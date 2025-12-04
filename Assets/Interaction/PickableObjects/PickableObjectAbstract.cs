@@ -19,7 +19,9 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 	private string _interactionItemNameUI;
 	public virtual string InteractionObjectNameUI => _interactionItemNameUI;
 
-	public string InteractionHint => $"Поднять {InteractionObjectNameUI}?";
+	public string MainInteractionHint => $"Поднять {InteractionObjectNameUI}?";
+	public virtual string AdditionalInteractionHint => null;
+	public virtual bool IsAdditionalInteractionHintActive => false;
 
 
 	public bool IsObjectPickedUp { get; protected set; }

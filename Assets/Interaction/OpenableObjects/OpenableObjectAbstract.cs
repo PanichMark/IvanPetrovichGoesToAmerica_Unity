@@ -13,7 +13,9 @@ public abstract class OpenableObjectAbstract : MonoBehaviour, IInteractable
 	public virtual string InteractionObjectNameUI => _interactionItemName;
 
 	// Свойство подсказки теперь учитывает состояние двери
-	public virtual string InteractionHint => !IsDoorOpened ? $"Открыть {InteractionObjectNameUI}" : $"Закрыть {InteractionObjectNameUI}";
+	public virtual string MainInteractionHint => !IsDoorOpened ? $"Открыть {InteractionObjectNameUI}" : $"Закрыть {InteractionObjectNameUI}";
+	public virtual string AdditionalInteractionHint => null;
+	public virtual bool IsAdditionalInteractionHintActive => false;
 
 	public virtual bool IsDoorOpened { get; protected set; }
 

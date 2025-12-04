@@ -13,7 +13,9 @@ public abstract class LootObjectAbstract : MonoBehaviour, IInteractable, IDataPe
 	private string _interactionItemNameUI;
 	public virtual string InteractionObjectNameUI => _interactionItemNameUI;
 
-	public virtual string InteractionHint => $"Поднять {InteractionObjectNameUI}";
+	public virtual string MainInteractionHint => $"Поднять {InteractionObjectNameUI}";
+	public virtual string AdditionalInteractionHint => null;
+	public virtual bool IsAdditionalInteractionHintActive => false;
 
 
 	[SerializeField]

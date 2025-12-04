@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SafeController : MonoBehaviour, IInteractable
 {
-	
+	private bool isAdditionalInteractionHintActive;
 	public virtual string InteractionObjectNameSystem => null;
 
 	public GameObject SafeDoor;
@@ -24,7 +24,9 @@ public class SafeController : MonoBehaviour, IInteractable
 	private bool isInStartMethod;
 
 	public string InteractionObjectNameUI => null;
-	public string InteractionHint => "Открыть сейф";
+	public string MainInteractionHint => "Открыть сейф";
+	public virtual string AdditionalInteractionHint => "Неправильная комбинация!";
+	public virtual bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
 
 	void Start()
 	{
@@ -103,6 +105,7 @@ public class SafeController : MonoBehaviour, IInteractable
 				Debug.Log("SAFE CORRECT");
 			}
 
+			isAdditionalInteractionHintActive = false;
 			wasSafeOpened = true;
 
 			StartCoroutine(OpenSafeDoor());
@@ -112,6 +115,8 @@ public class SafeController : MonoBehaviour, IInteractable
 			if (isInStartMethod == false)
 			{
 				Debug.Log("SAFE FAILED");
+				isAdditionalInteractionHintActive = true;
+
 			}
 		}
 

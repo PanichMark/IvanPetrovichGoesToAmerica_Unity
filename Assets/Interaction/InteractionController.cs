@@ -1,12 +1,16 @@
 ﻿using TMPro;
+using System.Collections;
 using UnityEngine;
 
 public class InteractionController : MonoBehaviour
 {
 	private float interactionRange = 50f; // Диапазон взаимодействия
-	public TextMeshProUGUI interactionText; // Подсказка (назначается вручную через Inspector)
+	public TextMeshProUGUI mainInteractionText; // Подсказка (назначается вручную через Inspector)
+	public TextMeshProUGUI additionalInteractionText;
 	public PlayerCameraController playerCamera;
 	public GameObject PlayerCameraObject;
+
+	private Coroutine showAdditionalHintCoroutine;
 
 	public PlayerBehaviour playerBehaviour;
 
@@ -21,21 +25,22 @@ public class InteractionController : MonoBehaviour
 	{
 		playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
 		playerBehaviour = GetComponent<PlayerBehaviour>();
+		additionalInteractionText.gameObject.SetActive(false);
 	}
 
 	void Update()
 	{
 		//Debug.Log(CurrentPickableObject);
-		
 
+		//Debug.Log(showAdditionalHintCoroutine);
 
 		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
 			interactionRange = 2.5f;
 		else if (playerCamera.CurrentPlayerCameraStateType == "ThirdPerson")
 			interactionRange = 2f + playerCamera.PlayerCameraDistanceZ;
 
-		if (interactionText != null)
-			interactionText.text = "";
+		if (mainInteractionText != null)
+			mainInteractionText.text = "";
 
 		if (playerCamera != null)
 		{
@@ -53,11 +58,11 @@ public class InteractionController : MonoBehaviour
 
 				if (throwableObj != null)
 				{
-					interactionText.text = $"Отпустить {InputManager.Instance.GetNameOfKeyInteract()}\nБросить {InputManager.Instance.GetNameOfKeyLeftHandWeaponAttack()}";
+					mainInteractionText.text = $"Отпустить {InputManager.Instance.GetNameOfKeyInteract()}\nБросить {InputManager.Instance.GetNameOfKeyLeftHandWeaponAttack()}";
 				}
 				else
 				{
-					interactionText.text = $"Отпустить на {InputManager.Instance.GetNameOfKeyInteract()}";
+					mainInteractionText.text = $"Отпустить на {InputManager.Instance.GetNameOfKeyInteract()}";
 				}
 
 
@@ -118,7 +123,7 @@ public class InteractionController : MonoBehaviour
 				if (currentInteractableObject != null)
 				{
 					// Подсказка для взаимодействия
-					interactionText.text = $"{interactableObj.InteractionHint}\nНажмите {InputManager.Instance.GetNameOfKeyInteract()}";
+					mainInteractionText.text = $"{interactableObj.MainInteractionHint}\nНажмите {InputManager.Instance.GetNameOfKeyInteract()}";
 				}
 
 				// Если это стандартный объект IInteractable, обрабатываем нажатие
@@ -129,6 +134,21 @@ public class InteractionController : MonoBehaviour
 					
 
 					interactableObj.Interact();
+					
+					if (interactableObj.IsAdditionalInteractionHintActive == true)
+					{
+						additionalInteractionText.text = interactableObj.AdditionalInteractionHint;
+						if (showAdditionalHintCoroutine != null)
+							StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
+
+						showAdditionalHintCoroutine = StartCoroutine(ShowHintForSeconds()); // Запускаем новую корутину
+					//	Debug.Log("!!!");
+					}
+					else if (showAdditionalHintCoroutine != null)
+					{
+						StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
+						additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
+					}
 
 					if (pickableObj != null)
 					{
@@ -143,6 +163,9 @@ public class InteractionController : MonoBehaviour
 				{
 					CurrentPickableObject = renderer;
 				}
+
+				
+
 			}
 			else
 			{
@@ -155,12 +178,37 @@ public class InteractionController : MonoBehaviour
 			if (currentInteractableObject != null)
 			{
 				currentInteractableObject.layer = LayerMask.NameToLayer("Default");
+				
+				/*
+				if (showAdditionalHintCoroutine != null)
+				{
+					StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
+					additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
+					Debug.Log("STOOP");
+				}
+				*/
 			}
 
+			
+
 			currentInteractableObject = null;
+
+			
 		}
 
 		// Помечаем текущий объект как предыдущий
 		previousInteractableObject = currentInteractableObject;
+
+
+		
+	}
+
+	
+
+	IEnumerator ShowHintForSeconds()
+	{
+		additionalInteractionText.gameObject.SetActive(true); // Показываем подсказку
+		yield return new WaitForSeconds(1f); // Ждем
+		additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
 	}
 }
