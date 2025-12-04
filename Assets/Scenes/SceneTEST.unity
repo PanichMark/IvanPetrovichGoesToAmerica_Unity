@@ -1057,7 +1057,7 @@ PrefabInstance:
       addedObject: {fileID: 406860886}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: efb7a07ac480a4848b2ad5e1e4224c29, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 406860885}
+      addedObject: {fileID: 406860892}
   m_SourcePrefab: {fileID: 100100000, guid: efb7a07ac480a4848b2ad5e1e4224c29, type: 3}
 --- !u!1 &127882651
 GameObject:
@@ -1583,7 +1583,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 13.390001, y: 6.5, z: 3.67}
-  m_LocalScale: {x: 1, y: 4, z: 2}
+  m_LocalScale: {x: 1.5, y: 4, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2033221783}
@@ -3850,10 +3850,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 714050b7ce96f04428a960dc6df0bd42, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1922000900}
+      addedObject: {fileID: 1922000899}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 714050b7ce96f04428a960dc6df0bd42, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1922000899}
+      addedObject: {fileID: 1922000906}
   m_SourcePrefab: {fileID: 100100000, guid: 714050b7ce96f04428a960dc6df0bd42, type: 3}
 --- !u!1 &375170412
 GameObject:
@@ -4265,19 +4265,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: efb7a07ac480a4848b2ad5e1e4224c29, type: 3}
   m_PrefabInstance: {fileID: 103828496}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &406860885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 406860884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc2c905d86e465f4ebf8fd441aef9bf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HealingItemModel: {fileID: 0}
 --- !u!65 &406860886
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4304,6 +4291,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: efb7a07ac480a4848b2ad5e1e4224c29, type: 3}
   m_PrefabInstance: {fileID: 103828496}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &406860892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406860884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4189a1dd9bd55c94d9b6c06e7f04aa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goodsForSaleModel: {fileID: 4206865506768132844, guid: 26f38a531436746429b0cde3b5a89d22, type: 3}
+  goodsPrice: 30
+  goodsName: "\u0428\u0430\u0443\u0440\u043C\u0430"
+  vendingMachineName: "\u0410\u0432\u0442\u043E\u043C\u0430\u0442\u0435 \u043F\u043E
+    \u043F\u0440\u043E\u0434\u0430\u0436\u0435 \u0448\u0430\u0443\u0440\u043C\u044B"
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -5950,7 +5954,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 13.390001, y: 1, z: 3.67}
-  m_LocalScale: {x: 1, y: 4, z: 2}
+  m_LocalScale: {x: 1.5, y: 4, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2033221783}
@@ -6866,7 +6870,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 13.39, y: 1, z: 1.68}
-  m_LocalScale: {x: 1, y: 4, z: 2}
+  m_LocalScale: {x: 1.5, y: 4, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2033221783}
@@ -14787,7 +14791,12 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.4000003, y: 1.947455, z: 0.68031067}
   m_Center: {x: 0, y: 1.6734731, z: 0.34015533}
---- !u!114 &1922000900
+--- !u!4 &1922000903 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 714050b7ce96f04428a960dc6df0bd42, type: 3}
+  m_PrefabInstance: {fileID: 331365138}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1922000906
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14796,15 +14805,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1922000898}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a347a2edc0d63947b6ed9b66efaa06f, type: 3}
+  m_Script: {fileID: 11500000, guid: 4189a1dd9bd55c94d9b6c06e7f04aa41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ManaReplenishItemModel: {fileID: 0}
---- !u!4 &1922000903 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 714050b7ce96f04428a960dc6df0bd42, type: 3}
-  m_PrefabInstance: {fileID: 331365138}
-  m_PrefabAsset: {fileID: 0}
+  goodsForSaleModel: {fileID: 2821634512713318240, guid: ab7ae580258066b4d9501bbb00e69436, type: 3}
+  goodsPrice: 15
+  goodsName: "\u0421\u0438\u0440\u043E\u043F"
+  vendingMachineName: "\u0410\u0432\u0442\u043E\u043C\u0430\u0442\u0435 \u043F\u043E
+    \u043F\u0440\u043E\u0434\u0430\u0436\u0435 \u0421\u0438\u0440\u043E\u043F\u0430"
 --- !u!1 &1931268773
 GameObject:
   m_ObjectHideFlags: 0
@@ -16214,7 +16222,7 @@ PrefabInstance:
       addedObject: {fileID: 2092572351}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b8deec434de502d45af4a7a54c260df8, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2092572350}
+      addedObject: {fileID: 2092572354}
   m_SourcePrefab: {fileID: 100100000, guid: b8deec434de502d45af4a7a54c260df8, type: 3}
 --- !u!4 &2092572348 stripped
 Transform:
@@ -16226,19 +16234,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b8deec434de502d45af4a7a54c260df8, type: 3}
   m_PrefabInstance: {fileID: 2092572347}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2092572350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2092572349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c54a58d7506916e4c836ec29f345916a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AmmoItemModel: {fileID: 0}
 --- !u!65 &2092572351
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16260,6 +16255,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3909175, y: 2.6619296, z: 1.2423536}
   m_Center: {x: 0, y: 1.3309648, z: 0.01071811}
+--- !u!114 &2092572354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092572349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4189a1dd9bd55c94d9b6c06e7f04aa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goodsForSaleModel: {fileID: 4206865506768132844, guid: 26f38a531436746429b0cde3b5a89d22, type: 3}
+  goodsPrice: 25
+  goodsName: "\u041F\u0430\u0442\u0440\u043E\u043D\u044B"
+  vendingMachineName: "\u0410\u0432\u0442\u043E\u043C\u0430\u0442\u0435 \u043F\u043E
+    \u043F\u0440\u043E\u0434\u0430\u0436\u0435 \u043F\u0430\u0442\u0440\u043E\u043D\u043E\u0432"
 --- !u!4 &2105420193 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1515228883894667458, guid: 26f38a531436746429b0cde3b5a89d22, type: 3}

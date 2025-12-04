@@ -410,18 +410,18 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 		else Big = true;
 
-		PlayerRigidBody.AddForce(transform.up * 1.01f, ForceMode.Impulse);
+		PlayerRigidBody.AddForce(transform.up * 1.2f, ForceMode.Impulse);
 
-		yield return new WaitForSeconds(0.07f);
+		yield return new WaitForSeconds(0.2f);
 
 		PlayerRigidBody.AddForce(Vector3.zero, ForceMode.Acceleration);
 		PlayerRigidBody.linearVelocity = Vector3.zero;
 		PlayerRigidBody.angularVelocity = Vector3.zero;
 		PlayerRigidBody.MovePosition(PlayerRigidBody.transform.position);
 
-		PlayerRigidBody.AddForce(transform.forward * 1.01f, ForceMode.Impulse);
+		PlayerRigidBody.AddForce(transform.forward * 1.4f, ForceMode.Impulse);
 
-		yield return new WaitForSeconds(0.01f);
+		yield return new WaitForSeconds(0.1f);
 		
 		PlayerRigidBody.AddForce(Vector3.zero, ForceMode.Acceleration);
 		PlayerRigidBody.linearVelocity = Vector3.zero;
