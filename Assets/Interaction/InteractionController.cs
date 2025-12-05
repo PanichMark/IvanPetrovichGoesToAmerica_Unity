@@ -25,13 +25,14 @@ public class InteractionController : MonoBehaviour
 	{
 		playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
 		playerBehaviour = GetComponent<PlayerBehaviour>();
-		additionalInteractionText.gameObject.SetActive(false);
+		//additionalInteractionText.gameObject.SetActive(false);
 	}
 
 	void Update()
 	{
 		//Debug.Log(CurrentPickableObject);
-
+		//Debug.Log(mainInteractionText.text);
+		//Debug.Log(additionalInteractionText.text);
 		//Debug.Log(showAdditionalHintCoroutine);
 
 		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
@@ -39,8 +40,12 @@ public class InteractionController : MonoBehaviour
 		else if (playerCamera.CurrentPlayerCameraStateType == "ThirdPerson")
 			interactionRange = 2f + playerCamera.PlayerCameraDistanceZ;
 
-		if (mainInteractionText != null)
-			mainInteractionText.text = "";
+
+		//if (mainInteractionText != null)
+			mainInteractionText.text = null;
+
+		if (showAdditionalHintCoroutine == null)
+			additionalInteractionText.text = null;
 
 		if (playerCamera != null)
 		{
@@ -147,7 +152,7 @@ public class InteractionController : MonoBehaviour
 					else if (showAdditionalHintCoroutine != null)
 					{
 						StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
-						additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
+						//additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
 					}
 
 					if (pickableObj != null)
@@ -179,14 +184,15 @@ public class InteractionController : MonoBehaviour
 			{
 				currentInteractableObject.layer = LayerMask.NameToLayer("Default");
 				
-				/*
+				
 				if (showAdditionalHintCoroutine != null)
 				{
 					StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
-					additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
-					Debug.Log("STOOP");
+					additionalInteractionText.text = null;
+					//additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
+					//Debug.Log("STOOP");
 				}
-				*/
+				
 			}
 
 			
@@ -207,8 +213,12 @@ public class InteractionController : MonoBehaviour
 
 	IEnumerator ShowHintForSeconds()
 	{
-		additionalInteractionText.gameObject.SetActive(true); // Показываем подсказку
+		//Debug.Log("Start");
+		//additionalInteractionText.gameObject.SetActive(true); // Показываем подсказку
 		yield return new WaitForSeconds(1f); // Ждем
-		additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
+		additionalInteractionText.text = null;
+		//Debug.Log("End");
+
+		//additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
 	}
 }

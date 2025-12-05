@@ -5,6 +5,13 @@ public class Door : OpenableObjectAbstract
 {
 	//public override string InteractionItemName => "Дверь";
 
+	private bool isAdditionalInteractionHintActive;
+	public override bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
+
+	[SerializeField] private bool isDoorKeyLocked;
+	//private bool isDoorUnlocked;
+	//private bool WasDoorKeyFound;
+
 	private float doorOpeningSpeed = 200f; // Скорость открытия-закрытия
 
 	private Coroutine currentAnimation;     // Переменная для хранения активной корутины
@@ -13,6 +20,7 @@ public class Door : OpenableObjectAbstract
 	private Quaternion closedRotation;     // Угловое положение закрытой двери
 	[SerializeField] private int doorOpenAngle;
 	
+	public override string AdditionalInteractionHint => $"{InteractionObjectNameUI} заперта!";
 
 	void Start()
 	{
@@ -28,20 +36,27 @@ public class Door : OpenableObjectAbstract
 
 	public override void Interact()
 	{
-		// Останавливаем ранее запущенную корутину, если она существует
-		if (currentAnimation != null)
+		if (!isDoorKeyLocked)
 		{
-			StopCoroutine(currentAnimation);
-		}
+			isAdditionalInteractionHintActive = false;
 
-		if (!IsDoorOpened)
-		{
-			currentAnimation = StartCoroutine(OpenDoor()); // Начинаем новую корутину
+			// Останавливаем ранее запущенную корутину, если она существует
+			if (currentAnimation != null)
+			{
+				StopCoroutine(currentAnimation);
+			}
+
+			if (!IsDoorOpened)
+			{
+				currentAnimation = StartCoroutine(OpenDoor()); // Начинаем новую корутину
+			}
+			else
+			{
+				currentAnimation = StartCoroutine(CloseDoor()); // Начинаем новую корутину
+			}
 		}
-		else
-		{
-			currentAnimation = StartCoroutine(CloseDoor()); // Начинаем новую корутину
-		}
+		else isAdditionalInteractionHintActive = true;
+
 	}
 
 	private void Update()

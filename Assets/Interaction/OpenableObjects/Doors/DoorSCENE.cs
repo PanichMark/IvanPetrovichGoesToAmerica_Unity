@@ -6,7 +6,7 @@ public class DoorSCENE : OpenableObjectAbstract
 {
 	//public override string InteractionItemName => "Дверь";
 
-	
+	public override string InteractionObjectNameUI => "Дверь в другой уровень";
 
 	[SerializeField] private string goToSceneName;
 
