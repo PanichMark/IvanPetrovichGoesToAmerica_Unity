@@ -8,7 +8,7 @@ public class LimitFPS : MonoBehaviour
 		//Cursor.lockState = CursorLockMode.Locked;
 		//Cursor.visible = false;
 
-		Application.targetFrameRate = 60;
+		//Application.targetFrameRate = 60;
 	}
 
     // Update is called once per frame
