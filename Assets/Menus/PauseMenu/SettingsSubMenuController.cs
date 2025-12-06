@@ -10,6 +10,8 @@ public class SettingsSubMenuController : MonoBehaviour
 	// Ссылка на контроллер паузы меню
 	PauseMenuController pauseMenuController;
 
+	private char lastValidChar; // Переменная для хранения последнего корректного символа
+
 	// Интерфейсы настроек
 	public Canvas SettingsSubMenuCanvas;
 	public Button CloseSettingsSubMenuButton;
@@ -47,23 +49,23 @@ public class SettingsSubMenuController : MonoBehaviour
 
 	private readonly char[][] layoutMap = new char[][]
 	{
-		new char[] {'Й', 'Q'}, new char[] {'Ц', 'W'}, new char[] {'У', 'E'}, new char[] {'К', 'R'},
-		new char[] {'Е', 'T'}, new char[] {'Н', 'Y'}, new char[] {'Г', 'U'}, new char[] {'Ш', 'I'},
-		new char[] {'Щ', 'O'}, new char[] {'З', 'P'}, new char[] {'Х', '['}, new char[] {'Ъ', ']'},
-		new char[] {'Ф', 'A'}, new char[] {'Ы', 'S'}, new char[] {'В', 'D'}, new char[] {'А', 'F'},
-		new char[] {'П', 'G'}, new char[] {'Р', 'H'}, new char[] {'О', 'J'}, new char[] {'Л', 'K'},
-		new char[] {'Д', 'L'}, new char[] {'Ж', ';'}, new char[] {'Э', '\''}, new char[] {'Я', 'Z'},
-		new char[] {'Ч', 'X'}, new char[] {'С', 'C'}, new char[] {'М', 'V'}, new char[] {'И', 'B'},
-		new char[] {'Т', 'N'}, new char[] {'Ь', 'M'}, new char[] {'Б', ','}, new char[] {'Ю', '.'},
-		new char[] {'.', '/'}, // Точка соответствует слэшу '/'
-    };
+	new char[] {'Й', 'Q'}, new char[] {'Ц', 'W'}, new char[] {'У', 'E'}, new char[] {'К', 'R'},
+	new char[] {'Е', 'T'}, new char[] {'Н', 'Y'}, new char[] {'Г', 'U'}, new char[] {'Ш', 'I'},
+	new char[] {'Щ', 'O'}, new char[] {'З', 'P'}, new char[] {'Х', '['}, new char[] {'Ъ', ']'},
+	new char[] {'Ф', 'A'}, new char[] {'Ы', 'S'}, new char[] {'В', 'D'}, new char[] {'А', 'F'},
+	new char[] {'П', 'G'}, new char[] {'Р', 'H'}, new char[] {'О', 'J'}, new char[] {'Л', 'K'},
+	new char[] {'Д', 'L'}, new char[] {'Ж', ';'}, new char[] {'Э', '\''}, new char[] {'Я', 'Z'},
+	new char[] {'Ч', 'X'}, new char[] {'С', 'C'}, new char[] {'М', 'V'}, new char[] {'И', 'B'},
+	new char[] {'Т', 'N'}, new char[] {'Ь', 'M'}, new char[] {'Б', ','}, new char[] {'Ю', '.'},
+	new char[] {'.', '/'}, // Точка соответствует слэшу '/'
+	  };
 
 	void Start()
 	{
 		pauseMenuController = GetComponent<PauseMenuController>();
 		CloseSettingsSubMenuButton.onClick.AddListener(CloseSettingsSubMenu);
 
-		// Настройки регулировки FOV
+		// Настройки ползунка FOV
 		if (fovSlider != null)
 		{
 			fovSlider.minValue = MIN_FOV_VALUE;
@@ -72,22 +74,26 @@ public class SettingsSubMenuController : MonoBehaviour
 			SetFOV(MIN_FOV_VALUE);
 		}
 
-		// Настройка кнопок для изменения лимитов FPS
+		// Настраиваем кнопки выбора лимита FPS
 		LimitFPS_30_Button.onClick.AddListener(() => ChangeFrameRateLimit(30));
 		LimitFPS_60_Button.onClick.AddListener(() => ChangeFrameRateLimit(60));
 		LimitFPS_90_Button.onClick.AddListener(() => ChangeFrameRateLimit(90));
 		LimitFPS_144_Button.onClick.AddListener(() => ChangeFrameRateLimit(144));
 
-		// Изначально выделяем кнопку 60 FPS
+		// Выделяем активную кнопку FPS
 		ChangeFrameRateLimit(60);
 		ApplyButtonColors(currentFrameRateLimit);
 
-		// Загружаем текущие значения клавиш из InputManager и добавляем слушатели событий
-		foreach (var (action, key) in InputManager.Instance.GetCurrentBindings())
+		// Заполняем поля ввода клавиш начальными значениями из InputManager
+		var bindings = InputManager.Instance.GetCurrentBindings().ToList();
+
+		foreach (var field in inputFields)
 		{
-			var field = inputFields.FirstOrDefault(f => f.name.Equals(action + "InputField")) as TMP_InputField;
-			if (field != null)
-				field.text = key.ToString();
+			var matchingBinding = bindings.FirstOrDefault(b => b.action == field.name.Replace("InputField", ""));
+			if (matchingBinding != default)
+			{
+				field.text = matchingBinding.key.ToString();
+			}
 		}
 
 		// Добавляем обработчики
@@ -99,7 +105,7 @@ public class SettingsSubMenuController : MonoBehaviour
 				string actionName = field.name.Replace("InputField", "");
 				HandleRebinding(actionName, text);
 			});
-			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field)); // Новый обработчик
+			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
 	}
 
@@ -110,30 +116,32 @@ public class SettingsSubMenuController : MonoBehaviour
 			field.text = field.text[field.text.Length - 1].ToString(); // Оставляем только последний символ
 		}
 	}
-
 	char ValidateAndConvertInput(string text, int charIndex, char addedChar)
 	{
-		if (char.IsControl(addedChar)) return addedChar;
+		if (char.IsControl(addedChar)) return addedChar; // Пропускаем управляющие символы
 
-		char upperCaseChar = char.ToUpperInvariant(addedChar);
+		char upperCaseChar = char.ToUpperInvariant(addedChar); // Верхний регистр
 
-		// Если символ — английская буква, просто возвращаем её
+		// Если символ — английская буква, возвращаем её
 		if (char.IsLetter(upperCaseChar) && upperCaseChar <= 'Z')
 		{
+			lastValidChar = upperCaseChar; // Запоминаем последнюю правильную букву
 			return upperCaseChar;
 		}
 
-		// Иначе ищем соответствие в русской раскладке
+		// Проверяем соответствие русской раскладке
 		foreach (var entry in layoutMap)
 		{
 			if (entry[0] == upperCaseChar)
 			{
-				return entry[1]; // Английский аналог
+				lastValidChar = entry[1]; // Запоминаем последнюю правильную букву
+				return entry[1];          // Возвращаем английский аналог
 			}
 		}
 
+		// Если соответствие не найдено, возвращаем последний валидный символ
 		Debug.LogWarning($"Символ {upperCaseChar} не обнаружен в раскладке!");
-		return upperCaseChar;
+		return lastValidChar; // Восстанавливаем предыдущий корректный символ
 	}
 
 	private void Update()
