@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System;
 using Unity.IO.LowLevel.Unsafe;
+using TMPro;
 
-public abstract class LootObjectAbstract : MonoBehaviour, IInteractable, IDataPersistence
+public abstract class LootObjectAbstract : MonoBehaviour, IInteractable, IInteractGainedItem, IDataPersistence
 {
 	[SerializeField]
 	private string _interactionItemNameSystem;
@@ -28,6 +29,8 @@ public abstract class LootObjectAbstract : MonoBehaviour, IInteractable, IDataPe
 
 	// Поле для внутреннего индекса и хранения типа предмета
 	public int LootItemIndex { get; protected set; }
+
+	public TextMeshProUGUI GainedItemtext => null;
 
 	internal void AssignLootItemIndex(int index)
 	{

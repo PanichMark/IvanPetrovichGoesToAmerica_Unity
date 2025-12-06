@@ -28,6 +28,8 @@ public class SafeController : MonoBehaviour, IInteractable
 	public virtual string AdditionalInteractionHint => "Неправильная комбинация!";
 	public virtual bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
 
+
+	
 	void Start()
 	{
 

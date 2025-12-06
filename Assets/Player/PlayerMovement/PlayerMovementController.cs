@@ -243,7 +243,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 			PlayerRigidBody.useGravity = true;
 		}
 
-		Debug.Log(PlayerRigidBody.linearVelocity);
+		//Debug.Log(PlayerRigidBody.linearVelocity);
 
 		if (IsPlayerOnSlope == true)
 		{

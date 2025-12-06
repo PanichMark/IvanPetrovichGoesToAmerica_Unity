@@ -6,5 +6,7 @@
 
 	string AdditionalInteractionHint { get; }
 	bool IsAdditionalInteractionHintActive { get; }
+
+
 	void Interact();
 }

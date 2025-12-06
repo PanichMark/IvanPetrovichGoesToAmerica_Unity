@@ -7,6 +7,11 @@ public class InteractionController : MonoBehaviour
 	private float interactionRange = 50f; // Диапазон взаимодействия
 	public TextMeshProUGUI mainInteractionText; // Подсказка (назначается вручную через Inspector)
 	public TextMeshProUGUI additionalInteractionText;
+
+	public TextMeshProUGUI GainItem1;
+	public TextMeshProUGUI GainItem2;
+	public TextMeshProUGUI GainItem3;
+
 	public PlayerCameraController playerCamera;
 	public GameObject PlayerCameraObject;
 
@@ -103,6 +108,8 @@ public class InteractionController : MonoBehaviour
 		{
 			var interactableObj = hitInfo.collider.GetComponent<IInteractable>();
 			var pickableObj = hitInfo.collider.GetComponent<IPickable>();
+			var gainedObject = hitInfo.collider.GetComponent<IInteractGainedItem>();
+			var usedObject = hitInfo.collider.GetComponent<IInteractUsedItem>();
 
 			//Debug.Log(pickableObj != null ? pickableObj.IsObjectPickedUp.ToString() : "Нет компонента PickableObjectAbstract");
 
@@ -139,6 +146,9 @@ public class InteractionController : MonoBehaviour
 					
 
 					interactableObj.Interact();
+
+
+
 					
 					if (interactableObj.IsAdditionalInteractionHintActive == true)
 					{
@@ -149,10 +159,55 @@ public class InteractionController : MonoBehaviour
 						showAdditionalHintCoroutine = StartCoroutine(ShowHintForSeconds()); // Запускаем новую корутину
 					//	Debug.Log("!!!");
 					}
-					else if (showAdditionalHintCoroutine != null)
+					else 
 					{
-						StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
+						if (showAdditionalHintCoroutine != null)
+						{
+							StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
+						}
 						//additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
+
+
+						if (gainedObject != null)
+						{
+							
+							if (GainItem1.gameObject.activeInHierarchy == false)
+							{
+								//Debug.Log("111");
+								GainItem1.gameObject.SetActive(true);
+								GainItem1.text = interactableObj.InteractionObjectNameUI;
+
+							}
+							else if (GainItem1.gameObject.activeInHierarchy == true && GainItem2.gameObject.activeInHierarchy == false)
+							{
+								//Debug.Log("222");
+
+
+								GainItem2.gameObject.SetActive(true);
+								GainItem2.text = GainItem1.text;
+								GainItem1.text = interactableObj.InteractionObjectNameUI;
+
+							}
+							else if (GainItem2.gameObject.activeInHierarchy == true && GainItem1.gameObject.activeInHierarchy == true)
+							{
+								//Debug.Log("333");
+								GainItem3.gameObject.SetActive(true);
+								GainItem3.text = GainItem2.text;
+								GainItem2.text = GainItem1.text;
+								GainItem1.text = interactableObj.InteractionObjectNameUI;
+
+							}
+							else if (GainItem3.gameObject.activeInHierarchy == true && GainItem1.gameObject.activeInHierarchy == true
+								&& GainItem1.gameObject.activeInHierarchy == true)
+							{
+								GainItem3.text = GainItem2.text;
+								GainItem2.text = GainItem1.text;
+								GainItem1.text = interactableObj.InteractionObjectNameUI;
+							}
+							//Debug.Log("222");
+							StartCoroutine(ShowItemsGained());
+
+						}
 					}
 
 					if (pickableObj != null)
@@ -209,10 +264,9 @@ public class InteractionController : MonoBehaviour
 		
 	}
 
-	
-
 	IEnumerator ShowHintForSeconds()
 	{
+		
 		//Debug.Log("Start");
 		//additionalInteractionText.gameObject.SetActive(true); // Показываем подсказку
 		yield return new WaitForSeconds(1f); // Ждем
@@ -221,4 +275,39 @@ public class InteractionController : MonoBehaviour
 
 		//additionalInteractionText.gameObject.SetActive(false); // Скрываем подсказку
 	}
+
+	IEnumerator ShowItemsGained()
+	{
+		//Debug.Log("333");
+
+		yield return new WaitForSeconds(2f);
+		if (GainItem3.gameObject.activeInHierarchy == true)
+		{
+			GainItem3.text = null;
+			GainItem3.gameObject.SetActive(false);
+			//Debug.Log("delete 333");
+
+		}
+		else if (GainItem2.gameObject.activeInHierarchy == true)
+		{
+			GainItem2.text = null;
+			GainItem2.gameObject.SetActive(false);
+			//Debug.Log("delete 222");
+
+		}
+		else if (GainItem1.gameObject.activeInHierarchy == true)
+		{
+			GainItem1.text = null;
+			GainItem1.gameObject.SetActive(false);
+			//Debug.Log("delete 111");
+
+		}
+	}
+
+	/*
+	IEnumerator ShowItemsUsed()
+	{
+		yield return new WaitForSeconds(1f);
+	}
+	*/
 }

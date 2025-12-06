@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
-public class VendingMachine : MonoBehaviour, IInteractable
+public class VendingMachine : MonoBehaviour, IInteractUsedItem, IInteractable
 {
 	[SerializeField] private GameObject goodsForSaleModel;
 	[SerializeField] private int goodsPrice;
@@ -15,7 +16,7 @@ public class VendingMachine : MonoBehaviour, IInteractable
 	public string InteractionObjectNameSystem => null;
 	public virtual bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
 
-
+	
 
 	private void Start()
 	{

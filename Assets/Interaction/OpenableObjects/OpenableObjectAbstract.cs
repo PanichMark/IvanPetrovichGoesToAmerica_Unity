@@ -22,6 +22,7 @@ public abstract class OpenableObjectAbstract : MonoBehaviour, IInteractable
 
 	public int DoorIndex { get; protected set; }
 
+	
 
 	public abstract void Interact();
 

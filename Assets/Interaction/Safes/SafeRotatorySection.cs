@@ -20,6 +20,9 @@ public class SafeRotatorySection : MonoBehaviour, IInteractable
 
 	public string InteractionObjectNameSystem => null;
 
+
+
+
 	public void Interact()
 	{
 		// Проверяем, есть ли уже запущенная корутина

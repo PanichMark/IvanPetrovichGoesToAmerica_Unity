@@ -27,6 +27,10 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 	public bool IsObjectPickedUp { get; protected set; }
 
 
+
+
+
+
 	void Start()
 	{
 		BoxCollider = GetComponent<BoxCollider>();
