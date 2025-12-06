@@ -221,6 +221,8 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 			}
 		}
 
+		
+
 		if (IsPlayerGrounded == true && IsPlayerOnSlope == true)
 		{
 			PlayerRigidBody.useGravity = false;
@@ -229,16 +231,19 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 			// IsPLayerSliding == false 
 
 			// все еще sliding ОШИБКА!
-			if (CurrentPlayerMovementStateType != "PlayerJumping")
+			if (CurrentPlayerMovementStateType == "PlayerJumping" || CurrentPlayerMovementStateType == "PlayerSliding")
 			{
-				PlayerRigidBody.linearVelocity = Vector3.zero;
+				
 			}
+			else PlayerRigidBody.linearVelocity = Vector3.zero;
 		
 		}
         else
         {
 			PlayerRigidBody.useGravity = true;
 		}
+
+		Debug.Log(PlayerRigidBody.linearVelocity);
 
 		if (IsPlayerOnSlope == true)
 		{

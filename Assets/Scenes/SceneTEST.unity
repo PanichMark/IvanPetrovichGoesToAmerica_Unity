@@ -6433,7 +6433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &405795461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9680,6 +9680,7 @@ Transform:
   m_Children:
   - {fileID: 634984113}
   - {fileID: 1721492905}
+  - {fileID: 1630312021}
   m_Father: {fileID: 1255085658}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &661110502
@@ -12885,7 +12886,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 650335068}
     m_Modifications:
     - target: {fileID: 477392822797136791, guid: f1ad9788051b61748a4efe1567ba269a, type: 3}
       propertyPath: m_Name
@@ -12897,7 +12898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1003135665565903149, guid: f1ad9788051b61748a4efe1567ba269a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000009536743
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1003135665565903149, guid: f1ad9788051b61748a4efe1567ba269a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -19026,7 +19027,7 @@ RectTransform:
   m_Father: {fileID: 1968908908}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -22221,6 +22222,11 @@ Transform:
   - {fileID: 285161813}
   m_Father: {fileID: 2143856452}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1630312021 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1003135665565903149, guid: f1ad9788051b61748a4efe1567ba269a, type: 3}
+  m_PrefabInstance: {fileID: 928202383}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1641192118
 GameObject:
   m_ObjectHideFlags: 0
@@ -25645,7 +25651,7 @@ RectTransform:
   m_Father: {fileID: 1316567742}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -29643,6 +29649,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door SCENE
       objectReference: {fileID: 0}
+    - target: {fileID: 7148807071726978935, guid: 0694a3c1529e34841a23ce420c628125, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9031986547328454540, guid: 0694a3c1529e34841a23ce420c628125, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -31931,4 +31941,3 @@ SceneRoots:
   - {fileID: 23897643}
   - {fileID: 562943793}
   - {fileID: 287281911}
-  - {fileID: 928202383}
