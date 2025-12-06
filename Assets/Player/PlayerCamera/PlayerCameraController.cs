@@ -113,6 +113,7 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 			ChangePlayerCameraView();
 		}
 
+		/*
 		if (InputManager.Instance.GetKeyEnterCutscene())
 		{
 			if (_currentPlayerCameraType != PlayerCameraStateType.Cutscene.ToString())
@@ -124,6 +125,7 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 				ExitCutscene();
 			}
 		}
+		*/
 
 		if (InputManager.Instance.GetKeyChangeCameraShoulder() && CurrentPlayerCameraStateType != "FirstPerson")
 		{

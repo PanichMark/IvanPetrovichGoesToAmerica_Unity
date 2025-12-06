@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 public class SettingsSubMenuController : MonoBehaviour
 {
@@ -11,75 +14,122 @@ public class SettingsSubMenuController : MonoBehaviour
 	public Canvas SettingsSubMenuCanvas;
 	public Button CloseSettingsSubMenuButton;
 
-	// Добавляем компонент Slider для регулировки FOV камеры
+	// Ползунок для регулировки FOV
 	public Slider fovSlider;
 
-	// Тексты для вывода значения FOV
+	// Тексты для отображения значения FOV
 	public TextMeshProUGUI fovDisplayText;
 
-	// Камеры, на которые будем влиять значением FOV
+	// Основные камеры
 	public Camera MainCamera;
 	public Camera AdditionalCamera;
 
-	// Ограничители FPS
+	// Кнопки выбора частоты кадров
 	public Button LimitFPS_30_Button;
 	public Button LimitFPS_60_Button;
 	public Button LimitFPS_90_Button;
 	public Button LimitFPS_144_Button;
 
-	// Цвет активной кнопки
+	// Цвет выделения активных кнопок
 	public Color activeColor = Color.green;
-	// Обычный цвет кнопки
 	public Color normalColor = Color.white;
 
-	// Хранится текущее активное ограничение FPS
+	// Текущее выбранное ограничение FPS
 	int currentFrameRateLimit = 60;
 
-	private const float MIN_FOV_VALUE = 60f; // Минимальное значение FOV
-	private const float MAX_FOV_VALUE = 120f; // Максимальное значение FOV
+	// Диапазон возможных значений FOV
+	private const float MIN_FOV_VALUE = 60f;
+	private const float MAX_FOV_VALUE = 120f;
+
+	// Список полей ввода для изменения клавиш
+	[SerializeField]
+	public TMP_InputField[] inputFields;
+
+	private readonly char[][] layoutMap = new char[][]
+	{
+		new char[] {'Й', 'Q'}, new char[] {'Ц', 'W'}, new char[] {'У', 'E'}, new char[] {'К', 'R'},
+		new char[] {'Е', 'T'}, new char[] {'Н', 'Y'}, new char[] {'Г', 'U'}, new char[] {'Ш', 'I'},
+		new char[] {'Щ', 'O'}, new char[] {'З', 'P'}, new char[] {'Х', '['}, new char[] {'Ъ', ']'},
+		new char[] {'Ф', 'A'}, new char[] {'Ы', 'S'}, new char[] {'В', 'D'}, new char[] {'А', 'F'},
+		new char[] {'П', 'G'}, new char[] {'Р', 'H'}, new char[] {'О', 'J'}, new char[] {'Л', 'K'},
+		new char[] {'Д', 'L'}, new char[] {'Ж', ';'}, new char[] {'Э', '\''}, new char[] {'Я', 'Z'},
+		new char[] {'Ч', 'X'}, new char[] {'С', 'C'}, new char[] {'М', 'V'}, new char[] {'И', 'B'},
+		new char[] {'Т', 'N'}, new char[] {'Ь', 'M'}, new char[] {'Б', ','}, new char[] {'Ю', '.'},
+		new char[] {'.', '/'}, // Точка соответствует слэшу '/'
+    };
 
 	void Start()
 	{
-		// Получаем ссылку на контроллер меню паузы
 		pauseMenuController = GetComponent<PauseMenuController>();
-
-		// Подписываем обработчик события нажатия кнопки закрытия
 		CloseSettingsSubMenuButton.onClick.AddListener(CloseSettingsSubMenu);
 
-		// Проверяем наличие ползунка и подписываем обработчик изменения значения
+		// Настройки регулировки FOV
 		if (fovSlider != null)
 		{
 			fovSlider.minValue = MIN_FOV_VALUE;
 			fovSlider.maxValue = MAX_FOV_VALUE;
-
-			// Подписываем обработчик изменения значения ползунка
 			fovSlider.onValueChanged.AddListener(OnFovChanged);
-
-			// Устанавливаем начальное положение ползунка
 			SetFOV(MIN_FOV_VALUE);
 		}
 
-		// Настройка кнопок для изменения лимита FPS
+		// Настройка кнопок для изменения лимитов FPS
 		LimitFPS_30_Button.onClick.AddListener(() => ChangeFrameRateLimit(30));
 		LimitFPS_60_Button.onClick.AddListener(() => ChangeFrameRateLimit(60));
 		LimitFPS_90_Button.onClick.AddListener(() => ChangeFrameRateLimit(90));
 		LimitFPS_144_Button.onClick.AddListener(() => ChangeFrameRateLimit(144));
 
-		// Применяем выделение изначально выбранной кнопки (для 60 FPS)
+		// Изначально выделяем кнопку 60 FPS
 		ChangeFrameRateLimit(60);
 		ApplyButtonColors(currentFrameRateLimit);
+
+		// Загружаем текущие значения клавиш из InputManager и добавляем слушатели событий
+		foreach (var (action, key) in InputManager.Instance.GetCurrentBindings())
+		{
+			var field = inputFields.FirstOrDefault(f => f.name.Equals(action + "InputField")) as TMP_InputField;
+			if (field != null)
+				field.text = key.ToString();
+		}
+
+		// Добавляем обработчики
+		foreach (var field in inputFields)
+		{
+			field.onValidateInput += ValidateAndConvertInput;
+			field.onEndEdit.AddListener((string text) =>
+			{
+				string actionName = field.name.Replace("InputField", ""); // Простая замена "InputField"
+				HandleRebinding(actionName, text);
+			});
+		}
+	}
+
+	char ValidateAndConvertInput(string text, int charIndex, char addedChar)
+	{
+		if (char.IsControl(addedChar)) return addedChar;
+
+		char upperCaseChar = char.ToUpperInvariant(addedChar);
+		Debug.Log($"Преобразуется символ: {upperCaseChar}");
+
+		foreach (var entry in layoutMap)
+		{
+			if (entry[0] == upperCaseChar)
+			{
+				Debug.Log($"Символ найден: {upperCaseChar} -> {entry[1]}");
+				return entry[1];
+			}
+		}
+
+		Debug.LogWarning($"Символ {upperCaseChar} не обнаружен в раскладке!");
+		return upperCaseChar;
 	}
 
 	private void Update()
 	{
-		// Закрываем меню, если нажата клавиша паузы и открыто окно настроек
 		if (InputManager.Instance.GetKeyPauseMenu() && SettingsSubMenuCanvas.gameObject.activeInHierarchy)
 		{
 			CloseSettingsSubMenu();
 		}
 	}
 
-	// Метод закрывает настройки и возвращает основное меню паузы
 	public void CloseSettingsSubMenu()
 	{
 		SettingsSubMenuCanvas.gameObject.SetActive(false);
@@ -87,32 +137,22 @@ public class SettingsSubMenuController : MonoBehaviour
 		Debug.Log("SettingsSubMenu closed");
 	}
 
-	// Обработчик изменения значения ползунка FOV
 	public void OnFovChanged(float value)
 	{
 		SetFOV(value);
 	}
 
-	// Установщик значения FOV для обеих камер
 	private void SetFOV(float newFov)
 	{
 		if (MainCamera != null)
-		{
 			MainCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
-		}
 		if (AdditionalCamera != null)
-		{
 			AdditionalCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
-		}
 
-		// Отображаем текущее значение в тексте
 		if (fovDisplayText != null)
-		{
-			fovDisplayText.text = ((int)newFov).ToString(); // Округляем до целого числа
-		}
+			fovDisplayText.text = ((int)newFov).ToString();
 	}
 
-	// Меняет ограничение FPS и выделяет соответствующую кнопку
 	private void ChangeFrameRateLimit(int frameRate)
 	{
 		Application.targetFrameRate = frameRate;
@@ -121,7 +161,6 @@ public class SettingsSubMenuController : MonoBehaviour
 		Debug.Log($"Frame rate limit set to {frameRate}");
 	}
 
-	// Выделяет нужную кнопку активным цветом и сбрасывает остальные
 	private void ApplyButtonColors(int activeFrameRate)
 	{
 		ResetAllButtons();
@@ -143,7 +182,6 @@ public class SettingsSubMenuController : MonoBehaviour
 		}
 	}
 
-	// Сбрасывает цвет всех кнопок
 	private void ResetAllButtons()
 	{
 		LimitFPS_30_Button.image.color = normalColor;
@@ -152,9 +190,22 @@ public class SettingsSubMenuController : MonoBehaviour
 		LimitFPS_144_Button.image.color = normalColor;
 	}
 
-	// Выделяет указанную кнопку
 	private void HighlightButton(Button button)
 	{
 		button.image.color = activeColor;
+	}
+
+	// Обработчик изменения клавиш
+	void HandleRebinding(string actionName, string newKeyStr)
+	{
+		KeyCode newKey;
+		if (Enum.TryParse<KeyCode>(newKeyStr, out newKey))
+		{
+			InputManager.Instance.RebindKey(actionName, newKey);
+		}
+		else
+		{
+			Debug.LogWarning($"Некорректная клавиша: {newKeyStr}. Введите допустимое обозначение клавиши.");
+		}
 	}
 }

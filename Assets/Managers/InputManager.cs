@@ -1,366 +1,68 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
 public class InputManager : MonoBehaviour
 {
 	public PlayerMovementController playerMovementController;
-	//public GameObject Player;
 
 	public static InputManager Instance { get; private set; }
+
 	private float lastPressTime = 0f;
 	private bool isKeyInteractBeingHeld = false;
 
-	private KeyCode _keyUp;
-	private KeyCode _keyDown;
-	private KeyCode _keyRight;
-	private KeyCode _keyLeft;
-
-	private KeyCode _keyChangeCameraView;
-	private KeyCode _keyChangeCameraShoulder;
-
-	//private KeyCode _keyShowWeapons;
-
-	private KeyCode _keyReload;
-
-	private KeyCode _keyEnterCutscene;
-
-	private KeyCode _keyRun;
-
-	private KeyCode _keyJump;
-	private KeyCode _keyCrouch;
-
-	private KeyCode _keyLegKick;
-
-	private KeyCode _keyInteract;
-
-	private KeyCode _keyRightHandWeaponWheel;
-	private KeyCode _keyLeftHandWeaponWheel;
-
-	private KeyCode _keyRightHandWeaponAttack;
-	private KeyCode _keyLeftHandWeaponAttack;
-
 	private KeyCode _keyPauseMenu;
 
-	private void Update()
+	private Dictionary<string, KeyCode> keyBindings = new Dictionary<string, KeyCode>()
 	{
-		
-			//GetKeyHideWeapons();
-		
-	}
+		{"MoveForward", KeyCode.W},
+		{"MoveBackward", KeyCode.S},
+		{"MoveRight", KeyCode.D},
+		{"MoveLeft", KeyCode.A},
+		{"Run", KeyCode.LeftShift},
+		{"Jump", KeyCode.Space},
+		{"Crouch", KeyCode.LeftControl},
+		{"Interact", KeyCode.F},
+
+		{"ChangeCameraView", KeyCode.V},
+		{"ChangeCameraShoulder", KeyCode.C},
+		{"RightHandWeaponWheel", KeyCode.E},
+		{"LeftHandWeaponWheel", KeyCode.Q},
+		{"RightHandWeaponAttack", KeyCode.Mouse1},
+		{"LeftHandWeaponAttack", KeyCode.Mouse0},
+		{"Reload", KeyCode.R},
+		{"LegKick", KeyCode.Mouse2},
+	};
 
 	private void Awake()
 	{
-		// Паттерн Singleton: предотвращаем создание второго экземпляра
 		if (Instance == null)
-		{
 			Instance = this;
-
-		}
 		else
-		{
-			Destroy(gameObject); // Уничтожаем лишние экземпляры
-		}
-	}
-	void Start()
-	{
-		
-		//playerMovementController = GetComponent<PlayerMovementController>();
-		
-
-		_keyUp = KeyCode.W;
-		_keyDown = KeyCode.S;
-		_keyRight = KeyCode.D;
-		_keyLeft = KeyCode.A;
-
-		_keyChangeCameraView = KeyCode.V;
-		_keyChangeCameraShoulder = KeyCode.C;
-
-		//_keyShowWeapons = KeyCode.X;
-
-		_keyReload = KeyCode.R;
-
-		///////////////////
-		_keyEnterCutscene = KeyCode.Z;
-
-		_keyRun = KeyCode.LeftShift;
-
-		_keyJump = KeyCode.Space;
-		_keyCrouch = KeyCode.LeftControl;
-
-		_keyLegKick = KeyCode.Mouse2;
-
-		_keyInteract = KeyCode.F;
-
-		_keyRightHandWeaponWheel = KeyCode.E;
-		_keyLeftHandWeaponWheel = KeyCode.Q;
-
-		_keyRightHandWeaponAttack = KeyCode.Mouse1;
-		_keyLeftHandWeaponAttack = KeyCode.Mouse0;
-
-		_keyPauseMenu = KeyCode.Alpha1; //for now its not ESC as Unity and stuff...
+			Destroy(gameObject);
 	}
 
-	
-	public bool GetKeyUp()
+	private void Start()
 	{
-		if (MenuManager.IsPlayerControllable && Input.GetKey(_keyUp) && Input.GetKey(_keyDown))
-		{
-			return false;
-		}
-		else if (MenuManager.IsPlayerControllable && Input.GetKey(_keyUp) && playerMovementController.IsPlayerAbleToMove == true)
-		{
-			return true;
-		}
-		else return false;
-	}
-	public bool GetKeyDown()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKey(_keyUp) && Input.GetKey(_keyDown))
-		{
-			return false;
-		}
-		else if (MenuManager.IsPlayerControllable && Input.GetKey(_keyDown) && playerMovementController.IsPlayerAbleToMove == true)
-		{
-			return true;
-		}
-		else return false;
-	}
-	public bool GetKeyRight()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKey(_keyRight) && Input.GetKey(_keyLeft))
-		{
-			return false;
-		}
-		else if (MenuManager.IsPlayerControllable && Input.GetKey(_keyRight) && playerMovementController.IsPlayerAbleToMove == true)
-		{
-			return true;
-		}
-		else return false;
-	}
-	public bool GetKeyLeft()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKey(_keyRight) && Input.GetKey(_keyLeft))
-		{
-			return false;
-		}
-		else if (MenuManager.IsPlayerControllable && Input.GetKey(_keyLeft) && playerMovementController.IsPlayerAbleToMove == true)
-		{
-			return true;
-		}
-		else return false;
+		_keyPauseMenu = KeyCode.Alpha1;
 	}
 
-	public bool GetKeyChangeCameraView()
+	public IEnumerable<(string action, KeyCode key)> GetCurrentBindings()
 	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyChangeCameraView))
-		{
-			return true;
-		}
-		else return false;
+		return keyBindings.Select(kvp => (kvp.Key, kvp.Value));
 	}
 
-	public bool GetKeyChangeCameraShoulder()
+	public KeyCode GetBinding(string actionName)
 	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyChangeCameraShoulder))
-		{
-			return true;
-		}
-		else return false;
+		return keyBindings.ContainsKey(actionName) ? keyBindings[actionName] : KeyCode.None;
 	}
 
-	////////////////////////
-	//////////////////////
-	public bool GetKeyEnterCutscene()
+	public void RebindKey(string actionName, KeyCode newKey)
 	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyEnterCutscene) && false)
-		{
-			return true;
-		}
-		else return false;
-	}
-
-
-
-
-
-
-	/*
-	public bool GetKeyHideWeapons()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyShowWeapons) && !MenuManager.IsWeaponWheelMenuOpened)
-		{
-			return true;
-		}
-		else return false;
-	}
-	*/
-	// Метод проверяющий длительное удержание
-	public bool GetKeyHideWeapons()
-	{
-		if (!isKeyInteractBeingHeld)
-		{
-			if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyInteract) && !MenuManager.IsWeaponWheelMenuOpened) // Нажали клавишу
-			{
-				lastPressTime = Time.time;
-				isKeyInteractBeingHeld = true;
-			}
-		}
-		else if (Input.GetKeyUp(_keyInteract)) // Отпустили клавишу
-		{
-			isKeyInteractBeingHeld = false;
-		}
-		else if (isKeyInteractBeingHeld && Time.time >= lastPressTime + 0.5f) // Удерживали больше 0.5 секунды
-		{
-			isKeyInteractBeingHeld = false;
-			//Debug.Log("TRUE");
-			return true;
-		}
-		//Debug.Log("FALSE");
-		return false;
-	}
-
-
-
-
-	/////////
-	/////////
-
-
-
-
-
-	public bool GetKeyReload()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyReload))
-		{
-			return true;
-		}
-		else return false;
-	}
-	public bool GetKeyRun()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKey(_keyRun) && playerMovementController.IsPlayerAbleToMove == true)
-		{
-			return true;
-		}
-		else return false;
-	}
-
-	public bool GetKeyJump()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyJump) && playerMovementController.IsPlayerGrounded == true && playerMovementController.IsPlayerAbleToMove == true && playerMovementController.IsPlayerAbleToStandUp == true)
-		{
-			return true;
-		}
-		else return false;
-	}
-	public bool GetKeyJumpBeingHeld()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKey(_keyJump))
-		{
-			return true;
-		}
-		else return false;
-	}
-
-	public bool GetKeyCrouch()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyCrouch))
-		{
-			return true;
-		}
-		else return false;
-	}
-
-	public bool GetKeyLegKick()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyLegKick) && playerMovementController.IsPlayerGrounded
-			&& !playerMovementController.IsPLayerSliding && playerMovementController.CurrentPlayerMovementStateType != "PlayerLedgeClimbing")
-		{
-			return true;
-		}
-		else return false;
-	}
-
-
-
-
-
-
-
-
-	/*
-	public bool GetKeyInteract()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyInteract))
-		{
-			return true;
-		}
-		else return false;
-	}
-	*/
-
-	// Метод проверки кратковременного клика
-	public bool GetKeyInteract()
-	{
-		if (isKeyInteractBeingHeld && Time.time > lastPressTime + 0.01f)
-		{
-			return false; // Игнорируем нажатие, если идет задержка для HideWeapons
-		}
-
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyInteract))
-		{
-			return true;
-		}
-		return false;
-	}
-
-
-	/////////
-	/////////
-
-
-	public string GetNameOfKeyInteract()
-	{
-		return _keyInteract.ToString();
-	}
-
-	public bool GetKeyRightHandWeaponWheel()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKey(_keyRightHandWeaponWheel))
-		{
-			return true;
-		}
-		else return false;
-	}
-	public bool GetKeyLeftHandWeaponWheel()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKey(_keyLeftHandWeaponWheel))
-		{
-			return true;
-		}
-		else return false;
-	}
-
-	public bool GetKeyRightHandWeaponAttack()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyRightHandWeaponAttack))
-		{
-			return true;
-		}
-		else return false;
-	}
-
-	public bool GetKeyLeftHandWeaponAttack()
-	{
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(_keyLeftHandWeaponAttack))
-		{
-			return true;
-		}
-		else return false;
-	}
-
-	public string GetNameOfKeyLeftHandWeaponAttack()
-	{
-		return _keyLeftHandWeaponAttack.ToString();
+		if (!keyBindings.ContainsKey(actionName))
+			Debug.LogError($"Нет такого действия '{actionName}'.");
+		else
+			keyBindings[actionName] = newKey;
 	}
 
 	public bool GetKeyPauseMenu()
@@ -370,5 +72,132 @@ public class InputManager : MonoBehaviour
 			return true;
 		}
 		else return false;
+	}
+
+	public bool GetKeyUp()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["MoveForward"]);
+	}
+
+	public bool GetKeyDown()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["MoveBackward"]);
+	}
+
+	public bool GetKeyRight()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["MoveRight"]);
+	}
+
+	public bool GetKeyLeft()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["MoveLeft"]);
+	}
+
+	public bool GetKeyChangeCameraView()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["ChangeCameraView"]);
+	}
+
+	public bool GetKeyChangeCameraShoulder()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["ChangeCameraShoulder"]);
+	}
+
+	public bool GetKeyReload()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["Reload"]);
+	}
+
+	public bool GetKeyRun()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["Run"]) && playerMovementController.IsPlayerAbleToMove;
+	}
+
+	public bool GetKeyJump()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["Jump"])
+			   && playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerAbleToMove
+			   && playerMovementController.IsPlayerAbleToStandUp;
+	}
+
+	public bool GetKeyJumpBeingHeld()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["Jump"]);
+	}
+
+	public bool GetKeyCrouch()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["Crouch"]);
+	}
+
+	public bool GetKeyLegKick()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["LegKick"])
+			   && playerMovementController.IsPlayerGrounded && !playerMovementController.IsPLayerSliding
+			   && playerMovementController.CurrentPlayerMovementStateType != "PlayerLedgeClimbing";
+	}
+
+	public bool GetKeyHideWeapons()
+	{
+		if (!isKeyInteractBeingHeld)
+		{
+			if (MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["Interact"]) && !MenuManager.IsWeaponWheelMenuOpened)
+			{
+				lastPressTime = Time.time;
+				isKeyInteractBeingHeld = true;
+			}
+		}
+		else if (Input.GetKeyUp(keyBindings["Interact"]))
+		{
+			isKeyInteractBeingHeld = false;
+		}
+		else if (isKeyInteractBeingHeld && Time.time >= lastPressTime + 0.5f)
+		{
+			isKeyInteractBeingHeld = false;
+			return true;
+		}
+		return false;
+	}
+
+	public bool GetKeyInteract()
+	{
+		if (isKeyInteractBeingHeld && Time.time > lastPressTime + 0.01f)
+			return false;
+
+		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["Interact"]))
+			return true;
+
+		return false;
+	}
+
+	public string GetNameOfKeyInteract()
+	{
+		return keyBindings["Interact"].ToString();
+	}
+
+	public bool GetKeyRightHandWeaponWheel()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["RightHandWeaponWheel"]);
+	}
+
+	public bool GetKeyLeftHandWeaponWheel()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["LeftHandWeaponWheel"]);
+	}
+
+	public bool GetKeyRightHandWeaponAttack()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["RightHandWeaponAttack"]);
+	}
+
+	public bool GetKeyLeftHandWeaponAttack()
+	{
+		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["LeftHandWeaponAttack"]);
+	}
+
+	public string GetNameOfKeyLeftHandWeaponAttack()
+	{
+		return keyBindings["LeftHandWeaponAttack"].ToString();
 	}
 }
