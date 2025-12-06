@@ -76,83 +76,120 @@ public class InputManager : MonoBehaviour
 
 	public bool GetKeyUp()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["MoveForward"]);
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKey(keyBindings["MoveForward"]) &&
+			Input.GetKey(keyBindings["MoveBackward"]))
+		{
+			return false;
+		}
+		else if (MenuManager.IsPlayerControllable &&
+				 Input.GetKey(keyBindings["MoveForward"]) &&
+				 playerMovementController.IsPlayerAbleToMove)
+		{
+			return true;
+		}
+		else return false;
 	}
 
 	public bool GetKeyDown()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["MoveBackward"]);
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKey(keyBindings["MoveForward"]) &&
+			Input.GetKey(keyBindings["MoveBackward"]))
+		{
+			return false;
+		}
+		else if (MenuManager.IsPlayerControllable &&
+				 Input.GetKey(keyBindings["MoveBackward"]) &&
+				 playerMovementController.IsPlayerAbleToMove)
+		{
+			return true;
+		}
+		else return false;
 	}
 
 	public bool GetKeyRight()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["MoveRight"]);
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKey(keyBindings["MoveRight"]) &&
+			Input.GetKey(keyBindings["MoveLeft"]))
+		{
+			return false;
+		}
+		else if (MenuManager.IsPlayerControllable &&
+				 Input.GetKey(keyBindings["MoveRight"]) &&
+				 playerMovementController.IsPlayerAbleToMove)
+		{
+			return true;
+		}
+		else return false;
 	}
 
 	public bool GetKeyLeft()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["MoveLeft"]);
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKey(keyBindings["MoveRight"]) &&
+			Input.GetKey(keyBindings["MoveLeft"]))
+		{
+			return false;
+		}
+		else if (MenuManager.IsPlayerControllable &&
+				 Input.GetKey(keyBindings["MoveLeft"]) &&
+				 playerMovementController.IsPlayerAbleToMove)
+		{
+			return true;
+		}
+		else return false;
 	}
 
 	public bool GetKeyChangeCameraView()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["ChangeCameraView"]);
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKeyDown(keyBindings["ChangeCameraView"]))
+		{
+			return true;
+		}
+		else return false;
 	}
 
 	public bool GetKeyChangeCameraShoulder()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["ChangeCameraShoulder"]);
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKeyDown(keyBindings["ChangeCameraShoulder"]))
+		{
+			return true;
+		}
+		else return false;
 	}
 
-	public bool GetKeyReload()
+	public bool GetKeyEnterCutscene()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["Reload"]);
-	}
-
-	public bool GetKeyRun()
-	{
-		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["Run"]) && playerMovementController.IsPlayerAbleToMove;
-	}
-
-	public bool GetKeyJump()
-	{
-		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["Jump"])
-			   && playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerAbleToMove
-			   && playerMovementController.IsPlayerAbleToStandUp;
-	}
-
-	public bool GetKeyJumpBeingHeld()
-	{
-		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["Jump"]);
-	}
-
-	public bool GetKeyCrouch()
-	{
-		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["Crouch"]);
-	}
-
-	public bool GetKeyLegKick()
-	{
-		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["LegKick"])
-			   && playerMovementController.IsPlayerGrounded && !playerMovementController.IsPLayerSliding
-			   && playerMovementController.CurrentPlayerMovementStateType != "PlayerLedgeClimbing";
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKeyDown(keyBindings["EnterCutscene"]) &&
+			false /* вероятно, сюда должна подставляться дополнительная переменная или условие */)
+		{
+			return true;
+		}
+		else return false;
 	}
 
 	public bool GetKeyHideWeapons()
 	{
 		if (!isKeyInteractBeingHeld)
 		{
-			if (MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["Interact"]) && !MenuManager.IsWeaponWheelMenuOpened)
+			if (MenuManager.IsPlayerControllable &&
+				Input.GetKeyDown(keyBindings["Interact"]) &&
+				!MenuManager.IsWeaponWheelMenuOpened)
 			{
 				lastPressTime = Time.time;
 				isKeyInteractBeingHeld = true;
 			}
 		}
-		else if (Input.GetKeyUp(keyBindings["Interact"]))
+		else if (Input.GetKeyUp(keyBindings["Interact"])) // отпущена кнопка
 		{
 			isKeyInteractBeingHeld = false;
 		}
-		else if (isKeyInteractBeingHeld && Time.time >= lastPressTime + 0.5f)
+		else if (isKeyInteractBeingHeld && Time.time >= lastPressTime + 0.5f) // удержано дольше полсекунды
 		{
 			isKeyInteractBeingHeld = false;
 			return true;
@@ -160,14 +197,85 @@ public class InputManager : MonoBehaviour
 		return false;
 	}
 
+	public bool GetKeyReload()
+	{
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKeyDown(keyBindings["Reload"]))
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	public bool GetKeyRun()
+	{
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKey(keyBindings["Run"]) &&
+			playerMovementController.IsPlayerAbleToMove)
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	public bool GetKeyJump()
+	{
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKeyDown(keyBindings["Jump"]) &&
+			playerMovementController.IsPlayerGrounded &&
+			playerMovementController.IsPlayerAbleToMove &&
+			playerMovementController.IsPlayerAbleToStandUp)
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	public bool GetKeyJumpBeingHeld()
+	{
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKey(keyBindings["Jump"]))
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	public bool GetKeyCrouch()
+	{
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKeyDown(keyBindings["Crouch"]))
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	public bool GetKeyLegKick()
+	{
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKeyDown(keyBindings["LegKick"]) &&
+			playerMovementController.IsPlayerGrounded &&
+			!playerMovementController.IsPLayerSliding &&
+			playerMovementController.CurrentPlayerMovementStateType != "PlayerLedgeClimbing")
+		{
+			return true;
+		}
+		else return false;
+	}
+
 	public bool GetKeyInteract()
 	{
 		if (isKeyInteractBeingHeld && Time.time > lastPressTime + 0.01f)
-			return false;
+		{
+			return false; // Игнорируем нажатие, если идёт задержка для HideWeapons
+		}
 
-		if (MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["Interact"]))
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKeyDown(keyBindings["Interact"]))
+		{
 			return true;
-
+		}
 		return false;
 	}
 
@@ -178,22 +286,42 @@ public class InputManager : MonoBehaviour
 
 	public bool GetKeyRightHandWeaponWheel()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["RightHandWeaponWheel"]);
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKey(keyBindings["RightHandWeaponWheel"]))
+		{
+			return true;
+		}
+		else return false;
 	}
 
 	public bool GetKeyLeftHandWeaponWheel()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKey(keyBindings["LeftHandWeaponWheel"]);
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKey(keyBindings["LeftHandWeaponWheel"]))
+		{
+			return true;
+		}
+		else return false;
 	}
 
 	public bool GetKeyRightHandWeaponAttack()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["RightHandWeaponAttack"]);
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKeyDown(keyBindings["RightHandWeaponAttack"]))
+		{
+			return true;
+		}
+		else return false;
 	}
 
 	public bool GetKeyLeftHandWeaponAttack()
 	{
-		return MenuManager.IsPlayerControllable && Input.GetKeyDown(keyBindings["LeftHandWeaponAttack"]);
+		if (MenuManager.IsPlayerControllable &&
+			Input.GetKeyDown(keyBindings["LeftHandWeaponAttack"]))
+		{
+			return true;
+		}
+		else return false;
 	}
 
 	public string GetNameOfKeyLeftHandWeaponAttack()

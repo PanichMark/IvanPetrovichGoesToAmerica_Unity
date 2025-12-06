@@ -96,9 +96,18 @@ public class SettingsSubMenuController : MonoBehaviour
 			field.onValidateInput += ValidateAndConvertInput;
 			field.onEndEdit.AddListener((string text) =>
 			{
-				string actionName = field.name.Replace("InputField", ""); // Простая замена "InputField"
+				string actionName = field.name.Replace("InputField", "");
 				HandleRebinding(actionName, text);
 			});
+			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field)); // Новый обработчик
+		}
+	}
+
+	private void KeepLastCharacter(TMP_InputField field)
+	{
+		if (!string.IsNullOrEmpty(field.text))
+		{
+			field.text = field.text[field.text.Length - 1].ToString(); // Оставляем только последний символ
 		}
 	}
 
@@ -107,14 +116,19 @@ public class SettingsSubMenuController : MonoBehaviour
 		if (char.IsControl(addedChar)) return addedChar;
 
 		char upperCaseChar = char.ToUpperInvariant(addedChar);
-		Debug.Log($"Преобразуется символ: {upperCaseChar}");
 
+		// Если символ — английская буква, просто возвращаем её
+		if (char.IsLetter(upperCaseChar) && upperCaseChar <= 'Z')
+		{
+			return upperCaseChar;
+		}
+
+		// Иначе ищем соответствие в русской раскладке
 		foreach (var entry in layoutMap)
 		{
 			if (entry[0] == upperCaseChar)
 			{
-				Debug.Log($"Символ найден: {upperCaseChar} -> {entry[1]}");
-				return entry[1];
+				return entry[1]; // Английский аналог
 			}
 		}
 
