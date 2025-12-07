@@ -2,6 +2,7 @@
 using System;
 using Unity.IO.LowLevel.Unsafe;
 using TMPro;
+using UnityEngine.UI;
 
 public abstract class LootObjectAbstract : MonoBehaviour, IInteractable, IInteractGainedItem, IDataPersistence
 {
@@ -13,6 +14,8 @@ public abstract class LootObjectAbstract : MonoBehaviour, IInteractable, IIntera
 	[SerializeField]
 	private string _interactionItemNameUI;
 	public virtual string InteractionObjectNameUI => _interactionItemNameUI;
+
+	public Sprite LootObjectImage;
 
 	public virtual string MainInteractionHint => $"Поднять {InteractionObjectNameUI}";
 	public virtual string AdditionalInteractionHint => null;
@@ -31,6 +34,8 @@ public abstract class LootObjectAbstract : MonoBehaviour, IInteractable, IIntera
 	public int LootItemIndex { get; protected set; }
 
 	public TextMeshProUGUI GainedItemtext => null;
+
+	public Sprite GainedItemImage => LootObjectImage;
 
 	internal void AssignLootItemIndex(int index)
 	{

@@ -48,6 +48,15 @@ public class PlayerManaManager : MonoBehaviour, IDataPersistence
 		ManaBarSlider.value = CurrentPlayerMana;
 
 		ManaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+
+		if (MenuManager.IsPauseMenuOpened)
+		{
+			ManaBarSlider.gameObject.SetActive(false);
+		}
+		else
+		{
+			ManaBarSlider.gameObject.SetActive(true);
+		}
 	}
 
 	private void UseManaReplenishItem()

@@ -10,7 +10,7 @@ public class VendingMachine : MonoBehaviour, IInteractUsedItem, IInteractable
 	//[SerializeField] private string additionalInteractionHint;
 	private bool isAdditionalInteractionHintActive;
 	public virtual string InteractionObjectNameUI => vendingMachineName;
-	public virtual string MainInteractionHint => $"Купить {goodsName} в {InteractionObjectNameUI}?";
+	public virtual string MainInteractionHint => $"Купить {goodsName} в {InteractionObjectNameUI} за {goodsPrice} рублей?";
 	public virtual string AdditionalInteractionHint => "Недостаточно денег!";
 
 	public string InteractionObjectNameSystem => null;

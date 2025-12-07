@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InteractionController : MonoBehaviour
 {
@@ -8,9 +9,14 @@ public class InteractionController : MonoBehaviour
 	public TextMeshProUGUI mainInteractionText; // Подсказка (назначается вручную через Inspector)
 	public TextMeshProUGUI additionalInteractionText;
 
-	public TextMeshProUGUI GainItem1;
-	public TextMeshProUGUI GainItem2;
-	public TextMeshProUGUI GainItem3;
+	public TextMeshProUGUI Item1Text;
+	public TextMeshProUGUI Item2Text;
+	public TextMeshProUGUI Item3Text;
+
+	public Image Item1Image;
+	public Image Item2Image;
+	public Image Item3Image;
+	public Sprite NoItemImageExeption;
 
 	public PlayerCameraController playerCamera;
 	public GameObject PlayerCameraObject;
@@ -171,38 +177,86 @@ public class InteractionController : MonoBehaviour
 						if (gainedObject != null)
 						{
 							
-							if (GainItem1.gameObject.activeInHierarchy == false)
+							if (Item1Text.gameObject.activeInHierarchy == false)
 							{
 								//Debug.Log("111");
-								GainItem1.gameObject.SetActive(true);
-								GainItem1.text = interactableObj.InteractionObjectNameUI;
+
+								Item1Text.gameObject.SetActive(true);
+								Item1Text.text = interactableObj.InteractionObjectNameUI;
+
+								Item1Image.gameObject.SetActive(true);
+								if (gainedObject.GainedItemImage != null)
+								{
+									Item1Image.sprite = gainedObject.GainedItemImage;
+								}
+								else
+								{
+									Item1Image.sprite = NoItemImageExeption;
+								}
 
 							}
-							else if (GainItem1.gameObject.activeInHierarchy == true && GainItem2.gameObject.activeInHierarchy == false)
+							else if (Item1Text.gameObject.activeInHierarchy == true && Item2Text.gameObject.activeInHierarchy == false)
 							{
 								//Debug.Log("222");
 
 
-								GainItem2.gameObject.SetActive(true);
-								GainItem2.text = GainItem1.text;
-								GainItem1.text = interactableObj.InteractionObjectNameUI;
+								Item2Text.gameObject.SetActive(true);
+								Item2Text.text = Item1Text.text;
+								Item1Text.text = interactableObj.InteractionObjectNameUI;
+
+								Item2Image.gameObject.SetActive(true);
+								Item2Image.sprite = Item1Image.sprite;
+								if (gainedObject.GainedItemImage != null)
+								{
+									
+									Item1Image.sprite = gainedObject.GainedItemImage;
+								}
+								else
+								{
+									Item1Image.sprite = NoItemImageExeption;
+								}
 
 							}
-							else if (GainItem2.gameObject.activeInHierarchy == true && GainItem1.gameObject.activeInHierarchy == true)
+							else if (Item2Text.gameObject.activeInHierarchy == true && Item1Text.gameObject.activeInHierarchy == true)
 							{
 								//Debug.Log("333");
-								GainItem3.gameObject.SetActive(true);
-								GainItem3.text = GainItem2.text;
-								GainItem2.text = GainItem1.text;
-								GainItem1.text = interactableObj.InteractionObjectNameUI;
+								Item3Text.gameObject.SetActive(true);
+								Item3Text.text = Item2Text.text;
+								Item2Text.text = Item1Text.text;
+								Item1Text.text = interactableObj.InteractionObjectNameUI;
+
+								Item3Image.gameObject.SetActive(true);
+								Item3Image.sprite = Item2Image.sprite;
+								Item2Image.sprite = Item1Image.sprite;
+								if (gainedObject.GainedItemImage != null)
+								{
+
+									Item1Image.sprite = gainedObject.GainedItemImage;
+								}
+								else
+								{
+									Item1Image.sprite = NoItemImageExeption;
+								}
 
 							}
-							else if (GainItem3.gameObject.activeInHierarchy == true && GainItem1.gameObject.activeInHierarchy == true
-								&& GainItem1.gameObject.activeInHierarchy == true)
+							else if (Item3Text.gameObject.activeInHierarchy == true && Item1Text.gameObject.activeInHierarchy == true
+								&& Item1Text.gameObject.activeInHierarchy == true)
 							{
-								GainItem3.text = GainItem2.text;
-								GainItem2.text = GainItem1.text;
-								GainItem1.text = interactableObj.InteractionObjectNameUI;
+								Item3Text.text = Item2Text.text;
+								Item2Text.text = Item1Text.text;
+								Item1Text.text = interactableObj.InteractionObjectNameUI;
+
+								Item3Image.sprite = Item2Image.sprite;
+								Item2Image.sprite = Item1Image.sprite;
+								if (gainedObject.GainedItemImage != null)
+								{
+
+									Item1Image.sprite = gainedObject.GainedItemImage;
+								}
+								else
+								{
+									Item1Image.sprite = NoItemImageExeption;
+								}
 							}
 							//Debug.Log("222");
 							StartCoroutine(ShowItemsGained());
@@ -281,25 +335,31 @@ public class InteractionController : MonoBehaviour
 		//Debug.Log("333");
 
 		yield return new WaitForSeconds(2f);
-		if (GainItem3.gameObject.activeInHierarchy == true)
+		if (Item3Text.gameObject.activeInHierarchy == true)
 		{
-			GainItem3.text = null;
-			GainItem3.gameObject.SetActive(false);
+			Item3Text.text = null;
+			Item3Text.gameObject.SetActive(false);
 			//Debug.Log("delete 333");
+			Item3Image.sprite = null;
+			Item3Image.gameObject.SetActive(false);
 
 		}
-		else if (GainItem2.gameObject.activeInHierarchy == true)
+		else if (Item2Text.gameObject.activeInHierarchy == true)
 		{
-			GainItem2.text = null;
-			GainItem2.gameObject.SetActive(false);
+			Item2Text.text = null;
+			Item2Text.gameObject.SetActive(false);
 			//Debug.Log("delete 222");
+			Item2Image.sprite = null;
+			Item2Image.gameObject.SetActive(false);
 
 		}
-		else if (GainItem1.gameObject.activeInHierarchy == true)
+		else if (Item1Text.gameObject.activeInHierarchy == true)
 		{
-			GainItem1.text = null;
-			GainItem1.gameObject.SetActive(false);
+			Item1Text.text = null;
+			Item1Text.gameObject.SetActive(false);
 			//Debug.Log("delete 111");
+			Item1Image.sprite = null;
+			Item1Image.gameObject.SetActive(false);
 
 		}
 	}
