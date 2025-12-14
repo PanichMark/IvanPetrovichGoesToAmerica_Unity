@@ -1,12 +1,12 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class DoorSCENE : OpenableObjectAbstract
 {
-	//public override string InteractionItemName => "ƒ‚Â¸";
+	//public override string InteractionItemName => "–î–≤–µ—Ä—å";
 
-	public override string InteractionObjectNameUI => "ƒ‚Â¸ ‚ ‰Û„ÓÈ ÛÓ‚ÂÌ¸";
+	public override string InteractionObjectNameUI => "–î–≤–µ—Ä—å –≤ –¥—Ä—É–≥–æ–π —É—Ä–æ–≤–µ–Ω—å";
 
 	[SerializeField] private string goToSceneName;
 
@@ -17,4 +17,5 @@ public class DoorSCENE : OpenableObjectAbstract
 }
 
 	
+
 

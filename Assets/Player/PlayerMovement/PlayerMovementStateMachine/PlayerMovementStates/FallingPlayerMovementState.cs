@@ -44,3 +44,4 @@ public class FallingPlayerMovementState : PlayerMovementState
 		playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerCrouchingSpeed);
 	}
 }
+

@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class PickableObjectThrowable : PickableObjectAbstract, IThrowable, IDamageable
 {
@@ -8,7 +8,7 @@ public class PickableObjectThrowable : PickableObjectAbstract, IThrowable, IDama
 
 	public float ObjectThrowPower => 10f;
 
-	// Поле для здоровья, регулируемое в инспекторе, min=0
+	// РџРѕР»Рµ РґР»СЏ Р·РґРѕСЂРѕРІСЊСЏ, СЂРµРіСѓР»РёСЂСѓРµРјРѕРµ РІ РёРЅСЃРїРµРєС‚РѕСЂРµ, min=0
 	[SerializeField, Min(0)]
 	private float _health;
 
@@ -19,15 +19,15 @@ public class PickableObjectThrowable : PickableObjectAbstract, IThrowable, IDama
 		{
 			_health = value;
 			if (_health <= 0)
-				Die(); // Вызываем метод уничтожения, если здоровье стало <= 0
+				Die(); // Р’С‹Р·С‹РІР°РµРј РјРµС‚РѕРґ СѓРЅРёС‡С‚РѕР¶РµРЅРёСЏ, РµСЃР»Рё Р·РґРѕСЂРѕРІСЊРµ СЃС‚Р°Р»Рѕ <= 0
 		}
 	}
 
-	// Внутреннее скрытое поле для состояния разрушения
+	// Р’РЅСѓС‚СЂРµРЅРЅРµРµ СЃРєСЂС‹С‚РѕРµ РїРѕР»Рµ РґР»СЏ СЃРѕСЃС‚РѕСЏРЅРёСЏ СЂР°Р·СЂСѓС€РµРЅРёСЏ
 
 	
 
-	// Соответствует интерфейсу IDamageable
+	// РЎРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ РёРЅС‚РµСЂС„РµР№СЃСѓ IDamageable
 	public bool WasObjectDestroyed => _wasObjectDestroyed;
 
 	
@@ -54,7 +54,7 @@ public class PickableObjectThrowable : PickableObjectAbstract, IThrowable, IDama
 		
 
 		_canObjectBeDestroyedOnImpact = true;
-		// Отцепляем объект от игрока
+		// РћС‚С†РµРїР»СЏРµРј РѕР±СЉРµРєС‚ РѕС‚ РёРіСЂРѕРєР°
 		transform.parent = null;
 
 		//
@@ -80,14 +80,15 @@ public class PickableObjectThrowable : PickableObjectAbstract, IThrowable, IDama
 
 		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {Health - amount}");
 
-		Health -= amount; // Уменьшаем здоровье на указанное количество единиц
+		Health -= amount; // РЈРјРµРЅСЊС€Р°РµРј Р·РґРѕСЂРѕРІСЊРµ РЅР° СѓРєР°Р·Р°РЅРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РµРґРёРЅРёС†
 
 	}
 
 	public void Die()
 	{
 		Debug.Log($"{InteractionObjectNameSystem} was destroyed!");
-		_wasObjectDestroyed = true; // Устанавливаем флаг, что объект разрушен
-		Destroy(gameObject); // Уничтожаем объект
+		_wasObjectDestroyed = true; // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°Рі, С‡С‚Рѕ РѕР±СЉРµРєС‚ СЂР°Р·СЂСѓС€РµРЅ
+		Destroy(gameObject); // РЈРЅРёС‡С‚РѕР¶Р°РµРј РѕР±СЉРµРєС‚
 	}
 }
+

@@ -34,3 +34,4 @@ public class ImagesSubMenuController : MonoBehaviour
 		Debug.Log("ImagesSubMenu closed");
 	}
 }
+

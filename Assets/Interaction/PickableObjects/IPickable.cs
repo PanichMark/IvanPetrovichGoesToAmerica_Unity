@@ -1,4 +1,4 @@
-public interface IPickable
+﻿public interface IPickable
 {
 	public bool IsObjectPickedUp { get; }
 	void PickUpObject();

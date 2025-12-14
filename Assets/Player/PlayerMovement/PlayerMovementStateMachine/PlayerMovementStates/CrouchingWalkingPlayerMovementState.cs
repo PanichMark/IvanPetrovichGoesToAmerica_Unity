@@ -43,3 +43,4 @@ public class CrouchingWalkingPlayerMovementState : PlayerMovementState
 		playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerCrouchingSpeed);
 	}
 }
+

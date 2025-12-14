@@ -4,3 +4,4 @@
 	ThirdPerson = 1,
 	Cutscene = 2,
 }
+

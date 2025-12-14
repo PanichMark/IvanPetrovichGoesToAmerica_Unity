@@ -98,3 +98,4 @@ public class PlayerManaManager : MonoBehaviour, IDataPersistence
 		CurrentManaReplenishItemsNumber = data.ManaReplenishItems;
 	}
 }
+

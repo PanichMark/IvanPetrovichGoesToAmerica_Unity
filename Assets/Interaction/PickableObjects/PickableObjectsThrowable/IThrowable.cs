@@ -1,4 +1,4 @@
-public interface IThrowable
+﻿public interface IThrowable
 {
 	public float ObjectThrowPower { get; }
 

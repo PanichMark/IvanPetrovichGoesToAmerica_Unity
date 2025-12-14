@@ -77,3 +77,4 @@ public class SafeRotatorySection : MonoBehaviour, IInteractable
 		IsSectionPositionCorrect = true;
 	}
 }
+

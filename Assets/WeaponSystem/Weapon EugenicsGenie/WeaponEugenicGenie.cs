@@ -18,3 +18,4 @@ public class WeaponEugenicGenie : WeaponClass
 		Debug.Log("EugenicAttack");
 	}
 }
+

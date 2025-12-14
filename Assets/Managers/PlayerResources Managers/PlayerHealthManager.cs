@@ -98,3 +98,4 @@ public class PlayerHealthManager : MonoBehaviour, IDataPersistence
 		CurrentHealingItemsNumber = data.HealingItems;
 	}
 }
+

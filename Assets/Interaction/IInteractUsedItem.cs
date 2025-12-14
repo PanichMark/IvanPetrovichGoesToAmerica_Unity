@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public interface IInteractUsedItem
@@ -6,3 +6,4 @@ public interface IInteractUsedItem
 	
 
 }
+

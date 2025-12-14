@@ -488,3 +488,4 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		SetPlayerMovementState(playerMovementStateType);
 	}
 }
+

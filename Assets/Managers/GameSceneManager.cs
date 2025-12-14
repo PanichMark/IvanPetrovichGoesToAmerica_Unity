@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -12,7 +12,7 @@ public class GameSceneManager : MonoBehaviour, IDataPersistence
 
 	private void Awake()
 	{
-		// Паттерн Singleton: предотвращаем создание второго экземпляра
+		// РџР°С‚С‚РµСЂРЅ Singleton: РїСЂРµРґРѕС‚РІСЂР°С‰Р°РµРј СЃРѕР·РґР°РЅРёРµ РІС‚РѕСЂРѕРіРѕ СЌРєР·РµРјРїР»СЏСЂР°
 		if (Instance == null)
 		{
 			Instance = this;
@@ -20,7 +20,7 @@ public class GameSceneManager : MonoBehaviour, IDataPersistence
 		}
 		else
 		{
-			Destroy(gameObject); // Уничтожаем лишние экземпляры
+			Destroy(gameObject); // РЈРЅРёС‡С‚РѕР¶Р°РµРј Р»РёС€РЅРёРµ СЌРєР·РµРјРїР»СЏСЂС‹
 		}
 
 		CurrentSceneSystemName = SceneManager.GetActiveScene().name;
@@ -35,11 +35,11 @@ public class GameSceneManager : MonoBehaviour, IDataPersistence
 
 		if (SceneManager.GetActiveScene().name == "SceneTEST")
 		{
-			CurrentLevelNameUI = "Тестовая сцена";
+			CurrentLevelNameUI = "РўРµСЃС‚РѕРІР°СЏ СЃС†РµРЅР°";
 		}
 		else if (SceneManager.GetActiveScene().name == "Scene1")
 		{
-			CurrentLevelNameUI = "Сцена 1";
+			CurrentLevelNameUI = "РЎС†РµРЅР° 1";
 		}
 	}
 
@@ -51,15 +51,15 @@ public class GameSceneManager : MonoBehaviour, IDataPersistence
 
 	public IEnumerator GoToScene(string sceneName)
 	{
-		// Начало сохранения игры
+		// РќР°С‡Р°Р»Рѕ СЃРѕС…СЂР°РЅРµРЅРёСЏ РёРіСЂС‹
 		DataPersistenceManager.Instance.SaveGame(-1);
 
-		// Ждём завершения сохранения
+		// Р–РґС‘Рј Р·Р°РІРµСЂС€РµРЅРёСЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ
 		yield return new WaitUntil(() => DataPersistenceManager.Instance.IsSavingFinished);
 
 
 
-		// После завершения сохранения начинаем загрузку новой сцены
+		// РџРѕСЃР»Рµ Р·Р°РІРµСЂС€РµРЅРёСЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ РЅР°С‡РёРЅР°РµРј Р·Р°РіСЂСѓР·РєСѓ РЅРѕРІРѕР№ СЃС†РµРЅС‹
 		SceneManager.LoadSceneAsync(sceneName);
 	}
 
@@ -70,11 +70,11 @@ public class GameSceneManager : MonoBehaviour, IDataPersistence
 
 		if (SceneManager.GetActiveScene().name == "SceneTEST")
 		{
-			data.CurrentSceneNameUI = "Тестовая сцена";
+			data.CurrentSceneNameUI = "РўРµСЃС‚РѕРІР°СЏ СЃС†РµРЅР°";
 		}
 		else if (SceneManager.GetActiveScene().name == "Scene1")
 			{
-				data.CurrentSceneNameUI = "Сцена 1";
+				data.CurrentSceneNameUI = "РЎС†РµРЅР° 1";
 			}
 
 		data.CurrentDateAndTime = CurrentDateAndTime;
@@ -87,3 +87,4 @@ public class GameSceneManager : MonoBehaviour, IDataPersistence
 		CurrentDateAndTime = data.CurrentDateAndTime;
 	}
 }
+

@@ -1,10 +1,10 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class LootObjectValuable : LootObjectAbstract
 {
 	public override void Interact()
 	{
-		Debug.Log($"Вы подняли {InteractionObjectNameUI}, получаете {MoneyValue} рублей");
+		Debug.Log($"Р’С‹ РїРѕРґРЅСЏР»Рё {InteractionObjectNameUI}, РїРѕР»СѓС‡Р°РµС‚Рµ {MoneyValue} СЂСѓР±Р»РµР№");
 		Destroy(gameObject);
 		PlayerMoneyManager.Instance.AddMoney(MoneyValue);
 		WasLootItemCollected = true;

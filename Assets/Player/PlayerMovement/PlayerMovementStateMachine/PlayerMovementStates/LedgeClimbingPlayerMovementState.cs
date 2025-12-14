@@ -21,3 +21,4 @@ public class LedgeClimbingPlayerMovementState : PlayerMovementState
 		//playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerCrouchingSpeed);
 	}
 }
+

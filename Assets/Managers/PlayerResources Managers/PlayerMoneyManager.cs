@@ -82,3 +82,4 @@ public class PlayerMoneyManager : MonoBehaviour, IDataPersistence
 		UpdateMoneyDisplay();
 	}
 }
+

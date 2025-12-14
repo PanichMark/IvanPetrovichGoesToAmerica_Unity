@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Rendering;
 
 public class PlayerCameraBlurFilter : MonoBehaviour
@@ -25,3 +25,4 @@ public class PlayerCameraBlurFilter : MonoBehaviour
 		}
 	}
 }
+

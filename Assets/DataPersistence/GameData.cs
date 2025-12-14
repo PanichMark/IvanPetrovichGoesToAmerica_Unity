@@ -78,3 +78,4 @@ public struct LootItemsData
 	public bool WasLootItemCollected;     
 		
 }
+

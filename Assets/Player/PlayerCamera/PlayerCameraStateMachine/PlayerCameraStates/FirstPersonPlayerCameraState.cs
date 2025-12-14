@@ -22,3 +22,4 @@ public class FirstPersonPlayerCameraState : PlayerCameraState
 		playerCamera.SetPlayerCameraType(PlayerCameraStateType.Cutscene);
 	}
 }
+

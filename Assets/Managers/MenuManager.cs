@@ -120,3 +120,4 @@ public class MenuManager : MonoBehaviour
 		Cursor.visible = false;
 	}
 }
+

@@ -11,3 +11,4 @@ public enum PlayerMovementStateType
     PlayerSliding = 7,
     PlayerLedgeClimbing = 8,
 }
+

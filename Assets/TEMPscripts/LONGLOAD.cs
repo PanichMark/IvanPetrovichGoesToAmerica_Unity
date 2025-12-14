@@ -1,26 +1,26 @@
-using System.Collections;
+п»їusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LONGLOAD : MonoBehaviour
 {
-	public float activationDelay = 5f; // Задержка перед активацией основных объектов
+	public float activationDelay = 5f; // Р—Р°РґРµСЂР¶РєР° РїРµСЂРµРґ Р°РєС‚РёРІР°С†РёРµР№ РѕСЃРЅРѕРІРЅС‹С… РѕР±СЉРµРєС‚РѕРІ
 
 	void Start()
 	{
-		// Деактивируем основной объект (если нужно)
+		// Р”РµР°РєС‚РёРІРёСЂСѓРµРј РѕСЃРЅРѕРІРЅРѕР№ РѕР±СЉРµРєС‚ (РµСЃР»Рё РЅСѓР¶РЅРѕ)
 		gameObject.SetActive(false);
 
-		// Задержка перед активацией
+		// Р—Р°РґРµСЂР¶РєР° РїРµСЂРµРґ Р°РєС‚РёРІР°С†РёРµР№
 		Invoke(nameof(ActivateObjects), activationDelay);
 	}
 
 	void ActivateObjects()
 	{
-		// Реактивация объектов
+		// Р РµР°РєС‚РёРІР°С†РёСЏ РѕР±СЉРµРєС‚РѕРІ
 		gameObject.SetActive(true);
 
-		// Опционально: делаем видимым Canvas или другие UI-элементы
+		// РћРїС†РёРѕРЅР°Р»СЊРЅРѕ: РґРµР»Р°РµРј РІРёРґРёРјС‹Рј Canvas РёР»Рё РґСЂСѓРіРёРµ UI-СЌР»РµРјРµРЅС‚С‹
 		GetComponentInChildren<Canvas>()?.gameObject.SetActive(true);
 	}
 }

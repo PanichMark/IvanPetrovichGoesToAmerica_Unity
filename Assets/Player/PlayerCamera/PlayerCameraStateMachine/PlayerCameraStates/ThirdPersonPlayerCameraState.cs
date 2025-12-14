@@ -25,3 +25,4 @@ public class ThirdPersonPlayerCameraState : PlayerCameraState
 		playerCamera.SetPlayerCameraType(PlayerCameraStateType.Cutscene);
 	}
 }
+

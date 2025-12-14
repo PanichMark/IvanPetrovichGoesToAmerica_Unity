@@ -43,3 +43,4 @@ public class RunningPlayerMovementState : PlayerMovementState
 		playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerRunningSpeed);
 	}
 }
+
