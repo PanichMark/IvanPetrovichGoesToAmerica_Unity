@@ -3,10 +3,15 @@ using UnityEngine;
 public class BootStrap : MonoBehaviour
 {
     private IInputDevice inputDevice;
-    
-	private PlayerCameraController cameraController;
-	private PlayerMovementController movementController;
+
+	[SerializeField] private GameObject playerModel;
+	[SerializeField] private PlayerMovementController movementController;
+	[SerializeField] private PlayerCapluseCollider playerCollider;
+
+	[SerializeField] private PlayerCameraController cameraController;
+	
 	private PlayerBehaviour playerBehaviour;
+	
 	
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,11 +22,11 @@ public class BootStrap : MonoBehaviour
 
 		playerBehaviour = new PlayerBehaviour(inputDevice);
 
+		movementController.Initialize(inputDevice, playerBehaviour);
+		playerCollider.Initialize(movementController);
 
-		movementController = new PlayerMovementController(inputDevice, playerBehaviour);
 
-
-		cameraController = new PlayerCameraController(inputDevice);
+		cameraController.Initialize(inputDevice, movementController, playerCollider, playerModel);
 	}
 	void Start()
     {

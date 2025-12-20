@@ -4,16 +4,12 @@ using System;
 public class PlayerMovementController : MonoBehaviour, IDataPersistence
 {
 	private IInputDevice inputDevice;
-	private readonly PlayerBehaviour playerBehaviour;
+	private PlayerBehaviour playerBehaviour;
+	//private GameObject playerModel;
 
-	// Конструктор принимает зависимость
-	public PlayerMovementController(IInputDevice inputDevice, PlayerBehaviour playerBehaviour)
-	{
-		this.inputDevice = inputDevice;
-		this.playerBehaviour = playerBehaviour; // Новый аргумент
-	}
 
-	
+
+	private Camera playerCamera;
 
 	private PlayerMovementState playerMovementState;
 	private PlayerMovementStateType playerMovementStateType;
@@ -22,8 +18,8 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 	private Vector3 PlayerMovement;
 	private Vector3 PlayerMovementDirectionWithCamera;
 
-	public PlayerCameraController playerCamera;
-	public GameObject PlayerCameraObject;
+	//public PlayerCameraController playerCamera;
+	//public GameObject PlayerCameraObject;
 
 	
 
@@ -73,12 +69,15 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 	void Start()
 	{
+		playerCamera = Camera.main;
 
-		
-		playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
-		
+
 
 		PlayerTransform = GetComponent<Transform>();
+		PlayerRigidBody = GetComponent<Rigidbody>();
+
+		//PlayerTransform = playerModel.GetComponent<Transform>();
+		//PlayerRigidBody = playerModel.GetComponent<Rigidbody>();
 
 		_playerPreviousFramePosition = transform.position;
 
@@ -266,14 +265,14 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 
 		//
-		PlayerMovementDirectionWithCamera = (PlayerWorldMovement.z * playerCamera.CameraForward + PlayerWorldMovement.x * playerCamera.CameraRight);
+		PlayerMovementDirectionWithCamera = (PlayerWorldMovement.z * playerCamera.transform.forward + PlayerWorldMovement.x * playerCamera.transform.right);
 		PlayerMovement = new Vector3(PlayerMovementDirectionWithCamera.x, 0, PlayerMovementDirectionWithCamera.z);
 		PlayerMovement.Normalize();
 
 		angle = Vector3.Angle(hitInfo.normal, Vector3.up);
 		moveFactor = 1 / Mathf.Cos(Mathf.Deg2Rad * angle);
-	
-		//
+
+		/*
 		if (playerBehaviour.IsPlayerArmed == false && (PlayerMovement != Vector3.zero) && (playerCamera.GetCurrentPlayerCameraType() == PlayerCameraStateType.ThirdPerson.ToString()))
 		{
 			Quaternion CharacterRotation = Quaternion.LookRotation(PlayerMovement, Vector3.up);
@@ -281,11 +280,13 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 		else if (playerBehaviour.IsPlayerArmed == true || (playerCamera.GetCurrentPlayerCameraType() == PlayerCameraStateType.FirstPerson.ToString()))
 		{
-			Quaternion PlayerRotateWhereCameraIsLooking = Quaternion.Euler(transform.localEulerAngles.x, playerCamera.CameraRotationY, transform.localEulerAngles.z);
+			Quaternion PlayerRotateWhereCameraIsLooking = Quaternion.Euler(transform.localEulerAngles.x, playerCamera.transform.eulerAngles.y, transform.localEulerAngles.z);
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, PlayerRotateWhereCameraIsLooking, PlayerRotationSpeed * Time.deltaTime);
 		}
+		*/
 
-		
+		//Quaternion CharacterRotation = Quaternion.LookRotation(PlayerMovement, Vector3.up);
+		//transform.rotation = Quaternion.RotateTowards(transform.rotation, CharacterRotation, PlayerRotationSpeed * Time.deltaTime);
 	}
 
 	private void FixedUpdate()
@@ -495,6 +496,14 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 		playerMovementStateType = (PlayerMovementStateType)Enum.Parse(typeof(PlayerMovementStateType), CurrentPlayerMovementStateType);
 		SetPlayerMovementState(playerMovementStateType);
+	}
+
+
+	public void Initialize(IInputDevice inputDevice, PlayerBehaviour playerBehaviour)
+	{
+		this.inputDevice = inputDevice;
+		this.playerBehaviour = playerBehaviour; // Новый аргумент
+		Debug.Log("MovementController Initialized");
 	}
 }
 

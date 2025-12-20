@@ -3,12 +3,11 @@ using UnityEngine;
 public class PlayerCameraController : MonoBehaviour, IDataPersistence
 {
 	private IInputDevice inputDevice;
-
+	private PlayerMovementController movementController;
+	private PlayerCapluseCollider playerCollider;
+	private GameObject playerModel;
 	// Конструктор принимает зависимость
-	public PlayerCameraController(IInputDevice inputDevice)
-	{
-		this.inputDevice = inputDevice;
-	}
+
 
 
 	private PlayerCameraState playerCameraState;
@@ -17,8 +16,8 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 	private Vector2 MouseRotation;
 	private Vector2 MouseScrollWheel;
 
-	private Vector3 CameraForward;
-	private Vector3 CameraRight;
+	//private Vector3 CameraForward;
+	//private Vector3 CameraRight;
 
 	private RaycastHit hit;
 
@@ -28,7 +27,7 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 	public float PlayerCameraDistanceY { get; private set; }
 	public float PlayerCameraDistanceZ { get; private set; }
 
-	public float CameraRotationY { get; private set; }
+	//public float CameraRotationY { get; private set; }
 	private float MouseRotationLimit = 65f;
 
 	public string CurrentPlayerCameraStateType { get; private set; } = "ThirdPerson";
@@ -144,9 +143,9 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 			PlayerCameraDistanceX = Mathf.Lerp(PlayerCameraDistanceX, 0.85f, Time.deltaTime * 4);
 		}
 
-		if (PlayerCollider != null)
+		if (playerCollider != null)
 		{
-			if (Physics.Linecast(PlayerCollider.transform.position, transform.position, out hit))
+			if (Physics.Linecast(playerCollider.transform.position, transform.position, out hit))
 			{
 				// Камера снова видит игрока
 				if (!canReturn)
@@ -183,12 +182,12 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 			}
 		}
 		
-		CameraForward = transform.forward;
-		CameraRight = transform.right;
+		//CameraForward = transform.forward;
+		//CameraRight = transform.right;
 
 		transform.rotation = Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0);
 		
-		CameraRotationY = transform.eulerAngles.y;
+		//CameraRotationY = transform.eulerAngles.y;
 	}
 
 	private void FixedUpdate()
@@ -247,14 +246,14 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 	public void FirstPersonCameraTransform()
 	{
 
-			transform.position = PlayerTransform.position + Quaternion.Euler(0, MouseRotation.y, 0) *
-			new Vector3(0, playerMovementController.PlayerCurrentHeight - 0.13f, 0.1f);
+			transform.position = playerModel.transform.position + Quaternion.Euler(0, MouseRotation.y, 0) *
+			new Vector3(0, movementController.PlayerCurrentHeight - 0.13f, 0.1f);
 		
 	}
 	public void ThirdPersonCameraTransform()
 	{
 	
-			transform.position = PlayerTransform.position - Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0) *
+			transform.position = playerModel.transform.position - Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0) *
 			new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
 		
 	}
@@ -298,6 +297,15 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 		playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
 		SetPlayerCameraState(playerCameraStateType);
 
+	}
+
+	public void Initialize(IInputDevice inputDevice, PlayerMovementController movementController, PlayerCapluseCollider playerCollider, GameObject playerModel)
+	{
+		this.inputDevice = inputDevice;
+		this.movementController = movementController; // Новый аргумент
+		this.playerCollider = playerCollider;
+		this.playerModel = playerModel;
+		Debug.Log("CameraController Initialized");
 	}
 }
 

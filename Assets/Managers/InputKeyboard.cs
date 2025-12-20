@@ -2,9 +2,12 @@
 using System.Linq;
 using UnityEngine;
 
-public class InputKeyboard : MonoBehaviour, IInputDevice
+public class InputKeyboard : IInputDevice
 {
-
+	public InputKeyboard()
+	{
+		Debug.Log("InputKeyboard Initialized");
+	}
 	
 
 	private float lastPressTime = 0f;

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerBehaviour
 {
@@ -9,6 +8,7 @@ public class PlayerBehaviour
 	public PlayerBehaviour(IInputDevice inputDevice)
 	{
 		this.inputDevice = inputDevice;
+		Debug.Log("PlayerBehaviour Initialized");
 	}
 
 	

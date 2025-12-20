@@ -1468,9 +1468,8 @@ GameObject:
   - component: {fileID: 835600083}
   - component: {fileID: 835600082}
   - component: {fileID: 835600081}
-  - component: {fileID: 835600080}
   - component: {fileID: 835600079}
-  - component: {fileID: 835600078}
+  - component: {fileID: 835600084}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: MainCamera
@@ -1495,20 +1494,6 @@ Transform:
   - {fileID: 1013935090}
   m_Father: {fileID: 1769733142}
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
---- !u!114 &835600078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835600076}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 600eb760b4c1e4942aae0a2f36a1659f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeMainCamera: {fileID: 0}
-  volumeFirstPersonCamera: {fileID: 2005563006}
 --- !u!114 &835600079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1526,32 +1511,6 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: b4d1e33309c00fb48909f932045c959e, type: 2}
---- !u!114 &835600080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835600076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bd2291651ad56141a0aa5670164876a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerMovementController: {fileID: 1004305801}
-  PlayerCollider: {fileID: 2083238383}
-  PlayerTransform: {fileID: 1004305802}
-  playerCameraStateType: 0
-  MouseRotation: {x: 0, y: 0}
-  MouseScrollWheel: {x: 0, y: 0}
-  CameraForward: {x: 0, y: 0, z: 0}
-  CameraRight: {x: 0, y: 0, z: 0}
-  IsAbleToZoomCameraOut: 1
-  PlayerCameraDistanceX: 0
-  PlayerCameraDistanceY: 0
-  PlayerCameraDistanceZ: 0
-  CameraRotationY: 0
-  transitionDelay: 0.5
 --- !u!114 &835600081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1656,6 +1615,18 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &835600084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835600076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bd2291651ad56141a0aa5670164876a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &845401381
 GameObject:
   m_ObjectHideFlags: 0
@@ -2004,7 +1975,7 @@ GameObject:
   - component: {fileID: 1004305802}
   - component: {fileID: 1004305800}
   - component: {fileID: 1004305799}
-  - component: {fileID: 1004305801}
+  - component: {fileID: 1004305803}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2061,25 +2032,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &1004305801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1004305785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a38f093e19fd31e4986ae05464ca805b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerMovementStateType: 0
-  PlayerWorldMovement: {x: 0, y: 0, z: 0}
-  playerCamera: {fileID: 0}
-  PlayerCameraObject: {fileID: 835600076}
-  playerCapsuleCollider: {fileID: 2083238383}
-  playerCapsuleColliderMesh: {fileID: 2083238387}
-  IsPlayerLegKicking: 0
 --- !u!4 &1004305802
 Transform:
   m_ObjectHideFlags: 0
@@ -2097,6 +2049,18 @@ Transform:
   - {fileID: 587305795}
   m_Father: {fileID: 1769733142}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1004305803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004305785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a38f093e19fd31e4986ae05464ca805b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1013935089
 GameObject:
   m_ObjectHideFlags: 0
@@ -2540,6 +2504,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e8ab7b187013e429602500af71f5e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerModel: {fileID: 1004305785}
+  movementController: {fileID: 1004305803}
+  playerCollider: {fileID: 2083238388}
+  cameraController: {fileID: 835600084}
 --- !u!4 &1160449979
 Transform:
   m_ObjectHideFlags: 0
@@ -4272,7 +4240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1907240234
 Transform:
   m_ObjectHideFlags: 0
@@ -4664,7 +4632,7 @@ GameObject:
   - component: {fileID: 2083238386}
   - component: {fileID: 2083238385}
   - component: {fileID: 2083238383}
-  - component: {fileID: 2083238384}
+  - component: {fileID: 2083238388}
   m_Layer: 8
   m_Name: Collider
   m_TagString: Untagged
@@ -4695,20 +4663,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2083238384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2083238382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb30e81cfe0afaa499babbd879443a84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerTransform: {fileID: 1004305802}
-  player: {fileID: 1004305785}
 --- !u!23 &2083238385
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4777,6 +4731,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1004305802}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2083238388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083238382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb30e81cfe0afaa499babbd879443a84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2101869973
 GameObject:
   m_ObjectHideFlags: 0
