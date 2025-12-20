@@ -17,6 +17,7 @@ public class ImagesSubMenuController : MonoBehaviour
 		CloseImagesSubMenuButton.onClick.AddListener(CloseImagesSubMenu);
 	}
 
+	/*
 	private void Update()
 	{
 		if (InputManager.Instance.GetKeyPauseMenu() && ImagesSubMenuCanvas.gameObject.activeInHierarchy)
@@ -24,6 +25,7 @@ public class ImagesSubMenuController : MonoBehaviour
 			CloseImagesSubMenu();
 		}
 	}
+	*/
 
 	public void CloseImagesSubMenu()
 	{

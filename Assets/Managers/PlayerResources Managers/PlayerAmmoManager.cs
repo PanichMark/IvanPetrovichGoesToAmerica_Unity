@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerAmmoManager : MonoBehaviour
 {
+
+
 	public static PlayerAmmoManager Instance { get; private set; } // Статическое поле экземпляра\
 
 	public TMP_Text PlayerAmmoText;
@@ -31,20 +33,20 @@ public class PlayerAmmoManager : MonoBehaviour
 		PlayerAmmoReserve = PlayerAmmoTotalCurrent - PlayerAmmoMagazineCurrent;
 	}
 
-
+	/*
 	private void Update()
 	{
 		//Debug.Log("Total " + PlayerAmmoTotalCurrent);
 		//Debug.Log("Magazine " + PlayerAmmoMagazineCurrent);
 		//Debug.Log("Reserve " + PlayerAmmoReserve);
 
-		if (InputManager.Instance.GetKeyReload())
+		if (InputKeyboard.Instance.GetKeyReload())
 		{
 			Reload();
 		}
 
 	}
-
+	*/
 
 
 

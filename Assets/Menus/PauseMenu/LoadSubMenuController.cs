@@ -43,7 +43,7 @@ public class LoadSubMenuController : MonoBehaviour
 			currentSceneNameUITexts[i] = buttonTransform.Find("Text_CurrentSceneNameUI")?.GetComponent<Text>();
 		}
 	}
-
+	/*
 	private void Update()
 	{
 		if (InputManager.Instance.GetKeyPauseMenu() && LoadSubMenuCanvas.gameObject.activeInHierarchy)
@@ -51,6 +51,7 @@ public class LoadSubMenuController : MonoBehaviour
 			CloseLoadSubMenu();
 		}
 	}
+	*/
 
 	public void CloseLoadSubMenu()
 	{

@@ -4,6 +4,14 @@ using TMPro;
 
 public class WeaponWheelController : MonoBehaviour
 {
+	private IInputDevice inputDevice;
+
+	// Конструктор принимает зависимость
+	public WeaponWheelController(IInputDevice inputDevice)
+	{
+		this.inputDevice = inputDevice;
+	}
+
 	//InputManager playerInputsList;
 	public Canvas WeaponWheelMenuCanvas; 
 
@@ -34,8 +42,8 @@ public class WeaponWheelController : MonoBehaviour
 
 	void Update()
 	{
-		bool currentRightHandPressed = InputManager.Instance.GetKeyRightHandWeaponWheel();
-		bool currentLeftHandPressed = InputManager.Instance.GetKeyLeftHandWeaponWheel();
+		bool currentRightHandPressed =inputDevice.GetKeyRightHandWeaponWheel();
+		bool currentLeftHandPressed = inputDevice.GetKeyLeftHandWeaponWheel();
 		
 		// Обновляем состояние, только если изменилось нажатие кнопки
 		if (currentRightHandPressed != previousRightHandPressed || currentLeftHandPressed != previousLeftHandPressed)

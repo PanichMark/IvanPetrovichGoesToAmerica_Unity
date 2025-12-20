@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 public class PlayerCapluseCollider : MonoBehaviour
 {
-    public Transform playerTransform;
-    public GameObject player;
+    //public Transform playerTransform;
+    //public GameObject player;
 
     PlayerMovementController playerMovementController;
     void Start()

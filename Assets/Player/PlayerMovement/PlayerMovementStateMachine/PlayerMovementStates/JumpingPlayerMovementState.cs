@@ -5,11 +5,14 @@ public class JumpingPlayerMovementState : PlayerMovementState
 {
 	private float progress = 0f;
 
-	public JumpingPlayerMovementState(PlayerMovementController playerMovementController)
+	private IInputDevice inputDevice;
+
+	public JumpingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		this.playerMovementController = playerMovementController;
-		//Debug.Log("Player Jumping");
-		
+		this.inputDevice = inputDevice;
+		//Debug.Log("Player Walking");
+
 	}
 
 	public override void ChangePlayerMovementState()
@@ -19,7 +22,7 @@ public class JumpingPlayerMovementState : PlayerMovementState
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
 
-		if (playerMovementController.IsPlayerAbleToClimbLedge == true && InputManager.Instance.GetKeyJumpBeingHeld())
+		if (playerMovementController.IsPlayerAbleToClimbLedge == true && inputDevice.GetKeyJumpBeingHeld())
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerLedgeClimbing);
 		}

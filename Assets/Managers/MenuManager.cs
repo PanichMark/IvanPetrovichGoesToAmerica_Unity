@@ -27,7 +27,7 @@ public class MenuManager : MonoBehaviour
 		IsAnyMenuOpened = false;
 	}
 
-	
+	/*
 	void Update()
     {
 		if (InputManager.Instance.GetKeyPauseMenu())
@@ -40,6 +40,7 @@ public class MenuManager : MonoBehaviour
 		}
 		//Debug.Log(IsPauseMenuOpened);
 	}
+	*/
 
     public void OpenPauseMenu()
     {

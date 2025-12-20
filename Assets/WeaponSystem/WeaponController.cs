@@ -3,6 +3,13 @@ using UnityEngine.UI;
 
 public class WeaponController : MonoBehaviour
 {
+	private IInputDevice inputDevice;
+
+	// Конструктор принимает зависимость
+	public WeaponController(IInputDevice inputDevice)
+	{
+		this.inputDevice = inputDevice;
+	}
 	//public PlayerCamera playerCamera;
 
 	public bool IsPoliceBatonWeaponUnlocked {  get; private set; }
@@ -17,6 +24,11 @@ public class WeaponController : MonoBehaviour
 
 	public WeaponClass LeftHandWeapon {  get; private set; }
 	public WeaponClass RightHandWeapon {  get; private set; }
+
+	private void Awake()
+	{
+		inputDevice = new InputKeyboard();
+	}
 
 	private void Start()
 	{
@@ -34,12 +46,12 @@ public class WeaponController : MonoBehaviour
 
 	private void Update()
 	{
-		if (InputManager.Instance.GetKeyRightHandWeaponAttack() && !MenuManager.IsAnyMenuOpened)
+		if (inputDevice.GetKeyRightHandWeaponAttack() && !MenuManager.IsAnyMenuOpened)
 		{
 			RightWeaponAttack();
 		}
 
-		if (InputManager.Instance.GetKeyLeftHandWeaponAttack() && !MenuManager.IsAnyMenuOpened)
+		if (inputDevice.GetKeyLeftHandWeaponAttack() && !MenuManager.IsAnyMenuOpened)
 		{
 			LeftWeaponAttack();
 		}

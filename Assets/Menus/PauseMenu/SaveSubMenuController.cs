@@ -29,7 +29,7 @@ public class SaveSubMenuController : MonoBehaviour
 		SaveGame5Button.onClick.AddListener(() => DataPersistenceManager.Instance.SaveGame(5));
 
 	}
-
+	/*
 	private void Update()
 	{
 		if (InputManager.Instance.GetKeyPauseMenu() && SaveSubMenuCanvas.gameObject.activeInHierarchy)
@@ -37,6 +37,7 @@ public class SaveSubMenuController : MonoBehaviour
 			CloseSaveSubMenu();
 		}
 	}
+	*/
 
 	public void CloseSaveSubMenu()
 	{

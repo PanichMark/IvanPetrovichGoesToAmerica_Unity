@@ -3,8 +3,15 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
+	private IInputDevice inputDevice;
+
+	// Конструктор принимает зависимость
+	public PlayerAnimationController(IInputDevice inputDevice)
+	{
+		this.inputDevice = inputDevice;
+	}
 	//public InputManager playerInputsList;
-	
+
 	public PlayerMovementController playerMovementController;
 
 	public PlayerCameraController playerCamera;
@@ -106,19 +113,19 @@ public class PlayerAnimationController : MonoBehaviour
 		{
 			if (playerBehaviour.IsPlayerArmed == true || (playerCamera.CurrentPlayerCameraStateType == "FirstPerson"))
 			{
-				if (InputManager.Instance.GetKeyUp())
+				if (inputDevice.GetKeyUp())
 				{
 					ChangePlayerMovementAnimation("Walking Forward");
 				}
-				else if (InputManager.Instance.GetKeyDown())
+				else if (inputDevice.GetKeyDown())
 				{
 					ChangePlayerMovementAnimation("Walking Backwards");
 				}
-				if (InputManager.Instance.GetKeyRight())
+				if (inputDevice.GetKeyRight())
 				{
 					ChangePlayerMovementAnimation("Walking Right");
 				}
-				else if (InputManager.Instance.GetKeyLeft())
+				else if (inputDevice.GetKeyLeft())
 				{
 					ChangePlayerMovementAnimation("Walking Left");
 				}

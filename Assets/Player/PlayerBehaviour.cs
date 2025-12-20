@@ -1,31 +1,40 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerBehaviour : MonoBehaviour
+public class PlayerBehaviour
 {
-	//InputManager playerInputsList;
-	WeaponController weaponController;
-	InteractionController interactionController;
+	private IInputDevice inputDevice;
+
+	// Конструктор принимает зависимость
+	public PlayerBehaviour(IInputDevice inputDevice)
+	{
+		this.inputDevice = inputDevice;
+	}
+
+	
+	//WeaponController weaponController;
+	//InteractionController interactionController;
 
 	public bool WasPlayerArmed { get; private set; }
 	public bool IsPlayerArmed { get; private set; }
 
+	
 	void Start()
 	{
-		//playerInputsList = GetComponent<InputManager>();
-		weaponController = GetComponent<WeaponController>();
-		interactionController = GetComponent<InteractionController>();
+		
+		//weaponController = GetComponent<WeaponController>();
+		//interactionController = GetComponent<InteractionController>();
 		
 	}
 
 	void Update()
 	{
-		if (InputManager.Instance.GetKeyHideWeapons())
+		if (inputDevice.GetKeyHideWeapons())
 		{
-			if (IsPlayerArmed && (weaponController.RightHandWeapon != null || weaponController.LeftHandWeapon != null))
-			{
+			//if (IsPlayerArmed && (weaponController.RightHandWeapon != null || weaponController.LeftHandWeapon != null))
+			//{
 				DisarmPlayer();
-			}
+			//}
 		}
 
 		//Debug.Log("was armed: " + WasPlayerArmed);
@@ -36,11 +45,11 @@ public class PlayerBehaviour : MonoBehaviour
 
 	public void ArmPlayer()
 	{
-		if (!IsPlayerArmed && interactionController.CurrentPickableObject == null)
-		{
+		//if (!IsPlayerArmed && interactionController.CurrentPickableObject == null)
+		//{
 			IsPlayerArmed = true;
 			WasPlayerArmed = false;
-
+		/*
 			if (weaponController.RightHandWeapon != null)
 			{
 				weaponController.ShowWeapon("right");
@@ -54,12 +63,13 @@ public class PlayerBehaviour : MonoBehaviour
 
 			Debug.Log("PlayerArmed");
 		}
+		*/
 	}
 
 	public void DisarmPlayer()
 	{
-		if (IsPlayerArmed || interactionController.CurrentPickableObject != null)
-		{
+		//if (IsPlayerArmed || interactionController.CurrentPickableObject != null)
+		//{
 			IsPlayerArmed = false;
 
 			
@@ -68,7 +78,7 @@ public class PlayerBehaviour : MonoBehaviour
 			
 
 		
-
+		/*
 
 			if (weaponController.RightHandWeapon != null)
 			{
@@ -83,7 +93,9 @@ public class PlayerBehaviour : MonoBehaviour
 			Debug.Log("PlayerDisarmed");
 		}
 		else WasPlayerArmed = false;
+		*/
 	}
+		
 
 }
 

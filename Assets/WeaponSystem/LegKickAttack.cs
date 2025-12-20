@@ -3,6 +3,14 @@ using System.Collections;
 
 public class LegKickAttack : MonoBehaviour
 {
+	private IInputDevice inputDevice;
+
+	// Конструктор принимает зависимость
+	public LegKickAttack(IInputDevice inputDevice)
+	{
+		this.inputDevice = inputDevice;
+	}
+
 	PlayerMovementController playerMovementController;
 	InteractionController interactionController;
 
@@ -45,7 +53,7 @@ public class LegKickAttack : MonoBehaviour
 
 	void Update()
 	{
-		if (InputManager.Instance.GetKeyLegKick() && !IsPlayerLegKicking && interactionController.CurrentPickableObject == null)
+		if (inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && interactionController.CurrentPickableObject == null)
 		{ 
 			LegKick();
 		}

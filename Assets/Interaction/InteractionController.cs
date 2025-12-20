@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 public class InteractionController : MonoBehaviour
 {
+	private IInputDevice inputDevice;
+
+	// Конструктор принимает зависимость
+	public InteractionController(IInputDevice inputDevice)
+	{
+		this.inputDevice = inputDevice;
+	}
+
 	private float interactionRange = 50f; // Диапазон взаимодействия
 	public TextMeshProUGUI mainInteractionText; // Подсказка (назначается вручную через Inspector)
 	public TextMeshProUGUI additionalInteractionText;
@@ -74,17 +82,17 @@ public class InteractionController : MonoBehaviour
 
 				if (throwableObj != null)
 				{
-					mainInteractionText.text = $"Отпустить {InputManager.Instance.GetNameOfKeyInteract()}\nБросить {InputManager.Instance.GetNameOfKeyLeftHandWeaponAttack()}";
+					mainInteractionText.text = $"Отпустить {inputDevice.GetNameOfKeyInteract()}\nБросить {inputDevice.GetNameOfKeyLeftHandWeaponAttack()}";
 				}
 				else
 				{
-					mainInteractionText.text = $"Отпустить на {InputManager.Instance.GetNameOfKeyInteract()}";
+					mainInteractionText.text = $"Отпустить на {inputDevice.GetNameOfKeyInteract()}";
 				}
 
 
 
 				// При нажатии кнопки освобождаем объект
-				if (InputManager.Instance.GetKeyInteract())
+				if (inputDevice.GetKeyInteract())
 				{
 					pickableObj.DropOffObject();
 					CurrentPickableObject = null;
@@ -95,7 +103,7 @@ public class InteractionController : MonoBehaviour
 				}
 
 
-				if (throwableObj != null && InputManager.Instance.GetKeyLeftHandWeaponAttack())
+				if (throwableObj != null && inputDevice.GetKeyLeftHandWeaponAttack())
 				{
 					throwableObj.ThrowObject();
 					CurrentPickableObject = null;
@@ -141,11 +149,11 @@ public class InteractionController : MonoBehaviour
 				if (currentInteractableObject != null)
 				{
 					// Подсказка для взаимодействия
-					mainInteractionText.text = $"{interactableObj.MainInteractionHint}\nНажмите {InputManager.Instance.GetNameOfKeyInteract()}";
+					mainInteractionText.text = $"{interactableObj.MainInteractionHint}\nНажмите {inputDevice.GetNameOfKeyInteract()}";
 				}
 
 				// Если это стандартный объект IInteractable, обрабатываем нажатие
-				if (InputManager.Instance.GetKeyInteract())
+				if (inputDevice.GetKeyInteract())
 				{
 					//Debug.Log("bruh11111111");
 

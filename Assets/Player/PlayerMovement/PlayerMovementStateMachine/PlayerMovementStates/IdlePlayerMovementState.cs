@@ -1,45 +1,47 @@
 ﻿using UnityEngine;
 
 public class IdlePlayerMovementState : PlayerMovementState
-{ 
-	
-	public IdlePlayerMovementState(PlayerMovementController playerMovementController)
+{
+
+	private IInputDevice inputDevice;
+
+	public IdlePlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		this.playerMovementController = playerMovementController;
-		
-		//Debug.Log("Player Idle");
-		
+		this.inputDevice = inputDevice;
+		//Debug.Log("Player Walking");
+
 	}
 
 
 	public override void ChangePlayerMovementState()
 	{
-		if (playerMovementController.IsPlayerMoving == true && InputManager.Instance.GetKeyRun() == false)
+		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() == false)
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
 		}
-		if (playerMovementController.IsPlayerMoving == true && InputManager.Instance.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true)
+		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true)
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
 		}
-		if (InputManager.Instance.GetKeyJump())
+		if (inputDevice.GetKeyJump())
 		{
 			WhatSpeedWas = "walking";
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
 		}
-		if (playerMovementController.IsPlayerFalling == true && InputManager.Instance.GetKeyCrouch() == false)
+		if (playerMovementController.IsPlayerFalling == true && inputDevice.GetKeyCrouch() == false)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
 		
-		if (playerMovementController.IsPlayerMoving == false && InputManager.Instance.GetKeyCrouch())
+		if (playerMovementController.IsPlayerMoving == false && inputDevice.GetKeyCrouch())
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
 		}
-		if (playerMovementController.IsPlayerMoving == true && InputManager.Instance.GetKeyCrouch())
+		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyCrouch())
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingWalking);
 		}

@@ -7,6 +7,15 @@ using System;
 
 public class SettingsSubMenuController : MonoBehaviour
 {
+	private IInputDevice inputDevice;
+
+	// Конструктор принимает зависимость
+	public SettingsSubMenuController(IInputDevice inputDevice)
+	{
+		this.inputDevice = inputDevice;
+	}
+
+
 	// Ссылка на контроллер паузы меню
 	PauseMenuController pauseMenuController;
 
@@ -60,8 +69,16 @@ public class SettingsSubMenuController : MonoBehaviour
 	new char[] {'.', '/'}, // Точка соответствует слэшу '/'
 	  };
 
+
+	private void Awake()
+	{
+		inputDevice = new InputKeyboard();
+	}
+
 	void Start()
 	{
+		
+
 		pauseMenuController = GetComponent<PauseMenuController>();
 		CloseSettingsSubMenuButton.onClick.AddListener(CloseSettingsSubMenu);
 
@@ -85,7 +102,7 @@ public class SettingsSubMenuController : MonoBehaviour
 		ApplyButtonColors(currentFrameRateLimit);
 
 		// Заполняем поля ввода клавиш начальными значениями из InputManager
-		var bindings = InputManager.Instance.GetCurrentBindings().ToList();
+		var bindings = inputDevice.GetCurrentBindings().ToList();
 
 		foreach (var field in inputFields)
 		{
@@ -146,7 +163,7 @@ public class SettingsSubMenuController : MonoBehaviour
 
 	private void Update()
 	{
-		if (InputManager.Instance.GetKeyPauseMenu() && SettingsSubMenuCanvas.gameObject.activeInHierarchy)
+		if (inputDevice.GetKeyPauseMenu() && SettingsSubMenuCanvas.gameObject.activeInHierarchy)
 		{
 			CloseSettingsSubMenu();
 		}
@@ -223,7 +240,7 @@ public class SettingsSubMenuController : MonoBehaviour
 		KeyCode newKey;
 		if (Enum.TryParse<KeyCode>(newKeyStr, out newKey))
 		{
-			InputManager.Instance.RebindKey(actionName, newKey);
+			inputDevice.RebindKey(actionName, newKey);
 		}
 		else
 		{

@@ -2,28 +2,31 @@
 
 public class CrouchingIdlePlayerMovementState : PlayerMovementState
 {
-	public CrouchingIdlePlayerMovementState(PlayerMovementController playerMovementController)
+	private IInputDevice inputDevice;
+
+	public CrouchingIdlePlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		this.playerMovementController = playerMovementController;
-		//Debug.Log("Player Crouching Idle");
-		
+		this.inputDevice = inputDevice;
+		//Debug.Log("Player Walking");
+
 	}
 	public override void ChangePlayerMovementState()
 	{
-		if (playerMovementController.IsPlayerMoving == true && InputManager.Instance.GetKeyCrouch() == false)
+		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyCrouch() == false)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingWalking);
 		}
-		if (playerMovementController.IsPlayerMoving == false && InputManager.Instance.GetKeyCrouch() == true && playerMovementController.IsPlayerAbleToStandUp == true)
+		if (playerMovementController.IsPlayerMoving == false && inputDevice.GetKeyCrouch() == true && playerMovementController.IsPlayerAbleToStandUp == true)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 		}
-		if (playerMovementController.IsPlayerMoving == true && InputManager.Instance.GetKeyCrouch() && playerMovementController.IsPlayerAbleToStandUp == true)
+		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyCrouch() && playerMovementController.IsPlayerAbleToStandUp == true)
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
 		}
-		if (InputManager.Instance.GetKeyJump())
+		if (inputDevice.GetKeyJump())
 		{
 			WhatSpeedWas = "crouching";
 

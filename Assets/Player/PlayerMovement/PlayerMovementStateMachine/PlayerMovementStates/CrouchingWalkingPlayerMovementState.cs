@@ -2,33 +2,36 @@
 
 public class CrouchingWalkingPlayerMovementState : PlayerMovementState
 {
-	public CrouchingWalkingPlayerMovementState(PlayerMovementController playerMovementController)
+	private IInputDevice inputDevice;
+
+	public CrouchingWalkingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		this.playerMovementController = playerMovementController;
-		//Debug.Log("Player Crouching Walking");
-		
+		this.inputDevice = inputDevice;
+		//Debug.Log("Player Walking");
+
 	}
 	public override void ChangePlayerMovementState()
 	{
-		if (playerMovementController.IsPlayerMoving == false && InputManager.Instance.GetKeyCrouch() == false)
+		if (playerMovementController.IsPlayerMoving == false && inputDevice.GetKeyCrouch() == false)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
 		}
-		if (playerMovementController.IsPlayerMoving == false && InputManager.Instance.GetKeyCrouch() == true && playerMovementController.IsPlayerAbleToStandUp == true)
+		if (playerMovementController.IsPlayerMoving == false && inputDevice.GetKeyCrouch() == true && playerMovementController.IsPlayerAbleToStandUp == true)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 		}
-		if (playerMovementController.IsPlayerMoving == true && InputManager.Instance.GetKeyCrouch() == true && playerMovementController.IsPlayerAbleToStandUp == true)
+		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyCrouch() == true && playerMovementController.IsPlayerAbleToStandUp == true)
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
 		}
-		if (playerMovementController.IsPlayerMoving == true && InputManager.Instance.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true)
+		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true)
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
 		}
-		if (InputManager.Instance.GetKeyJump())
+		if (inputDevice.GetKeyJump())
 		{
 			WhatSpeedWas = "crouching";
 

@@ -2,11 +2,14 @@
 
 public class RunningPlayerMovementState : PlayerMovementState
 {
-	public RunningPlayerMovementState(PlayerMovementController playerMovementController)
+	private IInputDevice inputDevice;
+
+	public RunningPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		this.playerMovementController = playerMovementController;
-		//Debug.Log("Player Running");
-		
+		this.inputDevice = inputDevice;
+		//Debug.Log("Player Walking");
+
 	}
 	public override void ChangePlayerMovementState()
 	{
@@ -15,22 +18,22 @@ public class RunningPlayerMovementState : PlayerMovementState
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 		}
-		if (playerMovementController.IsPlayerMoving == true && InputManager.Instance.GetKeyRun() == false)
+		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() == false)
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
 		}
-		if (playerMovementController.IsPlayerFalling == true && InputManager.Instance.GetKeyCrouch() == false)
+		if (playerMovementController.IsPlayerFalling == true && inputDevice.GetKeyCrouch() == false)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
-		if (InputManager.Instance.GetKeyJump())
+		if (inputDevice.GetKeyJump())
 		{
 			WhatSpeedWas = "running";
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
 		}
-		if (playerMovementController.IsPlayerMoving == true && playerMovementController.IsPlayerFalling == false && InputManager.Instance.GetKeyCrouch())
+		if (playerMovementController.IsPlayerMoving == true && playerMovementController.IsPlayerFalling == false && inputDevice.GetKeyCrouch())
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerSliding);
 		}

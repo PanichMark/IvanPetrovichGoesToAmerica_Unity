@@ -2,30 +2,33 @@
 using UnityEngine;
 public class PlayerCameraController : MonoBehaviour, IDataPersistence
 {
-	//InputManager playerInputsList;
-	public PlayerMovementController playerMovementController;
-	public CapsuleCollider PlayerCollider;
-	public Transform PlayerTransform;
-	//public Transform CameraTransform;
+	private IInputDevice inputDevice;
 
-	public PlayerCameraState playerCameraState;
-	public PlayerCameraStateType playerCameraStateType;
+	// Конструктор принимает зависимость
+	public PlayerCameraController(IInputDevice inputDevice)
+	{
+		this.inputDevice = inputDevice;
+	}
 
-	public Vector2 MouseRotation;
-	public Vector2 MouseScrollWheel;
 
-	public Vector3 CameraForward;
-	public Vector3 CameraRight;
+	private PlayerCameraState playerCameraState;
+	private PlayerCameraStateType playerCameraStateType;
+
+	private Vector2 MouseRotation;
+	private Vector2 MouseScrollWheel;
+
+	private Vector3 CameraForward;
+	private Vector3 CameraRight;
 
 	private RaycastHit hit;
 
-	public bool IsAbleToZoomCameraOut = true;
+	public bool IsAbleToZoomCameraOut { get; private set; } = true;
 
-	public float PlayerCameraDistanceX;
-	public float PlayerCameraDistanceY;
-	public float PlayerCameraDistanceZ;
+	public float PlayerCameraDistanceX { get; private set; }
+	public float PlayerCameraDistanceY { get; private set; }
+	public float PlayerCameraDistanceZ { get; private set; }
 
-	public float CameraRotationY;
+	public float CameraRotationY { get; private set; }
 	private float MouseRotationLimit = 65f;
 
 	public string CurrentPlayerCameraStateType { get; private set; } = "ThirdPerson";
@@ -33,11 +36,11 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 	private string _currentPlayerCameraType;
 	private string _previousPlayerCameraType;
 
-	private bool IsCameraShoulderRight = true;
+	private bool IsCameraShoulderRight= true;
 
 	private bool canReturn = false;     
 	private float startTransitionTime; 
-	public float transitionDelay = 0.5f;
+	public float transitionDelay { get; private set; } = 0.5f;
 
 	
 
@@ -73,13 +76,13 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 
 		//Debug.Log(CurrentPlayerCameraStateType);
 
-		if (!MenuManager.IsAnyMenuOpened)
-		{
+		///if (!MenuManager.IsAnyMenuOpened)
+		//{
 			MouseRotation.y += Input.GetAxis("Mouse X");
 			MouseRotation.x += Input.GetAxis("Mouse Y");
 			MouseRotation.x = Mathf.Clamp(MouseRotation.x, MouseRotationLimit * -1, MouseRotationLimit);
 			MouseScrollWheel = Input.mouseScrollDelta;
-		}
+		//}
 
 		if (MouseScrollWheel.y < 0 && IsAbleToZoomCameraOut == true && CurrentPlayerCameraStateType != "FirstPerson")
 		{
@@ -108,13 +111,13 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 		playerCameraState.PlayerCameraPosition();
 	
 
-		if (InputManager.Instance.GetKeyChangeCameraView())
+		if (inputDevice.GetKeyChangeCameraView())
 		{
 			ChangePlayerCameraView();
 		}
 
 		/*
-		if (InputManager.Instance.GetKeyEnterCutscene())
+		if (inputDevice.GetKeyEnterCutscene())
 		{
 			if (_currentPlayerCameraType != PlayerCameraStateType.Cutscene.ToString())
 			{
@@ -127,7 +130,7 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 		}
 		*/
 
-		if (InputManager.Instance.GetKeyChangeCameraShoulder() && CurrentPlayerCameraStateType != "FirstPerson")
+		if (inputDevice.GetKeyChangeCameraShoulder() && CurrentPlayerCameraStateType != "FirstPerson")
 		{
 			IsCameraShoulderRight = !IsCameraShoulderRight;
 		}
@@ -243,19 +246,17 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 	}
 	public void FirstPersonCameraTransform()
 	{
-		if (PlayerTransform != null)
-		{
+
 			transform.position = PlayerTransform.position + Quaternion.Euler(0, MouseRotation.y, 0) *
 			new Vector3(0, playerMovementController.PlayerCurrentHeight - 0.13f, 0.1f);
-		}
+		
 	}
 	public void ThirdPersonCameraTransform()
 	{
-		if (PlayerTransform != null)
-		{
+	
 			transform.position = PlayerTransform.position - Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0) *
 			new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
-		}
+		
 	}
 	public void CutsceneCameraTransform()
 	{

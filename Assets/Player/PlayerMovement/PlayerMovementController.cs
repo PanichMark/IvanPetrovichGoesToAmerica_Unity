@@ -3,24 +3,33 @@ using System.Collections;
 using System;
 public class PlayerMovementController : MonoBehaviour, IDataPersistence
 {
-	//public InputManager playerInputsList;
+	private IInputDevice inputDevice;
+	private readonly PlayerBehaviour playerBehaviour;
 
-	public PlayerMovementState playerMovementState;
-	public PlayerMovementStateType playerMovementStateType;
+	// Конструктор принимает зависимость
+	public PlayerMovementController(IInputDevice inputDevice, PlayerBehaviour playerBehaviour)
+	{
+		this.inputDevice = inputDevice;
+		this.playerBehaviour = playerBehaviour; // Новый аргумент
+	}
 
-	public Vector3 PlayerWorldMovement;
+	
+
+	private PlayerMovementState playerMovementState;
+	private PlayerMovementStateType playerMovementStateType;
+
+	private Vector3 PlayerWorldMovement;
 	private Vector3 PlayerMovement;
 	private Vector3 PlayerMovementDirectionWithCamera;
 
 	public PlayerCameraController playerCamera;
 	public GameObject PlayerCameraObject;
 
-	PlayerBehaviour playerBehaviour;
+	
 
-	public Transform PlayerTransform;
-	public Rigidbody PlayerRigidBody;
-	public CapsuleCollider playerCapsuleCollider;
-	public Transform playerCapsuleColliderMesh;
+	Transform PlayerTransform;
+	Rigidbody PlayerRigidBody;
+
 
 	private Vector3 _playerPreviousFramePosition;
 	private Vector3 _playerPreviousFramePositionChange;
@@ -58,16 +67,16 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 	private float moveFactor;
 
 
-	public bool IsPlayerLegKicking;
+	public bool IsPlayerLegKicking { get; private set; }
 
 	
 
 	void Start()
 	{
 
-		//playerInputsList = GetComponent<InputManager>();
+		
 		playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
-		playerBehaviour = GetComponent<PlayerBehaviour>();
+		
 
 		PlayerTransform = GetComponent<Transform>();
 
@@ -123,28 +132,28 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		playerMovementState.ChangePlayerMovementSpeed();
 
 		//
-		if (InputManager.Instance.GetKeyRight())
+		if (inputDevice.GetKeyRight())
 		{
 			PlayerWorldMovement.x = 1;
 		}
-		else if (InputManager.Instance.GetKeyLeft())
+		else if (inputDevice.GetKeyLeft())
 		{
 			PlayerWorldMovement.x = -1;
 		}
 		else PlayerWorldMovement.x = 0;
 
-		if (InputManager.Instance.GetKeyUp())
+		if (inputDevice.GetKeyUp())
 		{
 			PlayerWorldMovement.z = 1;
 		}
-		else if (InputManager.Instance.GetKeyDown())
+		else if (inputDevice.GetKeyDown())
 		{
 			PlayerWorldMovement.z = -1;
 		}
 		else PlayerWorldMovement.z = 0;
 
 		// короче тут проблема
-		if (InputManager.Instance.GetKeyJump())
+		if (inputDevice.GetKeyJump())
 		{
 			
 			PlayerRigidBody.AddForce(transform.up * 5f, ForceMode.Impulse);
@@ -292,7 +301,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 		if (playerMovementStateType == PlayerMovementStateType.PlayerIdle)
 		{
-			newState = new IdlePlayerMovementState(this);
+			newState = new IdlePlayerMovementState(this, inputDevice);
 			CurrentPlayerMovementStateType = "PlayerIdle";
 			if (IsPlayerLegKicking == false)
 			{
@@ -303,31 +312,31 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerWalking)
 		{
-			newState = new WalkingPlayerMovementState(this);
+			newState = new WalkingPlayerMovementState(this, inputDevice);
 			CurrentPlayerMovementStateType = "PlayerWalking";
 			IsPlayerCrouching = false;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerRunning)
 		{
-			newState = new RunningPlayerMovementState(this);
+			newState = new RunningPlayerMovementState(this, inputDevice);
 			CurrentPlayerMovementStateType = "PlayerRunning";
 			IsPlayerCrouching = false;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerJumping)
 		{
-			newState = new JumpingPlayerMovementState(this);
+			newState = new JumpingPlayerMovementState(this, inputDevice);
 			CurrentPlayerMovementStateType = "PlayerJumping";
 			IsPlayerCrouching = false;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerFalling)
 		{
-			newState = new FallingPlayerMovementState(this);
+			newState = new FallingPlayerMovementState(this, inputDevice);
 			CurrentPlayerMovementStateType = "PlayerFalling";
 			IsPlayerCrouching = false;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerCrouchingIdle)
 		{
-			newState = new CrouchingIdlePlayerMovementState(this);
+			newState = new CrouchingIdlePlayerMovementState(this, inputDevice);
 			CurrentPlayerMovementStateType = "PlayerCrouchingIdle";
 			IsPlayerCrouching = true;
 			if (IsPlayerLegKicking == false)
@@ -338,7 +347,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerCrouchingWalking)
 		{
-			newState = new CrouchingWalkingPlayerMovementState(this);
+			newState = new CrouchingWalkingPlayerMovementState(this, inputDevice);
 			CurrentPlayerMovementStateType = "PlayerCrouchingWalking";
 			IsPlayerCrouching = true;
 		}

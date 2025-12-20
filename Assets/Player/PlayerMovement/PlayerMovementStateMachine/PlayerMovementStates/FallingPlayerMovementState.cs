@@ -2,11 +2,14 @@
 
 public class FallingPlayerMovementState : PlayerMovementState
 {
-	public FallingPlayerMovementState(PlayerMovementController playerMovementController)
+	private IInputDevice inputDevice;
+
+	public FallingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
-	this.playerMovementController = playerMovementController;
-	//Debug.Log("Player Falling");
-		
+		this.playerMovementController = playerMovementController;
+		this.inputDevice = inputDevice;
+		//Debug.Log("Player Walking");
+
 	}
 
 	public override void ChangePlayerMovementState()
@@ -16,7 +19,7 @@ public class FallingPlayerMovementState : PlayerMovementState
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 		}
 		
-		if (playerMovementController.IsPlayerFalling == false && playerMovementController.IsPlayerMoving == true && InputManager.Instance.GetKeyRun())
+		if (playerMovementController.IsPlayerFalling == false && playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun())
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
@@ -32,7 +35,7 @@ public class FallingPlayerMovementState : PlayerMovementState
 		//	playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
 		//}
 
-		if (playerMovementController.IsPlayerAbleToClimbLedge == true && InputManager.Instance.GetKeyJumpBeingHeld())
+		if (playerMovementController.IsPlayerAbleToClimbLedge == true && inputDevice.GetKeyJumpBeingHeld())
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerLedgeClimbing);
 
