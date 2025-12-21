@@ -27,7 +27,10 @@ public class RunningPlayerMovementState : PlayerMovementState
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
-		if (inputDevice.GetKeyJump())
+		if (inputDevice.GetKeyJump() &&
+			playerMovementController.IsPlayerGrounded &&
+			playerMovementController.IsPlayerAbleToMove &&
+			playerMovementController.IsPlayerAbleToStandUp)
 		{
 			WhatSpeedWas = "running";
 

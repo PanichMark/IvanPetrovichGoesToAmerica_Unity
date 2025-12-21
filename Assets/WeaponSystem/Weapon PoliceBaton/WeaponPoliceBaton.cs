@@ -38,6 +38,8 @@ public class WeaponPoliceBaton : WeaponClass
 
 	public override void WeaponAttack()
 	{
+		Debug.Log("PoliceBatonAttack");
+		/*
 		if (IsPlayerPoliceBatonAttacking == false)
 		{
 
@@ -61,7 +63,9 @@ public class WeaponPoliceBaton : WeaponClass
 					StartCoroutine(DelayPoliceBatonAttackDamage(damageable, 0.5f, WeaponDamage));
 				}
 			}
+
 		}
+		*/
 	}
 
 	IEnumerator DisablePoliceBatonAttackActivation()

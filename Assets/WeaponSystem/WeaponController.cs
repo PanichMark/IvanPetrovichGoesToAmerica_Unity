@@ -1,35 +1,39 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+public delegate void OnWeaponChangedEvent(string activeHand);
+
 public class WeaponController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
+	private MenuManager menuManager;
 	private PlayerBehaviour playerBehaviour;
 
 	// Конструктор принимает зависимость
-	public void Initialize(IInputDevice inputDevice, PlayerBehaviour playerBehaviour)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour)
 	{
 		this.inputDevice = inputDevice;
+		this.menuManager = menuManager;	
 		this.playerBehaviour = playerBehaviour;
+		Debug.Log("WeaponController Initialized");
 	}
-	
+
+
+	public event OnWeaponChangedEvent OnWeaponChanged;
 
 	public bool IsPoliceBatonWeaponUnlocked {  get; private set; }
 	public bool IsHarmoniceRevolverWeaponUnlocked { get; private set; }
 	public bool IsPlungerCrossbowWeaponUnlocked { get; private set; }
 	public bool IsEugenicGenieWeaponUnlocked { get; private set; }
 
-	
-	//WeaponWheelController weaponWheelController;
-	//InteractionController interactionController;
-
 	public WeaponClass LeftHandWeapon {  get; private set; }
 	public WeaponClass RightHandWeapon {  get; private set; }
 
-	private void Awake()
-	{
-		inputDevice = new InputKeyboard();
-	}
+
+
+	//public bool IsLeftHand { get; private set; }
+	
+
 
 	private void Start()
 	{
@@ -37,25 +41,43 @@ public class WeaponController : MonoBehaviour
 		IsHarmoniceRevolverWeaponUnlocked = true;
 		IsPlungerCrossbowWeaponUnlocked = true;
 		IsEugenicGenieWeaponUnlocked = true;
-		
-		
-		
-		//weaponWheelController = GetComponent<WeaponWheelController>();
-		
-		//interactionController = GetComponent<InteractionController>();
 	}
 
 	private void Update()
 	{
-		if (inputDevice.GetKeyRightHandWeaponAttack())
+		if (inputDevice.GetKeyRightHandWeaponAttack() && !menuManager.IsAnyMenuOpened)
 		{
 			RightWeaponAttack();
 		}
 
-		if (inputDevice.GetKeyLeftHandWeaponAttack())
+		if (inputDevice.GetKeyLeftHandWeaponAttack() && !menuManager.IsAnyMenuOpened)
 		{
 			LeftWeaponAttack();
 		}
+
+		if (playerBehaviour.IsPlayerArmed)
+		{
+			if (RightHandWeapon != null)
+			{
+				ShowWeapon("right");
+			}
+			if (LeftHandWeapon != null)
+			{
+				ShowWeapon("left");
+			}
+		}
+		else 
+		{
+			if (RightHandWeapon != null)
+			{
+				HideWeapon("right");
+			}
+			if (LeftHandWeapon != null)
+			{
+				HideWeapon("left");
+			}
+		}
+
 	}
 
 	public void SelectWeapon(System.Type weaponType)
@@ -67,14 +89,12 @@ public class WeaponController : MonoBehaviour
 		if (isLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetType() == weaponType)
 		{
 			// Если текущее оружие совпадает с выбранным, ничего не делаем
-			//Debug.Log("Same left");
 			return;
 		}
 		// Проверяем, есть ли оружие в правой руке
 		else if (!isLeftHand && RightHandWeapon != null && RightHandWeapon.GetType() == weaponType)
 		{
 			// Если текущее оружие совпадает с выбранным, ничего не делаем
-			//Debug.Log("Same right");
 			return;
 		}
 		else
@@ -93,9 +113,11 @@ public class WeaponController : MonoBehaviour
 
 				// Создаем новый экземпляр оружия
 				LeftHandWeapon = (WeaponClass)gameObject.AddComponent(weaponType);
-				//weaponWheelController.ChangeWheaponWheelButtonColor("left");
+				/////
+				OnWeaponChanged?.Invoke("left");
 				LeftHandWeapon.InstantiateWeaponModel("left"); // Передаем флаг isLeftHand
 				playerBehaviour.ArmPlayer();
+
 
 				/*
 				if (interactionController.CurrentPickableObject != null)
@@ -118,7 +140,8 @@ public class WeaponController : MonoBehaviour
 
 				// Создаем новый экземпляр оружия
 				RightHandWeapon = (WeaponClass)gameObject.AddComponent(weaponType);
-				//weaponWheelController.ChangeWheaponWheelButtonColor("right");
+				////
+				OnWeaponChanged?.Invoke("right");
 				RightHandWeapon.InstantiateWeaponModel("right"); // Передаем флаг isLeftHand
 				playerBehaviour.ArmPlayer();
 
@@ -160,6 +183,8 @@ public class WeaponController : MonoBehaviour
 		}
 	}
 
+
+
 	public void LeftWeaponAttack()
 	{
 		if (LeftHandWeapon != null)
@@ -171,6 +196,7 @@ public class WeaponController : MonoBehaviour
 			playerBehaviour.ArmPlayer();
 		}
 	}
+
 
 	public void RemoveWeapon(string handType)
 	{

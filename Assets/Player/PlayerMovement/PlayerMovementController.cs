@@ -22,10 +22,12 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 	//public PlayerCameraController playerCamera;
 	//public GameObject PlayerCameraObject;
 
-	
+	private bool JumpWaitOnSlope = false; // Флаг готовности прыжка
 
 	Transform PlayerTransform;
 	Rigidbody PlayerRigidBody;
+
+	private string currentPlayerCameraType = "";
 
 
 	private Vector3 _playerPreviousFramePosition;
@@ -132,28 +134,31 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		playerMovementState.ChangePlayerMovementSpeed();
 
 		//
-		if (inputDevice.GetKeyRight())
+		if (inputDevice.GetKeyRight() && IsPlayerAbleToMove)
 		{
 			PlayerWorldMovement.x = 1;
 		}
-		else if (inputDevice.GetKeyLeft())
+		else if (inputDevice.GetKeyLeft() && IsPlayerAbleToMove)
 		{
 			PlayerWorldMovement.x = -1;
 		}
 		else PlayerWorldMovement.x = 0;
 
-		if (inputDevice.GetKeyUp())
+		if (inputDevice.GetKeyUp() && IsPlayerAbleToMove)
 		{
 			PlayerWorldMovement.z = 1;
 		}
-		else if (inputDevice.GetKeyDown())
+		else if (inputDevice.GetKeyDown() && IsPlayerAbleToMove)
 		{
 			PlayerWorldMovement.z = -1;
 		}
 		else PlayerWorldMovement.z = 0;
 
 		// короче тут проблема
-		if (inputDevice.GetKeyJump())
+		if (inputDevice.GetKeyJump() &&
+			IsPlayerGrounded &&
+			IsPlayerAbleToMove &&
+			IsPlayerAbleToStandUp)
 		{
 			
 			PlayerRigidBody.AddForce(transform.up * 5f, ForceMode.Impulse);
@@ -273,31 +278,24 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		angle = Vector3.Angle(hitInfo.normal, Vector3.up);
 		moveFactor = 1 / Mathf.Cos(Mathf.Deg2Rad * angle);
 
-		/*
-		if (playerBehaviour.IsPlayerArmed == false && (PlayerMovement != Vector3.zero) && (playerCamera.GetCurrentPlayerCameraType() == PlayerCameraStateType.ThirdPerson.ToString()))
+		
+		if (playerBehaviour.IsPlayerArmed == false && (PlayerMovement != Vector3.zero) && (currentPlayerCameraType == PlayerCameraStateType.ThirdPerson.ToString()))
 		{
 			Quaternion CharacterRotation = Quaternion.LookRotation(PlayerMovement, Vector3.up);
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, CharacterRotation, PlayerRotationSpeed * Time.deltaTime);
+			//Debug.Log("3333");
 		}
-		else if (playerBehaviour.IsPlayerArmed == true || (playerCamera.GetCurrentPlayerCameraType() == PlayerCameraStateType.FirstPerson.ToString()))
+		else if (playerBehaviour.IsPlayerArmed == true || (currentPlayerCameraType == PlayerCameraStateType.FirstPerson.ToString()))
 		{
 			Quaternion PlayerRotateWhereCameraIsLooking = Quaternion.Euler(transform.localEulerAngles.x, playerCamera.transform.eulerAngles.y, transform.localEulerAngles.z);
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, PlayerRotateWhereCameraIsLooking, PlayerRotationSpeed * Time.deltaTime);
+			//Debug.Log("1111");
 		}
-		*/
+		
+		
 
-		if (playerBehaviour.IsPlayerArmed == false && (PlayerMovement != Vector3.zero) && (ThirdPersonPlayerCameraState.Instance != null))
-		{
-			Quaternion CharacterRotation = Quaternion.LookRotation(PlayerMovement, Vector3.up);
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, CharacterRotation, PlayerRotationSpeed * Time.deltaTime);
-		}
-		else if (playerBehaviour.IsPlayerArmed == true || (FirstPersonPlayerCameraState.Instance != null))
-		{
-			Quaternion PlayerRotateWhereCameraIsLooking = Quaternion.Euler(transform.localEulerAngles.x, playerCamera.transform.eulerAngles.y, transform.localEulerAngles.z);
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, PlayerRotateWhereCameraIsLooking, PlayerRotationSpeed * Time.deltaTime);
-		}
-		//Quaternion CharacterRotation = Quaternion.LookRotation(PlayerMovement, Vector3.up);
-		//transform.rotation = Quaternion.RotateTowards(transform.rotation, CharacterRotation, PlayerRotationSpeed * Time.deltaTime);
+
+	
 	}
 
 	private void FixedUpdate()
@@ -490,6 +488,32 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		IsPlayerAbleToMove = true;
 
 		IsPlayerLegKicking = false;
+	}
+
+	public bool JumpingStateWait()
+	{
+	
+		StartCoroutine(JumpStateWaitCoroutine());
+		return JumpWaitOnSlope; // Сразу вернем false, флаг изменится позже
+
+	}
+
+	public void StopJumpingStateWait()
+	{
+		StopCoroutine(JumpStateWaitCoroutine());
+		JumpWaitOnSlope = false;
+	}
+
+	public IEnumerator JumpStateWaitCoroutine()
+	{
+		yield return new WaitForSeconds(0.5f); // Ждем 0.5 секунды
+		JumpWaitOnSlope = true; // Готовность установлена
+	}
+
+
+	public void GiveCurrentPlayerCameraType(string cameraType)
+	{
+		currentPlayerCameraType = cameraType;
 	}
 
 	public void SaveData(ref GameData data)

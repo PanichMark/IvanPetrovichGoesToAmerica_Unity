@@ -6,7 +6,7 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 	private MenuManager menuManager;
 	private PlayerMovementController movementController;
 	private PlayerCapluseCollider playerCollider;
-	private GameObject playerModel;
+	private GameObject player;
 	// Конструктор принимает зависимость
 
 
@@ -210,18 +210,21 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 		if (playerCameraStateType == PlayerCameraStateType.FirstPerson)
 		{
 			CurrentPlayerCameraStateType = "FirstPerson";
+			movementController.GiveCurrentPlayerCameraType("FirstPerson");
 			newState = new FirstPersonPlayerCameraState(this);
 			//IsPlayerCameraFirstPerson = true;
 		}
 		else if (playerCameraStateType == PlayerCameraStateType.ThirdPerson)
 		{
 			CurrentPlayerCameraStateType = "ThirdPerson";
+			movementController.GiveCurrentPlayerCameraType("ThirdPerson");
 			newState = new ThirdPersonPlayerCameraState(this);
 			//IsPlayerCameraFirstPerson = false;
 		}
 		else if (playerCameraStateType == PlayerCameraStateType.Cutscene)
 		{
 			CurrentPlayerCameraStateType = "Cutscene";
+			movementController.GiveCurrentPlayerCameraType("Cutscene");
 			newState = new CutscenePlayerCameraState(this);
 			//IsPlayerCameraFirstPerson = false;
 		}
@@ -247,14 +250,14 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 	public void FirstPersonCameraTransform()
 	{
 
-			transform.position = playerModel.transform.position + Quaternion.Euler(0, MouseRotation.y, 0) *
+			transform.position = player.transform.position + Quaternion.Euler(0, MouseRotation.y, 0) *
 			new Vector3(0, movementController.PlayerCurrentHeight - 0.13f, 0.1f);
 		
 	}
 	public void ThirdPersonCameraTransform()
 	{
 	
-			transform.position = playerModel.transform.position - Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0) *
+			transform.position = player.transform.position - Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0) *
 			new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
 		
 	}
@@ -306,7 +309,7 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 		this.menuManager = menuManager;
 		this.movementController = movementController; // Новый аргумент
 		this.playerCollider = playerCollider;
-		this.playerModel = playerModel;
+		this.player = playerModel;
 		Debug.Log("CameraController Initialized");
 	}
 }

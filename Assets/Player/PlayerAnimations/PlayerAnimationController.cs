@@ -1,31 +1,49 @@
 ﻿
 using UnityEngine;
 
-public class PlayerAnimationController : MonoBehaviour
+public class PlayerAnimationController: MonoBehaviour
 {
 	private IInputDevice inputDevice;
+	private PlayerBehaviour playerBehaviour;
+	private PlayerMovementController playerMovementController;
+	private PlayerCameraController playerCameraController;
+	private WeaponController weaponController;
+
+	private Camera playerCameraObject;
+	private Animator playerAnimator;
 
 	// Конструктор принимает зависимость
-	public PlayerAnimationController(IInputDevice inputDevice)
+	public void Initialize(IInputDevice inputDevice, GameObject player, PlayerBehaviour playerBehaviour, PlayerMovementController playerMovementController,
+		PlayerCameraController playerCameraController, WeaponController weaponController)
 	{
 		this.inputDevice = inputDevice;
+		playerAnimator = player.GetComponent<Animator>();
+		this.playerBehaviour = playerBehaviour;
+		this.playerMovementController = playerMovementController;
+		this.playerCameraController = playerCameraController;
+		this.weaponController = weaponController;
+
+		playerCameraObject = Camera.main;
+		ChangePlayerMovementAnimation("Idle");
+
+		Debug.Log("PlayerAnimationController Initialized");
 	}
-	//public InputManager playerInputsList;
 
-	public PlayerMovementController playerMovementController;
 
-	public PlayerCameraController playerCamera;
-	public GameObject playerCameraObject;
+	
 
-	private Animator playerAnimator;
+	
+	
+
+	
 	private string currentPlayerMovementAnimation = "";
 	private string currentPlayerWeaponRightAnimation = "";
 	private string currentPlayerWeaponLeftAnimation = "";
 	private string currentPlayerLegKickAttackAnimation = "";
 
-	public PlayerBehaviour playerBehaviour;
+	
 
-	public WeaponController weaponController;
+	
 
 	private bool wasPreviouslyKicking = false;
 
@@ -34,26 +52,18 @@ public class PlayerAnimationController : MonoBehaviour
 	private float adjustedCameraAngle;
 	void Start()
     {
-		//playerInputsList = GetComponent<InputManager>();
+	
 
-		playerMovementController = GetComponent<PlayerMovementController>();
-
-		playerCamera = playerCameraObject.GetComponent<PlayerCameraController>();
-
-		playerAnimator = GetComponent<Animator>();
+		//playerAnimator = GetComponent<Animator>();
 		ChangePlayerMovementAnimation("Idle");
 
-		playerBehaviour = GetComponent<PlayerBehaviour>();
-
-		weaponController = GetComponent<WeaponController>();
 
 
 	}
 
 	private void Update()
 	{
-		if (playerCameraObject != null)
-		{
+		
 			// считаем поворот камеры X
 			float cameraRotationX = playerCameraObject.transform.rotation.eulerAngles.x;
 			if (cameraRotationX >= 0 && cameraRotationX < 180)
@@ -64,10 +74,10 @@ public class PlayerAnimationController : MonoBehaviour
 			{
 				adjustedCameraAngle = cameraRotationX - 360;
 			}
-		}
+		
 	
 		// игрок смотрит вниз/вверх когда вооружен от 3го лица
-		if (playerBehaviour.IsPlayerArmed == true && playerCamera.CurrentPlayerCameraStateType == "ThirdPerson")
+		if (playerBehaviour.IsPlayerArmed == true && playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
 		{
 			// Шаг 1: Определяем начальное значение (текущее значение параметра)
 			float startValue = playerAnimator.GetFloat("UpDown");
@@ -96,7 +106,7 @@ public class PlayerAnimationController : MonoBehaviour
 			playerAnimator.SetFloat("UpDown", newValue);
 		}
 
-		if (playerBehaviour.IsPlayerArmed == true && playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
+		if (playerBehaviour.IsPlayerArmed == true && playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
 		{
 			playerAnimator.SetFloat("UpDown", 0);
 		}
@@ -111,7 +121,7 @@ public class PlayerAnimationController : MonoBehaviour
 		}
 		else if (playerMovementController.CurrentPlayerMovementStateType == "PlayerWalking")
 		{
-			if (playerBehaviour.IsPlayerArmed == true || (playerCamera.CurrentPlayerCameraStateType == "FirstPerson"))
+			if (playerBehaviour.IsPlayerArmed == true || (playerCameraController.CurrentPlayerCameraStateType == "FirstPerson"))
 			{
 				if (inputDevice.GetKeyUp())
 				{

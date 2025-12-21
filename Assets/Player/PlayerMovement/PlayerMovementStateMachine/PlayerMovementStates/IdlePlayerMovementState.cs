@@ -21,12 +21,15 @@ public class IdlePlayerMovementState : PlayerMovementState
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
 		}
-		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true)
+		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true && playerMovementController.IsPlayerAbleToMove)
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
 		}
-		if (inputDevice.GetKeyJump())
+		if (inputDevice.GetKeyJump() &&
+			playerMovementController.IsPlayerGrounded &&
+			playerMovementController.IsPlayerAbleToMove &&
+			playerMovementController.IsPlayerAbleToStandUp)
 		{
 			WhatSpeedWas = "walking";
 

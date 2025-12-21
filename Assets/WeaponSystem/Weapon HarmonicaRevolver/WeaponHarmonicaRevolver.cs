@@ -18,8 +18,8 @@ public class WeaponHarmonicaRevolver : WeaponClass
 
 	public override void WeaponAttack()
 	{
-
-		PlayerAmmoManager.Instance.Shoot(WeaponDamage);
+		Debug.Log("Revolver Attack");
+		//PlayerAmmoManager.Instance.Shoot(WeaponDamage);
 	}
 
 }

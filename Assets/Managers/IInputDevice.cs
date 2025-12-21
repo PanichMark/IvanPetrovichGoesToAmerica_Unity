@@ -25,6 +25,7 @@ public interface IInputDevice
 	bool GetKeyRightHandWeaponAttack();
 	bool GetKeyLeftHandWeaponAttack();
 
+
 	// Информация о ключах
 	string GetNameOfKeyInteract();
 	string GetNameOfKeyLeftHandWeaponAttack();

@@ -24,6 +24,7 @@ public class FirstPersonPlayerCameraState : PlayerCameraState
 	public override void ChangePlayerCameraView()
 	{
 		playerCamera.SetPlayerCameraState(PlayerCameraStateType.ThirdPerson);
+		//Instance = null;
 	}
 	public override void PlayerCameraPosition()
 	{

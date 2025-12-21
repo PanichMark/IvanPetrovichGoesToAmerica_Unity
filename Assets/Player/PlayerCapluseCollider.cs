@@ -28,6 +28,7 @@ public class PlayerCapluseCollider : MonoBehaviour
 	public void Initialize(PlayerMovementController movementController)
 	{
 		this.movementController = movementController; // Новый аргумент
+		Debug.Log("PlayerCollider Initialized");
 	}
 }
 

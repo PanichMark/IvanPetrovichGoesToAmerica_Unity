@@ -6,12 +6,16 @@ public class InputKeyboard : IInputDevice
 {
 	public InputKeyboard()
 	{
+		_keyPauseMenu = KeyCode.Alpha1;
 		Debug.Log("InputKeyboard Initialized");
 	}
 	
 
 	private float lastPressTime = 0f;
 	private bool isKeyInteractBeingHeld = false;
+
+	private bool isRightHandWeaponWheelOpened = false;
+	private bool isLeftHandWeaponWheelOpened = false;
 
 	private KeyCode _keyPauseMenu;
 
@@ -38,10 +42,6 @@ public class InputKeyboard : IInputDevice
 
 
 
-	private void Start()
-	{
-		_keyPauseMenu = KeyCode.Alpha1;
-	}
 
 	public IEnumerable<(string action, KeyCode key)> GetCurrentBindings()
 	{
@@ -251,20 +251,34 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyRightHandWeaponWheel()
 	{
-		if (Input.GetKey(keyBindings["RightHandWeaponWheel"]))
+		if (Input.GetKey(keyBindings["RightHandWeaponWheel"]) && !isLeftHandWeaponWheelOpened)
 		{
+			isRightHandWeaponWheelOpened = true;
+			//Debug.Log("RIGHT");
 			return true;
 		}
-		else return false;
+		else
+		{
+			isRightHandWeaponWheelOpened = false;
+			return false;
+		}
 	}
+
 
 	public bool GetKeyLeftHandWeaponWheel()
 	{
-		if (Input.GetKey(keyBindings["LeftHandWeaponWheel"]))
+		if (Input.GetKey(keyBindings["LeftHandWeaponWheel"]) && !isRightHandWeaponWheelOpened)
 		{
+			isLeftHandWeaponWheelOpened = true;
+			//Debug.Log("LEFT");
 			return true;
+			
 		}
-		else return false;
+		else
+		{
+			isLeftHandWeaponWheelOpened = false;
+			return false;
+		}
 	}
 
 	public bool GetKeyRightHandWeaponAttack()

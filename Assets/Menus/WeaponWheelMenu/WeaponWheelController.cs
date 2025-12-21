@@ -16,6 +16,10 @@ public class WeaponWheelController : MonoBehaviour
 		this.playerBehaviour = playerBehaviour;
 		this.weaponController = weaponController;
 		this.menuManager = menuManager;
+		Debug.Log("WeaponWheelController Initialized");
+
+		// Подписываемся на событие смены оружия
+		weaponController.OnWeaponChanged += OnWeaponChangedHandler; // Подписка на событие
 	}
 
 	public Canvas WeaponWheelMenuCanvas; 
@@ -43,10 +47,15 @@ public class WeaponWheelController : MonoBehaviour
 		HarmonicaRevolverButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponHarmonicaRevolver)));
 		PlungerCrossbowButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponPlungerCrossbow)));
 		EugenicGenieButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponEugenicGenie)));
+
+		//weaponController.SelectWeapon(typeof(WeaponPoliceBaton));
 	}
 
 	void Update()
 	{
+		
+
+		
 		bool currentRightHandPressed = inputDevice.GetKeyRightHandWeaponWheel();
 		bool currentLeftHandPressed = inputDevice.GetKeyLeftHandWeaponWheel();
 		
@@ -58,6 +67,9 @@ public class WeaponWheelController : MonoBehaviour
 
 		previousRightHandPressed = currentRightHandPressed;
 		previousLeftHandPressed = currentLeftHandPressed;
+
+
+		
 
 		if (PoliceBatonButton != null)
 		{
@@ -96,41 +108,43 @@ public class WeaponWheelController : MonoBehaviour
 		}
 	}
 
+	
 	void HandleWeaponWheel(bool rightHandPressed, bool leftHandPressed)
 	{
 		// Обработка правой руки
-		if (rightHandPressed && !leftHandPressed && !IsWeaponWheelActive)
+		if (rightHandPressed)
 		{
 			EnableWeaponWheelMenuCanvas("right");
-			
+			OnWeaponChangedHandler("right");
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = false;
-			playerBehaviour.ArmPlayer();
+			//playerBehaviour.ArmPlayer();
 			//ChangeWheaponWheelButtonColor("right");
 			//weaponWheelbuttonscript.HoverExit();
 			WeaponWheelName.text = "ПРАВАЯ РУКА";
 		}
 
 		// Обработка левой руки
-		else if (leftHandPressed && !rightHandPressed && !IsWeaponWheelActive)
+		else if (leftHandPressed)
 		{
 			EnableWeaponWheelMenuCanvas("left");
-			
+			OnWeaponChangedHandler("left");
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = true;
-			playerBehaviour.ArmPlayer();
+			//playerBehaviour.ArmPlayer();
 			//ChangeWheaponWheelButtonColor("left");
 			//weaponWheelbuttonscript.HoverExit();
 			WeaponWheelName.text = "ЛЕВАЯ РУКА";
 		}
 
 		// Деактивация, если ничего не нажато
-		else if (!leftHandPressed && !rightHandPressed)
+		else 
 		{
 			DisableWeaponWheelMenuCanvas(!IsWeaponLeftHand);
 			IsWeaponWheelActive = false;
 		}
 	}
+	
 
 	private void EnableWeaponWheelMenuCanvas(string handType)
 	{
@@ -147,43 +161,97 @@ public class WeaponWheelController : MonoBehaviour
 		}
 	}
 
-	/*
-	public void ChangeWheaponWheelButtonColor(string handType)
+	public void ChangeWeaponWheelButtonColorToActive(Button buttonType)
+	{
+		// Преобразуем HEX в значение цвета
+		string hexCode = "#FFEE00"; // добавляем альфа-канал FF (полностью непрозрачный)
+
+		Color newColor;
+		if (!ColorUtility.TryParseHtmlString(hexCode, out newColor))
+			Debug.LogError("Ошибка конвертации HEX цвета");
+
+		// Меняем цвета всех состояний кнопки
+		ColorBlock colors = buttonType.colors;
+		colors.normalColor = newColor;
+		colors.highlightedColor = newColor;
+		colors.selectedColor = newColor;
+		colors.pressedColor = newColor;
+		colors.disabledColor = newColor;
+		buttonType.colors = colors;
+	}
+
+	public void ChangeWeaponWheelButtonColorToDefault(Button buttonType)
+	{
+		// Определяем HEX-коды для двух цветов
+		string highlightHexCode = "#D18A24FF"; // Основной цвет для Highlight/Press/Select
+		string normalHexCode = "#5B4328FF";    // Отдельный цвет для Normal состояния
+
+		// Создаем объекты Color для обоих цветов
+		Color highlightColor;
+		Color normalColor;
+
+		// Проверяем оба HEX-кода
+		if (!ColorUtility.TryParseHtmlString(highlightHexCode, out highlightColor))
+		{
+			Debug.LogError("Ошибка конвертации первого HEX цвета");
+		}
+		if (!ColorUtility.TryParseHtmlString(normalHexCode, out normalColor))
+		{
+			Debug.LogError("Ошибка конвертации второго HEX цвета");
+		}
+
+		// Читаем текущие настройки цветов кнопки
+		ColorBlock colors = buttonType.colors;
+
+		// Применяем новые цвета для конкретных состояний
+		colors.normalColor = normalColor;       // Только для обычного состояния
+		colors.highlightedColor = highlightColor; // Для выделенного состояния
+		colors.pressedColor = highlightColor;   // Для нажатого состояния
+		colors.selectedColor = highlightColor;  // Для выбранного состояния
+
+		// Оставляем disabledColor без изменений
+
+		// Назначаем обновленные цвета кнопке
+		buttonType.colors = colors;
+	}
+
+
+	private void OnWeaponChangedHandler(string handType)
 	{
 		if (handType == "right")
 		{
 			if (weaponController.RightHandWeapon?.WeaponNameSystem == "PoliceBaton")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToActive(PoliceBatonButton);
+				ChangeWeaponWheelButtonColorToActive(PoliceBatonButton);
 			}
 			if (weaponController.RightHandWeapon?.WeaponNameSystem == "HarmonicaRevolver")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToActive(HarmonicaRevolverButton);
+				ChangeWeaponWheelButtonColorToActive(HarmonicaRevolverButton);
 			}
 			if (weaponController.RightHandWeapon?.WeaponNameSystem == "PlungerCrossbow")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToActive(PlungerCrossbowButton);
+				ChangeWeaponWheelButtonColorToActive(PlungerCrossbowButton);
 			}
 			if (weaponController.RightHandWeapon?.WeaponNameSystem == "EugenicGenie")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToActive(EugenicGenieButton);
+				ChangeWeaponWheelButtonColorToActive(EugenicGenieButton);
 			}
 
 			if (weaponController.RightHandWeapon?.WeaponNameSystem != "PoliceBaton")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToDefault(PoliceBatonButton);
+				ChangeWeaponWheelButtonColorToDefault(PoliceBatonButton);
 			}
 			if (weaponController.RightHandWeapon?.WeaponNameSystem != "HarmonicaRevolver")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToDefault(HarmonicaRevolverButton);
+				ChangeWeaponWheelButtonColorToDefault(HarmonicaRevolverButton);
 			}
 			if (weaponController.RightHandWeapon?.WeaponNameSystem != "PlungerCrossbow")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToDefault(PlungerCrossbowButton);
+				ChangeWeaponWheelButtonColorToDefault(PlungerCrossbowButton);
 			}
 			if (weaponController.RightHandWeapon?.WeaponNameSystem != "EugenicGenie")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToDefault(EugenicGenieButton);
+				ChangeWeaponWheelButtonColorToDefault(EugenicGenieButton);
 			}
 		}
 
@@ -191,40 +259,38 @@ public class WeaponWheelController : MonoBehaviour
 		{
 			if (weaponController.LeftHandWeapon?.WeaponNameSystem == "PoliceBaton")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToActive(PoliceBatonButton);
+				ChangeWeaponWheelButtonColorToActive(PoliceBatonButton);
 			}
 			if (weaponController.LeftHandWeapon?.WeaponNameSystem == "HarmonicaRevolver")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToActive(HarmonicaRevolverButton);
+				ChangeWeaponWheelButtonColorToActive(HarmonicaRevolverButton);
 			}
 			if (weaponController.LeftHandWeapon?.WeaponNameSystem == "PlungerCrossbow")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToActive(PlungerCrossbowButton);
+				ChangeWeaponWheelButtonColorToActive(PlungerCrossbowButton);
 			}
 			if (weaponController.LeftHandWeapon?.WeaponNameSystem == "EugenicGenie")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToActive(EugenicGenieButton);
+				ChangeWeaponWheelButtonColorToActive(EugenicGenieButton);
 			}
 
 			if (weaponController.LeftHandWeapon?.WeaponNameSystem != "PoliceBaton")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToDefault(PoliceBatonButton);
+				ChangeWeaponWheelButtonColorToDefault(PoliceBatonButton);
 			}
 			if (weaponController.LeftHandWeapon?.WeaponNameSystem != "HarmonicaRevolver")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToDefault(HarmonicaRevolverButton);
+				ChangeWeaponWheelButtonColorToDefault(HarmonicaRevolverButton);
 			}
 			if (weaponController.LeftHandWeapon?.WeaponNameSystem != "PlungerCrossbow")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToDefault(PlungerCrossbowButton); ;
+				ChangeWeaponWheelButtonColorToDefault(PlungerCrossbowButton); ;
 			}
 			if (weaponController.LeftHandWeapon?.WeaponNameSystem != "EugenicGenie")
 			{
-				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToDefault(EugenicGenieButton);
+				ChangeWeaponWheelButtonColorToDefault(EugenicGenieButton);
 			}
 		}
-	
 	}
-	*/
 
 }

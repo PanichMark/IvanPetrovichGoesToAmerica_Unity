@@ -19,7 +19,7 @@ public class FallingPlayerMovementState : PlayerMovementState
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 		}
 		
-		if (playerMovementController.IsPlayerFalling == false && playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun())
+		if (playerMovementController.IsPlayerFalling == false && playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToMove)
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);

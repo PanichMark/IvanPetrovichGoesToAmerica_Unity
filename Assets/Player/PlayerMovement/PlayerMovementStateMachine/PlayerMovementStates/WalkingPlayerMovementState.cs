@@ -18,7 +18,7 @@ public class WalkingPlayerMovementState: PlayerMovementState
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 		}
 		
-		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true)
+		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true && playerMovementController.IsPlayerAbleToMove)
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
@@ -29,7 +29,10 @@ public class WalkingPlayerMovementState: PlayerMovementState
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
 		
-		if (inputDevice.GetKeyJump())
+		if (inputDevice.GetKeyJump() &&
+			playerMovementController.IsPlayerGrounded &&
+			playerMovementController.IsPlayerAbleToMove &&
+			playerMovementController.IsPlayerAbleToStandUp)
 		{
 			WhatSpeedWas = "walking";
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);

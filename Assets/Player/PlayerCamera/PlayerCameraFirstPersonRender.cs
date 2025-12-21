@@ -1,11 +1,20 @@
 ﻿using UnityEngine;
 public class PlayerCameraFirstPersonRender : MonoBehaviour
 {
-	PlayerCameraController playerCamera;
-	WeaponController weaponController;
+
+
+	private PlayerCameraController playerCamera;
+	private WeaponController weaponController;
+
+	public void Initialize(PlayerCameraController playerCameraController, WeaponController weaponController)
+	{
+		this.playerCamera = playerCameraController;
+		this.weaponController = weaponController;
+	}	
+
 	private PlayerCameraStateType playerCameraStateType;
 
-	public GameObject PlayerCameraObject;
+	//public GameObject PlayerCameraObject;
 
 	public GameObject PlayerFirstPersonHandRight;
 	public GameObject PlayerFirstPersonHandLeft;
@@ -15,8 +24,8 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 	void Start()
 	{
-		playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
-		weaponController = GetComponent<WeaponController>();
+		//playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
+		//weaponController = GetComponent<WeaponController>();
 	}
 
 	private void Update()

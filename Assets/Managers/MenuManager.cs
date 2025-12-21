@@ -9,7 +9,7 @@ public class MenuManager : MonoBehaviour
 	public void Initialize(IInputDevice inputDevice)
 	{
 		this.inputDevice = inputDevice;
-
+		Debug.Log("MenuManager Initialized");
 	}
 
 	
@@ -37,10 +37,10 @@ public class MenuManager : MonoBehaviour
 		IsAnyMenuOpened = false;
 	}
 
-	/*
+	
 	void Update()
     {
-		if (InputManager.Instance.GetKeyPauseMenu())
+		if (inputDevice.GetKeyPauseMenu())
 		{
 			if (!IsPauseMenuOpened)
 			{
@@ -50,9 +50,9 @@ public class MenuManager : MonoBehaviour
 		}
 		//Debug.Log(IsPauseMenuOpened);
 	}
-	*/
+	
 
-	/*
+	
     public void OpenPauseMenu()
     {
 		if (IsWeaponWheelMenuOpened)
@@ -60,7 +60,7 @@ public class MenuManager : MonoBehaviour
 			CloseWeaponWheelMenu(true);
 		}
 
-		pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true); // Скрываем Canvas
+		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true); // Скрываем Canvas
 
 		Debug.Log("PauseMenu opened");
 		OpenAnyMenu();
@@ -73,9 +73,9 @@ public class MenuManager : MonoBehaviour
 	}
 	public void ClosePauseMenu()
 	{
-		if (pauseMenuController.PauseMenuCanvas.gameObject.activeInHierarchy)
-		{
-			pauseMenuController.PauseMenuCanvas.gameObject.SetActive(false); // Скрываем Canvas
+		//if (pauseMenuController.PauseMenuCanvas.gameObject.activeInHierarchy)
+		//{
+			//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(false); // Скрываем Canvas
 
 			Debug.Log("PauseMenu closed");
 			CloseAnyMenu();
@@ -85,9 +85,9 @@ public class MenuManager : MonoBehaviour
 
 			// Возвращаем нормальное течение времени
 			Time.timeScale = 1f;
-		}
+		//}
 	}
-	*/
+	
 
 	public void OpenWeaponWheelMenu(string handType)
 	{

@@ -4,7 +4,7 @@ public class BootStrap : MonoBehaviour
 {
     private IInputDevice inputDevice;
 
-	[SerializeField] private GameObject playerModel;
+	[SerializeField] private GameObject player;
 
 	[SerializeField] private MenuManager menuManager;
 
@@ -19,6 +19,15 @@ public class BootStrap : MonoBehaviour
 
 	[SerializeField] private WeaponController weaponController;
 	[SerializeField] private WeaponWheelController weaponWheelController;
+
+	[SerializeField] private WeaponWheelsButtons buttonBaton;
+	[SerializeField] private WeaponWheelsButtons buttonRevolver;
+	[SerializeField] private WeaponWheelsButtons buttonCrossbow;
+	[SerializeField] private WeaponWheelsButtons buttonEugenic;
+
+	[SerializeField] private PlayerCameraFirstPersonRender firstPersonRender;
+
+	[SerializeField] private PlayerAnimationController playerAnimationController;
 	
 	
 
@@ -34,11 +43,31 @@ public class BootStrap : MonoBehaviour
 		movementController.Initialize(inputDevice, playerBehaviour);
 		playerCollider.Initialize(movementController);
 
-		cameraController.Initialize(inputDevice, menuManager, movementController, playerCollider, playerModel);
+		cameraController.Initialize(inputDevice, menuManager, movementController, playerCollider, player);
 		cameraBlurFilter.Initialize(menuManager);
 
-		weaponController.Initialize(inputDevice, playerBehaviour);
+		weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
 		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController);
+		buttonBaton.Initialize(weaponController, weaponWheelController);
+		buttonRevolver.Initialize(weaponController, weaponWheelController);
+		buttonCrossbow.Initialize(weaponController, weaponWheelController);
+		buttonEugenic.Initialize(weaponController, weaponWheelController);
+
+		firstPersonRender.Initialize(cameraController, weaponController);
+
+		playerAnimationController.Initialize(inputDevice, player, playerBehaviour, movementController, cameraController, weaponController);
+
+		
+
+
+
+
+
+
+
+
+		Debug.Log("BootStrap ended!");
+		Debug.Log("#########################");
 
 	}
 	void Start()

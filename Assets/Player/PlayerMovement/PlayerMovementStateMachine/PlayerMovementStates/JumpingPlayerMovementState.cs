@@ -17,8 +17,10 @@ public class JumpingPlayerMovementState : PlayerMovementState
 
 	public override void ChangePlayerMovementState()
 	{
-		if (playerMovementController.IsPlayerFalling == true)
+		if (playerMovementController.IsPlayerFalling == true
+			|| playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerOnSlope && playerMovementController.JumpingStateWait())
 		{
+			playerMovementController.StopJumpingStateWait();
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
 

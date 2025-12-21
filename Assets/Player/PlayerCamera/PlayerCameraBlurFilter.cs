@@ -8,6 +8,7 @@ public class PlayerCameraBlurFilter : MonoBehaviour
 	public void Initialize(MenuManager menuManager)
 	{
 		this.menuManager = menuManager;
+		Debug.Log("CameraBlueFilter Initialized");
 	}
 
 	public Volume volumeMainCamera;

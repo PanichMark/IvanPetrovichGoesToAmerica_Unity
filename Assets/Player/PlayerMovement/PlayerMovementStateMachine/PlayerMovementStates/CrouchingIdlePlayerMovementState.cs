@@ -26,7 +26,10 @@ public class CrouchingIdlePlayerMovementState : PlayerMovementState
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
 		}
-		if (inputDevice.GetKeyJump())
+		if (inputDevice.GetKeyJump() &&
+			playerMovementController.IsPlayerGrounded &&
+			playerMovementController.IsPlayerAbleToMove &&
+			playerMovementController.IsPlayerAbleToStandUp)
 		{
 			WhatSpeedWas = "crouching";
 
