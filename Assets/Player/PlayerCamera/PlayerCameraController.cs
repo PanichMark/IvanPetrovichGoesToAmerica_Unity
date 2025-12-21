@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerCameraController : MonoBehaviour, IDataPersistence
 {
 	private IInputDevice inputDevice;
+	private MenuManager menuManager;
 	private PlayerMovementController movementController;
 	private PlayerCapluseCollider playerCollider;
 	private GameObject playerModel;
@@ -75,13 +76,13 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 
 		//Debug.Log(CurrentPlayerCameraStateType);
 
-		///if (!MenuManager.IsAnyMenuOpened)
-		//{
+		if (!menuManager.IsAnyMenuOpened)
+		{
 			MouseRotation.y += Input.GetAxis("Mouse X");
 			MouseRotation.x += Input.GetAxis("Mouse Y");
 			MouseRotation.x = Mathf.Clamp(MouseRotation.x, MouseRotationLimit * -1, MouseRotationLimit);
 			MouseScrollWheel = Input.mouseScrollDelta;
-		//}
+		}
 
 		if (MouseScrollWheel.y < 0 && IsAbleToZoomCameraOut == true && CurrentPlayerCameraStateType != "FirstPerson")
 		{
@@ -299,9 +300,10 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 
 	}
 
-	public void Initialize(IInputDevice inputDevice, PlayerMovementController movementController, PlayerCapluseCollider playerCollider, GameObject playerModel)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerMovementController movementController, PlayerCapluseCollider playerCollider, GameObject playerModel)
 	{
 		this.inputDevice = inputDevice;
+		this.menuManager = menuManager;
 		this.movementController = movementController; // Новый аргумент
 		this.playerCollider = playerCollider;
 		this.playerModel = playerModel;

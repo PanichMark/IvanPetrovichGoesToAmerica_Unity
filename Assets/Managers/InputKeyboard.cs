@@ -158,8 +158,7 @@ public class InputKeyboard : IInputDevice
 	{
 		if (!isKeyInteractBeingHeld)
 		{
-			if (Input.GetKeyDown(keyBindings["Interact"]) &&
-				!MenuManager.IsWeaponWheelMenuOpened)
+			if (Input.GetKeyDown(keyBindings["Interact"]))
 			{
 				lastPressTime = Time.time;
 				isKeyInteractBeingHeld = true;

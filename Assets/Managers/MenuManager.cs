@@ -2,21 +2,31 @@
 
 public class MenuManager : MonoBehaviour
 {
-    //InputManager playerInputsList;
-	PauseMenuController pauseMenuController;
+	private IInputDevice inputDevice;
+
+
+	// Конструктор принимает зависимость
+	public void Initialize(IInputDevice inputDevice)
+	{
+		this.inputDevice = inputDevice;
+
+	}
 
 	
-	public static bool IsPlayerControllable { get; private set; }
-	public static bool IsPauseMenuOpened { get; private set; }
-	public static bool IsWeaponWheelMenuOpened { get; private set; }
-	public static bool IsAnyMenuOpened { get; private set; }
+	//PauseMenuController pauseMenuController;
+
+
+	public bool IsPlayerControllable { get; private set; }
+	public bool IsPauseMenuOpened { get; private set; }
+	public bool IsWeaponWheelMenuOpened { get; private set; }
+	public bool IsAnyMenuOpened { get; private set; }
 	
 	void Start()
     {
-        //playerInputsList = GetComponent<InputManager>();
-		pauseMenuController = GetComponent<PauseMenuController>();
+     
+		//pauseMenuController = GetComponent<PauseMenuController>();
 
-		pauseMenuController.PauseMenuCanvas.gameObject.SetActive(false);
+		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(false);
 
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
@@ -42,6 +52,7 @@ public class MenuManager : MonoBehaviour
 	}
 	*/
 
+	/*
     public void OpenPauseMenu()
     {
 		if (IsWeaponWheelMenuOpened)
@@ -76,8 +87,9 @@ public class MenuManager : MonoBehaviour
 			Time.timeScale = 1f;
 		}
 	}
+	*/
 
-	public static void OpenWeaponWheelMenu(string handType)
+	public void OpenWeaponWheelMenu(string handType)
 	{
 		OpenAnyMenu();
 		IsWeaponWheelMenuOpened = true;
@@ -90,9 +102,11 @@ public class MenuManager : MonoBehaviour
 		{ 
 			Debug.Log("Left WeaponWheelMenu opened");
 		}
+
+		//Time.timeScale = 0.2f;
 	}
 
-	public static void CloseWeaponWheelMenu(bool IsItRightWeaponWheelMenu)
+	public void CloseWeaponWheelMenu(bool IsItRightWeaponWheelMenu)
 	{
 		CloseAnyMenu();
 		IsWeaponWheelMenuOpened = false;
@@ -104,16 +118,18 @@ public class MenuManager : MonoBehaviour
 		{
 			Debug.Log("Left WeaponWheelMenu closed");
 		}
+
+		//Time.timeScale = 1f;
 	}
 
-	public static void OpenAnyMenu()
+	public void OpenAnyMenu()
 	{
 		IsAnyMenuOpened = true;
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 	}
 
-	public static void CloseAnyMenu()
+	public void CloseAnyMenu()
 	{
 		IsAnyMenuOpened = false;
 

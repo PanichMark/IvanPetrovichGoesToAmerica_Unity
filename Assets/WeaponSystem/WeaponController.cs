@@ -4,23 +4,24 @@ using UnityEngine.UI;
 public class WeaponController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
+	private PlayerBehaviour playerBehaviour;
 
 	// Конструктор принимает зависимость
-	public WeaponController(IInputDevice inputDevice)
+	public void Initialize(IInputDevice inputDevice, PlayerBehaviour playerBehaviour)
 	{
 		this.inputDevice = inputDevice;
+		this.playerBehaviour = playerBehaviour;
 	}
-	//public PlayerCamera playerCamera;
+	
 
 	public bool IsPoliceBatonWeaponUnlocked {  get; private set; }
 	public bool IsHarmoniceRevolverWeaponUnlocked { get; private set; }
 	public bool IsPlungerCrossbowWeaponUnlocked { get; private set; }
 	public bool IsEugenicGenieWeaponUnlocked { get; private set; }
 
-	//InputManager playerInputsList;
-	WeaponWheelController weaponWheelController;
-	PlayerBehaviour playerBehaviour;
-	InteractionController interactionController;
+	
+	//WeaponWheelController weaponWheelController;
+	//InteractionController interactionController;
 
 	public WeaponClass LeftHandWeapon {  get; private set; }
 	public WeaponClass RightHandWeapon {  get; private set; }
@@ -38,20 +39,20 @@ public class WeaponController : MonoBehaviour
 		IsEugenicGenieWeaponUnlocked = true;
 		
 		
-		//playerInputsList = GetComponent<InputManager>();
-		weaponWheelController = GetComponent<WeaponWheelController>();
-		playerBehaviour = GetComponent<PlayerBehaviour>();
-		interactionController = GetComponent<InteractionController>();
+		
+		//weaponWheelController = GetComponent<WeaponWheelController>();
+		
+		//interactionController = GetComponent<InteractionController>();
 	}
 
 	private void Update()
 	{
-		if (inputDevice.GetKeyRightHandWeaponAttack() && !MenuManager.IsAnyMenuOpened)
+		if (inputDevice.GetKeyRightHandWeaponAttack())
 		{
 			RightWeaponAttack();
 		}
 
-		if (inputDevice.GetKeyLeftHandWeaponAttack() && !MenuManager.IsAnyMenuOpened)
+		if (inputDevice.GetKeyLeftHandWeaponAttack())
 		{
 			LeftWeaponAttack();
 		}
@@ -59,7 +60,8 @@ public class WeaponController : MonoBehaviour
 
 	public void SelectWeapon(System.Type weaponType)
 	{
-		bool isLeftHand = weaponWheelController.IsWeaponLeftHand;
+		
+		bool isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
 
 		// Проверяем, есть ли оружие в левой руке
 		if (isLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetType() == weaponType)
@@ -91,15 +93,17 @@ public class WeaponController : MonoBehaviour
 
 				// Создаем новый экземпляр оружия
 				LeftHandWeapon = (WeaponClass)gameObject.AddComponent(weaponType);
-				weaponWheelController.ChangeWheaponWheelButtonColor("left");
+				//weaponWheelController.ChangeWheaponWheelButtonColor("left");
 				LeftHandWeapon.InstantiateWeaponModel("left"); // Передаем флаг isLeftHand
 				playerBehaviour.ArmPlayer();
 
+				/*
 				if (interactionController.CurrentPickableObject != null)
 				{
 					playerBehaviour.DisarmPlayer();
 					//Debug.Log("DISARM");
 				}
+				*/
 			}
 			else
 			{
@@ -114,15 +118,18 @@ public class WeaponController : MonoBehaviour
 
 				// Создаем новый экземпляр оружия
 				RightHandWeapon = (WeaponClass)gameObject.AddComponent(weaponType);
-				weaponWheelController.ChangeWheaponWheelButtonColor("right");
+				//weaponWheelController.ChangeWheaponWheelButtonColor("right");
 				RightHandWeapon.InstantiateWeaponModel("right"); // Передаем флаг isLeftHand
 				playerBehaviour.ArmPlayer();
 
+
+				/*
 				if (interactionController.CurrentPickableObject != null)
 				{
 					playerBehaviour.DisarmPlayer();
 					//Debug.Log("DISARM");
 				}
+				*/
 			}
 
 			if (LeftHandWeapon != null && RightHandWeapon != null && RightHandWeapon.WeaponNameSystem == LeftHandWeapon.WeaponNameSystem)

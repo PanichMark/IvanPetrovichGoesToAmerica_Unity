@@ -3,7 +3,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 {
 	PlayerCameraController playerCamera;
 	WeaponController weaponController;
-	public PlayerCameraStateType playerCameraStateType;
+	private PlayerCameraStateType playerCameraStateType;
 
 	public GameObject PlayerCameraObject;
 

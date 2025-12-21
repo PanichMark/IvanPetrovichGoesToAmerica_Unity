@@ -49,14 +49,14 @@ public class PlayerHealthManager : MonoBehaviour, IDataPersistence
 
         HealingItemNumber.text = CurrentHealingItemsNumber.ToString();
 
-		if (MenuManager.IsPauseMenuOpened)
-		{
+		//if (MenuManager.IsPauseMenuOpened)
+		//{
 			HealthBarSlider.gameObject.SetActive(false);
-		}
-		else
-		{
+		//}
+		//else
+		//{
 			HealthBarSlider.gameObject.SetActive(true);
-		}
+		//}
 	}
 
     private void UseHealingItem()

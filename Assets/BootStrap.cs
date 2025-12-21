@@ -5,12 +5,20 @@ public class BootStrap : MonoBehaviour
     private IInputDevice inputDevice;
 
 	[SerializeField] private GameObject playerModel;
+
+	[SerializeField] private MenuManager menuManager;
+
+	[SerializeField] private PlayerBehaviour playerBehaviour;
+
 	[SerializeField] private PlayerMovementController movementController;
 	[SerializeField] private PlayerCapluseCollider playerCollider;
+	
 
 	[SerializeField] private PlayerCameraController cameraController;
-	
-	private PlayerBehaviour playerBehaviour;
+	[SerializeField] private PlayerCameraBlurFilter cameraBlurFilter;
+
+	[SerializeField] private WeaponController weaponController;
+	[SerializeField] private WeaponWheelController weaponWheelController;
 	
 	
 
@@ -19,14 +27,19 @@ public class BootStrap : MonoBehaviour
 	{
         inputDevice = new InputKeyboard();
 
+		menuManager.Initialize(inputDevice);
 
-		playerBehaviour = new PlayerBehaviour(inputDevice);
+		playerBehaviour.Initialize(inputDevice);
 
 		movementController.Initialize(inputDevice, playerBehaviour);
 		playerCollider.Initialize(movementController);
 
+		cameraController.Initialize(inputDevice, menuManager, movementController, playerCollider, playerModel);
+		cameraBlurFilter.Initialize(menuManager);
 
-		cameraController.Initialize(inputDevice, movementController, playerCollider, playerModel);
+		weaponController.Initialize(inputDevice, playerBehaviour);
+		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController);
+
 	}
 	void Start()
     {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Unity.VisualScripting;
 public class PlayerMovementController : MonoBehaviour, IDataPersistence
 {
 	private IInputDevice inputDevice;
@@ -285,6 +286,16 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 		*/
 
+		if (playerBehaviour.IsPlayerArmed == false && (PlayerMovement != Vector3.zero) && (ThirdPersonPlayerCameraState.Instance != null))
+		{
+			Quaternion CharacterRotation = Quaternion.LookRotation(PlayerMovement, Vector3.up);
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, CharacterRotation, PlayerRotationSpeed * Time.deltaTime);
+		}
+		else if (playerBehaviour.IsPlayerArmed == true || (FirstPersonPlayerCameraState.Instance != null))
+		{
+			Quaternion PlayerRotateWhereCameraIsLooking = Quaternion.Euler(transform.localEulerAngles.x, playerCamera.transform.eulerAngles.y, transform.localEulerAngles.z);
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, PlayerRotateWhereCameraIsLooking, PlayerRotationSpeed * Time.deltaTime);
+		}
 		//Quaternion CharacterRotation = Quaternion.LookRotation(PlayerMovement, Vector3.up);
 		//transform.rotation = Quaternion.RotateTowards(transform.rotation, CharacterRotation, PlayerRotationSpeed * Time.deltaTime);
 	}

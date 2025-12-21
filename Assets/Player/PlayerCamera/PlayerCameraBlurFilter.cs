@@ -3,6 +3,13 @@ using UnityEngine.Rendering;
 
 public class PlayerCameraBlurFilter : MonoBehaviour
 {
+	private MenuManager menuManager;
+
+	public void Initialize(MenuManager menuManager)
+	{
+		this.menuManager = menuManager;
+	}
+
 	public Volume volumeMainCamera;
 	public Volume volumeFirstPersonCamera;
 
@@ -13,7 +20,7 @@ public class PlayerCameraBlurFilter : MonoBehaviour
 
 	private void Update()
 	{
-		if (MenuManager.IsAnyMenuOpened)
+		if (menuManager.IsAnyMenuOpened)
 		{
 			volumeMainCamera.enabled = true;
 			volumeFirstPersonCamera.enabled = true;

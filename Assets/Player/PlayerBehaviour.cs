@@ -1,15 +1,11 @@
 ﻿using UnityEngine;
 
-public class PlayerBehaviour
+public class PlayerBehaviour: MonoBehaviour
 {
 	private IInputDevice inputDevice;
 
 	// Конструктор принимает зависимость
-	public PlayerBehaviour(IInputDevice inputDevice)
-	{
-		this.inputDevice = inputDevice;
-		Debug.Log("PlayerBehaviour Initialized");
-	}
+
 
 	
 	//WeaponController weaponController;
@@ -29,6 +25,12 @@ public class PlayerBehaviour
 
 	void Update()
 	{
+		if (inputDevice.GetKeyLeftHandWeaponAttack())
+		{
+			ArmPlayer();
+		}
+
+
 		if (inputDevice.GetKeyHideWeapons())
 		{
 			//if (IsPlayerArmed && (weaponController.RightHandWeapon != null || weaponController.LeftHandWeapon != null))
@@ -64,6 +66,7 @@ public class PlayerBehaviour
 			Debug.Log("PlayerArmed");
 		}
 		*/
+		Debug.Log("PlayerArmed");
 	}
 
 	public void DisarmPlayer()
@@ -75,9 +78,9 @@ public class PlayerBehaviour
 			
 			
 			WasPlayerArmed = true;
-			
 
-		
+
+
 		/*
 
 			if (weaponController.RightHandWeapon != null)
@@ -94,8 +97,14 @@ public class PlayerBehaviour
 		}
 		else WasPlayerArmed = false;
 		*/
+		Debug.Log("PlayerDisarmed");
 	}
-		
 
+
+	public void Initialize(IInputDevice inputDevice)
+	{
+		this.inputDevice = inputDevice;
+		Debug.Log("PlayerBehaviour Initialized");
+	}
 }
 

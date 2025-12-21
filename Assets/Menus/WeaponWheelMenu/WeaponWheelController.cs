@@ -5,14 +5,19 @@ using TMPro;
 public class WeaponWheelController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
+	private WeaponController weaponController;
+	private PlayerBehaviour playerBehaviour;
+	private MenuManager menuManager;
 
 	// Конструктор принимает зависимость
-	public WeaponWheelController(IInputDevice inputDevice)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, WeaponController weaponController)
 	{
 		this.inputDevice = inputDevice;
+		this.playerBehaviour = playerBehaviour;
+		this.weaponController = weaponController;
+		this.menuManager = menuManager;
 	}
 
-	//InputManager playerInputsList;
 	public Canvas WeaponWheelMenuCanvas; 
 
 	public Button PoliceBatonButton;
@@ -26,13 +31,13 @@ public class WeaponWheelController : MonoBehaviour
 	private bool previousLeftHandPressed = false;
 
 	public TextMeshProUGUI WeaponWheelName;
-	public WeaponWheelsButtons weaponWheelbuttonscript;
-	 WeaponController weaponController;
+	//public WeaponWheelsButtons weaponWheelbuttonscript;
+	
 
 	void Start()
 	{
 		//playerInputsList = GetComponent<InputManager>();
-		weaponController = GetComponent<WeaponController>();
+		//weaponController = GetComponent<WeaponController>();
 
 		PoliceBatonButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponPoliceBaton)));
 		HarmonicaRevolverButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponHarmonicaRevolver)));
@@ -42,7 +47,7 @@ public class WeaponWheelController : MonoBehaviour
 
 	void Update()
 	{
-		bool currentRightHandPressed =inputDevice.GetKeyRightHandWeaponWheel();
+		bool currentRightHandPressed = inputDevice.GetKeyRightHandWeaponWheel();
 		bool currentLeftHandPressed = inputDevice.GetKeyLeftHandWeaponWheel();
 		
 		// Обновляем состояние, только если изменилось нажатие кнопки
@@ -100,9 +105,9 @@ public class WeaponWheelController : MonoBehaviour
 			
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = false;
-			//playerBehaviour.ArmPlayer();
-			ChangeWheaponWheelButtonColor("right");
-			weaponWheelbuttonscript.HoverExit();
+			playerBehaviour.ArmPlayer();
+			//ChangeWheaponWheelButtonColor("right");
+			//weaponWheelbuttonscript.HoverExit();
 			WeaponWheelName.text = "ПРАВАЯ РУКА";
 		}
 
@@ -113,9 +118,9 @@ public class WeaponWheelController : MonoBehaviour
 			
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = true;
-			//playerBehaviour.ArmPlayer();
-			ChangeWheaponWheelButtonColor("left");
-			weaponWheelbuttonscript.HoverExit();
+			playerBehaviour.ArmPlayer();
+			//ChangeWheaponWheelButtonColor("left");
+			//weaponWheelbuttonscript.HoverExit();
 			WeaponWheelName.text = "ЛЕВАЯ РУКА";
 		}
 
@@ -130,18 +135,19 @@ public class WeaponWheelController : MonoBehaviour
 	private void EnableWeaponWheelMenuCanvas(string handType)
 	{
 		WeaponWheelMenuCanvas.gameObject.SetActive(true); // Показываем Canvas
-		MenuManager.OpenWeaponWheelMenu(handType);
+		menuManager.OpenWeaponWheelMenu(handType);
 	}
 
 	private void DisableWeaponWheelMenuCanvas(bool IsItRightWeaponWheelMenuCanvas)
 	{
 		WeaponWheelMenuCanvas.gameObject.SetActive(false); // Скрываем Canvas
-		if (!MenuManager.IsPauseMenuOpened)
+		if (!menuManager.IsPauseMenuOpened)
 		{
-			MenuManager.CloseWeaponWheelMenu(IsItRightWeaponWheelMenuCanvas);
+			menuManager.CloseWeaponWheelMenu(IsItRightWeaponWheelMenuCanvas);
 		}
 	}
 
+	/*
 	public void ChangeWheaponWheelButtonColor(string handType)
 	{
 		if (handType == "right")
@@ -217,5 +223,8 @@ public class WeaponWheelController : MonoBehaviour
 				weaponWheelbuttonscript.ChangeWeaponWheelButtonColorToDefault(EugenicGenieButton);
 			}
 		}
+	
 	}
+	*/
+
 }

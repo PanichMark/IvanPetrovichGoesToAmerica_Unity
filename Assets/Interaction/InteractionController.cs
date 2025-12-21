@@ -118,7 +118,8 @@ public class InteractionController : MonoBehaviour
 		}
 
 		// Нормальная обработка объектов
-		if (isHit && hitInfo.collider != null && hitInfo.collider.tag == "Interactable" && !MenuManager.IsAnyMenuOpened)
+		if (isHit && hitInfo.collider != null && hitInfo.collider.tag == "Interactable")
+		// && !MenuManager.IsAnyMenuOpened TO END END ABOVE                          && /\
 		{
 			var interactableObj = hitInfo.collider.GetComponent<IInteractable>();
 			var pickableObj = hitInfo.collider.GetComponent<IPickable>();

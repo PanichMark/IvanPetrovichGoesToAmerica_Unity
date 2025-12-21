@@ -4,14 +4,23 @@ using TMPro;
 
 public class WeaponWheelsButtons : MonoBehaviour
 {
-    public string WeaponWheelButtonName;
+	private WeaponController weaponController;
+	private WeaponWheelController weaponWheelController;
+
+	public void Initialize(WeaponController weaponController, WeaponWheelController weaponWheelController)
+	{
+		this.weaponController = weaponController;
+		this.weaponWheelController = weaponWheelController;	
+	}
+
+
+	public string WeaponWheelButtonName;
     public string AvailableWeaponName;
     public TextMeshProUGUI WeaponText;
     public Image WeaponSelected;
     public Sprite WeaponIcon;
     public Button WeaponButton;
-    public WeaponController weaponController;
-    public WeaponWheelController weaponWheelController;
+
 	//public InputManager PlayerInputsList;
 
     void Start()

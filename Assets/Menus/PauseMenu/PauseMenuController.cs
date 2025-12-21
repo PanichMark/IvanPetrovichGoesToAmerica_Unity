@@ -29,7 +29,7 @@ public class PauseMenuController : MonoBehaviour
 		imagesSubMenuController = GetComponent <ImagesSubMenuController>();
 		settingsSubMenuController = GetComponent<SettingsSubMenuController>();
 
-		ResumeGameButton.onClick.AddListener(menuManager.ClosePauseMenu);
+		//ResumeGameButton.onClick.AddListener(menuManager.ClosePauseMenu);
 		OpenSaveSubMenuButton.onClick.AddListener(OpenSaveSubMenu);
 		OpenLoadSubMenuButton.onClick.AddListener(OpenLoadSubMenu);
 		OpenImagesSubMenuButton.onClick.AddListener(OpenImagesSubMenu);
