@@ -23,17 +23,17 @@ public class WeaponWheelController : MonoBehaviour
 		Debug.Log("WeaponWheelController Initialized");
 
 		// Подписываемся на событие смены оружия
-		weaponController.OnWeaponChanged += OnWeaponChangedHandler; // Подписка на событие
+		//weaponController.OnWeaponChanged += OnWeaponChangedHandler; // Подписка на событие
 	}
 
 	public Canvas WeaponWheelMenuCanvas;
 
 	public TextMeshProUGUI WeaponText;
 
-	public Button PoliceBatonButton;
-	public Button HarmonicaRevolverButton;
-	public Button PlungerCrossbowButton;
-	public Button EugenicGenieButton;
+	//public Button PoliceBatonButton;
+	//public Button HarmonicaRevolverButton;
+	//public Button PlungerCrossbowButton;
+	//public Button EugenicGenieButton;
 	public bool IsWeaponLeftHand { get; private set; }
 	public bool IsWeaponWheelActive { get; private set; }
 
@@ -49,10 +49,10 @@ public class WeaponWheelController : MonoBehaviour
 		//playerInputsList = GetComponent<InputManager>();
 		//weaponController = GetComponent<WeaponController>();
 
-		PoliceBatonButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponPoliceBaton)));
-		HarmonicaRevolverButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponHarmonicaRevolver)));
-		PlungerCrossbowButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponPlungerCrossbow)));
-		EugenicGenieButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponEugenicGenie)));
+		//PoliceBatonButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponPoliceBaton)));
+		//HarmonicaRevolverButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponHarmonicaRevolver)));
+		//PlungerCrossbowButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponPlungerCrossbow)));
+		//EugenicGenieButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponEugenicGenie)));
 
 		//weaponController.SelectWeapon(typeof(WeaponPoliceBaton));
 	}
@@ -75,7 +75,7 @@ public class WeaponWheelController : MonoBehaviour
 		previousLeftHandPressed = currentLeftHandPressed;
 
 
-		
+		/*
 
 		if (PoliceBatonButton != null)
 		{
@@ -112,6 +112,7 @@ public class WeaponWheelController : MonoBehaviour
 			}
 			else EugenicGenieButton.gameObject.SetActive(false);
 		}
+		*/
 	}
 
 	
@@ -121,7 +122,7 @@ public class WeaponWheelController : MonoBehaviour
 		if (rightHandPressed)
 		{
 			EnableWeaponWheelMenuCanvas("right");
-			OnWeaponChangedHandler("right");
+			//OnWeaponChangedHandler("right");
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = false;
 			ShowWeaponName();
@@ -133,7 +134,7 @@ public class WeaponWheelController : MonoBehaviour
 		else if (leftHandPressed)
 		{
 			EnableWeaponWheelMenuCanvas("left");
-			OnWeaponChangedHandler("left");
+			//OnWeaponChangedHandler("left");
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = true;
 			ShowWeaponName();
@@ -249,7 +250,7 @@ public class WeaponWheelController : MonoBehaviour
 	}
 
 
-
+	/*
 	private void OnWeaponChangedHandler(string handType)
 	{
 		if (handType == "right")
@@ -325,6 +326,8 @@ public class WeaponWheelController : MonoBehaviour
 				ChangeWeaponWheelButtonColorToDefault(EugenicGenieButton);
 			}
 		}
+
 	}
+	*/
 
 }

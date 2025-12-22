@@ -14,7 +14,7 @@ public class WeaponPoliceBaton : WeaponClass
 
 	public override float WeaponDamage => 100f; // Устанавливаем постоянное значение урона для револьвера
 
-	public bool IsPlayerPoliceBatonAttacking;
+	//public bool IsPlayerPoliceBatonAttacking;
 	private void Start()
 	{
 		playerMovementController = GetComponent<PlayerMovementController>();
@@ -70,9 +70,9 @@ public class WeaponPoliceBaton : WeaponClass
 
 	IEnumerator DisablePoliceBatonAttackActivation()
 	{
-		IsPlayerPoliceBatonAttacking = true;
+		//IsPlayerPoliceBatonAttacking = true;
 		yield return new WaitForSeconds(1f);
-		IsPlayerPoliceBatonAttacking = false;
+		//IsPlayerPoliceBatonAttacking = false;
 	}
 
 

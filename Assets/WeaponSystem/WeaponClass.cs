@@ -2,30 +2,30 @@
 
 public abstract class WeaponClass : MonoBehaviour
 {
-	public string WeaponNameSystem;
-	public string WeaponNameUI;
+	public string WeaponNameSystem { get; protected set; }
+	public string WeaponNameUI { get; protected set; }
 	public virtual float WeaponDamage {  get; protected set; }
 
-	public GameObject weaponModel; // Ссылка на 3D модель оружия
-	public GameObject FirstPersonWeaponModelInstance; // Ссылка на инстанцированную модель
-	public GameObject ThirdPersonWeaponModelInstance; // Ссылка на инстанцированную модель
+	protected GameObject weaponModel; // Ссылка на 3D модель оружия
+	public GameObject FirstPersonWeaponModelInstance { get; protected set; } // Ссылка на инстанцированную модель
+	public GameObject ThirdPersonWeaponModelInstance { get; protected set; } // Ссылка на инстанцированную модель
 
-	public MeshRenderer FirstPersonWeaponMeshRenderer;
-	public MeshRenderer ThirdPersonWeaponMeshRenderer;
-
-	// Теперь слот для рук задаётся через инспектор
-	public GameObject ThirdPersonLeftHandWeaponSlot; // Левый слот (кость руки)
-	public GameObject ThirdRightHandWeaponSlot; // Правый слот (кость руки)
-	public Transform ThirdLeftHandWeaponSlotTransform; // Левый слот (кость руки)
-	public Transform ThirdRightHandWeaponSlotTransform; // Правый слот (кость руки)
+	private MeshRenderer FirstPersonWeaponMeshRenderer;
+	private MeshRenderer ThirdPersonWeaponMeshRenderer;
 
 	// Теперь слот для рук задаётся через инспектор
-	public GameObject FirstPersonLeftHandWeaponSlot; // Левый слот (кость руки)
-	public GameObject FirstRightHandWeaponSlot; // Правый слот (кость руки)
+	private GameObject ThirdPersonLeftHandWeaponSlot; // Левый слот (кость руки)
+	private GameObject ThirdRightHandWeaponSlot; // Правый слот (кость руки)
+	private Transform ThirdLeftHandWeaponSlotTransform; // Левый слот (кость руки)
+	private Transform ThirdRightHandWeaponSlotTransform; // Правый слот (кость руки)
+
+	// Теперь слот для рук задаётся через инспектор
+	private GameObject FirstPersonLeftHandWeaponSlot; // Левый слот (кость руки)
+	private GameObject FirstRightHandWeaponSlot; // Правый слот (кость руки)
 
 
-	public Transform FirstLeftHandWeaponSlotTransform; // Левый слот (кость руки)
-	public Transform FirstRightHandWeaponSlotTransform; // Правый слот (кость руки)
+	private Transform FirstLeftHandWeaponSlotTransform; // Левый слот (кость руки)
+	private Transform FirstRightHandWeaponSlotTransform; // Правый слот (кость руки)
 
 	public virtual void WeaponAttack()
 	{
@@ -33,15 +33,15 @@ public abstract class WeaponClass : MonoBehaviour
 	}
 
 	
-
 	public void InstantiateWeaponModel(string handType)
 	{
 		if (weaponModel != null)
 		{
+			
 			FirstPersonWeaponModelInstance = Instantiate(weaponModel);
 			ThirdPersonWeaponModelInstance = Instantiate(weaponModel);
-			FirstPersonWeaponMeshRenderer = FirstPersonWeaponModelInstance.GetComponent<MeshRenderer>();
-			ThirdPersonWeaponMeshRenderer = ThirdPersonWeaponModelInstance.GetComponent<MeshRenderer>();
+			FirstPersonWeaponMeshRenderer = GetComponent<MeshRenderer>();
+			ThirdPersonWeaponMeshRenderer = GetComponent<MeshRenderer>();
 			FirstPersonWeaponModelInstance.transform.parent = transform;
 			FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
 			// Перебираем всех непосредственных детей объекта
@@ -79,6 +79,7 @@ public abstract class WeaponClass : MonoBehaviour
 			ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
 		}
 	}
+	
 
 	public void DestroyWeaponModel()
 	{

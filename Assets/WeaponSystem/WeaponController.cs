@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public delegate void OnWeaponChangedEvent(string activeHand);
+public delegate void OnWeaponChanged(string activeHand);
 
 public class WeaponController : MonoBehaviour
 {
@@ -19,7 +19,7 @@ public class WeaponController : MonoBehaviour
 	}
 
 
-	public event OnWeaponChangedEvent OnWeaponChanged;
+	public event OnWeaponChanged OnWeaponChanged;
 
 	public bool IsPoliceBatonWeaponUnlocked {  get; private set; }
 	public bool IsHarmoniceRevolverWeaponUnlocked { get; private set; }
@@ -80,6 +80,96 @@ public class WeaponController : MonoBehaviour
 
 	}
 
+
+	public void SelectWeapon(GameObject weaponPrefab)
+	{
+		
+		
+		bool isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
+
+		// Извлекаем компонент оружия из префаба
+		WeaponClass weaponComponent = weaponPrefab.GetComponent<WeaponClass>();
+		if (weaponComponent == null)
+		{
+			Debug.LogError("Prefab must contain a WeaponClass component.");
+			return;
+		}
+
+		// Проверяем, есть ли оружие в левой руке
+		if (isLeftHand && LeftHandWeapon != null && LeftHandWeapon.gameObject == weaponPrefab)
+		{
+			// Если текущее оружие совпадает с выбранным, ничего не делаем
+			return;
+		}
+		// Проверяем, есть ли оружие в правой руке
+		else if (!isLeftHand && RightHandWeapon != null && RightHandWeapon.gameObject == weaponPrefab)
+		{
+			// Если текущее оружие совпадает с выбранным, ничего не делаем
+			return;
+		}
+		else
+		{
+			// Если оружие не найдено ни в одной руке, создаем новый экземпляр оружия
+			if (isLeftHand)
+			{
+				if (LeftHandWeapon != null)
+				{
+					RemoveWeapon("left");
+				}
+				else if (RightHandWeapon != null && RightHandWeapon.gameObject == weaponPrefab)
+				{
+					RemoveWeapon("right");
+				}
+
+				// Привязываем оружие к левому слоту
+				LeftHandWeapon = weaponComponent;
+				OnWeaponChanged?.Invoke("left");
+				LeftHandWeapon.InstantiateWeaponModel("left");
+				playerBehaviour.ArmPlayer();
+			}
+			else
+			{
+				if (RightHandWeapon != null)
+				{
+					RemoveWeapon("right");
+				}
+				else if (LeftHandWeapon != null && LeftHandWeapon.gameObject == weaponPrefab)
+				{
+					RemoveWeapon("left");
+				}
+
+				// Привязываем оружие к правому слоту
+				RightHandWeapon = weaponComponent;
+				OnWeaponChanged?.Invoke("right");
+				RightHandWeapon.InstantiateWeaponModel("right");
+				playerBehaviour.ArmPlayer();
+			}
+
+			if (LeftHandWeapon != null && RightHandWeapon != null &&
+			   RightHandWeapon.WeaponNameSystem == LeftHandWeapon.WeaponNameSystem)
+			{
+				if (isLeftHand)
+				{
+					RemoveWeapon("right");
+				}
+				else
+				{
+					RemoveWeapon("left");
+				}
+			}
+
+			Debug.Log("LeftHand: " + (LeftHandWeapon?.WeaponNameSystem ?? "null") +
+					 " | RightHand: " + (RightHandWeapon?.WeaponNameSystem ?? "null"));
+		}
+
+		
+	}
+
+
+
+
+
+	/*
 	public void SelectWeapon(System.Type weaponType)
 	{
 		
@@ -119,13 +209,13 @@ public class WeaponController : MonoBehaviour
 				playerBehaviour.ArmPlayer();
 
 
-				/*
-				if (interactionController.CurrentPickableObject != null)
-				{
-					playerBehaviour.DisarmPlayer();
-					//Debug.Log("DISARM");
-				}
-				*/
+				
+				//if (interactionController.CurrentPickableObject != null)
+				//{
+				//	playerBehaviour.DisarmPlayer();
+				//	//Debug.Log("DISARM");
+				//}
+				
 			}
 			else
 			{
@@ -146,13 +236,13 @@ public class WeaponController : MonoBehaviour
 				playerBehaviour.ArmPlayer();
 
 
-				/*
-				if (interactionController.CurrentPickableObject != null)
-				{
-					playerBehaviour.DisarmPlayer();
-					//Debug.Log("DISARM");
-				}
-				*/
+				
+				//if (interactionController.CurrentPickableObject != null)
+				//{
+					//playerBehaviour.DisarmPlayer();
+					/////Debug.Log("DISARM");
+				//}
+				
 			}
 
 			if (LeftHandWeapon != null && RightHandWeapon != null && RightHandWeapon.WeaponNameSystem == LeftHandWeapon.WeaponNameSystem)
@@ -170,6 +260,7 @@ public class WeaponController : MonoBehaviour
 			Debug.Log("LeftHand: " + (LeftHandWeapon?.WeaponNameSystem ?? "null") + " | RightHand: " + (RightHandWeapon?.WeaponNameSystem ?? "null"));
 		}
 	}
+	*/
 
 	public void RightWeaponAttack()
 	{

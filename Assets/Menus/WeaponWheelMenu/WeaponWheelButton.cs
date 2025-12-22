@@ -1,30 +1,25 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class WeaponWheelsButton : MonoBehaviour
 {
-	private WeaponController weaponController;
-	private WeaponWheelController weaponWheelController;
+	[SerializeField] private WeaponController weaponController;
+	[SerializeField] private WeaponWheelController weaponWheelController;
+	[SerializeField] private GameObject WeaponPrefab;
+	[SerializeField] private string WeaponWheelButtonName;
+	[SerializeField] private string AvailableWeaponName;
 
-
-	public void Initialize(WeaponController weaponController, WeaponWheelController weaponWheelController)
+	private void Start()
 	{
-		this.weaponController = weaponController;
-		this.weaponWheelController = weaponWheelController;
-		Debug.Log($"{WeaponWheelButtonName}Button Initialized");
-
-
+		var button = GetComponent<Button>();
+		button.onClick.AddListener(() => weaponController.SelectWeapon(WeaponPrefab));
+		//button.onClick.AddListener(() => Debug.Log("Bruh!"));
 	}
 
 
-	public string WeaponWheelButtonName;
-    public string AvailableWeaponName;
- 
-
-
-
-
+	
 
 	public void HoverEnter()
     {

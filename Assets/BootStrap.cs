@@ -20,10 +20,10 @@ public class BootStrap : MonoBehaviour
 	[SerializeField] private WeaponController weaponController;
 	[SerializeField] private WeaponWheelController weaponWheelController;
 
-	[SerializeField] private WeaponWheelsButton buttonBaton;
-	[SerializeField] private WeaponWheelsButton buttonRevolver;
-	[SerializeField] private WeaponWheelsButton buttonCrossbow;
-	[SerializeField] private WeaponWheelsButton buttonEugenic;
+	//[SerializeField] private WeaponWheelsButton buttonBaton;
+	//[SerializeField] private WeaponWheelsButton buttonRevolver;
+	//[SerializeField] private WeaponWheelsButton buttonCrossbow;
+	//[SerializeField] private WeaponWheelsButton buttonEugenic;
 
 	[SerializeField] private PlayerCameraFirstPersonRender firstPersonRender;
 
@@ -48,10 +48,10 @@ public class BootStrap : MonoBehaviour
 
 		weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
 		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController);
-		buttonBaton.Initialize(weaponController, weaponWheelController);
-		buttonRevolver.Initialize(weaponController, weaponWheelController);
-		buttonCrossbow.Initialize(weaponController, weaponWheelController);
-		buttonEugenic.Initialize(weaponController, weaponWheelController);
+		//buttonBaton.Initialize(weaponController, weaponWheelController);
+		//buttonRevolver.Initialize(weaponController, weaponWheelController);
+		//buttonCrossbow.Initialize(weaponController, weaponWheelController);
+		//buttonEugenic.Initialize(weaponController, weaponWheelController);
 
 		firstPersonRender.Initialize(cameraController, weaponController);
 
