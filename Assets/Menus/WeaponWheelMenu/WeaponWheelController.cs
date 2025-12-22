@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class WeaponWheelController : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class WeaponWheelController : MonoBehaviour
 	private WeaponController weaponController;
 	private PlayerBehaviour playerBehaviour;
 	private MenuManager menuManager;
+
+
+
 
 	// Конструктор принимает зависимость
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, WeaponController weaponController)
@@ -22,7 +26,9 @@ public class WeaponWheelController : MonoBehaviour
 		weaponController.OnWeaponChanged += OnWeaponChangedHandler; // Подписка на событие
 	}
 
-	public Canvas WeaponWheelMenuCanvas; 
+	public Canvas WeaponWheelMenuCanvas;
+
+	public TextMeshProUGUI WeaponText;
 
 	public Button PoliceBatonButton;
 	public Button HarmonicaRevolverButton;
@@ -118,9 +124,8 @@ public class WeaponWheelController : MonoBehaviour
 			OnWeaponChangedHandler("right");
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = false;
-			//playerBehaviour.ArmPlayer();
-			//ChangeWheaponWheelButtonColor("right");
-			//weaponWheelbuttonscript.HoverExit();
+			ShowWeaponName();
+
 			WeaponWheelName.text = "ПРАВАЯ РУКА";
 		}
 
@@ -131,9 +136,8 @@ public class WeaponWheelController : MonoBehaviour
 			OnWeaponChangedHandler("left");
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = true;
-			//playerBehaviour.ArmPlayer();
-			//ChangeWheaponWheelButtonColor("left");
-			//weaponWheelbuttonscript.HoverExit();
+			ShowWeaponName();
+
 			WeaponWheelName.text = "ЛЕВАЯ РУКА";
 		}
 
@@ -150,6 +154,8 @@ public class WeaponWheelController : MonoBehaviour
 	{
 		WeaponWheelMenuCanvas.gameObject.SetActive(true); // Показываем Canvas
 		menuManager.OpenWeaponWheelMenu(handType);
+
+
 	}
 
 	private void DisableWeaponWheelMenuCanvas(bool IsItRightWeaponWheelMenuCanvas)
@@ -214,6 +220,34 @@ public class WeaponWheelController : MonoBehaviour
 		// Назначаем обновленные цвета кнопке
 		buttonType.colors = colors;
 	}
+
+
+	public void ShowWeaponName()
+	{
+		if (IsWeaponLeftHand)
+		{
+			if (weaponController.LeftHandWeapon != null)
+			{
+				WeaponText.text = weaponController.LeftHandWeapon.WeaponNameUI;
+			}
+			else
+			{
+				WeaponText.text = "";
+			}
+		}
+		else if (IsWeaponLeftHand == false)
+		{
+			if (weaponController.RightHandWeapon != null)
+			{
+				WeaponText.text = weaponController.RightHandWeapon.WeaponNameUI;
+			}
+			else
+			{
+				WeaponText.text = "";
+			}
+		}
+	}
+
 
 
 	private void OnWeaponChangedHandler(string handType)

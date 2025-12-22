@@ -290,6 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponWheelMenuCanvas: {fileID: 1931274087}
+  WeaponText: {fileID: 1427655751}
   PoliceBatonButton: {fileID: 490071827}
   HarmonicaRevolverButton: {fileID: 1782315246}
   PlungerCrossbowButton: {fileID: 1633241814}
@@ -1147,7 +1148,6 @@ MonoBehaviour:
   WeaponWheelButtonName: PoliceBaton
   AvailableWeaponName: "\u041C\u0438\u043B\u0438\u0446\u0435\u0439\u0441\u043A\u0430\u044F
     \u0414\u0443\u0431\u0438\u043D\u043A\u0430"
-  WeaponText: {fileID: 1427655751}
 --- !u!114 &490071827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3625,7 +3625,6 @@ MonoBehaviour:
   WeaponWheelButtonName: EugenicGenie
   AvailableWeaponName: "\u0415\u0432\u0433\u0435\u043D\u0438\u043A \u0414\u044B\u0445\u0430\u043D\u0438\u0435
     \u0414\u0436\u0438\u043D\u043D\u0430"
-  WeaponText: {fileID: 1427655751}
 --- !u!114 &1268267921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4482,7 +4481,6 @@ MonoBehaviour:
   WeaponWheelButtonName: PoliceBaton
   AvailableWeaponName: "\u041C\u0438\u043B\u0438\u0446\u0435\u0439\u0441\u043A\u0430\u044F
     \u0414\u0443\u0431\u0438\u043D\u043A\u0430"
-  WeaponText: {fileID: 1427655751}
 --- !u!114 &1510829475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4943,7 +4941,6 @@ MonoBehaviour:
   WeaponWheelButtonName: PlungerCrossbow
   AvailableWeaponName: "\u0410\u0431\u043E\u0440\u0434\u0430\u0436\u043D\u044B\u0439
     \u0410\u0440\u0431\u0430\u043B\u0435\u0442"
-  WeaponText: {fileID: 1427655751}
 --- !u!114 &1633241814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5096,7 +5093,6 @@ MonoBehaviour:
   WeaponWheelButtonName: PoliceBaton
   AvailableWeaponName: "\u041C\u0438\u043B\u0438\u0446\u0435\u0439\u0441\u043A\u0430\u044F
     \u0414\u0443\u0431\u0438\u043D\u043A\u0430"
-  WeaponText: {fileID: 1427655751}
 --- !u!114 &1652234085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5658,7 +5654,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponWheelButtonName: HarmonicaRevolver
   AvailableWeaponName: "\u0420\u0435\u0432\u043E\u043B\u044C\u0432\u0435\u0440 \u0413\u0430\u0440\u043C\u043E\u043D\u0438\u043A\u0430"
-  WeaponText: {fileID: 1427655751}
 --- !u!114 &1782315246
 MonoBehaviour:
   m_ObjectHideFlags: 0

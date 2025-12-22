@@ -20,10 +20,10 @@ public class BootStrap : MonoBehaviour
 	[SerializeField] private WeaponController weaponController;
 	[SerializeField] private WeaponWheelController weaponWheelController;
 
-	[SerializeField] private WeaponWheelsButtons buttonBaton;
-	[SerializeField] private WeaponWheelsButtons buttonRevolver;
-	[SerializeField] private WeaponWheelsButtons buttonCrossbow;
-	[SerializeField] private WeaponWheelsButtons buttonEugenic;
+	[SerializeField] private WeaponWheelsButton buttonBaton;
+	[SerializeField] private WeaponWheelsButton buttonRevolver;
+	[SerializeField] private WeaponWheelsButton buttonCrossbow;
+	[SerializeField] private WeaponWheelsButton buttonEugenic;
 
 	[SerializeField] private PlayerCameraFirstPersonRender firstPersonRender;
 
