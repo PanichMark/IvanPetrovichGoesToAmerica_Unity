@@ -183,7 +183,7 @@ public class PlayerAnimationController: MonoBehaviour
 		// анимации оружия
 		if (weaponController.RightHandWeapon != null)
 		{
-			if (weaponController.RightHandWeapon.ThirdPersonWeaponModelInstance.activeInHierarchy)
+			if (weaponController.RightHandWeapon.activeInHierarchy)
 			{
 				playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponRight"), 1);
 				ChangePlayerWeaponRightAnimation("EquipRightWeapon");
@@ -208,7 +208,7 @@ public class PlayerAnimationController: MonoBehaviour
 
 		if (weaponController.LeftHandWeapon != null)
 		{
-			if (weaponController.LeftHandWeapon.ThirdPersonWeaponModelInstance.activeInHierarchy)
+			if (weaponController.LeftHandWeapon.activeInHierarchy)
 			{
 				playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponLeft"), 1);
 				ChangePlayerWeaponLeftAnimation("EquipLeftWeapon");

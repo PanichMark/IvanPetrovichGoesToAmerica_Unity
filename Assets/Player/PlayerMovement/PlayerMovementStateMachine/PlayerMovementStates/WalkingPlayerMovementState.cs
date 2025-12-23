@@ -1,62 +1,76 @@
 ﻿using UnityEngine;
 
-public class WalkingPlayerMovementState: PlayerMovementState
+public class WalkingPlayerMovementState : PlayerMovementState
 {
-	private IInputDevice inputDevice;
+    private IInputDevice inputDevice;
+	private Transform playerTransform;
+	private Rigidbody playerRigidBody;
+	private Vector3 playerWorldMovement;
 
-	public WalkingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
-	{
-		this.playerMovementController = playerMovementController;
-		this.inputDevice = inputDevice;
-		//Debug.Log("Player Walking");
+	public WalkingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice, Transform playerTransform, Rigidbody playerRigidBody)
+    {
+        this.playerMovementController = playerMovementController;
+        this.inputDevice = inputDevice;
+		this.playerTransform = playerTransform;
+		this.playerRigidBody = playerRigidBody;
 
+		playerMovementController.SetPlayerMovementSpeed(3);
 	}
-	public override void ChangePlayerMovementState()
-	{
-		if (playerMovementController.IsPlayerMoving == false)
+
+    public override void Update()
+    {
+		if (inputDevice.GetKeyRight())
+		{
+			playerWorldMovement.x = 1;
+		}
+		else if (inputDevice.GetKeyLeft())
+		{
+			playerWorldMovement.x = -1;
+		}
+		else
+		{
+			playerWorldMovement.x = 0;
+		}
+
+		if (inputDevice.GetKeyUp())
+		{
+			playerWorldMovement.z = 1;
+		}
+		else if (inputDevice.GetKeyDown())
+		{
+			playerWorldMovement.z = -1;
+		}
+		else
+		{
+			playerWorldMovement.z = 0;
+		}
+
+		playerMovementController.SetPlayerWorldMovement(playerWorldMovement);
+
+		if (playerWorldMovement.x == 0 && playerWorldMovement.z == 0)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 		}
-		
-		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true && playerMovementController.IsPlayerAbleToMove)
-		{
 
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
+		if (inputDevice.GetKeyJump() && playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerAbleToStandUp)
+		{
+			playerRigidBody.AddForce(playerTransform.up * 5f, ForceMode.Impulse);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
 		}
-		
-		if (playerMovementController.IsPlayerFalling == true  && inputDevice.GetKeyCrouch() == false)
+
+		if (playerMovementController.IsPlayerFalling)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
-		
-		if (inputDevice.GetKeyJump() &&
-			playerMovementController.IsPlayerGrounded &&
-			playerMovementController.IsPlayerAbleToMove &&
-			playerMovementController.IsPlayerAbleToStandUp)
+
+		if (inputDevice.GetKeyRun())
 		{
-			WhatSpeedWas = "walking";
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
 		}
-		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyCrouch())
+
+		if (inputDevice.GetKeyCrouch())
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingWalking);
-
 		}
-		if (playerMovementController.IsPlayerMoving == false && inputDevice.GetKeyCrouch())
-		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
-		}
-
-
-	}
-
-	public override void ChangePlayerMovementSpeed()
-	{
-		
-			playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerWalkingSpeed);
-		
-		
 	}
 }
-
-

@@ -20,10 +20,7 @@ public class BootStrap : MonoBehaviour
 	[SerializeField] private WeaponController weaponController;
 	[SerializeField] private WeaponWheelController weaponWheelController;
 
-	//[SerializeField] private WeaponWheelsButton buttonBaton;
-	//[SerializeField] private WeaponWheelsButton buttonRevolver;
-	//[SerializeField] private WeaponWheelsButton buttonCrossbow;
-	//[SerializeField] private WeaponWheelsButton buttonEugenic;
+
 
 	[SerializeField] private PlayerCameraFirstPersonRender firstPersonRender;
 
@@ -44,18 +41,15 @@ public class BootStrap : MonoBehaviour
 		playerCollider.Initialize(movementController);
 
 		cameraController.Initialize(inputDevice, menuManager, movementController, playerCollider, player);
-		cameraBlurFilter.Initialize(menuManager);
+		//cameraBlurFilter.Initialize(menuManager);
 
-		weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
-		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController);
-		//buttonBaton.Initialize(weaponController, weaponWheelController);
-		//buttonRevolver.Initialize(weaponController, weaponWheelController);
-		//buttonCrossbow.Initialize(weaponController, weaponWheelController);
-		//buttonEugenic.Initialize(weaponController, weaponWheelController);
+		//weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
+		//weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController);
+	
 
-		firstPersonRender.Initialize(cameraController, weaponController);
+		//firstPersonRender.Initialize(cameraController, weaponController);
 
-		playerAnimationController.Initialize(inputDevice, player, playerBehaviour, movementController, cameraController, weaponController);
+		//playerAnimationController.Initialize(inputDevice, player, playerBehaviour, movementController, cameraController, weaponController);
 
 		
 

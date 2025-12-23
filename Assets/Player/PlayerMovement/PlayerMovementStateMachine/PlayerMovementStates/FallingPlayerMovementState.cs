@@ -12,7 +12,7 @@ public class FallingPlayerMovementState : PlayerMovementState
 
 	}
 
-	public override void ChangePlayerMovementState()
+	public override void Update()
 	{
 		if (playerMovementController.IsPlayerFalling == false && playerMovementController.IsPlayerMoving == false)
 		{
@@ -42,9 +42,6 @@ public class FallingPlayerMovementState : PlayerMovementState
 		}
 	}
 
-	public override void ChangePlayerMovementSpeed()
-	{
-		playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerCrouchingSpeed);
-	}
+
 }
 

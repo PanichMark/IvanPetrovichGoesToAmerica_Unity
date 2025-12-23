@@ -12,13 +12,14 @@ public class PlayerCapluseCollider : MonoBehaviour
   
     void Update()
     {
-		if (movementController.IsPlayerCrouching == true)
-        {
+		if (movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
+			|| movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"
+			|| movementController.CurrentPlayerMovementStateType == "PlayerSliding")
+		{
             transform.position = transform.parent.position+new Vector3(0f, 0.5f, 0f); ;
             transform.localScale = new Vector3(1f,  0.5f, 1f);
         }
-
-		if (movementController.IsPlayerCrouching == false)
+		else 
 		{
 			transform.position = transform.parent.position+new Vector3(0f, 1f, 0f);
 			transform.localScale = new Vector3(1f, 1f, 1f);

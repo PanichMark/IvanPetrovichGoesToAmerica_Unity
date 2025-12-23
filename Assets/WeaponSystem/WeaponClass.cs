@@ -42,7 +42,7 @@ public abstract class WeaponClass : MonoBehaviour
 			ThirdPersonWeaponModelInstance = Instantiate(weaponModel);
 			FirstPersonWeaponMeshRenderer = GetComponent<MeshRenderer>();
 			ThirdPersonWeaponMeshRenderer = GetComponent<MeshRenderer>();
-			FirstPersonWeaponModelInstance.transform.parent = transform;
+			//FirstPersonWeaponModelInstance.transform.parent = transform;
 			FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
 			// Перебираем всех непосредственных детей объекта
 			foreach (Transform child in FirstPersonWeaponModelInstance.transform)

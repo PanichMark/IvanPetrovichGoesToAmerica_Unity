@@ -11,7 +11,7 @@ public class SlidingPlayerMovementState : PlayerMovementState
 		//Debug.Log("Player Sliding");
 		
 	}
-	public override void ChangePlayerMovementState()
+	public override void Update()
 	{
 		if (playerMovementController.IsPlayerAbleToSlide == true)
 		{
@@ -22,9 +22,6 @@ public class SlidingPlayerMovementState : PlayerMovementState
 
 	}
 
-	public override void ChangePlayerMovementSpeed()
-	{
-		playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerSlidingSpeed);
-	}
+
 	
 }

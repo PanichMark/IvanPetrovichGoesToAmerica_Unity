@@ -6,6 +6,7 @@ public class JumpingPlayerMovementState : PlayerMovementState
 	private float progress = 0f;
 
 	private IInputDevice inputDevice;
+	private Vector3 playerWorldMovement;
 
 	public JumpingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
@@ -15,8 +16,42 @@ public class JumpingPlayerMovementState : PlayerMovementState
 
 	}
 
-	public override void ChangePlayerMovementState()
+	public override void Update()
 	{
+		if (inputDevice.GetKeyRight())
+		{
+			playerWorldMovement.x = 1;
+		}
+		else if (inputDevice.GetKeyLeft())
+		{
+			playerWorldMovement.x = -1;
+		}
+		else
+		{
+			playerWorldMovement.x = 0;
+		}
+
+		if (inputDevice.GetKeyUp())
+		{
+			playerWorldMovement.z = 1;
+		}
+		else if (inputDevice.GetKeyDown())
+		{
+			playerWorldMovement.z = -1;
+		}
+		else
+		{
+			playerWorldMovement.z = 0;
+		}
+
+		playerMovementController.SetPlayerWorldMovement(playerWorldMovement);
+
+
+
+
+
+
+
 		if (playerMovementController.IsPlayerFalling == true
 			|| playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerOnSlope && playerMovementController.JumpingStateWait())
 		{
@@ -31,25 +66,7 @@ public class JumpingPlayerMovementState : PlayerMovementState
 
 	}
 
-	public override void ChangePlayerMovementSpeed()
-	{
-		
 
-		// Обновление прогресса плавно
-		progress += Time.deltaTime * 1.6f;
-
-		if (WhatSpeedWas == "crouching")
-			playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerCrouchingSpeed);
-
-
-		if (WhatSpeedWas == "walking")
-			//playerMovementController.SetPlayerMovementSpeed(Mathf.Lerp(playerMovementController.PlayerWalkingSpeed, playerMovementController.PlayerCrouchingSpeed, progress));
-			playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerWalkingSpeed);
-
-
-		if (WhatSpeedWas == "running")
-			playerMovementController.SetPlayerMovementSpeed(Mathf.Lerp(playerMovementController.PlayerRunningSpeed, playerMovementController.PlayerWalkingSpeed, progress));
-	}
 
 
 }

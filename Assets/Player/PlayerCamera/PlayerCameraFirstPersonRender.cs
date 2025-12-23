@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 public class PlayerCameraFirstPersonRender : MonoBehaviour
 {
+	public WeaponClass leftHandWeaponComponent { get; private set; }
 
+	public WeaponClass rightHandWeaponComponent { get; private set; }
 
 	private PlayerCameraController playerCamera;
 	private WeaponController weaponController;
@@ -10,11 +12,25 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 	{
 		this.playerCamera = playerCameraController;
 		this.weaponController = weaponController;
+
+		this.weaponController.OnWeaponChanged += RegisterWeapons;
+
+		
 	}	
 
 	private PlayerCameraStateType playerCameraStateType;
 
 	//public GameObject PlayerCameraObject;
+
+	private void RegisterWeapons(string handType)
+	{
+		if (handType == "left")
+	
+		leftHandWeaponComponent = weaponController.LeftHandWeapon.GetComponent<WeaponClass>();
+		else
+			rightHandWeaponComponent = weaponController.RightHandWeapon.GetComponent<WeaponClass>();
+	}
+
 
 	public GameObject PlayerFirstPersonHandRight;
 	public GameObject PlayerFirstPersonHandLeft;
@@ -26,39 +42,44 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 	{
 		//playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
 		//weaponController = GetComponent<WeaponController>();
+	
 	}
 
+
+	
 	private void Update()
 	{
 		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
 		{
-			if (weaponController.RightHandWeapon != null)
+			if (rightHandWeaponComponent != null)
 			{
-				ShowPlayerWeapon(weaponController.RightHandWeapon.FirstPersonWeaponModelInstance, false); // Первое лицо, оружие первого лица видно, без теней
-				HidePlayerWeapon(weaponController.RightHandWeapon.ThirdPersonWeaponModelInstance, true);  // Третье лицо, оружие третьего лица скрыто, но отбрасывает тени
+				//ShowPlayerWeapon(weaponController.RightHandWeapon, false); // Первое лицо, оружие первого лица видно, без теней
+				//HidePlayerWeapon(weaponController.RightHandWeapon, true);  // Третье лицо, оружие третьего лица скрыто, но отбрасывает тени
 			}
 
-		    if (weaponController.LeftHandWeapon != null)
+		    if (leftHandWeaponComponent != null)
 			{
-			    ShowPlayerWeapon(weaponController.LeftHandWeapon.FirstPersonWeaponModelInstance, false);   // Вторая рука, оружие первого лица, аналогично первой руке
-			    HidePlayerWeapon(weaponController.LeftHandWeapon.ThirdPersonWeaponModelInstance, true);   // Вторая рука, оружие третьего лица, аналогично первой руке
+			   // ShowPlayerWeapon(weaponController.LeftHandWeapon, false);   // Вторая рука, оружие первого лица, аналогично первой руке
+			   // HidePlayerWeapon(weaponController.LeftHandWeapon, true);   // Вторая рука, оружие третьего лица, аналогично первой руке
 			}
 	    }
 		else
 		{
 			if (weaponController.RightHandWeapon != null)
 			{
-				ShowPlayerWeapon(weaponController.RightHandWeapon.ThirdPersonWeaponModelInstance, true);  // Третье лицо, оружие третьего лица, показывает и отбрасывает тени
-				HidePlayerWeapon(weaponController.RightHandWeapon.FirstPersonWeaponModelInstance, false); // Первая рука, оружие первого лица, ничего не видно и нет теней
+				//ShowPlayerWeapon(weaponController.rightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);  // Третье лицо, оружие третьего лица, показывает и отбрасывает тени
+				//HidePlayerWeapon(weaponController.RightHandWeapon, false); // Первая рука, оружие первого лица, ничего не видно и нет теней
 			}
 
 			if (weaponController.LeftHandWeapon != null)
 			{
-				ShowPlayerWeapon(weaponController.LeftHandWeapon.ThirdPersonWeaponModelInstance, true);   // Левая рука, оружие третьего лица, аналогично правой руке
-				HidePlayerWeapon(weaponController.LeftHandWeapon.FirstPersonWeaponModelInstance, false);  // Левая рука, оружие первого лица, аналогично правой руке
+				//ShowPlayerWeapon(weaponController.leftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);   // Левая рука, оружие третьего лица, аналогично правой руке
+				//HidePlayerWeapon(weaponController.LeftHandWeapon, false);  // Левая рука, оружие первого лица, аналогично правой руке
 			}
 		}
 	}
+
+	/*
 	void FixedUpdate()
 	{
 		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson") 
@@ -67,7 +88,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 			if (weaponController.RightHandWeapon != null)
 			{
-				if (weaponController.RightHandWeapon.ThirdPersonWeaponModelInstance.activeInHierarchy)
+				if (weaponController.RightHandWeapon.activeInHierarchy)
 				{
 					HideBodyPart(PlayerHandRightParent);
 					ShowFirstPersonHand(PlayerFirstPersonHandRight);
@@ -87,7 +108,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 			if (weaponController.LeftHandWeapon != null)
 			{
-				if (weaponController.LeftHandWeapon.ThirdPersonWeaponModelInstance.activeInHierarchy)
+				if (weaponController.LeftHandWeapon.activeInHierarchy)
 				{
 					HideBodyPart(PlayerHandLeftParent);
 					ShowFirstPersonHand(PlayerFirstPersonHandLeft);
@@ -114,7 +135,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 			HideFirstPersonHand(PlayerFirstPersonHandLeft);
 		}
 	}
-
+	*/
 	public void ShowBodyPart(GameObject rootObj)
 	{
 		// Получаем все рендеры (включая дочерние объекты)
@@ -177,6 +198,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 	public void ShowPlayerWeapon(GameObject weaponRoot, bool castShadows)
 	{
+		//Debug.Log($"Show{weaponRoot}");
 		Renderer[] renderers = weaponRoot.GetComponentsInChildren<Renderer>(true);
 
 		foreach (Renderer renderer in renderers)
@@ -199,6 +221,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 	public void HidePlayerWeapon(GameObject weaponRoot, bool allowShadows)
 	{
+		//Debug.Log($"Hide{weaponRoot}");
 		Renderer[] renderers = weaponRoot.GetComponentsInChildren<Renderer>(true);
 
 		foreach (Renderer renderer in renderers)

@@ -15,7 +15,11 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 	private PlayerMovementState playerMovementState;
 	private PlayerMovementStateType playerMovementStateType;
 
-	private Vector3 PlayerWorldMovement;
+	private Vector3 playerWorldMovement;
+
+
+
+
 	private Vector3 PlayerMovement;
 	private Vector3 PlayerMovementDirectionWithCamera;
 
@@ -39,9 +43,9 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 	public float PlayerMovementSpeed { get; private set; }
 	public float PlayerRotationSpeed { get; private set; }
-	public float PlayerWalkingSpeed { get; private set; }
-	public float PlayerRunningSpeed { get; private set; }
-	public float PlayerCrouchingSpeed { get; private set; }
+	//public float PlayerWalkingSpeed { get; private set; }
+	//public float PlayerRunningSpeed { get; private set; }
+	//public float PlayerCrouchingSpeed { get; private set; }
 	public float PlayerSlidingSpeed { get; private set; }
 
 	public float PlayerCurrentHeight { get; private set; }
@@ -90,9 +94,9 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		SetPlayerMovementState(playerMovementStateType);
 
 		PlayerMovementSpeed = 3f;
-		PlayerWalkingSpeed = 3f;
-		PlayerRunningSpeed = 6f;
-		PlayerCrouchingSpeed = 1.8f;
+		//PlayerWalkingSpeed = 3f;
+		//PlayerRunningSpeed = 6f;
+		//PlayerCrouchingSpeed = 1.8f;
 		PlayerSlidingSpeed = 7.5f;
 
 		PlayerCurrentHeight = 1.75f;
@@ -130,30 +134,10 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		//Debug.Log(PlayerMovementSpeed);
 
 		// Player movement State Machine methods
-		playerMovementState.ChangePlayerMovementState();
-		playerMovementState.ChangePlayerMovementSpeed();
+		playerMovementState.Update();
 
-		//
-		if (inputDevice.GetKeyRight() && IsPlayerAbleToMove)
-		{
-			PlayerWorldMovement.x = 1;
-		}
-		else if (inputDevice.GetKeyLeft() && IsPlayerAbleToMove)
-		{
-			PlayerWorldMovement.x = -1;
-		}
-		else PlayerWorldMovement.x = 0;
-
-		if (inputDevice.GetKeyUp() && IsPlayerAbleToMove)
-		{
-			PlayerWorldMovement.z = 1;
-		}
-		else if (inputDevice.GetKeyDown() && IsPlayerAbleToMove)
-		{
-			PlayerWorldMovement.z = -1;
-		}
-		else PlayerWorldMovement.z = 0;
-
+		
+		/*
 		// короче тут проблема
 		if (inputDevice.GetKeyJump() &&
 			IsPlayerGrounded &&
@@ -163,6 +147,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 			
 			PlayerRigidBody.AddForce(transform.up * 5f, ForceMode.Impulse);
 		}
+		*/
 
 		//
 		IsPlayerMoving = (Mathf.Abs(_playerPreviousFramePositionChange.x) > 0.001f || Mathf.Abs(_playerPreviousFramePositionChange.z) > 0.001f);
@@ -271,7 +256,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 
 		//
-		PlayerMovementDirectionWithCamera = (PlayerWorldMovement.z * playerCamera.transform.forward + PlayerWorldMovement.x * playerCamera.transform.right);
+		PlayerMovementDirectionWithCamera = (playerWorldMovement.z * playerCamera.transform.forward + playerWorldMovement.x * playerCamera.transform.right);
 		PlayerMovement = new Vector3(PlayerMovementDirectionWithCamera.x, 0, PlayerMovementDirectionWithCamera.z);
 		PlayerMovement.Normalize();
 
@@ -298,6 +283,12 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 	
 	}
 
+
+	public void SetPlayerWorldMovement(Vector3 newMovement)
+	{
+		playerWorldMovement = newMovement;
+	}
+
 	private void FixedUpdate()
 	{
 		_playerPreviousFramePositionChange = transform.position - _playerPreviousFramePosition;
@@ -311,71 +302,48 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 		if (playerMovementStateType == PlayerMovementStateType.PlayerIdle)
 		{
-			newState = new IdlePlayerMovementState(this, inputDevice);
+			newState = new IdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 			CurrentPlayerMovementStateType = "PlayerIdle";
-			if (IsPlayerLegKicking == false)
-			{
-				IsPlayerAbleToMove = true;
-			}
-			IsPlayerCrouching = false;
-			PlayerRotationSpeed = 300f;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerWalking)
 		{
-			newState = new WalkingPlayerMovementState(this, inputDevice);
+			newState = new WalkingPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 			CurrentPlayerMovementStateType = "PlayerWalking";
-			IsPlayerCrouching = false;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerRunning)
 		{
-			newState = new RunningPlayerMovementState(this, inputDevice);
+			newState = new RunningPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 			CurrentPlayerMovementStateType = "PlayerRunning";
-			IsPlayerCrouching = false;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerJumping)
 		{
 			newState = new JumpingPlayerMovementState(this, inputDevice);
 			CurrentPlayerMovementStateType = "PlayerJumping";
-			IsPlayerCrouching = false;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerFalling)
 		{
 			newState = new FallingPlayerMovementState(this, inputDevice);
 			CurrentPlayerMovementStateType = "PlayerFalling";
-			IsPlayerCrouching = false;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerCrouchingIdle)
 		{
-			newState = new CrouchingIdlePlayerMovementState(this, inputDevice);
+			newState = new CrouchingIdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 			CurrentPlayerMovementStateType = "PlayerCrouchingIdle";
-			IsPlayerCrouching = true;
-			if (IsPlayerLegKicking == false)
-			{
-				IsPlayerAbleToMove = true;
-			}
-			PlayerRotationSpeed = 300f;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerCrouchingWalking)
 		{
-			newState = new CrouchingWalkingPlayerMovementState(this, inputDevice);
+			newState = new CrouchingWalkingPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 			CurrentPlayerMovementStateType = "PlayerCrouchingWalking";
-			IsPlayerCrouching = true;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerSliding)
 		{
 			newState = new SlidingPlayerMovementState(this);
 			CurrentPlayerMovementStateType = "PlayerSliding";
-			IsPlayerCrouching = true;
-			IsPlayerAbleToMove = false;
-			PlayerRotationSpeed = 0;
 		}
 		else if (playerMovementStateType == PlayerMovementStateType.PlayerLedgeClimbing)
 		{
 			newState = new LedgeClimbingPlayerMovementState(this);
 			CurrentPlayerMovementStateType = "PlayerLedgeClimbing";
-			IsPlayerCrouching = false;
-			IsPlayerAbleToMove = false;
-			PlayerRotationSpeed = 0;
 		}
 		else
 		{
@@ -383,7 +351,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 		playerMovementState = newState;
 
-		Debug.Log("PlayerMovementState: " + playerMovementState);
+		Debug.Log("PlayerMovementState: " + CurrentPlayerMovementStateType);
 	}
 
 	// Different player movement states scripts call this function

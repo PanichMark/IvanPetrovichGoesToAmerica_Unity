@@ -10,10 +10,6 @@ public class WeaponWheelController : MonoBehaviour
 	private PlayerBehaviour playerBehaviour;
 	private MenuManager menuManager;
 
-
-
-
-	// Конструктор принимает зависимость
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, WeaponController weaponController)
 	{
 		this.inputDevice = inputDevice;
@@ -21,19 +17,12 @@ public class WeaponWheelController : MonoBehaviour
 		this.weaponController = weaponController;
 		this.menuManager = menuManager;
 		Debug.Log("WeaponWheelController Initialized");
-
-		// Подписываемся на событие смены оружия
-		//weaponController.OnWeaponChanged += OnWeaponChangedHandler; // Подписка на событие
 	}
 
 	public Canvas WeaponWheelMenuCanvas;
 
 	public TextMeshProUGUI WeaponText;
 
-	//public Button PoliceBatonButton;
-	//public Button HarmonicaRevolverButton;
-	//public Button PlungerCrossbowButton;
-	//public Button EugenicGenieButton;
 	public bool IsWeaponLeftHand { get; private set; }
 	public bool IsWeaponWheelActive { get; private set; }
 
@@ -41,27 +30,10 @@ public class WeaponWheelController : MonoBehaviour
 	private bool previousLeftHandPressed = false;
 
 	public TextMeshProUGUI WeaponWheelName;
-	//public WeaponWheelsButtons weaponWheelbuttonscript;
-	
 
-	void Start()
-	{
-		//playerInputsList = GetComponent<InputManager>();
-		//weaponController = GetComponent<WeaponController>();
-
-		//PoliceBatonButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponPoliceBaton)));
-		//HarmonicaRevolverButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponHarmonicaRevolver)));
-		//PlungerCrossbowButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponPlungerCrossbow)));
-		//EugenicGenieButton.onClick.AddListener(() => weaponController.SelectWeapon(typeof(WeaponEugenicGenie)));
-
-		//weaponController.SelectWeapon(typeof(WeaponPoliceBaton));
-	}
 
 	void Update()
 	{
-		
-
-		
 		bool currentRightHandPressed = inputDevice.GetKeyRightHandWeaponWheel();
 		bool currentLeftHandPressed = inputDevice.GetKeyLeftHandWeaponWheel();
 		
@@ -73,46 +45,6 @@ public class WeaponWheelController : MonoBehaviour
 
 		previousRightHandPressed = currentRightHandPressed;
 		previousLeftHandPressed = currentLeftHandPressed;
-
-
-		/*
-
-		if (PoliceBatonButton != null)
-		{
-			if (weaponController.IsPoliceBatonWeaponUnlocked)
-			{
-				PoliceBatonButton.gameObject.SetActive(true);
-			}
-			else PoliceBatonButton.gameObject.SetActive(false);
-		}
-
-		if (HarmonicaRevolverButton != null)
-		{
-			if (weaponController.IsHarmoniceRevolverWeaponUnlocked)
-			{
-				HarmonicaRevolverButton.gameObject.SetActive(true);
-			}
-			else HarmonicaRevolverButton.gameObject.SetActive(false);
-		}
-
-		if (PlungerCrossbowButton != null)
-		{
-			if (weaponController.IsPlungerCrossbowWeaponUnlocked)
-			{
-				PlungerCrossbowButton.gameObject.SetActive(true);
-			}
-			else PlungerCrossbowButton.gameObject.SetActive(false);
-		}
-
-		if (EugenicGenieButton != null)
-		{
-			if (weaponController.IsEugenicGenieWeaponUnlocked)
-			{
-				EugenicGenieButton.gameObject.SetActive(true);
-			}
-			else EugenicGenieButton.gameObject.SetActive(false);
-		}
-		*/
 	}
 
 	
@@ -229,7 +161,7 @@ public class WeaponWheelController : MonoBehaviour
 		{
 			if (weaponController.LeftHandWeapon != null)
 			{
-				WeaponText.text = weaponController.LeftHandWeapon.WeaponNameUI;
+				WeaponText.text = weaponController.leftHandWeaponComponent.WeaponNameUI;
 			}
 			else
 			{
@@ -240,7 +172,7 @@ public class WeaponWheelController : MonoBehaviour
 		{
 			if (weaponController.RightHandWeapon != null)
 			{
-				WeaponText.text = weaponController.RightHandWeapon.WeaponNameUI;
+				WeaponText.text = weaponController.rightHandWeaponComponent.WeaponNameUI;
 			}
 			else
 			{

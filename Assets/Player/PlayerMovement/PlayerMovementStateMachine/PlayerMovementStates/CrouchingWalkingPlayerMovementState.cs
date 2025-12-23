@@ -3,51 +3,74 @@
 public class CrouchingWalkingPlayerMovementState : PlayerMovementState
 {
 	private IInputDevice inputDevice;
+	private Transform playerTransform;
+	private Rigidbody playerRigidBody;
+	private Vector3 playerWorldMovement;
 
-	public CrouchingWalkingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
+	public CrouchingWalkingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice, Transform playerTransform, Rigidbody playerRigidBody)
 	{
 		this.playerMovementController = playerMovementController;
 		this.inputDevice = inputDevice;
-		//Debug.Log("Player Walking");
+		this.playerTransform = playerTransform;
+		this.playerRigidBody = playerRigidBody;
 
+		playerMovementController.SetPlayerMovementSpeed(1.8f);
 	}
-	public override void ChangePlayerMovementState()
+	public override void Update()
 	{
-		if (playerMovementController.IsPlayerMoving == false && inputDevice.GetKeyCrouch() == false)
+		if (inputDevice.GetKeyRight())
+		{
+			playerWorldMovement.x = 1;
+		}
+		else if (inputDevice.GetKeyLeft())
+		{
+			playerWorldMovement.x = -1;
+		}
+		else
+		{
+			playerWorldMovement.x = 0;
+		}
+
+		if (inputDevice.GetKeyUp())
+		{
+			playerWorldMovement.z = 1;
+		}
+		else if (inputDevice.GetKeyDown())
+		{
+			playerWorldMovement.z = -1;
+		}
+		else
+		{
+			playerWorldMovement.z = 0;
+		}
+
+		playerMovementController.SetPlayerWorldMovement(playerWorldMovement);
+
+		if (playerWorldMovement.x == 0 && playerWorldMovement.z == 0)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
 		}
-		if (playerMovementController.IsPlayerMoving == false && inputDevice.GetKeyCrouch() == true && playerMovementController.IsPlayerAbleToStandUp == true)
-		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
-		}
-		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyCrouch() == true && playerMovementController.IsPlayerAbleToStandUp == true)
-		{
 
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
-		}
-		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true
-			&& playerMovementController.IsPlayerAbleToMove)
+		if (inputDevice.GetKeyJump() && playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerAbleToStandUp)
 		{
-
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
-		}
-		if (inputDevice.GetKeyJump() &&
-			playerMovementController.IsPlayerGrounded &&
-			playerMovementController.IsPlayerAbleToMove &&
-			playerMovementController.IsPlayerAbleToStandUp)
-		{
-			WhatSpeedWas = "crouching";
-
+			playerRigidBody.AddForce(playerTransform.up * 5f, ForceMode.Impulse);
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
 		}
 
+		if (playerMovementController.IsPlayerFalling)
+		{
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
+		}
 
-	}
+		if (inputDevice.GetKeyRun())
+		{
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
+		}
 
-	public override void ChangePlayerMovementSpeed()
-	{
-		playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerCrouchingSpeed);
+		if (inputDevice.GetKeyCrouch())
+		{
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
+		}
 	}
 }
 

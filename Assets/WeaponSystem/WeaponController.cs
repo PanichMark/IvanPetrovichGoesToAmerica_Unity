@@ -26,13 +26,15 @@ public class WeaponController : MonoBehaviour
 	public bool IsPlungerCrossbowWeaponUnlocked { get; private set; }
 	public bool IsEugenicGenieWeaponUnlocked { get; private set; }
 
-	public WeaponClass LeftHandWeapon {  get; private set; }
-	public WeaponClass RightHandWeapon {  get; private set; }
+	public GameObject LeftHandWeapon {  get; private set; }
+	public GameObject RightHandWeapon {  get; private set; }
 
+	public WeaponClass leftHandWeaponComponent { get; private set; }
 
+	public WeaponClass rightHandWeaponComponent { get; private set; }
 
 	//public bool IsLeftHand { get; private set; }
-	
+
 
 
 	private void Start()
@@ -83,8 +85,6 @@ public class WeaponController : MonoBehaviour
 
 	public void SelectWeapon(GameObject weaponPrefab)
 	{
-		
-		
 		bool isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
 
 		// Извлекаем компонент оружия из префаба
@@ -96,13 +96,13 @@ public class WeaponController : MonoBehaviour
 		}
 
 		// Проверяем, есть ли оружие в левой руке
-		if (isLeftHand && LeftHandWeapon != null && LeftHandWeapon.gameObject == weaponPrefab)
+		if (isLeftHand && LeftHandWeapon != null && LeftHandWeapon == weaponPrefab)
 		{
 			// Если текущее оружие совпадает с выбранным, ничего не делаем
 			return;
 		}
 		// Проверяем, есть ли оружие в правой руке
-		else if (!isLeftHand && RightHandWeapon != null && RightHandWeapon.gameObject == weaponPrefab)
+		else if (!isLeftHand && RightHandWeapon != null && RightHandWeapon == weaponPrefab)
 		{
 			// Если текущее оружие совпадает с выбранным, ничего не делаем
 			return;
@@ -116,15 +116,16 @@ public class WeaponController : MonoBehaviour
 				{
 					RemoveWeapon("left");
 				}
-				else if (RightHandWeapon != null && RightHandWeapon.gameObject == weaponPrefab)
+				else if (RightHandWeapon != null && RightHandWeapon == weaponPrefab)
 				{
 					RemoveWeapon("right");
 				}
 
-				// Привязываем оружие к левому слоту
-				LeftHandWeapon = weaponComponent;
+				// Устанавливаем новое оружие в левую руку
+				LeftHandWeapon = weaponPrefab;
 				OnWeaponChanged?.Invoke("left");
-				LeftHandWeapon.InstantiateWeaponModel("left");
+				weaponComponent.InstantiateWeaponModel("left");
+				leftHandWeaponComponent = LeftHandWeapon.GetComponent<WeaponClass>();
 				playerBehaviour.ArmPlayer();
 			}
 			else
@@ -133,20 +134,23 @@ public class WeaponController : MonoBehaviour
 				{
 					RemoveWeapon("right");
 				}
-				else if (LeftHandWeapon != null && LeftHandWeapon.gameObject == weaponPrefab)
+				else if (LeftHandWeapon != null && LeftHandWeapon == weaponPrefab)
 				{
 					RemoveWeapon("left");
 				}
 
-				// Привязываем оружие к правому слоту
-				RightHandWeapon = weaponComponent;
+				// Устанавливаем новое оружие в правую руку
+				RightHandWeapon = weaponPrefab;
 				OnWeaponChanged?.Invoke("right");
-				RightHandWeapon.InstantiateWeaponModel("right");
+
+				weaponComponent.InstantiateWeaponModel("right");
+				rightHandWeaponComponent = RightHandWeapon.GetComponent<WeaponClass>();
 				playerBehaviour.ArmPlayer();
 			}
 
 			if (LeftHandWeapon != null && RightHandWeapon != null &&
-			   RightHandWeapon.WeaponNameSystem == LeftHandWeapon.WeaponNameSystem)
+			   RightHandWeapon.GetComponent<WeaponClass>().WeaponNameSystem ==
+			   LeftHandWeapon.GetComponent<WeaponClass>().WeaponNameSystem)
 			{
 				if (isLeftHand)
 				{
@@ -158,11 +162,9 @@ public class WeaponController : MonoBehaviour
 				}
 			}
 
-			Debug.Log("LeftHand: " + (LeftHandWeapon?.WeaponNameSystem ?? "null") +
-					 " | RightHand: " + (RightHandWeapon?.WeaponNameSystem ?? "null"));
+			Debug.Log("LeftHand: " + (LeftHandWeapon ? LeftHandWeapon.name : "null") +
+					 " | RightHand: " + (RightHandWeapon ? RightHandWeapon.name : "null"));
 		}
-
-		
 	}
 
 
@@ -266,10 +268,8 @@ public class WeaponController : MonoBehaviour
 	{
 		if (RightHandWeapon != null)
 		{
-			if (RightHandWeapon.ThirdPersonWeaponModelInstance.activeInHierarchy)
-			{ 
-			RightHandWeapon.WeaponAttack();
-			}
+			
+			rightHandWeaponComponent.WeaponAttack();
 			playerBehaviour.ArmPlayer();
 		}
 	}
@@ -280,42 +280,51 @@ public class WeaponController : MonoBehaviour
 	{
 		if (LeftHandWeapon != null)
 		{
-			if (LeftHandWeapon.ThirdPersonWeaponModelInstance.activeInHierarchy)
-			{ 
-			LeftHandWeapon.WeaponAttack();
-			}
+
+			
+			leftHandWeaponComponent.WeaponAttack();
 			playerBehaviour.ArmPlayer();
 		}
 	}
 
 
 	public void RemoveWeapon(string handType)
-	{
-		if (handType == "right")
-		{
-			RightHandWeapon.DestroyWeaponModel(); // Добавляем вызов Unequip()
-			Destroy(RightHandWeapon); // Уничтожаем предыдущее оружие
-			RightHandWeapon = null;
-		}
-		else if (handType == "left")
-		{
-			LeftHandWeapon.DestroyWeaponModel(); // Добавляем вызов Unequip()
-			Destroy(LeftHandWeapon); // Уничтожаем предыдущее оружие
-			LeftHandWeapon = null;
-		}
-	}
+{
+    if (handType == "right")
+    {
+        if (RightHandWeapon != null)
+        {
+         
+            rightHandWeaponComponent.DestroyWeaponModel();
+            
+            // Уничтожаем объект оружия
+            Destroy(RightHandWeapon);
+            RightHandWeapon = null;
+        }
+    }
+    else if (handType == "left")
+    {
+        if (LeftHandWeapon != null)
+        {
+         
+            leftHandWeaponComponent.DestroyWeaponModel();
+            
+            // Уничтожаем объект оружия
+            Destroy(LeftHandWeapon);
+            LeftHandWeapon = null;
+        }
+    }
+}
 
 	public void ShowWeapon(string handType)
-	{ 
-		if (handType == "right")
+	{
+		if (handType == "right" && RightHandWeapon != null)
 		{
-			RightHandWeapon.FirstPersonWeaponModelInstance.SetActive(true);
-			RightHandWeapon.ThirdPersonWeaponModelInstance.SetActive(true);
+			RightHandWeapon.SetActive(true);
 		}
-		else if (handType == "left")
+		else if (handType == "left" && LeftHandWeapon != null)
 		{
-			LeftHandWeapon.FirstPersonWeaponModelInstance.SetActive(true);
-			LeftHandWeapon.ThirdPersonWeaponModelInstance.SetActive(true);
+			LeftHandWeapon.SetActive(true);
 		}
 	}
 
@@ -323,13 +332,11 @@ public class WeaponController : MonoBehaviour
 	{
 		if (handType == "right")
 		{
-			RightHandWeapon.FirstPersonWeaponModelInstance.SetActive(false);
-			RightHandWeapon.ThirdPersonWeaponModelInstance.SetActive(false);
+			RightHandWeapon.SetActive(false);
 		}
 		else if (handType == "left")
 		{
-			LeftHandWeapon.FirstPersonWeaponModelInstance.SetActive(false);
-			LeftHandWeapon.ThirdPersonWeaponModelInstance.SetActive(false);
+			LeftHandWeapon.SetActive(false);
 		}
 	}
 

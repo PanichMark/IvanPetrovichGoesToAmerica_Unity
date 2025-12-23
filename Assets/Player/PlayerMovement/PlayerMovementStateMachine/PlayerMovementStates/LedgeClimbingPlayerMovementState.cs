@@ -9,16 +9,12 @@ public class LedgeClimbingPlayerMovementState : PlayerMovementState
 	
 	}
 
-	public override void ChangePlayerMovementState()
+	public override void Update()
 	{
 
 		playerMovementController.StartPlayerLedgeClimbing();
 	}
 
-	public override void ChangePlayerMovementSpeed()
-	{
-		// speed is 0
-		//playerMovementController.SetPlayerMovementSpeed(playerMovementController.PlayerCrouchingSpeed);
-	}
+
 }
 

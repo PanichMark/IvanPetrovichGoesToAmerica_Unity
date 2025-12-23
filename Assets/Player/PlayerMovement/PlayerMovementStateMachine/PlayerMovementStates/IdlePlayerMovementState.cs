@@ -2,64 +2,45 @@
 
 public class IdlePlayerMovementState : PlayerMovementState
 {
-
 	private IInputDevice inputDevice;
+	private Transform playerTransform;
+	private Rigidbody playerRigidBody;
 
-	public IdlePlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
+	public IdlePlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice, Transform playerTransform, Rigidbody playerRigidBody)
 	{
 		this.playerMovementController = playerMovementController;
 		this.inputDevice = inputDevice;
-		//Debug.Log("Player Walking");
-
+		this.playerTransform = playerTransform;
+		this.playerRigidBody = playerRigidBody;
 	}
 
-
-	public override void ChangePlayerMovementState()
+	public override void Update()
 	{
-		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() == false)
-		{
 
+		if (!inputDevice.GetKeyRun() && (inputDevice.GetKeyUp() || inputDevice.GetKeyDown() || inputDevice.GetKeyRight() || inputDevice.GetKeyLeft()))
+		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
 		}
-		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp == true && playerMovementController.IsPlayerAbleToMove)
-		{
 
+		if (inputDevice.GetKeyRun() && (inputDevice.GetKeyUp() || inputDevice.GetKeyDown() || inputDevice.GetKeyRight() || inputDevice.GetKeyLeft()))
+		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
 		}
-		if (inputDevice.GetKeyJump() &&
-			playerMovementController.IsPlayerGrounded &&
-			playerMovementController.IsPlayerAbleToMove &&
-			playerMovementController.IsPlayerAbleToStandUp)
-		{
-			WhatSpeedWas = "walking";
 
+		if (inputDevice.GetKeyJump() && playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerAbleToStandUp)
+		{
+			playerRigidBody.AddForce(playerTransform.up * 5f, ForceMode.Impulse);
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
 		}
-		if (playerMovementController.IsPlayerFalling == true && inputDevice.GetKeyCrouch() == false)
+
+		if (playerMovementController.IsPlayerFalling)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
-		
-		if (playerMovementController.IsPlayerMoving == false && inputDevice.GetKeyCrouch())
+
+		if (inputDevice.GetKeyCrouch())
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
 		}
-		if (playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyCrouch())
-		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingWalking);
-		}
-		
 	}
-
-	public override void ChangePlayerMovementSpeed()
-	{
-		// just idle
-	}
-
-	
 }
-
-
-
-
-
