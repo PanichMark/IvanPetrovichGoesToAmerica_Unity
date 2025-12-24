@@ -14,7 +14,8 @@ public class CrouchingWalkingPlayerMovementState : PlayerMovementState
 		this.playerTransform = playerTransform;
 		this.playerRigidBody = playerRigidBody;
 
-		playerMovementController.SetPlayerMovementSpeed(1.8f);
+		playerMovementController.ChangePlayerMovementSpeed(1.8f);
+		playerMovementController.ChangePlayerRayPosition(1.2f);
 	}
 	public override void Update()
 	{
@@ -53,22 +54,26 @@ public class CrouchingWalkingPlayerMovementState : PlayerMovementState
 
 		if (inputDevice.GetKeyJump() && playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerAbleToStandUp)
 		{
+			
 			playerRigidBody.AddForce(playerTransform.up * 5f, ForceMode.Impulse);
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
 		}
 
 		if (playerMovementController.IsPlayerFalling)
 		{
+			
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
 
-		if (inputDevice.GetKeyRun())
+		if (inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp)
 		{
+			
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
 		}
 
-		if (inputDevice.GetKeyCrouch())
+		if (inputDevice.GetKeyCrouch() && playerMovementController.IsPlayerAbleToStandUp)
 		{
+			
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
 		}
 	}

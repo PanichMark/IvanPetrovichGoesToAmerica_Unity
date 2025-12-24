@@ -6,9 +6,6 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 {
 	private IInputDevice inputDevice;
 	private PlayerBehaviour playerBehaviour;
-	//private GameObject playerModel;
-
-
 
 	private Camera playerCamera;
 
@@ -17,23 +14,19 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 	private Vector3 playerWorldMovement;
 
-
-
-
 	private Vector3 PlayerMovement;
-	private Vector3 PlayerMovementDirectionWithCamera;
 
-	//public PlayerCameraController playerCamera;
-	//public GameObject PlayerCameraObject;
+	private Vector3 projection;
+	private Vector3 correctedMovement;
 
 	private bool JumpWaitOnSlope = false; // Флаг готовности прыжка
 
-	Transform PlayerTransform;
-	Rigidbody PlayerRigidBody;
+	private Transform PlayerTransform;
+	private Rigidbody PlayerRigidBody;
 
 	private string currentPlayerCameraType = "";
 
-
+	//private Vector3 PlayerMovementDirectionWithCamera;
 	private Vector3 _playerPreviousFramePosition;
 	private Vector3 _playerPreviousFramePositionChange;
 
@@ -43,34 +36,32 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 	public float PlayerMovementSpeed { get; private set; }
 	public float PlayerRotationSpeed { get; private set; }
-	//public float PlayerWalkingSpeed { get; private set; }
-	//public float PlayerRunningSpeed { get; private set; }
-	//public float PlayerCrouchingSpeed { get; private set; }
+
 	public float PlayerSlidingSpeed { get; private set; }
 
 	public float PlayerCurrentHeight { get; private set; }
-	public float PlayerStandingHeight { get; private set; }
-	public float PlayerCrouchingHeight { get; private set; }
+	//public float PlayerStandingHeight { get; private set; }
+	//public float PlayerCrouchingHeight { get; private set; }
 
-	public bool IsPlayerMoving { get; private set; }
-	public bool IsPlayerAbleToMove { get; private set; }
+	//public bool IsPlayerMoving { get; private set; }
+	//public bool IsPlayerAbleToMove { get; private set; }
 	public bool IsPlayerGrounded { get; private set; }
 	public bool IsPlayerCrouching { get; private set; }
 	public bool IsPlayerAbleToStandUp { get; private set; }
 	public bool IsPlayerFalling { get; private set; }
-	public bool IsPLayerSliding { get; private set; }
-	public bool IsPlayerAbleToSlide { get; private set; }
+	//public bool IsPLayerSliding { get; private set; }
+	//public bool IsPlayerAbleToSlide { get; private set; }
 	public bool IsPlayerAbleToClimbLedge { get; private set; }
 	public bool IsPlayerOnSlope { get; private set; }
 
 	public float PlayerUpRayYPosition { get; private set; }
-	public float PlayerDownRayYPosition { get; private set; }
+	public float PlayerDownRayYPosition { get; private set; } = 0.1f;
 	
-	private float angle;
-	private float moveFactor;
+	//private float angle;
+	//private float moveFactor;
 
 
-	public bool IsPlayerLegKicking { get; private set; }
+	//public bool IsPlayerLegKicking { get; private set; }
 
 	
 
@@ -78,13 +69,10 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 	{
 		playerCamera = Camera.main;
 
-
+		PlayerRotationSpeed = 300f;
 
 		PlayerTransform = GetComponent<Transform>();
 		PlayerRigidBody = GetComponent<Rigidbody>();
-
-		//PlayerTransform = playerModel.GetComponent<Transform>();
-		//PlayerRigidBody = playerModel.GetComponent<Rigidbody>();
 
 		_playerPreviousFramePosition = transform.position;
 
@@ -94,21 +82,24 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		SetPlayerMovementState(playerMovementStateType);
 
 		PlayerMovementSpeed = 3f;
-		//PlayerWalkingSpeed = 3f;
-		//PlayerRunningSpeed = 6f;
-		//PlayerCrouchingSpeed = 1.8f;
+
 		PlayerSlidingSpeed = 7.5f;
 
 		PlayerCurrentHeight = 1.75f;
-		PlayerCrouchingHeight = 1;
-		PlayerStandingHeight = 1.75f;
+		//PlayerCrouchingHeight = 1;
+		//PlayerStandingHeight = 1.75f;
 
-		IsPlayerAbleToSlide = true;
+		//IsPlayerAbleToSlide = true;
 
 		
 	}
 
-	/*
+	public void ChangePlayerRotationSpeed(float speed)
+	{
+		PlayerRotationSpeed = speed;
+	}
+	
+	
 	void OnDrawGizmos()
 	{
 		
@@ -117,6 +108,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		Gizmos.DrawRay(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down * 0.3f);
 		Gizmos.DrawRay(transform.position + new Vector3(0, PlayerUpRayYPosition, 0), Vector3.up * 0.3f);
 
+		
 		Gizmos.DrawCube(transform.position + transform.up * 1.75f + transform.forward * 0.75f + transform.right * -0.4f, new Vector3(0.25f, 0.25f, 0.25f));
 		Gizmos.DrawCube(transform.position + transform.up * 1.75f + transform.forward * 1.5f + transform.right * -0.4f, new Vector3(0.25f, 0.25f, 0.25f));
 		Gizmos.DrawCube(transform.position + transform.up * 1.75f + transform.forward * 0.75f + transform.right * 0.4f, new Vector3(0.25f, 0.25f, 0.25f));
@@ -127,46 +119,26 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		Gizmos.DrawCube(transform.position + transform.forward * 1.1f + new Vector3(0, 2.5f, 0), new Vector3(1.25f, 1.25f, 1.25f));
 		
 	}
-	*/
+	
+
+	public void ChangePlayerRayPosition(float up)
+	{
+		
+		PlayerUpRayYPosition = up;
+	}
 
 	void Update()
 	{
-		//Debug.Log(PlayerMovementSpeed);
 
-		// Player movement State Machine methods
+		//Debug.Log(playerCamera.transform.eulerAngles.y);
+
 		playerMovementState.Update();
 
-		
-		/*
-		// короче тут проблема
-		if (inputDevice.GetKeyJump() &&
-			IsPlayerGrounded &&
-			IsPlayerAbleToMove &&
-			IsPlayerAbleToStandUp)
-		{
-			
-			PlayerRigidBody.AddForce(transform.up * 5f, ForceMode.Impulse);
-		}
-		*/
-
-		//
-		IsPlayerMoving = (Mathf.Abs(_playerPreviousFramePositionChange.x) > 0.001f || Mathf.Abs(_playerPreviousFramePositionChange.z) > 0.001f);
 		IsPlayerGrounded = Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out hitInfo, 0.3f);
 		IsPlayerAbleToStandUp = !Physics.Raycast(transform.position + new Vector3(0, PlayerUpRayYPosition, 0), Vector3.up, out hitInfo, 0.3f);
 		IsPlayerFalling = (_playerPreviousFramePositionChange.y < -0.01f && IsPlayerGrounded == false);
 
-		//Debug.Log(IsPlayerGrounded);
-
-		if (IsPlayerCrouching == false)
-		{
-			PlayerDownRayYPosition = 0.1f;
-			PlayerUpRayYPosition = 1.9f;
-		}
-		else if (IsPlayerCrouching == true)
-		{
-			PlayerDownRayYPosition = 0.1f;
-			PlayerUpRayYPosition = 1.2f;
-		}
+	
 		
 		
 
@@ -198,6 +170,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 		else isSmallRectangleClear = true;
 
+
 		if (isAllBoxesColliding && (isBigRectangleClear || isSmallRectangleClear) && playerMovementStateType != PlayerMovementStateType.PlayerLedgeClimbing)
 		{
 			IsPlayerAbleToClimbLedge = true;
@@ -206,6 +179,8 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		{
 			IsPlayerAbleToClimbLedge = false;
 		}
+
+		//Debug.Log(IsPlayerAbleToClimbLedge);
 
 		// Slope 
 		if (Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out hitInfo, 0.3f))
@@ -244,39 +219,71 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 		//Debug.Log(PlayerRigidBody.linearVelocity);
 
+
+
+
+
+
+
+
 		if (IsPlayerOnSlope == true)
 		{
-			Vector3 correctedMovement = PlayerMovement * PlayerMovementSpeed * Time.deltaTime;
-			Vector3 projection = Vector3.Project(correctedMovement, hitInfo.normal);
+			correctedMovement = PlayerMovement * PlayerMovementSpeed * Time.deltaTime;
+			projection = Vector3.Project(correctedMovement, hitInfo.normal);
 			PlayerRigidBody.MovePosition(PlayerRigidBody.position + correctedMovement - projection);
+			//var newPosition = PlayerRigidBody.position + correctedMovement - projection;
+			//PlayerRigidBody.MovePosition(newPosition);
 		}
 		else
 		{
 			PlayerRigidBody.MovePosition(PlayerRigidBody.position + PlayerMovement * PlayerMovementSpeed * Time.deltaTime);
+			//var newPosition = PlayerRigidBody.position + PlayerMovement * PlayerMovementSpeed * Time.deltaTime;
+			//PlayerRigidBody.MovePosition(newPosition);
 		}
 
+
+
+
+
+
+
+
+
+
+
+
+
 		//
-		PlayerMovementDirectionWithCamera = (playerWorldMovement.z * playerCamera.transform.forward + playerWorldMovement.x * playerCamera.transform.right);
+		var PlayerMovementDirectionWithCamera = (playerWorldMovement.z * playerCamera.transform.forward + playerWorldMovement.x * playerCamera.transform.right);
 		PlayerMovement = new Vector3(PlayerMovementDirectionWithCamera.x, 0, PlayerMovementDirectionWithCamera.z);
 		PlayerMovement.Normalize();
 
-		angle = Vector3.Angle(hitInfo.normal, Vector3.up);
-		moveFactor = 1 / Mathf.Cos(Mathf.Deg2Rad * angle);
+		//angle = Vector3.Angle(hitInfo.normal, Vector3.up);
+		//moveFactor = 1 / Mathf.Cos(Mathf.Deg2Rad * angle);
 
-		
+		//Debug.Log(PlayerMovement);
+
+
+
+
+
+
+
 		if (playerBehaviour.IsPlayerArmed == false && (PlayerMovement != Vector3.zero) && (currentPlayerCameraType == PlayerCameraStateType.ThirdPerson.ToString()))
 		{
 			Quaternion CharacterRotation = Quaternion.LookRotation(PlayerMovement, Vector3.up);
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, CharacterRotation, PlayerRotationSpeed * Time.deltaTime);
 			//Debug.Log("3333");
+			//Debug.Log(transform.rotation);
 		}
 		else if (playerBehaviour.IsPlayerArmed == true || (currentPlayerCameraType == PlayerCameraStateType.FirstPerson.ToString()))
 		{
 			Quaternion PlayerRotateWhereCameraIsLooking = Quaternion.Euler(transform.localEulerAngles.x, playerCamera.transform.eulerAngles.y, transform.localEulerAngles.z);
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, PlayerRotateWhereCameraIsLooking, PlayerRotationSpeed * Time.deltaTime);
 			//Debug.Log("1111");
+			//Debug.Log(transform.rotation);
 		}
-		
+		//Debug.Log(transform.rotation);
 		
 
 
@@ -351,11 +358,11 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 		playerMovementState = newState;
 
-		Debug.Log("PlayerMovementState: " + CurrentPlayerMovementStateType);
+		Debug.Log("MovementState: " + CurrentPlayerMovementStateType);
 	}
 
 	// Different player movement states scripts call this function
-	public float SetPlayerMovementSpeed(float SetSpeed)
+	public float ChangePlayerMovementSpeed(float SetSpeed)
 	{
 		PlayerMovementSpeed = SetSpeed;
 		return PlayerMovementSpeed;
@@ -363,14 +370,26 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 	IEnumerator PlayerSlidingCourutine()
 	{
-		IsPlayerAbleToSlide = false;
-		IsPLayerSliding = true;
+		if (IsPlayerOnSlope)
+		{
+			// Сначала получаем плоскость движения по нормали склона
+			Vector3 horizontalPlaneNormal = Vector3.ProjectOnPlane(PlayerMovement, hitInfo.normal);
 
-		PlayerRigidBody.AddForce(transform.forward * PlayerSlidingSpeed, ForceMode.Impulse);
-		
-		// Disable player controls during sliding
-		PlayerRigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-		
+			// Добавляем небольшую поправку для учета уклона
+			Vector3 slopeCorrection = Vector3.Project(horizontalPlaneNormal, hitInfo.normal);
+
+			// Суммируем и нормализуем получившиеся векторы
+			Vector3 finalMovementDir = (horizontalPlaneNormal + slopeCorrection).normalized;
+
+			// Применяем импульс строго по этому направлению
+			PlayerRigidBody.AddForce(finalMovementDir * PlayerSlidingSpeed / 1.75f, ForceMode.Impulse);
+		}
+		else
+		{
+			PlayerRigidBody.AddForce(PlayerMovement * PlayerSlidingSpeed, ForceMode.Impulse);
+		}
+
+
 		yield return new WaitForSeconds(1f);
 
 		// Stop player in the sliding end
@@ -380,15 +399,14 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		PlayerRigidBody.MovePosition(PlayerRigidBody.transform.position);
 
 		SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
-
-		IsPlayerAbleToSlide = true;
-		IsPLayerSliding = false;
+		//Debug.Log("bruh");
 	}
 
 	// State SlidingState calls this function with courutine as it itself is non Monobahaviour
 	public void StartPlayerSliding()
 	{
 		StartCoroutine(PlayerSlidingCourutine());
+		//Debug.Log("bruh");
 	}
 
 	IEnumerator PlayerLedgeClimbingCourutine()
@@ -402,18 +420,18 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		}
 		else Big = true;
 
-		PlayerRigidBody.AddForce(transform.up * 1.2f, ForceMode.Impulse);
+		PlayerRigidBody.AddForce(transform.up * 7f, ForceMode.Impulse);
 
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(0.3f);
 
 		PlayerRigidBody.AddForce(Vector3.zero, ForceMode.Acceleration);
 		PlayerRigidBody.linearVelocity = Vector3.zero;
 		PlayerRigidBody.angularVelocity = Vector3.zero;
 		PlayerRigidBody.MovePosition(PlayerRigidBody.transform.position);
 
-		PlayerRigidBody.AddForce(transform.forward * 1.4f, ForceMode.Impulse);
+		PlayerRigidBody.AddForce(transform.forward * 5f, ForceMode.Impulse);
 
-		yield return new WaitForSeconds(0.1f);
+		yield return new WaitForSeconds(0.2f);
 		
 		PlayerRigidBody.AddForce(Vector3.zero, ForceMode.Acceleration);
 		PlayerRigidBody.linearVelocity = Vector3.zero;
@@ -423,17 +441,18 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		// DECIDE if player will end up in standing or crouching position after ledge climbing
 		if (Big == true)
 		{
-			if (IsPlayerMoving == false)
-			{
-				SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
-			}
+			//if (IsPlayerMoving == false)
+			//{
+			ChangePlayerRayPosition(1.9f);
+			SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
+			//}
 		}
 		else
 		{
-			if (IsPlayerMoving == false)
-			{
+			//if (IsPlayerMoving == false)
+			//{
 				SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
-			}
+			//}
 		}
 	}
 
@@ -443,6 +462,8 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		StartCoroutine(PlayerLedgeClimbingCourutine());
 	}
 
+
+	/*
 	public IEnumerator DisablePlayerMovementDuringLegKickAttack()
 	{
 		//Debug.Log("Leg Kick Attack");
@@ -457,6 +478,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 		IsPlayerLegKicking = false;
 	}
+	*/
 
 	public bool JumpingStateWait()
 	{

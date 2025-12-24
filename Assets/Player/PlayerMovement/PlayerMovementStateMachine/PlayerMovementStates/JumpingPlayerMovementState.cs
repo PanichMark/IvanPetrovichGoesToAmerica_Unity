@@ -13,7 +13,7 @@ public class JumpingPlayerMovementState : PlayerMovementState
 		this.playerMovementController = playerMovementController;
 		this.inputDevice = inputDevice;
 		//Debug.Log("Player Walking");
-
+		playerMovementController.ChangePlayerRayPosition(1.9f);
 	}
 
 	public override void Update()
@@ -51,18 +51,26 @@ public class JumpingPlayerMovementState : PlayerMovementState
 
 
 
-
+		/*
 		if (playerMovementController.IsPlayerFalling == true
 			|| playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerOnSlope && playerMovementController.JumpingStateWait())
 		{
 			playerMovementController.StopJumpingStateWait();
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
+		*/
+		if (playerMovementController.IsPlayerFalling == true)
+		{
+		
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
+		}
 
-		if (playerMovementController.IsPlayerAbleToClimbLedge == true && inputDevice.GetKeyJumpBeingHeld())
+		
+		if ( inputDevice.GetKeyJumpBeingHeld() && playerMovementController.IsPlayerAbleToClimbLedge)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerLedgeClimbing);
 		}
+		
 
 	}
 

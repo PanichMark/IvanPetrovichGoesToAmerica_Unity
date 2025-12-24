@@ -14,18 +14,18 @@ public class FallingPlayerMovementState : PlayerMovementState
 
 	public override void Update()
 	{
-		if (playerMovementController.IsPlayerFalling == false && playerMovementController.IsPlayerMoving == false)
+		if (playerMovementController.IsPlayerFalling == false)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 		}
 		
-		if (playerMovementController.IsPlayerFalling == false && playerMovementController.IsPlayerMoving == true && inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToMove)
+		if (playerMovementController.IsPlayerFalling == false && inputDevice.GetKeyRun())
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
 
 		}
-		 if (playerMovementController.IsPlayerFalling == false && playerMovementController.IsPlayerMoving == true)
+		 if (playerMovementController.IsPlayerFalling == false)
 		{
 
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
@@ -35,11 +35,13 @@ public class FallingPlayerMovementState : PlayerMovementState
 		//	playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
 		//}
 
-		if (playerMovementController.IsPlayerAbleToClimbLedge == true && inputDevice.GetKeyJumpBeingHeld())
+		 /*
+		if (inputDevice.GetKeyJumpBeingHeld())
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerLedgeClimbing);
 
 		}
+		 */
 	}
 
 

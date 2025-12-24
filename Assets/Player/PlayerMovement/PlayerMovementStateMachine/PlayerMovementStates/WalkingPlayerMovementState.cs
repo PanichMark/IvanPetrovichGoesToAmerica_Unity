@@ -14,7 +14,8 @@ public class WalkingPlayerMovementState : PlayerMovementState
 		this.playerTransform = playerTransform;
 		this.playerRigidBody = playerRigidBody;
 
-		playerMovementController.SetPlayerMovementSpeed(3);
+		playerMovementController.ChangePlayerMovementSpeed(3);
+		playerMovementController.ChangePlayerRayPosition(1.9f);
 	}
 
     public override void Update()

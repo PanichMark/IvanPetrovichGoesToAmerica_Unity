@@ -6,14 +6,10 @@ public class LedgeClimbingPlayerMovementState : PlayerMovementState
 	{
 		this.playerMovementController = playerMovementController;
 		//Debug.Log("Player LedgeClimbing");
-	
-	}
-
-	public override void Update()
-	{
-
 		playerMovementController.StartPlayerLedgeClimbing();
 	}
+
+	
 
 
 }

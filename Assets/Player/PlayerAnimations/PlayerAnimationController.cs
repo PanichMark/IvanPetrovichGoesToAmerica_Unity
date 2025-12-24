@@ -232,7 +232,7 @@ public class PlayerAnimationController: MonoBehaviour
 				playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponLeft"), 0);
 			}
 		}
-
+		/*
 		//Анимация атаки ногой
 		if (playerMovementController.IsPlayerLegKicking == true)
 		{
@@ -261,7 +261,7 @@ public class PlayerAnimationController: MonoBehaviour
 		wasPreviouslyKicking = playerMovementController.IsPlayerLegKicking;
 
 
-
+		*/
 
 	}
 		private void ChangePlayerMovementAnimation(string animation, float crossfade = 0.2f)

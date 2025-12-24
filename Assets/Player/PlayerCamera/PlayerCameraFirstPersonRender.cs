@@ -79,7 +79,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 		}
 	}
 
-	/*
+	
 	void FixedUpdate()
 	{
 		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson") 
@@ -135,7 +135,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 			HideFirstPersonHand(PlayerFirstPersonHandLeft);
 		}
 	}
-	*/
+	
 	public void ShowBodyPart(GameObject rootObj)
 	{
 		// Получаем все рендеры (включая дочерние объекты)

@@ -41,15 +41,15 @@ public class BootStrap : MonoBehaviour
 		playerCollider.Initialize(movementController);
 
 		cameraController.Initialize(inputDevice, menuManager, movementController, playerCollider, player);
-		//cameraBlurFilter.Initialize(menuManager);
+		cameraBlurFilter.Initialize(menuManager);
 
-		//weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
-		//weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController);
+		weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
+		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController);
 	
 
-		//firstPersonRender.Initialize(cameraController, weaponController);
+		firstPersonRender.Initialize(cameraController, weaponController);
 
-		//playerAnimationController.Initialize(inputDevice, player, playerBehaviour, movementController, cameraController, weaponController);
+		playerAnimationController.Initialize(inputDevice, player, playerBehaviour, movementController, cameraController, weaponController);
 
 		
 

@@ -12,6 +12,7 @@ public class IdlePlayerMovementState : PlayerMovementState
 		this.inputDevice = inputDevice;
 		this.playerTransform = playerTransform;
 		this.playerRigidBody = playerRigidBody;
+		playerMovementController.ChangePlayerRayPosition(1.9f);
 	}
 
 	public override void Update()

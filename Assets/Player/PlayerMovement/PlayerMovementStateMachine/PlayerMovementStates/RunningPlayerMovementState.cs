@@ -14,7 +14,8 @@ public class RunningPlayerMovementState : PlayerMovementState
 		this.playerTransform = playerTransform;
 		this.playerRigidBody = playerRigidBody;
 
-		playerMovementController.SetPlayerMovementSpeed(6f);
+		playerMovementController.ChangePlayerMovementSpeed(6f);
+		playerMovementController.ChangePlayerRayPosition(1.9f);
 	}
 	public override void Update()
 	{
@@ -62,7 +63,7 @@ public class RunningPlayerMovementState : PlayerMovementState
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
 
-		if (!inputDevice.GetKeyRun() && (playerWorldMovement.x != 0 && playerWorldMovement.z != 0))
+		if (!inputDevice.GetKeyRun())
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
 		}

@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 public class PlayerCapluseCollider : MonoBehaviour
 {
-	
 
+	private CapsuleCollider CapsuleCollider;
 	
 	private PlayerMovementController movementController;
 	// Конструктор принимает зависимость
-	
 
-	
-  
-    void Update()
+	private void Start()
+	{
+		CapsuleCollider = GetComponent<CapsuleCollider>();
+	}
+
+
+	void Update()
     {
 		if (movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
 			|| movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"
@@ -23,6 +26,17 @@ public class PlayerCapluseCollider : MonoBehaviour
 		{
 			transform.position = transform.parent.position+new Vector3(0f, 1f, 0f);
 			transform.localScale = new Vector3(1f, 1f, 1f);
+		}
+
+
+
+		if (movementController.CurrentPlayerMovementStateType == "PlayerLedgeClimbing")
+		{
+			CapsuleCollider.enabled = false;
+		}
+		else 
+		{
+			CapsuleCollider.enabled = true;
 		}
 	}
 

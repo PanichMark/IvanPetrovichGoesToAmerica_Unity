@@ -50,7 +50,7 @@ public class LegKickAttack : MonoBehaviour
 		Quaternion rotation = Quaternion.LookRotation(Vector3.right, transform.forward);
 		Gizmos.DrawWireCube(cylinderCenter, new Vector3(CapsuleRadius * 2, CapsuleHeight, CapsuleRadius * 2));
 	}
-
+	/*
 	void Update()
 	{
 		if (inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && interactionController.CurrentPickableObject == null)
@@ -66,7 +66,7 @@ public class LegKickAttack : MonoBehaviour
 
 		//Debug.Log(IsPlayerLegKicking);
 	}
-
+	
 	public void LegKick()
 	{
 		Debug.Log("LegKick attack");
@@ -101,7 +101,7 @@ public class LegKickAttack : MonoBehaviour
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
 		}
 	}
-
+	*/
 	IEnumerator DisableLegKickAttackActivation()
 	{
 		IsPlayerLegKicking = true;

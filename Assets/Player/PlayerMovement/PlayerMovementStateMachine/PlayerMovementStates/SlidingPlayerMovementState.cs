@@ -9,18 +9,13 @@ public class SlidingPlayerMovementState : PlayerMovementState
 		this.playerMovementController = playerMovementController;
 
 		//Debug.Log("Player Sliding");
-		
-	}
-	public override void Update()
-	{
-		if (playerMovementController.IsPlayerAbleToSlide == true)
-		{
-			
-			playerMovementController.StartPlayerSliding();
-		}
-
+		playerMovementController.ChangePlayerMovementSpeed(0f);
+		playerMovementController.ChangePlayerRotationSpeed(0);
+		playerMovementController.ChangePlayerRayPosition(1.2f);
+		playerMovementController.StartPlayerSliding();
 
 	}
+	
 
 
 	

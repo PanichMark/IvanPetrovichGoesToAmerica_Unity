@@ -6,7 +6,7 @@ public class PlayerBehaviour: MonoBehaviour
 
 
 	public bool WasPlayerArmed { get; private set; }
-	public bool IsPlayerArmed { get; private set; }
+	public bool IsPlayerArmed { get; private set; } = false;
 
 	
 
