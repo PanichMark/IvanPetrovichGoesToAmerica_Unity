@@ -18,6 +18,7 @@ public class WeaponController : MonoBehaviour
 		Debug.Log("WeaponController Initialized");
 	}
 
+	public bool hasAnyWeapon { get; private set; } = false;
 
 	public event OnWeaponChanged OnWeaponChanged;
 
@@ -39,10 +40,10 @@ public class WeaponController : MonoBehaviour
 
 	private void Start()
 	{
-		IsPoliceBatonWeaponUnlocked = true;
-		IsHarmoniceRevolverWeaponUnlocked = true;
-		IsPlungerCrossbowWeaponUnlocked = true;
-		IsEugenicGenieWeaponUnlocked = true;
+		IsPoliceBatonWeaponUnlocked = false;
+		IsHarmoniceRevolverWeaponUnlocked = false;
+		IsPlungerCrossbowWeaponUnlocked = false;
+		IsEugenicGenieWeaponUnlocked = false;
 	}
 
 	private void Update()
@@ -125,6 +126,7 @@ public class WeaponController : MonoBehaviour
 				LeftHandWeapon = weaponPrefab;
 				OnWeaponChanged?.Invoke("left");
 				weaponComponent.InstantiateWeaponModel("left");
+				
 				leftHandWeaponComponent = LeftHandWeapon.GetComponent<WeaponClass>();
 				playerBehaviour.ArmPlayer();
 			}
@@ -171,98 +173,7 @@ public class WeaponController : MonoBehaviour
 
 
 
-	/*
-	public void SelectWeapon(System.Type weaponType)
-	{
-		
-		bool isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
-
-		// Проверяем, есть ли оружие в левой руке
-		if (isLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetType() == weaponType)
-		{
-			// Если текущее оружие совпадает с выбранным, ничего не делаем
-			return;
-		}
-		// Проверяем, есть ли оружие в правой руке
-		else if (!isLeftHand && RightHandWeapon != null && RightHandWeapon.GetType() == weaponType)
-		{
-			// Если текущее оружие совпадает с выбранным, ничего не делаем
-			return;
-		}
-		else
-		{
-			// Если оружие не найдено ни в одной руке, создаем новый экземпляр оружия
-			if (isLeftHand)
-			{
-				if (LeftHandWeapon != null)
-				{
-					RemoveWeapon("left");
-				}
-				else if (RightHandWeapon != null && RightHandWeapon.GetType() == weaponType)
-				{
-					RemoveWeapon("right");
-				}
-
-				// Создаем новый экземпляр оружия
-				LeftHandWeapon = (WeaponClass)gameObject.AddComponent(weaponType);
-				/////
-				OnWeaponChanged?.Invoke("left");
-				LeftHandWeapon.InstantiateWeaponModel("left"); // Передаем флаг isLeftHand
-				playerBehaviour.ArmPlayer();
-
-
-				
-				//if (interactionController.CurrentPickableObject != null)
-				//{
-				//	playerBehaviour.DisarmPlayer();
-				//	//Debug.Log("DISARM");
-				//}
-				
-			}
-			else
-			{
-				if (RightHandWeapon != null)
-				{
-					RemoveWeapon("right");
-				}
-				else if (LeftHandWeapon != null && LeftHandWeapon.GetType() == weaponType)
-				{
-					RemoveWeapon("left");
-				}
-
-				// Создаем новый экземпляр оружия
-				RightHandWeapon = (WeaponClass)gameObject.AddComponent(weaponType);
-				////
-				OnWeaponChanged?.Invoke("right");
-				RightHandWeapon.InstantiateWeaponModel("right"); // Передаем флаг isLeftHand
-				playerBehaviour.ArmPlayer();
-
-
-				
-				//if (interactionController.CurrentPickableObject != null)
-				//{
-					//playerBehaviour.DisarmPlayer();
-					/////Debug.Log("DISARM");
-				//}
-				
-			}
-
-			if (LeftHandWeapon != null && RightHandWeapon != null && RightHandWeapon.WeaponNameSystem == LeftHandWeapon.WeaponNameSystem)
-			{
-				if (isLeftHand == true)
-				{
-					RemoveWeapon("right");
-				}
-				else if (isLeftHand == false)
-				{
-					RemoveWeapon("left");
-				}
-			}
-
-			Debug.Log("LeftHand: " + (LeftHandWeapon?.WeaponNameSystem ?? "null") + " | RightHand: " + (RightHandWeapon?.WeaponNameSystem ?? "null"));
-		}
-	}
-	*/
+	
 
 	public void RightWeaponAttack()
 	{
@@ -343,20 +254,24 @@ public class WeaponController : MonoBehaviour
 	public void UnlockPoliceBatonWeapon()
 	{
 		IsPoliceBatonWeaponUnlocked = true;
+		hasAnyWeapon = true;
 	}
 
 	public void UnlockHarmonicaRevolverWeapon()
 	{
 		IsHarmoniceRevolverWeaponUnlocked = true;
+		hasAnyWeapon = true;
 	}
 
 	public void UnlockPlungerCrossbowWeapon()
 	{
 		IsPlungerCrossbowWeaponUnlocked = true;
+		hasAnyWeapon = true;
 	}
 
 	public void UnlockEugenicGenieWeapon()
 	{
 		IsEugenicGenieWeaponUnlocked = false;
+		hasAnyWeapon = true;
 	}
 }

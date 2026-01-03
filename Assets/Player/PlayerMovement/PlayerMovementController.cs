@@ -99,7 +99,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		PlayerRotationSpeed = speed;
 	}
 	
-	
+	/*
 	void OnDrawGizmos()
 	{
 		
@@ -119,7 +119,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		Gizmos.DrawCube(transform.position + transform.forward * 1.1f + new Vector3(0, 2.5f, 0), new Vector3(1.25f, 1.25f, 1.25f));
 		
 	}
-	
+	*/
 
 	public void ChangePlayerRayPosition(float up)
 	{
