@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 3b3914c48f875f04981fc3f406f1205f, type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 3b3914c48f875f04981fc3f406f1205f, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -93,3 +93,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1a7ca36ba18c7f409a747519caf7987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WeaponNameUI: "\u041C\u0438\u043B\u0438\u0446\u0435\u0439\u0441\u043A\u0430\u044F
+    \u0414\u0443\u0431\u0438\u043D\u043A\u0430"
+  WeaponNameSystem: PoliceBaton
+  WeaponIcon: {fileID: 21300000, guid: bfc7ad6d8bb361a44bbccef14f6aeabf, type: 3}
+  weaponModel: {fileID: 7853468888140780316}

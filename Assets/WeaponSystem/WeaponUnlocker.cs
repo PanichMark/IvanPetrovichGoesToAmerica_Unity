@@ -2,48 +2,47 @@ using UnityEngine;
 
 public class WeaponUnlocker : MonoBehaviour
 {
-	public WeaponController weaponController; // Ссылка на контроллер оружия
+	public WeaponController weaponController; // Контроллер оружия
 
 	void Update()
 	{
-		// Обработка нажатия цифровых клавиш от 2 до 9
+		// Обрабатываем нажатие цифровых клавиш от 2 до 9
 		for (int i = 2; i <= 9; i++)
 		{
-			if (Input.GetKeyDown((KeyCode)(KeyCode.Alpha2 + i - 2))) // Alpha2 соответствует клавише "2"
+			if (Input.GetKeyDown((KeyCode)(KeyCode.Alpha2 + i - 2)))
 			{
-				// Определяем имя оружия в формате "Категория_ИмяОружия_Индекс"
-				string weaponName = GetWeaponNameByIndex(i);
+				// Получаем префаб оружия по индексу
+				GameObject weaponPrefab = GetWeaponPrefabByIndex(i);
 
-				// Загружаем данные оружия из ScriptableObject
-				WeaponData weaponData = Resources.Load<WeaponData>($"WeaponWheelButtons/{weaponName}");
-
-				if (weaponData != null)
+				if (weaponPrefab != null)
 				{
-					weaponController.UnlockWeapon(weaponData.WeaponPrefab); // Вызываем разблокировку оружия
+					weaponController.UnlockWeapon(weaponPrefab); // Разблокировка оружия
 				}
 				else
 				{
-					Debug.LogWarning($"Данные оружия '{weaponName}' не найдены!");
+					Debug.LogWarning($"Префаб оружия для индекса {i} не найден!");
 				}
 			}
 		}
 	}
 
-	// Метод для получения имени оружия по индексу
-	private string GetWeaponNameByIndex(int index)
+	// Возвращает префаб оружия по заданному индексу
+	private GameObject GetWeaponPrefabByIndex(int index)
 	{
 		switch (index)
 		{
 			case 2:
-				return "MeleePoliceBaton_0";
+				return Resources.Load<GameObject>("MeleePoliceBaton_0"); // Ваш путь к префабу оружия
 			case 3:
-				return "RangedHarmonicaRevolver_3";
+				return Resources.Load<GameObject>("RangedHarmonicaRevolver_3");
 			case 4:
-				return "RangedPlungerCrossbow_6";
+				return Resources.Load<GameObject>("RangedSawedoffShotgun_5");
 			case 5:
-				return "EugenicGenie_9";
+				return Resources.Load<GameObject>("RangedPlungerCrossbow_6");
+			case 6:
+				return Resources.Load<GameObject>("EugenicGenie_9");
 			default:
-				return "";
+				return null;
 		}
 	}
 }

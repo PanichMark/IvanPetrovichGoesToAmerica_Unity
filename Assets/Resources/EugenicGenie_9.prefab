@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a5900e5efaee9b438b9096cce5de998, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1728.8749
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a5900e5efaee9b438b9096cce5de998, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -341.3297
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a5900e5efaee9b438b9096cce5de998, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2727.4563
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a5900e5efaee9b438b9096cce5de998, type: 3}
       propertyPath: m_LocalRotation.w
@@ -54,11 +54,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 0a5900e5efaee9b438b9096cce5de998, type: 3}
       propertyPath: m_CastShadows
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0a5900e5efaee9b438b9096cce5de998, type: 3}
       propertyPath: m_Name
-      value: WeaponEugenicsGenie
+      value: EugenicGenie_9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0a5900e5efaee9b438b9096cce5de998, type: 3}
       propertyPath: m_IsActive
@@ -89,4 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66e09ded7490f8842963e2226c3d48d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponModel: {fileID: 0}
+  WeaponNameUI: "\u0415\u0432\u0433\u0435\u043D\u0438\u043A \u0414\u044B\u0445\u0430\u043D\u0438\u0435
+    \u0414\u0436\u0438\u043D\u043D\u0430"
+  WeaponNameSystem: EugenicGenie
+  WeaponIcon: {fileID: 21300000, guid: 3619438e49ae9504c98c91512339e736, type: 3}
+  weaponModel: {fileID: 765562863778996623}

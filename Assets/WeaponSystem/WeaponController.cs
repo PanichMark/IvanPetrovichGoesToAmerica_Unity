@@ -85,7 +85,6 @@ public class WeaponController : MonoBehaviour
 	{
 		bool isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
 
-		// Извлекаем компонент оружия из префаба
 		WeaponClass weaponComponent = weaponPrefab.GetComponent<WeaponClass>();
 		if (weaponComponent == null)
 		{
@@ -93,75 +92,56 @@ public class WeaponController : MonoBehaviour
 			return;
 		}
 
-		// Проверяем, есть ли оружие в левой руке
-		if (isLeftHand && LeftHandWeapon != null && LeftHandWeapon == weaponPrefab)
+		// Проверяем конфликт оружия в руках
+		if (isLeftHand && LeftHandWeapon != null && LeftHandWeapon == weaponPrefab ||
+			!isLeftHand && RightHandWeapon != null && RightHandWeapon == weaponPrefab)
 		{
-			// Если текущее оружие совпадает с выбранным, ничего не делаем
-			return;
+			return; // Ничего не меняем, если оружие уже установлено
 		}
-		// Проверяем, есть ли оружие в правой руке
-		else if (!isLeftHand && RightHandWeapon != null && RightHandWeapon == weaponPrefab)
+
+		// Проверяем конфликт имен системы оружия
+		if (isLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponClass>().WeaponNameSystem == weaponComponent.WeaponNameSystem ||
+			!isLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponClass>().WeaponNameSystem == weaponComponent.WeaponNameSystem)
 		{
-			// Если текущее оружие совпадает с выбранным, ничего не делаем
-			return;
-		}
-		else
-		{
-			// Если оружие не найдено ни в одной руке, устанавливаем новое оружие
+			// Если совпадают имена системы, убираем предыдущее оружие
 			if (isLeftHand)
 			{
-				if (LeftHandWeapon != null)
-				{
-					RemoveWeapon("left");
-				}
-				else if (RightHandWeapon != null && RightHandWeapon == weaponPrefab)
-				{
-					RemoveWeapon("right");
-				}
-
-				// Устанавливаем новое оружие в левую руку
-				LeftHandWeapon = weaponPrefab;
-				OnWeaponChanged?.Invoke("left");
-				weaponComponent.InstantiateWeaponModel("left");
-				leftHandWeaponComponent = LeftHandWeapon.GetComponent<WeaponClass>();
-				playerBehaviour.ArmPlayer();
+				RemoveWeapon("right");
 			}
 			else
 			{
-				if (RightHandWeapon != null)
-				{
-					RemoveWeapon("right");
-				}
-				else if (LeftHandWeapon != null && LeftHandWeapon == weaponPrefab)
-				{
-					RemoveWeapon("left");
-				}
-
-				// Устанавливаем новое оружие в правую руку
-				RightHandWeapon = weaponPrefab;
-				OnWeaponChanged?.Invoke("right");
-				weaponComponent.InstantiateWeaponModel("right");
-				rightHandWeaponComponent = RightHandWeapon.GetComponent<WeaponClass>();
-				playerBehaviour.ArmPlayer();
+				RemoveWeapon("left");
 			}
-
-			if (LeftHandWeapon != null && RightHandWeapon != null &&
-			   RightHandWeapon.GetComponent<WeaponClass>().WeaponNameSystem ==
-			   LeftHandWeapon.GetComponent<WeaponClass>().WeaponNameSystem)
-			{
-				if (isLeftHand)
-				{
-					RemoveWeapon("right");
-				}
-				else
-				{
-					RemoveWeapon("left");
-				}
-			}
-
-			Debug.Log("LeftHand: " + (LeftHandWeapon ? LeftHandWeapon.name : "null") +
-					 " | RightHand: " + (RightHandWeapon ? RightHandWeapon.name : "null"));
 		}
+
+		// Установка нового оружия
+		if (isLeftHand)
+		{
+			if (LeftHandWeapon != null)
+			{
+				RemoveWeapon("left");
+			}
+			LeftHandWeapon = weaponPrefab;
+			OnWeaponChanged?.Invoke("left");
+			weaponComponent.InstantiateWeaponModel("left");
+			leftHandWeaponComponent = LeftHandWeapon.GetComponent<WeaponClass>();
+			playerBehaviour.ArmPlayer();
+		}
+		else
+		{
+			if (RightHandWeapon != null)
+			{
+				RemoveWeapon("right");
+			}
+			RightHandWeapon = weaponPrefab;
+			OnWeaponChanged?.Invoke("right");
+			weaponComponent.InstantiateWeaponModel("right");
+			rightHandWeaponComponent = RightHandWeapon.GetComponent<WeaponClass>();
+			playerBehaviour.ArmPlayer();
+		}
+
+		Debug.Log("LeftHand: " + (LeftHandWeapon ? LeftHandWeapon.name : "null") +
+				  " | RightHand: " + (RightHandWeapon ? RightHandWeapon.name : "null"));
 	}
 
 	// Атака оружием
@@ -184,6 +164,7 @@ public class WeaponController : MonoBehaviour
 	}
 
 	// Удаление оружия
+	// Удаление оружия
 	public void RemoveWeapon(string handType)
 	{
 		if (handType == "right")
@@ -191,7 +172,6 @@ public class WeaponController : MonoBehaviour
 			if (RightHandWeapon != null)
 			{
 				rightHandWeaponComponent.DestroyWeaponModel();
-				Destroy(RightHandWeapon);
 				RightHandWeapon = null;
 			}
 		}
@@ -200,7 +180,6 @@ public class WeaponController : MonoBehaviour
 			if (LeftHandWeapon != null)
 			{
 				leftHandWeaponComponent.DestroyWeaponModel();
-				Destroy(LeftHandWeapon);
 				LeftHandWeapon = null;
 			}
 		}

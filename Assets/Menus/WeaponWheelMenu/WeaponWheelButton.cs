@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class WeaponWheelButton : MonoBehaviour
 {
@@ -17,13 +16,13 @@ public class WeaponWheelButton : MonoBehaviour
 		button.onClick.AddListener(() => weaponController.SelectWeapon(WeaponPrefab));
 	}
 
-	public void Initialize(WeaponController weaponController, WeaponWheelController weaponWheelController, WeaponData weaponData)
+	public void Initialize(WeaponController weaponController, WeaponWheelController weaponWheelController, GameObject weaponPrefab, WeaponClass weaponComponent)
 	{
 		this.weaponController = weaponController;
 		this.weaponWheelController = weaponWheelController;
-		WeaponPrefab = weaponData.WeaponPrefab;
-		WeaponName = weaponData.WeaponName;
-		WeaponIcon = weaponData.WeaponIcon;
+		WeaponPrefab = weaponPrefab;
+		WeaponName = weaponComponent.WeaponNameUI;
+		WeaponIcon = weaponComponent.WeaponIcon;
 	}
 
 	public void HoverEnter()
