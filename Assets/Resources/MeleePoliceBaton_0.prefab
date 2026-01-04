@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3b3914c48f875f04981fc3f406f1205f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.8892553
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b3914c48f875f04981fc3f406f1205f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.355
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b3914c48f875f04981fc3f406f1205f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.5593116
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b3914c48f875f04981fc3f406f1205f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 40a2200b27914f5458da58bc1e07ca0f, type: 2}
     - target: {fileID: 919132149155446097, guid: 3b3914c48f875f04981fc3f406f1205f, type: 3}
       propertyPath: m_Name
-      value: WeaponPoliceBaton
+      value: MeleePoliceBaton_0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3b3914c48f875f04981fc3f406f1205f, type: 3}
       propertyPath: m_IsActive
@@ -93,4 +93,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1a7ca36ba18c7f409a747519caf7987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponModel: {fileID: 919132149155446097, guid: 3b3914c48f875f04981fc3f406f1205f, type: 3}

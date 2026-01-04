@@ -14,16 +14,16 @@ public class WeaponUnlocker : MonoBehaviour
 				// Определяем имя оружия в формате "Категория_ИмяОружия_Индекс"
 				string weaponName = GetWeaponNameByIndex(i);
 
-				// Загружаем префаб оружия из ресурсов
-				GameObject weaponPrefab = Resources.Load<GameObject>($"WeaponWheelButtons/{weaponName}");
+				// Загружаем данные оружия из ScriptableObject
+				WeaponData weaponData = Resources.Load<WeaponData>($"WeaponWheelButtons/{weaponName}");
 
-				if (weaponPrefab != null)
+				if (weaponData != null)
 				{
-					weaponController.UnlockWeapon(weaponPrefab); // Вызываем разблокировку оружия
+					weaponController.UnlockWeapon(weaponData.WeaponPrefab); // Вызываем разблокировку оружия
 				}
 				else
 				{
-					Debug.LogWarning($"Префаб оружия '{weaponName}' не найден!");
+					Debug.LogWarning($"Данные оружия '{weaponName}' не найдены!");
 				}
 			}
 		}

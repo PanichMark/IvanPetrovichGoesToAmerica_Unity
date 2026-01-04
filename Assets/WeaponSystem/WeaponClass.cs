@@ -6,7 +6,7 @@ public abstract class WeaponClass : MonoBehaviour
 	public string WeaponNameUI { get; protected set; }
 	public virtual float WeaponDamage {  get; protected set; }
 
-	[SerializeField] protected GameObject weaponModel; // Ссылка на 3D модель оружия
+	protected GameObject weaponModel; // Ссылка на 3D модель оружия
 	public GameObject FirstPersonWeaponModelInstance { get; protected set; } // Ссылка на инстанцированную модель
 	public GameObject ThirdPersonWeaponModelInstance { get; protected set; } // Ссылка на инстанцированную модель
 

@@ -105,7 +105,6 @@ public class WeaponWheelController : MonoBehaviour
 	}
 
 
-
 	void CreateWheel()
 	{
 		// Собираем список разблокированных видов оружия
@@ -127,15 +126,9 @@ public class WeaponWheelController : MonoBehaviour
 		for (int i = 0; i < activeWeapons.Count; i++)
 		{
 			GameObject segmentInstance = Instantiate(wheelSegmentPrefab);
-			var bruh = segmentInstance.GetComponent<WeaponWheelButton>();
-			bruh.Initialize(weaponController, this);
-
-
-
 			segmentInstance.transform.SetParent(centerPoint.parent); // Родитель — тот же, что и у центра
 			segmentInstance.name = $"Segment {i + 1}";
 
-			// Настраиваем иконку и реакцию на нажатие кнопки
 			var button = segmentInstance.GetComponent<Button>();
 			button.onClick.AddListener(() => OnSegmentSelected?.Invoke(i)); // Отправляем индекс кнопки
 
@@ -147,16 +140,43 @@ public class WeaponWheelController : MonoBehaviour
 
 			// Добавляем компонент Image к иконке
 			Image iconImage = iconObject.AddComponent<Image>();
-			iconImage.sprite = activeWeapons[i].GetComponent<SpriteRenderer>().sprite; // Загрузка иконки оружия
+
+			// *** Изменено тут ***
+			// Теперь получаем данные из ScriptableObject
+			WeaponData weaponData = Resources.Load<WeaponData>($"WeaponWheelButtons/{activeWeapons[i].name}");
+			if (weaponData != null)
+				iconImage.sprite = weaponData.WeaponIcon; // Используем иконку из ScriptableObject
+			else
+				Debug.LogWarning($"Данные оружия '{activeWeapons[i].name}' не найдены!");
+
+			// Настройки компонента Image
+			iconImage.type = Image.Type.Simple; // Тип изображения
+			iconImage.fillMethod = Image.FillMethod.Horizontal; // Режим заполнения
+			iconImage.fillAmount = 1f; // Полное заполнение
+
+			// Настройки RectTransform
+			RectTransform iconRectTransform = iconObject.GetComponent<RectTransform>();
+			iconRectTransform.sizeDelta = new Vector2(100, 100); // Размеры иконки
+			iconRectTransform.anchorMin = new Vector2(0.5f, 0.5f); // Центрирование
+			iconRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+			iconRectTransform.pivot = new Vector2(0.5f, 0.5f);
 
 			// Вычисляем позицию кнопки на окружности
 			float adjustedAngle = i * angleStep + 90f; // Учтем сдвиг на -90 градусов
 			Vector3 positionOnCircle = CalculatePositionOnCircle(adjustedAngle, radius);
 			segmentInstance.transform.position = centerPoint.position + positionOnCircle;
 
+			// Назначаем данные для кнопки
+			WeaponWheelButton buttonScript = segmentInstance.GetComponent<WeaponWheelButton>();
+			if (buttonScript != null)
+			{
+				buttonScript.Initialize(weaponController, this, weaponData);
+			}
+
 			wheelSegments.Add(segmentInstance); // Запоминаем новый сегмент
 		}
 	}
+
 
 
 
