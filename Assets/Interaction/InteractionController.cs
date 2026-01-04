@@ -26,12 +26,12 @@ public class InteractionController : MonoBehaviour
 	public Image Item3Image;
 	public Sprite NoItemImageExeption;
 
-	public PlayerCameraController playerCamera;
-	public GameObject PlayerCameraObject;
+	private PlayerCameraController playerCamera;
+	//public GameObject PlayerCameraObject;
 
 	private Coroutine showAdditionalHintCoroutine;
 
-	public PlayerBehaviour playerBehaviour;
+	private PlayerBehaviour playerBehaviour;
 
 	private RaycastHit hitInfo;
 	private bool isHit;
@@ -40,10 +40,26 @@ public class InteractionController : MonoBehaviour
 	private GameObject currentInteractableObject; // Текущий объект взаимодействия
 	public GameObject CurrentPickableObject { get; private set; }
 
+
+	public void Initialize(IInputDevice inputDevice, PlayerCameraController playerCameraController, PlayerBehaviour playerBehaviour)
+	{
+		this.inputDevice = inputDevice;
+		playerCamera = playerCameraController;
+		this.playerBehaviour = playerBehaviour;
+
+		// Подписываемся на события игрока
+		
+
+
+		Debug.Log("InteractionController Initialized");
+	}
+
+
+
 	void Start()
 	{
-		playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
-		playerBehaviour = GetComponent<PlayerBehaviour>();
+	//	playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
+		//playerBehaviour = GetComponent<PlayerBehaviour>();
 		//additionalInteractionText.gameObject.SetActive(false);
 	}
 

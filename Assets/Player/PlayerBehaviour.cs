@@ -1,25 +1,24 @@
 ﻿using UnityEngine;
 
-public class PlayerBehaviour: MonoBehaviour
+public class PlayerBehaviour : MonoBehaviour
 {
 	private IInputDevice inputDevice;
-
 
 	public bool WasPlayerArmed { get; private set; }
 	public bool IsPlayerArmed { get; private set; } = false;
 
-	
-
+	// Делегаты для уведомлений
+	public delegate void OnPlayerEventHandler();
+	public event OnPlayerEventHandler OnPlayerArmed;
+	public event OnPlayerEventHandler OnPlayerDisarmed;
 
 	void Update()
 	{
-
 		if (inputDevice.GetKeyHideWeapons())
 		{
-				DisarmPlayer();
+			DisarmPlayer();
 		}
 	}
-	
 
 	public void ArmPlayer()
 	{
@@ -27,11 +26,12 @@ public class PlayerBehaviour: MonoBehaviour
 		{
 			IsPlayerArmed = true;
 			WasPlayerArmed = false;
-	
-			Debug.Log("PlayerArmed");
+
+			// Вызвать событие OnPlayerArmed
+			OnPlayerArmed?.Invoke();
+
+			Debug.Log("Player Armed");
 		}
-		
-		
 	}
 
 	public void DisarmPlayer()
@@ -39,19 +39,18 @@ public class PlayerBehaviour: MonoBehaviour
 		if (IsPlayerArmed)
 		{
 			IsPlayerArmed = false;
-
-			
-			
 			WasPlayerArmed = true;
 
-		
-			Debug.Log("PlayerDisarmed");
-		}
-		else WasPlayerArmed = false;
-		
-	
-	}
+			// Вызвать событие OnPlayerDisarmed
+			OnPlayerDisarmed?.Invoke();
 
+			Debug.Log("Player Disarmed");
+		}
+		else
+		{
+			WasPlayerArmed = false;
+		}
+	}
 
 	public void Initialize(IInputDevice inputDevice)
 	{
@@ -59,4 +58,3 @@ public class PlayerBehaviour: MonoBehaviour
 		Debug.Log("PlayerBehaviour Initialized");
 	}
 }
-

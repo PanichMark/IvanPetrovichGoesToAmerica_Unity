@@ -31,14 +31,63 @@ public class WeaponController : MonoBehaviour
 		this.inputDevice = inputDevice;
 		this.menuManager = menuManager;
 		this.playerBehaviour = playerBehaviour;
+
+		// Подписываемся на события игрока
+		playerBehaviour.OnPlayerArmed += OnPlayerArmed;
+		playerBehaviour.OnPlayerDisarmed += OnPlayerDisarmed;
+
+
 		Debug.Log("WeaponController Initialized");
 	}
+
+	private void OnPlayerArmed()
+	{
+		// Реакция на событие "игрок вооружился": покажем оружие
+		if (rightHandWeaponComponent != null)
+		{
+			ShowWeapon("right"); // Показать оружие правой руки
+		}
+
+		if (leftHandWeaponComponent != null)
+		{
+			ShowWeapon("left"); // Показать оружие левой руки
+		}
+	}
+
+	private void OnPlayerDisarmed()
+	{
+		// Реакция на событие "игрок обезоружился": спрячем оружие
+		if (rightHandWeaponComponent != null)
+		{
+			HideWeapon("right"); // Скрыть оружие правой руки
+		}
+
+		if (leftHandWeaponComponent != null)
+		{
+			HideWeapon("left"); // Скрыть оружие левой руки
+		}
+	}
+
 
 
 	private void Start()
 	{
 		ResetAllWeapons(); // Сбрасываем все оружие в начале
 	}
+
+	private void Update()
+	{
+		if (inputDevice.GetKeyRightHandWeaponAttack())
+		{
+			RightWeaponAttack();
+		}
+
+		if (inputDevice.GetKeyLeftHandWeaponAttack())
+		{
+			LeftWeaponAttack();
+		}
+	}
+
 
 	// Единственный метод разблокировки оружия
 	public void UnlockWeapon(GameObject weaponPrefab)
@@ -184,6 +233,47 @@ public class WeaponController : MonoBehaviour
 			}
 		}
 	}
+
+	public void ShowWeapon(string handType)
+	{
+		if (handType == "right" && rightHandWeaponComponent != null)
+		{
+			if (rightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+				rightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
+
+			if (rightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+				rightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+		}
+		else if (handType == "left" && leftHandWeaponComponent != null)
+		{
+			if (leftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+				leftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
+
+			if (leftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+				leftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+		}
+	}
+
+	public void HideWeapon(string handType)
+	{
+		if (handType == "right" && rightHandWeaponComponent != null)
+		{
+			if (rightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+				rightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
+
+			if (rightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+				rightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
+		}
+		else if (handType == "left" && leftHandWeaponComponent != null)
+		{
+			if (leftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+				leftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
+
+			if (leftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+				leftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
+		}
+	}
+
 
 	// Сбор разблокированных видов оружия
 	public List<GameObject> CollectActiveWeapons()

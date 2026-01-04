@@ -25,8 +25,8 @@ public class BootStrap : MonoBehaviour
 	[SerializeField] private PlayerCameraFirstPersonRender firstPersonRender;
 
 	[SerializeField] private PlayerAnimationController playerAnimationController;
-	
-	
+
+	[SerializeField] private InteractionController interactionController;
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	private void Awake()
@@ -51,6 +51,7 @@ public class BootStrap : MonoBehaviour
 
 		playerAnimationController.Initialize(inputDevice, player, playerBehaviour, movementController, cameraController, weaponController);
 
+		interactionController.Initialize(inputDevice, cameraController, playerBehaviour);
 		
 
 

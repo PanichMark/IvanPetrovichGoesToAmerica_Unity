@@ -38,7 +38,7 @@ public class WeaponPoliceBaton : WeaponClass
 
 	public override void WeaponAttack()
 	{
-		Debug.Log("PoliceBatonAttack");
+		Debug.Log("PoliceBaton Attack");
 		/*
 		if (IsPlayerPoliceBatonAttacking == false)
 		{
