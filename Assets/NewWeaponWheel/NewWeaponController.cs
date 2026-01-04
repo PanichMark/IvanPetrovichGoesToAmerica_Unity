@@ -1,5 +1,5 @@
 using UnityEngine;
-
+/*
 public class NewWeaponController : MonoBehaviour
 {
 	public DynamicWeaponWheel weaponWheel; // Ссылка на объект DynamicWeaponWheel
@@ -26,4 +26,6 @@ public class NewWeaponController : MonoBehaviour
 			weaponWheel.RecreateWheel();  // Пересоздаем колесо
 		}
 	}
+
 }
+*/

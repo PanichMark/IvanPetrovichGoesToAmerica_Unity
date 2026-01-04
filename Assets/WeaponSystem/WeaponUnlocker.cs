@@ -7,19 +7,19 @@ public class WeaponUnlocker : MonoBehaviour
 	void Update()
 	{
 		// Временная разблокировка оружия через клавиши
-		if (Input.GetKeyDown(KeyCode.Alpha1)) // Клавиша '1'
+		if (Input.GetKeyDown(KeyCode.Alpha2)) // Клавиша '1'
 		{
 			weaponController.UnlockPoliceBatonWeapon();
 		}
-		else if (Input.GetKeyDown(KeyCode.Alpha2)) // Клавиша '2'
+		else if (Input.GetKeyDown(KeyCode.Alpha3)) // Клавиша '2'
 		{
 			weaponController.UnlockHarmonicaRevolverWeapon();
 		}
-		else if (Input.GetKeyDown(KeyCode.Alpha3)) // Клавиша '3'
+		else if (Input.GetKeyDown(KeyCode.Alpha4)) // Клавиша '3'
 		{
 			weaponController.UnlockPlungerCrossbowWeapon();
 		}
-		else if (Input.GetKeyDown(KeyCode.Alpha4)) // Клавиша '4'
+		else if (Input.GetKeyDown(KeyCode.Alpha5)) // Клавиша '4'
 		{
 			weaponController.UnlockEugenicGenieWeapon();
 		}

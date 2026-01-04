@@ -289,9 +289,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd42e6d1088f36e4a8c118ebe4cc954d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wheelSegmentPrefab: {fileID: 7972868534559737324, guid: a93548d23f1c8534d9597853ad6a7a30, type: 3}
+  centerPoint: {fileID: 203175592}
   WeaponWheelMenuCanvas: {fileID: 1931274087}
   WeaponText: {fileID: 1427655751}
   WeaponWheelName: {fileID: 2119727412}
+  radius: 330
 --- !u!114 &47978239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,6 +569,41 @@ Transform:
   - {fileID: 845401382}
   m_Father: {fileID: 1303620215}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &203175591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 203175592}
+  m_Layer: 5
+  m_Name: Centre
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &203175592
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203175591}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1931274088}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &219486680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1289,7 +1327,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &528658806
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6628,7 +6666,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1931274085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6707,6 +6745,7 @@ RectTransform:
   - {fileID: 528658806}
   - {fileID: 2119727411}
   - {fileID: 1427655750}
+  - {fileID: 203175592}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
