@@ -37,19 +37,11 @@ public class WeaponUnlocker : MonoBehaviour
 			case 2:
 				return "MeleePoliceBaton_0";
 			case 3:
-				return "MeleeSilverRapier_1";
-			case 4:
-				return "MeleeFirefighterSaw_2";
-			case 5:
 				return "RangedHarmonicaRevolver_3";
-			case 6:
-				return "RangedBergmanPistol_4";
-			case 7:
-				return "RangedSawedoffShotgun_5";
-			case 8:
+			case 4:
 				return "RangedPlungerCrossbow_6";
-			case 9:
-				return "RangedGrenadeLauncher_7";
+			case 5:
+				return "EugenicGenie_9";
 			default:
 				return "";
 		}

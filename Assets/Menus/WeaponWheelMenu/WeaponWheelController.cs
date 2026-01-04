@@ -104,38 +104,8 @@ public class WeaponWheelController : MonoBehaviour
 		}
 	}
 
-	/*
-	// Метод создания колеса оружия
-	void CreateWheel()
-	{
-		// Собираем список разблокированных видов оружия
-		List<GameObject> activeWeapons = weaponController.CollectActiveWeapons();
 
-		if (activeWeapons.Count == 0)
-			return; // Нельзя создать колесо без оружия
 
-		float angleStep = 360f / activeWeapons.Count; // Угловое расстояние между сегментами
-
-		for (int i = 0; i < activeWeapons.Count; i++)
-		{
-			GameObject segmentInstance = Instantiate(wheelSegmentPrefab);
-			segmentInstance.transform.SetParent(centerPoint.parent); // Родитель — тот же, что и у центра
-			segmentInstance.name = $"Segment {i + 1}";
-
-			// Настраиваем иконку и реакцию на нажатие кнопки
-			var button = segmentInstance.GetComponent<Button>();
-			button.image.sprite = activeWeapons[i].GetComponent<SpriteRenderer>().sprite; // Загрузка иконки оружия
-			button.onClick.AddListener(() => OnSegmentSelected?.Invoke(i)); // Отправляем индекс кнопки
-
-			// Вычисляем позицию кнопки на окружности
-			float adjustedAngle = i * angleStep + 90f; // Учтем сдвиг на -90 градусов
-			Vector3 positionOnCircle = CalculatePositionOnCircle(adjustedAngle, radius);
-			segmentInstance.transform.position = centerPoint.position + positionOnCircle;
-
-			wheelSegments.Add(segmentInstance); // Запоминаем новый сегмент
-		}
-	}
-	*/
 	void CreateWheel()
 	{
 		// Собираем список разблокированных видов оружия
@@ -157,13 +127,27 @@ public class WeaponWheelController : MonoBehaviour
 		for (int i = 0; i < activeWeapons.Count; i++)
 		{
 			GameObject segmentInstance = Instantiate(wheelSegmentPrefab);
+			var bruh = segmentInstance.GetComponent<WeaponWheelButton>();
+			bruh.Initialize(weaponController, this);
+
+
+
 			segmentInstance.transform.SetParent(centerPoint.parent); // Родитель — тот же, что и у центра
 			segmentInstance.name = $"Segment {i + 1}";
 
 			// Настраиваем иконку и реакцию на нажатие кнопки
 			var button = segmentInstance.GetComponent<Button>();
-			button.image.sprite = activeWeapons[i].GetComponent<SpriteRenderer>().sprite; // Загрузка иконки оружия
 			button.onClick.AddListener(() => OnSegmentSelected?.Invoke(i)); // Отправляем индекс кнопки
+
+			// Создаем дочерний объект для иконки
+			GameObject iconObject = new GameObject("Icon");
+			iconObject.transform.SetParent(button.transform, false);
+			iconObject.transform.localPosition = Vector3.zero;
+			iconObject.transform.localScale = Vector3.one;
+
+			// Добавляем компонент Image к иконке
+			Image iconImage = iconObject.AddComponent<Image>();
+			iconImage.sprite = activeWeapons[i].GetComponent<SpriteRenderer>().sprite; // Загрузка иконки оружия
 
 			// Вычисляем позицию кнопки на окружности
 			float adjustedAngle = i * angleStep + 90f; // Учтем сдвиг на -90 градусов
