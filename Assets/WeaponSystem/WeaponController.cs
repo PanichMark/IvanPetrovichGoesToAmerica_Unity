@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
+public delegate void OnWeaponUnlocked(GameObject weaponPrefab);
 public delegate void OnWeaponChanged(string activeHand);
 
 public class WeaponController : MonoBehaviour
@@ -9,7 +10,22 @@ public class WeaponController : MonoBehaviour
 	private MenuManager menuManager;
 	private PlayerBehaviour playerBehaviour;
 
-	// Конструктор принимает зависимость
+	// Список разблокированных видов оружия
+	public Dictionary<string, GameObject> unlockedWeapons = new Dictionary<string, GameObject>();
+
+	public event OnWeaponUnlocked OnWeaponUnlocked; // Делегат для уведомления о разблокировке оружия
+
+	public event OnWeaponChanged OnWeaponChanged;
+
+	public bool hasAnyWeapon { get; private set; } = false;
+
+	public GameObject LeftHandWeapon { get; private set; }
+	public GameObject RightHandWeapon { get; private set; }
+
+	public WeaponClass leftHandWeaponComponent { get; private set; }
+	public WeaponClass rightHandWeaponComponent { get; private set; }
+
+	// Инициализация контроллера
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour)
 	{
 		this.inputDevice = inputDevice;
@@ -18,49 +34,37 @@ public class WeaponController : MonoBehaviour
 		Debug.Log("WeaponController Initialized");
 	}
 
-	public event OnWeaponChanged OnWeaponChanged;
-
-	public bool hasAnyWeapon { get; private set; } = false;
-
-	public bool IsPoliceBatonWeaponUnlocked { get; private set; }
-	public bool IsHarmonicaRevolverWeaponUnlocked { get; private set; }
-	public bool IsPlungerCrossbowWeaponUnlocked { get; private set; }
-	public bool IsEugenicGenieWeaponUnlocked { get; private set; }
-
-	public GameObject LeftHandWeapon { get; private set; }
-	public GameObject RightHandWeapon { get; private set; }
-
-	public WeaponClass leftHandWeaponComponent { get; private set; }
-	public WeaponClass rightHandWeaponComponent { get; private set; }
 
 	private void Start()
 	{
 		ResetAllWeapons(); // Сбрасываем все оружие в начале
 	}
 
-	// Разблокировка оружия
-	public void UnlockPoliceBatonWeapon()
+	// Единственный метод разблокировки оружия
+	public void UnlockWeapon(GameObject weaponPrefab)
 	{
-		IsPoliceBatonWeaponUnlocked = true;
-		SetHasAnyWeapon();
-	}
+		// Выделяем имя оружия и индекс из имени префаба
+		string[] parts = weaponPrefab.name.Split('_');
+		if (parts.Length != 2)
+		{
+			Debug.LogError("Некорректное имя префаба оружия!");
+			return;
+		}
 
-	public void UnlockHarmonicaRevolverWeapon()
-	{
-		IsHarmonicaRevolverWeaponUnlocked = true;
-		SetHasAnyWeapon();
-	}
+		string weaponName = parts[0]; // Имя оружия
+		int index = int.Parse(parts[1]); // Индекс оружия
 
-	public void UnlockPlungerCrossbowWeapon()
-	{
-		IsPlungerCrossbowWeaponUnlocked = true;
-		SetHasAnyWeapon();
-	}
+		// Создаем ключ в формате "ИмяОружия_Индекс"
+		string key = $"{weaponName}_{index}";
 
-	public void UnlockEugenicGenieWeapon()
-	{
-		IsEugenicGenieWeaponUnlocked = true;
+		// Добавляем оружие в словарь
+		unlockedWeapons[key] = weaponPrefab;
 		SetHasAnyWeapon();
+
+		// Вызываем делегат для уведомления о разблокировке оружия
+		OnWeaponUnlocked?.Invoke(weaponPrefab);
+
+		Debug.Log($"Unlocked {weaponPrefab}");
 	}
 
 	// Устанавливаем флаг наличия оружия
@@ -72,10 +76,7 @@ public class WeaponController : MonoBehaviour
 	// Сброс всех доступных видов оружия
 	public void ResetAllWeapons()
 	{
-		IsPoliceBatonWeaponUnlocked = false;
-		IsHarmonicaRevolverWeaponUnlocked = false;
-		IsPlungerCrossbowWeaponUnlocked = false;
-		IsEugenicGenieWeaponUnlocked = false;
+		unlockedWeapons.Clear();
 		hasAnyWeapon = false;
 	}
 
@@ -205,30 +206,9 @@ public class WeaponController : MonoBehaviour
 		}
 	}
 
-	// Отображение оружия
-	public void ShowWeapon(string handType)
+	// Сбор разблокированных видов оружия
+	public List<GameObject> CollectActiveWeapons()
 	{
-		if (handType == "right" && RightHandWeapon != null)
-		{
-			RightHandWeapon.SetActive(true);
-		}
-		else if (handType == "left" && LeftHandWeapon != null)
-		{
-			LeftHandWeapon.SetActive(true);
-		}
+		return new List<GameObject>(unlockedWeapons.Values);
 	}
-
-	public void HideWeapon(string handType)
-	{
-		if (handType == "right")
-		{
-			RightHandWeapon.SetActive(false);
-		}
-		else if (handType == "left")
-		{
-			LeftHandWeapon.SetActive(false);
-		}
-	}
-
-
 }

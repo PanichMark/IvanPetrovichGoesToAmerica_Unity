@@ -11,10 +11,7 @@ public class WeaponWheelController : MonoBehaviour
 	public TextMeshProUGUI WeaponText;    // Текст для отображения текущего оружия
 	public TextMeshProUGUI WeaponWheelName;// Текст для заголовка меню (левая/правая рука)
 
-	// Единый словарь для разблокированных видов оружия
-	// Ключ: строка "ИмяОружия_Индекс", значение: объект оружия
-	private Dictionary<string, GameObject> UnlockedWeapons = new Dictionary<string, GameObject>();
-
+	// Список сегментов
 	private List<GameObject> wheelSegments = new List<GameObject>();
 	private bool IsWeaponWheelActive = false;
 	private bool IsWeaponLeftHand = false;
@@ -27,53 +24,36 @@ public class WeaponWheelController : MonoBehaviour
 	private bool previousRightHandPressed = false;
 	private bool previousLeftHandPressed = false;
 
-	// Переменная radius, чтобы она была доступна в методах
-	public float radius; // Радиус окружности кнопок
+	// Радиус окружности кнопок
+	public float radius = 100f;
 
-	public event System.Action<int> OnSegmentSelected; // Сигнал о выборе сегмента
+	// Делегат для выбора сегмента
+	public event System.Action<int> OnSegmentSelected;
 
 	void Start()
 	{
-		CreateWheel(); // Создаём колесо оружия
-
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/MeleePoliceBaton_0"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/MeleeSilverRapier_1"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/MeleeFirefighterSaw_2"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/RangedHarmonicaRevolver_3"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/RangedBergmanPistol_4"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/RangedSawedoffShotgun_5"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/RangedPlungerCrossbow_6"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/RangedGrenadeLauncher_7"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/RangedSniperRifle_8"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/EugenicGenie_9"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/EugenicFireball_10"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/EugenicElectroshock_11"));
-		AddUnlockedWeapon(Resources.Load<GameObject>("WeaponWHeelButtons/EugenicMorozkoFrost_12"));
-
-
+		//CreateWheel(); // Создаём колесо оружия
 	}
 
-	// Метод добавления разблокированного оружия
-	public void AddUnlockedWeapon(GameObject weaponPrefab)
+	// Инициализация контроллера
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, WeaponController weaponController)
 	{
-		// Выделяем имя оружия и индекс из имени префаба
-		string[] parts = weaponPrefab.name.Split('_');
-		if (parts.Length != 2)
-		{
-			Debug.LogError("Некорректное имя префаба оружия!");
-			return;
-		}
+		this.inputDevice = inputDevice;
+		this.playerBehaviour = playerBehaviour;
+		this.weaponController = weaponController;
+		this.menuManager = menuManager;
+		Debug.Log("WeaponWheelController Initialized");
 
-		string weaponName = parts[0]; // Имя оружия
-		int index = int.Parse(parts[1]); // Индекс оружия
+		// Подписываемся на событие разблокировки оружия
+		weaponController.OnWeaponUnlocked += OnWeaponUnlocked;
+	}
 
-		// Создаем ключ в формате "ИмяОружия_Индекс"
-		string key = $"{weaponName}_{index}";
-
-		// Добавляем оружие в словарь
-		UnlockedWeapons[key] = weaponPrefab;
-
-		RecreateWheel(); // Пересоздаём колесо оружия
+	// Обработчик события разблокировки оружия
+	private void OnWeaponUnlocked(GameObject weaponPrefab)
+	{
+		// Пересоздаем колесо оружия
+		RecreateWheel();
+		//Debug.Log("Пересоздали кольцо");
 	}
 
 	// Обновлённое условие открытия колеса
@@ -124,22 +104,12 @@ public class WeaponWheelController : MonoBehaviour
 		}
 	}
 
-
-
-	public void RecreateWheel()
-	{
-		foreach (var seg in wheelSegments)
-			Destroy(seg.gameObject); // Удаляем предыдущие сегменты
-
-		wheelSegments.Clear(); // Чистка списка
-
-		CreateWheel(); // Формирование нового колеса
-	}
-
+	/*
+	// Метод создания колеса оружия
 	void CreateWheel()
 	{
 		// Собираем список разблокированных видов оружия
-		List<GameObject> activeWeapons = CollectActiveWeapons();
+		List<GameObject> activeWeapons = weaponController.CollectActiveWeapons();
 
 		if (activeWeapons.Count == 0)
 			return; // Нельзя создать колесо без оружия
@@ -155,7 +125,45 @@ public class WeaponWheelController : MonoBehaviour
 			// Настраиваем иконку и реакцию на нажатие кнопки
 			var button = segmentInstance.GetComponent<Button>();
 			button.image.sprite = activeWeapons[i].GetComponent<SpriteRenderer>().sprite; // Загрузка иконки оружия
-			button.onClick.AddListener(() => OnSegmentSelected.Invoke(i));
+			button.onClick.AddListener(() => OnSegmentSelected?.Invoke(i)); // Отправляем индекс кнопки
+
+			// Вычисляем позицию кнопки на окружности
+			float adjustedAngle = i * angleStep + 90f; // Учтем сдвиг на -90 градусов
+			Vector3 positionOnCircle = CalculatePositionOnCircle(adjustedAngle, radius);
+			segmentInstance.transform.position = centerPoint.position + positionOnCircle;
+
+			wheelSegments.Add(segmentInstance); // Запоминаем новый сегмент
+		}
+	}
+	*/
+	void CreateWheel()
+	{
+		// Собираем список разблокированных видов оружия
+		List<GameObject> activeWeapons = weaponController.CollectActiveWeapons();
+
+		if (activeWeapons.Count == 0)
+			return; // Нельзя создать колесо без оружия
+
+		// Сортировка оружия по индексу
+		activeWeapons.Sort((a, b) =>
+		{
+			int indexA = int.Parse(a.name.Split('_')[1]);
+			int indexB = int.Parse(b.name.Split('_')[1]);
+			return indexA.CompareTo(indexB);
+		});
+
+		float angleStep = 360f / activeWeapons.Count; // Угловое расстояние между сегментами
+
+		for (int i = 0; i < activeWeapons.Count; i++)
+		{
+			GameObject segmentInstance = Instantiate(wheelSegmentPrefab);
+			segmentInstance.transform.SetParent(centerPoint.parent); // Родитель — тот же, что и у центра
+			segmentInstance.name = $"Segment {i + 1}";
+
+			// Настраиваем иконку и реакцию на нажатие кнопки
+			var button = segmentInstance.GetComponent<Button>();
+			button.image.sprite = activeWeapons[i].GetComponent<SpriteRenderer>().sprite; // Загрузка иконки оружия
+			button.onClick.AddListener(() => OnSegmentSelected?.Invoke(i)); // Отправляем индекс кнопки
 
 			// Вычисляем позицию кнопки на окружности
 			float adjustedAngle = i * angleStep + 90f; // Учтем сдвиг на -90 градусов
@@ -166,11 +174,7 @@ public class WeaponWheelController : MonoBehaviour
 		}
 	}
 
-	// Собираем активный список оружия, исключая пустые позиции
-	private List<GameObject> CollectActiveWeapons()
-	{
-		return new List<GameObject>(UnlockedWeapons.Values);
-	}
+
 
 	// Функция для вычисления позиции на окружности
 	private Vector3 CalculatePositionOnCircle(float angleInDegrees, float radius)
@@ -180,20 +184,28 @@ public class WeaponWheelController : MonoBehaviour
 		return new Vector3(x, y, 0f);
 	}
 
-	// Инициализация контроллера
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, WeaponController weaponController)
+	// Метод рекреации колеса
+	public void RecreateWheel()
 	{
-		this.inputDevice = inputDevice;
-		this.playerBehaviour = playerBehaviour;
-		this.weaponController = weaponController;
-		this.menuManager = menuManager;
-		Debug.Log("WeaponWheelController Initialized");
+		foreach (var seg in wheelSegments)
+			Destroy(seg.gameObject); // Удаляем предыдущие сегменты
+
+		wheelSegments.Clear(); // Чистка списка
+
+		CreateWheel(); // Формирование нового колеса
+		//Debug.Log("Пересоздали кольцо");
 	}
 
 	private void EnableWeaponWheelMenuCanvas(string handType)
 	{
 		WeaponWheelMenuCanvas.gameObject.SetActive(true); // Показываем Canvas
 		menuManager.OpenWeaponWheelMenu(handType);
+
+		// Принудительно обновляем компоновку Canvas
+		//LayoutRebuilder.ForceRebuildLayoutImmediate(WeaponWheelMenuCanvas.GetComponent<RectTransform>());
+
+		// Пересоздаем колесо оружия при первом открытии
+		RecreateWheel();
 	}
 
 	private void DisableWeaponWheelMenuCanvas(bool IsItRightWeaponWheelMenuCanvas)
