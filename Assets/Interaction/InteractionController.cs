@@ -24,7 +24,7 @@ public class InteractionController : MonoBehaviour
 	public Image Item1Image;
 	public Image Item2Image;
 	public Image Item3Image;
-	public Sprite NoItemImageExeption;
+	private Sprite NoItemImageExeption;
 
 	private PlayerCameraController playerCamera;
 	//public GameObject PlayerCameraObject;

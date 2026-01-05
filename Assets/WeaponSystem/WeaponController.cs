@@ -86,6 +86,9 @@ public class WeaponController : MonoBehaviour
 		{
 			LeftWeaponAttack();
 		}
+
+		
+
 	}
 
 

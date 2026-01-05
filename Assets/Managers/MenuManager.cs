@@ -136,5 +136,18 @@ public class MenuManager : MonoBehaviour
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 	}
+
+	public void OpenInteractionMenu()
+	{
+		Time.timeScale = 0f;
+		OpenAnyMenu();
+	}
+
+	public void CloseInteractionMenu()
+	{
+		Time.timeScale = 1f;
+		CloseAnyMenu();
+	}
+
 }
 

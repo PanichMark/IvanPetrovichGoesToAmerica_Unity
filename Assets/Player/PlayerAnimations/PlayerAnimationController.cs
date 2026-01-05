@@ -1,4 +1,4 @@
-﻿
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerAnimationController: MonoBehaviour
@@ -183,7 +183,7 @@ public class PlayerAnimationController: MonoBehaviour
 		// анимации оружия
 		if (weaponController.RightHandWeapon != null)
 		{
-			if (weaponController.RightHandWeapon.activeInHierarchy)
+			if (weaponController.rightHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 			{
 				playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponRight"), 1);
 				ChangePlayerWeaponRightAnimation("EquipRightWeapon");
@@ -208,7 +208,7 @@ public class PlayerAnimationController: MonoBehaviour
 
 		if (weaponController.LeftHandWeapon != null)
 		{
-			if (weaponController.LeftHandWeapon.activeInHierarchy)
+			if (weaponController.leftHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 			{
 				playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponLeft"), 1);
 				ChangePlayerWeaponLeftAnimation("EquipLeftWeapon");
@@ -264,6 +264,10 @@ public class PlayerAnimationController: MonoBehaviour
 		*/
 
 	}
+
+
+
+	/*
 		private void ChangePlayerMovementAnimation(string animation, float crossfade = 0.2f)
 		{
 			if (currentPlayerMovementAnimation != animation)
@@ -272,6 +276,16 @@ public class PlayerAnimationController: MonoBehaviour
 				playerAnimator.CrossFade(animation, crossfade);
 			}
 		}
+	*/
+
+	private void ChangePlayerMovementAnimation(string animation, float crossfade = 0.2f)
+	{
+		if (currentPlayerMovementAnimation != animation)
+		{
+			currentPlayerMovementAnimation = animation;
+			playerAnimator.CrossFade(animation, crossfade);
+		}
+	}
 
 
 	private void ChangePlayerWeaponRightAnimation(string animation, float crossfade = 0.2f)

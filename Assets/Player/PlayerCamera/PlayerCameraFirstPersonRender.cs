@@ -103,7 +103,8 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 			if (weaponController.RightHandWeapon != null)
 			{
-				if (weaponController.RightHandWeapon.activeInHierarchy)
+				
+				if (rightHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 				{
 					HideBodyPart(PlayerHandRightParent);
 					ShowFirstPersonHand(PlayerFirstPersonHandRight);
@@ -123,7 +124,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 			if (weaponController.LeftHandWeapon != null)
 			{
-				if (weaponController.LeftHandWeapon.activeInHierarchy)
+				if (leftHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 				{
 					HideBodyPart(PlayerHandLeftParent);
 					ShowFirstPersonHand(PlayerFirstPersonHandLeft);

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections;
 public class PlayerCameraController : MonoBehaviour, IDataPersistence
 {
 	private IInputDevice inputDevice;
@@ -130,6 +131,31 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 		}
 		*/
 
+
+		
+		if (CurrentPlayerCameraStateType == "FirstPerson")
+		{
+			// Проверка на специфичные состояния движения
+			if (
+				movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
+				movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking" ||
+				movementController.CurrentPlayerMovementStateType == "PlayerSliding"
+			)
+			{
+				// Опускаем камеру вниз по оси Y
+				transform.position = new Vector3(transform.position.x, transform.position.y - 0.3f, transform.position.z);
+			}
+			else
+			{
+				// Восстанавливаем оригинальную высоту камеры
+				transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+			}
+		}
+		
+
+
+
+
 		if (inputDevice.GetKeyChangeCameraShoulder() && CurrentPlayerCameraStateType != "FirstPerson")
 		{
 			IsCameraShoulderRight = !IsCameraShoulderRight;
@@ -183,13 +209,31 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 			}
 		}
 		
+
+
+
+
+
 		//CameraForward = transform.forward;
 		//CameraRight = transform.right;
 
 		transform.rotation = Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0);
 		
 		//CameraRotationY = transform.eulerAngles.y;
+
+
+
+
+
+
+
+
+
 	}
+
+	// Корутина для плавного перемещения камеры
+
+
 
 	private void FixedUpdate()
 	{
