@@ -22,9 +22,13 @@ public class ReadableObject : MonoBehaviour, IInteractable
 
 	[SerializeField] private GameObject ImageRead;
 
-	[SerializeField] private GameObject DescriptionText; // Игровой объект с компонентом TextMeshProUGUI
+	[SerializeField] private GameObject DescriptionTextGameobject; // Игровой объект с компонентом TextMeshProUGUI
 
 	[SerializeField] private TextAsset textFile; // Поле для выбора текстового файла
+
+	[SerializeField] private GameObject ReadStructure;
+
+	private TextMeshProUGUI descriptionText;
 
 	private Image ImageComponent;
 
@@ -34,23 +38,17 @@ public class ReadableObject : MonoBehaviour, IInteractable
 	{
 		menuManager.OpenInteractionMenu();
 
-		ExitButton.SetActive(true);
-		ImageRead.SetActive(true);
-		DescriptionText.SetActive(true); // Включаем отображение текста
+		ReadStructure.SetActive(true);
+		
 
 		ImageComponent = ImageRead.GetComponent<Image>();
 		ImageComponent.sprite = Image;
 
 		// Включаем отображение текста из выбранного файла
-		if (textFile != null && !string.IsNullOrEmpty(textFile.text))
-		{
-			var descriptionText = DescriptionText.GetComponent<TextMeshProUGUI>();
-			descriptionText.text = textFile.text;
-		}
-		else
-		{
-			Debug.LogWarning("Текстовый файл не выбран или пуст.");
-		}
+		
+		descriptionText = DescriptionTextGameobject.GetComponent<TextMeshProUGUI>();
+		descriptionText.text = textFile.text;
+		
 
 		// Подписываемся на событие OnClick кнопки ExitButton
 		ExitButton.GetComponent<Button>().onClick.AddListener(CloseAndDeactivate);
@@ -60,10 +58,12 @@ public class ReadableObject : MonoBehaviour, IInteractable
 	private void CloseAndDeactivate()
 	{
 		// Деактивируем объекты
-		ExitButton.SetActive(false);
-		ImageRead.SetActive(false);
-		DescriptionText.SetActive(false); // Скрываем текст
+		
 
+		ImageComponent.sprite = null;
+		descriptionText.text = null;
+
+		ReadStructure.SetActive(false);
 		// Закрываем меню
 		menuManager.CloseInteractionMenu();
 	}
