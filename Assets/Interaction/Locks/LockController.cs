@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections; // Необходимо для использования IEnumerator
+using UnityEngine;
 
 public class LockController : MonoBehaviour, IInteractable
 {
@@ -17,6 +17,8 @@ public class LockController : MonoBehaviour, IInteractable
 	// Скорость перемещения (метры в секунду)
 	[SerializeField]
 	private float moveSpeed;
+
+	[SerializeField] GameObject CubeFollow;
 
 	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
 
@@ -38,6 +40,8 @@ public class LockController : MonoBehaviour, IInteractable
 	// Экземпляр шестерёнки
 	private GameObject currentGearInstance;
 
+	private GameObject currentCubeFollow;
+
 	// Угловой шаг поворота
 	private float rotationStep;
 
@@ -49,15 +53,20 @@ public class LockController : MonoBehaviour, IInteractable
 		menuManager.OpenInteractionMenu(gameObject); // Передача самого объекта сюда!
 
 		// Создаем экземпляр шестерёнки
-		currentGearInstance = Instantiate(gearPrefab, GetSpawnPosition(), Quaternion.identity);
+		currentGearInstance = Instantiate(gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
 		currentGearInstance.transform.LookAt(Camera.main.transform); // Поворачиваем к камере
-		currentGearInstance.transform.Translate(-0.01f, 0f, 0f, Space.Self);
+		currentGearInstance.transform.Translate(-0.05f, 0f, 0f, Space.Self);
 
 		gameObject.tag = "Untagged";
 
+
+		currentCubeFollow = Instantiate(CubeFollow, GetCubeSpawnPosition(), Quaternion.identity);
+		currentCubeFollow.transform.LookAt(Camera.main.transform);
+
+
 		// Рассчитываем шаги вращения и перемещения
 		rotationStep = 360f / segmentsCount;
-		movementStep = 0.02f; // Например, расстояние шага в метрах
+		movementStep = 0.1f; // Например, расстояние шага в метрах
 	}
 
 	private void Update()
@@ -69,8 +78,49 @@ public class LockController : MonoBehaviour, IInteractable
 			else if (Input.GetKeyDown(KeyCode.DownArrow)) StartCoroutine(RotateGear(-rotationStep));
 			else if (Input.GetKeyDown(KeyCode.RightArrow)) StartCoroutine(MoveRight());
 			else if (Input.GetKeyDown(KeyCode.LeftArrow)) StartCoroutine(MoveLeft());
+
+			
+		}
+		CheckForIntersection();
+	}
+
+	private void FixedUpdate()
+	{
+		if (Time.timeScale == 0f)
+		{
+			Physics.Simulate(Time.fixedDeltaTime); // Принудительная симуляция физики
 		}
 	}
+
+	private void CheckForIntersection()
+	{
+		if (currentCubeFollow != null && currentGearInstance != null &&
+			currentCubeFollow.TryGetComponent(out Collider cubeCollider) &&
+			currentGearInstance.TryGetComponent(out Collider gearCollider))
+		{
+			// Сначала переинициализируем состояние коллайдеров,
+			// чтобы убедиться, что ограничивающая область обновлена
+			cubeCollider.enabled = false;
+			cubeCollider.enabled = true;
+
+			gearCollider.enabled = false;
+			gearCollider.enabled = true;
+
+			// Синхронизируем преобразования физически активных объектов
+			Physics.SyncTransforms();
+
+			// Проверяем пересечение границ коллайдеров
+			if (cubeCollider.bounds.Intersects(gearCollider.bounds))
+			{
+				Debug.Log("Куб частично входит в шестерню!");
+			}
+			else
+			{
+				Debug.Log("Объекты не пересекаются.");
+			}
+		}
+	}
+
 
 	// Метод для плавного пошагового вращения шестерни
 	IEnumerator RotateGear(float targetAngle)
@@ -130,9 +180,17 @@ public class LockController : MonoBehaviour, IInteractable
 	}
 
 	// Получение позиции спауна шестерни перед камерой
-	private Vector3 GetSpawnPosition()
+	private Vector3 GetPuzzleSpawnPosition()
 	{
 		var camPos = Camera.main.transform.position;
-		return camPos + Camera.main.transform.forward * 0.18f; // Создаем экземпляр на расстоянии 0.18 м перед камерой
+		return camPos + Camera.main.transform.forward * 1f; // Создаем экземпляр на расстоянии 0.18 м перед камерой
+	}
+
+
+	// Получение позиции спауна шестерни перед камерой
+	private Vector3 GetCubeSpawnPosition()
+	{
+		var camPos = Camera.main.transform.position;
+		return camPos + Camera.main.transform.forward * 0.72f; // Создаем экземпляр на расстоянии 0.18 м перед камерой
 	}
 }
