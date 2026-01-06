@@ -1,4 +1,5 @@
-using System.Collections; // Необходимо для использования IEnumerator
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LockController : MonoBehaviour, IInteractable
@@ -6,7 +7,7 @@ public class LockController : MonoBehaviour, IInteractable
 	[SerializeField]
 	private GameObject gearPrefab;
 
-	// Количество сегментов вращения (задаётся в инспекторе)
+	// Количество сегментов вращения (задается в инспекторе)
 	[SerializeField]
 	private int segmentsCount = 12;
 
@@ -18,7 +19,8 @@ public class LockController : MonoBehaviour, IInteractable
 	[SerializeField]
 	private float moveSpeed;
 
-	[SerializeField] GameObject CubeFollow;
+	[SerializeField]
+	private GameObject CubeFollow;
 
 	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
 
@@ -30,16 +32,17 @@ public class LockController : MonoBehaviour, IInteractable
 
 	public string InteractionObjectNameUI => interactionObjectNameUI;
 
-	[SerializeField] private string interactionObjectNameUI;
+	[SerializeField]
+	private string interactionObjectNameUI;
 
-	[SerializeField] private MenuManager menuManager;
+	[SerializeField]
+	private MenuManager menuManager;
 
 	// Флаг блокировки взаимодействия
 	private bool isMovingOrRotating = false;
 
-	// Экземпляр шестерёнки
+	// Экземпляры объектов
 	private GameObject currentGearInstance;
-
 	private GameObject currentCubeFollow;
 
 	// Угловой шаг поворота
@@ -47,6 +50,18 @@ public class LockController : MonoBehaviour, IInteractable
 
 	// Шаг перемещения
 	private float movementStep;
+
+	// Детекторы зон коллизий (берутся автоматически из префаба CubeFollow)
+	private Collider UpZoneCollider;     // Верхняя зона
+	private Collider DownZoneCollider;   // Нижняя зона
+	private Collider LeftZoneCollider;   // Левая зона
+	private Collider RightZoneCollider;  // Правая зона
+
+	// Доступность направлений движения
+	private bool _canMoveUp = true;
+	private bool _canMoveDown = true;
+	private bool _canMoveLeft = true;
+	private bool _canMoveRight = true;
 
 	public void Interact()
 	{
@@ -59,10 +74,23 @@ public class LockController : MonoBehaviour, IInteractable
 
 		gameObject.tag = "Untagged";
 
-
+		// Создаем экземпляр куба
 		currentCubeFollow = Instantiate(CubeFollow, GetCubeSpawnPosition(), Quaternion.identity);
 		currentCubeFollow.transform.LookAt(Camera.main.transform);
 
+		// Простым поиском находим детекторы зон коллизий
+		Transform root = currentCubeFollow.transform;
+		UpZoneCollider = root.Find("UpZone")?.GetComponent<BoxCollider>();
+		DownZoneCollider = root.Find("DownZone")?.GetComponent<BoxCollider>();
+		LeftZoneCollider = root.Find("LeftZone")?.GetComponent<BoxCollider>();
+		RightZoneCollider = root.Find("RightZone")?.GetComponent<BoxCollider>();
+
+		// Проверяем наличие детекторов
+		if (UpZoneCollider == null || DownZoneCollider == null ||
+			LeftZoneCollider == null || RightZoneCollider == null)
+		{
+			Debug.LogWarning("Не удалось присвоить детекторы зон!");
+		}
 
 		// Рассчитываем шаги вращения и перемещения
 		rotationStep = 360f / segmentsCount;
@@ -73,15 +101,27 @@ public class LockController : MonoBehaviour, IInteractable
 	{
 		if (!isMovingOrRotating && currentGearInstance != null)
 		{
-			// Проверяем ввод клавиатуры
-			if (Input.GetKeyDown(KeyCode.UpArrow)) StartCoroutine(RotateGear(rotationStep));
-			else if (Input.GetKeyDown(KeyCode.DownArrow)) StartCoroutine(RotateGear(-rotationStep));
-			else if (Input.GetKeyDown(KeyCode.RightArrow)) StartCoroutine(MoveRight());
-			else if (Input.GetKeyDown(KeyCode.LeftArrow)) StartCoroutine(MoveLeft());
-
-			
+			// Движение возможно только в открытых направлениях
+			if (_canMoveUp && Input.GetKeyDown(KeyCode.UpArrow))
+			{
+				StartCoroutine(RotateGear(rotationStep));
+			}
+			else if (_canMoveDown && Input.GetKeyDown(KeyCode.DownArrow))
+			{
+				StartCoroutine(RotateGear(-rotationStep));
+			}
+			else if (_canMoveRight && Input.GetKeyDown(KeyCode.RightArrow))
+			{
+				StartCoroutine(MoveRight());
+			}
+			else if (_canMoveLeft && Input.GetKeyDown(KeyCode.LeftArrow))
+			{
+				StartCoroutine(MoveLeft());
+			}
 		}
-		CheckForIntersection();
+
+		// Регулярная проверка коллизий
+		//CheckForIntersection();
 	}
 
 	private void FixedUpdate()
@@ -90,44 +130,68 @@ public class LockController : MonoBehaviour, IInteractable
 		{
 			Physics.Simulate(Time.fixedDeltaTime); // Принудительная симуляция физики
 		}
+
+		
+	}
+
+	private void LateUpdate()
+	{
+		CheckForIntersection();
 	}
 
 	private void CheckForIntersection()
 	{
-		if (currentCubeFollow != null && currentGearInstance != null &&
-			currentCubeFollow.TryGetComponent(out Collider cubeCollider) &&
-			currentGearInstance.TryGetComponent(out Collider gearCollider))
+		if (currentCubeFollow != null && currentGearInstance != null)
 		{
-			// Сначала переинициализируем состояние коллайдеров,
-			// чтобы убедиться, что ограничивающая область обновлена
-			cubeCollider.enabled = false;
-			cubeCollider.enabled = true;
+			// Получаем все дочерние коллайдеры шестерёнки
+			Collider[] childColliders = currentGearInstance.GetComponentsInChildren<Collider>();
 
-			gearCollider.enabled = false;
-			gearCollider.enabled = true;
+			// Начальные условия — считаем, что пока все направления открыты
+			_canMoveUp = true;
+			_canMoveDown = true;
+			_canMoveLeft = true;
+			_canMoveRight = true;
 
-			// Синхронизируем преобразования физически активных объектов
-			Physics.SyncTransforms();
-
-			// Проверяем пересечение границ коллайдеров
-			if (cubeCollider.bounds.Intersects(gearCollider.bounds))
+			// Проходим по каждому дочернему коллайдеру шестерёнки
+			foreach (var gearCollider in childColliders)
 			{
-				Debug.Log("Куб частично входит в шестерню!");
-			}
-			else
-			{
-				Debug.Log("Объекты не пересекаются.");
+				// Меняем состояние коллайдера, чтобы обновить bounding-box
+				gearCollider.enabled = false;
+				gearCollider.enabled = true;
+
+				// Обновляем физическое состояние
+				Physics.SyncTransforms();
+
+				// Проверяем зоны на пересечения
+				if (UpZoneCollider.bounds.Intersects(gearCollider.bounds))
+				{
+					_canMoveUp = false;
+				}
+
+				if (DownZoneCollider.bounds.Intersects(gearCollider.bounds))
+				{
+					_canMoveDown = false;
+				}
+
+				if (LeftZoneCollider.bounds.Intersects(gearCollider.bounds))
+				{
+					_canMoveLeft = false;
+				}
+
+				if (RightZoneCollider.bounds.Intersects(gearCollider.bounds))
+				{
+					_canMoveRight = false;
+				}
 			}
 		}
 	}
 
-
-	// Метод для плавного пошагового вращения шестерни
+	// Плавное пошаговое вращение шестерни
 	IEnumerator RotateGear(float targetAngle)
 	{
 		isMovingOrRotating = true;
 		Quaternion startRotation = currentGearInstance.transform.rotation;
-		Quaternion endRotation = startRotation * Quaternion.Euler(new Vector3(targetAngle, 0, 0)); // Для оси X
+		Quaternion endRotation = startRotation * Quaternion.Euler(new Vector3(targetAngle, 0, 0)); // Вращение по оси X
 
 		float elapsedTime = 0f;
 		while (elapsedTime < 1f)
@@ -183,14 +247,13 @@ public class LockController : MonoBehaviour, IInteractable
 	private Vector3 GetPuzzleSpawnPosition()
 	{
 		var camPos = Camera.main.transform.position;
-		return camPos + Camera.main.transform.forward * 1f; // Создаем экземпляр на расстоянии 0.18 м перед камерой
+		return camPos + Camera.main.transform.forward * 1f; // Спауним впереди камеры
 	}
 
-
-	// Получение позиции спауна шестерни перед камерой
+	// Получение позиции спауна куба перед камерой
 	private Vector3 GetCubeSpawnPosition()
 	{
 		var camPos = Camera.main.transform.position;
-		return camPos + Camera.main.transform.forward * 0.72f; // Создаем экземпляр на расстоянии 0.18 м перед камерой
+		return camPos + Camera.main.transform.forward * 0.7f; // Немного ближе к камере
 	}
 }
