@@ -139,13 +139,13 @@ public class MenuManager : MonoBehaviour
 
 	public void OpenInteractionMenu()
 	{
-		Time.timeScale = 0f;
+		//Time.timeScale = 0f;
 		OpenAnyMenu();
 	}
 
 	public void CloseInteractionMenu()
 	{
-		Time.timeScale = 1f;
+		//Time.timeScale = 1f;
 		CloseAnyMenu();
 	}
 

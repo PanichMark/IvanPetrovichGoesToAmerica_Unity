@@ -52,6 +52,8 @@ public class ReadableObject : MonoBehaviour, IInteractable
 
 		// Подписываемся на событие OnClick кнопки ExitButton
 		ExitButton.GetComponent<Button>().onClick.AddListener(CloseAndDeactivate);
+
+		gameObject.tag = "Untagged";
 	}
 
 	// Новый метод для закрытия меню и деактивации элементов
@@ -66,5 +68,7 @@ public class ReadableObject : MonoBehaviour, IInteractable
 		ReadStructure.SetActive(false);
 		// Закрываем меню
 		menuManager.CloseInteractionMenu();
+
+		gameObject.tag = "Interactable";
 	}
 }

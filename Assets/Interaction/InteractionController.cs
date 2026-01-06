@@ -154,7 +154,10 @@ public class InteractionController : MonoBehaviour
 				// Если это стандартный объект IInteractable, обрабатываем нажатие
 				if (inputDevice.GetKeyInteract())
 				{
+					
 					interactableObj.Interact();
+				
+
 
 					if (interactableObj.IsAdditionalInteractionHintActive == true)
 					{
