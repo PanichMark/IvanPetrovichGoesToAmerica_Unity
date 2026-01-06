@@ -36,7 +36,7 @@ public class ReadableObject : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
-		menuManager.OpenInteractionMenu();
+		menuManager.OpenInteractionMenu(gameObject);
 
 		ReadStructure.SetActive(true);
 		

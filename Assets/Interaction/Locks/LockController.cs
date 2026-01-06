@@ -46,14 +46,12 @@ public class LockController : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
-		menuManager.OpenInteractionMenu();
+		menuManager.OpenInteractionMenu(gameObject); // Передача самого объекта сюда!
 
 		// Создаем экземпляр шестерёнки
 		currentGearInstance = Instantiate(gearPrefab, GetSpawnPosition(), Quaternion.identity);
 		currentGearInstance.transform.LookAt(Camera.main.transform); // Поворачиваем к камере
-		// После строки с созданием экземпляра
 		currentGearInstance.transform.Translate(-0.01f, 0f, 0f, Space.Self);
-
 
 		gameObject.tag = "Untagged";
 
@@ -85,7 +83,7 @@ public class LockController : MonoBehaviour, IInteractable
 		while (elapsedTime < 1f)
 		{
 			currentGearInstance.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime);
-			elapsedTime += Time.deltaTime * rotationSpeed;
+			elapsedTime += Time.unscaledDeltaTime * rotationSpeed; // Используем unscaledDeltaTime
 			yield return null;
 		}
 
@@ -104,7 +102,7 @@ public class LockController : MonoBehaviour, IInteractable
 		while (elapsedTime < 1f)
 		{
 			currentGearInstance.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime);
-			elapsedTime += Time.deltaTime * moveSpeed;
+			elapsedTime += Time.unscaledDeltaTime * moveSpeed; // Используем unscaledDeltaTime
 			yield return null;
 		}
 
@@ -123,7 +121,7 @@ public class LockController : MonoBehaviour, IInteractable
 		while (elapsedTime < 1f)
 		{
 			currentGearInstance.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime);
-			elapsedTime += Time.deltaTime * moveSpeed;
+			elapsedTime += Time.unscaledDeltaTime * moveSpeed; // Используем unscaledDeltaTime
 			yield return null;
 		}
 

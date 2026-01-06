@@ -4,7 +4,6 @@ public class MenuManager : MonoBehaviour
 {
 	private IInputDevice inputDevice;
 
-
 	// Конструктор принимает зависимость
 	public void Initialize(IInputDevice inputDevice)
 	{
@@ -12,22 +11,15 @@ public class MenuManager : MonoBehaviour
 		Debug.Log("MenuManager Initialized");
 	}
 
-	
-	//PauseMenuController pauseMenuController;
-
-
 	public bool IsPlayerControllable { get; private set; }
 	public bool IsPauseMenuOpened { get; private set; }
 	public bool IsWeaponWheelMenuOpened { get; private set; }
 	public bool IsAnyMenuOpened { get; private set; }
-	
+
+	private GameObject excludedObject; // Перемення для отслеживания единственного исключённого объекта
+
 	void Start()
-    {
-     
-		//pauseMenuController = GetComponent<PauseMenuController>();
-
-		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(false);
-
+	{
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
@@ -37,57 +29,41 @@ public class MenuManager : MonoBehaviour
 		IsAnyMenuOpened = false;
 	}
 
-	
 	void Update()
-    {
+	{
 		if (inputDevice.GetKeyPauseMenu())
 		{
 			if (!IsPauseMenuOpened)
-			{
 				OpenPauseMenu();
-			}
-			else ClosePauseMenu();
+			else
+				ClosePauseMenu();
 		}
-		//Debug.Log(IsPauseMenuOpened);
 	}
-	
 
-	
-    public void OpenPauseMenu()
-    {
+	public void OpenPauseMenu()
+	{
 		if (IsWeaponWheelMenuOpened)
-		{
 			CloseWeaponWheelMenu(true);
-		}
-
-		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true); // Скрываем Canvas
 
 		Debug.Log("PauseMenu opened");
 		OpenAnyMenu();
 
-        IsPlayerControllable = false;
+		IsPlayerControllable = false;
 		IsPauseMenuOpened = true;
 
-		// Полностью останавливаем игру
 		Time.timeScale = 0f;
 	}
+
 	public void ClosePauseMenu()
 	{
-		//if (pauseMenuController.PauseMenuCanvas.gameObject.activeInHierarchy)
-		//{
-			//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(false); // Скрываем Canvas
+		Debug.Log("PauseMenu closed");
+		CloseAnyMenu();
 
-			Debug.Log("PauseMenu closed");
-			CloseAnyMenu();
+		IsPlayerControllable = true;
+		IsPauseMenuOpened = false;
 
-			IsPlayerControllable = true;
-			IsPauseMenuOpened = false;
-
-			// Возвращаем нормальное течение времени
-			Time.timeScale = 1f;
-		//}
+		Time.timeScale = 1f;
 	}
-	
 
 	public void OpenWeaponWheelMenu(string handType)
 	{
@@ -95,31 +71,20 @@ public class MenuManager : MonoBehaviour
 		IsWeaponWheelMenuOpened = true;
 
 		if (handType == "right")
-		{
 			Debug.Log("Right WeaponWheelMenu opened");
-		}
 		else if (handType == "left")
-		{ 
 			Debug.Log("Left WeaponWheelMenu opened");
-		}
-
-		//Time.timeScale = 0.2f;
 	}
 
 	public void CloseWeaponWheelMenu(bool IsItRightWeaponWheelMenu)
 	{
 		CloseAnyMenu();
 		IsWeaponWheelMenuOpened = false;
-		if (IsItRightWeaponWheelMenu)
-		{
-			Debug.Log("Right WeaponWheelMenu closed");
-		}
-		else
-		{
-			Debug.Log("Left WeaponWheelMenu closed");
-		}
 
-		//Time.timeScale = 1f;
+		if (IsItRightWeaponWheelMenu)
+			Debug.Log("Right WeaponWheelMenu closed");
+		else
+			Debug.Log("Left WeaponWheelMenu closed");
 	}
 
 	public void OpenAnyMenu()
@@ -137,17 +102,19 @@ public class MenuManager : MonoBehaviour
 		Cursor.visible = false;
 	}
 
-	public void OpenInteractionMenu()
+	// Реализация открытия меню взаимодействия с исключением заданного объекта
+	public void OpenInteractionMenu(GameObject objectToExclude)
 	{
-		//Time.timeScale = 0f;
+		Time.timeScale = 0f;
+		excludedObject = objectToExclude; // Запоминаем исключённый объект
 		OpenAnyMenu();
 	}
 
+	// Реализация закрытия меню взаимодействия и возобновления нормального течения времени
 	public void CloseInteractionMenu()
 	{
-		//Time.timeScale = 1f;
+		excludedObject = null; // Убираем ссылку на исключённый объект
+		Time.timeScale = 1f;
 		CloseAnyMenu();
 	}
-
 }
-
