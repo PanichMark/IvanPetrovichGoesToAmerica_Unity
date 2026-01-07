@@ -9,7 +9,7 @@ public class LockController : MonoBehaviour, IInteractable
 
 	// Количество сегментов вращения (задается в инспекторе)
 	[SerializeField]
-	private int segmentsCount = 12;
+	private int segmentsCount;
 
 	// Скорость вращения (радианы в секунду)
 	[SerializeField]
@@ -71,12 +71,15 @@ public class LockController : MonoBehaviour, IInteractable
 		currentGearInstance = Instantiate(gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
 		currentGearInstance.transform.LookAt(Camera.main.transform); // Поворачиваем к камере
 		currentGearInstance.transform.Translate(-0.05f, 0f, 0f, Space.Self);
+		
 
 		gameObject.tag = "Untagged";
 
 		// Создаем экземпляр куба
 		currentCubeFollow = Instantiate(CubeFollow, GetCubeSpawnPosition(), Quaternion.identity);
 		currentCubeFollow.transform.LookAt(Camera.main.transform);
+		
+
 
 		// Простым поиском находим детекторы зон коллизий
 		Transform root = currentCubeFollow.transform;
@@ -84,6 +87,8 @@ public class LockController : MonoBehaviour, IInteractable
 		DownZoneCollider = root.Find("DownZone")?.GetComponent<BoxCollider>();
 		LeftZoneCollider = root.Find("LeftZone")?.GetComponent<BoxCollider>();
 		RightZoneCollider = root.Find("RightZone")?.GetComponent<BoxCollider>();
+
+		CheckForIntersection();
 
 		// Проверяем наличие детекторов
 		if (UpZoneCollider == null || DownZoneCollider == null ||
@@ -119,28 +124,14 @@ public class LockController : MonoBehaviour, IInteractable
 				StartCoroutine(MoveLeft());
 			}
 		}
-
-		// Регулярная проверка коллизий
-		//CheckForIntersection();
 	}
 
-	private void FixedUpdate()
-	{
-		if (Time.timeScale == 0f)
-		{
-			Physics.Simulate(Time.fixedDeltaTime); // Принудительная симуляция физики
-		}
-
-		
-	}
-
-	private void LateUpdate()
-	{
-		CheckForIntersection();
-	}
+	
 
 	private void CheckForIntersection()
 	{
+		Physics.SyncTransforms();
+
 		if (currentCubeFollow != null && currentGearInstance != null)
 		{
 			// Получаем все дочерние коллайдеры шестерёнки
@@ -155,14 +146,6 @@ public class LockController : MonoBehaviour, IInteractable
 			// Проходим по каждому дочернему коллайдеру шестерёнки
 			foreach (var gearCollider in childColliders)
 			{
-				// Меняем состояние коллайдера, чтобы обновить bounding-box
-				//gearCollider.enabled = false;
-				//gearCollider.enabled = true;
-
-				// Обновляем физическое состояние
-				Physics.SyncTransforms();
-
-				
 				// Проверяем зоны на пересечения
 				if (UpZoneCollider.bounds.Intersects(gearCollider.bounds))
 				{
@@ -175,10 +158,12 @@ public class LockController : MonoBehaviour, IInteractable
 					_canMoveDown = false;
 				}
 
+				
 				if (LeftZoneCollider.bounds.Intersects(gearCollider.bounds))
 				{
 					_canMoveLeft = false;
 				}
+				
 
 				if (RightZoneCollider.bounds.Intersects(gearCollider.bounds))
 				{
@@ -207,6 +192,7 @@ public class LockController : MonoBehaviour, IInteractable
 		}
 
 		currentGearInstance.transform.rotation = endRotation;
+		CheckForIntersection();
 		isMovingOrRotating = false;
 	}
 
@@ -226,6 +212,7 @@ public class LockController : MonoBehaviour, IInteractable
 		}
 
 		currentGearInstance.transform.position = endPosition;
+		CheckForIntersection();
 		isMovingOrRotating = false;
 	}
 
@@ -245,7 +232,9 @@ public class LockController : MonoBehaviour, IInteractable
 		}
 
 		currentGearInstance.transform.position = endPosition;
+		CheckForIntersection();
 		isMovingOrRotating = false;
+
 	}
 
 	// Получение позиции спауна шестерни перед камерой
