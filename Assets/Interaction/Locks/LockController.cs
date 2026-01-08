@@ -52,17 +52,60 @@ public class LockController : MonoBehaviour, IInteractable
 	private float movementStep;
 
 	// Детекторы зон коллизий (берутся автоматически из префаба CubeFollow)
-	private Collider UpZoneCollider;     // Верхняя зона
-	private Collider DownZoneCollider;   // Нижняя зона
-	private Collider LeftZoneCollider;   // Левая зона
-	private Collider RightZoneCollider;  // Правая зона
+	private MeshCollider UpZoneCollider;     // Верхняя зона
+	private MeshCollider DownZoneCollider;   // Нижняя зона
+	private MeshCollider LeftZoneCollider;   // Левая зона
+	private MeshCollider RightZoneCollider;  // Правая зона
 
 	// Доступность направлений движения
 	private bool _canMoveUp = true;
 	private bool _canMoveDown = true;
 	private bool _canMoveLeft = true;
 	private bool _canMoveRight = true;
+	/*
+	private void OnDrawGizmos()
+	{
+		if (currentGearInstance != null && Application.isPlaying)
+		{
+			// Получаем все коллайдеры дочерних объектов
+			MeshCollider[] childColliders = currentGearInstance.GetComponentsInChildren<MeshCollider>();
 
+			// Отображаем каждый коллайдер зеленого цвета
+			Gizmos.color = Color.green;
+
+			foreach (MeshCollider col in childColliders)
+			{
+				// Получаем саму сетку и рисуем её
+				Gizmos.DrawWireMesh(col.sharedMesh, col.transform.position, col.transform.rotation, col.transform.lossyScale);
+			}
+
+			// Теперь рисуем остальные зоны (они тоже MeshCollider)
+			if (UpZoneCollider != null)
+			{
+				Gizmos.color = Color.red;
+				Gizmos.DrawWireMesh(((MeshCollider)UpZoneCollider).sharedMesh, ((MeshCollider)UpZoneCollider).transform.position, ((MeshCollider)UpZoneCollider).transform.rotation, ((MeshCollider)UpZoneCollider).transform.lossyScale);
+			}
+
+			if (DownZoneCollider != null)
+			{
+				Gizmos.color = Color.red;
+				Gizmos.DrawWireMesh(((MeshCollider)DownZoneCollider).sharedMesh, ((MeshCollider)DownZoneCollider).transform.position, ((MeshCollider)DownZoneCollider).transform.rotation, ((MeshCollider)DownZoneCollider).transform.lossyScale);
+			}
+
+			if (LeftZoneCollider != null)
+			{
+				Gizmos.color = Color.red;
+				Gizmos.DrawWireMesh(((MeshCollider)LeftZoneCollider).sharedMesh, ((MeshCollider)LeftZoneCollider).transform.position, ((MeshCollider)LeftZoneCollider).transform.rotation, ((MeshCollider)LeftZoneCollider).transform.lossyScale);
+			}
+
+			if (RightZoneCollider != null)
+			{
+				Gizmos.color = Color.red;
+				Gizmos.DrawWireMesh(((MeshCollider)RightZoneCollider).sharedMesh, ((MeshCollider)RightZoneCollider).transform.position, ((MeshCollider)RightZoneCollider).transform.rotation, ((MeshCollider)RightZoneCollider).transform.lossyScale);
+			}
+		}
+	}
+	*/
 	public void Interact()
 	{
 		menuManager.OpenInteractionMenu(gameObject); // Передача самого объекта сюда!
@@ -83,10 +126,10 @@ public class LockController : MonoBehaviour, IInteractable
 
 		// Простым поиском находим детекторы зон коллизий
 		Transform root = currentCubeFollow.transform;
-		UpZoneCollider = root.Find("UpZone")?.GetComponent<BoxCollider>();
-		DownZoneCollider = root.Find("DownZone")?.GetComponent<BoxCollider>();
-		LeftZoneCollider = root.Find("LeftZone")?.GetComponent<BoxCollider>();
-		RightZoneCollider = root.Find("RightZone")?.GetComponent<BoxCollider>();
+		UpZoneCollider = root.Find("UpZone")?.GetComponent<MeshCollider>();
+		DownZoneCollider = root.Find("DownZone")?.GetComponent<MeshCollider>();
+		LeftZoneCollider = root.Find("LeftZone")?.GetComponent<MeshCollider>();
+		RightZoneCollider = root.Find("RightZone")?.GetComponent<MeshCollider>();
 
 		CheckForIntersection();
 
@@ -126,7 +169,7 @@ public class LockController : MonoBehaviour, IInteractable
 		}
 	}
 
-	
+
 
 	private void CheckForIntersection()
 	{
@@ -134,8 +177,8 @@ public class LockController : MonoBehaviour, IInteractable
 
 		if (currentCubeFollow != null && currentGearInstance != null)
 		{
-			// Получаем все дочерние коллайдеры шестерёнки
-			Collider[] childColliders = currentGearInstance.GetComponentsInChildren<Collider>();
+			// Получаем все дочерние коллайдеры шестерёнки (только MeshCollider!)
+			MeshCollider[] childColliders = currentGearInstance.GetComponentsInChildren<MeshCollider>();
 
 			// Начальные условия — считаем, что пока все направления открыты
 			_canMoveUp = true;
@@ -146,34 +189,24 @@ public class LockController : MonoBehaviour, IInteractable
 			// Проходим по каждому дочернему коллайдеру шестерёнки
 			foreach (var gearCollider in childColliders)
 			{
-				// Проверяем зоны на пересечения
-				if (UpZoneCollider.bounds.Intersects(gearCollider.bounds))
-				{
-					_canMoveUp = false;
-				}
-
-
-				if (DownZoneCollider.bounds.Intersects(gearCollider.bounds))
-				{
-					_canMoveDown = false;
-				}
-
-				
-				if (LeftZoneCollider.bounds.Intersects(gearCollider.bounds))
-				{
-					_canMoveLeft = false;
-				}
-				
-
-				if (RightZoneCollider.bounds.Intersects(gearCollider.bounds))
-				{
-					_canMoveRight = false;
-				}
-				
-
-
+				// Проверяем зоны на пересечения (полигональные коллайдеры)
+				if (IsIntersectingWithCollider(UpZoneCollider, gearCollider)) _canMoveUp = false;
+				if (IsIntersectingWithCollider(DownZoneCollider, gearCollider)) _canMoveDown = false;
+				if (IsIntersectingWithCollider(LeftZoneCollider, gearCollider)) _canMoveLeft = false;
+				if (IsIntersectingWithCollider(RightZoneCollider, gearCollider)) _canMoveRight = false;
 			}
 		}
+	}
+
+	// Новый метод для проверки пересечения MeshCollider
+	bool IsIntersectingWithCollider(MeshCollider firstCollider, MeshCollider secondCollider)
+	{
+		// Проверяем столкновение между MeshCollider'ами
+		Vector3 direction;
+		float distance;
+		return Physics.ComputePenetration(firstCollider, firstCollider.transform.position, firstCollider.transform.rotation,
+										  secondCollider, secondCollider.transform.position, secondCollider.transform.rotation,
+										  out direction, out distance);
 	}
 
 	// Плавное пошаговое вращение шестерни
@@ -251,3 +284,4 @@ public class LockController : MonoBehaviour, IInteractable
 		return camPos + Camera.main.transform.forward * 0.7f; // Немного ближе к камере
 	}
 }
+
