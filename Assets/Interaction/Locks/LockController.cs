@@ -1,83 +1,68 @@
-﻿using System.Collections;
-using Unity.VisualScripting;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // Подключаем пространство имен UI
 
 public class LockController : MonoBehaviour, IInteractable
 {
-	[SerializeField]
-	private GameObject gearPrefab;
+	
+	[SerializeField] private GameObject gearPrefab;               // Префаб шестерёнки
+	[SerializeField] private int segmentsCount;                  // Количество сегментов вращения
+	[SerializeField] private float rotationSpeed;                // Скорость вращения
+	[SerializeField] private float moveSpeed;                    // Скорость перемещения
+	[SerializeField] private GameObject CubeFollow;              // Префаб следящего куба
+	[SerializeField] private Button ClosePuzzleButton;           // Кнопка закрытия пазла
+	[SerializeField] private MenuManager menuManager;                             // Менеджер меню
 
-	// Количество сегментов вращения (задается в инспекторе)
-	[SerializeField]
-	private int segmentsCount;
 
-	// Скорость вращения (радианы в секунду)
-	[SerializeField]
-	private float rotationSpeed;
-
-	// Скорость перемещения (метры в секунду)
-	[SerializeField]
-	private float moveSpeed;
-
-	[SerializeField]
-	private GameObject CubeFollow;
-
-	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
-
-	public string MainInteractionHint => $"Вскрыть {InteractionObjectNameUI}";
-
-	public string AdditionalInteractionHint => throw new System.NotImplementedException();
-
+	private string interactionObjectNameUI;                      // Название объекта интерфейса
+	private bool isMovingOrRotating = false;                     // Блокировка взаимодействия
+	private GameObject currentGearInstance;                      // Текущий экземпляр шестерёнки
+	private GameObject currentCubeFollow;                        // Текущий экземпляр куба
+	private MeshCollider EndCollider;                            // Коллайдер объекта "END"
+	private float rotationStep;                                  // Шаг угла вращения
+	private float movementStep;                                  // Шаг перемещения
+	private MeshCollider CentreZoneCollider;                     // Центровый коллайдер
+	private MeshCollider UpZoneCollider;                         // Верхняя зона
+	private MeshCollider DownZoneCollider;                       // Нижняя зона
+	private MeshCollider LeftZoneCollider;                       // Левая зона
+	private MeshCollider RightZoneCollider;                      // Правая зона
+	private bool _canMoveUp = true;                              // Возможность двигаться вверх
+	private bool _canMoveDown = true;                            // Возможность двигаться вниз
+	private bool _canMoveLeft = true;                            // Возможность двигаться влево
+	private bool _canMoveRight = true;                           // Возможность двигаться вправо
+	private List<MeshCollider> cachedWallColliders;              // Кэшированные коллайдеры стен
+	
+	public string InteractionObjectNameSystem => throw new NotImplementedException();
+	public string MainInteractionHint => $"Вскрыть {interactionObjectNameUI}";
+	public string AdditionalInteractionHint => throw new NotImplementedException();
 	public bool IsAdditionalInteractionHintActive => false;
-
 	public string InteractionObjectNameUI => interactionObjectNameUI;
 
-	[SerializeField]
-	private string interactionObjectNameUI;
-
-	[SerializeField]
-	private MenuManager menuManager;
-
-	// Флаг блокировки взаимодействия
-	private bool isMovingOrRotating = false;
-
-	// Экземпляры объектов
-	private GameObject currentGearInstance;
-	private GameObject currentCubeFollow;
-
-	// Угловой шаг поворота
-	private float rotationStep;
-
-	// Шаг перемещения
-	private float movementStep;
-
-	// Детекторы зон коллизий (берутся автоматически из префаба CubeFollow)
-	private MeshCollider UpZoneCollider;     // Верхняя зона
-	private MeshCollider DownZoneCollider;   // Нижняя зона
-	private MeshCollider LeftZoneCollider;   // Левая зона
-	private MeshCollider RightZoneCollider;  // Правая зона
-
-	// Доступность направлений движения
-	private bool _canMoveUp = true;
-	private bool _canMoveDown = true;
-	private bool _canMoveLeft = true;
-	private bool _canMoveRight = true;
 	/*
 	private void OnDrawGizmos()
 	{
 		if (currentGearInstance != null && Application.isPlaying)
 		{
-			// Получаем все коллайдеры дочерних объектов
-			MeshCollider[] childColliders = currentGearInstance.GetComponentsInChildren<MeshCollider>();
+			// Поиск группы "PuzzleWalls" внутри currentGearInstance
+			Transform wallsGroup = currentGearInstance.transform.Find("Walls");
 
-			// Отображаем каждый коллайдер зеленого цвета
-			Gizmos.color = Color.green;
-
-			foreach (MeshCollider col in childColliders)
+			if (wallsGroup != null)
 			{
-				// Получаем саму сетку и рисуем её
-				Gizmos.DrawWireMesh(col.sharedMesh, col.transform.position, col.transform.rotation, col.transform.lossyScale);
+				// Получаем все коллайдеры дочерних объектов внутри группы "PuzzleWalls"
+				MeshCollider[] childColliders = wallsGroup.GetComponentsInChildren<MeshCollider>();
+
+				// Отображаем коллайдеры внутри группы "PuzzleWalls" зеленым цветом
+				Gizmos.color = Color.green;
+
+				foreach (MeshCollider col in childColliders)
+				{
+					// Рисуем границу сетки (wireframe) коллайдера
+					Gizmos.DrawWireMesh(col.sharedMesh, col.transform.position, col.transform.rotation, col.transform.lossyScale);
+				}
 			}
+
 
 			// Теперь рисуем остальные зоны (они тоже MeshCollider)
 			if (UpZoneCollider != null)
@@ -106,44 +91,6 @@ public class LockController : MonoBehaviour, IInteractable
 		}
 	}
 	*/
-	public void Interact()
-	{
-		menuManager.OpenInteractionMenu(gameObject); // Передача самого объекта сюда!
-
-		// Создаем экземпляр шестерёнки
-		currentGearInstance = Instantiate(gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
-		currentGearInstance.transform.LookAt(Camera.main.transform); // Поворачиваем к камере
-		currentGearInstance.transform.Translate(-0.05f, 0f, 0f, Space.Self);
-		
-
-		gameObject.tag = "Untagged";
-
-		// Создаем экземпляр куба
-		currentCubeFollow = Instantiate(CubeFollow, GetCubeSpawnPosition(), Quaternion.identity);
-		currentCubeFollow.transform.LookAt(Camera.main.transform);
-		
-
-
-		// Простым поиском находим детекторы зон коллизий
-		Transform root = currentCubeFollow.transform;
-		UpZoneCollider = root.Find("UpZone")?.GetComponent<MeshCollider>();
-		DownZoneCollider = root.Find("DownZone")?.GetComponent<MeshCollider>();
-		LeftZoneCollider = root.Find("LeftZone")?.GetComponent<MeshCollider>();
-		RightZoneCollider = root.Find("RightZone")?.GetComponent<MeshCollider>();
-
-		CheckForIntersection();
-
-		// Проверяем наличие детекторов
-		if (UpZoneCollider == null || DownZoneCollider == null ||
-			LeftZoneCollider == null || RightZoneCollider == null)
-		{
-			Debug.LogWarning("Не удалось присвоить детекторы зон!");
-		}
-
-		// Рассчитываем шаги вращения и перемещения
-		rotationStep = 360f / segmentsCount;
-		movementStep = 0.1f; // Например, расстояние шага в метрах
-	}
 
 	private void Update()
 	{
@@ -168,8 +115,82 @@ public class LockController : MonoBehaviour, IInteractable
 			}
 		}
 	}
+	
+	public void Interact()
+	{
+		menuManager.OpenInteractionMenu();
 
+		// Создание экземпляров объектов
+		currentGearInstance = Instantiate(gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
+		currentGearInstance.transform.LookAt(Camera.main.transform);
+		currentGearInstance.transform.Translate(-0.05f, 0f, 0f, Space.Self);
 
+		// Определение коллайдера объекта "END"
+		Transform endTransform = currentGearInstance.transform.Find("END");
+		if (endTransform != null)
+		{
+			EndCollider = endTransform.GetComponent<MeshCollider>();
+		}
+		else
+		{
+			Debug.LogError("Объект с именем \"END\" не найден.");
+		}
+
+		// Настройка кнопок
+		if (ClosePuzzleButton != null)
+		{
+			ClosePuzzleButton.onClick.RemoveAllListeners();      // Удаляем предыдущие события
+			ClosePuzzleButton.onClick.AddListener(OnClosePuzzle);// Присваиваем обработчик
+			ClosePuzzleButton.gameObject.SetActive(true);       // Активируем кнопку
+		}
+
+		gameObject.tag = "Untagged"; // Меняем тег объекта
+
+		// Создание куба
+		currentCubeFollow = Instantiate(CubeFollow, GetCubeSpawnPosition(), Quaternion.identity);
+		currentCubeFollow.transform.LookAt(Camera.main.transform);
+
+		// Поиск детекторов зон коллизий
+		Transform root = currentCubeFollow.transform;
+		CentreZoneCollider = root.Find("CentreZone")?.GetComponent<MeshCollider>();
+		UpZoneCollider = root.Find("UpZone")?.GetComponent<MeshCollider>();
+		DownZoneCollider = root.Find("DownZone")?.GetComponent<MeshCollider>();
+		LeftZoneCollider = root.Find("LeftZone")?.GetComponent<MeshCollider>();
+		RightZoneCollider = root.Find("RightZone")?.GetComponent<MeshCollider>();
+
+		// Поиск группы "Walls" и сохранение коллайдеров
+		Transform wallsGroup = currentGearInstance.transform.Find("Walls");
+		if (wallsGroup != null)
+		{
+			cachedWallColliders = new List<MeshCollider>(wallsGroup.GetComponentsInChildren<MeshCollider>());
+		}
+		else
+		{
+			Debug.LogError("Группа 'Walls' не найдена.");
+		}
+
+		CheckForIntersection();
+
+		// Проверка детекторов зон
+		if (UpZoneCollider == null || DownZoneCollider == null ||
+			LeftZoneCollider == null || RightZoneCollider == null)
+		{
+			Debug.LogWarning("Не удалось присвоить детекторы зон!");
+		}
+
+		// Расчёт шагов вращения и перемещения
+		rotationStep = 360f / segmentsCount;
+		movementStep = 0.1f; // Расстояние шага в метрах
+	}
+
+	private void OnClosePuzzle()
+	{
+		menuManager.CloseInteractionMenu();
+		Destroy(currentGearInstance);
+		Destroy(currentCubeFollow);
+		gameObject.tag = "Interactable";
+		ClosePuzzleButton?.gameObject.SetActive(false); // Скрываем кнопку
+	}
 
 	private void CheckForIntersection()
 	{
@@ -177,31 +198,38 @@ public class LockController : MonoBehaviour, IInteractable
 
 		if (currentCubeFollow != null && currentGearInstance != null)
 		{
-			// Получаем все дочерние коллайдеры шестерёнки (только MeshCollider!)
-			MeshCollider[] childColliders = currentGearInstance.GetComponentsInChildren<MeshCollider>();
-
-			// Начальные условия — считаем, что пока все направления открыты
 			_canMoveUp = true;
 			_canMoveDown = true;
 			_canMoveLeft = true;
 			_canMoveRight = true;
 
-			// Проходим по каждому дочернему коллайдеру шестерёнки
-			foreach (var gearCollider in childColliders)
+			// Проверка пересечения с ранее сохранённым списком коллайдеров
+			if (cachedWallColliders != null)
 			{
-				// Проверяем зоны на пересечения (полигональные коллайдеры)
-				if (IsIntersectingWithCollider(UpZoneCollider, gearCollider)) _canMoveUp = false;
-				if (IsIntersectingWithCollider(DownZoneCollider, gearCollider)) _canMoveDown = false;
-				if (IsIntersectingWithCollider(LeftZoneCollider, gearCollider)) _canMoveLeft = false;
-				if (IsIntersectingWithCollider(RightZoneCollider, gearCollider)) _canMoveRight = false;
+				foreach (var collider in cachedWallColliders)
+				{
+					if (IsIntersectingWithCollider(UpZoneCollider, collider)) _canMoveUp = false;
+					if (IsIntersectingWithCollider(DownZoneCollider, collider)) _canMoveDown = false;
+					if (IsIntersectingWithCollider(LeftZoneCollider, collider)) _canMoveLeft = false;
+					if (IsIntersectingWithCollider(RightZoneCollider, collider)) _canMoveRight = false;
+				}
+			}
+			else
+			{
+				Debug.LogError("Список коллайдеров не заполнен.");
+			}
+
+			// Дополнительная проверка на пересечение с объектом "END"
+			if (EndCollider != null && IsIntersectingWithCollider(CentreZoneCollider, EndCollider))
+			{
+				Debug.Log("Центр пересекся с объектом 'END'.");
+				OnClosePuzzle(); // Автоматически закрываем пазл
 			}
 		}
 	}
 
-	// Новый метод для проверки пересечения MeshCollider
-	bool IsIntersectingWithCollider(MeshCollider firstCollider, MeshCollider secondCollider)
+	private bool IsIntersectingWithCollider(MeshCollider firstCollider, MeshCollider secondCollider)
 	{
-		// Проверяем столкновение между MeshCollider'ами
 		Vector3 direction;
 		float distance;
 		return Physics.ComputePenetration(firstCollider, firstCollider.transform.position, firstCollider.transform.rotation,
@@ -209,7 +237,6 @@ public class LockController : MonoBehaviour, IInteractable
 										  out direction, out distance);
 	}
 
-	// Плавное пошаговое вращение шестерни
 	IEnumerator RotateGear(float targetAngle)
 	{
 		isMovingOrRotating = true;
@@ -229,7 +256,6 @@ public class LockController : MonoBehaviour, IInteractable
 		isMovingOrRotating = false;
 	}
 
-	// Перемещение объекта вправо
 	IEnumerator MoveRight()
 	{
 		isMovingOrRotating = true;
@@ -249,7 +275,6 @@ public class LockController : MonoBehaviour, IInteractable
 		isMovingOrRotating = false;
 	}
 
-	// Перемещение объекта влево
 	IEnumerator MoveLeft()
 	{
 		isMovingOrRotating = true;
@@ -267,21 +292,17 @@ public class LockController : MonoBehaviour, IInteractable
 		currentGearInstance.transform.position = endPosition;
 		CheckForIntersection();
 		isMovingOrRotating = false;
-
 	}
 
-	// Получение позиции спауна шестерни перед камерой
 	private Vector3 GetPuzzleSpawnPosition()
 	{
 		var camPos = Camera.main.transform.position;
 		return camPos + Camera.main.transform.forward * 1f; // Спауним впереди камеры
 	}
 
-	// Получение позиции спауна куба перед камерой
 	private Vector3 GetCubeSpawnPosition()
 	{
 		var camPos = Camera.main.transform.position;
 		return camPos + Camera.main.transform.forward * 0.7f; // Немного ближе к камере
 	}
 }
-

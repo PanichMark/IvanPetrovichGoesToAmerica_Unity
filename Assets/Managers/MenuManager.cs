@@ -16,7 +16,6 @@ public class MenuManager : MonoBehaviour
 	public bool IsWeaponWheelMenuOpened { get; private set; }
 	public bool IsAnyMenuOpened { get; private set; }
 
-	private GameObject excludedObject; // Перемення для отслеживания единственного исключённого объекта
 
 	void Start()
 	{
@@ -103,17 +102,17 @@ public class MenuManager : MonoBehaviour
 	}
 
 	// Реализация открытия меню взаимодействия с исключением заданного объекта
-	public void OpenInteractionMenu(GameObject objectToExclude)
+	public void OpenInteractionMenu()
 	{
 		Time.timeScale = 0f;
-		excludedObject = objectToExclude; // Запоминаем исключённый объект
+		
 		OpenAnyMenu();
 	}
 
 	// Реализация закрытия меню взаимодействия и возобновления нормального течения времени
 	public void CloseInteractionMenu()
 	{
-		excludedObject = null; // Убираем ссылку на исключённый объект
+		
 		Time.timeScale = 1f;
 		CloseAnyMenu();
 	}
