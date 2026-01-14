@@ -43,23 +43,12 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 	private float startTransitionTime; 
 	public float transitionDelay { get; private set; } = 0.5f;
 
-	
 
+	private bool _isInitialized = false;
 	void Start()
 	{
 		//playerInputsList = GetComponent<InputManager>();
-		//CameraTransform = GetComponent<Transform>();
-
-		PlayerCameraDistanceX = -0.85f;
-		PlayerCameraDistanceY = -1.75f;
-		PlayerCameraDistanceZ = 3.25f;
-
-
-		playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
-
-		SetPlayerCameraState(playerCameraStateType);
-
-		
+	
 
 		
 		// DO NOT DELETE
@@ -73,10 +62,18 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 
 	void Update()
 	{
+		// Если инициализация не завершена, ничего не делаем
+		if (!_isInitialized)
+		{
+			//Debug.Log("bruh");
+			return;
+			
+		}
 
 
+		
 		//Debug.Log(CurrentPlayerCameraStateType);
-
+		
 		if (!menuManager.IsAnyMenuOpened)
 		{
 			MouseRotation.y += Input.GetAxis("Mouse X");
@@ -354,6 +351,17 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 		this.movementController = movementController; // Новый аргумент
 		this.playerCollider = playerCollider;
 		this.player = playerModel;
+
+
+		PlayerCameraDistanceX = -0.85f;
+		PlayerCameraDistanceY = -1.75f;
+		PlayerCameraDistanceZ = 3.25f;
+
+
+		playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
+
+		SetPlayerCameraState(playerCameraStateType);
+		_isInitialized = true;
 		Debug.Log("CameraController Initialized");
 	}
 }

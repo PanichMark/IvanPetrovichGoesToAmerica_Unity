@@ -1,22 +1,32 @@
 ﻿using UnityEngine;
 public class PlayerCameraFirstPersonRender : MonoBehaviour
 {
-	public WeaponClass leftHandWeaponComponent { get; private set; }
+	private WeaponClass leftHandWeaponComponent;
 
-	public WeaponClass rightHandWeaponComponent { get; private set; }
+	private WeaponClass rightHandWeaponComponent;
 
 	private PlayerCameraController playerCamera;
 	private WeaponController weaponController;
 
-	public void Initialize(PlayerCameraController playerCameraController, WeaponController weaponController)
+	public void Initialize(PlayerCameraController playerCameraController, WeaponController weaponController,
+							GameObject playerFirstPersonHandRight, GameObject playerFirstPersonHandLeft,
+							GameObject playerHeadParent, GameObject playerHandRightParent, GameObject playerHandLeftParent)
 	{
 		this.playerCamera = playerCameraController;
 		this.weaponController = weaponController;
 
-		this.weaponController.OnWeaponChanged += RegisterWeapons;
+		// Присваиваем полученные объекты
+		this.PlayerFirstPersonHandRight = playerFirstPersonHandRight;
+		this.PlayerFirstPersonHandLeft = playerFirstPersonHandLeft;
+		this.PlayerHeadParent = playerHeadParent;
+		this.PlayerHandRightParent = playerHandRightParent;
+		this.PlayerHandLeftParent = playerHandLeftParent;
 
-		
-	}	
+		// Регистрация события смены оружия
+		this.weaponController.OnWeaponChanged += RegisterWeapons;
+		_isInitialized = true;
+		Debug.Log("FirstPersonRender Initialized!");
+	}
 
 	private PlayerCameraStateType playerCameraStateType;
 
@@ -41,13 +51,13 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 			else rightHandWeaponComponent = null;
 		}
 	}
+	private bool _isInitialized = false;
 
-
-	public GameObject PlayerFirstPersonHandRight;
-	public GameObject PlayerFirstPersonHandLeft;
-	public GameObject PlayerHeadParent;
-	public GameObject PlayerHandRightParent;
-	public GameObject PlayerHandLeftParent;
+	private GameObject PlayerFirstPersonHandRight;
+	private GameObject PlayerFirstPersonHandLeft;
+	private GameObject PlayerHeadParent;
+	private GameObject PlayerHandRightParent;
+	private GameObject PlayerHandLeftParent;
 
 	void Start()
 	{
@@ -60,6 +70,9 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 	private void Update()
 	{
+		if (!_isInitialized)
+			return;
+
 		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
 		{
 			if (rightHandWeaponComponent != null &&
@@ -97,6 +110,9 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		if (!_isInitialized)
+			return;
+
 		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson") 
 		{
 			HideBodyPart(PlayerHeadParent);

@@ -14,12 +14,15 @@ public class PlayerCameraBlurFilter : MonoBehaviour
 		volumeMainCamera = GetComponent<Volume>();
 		Transform firstPersonCameraTransform = transform.Find("FirstPerson Camera");
 		volumeFirstPersonCamera = firstPersonCameraTransform.GetComponent<Volume>();
-
+		_isInitialized = true;
 		Debug.Log("PlayerCameraBlurFilter initialized.");
 	}
-
+	private bool _isInitialized = false;
 	private void Update()
 	{
+		// Если инициализация не завершена, ничего не делаем
+		if (!_isInitialized)
+			return;
 		if (menuManager.IsAnyMenuOpened)
 		{
 			volumeMainCamera.enabled = true;

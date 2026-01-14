@@ -67,25 +67,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 	void Start()
 	{
-		playerCamera = Camera.main;
-
-		PlayerRotationSpeed = 300f;
-
-		PlayerTransform = GetComponent<Transform>();
-		PlayerRigidBody = GetComponent<Rigidbody>();
-
-		_playerPreviousFramePosition = transform.position;
-
-
-		playerMovementStateType = (PlayerMovementStateType)Enum.Parse(typeof(PlayerMovementStateType),CurrentPlayerMovementStateType);
-
-		SetPlayerMovementState(playerMovementStateType);
-
-		PlayerMovementSpeed = 3f;
-
-		PlayerSlidingSpeed = 7.5f;
-
-		PlayerCurrentHeight = 1.75f;
+	
 		//PlayerCrouchingHeight = 1;
 		//PlayerStandingHeight = 1.75f;
 
@@ -126,10 +108,12 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 		
 		PlayerUpRayYPosition = up;
 	}
-
+	private bool _isInitialized = false;
 	void Update()
 	{
-
+		// Если инициализация не завершена, ничего не делаем
+		if (!_isInitialized)
+			return;
 		//Debug.Log(playerCamera.transform.eulerAngles.y);
 
 		playerMovementState.Update();
@@ -528,6 +512,26 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 	{
 		this.inputDevice = inputDevice;
 		this.playerBehaviour = playerBehaviour; // Новый аргумент
+		playerCamera = Camera.main;
+
+		PlayerRotationSpeed = 300f;
+
+		PlayerTransform = GetComponent<Transform>();
+		PlayerRigidBody = GetComponent<Rigidbody>();
+
+		_playerPreviousFramePosition = transform.position;
+
+
+		playerMovementStateType = (PlayerMovementStateType)Enum.Parse(typeof(PlayerMovementStateType), CurrentPlayerMovementStateType);
+
+		SetPlayerMovementState(playerMovementStateType);
+
+		PlayerMovementSpeed = 3f;
+
+		PlayerSlidingSpeed = 7.5f;
+
+		PlayerCurrentHeight = 1.75f;
+		_isInitialized = true;
 		Debug.Log("MovementController Initialized");
 	}
 }

@@ -906,8 +906,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 600eb760b4c1e4942aae0a2f36a1659f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeMainCamera: {fileID: 1433013499809569101}
-  volumeFirstPersonCamera: {fileID: 8735081162938914822}
 --- !u!114 &5390742714037677161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,13 +913,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3834870033131635256}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03a667e9d5d735345abdee14fb740f8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerFirstPersonHandRight: {fileID: 3235909896266135599}
-  PlayerFirstPersonHandLeft: {fileID: 3129673905390220885}
+  PlayerFirstPersonHandRight: {fileID: 0}
+  PlayerFirstPersonHandLeft: {fileID: 0}
   PlayerHeadParent: {fileID: 0}
   PlayerHandRightParent: {fileID: 0}
   PlayerHandLeftParent: {fileID: 0}

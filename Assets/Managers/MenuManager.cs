@@ -8,17 +8,7 @@ public class MenuManager : MonoBehaviour
 	public void Initialize(IInputDevice inputDevice)
 	{
 		this.inputDevice = inputDevice;
-		Debug.Log("MenuManager Initialized");
-	}
 
-	public bool IsPlayerControllable { get; private set; }
-	public bool IsPauseMenuOpened { get; private set; }
-	public bool IsWeaponWheelMenuOpened { get; private set; }
-	public bool IsAnyMenuOpened { get; private set; }
-
-
-	void Start()
-	{
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
@@ -26,10 +16,24 @@ public class MenuManager : MonoBehaviour
 		IsPauseMenuOpened = false;
 		IsWeaponWheelMenuOpened = false;
 		IsAnyMenuOpened = false;
+		_isInitialized = true;
+		Debug.Log("MenuManager Initialized");
 	}
+	private bool _isInitialized = false;
+	public bool IsPlayerControllable { get; private set; }
+	public bool IsPauseMenuOpened { get; private set; }
+	public bool IsWeaponWheelMenuOpened { get; private set; }
+	public bool IsAnyMenuOpened { get; private set; }
+
+
+
 
 	void Update()
 	{
+		// Если инициализация не завершена, ничего не делаем
+		if (!_isInitialized)
+			return;
+
 		if (inputDevice.GetKeyPauseMenu())
 		{
 			if (!IsPauseMenuOpened)

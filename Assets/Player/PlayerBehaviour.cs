@@ -11,9 +11,12 @@ public class PlayerBehaviour : MonoBehaviour
 	public delegate void OnPlayerEventHandler();
 	public event OnPlayerEventHandler OnPlayerArmed;
 	public event OnPlayerEventHandler OnPlayerDisarmed;
-
+	private bool _isInitialized = false;
 	void Update()
 	{
+		// Если инициализация не завершена, ничего не делаем
+		if (!_isInitialized)
+			return;
 		if (inputDevice.GetKeyHideWeapons())
 		{
 			DisarmPlayer();
@@ -55,6 +58,7 @@ public class PlayerBehaviour : MonoBehaviour
 	public void Initialize(IInputDevice inputDevice)
 	{
 		this.inputDevice = inputDevice;
+		_isInitialized = true;
 		Debug.Log("PlayerBehaviour Initialized");
 	}
 }

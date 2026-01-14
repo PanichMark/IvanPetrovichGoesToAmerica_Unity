@@ -7,20 +7,21 @@ public class PlayerCapluseCollider : MonoBehaviour
 	private PlayerMovementController movementController;
 	// Конструктор принимает зависимость
 
-	private void Start()
-	{
-		CapsuleCollider = GetComponent<CapsuleCollider>();
-	}
 
 
+	private bool _isInitialized = false;
 	void Update()
     {
+		// Если инициализация не завершена, ничего не делаем
+		if (!_isInitialized)
+			return;
 		if (movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
 			|| movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"
 			|| movementController.CurrentPlayerMovementStateType == "PlayerSliding")
 		{
-            transform.position = transform.parent.position+new Vector3(0f, 0.5f, 0f); ;
+            transform.position = transform.parent.position+new Vector3(0f, 0.5f, 0f);
             transform.localScale = new Vector3(1f,  0.5f, 1f);
+			
         }
 		else 
 		{
@@ -43,6 +44,8 @@ public class PlayerCapluseCollider : MonoBehaviour
 	public void Initialize(PlayerMovementController movementController)
 	{
 		this.movementController = movementController; // Новый аргумент
+		CapsuleCollider = GetComponent<CapsuleCollider>();
+		_isInitialized = true;
 		Debug.Log("PlayerCollider Initialized");
 	}
 }

@@ -44,6 +44,9 @@ public class WeaponWheelController : MonoBehaviour
 		this.WeaponWheelMenuCanvas = WeaponWheelMenuCanvas;
 		this.WeaponText = WeaponText;
 		this.WeaponWheelName = WeaponWheelName;
+
+		WeaponWheelMenuCanvas.gameObject.SetActive(false);
+		_isInitialized = true;
 		Debug.Log("WeaponWheelController Initialized");
 
 		weaponController.OnWeaponUnlocked += OnWeaponUnlocked;
@@ -53,9 +56,12 @@ public class WeaponWheelController : MonoBehaviour
 	{
 		RecreateWheel();
 	}
-
+	private bool _isInitialized = false;
 	void Update()
 	{
+		// Если инициализация не завершена, ничего не делаем
+		if (!_isInitialized)
+			return;
 		bool currentRightHandPressed = inputDevice.GetKeyRightHandWeaponWheel();
 		bool currentLeftHandPressed = inputDevice.GetKeyLeftHandWeaponWheel();
 
