@@ -5,11 +5,11 @@ using TMPro;
 
 public class WeaponWheelController : MonoBehaviour
 {
-	public GameObject wheelSegmentPrefab;           // Префаб сегмента
-	public Transform centerPoint;                   // Центр круга
-	public Canvas WeaponWheelMenuCanvas;            // Canvas меню выбора оружия
-	public TextMeshProUGUI WeaponText;              // Текущий выбор оружия
-	public TextMeshProUGUI WeaponWheelName;         // Название меню (левая/правая рука)
+	private GameObject wheelSegmentPrefab;           // Префаб сегмента
+	private Transform centerPoint;                   // Центр круга
+	private GameObject WeaponWheelMenuCanvas;            // Canvas меню выбора оружия
+	public TextMeshProUGUI WeaponText { get; private set; }               // Текущий выбор оружия
+	public TextMeshProUGUI WeaponWheelName { get; private set; }       // Название меню (левая/правая рука)
 
 	private List<GameObject> wheelSegments = new List<GameObject>();
 	private bool IsWeaponWheelActive = false;
@@ -32,12 +32,18 @@ public class WeaponWheelController : MonoBehaviour
 		// createWheel(); // Вызывается позже при активации меню
 	}
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, WeaponController weaponController)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, WeaponController weaponController,
+		GameObject wheelSegmentPrefab, Transform centerPoint, GameObject WeaponWheelMenuCanvas, TextMeshProUGUI WeaponText, TextMeshProUGUI WeaponWheelName)
 	{
 		this.inputDevice = inputDevice;
 		this.playerBehaviour = playerBehaviour;
 		this.weaponController = weaponController;
 		this.menuManager = menuManager;
+		this.wheelSegmentPrefab = wheelSegmentPrefab;
+		this.centerPoint = centerPoint;
+		this.WeaponWheelMenuCanvas = WeaponWheelMenuCanvas;
+		this.WeaponText = WeaponText;
+		this.WeaponWheelName = WeaponWheelName;
 		Debug.Log("WeaponWheelController Initialized");
 
 		weaponController.OnWeaponUnlocked += OnWeaponUnlocked;

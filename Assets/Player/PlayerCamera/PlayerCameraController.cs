@@ -131,7 +131,7 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 		}
 		*/
 
-
+		//Debug.Log(player);
 		
 		if (CurrentPlayerCameraStateType == "FirstPerson")
 		{
@@ -301,9 +301,9 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 	public void ThirdPersonCameraTransform()
 	{
 	
-			transform.position = player.transform.position - Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0) *
-			new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
-		
+		transform.position = player.transform.position - Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0) *
+		new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
+
 	}
 	public void CutsceneCameraTransform()
 	{

@@ -73,6 +73,8 @@ public class WeaponController : MonoBehaviour
 	private void Start()
 	{
 		ResetAllWeapons(); // Сбрасываем все оружие в начале
+		UnlockWeapon(Resources.Load<GameObject>("RangedPlungerCrossbow_6"));
+		
 	}
 
 	private void Update()

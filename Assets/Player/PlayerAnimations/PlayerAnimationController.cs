@@ -23,7 +23,7 @@ public class PlayerAnimationController: MonoBehaviour
 		this.playerCameraController = playerCameraController;
 		this.weaponController = weaponController;
 
-		playerCameraObject = Camera.main;
+		
 		ChangePlayerMovementAnimation("Idle");
 
 		Debug.Log("PlayerAnimationController Initialized");
@@ -52,8 +52,8 @@ public class PlayerAnimationController: MonoBehaviour
 	private float adjustedCameraAngle;
 	void Start()
     {
-	
 
+		playerCameraObject = Camera.main;
 		//playerAnimator = GetComponent<Animator>();
 		ChangePlayerMovementAnimation("Idle");
 

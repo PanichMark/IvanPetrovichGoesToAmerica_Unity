@@ -4,12 +4,17 @@ using UnityEngine.Rendering;
 public class PlayerCameraBlurFilter : MonoBehaviour
 {
 	private MenuManager menuManager;
-	public Volume volumeMainCamera;
-	public Volume volumeFirstPersonCamera;
+	private Volume volumeMainCamera;
+	private Volume volumeFirstPersonCamera;
 
 	public void Initialize(MenuManager manager)
 	{
 		menuManager = manager;
+
+		volumeMainCamera = GetComponent<Volume>();
+		Transform firstPersonCameraTransform = transform.Find("FirstPerson Camera");
+		volumeFirstPersonCamera = firstPersonCameraTransform.GetComponent<Volume>();
+
 		Debug.Log("PlayerCameraBlurFilter initialized.");
 	}
 
