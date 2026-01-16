@@ -14,16 +14,22 @@ public class InteractionController : MonoBehaviour
 	}
 
 	private float interactionRange = 50f; // Диапазон взаимодействия
-	public TextMeshProUGUI mainInteractionText; // Подсказка (назначается вручную через Inspector)
-	public TextMeshProUGUI additionalInteractionText;
 
-	public TextMeshProUGUI Item1Text;
-	public TextMeshProUGUI Item2Text;
-	public TextMeshProUGUI Item3Text;
+	private bool _isInitialized = false;
 
-	public Image Item1Image;
-	public Image Item2Image;
-	public Image Item3Image;
+	private TextMeshProUGUI mainInteractionText; 
+	private TextMeshProUGUI additionalInteractionText;
+
+	private TextMeshProUGUI Item1Text;
+	private TextMeshProUGUI Item2Text;
+	private TextMeshProUGUI Item3Text;
+
+	private Image Item1Image;
+	private Image Item2Image;
+	private Image Item3Image;
+
+
+
 	private Sprite NoItemImageExeption;
 
 	private PlayerCameraController playerCamera;
@@ -40,26 +46,47 @@ public class InteractionController : MonoBehaviour
 	private GameObject currentInteractableObject; // Текущий объект взаимодействия
 	public GameObject CurrentPickableObject { get; private set; }
 
-	public void Initialize(IInputDevice inputDevice, PlayerCameraController playerCameraController, PlayerBehaviour playerBehaviour)
+	public void Initialize(
+		IInputDevice inputDevice,
+		PlayerCameraController playerCameraController,
+		PlayerBehaviour playerBehaviour,
+		TextMeshProUGUI mainInteractionText,
+		TextMeshProUGUI additionalInteractionText,
+		TextMeshProUGUI item1Text,
+		TextMeshProUGUI item2Text,
+		TextMeshProUGUI item3Text,
+		Image item1Image,
+		Image item2Image,
+		Image item3Image
+	)
 	{
 		this.inputDevice = inputDevice;
-		playerCamera = playerCameraController;
+		this.playerCamera = playerCameraController;
 		this.playerBehaviour = playerBehaviour;
 
-		// Подписываемся на события игрока
-
+		// Новые параметры
+		this.mainInteractionText = mainInteractionText;
+		this.additionalInteractionText = additionalInteractionText;
+		this.Item1Text = item1Text;
+		this.Item2Text = item2Text;
+		this.Item3Text = item3Text;
+		this.Item1Image = item1Image;
+		this.Item2Image = item2Image;
+		this.Item3Image = item3Image;
+		
+		_isInitialized = true;
 		Debug.Log("InteractionController Initialized");
+		
 	}
 
-	void Start()
-	{
-		//playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
-		//playerBehaviour = GetComponent<PlayerBehaviour>();
-		//additionalInteractionText.gameObject.SetActive(false);
-	}
+
 
 	void Update()
 	{
+		// Если инициализация не завершена, ничего не делаем
+		if (!_isInitialized)
+			return;
+		
 		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
 			interactionRange = 2.5f;
 		else if (playerCamera.CurrentPlayerCameraStateType == "ThirdPerson")
@@ -75,6 +102,7 @@ public class InteractionController : MonoBehaviour
 		{
 			isHit = Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hitInfo, interactionRange);
 		}
+		
 
 		// Если у нас есть захваченный объект, запрещаем любое другое взаимодействие
 		if (CurrentPickableObject != null)
@@ -149,6 +177,7 @@ public class InteractionController : MonoBehaviour
 				{
 					// Подсказка для взаимодействия
 					mainInteractionText.text = $"{interactableObj.MainInteractionHint}\nНажмите {inputDevice.GetNameOfKeyInteract()}";
+					
 				}
 
 				// Если это стандартный объект IInteractable, обрабатываем нажатие

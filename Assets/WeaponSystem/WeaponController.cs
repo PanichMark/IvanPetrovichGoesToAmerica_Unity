@@ -37,7 +37,7 @@ public class WeaponController : MonoBehaviour
 		playerBehaviour.OnPlayerDisarmed += OnPlayerDisarmed;
 
 		ResetAllWeapons(); // Сбрасываем все оружие в начале
-		UnlockWeapon(Resources.Load<GameObject>("RangedPlungerCrossbow_6"));
+		
 		_isInitialized = true;
 		Debug.Log("WeaponController Initialized");
 	}

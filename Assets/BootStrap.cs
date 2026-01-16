@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class BootStrap : MonoBehaviour
 {
@@ -33,13 +34,28 @@ public class BootStrap : MonoBehaviour
 
 
 	private PlayerAnimationController playerAnimationController;
-	private InteractionController interactionController;
+	[SerializeField] private InteractionController interactionController;
+	[SerializeField] private GameObject interactionCanvas;
+	private TextMeshProUGUI mainInteractionText;
+	private TextMeshProUGUI additionalInteractionText;
+
+	private TextMeshProUGUI Item1Text;
+	private TextMeshProUGUI Item2Text;
+	private TextMeshProUGUI Item3Text;
+
+	private Image Item1Image;
+	private Image Item2Image;
+	private Image Item3Image;
+
 
 	private GameObject wheelSegmentPrefab;          // Префаб сегмента
 	private Transform centerPoint;                  // Центр круга
 	private TextMeshProUGUI WeaponText;             // Текущий выбор оружия
 	private TextMeshProUGUI WeaponWheelName;        // Название меню (левая/правая рука)
 													// Метод для рекурсивного поиска объекта по имени
+
+
+	
 	private GameObject FindDeepChildByName(GameObject root, string targetName)
 	{
 		Queue<Transform> queue = new Queue<Transform>();
@@ -71,11 +87,33 @@ public class BootStrap : MonoBehaviour
 		WeaponText = weaponWheelCanvas.transform.Find("Selected Weapon Name")?.GetComponent<TextMeshProUGUI>();
 		WeaponWheelName = weaponWheelCanvas.transform.Find("WeaponWheel Hand")?.GetComponent<TextMeshProUGUI>();
 
+
+		mainInteractionText = interactionCanvas.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
+		additionalInteractionText = interactionCanvas.transform.Find("additionalInteractionText")?.GetComponent<TextMeshProUGUI>();
+
+		Item1Text = interactionCanvas.transform.Find("Item1text")?.GetComponent<TextMeshProUGUI>();
+		Item2Text = interactionCanvas.transform.Find("Item2text")?.GetComponent<TextMeshProUGUI>();
+		Item3Text = interactionCanvas.transform.Find("Item3text")?.GetComponent<TextMeshProUGUI>();
+
+		Item1Image = interactionCanvas.transform.Find("Image1Icon")?.GetComponent<Image>();
+		Item2Image = interactionCanvas.transform.Find("Image2Icon")?.GetComponent<Image>();
+		Item3Image = interactionCanvas.transform.Find("Image3Icon")?.GetComponent<Image>();
+
+
+
+
+
+
+
+
+
 		// ИНСТАНТИРУЕМ ОБЪЕКТЫ ПЕРЕД ВСЕМИ ОПЕРАЦИЯМИ
 		player = Instantiate(player);
 		playerCamera = Instantiate(playerCamera);
 		weaponSystem = Instantiate(weaponSystem);
 		weaponWheelCanvas = Instantiate(weaponWheelCanvas);
+		interactionController = Instantiate(interactionController);
+		interactionCanvas = Instantiate(interactionCanvas);
 
 
 		// НАХОДИМ НУЖНЫЕ GAMEOBJECTS ПО ИМЕНАМ
@@ -109,10 +147,21 @@ public class BootStrap : MonoBehaviour
 							 PlayerFirstPersonHandRight, PlayerFirstPersonHandLeft,
 							 PlayerHeadParent, PlayerHandRightParent, PlayerHandLeftParent);
 		//playerAnimationController.Initialize(inputDevice, player, playerBehaviour, movementController, cameraController, weaponController);
-		//interactionController.Initialize(inputDevice, cameraController, playerBehaviour);
+		interactionController.Initialize(
+	inputDevice,
+	cameraController,
+	playerBehaviour,
+	mainInteractionText,
+	additionalInteractionText,
+	Item1Text,
+	Item2Text,
+	Item3Text,
+	Item1Image,
+	Item2Image,
+	Item3Image
+);
 
 		// Поднимаем флаг только после завершения всех шагов
-
 
 		Debug.Log("Все компоненты успешно инициализированы!");
 	}

@@ -23,7 +23,7 @@ public class WeaponWheelController : MonoBehaviour
 	private bool previousRightHandPressed = false;
 	private bool previousLeftHandPressed = false;
 
-	public float radius = 100f;
+	public float radius;
 
 	public event System.Action<int> OnSegmentSelected;
 
@@ -118,11 +118,17 @@ public class WeaponWheelController : MonoBehaviour
 		for (int i = 0; i < activeWeapons.Count; i++)
 		{
 			GameObject segmentInstance = Instantiate(wheelSegmentPrefab);
-			segmentInstance.transform.SetParent(centerPoint.parent);
 			segmentInstance.name = $"Segment {i + 1}";
+
+			// Ставим сегмент как прямой ребёнок канваса
+			segmentInstance.transform.SetParent(WeaponWheelMenuCanvas.transform, false);
 
 			Button button = segmentInstance.GetComponent<Button>();
 			button.onClick.AddListener(() => OnSegmentSelected?.Invoke(i));
+
+			// Получаем RectTransform кнопки
+			RectTransform buttonRectTransform = button.GetComponent<RectTransform>();
+			buttonRectTransform.sizeDelta = new Vector2(50, 50); // уменьшаем размеры кнопок
 
 			GameObject iconObject = new GameObject("Icon");
 			iconObject.transform.SetParent(button.transform, false);
@@ -145,14 +151,15 @@ public class WeaponWheelController : MonoBehaviour
 			iconImage.fillAmount = 1f;
 
 			RectTransform iconRectTransform = iconObject.GetComponent<RectTransform>();
-			iconRectTransform.sizeDelta = new Vector2(100, 100);
+			iconRectTransform.sizeDelta = new Vector2(50, 50); // уменьшенные размеры иконки
 			iconRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
 			iconRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
 			iconRectTransform.pivot = new Vector2(0.5f, 0.5f);
 
+			// Локальная позиция определяется относительно центра канваса
 			float adjustedAngle = i * angleStep + 90f;
 			Vector3 positionOnCircle = CalculatePositionOnCircle(adjustedAngle, radius);
-			segmentInstance.transform.position = centerPoint.position + positionOnCircle;
+			segmentInstance.transform.localPosition = positionOnCircle;
 
 			WeaponWheelButton buttonScript = segmentInstance.GetComponent<WeaponWheelButton>();
 			if (buttonScript != null)
