@@ -8,7 +8,7 @@ public class ReadableObject : MonoBehaviour, IInteractable
 
 	[SerializeField] private string interactionObjectNameUI;
 
-	[SerializeField] private MenuManager menuManager;
+	private MenuManager menuManager;
 
 	public string InteractionObjectNameUI => interactionObjectNameUI;
 
@@ -34,6 +34,10 @@ public class ReadableObject : MonoBehaviour, IInteractable
 
 	public bool IsAdditionalInteractionHintActive => false;
 
+	private void Awake()
+	{
+		menuManager = ServiceLocator.Resolve<MenuManager>();
+	}
 	public void Interact()
 	{
 		menuManager.OpenInteractionMenu();

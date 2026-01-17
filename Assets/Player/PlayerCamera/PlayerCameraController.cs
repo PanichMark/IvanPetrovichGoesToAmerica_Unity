@@ -6,7 +6,7 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
 	private PlayerMovementController movementController;
-	private PlayerCapluseCollider playerCollider;
+	private PlayerCapsuleCollider playerCollider;
 	private GameObject player;
 	// Конструктор принимает зависимость
 
@@ -344,7 +344,7 @@ public class PlayerCameraController : MonoBehaviour, IDataPersistence
 
 	}
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerMovementController movementController, PlayerCapluseCollider playerCollider, GameObject playerModel)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerMovementController movementController, PlayerCapsuleCollider playerCollider, GameObject playerModel)
 	{
 		this.inputDevice = inputDevice;
 		this.menuManager = menuManager;

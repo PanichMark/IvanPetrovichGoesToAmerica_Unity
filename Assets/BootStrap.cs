@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BootStrap : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class BootStrap : MonoBehaviour
 
 	private PlayerBehaviour playerBehaviour;
 	private PlayerMovementController movementController;
-	private PlayerCapluseCollider playerCollider;
+	private PlayerCapsuleCollider playerCollider;
 
 	private PlayerCameraController cameraController;
 	private PlayerCameraBlurFilter cameraBlurFilter;
@@ -76,11 +77,13 @@ public class BootStrap : MonoBehaviour
 		return null;
 	}
 	// Простая обычная инициализация без корутин
-	private void SequentialInitialization()
+	private IEnumerator SequentialInitialization()
 	{
 		// Создание устройства ввода
 		inputDevice = new InputKeyboard();
-
+		//inputDevice = new InputController();
+		weaponWheelCanvas = Instantiate(weaponWheelCanvas);
+		interactionCanvas = Instantiate(interactionCanvas);
 		// Загрузка ресурсов
 		wheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
 		centerPoint = weaponWheelCanvas.transform.Find("Centre")?.transform;
@@ -100,8 +103,7 @@ public class BootStrap : MonoBehaviour
 		Item3Image = interactionCanvas.transform.Find("Image3Icon")?.GetComponent<Image>();
 
 
-
-
+		
 
 
 
@@ -111,9 +113,10 @@ public class BootStrap : MonoBehaviour
 		player = Instantiate(player);
 		playerCamera = Instantiate(playerCamera);
 		weaponSystem = Instantiate(weaponSystem);
-		weaponWheelCanvas = Instantiate(weaponWheelCanvas);
+		//weaponWheelCanvas = Instantiate(weaponWheelCanvas);
 		interactionController = Instantiate(interactionController);
-		interactionCanvas = Instantiate(interactionCanvas);
+		//interactionCanvas = Instantiate(interactionCanvas);
+		menuManager = Instantiate(menuManager);
 
 
 		// НАХОДИМ НУЖНЫЕ GAMEOBJECTS ПО ИМЕНАМ
@@ -126,11 +129,12 @@ public class BootStrap : MonoBehaviour
 		// Получить компоненты ПОСЛЕ инстанцирования
 		playerBehaviour = player.GetComponent<PlayerBehaviour>();
 		movementController = player.GetComponent<PlayerMovementController>();
-		playerCollider = player.GetComponentInChildren<PlayerCapluseCollider>();
+		playerCollider = player.GetComponentInChildren<PlayerCapsuleCollider>();
 		cameraController = playerCamera.GetComponent<PlayerCameraController>();
 		cameraBlurFilter = playerCamera.GetComponent<PlayerCameraBlurFilter>();
 		weaponController = weaponSystem.GetComponent<WeaponController>();
 		weaponWheelController = weaponSystem.GetComponent<WeaponWheelController>();
+		playerAnimationController = player.GetComponent<PlayerAnimationController>();
 		firstPersonRender = playerCamera.GetComponent<PlayerCameraFirstPersonRender>();
 
 		// ИНЦИАЛИЗАЦИЯ КОМПОНЕНТОВ
@@ -146,7 +150,7 @@ public class BootStrap : MonoBehaviour
 		firstPersonRender.Initialize(cameraController, weaponController,
 							 PlayerFirstPersonHandRight, PlayerFirstPersonHandLeft,
 							 PlayerHeadParent, PlayerHandRightParent, PlayerHandLeftParent);
-		//playerAnimationController.Initialize(inputDevice, player, playerBehaviour, movementController, cameraController, weaponController);
+		playerAnimationController.Initialize(inputDevice, player, playerBehaviour, movementController, cameraController, weaponController);
 		interactionController.Initialize(
 	inputDevice,
 	cameraController,
@@ -163,20 +167,29 @@ public class BootStrap : MonoBehaviour
 
 		// Поднимаем флаг только после завершения всех шагов
 
+		// Зарегистрировали контроллер оружия в Service Locator
+		ServiceLocator.Register(player);
+		ServiceLocator.Register(menuManager);
+		ServiceLocator.Register(weaponController);
+
+		//yield return null;
+			yield return StartCoroutine(LoadNextScene());
+
 		Debug.Log("Все компоненты успешно инициализированы!");
 	}
+	private IEnumerator LoadNextScene()
+	{
+		var operation = SceneManager.LoadSceneAsync("NEW_SceneTest", LoadSceneMode.Additive);
+		while (!operation.isDone)
+			yield return null;
 
+		Debug.Log("Новая сцена загружена!");
+	}
 	// Main entry point
 	private void Awake()
 	{
-		SequentialInitialization();
+		StartCoroutine(SequentialInitialization()); // Используем StartCoroutine!
 	}
 
-	void Start()
-	{
-	}
 
-	void Update()
-	{
-	}
 }

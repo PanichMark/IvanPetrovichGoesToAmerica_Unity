@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class PlayerCapluseCollider : MonoBehaviour
+public class PlayerCapsuleCollider : MonoBehaviour
 {
 
 	private CapsuleCollider CapsuleCollider;

@@ -30,11 +30,11 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 
 
 
-	void Start()
+	void Awake()
 	{
 		BoxCollider = GetComponent<BoxCollider>();
 		RigidBody = GetComponent<Rigidbody>();
-		CachedPlayer = GameObject.Find("Player");
+		CachedPlayer = ServiceLocator.Resolve<GameObject>();
 	}
 
 	

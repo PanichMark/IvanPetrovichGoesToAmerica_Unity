@@ -2,16 +2,14 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
 
 public class InteractionController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
 
 	// Конструктор принимает зависимость
-	public InteractionController(IInputDevice inputDevice)
-	{
-		this.inputDevice = inputDevice;
-	}
+
 
 	private float interactionRange = 50f; // Диапазон взаимодействия
 
@@ -313,6 +311,8 @@ public class InteractionController : MonoBehaviour
 
 			currentInteractableObject = null;
 		}
+
+	
 
 		// Помечаем текущий объект как предыдущий
 		previousInteractableObject = currentInteractableObject;

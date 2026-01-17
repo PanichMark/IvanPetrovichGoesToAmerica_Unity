@@ -2,14 +2,16 @@ using UnityEngine;
 
 public class LootObjectWeapon : LootObjectAbstract
 {
-	public override int MoneyValue => 0;
-
-
-
-	[SerializeField] private WeaponController weaponController;
-
 	[SerializeField] private GameObject weaponObject;
 
+	private WeaponController weaponController;
+
+	private void Awake()
+	{
+		// Обращаемся к Service Locator и получаем контроллер оружия
+		weaponController = ServiceLocator.Resolve<WeaponController>();
+		
+	}
 
 	public override void Interact()
 	{

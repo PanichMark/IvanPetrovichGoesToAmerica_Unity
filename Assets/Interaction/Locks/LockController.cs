@@ -13,7 +13,7 @@ public class LockController : MonoBehaviour, IInteractable
 	[SerializeField] private float moveSpeed;                    // Скорость перемещения
 	[SerializeField] private GameObject CubeFollow;              // Префаб следящего куба
 	[SerializeField] private Button ClosePuzzleButton;           // Кнопка закрытия пазла
-	[SerializeField] private MenuManager menuManager;                             // Менеджер меню
+	 private MenuManager menuManager;                             // Менеджер меню
 
 
 	private string interactionObjectNameUI;                      // Название объекта интерфейса
@@ -92,6 +92,11 @@ public class LockController : MonoBehaviour, IInteractable
 	}
 	*/
 
+
+	private void Awake()
+	{
+		menuManager = ServiceLocator.Resolve<MenuManager>();
+	}
 	private void Update()
 	{
 		if (!isMovingOrRotating && currentGearInstance != null)

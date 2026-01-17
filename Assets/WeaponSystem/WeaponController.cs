@@ -38,6 +38,7 @@ public class WeaponController : MonoBehaviour
 
 		ResetAllWeapons(); // Сбрасываем все оружие в начале
 		
+
 		_isInitialized = true;
 		Debug.Log("WeaponController Initialized");
 	}

@@ -11,7 +11,7 @@ public class PlayerAnimationController: MonoBehaviour
 
 	private Camera playerCameraObject;
 	private Animator playerAnimator;
-
+	private bool _isInitialized = false;
 	// Конструктор принимает зависимость
 	public void Initialize(IInputDevice inputDevice, GameObject player, PlayerBehaviour playerBehaviour, PlayerMovementController playerMovementController,
 		PlayerCameraController playerCameraController, WeaponController weaponController)
@@ -24,8 +24,13 @@ public class PlayerAnimationController: MonoBehaviour
 		this.weaponController = weaponController;
 
 		
+	
+		playerCameraObject = Camera.main;
+		
 		ChangePlayerMovementAnimation("Idle");
 
+
+		_isInitialized = true;
 		Debug.Log("PlayerAnimationController Initialized");
 	}
 
@@ -50,22 +55,15 @@ public class PlayerAnimationController: MonoBehaviour
 
 
 	private float adjustedCameraAngle;
-	void Start()
-    {
 
-		playerCameraObject = Camera.main;
-		//playerAnimator = GetComponent<Animator>();
-		ChangePlayerMovementAnimation("Idle");
-
-
-
-	}
 
 	private void Update()
 	{
-		
-			// считаем поворот камеры X
-			float cameraRotationX = playerCameraObject.transform.rotation.eulerAngles.x;
+		// Если инициализация не завершена, ничего не делаем
+		if (!_isInitialized)
+			return;
+		// считаем поворот камеры X
+		float cameraRotationX = playerCameraObject.transform.rotation.eulerAngles.x;
 			if (cameraRotationX >= 0 && cameraRotationX < 180)
 			{
 				adjustedCameraAngle = cameraRotationX;
