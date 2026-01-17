@@ -39,6 +39,9 @@ public class BootStrap : MonoBehaviour
 	[SerializeField] private GameObject interactionCanvas;
 	private TextMeshProUGUI mainInteractionText;
 	private TextMeshProUGUI additionalInteractionText;
+	private Button ExitInteraction;
+	private TextMeshProUGUI ReadableText;
+	private Image BackgroundBlack;
 
 	private TextMeshProUGUI Item1Text;
 	private TextMeshProUGUI Item2Text;
@@ -48,6 +51,8 @@ public class BootStrap : MonoBehaviour
 	private Image Item2Image;
 	private Image Item3Image;
 
+	
+	private Image ImageNewspaper;
 
 	private GameObject wheelSegmentPrefab;          // Префаб сегмента
 	private Transform centerPoint;                  // Центр круга
@@ -102,10 +107,11 @@ public class BootStrap : MonoBehaviour
 		Item2Image = interactionCanvas.transform.Find("Image2Icon")?.GetComponent<Image>();
 		Item3Image = interactionCanvas.transform.Find("Image3Icon")?.GetComponent<Image>();
 
-
+		ExitInteraction = interactionCanvas.transform.Find("ExitInteraction")?.GetComponent<Button>();
 		
-
-
+		ImageNewspaper = interactionCanvas.transform.Find("ReadableImage")?.GetComponent<Image>();
+		ReadableText = interactionCanvas.transform.Find("ReadableText")?.GetComponent<TextMeshProUGUI>();
+		BackgroundBlack = interactionCanvas.transform.Find("BackgroundBlack")?.GetComponent<Image>();
 
 
 
@@ -113,9 +119,7 @@ public class BootStrap : MonoBehaviour
 		player = Instantiate(player);
 		playerCamera = Instantiate(playerCamera);
 		weaponSystem = Instantiate(weaponSystem);
-		//weaponWheelCanvas = Instantiate(weaponWheelCanvas);
 		interactionController = Instantiate(interactionController);
-		//interactionCanvas = Instantiate(interactionCanvas);
 		menuManager = Instantiate(menuManager);
 
 
@@ -168,28 +172,42 @@ public class BootStrap : MonoBehaviour
 		// Поднимаем флаг только после завершения всех шагов
 
 		// Зарегистрировали контроллер оружия в Service Locator
-		ServiceLocator.Register(player);
-		ServiceLocator.Register(menuManager);
-		ServiceLocator.Register(weaponController);
+	    ServiceLocator.Register("Player", player);
+        ServiceLocator.Register("MenuManager", menuManager);
+        ServiceLocator.Register("WeaponController", weaponController);
+        ServiceLocator.Register("ExitInteraction", ExitInteraction);
+        ServiceLocator.Register("ImageNewspaper", ImageNewspaper);
+		ServiceLocator.Register("ReadableText", ReadableText);
+		ServiceLocator.Register("BackgroundBlack", BackgroundBlack);
+		//Debug.Log(BackgroundBlack);
 
 		//yield return null;
-			yield return StartCoroutine(LoadNextScene());
+		yield return StartCoroutine(LoadNextScene());
 
 		Debug.Log("Все компоненты успешно инициализированы!");
 	}
 	private IEnumerator LoadNextScene()
 	{
-		var operation = SceneManager.LoadSceneAsync("NEW_SceneTest", LoadSceneMode.Additive);
-		while (!operation.isDone)
+		// Сразу подгружаем New_SceneTest поверх Bootstrap
+		//var operation = SceneManager.LoadSceneAsync("NEW_SceneTest", LoadSceneMode.Additive);
+
+		//while (!operation.isDone)
 			yield return null;
 
-		Debug.Log("Новая сцена загружена!");
+		Debug.Log("Дополнительная сцена загружена!");
 	}
+
+
+
 	// Main entry point
 	private void Awake()
 	{
 		StartCoroutine(SequentialInitialization()); // Используем StartCoroutine!
+		
 	}
 
-
+	private void OnApplicationQuit()
+	{
+		ServiceLocator.ClearServices();
+	}
 }

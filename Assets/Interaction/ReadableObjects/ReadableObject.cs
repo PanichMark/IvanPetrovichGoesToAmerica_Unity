@@ -16,17 +16,17 @@ public class ReadableObject : MonoBehaviour, IInteractable
 
 	public string AdditionalInteractionHint => null;
 
-	[SerializeField] private GameObject ExitButton;
+	private Button ExitButton;
 
 	[SerializeField] private Sprite Image;
 
-	[SerializeField] private GameObject ImageRead;
+	
 
-	[SerializeField] private GameObject DescriptionTextGameobject; // Игровой объект с компонентом TextMeshProUGUI
+	
 
 	[SerializeField] private TextAsset textFile; // Поле для выбора текстового файла
 
-	[SerializeField] private GameObject ReadStructure;
+	private Image ReadStructure;
 
 	private TextMeshProUGUI descriptionText;
 
@@ -36,26 +36,34 @@ public class ReadableObject : MonoBehaviour, IInteractable
 
 	private void Awake()
 	{
-		menuManager = ServiceLocator.Resolve<MenuManager>();
+		// Разрешаем объекты по строке-ключу
+		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		ExitButton = ServiceLocator.Resolve<Button>("ExitInteraction");     // Предполагаемый ключ
+		ImageComponent = ServiceLocator.Resolve<Image>("ImageNewspaper"); // Предполагаемый ключ
+		descriptionText = ServiceLocator.Resolve<TextMeshProUGUI>("ReadableText");
+		ReadStructure = ServiceLocator.Resolve<Image>("BackgroundBlack");
+		//Debug.Log(ReadStructure);
+		
 	}
 	public void Interact()
 	{
 		menuManager.OpenInteractionMenu();
 
-		ReadStructure.SetActive(true);
-		
+		ReadStructure.gameObject.SetActive(true);
 
-		ImageComponent = ImageRead.GetComponent<Image>();
+		
+		ImageComponent.gameObject.SetActive(true);	
 		ImageComponent.sprite = Image;
 
 		// Включаем отображение текста из выбранного файла
 		
-		descriptionText = DescriptionTextGameobject.GetComponent<TextMeshProUGUI>();
-		descriptionText.text = textFile.text;
+		
+	    descriptionText.text = textFile.text;
 		
 
 		// Подписываемся на событие OnClick кнопки ExitButton
 		ExitButton.GetComponent<Button>().onClick.AddListener(CloseAndDeactivate);
+		ExitButton.gameObject.SetActive(true);
 
 		gameObject.tag = "Untagged";
 	}
@@ -64,13 +72,13 @@ public class ReadableObject : MonoBehaviour, IInteractable
 	private void CloseAndDeactivate()
 	{
 		// Деактивируем объекты
-		
 
+		ExitButton.gameObject.SetActive(false);
 		ImageComponent.sprite = null;
 		descriptionText.text = null;
-
-		ReadStructure.SetActive(false);
-		// Закрываем меню
+		ImageComponent.gameObject.SetActive(false);
+		ReadStructure.gameObject.SetActive(false);
+		//Закрываем меню
 		menuManager.CloseInteractionMenu();
 
 		gameObject.tag = "Interactable";

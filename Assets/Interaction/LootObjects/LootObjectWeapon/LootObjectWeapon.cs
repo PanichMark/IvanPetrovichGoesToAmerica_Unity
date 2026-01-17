@@ -8,9 +8,8 @@ public class LootObjectWeapon : LootObjectAbstract
 
 	private void Awake()
 	{
-		// Обращаемся к Service Locator и получаем контроллер оружия
-		weaponController = ServiceLocator.Resolve<WeaponController>();
-		
+		// Запрашиваем оружие-контроллер, используя уникальный ключ
+		weaponController = ServiceLocator.Resolve<WeaponController>("WeaponController");
 	}
 
 	public override void Interact()

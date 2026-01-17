@@ -12,10 +12,10 @@ public class LockController : MonoBehaviour, IInteractable
 	[SerializeField] private float rotationSpeed;                // Скорость вращения
 	[SerializeField] private float moveSpeed;                    // Скорость перемещения
 	[SerializeField] private GameObject CubeFollow;              // Префаб следящего куба
-	[SerializeField] private Button ClosePuzzleButton;           // Кнопка закрытия пазла
+	private Button ClosePuzzleButton;           // Кнопка закрытия пазла
 	private MenuManager menuManager;                             // Менеджер меню
 
-
+	public bool WasUnlocked { get; private set; } = false;
 	private string interactionObjectNameUI;                      // Название объекта интерфейса
 	private bool isMovingOrRotating = false;                     // Блокировка взаимодействия
 	private GameObject currentGearInstance;                      // Текущий экземпляр шестерёнки
@@ -95,7 +95,9 @@ public class LockController : MonoBehaviour, IInteractable
 
 	private void Awake()
 	{
-		menuManager = ServiceLocator.Resolve<MenuManager>();
+		// Разрешаем объекты через ключи
+		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		ClosePuzzleButton = ServiceLocator.Resolve<Button>("ExitInteraction");
 	}
 	private void Update()
 	{
@@ -227,7 +229,9 @@ public class LockController : MonoBehaviour, IInteractable
 			if (EndCollider != null && IsIntersectingWithCollider(CentreZoneCollider, EndCollider))
 			{
 				Debug.Log("Центр пересекся с объектом 'END'.");
+				WasUnlocked = true;
 				OnClosePuzzle(); // Автоматически закрываем пазл
+				
 			}
 		}
 	}

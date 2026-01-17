@@ -34,12 +34,12 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 	{
 		BoxCollider = GetComponent<BoxCollider>();
 		RigidBody = GetComponent<Rigidbody>();
-		CachedPlayer = ServiceLocator.Resolve<GameObject>();
+		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
 	}
 
-	
 
-	
+
+
 
 	public void Interact()
 	{

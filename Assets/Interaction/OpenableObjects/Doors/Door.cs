@@ -8,9 +8,10 @@ public class Door : OpenableObjectAbstract
 	private bool isAdditionalInteractionHintActive;
 	public override bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
 
-	[SerializeField] private bool isDoorKeyLocked;
-	//private bool isDoorUnlocked;
-	//private bool WasDoorKeyFound;
+	[SerializeField]
+	private LockController lockController;   // Поле для добавления контроллера замка
+											 //private bool isDoorUnlocked;
+											 //private bool WasDoorKeyFound;
 
 	private float doorOpeningSpeed = 200f; // Скорость открытия-закрытия
 
@@ -36,29 +37,40 @@ public class Door : OpenableObjectAbstract
 
 	public override void Interact()
 	{
-		if (!isDoorKeyLocked)
+		if (lockController != null && lockController.WasUnlocked == false)
 		{
-			isAdditionalInteractionHintActive = false;
+			// Если замок установлен, сначала пытаемся открыть замок
+			Debug.Log("Запускается попытка взлома замка...");
+			lockController.Interact();
 
-			// Останавливаем ранее запущенную корутину, если она существует
-			if (currentAnimation != null)
-			{
-				StopCoroutine(currentAnimation);
-			}
-
-			if (!IsDoorOpened)
-			{
-				currentAnimation = StartCoroutine(OpenDoor()); // Начинаем новую корутину
-			}
-			else
-			{
-				currentAnimation = StartCoroutine(CloseDoor()); // Начинаем новую корутину
-			}
+			
 		}
-		else isAdditionalInteractionHintActive = true;
 
+		if (lockController == null || lockController.WasUnlocked == true)
+		{
+			// Если замка нет, сразу открываем дверь
+			PerformDoorInteraction();
+		}
 	}
+	private void PerformDoorInteraction()
+	{
+		isAdditionalInteractionHintActive = false;
 
+		// Останавливаем ранее запущенную корутину, если она существует
+		if (currentAnimation != null)
+		{
+			StopCoroutine(currentAnimation);
+		}
+
+		if (!IsDoorOpened)
+		{
+			currentAnimation = StartCoroutine(OpenDoor()); // Начинаем новую корутину
+		}
+		else
+		{
+			currentAnimation = StartCoroutine(CloseDoor()); // Начинаем новую корутину
+		}
+	}
 	private void Update()
 	{
 		//Debug.Log(currentAnimation);

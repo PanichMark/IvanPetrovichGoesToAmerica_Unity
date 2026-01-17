@@ -1,21 +1,31 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 public class ServiceLocator
 {
-	private static Dictionary<Type, object> services = new Dictionary<Type, object>();
+	private static readonly Dictionary<string, object> services = new Dictionary<string, object>();
 
-	public static void Register<T>(T serviceInstance)
+	public static void Register(string key, object serviceInstance)
 	{
-		services[typeof(T)] = serviceInstance;
+		if (services.ContainsKey(key))
+		{
+			throw new ArgumentException($"Служба с ключом '{key}' уже зарегистрирована.", nameof(key));
+		}
+		services[key] = serviceInstance;
 	}
 
-	public static T Resolve<T>()
+	public static T Resolve<T>(string key)
 	{
-		if (!services.TryGetValue(typeof(T), out var result))
+		if (!services.TryGetValue(key, out var result))
 		{
-			throw new InvalidOperationException($"Тип {typeof(T)} не зарегистрирован.");
+			throw new KeyNotFoundException($"Не найдено службы с ключом '{key}'.");
 		}
 		return (T)result;
+	}
+
+	// Новый публичный метод для очистки
+	public static void ClearServices()
+	{
+		services.Clear();
 	}
 }
