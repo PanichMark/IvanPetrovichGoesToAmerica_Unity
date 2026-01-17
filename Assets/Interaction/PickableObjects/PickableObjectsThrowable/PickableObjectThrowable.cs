@@ -92,3 +92,4 @@ public class PickableObjectThrowable : PickableObjectAbstract, IThrowable, IDama
 	}
 }
 
+

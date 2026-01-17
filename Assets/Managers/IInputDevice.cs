@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using UnityEngine;
 
 public interface IInputDevice
 {
-	// Получение состояния клавиш
+	// РџРѕР»СѓС‡РµРЅРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ РєР»Р°РІРёС€
 	bool GetKeyPauseMenu();
 	bool GetKeyUp();
 	bool GetKeyDown();
@@ -26,12 +26,13 @@ public interface IInputDevice
 	bool GetKeyLeftHandWeaponAttack();
 
 
-	// Информация о ключах
+	// РРЅС„РѕСЂРјР°С†РёСЏ Рѕ РєР»СЋС‡Р°С…
 	string GetNameOfKeyInteract();
 	string GetNameOfKeyLeftHandWeaponAttack();
 
-	// Дополнительные полезные методы
+	// Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РїРѕР»РµР·РЅС‹Рµ РјРµС‚РѕРґС‹
 	IEnumerable<(string action, KeyCode key)> GetCurrentBindings();
 	KeyCode GetBinding(string actionName);
 	void RebindKey(string actionName, KeyCode newKey);
 }
+

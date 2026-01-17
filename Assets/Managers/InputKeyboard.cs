@@ -304,3 +304,4 @@ public class InputKeyboard : IInputDevice
 		return keyBindings["LeftHandWeaponAttack"].ToString();
 	}
 }
+

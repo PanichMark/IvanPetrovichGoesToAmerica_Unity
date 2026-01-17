@@ -47,3 +47,4 @@ public class VendingMachine : MonoBehaviour, IInteractUsedItem, IInteractable
 	}
 }
 	
+

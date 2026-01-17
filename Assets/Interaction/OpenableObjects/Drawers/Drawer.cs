@@ -70,3 +70,4 @@ public class Drawer : OpenableObjectAbstract
 		currentAnimation = null;
 	}
 }
+

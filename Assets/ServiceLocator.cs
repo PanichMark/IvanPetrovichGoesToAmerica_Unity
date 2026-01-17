@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System;
 
 public class ServiceLocator
@@ -14,7 +14,7 @@ public class ServiceLocator
 	{
 		if (!services.TryGetValue(typeof(T), out var result))
 		{
-			throw new InvalidOperationException($"Тип {typeof(T)} не зарегистрирован.");
+			throw new InvalidOperationException($"РўРёРї {typeof(T)} РЅРµ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅ.");
 		}
 		return (T)result;
 	}

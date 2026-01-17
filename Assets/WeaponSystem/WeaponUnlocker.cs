@@ -1,38 +1,38 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class WeaponUnlocker : MonoBehaviour
 {
-	public WeaponController weaponController; // Контроллер оружия
+	public WeaponController weaponController; // РљРѕРЅС‚СЂРѕР»Р»РµСЂ РѕСЂСѓР¶РёСЏ
 
 	void Update()
 	{
-		// Обрабатываем нажатие цифровых клавиш от 2 до 9
+		// РћР±СЂР°Р±Р°С‚С‹РІР°РµРј РЅР°Р¶Р°С‚РёРµ С†РёС„СЂРѕРІС‹С… РєР»Р°РІРёС€ РѕС‚ 2 РґРѕ 9
 		for (int i = 2; i <= 9; i++)
 		{
 			if (Input.GetKeyDown((KeyCode)(KeyCode.Alpha2 + i - 2)))
 			{
-				// Получаем префаб оружия по индексу
+				// РџРѕР»СѓС‡Р°РµРј РїСЂРµС„Р°Р± РѕСЂСѓР¶РёСЏ РїРѕ РёРЅРґРµРєСЃСѓ
 				GameObject weaponPrefab = GetWeaponPrefabByIndex(i);
 
 				if (weaponPrefab != null)
 				{
-					weaponController.UnlockWeapon(weaponPrefab); // Разблокировка оружия
+					weaponController.UnlockWeapon(weaponPrefab); // Р Р°Р·Р±Р»РѕРєРёСЂРѕРІРєР° РѕСЂСѓР¶РёСЏ
 				}
 				else
 				{
-					Debug.LogWarning($"Префаб оружия для индекса {i} не найден!");
+					Debug.LogWarning($"РџСЂРµС„Р°Р± РѕСЂСѓР¶РёСЏ РґР»СЏ РёРЅРґРµРєСЃР° {i} РЅРµ РЅР°Р№РґРµРЅ!");
 				}
 			}
 		}
 	}
 
-	// Возвращает префаб оружия по заданному индексу
+	// Р’РѕР·РІСЂР°С‰Р°РµС‚ РїСЂРµС„Р°Р± РѕСЂСѓР¶РёСЏ РїРѕ Р·Р°РґР°РЅРЅРѕРјСѓ РёРЅРґРµРєСЃСѓ
 	private GameObject GetWeaponPrefabByIndex(int index)
 	{
 		switch (index)
 		{
 			case 2:
-				return Resources.Load<GameObject>("MeleePoliceBaton_0"); // Ваш путь к префабу оружия
+				return Resources.Load<GameObject>("MeleePoliceBaton_0"); // Р’Р°С€ РїСѓС‚СЊ Рє РїСЂРµС„Р°Р±Сѓ РѕСЂСѓР¶РёСЏ
 			case 3:
 				return Resources.Load<GameObject>("RangedHarmonicaRevolver_3");
 			case 4:

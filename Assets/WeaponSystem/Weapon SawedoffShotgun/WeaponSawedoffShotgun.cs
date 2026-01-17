@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WeaponSawedoffShotgun : WeaponClass
 {
@@ -7,3 +7,4 @@ public class WeaponSawedoffShotgun : WeaponClass
 		Debug.Log("Shotgun Attack");
 	}
 }
+

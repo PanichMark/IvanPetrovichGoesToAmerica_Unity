@@ -19,3 +19,4 @@ public class WeaponEugenicGenie : WeaponClass
 	}
 }
 
+

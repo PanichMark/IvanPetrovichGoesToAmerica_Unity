@@ -126,3 +126,4 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 	
 }
 
+

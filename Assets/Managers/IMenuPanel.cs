@@ -1,4 +1,4 @@
-public interface IMenuPanel
+﻿public interface IMenuPanel
 {
 	void Show();
 	void Hide();

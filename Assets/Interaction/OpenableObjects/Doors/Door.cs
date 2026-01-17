@@ -92,3 +92,4 @@ public class Door : OpenableObjectAbstract
 		currentAnimation = null;
 	}
 }
+

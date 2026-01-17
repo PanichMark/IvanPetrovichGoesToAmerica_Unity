@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -6,8 +6,8 @@ using UnityEngine;
 /// 
 /// 
 /// 
-/// НЕ РАБОТАЕТ СЛОВАРЬ
-/// ПОНЯТЬ КАКИЕ КНОПКИ КОНТРОЛЛЕРА OLD INPUT SYSTEM!!!!!!!!!
+/// РќР• Р РђР‘РћРўРђР•Рў РЎР›РћР’РђР Р¬
+/// РџРћРќРЇРўР¬ РљРђРљРР• РљРќРћРџРљР РљРћРќРўР РћР›Р›Р•Р Рђ OLD INPUT SYSTEM!!!!!!!!!
 /// 
 /// 
 /// </summary>
@@ -30,22 +30,22 @@ public class InputController : IInputDevice
 
 	private Dictionary<string, string> controllerBindings = new Dictionary<string, string>()
 {
-	{"MoveForward", "Vertical"},             // Джойстик вперёд (positive)
-    {"MoveBackward", "Vertical"},            // Джойстик назад (negative)
-    {"MoveRight", "Horizontal"},             // Джойстик вправо (positive)
-    {"MoveLeft", "Horizontal"},              // Джойстик влево (negative)
-    {"Run", "Y"},                           // RB на Xbox или R2 на PlayStation
-    {"Jump", "A"},                           // A на Xbox или X на PlayStation
-    {"Crouch", "B"},                         // B на Xbox или O на PlayStation
-    {"Interact", "Y"},                       // A на Xbox или X на PlayStation
-    {"ChangeCameraView", "Y"},              // LB на Xbox или L1 на PlayStation
-    {"ChangeCameraShoulder", "Y"},          // RB на Xbox или R1 на PlayStation
-    {"RightHandWeaponWheel", "Y"},          // RT на Xbox или R2 на PlayStation
-    {"LeftHandWeaponWheel", "Y"},           // LT на Xbox или L2 на PlayStation
-    {"RightHandWeaponAttack", "Y"},         // RT на Xbox или R2 на PlayStation
-    {"LeftHandWeaponAttack", "Y"},          // LT на Xbox или L2 на PlayStation
-    {"Reload", "Y"},                         // Y на Xbox или Triangle на PlayStation
-    {"LegKick", "Y"}                         // X на Xbox или Square на PlayStation
+	{"MoveForward", "Vertical"},             // Р”Р¶РѕР№СЃС‚РёРє РІРїРµСЂС‘Рґ (positive)
+    {"MoveBackward", "Vertical"},            // Р”Р¶РѕР№СЃС‚РёРє РЅР°Р·Р°Рґ (negative)
+    {"MoveRight", "Horizontal"},             // Р”Р¶РѕР№СЃС‚РёРє РІРїСЂР°РІРѕ (positive)
+    {"MoveLeft", "Horizontal"},              // Р”Р¶РѕР№СЃС‚РёРє РІР»РµРІРѕ (negative)
+    {"Run", "Y"},                           // RB РЅР° Xbox РёР»Рё R2 РЅР° PlayStation
+    {"Jump", "A"},                           // A РЅР° Xbox РёР»Рё X РЅР° PlayStation
+    {"Crouch", "B"},                         // B РЅР° Xbox РёР»Рё O РЅР° PlayStation
+    {"Interact", "Y"},                       // A РЅР° Xbox РёР»Рё X РЅР° PlayStation
+    {"ChangeCameraView", "Y"},              // LB РЅР° Xbox РёР»Рё L1 РЅР° PlayStation
+    {"ChangeCameraShoulder", "Y"},          // RB РЅР° Xbox РёР»Рё R1 РЅР° PlayStation
+    {"RightHandWeaponWheel", "Y"},          // RT РЅР° Xbox РёР»Рё R2 РЅР° PlayStation
+    {"LeftHandWeaponWheel", "Y"},           // LT РЅР° Xbox РёР»Рё L2 РЅР° PlayStation
+    {"RightHandWeaponAttack", "Y"},         // RT РЅР° Xbox РёР»Рё R2 РЅР° PlayStation
+    {"LeftHandWeaponAttack", "Y"},          // LT РЅР° Xbox РёР»Рё L2 РЅР° PlayStation
+    {"Reload", "Y"},                         // Y РЅР° Xbox РёР»Рё Triangle РЅР° PlayStation
+    {"LegKick", "Y"}                         // X РЅР° Xbox РёР»Рё Square РЅР° PlayStation
 };
 
 
@@ -67,7 +67,7 @@ public class InputController : IInputDevice
 	public void RebindKey(string actionName, KeyCode newKey)
 	{
 		if (!bruh.ContainsKey(actionName))
-			Debug.LogError($"Нет такого действия '{actionName}'.");
+			Debug.LogError($"РќРµС‚ С‚Р°РєРѕРіРѕ РґРµР№СЃС‚РІРёСЏ '{actionName}'.");
 		else
 			bruh[actionName] = newKey;
 	}
@@ -164,7 +164,7 @@ public class InputController : IInputDevice
 	public bool GetKeyEnterCutscene()
 	{
 		if (Input.GetKeyDown(controllerBindings["EnterCutscene"]) &&
-			false /* вероятно, сюда должна подставляться дополнительная переменная или условие */)
+			false /* РІРµСЂРѕСЏС‚РЅРѕ, СЃСЋРґР° РґРѕР»Р¶РЅР° РїРѕРґСЃС‚Р°РІР»СЏС‚СЊСЃСЏ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ РёР»Рё СѓСЃР»РѕРІРёРµ */)
 		{
 			return true;
 		}
@@ -181,11 +181,11 @@ public class InputController : IInputDevice
 				isKeyInteractBeingHeld = true;
 			}
 		}
-		else if (Input.GetKeyUp(controllerBindings["Interact"])) // отпущена кнопка
+		else if (Input.GetKeyUp(controllerBindings["Interact"])) // РѕС‚РїСѓС‰РµРЅР° РєРЅРѕРїРєР°
 		{
 			isKeyInteractBeingHeld = false;
 		}
-		else if (isKeyInteractBeingHeld && Time.time >= lastPressTime + 0.5f) // удержано дольше полсекунды
+		else if (isKeyInteractBeingHeld && Time.time >= lastPressTime + 0.5f) // СѓРґРµСЂР¶Р°РЅРѕ РґРѕР»СЊС€Рµ РїРѕР»СЃРµРєСѓРЅРґС‹
 		{
 			isKeyInteractBeingHeld = false;
 			return true;
@@ -251,7 +251,7 @@ public class InputController : IInputDevice
 	{
 		if (isKeyInteractBeingHeld && Time.time > lastPressTime + 0.01f)
 		{
-			return false; // Игнорируем нажатие, если идёт задержка для HideWeapons
+			return false; // РРіРЅРѕСЂРёСЂСѓРµРј РЅР°Р¶Р°С‚РёРµ, РµСЃР»Рё РёРґС‘С‚ Р·Р°РґРµСЂР¶РєР° РґР»СЏ HideWeapons
 		}
 
 		if (Input.GetKeyDown(controllerBindings["Interact"]))
@@ -321,3 +321,4 @@ public class InputController : IInputDevice
 		return controllerBindings["LeftHandWeaponAttack"].ToString();
 	}
 }
+

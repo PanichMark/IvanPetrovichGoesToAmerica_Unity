@@ -1,29 +1,29 @@
-using UnityEngine;
+п»їusing UnityEngine;
 /*
 public class NewWeaponController : MonoBehaviour
 {
-	public DynamicWeaponWheel weaponWheel; // Ссылка на объект DynamicWeaponWheel
+	public DynamicWeaponWheel weaponWheel; // РЎСЃС‹Р»РєР° РЅР° РѕР±СЉРµРєС‚ DynamicWeaponWheel
 
 	void Update()
 	{
-		// Обработка ввода стрелок
+		// РћР±СЂР°Р±РѕС‚РєР° РІРІРѕРґР° СЃС‚СЂРµР»РѕРє
 		if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
-			weaponWheel.AddNewSegment();  // Добавляем новый сегмент
+			weaponWheel.AddNewSegment();  // Р”РѕР±Р°РІР»СЏРµРј РЅРѕРІС‹Р№ СЃРµРіРјРµРЅС‚
 		}
 		else if (Input.GetKeyDown(KeyCode.LeftArrow))
 		{
-			RemoveLastSegment();          // Убираем последний сегмент
+			RemoveLastSegment();          // РЈР±РёСЂР°РµРј РїРѕСЃР»РµРґРЅРёР№ СЃРµРіРјРµРЅС‚
 		}
 	}
 
-	// Метод удаления последнего сегмента
+	// РњРµС‚РѕРґ СѓРґР°Р»РµРЅРёСЏ РїРѕСЃР»РµРґРЅРµРіРѕ СЃРµРіРјРµРЅС‚Р°
 	void RemoveLastSegment()
 	{
 		if (weaponWheel.numberOfSegments > 0)
 		{
 			weaponWheel.numberOfSegments--;
-			weaponWheel.RecreateWheel();  // Пересоздаем колесо
+			weaponWheel.RecreateWheel();  // РџРµСЂРµСЃРѕР·РґР°РµРј РєРѕР»РµСЃРѕ
 		}
 	}
 

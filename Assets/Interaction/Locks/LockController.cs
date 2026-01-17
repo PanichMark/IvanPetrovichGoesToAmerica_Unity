@@ -13,7 +13,7 @@ public class LockController : MonoBehaviour, IInteractable
 	[SerializeField] private float moveSpeed;                    // Скорость перемещения
 	[SerializeField] private GameObject CubeFollow;              // Префаб следящего куба
 	[SerializeField] private Button ClosePuzzleButton;           // Кнопка закрытия пазла
-	 private MenuManager menuManager;                             // Менеджер меню
+	private MenuManager menuManager;                             // Менеджер меню
 
 
 	private string interactionObjectNameUI;                      // Название объекта интерфейса
@@ -142,12 +142,11 @@ public class LockController : MonoBehaviour, IInteractable
 		}
 
 		// Настройка кнопок
-		if (ClosePuzzleButton != null)
-		{
+		
 			ClosePuzzleButton.onClick.RemoveAllListeners();      // Удаляем предыдущие события
 			ClosePuzzleButton.onClick.AddListener(OnClosePuzzle);// Присваиваем обработчик
 			ClosePuzzleButton.gameObject.SetActive(true);       // Активируем кнопку
-		}
+		
 
 		gameObject.tag = "Untagged"; // Меняем тег объекта
 

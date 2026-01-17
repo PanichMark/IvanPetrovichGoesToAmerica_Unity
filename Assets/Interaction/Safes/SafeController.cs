@@ -142,3 +142,4 @@ public class SafeController : MonoBehaviour, IInteractable
 	}
 }
 
+

@@ -10,3 +10,4 @@ public class LootObjectValuable : LootObjectAbstract
 		WasLootItemCollected = true;
 	}
 }
+

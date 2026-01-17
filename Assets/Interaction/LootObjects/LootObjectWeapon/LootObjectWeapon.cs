@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class LootObjectWeapon : LootObjectAbstract
 {
@@ -8,15 +8,16 @@ public class LootObjectWeapon : LootObjectAbstract
 
 	private void Awake()
 	{
-		// Обращаемся к Service Locator и получаем контроллер оружия
+		// РћР±СЂР°С‰Р°РµРјСЃСЏ Рє Service Locator Рё РїРѕР»СѓС‡Р°РµРј РєРѕРЅС‚СЂРѕР»Р»РµСЂ РѕСЂСѓР¶РёСЏ
 		weaponController = ServiceLocator.Resolve<WeaponController>();
 		
 	}
 
 	public override void Interact()
 	{
-		Debug.Log($"Вы подняли {InteractionObjectNameUI}");
+		Debug.Log($"Р’С‹ РїРѕРґРЅСЏР»Рё {InteractionObjectNameUI}");
 		weaponController.UnlockWeapon(weaponObject);
 		Destroy(gameObject);
 	}
 }
+

@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -12,7 +12,7 @@ public class ReadableObject : MonoBehaviour, IInteractable
 
 	public string InteractionObjectNameUI => interactionObjectNameUI;
 
-	public string MainInteractionHint => $"Прочитать {InteractionObjectNameUI}";
+	public string MainInteractionHint => $"РџСЂРѕС‡РёС‚Р°С‚СЊ {InteractionObjectNameUI}";
 
 	public string AdditionalInteractionHint => null;
 
@@ -22,9 +22,9 @@ public class ReadableObject : MonoBehaviour, IInteractable
 
 	[SerializeField] private GameObject ImageRead;
 
-	[SerializeField] private GameObject DescriptionTextGameobject; // Игровой объект с компонентом TextMeshProUGUI
+	[SerializeField] private GameObject DescriptionTextGameobject; // РРіСЂРѕРІРѕР№ РѕР±СЉРµРєС‚ СЃ РєРѕРјРїРѕРЅРµРЅС‚РѕРј TextMeshProUGUI
 
-	[SerializeField] private TextAsset textFile; // Поле для выбора текстового файла
+	[SerializeField] private TextAsset textFile; // РџРѕР»Рµ РґР»СЏ РІС‹Р±РѕСЂР° С‚РµРєСЃС‚РѕРІРѕРіРѕ С„Р°Р№Р»Р°
 
 	[SerializeField] private GameObject ReadStructure;
 
@@ -48,29 +48,29 @@ public class ReadableObject : MonoBehaviour, IInteractable
 		ImageComponent = ImageRead.GetComponent<Image>();
 		ImageComponent.sprite = Image;
 
-		// Включаем отображение текста из выбранного файла
+		// Р’РєР»СЋС‡Р°РµРј РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ С‚РµРєСЃС‚Р° РёР· РІС‹Р±СЂР°РЅРЅРѕРіРѕ С„Р°Р№Р»Р°
 		
 		descriptionText = DescriptionTextGameobject.GetComponent<TextMeshProUGUI>();
 		descriptionText.text = textFile.text;
 		
 
-		// Подписываемся на событие OnClick кнопки ExitButton
+		// РџРѕРґРїРёСЃС‹РІР°РµРјСЃСЏ РЅР° СЃРѕР±С‹С‚РёРµ OnClick РєРЅРѕРїРєРё ExitButton
 		ExitButton.GetComponent<Button>().onClick.AddListener(CloseAndDeactivate);
 
 		gameObject.tag = "Untagged";
 	}
 
-	// Новый метод для закрытия меню и деактивации элементов
+	// РќРѕРІС‹Р№ РјРµС‚РѕРґ РґР»СЏ Р·Р°РєСЂС‹С‚РёСЏ РјРµРЅСЋ Рё РґРµР°РєС‚РёРІР°С†РёРё СЌР»РµРјРµРЅС‚РѕРІ
 	private void CloseAndDeactivate()
 	{
-		// Деактивируем объекты
+		// Р”РµР°РєС‚РёРІРёСЂСѓРµРј РѕР±СЉРµРєС‚С‹
 		
 
 		ImageComponent.sprite = null;
 		descriptionText.text = null;
 
 		ReadStructure.SetActive(false);
-		// Закрываем меню
+		// Р—Р°РєСЂС‹РІР°РµРј РјРµРЅСЋ
 		menuManager.CloseInteractionMenu();
 
 		gameObject.tag = "Interactable";

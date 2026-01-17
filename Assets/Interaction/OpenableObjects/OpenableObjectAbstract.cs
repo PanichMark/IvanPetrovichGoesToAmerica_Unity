@@ -28,3 +28,4 @@ public abstract class OpenableObjectAbstract : MonoBehaviour, IInteractable
 
 
 }
+

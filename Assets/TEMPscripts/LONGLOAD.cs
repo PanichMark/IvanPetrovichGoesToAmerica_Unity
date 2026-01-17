@@ -24,3 +24,4 @@ public class LONGLOAD : MonoBehaviour
 		GetComponentInChildren<Canvas>()?.gameObject.SetActive(true);
 	}
 }
+

@@ -117,3 +117,4 @@ public class LegKickAttack : MonoBehaviour
 		target.TakeDamage(damageAmount);
 	}
 }
+
