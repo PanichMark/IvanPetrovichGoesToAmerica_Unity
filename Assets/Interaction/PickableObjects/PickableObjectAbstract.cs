@@ -5,7 +5,7 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 {
 	public GameObject CachedPlayer {  get; protected set; }
 
-	public BoxCollider BoxCollider {  get; protected set; }
+	public Collider Collider {  get; protected set; }
 	public Rigidbody RigidBody { get; protected set; }
 
 	[SerializeField]
@@ -15,7 +15,7 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 
 	// Приватное поле, видимое в инспекторе
 	[SerializeField]
-	private string _interactionItemNameUI;
+	protected string _interactionItemNameUI;
 	public virtual string InteractionObjectNameUI => _interactionItemNameUI;
 
 	public string MainInteractionHint => $"Поднять {InteractionObjectNameUI}?";
@@ -32,7 +32,7 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 
 	void Awake()
 	{
-		BoxCollider = GetComponent<BoxCollider>();
+		Collider = GetComponent<Collider>();
 		RigidBody = GetComponent<Rigidbody>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
 	}
@@ -52,10 +52,10 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 		{
 			if (CachedPlayer != null)
 			{
-				Debug.Log($"Picked up {InteractionObjectNameSystem}");
-
+				Debug.Log($"Picked up {InteractionObjectNameUI}");
+				
 				gameObject.tag = "Untagged";
-				BoxCollider.enabled = false;
+				Collider.enabled = false;
 				RigidBody.isKinematic = true;
 
 				// Начинаем плавное перемещение
@@ -63,7 +63,7 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 
 				// Другие настройки остаются такими же
 				transform.parent = CachedPlayer.transform;
-				transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y, 0);
+				transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
 				IsObjectPickedUp = true;
 			}
 			else
@@ -78,7 +78,7 @@ public abstract class PickableObjectAbstract : MonoBehaviour, IInteractable, IDa
 	{
 			Debug.Log($"Dropped off {InteractionObjectNameSystem}");
 			gameObject.tag = "Interactable";
-			BoxCollider.enabled = true;
+			Collider.enabled = true;
 			RigidBody.isKinematic = false;
 			IsObjectPickedUp = false;
 

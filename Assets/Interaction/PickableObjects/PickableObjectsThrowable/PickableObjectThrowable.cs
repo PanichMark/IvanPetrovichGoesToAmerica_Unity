@@ -47,7 +47,7 @@ public class PickableObjectThrowable : PickableObjectAbstract, IThrowable, IDama
 	{
 		Debug.Log($"Throwed {InteractionObjectNameSystem}");
 		gameObject.tag = "Interactable";
-		BoxCollider.enabled = true;
+		Collider.enabled = true;
 		RigidBody.isKinematic = false;
 		IsObjectPickedUp = false;
 
