@@ -43,7 +43,7 @@ public class SaveSubMenuController : MonoBehaviour
 	{
 		SaveSubMenuCanvas.gameObject.SetActive(false);
 		
-		pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
+		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
 		
 		Debug.Log("SaveSubMenu closed");
 	}

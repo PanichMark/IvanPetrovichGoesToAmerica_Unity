@@ -31,7 +31,7 @@ public class ImagesSubMenuController : MonoBehaviour
 	{
 		ImagesSubMenuCanvas.gameObject.SetActive(false);
 
-		pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
+		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
 
 		Debug.Log("ImagesSubMenu closed");
 	}

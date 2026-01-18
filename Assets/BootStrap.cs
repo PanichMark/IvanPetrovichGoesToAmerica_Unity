@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class BootStrap : MonoBehaviour
 {
 	private IInputDevice inputDevice;
-
+	private IGameController gameController;
 	[SerializeField] private GameObject player;
 	[SerializeField] private GameObject playerCamera;
 	[SerializeField] private GameObject weaponSystem;
@@ -19,7 +19,7 @@ public class BootStrap : MonoBehaviour
 	private PlayerBehaviour playerBehaviour;
 	private PlayerMovementController movementController;
 	private PlayerCapsuleCollider playerCollider;
-
+	[SerializeField] private GameObject PauseMenuCanvas;
 	private PlayerCameraController cameraController;
 	private PlayerCameraBlurFilter cameraBlurFilter;
 
@@ -51,7 +51,7 @@ public class BootStrap : MonoBehaviour
 	private Image Item2Image;
 	private Image Item3Image;
 
-	
+	[SerializeField] private PauseMenuController PauseMenuController;
 	private Image ImageNewspaper;
 
 	private GameObject wheelSegmentPrefab;          // Префаб сегмента
@@ -84,11 +84,14 @@ public class BootStrap : MonoBehaviour
 	// Простая обычная инициализация без корутин
 	private IEnumerator SequentialInitialization()
 	{
+		gameController = new GameController();
+
 		// Создание устройства ввода
-		inputDevice = new InputKeyboard();
+		inputDevice = new InputKeyboard(gameController);
 		//inputDevice = new InputController();
 		weaponWheelCanvas = Instantiate(weaponWheelCanvas);
 		interactionCanvas = Instantiate(interactionCanvas);
+		PauseMenuCanvas = Instantiate(PauseMenuCanvas);
 		// Загрузка ресурсов
 		wheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
 		centerPoint = weaponWheelCanvas.transform.Find("Centre")?.transform;
@@ -121,7 +124,7 @@ public class BootStrap : MonoBehaviour
 		weaponSystem = Instantiate(weaponSystem);
 		interactionController = Instantiate(interactionController);
 		menuManager = Instantiate(menuManager);
-
+		PauseMenuController = Instantiate(PauseMenuController);
 
 		// НАХОДИМ НУЖНЫЕ GAMEOBJECTS ПО ИМЕНАМ
 		PlayerFirstPersonHandRight = FindDeepChildByName(playerCamera, "UNITY HandRight");
@@ -142,7 +145,8 @@ public class BootStrap : MonoBehaviour
 		firstPersonRender = playerCamera.GetComponent<PlayerCameraFirstPersonRender>();
 
 		// ИНЦИАЛИЗАЦИЯ КОМПОНЕНТОВ
-		menuManager.Initialize(inputDevice);
+		menuManager.Initialize(inputDevice, gameController);
+		PauseMenuController.Initialize(menuManager, PauseMenuCanvas);
 		playerBehaviour.Initialize(inputDevice);
 		movementController.Initialize(inputDevice, playerBehaviour);
 		playerCollider.Initialize(movementController);

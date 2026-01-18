@@ -2,17 +2,21 @@
 
 public class MenuManager : MonoBehaviour
 {
-	private IInputDevice inputDevice;
-
+	// Event для вызова меню паузы
+	public delegate void OpenPauseMenuEventHandler();
+	public event OpenPauseMenuEventHandler OnOpenPauseMenu;
+	public event OpenPauseMenuEventHandler OnClosePauseMenu;
+	public IInputDevice inputDevice;
+	private IGameController gameController;
 	// Конструктор принимает зависимость
-	public void Initialize(IInputDevice inputDevice)
+	public void Initialize(IInputDevice inputDevice, IGameController gameController)
 	{
 		this.inputDevice = inputDevice;
-
+		this.gameController = gameController;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
-		IsPlayerControllable = true;
+		
 		IsPauseMenuOpened = false;
 		IsWeaponWheelMenuOpened = false;
 		IsAnyMenuOpened = false;
@@ -20,7 +24,7 @@ public class MenuManager : MonoBehaviour
 		Debug.Log("MenuManager Initialized");
 	}
 	private bool _isInitialized = false;
-	public bool IsPlayerControllable { get; private set; }
+	
 	public bool IsPauseMenuOpened { get; private set; }
 	public bool IsWeaponWheelMenuOpened { get; private set; }
 	public bool IsAnyMenuOpened { get; private set; }
@@ -34,12 +38,11 @@ public class MenuManager : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (inputDevice.GetKeyPauseMenu())
+		if (inputDevice.GetKeyPauseMenu()) // Любое нажатие
 		{
 			if (!IsPauseMenuOpened)
-				OpenPauseMenu();
-			else
-				ClosePauseMenu();
+				OpenPauseMenu(); // Открывать, если меню не открыто
+			else ClosePauseMenu();
 		}
 	}
 
@@ -48,10 +51,12 @@ public class MenuManager : MonoBehaviour
 		if (IsWeaponWheelMenuOpened)
 			CloseWeaponWheelMenu(true);
 
+		OnOpenPauseMenu?.Invoke(); // Вызвать событие открытия меню паузы
 		Debug.Log("PauseMenu opened");
 		OpenAnyMenu();
+		gameController.MakePlayerNonControllable();
 
-		IsPlayerControllable = false;
+		
 		IsPauseMenuOpened = true;
 
 		Time.timeScale = 0f;
@@ -59,10 +64,11 @@ public class MenuManager : MonoBehaviour
 
 	public void ClosePauseMenu()
 	{
+		OnClosePauseMenu?.Invoke();
 		Debug.Log("PauseMenu closed");
 		CloseAnyMenu();
-
-		IsPlayerControllable = true;
+		gameController.MakePlayerControllable();
+	
 		IsPauseMenuOpened = false;
 
 		Time.timeScale = 1f;

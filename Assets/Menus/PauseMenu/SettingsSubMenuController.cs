@@ -72,7 +72,7 @@ public class SettingsSubMenuController : MonoBehaviour
 
 	private void Awake()
 	{
-		inputDevice = new InputKeyboard();
+	//	inputDevice = new InputKeyboard();
 	}
 
 	void Start()
@@ -172,7 +172,7 @@ public class SettingsSubMenuController : MonoBehaviour
 	public void CloseSettingsSubMenu()
 	{
 		SettingsSubMenuCanvas.gameObject.SetActive(false);
-		pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
+		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
 		Debug.Log("SettingsSubMenu closed");
 	}
 

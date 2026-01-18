@@ -1850,6 +1850,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4413069963491129513, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: PauseMenuCanvas
+      value: 
+      objectReference: {fileID: 8073867487923853320, guid: dbe31a4f8c1107a42a76c5855b3c2483, type: 3}
+    - target: {fileID: 4413069963491129513, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: PauseMenuController
+      value: 
+      objectReference: {fileID: 8596349827545634526, guid: 0094513a17b38ed44917005e7a44ffaf, type: 3}
     - target: {fileID: 8941166669569671294, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
       propertyPath: m_Name
       value: BootStrap

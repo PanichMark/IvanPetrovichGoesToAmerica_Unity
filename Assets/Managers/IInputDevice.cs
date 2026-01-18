@@ -3,6 +3,7 @@ using UnityEngine;
 
 public interface IInputDevice
 {
+	
 	// Получение состояния клавиш
 	bool GetKeyPauseMenu();
 	bool GetKeyUp();
@@ -11,7 +12,6 @@ public interface IInputDevice
 	bool GetKeyLeft();
 	bool GetKeyChangeCameraView();
 	bool GetKeyChangeCameraShoulder();
-	bool GetKeyEnterCutscene();
 	bool GetKeyHideWeapons();
 	bool GetKeyReload();
 	bool GetKeyRun();

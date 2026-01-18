@@ -56,7 +56,7 @@ public class LoadSubMenuController : MonoBehaviour
 	public void CloseLoadSubMenu()
 	{
 		LoadSubMenuCanvas.gameObject.SetActive(false);
-		pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
+		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
 		Debug.Log("LoadSubMenu closed");
 	}
 
