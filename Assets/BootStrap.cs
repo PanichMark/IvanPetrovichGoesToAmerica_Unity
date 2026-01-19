@@ -156,7 +156,7 @@ public class BootStrap : MonoBehaviour
 		// ИНЦИАЛИЗАЦИЯ КОМПОНЕНТОВ
 		menuManager.Initialize(inputDevice, gameController);
 		PauseMenuController.Initialize(inputDevice, menuManager, PauseMenuCanvas, ButtonImagesSubMenu);
-		imagesSubMenuController.Initialize(inputDevice, PauseMenuController, canvasImagesSubMenu);
+		imagesSubMenuController.Initialize(inputDevice, menuManager, PauseMenuController, canvasImagesSubMenu);
 		playerBehaviour.Initialize(inputDevice);
 		movementController.Initialize(inputDevice, playerBehaviour);
 		playerCollider.Initialize(movementController);

@@ -24,28 +24,16 @@ public class PauseMenuController : MonoBehaviour
 		Debug.Log("PauseMenuController Initialized");
 	}
 
-
-
-
-	
-
-
-	
-	void Start()
-    {
-		
-
-		/*
-		ResumeGameButton.onClick.AddListener(HidePauseMenu);
-		OpenSaveSubMenuButton.onClick.AddListener(OpenSaveSubMenu);
-		OpenLoadSubMenuButton.onClick.AddListener(OpenLoadSubMenu);
-		OpenImagesSubMenuButton.onClick.AddListener(OpenImagesSubMenu);
-		OpenSettingsSubMenuButton.onClick.AddListener(OpenSettingsSubMenu);
-		ExitToMainMenuButton.onClick.AddListener(ExitToMainMenu);
-		*/
-		
+	public void OpenImagesSubMenu()
+	{
+		//PauseMenuCanvas.gameObject.SetActive(false);
+		//Debug.Log("PauseMenu closed");
+		OnOpenPauseSubMenu.Invoke();
+		menuManager.menuLevelStack.Push(2); // Субменю открыто поверх главного меню
+								//imagesSubMenuController.ImagesSubMenuCanvas.gameObject.SetActive(true);
+		Debug.Log("ImagesSubMenu opened");
+		HidePauseMenu();
 	}
-
 
 	// Функция, вызываемая при событии "открыть меню паузы"
 	public void ShowPauseMenu()
@@ -79,15 +67,7 @@ public class PauseMenuController : MonoBehaviour
 		Debug.Log("LoadSubMenu opened");
 	}
 
-	public void OpenImagesSubMenu()
-	{
-		//PauseMenuCanvas.gameObject.SetActive(false);
-		//Debug.Log("PauseMenu closed");
-		OnOpenPauseSubMenu.Invoke();
-		//imagesSubMenuController.ImagesSubMenuCanvas.gameObject.SetActive(true);
-		Debug.Log("ImagesSubMenu opened");
-	}
-
+	
 	public void OpenSettingsSubMenu()
 	{
 		//PauseMenuCanvas.gameObject.SetActive(false);
@@ -100,6 +80,21 @@ public class PauseMenuController : MonoBehaviour
 	public void ExitToMainMenu()
 	{
 		Debug.Log("MAIN MENU EXIT");
+	}
+
+	void Start()
+	{
+
+
+		/*
+		ResumeGameButton.onClick.AddListener(HidePauseMenu);
+		OpenSaveSubMenuButton.onClick.AddListener(OpenSaveSubMenu);
+		OpenLoadSubMenuButton.onClick.AddListener(OpenLoadSubMenu);
+		OpenImagesSubMenuButton.onClick.AddListener(OpenImagesSubMenu);
+		OpenSettingsSubMenuButton.onClick.AddListener(OpenSettingsSubMenu);
+		ExitToMainMenuButton.onClick.AddListener(ExitToMainMenu);
+		*/
+
 	}
 }
 

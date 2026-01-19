@@ -5,20 +5,22 @@ public class ImagesSubMenuController : MonoBehaviour
 {
 	
 	private IInputDevice inputDevice;
-	private PauseMenuController pauseMenuController;
+	private MenuManager menuManager;
 
 	private GameObject ImagesSubMenuCanvas;
+	private PauseMenuController pauseMenuController;
 
 	//private Button CloseImagesSubMenuButton;
-	public void Initialize(IInputDevice inputDevice, PauseMenuController pauseMenuController, GameObject ImagesSubMenuCanvas)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject ImagesSubMenuCanvas)
 
 	{
 		this.pauseMenuController = pauseMenuController;
+		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
 		this.ImagesSubMenuCanvas = ImagesSubMenuCanvas;
 		// Подписываемся на события главного меню паузы
 		pauseMenuController.OnOpenPauseSubMenu += OpenImagesSubMenu;
-		pauseMenuController.OnClosePauseSubMenu += CloseImagesSubMenu;
+		menuManager.OnClosePauseSubMenu += CloseImagesSubMenu;
 		Debug.Log("ImagesSubMenu Initialized");
 	}
 
@@ -41,17 +43,17 @@ public class ImagesSubMenuController : MonoBehaviour
 	private void OpenImagesSubMenu()
 	{
 		ImagesSubMenuCanvas.gameObject.SetActive(true);
-		pauseMenuController.HidePauseMenu();
-
+		//pauseMenuController.HidePauseMenu();
+	
 		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
 
-		Debug.Log("ImagesSubMenu Opened");
+
 	}
 	private void CloseImagesSubMenu()
 	{
 		ImagesSubMenuCanvas.gameObject.SetActive(false);
-		pauseMenuController.ShowPauseMenu();
-
+		//pauseMenuController.ShowPauseMenu();
+		menuManager.menuLevelStack.Pop();
 		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
 
 		Debug.Log("ImagesSubMenu closed");

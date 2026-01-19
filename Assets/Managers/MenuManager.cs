@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
@@ -6,8 +7,15 @@ public class MenuManager : MonoBehaviour
 	public delegate void OpenPauseMenuEventHandler();
 	public event OpenPauseMenuEventHandler OnOpenPauseMenu;
 	public event OpenPauseMenuEventHandler OnClosePauseMenu;
+	public delegate void OpenPauseSubMenuEventHandler();
+	public event OpenPauseSubMenuEventHandler OnOpenPauseSubMenu;
+	public event OpenPauseSubMenuEventHandler OnClosePauseSubMenu;
 	public IInputDevice inputDevice;
 	private IGameController gameController;
+
+
+	// Стек для хранения уровней открытых меню
+	public Stack<int> menuLevelStack = new Stack<int>();
 	// Конструктор принимает зависимость
 	public void Initialize(IInputDevice inputDevice, IGameController gameController)
 	{
@@ -38,11 +46,26 @@ public class MenuManager : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (inputDevice.GetKeyPauseMenu()) // Любое нажатие
+		if (inputDevice.GetKeyPauseMenu()) // Нажата кнопка паузы
 		{
-			if (!IsPauseMenuOpened)
-				OpenPauseMenu(); // Открывать, если меню не открыто
-			else ClosePauseMenu();
+			if (menuLevelStack.Count >= 2)
+			{
+				// Если открыто субменю, перейдем на предыдущий уровень
+				menuLevelStack.Pop(); // Убираем текущий уровень (submenu)
+				OnClosePauseSubMenu?.Invoke();
+				OpenPauseMenu();       // Возвращаемся к меню паузы
+
+			}
+			else if (menuLevelStack.Count == 1)
+			{
+				// Только основное меню открыто, закрываем его
+				ClosePauseMenu();
+			}
+			else
+			{
+				// Ничего не открыто, открываем меню паузы
+				OpenPauseMenu();
+			}
 		}
 	}
 
@@ -50,7 +73,8 @@ public class MenuManager : MonoBehaviour
 	{
 		if (IsWeaponWheelMenuOpened)
 			CloseWeaponWheelMenu(true);
-
+		// Заполнение стека на уровне 1
+		menuLevelStack.Push(1);
 		OnOpenPauseMenu?.Invoke(); // Вызвать событие открытия меню паузы
 		Debug.Log("PauseMenu opened");
 		OpenAnyMenu();
@@ -68,7 +92,9 @@ public class MenuManager : MonoBehaviour
 		Debug.Log("PauseMenu closed");
 		CloseAnyMenu();
 		gameController.MakePlayerControllable();
-	
+		// Удаляем верхний элемент стека
+		if (menuLevelStack.Count > 0)
+			menuLevelStack.Pop();
 		IsPauseMenuOpened = false;
 
 		Time.timeScale = 1f;
