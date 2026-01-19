@@ -3,18 +3,30 @@ using UnityEngine.UI;
 
 public class ImagesSubMenuController : MonoBehaviour
 {
-	//InputManager playerInputsList;
-	PauseMenuController pauseMenuController;
+	
+	private IInputDevice inputDevice;
+	private PauseMenuController pauseMenuController;
 
-	public Canvas ImagesSubMenuCanvas;
+	private GameObject ImagesSubMenuCanvas;
 
-	public Button CloseImagesSubMenuButton;
+	//private Button CloseImagesSubMenuButton;
+	public void Initialize(IInputDevice inputDevice, PauseMenuController pauseMenuController, GameObject ImagesSubMenuCanvas)
+
+	{
+		this.pauseMenuController = pauseMenuController;
+		this.inputDevice = inputDevice;
+		this.ImagesSubMenuCanvas = ImagesSubMenuCanvas;
+		// Подписываемся на события главного меню паузы
+		pauseMenuController.OnOpenPauseSubMenu += OpenImagesSubMenu;
+		pauseMenuController.OnClosePauseSubMenu += CloseImagesSubMenu;
+		Debug.Log("ImagesSubMenu Initialized");
+	}
+
 	void Start()
 	{
-		//playerInputsList = GetComponent<InputManager>();
-		pauseMenuController = GetComponent<PauseMenuController>();
+		
 
-		CloseImagesSubMenuButton.onClick.AddListener(CloseImagesSubMenu);
+		//CloseImagesSubMenuButton.onClick.AddListener(CloseImagesSubMenu);
 	}
 
 	/*
@@ -26,10 +38,19 @@ public class ImagesSubMenuController : MonoBehaviour
 		}
 	}
 	*/
+	private void OpenImagesSubMenu()
+	{
+		ImagesSubMenuCanvas.gameObject.SetActive(true);
+		pauseMenuController.HidePauseMenu();
 
-	public void CloseImagesSubMenu()
+		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
+
+		Debug.Log("ImagesSubMenu Opened");
+	}
+	private void CloseImagesSubMenu()
 	{
 		ImagesSubMenuCanvas.gameObject.SetActive(false);
+		pauseMenuController.ShowPauseMenu();
 
 		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
 

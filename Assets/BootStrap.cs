@@ -13,15 +13,16 @@ public class BootStrap : MonoBehaviour
 	[SerializeField] private GameObject playerCamera;
 	[SerializeField] private GameObject weaponSystem;
 	[SerializeField] private GameObject weaponWheelCanvas;
-
+	[SerializeField] private GameObject canvasImagesSubMenu;
 	[SerializeField] private MenuManager menuManager;
-
+	[SerializeField] private GameObject imagesSubMenuControllerGameObject;
 	private PlayerBehaviour playerBehaviour;
 	private PlayerMovementController movementController;
 	private PlayerCapsuleCollider playerCollider;
 	[SerializeField] private GameObject PauseMenuCanvas;
 	private PlayerCameraController cameraController;
 	private PlayerCameraBlurFilter cameraBlurFilter;
+	private ImagesSubMenuController imagesSubMenuController;
 
 	private WeaponController weaponController;
 	private WeaponWheelController weaponWheelController;
@@ -61,6 +62,8 @@ public class BootStrap : MonoBehaviour
 													// Метод для рекурсивного поиска объекта по имени
 
 
+	private GameObject ButtonImagesSubMenu;
+
 	
 	private GameObject FindDeepChildByName(GameObject root, string targetName)
 	{
@@ -92,6 +95,11 @@ public class BootStrap : MonoBehaviour
 		weaponWheelCanvas = Instantiate(weaponWheelCanvas);
 		interactionCanvas = Instantiate(interactionCanvas);
 		PauseMenuCanvas = Instantiate(PauseMenuCanvas);
+		imagesSubMenuControllerGameObject = Instantiate(imagesSubMenuControllerGameObject);
+		canvasImagesSubMenu = Instantiate(canvasImagesSubMenu);
+		ButtonImagesSubMenu = FindDeepChildByName(PauseMenuCanvas, "PauseMenu Images Button");
+	
+
 		// Загрузка ресурсов
 		wheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
 		centerPoint = weaponWheelCanvas.transform.Find("Centre")?.transform;
@@ -143,10 +151,12 @@ public class BootStrap : MonoBehaviour
 		weaponWheelController = weaponSystem.GetComponent<WeaponWheelController>();
 		playerAnimationController = player.GetComponent<PlayerAnimationController>();
 		firstPersonRender = playerCamera.GetComponent<PlayerCameraFirstPersonRender>();
+		imagesSubMenuController = imagesSubMenuControllerGameObject.GetComponent<ImagesSubMenuController>();
 
 		// ИНЦИАЛИЗАЦИЯ КОМПОНЕНТОВ
 		menuManager.Initialize(inputDevice, gameController);
-		PauseMenuController.Initialize(menuManager, PauseMenuCanvas);
+		PauseMenuController.Initialize(inputDevice, menuManager, PauseMenuCanvas, ButtonImagesSubMenu);
+		imagesSubMenuController.Initialize(inputDevice, PauseMenuController, canvasImagesSubMenu);
 		playerBehaviour.Initialize(inputDevice);
 		movementController.Initialize(inputDevice, playerBehaviour);
 		playerCollider.Initialize(movementController);
