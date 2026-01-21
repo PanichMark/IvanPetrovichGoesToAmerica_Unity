@@ -86,7 +86,7 @@ public class DataPersistenceManager : MonoBehaviour
 
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		LootObjectAbstract[] lootItems = FindObjectsOfType<LootObjectAbstract>();
+		InteractionObjectLootAbstract[] lootItems = FindObjectsOfType<InteractionObjectLootAbstract>();
 		for (int i = 0; i < lootItems.Length; i++)
 		{
 			lootItems[i].AssignLootItemIndex(i);

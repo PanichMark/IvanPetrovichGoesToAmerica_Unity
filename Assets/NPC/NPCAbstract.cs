@@ -37,7 +37,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 		gameObject.AddComponent<Rigidbody>(); // Добавляем физический компонент
 
 		// Используем фабричный метод для задания имени UI
-		PickableObjectNonThrowable.CreateWithName(gameObject, NPC_name);
+		InteractionObjectPickable.CreateWithName(gameObject, NPC_name);
 
 		Destroy(this);                        // Уничтожаем оригинальный компонент NPC
 	}
