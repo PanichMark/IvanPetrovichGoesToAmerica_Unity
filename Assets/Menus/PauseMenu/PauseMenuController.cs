@@ -8,8 +8,11 @@ public class PauseMenuController : MonoBehaviour
     private MenuManager menuManager;
 	private GameObject ButtonsImagesSubMenu;
 	public delegate void OpenPauseSubMenuEventHandler();
-	public event OpenPauseSubMenuEventHandler OnOpenPauseSubMenu;
-	public event OpenPauseSubMenuEventHandler OnClosePauseSubMenu;
+	public event OpenPauseSubMenuEventHandler OnOpenSaveSubMenu;
+	public event OpenPauseSubMenuEventHandler OnOpenLoadSubMenu;
+	public event OpenPauseSubMenuEventHandler OnOpenImagesSubMenu;
+	public event OpenPauseSubMenuEventHandler OnOpenSettingsSubMenu;
+	public event OpenPauseSubMenuEventHandler OnCloseSubMenu;
 	public void Initialize( IInputDevice inputDevice, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject buttonImages)
 	{
 		this.menuManager = menuManager;
@@ -21,81 +24,73 @@ public class PauseMenuController : MonoBehaviour
 		menuManager.OnClosePauseMenu += HidePauseMenu;
 		Button imagesSubMenuButton = ButtonsImagesSubMenu.GetComponent<Button>();
 		imagesSubMenuButton.onClick.AddListener(OpenImagesSubMenu);
+
+		/*
+		ResumeGameButton.onClick.AddListener(HidePauseMenu);
+		OpenSaveSubMenuButton.onClick.AddListener(OpenSaveSubMenu);
+		OpenLoadSubMenuButton.onClick.AddListener(OpenLoadSubMenu);
+		OpenSettingsSubMenuButton.onClick.AddListener(OpenSettingsSubMenu);
+		ExitToMainMenuButton.onClick.AddListener(ExitToMainMenu);
+		*/
+
 		Debug.Log("PauseMenuController Initialized");
 	}
 
 	public void OpenImagesSubMenu()
 	{
-		//PauseMenuCanvas.gameObject.SetActive(false);
-		//Debug.Log("PauseMenu closed");
-		OnOpenPauseSubMenu.Invoke();
-		menuManager.menuLevelStack.Push(2); // Субменю открыто поверх главного меню
-								//imagesSubMenuController.ImagesSubMenuCanvas.gameObject.SetActive(true);
+		OnOpenImagesSubMenu?.Invoke();
+		menuManager.menuLevelStack.Push(2);
 		Debug.Log("ImagesSubMenu opened");
 		HidePauseMenu();
 	}
+	private void Update()
+	{
 
-	// Функция, вызываемая при событии "открыть меню паузы"
+		if (inputDevice.GetKeyPauseMenu())
+		{
+			if (menuManager.menuLevelStack.Count == 2)
+			{
+				OnCloseSubMenu?.Invoke();
+				ShowPauseMenu();
+			}
+		}
+	}
+	
 	public void ShowPauseMenu()
 	{
-		PauseMenuCanvas.gameObject.SetActive(true); // Покажем меню паузы
+		PauseMenuCanvas.gameObject.SetActive(true);
 	}
 	public void HidePauseMenu()
 	{
-		PauseMenuCanvas.gameObject.SetActive(false); // Скрываем меню паузы
-		
-		
-		
+		PauseMenuCanvas.gameObject.SetActive(false);
 	}
 	
 	public void OpenSaveSubMenu()
 	{
-		//PauseMenuCanvas.gameObject.SetActive(false);
-	//	Debug.Log("PauseMenu closed");
-
-		//saveSubMenuController.SaveSubMenuCanvas.gameObject.SetActive(true);
+		OnOpenSaveSubMenu?.Invoke();
+		menuManager.menuLevelStack.Push(2);
 		Debug.Log("SaveSubMenu opened");
+		HidePauseMenu();
 	}
 
 	public void OpenLoadSubMenu()
 	{
-		//PauseMenuCanvas.gameObject.SetActive(false);
-		//Debug.Log("PauseMenu closed");
-
-		//loadSubMenuController.LoadSubMenuCanvas.gameObject.SetActive(true);
-		//loadSubMenuController.RefreshLoadButtonLabels(); // Всегда обновляем информацию при открытии меню
+		OnOpenLoadSubMenu?.Invoke();
+		menuManager.menuLevelStack.Push(2);
 		Debug.Log("LoadSubMenu opened");
+		HidePauseMenu();
 	}
 
-	
 	public void OpenSettingsSubMenu()
 	{
-		//PauseMenuCanvas.gameObject.SetActive(false);
-		//Debug.Log("PauseMenu closed");
-
-		//settingsSubMenuController.SettingsSubMenuCanvas.gameObject.SetActive(true);
+		OnOpenSettingsSubMenu?.Invoke();
+		menuManager.menuLevelStack.Push(2);
 		Debug.Log("SettingsSubMenu opened");
+		HidePauseMenu();
 	}
 	
 	public void ExitToMainMenu()
 	{
 		Debug.Log("MAIN MENU EXIT");
 	}
-
-	void Start()
-	{
-
-
-		/*
-		ResumeGameButton.onClick.AddListener(HidePauseMenu);
-		OpenSaveSubMenuButton.onClick.AddListener(OpenSaveSubMenu);
-		OpenLoadSubMenuButton.onClick.AddListener(OpenLoadSubMenu);
-		OpenImagesSubMenuButton.onClick.AddListener(OpenImagesSubMenu);
-		OpenSettingsSubMenuButton.onClick.AddListener(OpenSettingsSubMenu);
-		ExitToMainMenuButton.onClick.AddListener(ExitToMainMenu);
-		*/
-
-	}
 }
-
-

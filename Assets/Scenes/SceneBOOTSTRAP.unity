@@ -167,6 +167,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4413069963491129513, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: PauseMenuCanvas
+      value: 
+      objectReference: {fileID: 8073867487923853320, guid: dbe31a4f8c1107a42a76c5855b3c2483, type: 3}
+    - target: {fileID: 4413069963491129513, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasImagesSubMenu
+      value: 
+      objectReference: {fileID: 3996022776004995110, guid: 7211552481043d74ea4fc5bc36150aae, type: 3}
+    - target: {fileID: 4413069963491129513, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: menuManagerGameobject
+      value: 
+      objectReference: {fileID: 6903780836532286645, guid: ba6c778106bded6459885eb4f07e5a62, type: 3}
+    - target: {fileID: 4413069963491129513, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: PauseMenuControllerGameObject
+      value: 
+      objectReference: {fileID: 243743496466786295, guid: 0094513a17b38ed44917005e7a44ffaf, type: 3}
+    - target: {fileID: 4413069963491129513, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: interactionControllerGameObject
+      value: 
+      objectReference: {fileID: 4814294911176081341, guid: 92c25c75e5130f44dbb83465860f95dc, type: 3}
     - target: {fileID: 8941166669569671294, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
       propertyPath: m_Name
       value: BootStrap

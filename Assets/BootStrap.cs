@@ -14,8 +14,9 @@ public class BootStrap : MonoBehaviour
 	[SerializeField] private GameObject weaponSystem;
 	[SerializeField] private GameObject weaponWheelCanvas;
 	[SerializeField] private GameObject canvasImagesSubMenu;
-	[SerializeField] private MenuManager menuManager;
-	[SerializeField] private GameObject imagesSubMenuControllerGameObject;
+	[SerializeField] private GameObject menuManagerGameobject;
+	private MenuManager menuManager;
+	[SerializeField] private GameObject PauseMenuControllerGameObject;
 	private PlayerBehaviour playerBehaviour;
 	private PlayerMovementController movementController;
 	private PlayerCapsuleCollider playerCollider;
@@ -34,9 +35,9 @@ public class BootStrap : MonoBehaviour
 	private GameObject PlayerHandRightParent;
 	private GameObject PlayerHandLeftParent;
 
-
+	 private InteractionController interactionController;
 	private PlayerAnimationController playerAnimationController;
-	[SerializeField] private InteractionController interactionController;
+	[SerializeField] private GameObject interactionControllerGameObject;
 	[SerializeField] private GameObject interactionCanvas;
 	private TextMeshProUGUI mainInteractionText;
 	private TextMeshProUGUI additionalInteractionText;
@@ -52,7 +53,7 @@ public class BootStrap : MonoBehaviour
 	private Image Item2Image;
 	private Image Item3Image;
 
-	[SerializeField] private PauseMenuController PauseMenuController;
+	private PauseMenuController PauseMenuController;
 	private Image ImageNewspaper;
 
 	private GameObject wheelSegmentPrefab;          // Префаб сегмента
@@ -95,8 +96,9 @@ public class BootStrap : MonoBehaviour
 		weaponWheelCanvas = Instantiate(weaponWheelCanvas);
 		interactionCanvas = Instantiate(interactionCanvas);
 		PauseMenuCanvas = Instantiate(PauseMenuCanvas);
-		imagesSubMenuControllerGameObject = Instantiate(imagesSubMenuControllerGameObject);
+	
 		canvasImagesSubMenu = Instantiate(canvasImagesSubMenu);
+	
 		ButtonImagesSubMenu = FindDeepChildByName(PauseMenuCanvas, "PauseMenu Images Button");
 	
 
@@ -130,9 +132,10 @@ public class BootStrap : MonoBehaviour
 		player = Instantiate(player);
 		playerCamera = Instantiate(playerCamera);
 		weaponSystem = Instantiate(weaponSystem);
-		interactionController = Instantiate(interactionController);
-		menuManager = Instantiate(menuManager);
-		PauseMenuController = Instantiate(PauseMenuController);
+		PauseMenuControllerGameObject = Instantiate(PauseMenuControllerGameObject);
+		interactionControllerGameObject = Instantiate(interactionControllerGameObject);
+		menuManagerGameobject = Instantiate(menuManagerGameobject);
+
 
 		// НАХОДИМ НУЖНЫЕ GAMEOBJECTS ПО ИМЕНАМ
 		PlayerFirstPersonHandRight = FindDeepChildByName(playerCamera, "UNITY HandRight");
@@ -151,8 +154,10 @@ public class BootStrap : MonoBehaviour
 		weaponWheelController = weaponSystem.GetComponent<WeaponWheelController>();
 		playerAnimationController = player.GetComponent<PlayerAnimationController>();
 		firstPersonRender = playerCamera.GetComponent<PlayerCameraFirstPersonRender>();
-		imagesSubMenuController = imagesSubMenuControllerGameObject.GetComponent<ImagesSubMenuController>();
-
+		imagesSubMenuController = PauseMenuControllerGameObject.GetComponent<ImagesSubMenuController>();
+		PauseMenuController = PauseMenuControllerGameObject.GetComponent<PauseMenuController>();
+		interactionController = interactionControllerGameObject.GetComponent<InteractionController>();
+		menuManager = menuManagerGameobject.GetComponent<MenuManager>();
 		// ИНЦИАЛИЗАЦИЯ КОМПОНЕНТОВ
 		menuManager.Initialize(inputDevice, gameController);
 		PauseMenuController.Initialize(inputDevice, menuManager, PauseMenuCanvas, ButtonImagesSubMenu);
