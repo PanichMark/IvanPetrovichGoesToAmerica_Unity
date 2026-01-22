@@ -48,16 +48,15 @@ public class PauseMenuController : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (inputDevice.GetKeyPauseMenu())
+		// Проверка условия перехода назад по меню
+		if (inputDevice.GetKeyPauseMenu() && menuManager.menuLevelStack.Count == 2)
 		{
-			if (menuManager.menuLevelStack.Count == 2)
-			{
-				OnCloseSubMenu?.Invoke();
-				ShowPauseMenu();
-			}
+			OnCloseSubMenu?.Invoke();
+			menuManager.menuLevelStack.Pop(); // Убираем верхний элемент (субменю)
+			ShowPauseMenu(); // Показываем главное меню паузы снова
 		}
 	}
-	
+
 	public void ShowPauseMenu()
 	{
 		PauseMenuCanvas.gameObject.SetActive(true);

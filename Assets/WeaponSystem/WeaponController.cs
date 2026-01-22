@@ -22,8 +22,8 @@ public class WeaponController : MonoBehaviour
 	public GameObject LeftHandWeapon { get; private set; }
 	public GameObject RightHandWeapon { get; private set; }
 
-	public WeaponClass leftHandWeaponComponent { get; private set; }
-	public WeaponClass rightHandWeaponComponent { get; private set; }
+	public WeaponAbstract leftHandWeaponComponent { get; private set; }
+	public WeaponAbstract rightHandWeaponComponent { get; private set; }
 
 	// Инициализация контроллера
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour)
@@ -139,7 +139,7 @@ public class WeaponController : MonoBehaviour
 	{
 		bool isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
 
-		WeaponClass weaponComponent = weaponPrefab.GetComponent<WeaponClass>();
+		WeaponAbstract weaponComponent = weaponPrefab.GetComponent<WeaponAbstract>();
 		if (weaponComponent == null)
 		{
 			Debug.LogError("Prefab must contain a WeaponClass component.");
@@ -154,8 +154,8 @@ public class WeaponController : MonoBehaviour
 		}
 
 		// Проверяем конфликт имен системы оружия
-		if (isLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponClass>().WeaponNameSystem == weaponComponent.WeaponNameSystem ||
-			!isLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponClass>().WeaponNameSystem == weaponComponent.WeaponNameSystem)
+		if (isLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == weaponComponent.WeaponNameSystem ||
+			!isLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == weaponComponent.WeaponNameSystem)
 		{
 			// Если совпадают имена системы, убираем предыдущее оружие
 			if (isLeftHand)
@@ -178,7 +178,7 @@ public class WeaponController : MonoBehaviour
 			LeftHandWeapon = weaponPrefab;
 			OnWeaponChanged?.Invoke("left");
 			weaponComponent.InstantiateWeaponModel("left");
-			leftHandWeaponComponent = LeftHandWeapon.GetComponent<WeaponClass>();
+			leftHandWeaponComponent = LeftHandWeapon.GetComponent<WeaponAbstract>();
 			playerBehaviour.ArmPlayer();
 		}
 		else
@@ -190,7 +190,7 @@ public class WeaponController : MonoBehaviour
 			RightHandWeapon = weaponPrefab;
 			OnWeaponChanged?.Invoke("right");
 			weaponComponent.InstantiateWeaponModel("right");
-			rightHandWeaponComponent = RightHandWeapon.GetComponent<WeaponClass>();
+			rightHandWeaponComponent = RightHandWeapon.GetComponent<WeaponAbstract>();
 			playerBehaviour.ArmPlayer();
 		}
 

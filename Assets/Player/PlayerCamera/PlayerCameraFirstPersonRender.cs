@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 public class PlayerCameraFirstPersonRender : MonoBehaviour
 {
-	private WeaponClass leftHandWeaponComponent;
+	private WeaponAbstract leftHandWeaponComponent;
 
-	private WeaponClass rightHandWeaponComponent;
+	private WeaponAbstract rightHandWeaponComponent;
 
 	private PlayerCameraController playerCamera;
 	private WeaponController weaponController;
@@ -38,7 +38,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 		{
 			if (weaponController.LeftHandWeapon != null)
 			{
-				leftHandWeaponComponent = weaponController.LeftHandWeapon.GetComponent<WeaponClass>();
+				leftHandWeaponComponent = weaponController.LeftHandWeapon.GetComponent<WeaponAbstract>();
 			}
 			else leftHandWeaponComponent = null;
 		}
@@ -46,7 +46,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 		{
 			if (weaponController.RightHandWeapon != null)
 			{
-				rightHandWeaponComponent = weaponController.RightHandWeapon.GetComponent<WeaponClass>();
+				rightHandWeaponComponent = weaponController.RightHandWeapon.GetComponent<WeaponAbstract>();
 			}
 			else rightHandWeaponComponent = null;
 		}

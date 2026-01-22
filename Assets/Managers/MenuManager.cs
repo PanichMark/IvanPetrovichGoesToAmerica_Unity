@@ -61,7 +61,9 @@ public class MenuManager : MonoBehaviour
 	public void OpenPauseMenu()
 	{
 		if (IsWeaponWheelMenuOpened)
+		{
 			CloseWeaponWheelMenu(true);
+		}
 		menuLevelStack.Push(1);
 		OnOpenPauseMenu?.Invoke(); 
 		Debug.Log("PauseMenu opened");
@@ -79,7 +81,7 @@ public class MenuManager : MonoBehaviour
 		Debug.Log("PauseMenu closed");
 		CloseAnyMenu();
 		gameController.MakePlayerControllable();
-			menuLevelStack.Pop();
+		menuLevelStack.Pop();
 		IsPauseMenuOpened = false;
 
 		Time.timeScale = 1f;
