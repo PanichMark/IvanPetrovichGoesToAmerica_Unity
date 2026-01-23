@@ -6,31 +6,37 @@ public class PauseMenuController : MonoBehaviour
 	private IInputDevice inputDevice;
 	private GameObject PauseMenuCanvas;
     private MenuManager menuManager;
-	private GameObject ButtonsImagesSubMenu;
+	private GameObject buttonOpenPauseSubMenuImagesGameObject;
+	private GameObject buttonOpenPauseSubMenuSettingsGameObject;
+	private GameObject buttonOpenPauseSubMenuLoadGameObject;
+	private GameObject buttonOpenPauseSubMenuSaveGameObject;
 	public delegate void OpenPauseSubMenuEventHandler();
 	public event OpenPauseSubMenuEventHandler OnOpenSaveSubMenu;
 	public event OpenPauseSubMenuEventHandler OnOpenLoadSubMenu;
 	public event OpenPauseSubMenuEventHandler OnOpenImagesSubMenu;
 	public event OpenPauseSubMenuEventHandler OnOpenSettingsSubMenu;
 	public event OpenPauseSubMenuEventHandler OnCloseSubMenu;
-	public void Initialize( IInputDevice inputDevice, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject buttonImages)
+	public void Initialize( IInputDevice inputDevice, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject buttonOpenPauseSubMenuImages)
 	{
 		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
 		this.PauseMenuCanvas = PauseMenuCanvas;
-		this.ButtonsImagesSubMenu = buttonImages;
+		this.buttonOpenPauseSubMenuImagesGameObject = buttonOpenPauseSubMenuImages;
 		
 		menuManager.OnOpenPauseMenu += ShowPauseMenu;
 		menuManager.OnClosePauseMenu += HidePauseMenu;
-		Button imagesSubMenuButton = ButtonsImagesSubMenu.GetComponent<Button>();
-		imagesSubMenuButton.onClick.AddListener(OpenImagesSubMenu);
+		Button buttonOpenPauseSubMenuImagesComponent = this.buttonOpenPauseSubMenuImagesGameObject.GetComponent<Button>();
+		buttonOpenPauseSubMenuImagesComponent.onClick.AddListener(OpenImagesSubMenu);
 
 		/*
-		ResumeGameButton.onClick.AddListener(HidePauseMenu);
-		OpenSaveSubMenuButton.onClick.AddListener(OpenSaveSubMenu);
-		OpenLoadSubMenuButton.onClick.AddListener(OpenLoadSubMenu);
-		OpenSettingsSubMenuButton.onClick.AddListener(OpenSettingsSubMenu);
-		ExitToMainMenuButton.onClick.AddListener(ExitToMainMenu);
+		Button buttonOpenPauseSubMenuSettingsComponent = this.buttonOpenPauseSubMenuSettingsGameObject.GetComponent<Button>();
+		buttonOpenPauseSubMenuSettingsComponent.onClick.AddListener(OpenSettingsSubMenu);
+
+		Button buttonOpenPauseSubMenuSaveComponent = this.buttonOpenPauseSubMenuSaveGameObject.GetComponent<Button>();
+		buttonOpenPauseSubMenuSaveComponent.onClick.AddListener(OpenSaveSubMenu);
+
+		Button buttonOpenPauseSubMenuLoadComponent = this.buttonOpenPauseSubMenuLoadGameObject.GetComponent<Button>();
+		buttonOpenPauseSubMenuLoadComponent.onClick.AddListener(OpenLoadSubMenu);
 		*/
 		_isInitialized = true;
 		Debug.Log("PauseMenuController Initialized");
@@ -39,7 +45,7 @@ public class PauseMenuController : MonoBehaviour
 	public void OpenImagesSubMenu()
 	{
 		OnOpenImagesSubMenu?.Invoke();
-		menuManager.menuLevelStack.Push(2);
+		menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("ImagesSubMenu opened");
 		HidePauseMenu();
 	}
@@ -49,10 +55,10 @@ public class PauseMenuController : MonoBehaviour
 			return;
 
 		// Проверка условия перехода назад по меню
-		if (inputDevice.GetKeyPauseMenu() && menuManager.menuLevelStack.Count == 2)
+		if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 2)
 		{
 			OnCloseSubMenu?.Invoke();
-			menuManager.menuLevelStack.Pop(); // Убираем верхний элемент (субменю)
+			menuManager.PauseMenuLevel.Pop(); // Убираем верхний элемент (субменю)
 			ShowPauseMenu(); // Показываем главное меню паузы снова
 		}
 	}
@@ -69,7 +75,7 @@ public class PauseMenuController : MonoBehaviour
 	public void OpenSaveSubMenu()
 	{
 		OnOpenSaveSubMenu?.Invoke();
-		menuManager.menuLevelStack.Push(2);
+		menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("SaveSubMenu opened");
 		HidePauseMenu();
 	}
@@ -77,7 +83,7 @@ public class PauseMenuController : MonoBehaviour
 	public void OpenLoadSubMenu()
 	{
 		OnOpenLoadSubMenu?.Invoke();
-		menuManager.menuLevelStack.Push(2);
+		menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("LoadSubMenu opened");
 		HidePauseMenu();
 	}
@@ -85,7 +91,7 @@ public class PauseMenuController : MonoBehaviour
 	public void OpenSettingsSubMenu()
 	{
 		OnOpenSettingsSubMenu?.Invoke();
-		menuManager.menuLevelStack.Push(2);
+		menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("SettingsSubMenu opened");
 		HidePauseMenu();
 	}

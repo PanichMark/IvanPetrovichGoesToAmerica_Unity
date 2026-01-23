@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PauseSubMenuLoadController : MonoBehaviour
 {
 	PauseMenuController pauseMenuController;
-
+	private DataPersistenceManager dataPersistenceManager;
 	public Canvas LoadSubMenuCanvas;
 
 	public Button CloseLoadSubMenuButton;
@@ -28,7 +28,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 			int index = i + 1; // Индекс сохранения начинается с 1
 			LoadGameButtons[i].onClick.AddListener(() =>
 			{
-				DataPersistenceManager.Instance.LoadGame(index); // Передаем индекс сохранения
+				dataPersistenceManager.LoadGame(index); // Передаем индекс сохранения
 			});
 		}
 
@@ -62,7 +62,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 
 	public void RefreshLoadButtonLabels()
 	{
-		var extendedSaveInfos = DataPersistenceManager.Instance.GetExtendedSaveInfo();
+		var extendedSaveInfos = dataPersistenceManager.GetExtendedSaveInfo();
 
 		for (int i = 0; i < extendedSaveInfos.Length; i++)
 		{

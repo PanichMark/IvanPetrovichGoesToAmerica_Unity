@@ -6,16 +6,16 @@ public class PauseSubMenuImagesController : MonoBehaviour
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
 
-	private GameObject ImagesSubMenuCanvas;
+	private GameObject canvasPauseSubMenuImages;
 	private PauseMenuController pauseMenuController;
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject ImagesSubMenuCanvas)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuImages)
 
 	{
 		this.pauseMenuController = pauseMenuController;
 		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
-		this.ImagesSubMenuCanvas = ImagesSubMenuCanvas;
+		this.canvasPauseSubMenuImages = canvasPauseSubMenuImages;
 		pauseMenuController.OnOpenImagesSubMenu += ShowImagesSubMenuCanvas;
 		pauseMenuController.OnCloseSubMenu += HideImagesSubMenuCanvas;
 		Debug.Log("ImagesSubMenu Initialized");
@@ -23,12 +23,12 @@ public class PauseSubMenuImagesController : MonoBehaviour
 
 	private void ShowImagesSubMenuCanvas()
 	{
-		ImagesSubMenuCanvas.gameObject.SetActive(true);
+		canvasPauseSubMenuImages.gameObject.SetActive(true);
 	}
 	private void HideImagesSubMenuCanvas()
 	{
-		ImagesSubMenuCanvas.gameObject.SetActive(false);
-		menuManager.menuLevelStack.Pop();
+		canvasPauseSubMenuImages.gameObject.SetActive(false);
+		menuManager.PauseMenuLevel.Pop();
 		Debug.Log("ImagesSubMenu closed");
 	}
 }

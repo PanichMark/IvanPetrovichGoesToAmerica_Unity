@@ -3,48 +3,36 @@ using UnityEngine.UI;
 
 public class PauseSubMenuSaveController : MonoBehaviour
 {
-	//InputManager playerInputsList;
+	
 	PauseMenuController pauseMenuController;
 
-	public Canvas SaveSubMenuCanvas;
+	private Canvas canvasPauseSubMenuSave;
+	private DataPersistenceManager dataPersistenceManager;
+	private Button CloseSaveSubMenuButton;
 
-	public Button CloseSaveSubMenuButton;
-
-	public Button SaveGame1Button;
-	public Button SaveGame2Button;
-	public Button SaveGame3Button;
-	public Button SaveGame4Button;
-	public Button SaveGame5Button;
+	private Button SaveGame1Button;
+	private Button SaveGame2Button;
+	private Button SaveGame3Button;
+	private Button SaveGame4Button;
+	private Button SaveGame5Button;
 	void Start()
     {
-		//playerInputsList = GetComponent<InputManager>();
-		pauseMenuController = GetComponent<PauseMenuController>();
+
 
 		CloseSaveSubMenuButton.onClick.AddListener(CloseSaveSubMenu);
 
-		SaveGame1Button.onClick.AddListener(() => DataPersistenceManager.Instance.SaveGame(1));
-		SaveGame2Button.onClick.AddListener(() => DataPersistenceManager.Instance.SaveGame(2));
-		SaveGame3Button.onClick.AddListener(() => DataPersistenceManager.Instance.SaveGame(3));
-		SaveGame4Button.onClick.AddListener(() => DataPersistenceManager.Instance.SaveGame(4));
-		SaveGame5Button.onClick.AddListener(() => DataPersistenceManager.Instance.SaveGame(5));
+		SaveGame1Button.onClick.AddListener(() => dataPersistenceManager.SaveGame(1));
+		SaveGame2Button.onClick.AddListener(() => dataPersistenceManager.SaveGame(2));
+		SaveGame3Button.onClick.AddListener(() => dataPersistenceManager.SaveGame(3));
+		SaveGame4Button.onClick.AddListener(() => dataPersistenceManager.SaveGame(4));
+		SaveGame5Button.onClick.AddListener(() => dataPersistenceManager.SaveGame(5));
 
 	}
-	/*
-	private void Update()
-	{
-		if (InputManager.Instance.GetKeyPauseMenu() && SaveSubMenuCanvas.gameObject.activeInHierarchy)
-		{
-			CloseSaveSubMenu();
-		}
-	}
-	*/
+
 
 	public void CloseSaveSubMenu()
 	{
-		SaveSubMenuCanvas.gameObject.SetActive(false);
-		
-		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
-		
+		canvasPauseSubMenuSave.gameObject.SetActive(false);
 		Debug.Log("SaveSubMenu closed");
 	}
 }

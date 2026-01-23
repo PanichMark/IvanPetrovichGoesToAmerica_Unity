@@ -5,7 +5,7 @@ using System.Collections;
 public class GameSceneManager : MonoBehaviour, IDataPersistence
 {
 	public string CurrentSceneSystemName {  get; private set; }
-
+	private DataPersistenceManager dataPersistenceManager;
 	public string CurrentLevelNameUI { get; private set; }
 	public string CurrentDateAndTime { get; private set; }
 	public static GameSceneManager Instance { get; private set; }
@@ -52,10 +52,10 @@ public class GameSceneManager : MonoBehaviour, IDataPersistence
 	public IEnumerator GoToScene(string sceneName)
 	{
 		// Начало сохранения игры
-		DataPersistenceManager.Instance.SaveGame(-1);
+		dataPersistenceManager.SaveGame(-1);
 
 		// Ждём завершения сохранения
-		yield return new WaitUntil(() => DataPersistenceManager.Instance.IsSavingFinished);
+		yield return new WaitUntil(() => dataPersistenceManager.IsSavingFinished);
 
 
 

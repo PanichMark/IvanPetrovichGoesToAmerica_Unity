@@ -44,10 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3111ffddc8a1d604895768280c24a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 5524229887350033321, guid: a8784ba4b9fb8934cb31b2ab7a46b168, type: 3}
-  playerCamera: {fileID: 3834870033131635256, guid: 9a2b9c7ab33262f43870baef3d1c4047, type: 3}
-  weaponSystem: {fileID: 1273523812861932044, guid: 032b3b1bb4a41ae49ad06b0d1a452458, type: 3}
-  weaponWheelCanvas: {fileID: 5879893543200193792, guid: c44457cccf516d44eb926a4ac41336d9, type: 3}
-  menuManager: {fileID: 1495869396809099579, guid: ba6c778106bded6459885eb4f07e5a62, type: 3}
-  interactionController: {fileID: 3735747687780477035, guid: 92c25c75e5130f44dbb83465860f95dc, type: 3}
-  interactionCanvas: {fileID: 3487674979134261898, guid: 14a2db8b24d87894796b2a9ecea9df18, type: 3}
+  canvasMenuWeaponWheel: {fileID: 5879893543200193792, guid: c44457cccf516d44eb926a4ac41336d9, type: 3}
+  canvasPauseSubMenuImages: {fileID: 3996022776004995110, guid: 7211552481043d74ea4fc5bc36150aae, type: 3}
+  CanvasHUDInteraction: {fileID: 3487674979134261898, guid: 14a2db8b24d87894796b2a9ecea9df18, type: 3}
+  canvasPauseMenu: {fileID: 8073867487923853320, guid: dbe31a4f8c1107a42a76c5855b3c2483, type: 3}

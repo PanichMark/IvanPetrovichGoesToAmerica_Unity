@@ -77,8 +77,10 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	}
 
+
 	public void LoadData(GameData data)
 	{
+		/*
 		if (GameSceneManager.Instance.CurrentSceneSystemName == "SceneTEST")
 		{
 			if (data.LootItemsSceneTEST[LootItemIndex].WasLootItemCollected == true)
@@ -96,6 +98,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 				Destroy(gameObject);
 			}
 		}
+		*/
 	}
 }
 

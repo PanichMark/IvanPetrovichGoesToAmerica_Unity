@@ -13,7 +13,7 @@ public class MenuManager : MonoBehaviour
 
 
 
-	public Stack<int> menuLevelStack = new Stack<int>();
+	public Stack<int> PauseMenuLevel = new Stack<int>();
 
 	public void Initialize(IInputDevice inputDevice, IGameController gameController)
 	{
@@ -47,11 +47,11 @@ public class MenuManager : MonoBehaviour
 
 		if (inputDevice.GetKeyPauseMenu())
 		{
-			if (menuLevelStack.Count == 0)
+			if (PauseMenuLevel.Count == 0)
 			{
 				OpenPauseMenu();   
 			}
-			else if (menuLevelStack.Count == 1)
+			else if (PauseMenuLevel.Count == 1)
 			{
 				ClosePauseMenu();
 			}
@@ -64,7 +64,7 @@ public class MenuManager : MonoBehaviour
 		{
 			CloseWeaponWheelMenu(true);
 		}
-		menuLevelStack.Push(1);
+		PauseMenuLevel.Push(1);
 		OnOpenPauseMenu?.Invoke(); 
 		Debug.Log("PauseMenu opened");
 		OpenAnyMenu();
@@ -81,7 +81,7 @@ public class MenuManager : MonoBehaviour
 		Debug.Log("PauseMenu closed");
 		CloseAnyMenu();
 		gameController.MakePlayerControllable();
-		menuLevelStack.Pop();
+		PauseMenuLevel.Pop();
 		IsPauseMenuOpened = false;
 
 		Time.timeScale = 1f;

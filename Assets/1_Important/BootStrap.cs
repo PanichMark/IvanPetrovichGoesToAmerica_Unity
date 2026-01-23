@@ -7,46 +7,72 @@ using UnityEngine.SceneManagement;
 
 public class BootStrap : MonoBehaviour
 {
-	// === Устройства ввода и управление ===
+	//Интерфейсы
 	private IInputDevice inputDevice;
 	private IGameController gameController;
 
-	// === Менеджеры и контроллеры высокого уровня ===
-	private MenuManager menuManager;
-	private PauseMenuController pauseMenuController;
-	private InteractionController interactionController;
-	private PauseSubMenuImagesController imagesSubMenuController;
+	//Система Сохранений
+	private GameObject dataPersistenceManagerGameObject;
+	private DataPersistenceManager dataPersistenceManager;
 
-	// === Камера и отображение игрока ===
-	private PlayerCameraController cameraController;
-	private PlayerCameraBlurFilter cameraBlurFilter;
-	private PlayerCameraFirstPersonRender firstPersonRender;
-	private GameObject playerFirstPersonHandRight;
-	private GameObject playerFirstPersonHandLeft;
+	//Игрок
+	private GameObject playerGameObject;
 	private GameObject playerHeadParent;
 	private GameObject playerHandRightParent;
 	private GameObject playerHandLeftParent;
-
-	// === Игрок и движение ===
+	private GameObject playerFirstPersonHandRight;
+	private GameObject playerFirstPersonHandLeft;
+	//Игрок Системы
 	private PlayerBehaviour playerBehaviour;
 	private PlayerMovementController movementController;
 	private PlayerCapsuleCollider playerCollider;
 	private PlayerAnimationController playerAnimationController;
+	//Игрок Камера
+	private GameObject playerCameraGameObject;
+	private PlayerCameraController playerCameraController;
+	private PlayerCameraBlurFilter playerCameraBlurFilter;
+	private PlayerCameraFirstPersonRender playerCameraFirstPersonRender;
 
-	// === Система оружия ===
+	//Меню
+	private GameObject menuManagerGameobject;
+	private MenuManager menuManager;
+	//Меню Паузы
+	private PauseMenuController pauseMenuController;
+	[SerializeField] private GameObject canvasPauseMenu;
+	private GameObject buttonClosePauseMenu;
+	private GameObject buttonOpenPauseSubMenuSave;
+	private GameObject buttonOpenPauseSubMenuLoad;
+	private GameObject buttonOpenPauseSubMenuImages;
+	private GameObject buttonOpenPauseSubMenuSettings;
+	private GameObject buttonLeaveToMainMenu;
+	//ПодМеню Сохранения
+	private PauseSubMenuSaveController pauseSubMenuSaveController;
+	[SerializeField] private GameObject canvasPauseSubMenuSave;
+	//ПодМеню Загрузки
+	private PauseSubMenuLoadController pauseSubMenuLoadController;
+	[SerializeField] private GameObject canvasPauseSubMenuLoad;
+	//ПодМеню Картинок
+	private PauseSubMenuImagesController pauseSubMenuImagesController;
+	[SerializeField] private GameObject canvasPauseSubMenuImages;
+	//ПодМеню Настроек
+	private PauseSubMenuSettingsController pauseSubMenuSettingsController;
+	[SerializeField] private GameObject canvasPauseSubMenuSettings;
+
+	//Система Оружия
+	private GameObject weaponSystemGameObject;
 	private WeaponController weaponController;
+	//Колесо Выбора Оружия
 	private WeaponWheelController weaponWheelController;
+	[SerializeField] private GameObject canvasMenuWeaponWheel;
+	private GameObject weaponWheelSegmentPrefab;
+	private TextMeshProUGUI weaponText;
+	private TextMeshProUGUI weaponWheelName;
+	private Transform centerPoint; // я думаю это можно удалить ?? нужно проверить
 
-	// === Канвасы и пользовательские интерфейсы ===
-	[SerializeField] private GameObject weaponWheelCanvas;
-	[SerializeField] private GameObject canvasImagesSubMenu;
-	[SerializeField] private GameObject menuManagerGameobject;
-	[SerializeField] private GameObject pauseMenuControllerGameObject;
-	[SerializeField] private GameObject interactionControllerGameObject;
-	[SerializeField] private GameObject interactionCanvas;
-	[SerializeField] private GameObject pauseMenuCanvas;
-
-	// === UI-компоненты ===
+	//Система Взаимодействия
+	private GameObject interactionControllerGameObject;
+	private InteractionController interactionController;
+	[SerializeField] private GameObject CanvasHUDInteraction;
 	private TextMeshProUGUI mainInteractionText;
 	private TextMeshProUGUI additionalInteractionText;
 	private Button exitInteraction;
@@ -59,20 +85,215 @@ public class BootStrap : MonoBehaviour
 	private Image item2Image;
 	private Image item3Image;
 	private Image imageNewspaper;
-	private GameObject buttonImagesSubMenu;
-	private GameObject wheelSegmentPrefab;
-	private Transform centerPoint;
-	private TextMeshProUGUI weaponText;
-	private TextMeshProUGUI weaponWheelName;
 
-	// === Сериализованные игровые объекты ===
-	[SerializeField] private GameObject player;
-	[SerializeField] private GameObject playerCamera;
-	[SerializeField] private GameObject weaponSystem;
+	private void Awake()
+	{
+		StartCoroutine(SequentialInitialization());
+	}
 
-	// Дополнительные методы
+	private IEnumerator SequentialInitialization()
+	{
+		Time.timeScale = 0f;
+		yield return StartCoroutine(InitializeInterfaces());           // Инициализация интерфейсов
+		yield return StartCoroutine(InitializeSavingSystem());
+		yield return StartCoroutine(InitializeMenuLogic());    // Инициализация системы сохранения
+		yield return StartCoroutine(InitializePlayerComponents());    // Инициализация игрока и всех его компонент
+		yield return StartCoroutine(InitializeWeaponsSystem());       // Инициализация оружия и сопутствующих компонентов
+		yield return StartCoroutine(InitializeInteractionSystem());   // Инициализация взаимодействия с миром
+		yield return StartCoroutine(RegisterAllDependencies());
+		//yield return StartCoroutine(LoadNextScene());   // Регистрация всех сервисов
+		Debug.Log("! GAME INITIALIZED !");
+		dataPersistenceManager.Initialize();
+		Time.timeScale = 1.0f;
+	}
 
-	// Поиск дочернего объекта по имени
+
+	private IEnumerator InitializeInterfaces()
+	{
+		ServiceLocator.ClearServices();
+		gameController = new GameController();
+		inputDevice = new InputKeyboard(gameController);
+		Debug.Log("Интерфейсы инициализированы.");
+		yield break;
+	}
+
+	private IEnumerator InitializeSavingSystem()
+	{
+		dataPersistenceManagerGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/DataPersistenceManagerGameObject"));
+		dataPersistenceManager = dataPersistenceManagerGameObject.GetComponent<DataPersistenceManager>();
+		Debug.Log("Система сохранения создана.");
+		yield break;
+	}
+
+	private IEnumerator InitializePlayerComponents()
+	{
+		playerGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerGameObject"));
+		playerCameraGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerCameraGameObject"));
+
+		// Получение компонентов игрока
+		playerBehaviour = playerGameObject.GetComponent<PlayerBehaviour>();
+		movementController = playerGameObject.GetComponent<PlayerMovementController>();
+		playerCollider = playerGameObject.GetComponentInChildren<PlayerCapsuleCollider>();
+		playerAnimationController = playerGameObject.GetComponent<PlayerAnimationController>();
+
+		// Компоненты камеры игрока
+		playerCameraController = playerCameraGameObject.GetComponent<PlayerCameraController>();
+		playerCameraBlurFilter = playerCameraGameObject.GetComponent<PlayerCameraBlurFilter>();
+		playerCameraFirstPersonRender = playerCameraGameObject.GetComponent<PlayerCameraFirstPersonRender>();
+
+		// Внутренние объекты игрока
+		playerFirstPersonHandRight = FindDeepChildByName(playerCameraGameObject, "UNITY HandRight");
+		playerFirstPersonHandLeft = FindDeepChildByName(playerCameraGameObject, "UNITY  HandLeft");
+		playerHeadParent = FindDeepChildByName(playerGameObject, "UNITY PlayerHead");
+		playerHandRightParent = FindDeepChildByName(playerGameObject, "UNITY HandRight");
+		playerHandLeftParent = FindDeepChildByName(playerGameObject, "UNITY  HandLeft");
+
+		// Инициализация полученных компонентов
+		playerBehaviour.Initialize(inputDevice);
+		movementController.Initialize(inputDevice, playerBehaviour);
+		playerCollider.Initialize(movementController);
+		playerCameraController.Initialize(inputDevice, menuManager, movementController, playerCollider, playerGameObject);
+		playerCameraBlurFilter.Initialize(menuManager);
+
+
+
+		//playerCameraFirstPersonRender.Initialize(playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHeadParent, playerHandRightParent, playerHandLeftParent);
+		//playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, movementController, playerCameraController, weaponController);
+
+
+
+
+		Debug.Log("Компоненты игрока инициализированы.");
+		yield break;
+	}
+
+	private IEnumerator InitializeMenuLogic()
+	{
+		menuManagerGameobject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/MenuManagerGameObject"));
+		menuManager = menuManagerGameobject.GetComponent<MenuManager>();
+
+		// Объекты меню
+		canvasPauseMenu = Instantiate(canvasPauseMenu);
+		canvasPauseSubMenuImages = Instantiate(canvasPauseSubMenuImages);
+		//canvasPauseSubMenuSave = Instantiate(canvasPauseSubMenuSave);
+		//canvasPauseSubMenuLoad = Instantiate(canvasPauseSubMenuLoad);
+		//canvasPauseSubMenuSettings = Instantiate(canvasPauseSubMenuSettings);
+
+		// Контроллеры меню
+		pauseMenuController = menuManagerGameobject.GetComponent<PauseMenuController>();
+		pauseSubMenuImagesController = menuManagerGameobject.GetComponent<PauseSubMenuImagesController>();
+		//pauseSubMenuSaveController = menuManagerGameobject.GetComponent<PauseSubMenuSaveController>();
+		//pauseSubMenuLoadController = menuManagerGameobject.GetComponent<PauseSubMenuLoadController>();
+		//pauseSubMenuSettingsController = menuManagerGameobject.GetComponent<PauseSubMenuSettingsController>();
+
+		// Кнопки меню
+		buttonOpenPauseSubMenuImages = FindDeepChildByName(canvasPauseMenu, "PauseMenu Images Button");
+		//buttonOpenPauseSubMenuSave = FindDeepChildByName(canvasPauseMenu, "PauseMenu Save Button");
+		//buttonOpenPauseSubMenuLoad = FindDeepChildByName(canvasPauseMenu, "PauseMenu Load Button");
+		//buttonOpenPauseSubMenuSettings = FindDeepChildByName(canvasPauseMenu, "PauseMenu Settings Button");
+		//buttonLeaveToMainMenu = FindDeepChildByName(canvasPauseMenu, "Leave to Main Menu Button");
+
+		// Инициализация меню
+		menuManager.Initialize(inputDevice, gameController);
+		pauseMenuController.Initialize(inputDevice, menuManager, canvasPauseMenu, buttonOpenPauseSubMenuImages);
+		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages);
+		//pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSave);
+		//pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuLoad);
+		//pauseSubMenuSettingsController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSettings);
+
+		Debug.Log("Логика меню инициализирована.");
+		yield break;
+	}
+
+	private IEnumerator InitializeWeaponsSystem()
+	{
+		weaponSystemGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/WeaponSystemGameObject"));
+
+		// Основной компонент оружия
+		weaponController = weaponSystemGameObject.GetComponent<WeaponController>();
+		weaponWheelController = weaponSystemGameObject.GetComponent<WeaponWheelController>();
+
+		// Колесо выбора оружия
+		canvasMenuWeaponWheel = Instantiate(canvasMenuWeaponWheel);
+		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
+		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre")?.transform;
+		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name")?.GetComponent<TextMeshProUGUI>();
+		weaponWheelName = canvasMenuWeaponWheel.transform.Find("WeaponWheel Hand")?.GetComponent<TextMeshProUGUI>();
+
+		// Инициализация оружия
+		weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
+		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController, weaponWheelSegmentPrefab, centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName);
+
+		Debug.Log("Система оружия инициализирована.");
+		yield break;
+	}
+
+	private IEnumerator InitializeInteractionSystem()
+	{
+		interactionControllerGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/InteractionControllerGameObject"));
+		interactionController = interactionControllerGameObject.GetComponent<InteractionController>();
+
+		// Элементы HUD
+		CanvasHUDInteraction = Instantiate(CanvasHUDInteraction);
+		mainInteractionText = CanvasHUDInteraction.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
+		additionalInteractionText = CanvasHUDInteraction.transform.Find("additionalInteractionText")?.GetComponent<TextMeshProUGUI>();
+		item1Text = CanvasHUDInteraction.transform.Find("Item1text")?.GetComponent<TextMeshProUGUI>();
+		item2Text = CanvasHUDInteraction.transform.Find("Item2text")?.GetComponent<TextMeshProUGUI>();
+		item3Text = CanvasHUDInteraction.transform.Find("Item3text")?.GetComponent<TextMeshProUGUI>();
+		item1Image = CanvasHUDInteraction.transform.Find("Image1Icon")?.GetComponent<Image>();
+		item2Image = CanvasHUDInteraction.transform.Find("Image2Icon")?.GetComponent<Image>();
+		item3Image = CanvasHUDInteraction.transform.Find("Image3Icon")?.GetComponent<Image>();
+		exitInteraction = CanvasHUDInteraction.transform.Find("ExitInteraction")?.GetComponent<Button>();
+		imageNewspaper = CanvasHUDInteraction.transform.Find("ReadableImage")?.GetComponent<Image>();
+		readableText = CanvasHUDInteraction.transform.Find("ReadableText")?.GetComponent<TextMeshProUGUI>();
+		backgroundBlack = CanvasHUDInteraction.transform.Find("BackgroundBlack")?.GetComponent<Image>();
+
+		// Инициализация взаимодействия
+		interactionController.Initialize(inputDevice, playerCameraController, playerBehaviour, mainInteractionText, additionalInteractionText, item1Text, item2Text, item3Text, item1Image, item2Image, item3Image);
+
+		Debug.Log("Система взаимодействия инициализирована.");
+		yield break;
+	}
+
+	private IEnumerator RegisterAllDependencies()
+	{
+		// Регистрация служб
+		ServiceLocator.Register("Player", playerGameObject);
+		ServiceLocator.Register("MenuManager", menuManager);
+		ServiceLocator.Register("WeaponController", weaponController);
+		ServiceLocator.Register("ExitInteraction", exitInteraction);
+		ServiceLocator.Register("ImageNewspaper", imageNewspaper);
+		ServiceLocator.Register("ReadableText", readableText);
+		ServiceLocator.Register("BackgroundBlack", backgroundBlack);
+
+		Debug.Log("Сервисы зарегистрированы.");
+		yield break;
+	}
+
+
+
+
+
+
+	private IEnumerator LoadNextScene()
+	{
+		SceneManager.LoadScene("NEW_SceneTest", LoadSceneMode.Additive);
+
+		Debug.Log("Дополнительная сцена загружена!");
+		yield break;
+	}
+
+
+
+
+	private void OnApplicationQuit()
+	{
+		ServiceLocator.ClearServices();
+	}
+
+
+
+	
 	private GameObject FindDeepChildByName(GameObject root, string targetName)
 	{
 		Queue<Transform> queue = new Queue<Transform>();
@@ -94,136 +315,4 @@ public class BootStrap : MonoBehaviour
 		return null;
 	}
 
-	// Инициализация последовательности действий
-	private IEnumerator SequentialInitialization()
-	{
-		yield return StartCoroutine(InitializeCoreObjects());
-		yield return StartCoroutine(SetupUIElements());
-		yield return StartCoroutine(RegisterDependencies());
-		//yield return StartCoroutine(LoadNextScene());
-
-		Debug.Log("Все компоненты успешно инициализированы!");
-	}
-
-	// Создание основных игровых объектов
-	private IEnumerator InitializeCoreObjects()
-	{
-		yield return new WaitForEndOfFrame(); // Ожидание конца текущего кадра
-		gameController = new GameController();
-		inputDevice = new InputKeyboard(gameController);
-
-		// Инстанцирование объектов
-		weaponWheelCanvas = Instantiate(weaponWheelCanvas);
-		interactionCanvas = Instantiate(interactionCanvas);
-		pauseMenuCanvas = Instantiate(pauseMenuCanvas);
-		canvasImagesSubMenu = Instantiate(canvasImagesSubMenu);
-		player = Instantiate(player);
-		playerCamera = Instantiate(playerCamera);
-		weaponSystem = Instantiate(weaponSystem);
-		pauseMenuControllerGameObject = Instantiate(pauseMenuControllerGameObject);
-		interactionControllerGameObject = Instantiate(interactionControllerGameObject);
-		menuManagerGameobject = Instantiate(menuManagerGameobject);
-
-		Debug.Log("Основные игровые объекты созданы.");
-		yield break; // Возвращаемся назад
-	}
-
-	// Настройка элементов интерфейса и их компонентов
-	private IEnumerator SetupUIElements()
-	{
-		// Поиск элементов интерфейса
-		buttonImagesSubMenu = FindDeepChildByName(pauseMenuCanvas, "PauseMenu Images Button");
-		wheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
-		centerPoint = weaponWheelCanvas.transform.Find("Centre")?.transform;
-		weaponText = weaponWheelCanvas.transform.Find("Selected Weapon Name")?.GetComponent<TextMeshProUGUI>();
-		weaponWheelName = weaponWheelCanvas.transform.Find("WeaponWheel Hand")?.GetComponent<TextMeshProUGUI>();
-
-		mainInteractionText = interactionCanvas.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
-		additionalInteractionText = interactionCanvas.transform.Find("additionalInteractionText")?.GetComponent<TextMeshProUGUI>();
-		item1Text = interactionCanvas.transform.Find("Item1text")?.GetComponent<TextMeshProUGUI>();
-		item2Text = interactionCanvas.transform.Find("Item2text")?.GetComponent<TextMeshProUGUI>();
-		item3Text = interactionCanvas.transform.Find("Item3text")?.GetComponent<TextMeshProUGUI>();
-		item1Image = interactionCanvas.transform.Find("Image1Icon")?.GetComponent<Image>();
-		item2Image = interactionCanvas.transform.Find("Image2Icon")?.GetComponent<Image>();
-		item3Image = interactionCanvas.transform.Find("Image3Icon")?.GetComponent<Image>();
-		exitInteraction = interactionCanvas.transform.Find("ExitInteraction")?.GetComponent<Button>();
-		imageNewspaper = interactionCanvas.transform.Find("ReadableImage")?.GetComponent<Image>();
-		readableText = interactionCanvas.transform.Find("ReadableText")?.GetComponent<TextMeshProUGUI>();
-		backgroundBlack = interactionCanvas.transform.Find("BackgroundBlack")?.GetComponent<Image>();
-
-		Debug.Log("Элементы интерфейса настроены.");
-		yield break; // Возвращаемся назад
-	}
-
-	// Регистрация зависимостей и компонентов
-	private IEnumerator RegisterDependencies()
-	{
-		// Назначение внутренних объектов камеры и рук
-		playerFirstPersonHandRight = FindDeepChildByName(playerCamera, "UNITY HandRight");
-		playerFirstPersonHandLeft = FindDeepChildByName(playerCamera, "UNITY  HandLeft");
-		playerHeadParent = FindDeepChildByName(player, "UNITY PlayerHead");
-		playerHandRightParent = FindDeepChildByName(player, "UNITY HandRight");
-		playerHandLeftParent = FindDeepChildByName(player, "UNITY  HandLeft");
-
-		// Получение компонентов игроков
-		playerBehaviour = player.GetComponent<PlayerBehaviour>();
-		movementController = player.GetComponent<PlayerMovementController>();
-		playerCollider = player.GetComponentInChildren<PlayerCapsuleCollider>();
-		cameraController = playerCamera.GetComponent<PlayerCameraController>();
-		cameraBlurFilter = playerCamera.GetComponent<PlayerCameraBlurFilter>();
-		weaponController = weaponSystem.GetComponent<WeaponController>();
-		weaponWheelController = weaponSystem.GetComponent<WeaponWheelController>();
-		playerAnimationController = player.GetComponent<PlayerAnimationController>();
-		firstPersonRender = playerCamera.GetComponent<PlayerCameraFirstPersonRender>();
-		imagesSubMenuController = pauseMenuControllerGameObject.GetComponent<PauseSubMenuImagesController>();
-		pauseMenuController = pauseMenuControllerGameObject.GetComponent<PauseMenuController>();
-		interactionController = interactionControllerGameObject.GetComponent<InteractionController>();
-		menuManager = menuManagerGameobject.GetComponent<MenuManager>();
-
-		// Регистрация и инициализация контроллеров
-		menuManager.Initialize(inputDevice, gameController);
-		pauseMenuController.Initialize(inputDevice, menuManager, pauseMenuCanvas, buttonImagesSubMenu);
-		imagesSubMenuController.Initialize(inputDevice, menuManager, pauseMenuController, canvasImagesSubMenu);
-		playerBehaviour.Initialize(inputDevice);
-		movementController.Initialize(inputDevice, playerBehaviour);
-		playerCollider.Initialize(movementController);
-		cameraController.Initialize(inputDevice, menuManager, movementController, playerCollider, player);
-		cameraBlurFilter.Initialize(menuManager);
-		weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
-		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController, wheelSegmentPrefab, centerPoint, weaponWheelCanvas, weaponText, weaponWheelName);
-		firstPersonRender.Initialize(cameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHeadParent, playerHandRightParent, playerHandLeftParent);
-		playerAnimationController.Initialize(inputDevice, player, playerBehaviour, movementController, cameraController, weaponController);
-		interactionController.Initialize(inputDevice, cameraController, playerBehaviour, mainInteractionText, additionalInteractionText, item1Text, item2Text, item3Text, item1Image, item2Image, item3Image);
-
-		// Регистрация служб
-		ServiceLocator.Register("Player", player);
-		ServiceLocator.Register("MenuManager", menuManager);
-		ServiceLocator.Register("WeaponController", weaponController);
-		ServiceLocator.Register("ExitInteraction", exitInteraction);
-		ServiceLocator.Register("ImageNewspaper", imageNewspaper);
-		ServiceLocator.Register("ReadableText", readableText);
-		ServiceLocator.Register("BackgroundBlack", backgroundBlack);
-
-		Debug.Log("Зависимости зарегистрированы.");
-		yield break; // Возвращаемся назад
-	}
-
-	// Загрузка дополнительной сцены
-	private IEnumerator LoadNextScene()
-	{
-		yield return null;
-		Debug.Log("Дополнительная сцена загружена!");
-	}
-
-	// Запуск главной точки входа
-	private void Awake()
-	{
-		StartCoroutine(SequentialInitialization());
-	}
-
-	// Освобождение ресурсов при завершении приложения
-	private void OnApplicationQuit()
-	{
-		ServiceLocator.ClearServices();
-	}
 }
