@@ -8,7 +8,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
 	private PauseMenuController pauseMenuController;
-	private DataPersistenceManager dataPersistenceManager;
+	private SaveLoadController dataPersistenceManager;
 	private GameObject canvasPauseSubMenuLoad;
 
 	private Button CloseLoadSubMenuButton;
@@ -26,7 +26,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		this.inputDevice = inputDevice;
 		this.canvasPauseSubMenuLoad = canvasPauseSubMenuLoad;
 		pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;
-		pauseMenuController.OnCloseSubMenu += HideLoadSubMenuCanvas;
+		pauseMenuController.OnClosePauseSubMenu += HideLoadSubMenuCanvas;
 		Debug.Log("LoadSubMenu Initialized");
 	}
 

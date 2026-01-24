@@ -8,8 +8,6 @@ public class InteractionController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
 
-	// Конструктор принимает зависимость
-
 
 	private float interactionRange = 50f; // Диапазон взаимодействия
 
@@ -18,19 +16,14 @@ public class InteractionController : MonoBehaviour
 	private TextMeshProUGUI mainInteractionText; 
 	private TextMeshProUGUI additionalInteractionText;
 
-	private TextMeshProUGUI Item1Text;
-	private TextMeshProUGUI Item2Text;
-	private TextMeshProUGUI Item3Text;
-
-	private Image Item1Image;
-	private Image Item2Image;
-	private Image Item3Image;
+	private TextMeshProUGUI[] itemsTexts; 
+	private Image[] itemsImages; 
 
 
 
 	private Sprite NoItemImageExeption;
 
-	private PlayerCameraController playerCamera;
+	private PlayerCameraController playerCameraController;
 	//public GameObject PlayerCameraObject;
 
 	private Coroutine showAdditionalHintCoroutine;
@@ -50,31 +43,24 @@ public class InteractionController : MonoBehaviour
 		PlayerBehaviour playerBehaviour,
 		TextMeshProUGUI mainInteractionText,
 		TextMeshProUGUI additionalInteractionText,
-		TextMeshProUGUI item1Text,
-		TextMeshProUGUI item2Text,
-		TextMeshProUGUI item3Text,
-		Image item1Image,
-		Image item2Image,
-		Image item3Image
+		TextMeshProUGUI[] itemsTexts, // Передача массива
+		Image[] itemsImages // Передача массива
 	)
 	{
 		this.inputDevice = inputDevice;
-		this.playerCamera = playerCameraController;
+		this.playerCameraController = playerCameraController;
 		this.playerBehaviour = playerBehaviour;
 
-		// Новые параметры
+		// Присваиваем новые массивы
+		this.itemsTexts = itemsTexts;
+		this.itemsImages = itemsImages;
+
+		// Старые параметры
 		this.mainInteractionText = mainInteractionText;
 		this.additionalInteractionText = additionalInteractionText;
-		this.Item1Text = item1Text;
-		this.Item2Text = item2Text;
-		this.Item3Text = item3Text;
-		this.Item1Image = item1Image;
-		this.Item2Image = item2Image;
-		this.Item3Image = item3Image;
-		
+
 		_isInitialized = true;
 		Debug.Log("InteractionController Initialized");
-		
 	}
 
 
@@ -85,10 +71,10 @@ public class InteractionController : MonoBehaviour
 		if (!_isInitialized)
 			return;
 		
-		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
+		if (playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
 			interactionRange = 2.5f;
-		else if (playerCamera.CurrentPlayerCameraStateType == "ThirdPerson")
-			interactionRange = 2f + playerCamera.PlayerCameraDistanceZ;
+		else if (playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
+			interactionRange = 2f + playerCameraController.PlayerCameraDistanceZ;
 
 		if (mainInteractionText != null)
 			mainInteractionText.text = null;
@@ -96,9 +82,9 @@ public class InteractionController : MonoBehaviour
 		if (showAdditionalHintCoroutine == null)
 			additionalInteractionText.text = null;
 
-		if (playerCamera != null)
+		if (playerCameraController != null)
 		{
-			isHit = Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hitInfo, interactionRange);
+			isHit = Physics.Raycast(playerCameraController.transform.position, playerCameraController.transform.forward, out hitInfo, interactionRange);
 		}
 		
 
@@ -203,74 +189,74 @@ public class InteractionController : MonoBehaviour
 
 						if (gainedObject != null)
 						{
-							if (Item1Text.gameObject.activeInHierarchy == false)
+							if (!itemsTexts[0].gameObject.activeInHierarchy)
 							{
-								Item1Text.gameObject.SetActive(true);
-								Item1Text.text = interactableObj.InteractionObjectNameUI;
+								itemsTexts[0].gameObject.SetActive(true);
+								itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
 
-								Item1Image.gameObject.SetActive(true);
+								itemsImages[0].gameObject.SetActive(true);
 								if (gainedObject.GainedItemImage != null)
 								{
-									Item1Image.sprite = gainedObject.GainedItemImage;
+									itemsImages[0].sprite = gainedObject.GainedItemImage;
 								}
 								else
 								{
-									Item1Image.sprite = NoItemImageExeption;
+									itemsImages[0].sprite = NoItemImageExeption;
 								}
 							}
-							else if (Item1Text.gameObject.activeInHierarchy == true && Item2Text.gameObject.activeInHierarchy == false)
+							else if (itemsTexts[0].gameObject.activeInHierarchy && !itemsTexts[1].gameObject.activeInHierarchy)
 							{
-								Item2Text.gameObject.SetActive(true);
-								Item2Text.text = Item1Text.text;
-								Item1Text.text = interactableObj.InteractionObjectNameUI;
+								itemsTexts[1].gameObject.SetActive(true);
+								itemsTexts[1].text = itemsTexts[0].text;
+								itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
 
-								Item2Image.gameObject.SetActive(true);
-								Item2Image.sprite = Item1Image.sprite;
+								itemsImages[1].gameObject.SetActive(true);
+								itemsImages[1].sprite = itemsImages[0].sprite;
 								if (gainedObject.GainedItemImage != null)
 								{
-									Item1Image.sprite = gainedObject.GainedItemImage;
+									itemsImages[0].sprite = gainedObject.GainedItemImage;
 								}
 								else
 								{
-									Item1Image.sprite = NoItemImageExeption;
+									itemsImages[0].sprite = NoItemImageExeption;
 								}
 							}
-							else if (Item2Text.gameObject.activeInHierarchy == true && Item1Text.gameObject.activeInHierarchy == true)
+							else if (itemsTexts[1].gameObject.activeInHierarchy && itemsTexts[0].gameObject.activeInHierarchy)
 							{
-								Item3Text.gameObject.SetActive(true);
-								Item3Text.text = Item2Text.text;
-								Item2Text.text = Item1Text.text;
-								Item1Text.text = interactableObj.InteractionObjectNameUI;
+								itemsTexts[2].gameObject.SetActive(true);
+								itemsTexts[2].text = itemsTexts[1].text;
+								itemsTexts[1].text = itemsTexts[0].text;
+								itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
 
-								Item3Image.gameObject.SetActive(true);
-								Item3Image.sprite = Item2Image.sprite;
-								Item2Image.sprite = Item1Image.sprite;
+								itemsImages[2].gameObject.SetActive(true);
+								itemsImages[2].sprite = itemsImages[1].sprite;
+								itemsImages[1].sprite = itemsImages[0].sprite;
 								if (gainedObject.GainedItemImage != null)
 								{
-									Item1Image.sprite = gainedObject.GainedItemImage;
+									itemsImages[0].sprite = gainedObject.GainedItemImage;
 								}
 								else
 								{
-									Item1Image.sprite = NoItemImageExeption;
+									itemsImages[0].sprite = NoItemImageExeption;
 								}
 							}
-							else if (Item3Text.gameObject.activeInHierarchy == true &&
-									 Item1Text.gameObject.activeInHierarchy == true &&
-									 Item2Text.gameObject.activeInHierarchy == true)
+							else if (itemsTexts[2].gameObject.activeInHierarchy &&
+									 itemsTexts[0].gameObject.activeInHierarchy &&
+									 itemsTexts[1].gameObject.activeInHierarchy)
 							{
-								Item3Text.text = Item2Text.text;
-								Item2Text.text = Item1Text.text;
-								Item1Text.text = interactableObj.InteractionObjectNameUI;
+								itemsTexts[2].text = itemsTexts[1].text;
+								itemsTexts[1].text = itemsTexts[0].text;
+								itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
 
-								Item3Image.sprite = Item2Image.sprite;
-								Item2Image.sprite = Item1Image.sprite;
+								itemsImages[2].sprite = itemsImages[1].sprite;
+								itemsImages[1].sprite = itemsImages[0].sprite;
 								if (gainedObject.GainedItemImage != null)
 								{
-									Item1Image.sprite = gainedObject.GainedItemImage;
+									itemsImages[0].sprite = gainedObject.GainedItemImage;
 								}
 								else
 								{
-									Item1Image.sprite = NoItemImageExeption;
+									itemsImages[0].sprite = NoItemImageExeption;
 								}
 							}
 
@@ -327,26 +313,31 @@ public class InteractionController : MonoBehaviour
 	IEnumerator ShowItemsGained()
 	{
 		yield return new WaitForSeconds(2f);
-		if (Item3Text.gameObject.activeInHierarchy == true)
+
+		// Начинаем проверку с третьего элемента (если активен)
+		if (itemsTexts[2].gameObject.activeInHierarchy)
 		{
-			Item3Text.text = null;
-			Item3Text.gameObject.SetActive(false);
-			Item3Image.sprite = null;
-			Item3Image.gameObject.SetActive(false);
+			itemsTexts[2].text = null;
+			itemsTexts[2].gameObject.SetActive(false);
+
+			itemsImages[2].sprite = null;
+			itemsImages[2].gameObject.SetActive(false);
 		}
-		else if (Item2Text.gameObject.activeInHierarchy == true)
+		else if (itemsTexts[1].gameObject.activeInHierarchy)
 		{
-			Item2Text.text = null;
-			Item2Text.gameObject.SetActive(false);
-			Item2Image.sprite = null;
-			Item2Image.gameObject.SetActive(false);
+			itemsTexts[1].text = null;
+			itemsTexts[1].gameObject.SetActive(false);
+
+			itemsImages[1].sprite = null;
+			itemsImages[1].gameObject.SetActive(false);
 		}
-		else if (Item1Text.gameObject.activeInHierarchy == true)
+		else if (itemsTexts[0].gameObject.activeInHierarchy)
 		{
-			Item1Text.text = null;
-			Item1Text.gameObject.SetActive(false);
-			Item1Image.sprite = null;
-			Item1Image.gameObject.SetActive(false);
+			itemsTexts[0].text = null;
+			itemsTexts[0].gameObject.SetActive(false);
+
+			itemsImages[0].sprite = null;
+			itemsImages[0].gameObject.SetActive(false);
 		}
 	}
 

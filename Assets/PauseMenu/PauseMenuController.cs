@@ -7,12 +7,7 @@ public class PauseMenuController : MonoBehaviour
     private MenuManager menuManager;
 	private GameObject PauseMenuCanvas;
 
-	private GameObject buttonClosePauseMenuGameObject;
-	private GameObject buttonOpenPauseSubMenuLoadGameObject;
-	private GameObject buttonOpenPauseSubMenuImagesGameObject;
-	private GameObject buttonOpenPauseSubMenuSaveGameObject;
-	private GameObject buttonOpenPauseSubMenuSettingsGameObject;
-	private GameObject buttonExitToMainMenuGameObject;
+	private GameObject[] buttonsPauseMenu;
 
 	public delegate void OpenPauseMenuEventHandler();
 	public event OpenPauseMenuEventHandler OnClosePauseMenu;
@@ -21,49 +16,27 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnOpenImagesSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenSettingsSubMenu;
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
-	public event OpenPauseMenuEventHandler OnCloseSubMenu;
-	public void Initialize( IInputDevice inputDevice, MenuManager menuManager, GameObject PauseMenuCanvas,
-		GameObject buttonClosePauseMenu, GameObject buttonOpenPauseSubMenuSave,
-		GameObject buttonOpenPauseSubMenuLoad, GameObject buttonOpenPauseSubMenuImages,
-		GameObject buttonOpenPauseSubMenuSettings, GameObject buttonExitToMainMenu)
+	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
+	public void Initialize( IInputDevice inputDevice, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject[] buttonsPauseMenu)
 	{
 		this.inputDevice = inputDevice;
 		this.menuManager = menuManager;
 		this.PauseMenuCanvas = PauseMenuCanvas;
+		this.buttonsPauseMenu = buttonsPauseMenu;
 
-		this.buttonClosePauseMenuGameObject = buttonClosePauseMenu;
-		this.buttonOpenPauseSubMenuSaveGameObject = buttonOpenPauseSubMenuSave;
-		this.buttonOpenPauseSubMenuLoadGameObject = buttonOpenPauseSubMenuLoad;
-		this.buttonOpenPauseSubMenuImagesGameObject = buttonOpenPauseSubMenuImages;
-		this.buttonOpenPauseSubMenuSettingsGameObject = buttonOpenPauseSubMenuSettings;
-		this.buttonExitToMainMenuGameObject = buttonExitToMainMenu;
-
-
-
-		Button buttonClosePauseMenuComponent = this.buttonClosePauseMenuGameObject.GetComponent<Button>();
-		buttonClosePauseMenuComponent.onClick.AddListener(menuManager.ClosePauseMenu);
-
-		Button buttonOpenPauseSubMenuSaveComponent = this.buttonOpenPauseSubMenuSaveGameObject.GetComponent<Button>();
-		buttonOpenPauseSubMenuSaveComponent.onClick.AddListener(OpenSaveSubMenu);
-		
-		Button buttonOpenPauseSubMenuLoadComponent = this.buttonOpenPauseSubMenuLoadGameObject.GetComponent<Button>();
-		buttonOpenPauseSubMenuLoadComponent.onClick.AddListener(OpenLoadSubMenu);
-
-		Button buttonOpenPauseSubMenuImagesComponent = this.buttonOpenPauseSubMenuImagesGameObject.GetComponent<Button>();
-		buttonOpenPauseSubMenuImagesComponent.onClick.AddListener(OpenImagesSubMenu);
-
-		Button buttonOpenPauseSubMenuSettingsComponent = this.buttonOpenPauseSubMenuSettingsGameObject.GetComponent<Button>();
-		buttonOpenPauseSubMenuSettingsComponent.onClick.AddListener(OpenSettingsSubMenu);
-
-		Button buttonExitToMainMenuComponent = this.buttonExitToMainMenuGameObject.GetComponent<Button>();
-		buttonExitToMainMenuComponent.onClick.AddListener(ExitToMainMenu);
+		this.buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(menuManager.ClosePauseMenu);     
+		this.buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
+		this.buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
+		this.buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenImagesSubMenu);              
+		this.buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);         
+		this.buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(ExitToMainMenu);
 
 		menuManager.OnOpenPauseMenu += ShowPauseMenu;
 		menuManager.OnClosePauseMenu += HidePauseMenu;
 
 		_isInitialized = true;
 
-		Debug.Log("PauseMenuController Initialized");
+		Debug.Log("PauseMenu Initialized");
 	}
 	private bool _isInitialized = false;
 
@@ -75,7 +48,7 @@ public class PauseMenuController : MonoBehaviour
 		// Проверка условия перехода назад по меню
 		if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 2)
 		{
-			OnCloseSubMenu?.Invoke();
+			OnClosePauseSubMenu?.Invoke();
 			menuManager.PauseMenuLevel.Pop(); // Убираем верхний элемент (субменю)
 			ShowPauseMenu(); // Показываем главное меню паузы снова
 		}

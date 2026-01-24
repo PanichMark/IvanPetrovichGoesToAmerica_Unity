@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealthManager : MonoBehaviour, IDataPersistence
+public class PlayerHealthManager : MonoBehaviour, ISaveLoad
 {
 	public static PlayerHealthManager Instance { get; private set; } // Статическое поле экземпляра
 

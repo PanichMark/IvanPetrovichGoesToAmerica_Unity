@@ -22,8 +22,8 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		this.inputDevice = inputDevice;
 		this.canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
 		pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
-		pauseMenuController.OnCloseSubMenu += HideSettingsSubMenuCanvas;
-		Debug.Log("ImagesSubMenu Initialized");
+		pauseMenuController.OnClosePauseSubMenu += HideSettingsSubMenuCanvas;
+		Debug.Log("SettingsSubMenu Initialized");
 	}
 
 	// Ссылка на контроллер паузы меню

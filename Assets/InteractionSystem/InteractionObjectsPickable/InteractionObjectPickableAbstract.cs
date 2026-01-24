@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, IDataPersistence, IPickable
+public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, ISaveLoad, IPickable
 {
 	public GameObject CachedPlayer {  get; protected set; }
 

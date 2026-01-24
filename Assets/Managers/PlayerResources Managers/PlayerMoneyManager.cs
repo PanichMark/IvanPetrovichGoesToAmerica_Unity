@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 
-public class PlayerMoneyManager : MonoBehaviour, IDataPersistence
+public class PlayerMoneyManager : MonoBehaviour, ISaveLoad
 {
 	public static PlayerMoneyManager Instance { get; private set; } // Статическое поле экземпляра
 	//public InputManager playerInputsList;

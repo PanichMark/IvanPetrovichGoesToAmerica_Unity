@@ -9,11 +9,11 @@ public class BootStrap : MonoBehaviour
 {
 	//Интерфейсы
 	private IInputDevice inputDevice;
-	private IGameController gameController;
+	private GameController gameController;
 
 	//Система Сохранений
-	private GameObject dataPersistenceManagerGameObject;
-	private DataPersistenceManager dataPersistenceManager;
+	private GameObject dataSaveLoadControllerObject;
+	private SaveLoadController saveLoadController;
 
 	//Игрок
 	private GameObject playerGameObject;
@@ -39,12 +39,7 @@ public class BootStrap : MonoBehaviour
 	//Меню Паузы
 	private PauseMenuController pauseMenuController;
 	[SerializeField] private GameObject canvasPauseMenu;
-	private GameObject buttonClosePauseMenu;
-	private GameObject buttonOpenPauseSubMenuSave;
-	private GameObject buttonOpenPauseSubMenuLoad;
-	private GameObject buttonOpenPauseSubMenuImages;
-	private GameObject buttonOpenPauseSubMenuSettings;
-	private GameObject buttonExitToMainMenu;
+	private GameObject[] buttonsPauseMenu;
 	//ПодМеню Сохранения
 	private PauseSubMenuSaveController pauseSubMenuSaveController;
 	[SerializeField] private GameObject canvasPauseSubMenuSave;
@@ -78,12 +73,8 @@ public class BootStrap : MonoBehaviour
 	private Button exitInteraction;
 	private TextMeshProUGUI readableText;
 	private Image backgroundBlack;
-	private TextMeshProUGUI item1Text;
-	private TextMeshProUGUI item2Text;
-	private TextMeshProUGUI item3Text;
-	private Image item1Image;
-	private Image item2Image;
-	private Image item3Image;
+	private TextMeshProUGUI[] itemsTexts;
+	private Image[] itemsImages;
 	private Image imageNewspaper;
 
 	private void Awake()
@@ -102,8 +93,9 @@ public class BootStrap : MonoBehaviour
 		yield return StartCoroutine(InitializeInteractionSystem());   // Инициализация взаимодействия с миром
 		yield return StartCoroutine(RegisterAllDependencies());
 		//yield return StartCoroutine(LoadNextScene());   // Регистрация всех сервисов
-		Debug.Log("! GAME INITIALIZED !");
-		dataPersistenceManager.Initialize();
+		Debug.Log("!!! GAME INITIALIZED !!!");
+		saveLoadController.NewGame();
+		//saveLoadController.Initialize();
 		Time.timeScale = 1.0f;
 	}
 
@@ -113,15 +105,16 @@ public class BootStrap : MonoBehaviour
 		ServiceLocator.ClearServices();
 		gameController = new GameController();
 		inputDevice = new InputKeyboard(gameController);
-		Debug.Log("Интерфейсы инициализированы.");
+		Debug.Log("INTERFACES INITIALIZED");
 		yield break;
 	}
 
 	private IEnumerator InitializeSavingSystem()
 	{
-		dataPersistenceManagerGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/DataPersistenceManagerGameObject"));
-		dataPersistenceManager = dataPersistenceManagerGameObject.GetComponent<DataPersistenceManager>();
-		Debug.Log("Система сохранения создана.");
+		dataSaveLoadControllerObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/DataPersistenceManagerGameObject"));
+		saveLoadController = dataSaveLoadControllerObject.GetComponent<SaveLoadController>();
+		saveLoadController.Initialize();
+		Debug.Log("SAVE SYSTEM INITIALIZED");
 		yield break;
 	}
 
@@ -163,7 +156,7 @@ public class BootStrap : MonoBehaviour
 
 
 
-		Debug.Log("Компоненты игрока инициализированы.");
+		Debug.Log("PLAYER INITIALIZED");
 		yield break;
 	}
 
@@ -187,23 +180,25 @@ public class BootStrap : MonoBehaviour
 		pauseSubMenuSettingsController = menuManagerGameobject.GetComponent<PauseSubMenuSettingsController>();
 
 		// Кнопки меню
-		buttonClosePauseMenu = FindDeepChildByName(canvasPauseMenu, "PauseMenu Resume Button");
-		buttonOpenPauseSubMenuSave = FindDeepChildByName(canvasPauseMenu, "PauseMenu Save Button");
-		buttonOpenPauseSubMenuLoad = FindDeepChildByName(canvasPauseMenu, "PauseMenu Load Button");
-		buttonOpenPauseSubMenuImages = FindDeepChildByName(canvasPauseMenu, "PauseMenu Images Button");
-		buttonOpenPauseSubMenuSettings = FindDeepChildByName(canvasPauseMenu, "PauseMenu Settings Button");
-		buttonExitToMainMenu = FindDeepChildByName(canvasPauseMenu, "PauseMenu Exit Button");
+		buttonsPauseMenu = new GameObject[]
+		{
+			FindDeepChildByName(canvasPauseMenu, "PauseMenu Resume Button"),     
+			FindDeepChildByName(canvasPauseMenu, "PauseMenu Save Button"),     
+			FindDeepChildByName(canvasPauseMenu, "PauseMenu Load Button"),     
+			FindDeepChildByName(canvasPauseMenu, "PauseMenu Images Button"),    
+			FindDeepChildByName(canvasPauseMenu, "PauseMenu Settings Button"),  
+			FindDeepChildByName(canvasPauseMenu, "PauseMenu Exit Button")    
+		};
 
 		// Инициализация меню
 		menuManager.Initialize(inputDevice, gameController);
-		pauseMenuController.Initialize(inputDevice, menuManager, canvasPauseMenu, buttonClosePauseMenu, buttonOpenPauseSubMenuSave,
-			buttonOpenPauseSubMenuLoad, buttonOpenPauseSubMenuImages, buttonOpenPauseSubMenuSettings, buttonExitToMainMenu);
+		pauseMenuController.Initialize(inputDevice, menuManager, canvasPauseMenu, buttonsPauseMenu);
 		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSave);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuLoad);
 		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages);
 		pauseSubMenuSettingsController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSettings);
 
-		Debug.Log("Логика меню инициализирована.");
+		Debug.Log("PAUSE MENU INITIALIZED");
 		yield break;
 	}
 
@@ -224,9 +219,10 @@ public class BootStrap : MonoBehaviour
 
 		// Инициализация оружия
 		weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
-		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController, weaponWheelSegmentPrefab, centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName);
+		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController, weaponWheelSegmentPrefab,
+			centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName);
 
-		Debug.Log("Система оружия инициализирована.");
+		Debug.Log("WEAPON SYSTEM INITIALIZED");
 		yield break;
 	}
 
@@ -239,21 +235,27 @@ public class BootStrap : MonoBehaviour
 		CanvasHUDInteraction = Instantiate(CanvasHUDInteraction);
 		mainInteractionText = CanvasHUDInteraction.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
 		additionalInteractionText = CanvasHUDInteraction.transform.Find("additionalInteractionText")?.GetComponent<TextMeshProUGUI>();
-		item1Text = CanvasHUDInteraction.transform.Find("Item1text")?.GetComponent<TextMeshProUGUI>();
-		item2Text = CanvasHUDInteraction.transform.Find("Item2text")?.GetComponent<TextMeshProUGUI>();
-		item3Text = CanvasHUDInteraction.transform.Find("Item3text")?.GetComponent<TextMeshProUGUI>();
-		item1Image = CanvasHUDInteraction.transform.Find("Image1Icon")?.GetComponent<Image>();
-		item2Image = CanvasHUDInteraction.transform.Find("Image2Icon")?.GetComponent<Image>();
-		item3Image = CanvasHUDInteraction.transform.Find("Image3Icon")?.GetComponent<Image>();
+		itemsTexts = new TextMeshProUGUI[]
+		{
+			CanvasHUDInteraction.transform.Find("Item1text").GetComponent<TextMeshProUGUI>(),
+			CanvasHUDInteraction.transform.Find("Item2text").GetComponent<TextMeshProUGUI>(),
+			CanvasHUDInteraction.transform.Find("Item3text").GetComponent<TextMeshProUGUI>()
+		};
+		itemsImages = new Image[]
+		{
+			CanvasHUDInteraction.transform.Find("Image1Icon").GetComponent<Image>(),
+			CanvasHUDInteraction.transform.Find("Image2Icon").GetComponent<Image>(),
+			CanvasHUDInteraction.transform.Find("Image3Icon").GetComponent<Image>()
+		};
 		exitInteraction = CanvasHUDInteraction.transform.Find("ExitInteraction")?.GetComponent<Button>();
 		imageNewspaper = CanvasHUDInteraction.transform.Find("ReadableImage")?.GetComponent<Image>();
 		readableText = CanvasHUDInteraction.transform.Find("ReadableText")?.GetComponent<TextMeshProUGUI>();
 		backgroundBlack = CanvasHUDInteraction.transform.Find("BackgroundBlack")?.GetComponent<Image>();
 
 		// Инициализация взаимодействия
-		interactionController.Initialize(inputDevice, playerCameraController, playerBehaviour, mainInteractionText, additionalInteractionText, item1Text, item2Text, item3Text, item1Image, item2Image, item3Image);
-
-		Debug.Log("Система взаимодействия инициализирована.");
+		interactionController.Initialize(inputDevice, playerCameraController, playerBehaviour, mainInteractionText,
+			additionalInteractionText, itemsTexts, itemsImages);
+		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 		yield break;
 	}
 
@@ -268,14 +270,9 @@ public class BootStrap : MonoBehaviour
 		ServiceLocator.Register("ReadableText", readableText);
 		ServiceLocator.Register("BackgroundBlack", backgroundBlack);
 
-		Debug.Log("Сервисы зарегистрированы.");
+		Debug.Log("SERVICE REGISTERED");
 		yield break;
 	}
-
-
-
-
-
 
 	private IEnumerator LoadNextScene()
 	{
@@ -285,17 +282,11 @@ public class BootStrap : MonoBehaviour
 		yield break;
 	}
 
-
-
-
 	private void OnApplicationQuit()
 	{
 		ServiceLocator.ClearServices();
 	}
 
-
-
-	
 	private GameObject FindDeepChildByName(GameObject root, string targetName)
 	{
 		Queue<Transform> queue = new Queue<Transform>();
@@ -316,5 +307,4 @@ public class BootStrap : MonoBehaviour
 
 		return null;
 	}
-
 }

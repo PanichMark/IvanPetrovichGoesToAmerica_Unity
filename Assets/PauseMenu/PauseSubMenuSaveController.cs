@@ -8,7 +8,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	PauseMenuController pauseMenuController;
 
 	private GameObject canvasPauseSubMenuSave;
-	private DataPersistenceManager dataPersistenceManager;
+	private SaveLoadController dataPersistenceManager;
 	private Button CloseSaveSubMenuButton;
 
 	private Button SaveGame1Button;
@@ -25,7 +25,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		this.inputDevice = inputDevice;
 		this.canvasPauseSubMenuSave = canvasPauseSubMenuSave;
 		pauseMenuController.OnOpenSaveSubMenu += ShowSaveSubMenuCanvas;
-		pauseMenuController.OnCloseSubMenu += HideSaveSubMenuCanvas;
+		pauseMenuController.OnClosePauseSubMenu += HideSaveSubMenuCanvas;
 		/*
 		CloseSaveSubMenuButton.onClick.AddListener(HideImagesSubMenuCanvas);
 

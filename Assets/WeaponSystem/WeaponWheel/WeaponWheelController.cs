@@ -47,7 +47,7 @@ public class WeaponWheelController : MonoBehaviour
 
 		WeaponWheelMenuCanvas.gameObject.SetActive(false);
 		_isInitialized = true;
-		Debug.Log("WeaponWheelController Initialized");
+		Debug.Log("WeaponWheel Initialized");
 
 		weaponController.OnWeaponUnlocked += OnWeaponUnlocked;
 	}

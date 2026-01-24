@@ -15,7 +15,7 @@ public class PlayerCameraBlurFilter : MonoBehaviour
 		Transform firstPersonCameraTransform = transform.Find("FirstPerson Camera");
 		volumeFirstPersonCamera = firstPersonCameraTransform.GetComponent<Volume>();
 		_isInitialized = true;
-		Debug.Log("PlayerCameraBlurFilter initialized.");
+		Debug.Log("CameraBlurFilter initialized.");
 	}
 	private bool _isInitialized = false;
 	private void Update()

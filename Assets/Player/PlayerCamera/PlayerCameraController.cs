@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
-public class PlayerCameraController : MonoBehaviour, IDataPersistence
+public class PlayerCameraController : MonoBehaviour, ISaveLoad
 {
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;

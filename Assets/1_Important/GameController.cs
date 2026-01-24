@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class GameController : IGameController
+public class GameController
 {
 	private bool _isPlayerControllable = true;
 	private bool _isPlayerDead = false;

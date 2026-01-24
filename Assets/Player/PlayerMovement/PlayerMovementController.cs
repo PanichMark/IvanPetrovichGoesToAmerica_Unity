@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 using Unity.VisualScripting;
-public class PlayerMovementController : MonoBehaviour, IDataPersistence
+public class PlayerMovementController : MonoBehaviour, ISaveLoad
 {
 	private IInputDevice inputDevice;
 	private PlayerBehaviour playerBehaviour;
@@ -523,7 +523,6 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 
 		playerMovementStateType = (PlayerMovementStateType)Enum.Parse(typeof(PlayerMovementStateType), CurrentPlayerMovementStateType);
-
 		SetPlayerMovementState(playerMovementStateType);
 
 		PlayerMovementSpeed = 3f;
@@ -532,7 +531,7 @@ public class PlayerMovementController : MonoBehaviour, IDataPersistence
 
 		PlayerCurrentHeight = 1.75f;
 		_isInitialized = true;
-		Debug.Log("MovementController Initialized");
+		Debug.Log("PlayerMovement Initialized");
 	}
 }
 

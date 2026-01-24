@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class InputKeyboard : IInputDevice
 {
-	private IGameController gameController;
-	public InputKeyboard(IGameController gameController)
+	private GameController gameController;
+	public InputKeyboard(GameController gameController)
 	{
 		this.gameController = gameController;
 		_keyPauseMenu = KeyCode.Alpha1;

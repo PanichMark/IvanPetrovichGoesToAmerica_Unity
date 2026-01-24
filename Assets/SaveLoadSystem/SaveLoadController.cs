@@ -6,7 +6,7 @@ using NUnit.Framework;
 using UnityEngine.SceneManagement;
 using System;
 
-public class DataPersistenceManager : MonoBehaviour
+public class SaveLoadController : MonoBehaviour
 {
 	private string fileSaveDataTEMP = "";
 	private string fileSaveDataName1 = "";
@@ -18,7 +18,7 @@ public class DataPersistenceManager : MonoBehaviour
 	private GameData gameData;
 	public bool IsSavingFinished { get; private set; }
 
-	private List<IDataPersistence> dataPersistenceObjects;
+	private List<ISaveLoad> saveLoadObjects;
 	private FileDataHandler fileDataHandler;
 
 	public void Initialize()
@@ -29,23 +29,23 @@ public class DataPersistenceManager : MonoBehaviour
 		fileSaveDataName3 = "SaveGame3.json";
 		fileSaveDataName4 = "SaveGame4.json";
 		fileSaveDataName5 = "SaveGame5.json";
+		//this.saveLoadObjects = FindAllSaveLoadObjects();
+		//NewGame();
+		Debug.Log("DataPersistence Initialized");
+	}
 
-		this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+
+
+	private void SearchForItems()
+	{
+		//this.dataPersistenceObjects = FindAllDataPersistenceObjects();
 
 		InteractionObjectLootAbstract[] lootItems = FindObjectsOfType<InteractionObjectLootAbstract>();
 		for (int i = 0; i < lootItems.Length; i++)
 		{
 			lootItems[i].AssignLootItemIndex(i);
 		}
-
-		NewGame();
-
-
 	}
-
-
-
-
 
 
 
@@ -74,6 +74,7 @@ public class DataPersistenceManager : MonoBehaviour
 	*/
 	public void NewGame()
 	{
+		this.saveLoadObjects = FindAllSaveLoadObjects();
 		// Шаг 1: Создание нового объекта GameData с начальными значениями
 		this.gameData = new GameData();
 
@@ -85,12 +86,12 @@ public class DataPersistenceManager : MonoBehaviour
 
 		// Шаг 4: Теперь обновляем каждый объект, реализующий IDataPersistence,
 		// используя ранее созданные данные из временного файла
-		foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+		foreach (ISaveLoad saveLoadObj in saveLoadObjects)
 		{
-			dataPersistenceObj.LoadData(this.gameData);
+			saveLoadObj.LoadData(this.gameData);
 		}
 
-		Debug.Log("A new game has been started!");
+		Debug.Log("--- New Game Started ---");
 	}
 
 
@@ -142,9 +143,9 @@ public class DataPersistenceManager : MonoBehaviour
 			this.fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileSaveDataName5);
 		}
 
-		foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+		foreach (ISaveLoad saveLoadObj in saveLoadObjects)
 		{
-			dataPersistenceObj.SaveData(ref gameData);
+			saveLoadObj.SaveData(ref gameData);
 		}
 
 		fileDataHandler.Save(gameData);
@@ -259,11 +260,11 @@ public class DataPersistenceManager : MonoBehaviour
 	}
 
 
-	private List<IDataPersistence> FindAllDataPersistenceObjects()
+	private List<ISaveLoad> FindAllSaveLoadObjects()
 	{
-		IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();
+		IEnumerable<ISaveLoad> saveLoadObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoad>();
 
-		return new List<IDataPersistence>(dataPersistenceObjects);
+		return new List<ISaveLoad>(saveLoadObjects);
 	}
 }
 

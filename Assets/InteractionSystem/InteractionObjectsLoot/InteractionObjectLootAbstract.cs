@@ -4,7 +4,7 @@ using Unity.IO.LowLevel.Unsafe;
 using TMPro;
 using UnityEngine.UI;
 
-public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractable, IInteractGainedItem, IDataPersistence
+public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractable, IInteractGainedItem, ISaveLoad
 {
 	[SerializeField]
 	private string _interactionItemNameSystem;

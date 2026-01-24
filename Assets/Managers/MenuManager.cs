@@ -9,13 +9,13 @@ public class MenuManager : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnClosePauseMenu;
 
 	public IInputDevice inputDevice;
-	private IGameController gameController;
+	private GameController gameController;
 
 
 
 	public Stack<int> PauseMenuLevel = new Stack<int>();
 
-	public void Initialize(IInputDevice inputDevice, IGameController gameController)
+	public void Initialize(IInputDevice inputDevice, GameController gameController)
 	{
 		this.inputDevice = inputDevice;
 		this.gameController = gameController;

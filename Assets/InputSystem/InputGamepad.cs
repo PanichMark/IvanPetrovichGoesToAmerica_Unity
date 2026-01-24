@@ -11,9 +11,9 @@ using UnityEngine;
 /// 
 /// 
 /// </summary>
-public class InputController : IInputDevice
+public class InputGamepad : IInputDevice
 {
-	public InputController()
+	public InputGamepad()
 	{
 		_keyPauseMenu = KeyCode.Alpha1;
 		Debug.Log("InputController Initialized");

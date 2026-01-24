@@ -18,7 +18,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	private void Start()
 	{
 		NPC_currenthealth = NPC_maxhealth;
-		Debug.Log(NPC_currenthealth);
+		//Debug.Log(NPC_currenthealth);
 
 		if (KillNPC)
 		{

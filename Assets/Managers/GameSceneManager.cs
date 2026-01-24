@@ -2,10 +2,10 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class GameSceneManager : MonoBehaviour, IDataPersistence
+public class GameSceneManager : MonoBehaviour, ISaveLoad
 {
 	public string CurrentSceneSystemName {  get; private set; }
-	private DataPersistenceManager dataPersistenceManager;
+	private SaveLoadController dataPersistenceManager;
 	public string CurrentLevelNameUI { get; private set; }
 	public string CurrentDateAndTime { get; private set; }
 	public static GameSceneManager Instance { get; private set; }

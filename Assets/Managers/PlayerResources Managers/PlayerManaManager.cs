@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerManaManager : MonoBehaviour, IDataPersistence
+public class PlayerManaManager : MonoBehaviour, ISaveLoad
 {
 	public static PlayerManaManager Instance { get; private set; } // Статическое поле экземпляра
 
