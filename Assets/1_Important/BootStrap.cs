@@ -44,7 +44,7 @@ public class BootStrap : MonoBehaviour
 	private GameObject buttonOpenPauseSubMenuLoad;
 	private GameObject buttonOpenPauseSubMenuImages;
 	private GameObject buttonOpenPauseSubMenuSettings;
-	private GameObject buttonLeaveToMainMenu;
+	private GameObject buttonExitToMainMenu;
 	//ПодМеню Сохранения
 	private PauseSubMenuSaveController pauseSubMenuSaveController;
 	[SerializeField] private GameObject canvasPauseSubMenuSave;
@@ -174,32 +174,34 @@ public class BootStrap : MonoBehaviour
 
 		// Объекты меню
 		canvasPauseMenu = Instantiate(canvasPauseMenu);
+		canvasPauseSubMenuSave = Instantiate(canvasPauseSubMenuSave);
+		canvasPauseSubMenuLoad = Instantiate(canvasPauseSubMenuLoad);
 		canvasPauseSubMenuImages = Instantiate(canvasPauseSubMenuImages);
-		//canvasPauseSubMenuSave = Instantiate(canvasPauseSubMenuSave);
-		//canvasPauseSubMenuLoad = Instantiate(canvasPauseSubMenuLoad);
-		//canvasPauseSubMenuSettings = Instantiate(canvasPauseSubMenuSettings);
+		canvasPauseSubMenuSettings = Instantiate(canvasPauseSubMenuSettings);
 
 		// Контроллеры меню
 		pauseMenuController = menuManagerGameobject.GetComponent<PauseMenuController>();
+		pauseSubMenuSaveController = menuManagerGameobject.GetComponent<PauseSubMenuSaveController>();
+		pauseSubMenuLoadController = menuManagerGameobject.GetComponent<PauseSubMenuLoadController>();
 		pauseSubMenuImagesController = menuManagerGameobject.GetComponent<PauseSubMenuImagesController>();
-		//pauseSubMenuSaveController = menuManagerGameobject.GetComponent<PauseSubMenuSaveController>();
-		//pauseSubMenuLoadController = menuManagerGameobject.GetComponent<PauseSubMenuLoadController>();
-		//pauseSubMenuSettingsController = menuManagerGameobject.GetComponent<PauseSubMenuSettingsController>();
+		pauseSubMenuSettingsController = menuManagerGameobject.GetComponent<PauseSubMenuSettingsController>();
 
 		// Кнопки меню
+		buttonClosePauseMenu = FindDeepChildByName(canvasPauseMenu, "PauseMenu Resume Button");
+		buttonOpenPauseSubMenuSave = FindDeepChildByName(canvasPauseMenu, "PauseMenu Save Button");
+		buttonOpenPauseSubMenuLoad = FindDeepChildByName(canvasPauseMenu, "PauseMenu Load Button");
 		buttonOpenPauseSubMenuImages = FindDeepChildByName(canvasPauseMenu, "PauseMenu Images Button");
-		//buttonOpenPauseSubMenuSave = FindDeepChildByName(canvasPauseMenu, "PauseMenu Save Button");
-		//buttonOpenPauseSubMenuLoad = FindDeepChildByName(canvasPauseMenu, "PauseMenu Load Button");
-		//buttonOpenPauseSubMenuSettings = FindDeepChildByName(canvasPauseMenu, "PauseMenu Settings Button");
-		//buttonLeaveToMainMenu = FindDeepChildByName(canvasPauseMenu, "Leave to Main Menu Button");
+		buttonOpenPauseSubMenuSettings = FindDeepChildByName(canvasPauseMenu, "PauseMenu Settings Button");
+		buttonExitToMainMenu = FindDeepChildByName(canvasPauseMenu, "PauseMenu Exit Button");
 
 		// Инициализация меню
 		menuManager.Initialize(inputDevice, gameController);
-		pauseMenuController.Initialize(inputDevice, menuManager, canvasPauseMenu, buttonOpenPauseSubMenuImages);
+		pauseMenuController.Initialize(inputDevice, menuManager, canvasPauseMenu, buttonClosePauseMenu, buttonOpenPauseSubMenuSave,
+			buttonOpenPauseSubMenuLoad, buttonOpenPauseSubMenuImages, buttonOpenPauseSubMenuSettings, buttonExitToMainMenu);
+		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSave);
+		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuLoad);
 		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages);
-		//pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSave);
-		//pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuLoad);
-		//pauseSubMenuSettingsController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSettings);
+		pauseSubMenuSettingsController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSettings);
 
 		Debug.Log("Логика меню инициализирована.");
 		yield break;

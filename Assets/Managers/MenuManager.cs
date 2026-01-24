@@ -43,7 +43,7 @@ public class MenuManager : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		//Debug.Log(menuLevelStack.Count);
+		//Debug.Log(PauseMenuLevel.Count);
 
 		if (inputDevice.GetKeyPauseMenu())
 		{

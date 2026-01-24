@@ -8,53 +8,63 @@ using System;
 public class PauseSubMenuSettingsController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
+	private MenuManager menuManager;
 
+	private GameObject canvasPauseSubMenuSettings;
+	private PauseMenuController pauseMenuController;
 	// Конструктор принимает зависимость
-	public PauseSubMenuSettingsController(IInputDevice inputDevice)
+
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuSettings)
+
 	{
+		this.pauseMenuController = pauseMenuController;
+		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
+		this.canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
+		pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
+		pauseMenuController.OnCloseSubMenu += HideSettingsSubMenuCanvas;
+		Debug.Log("ImagesSubMenu Initialized");
 	}
 
-
 	// Ссылка на контроллер паузы меню
-	PauseMenuController pauseMenuController;
+
 
 	private char lastValidChar; // Переменная для хранения последнего корректного символа
 
 	// Интерфейсы настроек
-	public Canvas SettingsSubMenuCanvas;
-	public Button CloseSettingsSubMenuButton;
+	
+	private Button CloseSettingsSubMenuButton;
 
 	// Ползунок для регулировки FOV
-	public Slider fovSlider;
+	private Slider fovSlider;
 
 	// Тексты для отображения значения FOV
-	public TextMeshProUGUI fovDisplayText;
+	private TextMeshProUGUI fovDisplayText;
 
 	// Основные камеры
-	public Camera MainCamera;
-	public Camera AdditionalCamera;
+	private Camera MainCamera;
+	private Camera AdditionalCamera;
 
 	// Кнопки выбора частоты кадров
-	public Button LimitFPS_30_Button;
-	public Button LimitFPS_60_Button;
-	public Button LimitFPS_90_Button;
-	public Button LimitFPS_144_Button;
+	private Button LimitFPS_30_Button;
+	private Button LimitFPS_60_Button;
+	private Button LimitFPS_90_Button;
+	private Button LimitFPS_144_Button;
 
 	// Цвет выделения активных кнопок
-	public Color activeColor = Color.green;
-	public Color normalColor = Color.white;
+	private Color activeColor = Color.green;
+	private Color normalColor = Color.white;
 
 	// Текущее выбранное ограничение FPS
-	int currentFrameRateLimit = 60;
+	private int currentFrameRateLimit = 60;
 
 	// Диапазон возможных значений FOV
 	private const float MIN_FOV_VALUE = 60f;
 	private const float MAX_FOV_VALUE = 120f;
 
 	// Список полей ввода для изменения клавиш
-	[SerializeField]
-	public TMP_InputField[] inputFields;
+	
+	private TMP_InputField[] inputFields;
 
 	private readonly char[][] layoutMap = new char[][]
 	{
@@ -70,16 +80,19 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	  };
 
 
-	private void Awake()
-	{
-	//	inputDevice = new InputKeyboard();
-	}
 
+
+
+
+
+
+
+	/*
 	void Start()
 	{
 		
 
-		pauseMenuController = GetComponent<PauseMenuController>();
+	
 		CloseSettingsSubMenuButton.onClick.AddListener(CloseSettingsSubMenu);
 
 		// Настройки ползунка FOV
@@ -125,7 +138,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
 	}
-
+	*/
 	private void KeepLastCharacter(TMP_InputField field)
 	{
 		if (!string.IsNullOrEmpty(field.text))
@@ -161,21 +174,18 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		return lastValidChar; // Восстанавливаем предыдущий корректный символ
 	}
 
-	private void Update()
-	{
-		if (inputDevice.GetKeyPauseMenu() && SettingsSubMenuCanvas.gameObject.activeInHierarchy)
-		{
-			CloseSettingsSubMenu();
-		}
-	}
 
-	public void CloseSettingsSubMenu()
+
+	public void HideSettingsSubMenuCanvas()
 	{
-		SettingsSubMenuCanvas.gameObject.SetActive(false);
-		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
+		canvasPauseSubMenuSettings.gameObject.SetActive(false);
+
 		Debug.Log("SettingsSubMenu closed");
 	}
-
+	public void ShowSettingsSubMenuCanvas()
+	{
+		canvasPauseSubMenuSettings.gameObject.SetActive(true);
+	}
 	public void OnFovChanged(float value)
 	{
 		SetFOV(value);

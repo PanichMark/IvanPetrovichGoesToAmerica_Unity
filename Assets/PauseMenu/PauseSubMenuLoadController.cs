@@ -5,20 +5,35 @@ using UnityEngine.UI;
 
 public class PauseSubMenuLoadController : MonoBehaviour
 {
-	PauseMenuController pauseMenuController;
+	private IInputDevice inputDevice;
+	private MenuManager menuManager;
+	private PauseMenuController pauseMenuController;
 	private DataPersistenceManager dataPersistenceManager;
-	public Canvas LoadSubMenuCanvas;
+	private GameObject canvasPauseSubMenuLoad;
 
-	public Button CloseLoadSubMenuButton;
+	private Button CloseLoadSubMenuButton;
 
-	public Button[] LoadGameButtons; // Массив всех кнопок загрузки игры
+	private Button[] LoadGameButtons; // Массив всех кнопок загрузки игры
 
 	private Text[] currentDateAndTimeTexts;
 	private Text[] currentSceneNameUITexts;
 
-	void Start()
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuLoad)
+
 	{
-		pauseMenuController = GetComponent<PauseMenuController>();
+		this.pauseMenuController = pauseMenuController;
+		this.menuManager = menuManager;
+		this.inputDevice = inputDevice;
+		this.canvasPauseSubMenuLoad = canvasPauseSubMenuLoad;
+		pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;
+		pauseMenuController.OnCloseSubMenu += HideLoadSubMenuCanvas;
+		Debug.Log("LoadSubMenu Initialized");
+	}
+
+	/*
+		void Start()
+	{
+	
 
 		CloseLoadSubMenuButton.onClick.AddListener(CloseLoadSubMenu);
 
@@ -43,6 +58,9 @@ public class PauseSubMenuLoadController : MonoBehaviour
 			currentSceneNameUITexts[i] = buttonTransform.Find("Text_CurrentSceneNameUI")?.GetComponent<Text>();
 		}
 	}
+	*/
+
+
 	/*
 	private void Update()
 	{
@@ -52,11 +70,13 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		}
 	}
 	*/
-
-	public void CloseLoadSubMenu()
+	public void ShowLoadSubMenuCanvas()
 	{
-		LoadSubMenuCanvas.gameObject.SetActive(false);
-		//pauseMenuController.PauseMenuCanvas.gameObject.SetActive(true);
+		canvasPauseSubMenuLoad.gameObject.SetActive(true);
+	}
+	public void HideLoadSubMenuCanvas()
+	{
+		canvasPauseSubMenuLoad.gameObject.SetActive(false);
 		Debug.Log("LoadSubMenu closed");
 	}
 

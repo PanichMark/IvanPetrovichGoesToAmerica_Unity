@@ -28,7 +28,6 @@ public class PauseSubMenuImagesController : MonoBehaviour
 	private void HideImagesSubMenuCanvas()
 	{
 		canvasPauseSubMenuImages.gameObject.SetActive(false);
-		menuManager.PauseMenuLevel.Pop();
 		Debug.Log("ImagesSubMenu closed");
 	}
 }
