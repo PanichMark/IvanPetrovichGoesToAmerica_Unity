@@ -10,23 +10,35 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	private PauseMenuController pauseMenuController;
 	private SaveLoadController dataPersistenceManager;
 	private GameObject canvasPauseSubMenuLoad;
+	private SaveLoadController saveLoadController;
 
 	private Button CloseLoadSubMenuButton;
 
-	private Button[] LoadGameButtons; // Массив всех кнопок загрузки игры
+	
+	private GameObject[] buttonsLoadGame;
 
 	private Text[] currentDateAndTimeTexts;
 	private Text[] currentSceneNameUITexts;
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuLoad)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController, GameObject canvasPauseSubMenuLoad, GameObject[] buttonsLoadGame)
 
 	{
 		this.pauseMenuController = pauseMenuController;
 		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
 		this.canvasPauseSubMenuLoad = canvasPauseSubMenuLoad;
-		pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;
-		pauseMenuController.OnClosePauseSubMenu += HideLoadSubMenuCanvas;
+		this.saveLoadController = saveLoadController;
+		this.buttonsLoadGame = buttonsLoadGame;
+
+		this.buttonsLoadGame[0].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(1));
+		this.buttonsLoadGame[1].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(2));
+		this.buttonsLoadGame[2].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(3));
+		this.buttonsLoadGame[3].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(4));
+		this.buttonsLoadGame[4].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(5));
+
+
+		this.pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;
+		this.pauseMenuController.OnClosePauseSubMenu += HideLoadSubMenuCanvas;
 		Debug.Log("LoadSubMenu Initialized");
 	}
 
@@ -90,7 +102,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 
 			if (!string.IsNullOrEmpty(currentSceneNameSystem)) // Проверяем наличие сцены
 			{
-				LoadGameButtons[i].gameObject.SetActive(true);
+				buttonsLoadGame[i].gameObject.SetActive(true);
 
 				// Обновляем текстовую информацию
 				currentSceneNameUITexts[i].text = currentDataAndTime;
@@ -109,8 +121,8 @@ public class PauseSubMenuLoadController : MonoBehaviour
 				if (sprite != null)
 				{
 					// Активируем изображение и устанавливаем нужный спрайт
-					LoadGameButtons[i].transform.Find("Level_Image").gameObject.SetActive(true);
-					LoadGameButtons[i].transform.Find("Level_Image").GetComponent<Image>().sprite = sprite;
+					buttonsLoadGame[i].transform.Find("Level_Image").gameObject.SetActive(true);
+					buttonsLoadGame[i].transform.Find("Level_Image").GetComponent<Image>().sprite = sprite;
 				}
 				else
 				{
@@ -120,7 +132,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 			else
 			{
 				// Скрываем ненужные элементы интерфейса
-				LoadGameButtons[i].gameObject.SetActive(false);
+				buttonsLoadGame[i].gameObject.SetActive(false);
 			}
 		}
 	}

@@ -31,8 +31,8 @@ public class PauseMenuController : MonoBehaviour
 		this.buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);         
 		this.buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(ExitToMainMenu);
 
-		menuManager.OnOpenPauseMenu += ShowPauseMenu;
-		menuManager.OnClosePauseMenu += HidePauseMenu;
+		this.menuManager.OnOpenPauseMenu += ShowPauseMenu;
+		this.menuManager.OnClosePauseMenu += HidePauseMenu;
 
 		_isInitialized = true;
 

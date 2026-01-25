@@ -8,33 +8,35 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	PauseMenuController pauseMenuController;
 
 	private GameObject canvasPauseSubMenuSave;
-	private SaveLoadController dataPersistenceManager;
+	private SaveLoadController saveLoadController;
 	private Button CloseSaveSubMenuButton;
 
-	private Button SaveGame1Button;
-	private Button SaveGame2Button;
-	private Button SaveGame3Button;
-	private Button SaveGame4Button;
-	private Button SaveGame5Button;
+	private GameObject[] buttonsSaveGame;
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuSave)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController, GameObject canvasPauseSubMenuSave, GameObject[] buttonsSaveGame)
 
 	{
 		this.pauseMenuController = pauseMenuController;
 		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
 		this.canvasPauseSubMenuSave = canvasPauseSubMenuSave;
-		pauseMenuController.OnOpenSaveSubMenu += ShowSaveSubMenuCanvas;
-		pauseMenuController.OnClosePauseSubMenu += HideSaveSubMenuCanvas;
+		this.buttonsSaveGame = buttonsSaveGame;
+		this.saveLoadController = saveLoadController;
+		this.pauseMenuController.OnOpenSaveSubMenu += ShowSaveSubMenuCanvas;
+		this.pauseMenuController.OnClosePauseSubMenu += HideSaveSubMenuCanvas;
 		/*
 		CloseSaveSubMenuButton.onClick.AddListener(HideImagesSubMenuCanvas);
-
-		SaveGame1Button.onClick.AddListener(() => dataPersistenceManager.SaveGame(1));
-		SaveGame2Button.onClick.AddListener(() => dataPersistenceManager.SaveGame(2));
-		SaveGame3Button.onClick.AddListener(() => dataPersistenceManager.SaveGame(3));
-		SaveGame4Button.onClick.AddListener(() => dataPersistenceManager.SaveGame(4));
-		SaveGame5Button.onClick.AddListener(() => dataPersistenceManager.SaveGame(5));
 		*/
+
+		
+
+		this.buttonsSaveGame[0].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(1));
+		this.buttonsSaveGame[1].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(2));
+		this.buttonsSaveGame[2].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(3));
+		this.buttonsSaveGame[3].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(4));
+		this.buttonsSaveGame[4].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(5));
+
+
 		Debug.Log("SaveSubMenu Initialized");
 	}
 

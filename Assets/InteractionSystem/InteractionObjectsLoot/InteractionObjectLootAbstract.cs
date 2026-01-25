@@ -47,7 +47,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	public void SaveData(ref GameData data)
 	{
 
-
+		/*
 		if (GameSceneManager.Instance.CurrentSceneSystemName == "SceneTEST")
 		{
 			data.LootItemsSceneTEST[LootItemIndex].LootItemIndex = LootItemIndex;
@@ -73,7 +73,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 			else data.LootItemsScene1[LootItemIndex].WasLootItemCollected = false;
 
 		}
-
+		*/
 
 	}
 

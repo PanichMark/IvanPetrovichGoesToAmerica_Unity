@@ -43,9 +43,11 @@ public class BootStrap : MonoBehaviour
 	//ПодМеню Сохранения
 	private PauseSubMenuSaveController pauseSubMenuSaveController;
 	[SerializeField] private GameObject canvasPauseSubMenuSave;
+	private GameObject[] buttonsSaveGame;
 	//ПодМеню Загрузки
 	private PauseSubMenuLoadController pauseSubMenuLoadController;
 	[SerializeField] private GameObject canvasPauseSubMenuLoad;
+	private GameObject[] buttonsLoadGame;
 	//ПодМеню Картинок
 	private PauseSubMenuImagesController pauseSubMenuImagesController;
 	[SerializeField] private GameObject canvasPauseSubMenuImages;
@@ -190,11 +192,29 @@ public class BootStrap : MonoBehaviour
 			FindDeepChildByName(canvasPauseMenu, "PauseMenu Exit Button")    
 		};
 
+		buttonsSaveGame = new GameObject[]
+		{
+			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE1 Button"),
+			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE2 Button"),
+			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE3 Button"),
+			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE4 Button"),
+			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE5 Button"),
+		};
+
+		buttonsLoadGame = new GameObject[]
+		{
+			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu LOAD1 Button"),
+			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu LOAD2 Button"),
+			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu LOAD3 Button"),
+			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu LOAD4 Button"),
+			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu LOAD5 Button"),
+		};
+
 		// Инициализация меню
 		menuManager.Initialize(inputDevice, gameController);
 		pauseMenuController.Initialize(inputDevice, menuManager, canvasPauseMenu, buttonsPauseMenu);
-		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSave);
-		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuLoad);
+		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame);
+		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame);
 		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages);
 		pauseSubMenuSettingsController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSettings);
 

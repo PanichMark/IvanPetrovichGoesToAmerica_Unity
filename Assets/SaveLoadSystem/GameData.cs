@@ -41,7 +41,7 @@ public class GameData
 
 	public GameData()
 	{
-		CurrentSceneNameSystem = "SceneTEST";
+		CurrentSceneNameSystem = "NEW_SceneTest";
 		CurrentSceneNameUI = "Тестовая сцена";
 
 		CurrentDateAndTime = DateTime.Now.ToString();

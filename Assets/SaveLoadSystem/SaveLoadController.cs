@@ -5,6 +5,7 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine.SceneManagement;
 using System;
+using Unity.VisualScripting;
 
 public class SaveLoadController : MonoBehaviour
 {
@@ -104,15 +105,18 @@ public class SaveLoadController : MonoBehaviour
 		{
 			this.fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileSaveDataTEMP);
 
+
 			if (this.gameData == null)
 			{
-				this.gameData = new GameData();
+				Debug.Log("NO EXISTING GAME DATA");
+				return;
 			}
 			//else this.gameData = fileDataHandler.Load();
 
 		}
+		
 		/*
-		foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+		foreach (ISaveLoad dataPersistenceObj in saveLoadObjects)
 		{
 			dataPersistenceObj.SaveData(ref gameData);
 		}
@@ -191,7 +195,7 @@ public class SaveLoadController : MonoBehaviour
 		}
 
 		
-		this.gameData = fileDataHandler.Load();
+		
 
 
 
@@ -205,11 +209,19 @@ public class SaveLoadController : MonoBehaviour
 		}
 		else
 		{
+			this.gameData = fileDataHandler.Load();
+
+			foreach (ISaveLoad loadLoadObj in saveLoadObjects)
+			{
+				loadLoadObj.LoadData(gameData);
+			}
+
+			
 
 			string sceneName = gameData.CurrentSceneNameSystem;
 
-			SceneManager.LoadSceneAsync(sceneName);
-			Debug.Log($"Scene {sceneName} loaded");
+		//	SceneManager.LoadSceneAsync(sceneName);
+			//Debug.Log($"Scene {sceneName} loaded");
 		}
 	}
 

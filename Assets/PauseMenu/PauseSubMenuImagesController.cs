@@ -16,8 +16,8 @@ public class PauseSubMenuImagesController : MonoBehaviour
 		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
 		this.canvasPauseSubMenuImages = canvasPauseSubMenuImages;
-		pauseMenuController.OnOpenImagesSubMenu += ShowImagesSubMenuCanvas;
-		pauseMenuController.OnClosePauseSubMenu += HideImagesSubMenuCanvas;
+		this.pauseMenuController.OnOpenImagesSubMenu += ShowImagesSubMenuCanvas;
+		this.pauseMenuController.OnClosePauseSubMenu += HideImagesSubMenuCanvas;
 		Debug.Log("ImagesSubMenu Initialized");
 	}
 
