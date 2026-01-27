@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 474629428647824125, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
       propertyPath: m_CastShadows
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 474629428647824125, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2455585418818073823, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
       propertyPath: m_CastShadows
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2455585418818073823, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 96b0ef4b48853a243a3b3f5f6e3dc78a, type: 2}
     - target: {fileID: 5256522091401314641, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
       propertyPath: m_CastShadows
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5256522091401314641, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -78,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 96b0ef4b48853a243a3b3f5f6e3dc78a, type: 2}
     - target: {fileID: 5375733430734238079, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
       propertyPath: m_CastShadows
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5375733430734238079, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -108,7 +108,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1750464879899684084}
   m_Enabled: 1
-  m_CastShadows: 3
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0

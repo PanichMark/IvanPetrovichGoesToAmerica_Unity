@@ -1,14 +1,19 @@
-﻿using UnityEngine;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections;
-using NUnit.Framework;
-using UnityEngine.SceneManagement;
+﻿using NUnit.Framework;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveLoadController : MonoBehaviour
 {
+	public delegate void GameSafeFileDeleteHandler();
+	public event GameSafeFileDeleteHandler OnSafeFileDelete;
+
+
 	private string fileSaveDataTEMP = "";
 	private string fileSaveDataName1 = "";
 	private string fileSaveDataName2 = "";
@@ -108,7 +113,7 @@ public class SaveLoadController : MonoBehaviour
 
 			if (this.gameData == null)
 			{
-				Debug.Log("NO EXISTING GAME DATA");
+				Debug.Log("NO GAMEDATA TO SAVE");
 				return;
 			}
 			//else this.gameData = fileDataHandler.Load();
@@ -167,7 +172,14 @@ public class SaveLoadController : MonoBehaviour
 
 	public void LoadGame(int loadSlotNumber)
 	{
-		
+		if (this.gameData == null)
+		{
+			Debug.Log("NO GAMEDATA TO LOAD");
+			return;
+		}
+
+
+
 		if (loadSlotNumber == 1)
 		{
 			this.fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileSaveDataName1);
@@ -224,6 +236,57 @@ public class SaveLoadController : MonoBehaviour
 			//Debug.Log($"Scene {sceneName} loaded");
 		}
 	}
+
+	public void DeleteGame(int deleteSlotNumber)
+	{
+		if (deleteSlotNumber <= 0)
+		{
+			Debug.LogError("Invalid slot number for deletion.");
+			return;
+		}
+
+		string fullPath = "";
+
+		if (deleteSlotNumber == 1)
+		{
+			fullPath = Path.Combine(Application.persistentDataPath, fileSaveDataName1);
+		}
+		else if (deleteSlotNumber == 2)
+		{
+			fullPath = Path.Combine(Application.persistentDataPath, fileSaveDataName2);
+		}
+		else if (deleteSlotNumber == 3)
+		{
+			fullPath = Path.Combine(Application.persistentDataPath, fileSaveDataName3);
+		}
+		else if (deleteSlotNumber == 4)
+		{
+			fullPath = Path.Combine(Application.persistentDataPath, fileSaveDataName4);
+		}
+		else if (deleteSlotNumber == 5)
+		{
+			fullPath = Path.Combine(Application.persistentDataPath, fileSaveDataName5);
+		}
+
+		try
+		{
+			if (File.Exists(fullPath))
+			{
+				File.Delete(fullPath);
+				OnSafeFileDelete?.Invoke();
+				Debug.Log("Deleted game from slot " + deleteSlotNumber);
+			}
+			else
+			{
+				Debug.LogWarning("No save file exists at slot " + deleteSlotNumber);
+			}
+		}
+		catch (Exception ex)
+		{
+			Debug.LogError("Error deleting the save file: " + ex.Message);
+		}
+	}
+
 
 
 

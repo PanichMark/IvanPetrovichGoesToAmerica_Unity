@@ -8,19 +8,20 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
 	private PauseMenuController pauseMenuController;
-	private SaveLoadController dataPersistenceManager;
-	private GameObject canvasPauseSubMenuLoad;
 	private SaveLoadController saveLoadController;
+	private GameObject canvasPauseSubMenuLoad;
+	
 
 	private Button CloseLoadSubMenuButton;
 
 	
 	private GameObject[] buttonsLoadGame;
+	private GameObject[] buttonsDeleteGame;
 
 	private Text[] currentDateAndTimeTexts;
 	private Text[] currentSceneNameUITexts;
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController, GameObject canvasPauseSubMenuLoad, GameObject[] buttonsLoadGame)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController, GameObject canvasPauseSubMenuLoad, GameObject[] buttonsLoadGame, GameObject[] buttonsDeleteGame)
 
 	{
 		this.pauseMenuController = pauseMenuController;
@@ -29,6 +30,8 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		this.canvasPauseSubMenuLoad = canvasPauseSubMenuLoad;
 		this.saveLoadController = saveLoadController;
 		this.buttonsLoadGame = buttonsLoadGame;
+		this.buttonsDeleteGame = buttonsDeleteGame;
+
 
 		this.buttonsLoadGame[0].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(1));
 		this.buttonsLoadGame[1].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(2));
@@ -36,55 +39,42 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		this.buttonsLoadGame[3].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(4));
 		this.buttonsLoadGame[4].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(5));
 
+		this.buttonsDeleteGame[0].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(1));
+		this.buttonsDeleteGame[1].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(2));
+		this.buttonsDeleteGame[2].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(3));
+		this.buttonsDeleteGame[3].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(4));
+		this.buttonsDeleteGame[4].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(5));
+
+
 
 		this.pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;
 		this.pauseMenuController.OnClosePauseSubMenu += HideLoadSubMenuCanvas;
-		Debug.Log("LoadSubMenu Initialized");
-	}
-
-	/*
-		void Start()
-	{
-	
-
-		CloseLoadSubMenuButton.onClick.AddListener(CloseLoadSubMenu);
-
-		// Добавляем обработчики кликов на каждую кнопку
-		for (int i = 0; i < LoadGameButtons.Length; i++)
-		{
-			int index = i + 1; // Индекс сохранения начинается с 1
-			LoadGameButtons[i].onClick.AddListener(() =>
-			{
-				dataPersistenceManager.LoadGame(index); // Передаем индекс сохранения
-			});
-		}
+		this.saveLoadController.OnSafeFileDelete += RefreshLoadButtonLabels;
 
 		// Формируем массивы текстовых компонентов
-		currentDateAndTimeTexts = new Text[LoadGameButtons.Length]; // Столько же элементов, сколько кнопок
-		currentSceneNameUITexts = new Text[LoadGameButtons.Length];
+		currentDateAndTimeTexts = new Text[this.buttonsLoadGame.Length]; // Столько же элементов, сколько кнопок
+		currentSceneNameUITexts = new Text[this.buttonsLoadGame.Length];
 
-		for (int i = 0; i < LoadGameButtons.Length; i++)
+		for (int i = 0; i < this.buttonsLoadGame.Length; i++)
 		{
-			Transform buttonTransform = LoadGameButtons[i].transform;
+			Transform buttonTransform = this.buttonsLoadGame[i].transform;
 			currentDateAndTimeTexts[i] = buttonTransform.Find("Text_CurrentDateAndTime")?.GetComponent<Text>();
 			currentSceneNameUITexts[i] = buttonTransform.Find("Text_CurrentSceneNameUI")?.GetComponent<Text>();
 		}
+
+		Debug.Log("LoadSubMenu Initialized");
 	}
-	*/
 
 
-	/*
-	private void Update()
-	{
-		if (InputManager.Instance.GetKeyPauseMenu() && LoadSubMenuCanvas.gameObject.activeInHierarchy)
-		{
-			CloseLoadSubMenu();
-		}
-	}
-	*/
+		
+	
+
+
+	
 	public void ShowLoadSubMenuCanvas()
 	{
 		canvasPauseSubMenuLoad.gameObject.SetActive(true);
+		RefreshLoadButtonLabels();
 	}
 	public void HideLoadSubMenuCanvas()
 	{
@@ -94,7 +84,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 
 	public void RefreshLoadButtonLabels()
 	{
-		var extendedSaveInfos = dataPersistenceManager.GetExtendedSaveInfo();
+		var extendedSaveInfos = saveLoadController.GetExtendedSaveInfo();
 
 		for (int i = 0; i < extendedSaveInfos.Length; i++)
 		{
@@ -114,7 +104,6 @@ public class PauseSubMenuLoadController : MonoBehaviour
 
 				// Формирование имени файла иконки
 				string currentSceneBackgroundImage = $"{currentSceneNameSystem}";
-
 				// Загрузка спрайта иконки
 				Sprite sprite = Resources.Load<Sprite>($"Sprites/{currentSceneBackgroundImage}");
 

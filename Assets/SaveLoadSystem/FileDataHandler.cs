@@ -6,6 +6,9 @@ using System.IO;
 
 public class FileDataHandler
 {
+	public delegate void GameSafeFileDeleteHandler();
+	public event GameSafeFileDeleteHandler OnSafeFileDelete;
+
 
 	private string dataDirPath = "";
 
