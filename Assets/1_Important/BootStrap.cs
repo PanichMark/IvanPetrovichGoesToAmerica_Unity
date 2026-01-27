@@ -9,6 +9,7 @@ public class BootStrap : MonoBehaviour
 {
 	//Интерфейсы
 	private IInputDevice inputDevice;
+	private LocalizationManager localizationManager;
 	private GameController gameController;
 
 	//Система Сохранений
@@ -108,6 +109,8 @@ public class BootStrap : MonoBehaviour
 	{
 		ServiceLocator.ClearServices();
 		gameController = new GameController();
+		localizationManager = new LocalizationManager();
+		localizationManager.ChangeLanguage("Russian"); 
 		inputDevice = new InputKeyboard(gameController);
 		Debug.Log("INTERFACES INITIALIZED");
 		yield break;
@@ -293,6 +296,7 @@ public class BootStrap : MonoBehaviour
 	private IEnumerator RegisterAllDependencies()
 	{
 		// Регистрация служб
+		ServiceLocator.Register("LocalizationManager", localizationManager);
 		ServiceLocator.Register("Player", playerGameObject);
 		ServiceLocator.Register("MenuManager", menuManager);
 		ServiceLocator.Register("WeaponController", weaponController);

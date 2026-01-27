@@ -3,10 +3,10 @@
 public class InteractionObjectPickable : InteractionObjectPickableAbstract
 {
 	// Статический метод фабрики для инициализации объекта с нужным именем
-	public static InteractionObjectPickable CreateWithName(GameObject obj, string interactionItemNameUI)
+	public static InteractionObjectPickable CreateWithName(GameObject obj, string interactionItemNameSystem)
 	{
 		var component = obj.AddComponent<InteractionObjectPickable>();
-		component._interactionItemNameUI = interactionItemNameUI;
+		component._interactionItemNameSystem = interactionItemNameSystem;
 		return component;
 	}
 }

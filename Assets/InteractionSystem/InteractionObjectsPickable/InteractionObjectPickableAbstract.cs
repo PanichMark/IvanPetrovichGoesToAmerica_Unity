@@ -9,14 +9,31 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	public Rigidbody RigidBody { get; protected set; }
 
 	[SerializeField]
-	private string _interactionItemNameSystem;
+	protected string _interactionItemNameSystem;
 	public virtual string InteractionObjectNameSystem => _interactionItemNameSystem;
 
 
-	// Приватное поле, видимое в инспекторе
-	[SerializeField]
-	protected string _interactionItemNameUI;
-	public virtual string InteractionObjectNameUI => _interactionItemNameUI;
+	// Новое виртуальное свойство для получения локализованного имени UI
+	public virtual string InteractionObjectNameUI
+	{
+		get
+		{
+			LocalizationManager localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+			string localizedString = localizationManager.GetLocalizedString(_interactionItemNameSystem);
+
+			if (localizedString.StartsWith("Unknown key"))
+			{
+				Debug.LogError($"Ключ '{_interactionItemNameSystem}' не найден в файле локализации. Возможно, неверно указан ключ в инспекторе.");
+				return _interactionItemNameSystem; // Возврат оригинала, если нет перевода
+			}
+			return localizedString;
+		}
+	}
+
+
+
+
+
 
 	public string MainInteractionHint => $"Поднять {InteractionObjectNameUI}?";
 	public virtual string AdditionalInteractionHint => null;
