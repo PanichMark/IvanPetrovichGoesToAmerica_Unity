@@ -6,7 +6,7 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 	{
 		Debug.Log($"Вы подняли {InteractionObjectNameUI}, получаете {MoneyValue} рублей");
 		Destroy(gameObject);
-		PlayerMoneyManager.Instance.AddMoney(MoneyValue);
+		//PlayerMoneyManager.Instance.AddMoney(MoneyValue);
 		WasLootItemCollected = true;
 	}
 }

@@ -1,27 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using static Unity.VisualScripting.Icons;
 
 public class LocalizationManager
 {
 	private Dictionary<string, Dictionary<string, string>> _localizations = new Dictionary<string, Dictionary<string, string>>();
 
-	public string CurrentLanguage { get; private set; } = "English"; // Начальный язык по умолчанию
+	public LanguagesList CurrentLanguage { get; private set; } = LanguagesList.English; // Начальный язык по умолчанию
 
 	public LocalizationManager()
 	{
 		LoadFromCsv();
 	}
 
-	public void ChangeLanguage(string language)
+	/// <summary>
+	/// Изменяет активный язык на заданный.
+	/// </summary>
+	public void ChangeLanguage(LanguagesList language)
 	{
 		CurrentLanguage = language;
+		Debug.Log($"Lozalization{language} Initialized");
 	}
 
+	/// <summary>
+	/// Возвращает локализованную строку по указанному ключу.
+	/// </summary>
 	public string GetLocalizedString(string key)
 	{
 		if (_localizations.TryGetValue(key, out var translations) &&
-			translations.TryGetValue(CurrentLanguage, out var translation))
+			translations.TryGetValue(CurrentLanguage.ToString(), out var translation))
 		{
 			return translation;
 		}

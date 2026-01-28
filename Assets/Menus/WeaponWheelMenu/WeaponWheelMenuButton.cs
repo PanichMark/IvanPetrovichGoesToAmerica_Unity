@@ -2,10 +2,10 @@
 using UnityEngine.UI;
 using TMPro;
 
-public class WeaponWheelButton : MonoBehaviour
+public class WeaponWheelMenuButton : MonoBehaviour
 {
 	private WeaponController weaponController;
-	private WeaponWheelController weaponWheelController;
+	private WeaponWheelMenuController weaponWheelController;
 	private GameObject WeaponPrefab;
 	private string WeaponName;
 	private Sprite WeaponIcon;
@@ -16,7 +16,7 @@ public class WeaponWheelButton : MonoBehaviour
 		button.onClick.AddListener(() => weaponController.SelectWeapon(WeaponPrefab));
 	}
 
-	public void Initialize(WeaponController weaponController, WeaponWheelController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
+	public void Initialize(WeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
 	{
 		this.weaponController = weaponController;
 		this.weaponWheelController = weaponWheelController;

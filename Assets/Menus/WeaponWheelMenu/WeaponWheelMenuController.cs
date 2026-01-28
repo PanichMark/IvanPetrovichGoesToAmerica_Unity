@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class WeaponWheelController : MonoBehaviour
+public class WeaponWheelMenuController : MonoBehaviour
 {
 	private GameObject wheelSegmentPrefab;           // Префаб сегмента
 	private Transform centerPoint;                   // Центр круга
@@ -161,7 +161,7 @@ public class WeaponWheelController : MonoBehaviour
 			Vector3 positionOnCircle = CalculatePositionOnCircle(adjustedAngle, radius);
 			segmentInstance.transform.localPosition = positionOnCircle;
 
-			WeaponWheelButton buttonScript = segmentInstance.GetComponent<WeaponWheelButton>();
+			WeaponWheelMenuButton buttonScript = segmentInstance.GetComponent<WeaponWheelMenuButton>();
 			if (buttonScript != null)
 			{
 				buttonScript.Initialize(weaponController, this, activeWeapons[i], weaponComponent);

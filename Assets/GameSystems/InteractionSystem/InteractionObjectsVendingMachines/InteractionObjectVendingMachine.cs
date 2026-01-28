@@ -7,6 +7,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractUsedItem,
 	[SerializeField] private int goodsPrice;
 	[SerializeField] private string goodsName;
 	[SerializeField] private string vendingMachineName;
+	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
 	//[SerializeField] private string additionalInteractionHint;
 	private bool isAdditionalInteractionHintActive;
 	public virtual string InteractionObjectNameUI => vendingMachineName;
@@ -20,20 +21,21 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractUsedItem,
 
 	private void Start()
 	{
-		//isAdditionalInteractionHintActive = true;
+		playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
 
 	}
 
 	
 	public void Interact()
 	{
-		if (PlayerMoneyManager.Instance.PlayerMoney >= goodsPrice)
+		
+		if (playerResourcesMoneyManager.PlayerMoney >= goodsPrice)
 		{
 			Vector3 spawnPosition = transform.position + new Vector3(-1f, 0.5f, 0f); // Сместили объект вверх на единицу
 
 			Debug.Log($"Вы купили {goodsName} в {InteractionObjectNameUI}");
 			Instantiate(goodsForSaleModel, spawnPosition, Quaternion.identity);
-			PlayerMoneyManager.Instance.DeductMoney(-goodsPrice);
+			playerResourcesMoneyManager.DeductMoney(-goodsPrice);
 
 			isAdditionalInteractionHintActive = false;
 
@@ -44,6 +46,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractUsedItem,
 
 			isAdditionalInteractionHintActive = true;
 		}
+		
 	}
 }
 	

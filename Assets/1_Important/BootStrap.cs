@@ -1,9 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using TMPro;
+﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
+using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using static Unity.VisualScripting.Icons;
 
 public class BootStrap : MonoBehaviour
 {
@@ -34,6 +35,13 @@ public class BootStrap : MonoBehaviour
 	private PlayerCameraBlurFilter playerCameraBlurFilter;
 	private PlayerCameraFirstPersonRender playerCameraFirstPersonRender;
 
+	//Игрок Ресурсы
+	[SerializeField] private GameObject playerResourcesGameObject;
+	//Игрок Ресурсы Деньги
+	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
+	private TMP_Text playerMoneyTextGameObject;
+
+
 	//Меню
 	private GameObject menuManagerGameobject;
 	private MenuManager menuManager;
@@ -61,7 +69,7 @@ public class BootStrap : MonoBehaviour
 	private GameObject weaponSystemGameObject;
 	private WeaponController weaponController;
 	//Колесо Выбора Оружия
-	private WeaponWheelController weaponWheelController;
+	private WeaponWheelMenuController weaponWheelController;
 	[SerializeField] private GameObject canvasMenuWeaponWheel;
 	private GameObject weaponWheelSegmentPrefab;
 	private TextMeshProUGUI weaponText;
@@ -91,10 +99,11 @@ public class BootStrap : MonoBehaviour
 		Time.timeScale = 0f;
 		yield return StartCoroutine(InitializeInterfaces());          
 		yield return StartCoroutine(InitializeSavingSystem());
-		
+		yield return StartCoroutine(InitializeCanvases());
 		yield return StartCoroutine(InitializeMenuLogic());
-		yield return StartCoroutine(InitializePlayerComponents());
-		yield return StartCoroutine(InitializeWeaponsSystem());       
+		yield return StartCoroutine(InitializePlayerSystems());
+		yield return StartCoroutine(InitializePlayerResources());
+		yield return StartCoroutine(InitializeWeaponSystem());       
 		yield return StartCoroutine(InitializeInteractionSystem());   
 		yield return StartCoroutine(RegisterAllDependencies());
 		yield return StartCoroutine(LoadNextScene());   
@@ -110,9 +119,22 @@ public class BootStrap : MonoBehaviour
 		ServiceLocator.ClearServices();
 		gameController = new GameController();
 		localizationManager = new LocalizationManager();
-		localizationManager.ChangeLanguage("Russian"); 
+		localizationManager.ChangeLanguage(LanguagesList.Russian);
 		inputDevice = new InputKeyboard(gameController);
 		Debug.Log("INTERFACES INITIALIZED");
+		yield break;
+	}
+
+	private IEnumerator InitializeCanvases()
+	{
+		canvasPauseMenu = Instantiate(canvasPauseMenu);
+		canvasPauseSubMenuSave = Instantiate(canvasPauseSubMenuSave);
+		canvasPauseSubMenuLoad = Instantiate(canvasPauseSubMenuLoad);
+		canvasPauseSubMenuImages = Instantiate(canvasPauseSubMenuImages);
+		canvasPauseSubMenuSettings = Instantiate(canvasPauseSubMenuSettings);
+		canvasMenuWeaponWheel = Instantiate(canvasMenuWeaponWheel);
+		CanvasHUDInteraction = Instantiate(CanvasHUDInteraction);
+
 		yield break;
 	}
 
@@ -125,7 +147,7 @@ public class BootStrap : MonoBehaviour
 		yield break;
 	}
 
-	private IEnumerator InitializePlayerComponents()
+	private IEnumerator InitializePlayerSystems()
 	{
 		playerGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerGameObject"));
 		playerCameraGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerCameraGameObject"));
@@ -163,7 +185,20 @@ public class BootStrap : MonoBehaviour
 
 
 
-		Debug.Log("PLAYER INITIALIZED");
+		Debug.Log("PLAYER SYSTEMS INITIALIZED");
+		yield break;
+	}
+
+	private IEnumerator InitializePlayerResources()
+	{
+		playerResourcesGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerResourcesGameObject"));
+		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber")?.GetComponent<TMP_Text>();
+
+		playerResourcesMoneyManager = playerResourcesGameObject.GetComponent<PlayerResourcesMoneyManager>();
+
+		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
+
+		Debug.Log("PLAYER RESOURCES INITIALIZED");
 		yield break;
 	}
 
@@ -171,13 +206,6 @@ public class BootStrap : MonoBehaviour
 	{
 		menuManagerGameobject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/MenuManagerGameObject"));
 		menuManager = menuManagerGameobject.GetComponent<MenuManager>();
-
-		// Объекты меню
-		canvasPauseMenu = Instantiate(canvasPauseMenu);
-		canvasPauseSubMenuSave = Instantiate(canvasPauseSubMenuSave);
-		canvasPauseSubMenuLoad = Instantiate(canvasPauseSubMenuLoad);
-		canvasPauseSubMenuImages = Instantiate(canvasPauseSubMenuImages);
-		canvasPauseSubMenuSettings = Instantiate(canvasPauseSubMenuSettings);
 
 		// Контроллеры меню
 		pauseMenuController = menuManagerGameobject.GetComponent<PauseMenuController>();
@@ -236,16 +264,15 @@ public class BootStrap : MonoBehaviour
 		yield break;
 	}
 
-	private IEnumerator InitializeWeaponsSystem()
+	private IEnumerator InitializeWeaponSystem()
 	{
 		weaponSystemGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/WeaponSystemGameObject"));
 
 		// Основной компонент оружия
 		weaponController = weaponSystemGameObject.GetComponent<WeaponController>();
-		weaponWheelController = weaponSystemGameObject.GetComponent<WeaponWheelController>();
+		weaponWheelController = weaponSystemGameObject.GetComponent<WeaponWheelMenuController>();
 
 		// Колесо выбора оружия
-		canvasMenuWeaponWheel = Instantiate(canvasMenuWeaponWheel);
 		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
 		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre")?.transform;
 		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name")?.GetComponent<TextMeshProUGUI>();
@@ -266,7 +293,6 @@ public class BootStrap : MonoBehaviour
 		interactionController = interactionControllerGameObject.GetComponent<InteractionController>();
 
 		// Элементы HUD
-		CanvasHUDInteraction = Instantiate(CanvasHUDInteraction);
 		mainInteractionText = CanvasHUDInteraction.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
 		additionalInteractionText = CanvasHUDInteraction.transform.Find("additionalInteractionText")?.GetComponent<TextMeshProUGUI>();
 		itemsTexts = new TextMeshProUGUI[]
@@ -304,6 +330,7 @@ public class BootStrap : MonoBehaviour
 		ServiceLocator.Register("ImageNewspaper", imageNewspaper);
 		ServiceLocator.Register("ReadableText", readableText);
 		ServiceLocator.Register("BackgroundBlack", backgroundBlack);
+		ServiceLocator.Register("PlayerResourcesMoneyManager", playerResourcesMoneyManager);
 
 		Debug.Log("SERVICE REGISTERED");
 		yield break;
