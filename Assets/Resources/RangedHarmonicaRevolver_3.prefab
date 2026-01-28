@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RangedHarmonicaRevolver_3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f5016e0d89cf39740a98dfb36892b75d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2987967272552621905, guid: f5016e0d89cf39740a98dfb36892b75d, type: 3}
       propertyPath: m_CastShadows
       value: 1
@@ -152,4 +156,3 @@ MonoBehaviour:
   WeaponNameUI: "\u0420\u0435\u0432\u043E\u043B\u044C\u0432\u0435\u0440 \u0413\u0430\u0440\u043C\u043E\u043D\u0438\u043A\u0430"
   WeaponNameSystem: HarmonicaRevolver
   WeaponIcon: {fileID: 21300000, guid: ee4cefae06d79f146bbc89a3411e51ed, type: 3}
-  weaponModel: {fileID: 5726397282783717853}

@@ -4,7 +4,7 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 {
 	private bool isAdditionalInteractionHintActive;
 	public override bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
-	public override int MoneyValue => 0;
+
 
 	public override string InteractionObjectNameSystem => "HealingItem";
 	public override string InteractionObjectNameUI => "Лечащий предмет";

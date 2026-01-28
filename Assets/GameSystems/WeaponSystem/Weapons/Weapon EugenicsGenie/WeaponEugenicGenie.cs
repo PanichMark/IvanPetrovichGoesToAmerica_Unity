@@ -2,16 +2,12 @@
 
 public class WeaponEugenicGenie : WeaponAbstract
 {
-    WeaponEugenicGenie()
-    {
-        WeaponNameSystem = "EugenicGenie";
-		WeaponNameUI = "Евгеник Дыхание Джинна";
-	}
+ 
+	public override string WeaponNameSystem => "EugenicGenie";
+	public override string WeaponNameUI => "Евгеник Дыхание Джинна";
 
-	public void Awake()
-	{
-		weaponModel = Resources.Load<GameObject>("WeaponEugenicsGenie"); // Загружаем префаб револьвера
-	}
+	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheelButtons/Jinny icon");
+
 
 	public override void WeaponAttack()
 	{

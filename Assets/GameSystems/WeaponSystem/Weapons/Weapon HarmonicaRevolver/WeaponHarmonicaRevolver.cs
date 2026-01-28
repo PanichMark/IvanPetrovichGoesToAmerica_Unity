@@ -4,17 +4,11 @@ public class WeaponHarmonicaRevolver : WeaponAbstract
 {
 	public override float WeaponDamage => 30f; // Устанавливаем постоянное значение урона для револьвера
 
-	WeaponHarmonicaRevolver()
-    {
-        WeaponNameSystem = "HarmonicaRevolver";
-		WeaponNameUI = "Револьвер Гармоника";
-	}
+	
+	public override string WeaponNameSystem => "HarmonicaRevolver";
+	public override string WeaponNameUI => "Револьвер Гармоника";
+	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheelButtons/Pistol icon");
 
-	public void Awake()
-	{
-		weaponModel = Resources.Load<GameObject>("WeaponHarmonicaRevolver"); // Загружаем префаб револьвера
-		//Debug.Log("Загружен префаб: " + weaponModel);
-	}
 
 	public override void WeaponAttack()
 	{

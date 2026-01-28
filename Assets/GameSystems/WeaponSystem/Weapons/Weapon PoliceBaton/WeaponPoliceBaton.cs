@@ -13,6 +13,10 @@ public class WeaponPoliceBaton : WeaponAbstract
 	float ForwardOffset;    // Смещение вперёд от центра игрока
 
 	public override float WeaponDamage => 100f; // Устанавливаем постоянное значение урона для револьвера
+	public override string  WeaponNameSystem => "PoliceBaton";
+	public override string WeaponNameUI => "Милицейская Дубинка";
+	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheelButtons/Baton icon");
+
 
 	//public bool IsPlayerPoliceBatonAttacking;
 	private void Start()
@@ -24,17 +28,9 @@ public class WeaponPoliceBaton : WeaponAbstract
 		ForwardOffset = 0.5f;      // Смещение вперёд от центра игрока
 	}
 
-	public WeaponPoliceBaton()
-    {
-        WeaponNameSystem = "PoliceBaton";
-		WeaponNameUI = "Милицейская Дубинка";
+	
 
-	}
 
-	public void Awake()
-	{
-		weaponModel = Resources.Load<GameObject>("WeaponPoliceBaton"); // Загружаем префаб револьвера
-	}
 
 	public override void WeaponAttack()
 	{

@@ -4,7 +4,7 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 {
 	private bool isAdditionalInteractionHintActive;
 	public override bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
-	public override int MoneyValue => 0;
+
 
 	public override string InteractionObjectNameSystem => "ManaReplenishItem";
 	public override string InteractionObjectNameUI => "Предмет восстаналивает ману";

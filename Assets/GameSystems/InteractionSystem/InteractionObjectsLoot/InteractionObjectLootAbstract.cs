@@ -22,10 +22,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	public virtual bool IsAdditionalInteractionHintActive => false;
 
 
-	[SerializeField]
-	private int _moneyValue;
-
-	public virtual int MoneyValue => _moneyValue;
+	
 
 	public virtual bool WasLootItemCollected { get; protected set; }
 
@@ -35,7 +32,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public TextMeshProUGUI GainedItemtext => null;
 
-	public Sprite GainedItemImage => LootObjectImage;
+	public virtual Sprite GainedItemImage => LootObjectImage;
 
 	internal void AssignLootItemIndex(int index)
 	{

@@ -2,18 +2,13 @@
 
 public class WeaponPlungerCrossbow : WeaponAbstract
 {
-    public WeaponPlungerCrossbow()
-    {
-        WeaponNameSystem = "PlungerCrossbow";
-		WeaponNameUI = "Абордажный Арбалет";
-	}
+    
+	public override string WeaponNameSystem => "PlungerCrossbow";
+	public override string WeaponNameUI => "Абордажный Арбалет";
+	
+	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheelButtons/CrossBow icon");
 
-	public void Awake()
-	{
-		weaponModel = Resources.Load<GameObject>("WeaponPlungerCrossbow"); // Загружаем префаб револьвера
-	//	weaponMeshRenderer = weapon
-		//Debug.Log("Загружен префаб: " + weaponModel);
-	}
+
 
 	public override void WeaponAttack()
 	{
