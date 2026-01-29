@@ -6,6 +6,7 @@ public class PauseSubMenuImagesController : MonoBehaviour
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
 
+	private bool isPauseSubMenuImagesOpened;
 	private GameObject canvasPauseSubMenuImages;
 	private PauseMenuController pauseMenuController;
 
@@ -23,11 +24,16 @@ public class PauseSubMenuImagesController : MonoBehaviour
 
 	private void ShowImagesSubMenuCanvas()
 	{
+		isPauseSubMenuImagesOpened = true;
 		canvasPauseSubMenuImages.gameObject.SetActive(true);
 	}
 	private void HideImagesSubMenuCanvas()
 	{
-		canvasPauseSubMenuImages.gameObject.SetActive(false);
-		Debug.Log("ImagesSubMenu closed");
+		if (isPauseSubMenuImagesOpened)
+		{
+			isPauseSubMenuImagesOpened = false;
+			canvasPauseSubMenuImages.gameObject.SetActive(false);
+			Debug.Log("ImagesSubMenu closed");
+		}
 	}
 }

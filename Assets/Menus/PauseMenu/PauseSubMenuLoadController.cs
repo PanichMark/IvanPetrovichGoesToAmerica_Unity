@@ -10,7 +10,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	private PauseMenuController pauseMenuController;
 	private SaveLoadController saveLoadController;
 	private GameObject canvasPauseSubMenuLoad;
-	
+	private bool isPauseSubMenuLoadOpened;
 
 	private Button CloseLoadSubMenuButton;
 
@@ -73,13 +73,18 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	
 	public void ShowLoadSubMenuCanvas()
 	{
+		isPauseSubMenuLoadOpened = true;
 		canvasPauseSubMenuLoad.gameObject.SetActive(true);
 		RefreshLoadButtonLabels();
 	}
 	public void HideLoadSubMenuCanvas()
 	{
-		canvasPauseSubMenuLoad.gameObject.SetActive(false);
-		Debug.Log("LoadSubMenu closed");
+		if (isPauseSubMenuLoadOpened)
+		{
+			isPauseSubMenuLoadOpened = false;
+			canvasPauseSubMenuLoad.gameObject.SetActive(false);
+			Debug.Log("LoadSubMenu closed");
+		}
 	}
 
 	public void RefreshLoadButtonLabels()

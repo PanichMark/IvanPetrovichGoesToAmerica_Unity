@@ -82,6 +82,7 @@ public class MenuManager : MonoBehaviour
 		CloseAnyMenu();
 		gameController.MakePlayerControllable();
 		PauseMenuLevel.Pop();
+		
 		IsPauseMenuOpened = false;
 
 		Time.timeScale = 1f;

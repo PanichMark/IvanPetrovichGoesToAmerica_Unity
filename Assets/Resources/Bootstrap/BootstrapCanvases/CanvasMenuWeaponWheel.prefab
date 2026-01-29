@@ -148,7 +148,6 @@ GameObject:
   - component: {fileID: 4552086177249021354}
   - component: {fileID: 4695485365734618230}
   - component: {fileID: 2687320164562196461}
-  - component: {fileID: 1325213751201666908}
   - component: {fileID: 6113968042013347523}
   m_Layer: 5
   m_Name: 'ManaReplenishItemButton '
@@ -156,7 +155,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7716619861365087103
 RectTransform:
   m_ObjectHideFlags: 0
@@ -260,18 +259,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1325213751201666908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 307250398014048895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dabb35f0a95335c4bbc1740464e2ec12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6113968042013347523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -893,7 +880,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2449130997083733223
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1032,7 +1019,6 @@ GameObject:
   - component: {fileID: 6563109373360918414}
   - component: {fileID: 7360477401334364412}
   - component: {fileID: 1041381500237012491}
-  - component: {fileID: 3962330580217220176}
   - component: {fileID: 5707319870021029061}
   m_Layer: 5
   m_Name: HealingItemButton
@@ -1040,7 +1026,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3806382081764777062
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1144,18 +1130,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3962330580217220176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8405704729425035758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dabb35f0a95335c4bbc1740464e2ec12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5707319870021029061
 MonoBehaviour:
   m_ObjectHideFlags: 0

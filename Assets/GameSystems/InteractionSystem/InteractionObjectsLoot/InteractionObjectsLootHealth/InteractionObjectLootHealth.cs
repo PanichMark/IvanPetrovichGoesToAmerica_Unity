@@ -2,6 +2,7 @@
 
 public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 {
+	private PlayerResourcesHealthManager playerResourcesHealthManager;
 	private bool isAdditionalInteractionHintActive;
 	public override bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
 
@@ -11,14 +12,18 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 
 	public override string AdditionalInteractionHint => $"Максимум {InteractionObjectNameUI}";
 
+	private void Awake()
+	{
+		playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
+	}
 
 	public override void Interact()
 	{
-		if (PlayerHealthManager.Instance.CurrentHealingItemsNumber < 9)
+		if (playerResourcesHealthManager.CurrentHealingItemsNumber < 9)
 		{
 			Debug.Log($"Вы подняли {InteractionObjectNameUI}");
 			Destroy(gameObject);
-			PlayerHealthManager.Instance.AddHealingItem();
+			playerResourcesHealthManager.AddHealingItem();
 			isAdditionalInteractionHintActive = false;
 			WasLootItemCollected = true;
 		}

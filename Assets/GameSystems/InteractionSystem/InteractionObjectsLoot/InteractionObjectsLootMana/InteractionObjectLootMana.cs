@@ -4,20 +4,26 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 {
 	private bool isAdditionalInteractionHintActive;
 	public override bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
-
+	private PlayerResourcesManaManager playerResourcesManaManager;
 
 	public override string InteractionObjectNameSystem => "ManaReplenishItem";
 	public override string InteractionObjectNameUI => "Предмет восстаналивает ману";
 
 	public override string AdditionalInteractionHint => $"Максимум {InteractionObjectNameUI}";
 
+	private void Awake()
+	{
+		playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
+	}
+
+
 	public override void Interact()
 	{
-		if (PlayerManaManager.Instance.CurrentManaReplenishItemsNumber < 9)
+		if (playerResourcesManaManager.CurrentManaReplenishItemsNumber < 9)
 		{
 			Debug.Log($"Вы подняли {InteractionObjectNameUI}");
 			Destroy(gameObject);
-			PlayerManaManager.Instance.AddManaReplenishItem();
+			playerResourcesManaManager.AddManaReplenishItem();
 			isAdditionalInteractionHintActive = false;
 			WasLootItemCollected = true;
 		}

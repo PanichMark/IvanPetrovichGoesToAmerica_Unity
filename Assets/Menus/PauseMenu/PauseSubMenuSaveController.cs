@@ -6,7 +6,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
 	PauseMenuController pauseMenuController;
-
+	private bool isPauseSubMenuSaveOpened;
 	private GameObject canvasPauseSubMenuSave;
 	private SaveLoadController saveLoadController;
 	private Button CloseSaveSubMenuButton;
@@ -45,12 +45,17 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 	private void ShowSaveSubMenuCanvas()
 	{
+		isPauseSubMenuSaveOpened = true;
 		canvasPauseSubMenuSave.gameObject.SetActive(true);
 	}
 	private void HideSaveSubMenuCanvas()
 	{
-		canvasPauseSubMenuSave.gameObject.SetActive(false);
-		Debug.Log("SaveSubMenu closed");
+		if (isPauseSubMenuSaveOpened)
+		{
+			isPauseSubMenuSaveOpened = false;
+			canvasPauseSubMenuSave.gameObject.SetActive(false);
+			Debug.Log("SaveSubMenu closed");
+		}
 	}
 }
 

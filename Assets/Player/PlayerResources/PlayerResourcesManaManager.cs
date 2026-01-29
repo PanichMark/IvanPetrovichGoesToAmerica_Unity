@@ -2,13 +2,23 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerManaManager : MonoBehaviour, ISaveLoad
+public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 {
-	public static PlayerManaManager Instance { get; private set; } // Статическое поле экземпляра
+	public void Initialize(Slider ManaBarSlider, Button ManaReplenishtemButton, TextMeshProUGUI ManaReplenishItemNumber)
+	{
 
-	public Slider ManaBarSlider;
-	public Button ManaReplenishtemButton;
-	public TextMeshProUGUI ManaReplenishItemNumber;
+		this.ManaBarSlider = ManaBarSlider;
+		this.ManaReplenishtemButton = ManaReplenishtemButton;	
+		this.ManaReplenishItemNumber = ManaReplenishItemNumber;
+		this.ManaReplenishtemButton.onClick.AddListener(() => UseManaReplenishItem());
+
+		this.ManaBarSlider.maxValue = MaxPlayerMana;
+
+	}
+
+	private Slider ManaBarSlider;
+	private Button ManaReplenishtemButton;
+	private TextMeshProUGUI ManaReplenishItemNumber;
 	public int MaxPlayerMana { get; private set; } = 100;
 	public int CurrentPlayerMana { get; private set; }
 
@@ -16,32 +26,9 @@ public class PlayerManaManager : MonoBehaviour, ISaveLoad
 
 	public int CurrentManaReplenishItemsNumber { get; private set; }
 
-	private void Awake()
-	{
+	
 
-
-
-		// Паттерн Singleton: предотвращаем создание второго экземпляра
-		if (Instance == null)
-		{
-			Instance = this;
-			//DontDestroyOnLoad(gameObject); // Сохраняется при смене уровней
-		}
-		else
-		{
-			Destroy(gameObject); // Уничтожаем лишние экземпляры
-		}
-
-
-	}
-
-	void Start()
-	{
-		ManaReplenishtemButton.onClick.AddListener(() => UseManaReplenishItem());
-
-		ManaBarSlider.maxValue = MaxPlayerMana;
-
-	}
+	
 
 	void Update()
 	{

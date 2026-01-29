@@ -40,6 +40,18 @@ public class BootStrap : MonoBehaviour
 	//Игрок Ресурсы Деньги
 	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
 	private TMP_Text playerMoneyTextGameObject;
+	//Игрок Ресурсы Здоровье
+	private PlayerResourcesHealthManager playerResourcesHealthManager;
+	[SerializeField] private GameObject canvasPlayerHUDMain;
+	private Slider HealthBarSlider;
+	private Button HealingItemButton;
+	private TextMeshProUGUI HealingItemNumber;
+	//Игрок Ресурсы Мана
+	private PlayerResourcesManaManager playerResourcesManaManager;
+	private Slider ManaBarSlider;
+	private Button ManaReplenishtemButton;
+	private TextMeshProUGUI ManaReplenishItemNumber;
+	//Игрок Ресурсы Патроны
 
 
 	//Меню
@@ -134,6 +146,7 @@ public class BootStrap : MonoBehaviour
 		canvasPauseSubMenuSettings = Instantiate(canvasPauseSubMenuSettings);
 		canvasMenuWeaponWheel = Instantiate(canvasMenuWeaponWheel);
 		CanvasHUDInteraction = Instantiate(CanvasHUDInteraction);
+		canvasPlayerHUDMain = Instantiate(canvasPlayerHUDMain);
 
 		yield break;
 	}
@@ -192,11 +205,22 @@ public class BootStrap : MonoBehaviour
 	private IEnumerator InitializePlayerResources()
 	{
 		playerResourcesGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerResourcesGameObject"));
+
 		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber")?.GetComponent<TMP_Text>();
+		HealthBarSlider = canvasPlayerHUDMain.transform.Find("Health Slider")?.GetComponent<Slider>();
+		HealingItemButton = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemButton")?.GetComponent<Button>();
+		HealingItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemsNumber")?.GetComponent<TextMeshProUGUI>();
+		ManaBarSlider = canvasPlayerHUDMain.transform.Find("Mana Slider")?.GetComponent<Slider>();
+		ManaReplenishtemButton = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemButton ")?.GetComponent<Button>();
+		ManaReplenishItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemsNumber")?.GetComponent<TextMeshProUGUI>();
 
 		playerResourcesMoneyManager = playerResourcesGameObject.GetComponent<PlayerResourcesMoneyManager>();
+		playerResourcesHealthManager = playerResourcesGameObject.gameObject.GetComponent<PlayerResourcesHealthManager>();
+		playerResourcesManaManager = playerResourcesGameObject.gameObject.GetComponent<PlayerResourcesManaManager>();
 
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
+		playerResourcesHealthManager.Initialize(HealthBarSlider, HealingItemButton, HealingItemNumber);
+		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
 
 		Debug.Log("PLAYER RESOURCES INITIALIZED");
 		yield break;
@@ -331,6 +355,8 @@ public class BootStrap : MonoBehaviour
 		ServiceLocator.Register("ReadableText", readableText);
 		ServiceLocator.Register("BackgroundBlack", backgroundBlack);
 		ServiceLocator.Register("PlayerResourcesMoneyManager", playerResourcesMoneyManager);
+		ServiceLocator.Register("PlayerResourcesHealthManager", playerResourcesHealthManager);
+		ServiceLocator.Register("PlayerResourcesManaManager", playerResourcesManaManager);
 
 		Debug.Log("SERVICE REGISTERED");
 		yield break;

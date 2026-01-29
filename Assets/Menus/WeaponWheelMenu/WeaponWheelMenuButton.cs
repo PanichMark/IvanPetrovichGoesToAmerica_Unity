@@ -10,6 +10,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	private string WeaponName;
 	private Sprite WeaponIcon;
 
+
 	private void Start()
 	{
 		var button = GetComponent<Button>();
@@ -20,7 +21,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	{
 		this.weaponController = weaponController;
 		this.weaponWheelController = weaponWheelController;
-		WeaponPrefab = weaponPrefab;
+		this.WeaponPrefab = weaponPrefab;
 		WeaponName = weaponComponent.WeaponNameUI;
 		WeaponIcon = weaponComponent.WeaponIcon;
 	}

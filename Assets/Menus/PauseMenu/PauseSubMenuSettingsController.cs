@@ -9,7 +9,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
-
+	private bool isPauseSubMenuSettingsOpened;
 	private GameObject canvasPauseSubMenuSettings;
 	private PauseMenuController pauseMenuController;
 	// Конструктор принимает зависимость
@@ -183,12 +183,17 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	public void HideSettingsSubMenuCanvas()
 	{
-		canvasPauseSubMenuSettings.gameObject.SetActive(false);
+		if (isPauseSubMenuSettingsOpened)
+		{
+			isPauseSubMenuSettingsOpened = false;
+			canvasPauseSubMenuSettings.gameObject.SetActive(false);
 
-		Debug.Log("SettingsSubMenu closed");
+			Debug.Log("SettingsSubMenu closed");
+		}
 	}
 	public void ShowSettingsSubMenuCanvas()
 	{
+		isPauseSubMenuSettingsOpened = true;
 		canvasPauseSubMenuSettings.gameObject.SetActive(true);
 	}
 	public void OnFovChanged(float value)

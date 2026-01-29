@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3111ffddc8a1d604895768280c24a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerResourcesGameObject: {fileID: 2433788566853819396, guid: d09e6d0f6a12e26448e4a0c946a5f598, type: 3}
+  canvasPlayerHUDMain: {fileID: 2273119861689627557, guid: b56cff88fa0a71d4c997dbf30e8463af, type: 3}
   canvasPauseMenu: {fileID: 8073867487923853320, guid: dbe31a4f8c1107a42a76c5855b3c2483, type: 3}
   canvasPauseSubMenuSave: {fileID: 5903125011697291700, guid: 104664eef1b78e24294c3d4712d18631, type: 3}
   canvasPauseSubMenuLoad: {fileID: 8269768497378364233, guid: 6b7668360b2dcbf43bcd7c76ed62cc13, type: 3}

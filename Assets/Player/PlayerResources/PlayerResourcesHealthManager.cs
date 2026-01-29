@@ -2,13 +2,22 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealthManager : MonoBehaviour, ISaveLoad
+public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 {
-	public static PlayerHealthManager Instance { get; private set; } // Статическое поле экземпляра
+	public void Initialize(Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
+	{
+		this.HealthBarSlider = HealthBarSlider;
+		this.HealingItemButton = HealingItemButton;
+		this.HealingItemNumber = HealingItemNumber;
 
-	public Slider HealthBarSlider;
-    public Button HealingItemButton;
-    public TextMeshProUGUI HealingItemNumber;
+		this.HealingItemButton.onClick.AddListener(() => UseHealingItem());
+
+		this.HealthBarSlider.maxValue = MaxPlayerHealth;
+	}
+
+	private Slider HealthBarSlider;
+    private Button HealingItemButton;
+    private TextMeshProUGUI HealingItemNumber;
     public int MaxPlayerHealth { get; private set; } = 100;
     public int CurrentPlayerHealth { get; private set; }
 
@@ -16,32 +25,9 @@ public class PlayerHealthManager : MonoBehaviour, ISaveLoad
 
 	public int CurrentHealingItemsNumber { get; private set; }
 
-	private void Awake()
-	{
-		
-		
-
-		// Паттерн Singleton: предотвращаем создание второго экземпляра
-		if (Instance == null)
-		{
-			Instance = this;
-			//DontDestroyOnLoad(gameObject); // Сохраняется при смене уровней
-		}
-		else
-		{
-			Destroy(gameObject); // Уничтожаем лишние экземпляры
-		}
 
 
-	}
 
-	void Start()
-    {
-        HealingItemButton.onClick.AddListener(() => UseHealingItem());
-
-        HealthBarSlider.maxValue = MaxPlayerHealth;
-
-    }
 
     void Update()
     {

@@ -51,6 +51,7 @@ public class PauseMenuController : MonoBehaviour
 			OnClosePauseSubMenu?.Invoke();
 			menuManager.PauseMenuLevel.Pop(); // Убираем верхний элемент (субменю)
 			ShowPauseMenu(); // Показываем главное меню паузы снова
+			
 		}
 	}
 
