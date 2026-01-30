@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 public class GameController
 {
-	private bool _isPlayerControllable = true;
-	private bool _isPlayerDead = false;
-	private bool _isGameAbleToSave = true;
 
-	public bool IsPlayerControllable => _isPlayerControllable;
-	public bool IsPlayerDead => _isPlayerDead;
-	public bool IsGameAbleToSave => _isGameAbleToSave;
+	public bool IsSceneLoading { get; private set; }
+	public bool IsPlayerControllable { get; private set; }
+	public bool IsPlayerDead { get; private set; }
+	public bool IsGameAbleToSave { get; private set; }
 
 	public GameController()
 	{
@@ -16,16 +14,29 @@ public class GameController
 
 	public void PlayerIsDead()
 	{
-		_isPlayerDead = true;
+		IsPlayerDead = true;
 	}
 
 	public void MakePlayerNonControllable()
 	{
-		_isPlayerControllable = false;
+		IsPlayerControllable = false;
 	}
 
 	public void MakePlayerControllable()
 	{
-		_isPlayerControllable = true;
+		IsPlayerControllable = true;
 	}
+
+	public void SceneLoadBegan()
+	{
+		IsSceneLoading = true;
+		MakePlayerNonControllable();
+	}
+
+	public void SceneLoadEnded()
+	{
+		IsSceneLoading = false;
+		MakePlayerControllable();
+	}
+
 }

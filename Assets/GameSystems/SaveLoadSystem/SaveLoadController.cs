@@ -37,7 +37,7 @@ public class SaveLoadController : MonoBehaviour
 		fileSaveDataName5 = "SaveGame5.json";
 		//this.saveLoadObjects = FindAllSaveLoadObjects();
 		//NewGame();
-		Debug.Log("DataPersistence Initialized");
+		Debug.Log("SaveLoadController Initialized");
 	}
 
 

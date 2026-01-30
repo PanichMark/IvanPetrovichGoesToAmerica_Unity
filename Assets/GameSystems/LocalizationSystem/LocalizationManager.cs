@@ -7,7 +7,7 @@ public class LocalizationManager
 {
 	private Dictionary<string, Dictionary<string, string>> _localizations = new Dictionary<string, Dictionary<string, string>>();
 
-	public LanguagesList CurrentLanguage { get; private set; } = LanguagesList.English; // Начальный язык по умолчанию
+	public LanguagesEnum CurrentLanguage { get; private set; } = LanguagesEnum.English; // Начальный язык по умолчанию
 
 	public LocalizationManager()
 	{
@@ -17,7 +17,7 @@ public class LocalizationManager
 	/// <summary>
 	/// Изменяет активный язык на заданный.
 	/// </summary>
-	public void ChangeLanguage(LanguagesList language)
+	public void ChangeLanguage(LanguagesEnum language)
 	{
 		CurrentLanguage = language;
 		Debug.Log($"Lozalization{language} Initialized");

@@ -13,6 +13,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 		this.HealingItemButton.onClick.AddListener(() => UseHealingItem());
 
 		this.HealthBarSlider.maxValue = MaxPlayerHealth;
+		Debug.Log("PlayerResourcesHealth Initialized");
 	}
 
 	private Slider HealthBarSlider;

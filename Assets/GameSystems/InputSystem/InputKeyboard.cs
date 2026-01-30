@@ -65,7 +65,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyPauseMenu()
 	{
-		if (Input.GetKeyDown(_keyPauseMenu))
+		if (Input.GetKeyDown(_keyPauseMenu) && !gameController.IsSceneLoading)
 		{
 			return true;
 		}

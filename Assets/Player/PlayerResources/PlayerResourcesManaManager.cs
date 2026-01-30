@@ -13,7 +13,7 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		this.ManaReplenishtemButton.onClick.AddListener(() => UseManaReplenishItem());
 
 		this.ManaBarSlider.maxValue = MaxPlayerMana;
-
+		Debug.Log("PlayerResourcesMana Initialized");
 	}
 
 	private Slider ManaBarSlider;

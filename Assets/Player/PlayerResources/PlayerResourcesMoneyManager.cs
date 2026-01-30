@@ -15,6 +15,7 @@ public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
 		
 
 		UpdateMoneyDisplay();
+		Debug.Log("PlayerResourcesMoney Initialized");
 	}
 
 	

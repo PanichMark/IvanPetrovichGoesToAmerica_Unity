@@ -12,7 +12,7 @@ public class DoorSCENE : InteractionObjectOpenableAbstract
 
 	public override void Interact()
 	{
-		StartCoroutine(GameSceneManager.Instance.GoToScene(goToSceneName));
+		//StartCoroutine(GameSceneManager.Instance.GoToScene(goToSceneName));
 	}
 }
 

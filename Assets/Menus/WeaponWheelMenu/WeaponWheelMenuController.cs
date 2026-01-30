@@ -23,7 +23,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	private bool previousRightHandPressed = false;
 	private bool previousLeftHandPressed = false;
 
-	public float radius;
+	private float radius = 125;
 
 	public event System.Action<int> OnSegmentSelected;
 

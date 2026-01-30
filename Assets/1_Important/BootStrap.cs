@@ -8,87 +8,98 @@ using static Unity.VisualScripting.Icons;
 
 public class BootStrap : MonoBehaviour
 {
-	//Интерфейсы
+	private GameObject tempCameraObject;
+	[SerializeField] private GameObject canvasBootstrap;
+	private TMP_Text loadingStatusText;
+
+	// Интерфейсы
 	private IInputDevice inputDevice;
 	private LocalizationManager localizationManager;
 	private GameController gameController;
 
-	//Система Сохранений
-	private GameObject dataSaveLoadControllerObject;
+	// Система Сцен
+	private GameObject gameSceneManagerGameObject;
+	[SerializeField] private GameObject canvasLoadingScreen;
+	private GameSceneManager gameSceneManager;
+	private TMP_Text loadingScreenText;
+
+	// Система сохранений
+	private GameObject dataSaveLoadControllerGameObject;
 	private SaveLoadController saveLoadController;
 
-	//Игрок
+	// Игрок
 	private GameObject playerGameObject;
 	private GameObject playerHeadParent;
 	private GameObject playerHandRightParent;
 	private GameObject playerHandLeftParent;
 	private GameObject playerFirstPersonHandRight;
 	private GameObject playerFirstPersonHandLeft;
-	//Игрок Системы
+	// Игрок системы
 	private PlayerBehaviour playerBehaviour;
 	private PlayerMovementController movementController;
 	private PlayerCapsuleCollider playerCollider;
 	private PlayerAnimationController playerAnimationController;
-	//Игрок Камера
+	// Игрок камера
 	private GameObject playerCameraGameObject;
 	private PlayerCameraController playerCameraController;
 	private PlayerCameraBlurFilter playerCameraBlurFilter;
 	private PlayerCameraFirstPersonRender playerCameraFirstPersonRender;
 
-	//Игрок Ресурсы
-	[SerializeField] private GameObject playerResourcesGameObject;
-	//Игрок Ресурсы Деньги
+	// Игрок ресурсы
+	private GameObject playerResourcesGameObject;
+	// Игрок ресурсы деньги
 	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
 	private TMP_Text playerMoneyTextGameObject;
-	//Игрок Ресурсы Здоровье
+	// Игрок ресурсы здоровье
 	private PlayerResourcesHealthManager playerResourcesHealthManager;
 	[SerializeField] private GameObject canvasPlayerHUDMain;
 	private Slider HealthBarSlider;
 	private Button HealingItemButton;
 	private TextMeshProUGUI HealingItemNumber;
-	//Игрок Ресурсы Мана
+	// Игрок ресурсы мана
 	private PlayerResourcesManaManager playerResourcesManaManager;
 	private Slider ManaBarSlider;
 	private Button ManaReplenishtemButton;
 	private TextMeshProUGUI ManaReplenishItemNumber;
-	//Игрок Ресурсы Патроны
+	// Игрок ресурсы патроны
+	//
+	//
 
-
-	//Меню
+	// Меню
 	private GameObject menuManagerGameobject;
 	private MenuManager menuManager;
-	//Меню Паузы
+	// Меню паузы
 	private PauseMenuController pauseMenuController;
 	[SerializeField] private GameObject canvasPauseMenu;
 	private GameObject[] buttonsPauseMenu;
-	//ПодМеню Сохранения
+	// Подменю сохранения
 	private PauseSubMenuSaveController pauseSubMenuSaveController;
 	[SerializeField] private GameObject canvasPauseSubMenuSave;
 	private GameObject[] buttonsSaveGame;
-	//ПодМеню Загрузки
+	// Подменю загрузки
 	private PauseSubMenuLoadController pauseSubMenuLoadController;
 	[SerializeField] private GameObject canvasPauseSubMenuLoad;
 	private GameObject[] buttonsLoadGame;
 	private GameObject[] buttonsDeleteGame;
-	//ПодМеню Картинок
+	// Подменю картинок
 	private PauseSubMenuImagesController pauseSubMenuImagesController;
 	[SerializeField] private GameObject canvasPauseSubMenuImages;
-	//ПодМеню Настроек
+	// Подменю настроек
 	private PauseSubMenuSettingsController pauseSubMenuSettingsController;
 	[SerializeField] private GameObject canvasPauseSubMenuSettings;
 
-	//Система Оружия
+	// Система оружия
 	private GameObject weaponSystemGameObject;
 	private WeaponController weaponController;
-	//Колесо Выбора Оружия
+	// Колесо выбора оружия
 	private WeaponWheelMenuController weaponWheelController;
 	[SerializeField] private GameObject canvasMenuWeaponWheel;
 	private GameObject weaponWheelSegmentPrefab;
 	private TextMeshProUGUI weaponText;
 	private TextMeshProUGUI weaponWheelName;
-	private Transform centerPoint; // я думаю это можно удалить ?? нужно проверить
+	private Transform centerPoint; // я думаю это можно удалить ??
 
-	//Система Взаимодействия
+	// Система взаимодействия
 	private GameObject interactionControllerGameObject;
 	private InteractionController interactionController;
 	[SerializeField] private GameObject CanvasHUDInteraction;
@@ -103,35 +114,48 @@ public class BootStrap : MonoBehaviour
 
 	private void Awake()
 	{
+		Time.timeScale = 0f;
+
+		tempCameraObject = new GameObject("TempCamera");
+		tempCameraObject.AddComponent<Camera>();
+
+		canvasBootstrap = Instantiate(canvasBootstrap);
+		loadingStatusText = canvasBootstrap.transform.Find("TextInitializationStep")?.GetComponent<TMP_Text>();
+
 		StartCoroutine(SequentialInitialization());
 	}
 
 	private IEnumerator SequentialInitialization()
 	{
-		Time.timeScale = 0f;
-		yield return StartCoroutine(InitializeInterfaces());          
-		yield return StartCoroutine(InitializeSavingSystem());
+		yield return StartCoroutine(InitializeInterfaces());
 		yield return StartCoroutine(InitializeCanvases());
-		yield return StartCoroutine(InitializeMenuLogic());
+		yield return StartCoroutine(InitializeSceneSystem());
+		yield return StartCoroutine(InitializeSavingSystem());
+		yield return StartCoroutine(InitializeMenuSystems());
 		yield return StartCoroutine(InitializePlayerSystems());
 		yield return StartCoroutine(InitializePlayerResources());
-		yield return StartCoroutine(InitializeWeaponSystem());       
-		yield return StartCoroutine(InitializeInteractionSystem());   
+		yield return StartCoroutine(InitializeWeaponSystem());
+		yield return StartCoroutine(InitializeInteractionSystem());
 		yield return StartCoroutine(RegisterAllDependencies());
-		yield return StartCoroutine(LoadNextScene());   
+
+		Destroy(tempCameraObject);
+		Destroy(canvasBootstrap);
+
+		StartCoroutine(gameSceneManager.LoadScene(ScenesEnum.NEW_SceneTest));
+
 		Debug.Log("!!! GAME INITIALIZED !!!");
 		saveLoadController.NewGame();
-		//saveLoadController.Initialize();
 		Time.timeScale = 1.0f;
 	}
 
-
 	private IEnumerator InitializeInterfaces()
 	{
+		loadingStatusText.text = "Interfaces";
+
 		ServiceLocator.ClearServices();
 		gameController = new GameController();
 		localizationManager = new LocalizationManager();
-		localizationManager.ChangeLanguage(LanguagesList.Russian);
+		localizationManager.ChangeLanguage(LanguagesEnum.Russian);
 		inputDevice = new InputKeyboard(gameController);
 		Debug.Log("INTERFACES INITIALIZED");
 		yield break;
@@ -139,6 +163,8 @@ public class BootStrap : MonoBehaviour
 
 	private IEnumerator InitializeCanvases()
 	{
+		loadingStatusText.text = "Canvases";
+
 		canvasPauseMenu = Instantiate(canvasPauseMenu);
 		canvasPauseSubMenuSave = Instantiate(canvasPauseSubMenuSave);
 		canvasPauseSubMenuLoad = Instantiate(canvasPauseSubMenuLoad);
@@ -147,14 +173,26 @@ public class BootStrap : MonoBehaviour
 		canvasMenuWeaponWheel = Instantiate(canvasMenuWeaponWheel);
 		CanvasHUDInteraction = Instantiate(CanvasHUDInteraction);
 		canvasPlayerHUDMain = Instantiate(canvasPlayerHUDMain);
+		canvasLoadingScreen = Instantiate(canvasLoadingScreen);
+		yield break;
+	}
+
+	private IEnumerator InitializeSceneSystem()
+	{
+		gameSceneManagerGameObject = new GameObject("GameSceneManager");
+		gameSceneManager = gameSceneManagerGameObject.AddComponent<GameSceneManager>();
+		loadingScreenText = canvasLoadingScreen.transform.Find("LoadingScreenText")?.GetComponent<TMP_Text>();
+		gameSceneManager.Initialize(gameController, canvasLoadingScreen, loadingScreenText);
 
 		yield break;
 	}
 
 	private IEnumerator InitializeSavingSystem()
 	{
-		dataSaveLoadControllerObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/DataPersistenceManagerGameObject"));
-		saveLoadController = dataSaveLoadControllerObject.GetComponent<SaveLoadController>();
+		loadingStatusText.text = "Saving System";
+
+		dataSaveLoadControllerGameObject = new GameObject("DataSaveLoadController");
+		saveLoadController = dataSaveLoadControllerGameObject.AddComponent<SaveLoadController>();
 		saveLoadController.Initialize();
 		Debug.Log("SAVE SYSTEM INITIALIZED");
 		yield break;
@@ -162,6 +200,8 @@ public class BootStrap : MonoBehaviour
 
 	private IEnumerator InitializePlayerSystems()
 	{
+		loadingStatusText.text = "Player Systems";
+
 		playerGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerGameObject"));
 		playerCameraGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerCameraGameObject"));
 
@@ -190,21 +230,15 @@ public class BootStrap : MonoBehaviour
 		playerCameraController.Initialize(inputDevice, menuManager, movementController, playerCollider, playerGameObject);
 		playerCameraBlurFilter.Initialize(menuManager);
 
-
-
-		//playerCameraFirstPersonRender.Initialize(playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHeadParent, playerHandRightParent, playerHandLeftParent);
-		//playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, movementController, playerCameraController, weaponController);
-
-
-
-
 		Debug.Log("PLAYER SYSTEMS INITIALIZED");
 		yield break;
 	}
 
 	private IEnumerator InitializePlayerResources()
 	{
-		playerResourcesGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerResourcesGameObject"));
+		loadingStatusText.text = "Player Resources";
+
+		playerResourcesGameObject = new GameObject("PlayerResources");
 
 		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber")?.GetComponent<TMP_Text>();
 		HealthBarSlider = canvasPlayerHUDMain.transform.Find("Health Slider")?.GetComponent<Slider>();
@@ -214,9 +248,9 @@ public class BootStrap : MonoBehaviour
 		ManaReplenishtemButton = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemButton ")?.GetComponent<Button>();
 		ManaReplenishItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemsNumber")?.GetComponent<TextMeshProUGUI>();
 
-		playerResourcesMoneyManager = playerResourcesGameObject.GetComponent<PlayerResourcesMoneyManager>();
-		playerResourcesHealthManager = playerResourcesGameObject.gameObject.GetComponent<PlayerResourcesHealthManager>();
-		playerResourcesManaManager = playerResourcesGameObject.gameObject.GetComponent<PlayerResourcesManaManager>();
+		playerResourcesMoneyManager = playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
+		playerResourcesHealthManager = playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
+		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
 
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
 		playerResourcesHealthManager.Initialize(HealthBarSlider, HealingItemButton, HealingItemNumber);
@@ -226,17 +260,19 @@ public class BootStrap : MonoBehaviour
 		yield break;
 	}
 
-	private IEnumerator InitializeMenuLogic()
+	private IEnumerator InitializeMenuSystems()
 	{
-		menuManagerGameobject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/MenuManagerGameObject"));
-		menuManager = menuManagerGameobject.GetComponent<MenuManager>();
+		loadingStatusText.text = "Menu Systems";
+
+		menuManagerGameobject = new GameObject("MenuManager");
 
 		// Контроллеры меню
-		pauseMenuController = menuManagerGameobject.GetComponent<PauseMenuController>();
-		pauseSubMenuSaveController = menuManagerGameobject.GetComponent<PauseSubMenuSaveController>();
-		pauseSubMenuLoadController = menuManagerGameobject.GetComponent<PauseSubMenuLoadController>();
-		pauseSubMenuImagesController = menuManagerGameobject.GetComponent<PauseSubMenuImagesController>();
-		pauseSubMenuSettingsController = menuManagerGameobject.GetComponent<PauseSubMenuSettingsController>();
+		menuManager = menuManagerGameobject.AddComponent<MenuManager>();
+		pauseMenuController = menuManagerGameobject.AddComponent<PauseMenuController>();
+		pauseSubMenuSaveController = menuManagerGameobject.AddComponent<PauseSubMenuSaveController>();
+		pauseSubMenuLoadController = menuManagerGameobject.AddComponent<PauseSubMenuLoadController>();
+		pauseSubMenuImagesController = menuManagerGameobject.AddComponent<PauseSubMenuImagesController>();
+		pauseSubMenuSettingsController = menuManagerGameobject.AddComponent<PauseSubMenuSettingsController>();
 
 		// Кнопки меню
 		buttonsPauseMenu = new GameObject[]
@@ -290,11 +326,13 @@ public class BootStrap : MonoBehaviour
 
 	private IEnumerator InitializeWeaponSystem()
 	{
-		weaponSystemGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/WeaponSystemGameObject"));
+		loadingStatusText.text = "Weapon System";
+
+		weaponSystemGameObject = new GameObject("WeaponSystem");
 
 		// Основной компонент оружия
-		weaponController = weaponSystemGameObject.GetComponent<WeaponController>();
-		weaponWheelController = weaponSystemGameObject.GetComponent<WeaponWheelMenuController>();
+		weaponController = weaponSystemGameObject.AddComponent<WeaponController>();
+		weaponWheelController = weaponSystemGameObject.AddComponent<WeaponWheelMenuController>();
 
 		// Колесо выбора оружия
 		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
@@ -313,8 +351,11 @@ public class BootStrap : MonoBehaviour
 
 	private IEnumerator InitializeInteractionSystem()
 	{
-		interactionControllerGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapScripts/InteractionControllerGameObject"));
-		interactionController = interactionControllerGameObject.GetComponent<InteractionController>();
+		loadingStatusText.text = "Interaction System";
+
+		interactionControllerGameObject = new GameObject("InteractionController");
+
+		interactionController = interactionControllerGameObject.AddComponent<InteractionController>();
 
 		// Элементы HUD
 		mainInteractionText = CanvasHUDInteraction.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
@@ -345,6 +386,8 @@ public class BootStrap : MonoBehaviour
 
 	private IEnumerator RegisterAllDependencies()
 	{
+		loadingStatusText.text = "Service Locator";
+
 		// Регистрация служб
 		ServiceLocator.Register("LocalizationManager", localizationManager);
 		ServiceLocator.Register("Player", playerGameObject);
@@ -362,13 +405,7 @@ public class BootStrap : MonoBehaviour
 		yield break;
 	}
 
-	private IEnumerator LoadNextScene()
-	{
-		SceneManager.LoadScene("NEW_SceneTest", LoadSceneMode.Additive);
 
-		Debug.Log("Дополнительная сцена загружена!");
-		yield break;
-	}
 
 	private void OnApplicationQuit()
 	{
