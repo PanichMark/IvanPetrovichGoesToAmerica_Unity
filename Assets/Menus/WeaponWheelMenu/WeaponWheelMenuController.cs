@@ -23,7 +23,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	private bool previousRightHandPressed = false;
 	private bool previousLeftHandPressed = false;
 
-	private float radius = 125;
+	private float radius = 135;
 
 	public event System.Action<int> OnSegmentSelected;
 
@@ -78,7 +78,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	{
 		if (rightHandPressed)
 		{
-			EnableWeaponWheelMenuCanvas("right");
+			EnableWeaponWheelMenuCanvas();
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = false;
 			ShowWeaponName();
@@ -86,7 +86,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		}
 		else if (leftHandPressed)
 		{
-			EnableWeaponWheelMenuCanvas("left");
+			EnableWeaponWheelMenuCanvas();
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = true;
 			ShowWeaponName();
@@ -94,7 +94,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		}
 		else
 		{
-			DisableWeaponWheelMenuCanvas(!IsWeaponLeftHand);
+			DisableWeaponWheelMenuCanvas();
 			IsWeaponWheelActive = false;
 		}
 	}
@@ -187,19 +187,19 @@ public class WeaponWheelMenuController : MonoBehaviour
 		CreateWheel();
 	}
 
-	private void EnableWeaponWheelMenuCanvas(string handType)
+	private void EnableWeaponWheelMenuCanvas()
 	{
 		WeaponWheelMenuCanvas.gameObject.SetActive(true);
-		menuManager.OpenWeaponWheelMenu(handType);
+		menuManager.OpenWeaponWheelMenu();
 		RecreateWheel();
 	}
 
-	private void DisableWeaponWheelMenuCanvas(bool isItRightWeaponWheelMenuCanvas)
+	private void DisableWeaponWheelMenuCanvas()
 	{
 		WeaponWheelMenuCanvas.gameObject.SetActive(false);
 		if (!menuManager.IsPauseMenuOpened)
 		{
-			menuManager.CloseWeaponWheelMenu(isItRightWeaponWheelMenuCanvas);
+			menuManager.CloseWeaponWheelMenu();
 		}
 	}
 

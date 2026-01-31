@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class WeaponAbstract : MonoBehaviour
 {
@@ -30,9 +31,23 @@ public abstract class WeaponAbstract : MonoBehaviour
 	}
 
 	// Создание модели оружия
-	public void InstantiateWeaponModel(string handType)
+	public void InstantiateWeaponModel(WeaponHandsEnum handType)
 	{
-		
+		string handString = "";
+
+		switch (handType)
+		{
+			case WeaponHandsEnum.RightHand:
+				handString = "RightHand";
+				break;
+			case WeaponHandsEnum.LeftHand:
+				handString = "LeftHand";
+				break;
+			default:
+				throw new ArgumentException("Неверный тип руки.");
+		}
+
+
 		FirstPersonWeaponModelInstance = Instantiate(gameObject);
 		ThirdPersonWeaponModelInstance = Instantiate(gameObject);
 
@@ -40,7 +55,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 		foreach (Transform child in FirstPersonWeaponModelInstance.transform)
 			child.gameObject.layer = LayerMask.NameToLayer("FirstPerson");
 
-		if (handType == "left")
+		if (handString == "LeftHand")
 		{
 			firstPersonLeftHandWeaponSlotTransform = GameObject.Find("Slot1.L").transform;
 			FirstPersonWeaponModelInstance.transform.SetParent(firstPersonLeftHandWeaponSlotTransform, true);
@@ -48,7 +63,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 			thirdPersonLeftHandWeaponSlotTransform = GameObject.Find("Slot.L").transform;
 			ThirdPersonWeaponModelInstance.transform.SetParent(thirdPersonLeftHandWeaponSlotTransform, true);
 		}
-		else if (handType == "right")
+		else if (handString == "RightHand")
 		{
 			firstPersonRightHandWeaponSlotTransform = GameObject.Find("Slot1.R").transform;
 			FirstPersonWeaponModelInstance.transform.SetParent(firstPersonRightHandWeaponSlotTransform, true);

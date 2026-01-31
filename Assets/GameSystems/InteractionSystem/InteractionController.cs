@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 public class InteractionController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
-
+	private GameObject canvasHUDInteraction;
 
 	private float interactionRange = 50f; // Диапазон взаимодействия
 
@@ -19,7 +19,7 @@ public class InteractionController : MonoBehaviour
 	private TextMeshProUGUI[] itemsTexts; 
 	private Image[] itemsImages; 
 
-
+	private MenuManager menuManager;
 
 	private Sprite NoItemImageExeption;
 
@@ -39,8 +39,10 @@ public class InteractionController : MonoBehaviour
 
 	public void Initialize(
 		IInputDevice inputDevice,
+		MenuManager menuManager,
 		PlayerCameraController playerCameraController,
 		PlayerBehaviour playerBehaviour,
+		GameObject canvasHUDInteraction,
 		TextMeshProUGUI mainInteractionText,
 		TextMeshProUGUI additionalInteractionText,
 		TextMeshProUGUI[] itemsTexts, // Передача массива
@@ -50,6 +52,8 @@ public class InteractionController : MonoBehaviour
 		this.inputDevice = inputDevice;
 		this.playerCameraController = playerCameraController;
 		this.playerBehaviour = playerBehaviour;
+		this.menuManager = menuManager;
+		this.canvasHUDInteraction = canvasHUDInteraction;	
 
 		// Присваиваем новые массивы
 		this.itemsTexts = itemsTexts;
@@ -60,7 +64,23 @@ public class InteractionController : MonoBehaviour
 		this.additionalInteractionText = additionalInteractionText;
 
 		_isInitialized = true;
+
+		this.menuManager.OnOpenPauseMenu += HideCanvasHUDInteraction;
+		this.menuManager.OnClosePauseMenu += ShowCanvasHUDInteraction;
+		this.menuManager.OnOpenWeaponWheelMenu += HideCanvasHUDInteraction;
+		this.menuManager.OnCloseWeaponWheelMenu += ShowCanvasHUDInteraction;
+
 		Debug.Log("InteractionController Initialized");
+	}
+
+	private void ShowCanvasHUDInteraction()
+	{
+		canvasHUDInteraction.gameObject.SetActive(true);
+	}
+
+	private void HideCanvasHUDInteraction()
+	{
+		canvasHUDInteraction.gameObject.SetActive(false);
 	}
 
 
@@ -70,11 +90,15 @@ public class InteractionController : MonoBehaviour
 		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 			return;
-		
-		if (playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
-			interactionRange = 2.5f;
-		else if (playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
-			interactionRange = 2f + playerCameraController.PlayerCameraDistanceZ;
+
+		if (!menuManager.IsAnyMenuOpened)
+		{
+			if (playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
+				interactionRange = 2.5f;
+			else if (playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
+				interactionRange = 2f + playerCameraController.PlayerCameraDistanceZ;
+		}
+		else interactionRange = 0;
 
 		if (mainInteractionText != null)
 			mainInteractionText.text = null;

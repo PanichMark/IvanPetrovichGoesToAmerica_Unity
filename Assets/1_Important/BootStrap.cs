@@ -378,7 +378,7 @@ public class BootStrap : MonoBehaviour
 		backgroundBlack = CanvasHUDInteraction.transform.Find("BackgroundBlack")?.GetComponent<Image>();
 
 		// Инициализация взаимодействия
-		interactionController.Initialize(inputDevice, playerCameraController, playerBehaviour, mainInteractionText,
+		interactionController.Initialize(inputDevice, menuManager, playerCameraController, playerBehaviour, CanvasHUDInteraction, mainInteractionText,
 			additionalInteractionText, itemsTexts, itemsImages);
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 		yield break;

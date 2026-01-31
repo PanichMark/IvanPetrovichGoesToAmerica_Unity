@@ -4,9 +4,11 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
 	
-	public delegate void OpenPauseMenuEventHandler();
-	public event OpenPauseMenuEventHandler OnOpenPauseMenu;
-	public event OpenPauseMenuEventHandler OnClosePauseMenu;
+	public delegate void OpenMenuEventHandler();
+	public event OpenMenuEventHandler OnOpenPauseMenu;
+	public event OpenMenuEventHandler OnClosePauseMenu;
+	public event OpenMenuEventHandler OnOpenWeaponWheelMenu;
+	public event OpenMenuEventHandler OnCloseWeaponWheelMenu;
 
 	public IInputDevice inputDevice;
 	private GameController gameController;
@@ -62,7 +64,7 @@ public class MenuManager : MonoBehaviour
 	{
 		if (IsWeaponWheelMenuOpened)
 		{
-			CloseWeaponWheelMenu(true);
+			CloseWeaponWheelMenu();
 		}
 		PauseMenuLevel.Push(1);
 		OnOpenPauseMenu?.Invoke(); 
@@ -88,26 +90,26 @@ public class MenuManager : MonoBehaviour
 		Time.timeScale = 1f;
 	}
 
-	public void OpenWeaponWheelMenu(string handType)
+	public void OpenWeaponWheelMenu()
 	{
 		OpenAnyMenu();
 		IsWeaponWheelMenuOpened = true;
+		OnOpenWeaponWheelMenu?.Invoke();
 
-		if (handType == "right")
-			Debug.Log("Right WeaponWheelMenu opened");
-		else if (handType == "left")
-			Debug.Log("Left WeaponWheelMenu opened");
+
+		Debug.Log("WeaponWheelMenu opened");
+	
 	}
 
-	public void CloseWeaponWheelMenu(bool IsItRightWeaponWheelMenu)
+	public void CloseWeaponWheelMenu()
 	{
 		CloseAnyMenu();
 		IsWeaponWheelMenuOpened = false;
+		OnCloseWeaponWheelMenu?.Invoke();
 
-		if (IsItRightWeaponWheelMenu)
-			Debug.Log("Right WeaponWheelMenu closed");
-		else
-			Debug.Log("Left WeaponWheelMenu closed");
+
+		Debug.Log("WeaponWheelMenu closed");
+	
 	}
 
 	public void OpenAnyMenu()
