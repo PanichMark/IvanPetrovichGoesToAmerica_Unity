@@ -44,14 +44,14 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 		ReadStructure = ServiceLocator.Resolve<Image>("BackgroundBlack");
 		canvasReadNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasReadNoteMenu");
 		//Debug.Log(ReadStructure);
-		menuManager.OnCloseReadNoteMenu += CloseAndDeactivate;
+		//menuManager.OnCloseReadNoteMenu += CloseAndDeactivate;
 
 	}
 
 	
 	public void Interact()
 	{
-		menuManager.OpenInteractionMenu();
+		menuManager.OpenReadNoteMenu();
 
 		ReadStructure.gameObject.SetActive(true);
 
@@ -83,7 +83,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 		//Закрываем меню
 		canvasReadNoteMenu.SetActive(false);
 		menuManager.CloseReadNoteMenu();
-
+		
 		gameObject.tag = "Interactable";
 	}
 }

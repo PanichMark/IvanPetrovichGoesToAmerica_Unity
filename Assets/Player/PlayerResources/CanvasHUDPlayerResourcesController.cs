@@ -13,18 +13,20 @@ public class CanvasHUDPlayerResourcesController : MonoBehaviour
 
 		this.menuManager.OnOpenPauseMenu += HideCanvasHUDPlayerResources;
 		this.menuManager.OnClosePauseMenu += ShowCanvasHUDPlayerResources;
-		this.menuManager.OnOpenInteractionMenu += HideCanvasHUDPlayerResources;
-		this.menuManager.OnCloseInteractionMenu += ShowCanvasHUDPlayerResources;
-        Debug.Log("CanvasHUDPlayerResourcesController Initialized");
+		this.menuManager.OnOpenReadNoteMenu += HideCanvasHUDPlayerResources;
+		this.menuManager.OnCloseReadNoteMenu += ShowCanvasHUDPlayerResources;
+		this.menuManager.OnOpenLockpickMenu += HideCanvasHUDPlayerResources;
+		this.menuManager.OnCloseLockpickMenu += ShowCanvasHUDPlayerResources;
+		Debug.Log("CanvasHUDPlayerResourcesController Initialized");
 	}
     private void ShowCanvasHUDPlayerResources()
     {
-       //if (!menuManager.IsInteractionMenuOpened)
-      // {
+       if (!menuManager.IsReadNoteMenuOpened && !menuManager.IsLockpickMenuOpened)
+      {
 
         canvasHUDPlayerResources.SetActive(true);
         Debug.Log("Show canvasHUDPlayerResources");
-       // }
+        }
     }
 	private void HideCanvasHUDPlayerResources()
 	{

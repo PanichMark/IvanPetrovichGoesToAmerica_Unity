@@ -65,12 +65,9 @@ public class InteractionController : MonoBehaviour
 
 		_isInitialized = true;
 
-		this.menuManager.OnOpenPauseMenu += HideCanvasHUDInteraction;
-		this.menuManager.OnClosePauseMenu += ShowCanvasHUDInteraction;
-		this.menuManager.OnOpenWeaponWheelMenu += HideCanvasHUDInteraction;
-		this.menuManager.OnCloseWeaponWheelMenu += ShowCanvasHUDInteraction;
-		this.menuManager.OnOpenInteractionMenu += HideCanvasHUDInteraction;
-		this.menuManager.OnCloseInteractionMenu += ShowCanvasHUDInteraction;
+	
+		this.menuManager.OnOpenInteractionMenu += ShowCanvasHUDInteraction;
+		this.menuManager.OnCloseInteractionMenu += HideCanvasHUDInteraction;
 
 		Debug.Log("InteractionController Initialized");
 	}
@@ -78,13 +75,13 @@ public class InteractionController : MonoBehaviour
 	private void ShowCanvasHUDInteraction()
 	{
 		canvasHUDInteraction.gameObject.SetActive(true);
-		Debug.Log("Show canvasHUDInteraction");
+
 	}
 
 	private void HideCanvasHUDInteraction()
 	{
 		canvasHUDInteraction.gameObject.SetActive(false);
-		Debug.Log("Hide canvasHUDInteraction");
+	
 	}
 
 

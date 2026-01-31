@@ -100,7 +100,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		canvasLockpickMenu = ServiceLocator.Resolve<GameObject>("CanvasLockpickMenu");
 		buttonExitLockpickMenu = ServiceLocator.Resolve<Button>("ExitLockpick");
-		menuManager.OnCloseLockpickMenu += OnClosePuzzle;
+		//menuManager.OnCloseLockpickMenu += OnClosePuzzle;
 	}
 	
 
@@ -130,7 +130,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	
 	public void Interact()
 	{
-		menuManager.OpenInteractionMenu();
+		menuManager.OpenLockpickMenu();
 
 		// Создание экземпляров объектов
 		currentGearInstance = Instantiate(gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
@@ -202,6 +202,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		Destroy(currentCubeFollow);
 		gameObject.tag = "Interactable";
 		//ClosePuzzleButton?.gameObject.SetActive(false); // Скрываем кнопку
+		menuManager.CloseLockpickMenu();
 	}
 
 	private void CheckForIntersection()
