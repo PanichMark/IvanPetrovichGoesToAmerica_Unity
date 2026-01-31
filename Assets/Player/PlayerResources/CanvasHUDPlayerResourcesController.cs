@@ -22,11 +22,11 @@ public class CanvasHUDPlayerResourcesController : MonoBehaviour
     private void ShowCanvasHUDPlayerResources()
     {
        if (!menuManager.IsReadNoteMenuOpened && !menuManager.IsLockpickMenuOpened)
-      {
+       {
 
-        canvasHUDPlayerResources.SetActive(true);
-        Debug.Log("Show canvasHUDPlayerResources");
-        }
+           canvasHUDPlayerResources.SetActive(true);
+           Debug.Log("Show canvasHUDPlayerResources");
+       }
     }
 	private void HideCanvasHUDPlayerResources()
 	{

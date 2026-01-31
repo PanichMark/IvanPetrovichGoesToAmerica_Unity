@@ -81,7 +81,7 @@ public class MenuManager : MonoBehaviour
 		}
 		PauseMenuLevel.Push(1);
 		OnOpenPauseMenu?.Invoke(); 
-		CloseInteractionHUD();
+		
 		OpenAnyMenu();
 		gameController.MakePlayerNonControllable();
 
@@ -105,7 +105,7 @@ public class MenuManager : MonoBehaviour
 		{
 			gameController.MakePlayerControllable();
 
-			OpenInteractionHUD();
+			
 
 			CloseAnyMenu();
 			Time.timeScale = 1f;
@@ -141,6 +141,7 @@ public class MenuManager : MonoBehaviour
 		IsAnyMenuOpened = true;
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
+		CloseInteractionHUD();
 	}
 
 	public void CloseAnyMenu()
@@ -148,7 +149,7 @@ public class MenuManager : MonoBehaviour
 		IsAnyMenuOpened = false;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-		
+		OpenInteractionHUD();
 	}
 
 	public void OpenInteractionHUD()
@@ -178,7 +179,7 @@ public class MenuManager : MonoBehaviour
 		gameController.MakePlayerNonControllable();
 		OpenAnyMenu();
 		OnOpenReadNoteMenu?.Invoke();
-		CloseInteractionHUD();
+		
 		Debug.Log("ReadNoteMenu opened");
 	}
 	public void CloseReadNoteMenu()
@@ -199,7 +200,7 @@ public class MenuManager : MonoBehaviour
 		Time.timeScale = 0;
 		OnOpenLockpickMenu?.Invoke();
 		OpenAnyMenu();
-		CloseInteractionHUD();
+		
 		Debug.Log("LockpickMenu opened");
 
 	}

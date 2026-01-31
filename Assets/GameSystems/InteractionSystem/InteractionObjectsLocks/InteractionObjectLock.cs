@@ -15,7 +15,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	private GameObject canvasLockpickMenu;
 	private Button buttonExitLockpickMenu;           // Кнопка закрытия пазла
 	private MenuManager menuManager;                             // Менеджер меню
-
+	private bool IsPuzzleActive;
 	public bool WasUnlocked { get; private set; } = false;
 	private string interactionObjectNameUI;                      // Название объекта интерфейса
 	private bool isMovingOrRotating = false;                     // Блокировка взаимодействия
@@ -40,7 +40,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	public string AdditionalInteractionHint => throw new NotImplementedException();
 	public bool IsAdditionalInteractionHintActive => false;
 	public string InteractionObjectNameUI => interactionObjectNameUI;
-
+	private SaveLoadController saveLoadController;
 	/*
 	private void OnDrawGizmos()
 	{
@@ -101,12 +101,17 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		canvasLockpickMenu = ServiceLocator.Resolve<GameObject>("CanvasLockpickMenu");
 		buttonExitLockpickMenu = ServiceLocator.Resolve<Button>("ExitLockpick");
 		//menuManager.OnCloseLockpickMenu += OnClosePuzzle;
+		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
+		saveLoadController.OnSafeFileLoad += OnClosePuzzle;
+
+		menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
+		menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
 	}
 	
 
 	private void Update()
 	{
-		if (!isMovingOrRotating && currentGearInstance != null)
+		if (!isMovingOrRotating && currentGearInstance != null && !menuManager.IsPauseMenuOpened)
 		{
 			// Движение возможно только в открытых направлениях
 			if (_canMoveUp && Input.GetKeyDown(KeyCode.UpArrow))
@@ -128,10 +133,31 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		}
 	}
 	
+	private void HidePuzzleCanvas()
+	{
+		if (IsPuzzleActive)
+		{
+			canvasLockpickMenu.SetActive(false);
+			currentGearInstance.SetActive(false);
+			currentCubeFollow.SetActive(false);
+		}
+	}
+
+	private void ShowPuzzleCanvas()
+	{
+		if (IsPuzzleActive)
+		{
+			canvasLockpickMenu.SetActive(true);
+			currentGearInstance.SetActive(true);
+			currentCubeFollow.SetActive(true);
+		}
+	}
+
+
 	public void Interact()
 	{
 		menuManager.OpenLockpickMenu();
-
+		IsPuzzleActive = true;
 		// Создание экземпляров объектов
 		currentGearInstance = Instantiate(gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
 		currentGearInstance.transform.LookAt(Camera.main.transform);
@@ -196,13 +222,17 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 
 	private void OnClosePuzzle()
 	{
-		canvasLockpickMenu.SetActive(false);
-		//menuManager.CloseLockpickMenu();
-		Destroy(currentGearInstance);
-		Destroy(currentCubeFollow);
-		gameObject.tag = "Interactable";
-		//ClosePuzzleButton?.gameObject.SetActive(false); // Скрываем кнопку
-		menuManager.CloseLockpickMenu();
+		if (IsPuzzleActive)
+		{
+			IsPuzzleActive = false;
+			canvasLockpickMenu.SetActive(false);
+			//menuManager.CloseLockpickMenu();
+			Destroy(currentGearInstance);
+			Destroy(currentCubeFollow);
+			gameObject.tag = "Interactable";
+			//ClosePuzzleButton?.gameObject.SetActive(false); // Скрываем кнопку
+			menuManager.CloseLockpickMenu();
+		}
 	}
 
 	private void CheckForIntersection()

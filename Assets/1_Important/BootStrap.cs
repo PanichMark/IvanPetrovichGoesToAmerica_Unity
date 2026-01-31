@@ -423,7 +423,7 @@ public class BootStrap : MonoBehaviour
 		ServiceLocator.Register("PlayerResourcesManaManager", playerResourcesManaManager);
 		ServiceLocator.Register("CanvasLockpickMenu", canvasLockpickMenu);
 		ServiceLocator.Register("CanvasReadNoteMenu", canvasReadNoteMenu);
-
+		ServiceLocator.Register("SaveLoadController", saveLoadController);
 		Debug.Log("SERVICE REGISTERED");
 		yield break;
 	}

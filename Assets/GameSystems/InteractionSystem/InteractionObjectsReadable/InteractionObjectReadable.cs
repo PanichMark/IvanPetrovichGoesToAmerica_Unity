@@ -9,7 +9,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 	[SerializeField] private string interactionObjectNameUI;
 
 	private MenuManager menuManager;
-
+	private bool IsReading;
 	public string InteractionObjectNameUI => interactionObjectNameUI;
 
 	public string MainInteractionHint => $"Прочитать {InteractionObjectNameUI}";
@@ -20,8 +20,8 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 
 	[SerializeField] private Sprite Image;
 
-	
 
+	private SaveLoadController saveLoadController;
 	
 
 	[SerializeField] private TextAsset textFile; // Поле для выбора текстового файла
@@ -43,16 +43,37 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 		descriptionText = ServiceLocator.Resolve<TextMeshProUGUI>("ReadableText");
 		ReadStructure = ServiceLocator.Resolve<Image>("BackgroundBlack");
 		canvasReadNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasReadNoteMenu");
+		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		//Debug.Log(ReadStructure);
 		//menuManager.OnCloseReadNoteMenu += CloseAndDeactivate;
+		saveLoadController.OnSafeFileLoad += CloseAndDeactivate;
+
+
+		menuManager.OnOpenPauseMenu += HideReadNoteCanvas;
+		menuManager.OnClosePauseMenu += ShowReadNoteCanvas;
 
 	}
 
-	
+	private void HideReadNoteCanvas()
+	{
+		if (IsReading)
+		{
+			canvasReadNoteMenu.SetActive(false);
+		}
+	}
+
+	private void ShowReadNoteCanvas()
+	{
+		if (IsReading)
+		{
+			canvasReadNoteMenu.SetActive(true);
+		}
+	}
+
 	public void Interact()
 	{
 		menuManager.OpenReadNoteMenu();
-
+		IsReading = true;
 		ReadStructure.gameObject.SetActive(true);
 
 		
@@ -75,15 +96,19 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 	// Новый метод для закрытия меню и деактивации элементов
 	private void CloseAndDeactivate()
 	{
-		// Деактивируем объекты
+		if (IsReading)
+		{
+			IsReading = false;
+			// Деактивируем объекты
 
-		//ExitButton.gameObject.SetActive(false);
-		ImageComponent.sprite = null;
-		descriptionText.text = null;
-		//Закрываем меню
-		canvasReadNoteMenu.SetActive(false);
-		menuManager.CloseReadNoteMenu();
-		
-		gameObject.tag = "Interactable";
+			//ExitButton.gameObject.SetActive(false);
+			ImageComponent.sprite = null;
+			descriptionText.text = null;
+			//Закрываем меню
+			canvasReadNoteMenu.SetActive(false);
+			menuManager.CloseReadNoteMenu();
+
+			gameObject.tag = "Interactable";
+		}
 	}
 }
