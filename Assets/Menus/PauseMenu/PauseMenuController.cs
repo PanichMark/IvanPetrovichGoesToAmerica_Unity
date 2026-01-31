@@ -6,7 +6,7 @@ public class PauseMenuController : MonoBehaviour
 	private IInputDevice inputDevice;
     private MenuManager menuManager;
 	private GameObject PauseMenuCanvas;
-
+	private SaveLoadController saveLoadController;
 	private GameObject[] buttonsPauseMenu;
 
 	public delegate void OpenPauseMenuEventHandler();
@@ -17,13 +17,13 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnOpenSettingsSubMenu;
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
-	public void Initialize( IInputDevice inputDevice, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject[] buttonsPauseMenu)
+	public void Initialize( IInputDevice inputDevice, SaveLoadController saveLoadController, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject[] buttonsPauseMenu)
 	{
 		this.inputDevice = inputDevice;
 		this.menuManager = menuManager;
 		this.PauseMenuCanvas = PauseMenuCanvas;
 		this.buttonsPauseMenu = buttonsPauseMenu;
-
+		this.saveLoadController = saveLoadController;
 		this.buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(menuManager.ClosePauseMenu);     
 		this.buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
 		this.buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
@@ -35,7 +35,7 @@ public class PauseMenuController : MonoBehaviour
 		this.menuManager.OnClosePauseMenu += HidePauseMenu;
 
 		_isInitialized = true;
-
+		this.saveLoadController.OnSafeFileLoad += CloseSubMenu;
 		Debug.Log("PauseMenu Initialized");
 	}
 	private bool _isInitialized = false;
@@ -64,6 +64,12 @@ public class PauseMenuController : MonoBehaviour
 		PauseMenuCanvas.gameObject.SetActive(false);
 	}
 	
+	public void CloseSubMenu()
+	{
+		OnClosePauseSubMenu.Invoke();
+		menuManager.PauseMenuLevel.Pop();
+	}
+
 	public void OpenSaveSubMenu()
 	{
 		OnOpenSaveSubMenu?.Invoke();

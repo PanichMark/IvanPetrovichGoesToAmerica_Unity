@@ -33,11 +33,12 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		this.buttonsDeleteGame = buttonsDeleteGame;
 
 
-		this.buttonsLoadGame[0].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(1));
-		this.buttonsLoadGame[1].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(2));
-		this.buttonsLoadGame[2].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(3));
-		this.buttonsLoadGame[3].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(4));
-		this.buttonsLoadGame[4].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.LoadGame(5));
+		this.buttonsLoadGame[0].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(1)));
+		this.buttonsLoadGame[1].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(2)));
+		this.buttonsLoadGame[2].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(3)));
+		this.buttonsLoadGame[3].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(4)));
+		this.buttonsLoadGame[4].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(5)));
+
 
 		this.buttonsDeleteGame[0].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(1));
 		this.buttonsDeleteGame[1].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(2));

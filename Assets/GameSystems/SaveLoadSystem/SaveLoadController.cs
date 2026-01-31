@@ -10,10 +10,11 @@ using UnityEngine.SceneManagement;
 
 public class SaveLoadController : MonoBehaviour
 {
-	public delegate void GameSafeFileDeleteHandler();
-	public event GameSafeFileDeleteHandler OnSafeFileDelete;
+	public delegate void GameSafeFileHandler();
+	public event GameSafeFileHandler OnSafeFileDelete;
+	public event GameSafeFileHandler OnSafeFileLoad;
 
-
+	private GameSceneManager gameSceneManager;
 	private string fileSaveDataTEMP = "";
 	private string fileSaveDataName1 = "";
 	private string fileSaveDataName2 = "";
@@ -27,8 +28,9 @@ public class SaveLoadController : MonoBehaviour
 	private List<ISaveLoad> saveLoadObjects;
 	private FileDataHandler fileDataHandler;
 
-	public void Initialize()
+	public void Initialize(GameSceneManager gameSceneManager)
 	{
+		this.gameSceneManager = gameSceneManager;
 		fileSaveDataTEMP = "SaveGameTEMP.json";
 		fileSaveDataName1 = "SaveGame1.json";
 		fileSaveDataName2 = "SaveGame2.json";
@@ -170,15 +172,15 @@ public class SaveLoadController : MonoBehaviour
 		IsSavingFinished = true;
 	}
 
-	public void LoadGame(int loadSlotNumber)
+	public IEnumerator LoadGame(int loadSlotNumber)
 	{
 		if (this.gameData == null)
 		{
 			Debug.Log("NO GAMEDATA TO LOAD");
-			return;
+			yield break;
 		}
 
-
+		OnSafeFileLoad?.Invoke();
 
 		if (loadSlotNumber == 1)
 		{
@@ -206,35 +208,34 @@ public class SaveLoadController : MonoBehaviour
 			
 		}
 
-		
-		
 
 
 
-		if (this.gameData == null)
+		// Загружаем данные из файла
+		this.gameData = fileDataHandler.Load();
+
+		// Извлекаем имя сцены из данных
+		string sceneName = gameData.CurrentSceneNameSystem;
+
+		foreach (ISaveLoad loadLoadObj in saveLoadObjects)
 		{
-			Debug.Log("No data to load found in slot " + loadSlotNumber);
+			loadLoadObj.LoadData(gameData);
+		}
+
+		// Начинаем загрузку сцены через GameSceneManager
+		yield return StartCoroutine(gameSceneManager.LoadScene((ScenesEnum)Enum.Parse(typeof(ScenesEnum), sceneName)));
+
+
+		
+
+		
+
 			
 
+		
 
-			return;
-		}
-		else
-		{
-			this.gameData = fileDataHandler.Load();
-
-			foreach (ISaveLoad loadLoadObj in saveLoadObjects)
-			{
-				loadLoadObj.LoadData(gameData);
-			}
-
-			
-
-			string sceneName = gameData.CurrentSceneNameSystem;
-
-		//	SceneManager.LoadSceneAsync(sceneName);
-			//Debug.Log($"Scene {sceneName} loaded");
-		}
+	
+		
 	}
 
 	public void DeleteGame(int deleteSlotNumber)

@@ -12,15 +12,16 @@ public class MenuManager : MonoBehaviour
 
 	public IInputDevice inputDevice;
 	private GameController gameController;
-
+	private SaveLoadController saveLoadController;
 
 
 	public Stack<int> PauseMenuLevel = new Stack<int>();
 
-	public void Initialize(IInputDevice inputDevice, GameController gameController)
+	public void Initialize(IInputDevice inputDevice, GameController gameController, SaveLoadController saveLoadController)
 	{
 		this.inputDevice = inputDevice;
 		this.gameController = gameController;
+		this.saveLoadController = saveLoadController;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
@@ -29,6 +30,7 @@ public class MenuManager : MonoBehaviour
 		IsWeaponWheelMenuOpened = false;
 		IsAnyMenuOpened = false;
 		_isInitialized = true;
+		this.saveLoadController.OnSafeFileLoad += ClosePauseMenu;
 		Debug.Log("MenuManager Initialized");
 	}
 	private bool _isInitialized = false;
@@ -89,6 +91,8 @@ public class MenuManager : MonoBehaviour
 
 		Time.timeScale = 1f;
 	}
+
+	
 
 	public void OpenWeaponWheelMenu()
 	{

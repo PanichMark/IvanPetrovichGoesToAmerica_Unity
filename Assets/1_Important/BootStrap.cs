@@ -193,7 +193,7 @@ public class BootStrap : MonoBehaviour
 
 		dataSaveLoadControllerGameObject = new GameObject("DataSaveLoadController");
 		saveLoadController = dataSaveLoadControllerGameObject.AddComponent<SaveLoadController>();
-		saveLoadController.Initialize();
+		saveLoadController.Initialize(gameSceneManager);
 		Debug.Log("SAVE SYSTEM INITIALIZED");
 		yield break;
 	}
@@ -313,8 +313,8 @@ public class BootStrap : MonoBehaviour
 		};
 
 		// Инициализация меню
-		menuManager.Initialize(inputDevice, gameController);
-		pauseMenuController.Initialize(inputDevice, menuManager, canvasPauseMenu, buttonsPauseMenu);
+		menuManager.Initialize(inputDevice, gameController, saveLoadController);
+		pauseMenuController.Initialize(inputDevice, saveLoadController, menuManager,  canvasPauseMenu, buttonsPauseMenu);
 		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonsDeleteGame);
 		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages);
