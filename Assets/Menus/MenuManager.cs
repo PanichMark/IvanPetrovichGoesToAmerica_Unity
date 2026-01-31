@@ -9,6 +9,12 @@ public class MenuManager : MonoBehaviour
 	public event OpenMenuEventHandler OnClosePauseMenu;
 	public event OpenMenuEventHandler OnOpenWeaponWheelMenu;
 	public event OpenMenuEventHandler OnCloseWeaponWheelMenu;
+	public event OpenMenuEventHandler OnOpenInteractionMenu;
+	public event OpenMenuEventHandler OnCloseInteractionMenu;
+	public event OpenMenuEventHandler OnOpenReadNoteMenu;
+	public event OpenMenuEventHandler OnCloseReadNoteMenu;
+	public event OpenMenuEventHandler OnOpenLockpickMenu;
+	public event OpenMenuEventHandler OnCloseLockpickMenu;
 
 	public IInputDevice inputDevice;
 	private GameController gameController;
@@ -31,6 +37,10 @@ public class MenuManager : MonoBehaviour
 		IsAnyMenuOpened = false;
 		_isInitialized = true;
 		this.saveLoadController.OnSafeFileLoad += ClosePauseMenu;
+		this.saveLoadController.OnSafeFileLoad += CloseWeaponWheelMenu;
+		this.saveLoadController.OnSafeFileLoad += CloseInteractionMenu;
+		this.saveLoadController.OnSafeFileLoad += CloseReadNoteMenu;
+		this.saveLoadController.OnSafeFileLoad += CloseLockpickMenu;
 		Debug.Log("MenuManager Initialized");
 	}
 	private bool _isInitialized = false;
@@ -39,7 +49,7 @@ public class MenuManager : MonoBehaviour
 	public bool IsWeaponWheelMenuOpened { get; private set; }
 	public bool IsAnyMenuOpened { get; private set; }
 
-
+	public bool IsInteractionMenuOpened { get; private set; }
 
 
 	void Update()
@@ -81,15 +91,20 @@ public class MenuManager : MonoBehaviour
 
 	public void ClosePauseMenu()
 	{
+
 		OnClosePauseMenu?.Invoke();
 		Debug.Log("PauseMenu closed");
-		CloseAnyMenu();
-		gameController.MakePlayerControllable();
-		PauseMenuLevel.Pop();
-		
-		IsPauseMenuOpened = false;
 
-		Time.timeScale = 1f;
+		IsPauseMenuOpened = false;
+		PauseMenuLevel.Pop();
+
+		if (!IsInteractionMenuOpened)
+		{
+			gameController.MakePlayerControllable();
+		
+			CloseAnyMenu();
+			Time.timeScale = 1f;
+		}
 	}
 
 	
@@ -129,19 +144,53 @@ public class MenuManager : MonoBehaviour
 
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
+
 	}
 
 	public void OpenInteractionMenu()
 	{
+		OnOpenInteractionMenu?.Invoke();
+
 		Time.timeScale = 0f;
-		
+		gameController.MakePlayerNonControllable();
 		OpenAnyMenu();
+		IsInteractionMenuOpened = true;
+		Debug.Log("InteractionMenu opened");
 	}
 
 	public void CloseInteractionMenu()
 	{
-		
+		OnCloseInteractionMenu?.Invoke();
 		Time.timeScale = 1f;
+		CloseAnyMenu();
+		IsInteractionMenuOpened = false;
+		gameController.MakePlayerControllable();
+		Debug.Log("InteractionMenu closed");
+
+	}
+
+	public void OpenReadNoteMenu()
+	{
+		OnOpenReadNoteMenu?.Invoke();
+	}
+	public void CloseReadNoteMenu()
+	{
+	
+			OnCloseLockpickMenu?.Invoke();
+
+		gameController.MakePlayerControllable();
+		CloseAnyMenu();
+	}
+	public void OpenLockpickMenu()
+	{
+		OnOpenLockpickMenu?.Invoke();
+	}
+	public void CloseLockpickMenu()
+	{
+		
+			OnCloseLockpickMenu?.Invoke();
+		gameController.MakePlayerControllable();
+
 		CloseAnyMenu();
 	}
 }

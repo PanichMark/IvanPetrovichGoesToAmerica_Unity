@@ -12,7 +12,8 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	[SerializeField] private float rotationSpeed;                // Скорость вращения
 	[SerializeField] private float moveSpeed;                    // Скорость перемещения
 	[SerializeField] private GameObject CubeFollow;              // Префаб следящего куба
-	private Button ClosePuzzleButton;           // Кнопка закрытия пазла
+	private GameObject canvasLockpickMenu;
+	private Button buttonExitLockpickMenu;           // Кнопка закрытия пазла
 	private MenuManager menuManager;                             // Менеджер меню
 
 	public bool WasUnlocked { get; private set; } = false;
@@ -97,8 +98,12 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	{
 		// Разрешаем объекты через ключи
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		ClosePuzzleButton = ServiceLocator.Resolve<Button>("ExitInteraction");
+		canvasLockpickMenu = ServiceLocator.Resolve<GameObject>("CanvasLockpickMenu");
+		buttonExitLockpickMenu = ServiceLocator.Resolve<Button>("ExitLockpick");
+		menuManager.OnCloseLockpickMenu += OnClosePuzzle;
 	}
+	
+
 	private void Update()
 	{
 		if (!isMovingOrRotating && currentGearInstance != null)
@@ -144,10 +149,10 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		}
 
 		// Настройка кнопок
-		
-			ClosePuzzleButton.onClick.RemoveAllListeners();      // Удаляем предыдущие события
-			ClosePuzzleButton.onClick.AddListener(OnClosePuzzle);// Присваиваем обработчик
-			ClosePuzzleButton.gameObject.SetActive(true);       // Активируем кнопку
+		canvasLockpickMenu.SetActive(true);
+		buttonExitLockpickMenu.onClick.RemoveAllListeners();      // Удаляем предыдущие события
+		buttonExitLockpickMenu.onClick.AddListener(OnClosePuzzle);// Присваиваем обработчик
+		//ClosePuzzleButton.gameObject.SetActive(true);       // Активируем кнопку
 		
 
 		gameObject.tag = "Untagged"; // Меняем тег объекта
@@ -191,11 +196,12 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 
 	private void OnClosePuzzle()
 	{
-		menuManager.CloseInteractionMenu();
+		canvasLockpickMenu.SetActive(false);
+		//menuManager.CloseLockpickMenu();
 		Destroy(currentGearInstance);
 		Destroy(currentCubeFollow);
 		gameObject.tag = "Interactable";
-		ClosePuzzleButton?.gameObject.SetActive(false); // Скрываем кнопку
+		//ClosePuzzleButton?.gameObject.SetActive(false); // Скрываем кнопку
 	}
 
 	private void CheckForIntersection()

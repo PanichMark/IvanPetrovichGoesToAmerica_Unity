@@ -68,7 +68,7 @@ public class WeaponController : MonoBehaviour
 
 		if (leftHandWeaponComponent != null)
 		{
-			HideWeapon(WeaponHandsEnum.RightHand); // Скрыть оружие левой руки
+			HideWeapon(WeaponHandsEnum.LeftHand); // Скрыть оружие левой руки
 		}
 	}
 

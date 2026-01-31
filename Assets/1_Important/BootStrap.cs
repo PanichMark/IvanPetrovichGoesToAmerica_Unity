@@ -4,10 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static Unity.VisualScripting.Icons;
+
 
 public class BootStrap : MonoBehaviour
 {
+	// Экран Инициализации Bootstrap
 	private GameObject tempCameraObject;
 	[SerializeField] private GameObject canvasBootstrap;
 	private TMP_Text loadingStatusText;
@@ -47,12 +48,13 @@ public class BootStrap : MonoBehaviour
 
 	// Игрок ресурсы
 	private GameObject playerResourcesGameObject;
+	private CanvasHUDPlayerResourcesController canvasHUDPlayerResourcesController;
+	[SerializeField] private GameObject canvasHUDPlayerResources;
 	// Игрок ресурсы деньги
 	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
 	private TMP_Text playerMoneyTextGameObject;
 	// Игрок ресурсы здоровье
 	private PlayerResourcesHealthManager playerResourcesHealthManager;
-	[SerializeField] private GameObject canvasPlayerHUDMain;
 	private Slider HealthBarSlider;
 	private Button HealingItemButton;
 	private TextMeshProUGUI HealingItemNumber;
@@ -102,10 +104,13 @@ public class BootStrap : MonoBehaviour
 	// Система взаимодействия
 	private GameObject interactionControllerGameObject;
 	private InteractionController interactionController;
-	[SerializeField] private GameObject CanvasHUDInteraction;
+	[SerializeField] private GameObject canvasHUDInteraction;
+	[SerializeField] private GameObject canvasReadNoteMenu;
+	[SerializeField] private GameObject canvasLockpickMenu;
 	private TextMeshProUGUI mainInteractionText;
 	private TextMeshProUGUI additionalInteractionText;
-	private Button exitInteraction;
+	private Button buttonExitReadNoteMenu;
+	private Button buttonExitLockpickMenu;
 	private TextMeshProUGUI readableText;
 	private Image backgroundBlack;
 	private TextMeshProUGUI[] itemsTexts;
@@ -136,6 +141,7 @@ public class BootStrap : MonoBehaviour
 		yield return StartCoroutine(InitializePlayerResources());
 		yield return StartCoroutine(InitializeWeaponSystem());
 		yield return StartCoroutine(InitializeInteractionSystem());
+		yield return StartCoroutine(InitializeFinalSystems());
 		yield return StartCoroutine(RegisterAllDependencies());
 
 		Destroy(tempCameraObject);
@@ -171,9 +177,11 @@ public class BootStrap : MonoBehaviour
 		canvasPauseSubMenuImages = Instantiate(canvasPauseSubMenuImages);
 		canvasPauseSubMenuSettings = Instantiate(canvasPauseSubMenuSettings);
 		canvasMenuWeaponWheel = Instantiate(canvasMenuWeaponWheel);
-		CanvasHUDInteraction = Instantiate(CanvasHUDInteraction);
-		canvasPlayerHUDMain = Instantiate(canvasPlayerHUDMain);
+		canvasHUDInteraction = Instantiate(canvasHUDInteraction);
+		canvasHUDPlayerResources = Instantiate(canvasHUDPlayerResources);
 		canvasLoadingScreen = Instantiate(canvasLoadingScreen);
+		canvasReadNoteMenu = Instantiate(canvasReadNoteMenu);
+		canvasLockpickMenu = Instantiate(canvasLockpickMenu);
 		yield break;
 	}
 
@@ -241,17 +249,19 @@ public class BootStrap : MonoBehaviour
 		playerResourcesGameObject = new GameObject("PlayerResources");
 
 		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber")?.GetComponent<TMP_Text>();
-		HealthBarSlider = canvasPlayerHUDMain.transform.Find("Health Slider")?.GetComponent<Slider>();
+		HealthBarSlider = canvasHUDPlayerResources.transform.Find("Health Slider")?.GetComponent<Slider>();
 		HealingItemButton = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemButton")?.GetComponent<Button>();
 		HealingItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemsNumber")?.GetComponent<TextMeshProUGUI>();
-		ManaBarSlider = canvasPlayerHUDMain.transform.Find("Mana Slider")?.GetComponent<Slider>();
+		ManaBarSlider = canvasHUDPlayerResources.transform.Find("Mana Slider")?.GetComponent<Slider>();
 		ManaReplenishtemButton = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemButton ")?.GetComponent<Button>();
 		ManaReplenishItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemsNumber")?.GetComponent<TextMeshProUGUI>();
 
+		canvasHUDPlayerResourcesController = playerResourcesGameObject.AddComponent<CanvasHUDPlayerResourcesController>();
 		playerResourcesMoneyManager = playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
 		playerResourcesHealthManager = playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
 		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
 
+		canvasHUDPlayerResourcesController.Initialize(menuManager, canvasHUDPlayerResources);
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
 		playerResourcesHealthManager.Initialize(HealthBarSlider, HealingItemButton, HealingItemNumber);
 		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
@@ -358,29 +368,39 @@ public class BootStrap : MonoBehaviour
 		interactionController = interactionControllerGameObject.AddComponent<InteractionController>();
 
 		// Элементы HUD
-		mainInteractionText = CanvasHUDInteraction.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
-		additionalInteractionText = CanvasHUDInteraction.transform.Find("additionalInteractionText")?.GetComponent<TextMeshProUGUI>();
+		mainInteractionText = canvasHUDInteraction.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
+		additionalInteractionText = canvasHUDInteraction.transform.Find("additionalInteractionText")?.GetComponent<TextMeshProUGUI>();
 		itemsTexts = new TextMeshProUGUI[]
 		{
-			CanvasHUDInteraction.transform.Find("Item1text").GetComponent<TextMeshProUGUI>(),
-			CanvasHUDInteraction.transform.Find("Item2text").GetComponent<TextMeshProUGUI>(),
-			CanvasHUDInteraction.transform.Find("Item3text").GetComponent<TextMeshProUGUI>()
+			canvasHUDInteraction.transform.Find("Item1text").GetComponent<TextMeshProUGUI>(),
+			canvasHUDInteraction.transform.Find("Item2text").GetComponent<TextMeshProUGUI>(),
+			canvasHUDInteraction.transform.Find("Item3text").GetComponent<TextMeshProUGUI>()
 		};
 		itemsImages = new Image[]
 		{
-			CanvasHUDInteraction.transform.Find("Image1Icon").GetComponent<Image>(),
-			CanvasHUDInteraction.transform.Find("Image2Icon").GetComponent<Image>(),
-			CanvasHUDInteraction.transform.Find("Image3Icon").GetComponent<Image>()
+			canvasHUDInteraction.transform.Find("Image1Icon").GetComponent<Image>(),
+			canvasHUDInteraction.transform.Find("Image2Icon").GetComponent<Image>(),
+			canvasHUDInteraction.transform.Find("Image3Icon").GetComponent<Image>()
 		};
-		exitInteraction = CanvasHUDInteraction.transform.Find("ExitInteraction")?.GetComponent<Button>();
-		imageNewspaper = CanvasHUDInteraction.transform.Find("ReadableImage")?.GetComponent<Image>();
-		readableText = CanvasHUDInteraction.transform.Find("ReadableText")?.GetComponent<TextMeshProUGUI>();
-		backgroundBlack = CanvasHUDInteraction.transform.Find("BackgroundBlack")?.GetComponent<Image>();
+		buttonExitReadNoteMenu = canvasReadNoteMenu.transform.Find("ExitReadNote")?.GetComponent<Button>();
+		imageNewspaper = canvasReadNoteMenu.transform.Find("ReadableImage")?.GetComponent<Image>();
+		readableText = canvasReadNoteMenu.transform.Find("ReadableText")?.GetComponent<TextMeshProUGUI>();
+		backgroundBlack = canvasReadNoteMenu.transform.Find("BackgroundBlack")?.GetComponent<Image>();
+		buttonExitLockpickMenu = canvasLockpickMenu.transform.Find("ExitLockpick")?.GetComponent<Button>();
 
 		// Инициализация взаимодействия
-		interactionController.Initialize(inputDevice, menuManager, playerCameraController, playerBehaviour, CanvasHUDInteraction, mainInteractionText,
+		interactionController.Initialize(inputDevice, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
 			additionalInteractionText, itemsTexts, itemsImages);
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
+		yield break;
+	}
+
+	private IEnumerator InitializeFinalSystems()
+	{
+		playerCameraFirstPersonRender.Initialize(playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHeadParent, playerHandRightParent, playerHandLeftParent);
+		playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, movementController, playerCameraController, weaponController);
+
+		Debug.Log("FINAL SYSTEMS INITIALIZED");
 		yield break;
 	}
 
@@ -393,13 +413,16 @@ public class BootStrap : MonoBehaviour
 		ServiceLocator.Register("Player", playerGameObject);
 		ServiceLocator.Register("MenuManager", menuManager);
 		ServiceLocator.Register("WeaponController", weaponController);
-		ServiceLocator.Register("ExitInteraction", exitInteraction);
+		ServiceLocator.Register("ExitReadNote", buttonExitReadNoteMenu);
+		ServiceLocator.Register("ExitLockpick", buttonExitLockpickMenu);
 		ServiceLocator.Register("ImageNewspaper", imageNewspaper);
 		ServiceLocator.Register("ReadableText", readableText);
 		ServiceLocator.Register("BackgroundBlack", backgroundBlack);
 		ServiceLocator.Register("PlayerResourcesMoneyManager", playerResourcesMoneyManager);
 		ServiceLocator.Register("PlayerResourcesHealthManager", playerResourcesHealthManager);
 		ServiceLocator.Register("PlayerResourcesManaManager", playerResourcesManaManager);
+		ServiceLocator.Register("CanvasLockpickMenu", canvasLockpickMenu);
+		ServiceLocator.Register("CanvasReadNoteMenu", canvasReadNoteMenu);
 
 		Debug.Log("SERVICE REGISTERED");
 		yield break;
