@@ -7,15 +7,12 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
 
 
-	public override string InteractionObjectNameSystem => "HealingItem";
-	public override string InteractionObjectNameUI => "Лечащий предмет";
+
+	
 
 	public override string InteractionHintMessageAdditional => $"Максимум {InteractionObjectNameUI}";
 
-	private void Awake()
-	{
-		playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
-	}
+	
 
 	public override void Interact()
 	{
@@ -31,6 +28,11 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 		else isAdditionalInteractionHintActive = true;
 	}
 
+	protected override void ThisMethodSetsActionName()
+	{
+		playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
 	
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+	}
 }
 

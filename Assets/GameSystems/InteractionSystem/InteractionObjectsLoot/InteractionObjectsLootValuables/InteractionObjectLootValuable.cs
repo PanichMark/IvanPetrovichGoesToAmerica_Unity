@@ -2,17 +2,26 @@
 
 public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 {
-	[SerializeField]
-	private int _moneyValue;
-
 	
+	[SerializeField] private int moneyValue;
+
+	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
+	
+
 
 	public override void Interact()
 	{
-		Debug.Log($"Вы подняли {InteractionObjectNameUI}, получаете {_moneyValue} рублей");
+		Debug.Log($"Picked up {InteractionObjectNameUI}, recieved {moneyValue} rubles");
 		Destroy(gameObject);
-		//PlayerMoneyManager.Instance.AddMoney(MoneyValue);
+		playerResourcesMoneyManager.AddMoney(moneyValue);
 		WasLootItemCollected = true;
+	}
+
+	protected override void ThisMethodSetsActionName()
+	{
+	
+		playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 	}
 }
 

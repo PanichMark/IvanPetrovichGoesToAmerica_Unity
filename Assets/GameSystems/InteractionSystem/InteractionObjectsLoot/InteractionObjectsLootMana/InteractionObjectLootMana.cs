@@ -6,15 +6,10 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
 	private PlayerResourcesManaManager playerResourcesManaManager;
 
-	public override string InteractionObjectNameSystem => "ManaReplenishItem";
-	public override string InteractionObjectNameUI => "Предмет восстаналивает ману";
 
 	public override string InteractionHintMessageAdditional => $"Максимум {InteractionObjectNameUI}";
 
-	private void Awake()
-	{
-		playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
-	}
+
 
 
 	public override void Interact()
@@ -31,6 +26,11 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 		else isAdditionalInteractionHintActive = true;
 	}
 
+	protected override void ThisMethodSetsActionName()
+	{
 	
+		playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+	}
 }
 

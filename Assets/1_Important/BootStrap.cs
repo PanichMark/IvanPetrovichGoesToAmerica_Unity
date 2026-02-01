@@ -161,7 +161,7 @@ public class BootStrap : MonoBehaviour
 		ServiceLocator.ClearServices();
 		gameController = new GameController();
 		localizationManager = new LocalizationManager();
-		localizationManager.ChangeLanguage(LanguagesEnum.English);
+		localizationManager.ChangeLanguage(LanguagesEnum.Russian);
 		inputDevice = new InputKeyboard(gameController);
 		Debug.Log("INTERFACES INITIALIZED");
 		yield break;

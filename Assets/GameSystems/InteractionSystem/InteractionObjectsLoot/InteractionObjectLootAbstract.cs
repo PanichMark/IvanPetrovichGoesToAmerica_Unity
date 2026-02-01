@@ -6,22 +6,35 @@ using UnityEngine.UI;
 
 public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractable, IInteractGainedItem, ISaveLoad
 {
-	[SerializeField]
-	private string _interactionItemNameSystem;
-	public virtual string InteractionObjectNameSystem => _interactionItemNameSystem;
+	
+	[SerializeField] protected string interactionObjectNameSystem;
+	public virtual string InteractionObjectNameSystem => interactionObjectNameSystem;
+	protected LocalizationManager localizationManager;
 
-
-	[SerializeField]
-	private string _interactionItemNameUI;
-	public virtual string InteractionObjectNameUI => _interactionItemNameUI;
+	
+	public virtual string InteractionObjectNameUI {  get; protected set; }
 
 	public Sprite LootObjectImage;
 
-	public virtual string InteractionHintMessageMain => $"Поднять {InteractionObjectNameUI}";
+	public virtual string InteractionHintMessageMain => $"{InteractionHintAction} {InteractionObjectNameUI}";
 	public virtual string InteractionHintMessageAdditional => null;
 	public virtual bool IsInteractionHintMessageAdditionalActive => false;
 
+	private void Start()
+	{
+		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
+		
+		
+		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
+		ThisMethodSetsActionName();
+	}
+
+
+	protected virtual void ThisMethodSetsActionName()
+	{
+
+	}
 	public string InteractionHintAction { get; protected set; }
 
 	public virtual bool WasLootItemCollected { get; protected set; }

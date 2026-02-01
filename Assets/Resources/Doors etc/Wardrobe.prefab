@@ -365,8 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c688555cb5f2445a1cf75a53809cae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionItemNameSystem: 
-  _interactionItemName: "\u044F\u0449\u0438\u0447\u043A\u0430"
+  interactionObjectNameSystem: InteractionOpenableDrawer_Drawer
   drawerOpenLength: 0.45
 --- !u!65 &6376001875503171571
 BoxCollider:

@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
 using System;
-using Unity.IO.LowLevel.Unsafe;
+
 
 public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IInteractable
 {
-	[SerializeField]
-	private string _interactionItemNameSystem;
-	public virtual string InteractionObjectNameSystem => _interactionItemNameSystem;
+
+	[SerializeField] protected string interactionObjectNameSystem;
+	public virtual string InteractionObjectNameSystem => interactionObjectNameSystem;
 	// Приватное поле, видимое в инспекторе
-	[SerializeField]
-	private string _interactionItemName;
-	public virtual string InteractionObjectNameUI => _interactionItemName;
+	private LocalizationManager localizationManager;
+	public virtual string InteractionObjectNameUI { get; protected set; }
 
 	// Свойство подсказки теперь учитывает состояние двери
 	protected string interactionHintMessageMain;

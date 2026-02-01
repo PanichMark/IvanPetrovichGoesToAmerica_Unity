@@ -60,6 +60,8 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
+		Text buttonText = buttonExitLockpickMenu.GetComponentInChildren<Text>();
+		buttonText.text = localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
 
 		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 {
-	
+	private LocalizationManager localizationManager;
 
 	private float drawerOpeningSpeed = 3f; // Скорость открытия-закрытия ящика
 
@@ -15,6 +15,12 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 
 	void Start()
 	{
+		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+
+	
+		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
+		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 		// Начальное положение закрылого ящика
 		closedPosition = transform.localPosition;
 
@@ -34,17 +40,21 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 
 		if (!IsDoorOpened)
 		{
+			InteractionHintAction = localizationManager.GetLocalizedString("CloseDoor");
+			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 			currentAnimation = StartCoroutine(OpenDrawer()); // Начинаем новую корутину
 		}
 		else
 		{
+			InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
+			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 			currentAnimation = StartCoroutine(CloseDrawer()); // Начинаем новую корутину
 		}
 	}
 
 	IEnumerator OpenDrawer()
 	{
-		Debug.Log($"Был открыт {InteractionObjectNameUI}");
+		Debug.Log($"Was opened {InteractionObjectNameUI}");
 		IsDoorOpened = true;
 
 		while (Mathf.Abs(transform.localPosition.z - openedPosition.z) > 0.001f)
@@ -58,7 +68,7 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 
 	IEnumerator CloseDrawer()
 	{
-		Debug.Log($"Был закрыт {InteractionObjectNameUI}");
+		Debug.Log($"Was closed {InteractionObjectNameUI}");
 		IsDoorOpened = false;
 
 		while (Mathf.Abs(transform.localPosition.z - closedPosition.z) > 0.001f)

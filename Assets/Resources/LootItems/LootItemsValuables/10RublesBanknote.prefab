@@ -121,7 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aac234cc20c13049ad71a24f7780e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionItemNameSystem: 10Rubles
-  _interactionItemNameUI: "10 \u0440\u0443\u0431\u043B\u0435\u0439"
+  interactionObjectNameSystem: InteractionLootValuable_Money10
   LootObjectImage: {fileID: 0}
-  _moneyValue: 10
+  moneyValue: 10

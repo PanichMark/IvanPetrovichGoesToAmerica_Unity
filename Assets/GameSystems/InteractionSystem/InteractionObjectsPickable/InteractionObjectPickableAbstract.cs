@@ -31,7 +31,10 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
+	
 	}
+
+
 
 	public void Interact()
 	{
