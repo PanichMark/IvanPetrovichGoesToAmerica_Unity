@@ -3,13 +3,13 @@
 public class InteractionObjectLootMana : InteractionObjectLootAbstract
 {
 	private bool isAdditionalInteractionHintActive;
-	public override bool IsAdditionalInteractionHintMessageActive => isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
 	private PlayerResourcesManaManager playerResourcesManaManager;
 
 	public override string InteractionObjectNameSystem => "ManaReplenishItem";
 	public override string InteractionObjectNameUI => "Предмет восстаналивает ману";
 
-	public override string AdditionalInteractionHintMessage => $"Максимум {InteractionObjectNameUI}";
+	public override string InteractionHintMessageAdditional => $"Максимум {InteractionObjectNameUI}";
 
 	private void Awake()
 	{

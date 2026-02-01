@@ -12,15 +12,15 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 	private bool IsReading;
 	public string InteractionObjectNameUI => interactionObjectNameUI;
 
-	public string MainInteractionHintMessage => $"Прочитать {InteractionObjectNameUI}";
+	public string InteractionHintMessageMain => $"Прочитать {InteractionObjectNameUI}";
 
-	public string AdditionalInteractionHintMessage => null;
+	public string InteractionHintMessageAdditional => null;
 	private GameObject canvasReadNoteMenu;
 	private Button buttonExitReadNoteMenu;
 
 	[SerializeField] private Sprite Image;
 
-
+	public string InteractionHintAction { get; protected set; }
 	private SaveLoadController saveLoadController;
 	
 
@@ -32,7 +32,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 
 	private Image ImageComponent;
 
-	public bool IsAdditionalInteractionHintMessageActive => false;
+	public bool IsInteractionHintMessageAdditionalActive => false;
 
 	private void Awake()
 	{

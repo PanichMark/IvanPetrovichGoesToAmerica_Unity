@@ -4,21 +4,23 @@ using System.Collections;
 public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, ISaveLoad, IPickable
 {
 	private LocalizationManager localizationManager;
+
+	public GameObject CachedPlayer { get; protected set; }
 	public Collider Collider { get; protected set; }
 	public Rigidbody RigidBody { get; protected set; }
-	public GameObject CachedPlayer {  get; protected set; }
 
-	[SerializeField] protected string interactionItemNameSystem;
-	public virtual string InteractionObjectNameSystem => interactionItemNameSystem;
+	[SerializeField] protected string interactionObjectNameSystem;
+	public virtual string InteractionObjectNameSystem => interactionObjectNameSystem;
 	public virtual string InteractionObjectNameUI { get; protected set; }
-	public string MainInteractionHintMessage => $"{MainInteractionHintAction} {InteractionObjectNameUI}?";
+	public string InteractionHintMessageMain => $"{InteractionHintAction} {InteractionObjectNameUI}?";
 
-	private string MainInteractionHintAction = "HUDInteraction_HintAction_Pickable";
+	public string InteractionHintAction {  get; protected set; }
 
-	public virtual string AdditionalInteractionHintMessage => null;
-	public virtual bool IsAdditionalInteractionHintMessageActive => false;
+	public virtual string InteractionHintMessageAdditional => null;
+	public virtual bool IsInteractionHintMessageAdditionalActive => false;
 
 	public bool IsObjectPickedUp { get; protected set; }
+
 
 	void Start()
 	{
@@ -27,8 +29,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionItemNameSystem);
-		MainInteractionHintAction = localizationManager.GetLocalizedString(MainInteractionHintAction);
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
 	}
 
 	public void Interact()
@@ -53,7 +55,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 				// Другие настройки остаются такими же
 				transform.parent = CachedPlayer.transform;
-				//transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
+				transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
 				IsObjectPickedUp = true;
 			}
 			else
@@ -65,19 +67,18 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	public virtual void DropOffObject()
 	{
-			Debug.Log($"Dropped off {InteractionObjectNameSystem}");
-			gameObject.tag = "Interactable";
-			Collider.enabled = true;
-			RigidBody.isKinematic = false;
-			IsObjectPickedUp = false;
+		Debug.Log($"Dropped off {InteractionObjectNameSystem}");
+		gameObject.tag = "Interactable";
+		Collider.enabled = true;
+		RigidBody.isKinematic = false;
+		IsObjectPickedUp = false;
 
-			// Отцепляем объект от игрока
-			transform.parent = null;
+		// Отцепляем объект от игрока
+		transform.parent = null;
 	}
 
 	IEnumerator MoveTowardsTarget()
 	{
-
 		while (true)
 		{
 			// Рассчитываем новую целевую позицию каждый кадр

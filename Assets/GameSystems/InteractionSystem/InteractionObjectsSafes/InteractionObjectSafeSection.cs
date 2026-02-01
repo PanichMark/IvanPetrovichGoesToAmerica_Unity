@@ -11,12 +11,12 @@ public class InteractionObjectSafeSection : MonoBehaviour, IInteractable
 
 	private float sectionRotationSpeed = 0.15f;
 	private Coroutine sectionCoroutine; // Переменная для хранения текущей корутины
-
+	public string InteractionHintAction { get; protected set; }
 	public string InteractionObjectNameUI => safeSectionSlotNumber.ToString();
-	public virtual string MainInteractionHintMessage => $"Повернуть ячейку #{InteractionObjectNameUI}";
-	public virtual string AdditionalInteractionHintMessage => null;
+	public virtual string InteractionHintMessageMain => $"Повернуть ячейку #{InteractionObjectNameUI}";
+	public virtual string InteractionHintMessageAdditional => null;
 
-	public virtual bool IsAdditionalInteractionHintMessageActive => false;
+	public virtual bool IsInteractionHintMessageAdditionalActive => false;
 
 	public string InteractionObjectNameSystem => null;
 

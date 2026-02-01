@@ -6,7 +6,12 @@ using UnityEngine.UI; // Подключаем пространство имен 
 
 public class InteractionObjectLock : MonoBehaviour, IInteractable
 {
-	
+	private SaveLoadController saveLoadController;
+	private LocalizationManager localizationManager;
+
+	public delegate void UnlockLockEventHandler();
+	public event UnlockLockEventHandler OnUnlockLock;
+
 	[SerializeField] private GameObject gearPrefab;               // Префаб шестерёнки
 	[SerializeField] private int segmentsCount;                  // Количество сегментов вращения
 	[SerializeField] private float rotationSpeed;                // Скорость вращения
@@ -16,8 +21,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	private Button buttonExitLockpickMenu;           // Кнопка закрытия пазла
 	private MenuManager menuManager;                             // Менеджер меню
 	private bool IsPuzzleActive;
-	public bool WasUnlocked { get; private set; } = false;
-	private string interactionObjectNameUI;                      // Название объекта интерфейса
+	public bool WasUnlocked { get; private set; } = false;                    // Название объекта интерфейса
 	private bool isMovingOrRotating = false;                     // Блокировка взаимодействия
 	private GameObject currentGearInstance;                      // Текущий экземпляр шестерёнки
 	private GameObject currentCubeFollow;                        // Текущий экземпляр куба
@@ -34,81 +38,35 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	private bool _canMoveLeft = true;                            // Возможность двигаться влево
 	private bool _canMoveRight = true;                           // Возможность двигаться вправо
 	private List<MeshCollider> cachedWallColliders;              // Кэшированные коллайдеры стен
-	
-	public string InteractionObjectNameSystem => throw new NotImplementedException();
-	public string MainInteractionHintMessage => $"Вскрыть {interactionObjectNameUI}";
-	public string AdditionalInteractionHintMessage => throw new NotImplementedException();
-	public bool IsAdditionalInteractionHintMessageActive => false;
-	public string InteractionObjectNameUI => interactionObjectNameUI;
-	private SaveLoadController saveLoadController;
-	/*
-	private void OnDrawGizmos()
-	{
-		if (currentGearInstance != null && Application.isPlaying)
-		{
-			// Поиск группы "PuzzleWalls" внутри currentGearInstance
-			Transform wallsGroup = currentGearInstance.transform.Find("Walls");
 
-			if (wallsGroup != null)
-			{
-				// Получаем все коллайдеры дочерних объектов внутри группы "PuzzleWalls"
-				MeshCollider[] childColliders = wallsGroup.GetComponentsInChildren<MeshCollider>();
-
-				// Отображаем коллайдеры внутри группы "PuzzleWalls" зеленым цветом
-				Gizmos.color = Color.green;
-
-				foreach (MeshCollider col in childColliders)
-				{
-					// Рисуем границу сетки (wireframe) коллайдера
-					Gizmos.DrawWireMesh(col.sharedMesh, col.transform.position, col.transform.rotation, col.transform.lossyScale);
-				}
-			}
-
-
-			// Теперь рисуем остальные зоны (они тоже MeshCollider)
-			if (UpZoneCollider != null)
-			{
-				Gizmos.color = Color.red;
-				Gizmos.DrawWireMesh(((MeshCollider)UpZoneCollider).sharedMesh, ((MeshCollider)UpZoneCollider).transform.position, ((MeshCollider)UpZoneCollider).transform.rotation, ((MeshCollider)UpZoneCollider).transform.lossyScale);
-			}
-
-			if (DownZoneCollider != null)
-			{
-				Gizmos.color = Color.red;
-				Gizmos.DrawWireMesh(((MeshCollider)DownZoneCollider).sharedMesh, ((MeshCollider)DownZoneCollider).transform.position, ((MeshCollider)DownZoneCollider).transform.rotation, ((MeshCollider)DownZoneCollider).transform.lossyScale);
-			}
-
-			if (LeftZoneCollider != null)
-			{
-				Gizmos.color = Color.red;
-				Gizmos.DrawWireMesh(((MeshCollider)LeftZoneCollider).sharedMesh, ((MeshCollider)LeftZoneCollider).transform.position, ((MeshCollider)LeftZoneCollider).transform.rotation, ((MeshCollider)LeftZoneCollider).transform.lossyScale);
-			}
-
-			if (RightZoneCollider != null)
-			{
-				Gizmos.color = Color.red;
-				Gizmos.DrawWireMesh(((MeshCollider)RightZoneCollider).sharedMesh, ((MeshCollider)RightZoneCollider).transform.position, ((MeshCollider)RightZoneCollider).transform.rotation, ((MeshCollider)RightZoneCollider).transform.lossyScale);
-			}
-		}
-	}
-	*/
+	[SerializeField] private string interactionObjectNameSystem;
+	public string InteractionObjectNameSystem => interactionObjectNameSystem;
+	private string interactionHintMessageMain;
+	public string InteractionHintMessageMain => interactionHintMessageMain;
+	public string InteractionHintAction { get; protected set; }
+	public string InteractionHintMessageAdditional => null;
+	public bool IsInteractionHintMessageAdditionalActive => false;
+	public string InteractionObjectNameUI {  get; protected set; }
 
 
 	private void Awake()
 	{
-		// Разрешаем объекты через ключи
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		canvasLockpickMenu = ServiceLocator.Resolve<GameObject>("CanvasLockpickMenu");
 		buttonExitLockpickMenu = ServiceLocator.Resolve<Button>("ExitLockpick");
-		//menuManager.OnCloseLockpickMenu += OnClosePuzzle;
+		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		saveLoadController.OnSafeFileLoad += OnClosePuzzle;
+
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
+
+		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 
 		menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
 		menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
 	}
 	
-
 	private void Update()
 	{
 		if (!isMovingOrRotating && currentGearInstance != null && !menuManager.IsPauseMenuOpened)
@@ -132,7 +90,6 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 			}
 		}
 	}
-	
 	private void HidePuzzleCanvas()
 	{
 		if (IsPuzzleActive)
@@ -152,7 +109,6 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 			currentCubeFollow.SetActive(true);
 		}
 	}
-
 
 	public void Interact()
 	{
@@ -180,7 +136,6 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		buttonExitLockpickMenu.onClick.AddListener(OnClosePuzzle);// Присваиваем обработчик
 		//ClosePuzzleButton.gameObject.SetActive(true);       // Активируем кнопку
 		
-
 		gameObject.tag = "Untagged"; // Меняем тег объекта
 
 		// Создание куба
@@ -226,11 +181,9 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		{
 			IsPuzzleActive = false;
 			canvasLockpickMenu.SetActive(false);
-			//menuManager.CloseLockpickMenu();
 			Destroy(currentGearInstance);
 			Destroy(currentCubeFollow);
 			gameObject.tag = "Interactable";
-			//ClosePuzzleButton?.gameObject.SetActive(false); // Скрываем кнопку
 			menuManager.CloseLockpickMenu();
 		}
 	}
@@ -268,7 +221,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 				Debug.Log("Центр пересекся с объектом 'END'.");
 				WasUnlocked = true;
 				OnClosePuzzle(); // Автоматически закрываем пазл
-				
+				OnUnlockLock?.Invoke();
 			}
 		}
 	}
@@ -350,4 +303,54 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		var camPos = Camera.main.transform.position;
 		return camPos + Camera.main.transform.forward * 0.7f; // Немного ближе к камере
 	}
+		
+/*	private void OnDrawGizmos()
+	{
+		if (currentGearInstance != null && Application.isPlaying)
+		{
+			// Поиск группы "PuzzleWalls" внутри currentGearInstance
+			Transform wallsGroup = currentGearInstance.transform.Find("Walls");
+
+			if (wallsGroup != null)
+			{
+				// Получаем все коллайдеры дочерних объектов внутри группы "PuzzleWalls"
+				MeshCollider[] childColliders = wallsGroup.GetComponentsInChildren<MeshCollider>();
+
+				// Отображаем коллайдеры внутри группы "PuzzleWalls" зеленым цветом
+				Gizmos.color = Color.green;
+
+				foreach (MeshCollider col in childColliders)
+				{
+					// Рисуем границу сетки (wireframe) коллайдера
+					Gizmos.DrawWireMesh(col.sharedMesh, col.transform.position, col.transform.rotation, col.transform.lossyScale);
+				}
+			}
+
+
+			// Теперь рисуем остальные зоны (они тоже MeshCollider)
+			if (UpZoneCollider != null)
+			{
+				Gizmos.color = Color.red;
+				Gizmos.DrawWireMesh(((MeshCollider)UpZoneCollider).sharedMesh, ((MeshCollider)UpZoneCollider).transform.position, ((MeshCollider)UpZoneCollider).transform.rotation, ((MeshCollider)UpZoneCollider).transform.lossyScale);
+			}
+
+			if (DownZoneCollider != null)
+			{
+				Gizmos.color = Color.red;
+				Gizmos.DrawWireMesh(((MeshCollider)DownZoneCollider).sharedMesh, ((MeshCollider)DownZoneCollider).transform.position, ((MeshCollider)DownZoneCollider).transform.rotation, ((MeshCollider)DownZoneCollider).transform.lossyScale);
+			}
+
+			if (LeftZoneCollider != null)
+			{
+				Gizmos.color = Color.red;
+				Gizmos.DrawWireMesh(((MeshCollider)LeftZoneCollider).sharedMesh, ((MeshCollider)LeftZoneCollider).transform.position, ((MeshCollider)LeftZoneCollider).transform.rotation, ((MeshCollider)LeftZoneCollider).transform.lossyScale);
+			}
+
+			if (RightZoneCollider != null)
+			{
+				Gizmos.color = Color.red;
+				Gizmos.DrawWireMesh(((MeshCollider)RightZoneCollider).sharedMesh, ((MeshCollider)RightZoneCollider).transform.position, ((MeshCollider)RightZoneCollider).transform.rotation, ((MeshCollider)RightZoneCollider).transform.lossyScale);
+			}
+		}
+	}	*/
 }

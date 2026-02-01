@@ -10,11 +10,11 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractUsedItem,
 	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
 	//[SerializeField] private string additionalInteractionHint;
 	private bool isAdditionalInteractionHintActive;
-	public virtual string MainInteractionHintMessage => $"Купить {goodsName} в {InteractionObjectNameUI} за {goodsPrice} рублей?";
-	public virtual string AdditionalInteractionHintMessage => "Недостаточно денег!";
-
+	public virtual string InteractionHintMessageMain => $"Купить {goodsName} в {InteractionObjectNameUI} за {goodsPrice} рублей?";
+	public virtual string InteractionHintMessageAdditional => "Недостаточно денег!";
+	public string InteractionHintAction { get; protected set; }
 	public string InteractionObjectNameSystem => vendingMachineName;
-	public virtual bool IsAdditionalInteractionHintMessageActive => isAdditionalInteractionHintActive;
+	public virtual bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
 
 	private LocalizationManager localizationManager;
 	public virtual string InteractionObjectNameUI => vendingMachineName;

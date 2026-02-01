@@ -22,11 +22,11 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 	private Quaternion safeDoorOpenedRotation;
 
 	private bool isInStartMethod;
-
+	public string InteractionHintAction { get; protected set; }
 	public string InteractionObjectNameUI => null;
-	public string MainInteractionHintMessage => "Открыть сейф";
-	public virtual string AdditionalInteractionHintMessage => "Неправильная комбинация!";
-	public virtual bool IsAdditionalInteractionHintMessageActive => isAdditionalInteractionHintActive;
+	public string InteractionHintMessageMain => "Открыть сейф";
+	public virtual string InteractionHintMessageAdditional => "Неправильная комбинация!";
+	public virtual bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
 
 
 	

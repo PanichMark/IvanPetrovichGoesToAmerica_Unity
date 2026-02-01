@@ -17,12 +17,12 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public Sprite LootObjectImage;
 
-	public virtual string MainInteractionHintMessage => $"Поднять {InteractionObjectNameUI}";
-	public virtual string AdditionalInteractionHintMessage => null;
-	public virtual bool IsAdditionalInteractionHintMessageActive => false;
+	public virtual string InteractionHintMessageMain => $"Поднять {InteractionObjectNameUI}";
+	public virtual string InteractionHintMessageAdditional => null;
+	public virtual bool IsInteractionHintMessageAdditionalActive => false;
 
 
-	
+	public string InteractionHintAction { get; protected set; }
 
 	public virtual bool WasLootItemCollected { get; protected set; }
 

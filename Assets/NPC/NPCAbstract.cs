@@ -11,10 +11,10 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	[SerializeField] private bool KillNPC;
 	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
 	public string InteractionObjectNameUI => NPC_name;
-	public string MainInteractionHintMessage => $"Поговорить с {NPC_name}";
-	public string AdditionalInteractionHintMessage => throw new System.NotImplementedException();
-	public virtual bool IsAdditionalInteractionHintMessageActive => false;
-
+	public string InteractionHintMessageMain => $"Поговорить с {NPC_name}";
+	public string InteractionHintMessageAdditional => throw new System.NotImplementedException();
+	public virtual bool IsInteractionHintMessageAdditionalActive => false;
+	public string InteractionHintAction { get; protected set; }
 	private void Start()
 	{
 		NPC_currenthealth = NPC_maxhealth;

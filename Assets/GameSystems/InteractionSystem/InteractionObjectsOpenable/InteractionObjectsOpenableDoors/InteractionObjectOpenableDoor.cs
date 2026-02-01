@@ -6,7 +6,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	//public override string InteractionItemName => "Дверь";
 
 	private bool isAdditionalInteractionHintActive;
-	public override bool IsAdditionalInteractionHintMessageActive => isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
 
 	[SerializeField]
 	private InteractionObjectLock lockController;   // Поле для добавления контроллера замка
@@ -21,7 +21,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	private Quaternion closedRotation;     // Угловое положение закрытой двери
 	[SerializeField] private int doorOpenAngle;
 	
-	public override string AdditionalInteractionHintMessage => $"{InteractionObjectNameUI} заперта!";
+	public override string InteractionHintMessageAdditional => $"{InteractionObjectNameUI} заперта!";
 
 	void Start()
 	{
@@ -33,6 +33,25 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 		closedRotation = Quaternion.Euler(closedEulerAngles);
 
 		IsDoorOpened = false;
+
+		if (lockController != null && lockController.WasUnlocked == false)
+		{
+			interactionHintMessageMain = lockController.InteractionHintMessageMain;
+			lockController.OnUnlockLock += UnlockDoor;
+		}
+
+		
+		if (lockController == null || lockController.WasUnlocked == true)
+		{
+			interactionHintMessageMain = !IsDoorOpened ? $"Открыть {InteractionObjectNameUI}" : $"Закрыть {InteractionObjectNameUI}";
+		}
+
+		
+	}
+
+	private void UnlockDoor()
+	{
+		interactionHintMessageMain = !IsDoorOpened ? $"Открыть {InteractionObjectNameUI}" : $"Закрыть {InteractionObjectNameUI}";
 	}
 
 	public override void Interact()

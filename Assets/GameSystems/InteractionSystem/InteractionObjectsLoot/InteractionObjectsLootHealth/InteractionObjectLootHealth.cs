@@ -4,13 +4,13 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 {
 	private PlayerResourcesHealthManager playerResourcesHealthManager;
 	private bool isAdditionalInteractionHintActive;
-	public override bool IsAdditionalInteractionHintMessageActive => isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
 
 
 	public override string InteractionObjectNameSystem => "HealingItem";
 	public override string InteractionObjectNameUI => "Лечащий предмет";
 
-	public override string AdditionalInteractionHintMessage => $"Максимум {InteractionObjectNameUI}";
+	public override string InteractionHintMessageAdditional => $"Максимум {InteractionObjectNameUI}";
 
 	private void Awake()
 	{

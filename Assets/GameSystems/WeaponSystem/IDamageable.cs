@@ -8,6 +8,6 @@
 	void TakeDamage(float amount);
 
 	// Метод, вызываемый при гибели объекта
-	void Die();
+	void DestroyTrowableObject();
 }
 

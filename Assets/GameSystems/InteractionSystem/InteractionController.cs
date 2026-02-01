@@ -196,7 +196,7 @@ public class InteractionController : MonoBehaviour
 				if (currentInteractableObject != null)
 				{
 					// Подсказка для взаимодействия
-					mainInteractionText.text = $"{interactableObj.MainInteractionHintMessage}\n{HUDInteraction_MainTextInteract} {inputDevice.GetNameOfKeyInteract()}";
+					mainInteractionText.text = $"{interactableObj.InteractionHintMessageMain}\n{HUDInteraction_MainTextInteract} {inputDevice.GetNameOfKeyInteract()}";
 					
 				}
 
@@ -208,9 +208,9 @@ public class InteractionController : MonoBehaviour
 				
 
 
-					if (interactableObj.IsAdditionalInteractionHintMessageActive == true)
+					if (interactableObj.IsInteractionHintMessageAdditionalActive == true)
 					{
-						additionalInteractionText.text = interactableObj.AdditionalInteractionHintMessage;
+						additionalInteractionText.text = interactableObj.InteractionHintMessageAdditional;
 						if (showAdditionalHintCoroutine != null)
 							StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
 
