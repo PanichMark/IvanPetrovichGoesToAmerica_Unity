@@ -13,10 +13,10 @@ public class InteractionObjectSafeSection : MonoBehaviour, IInteractable
 	private Coroutine sectionCoroutine; // Переменная для хранения текущей корутины
 
 	public string InteractionObjectNameUI => safeSectionSlotNumber.ToString();
-	public virtual string MainInteractionHint => $"Повернуть ячейку #{InteractionObjectNameUI}";
-	public virtual string AdditionalInteractionHint => null;
+	public virtual string MainInteractionHintMessage => $"Повернуть ячейку #{InteractionObjectNameUI}";
+	public virtual string AdditionalInteractionHintMessage => null;
 
-	public virtual bool IsAdditionalInteractionHintActive => false;
+	public virtual bool IsAdditionalInteractionHintMessageActive => false;
 
 	public string InteractionObjectNameSystem => null;
 

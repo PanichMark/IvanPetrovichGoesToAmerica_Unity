@@ -13,6 +13,10 @@ public class InteractionController : MonoBehaviour
 
 	private bool _isInitialized = false;
 
+	private LocalizationManager localizationManager;
+
+	private string HUDInteraction_MainTextInteract;
+
 	private TextMeshProUGUI mainInteractionText; 
 	private TextMeshProUGUI additionalInteractionText;
 
@@ -38,7 +42,7 @@ public class InteractionController : MonoBehaviour
 	public GameObject CurrentPickableObject { get; private set; }
 
 	public void Initialize(
-		IInputDevice inputDevice,
+		IInputDevice inputDevice, LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PlayerCameraController playerCameraController,
 		PlayerBehaviour playerBehaviour,
@@ -50,6 +54,7 @@ public class InteractionController : MonoBehaviour
 	)
 	{
 		this.inputDevice = inputDevice;
+		this.localizationManager = localizationManager;
 		this.playerCameraController = playerCameraController;
 		this.playerBehaviour = playerBehaviour;
 		this.menuManager = menuManager;
@@ -65,7 +70,13 @@ public class InteractionController : MonoBehaviour
 
 		_isInitialized = true;
 
-	
+		HUDInteraction_MainTextInteract = this.localizationManager.GetLocalizedString("HUDInteraction_MainTextInteract");
+		//HUDInteraction_MainTextInteract = "bruh";
+
+
+
+
+
 		this.menuManager.OnOpenInteractionMenu += ShowCanvasHUDInteraction;
 		this.menuManager.OnCloseInteractionMenu += HideCanvasHUDInteraction;
 
@@ -185,7 +196,7 @@ public class InteractionController : MonoBehaviour
 				if (currentInteractableObject != null)
 				{
 					// Подсказка для взаимодействия
-					mainInteractionText.text = $"{interactableObj.MainInteractionHint}\nНажмите {inputDevice.GetNameOfKeyInteract()}";
+					mainInteractionText.text = $"{interactableObj.MainInteractionHintMessage}\n{HUDInteraction_MainTextInteract} {inputDevice.GetNameOfKeyInteract()}";
 					
 				}
 
@@ -197,9 +208,9 @@ public class InteractionController : MonoBehaviour
 				
 
 
-					if (interactableObj.IsAdditionalInteractionHintActive == true)
+					if (interactableObj.IsAdditionalInteractionHintMessageActive == true)
 					{
-						additionalInteractionText.text = interactableObj.AdditionalInteractionHint;
+						additionalInteractionText.text = interactableObj.AdditionalInteractionHintMessage;
 						if (showAdditionalHintCoroutine != null)
 							StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
 

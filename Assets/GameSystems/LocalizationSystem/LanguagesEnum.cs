@@ -1,5 +1,5 @@
 ﻿public enum LanguagesEnum
 {
-	English,
-	Russian
+	Russian,
+	English
 }

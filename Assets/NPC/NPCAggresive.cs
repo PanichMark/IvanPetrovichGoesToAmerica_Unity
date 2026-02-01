@@ -2,7 +2,7 @@
 
 public class NPCAggresive : NPCAbstract
 {
-	public override bool IsAdditionalInteractionHintActive => false;
+	public override bool IsAdditionalInteractionHintMessageActive => false;
 
 	override public void Interact()
 	{

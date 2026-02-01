@@ -6,7 +6,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	//public override string InteractionItemName => "Дверь";
 
 	private bool isAdditionalInteractionHintActive;
-	public override bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
+	public override bool IsAdditionalInteractionHintMessageActive => isAdditionalInteractionHintActive;
 
 	[SerializeField]
 	private InteractionObjectLock lockController;   // Поле для добавления контроллера замка
@@ -21,7 +21,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	private Quaternion closedRotation;     // Угловое положение закрытой двери
 	[SerializeField] private int doorOpenAngle;
 	
-	public override string AdditionalInteractionHint => $"{InteractionObjectNameUI} заперта!";
+	public override string AdditionalInteractionHintMessage => $"{InteractionObjectNameUI} заперта!";
 
 	void Start()
 	{

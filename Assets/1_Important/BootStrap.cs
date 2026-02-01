@@ -161,7 +161,7 @@ public class BootStrap : MonoBehaviour
 		ServiceLocator.ClearServices();
 		gameController = new GameController();
 		localizationManager = new LocalizationManager();
-		localizationManager.ChangeLanguage(LanguagesEnum.Russian);
+		localizationManager.ChangeLanguage(LanguagesEnum.English);
 		inputDevice = new InputKeyboard(gameController);
 		Debug.Log("INTERFACES INITIALIZED");
 		yield break;
@@ -389,7 +389,7 @@ public class BootStrap : MonoBehaviour
 		buttonExitLockpickMenu = canvasLockpickMenu.transform.Find("ExitLockpick")?.GetComponent<Button>();
 
 		// Инициализация взаимодействия
-		interactionController.Initialize(inputDevice, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
+		interactionController.Initialize(inputDevice, localizationManager, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
 			additionalInteractionText, itemsTexts, itemsImages);
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 		yield break;

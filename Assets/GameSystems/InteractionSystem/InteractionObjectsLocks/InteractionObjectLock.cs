@@ -36,9 +36,9 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	private List<MeshCollider> cachedWallColliders;              // Кэшированные коллайдеры стен
 	
 	public string InteractionObjectNameSystem => throw new NotImplementedException();
-	public string MainInteractionHint => $"Вскрыть {interactionObjectNameUI}";
-	public string AdditionalInteractionHint => throw new NotImplementedException();
-	public bool IsAdditionalInteractionHintActive => false;
+	public string MainInteractionHintMessage => $"Вскрыть {interactionObjectNameUI}";
+	public string AdditionalInteractionHintMessage => throw new NotImplementedException();
+	public bool IsAdditionalInteractionHintMessageActive => false;
 	public string InteractionObjectNameUI => interactionObjectNameUI;
 	private SaveLoadController saveLoadController;
 	/*

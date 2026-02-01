@@ -11,9 +11,9 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	[SerializeField] private bool KillNPC;
 	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
 	public string InteractionObjectNameUI => NPC_name;
-	public string MainInteractionHint => $"Поговорить с {NPC_name}";
-	public string AdditionalInteractionHint => throw new System.NotImplementedException();
-	public virtual bool IsAdditionalInteractionHintActive => false;
+	public string MainInteractionHintMessage => $"Поговорить с {NPC_name}";
+	public string AdditionalInteractionHintMessage => throw new System.NotImplementedException();
+	public virtual bool IsAdditionalInteractionHintMessageActive => false;
 
 	private void Start()
 	{

@@ -24,9 +24,9 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 	private bool isInStartMethod;
 
 	public string InteractionObjectNameUI => null;
-	public string MainInteractionHint => "Открыть сейф";
-	public virtual string AdditionalInteractionHint => "Неправильная комбинация!";
-	public virtual bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
+	public string MainInteractionHintMessage => "Открыть сейф";
+	public virtual string AdditionalInteractionHintMessage => "Неправильная комбинация!";
+	public virtual bool IsAdditionalInteractionHintMessageActive => isAdditionalInteractionHintActive;
 
 
 	

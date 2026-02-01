@@ -10,15 +10,30 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractUsedItem,
 	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
 	//[SerializeField] private string additionalInteractionHint;
 	private bool isAdditionalInteractionHintActive;
+	public virtual string MainInteractionHintMessage => $"Купить {goodsName} в {InteractionObjectNameUI} за {goodsPrice} рублей?";
+	public virtual string AdditionalInteractionHintMessage => "Недостаточно денег!";
+
+	public string InteractionObjectNameSystem => vendingMachineName;
+	public virtual bool IsAdditionalInteractionHintMessageActive => isAdditionalInteractionHintActive;
+
+	private LocalizationManager localizationManager;
 	public virtual string InteractionObjectNameUI => vendingMachineName;
-	public virtual string MainInteractionHint => $"Купить {goodsName} в {InteractionObjectNameUI} за {goodsPrice} рублей?";
-	public virtual string AdditionalInteractionHint => "Недостаточно денег!";
+		/*
+	{
+		get
+		{
+			localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+			string localizedString = localizationManager.GetLocalizedString(vendingMachineName);
 
-	public string InteractionObjectNameSystem => null;
-	public virtual bool IsAdditionalInteractionHintActive => isAdditionalInteractionHintActive;
-
-	
-
+			if (localizedString.StartsWith("Unknown key"))
+			{
+				Debug.LogError($"Key '{vendingMachineName}' not found");
+				return vendingMachineName; // Возврат оригинала, если нет перевода
+			}
+			return localizedString;
+		}
+	}
+		*/
 	private void Start()
 	{
 		playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");

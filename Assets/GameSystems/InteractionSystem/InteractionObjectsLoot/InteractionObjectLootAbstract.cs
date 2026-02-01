@@ -17,9 +17,9 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public Sprite LootObjectImage;
 
-	public virtual string MainInteractionHint => $"Поднять {InteractionObjectNameUI}";
-	public virtual string AdditionalInteractionHint => null;
-	public virtual bool IsAdditionalInteractionHintActive => false;
+	public virtual string MainInteractionHintMessage => $"Поднять {InteractionObjectNameUI}";
+	public virtual string AdditionalInteractionHintMessage => null;
+	public virtual bool IsAdditionalInteractionHintMessageActive => false;
 
 
 	

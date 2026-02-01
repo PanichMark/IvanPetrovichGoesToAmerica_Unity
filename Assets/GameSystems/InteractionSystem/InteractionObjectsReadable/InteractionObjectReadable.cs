@@ -12,9 +12,9 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 	private bool IsReading;
 	public string InteractionObjectNameUI => interactionObjectNameUI;
 
-	public string MainInteractionHint => $"Прочитать {InteractionObjectNameUI}";
+	public string MainInteractionHintMessage => $"Прочитать {InteractionObjectNameUI}";
 
-	public string AdditionalInteractionHint => null;
+	public string AdditionalInteractionHintMessage => null;
 	private GameObject canvasReadNoteMenu;
 	private Button buttonExitReadNoteMenu;
 
@@ -32,7 +32,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 
 	private Image ImageComponent;
 
-	public bool IsAdditionalInteractionHintActive => false;
+	public bool IsAdditionalInteractionHintMessageActive => false;
 
 	private void Awake()
 	{

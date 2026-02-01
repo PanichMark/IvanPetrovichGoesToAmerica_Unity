@@ -6,7 +6,7 @@ public class InteractionObjectPickable : InteractionObjectPickableAbstract
 	public static InteractionObjectPickable CreateWithName(GameObject obj, string interactionItemNameSystem)
 	{
 		var component = obj.AddComponent<InteractionObjectPickable>();
-		component._interactionItemNameSystem = interactionItemNameSystem;
+		component.interactionItemNameSystem = interactionItemNameSystem;
 		return component;
 	}
 }

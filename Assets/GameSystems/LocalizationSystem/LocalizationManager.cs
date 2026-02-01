@@ -14,18 +14,14 @@ public class LocalizationManager
 		LoadFromCsv();
 	}
 
-	/// <summary>
-	/// Изменяет активный язык на заданный.
-	/// </summary>
+
 	public void ChangeLanguage(LanguagesEnum language)
 	{
 		CurrentLanguage = language;
 		Debug.Log($"Lozalization{language} Initialized");
 	}
 
-	/// <summary>
-	/// Возвращает локализованную строку по указанному ключу.
-	/// </summary>
+	
 	public string GetLocalizedString(string key)
 	{
 		if (_localizations.TryGetValue(key, out var translations) &&
@@ -33,7 +29,11 @@ public class LocalizationManager
 		{
 			return translation;
 		}
-		return $"Unknown key '{key}' or no translation available.";
+		else
+		{
+			Debug.LogError($"Key \"{key}\" not found!");
+			return null;
+		}
 	}
 
 	private void LoadFromCsv()
@@ -54,14 +54,14 @@ public class LocalizationManager
 				if (values.Length >= 3)
 				{
 					string key = values[0];
-					string enValue = values[1].Trim('"'); // Удаляем возможные двойные кавычки
-					string ruValue = values[2].Trim('"');
+					string ruValue = values[1].Trim('"'); // Удаляем возможные двойные кавычки
+					string enValue = values[2].Trim('"');
 
 					if (!_localizations.ContainsKey(key))
 						_localizations[key] = new Dictionary<string, string>();
 
-					_localizations[key]["English"] = enValue;
 					_localizations[key]["Russian"] = ruValue;
+					_localizations[key]["English"] = enValue;
 				}
 			}
 		}

@@ -2,12 +2,9 @@
 {
 	string InteractionObjectNameSystem { get; }
 	string InteractionObjectNameUI { get; }
-	string MainInteractionHint { get; }
-
-	string AdditionalInteractionHint { get; }
-	bool IsAdditionalInteractionHintActive { get; }
-
+	string MainInteractionHintMessage { get; }
+	string AdditionalInteractionHintMessage { get; }
+	bool IsAdditionalInteractionHintMessageActive { get; }
 
 	void Interact();
 }
-
