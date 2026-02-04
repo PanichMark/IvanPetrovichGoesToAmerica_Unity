@@ -18,8 +18,9 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 	{
 		if (playerResourcesHealthManager.CurrentHealingItemsNumber < 9)
 		{
+			base.Interact();
 			Debug.Log($"Вы подняли {InteractionObjectNameUI}");
-			Destroy(gameObject);
+			
 			playerResourcesHealthManager.AddHealingItem();
 			isAdditionalInteractionHintActive = false;
 			WasLootItemCollected = true;

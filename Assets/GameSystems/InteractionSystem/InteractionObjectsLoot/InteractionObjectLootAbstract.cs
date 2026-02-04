@@ -3,6 +3,8 @@ using System;
 using Unity.IO.LowLevel.Unsafe;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
+using Unity.VisualScripting;
 
 public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractable, IInteractGainedItem, ISaveLoad
 {
@@ -10,8 +12,8 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	[SerializeField] protected string interactionObjectNameSystem;
 	public virtual string InteractionObjectNameSystem => interactionObjectNameSystem;
 	protected LocalizationManager localizationManager;
+	public Collider Collider { get; protected set; }
 
-	
 	public virtual string InteractionObjectNameUI {  get; protected set; }
 
 	public Sprite LootObjectImage;
@@ -23,9 +25,9 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	private void Start()
 	{
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		Collider = GetComponent<Collider>();
+		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
 
-		
-		
 		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
 		ThisMethodSetsActionName();
 	}
@@ -52,7 +54,43 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		LootItemIndex = index;
 	}
 
-	public abstract void Interact();
+
+
+	public virtual void Interact()
+	{
+			if (CachedPlayer != null)
+			{
+				Collider.enabled = false;
+				gameObject.tag = "Untagged";
+
+				StartCoroutine(MoveTowardsTarget());
+			}
+			else
+			{
+				Debug.Log("Player not found!");
+			}
+	}
+	public GameObject CachedPlayer { get; protected set; }
+	IEnumerator MoveTowardsTarget()
+	{
+		while (true)
+		{
+			// Рассчитываем новую целевую позицию каждый кадр
+			Vector3 targetPosition = CachedPlayer.transform.position + Vector3.up * 1f;
+
+			// Перемещаем объект к новой позиции
+			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
+
+			// Выход из цикла, если объект вплотную приблизился к игроку
+			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
+			{
+				Destroy(gameObject);
+				break;
+			}
+
+			yield return null;
+		}
+	}
 
 	public void SaveData(ref GameData data)
 	{

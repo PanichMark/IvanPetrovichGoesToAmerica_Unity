@@ -16,8 +16,9 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 	{
 		if (playerResourcesManaManager.CurrentManaReplenishItemsNumber < 9)
 		{
+			base.Interact();
 			Debug.Log($"Вы подняли {InteractionObjectNameUI}");
-			Destroy(gameObject);
+			
 			playerResourcesManaManager.AddManaReplenishItem();
 			isAdditionalInteractionHintActive = false;
 			WasLootItemCollected = true;

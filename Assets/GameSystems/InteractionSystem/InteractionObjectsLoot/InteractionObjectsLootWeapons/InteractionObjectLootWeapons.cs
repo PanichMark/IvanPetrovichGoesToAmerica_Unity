@@ -23,9 +23,10 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 
 	public override void Interact()
 	{
+		base.Interact();
 		Debug.Log($"Вы подняли {InteractionObjectNameUI}");
 		weaponController.UnlockWeapon(weaponObject);
-		Destroy(gameObject);
+		
 	}
 }
 

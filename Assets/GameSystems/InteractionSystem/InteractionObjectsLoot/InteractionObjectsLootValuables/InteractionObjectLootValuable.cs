@@ -11,8 +11,9 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 
 	public override void Interact()
 	{
+		base.Interact();
 		Debug.Log($"Picked up {InteractionObjectNameUI}, recieved {moneyValue} rubles");
-		Destroy(gameObject);
+	
 		playerResourcesMoneyManager.AddMoney(moneyValue);
 		WasLootItemCollected = true;
 	}
