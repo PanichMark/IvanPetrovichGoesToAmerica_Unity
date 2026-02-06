@@ -1,4 +1,5 @@
-﻿public enum ScenesEnum
+﻿public enum GameScenesEnum
 {
-	NEW_SceneTest
+	NEW_SceneTest,
+	SceneMainMenu
 }

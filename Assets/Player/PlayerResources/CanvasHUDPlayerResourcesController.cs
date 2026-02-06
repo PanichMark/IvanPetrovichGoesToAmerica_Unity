@@ -28,7 +28,7 @@ public class CanvasHUDPlayerResourcesController : MonoBehaviour
            Debug.Log("Show canvasHUDPlayerResources");
        }
     }
-	private void HideCanvasHUDPlayerResources()
+	public void HideCanvasHUDPlayerResources()
 	{
 		canvasHUDPlayerResources.SetActive(false);
 		Debug.Log("Hide canvasHUDPlayerResources");

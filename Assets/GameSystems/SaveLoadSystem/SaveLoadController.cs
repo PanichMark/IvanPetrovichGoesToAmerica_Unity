@@ -223,7 +223,7 @@ public class SaveLoadController : MonoBehaviour
 		}
 
 		// Начинаем загрузку сцены через GameSceneManager
-		yield return StartCoroutine(gameSceneManager.LoadScene((ScenesEnum)Enum.Parse(typeof(ScenesEnum), sceneName)));
+		yield return StartCoroutine(gameSceneManager.LoadScene((GameScenesEnum)Enum.Parse(typeof(GameScenesEnum), sceneName)));
 
 
 		

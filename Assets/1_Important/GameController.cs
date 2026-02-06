@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 public class GameController
 {
 
-	public bool IsSceneLoading { get; private set; }
+	public bool IsPauseMenuAvailable { get; private set; }
 	public bool IsPlayerControllable { get; private set; }
 	public bool IsPlayerDead { get; private set; }
 	public bool IsGameAbleToSave { get; private set; }
@@ -11,6 +12,8 @@ public class GameController
 	{
 		Debug.Log("GameController Initialized");
 	}
+
+	
 
 	public void PlayerIsDead()
 	{
@@ -29,14 +32,16 @@ public class GameController
 
 	public void SceneLoadBegan()
 	{
-		IsSceneLoading = true;
+		IsPauseMenuAvailable = false;
 		MakePlayerNonControllable();
 	}
 
 	public void SceneLoadEnded()
 	{
-		IsSceneLoading = false;
+		IsPauseMenuAvailable = true;
 		MakePlayerControllable();
 	}
+
+	
 
 }

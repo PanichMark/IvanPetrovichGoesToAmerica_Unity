@@ -144,15 +144,23 @@ public class BootStrap : MonoBehaviour
 		yield return StartCoroutine(InitializeFinalSystems());
 		yield return StartCoroutine(RegisterAllDependencies());
 
-		Destroy(tempCameraObject);
+		yield return new WaitForSecondsRealtime(0.5f);
+
+		//Destroy(tempCameraObject);
+		canvasHUDPlayerResourcesController.HideCanvasHUDPlayerResources();
+		menuManager.CloseInteractionHUD();
+
 		Destroy(canvasBootstrap);
 
-		StartCoroutine(gameSceneManager.LoadScene(ScenesEnum.NEW_SceneTest));
+		//StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
+		 StartCoroutine(gameSceneManager.LoadMainMenuScene());
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 		saveLoadController.NewGame();
 		Time.timeScale = 1.0f;
 	}
+
+	
 
 	private IEnumerator InitializeInterfaces()
 	{
@@ -424,6 +432,11 @@ public class BootStrap : MonoBehaviour
 		ServiceLocator.Register("CanvasLockpickMenu", canvasLockpickMenu);
 		ServiceLocator.Register("CanvasReadNoteMenu", canvasReadNoteMenu);
 		ServiceLocator.Register("SaveLoadController", saveLoadController);
+		ServiceLocator.Register("PauseMenuController", pauseMenuController);
+		ServiceLocator.Register("GameController", gameController);
+		ServiceLocator.Register("GameSceneManager", gameSceneManager);
+
+
 		Debug.Log("SERVICE REGISTERED");
 		yield break;
 	}

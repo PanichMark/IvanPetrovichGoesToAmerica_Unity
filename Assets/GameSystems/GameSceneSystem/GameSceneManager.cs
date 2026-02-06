@@ -20,7 +20,7 @@ public class GameSceneManager : MonoBehaviour
 
 
 	// Метод-корутина для загрузки сцены в аддитивном режиме
-	public IEnumerator LoadScene(ScenesEnum scene)
+	public IEnumerator LoadScene(GameScenesEnum scene)
 	{
 		gameController.SceneLoadBegan();
 		canvasLoadingScreen.SetActive(true);
@@ -59,7 +59,43 @@ public class GameSceneManager : MonoBehaviour
 		canvasLoadingScreen.SetActive(false);
 		gameController.SceneLoadEnded();
 		Time.timeScale = 1f; // Возвращаем нормальный таймскейл
-		IsItFirstTimeLoading = false; ;
+		IsItFirstTimeLoading = false; 
 		Debug.Log($"SceneLoaded {scene}");
+	}
+
+	public IEnumerator LoadMainMenuScene()
+	{
+		gameController.SceneLoadBegan();
+		//canvasLoadingScreen.SetActive(true);
+		//loadingScreenText.text = "Загрузка";
+
+		Time.timeScale = 0f; // Устанавливаем таймскейл на паузу
+
+		//string sceneName = scene.ToString(); // Преобразуем перечисление в название сцены
+
+	
+
+		AsyncOperation operation = SceneManager.LoadSceneAsync("SceneMainMenu", LoadSceneMode.Additive); // Загрузка новой сцены асинхронно
+
+		while (!operation.isDone)
+		{
+			yield return null; // Пауза на один кадр
+		}
+
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+
+		//loadingScreenText.text = "Нажмите любую кнопку";
+
+		// Ждём нажатия любой клавиши
+		//yield return new WaitWhile(() => !Input.anyKeyDown);
+
+		//canvasLoadingScreen.SetActive(false);
+		//gameController.SceneLoadEnded();
+		//Time.timeScale = 1f; // Возвращаем нормальный таймскейл
+		//IsItFirstTimeLoading = false; ;
+		//Debug.Log($"SceneLoaded {scene}");
+		IsItFirstTimeLoading = false;
+		//yield break;
 	}
 }
