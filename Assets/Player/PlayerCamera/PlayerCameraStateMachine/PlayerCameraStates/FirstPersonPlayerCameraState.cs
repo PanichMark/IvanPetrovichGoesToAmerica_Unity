@@ -13,7 +13,10 @@ public class FirstPersonPlayerCameraState : PlayerCameraState
 
 	public override void Update()
 	{
+		playerCamera.RotateCamera();
 		this.playerCamera.FirstPersonCameraTransform();
+
+		
 
 		// Проверка на специфичные состояния движения
 		if (

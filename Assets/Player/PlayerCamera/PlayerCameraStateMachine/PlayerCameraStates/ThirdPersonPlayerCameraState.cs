@@ -14,8 +14,9 @@ public class ThirdPersonPlayerCameraState : PlayerCameraState
 
 	public override void Update()
 	{
+		playerCamera.RotateCamera();
 		this.playerCamera.ThirdPersonCameraTransform();
-
+		
 		if (inputDevice.GetKeyChangeCameraView())
 		{
 			playerCamera.SetPlayerCameraState(PlayerCameraStateType.FirstPerson);

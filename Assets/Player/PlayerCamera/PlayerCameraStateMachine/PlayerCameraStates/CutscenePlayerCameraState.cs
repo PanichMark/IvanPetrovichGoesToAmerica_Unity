@@ -1,20 +1,27 @@
 ﻿using UnityEngine;
 
 public class CutscenePlayerCameraState : PlayerCameraState
+
+
 {
-	public CutscenePlayerCameraState(PlayerCameraController playerCam)
+	private Vector3 position;
+
+	public CutscenePlayerCameraState(PlayerCameraController playerCam, Vector3 position)
 	{
 		playerCamera = playerCam;
-		Debug.Log("Entered Cutscene Camera");
+		this.position = position;
+		playerCamera.CutsceneCameraTransform(this.position);
+	//	Debug.Log("POSITION "+ this.position);
 	}
-	
 
+	
 	public override void Update()
 	{
-		playerCamera.CutsceneCameraTransform();
+		//playerCamera.CutsceneCameraTransform(new Vector3(0, 5, -7));
+		//playerCamera.CutsceneCameraTransform(position);
 	}
-
 	
+
 }
 
 

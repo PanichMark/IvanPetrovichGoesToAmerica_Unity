@@ -9,8 +9,8 @@ public class MainMenuController : MonoBehaviour
 	private GameController gameController;
 	private Renderer _renderer;
 	private GameSceneManager gameSceneManager;
-
-	
+	private Collider collider;
+	private SaveLoadController saveLoadController;
 
 	void Start()
 	{
@@ -21,6 +21,9 @@ public class MainMenuController : MonoBehaviour
 		if (_renderer != null && defaultMaterial != null)
 			_renderer.material = defaultMaterial;
 
+		collider = GetComponent<Collider>();
+
+		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 
 	}
 
@@ -47,7 +50,7 @@ public class MainMenuController : MonoBehaviour
 
 	void OnMouseDown()
 	{
-
+		collider.enabled = false;
 		StartCoroutine(DestroyAfterLoad());
 
 	}
@@ -63,7 +66,7 @@ public class MainMenuController : MonoBehaviour
 
 		// Начинаем загрузку сцены
 		yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
-
+		saveLoadController.NewGame();
 		// Удаляем объект после завершения загрузки
 		Destroy(gameObject);
 	}

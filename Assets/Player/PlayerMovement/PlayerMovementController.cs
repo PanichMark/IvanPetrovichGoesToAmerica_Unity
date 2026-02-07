@@ -489,7 +489,10 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	{
 		currentPlayerCameraType = cameraType;
 	}
-
+	public void SetPlayerPosition(Vector3 position)
+	{
+		transform.position = position;
+	}
 	public void SaveData(ref GameData data)
 	{
 		data.CurrentPlayerMovementStateType = this.CurrentPlayerMovementStateType;

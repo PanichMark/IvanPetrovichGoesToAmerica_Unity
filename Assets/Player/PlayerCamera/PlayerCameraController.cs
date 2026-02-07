@@ -57,17 +57,11 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			
 		}
 
+		
 
-		
 		//Debug.Log(CurrentPlayerCameraStateType);
-		
-		if (!menuManager.IsAnyMenuOpened)
-		{
-			MouseRotation.y += Input.GetAxis("Mouse X");
-			MouseRotation.x += Input.GetAxis("Mouse Y");
-			MouseRotation.x = Mathf.Clamp(MouseRotation.x, MouseRotationLimit * -1, MouseRotationLimit);
-			MouseScrollWheel = Input.mouseScrollDelta;
-		}
+
+	
 
 		if (MouseScrollWheel.y < 0 && IsAbleToZoomCameraOut == true && CurrentPlayerCameraStateType != "FirstPerson")
 		{
@@ -218,7 +212,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		{
 			CurrentPlayerCameraStateType = "Cutscene";
 			movementController.GiveCurrentPlayerCameraType("Cutscene");
-			newState = new CutscenePlayerCameraState(this);
+			newState = new CutscenePlayerCameraState(this, new Vector3(0, 0, 0));
 			//IsPlayerCameraFirstPerson = false;
 		}
 		else
@@ -254,15 +248,11 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
 
 	}
-	public void CutsceneCameraTransform()
+	public void CutsceneCameraTransform(Vector3 position)
 	{
-		transform.position = new Vector3(0, 5, -7);
+		transform.position = position;
 	}
-	public void SetPlayerCameraType(PlayerCameraStateType newCameraType)
-	{
-		_previousPlayerCameraType = _currentPlayerCameraType;
-        _currentPlayerCameraType = newCameraType.ToString();
-	}
+	
 	public string GetCurrentPlayerCameraType()
 	{
 		return _currentPlayerCameraType.ToString();
@@ -295,7 +285,16 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		SetPlayerCameraState(playerCameraStateType);
 
 	}
-
+	public void RotateCamera()
+	{
+		if (!menuManager.IsAnyMenuOpened)
+		{
+			MouseRotation.y += Input.GetAxis("Mouse X");
+			MouseRotation.x += Input.GetAxis("Mouse Y");
+			MouseRotation.x = Mathf.Clamp(MouseRotation.x, MouseRotationLimit * -1, MouseRotationLimit);
+			MouseScrollWheel = Input.mouseScrollDelta;
+		}
+	}
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerMovementController movementController, PlayerCapsuleCollider playerCollider, GameObject playerModel)
 	{
 		this.inputDevice = inputDevice;

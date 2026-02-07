@@ -37,7 +37,7 @@ public class BootStrap : MonoBehaviour
 	private GameObject playerFirstPersonHandLeft;
 	// Игрок системы
 	private PlayerBehaviour playerBehaviour;
-	private PlayerMovementController movementController;
+	private PlayerMovementController playerMovementController;
 	private PlayerCapsuleCollider playerCollider;
 	private PlayerAnimationController playerAnimationController;
 	// Игрок камера
@@ -158,16 +158,19 @@ public class BootStrap : MonoBehaviour
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
-		//canvasHUDPlayerResourcesController.HideCanvasHUDPlayerResources();
-		//menuManager.CloseInteractionHUD();
+		canvasHUDPlayerResourcesController.HideCanvasHUDPlayerResources();
+		menuManager.CloseInteractionHUD();
 
-		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandRight);
-		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandLeft);
+		playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandRight);
+		playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandLeft);
 
 		Destroy(canvasBootstrap);
-		saveLoadController.NewGame();
-		//StartCoroutine(gameSceneManager.LoadMainMenuScene());
-		StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
+		//saveLoadController.NewGame();
+		yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
+		//yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
+		playerCameraController.SetPlayerCameraState(PlayerCameraStateType.Cutscene);
+		playerMovementController.SetPlayerPosition(new Vector3(1.85f, -0.2f, 4));
+		//yield return new WaitForSecondsRealtime(0.1f);
 		Destroy(tempCameraObject);
 	}
 
@@ -234,7 +237,7 @@ public class BootStrap : MonoBehaviour
 
 		// Получение компонентов игрока
 		playerBehaviour = playerGameObject.GetComponent<PlayerBehaviour>();
-		movementController = playerGameObject.GetComponent<PlayerMovementController>();
+		playerMovementController = playerGameObject.GetComponent<PlayerMovementController>();
 		playerCollider = playerGameObject.GetComponentInChildren<PlayerCapsuleCollider>();
 		playerAnimationController = playerGameObject.GetComponent<PlayerAnimationController>();
 
@@ -252,9 +255,9 @@ public class BootStrap : MonoBehaviour
 
 		// Инициализация полученных компонентов
 		playerBehaviour.Initialize(inputDevice);
-		movementController.Initialize(inputDevice, playerBehaviour);
-		playerCollider.Initialize(movementController);
-		playerCameraController.Initialize(inputDevice, menuManager, movementController, playerCollider, playerGameObject);
+		playerMovementController.Initialize(inputDevice, playerBehaviour);
+		playerCollider.Initialize(playerMovementController);
+		playerCameraController.Initialize(inputDevice, menuManager, playerMovementController, playerCollider, playerGameObject);
 		playerCameraBlurFilter.Initialize(menuManager);
 
 		Debug.Log("PLAYER SYSTEMS INITIALIZED");
@@ -417,7 +420,7 @@ public class BootStrap : MonoBehaviour
 	private IEnumerator InitializeFinalSystems()
 	{
 		playerCameraFirstPersonRender.Initialize(playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHeadParent, playerHandRightParent, playerHandLeftParent);
-		playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, movementController, playerCameraController, weaponController);
+		playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, playerMovementController, playerCameraController, weaponController);
 
 		Debug.Log("FINAL SYSTEMS INITIALIZED");
 		yield break;
