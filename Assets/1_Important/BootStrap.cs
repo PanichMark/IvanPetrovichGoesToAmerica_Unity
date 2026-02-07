@@ -144,20 +144,22 @@ public class BootStrap : MonoBehaviour
 		yield return StartCoroutine(InitializeFinalSystems());
 		yield return StartCoroutine(RegisterAllDependencies());
 
-		yield return new WaitForSecondsRealtime(0.5f);
+		yield return new WaitForSecondsRealtime(0.3f);
 
 		//Destroy(tempCameraObject);
+	
+
+		//StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
+		 
+
+		Debug.Log("!!! GAME INITIALIZED !!!");
+
 		canvasHUDPlayerResourcesController.HideCanvasHUDPlayerResources();
 		menuManager.CloseInteractionHUD();
 
 		Destroy(canvasBootstrap);
-
-		//StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
-		 StartCoroutine(gameSceneManager.LoadMainMenuScene());
-
-		Debug.Log("!!! GAME INITIALIZED !!!");
 		saveLoadController.NewGame();
-		Time.timeScale = 1.0f;
+		StartCoroutine(gameSceneManager.LoadMainMenuScene());
 	}
 
 	

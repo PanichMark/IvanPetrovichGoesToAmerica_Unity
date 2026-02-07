@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class MainMenuController : MonoBehaviour
 	private GameController gameController;
 	private Renderer _renderer;
 	private GameSceneManager gameSceneManager;
+
 	
 
 	void Start()
@@ -45,15 +47,24 @@ public class MainMenuController : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		
-		MyMethod(); // Ваш собственный метод, выполняемый при клике
+
+		StartCoroutine(DestroyAfterLoad());
+
 	}
 
-	void MyMethod()
+	
+
+	// Вспомогательная корутина для очистки объекта после завершения основной корутины
+	IEnumerator DestroyAfterLoad()
 	{
-		StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
-		//gameController.CanCloseSubMenu();
-		//pauseMenuController.OpenImagesSubMenu();
-		//Debug.Log("Метод вызван при клике");
+		Debug.Log("START!!!!!!!!!");
+		// Сначала делаем объект постоянным, чтобы предотвратить преждевременное разрушение
+		DontDestroyOnLoad(gameObject);
+
+		// Начинаем загрузку сцены
+		yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
+
+		// Удаляем объект после завершения загрузки
+		Destroy(gameObject);
 	}
 }
