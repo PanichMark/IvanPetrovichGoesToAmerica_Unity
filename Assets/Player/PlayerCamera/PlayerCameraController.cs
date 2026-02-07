@@ -45,20 +45,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 
 	private bool _isInitialized = false;
-	void Start()
-	{
-		//playerInputsList = GetComponent<InputManager>();
-	
 
-		
-		// DO NOT DELETE
-		// MAX AND MIN CONSTS
-		//PlayerCameraDistanceY = -2;
-		//PlayerCameraDistanceZ = 5;
-		//
-		//PlayerCameraDistanceY = -1.5f;
-		//PlayerCameraDistanceZ = 1.5f;
-	}
 
 	void Update()
 	{
@@ -106,48 +93,13 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		}
 
 		
-		playerCameraState.PlayerCameraPosition();
+		playerCameraState.Update();
 	
 
-		if (inputDevice.GetKeyChangeCameraView())
-		{
-			ChangePlayerCameraView();
-		}
+	
 
-		/*
-		if (inputDevice.GetKeyEnterCutscene())
-		{
-			if (_currentPlayerCameraType != PlayerCameraStateType.Cutscene.ToString())
-			{
-				EnterCutscene();
-			}
-			else
-			{
-				ExitCutscene();
-			}
-		}
-		*/
-
-		//Debug.Log(player);
-		
-		if (CurrentPlayerCameraStateType == "FirstPerson")
-		{
-			// Проверка на специфичные состояния движения
-			if (
-				movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
-				movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking" ||
-				movementController.CurrentPlayerMovementStateType == "PlayerSliding"
-			)
-			{
-				// Опускаем камеру вниз по оси Y
-				transform.position = new Vector3(transform.position.x, transform.position.y - 0.3f, transform.position.z);
-			}
-			else
-			{
-				// Восстанавливаем оригинальную высоту камеры
-				transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-			}
-		}
+	
+	
 		
 
 
@@ -252,14 +204,14 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		{
 			CurrentPlayerCameraStateType = "FirstPerson";
 			movementController.GiveCurrentPlayerCameraType("FirstPerson");
-			newState = new FirstPersonPlayerCameraState(this);
+			newState = new FirstPersonPlayerCameraState(this, movementController, inputDevice);
 			//IsPlayerCameraFirstPerson = true;
 		}
 		else if (playerCameraStateType == PlayerCameraStateType.ThirdPerson)
 		{
 			CurrentPlayerCameraStateType = "ThirdPerson";
 			movementController.GiveCurrentPlayerCameraType("ThirdPerson");
-			newState = new ThirdPersonPlayerCameraState(this);
+			newState = new ThirdPersonPlayerCameraState(this, inputDevice);
 			//IsPlayerCameraFirstPerson = false;
 		}
 		else if (playerCameraStateType == PlayerCameraStateType.Cutscene)
@@ -276,17 +228,17 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 		playerCameraState = newState;
 	}
-	public void ChangePlayerCameraView()
+	public void CameraStanding()
 	{
-		playerCameraState.ChangePlayerCameraView();
+		
+		// Восстанавливаем оригинальную высоту камеры
+		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+		
+
 	}
-	public void EnterCutscene()
+	public void CameraCrouching()
 	{
-		playerCameraState.EnterCutscene();
-	}
-	public void ExitCutscene()
-	{
-		playerCameraState.ExitCutscene();
+		transform.position = new Vector3(transform.position.x, transform.position.y - 0.3f, transform.position.z);
 	}
 	public void FirstPersonCameraTransform()
 	{

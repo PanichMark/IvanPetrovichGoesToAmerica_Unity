@@ -1,41 +1,40 @@
 ﻿using UnityEngine;
 public class FirstPersonPlayerCameraState : PlayerCameraState
 {
-	public static FirstPersonPlayerCameraState Instance { get; private set; }
-
-	public FirstPersonPlayerCameraState(PlayerCameraController playerCam)
+	private PlayerMovementController movementController;
+	private IInputDevice inputDevice;
+	public FirstPersonPlayerCameraState(PlayerCameraController playerCam, PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		playerCamera = playerCam;
-		Debug.Log("Entered 1st Person Camera");
-		playerCamera.SetPlayerCameraType(PlayerCameraStateType.FirstPerson);
+		movementController = playerMovementController;
 
-		// Установим экземпляр
-		Instance = this;
-
-
+		this .inputDevice = inputDevice;	
 	}
 
-	// Деструктор, который очищает экземпляр
-	~FirstPersonPlayerCameraState()
+	public override void Update()
 	{
-		Instance = null;
+		this.playerCamera.FirstPersonCameraTransform();
+
+		// Проверка на специфичные состояния движения
+		if (
+			movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
+			movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking" ||
+			movementController.CurrentPlayerMovementStateType == "PlayerSliding"
+		)
+		{
+			playerCamera.CameraCrouching();
+		}
+		else playerCamera.CameraStanding();
+
+		if (inputDevice.GetKeyChangeCameraView())
+		{
+			playerCamera.SetPlayerCameraState(PlayerCameraStateType.ThirdPerson);
+		}
+
+		//playerCamera.SetPlayerCameraState(PlayerCameraStateType.FirstPerson);
 	}
 
-	public override void ChangePlayerCameraView()
-	{
-		playerCamera.SetPlayerCameraState(PlayerCameraStateType.ThirdPerson);
-		//Instance = null;
-	}
-	public override void PlayerCameraPosition()
-	{
-		playerCamera.FirstPersonCameraTransform();
-	}
-
-	public override void EnterCutscene()
-	{
-		playerCamera.SetPlayerCameraState(PlayerCameraStateType.Cutscene);
-		playerCamera.SetPlayerCameraType(PlayerCameraStateType.Cutscene);
-	}
+	
 }
 
 

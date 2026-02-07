@@ -120,6 +120,10 @@ public class BootStrap : MonoBehaviour
 	private void Awake()
 	{
 		Time.timeScale = 0f;
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
+
 
 		tempCameraObject = new GameObject("TempCamera");
 		tempCameraObject.AddComponent<Camera>();
@@ -146,20 +150,25 @@ public class BootStrap : MonoBehaviour
 
 		yield return new WaitForSecondsRealtime(0.3f);
 
-		//Destroy(tempCameraObject);
+		
 	
 
-		//StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
+		
 		 
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
-		canvasHUDPlayerResourcesController.HideCanvasHUDPlayerResources();
-		menuManager.CloseInteractionHUD();
+		//canvasHUDPlayerResourcesController.HideCanvasHUDPlayerResources();
+		//menuManager.CloseInteractionHUD();
+
+		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandRight);
+		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandLeft);
 
 		Destroy(canvasBootstrap);
 		saveLoadController.NewGame();
-		StartCoroutine(gameSceneManager.LoadMainMenuScene());
+		//StartCoroutine(gameSceneManager.LoadMainMenuScene());
+		StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
+		Destroy(tempCameraObject);
 	}
 
 	

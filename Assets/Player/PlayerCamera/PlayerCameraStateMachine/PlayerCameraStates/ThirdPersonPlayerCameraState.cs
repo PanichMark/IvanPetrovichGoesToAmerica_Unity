@@ -1,41 +1,31 @@
 ﻿using UnityEngine;
 public class ThirdPersonPlayerCameraState : PlayerCameraState
 {
-	public static ThirdPersonPlayerCameraState Instance { get; private set; }
-	public ThirdPersonPlayerCameraState(PlayerCameraController playerCam)
+	private IInputDevice inputDevice;
+	public ThirdPersonPlayerCameraState(PlayerCameraController playerCam, IInputDevice inputDevice)
 	{
 		playerCamera = playerCam;
-		Debug.Log("Entered 3rd Person Camera");
-		playerCamera.SetPlayerCameraType(PlayerCameraStateType.ThirdPerson);
-
-		// Установим экземпляр
-		Instance = this;
+		this.inputDevice = inputDevice;
+	
 	}
 
 	// Деструктор, который очищает экземпляр
-	~ThirdPersonPlayerCameraState()
+	
+
+	public override void Update()
 	{
-		Instance = null;
+		this.playerCamera.ThirdPersonCameraTransform();
+
+		if (inputDevice.GetKeyChangeCameraView())
+		{
+			playerCamera.SetPlayerCameraState(PlayerCameraStateType.FirstPerson);
+		}
+		//playerCamera.ThirdPersonCameraTransform();
 	}
 
-	public override void ChangePlayerCameraView()
-	{
-		playerCamera.SetPlayerCameraState(PlayerCameraStateType.FirstPerson);
-		//Instance = null;
-	}
-	public override void PlayerCameraPosition()
-	{
-		playerCamera.ThirdPersonCameraTransform();
-	}
-
-
-
-
-	public override void EnterCutscene()
-	{
-		playerCamera.SetPlayerCameraState(PlayerCameraStateType.Cutscene);
-		playerCamera.SetPlayerCameraType(PlayerCameraStateType.Cutscene);
-	}
 }
+
+
+	
 
 

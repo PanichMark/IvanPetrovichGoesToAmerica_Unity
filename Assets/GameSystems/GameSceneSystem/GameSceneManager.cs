@@ -72,8 +72,7 @@ public class GameSceneManager : MonoBehaviour
 		gameController.SceneLoadEnded();
 		Time.timeScale = 1f; // Возвращаем нормальный таймскейл
 		Debug.Log($"SceneLoaded {scene}");
-		Cursor.lockState = CursorLockMode.None;
-		Cursor.visible = true;
+
 		yield break;
 	}
 
@@ -84,7 +83,8 @@ public class GameSceneManager : MonoBehaviour
 		gameController.SceneLoadBegan();
 		//canvasLoadingScreen.SetActive(true);
 		//loadingScreenText.text = "Загрузка";
-
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 		Time.timeScale = 0f; // Устанавливаем таймскейл на паузу
 
 		//string sceneName = scene.ToString(); // Преобразуем перечисление в название сцены
@@ -109,8 +109,10 @@ public class GameSceneManager : MonoBehaviour
 		//canvasLoadingScreen.SetActive(false);
 		//gameController.SceneLoadEnded();
 		Time.timeScale = 1f; // Возвращаем нормальный таймскейл
-		//IsItFirstTimeLoading = false; ;
-		//Debug.Log($"SceneLoaded {scene}");
+							 //IsItFirstTimeLoading = false; ;
+							 //Debug.Log($"SceneLoaded {scene}");
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
 		yield break;
 	}
 }

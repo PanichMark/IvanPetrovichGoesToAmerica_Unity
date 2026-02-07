@@ -9,22 +9,12 @@ public class CutscenePlayerCameraState : PlayerCameraState
 	}
 	
 
-	public override void PlayerCameraPosition()
+	public override void Update()
 	{
 		playerCamera.CutsceneCameraTransform();
 	}
 
-	public override void ExitCutscene()
-	{
-		if (playerCamera.GetPreviousPlayerCameraType() == PlayerCameraStateType.FirstPerson.ToString())
-		{
-			playerCamera.SetPlayerCameraState(PlayerCameraStateType.FirstPerson);
-		}
-		else if (playerCamera.GetPreviousPlayerCameraType() == PlayerCameraStateType.ThirdPerson.ToString())
-		{
-			playerCamera.SetPlayerCameraState(PlayerCameraStateType.ThirdPerson);
-		}
-	}
+	
 }
 
 
