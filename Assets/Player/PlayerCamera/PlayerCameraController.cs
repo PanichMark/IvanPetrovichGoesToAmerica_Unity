@@ -160,7 +160,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		//CameraForward = transform.forward;
 		//CameraRight = transform.right;
 
-		transform.rotation = Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0);
+		
 		
 		//CameraRotationY = transform.eulerAngles.y;
 
@@ -212,14 +212,14 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		{
 			CurrentPlayerCameraStateType = "Cutscene";
 			movementController.GiveCurrentPlayerCameraType("Cutscene");
-			newState = new CutscenePlayerCameraState(this, new Vector3(0, 0, 0));
+			newState = new CutscenePlayerCameraState(this, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(25, -12, 0));
 			//IsPlayerCameraFirstPerson = false;
 		}
 		else
 		{
 			newState = null;
 		}
-
+		Debug.Log("CameraState: " + CurrentPlayerCameraStateType);
 		playerCameraState = newState;
 	}
 	public void CameraStanding()
@@ -248,11 +248,15 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
 
 	}
-	public void CutsceneCameraTransform(Vector3 position)
+	public void CutsceneCameraTransformPosition(Vector3 position)
 	{
 		transform.position = position;
 	}
-	
+	public void CutsceneCameraTransformRotation(Quaternion rotation)
+	{
+		transform.rotation = rotation;
+	}
+
 	public string GetCurrentPlayerCameraType()
 	{
 		return _currentPlayerCameraType.ToString();
@@ -293,6 +297,8 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			MouseRotation.x += Input.GetAxis("Mouse Y");
 			MouseRotation.x = Mathf.Clamp(MouseRotation.x, MouseRotationLimit * -1, MouseRotationLimit);
 			MouseScrollWheel = Input.mouseScrollDelta;
+
+			transform.rotation = Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0);
 		}
 	}
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerMovementController movementController, PlayerCapsuleCollider playerCollider, GameObject playerModel)
@@ -309,9 +315,9 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		PlayerCameraDistanceZ = 3.25f;
 
 
-		playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
+		//playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
 
-		SetPlayerCameraState(playerCameraStateType);
+		SetPlayerCameraState(PlayerCameraStateType.Cutscene);
 		_isInitialized = true;
 		Debug.Log("CameraController Initialized");
 	}

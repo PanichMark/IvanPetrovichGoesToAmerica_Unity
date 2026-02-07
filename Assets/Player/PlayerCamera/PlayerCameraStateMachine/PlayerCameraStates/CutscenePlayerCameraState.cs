@@ -5,13 +5,17 @@ public class CutscenePlayerCameraState : PlayerCameraState
 
 {
 	private Vector3 position;
+	private Vector3 eulerAngles;
 
-	public CutscenePlayerCameraState(PlayerCameraController playerCam, Vector3 position)
+	public CutscenePlayerCameraState(PlayerCameraController playerCam, Vector3 position, Vector3 eulerAngles)
 	{
 		playerCamera = playerCam;
 		this.position = position;
-		playerCamera.CutsceneCameraTransform(this.position);
-	//	Debug.Log("POSITION "+ this.position);
+		this.eulerAngles = eulerAngles;
+		playerCamera.CutsceneCameraTransformPosition(this.position);
+		var quaternionRotation = Quaternion.Euler(eulerAngles);
+		playerCamera.CutsceneCameraTransformRotation(quaternionRotation);
+		//	Debug.Log("POSITION "+ this.position);
 	}
 
 	

@@ -169,7 +169,7 @@ public class BootStrap : MonoBehaviour
 		yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
 		//yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
 		playerCameraController.SetPlayerCameraState(PlayerCameraStateType.Cutscene);
-		playerMovementController.SetPlayerPosition(new Vector3(1.85f, -0.2f, 4));
+		playerMovementController.SetPlayerPosition(new Vector3(0, 0, -5));
 		//yield return new WaitForSecondsRealtime(0.1f);
 		Destroy(tempCameraObject);
 	}
