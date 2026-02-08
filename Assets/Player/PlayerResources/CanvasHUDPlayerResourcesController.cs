@@ -6,8 +6,9 @@ public class CanvasHUDPlayerResourcesController : MonoBehaviour
     private MenuManager menuManager;
     private GameObject canvasHUDPlayerResources;
     private GameSceneManager gameSceneManager;
+    private GameController gameController;
 
-    public void Initialize (GameSceneManager gameSceneManager, MenuManager menuManager, GameObject canvasHUDPlayerResources)
+    public void Initialize (GameSceneManager gameSceneManager, GameController gameController, MenuManager menuManager, GameObject canvasHUDPlayerResources)
     {
         this.gameSceneManager = gameSceneManager;
         this.menuManager = menuManager;
@@ -20,13 +21,13 @@ public class CanvasHUDPlayerResourcesController : MonoBehaviour
 		this.menuManager.OnOpenLockpickMenu += HideCanvasHUDPlayerResources;
 		this.menuManager.OnCloseLockpickMenu += ShowCanvasHUDPlayerResources;
 		Debug.Log("CanvasHUDPlayerResourcesController Initialized");
-
+        this.gameController = gameController;
         this.gameSceneManager.OnLoadMainMenuScene += HideCanvasHUDPlayerResources;
 		this.gameSceneManager.OnLoadGameplayScene += ShowCanvasHUDPlayerResources;
 	}
     private void ShowCanvasHUDPlayerResources()
     {
-       if (!menuManager.IsReadNoteMenuOpened && !menuManager.IsLockpickMenuOpened)
+       if (!menuManager.IsReadNoteMenuOpened && !menuManager.IsLockpickMenuOpened && !gameController.IsMainMenuOpen)
        {
 
            canvasHUDPlayerResources.SetActive(true);

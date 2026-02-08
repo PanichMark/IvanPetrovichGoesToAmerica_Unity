@@ -27,10 +27,11 @@ public class SaveLoadController : MonoBehaviour
 
 	private List<ISaveLoad> saveLoadObjects;
 	private FileDataHandler fileDataHandler;
-
-	public void Initialize(GameSceneManager gameSceneManager)
+	private GameController gameController;
+	public void Initialize(GameSceneManager gameSceneManager, GameController gameController)
 	{
 		this.gameSceneManager = gameSceneManager;
+		this.gameController = gameController;
 		fileSaveDataTEMP = "SaveGameTEMP.json";
 		fileSaveDataName1 = "SaveGame1.json";
 		fileSaveDataName2 = "SaveGame2.json";
@@ -40,6 +41,7 @@ public class SaveLoadController : MonoBehaviour
 		//this.saveLoadObjects = FindAllSaveLoadObjects();
 		//NewGame();
 		Debug.Log("SaveLoadController Initialized");
+
 	}
 
 
@@ -180,6 +182,7 @@ public class SaveLoadController : MonoBehaviour
 			yield break;
 		}
 
+		gameController.CloseMainMenu();
 		OnSafeFileLoad?.Invoke();
 
 		if (loadSlotNumber == 1)

@@ -23,7 +23,7 @@ public class MenuManager : MonoBehaviour
 
 	public Stack<int> PauseMenuLevel = new Stack<int>();
 
-	public void Initialize(IInputDevice inputDevice, GameController gameController, SaveLoadController saveLoadController)
+	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, GameController gameController, SaveLoadController saveLoadController)
 	{
 		this.inputDevice = inputDevice;
 		this.gameController = gameController;
@@ -60,7 +60,7 @@ public class MenuManager : MonoBehaviour
 
 		//Debug.Log(PauseMenuLevel.Count);
 
-		if (inputDevice.GetKeyPauseMenu())
+		if (inputDevice.GetKeyPauseMenu() && !gameController.IsMainMenuOpen)
 		{
 			if (PauseMenuLevel.Count == 0)
 			{
@@ -71,6 +71,8 @@ public class MenuManager : MonoBehaviour
 				ClosePauseMenu();
 			}
 		}
+		//Debug.Log(PauseMenuLevel.Count);
+		//Debug.Log(gameController.IsMainMenuOpen);
 	}
 
 	public void OpenPauseMenu()
@@ -99,7 +101,8 @@ public class MenuManager : MonoBehaviour
 	
 
 		IsPauseMenuOpened = false;
-		PauseMenuLevel.Pop();
+		if (PauseMenuLevel.Count > 0)
+			PauseMenuLevel.Pop();
 
 		if (!IsReadNoteMenuOpened && !IsLockpickMenuOpened)
 		{
@@ -188,7 +191,7 @@ public class MenuManager : MonoBehaviour
 		Time.timeScale = 1;
 		OnCloseReadNoteMenu?.Invoke();
 		gameController.MakePlayerControllable();
-		OpenInteractionHUD();
+		//OpenInteractionHUD();
 		CloseAnyMenu();
 		Debug.Log("ReadNoteMenu closed");
 

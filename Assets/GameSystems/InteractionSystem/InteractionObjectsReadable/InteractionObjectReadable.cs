@@ -33,7 +33,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 	private Image ImageComponent;
 
 	public bool IsInteractionHintMessageAdditionalActive => false;
-
+	private GameSceneManager gameSceneManager;
 	private void Awake()
 	{
 		// Разрешаем объекты по строке-ключу
@@ -46,7 +46,11 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		//Debug.Log(ReadStructure);
 		//menuManager.OnCloseReadNoteMenu += CloseAndDeactivate;
-		saveLoadController.OnSafeFileLoad += CloseAndDeactivate;
+		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		gameSceneManager.OnLoadMainMenuScene += CloseAndDeactivate;
+		gameSceneManager.OnLoadGameplayScene += CloseAndDeactivate;
+
+		//saveLoadController.OnSafeFileLoad += CloseAndDeactivate;
 
 
 		menuManager.OnOpenPauseMenu += HideReadNoteCanvas;

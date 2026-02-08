@@ -2,7 +2,7 @@
 using UnityEngine;
 public class GameController
 {
-
+	public bool IsMainMenuOpen {  get; private set; }
 	public bool IsPauseMenuAvailable { get; private set; }
 	public bool IsPlayerControllable { get; private set; }
 	public bool IsPlayerDead { get; private set; }
@@ -14,7 +14,7 @@ public class GameController
 	}
 
 	
-
+	
 	public void PlayerIsDead()
 	{
 		IsPlayerDead = true;
@@ -42,6 +42,15 @@ public class GameController
 		MakePlayerControllable();
 	}
 
-	
+	public void OpenMainMenu()
+	{
+		IsMainMenuOpen = true;
+		Debug.Log("Open MAINMENU");
+	}
+	public void CloseMainMenu()
+	{
+		IsMainMenuOpen = false;
+		Debug.Log("Close MAINMENU");
 
+	}
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MainMenuController : MonoBehaviour
+public class MainMenuDiegeticButtonController : MonoBehaviour
 {
 	public Material defaultMaterial; // Материал по умолчанию
 	public Material hoverMaterial;   // Материал при наведении (белый)
@@ -11,7 +11,7 @@ public class MainMenuController : MonoBehaviour
 	private GameSceneManager gameSceneManager;
 	private Collider collider;
 	private SaveLoadController saveLoadController;
-
+	private MenuManager menuManager;
 	void Start()
 	{
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
@@ -23,16 +23,18 @@ public class MainMenuController : MonoBehaviour
 		collider = GetComponent<Collider>();
 
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
-
+		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 	}
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Alpha1))
+		if (Input.GetKeyDown(KeyCode.Alpha1) && menuManager.PauseMenuLevel.Count == 1)
 		{
-			//OnClosePauseSubMenu?.Invoke();
+		pauseMenuController.CloseSubMenu();
+		collider.enabled = true;
+		//Debug.Log("BRUH!");
 		}
-		//Debug.Log(gameController.IsPauseMenuAvailable);
+		//Debug.Log("Collider is now " + collider.enabled);
 	}
 
 	void OnMouseEnter()
@@ -50,28 +52,34 @@ public class MainMenuController : MonoBehaviour
 	void OnMouseDown()
 	{
 	
-		if (this.name == "NewGame")
+		if (name == "NewGame")
 		{
-			Debug.Log("Началась новая игра.");
+			Debug.Log("START NEW GAME");
 			collider.enabled = false;
+			gameController.CloseMainMenu();
 			StartCoroutine(StartNewGame());
 		}
-		else if (this.name == "LoadGame")
+		else if (name == "LoadGame")
 		{
-			Debug.Log("Игра загружается.");
+			Debug.Log("OPEN LOAD GAME");
+			collider.enabled = false;
+			pauseMenuController.OpenLoadSubMenu();
 		}
 		else if (this.name == "ExitGame")
 		{
-			Debug.Log("Приложение закрывается.");
-			Application.Quit();
+			Debug.Log("EXIT GAME");
+			//collider.enabled = false;
+			//Application.Quit();
 		}
 		else if (this.name == "Options")
 		{
-			Debug.Log("Открываются опции.");
+			Debug.Log("OPEN OPTIONS");
+			//collider.enabled = false;
 		}
 		else if (this.name == "ReadNews")
 		{
-			Debug.Log("Читают новости.");
+			Debug.Log("OPEN NEWS");
+			//collider.enabled = false;
 		}
 	}
 

@@ -86,8 +86,10 @@ public class GameSceneManager : MonoBehaviour
 
 	public IEnumerator LoadMainMenuScene()
 	{
+		gameController.OpenMainMenu();
 		OnLoadMainMenuScene?.Invoke();
-		gameController.SceneLoadBegan();
+		canvasLoadingScreen.SetActive(true);
+		//gameController.SceneLoadBegan();
 		//canvasLoadingScreen.SetActive(true);
 		//loadingScreenText.text = "Загрузка";
 		Cursor.lockState = CursorLockMode.Locked;
@@ -96,7 +98,23 @@ public class GameSceneManager : MonoBehaviour
 
 		//string sceneName = scene.ToString(); // Преобразуем перечисление в название сцены
 
-	
+		// Проверка и выгрузка предыдущей сцены
+		if (SceneManager.sceneCount > 1)
+		{
+			Scene loadedScene = SceneManager.GetSceneAt(1); // Вторая сцена в индексе - первая загруженная дополнительная сцена
+
+			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
+			{
+				loadingScreenText.text = "Выгрузка предыдущей сцены...";
+				Debug.Log("Начало выгрузки сцены: " + loadedScene.name);
+
+				SceneManager.UnloadSceneAsync(loadedScene);
+				yield return new WaitUntil(() => !loadedScene.isLoaded); // Ждем завершения выгрузки
+
+				Debug.Log("Завершение выгрузки сцены: " + loadedScene.name);
+				loadingScreenText.text = "Предыдущая сцена выгружена.";
+			}
+		}
 
 		AsyncOperation operation = SceneManager.LoadSceneAsync("SceneMainMenu", LoadSceneMode.Additive); // Загрузка новой сцены асинхронно
 
@@ -120,6 +138,8 @@ public class GameSceneManager : MonoBehaviour
 							 //Debug.Log($"SceneLoaded {scene}");
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
+		//gameController.SceneLoadEnded();
+		canvasLoadingScreen.SetActive(false);
 		yield break;
 	}
 }

@@ -160,19 +160,13 @@ public class BootStrap : MonoBehaviour
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
-		//canvasHUDPlayerResourcesController.HideCanvasHUDPlayerResources();
-		//menuManager.CloseInteractionHUD();
-
-		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandRight);
-		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandLeft);
 
 		
-		//saveLoadController.NewGame();
+
+		
+		saveLoadController.NewGame();
 		yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
-		//yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
-		//playerCameraController.SetPlayerCameraState(PlayerCameraStateType.Cutscene);
-		//playerMovementController.SetPlayerPosition(new Vector3(0, 0, -5));
-		//yield return new WaitForSecondsRealtime(0.1f);
+	
 		Destroy(tempCameraObject);
 		Destroy(canvasBootstrap);
 	}
@@ -226,7 +220,7 @@ public class BootStrap : MonoBehaviour
 
 		dataSaveLoadControllerGameObject = new GameObject("DataSaveLoadController");
 		saveLoadController = dataSaveLoadControllerGameObject.AddComponent<SaveLoadController>();
-		saveLoadController.Initialize(gameSceneManager);
+		saveLoadController.Initialize(gameSceneManager, gameController);
 		Debug.Log("SAVE SYSTEM INITIALIZED");
 		yield break;
 	}
@@ -286,7 +280,7 @@ public class BootStrap : MonoBehaviour
 		playerResourcesHealthManager = playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
 		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
 
-		canvasHUDPlayerResourcesController.Initialize(gameSceneManager, menuManager, canvasHUDPlayerResources);
+		canvasHUDPlayerResourcesController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDPlayerResources);
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
 		playerResourcesHealthManager.Initialize(HealthBarSlider, HealingItemButton, HealingItemNumber);
 		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
@@ -348,8 +342,8 @@ public class BootStrap : MonoBehaviour
 		};
 
 		// Инициализация меню
-		menuManager.Initialize(inputDevice, gameController, saveLoadController);
-		pauseMenuController.Initialize(inputDevice, saveLoadController, menuManager,  canvasPauseMenu, buttonsPauseMenu);
+		menuManager.Initialize(inputDevice, gameSceneManager, gameController, saveLoadController);
+		pauseMenuController.Initialize(inputDevice, gameSceneManager, saveLoadController, menuManager,  canvasPauseMenu, buttonsPauseMenu);
 		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonsDeleteGame);
 		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages);
@@ -414,7 +408,7 @@ public class BootStrap : MonoBehaviour
 		buttonExitLockpickMenu = canvasLockpickMenu.transform.Find("ExitLockpick")?.GetComponent<Button>();
 
 		// Инициализация взаимодействия
-		interactionController.Initialize(gameSceneManager, inputDevice, localizationManager, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
+		interactionController.Initialize(gameController, gameSceneManager, inputDevice, localizationManager, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
 			additionalInteractionText, itemsTexts, itemsImages);
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 		yield break;

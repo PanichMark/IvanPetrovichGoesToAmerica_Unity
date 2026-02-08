@@ -41,7 +41,8 @@ public class InteractionController : MonoBehaviour
 	private GameObject currentInteractableObject; // Текущий объект взаимодействия
 	public GameObject CurrentPickableObject { get; private set; }
 	private GameSceneManager gameSceneManager;
-	public void Initialize(
+	private GameController gameController;
+	public void Initialize(GameController gameController,
 		GameSceneManager gameSceneManager,
 		IInputDevice inputDevice, LocalizationManager localizationManager,
 		MenuManager menuManager,
@@ -54,6 +55,7 @@ public class InteractionController : MonoBehaviour
 		Image[] itemsImages // Передача массива
 	)
 	{
+		this.gameController = gameController;
 		this.gameSceneManager = gameSceneManager;
 		this.inputDevice = inputDevice;
 		this.localizationManager = localizationManager;
@@ -88,6 +90,7 @@ public class InteractionController : MonoBehaviour
 
 	private void ShowCanvasHUDInteraction()
 	{
+		if (!gameController.IsMainMenuOpen)
 		canvasHUDInteraction.gameObject.SetActive(true);
 
 	}

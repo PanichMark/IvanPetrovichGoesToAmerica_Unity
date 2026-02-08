@@ -48,7 +48,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	public bool IsInteractionHintMessageAdditionalActive => false;
 	public string InteractionObjectNameUI {  get; protected set; }
 
-
+	private GameSceneManager gameSceneManager;
 	private void Awake()
 	{
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
@@ -56,7 +56,9 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		buttonExitLockpickMenu = ServiceLocator.Resolve<Button>("ExitLockpick");
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
-		saveLoadController.OnSafeFileLoad += OnClosePuzzle;
+		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		gameSceneManager.OnLoadMainMenuScene += OnClosePuzzle;
+		gameSceneManager.OnLoadGameplayScene += OnClosePuzzle;
 
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");

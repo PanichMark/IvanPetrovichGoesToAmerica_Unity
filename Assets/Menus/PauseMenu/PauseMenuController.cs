@@ -8,7 +8,7 @@ public class PauseMenuController : MonoBehaviour
 	private GameObject PauseMenuCanvas;
 	private SaveLoadController saveLoadController;
 	private GameObject[] buttonsPauseMenu;
-
+	private GameSceneManager gameSceneManager;
 	public delegate void OpenPauseMenuEventHandler();
 	public event OpenPauseMenuEventHandler OnClosePauseMenu;
 	public event OpenPauseMenuEventHandler OnOpenSaveSubMenu;
@@ -17,8 +17,9 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnOpenSettingsSubMenu;
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
-	public void Initialize( IInputDevice inputDevice, SaveLoadController saveLoadController, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject[] buttonsPauseMenu)
+	public void Initialize( IInputDevice inputDevice, GameSceneManager gameSceneManager, SaveLoadController saveLoadController, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject[] buttonsPauseMenu)
 	{
+		this.gameSceneManager = gameSceneManager;
 		this.inputDevice = inputDevice;
 		this.menuManager = menuManager;
 		this.PauseMenuCanvas = PauseMenuCanvas;
@@ -67,6 +68,7 @@ public class PauseMenuController : MonoBehaviour
 	public void CloseSubMenu()
 	{
 		OnClosePauseSubMenu.Invoke();
+		if (menuManager.PauseMenuLevel.Count > 0) 
 		menuManager.PauseMenuLevel.Pop();
 	}
 
@@ -102,6 +104,10 @@ public class PauseMenuController : MonoBehaviour
 	
 	public void ExitToMainMenu()
 	{
+		
 		Debug.Log("MAIN MENU EXIT");
+		CloseSubMenu();
+		menuManager.ClosePauseMenu();
+		StartCoroutine(gameSceneManager.LoadMainMenuScene());
 	}
 }
