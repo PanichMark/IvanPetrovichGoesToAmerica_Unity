@@ -1,5 +1,6 @@
 ﻿public enum GameScenesEnum
 {
 	NEW_SceneTest,
-	SceneMainMenu
+	SceneMainMenu,
+	SceneStreet
 }

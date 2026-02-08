@@ -30,8 +30,9 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1) && menuManager.PauseMenuLevel.Count == 1)
 		{
-		pauseMenuController.CloseSubMenu();
-		collider.enabled = true;
+			collider.enabled = true;
+			pauseMenuController.CloseSubMenu();
+	
 		//Debug.Log("BRUH!");
 		}
 		//Debug.Log("Collider is now " + collider.enabled);

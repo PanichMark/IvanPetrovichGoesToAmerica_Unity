@@ -168,7 +168,7 @@ public class SaveLoadController : MonoBehaviour
 			Debug.Log("Data saved to slot " + saveSlotNumber);
 		}
 
-	
+		
 
 
 		IsSavingFinished = true;

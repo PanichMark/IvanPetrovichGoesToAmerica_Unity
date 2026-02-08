@@ -1,14 +1,17 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using System;
 using System.Collections;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class GameSceneManager : MonoBehaviour
+public class GameSceneManager : MonoBehaviour, ISaveLoad
 {
 	private GameController gameController;
 	private GameObject canvasLoadingScreen;
 	private TMP_Text loadingScreenText;
-
+	private TMP_Text sceneNameText;
+	private Image sceneLoadingScreenImage;
 
 	public delegate void LoadSceneHandler();
 	public event LoadSceneHandler OnLoadMainMenuScene;
@@ -18,12 +21,18 @@ public class GameSceneManager : MonoBehaviour
 		this.gameController = gameController;	
 		this.canvasLoadingScreen = canvasLoadingScreen;	
 		this.loadingScreenText = loadingScreenText;
+		sceneNameText = canvasLoadingScreen.transform.Find("SceneName")?.GetComponent<TMP_Text>();
+		sceneLoadingScreenImage = canvasLoadingScreen.transform.Find("BackgroundImage")?.GetComponent<Image>();
+
+
 		Debug.Log("GameSceneManager Initialized");
 	}
 
 
 	public IEnumerator LoadScene(GameScenesEnum scene)
 	{
+
+
 		OnLoadGameplayScene?.Invoke();
 		gameController.SceneLoadBegan();
 		canvasLoadingScreen.SetActive(true);
@@ -36,6 +45,12 @@ public class GameSceneManager : MonoBehaviour
 		Time.timeScale = 0f; // Устанавливаем таймскейл на паузу
 
 		string sceneName = scene.ToString(); // Преобразуем перечисление в название сцены
+
+		// Подгружаем спрайт из папки Resources с таким же именем, как у сцены
+		Sprite spriteToUse = Resources.Load<Sprite>($"Sprites/{sceneName}");
+
+		sceneLoadingScreenImage.sprite = spriteToUse;
+		sceneNameText.text = sceneName;
 
 		// Проверка и выгрузка предыдущей сцены
 		if (SceneManager.sceneCount > 1)
@@ -141,5 +156,27 @@ public class GameSceneManager : MonoBehaviour
 		//gameController.SceneLoadEnded();
 		canvasLoadingScreen.SetActive(false);
 		yield break;
+	}
+
+	public void SaveData(ref GameData data)
+	{
+
+		data.CurrentSceneNameSystem = SceneManager.GetSceneAt(1).name;
+		data.CurrentSceneNameUI = SceneManager.GetSceneAt(1).name;
+	}
+
+	public void LoadData(GameData data)
+	{
+		/*
+		// Пробуем разобрать строку в значение перечисления
+		if (Enum.TryParse<GameScenesEnum>(data.CurrentSceneNameSystem, out var parsedScene))
+		{
+			StartCoroutine(LoadScene(parsedScene)); // Запускаем загрузку, если получилось распознать сцену
+		}
+		else
+		{
+			Debug.LogError($"Не удалось распознать сцену из строки \"{data.CurrentSceneNameSystem}\".");
+		}
+		*/
 	}
 }

@@ -5,7 +5,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 {
 	//public override string InteractionItemName => "Дверь";
 
-	private bool isAdditionalInteractionHintActive;
+	protected bool isAdditionalInteractionHintActive;
 	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
 	
 	private LocalizationManager localizationManager;
@@ -66,17 +66,19 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			// Если замок установлен, сначала пытаемся открыть замок
 			Debug.Log("Запускается попытка взлома замка...");
 			lockController.Interact();
+			//Debug.Log("LMAO!");
 
-			
 		}
 
 		if (lockController == null || lockController.WasUnlocked == true)
 		{
 			// Если замка нет, сразу открываем дверь
 			PerformDoorInteraction();
+			//Debug.Log("BRUH!");
 		}
+		
 	}
-	private void PerformDoorInteraction()
+	protected virtual void PerformDoorInteraction()
 	{
 		isAdditionalInteractionHintActive = false;
 

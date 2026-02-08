@@ -121,6 +121,8 @@ public class BootStrap : MonoBehaviour
 	{
 		canvasBootstrap = Instantiate(canvasBootstrap);
 		loadingStatusText = canvasBootstrap.transform.Find("TextInitializationStep")?.GetComponent<TMP_Text>();
+	
+
 
 		Time.timeScale = 0f;
 		Cursor.lockState = CursorLockMode.Locked;
@@ -165,13 +167,18 @@ public class BootStrap : MonoBehaviour
 
 		
 		saveLoadController.NewGame();
-		yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
-	
+
+
 		Destroy(tempCameraObject);
 		Destroy(canvasBootstrap);
+		yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
+
+		//yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
+		//Destroy(tempCameraObject);
+		//Destroy(canvasBootstrap);
 	}
 
-	
+
 
 	private IEnumerator InitializeInterfaces()
 	{
