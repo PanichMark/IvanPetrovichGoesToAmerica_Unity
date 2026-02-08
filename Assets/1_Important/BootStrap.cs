@@ -119,6 +119,9 @@ public class BootStrap : MonoBehaviour
 
 	private void Awake()
 	{
+		canvasBootstrap = Instantiate(canvasBootstrap);
+		loadingStatusText = canvasBootstrap.transform.Find("TextInitializationStep")?.GetComponent<TMP_Text>();
+
 		Time.timeScale = 0f;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
@@ -128,8 +131,7 @@ public class BootStrap : MonoBehaviour
 		tempCameraObject = new GameObject("TempCamera");
 		tempCameraObject.AddComponent<Camera>();
 
-		canvasBootstrap = Instantiate(canvasBootstrap);
-		loadingStatusText = canvasBootstrap.transform.Find("TextInitializationStep")?.GetComponent<TMP_Text>();
+	
 
 		StartCoroutine(SequentialInitialization());
 	}
@@ -149,29 +151,30 @@ public class BootStrap : MonoBehaviour
 		yield return StartCoroutine(RegisterAllDependencies());
 
 		yield return new WaitForSecondsRealtime(0.3f);
+		//yield return new WaitForSecondsRealtime(1f);
 
-		
-	
 
-		
-		 
+
+
+
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
-		canvasHUDPlayerResourcesController.HideCanvasHUDPlayerResources();
-		menuManager.CloseInteractionHUD();
+		//canvasHUDPlayerResourcesController.HideCanvasHUDPlayerResources();
+		//menuManager.CloseInteractionHUD();
 
-		playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandRight);
-		playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandLeft);
+		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandRight);
+		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandLeft);
 
-		Destroy(canvasBootstrap);
+		
 		//saveLoadController.NewGame();
 		yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
 		//yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
-		playerCameraController.SetPlayerCameraState(PlayerCameraStateType.Cutscene);
-		playerMovementController.SetPlayerPosition(new Vector3(0, 0, -5));
+		//playerCameraController.SetPlayerCameraState(PlayerCameraStateType.Cutscene);
+		//playerMovementController.SetPlayerPosition(new Vector3(0, 0, -5));
 		//yield return new WaitForSecondsRealtime(0.1f);
 		Destroy(tempCameraObject);
+		Destroy(canvasBootstrap);
 	}
 
 	
@@ -255,9 +258,9 @@ public class BootStrap : MonoBehaviour
 
 		// Инициализация полученных компонентов
 		playerBehaviour.Initialize(inputDevice);
-		playerMovementController.Initialize(inputDevice, playerBehaviour);
+		playerMovementController.Initialize(inputDevice, gameSceneManager, playerBehaviour);
 		playerCollider.Initialize(playerMovementController);
-		playerCameraController.Initialize(inputDevice, menuManager, playerMovementController, playerCollider, playerGameObject);
+		playerCameraController.Initialize(inputDevice, gameSceneManager, menuManager, playerMovementController, playerCollider, playerGameObject);
 		playerCameraBlurFilter.Initialize(menuManager);
 
 		Debug.Log("PLAYER SYSTEMS INITIALIZED");
@@ -283,7 +286,7 @@ public class BootStrap : MonoBehaviour
 		playerResourcesHealthManager = playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
 		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
 
-		canvasHUDPlayerResourcesController.Initialize(menuManager, canvasHUDPlayerResources);
+		canvasHUDPlayerResourcesController.Initialize(gameSceneManager, menuManager, canvasHUDPlayerResources);
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
 		playerResourcesHealthManager.Initialize(HealthBarSlider, HealingItemButton, HealingItemNumber);
 		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
@@ -411,7 +414,7 @@ public class BootStrap : MonoBehaviour
 		buttonExitLockpickMenu = canvasLockpickMenu.transform.Find("ExitLockpick")?.GetComponent<Button>();
 
 		// Инициализация взаимодействия
-		interactionController.Initialize(inputDevice, localizationManager, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
+		interactionController.Initialize(gameSceneManager, inputDevice, localizationManager, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
 			additionalInteractionText, itemsTexts, itemsImages);
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 		yield break;
@@ -419,7 +422,7 @@ public class BootStrap : MonoBehaviour
 
 	private IEnumerator InitializeFinalSystems()
 	{
-		playerCameraFirstPersonRender.Initialize(playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHeadParent, playerHandRightParent, playerHandLeftParent);
+		playerCameraFirstPersonRender.Initialize(gameSceneManager, playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHeadParent, playerHandRightParent, playerHandLeftParent);
 		playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, playerMovementController, playerCameraController, weaponController);
 
 		Debug.Log("FINAL SYSTEMS INITIALIZED");

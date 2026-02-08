@@ -40,8 +40,9 @@ public class InteractionController : MonoBehaviour
 	private GameObject previousInteractableObject; // Переменная для хранения предыдущего объекта
 	private GameObject currentInteractableObject; // Текущий объект взаимодействия
 	public GameObject CurrentPickableObject { get; private set; }
-
+	private GameSceneManager gameSceneManager;
 	public void Initialize(
+		GameSceneManager gameSceneManager,
 		IInputDevice inputDevice, LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PlayerCameraController playerCameraController,
@@ -53,6 +54,7 @@ public class InteractionController : MonoBehaviour
 		Image[] itemsImages // Передача массива
 	)
 	{
+		this.gameSceneManager = gameSceneManager;
 		this.inputDevice = inputDevice;
 		this.localizationManager = localizationManager;
 		this.playerCameraController = playerCameraController;
@@ -75,7 +77,8 @@ public class InteractionController : MonoBehaviour
 
 
 
-
+		this.gameSceneManager.OnLoadMainMenuScene += HideCanvasHUDInteraction;
+		this.gameSceneManager.OnLoadGameplayScene += ShowCanvasHUDInteraction;
 
 		this.menuManager.OnOpenInteractionMenu += ShowCanvasHUDInteraction;
 		this.menuManager.OnCloseInteractionMenu += HideCanvasHUDInteraction;

@@ -212,7 +212,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		{
 			CurrentPlayerCameraStateType = "Cutscene";
 			movementController.GiveCurrentPlayerCameraType("Cutscene");
-			newState = new CutscenePlayerCameraState(this, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(25, -12, 0));
+			newState = new CutscenePlayerCameraState(this, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(20, -12, 0));
 			//IsPlayerCameraFirstPerson = false;
 		}
 		else
@@ -301,8 +301,9 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			transform.rotation = Quaternion.Euler(-MouseRotation.x, MouseRotation.y, 0);
 		}
 	}
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerMovementController movementController, PlayerCapsuleCollider playerCollider, GameObject playerModel)
+	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, MenuManager menuManager, PlayerMovementController movementController, PlayerCapsuleCollider playerCollider, GameObject playerModel)
 	{
+		this.gameSceneManager = gameSceneManager;
 		this.inputDevice = inputDevice;
 		this.menuManager = menuManager;
 		this.movementController = movementController; // Новый аргумент
@@ -316,11 +317,12 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 
 		//playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
-
-		SetPlayerCameraState(PlayerCameraStateType.Cutscene);
+		this.gameSceneManager.OnLoadMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateType.Cutscene);
+		SetPlayerCameraState(PlayerCameraStateType.FirstPerson);
 		_isInitialized = true;
 		Debug.Log("CameraController Initialized");
 	}
+	private GameSceneManager gameSceneManager;
 }
 
 

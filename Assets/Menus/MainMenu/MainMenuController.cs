@@ -18,8 +18,7 @@ public class MainMenuController : MonoBehaviour
 		_renderer = GetComponent<Renderer>();
 		pauseMenuController = ServiceLocator.Resolve<PauseMenuController>("PauseMenuController");
 		gameController = ServiceLocator.Resolve<GameController>("GameController");
-		if (_renderer != null && defaultMaterial != null)
-			_renderer.material = defaultMaterial;
+
 
 		collider = GetComponent<Collider>();
 
@@ -38,27 +37,48 @@ public class MainMenuController : MonoBehaviour
 
 	void OnMouseEnter()
 	{
-		if (_renderer != null && hoverMaterial != null)
+		
 			_renderer.material = hoverMaterial;
 	}
 
 	void OnMouseExit()
 	{
-		if (_renderer != null && defaultMaterial != null)
+	
 			_renderer.material = defaultMaterial;
 	}
 
 	void OnMouseDown()
 	{
-		collider.enabled = false;
-		StartCoroutine(DestroyAfterLoad());
-
+	
+		if (this.name == "NewGame")
+		{
+			Debug.Log("Началась новая игра.");
+			collider.enabled = false;
+			StartCoroutine(StartNewGame());
+		}
+		else if (this.name == "LoadGame")
+		{
+			Debug.Log("Игра загружается.");
+		}
+		else if (this.name == "ExitGame")
+		{
+			Debug.Log("Приложение закрывается.");
+			Application.Quit();
+		}
+		else if (this.name == "Options")
+		{
+			Debug.Log("Открываются опции.");
+		}
+		else if (this.name == "ReadNews")
+		{
+			Debug.Log("Читают новости.");
+		}
 	}
 
 	
 
 	// Вспомогательная корутина для очистки объекта после завершения основной корутины
-	IEnumerator DestroyAfterLoad()
+	IEnumerator StartNewGame()
 	{
 		Debug.Log("START!!!!!!!!!");
 		// Сначала делаем объект постоянным, чтобы предотвратить преждевременное разрушение

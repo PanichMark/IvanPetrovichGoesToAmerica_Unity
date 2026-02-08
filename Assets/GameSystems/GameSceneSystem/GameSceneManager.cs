@@ -8,6 +8,11 @@ public class GameSceneManager : MonoBehaviour
 	private GameController gameController;
 	private GameObject canvasLoadingScreen;
 	private TMP_Text loadingScreenText;
+
+
+	public delegate void LoadSceneHandler();
+	public event LoadSceneHandler OnLoadMainMenuScene;
+	public event LoadSceneHandler OnLoadGameplayScene;
 	public void Initialize(GameController gameController, GameObject canvasLoadingScreen, TMP_Text loadingScreenText)
 	{
 		this.gameController = gameController;	
@@ -19,6 +24,7 @@ public class GameSceneManager : MonoBehaviour
 
 	public IEnumerator LoadScene(GameScenesEnum scene)
 	{
+		OnLoadGameplayScene?.Invoke();
 		gameController.SceneLoadBegan();
 		canvasLoadingScreen.SetActive(true);
 		loadingScreenText.text = "Подготовка к загрузке...";
@@ -80,6 +86,7 @@ public class GameSceneManager : MonoBehaviour
 
 	public IEnumerator LoadMainMenuScene()
 	{
+		OnLoadMainMenuScene?.Invoke();
 		gameController.SceneLoadBegan();
 		//canvasLoadingScreen.SetActive(true);
 		//loadingScreenText.text = "Загрузка";

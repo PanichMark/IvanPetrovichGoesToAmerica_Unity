@@ -5,9 +5,11 @@ public class CanvasHUDPlayerResourcesController : MonoBehaviour
 {
     private MenuManager menuManager;
     private GameObject canvasHUDPlayerResources;
+    private GameSceneManager gameSceneManager;
 
-    public void Initialize (MenuManager menuManager, GameObject canvasHUDPlayerResources)
+    public void Initialize (GameSceneManager gameSceneManager, MenuManager menuManager, GameObject canvasHUDPlayerResources)
     {
+        this.gameSceneManager = gameSceneManager;
         this.menuManager = menuManager;
         this.canvasHUDPlayerResources = canvasHUDPlayerResources;
 
@@ -18,6 +20,9 @@ public class CanvasHUDPlayerResourcesController : MonoBehaviour
 		this.menuManager.OnOpenLockpickMenu += HideCanvasHUDPlayerResources;
 		this.menuManager.OnCloseLockpickMenu += ShowCanvasHUDPlayerResources;
 		Debug.Log("CanvasHUDPlayerResourcesController Initialized");
+
+        this.gameSceneManager.OnLoadMainMenuScene += HideCanvasHUDPlayerResources;
+		this.gameSceneManager.OnLoadGameplayScene += ShowCanvasHUDPlayerResources;
 	}
     private void ShowCanvasHUDPlayerResources()
     {

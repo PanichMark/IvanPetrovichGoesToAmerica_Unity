@@ -7,11 +7,12 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 	private PlayerCameraController playerCamera;
 	private WeaponController weaponController;
-
-	public void Initialize(PlayerCameraController playerCameraController, WeaponController weaponController,
+	private GameSceneManager gameSceneManager;
+	public void Initialize(GameSceneManager gameSceneManager, PlayerCameraController playerCameraController, WeaponController weaponController,
 							GameObject playerFirstPersonHandRight, GameObject playerFirstPersonHandLeft,
 							GameObject playerHeadParent, GameObject playerHandRightParent, GameObject playerHandLeftParent)
 	{
+		this.gameSceneManager = gameSceneManager;
 		this.playerCamera = playerCameraController;
 		this.weaponController = weaponController;
 
@@ -22,6 +23,10 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 		this.PlayerHandRightParent = playerHandRightParent;
 		this.PlayerHandLeftParent = playerHandLeftParent;
 
+		this.gameSceneManager.OnLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandRight);
+		this.gameSceneManager.OnLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandLeft);
+		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandRight);
+		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandLeft);
 		// Регистрация события смены оружия
 		this.weaponController.OnWeaponChanged += RegisterWeapons;
 		_isInitialized = true;

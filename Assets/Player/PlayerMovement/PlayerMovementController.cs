@@ -511,8 +511,9 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	}
 
 
-	public void Initialize(IInputDevice inputDevice, PlayerBehaviour playerBehaviour)
+	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, PlayerBehaviour playerBehaviour)
 	{
+		this.gameSceneManager = gameSceneManager;
 		this.inputDevice = inputDevice;
 		this.playerBehaviour = playerBehaviour; // Новый аргумент
 		playerCamera = Camera.main;
@@ -523,10 +524,10 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		PlayerRigidBody = GetComponent<Rigidbody>();
 
 		_playerPreviousFramePosition = transform.position;
+		this.gameSceneManager.OnLoadMainMenuScene += () => SetPlayerPosition(new Vector3(0, 0, -5));
+		this.gameSceneManager.OnLoadMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 
-
-		playerMovementStateType = (PlayerMovementStateType)Enum.Parse(typeof(PlayerMovementStateType), CurrentPlayerMovementStateType);
-		SetPlayerMovementState(playerMovementStateType);
+		SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 
 		PlayerMovementSpeed = 3f;
 
@@ -535,7 +536,11 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		PlayerCurrentHeight = 1.75f;
 		_isInitialized = true;
 		Debug.Log("PlayerMovement Initialized");
+
+
+
 	}
+	private GameSceneManager gameSceneManager;
 }
 
 
