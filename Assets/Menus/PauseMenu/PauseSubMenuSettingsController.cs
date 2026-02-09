@@ -13,18 +13,19 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private GameObject canvasPauseSubMenuSettings;
 	private PauseMenuController pauseMenuController;
 	// Конструктор принимает зависимость
-
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuSettings)
+	private GameObject buttonClosePauseSubMenuSettings;
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings)
 
 	{
 		this.pauseMenuController = pauseMenuController;
 		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
 		this.canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
+		this.buttonClosePauseSubMenuSettings = buttonClosePauseSubMenuSettings;
 		this.pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
 		this.pauseMenuController.OnClosePauseSubMenu += HideSettingsSubMenuCanvas;
 
-	
+		this.buttonClosePauseSubMenuSettings.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
 
 
 
@@ -143,7 +144,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
 	}
-	*/
+	
 	private void KeepLastCharacter(TMP_InputField field)
 	{
 		if (!string.IsNullOrEmpty(field.text))
@@ -178,7 +179,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		Debug.LogWarning($"Символ {upperCaseChar} не обнаружен в раскладке!");
 		return lastValidChar; // Восстанавливаем предыдущий корректный символ
 	}
-
+	*/
 
 
 	public void HideSettingsSubMenuCanvas()

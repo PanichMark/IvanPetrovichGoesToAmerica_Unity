@@ -1,10 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class MainMenuDiegeticButtonController : MonoBehaviour
 {
-	public Material defaultMaterial; // Материал по умолчанию
-	public Material hoverMaterial;   // Материал при наведении (белый)
+	public Material defaultMaterial;     // Материал по умолчанию
+	public Material hoverMaterial;      // Материал при наведении (белый)
+
+	private static List<MainMenuDiegeticButtonController> instances = new List<MainMenuDiegeticButtonController>();
+
 	private PauseMenuController pauseMenuController;
 	private GameController gameController;
 	private Renderer _renderer;
@@ -12,91 +16,110 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private Collider collider;
 	private SaveLoadController saveLoadController;
 	private MenuManager menuManager;
+
+	void Awake()
+	{
+		// Регистрация текущего экземпляра компонента в списке экземпляров
+		instances.Add(this);
+	}
+
+	void OnDestroy()
+	{
+		// Убираем экземпляр из списка при уничтожении объекта
+		instances.Remove(this);
+	}
+
 	void Start()
 	{
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_renderer = GetComponent<Renderer>();
 		pauseMenuController = ServiceLocator.Resolve<PauseMenuController>("PauseMenuController");
 		gameController = ServiceLocator.Resolve<GameController>("GameController");
-
-
 		collider = GetComponent<Collider>();
-
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		pauseMenuController.OnClosePauseSubMenu += EnableAllColliders;
 	}
 
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1) && menuManager.PauseMenuLevel.Count == 1)
 		{
-			collider.enabled = true;
 			pauseMenuController.CloseSubMenu();
-	
-		//Debug.Log("BRUH!");
+			//EnableAllColliders();
+			//Debug.Log("BRUH!");
 		}
-		//Debug.Log("Collider is now " + collider.enabled);
 	}
 
 	void OnMouseEnter()
 	{
-		
-			_renderer.material = hoverMaterial;
+		_renderer.material = hoverMaterial;
 	}
 
 	void OnMouseExit()
 	{
-	
-			_renderer.material = defaultMaterial;
+		_renderer.material = defaultMaterial;
 	}
 
 	void OnMouseDown()
 	{
-	
+		// Отключение коллайдеров у всех объектов с данным компонентом
+
 		if (name == "NewGame")
 		{
 			Debug.Log("START NEW GAME");
-			collider.enabled = false;
+			DisableAllColliders();
 			gameController.CloseMainMenu();
 			StartCoroutine(StartNewGame());
+
 		}
 		else if (name == "LoadGame")
 		{
 			Debug.Log("OPEN LOAD GAME");
-			collider.enabled = false;
+			DisableAllColliders();
 			pauseMenuController.OpenLoadSubMenu();
 		}
 		else if (this.name == "ExitGame")
 		{
 			Debug.Log("EXIT GAME");
-			//collider.enabled = false;
-			//Application.Quit();
 		}
 		else if (this.name == "Options")
 		{
 			Debug.Log("OPEN OPTIONS");
-			//collider.enabled = false;
+			DisableAllColliders();
+			pauseMenuController.OpenSettingsSubMenu();
 		}
 		else if (this.name == "ReadNews")
 		{
 			Debug.Log("OPEN NEWS");
-			//collider.enabled = false;
 		}
 	}
 
-	
+	// Методы для обработки коллайдеров всех объектов с данным компонентом
+	public void EnableAllColliders()
+	{
+		foreach (var instance in instances)
+		{
+			var colliderInstance = instance.collider;
+				colliderInstance.enabled = true;
+		}
+	}
 
-	// Вспомогательная корутина для очистки объекта после завершения основной корутины
+	// Методы для обработки коллайдеров всех объектов с данным компонентом
+	private void DisableAllColliders()
+	{
+		foreach (var instance in instances)
+		{
+			var colliderInstance = instance.collider;
+			colliderInstance.enabled = false;
+		}
+	}
+
 	IEnumerator StartNewGame()
 	{
-		Debug.Log("START!!!!!!!!!");
-		// Сначала делаем объект постоянным, чтобы предотвратить преждевременное разрушение
 		DontDestroyOnLoad(gameObject);
-
-		// Начинаем загрузку сцены
 		yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.Scene_0_Test));
 		saveLoadController.NewGame();
-		// Удаляем объект после завершения загрузки
 		Destroy(gameObject);
 	}
 }

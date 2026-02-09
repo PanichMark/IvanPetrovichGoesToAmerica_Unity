@@ -78,17 +78,21 @@ public class Bootstrap : MonoBehaviour
 	private PauseSubMenuSaveController pauseSubMenuSaveController;
 	[SerializeField] private GameObject canvasPauseSubMenuSave;
 	private GameObject[] buttonsSaveGame;
+	private GameObject buttonClosePauseSubMenuSave;
 	// Подменю загрузки
 	private PauseSubMenuLoadController pauseSubMenuLoadController;
 	[SerializeField] private GameObject canvasPauseSubMenuLoad;
 	private GameObject[] buttonsLoadGame;
 	private GameObject[] buttonsDeleteGame;
+	private GameObject buttonClosePauseSubMenuLoad;
 	// Подменю картинок
 	private PauseSubMenuImagesController pauseSubMenuImagesController;
 	[SerializeField] private GameObject canvasPauseSubMenuImages;
+	private GameObject buttonClosePauseSubMenuImages;
 	// Подменю настроек
 	private PauseSubMenuSettingsController pauseSubMenuSettingsController;
 	[SerializeField] private GameObject canvasPauseSubMenuSettings;
+	private GameObject buttonClosePauseSubMenuSettings;
 
 	// Система оружия
 	private GameObject weaponSystemGameObject;
@@ -169,13 +173,13 @@ public class Bootstrap : MonoBehaviour
 		saveLoadController.NewGame();
 
 
-		Destroy(tempCameraObject);
-		Destroy(canvasBootstrap);
-		yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.Scene_0_Test));
-
-		//yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
 		//Destroy(tempCameraObject);
 		//Destroy(canvasBootstrap);
+		//yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.Scene_0_Test));
+
+		yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
+		Destroy(tempCameraObject);
+		Destroy(canvasBootstrap);
 	}
 
 
@@ -329,6 +333,7 @@ public class Bootstrap : MonoBehaviour
 			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE4 Button"),
 			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE5 Button"),
 		};
+		buttonClosePauseSubMenuSave = FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu close Button");
 
 		buttonsLoadGame = new GameObject[]
 		{
@@ -347,14 +352,19 @@ public class Bootstrap : MonoBehaviour
 			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu DELETE4 Button"),
 			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu DELETE5 Button"),
 		};
+		buttonClosePauseSubMenuLoad = FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu close Button");
+
+		buttonClosePauseSubMenuImages = FindDeepChildByName(canvasPauseSubMenuImages, "ImagesSubMenu close Button");
+
+		buttonClosePauseSubMenuSettings = FindDeepChildByName(canvasPauseSubMenuSettings, "SettingsSubMenu close Button");
 
 		// Инициализация меню
 		menuManager.Initialize(inputDevice, gameSceneManager, gameController, saveLoadController);
-		pauseMenuController.Initialize(inputDevice, gameSceneManager, saveLoadController, menuManager,  canvasPauseMenu, buttonsPauseMenu);
-		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame);
-		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonsDeleteGame);
-		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages);
-		pauseSubMenuSettingsController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSettings);
+		pauseMenuController.Initialize(inputDevice, gameController, gameSceneManager, saveLoadController, menuManager,  canvasPauseMenu, buttonsPauseMenu);
+		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame, buttonClosePauseSubMenuSave);
+		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonsDeleteGame, buttonClosePauseSubMenuLoad);
+		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages, buttonClosePauseSubMenuImages);
+		pauseSubMenuSettingsController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings);
 
 		Debug.Log("PAUSE MENU INITIALIZED");
 		yield break;

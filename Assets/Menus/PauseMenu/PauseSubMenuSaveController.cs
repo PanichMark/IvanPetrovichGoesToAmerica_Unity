@@ -9,13 +9,14 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	private bool isPauseSubMenuSaveOpened;
 	private GameObject canvasPauseSubMenuSave;
 	private SaveLoadController saveLoadController;
-	private Button CloseSaveSubMenuButton;
-
+	//private Button CloseSaveSubMenuButton;
+	private GameObject buttonClosePauseSubMenuSave;
 	private GameObject[] buttonsSaveGame;
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController, GameObject canvasPauseSubMenuSave, GameObject[] buttonsSaveGame)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController, GameObject canvasPauseSubMenuSave, GameObject[] buttonsSaveGame, GameObject buttonClosePauseSubMenuSave)
 
 	{
+		this.buttonClosePauseSubMenuSave = buttonClosePauseSubMenuSave;
 		this.pauseMenuController = pauseMenuController;
 		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
@@ -36,6 +37,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		this.buttonsSaveGame[3].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(4));
 		this.buttonsSaveGame[4].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(5));
 
+		this.buttonClosePauseSubMenuSave.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
 
 		Debug.Log("SaveSubMenu Initialized");
 	}

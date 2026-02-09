@@ -17,9 +17,11 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnOpenSettingsSubMenu;
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
-	public void Initialize( IInputDevice inputDevice, GameSceneManager gameSceneManager, SaveLoadController saveLoadController, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject[] buttonsPauseMenu)
+	private GameController gameController;
+	public void Initialize( IInputDevice inputDevice, GameController gameController, GameSceneManager gameSceneManager, SaveLoadController saveLoadController, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject[] buttonsPauseMenu)
 	{
 		this.gameSceneManager = gameSceneManager;
+		this.gameController = gameController;
 		this.inputDevice = inputDevice;
 		this.menuManager = menuManager;
 		this.PauseMenuCanvas = PauseMenuCanvas;
@@ -49,11 +51,18 @@ public class PauseMenuController : MonoBehaviour
 		// Проверка условия перехода назад по меню
 		if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 2)
 		{
-			OnClosePauseSubMenu?.Invoke();
-			menuManager.PauseMenuLevel.Pop(); // Убираем верхний элемент (субменю)
-			ShowPauseMenu(); // Показываем главное меню паузы снова
-			
+			ClosePauseSubMenu();
+
+
 		}
+	}
+
+	public void ClosePauseSubMenu()
+	{
+		OnClosePauseSubMenu?.Invoke();
+		menuManager.PauseMenuLevel.Pop(); // Убираем верхний элемент (субменю)
+		if (!gameController.IsMainMenuOpen) 
+		ShowPauseMenu(); // Показываем главное меню паузы снова
 	}
 
 	public void ShowPauseMenu()
