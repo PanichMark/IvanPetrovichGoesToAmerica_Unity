@@ -94,7 +94,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 
 		// Начинаем загрузку сцены
-		yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
+		yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.Scene_0_Test));
 		saveLoadController.NewGame();
 		// Удаляем объект после завершения загрузки
 		Destroy(gameObject);

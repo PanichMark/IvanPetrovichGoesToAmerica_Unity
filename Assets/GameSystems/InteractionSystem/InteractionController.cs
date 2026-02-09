@@ -93,6 +93,21 @@ public class InteractionController : MonoBehaviour
 		if (!gameController.IsMainMenuOpen)
 		canvasHUDInteraction.gameObject.SetActive(true);
 
+		itemsTexts[2].text = null;
+		itemsTexts[2].gameObject.SetActive(false);
+		itemsImages[2].sprite = null;
+		itemsImages[2].gameObject.SetActive(false);
+		
+		itemsTexts[1].text = null;
+		itemsTexts[1].gameObject.SetActive(false);
+		itemsImages[1].sprite = null;
+		itemsImages[1].gameObject.SetActive(false);
+		
+		itemsTexts[0].text = null;
+		itemsTexts[0].gameObject.SetActive(false);
+		itemsImages[0].sprite = null;
+		itemsImages[0].gameObject.SetActive(false);
+		
 	}
 
 	private void HideCanvasHUDInteraction()

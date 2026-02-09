@@ -207,7 +207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1750767306}
-  - component: {fileID: 1750767305}
+  - component: {fileID: 1750767307}
   m_Layer: 0
   m_Name: 60FPS
   m_TagString: Untagged
@@ -215,18 +215,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1750767305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750767304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a1a9f354a1cf6c4c96415cec7e502eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1750767306
 Transform:
   m_ObjectHideFlags: 0
@@ -242,6 +230,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1750767307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750767304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ab306722e41a604ea014d32cd06c214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2094619150595392257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -318,11 +318,60 @@ PrefabInstance:
       propertyPath: interactionControllerGameObject
       value: 
       objectReference: {fileID: 4814294911176081341, guid: 92c25c75e5130f44dbb83465860f95dc, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasBootstrap
+      value: 
+      objectReference: {fileID: 6714391010334597348, guid: 08d27b996c6eb024eb92725af576e2f4, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasPauseMenu
+      value: 
+      objectReference: {fileID: 8073867487923853320, guid: dbe31a4f8c1107a42a76c5855b3c2483, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasLockpickMenu
+      value: 
+      objectReference: {fileID: 7539572659657130930, guid: cf1afa49f7269b042a808ccd9c3b00ec, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasReadNoteMenu
+      value: 
+      objectReference: {fileID: 1408695191542219954, guid: f2531bfd9b65a3246abd9686a4fc63a4, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasLoadingScreen
+      value: 
+      objectReference: {fileID: 472678922251620575, guid: fa544696e09b1264dac7627c0d42d682, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasHUDInteraction
+      value: 
+      objectReference: {fileID: 3487674979134261898, guid: 14a2db8b24d87894796b2a9ecea9df18, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasMenuWeaponWheel
+      value: 
+      objectReference: {fileID: 5879893543200193792, guid: c44457cccf516d44eb926a4ac41336d9, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasPauseSubMenuLoad
+      value: 
+      objectReference: {fileID: 8269768497378364233, guid: 6b7668360b2dcbf43bcd7c76ed62cc13, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasPauseSubMenuSave
+      value: 
+      objectReference: {fileID: 5903125011697291700, guid: 104664eef1b78e24294c3d4712d18631, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasHUDPlayerResources
+      value: 
+      objectReference: {fileID: 2273119861689627557, guid: b56cff88fa0a71d4c997dbf30e8463af, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasPauseSubMenuImages
+      value: 
+      objectReference: {fileID: 3996022776004995110, guid: 7211552481043d74ea4fc5bc36150aae, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasPauseSubMenuSettings
+      value: 
+      objectReference: {fileID: 5973256293069603521, guid: e59295eb67009e948b49ab6add309082, type: 3}
     - target: {fileID: 8941166669569671294, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
       propertyPath: m_Name
       value: BootStrap
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4413069963491129513, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

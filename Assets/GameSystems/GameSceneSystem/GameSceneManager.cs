@@ -12,13 +12,15 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	private TMP_Text loadingScreenText;
 	private TMP_Text sceneNameText;
 	private Image sceneLoadingScreenImage;
+	private LocalizationManager localizationManager;
 
 	public delegate void LoadSceneHandler();
 	public event LoadSceneHandler OnLoadMainMenuScene;
 	public event LoadSceneHandler OnLoadGameplayScene;
-	public void Initialize(GameController gameController, GameObject canvasLoadingScreen, TMP_Text loadingScreenText)
+	public void Initialize(GameController gameController, LocalizationManager localizationManager, GameObject canvasLoadingScreen, TMP_Text loadingScreenText)
 	{
 		this.gameController = gameController;	
+		this.localizationManager = localizationManager;
 		this.canvasLoadingScreen = canvasLoadingScreen;	
 		this.loadingScreenText = loadingScreenText;
 		sceneNameText = canvasLoadingScreen.transform.Find("SceneName")?.GetComponent<TMP_Text>();
@@ -50,7 +52,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		Sprite spriteToUse = Resources.Load<Sprite>($"Sprites/{sceneName}");
 
 		sceneLoadingScreenImage.sprite = spriteToUse;
-		sceneNameText.text = sceneName;
+		sceneNameText.text = localizationManager.GetLocalizedString(sceneName);
 
 		// Проверка и выгрузка предыдущей сцены
 		if (SceneManager.sceneCount > 1)
@@ -131,7 +133,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 			}
 		}
 
-		AsyncOperation operation = SceneManager.LoadSceneAsync("SceneMainMenu", LoadSceneMode.Additive); // Загрузка новой сцены асинхронно
+		AsyncOperation operation = SceneManager.LoadSceneAsync("Scene_0_MainMenu", LoadSceneMode.Additive); // Загрузка новой сцены асинхронно
 
 		while (!operation.isDone)
 		{

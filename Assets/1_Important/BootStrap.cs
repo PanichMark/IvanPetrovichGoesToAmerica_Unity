@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-public class BootStrap : MonoBehaviour
+public class Bootstrap : MonoBehaviour
 {
 	// Экран Инициализации Bootstrap
 	private GameObject tempCameraObject;
@@ -171,7 +171,7 @@ public class BootStrap : MonoBehaviour
 
 		Destroy(tempCameraObject);
 		Destroy(canvasBootstrap);
-		yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.NEW_SceneTest));
+		yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.Scene_0_Test));
 
 		//yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
 		//Destroy(tempCameraObject);
@@ -216,7 +216,7 @@ public class BootStrap : MonoBehaviour
 		gameSceneManagerGameObject = new GameObject("GameSceneManager");
 		gameSceneManager = gameSceneManagerGameObject.AddComponent<GameSceneManager>();
 		loadingScreenText = canvasLoadingScreen.transform.Find("LoadingScreenText")?.GetComponent<TMP_Text>();
-		gameSceneManager.Initialize(gameController, canvasLoadingScreen, loadingScreenText);
+		gameSceneManager.Initialize(gameController, localizationManager, canvasLoadingScreen, loadingScreenText);
 
 		yield break;
 	}
