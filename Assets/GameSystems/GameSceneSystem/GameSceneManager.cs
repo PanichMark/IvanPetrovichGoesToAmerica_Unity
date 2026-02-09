@@ -16,7 +16,8 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 	public delegate void LoadSceneHandler();
 	public event LoadSceneHandler OnLoadMainMenuScene;
-	public event LoadSceneHandler OnLoadGameplayScene;
+	public event LoadSceneHandler OnBeginLoadGameplayScene;
+	public event LoadSceneHandler OnEndLoadGameplayScene;
 	public void Initialize(GameController gameController, LocalizationManager localizationManager, GameObject canvasLoadingScreen, TMP_Text loadingScreenText)
 	{
 		this.gameController = gameController;	
@@ -35,7 +36,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	{
 
 
-		OnLoadGameplayScene?.Invoke();
+		OnBeginLoadGameplayScene?.Invoke();
 		gameController.SceneLoadBegan();
 		canvasLoadingScreen.SetActive(true);
 		loadingScreenText.text = "Подготовка к загрузке...";
@@ -87,7 +88,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		//yield return new WaitForSecondsRealtime(0.05f);
 		Debug.Log("Завершение загрузки сцены: " + sceneName);
 		loadingScreenText.text = "Нажмите любую клавишу";
-
+		OnEndLoadGameplayScene?.Invoke();
 		// Ждем нажатия любой клавиши
 		yield return new WaitWhile(() => !Input.anyKeyDown);
 
@@ -122,6 +123,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
 			{
+
 				loadingScreenText.text = "Выгрузка предыдущей сцены...";
 				Debug.Log("Начало выгрузки сцены: " + loadedScene.name);
 

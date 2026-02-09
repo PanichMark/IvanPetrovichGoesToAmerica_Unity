@@ -36,8 +36,8 @@ public class GameData
 	public int ManaReplenishItems;
 
 	//Collectables
-	public LootItemsData[] LootItemsSceneTEST;
-	public LootItemsData[] LootItemsScene1;
+	public LootObjectsData[] LootObjects_Scene_0_Test;
+	public LootObjectsData[] LootObjects_Scene_1_StreetMain;
 
 	public GameData()
 	{
@@ -64,14 +64,14 @@ public class GameData
 		PlayerMana = 15;
 		ManaReplenishItems = 6;
 
-		LootItemsSceneTEST = new LootItemsData[20];
-		LootItemsScene1 = new LootItemsData[20];
+		LootObjects_Scene_0_Test = new LootObjectsData[30];
+		LootObjects_Scene_1_StreetMain = new LootObjectsData[30];
 
 	}
 }
 
 [System.Serializable]
-public struct LootItemsData
+public struct LootObjectsData
 {
 	public int LootItemIndex;
 	public string LootItemName;

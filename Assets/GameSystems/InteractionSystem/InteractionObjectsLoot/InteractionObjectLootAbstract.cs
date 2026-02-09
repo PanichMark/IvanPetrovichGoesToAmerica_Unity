@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System;
-using Unity.IO.LowLevel.Unsafe;
+
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
-using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
+
 
 public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractable, IInteractGainedItem, ISaveLoad
 {
@@ -95,58 +96,63 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	public void SaveData(ref GameData data)
 	{
 
-		/*
-		if (GameSceneManager.Instance.CurrentSceneSystemName == "SceneTEST")
+
+		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
 		{
-			data.LootItemsSceneTEST[LootItemIndex].LootItemIndex = LootItemIndex;
-			data.LootItemsSceneTEST[LootItemIndex].LootItemName = InteractionObjectNameSystem;
+			data.LootObjects_Scene_0_Test[LootItemIndex].LootItemIndex = LootItemIndex;
+			data.LootObjects_Scene_0_Test[LootItemIndex].LootItemName = InteractionObjectNameSystem;
 
 			if (WasLootItemCollected == true)
 			{
-				data.LootItemsSceneTEST[LootItemIndex].WasLootItemCollected = true;
+				data.LootObjects_Scene_0_Test[LootItemIndex].WasLootItemCollected = true;
 			}
-			else data.LootItemsSceneTEST[LootItemIndex].WasLootItemCollected = false;
+			else data.LootObjects_Scene_0_Test[LootItemIndex].WasLootItemCollected = false;
 
 		}
 
-		if (GameSceneManager.Instance.CurrentSceneSystemName == "Scene1")
+		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_StreetMain))
 		{
-			data.LootItemsScene1[LootItemIndex].LootItemIndex = LootItemIndex;
-			data.LootItemsScene1[LootItemIndex].LootItemName = InteractionObjectNameSystem;
+			data.LootObjects_Scene_1_StreetMain[LootItemIndex].LootItemIndex = LootItemIndex;
+			data.LootObjects_Scene_1_StreetMain[LootItemIndex].LootItemName = InteractionObjectNameSystem;
 
 			if (WasLootItemCollected == true)
 			{
-				data.LootItemsScene1[LootItemIndex].WasLootItemCollected = true;
+				data.LootObjects_Scene_1_StreetMain[LootItemIndex].WasLootItemCollected = true;
 			}
-			else data.LootItemsScene1[LootItemIndex].WasLootItemCollected = false;
+			else data.LootObjects_Scene_1_StreetMain[LootItemIndex].WasLootItemCollected = false;
 
 		}
-		*/
+		
 
 	}
 
 
 	public void LoadData(GameData data)
 	{
-		/*
-		if (GameSceneManager.Instance.CurrentSceneSystemName == "SceneTEST")
+
+		Debug.Log("This is: " + interactionObjectNameSystem);
+		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
 		{
-			if (data.LootItemsSceneTEST[LootItemIndex].WasLootItemCollected == true)
+		
+			if (data.LootObjects_Scene_0_Test[LootItemIndex].WasLootItemCollected == true)
 			{
+				
 				WasLootItemCollected = true;
 				Destroy(gameObject);
+				Debug.Log("DESTROY: " + LootItemIndex);
 			}
+			//Debug.Log("Its #: " + data.LootObjects_Scene_0_Test[LootItemIndex]);
 		}
 
-		if (GameSceneManager.Instance.CurrentSceneSystemName == "Scene1")
+		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_StreetMain))
 		{
-			if (data.LootItemsScene1[LootItemIndex].WasLootItemCollected == true)
+			if (data.LootObjects_Scene_1_StreetMain[LootItemIndex].WasLootItemCollected == true)
 			{
 				WasLootItemCollected = true;
 				Destroy(gameObject);
 			}
 		}
-		*/
+		
 	}
 }
 

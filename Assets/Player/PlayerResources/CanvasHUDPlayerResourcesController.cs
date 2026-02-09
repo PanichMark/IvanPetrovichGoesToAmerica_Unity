@@ -23,7 +23,7 @@ public class CanvasHUDPlayerResourcesController : MonoBehaviour
 		Debug.Log("CanvasHUDPlayerResourcesController Initialized");
         this.gameController = gameController;
         this.gameSceneManager.OnLoadMainMenuScene += HideCanvasHUDPlayerResources;
-		this.gameSceneManager.OnLoadGameplayScene += ShowCanvasHUDPlayerResources;
+		this.gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDPlayerResources;
 	}
     private void ShowCanvasHUDPlayerResources()
     {

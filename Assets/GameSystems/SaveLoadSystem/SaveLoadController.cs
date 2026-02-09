@@ -10,6 +10,8 @@ using UnityEngine.SceneManagement;
 
 public class SaveLoadController : MonoBehaviour
 {
+	public string SceneNameToLoad {  get; private set; }
+
 	public delegate void GameSafeFileHandler();
 	public event GameSafeFileHandler OnSafeFileDelete;
 	public event GameSafeFileHandler OnSafeFileLoad;
@@ -40,21 +42,28 @@ public class SaveLoadController : MonoBehaviour
 		fileSaveDataName5 = "SaveGame5.json";
 		//this.saveLoadObjects = FindAllSaveLoadObjects();
 		//NewGame();
+		this.gameSceneManager.OnEndLoadGameplayScene += () => SaveGame(-1);
+		this.gameSceneManager.OnEndLoadGameplayScene += ClearOldSceneReferences;
+		this.gameSceneManager.OnEndLoadGameplayScene += FindAllLootObjects;
+		//this.gameSceneManager.OnEndLoadGameplayScene += FindAllSaveLoadObjects();
 		Debug.Log("SaveLoadController Initialized");
 
 	}
 
 
 
-	private void SearchForItems()
+	private void FindAllLootObjects()
 	{
-		//this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+
 
 		InteractionObjectLootAbstract[] lootItems = FindObjectsOfType<InteractionObjectLootAbstract>();
-		for (int i = 0; i < lootItems.Length; i++)
+
+		int NumberOfLootObjectsOnScene; // Объявляем переменную перед циклом
+		for (NumberOfLootObjectsOnScene = 0; NumberOfLootObjectsOnScene < lootItems.Length; NumberOfLootObjectsOnScene++)
 		{
-			lootItems[i].AssignLootItemIndex(i);
+			lootItems[NumberOfLootObjectsOnScene].AssignLootItemIndex(NumberOfLootObjectsOnScene);
 		}
+		Debug.Log(NumberOfLootObjectsOnScene + " LOOT OBJECTS ON SCENE");
 	}
 
 
@@ -218,27 +227,33 @@ public class SaveLoadController : MonoBehaviour
 		this.gameData = fileDataHandler.Load();
 
 		// Извлекаем имя сцены из данных
-		string sceneName = gameData.CurrentSceneNameSystem;
+		SceneNameToLoad = gameData.CurrentSceneNameSystem;
 
-		foreach (ISaveLoad loadLoadObj in saveLoadObjects)
-		{
-			loadLoadObj.LoadData(gameData);
-		}
+		
 
 		// Начинаем загрузку сцены через GameSceneManager
-		yield return StartCoroutine(gameSceneManager.LoadScene((GameScenesEnum)Enum.Parse(typeof(GameScenesEnum), sceneName)));
+		yield return StartCoroutine(gameSceneManager.LoadScene((GameScenesEnum)Enum.Parse(typeof(GameScenesEnum), SceneNameToLoad)));
+
+		//saveLoadObjects = FindAllSaveLoadObjects();
+
+		//	Debug.Log("-----START-----");
+		foreach (ISaveLoad loadLoadObj in saveLoadObjects)
+		{
+
+			//Debug.Log(loadLoadObj);
+			loadLoadObj.LoadData(gameData);
+		}
+		//	Debug.Log("-----END-----");
 
 
-		
 
-		
 
-			
 
-		
+		//Debug.Log("-----START-----");
 
-	
-		
+		//	Debug.Log("-----END-----");
+
+
 	}
 
 	public void DeleteGame(int deleteSlotNumber)
@@ -344,6 +359,14 @@ public class SaveLoadController : MonoBehaviour
 		IEnumerable<ISaveLoad> saveLoadObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoad>();
 
 		return new List<ISaveLoad>(saveLoadObjects);
+	}
+
+	// Метод, вызываемый после загрузки новой сцены
+	private void ClearOldSceneReferences()
+	{
+		// Здесь сбросим старые ссылки на объекты сцены
+		saveLoadObjects.Clear(); // Очищаем коллекцию
+		saveLoadObjects = FindAllSaveLoadObjects(); // Пересоздаем список новых объектов сцены
 	}
 }
 

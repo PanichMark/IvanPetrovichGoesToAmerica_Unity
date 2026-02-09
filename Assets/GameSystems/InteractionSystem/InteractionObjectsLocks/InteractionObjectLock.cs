@@ -58,7 +58,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		gameSceneManager.OnLoadMainMenuScene += OnClosePuzzle;
-		gameSceneManager.OnLoadGameplayScene += OnClosePuzzle;
+		gameSceneManager.OnBeginLoadGameplayScene += OnClosePuzzle;
 
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
