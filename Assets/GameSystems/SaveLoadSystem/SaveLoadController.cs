@@ -174,7 +174,7 @@ public class SaveLoadController : MonoBehaviour
 			saveLoadObj.SaveData(ref gameData);
 		}
 
-		yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
+		//yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
 
 		foreach (ISaveLoad saveLoadObj in gameplaySaveLoadObjects)
 		{
@@ -192,6 +192,7 @@ public class SaveLoadController : MonoBehaviour
 
 
 		IsSavingFinished = true;
+		yield break;
 	}
 
 	public IEnumerator LoadGame(int loadSlotNumber)

@@ -17,7 +17,7 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 
 	IEnumerator LoadGameplayScene()
 	{
-		Debug.Log("LOADING STREET");
+		Debug.Log("LOADING: " + targetScene);
 
 		// Получаем родителя текущего объекта
 		Transform parentTransform = transform.parent;

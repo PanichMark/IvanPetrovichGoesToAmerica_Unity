@@ -28,5 +28,13 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 		weaponController.UnlockWeapon(weaponObject);
 		
 	}
+
+	protected override void ThisMethodSetsActionName()
+	{
+
+		
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+	}
+
 }
 
