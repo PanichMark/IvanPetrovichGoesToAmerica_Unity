@@ -41,7 +41,7 @@ public class Bootstrap : MonoBehaviour
 	private PlayerCapsuleCollider playerCollider;
 	private PlayerAnimationController playerAnimationController;
 	// Игрок камера
-	private GameObject playerCameraGameObject;
+	private GameObject playerMainCameraGameObject;
 	private PlayerCameraController playerCameraController;
 	private PlayerCameraBlurFilter playerCameraBlurFilter;
 	private PlayerCameraFirstPersonRender playerCameraFirstPersonRender;
@@ -93,6 +93,9 @@ public class Bootstrap : MonoBehaviour
 	private PauseSubMenuSettingsController pauseSubMenuSettingsController;
 	[SerializeField] private GameObject canvasPauseSubMenuSettings;
 	private GameObject buttonClosePauseSubMenuSettings;
+	private GameObject[] FPSbuttons;
+	private GameObject FOVSlider;
+	private GameObject fovDisplayText;
 
 	// Система оружия
 	private GameObject weaponSystemGameObject;
@@ -145,6 +148,7 @@ public class Bootstrap : MonoBehaviour
 	private IEnumerator SequentialInitialization()
 	{
 		yield return StartCoroutine(InitializeInterfaces());
+		yield return StartCoroutine(InitializePlayerPrefabs());
 		yield return StartCoroutine(InitializeCanvases());
 		yield return StartCoroutine(InitializeSceneSystem());
 		yield return StartCoroutine(InitializeSavingSystem());
@@ -202,6 +206,16 @@ public class Bootstrap : MonoBehaviour
 		yield break;
 	}
 
+	private IEnumerator InitializePlayerPrefabs()
+	{
+		playerGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerGameObject"));
+		playerMainCameraGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerCameraGameObject"));
+		
+
+		Debug.Log("PLAYER PREFABS INITIALIZED");
+		yield break;
+	}
+
 	private IEnumerator InitializeCanvases()
 	{
 		loadingStatusText.text = "Canvases";
@@ -238,70 +252,6 @@ public class Bootstrap : MonoBehaviour
 		saveLoadController = dataSaveLoadControllerGameObject.AddComponent<SaveLoadController>();
 		saveLoadController.Initialize(gameSceneManager, gameController);
 		Debug.Log("SAVE SYSTEM INITIALIZED");
-		yield break;
-	}
-
-	private IEnumerator InitializePlayerSystems()
-	{
-		loadingStatusText.text = "Player Systems";
-
-		playerGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerGameObject"));
-		playerCameraGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerCameraGameObject"));
-
-		// Получение компонентов игрока
-		playerBehaviour = playerGameObject.GetComponent<PlayerBehaviour>();
-		playerMovementController = playerGameObject.GetComponent<PlayerMovementController>();
-		playerCollider = playerGameObject.GetComponentInChildren<PlayerCapsuleCollider>();
-		playerAnimationController = playerGameObject.GetComponent<PlayerAnimationController>();
-
-		// Компоненты камеры игрока
-		playerCameraController = playerCameraGameObject.GetComponent<PlayerCameraController>();
-		playerCameraBlurFilter = playerCameraGameObject.GetComponent<PlayerCameraBlurFilter>();
-		playerCameraFirstPersonRender = playerCameraGameObject.GetComponent<PlayerCameraFirstPersonRender>();
-
-		// Внутренние объекты игрока
-		playerFirstPersonHandRight = FindDeepChildByName(playerCameraGameObject, "UNITY HandRight");
-		playerFirstPersonHandLeft = FindDeepChildByName(playerCameraGameObject, "UNITY  HandLeft");
-		playerHeadParent = FindDeepChildByName(playerGameObject, "UNITY PlayerHead");
-		playerHandRightParent = FindDeepChildByName(playerGameObject, "UNITY HandRight");
-		playerHandLeftParent = FindDeepChildByName(playerGameObject, "UNITY  HandLeft");
-
-		// Инициализация полученных компонентов
-		playerBehaviour.Initialize(inputDevice);
-		playerMovementController.Initialize(inputDevice, gameSceneManager, playerBehaviour);
-		playerCollider.Initialize(playerMovementController);
-		playerCameraController.Initialize(inputDevice, gameSceneManager, menuManager, playerMovementController, playerCollider, playerGameObject);
-		playerCameraBlurFilter.Initialize(menuManager);
-
-		Debug.Log("PLAYER SYSTEMS INITIALIZED");
-		yield break;
-	}
-
-	private IEnumerator InitializePlayerResources()
-	{
-		loadingStatusText.text = "Player Resources";
-
-		playerResourcesGameObject = new GameObject("PlayerResources");
-
-		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber")?.GetComponent<TMP_Text>();
-		HealthBarSlider = canvasHUDPlayerResources.transform.Find("Health Slider")?.GetComponent<Slider>();
-		HealingItemButton = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemButton")?.GetComponent<Button>();
-		HealingItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemsNumber")?.GetComponent<TextMeshProUGUI>();
-		ManaBarSlider = canvasHUDPlayerResources.transform.Find("Mana Slider")?.GetComponent<Slider>();
-		ManaReplenishtemButton = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemButton ")?.GetComponent<Button>();
-		ManaReplenishItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemsNumber")?.GetComponent<TextMeshProUGUI>();
-
-		canvasHUDPlayerResourcesController = playerResourcesGameObject.AddComponent<CanvasHUDPlayerResourcesController>();
-		playerResourcesMoneyManager = playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
-		playerResourcesHealthManager = playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
-		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
-
-		canvasHUDPlayerResourcesController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDPlayerResources);
-		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
-		playerResourcesHealthManager.Initialize(HealthBarSlider, HealingItemButton, HealingItemNumber);
-		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
-
-		Debug.Log("PLAYER RESOURCES INITIALIZED");
 		yield break;
 	}
 
@@ -361,19 +311,95 @@ public class Bootstrap : MonoBehaviour
 
 		buttonClosePauseSubMenuImages = FindDeepChildByName(canvasPauseSubMenuImages, "ImagesSubMenu close Button");
 
+		FOVSlider = FindDeepChildByName(canvasPauseSubMenuSettings, "CameraFOVSlider");
+		fovDisplayText = FindDeepChildByName(canvasPauseSubMenuSettings, "CameraFOVText");
+		FPSbuttons = new GameObject[]
+		{
+			FindDeepChildByName(canvasPauseSubMenuSettings, "Fps30"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "Fps60"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "Fps90"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "Fps144"),
+		};
+
 		buttonClosePauseSubMenuSettings = FindDeepChildByName(canvasPauseSubMenuSettings, "SettingsSubMenu close Button");
 
 		// Инициализация меню
 		menuManager.Initialize(inputDevice, gameSceneManager, gameController, saveLoadController);
-		pauseMenuController.Initialize(inputDevice, gameController, gameSceneManager, saveLoadController, menuManager,  canvasPauseMenu, buttonsPauseMenu);
+		pauseMenuController.Initialize(inputDevice, gameController, gameSceneManager, saveLoadController, menuManager, canvasPauseMenu, buttonsPauseMenu);
 		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame, buttonClosePauseSubMenuSave);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonsDeleteGame, buttonClosePauseSubMenuLoad);
 		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages, buttonClosePauseSubMenuImages);
-		pauseSubMenuSettingsController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings);
+		pauseSubMenuSettingsController.Initialize(inputDevice, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons);
 
 		Debug.Log("PAUSE MENU INITIALIZED");
 		yield break;
 	}
+
+	private IEnumerator InitializePlayerSystems()
+	{
+		loadingStatusText.text = "Player Systems";
+
+
+	
+
+		// Получение компонентов игрока
+		playerBehaviour = playerGameObject.GetComponent<PlayerBehaviour>();
+		playerMovementController = playerGameObject.GetComponent<PlayerMovementController>();
+		playerCollider = playerGameObject.GetComponentInChildren<PlayerCapsuleCollider>();
+		playerAnimationController = playerGameObject.GetComponent<PlayerAnimationController>();
+
+		// Компоненты камеры игрока
+		playerCameraController = playerMainCameraGameObject.GetComponent<PlayerCameraController>();
+		playerCameraBlurFilter = playerMainCameraGameObject.GetComponent<PlayerCameraBlurFilter>();
+		playerCameraFirstPersonRender = playerMainCameraGameObject.GetComponent<PlayerCameraFirstPersonRender>();
+
+		// Внутренние объекты игрока
+		playerFirstPersonHandRight = FindDeepChildByName(playerMainCameraGameObject, "UNITY HandRight");
+		playerFirstPersonHandLeft = FindDeepChildByName(playerMainCameraGameObject, "UNITY  HandLeft");
+		playerHeadParent = FindDeepChildByName(playerGameObject, "UNITY PlayerHead");
+		playerHandRightParent = FindDeepChildByName(playerGameObject, "UNITY HandRight");
+		playerHandLeftParent = FindDeepChildByName(playerGameObject, "UNITY  HandLeft");
+
+		// Инициализация полученных компонентов
+		playerBehaviour.Initialize(inputDevice);
+		playerMovementController.Initialize(inputDevice, gameSceneManager, playerBehaviour);
+		playerCollider.Initialize(playerMovementController);
+		playerCameraController.Initialize(inputDevice, gameSceneManager, menuManager, playerMovementController, playerCollider, playerGameObject);
+		playerCameraBlurFilter.Initialize(menuManager);
+
+		Debug.Log("PLAYER SYSTEMS INITIALIZED");
+		yield break;
+	}
+
+	private IEnumerator InitializePlayerResources()
+	{
+		loadingStatusText.text = "Player Resources";
+
+		playerResourcesGameObject = new GameObject("PlayerResources");
+
+		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber")?.GetComponent<TMP_Text>();
+		HealthBarSlider = canvasHUDPlayerResources.transform.Find("Health Slider")?.GetComponent<Slider>();
+		HealingItemButton = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemButton")?.GetComponent<Button>();
+		HealingItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemsNumber")?.GetComponent<TextMeshProUGUI>();
+		ManaBarSlider = canvasHUDPlayerResources.transform.Find("Mana Slider")?.GetComponent<Slider>();
+		ManaReplenishtemButton = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemButton ")?.GetComponent<Button>();
+		ManaReplenishItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemsNumber")?.GetComponent<TextMeshProUGUI>();
+
+		canvasHUDPlayerResourcesController = playerResourcesGameObject.AddComponent<CanvasHUDPlayerResourcesController>();
+		playerResourcesMoneyManager = playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
+		playerResourcesHealthManager = playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
+		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
+
+		canvasHUDPlayerResourcesController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDPlayerResources);
+		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
+		playerResourcesHealthManager.Initialize(HealthBarSlider, HealingItemButton, HealingItemNumber);
+		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
+
+		Debug.Log("PLAYER RESOURCES INITIALIZED");
+		yield break;
+	}
+
+	
 
 	private IEnumerator InitializeWeaponSystem()
 	{

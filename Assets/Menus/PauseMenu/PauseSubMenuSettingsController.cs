@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System;
 
 public class PauseSubMenuSettingsController : MonoBehaviour
@@ -14,31 +14,13 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private PauseMenuController pauseMenuController;
 	// Конструктор принимает зависимость
 	private GameObject buttonClosePauseSubMenuSettings;
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings)
-
-	{
-		this.pauseMenuController = pauseMenuController;
-		this.menuManager = menuManager;
-		this.inputDevice = inputDevice;
-		this.canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
-		this.buttonClosePauseSubMenuSettings = buttonClosePauseSubMenuSettings;
-		this.pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
-		this.pauseMenuController.OnClosePauseSubMenu += HideSettingsSubMenuCanvas;
-
-		this.buttonClosePauseSubMenuSettings.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
-
-
-
-		Debug.Log("SettingsSubMenu Initialized");
-	}
-
-	// Ссылка на контроллер паузы меню
-
+	private GameObject[] FPSbuttons;
+	private GameObject FOVSlider;
 
 	private char lastValidChar; // Переменная для хранения последнего корректного символа
 
 	// Интерфейсы настроек
-	
+
 	private Button CloseSettingsSubMenuButton;
 
 	// Ползунок для регулировки FOV
@@ -52,10 +34,8 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private Camera AdditionalCamera;
 
 	// Кнопки выбора частоты кадров
-	private Button LimitFPS_30_Button;
-	private Button LimitFPS_60_Button;
-	private Button LimitFPS_90_Button;
-	private Button LimitFPS_144_Button;
+	private Button[] LimitFPS_Button;
+
 
 	// Цвет выделения активных кнопок
 	private Color activeColor = Color.green;
@@ -69,7 +49,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private const float MAX_FOV_VALUE = 120f;
 
 	// Список полей ввода для изменения клавиш
-	
+	private GameController gameController;
 	private TMP_InputField[] inputFields;
 
 	private readonly char[][] layoutMap = new char[][]
@@ -85,43 +65,58 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	new char[] {'.', '/'}, // Точка соответствует слэшу '/'
 	  };
 
+	public void Initialize(IInputDevice inputDevice, GameController gameController, GameObject mainCamera, GameObject fovDisplayText, MenuManager menuManager, PauseMenuController pauseMenuController,
+		GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings, GameObject FOVSlider, GameObject[] FPSbuttons)
 
-
-
-
-
-
-
-
-	/*
-	void Start()
 	{
+		this.gameController = gameController;
+		//Debug.Log(mainCamera);
+		this.MainCamera = mainCamera.GetComponent<Camera>();
+		this.fovDisplayText = fovDisplayText.GetComponent<TextMeshProUGUI>();
+
+		this.FOVSlider = FOVSlider;
+		this.FPSbuttons = FPSbuttons;
+		// Инициализируй массив LimitFPS_Button
+		LimitFPS_Button = new Button[this.FPSbuttons.Length];
+		this.pauseMenuController = pauseMenuController;
+		this.menuManager = menuManager;
+		this.inputDevice = inputDevice;
+		this.canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
+		this.buttonClosePauseSubMenuSettings = buttonClosePauseSubMenuSettings;
+		this.pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
+		this.pauseMenuController.OnClosePauseSubMenu += HideSettingsSubMenuCanvas;
+
+		this.buttonClosePauseSubMenuSettings.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
+
+		fovSlider = this.FOVSlider.GetComponent<Slider>();
+
+		
+		this.fovSlider.minValue = MIN_FOV_VALUE;
+		this.fovSlider.maxValue = MAX_FOV_VALUE;
+		this.fovSlider.onValueChanged.AddListener(OnFovChanged);
+		SetFOV(MIN_FOV_VALUE);
+
+		Debug.Log(this.FPSbuttons[0]);
+		
+		LimitFPS_Button[0] = this.FPSbuttons[0].GetComponent<Button>();
+		LimitFPS_Button[1] = this.FPSbuttons[1].GetComponent<Button>();
+		LimitFPS_Button[2] = this.FPSbuttons[2].GetComponent<Button>();
+		LimitFPS_Button[3] = this.FPSbuttons[3].GetComponent<Button>();
 		
 
-	
-		CloseSettingsSubMenuButton.onClick.AddListener(CloseSettingsSubMenu);
+		LimitFPS_Button[0].onClick.AddListener(() => ChangeFrameRateLimit(30));
+		LimitFPS_Button[1].onClick.AddListener(() => ChangeFrameRateLimit(60));
+		LimitFPS_Button[2].onClick.AddListener(() => ChangeFrameRateLimit(90));
+		LimitFPS_Button[3].onClick.AddListener(() => ChangeFrameRateLimit(144));
 
-		// Настройки ползунка FOV
-		if (fovSlider != null)
-		{
-			fovSlider.minValue = MIN_FOV_VALUE;
-			fovSlider.maxValue = MAX_FOV_VALUE;
-			fovSlider.onValueChanged.AddListener(OnFovChanged);
-			SetFOV(MIN_FOV_VALUE);
-		}
-
-		// Настраиваем кнопки выбора лимита FPS
-		LimitFPS_30_Button.onClick.AddListener(() => ChangeFrameRateLimit(30));
-		LimitFPS_60_Button.onClick.AddListener(() => ChangeFrameRateLimit(60));
-		LimitFPS_90_Button.onClick.AddListener(() => ChangeFrameRateLimit(90));
-		LimitFPS_144_Button.onClick.AddListener(() => ChangeFrameRateLimit(144));
 
 		// Выделяем активную кнопку FPS
 		ChangeFrameRateLimit(60);
 		ApplyButtonColors(currentFrameRateLimit);
-
+		this.gameController.OnOpenMainMenu += () => SetFOV(60);
+		/*
 		// Заполняем поля ввода клавиш начальными значениями из InputManager
-		var bindings = inputDevice.GetCurrentBindings().ToList();
+		var bindings = this.inputDevice.GetCurrentBindings().ToList();
 
 		foreach (var field in inputFields)
 		{
@@ -143,8 +138,16 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			});
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
+		*/
+		Debug.Log("SettingsSubMenu Initialized");
 	}
+
+	// Ссылка на контроллер паузы меню
+
+
 	
+
+
 	private void KeepLastCharacter(TMP_InputField field)
 	{
 		if (!string.IsNullOrEmpty(field.text))
@@ -179,9 +182,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		Debug.LogWarning($"Символ {upperCaseChar} не обнаружен в раскладке!");
 		return lastValidChar; // Восстанавливаем предыдущий корректный символ
 	}
-	*/
-
-
+	
 	public void HideSettingsSubMenuCanvas()
 	{
 		if (isPauseSubMenuSettingsOpened)
@@ -204,12 +205,12 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	private void SetFOV(float newFov)
 	{
-		if (MainCamera != null)
+	
 			MainCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
-		if (AdditionalCamera != null)
-			AdditionalCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
+		
+			//AdditionalCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
 
-		if (fovDisplayText != null)
+		
 			fovDisplayText.text = ((int)newFov).ToString();
 	}
 
@@ -228,26 +229,26 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		switch (activeFrameRate)
 		{
 			case 30:
-				HighlightButton(LimitFPS_30_Button);
+				HighlightButton(LimitFPS_Button[0]);
 				break;
 			case 60:
-				HighlightButton(LimitFPS_60_Button);
+				HighlightButton(LimitFPS_Button[1]);
 				break;
 			case 90:
-				HighlightButton(LimitFPS_90_Button);
+				HighlightButton(LimitFPS_Button[2]);
 				break;
 			case 144:
-				HighlightButton(LimitFPS_144_Button);
+				HighlightButton(LimitFPS_Button[3]);
 				break;
 		}
 	}
 
 	private void ResetAllButtons()
 	{
-		LimitFPS_30_Button.image.color = normalColor;
-		LimitFPS_60_Button.image.color = normalColor;
-		LimitFPS_90_Button.image.color = normalColor;
-		LimitFPS_144_Button.image.color = normalColor;
+		LimitFPS_Button[0].image.color = normalColor;
+		LimitFPS_Button[1].image.color = normalColor;
+		LimitFPS_Button[2].image.color = normalColor;
+		LimitFPS_Button[3].image.color = normalColor;
 	}
 
 	private void HighlightButton(Button button)

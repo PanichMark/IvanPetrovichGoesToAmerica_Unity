@@ -8,6 +8,9 @@ public class GameController
 	public bool IsPlayerDead { get; private set; }
 	public bool IsGameAbleToSave { get; private set; }
 
+	public delegate void MainMenuEventHandler();
+	public event MainMenuEventHandler OnOpenMainMenu;
+
 	public GameController()
 	{
 		Debug.Log("GameController Initialized");
@@ -45,6 +48,7 @@ public class GameController
 	public void OpenMainMenu()
 	{
 		IsMainMenuOpen = true;
+		OnOpenMainMenu?.Invoke();
 		Debug.Log("Open MAINMENU");
 	}
 	public void CloseMainMenu()
