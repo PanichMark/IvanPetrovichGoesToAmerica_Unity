@@ -15,7 +15,8 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	private LocalizationManager localizationManager;
 
 	public delegate void LoadSceneHandler();
-	public event LoadSceneHandler OnLoadMainMenuScene;
+	public event LoadSceneHandler OnBeginLoadMainMenuScene;
+	public event LoadSceneHandler OnEndLoadMainMenuScene;
 	public event LoadSceneHandler OnBeginLoadGameplayScene;
 	public event LoadSceneHandler OnEndLoadGameplayScene;
 	public void Initialize(GameController gameController, LocalizationManager localizationManager, GameObject canvasLoadingScreen, TMP_Text loadingScreenText)
@@ -105,7 +106,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	public IEnumerator LoadMainMenuScene()
 	{
 		gameController.OpenMainMenu();
-		OnLoadMainMenuScene?.Invoke();
+		OnBeginLoadMainMenuScene?.Invoke();
 		canvasLoadingScreen.SetActive(true);
 		//gameController.SceneLoadBegan();
 		//canvasLoadingScreen.SetActive(true);
@@ -134,7 +135,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 				loadingScreenText.text = "Предыдущая сцена выгружена.";
 			}
 		}
-
+		Debug.Log("Начало загрузки ГлавногоМеню");
 		AsyncOperation operation = SceneManager.LoadSceneAsync("Scene_0_MainMenu", LoadSceneMode.Additive); // Загрузка новой сцены асинхронно
 
 		while (!operation.isDone)
@@ -157,6 +158,8 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 							 //Debug.Log($"SceneLoaded {scene}");
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
+		OnEndLoadMainMenuScene?.Invoke();
+		Debug.Log("Конец загрузки ГлавногоМеню");
 		//gameController.SceneLoadEnded();
 		canvasLoadingScreen.SetActive(false);
 		yield break;

@@ -57,7 +57,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		gameSceneManager.OnLoadMainMenuScene += OnClosePuzzle;
+		gameSceneManager.OnBeginLoadMainMenuScene += OnClosePuzzle;
 		gameSceneManager.OnBeginLoadGameplayScene += OnClosePuzzle;
 
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);

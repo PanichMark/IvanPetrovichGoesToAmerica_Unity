@@ -23,8 +23,8 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 		this.PlayerHandRightParent = playerHandRightParent;
 		this.PlayerHandLeftParent = playerHandLeftParent;
 
-		this.gameSceneManager.OnLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandRight);
-		this.gameSceneManager.OnLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandLeft);
+		this.gameSceneManager.OnBeginLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandRight);
+		this.gameSceneManager.OnBeginLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandLeft);
 		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandRight);
 		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandLeft);
 		// Регистрация события смены оружия

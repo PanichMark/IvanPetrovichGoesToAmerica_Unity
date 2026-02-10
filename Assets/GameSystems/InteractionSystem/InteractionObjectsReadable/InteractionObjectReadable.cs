@@ -47,7 +47,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 		//Debug.Log(ReadStructure);
 		//menuManager.OnCloseReadNoteMenu += CloseAndDeactivate;
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		gameSceneManager.OnLoadMainMenuScene += CloseAndDeactivate;
+		gameSceneManager.OnBeginLoadMainMenuScene += CloseAndDeactivate;
 		gameSceneManager.OnBeginLoadGameplayScene += CloseAndDeactivate;
 
 		//saveLoadController.OnSafeFileLoad += CloseAndDeactivate;

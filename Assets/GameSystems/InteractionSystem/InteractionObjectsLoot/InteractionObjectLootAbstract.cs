@@ -130,7 +130,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	public void LoadData(GameData data)
 	{
 
-		Debug.Log("This is: " + interactionObjectNameSystem);
+		Debug.Log("This is: " + LootItemIndex + " " + interactionObjectNameSystem);
 		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
 		{
 		

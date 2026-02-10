@@ -29,13 +29,15 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		CloseSaveSubMenuButton.onClick.AddListener(HideImagesSubMenuCanvas);
 		*/
 
-		
 
-		this.buttonsSaveGame[0].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(1));
-		this.buttonsSaveGame[1].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(2));
-		this.buttonsSaveGame[2].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(3));
-		this.buttonsSaveGame[3].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(4));
-		this.buttonsSaveGame[4].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.SaveGame(5));
+
+		this.buttonsSaveGame[0].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.SaveGame(1)));
+		this.buttonsSaveGame[1].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.SaveGame(2)));
+		this.buttonsSaveGame[2].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.SaveGame(3)));
+		this.buttonsSaveGame[3].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.SaveGame(4)));
+		this.buttonsSaveGame[4].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.SaveGame(5)));
+
+
 
 		this.buttonClosePauseSubMenuSave.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
 

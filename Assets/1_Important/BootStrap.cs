@@ -167,19 +167,24 @@ public class Bootstrap : MonoBehaviour
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
 
-		
 
-		
-		saveLoadController.NewGame();
 
+
+
+		yield return StartCoroutine(saveLoadController.NewGame());
 
 		//Destroy(tempCameraObject);
 		//Destroy(canvasBootstrap);
 		//yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.Scene_0_Test));
 
 		yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
+
+		
+
+
 		Destroy(tempCameraObject);
 		Destroy(canvasBootstrap);
+
 	}
 
 

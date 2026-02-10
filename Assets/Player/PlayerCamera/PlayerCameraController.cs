@@ -317,7 +317,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 
 		//playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
-		this.gameSceneManager.OnLoadMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateType.Cutscene);
+		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateType.Cutscene);
 		SetPlayerCameraState(PlayerCameraStateType.FirstPerson);
 		_isInitialized = true;
 		Debug.Log("CameraController Initialized");
