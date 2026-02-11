@@ -18,7 +18,7 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 
-	
+
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
 		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 		// Начальное положение закрылого ящика
@@ -26,9 +26,20 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 
 		// Открываем ящик вперёд по оси Z на 0.45 единицы
 		openedPosition = transform.localPosition + new Vector3(0, 0, drawerOpenLength);
-
+		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 		IsDoorOpened = false;
 	}
+
+	public void ChangeLanguage()
+	{
+		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+
+
+		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
+		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+	}
+
 
 	public override void Interact()
 	{

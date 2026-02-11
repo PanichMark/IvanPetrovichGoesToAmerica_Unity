@@ -183,7 +183,10 @@ public class Bootstrap : MonoBehaviour
 
 		//Destroy(tempCameraObject);
 		//Destroy(canvasBootstrap);
-		//yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.Scene_0_Test));
+
+
+
+	//	yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.Scene_1_Church));
 
 		yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
 

@@ -1035,6 +1035,75 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b16561caf5d6fa4180ccb63691ce508, type: 3}
+--- !u!1001 &579165143
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400834367761838309, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_Name
+      value: DoorScene (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539115453787726843, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: lockController
+      value: 
+      objectReference: {fileID: 339684274}
+    - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: targetScene
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: lockController
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
 --- !u!1 &580859631
 GameObject:
   m_ObjectHideFlags: 0
@@ -4168,7 +4237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.35
+      value: 0.57
       objectReference: {fileID: 0}
     - target: {fileID: 5166130245565502196, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4200,7 +4269,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
       propertyPath: targetScene
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
       propertyPath: lockController
@@ -4931,7 +5000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NPC_maxhealth: 200
-  NPC_name: "\u041C\u0438\u043B\u0438\u0446\u0438\u043E\u043D\u0435\u0440"
+  NPC_name: NPC_Aggressive_Policeman
   KillNPC: 1
 --- !u!136 &6673950889563946704
 CapsuleCollider:
@@ -5044,6 +5113,7 @@ SceneRoots:
   - {fileID: 342145011}
   - {fileID: 862678963}
   - {fileID: 667319234742611811}
+  - {fileID: 579165143}
   - {fileID: 244704947}
   - {fileID: 2105602341}
   - {fileID: 1310092744}

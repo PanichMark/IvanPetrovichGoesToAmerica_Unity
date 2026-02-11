@@ -25,9 +25,10 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	void Start()
 	{
+		IsDoorOpened = false;
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
-		IsDoorOpened = false;
+	
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
 		// Настройка состояний вращения
 		Vector3 openedEulerAngles = new Vector3(0, 0, doorOpenAngle);
@@ -35,8 +36,8 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 		Vector3 closedEulerAngles = new Vector3(0, 0, 0);
 		closedRotation = Quaternion.Euler(closedEulerAngles);
-	
-		
+
+		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 
 		if (lockController != null && lockController.WasUnlocked == false)
 		{
@@ -44,15 +45,33 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			lockController.OnUnlockLock += UnlockDoor;
 		}
 
-		
+
 		if (lockController == null || lockController.WasUnlocked == true)
 		{
-			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}"; 
+			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 		}
 
-		
-	}
 
+	}
+	public void ChangeLanguage()
+	{
+		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+
+		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
+
+		if (lockController != null && lockController.WasUnlocked == false)
+		{
+			interactionHintMessageMain = lockController.InteractionHintMessageMain;
+			lockController.OnUnlockLock += UnlockDoor;
+		}
+
+
+		if (lockController == null || lockController.WasUnlocked == true)
+		{
+			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		}
+	}
 	private void UnlockDoor()
 	{
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");

@@ -54,11 +54,16 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 		gameSceneManager.OnBeginLoadGameplayScene += CloseAndDeactivate;
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		//saveLoadController.OnSafeFileLoad += CloseAndDeactivate;
-
+		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 
 		menuManager.OnOpenPauseMenu += HideReadNoteCanvas;
 		menuManager.OnClosePauseMenu += ShowReadNoteCanvas;
 
+	}
+
+	public void ChangeLanguage()
+	{
+		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 	}
 
 	private void HideReadNoteCanvas()

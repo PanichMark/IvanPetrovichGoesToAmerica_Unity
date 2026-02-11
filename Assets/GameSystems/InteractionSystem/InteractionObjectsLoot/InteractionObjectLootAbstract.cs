@@ -31,6 +31,15 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
 		ThisMethodSetsActionName();
+		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+	}
+
+	public void ChangeLanguage()
+	{
+		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+
+		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
+		ThisMethodSetsActionName();
 	}
 
 

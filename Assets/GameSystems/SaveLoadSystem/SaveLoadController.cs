@@ -41,12 +41,12 @@ public class SaveLoadController : MonoBehaviour
 		fileSaveDataName3 = "SaveGame3.json";
 		fileSaveDataName4 = "SaveGame4.json";
 		fileSaveDataName5 = "SaveGame5.json";
+
+
+		this.gameSceneManager.OnEndLoadGameplayScene += () => StartCoroutine(OnSceneLoadUpdateGameplayObjects());
 		
 
-		//this.gameSceneManager.OnEndLoadGameplayScene += () => StartCoroutine(UpdateGameplaySaveLoadObjects());
-		//this.gameSceneManager.OnEndLoadGameplayScene += () => StartCoroutine(SaveGame(-1));
-
-			Debug.Log("SaveLoadController Initialized");
+		Debug.Log("SaveLoadController Initialized");
 
 	}
 
@@ -253,6 +253,18 @@ public class SaveLoadController : MonoBehaviour
 		// Начинаем загрузку сцены через GameSceneManager
 		yield return StartCoroutine(gameSceneManager.LoadScene((GameScenesEnum)Enum.Parse(typeof(GameScenesEnum), SceneNameToLoad)));
 
+	
+
+
+		//Debug.Log("-----START-----");
+
+		//	Debug.Log("-----END-----");
+
+		yield break;
+	}
+
+	IEnumerator OnSceneLoadUpdateGameplayObjects()
+	{
 		yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
 
 		//saveLoadObjects = FindAllSaveLoadObjects();
@@ -268,14 +280,9 @@ public class SaveLoadController : MonoBehaviour
 		}
 
 		yield return StartCoroutine(SaveGame(-1));
-
-
-		//Debug.Log("-----START-----");
-
-		//	Debug.Log("-----END-----");
-
 		yield break;
 	}
+
 
 	public void DeleteGame(int deleteSlotNumber)
 	{
