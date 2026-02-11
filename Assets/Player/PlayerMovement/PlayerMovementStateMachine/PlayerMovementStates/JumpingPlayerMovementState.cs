@@ -3,7 +3,7 @@ using System.Collections;
 
 public class JumpingPlayerMovementState : PlayerMovementState
 {
-	private float progress = 0f;
+	
 
 	private IInputDevice inputDevice;
 	private Vector3 playerWorldMovement;
@@ -13,7 +13,8 @@ public class JumpingPlayerMovementState : PlayerMovementState
 		this.playerMovementController = playerMovementController;
 		this.inputDevice = inputDevice;
 		//Debug.Log("Player Walking");
-		playerMovementController.ChangePlayerRayPosition(1.9f);
+		this.playerMovementController.ChangePlayerRayPosition(1.9f);
+	
 	}
 
 	public override void Update()
@@ -48,24 +49,17 @@ public class JumpingPlayerMovementState : PlayerMovementState
 
 
 
-
-
-
-		/*
-		if (playerMovementController.IsPlayerFalling == true
-			|| playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerOnSlope && playerMovementController.JumpingStateWait())
-		{
-			playerMovementController.StopJumpingStateWait();
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
-		}
-		*/
 		if (playerMovementController.IsPlayerFalling == true)
 		{
-		
+			
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
 
-		
+
+
+
+
+
 		if ( inputDevice.GetKeyJumpBeingHeld() && playerMovementController.IsPlayerAbleToClimbLedge)
 		{
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerLedgeClimbing);
@@ -74,8 +68,7 @@ public class JumpingPlayerMovementState : PlayerMovementState
 
 	}
 
-
-
+	
 
 }
 

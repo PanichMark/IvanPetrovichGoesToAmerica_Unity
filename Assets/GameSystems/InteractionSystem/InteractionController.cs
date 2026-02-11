@@ -44,7 +44,7 @@ public class InteractionController : MonoBehaviour
 	private GameController gameController;
 	public void Initialize(GameController gameController,
 		GameSceneManager gameSceneManager,
-		IInputDevice inputDevice, LocalizationManager localizationManager,
+		IInputDevice inputDevice,
 		MenuManager menuManager,
 		PlayerCameraController playerCameraController,
 		PlayerBehaviour playerBehaviour,
@@ -58,7 +58,7 @@ public class InteractionController : MonoBehaviour
 		this.gameController = gameController;
 		this.gameSceneManager = gameSceneManager;
 		this.inputDevice = inputDevice;
-		this.localizationManager = localizationManager;
+		//this.localizationManager = localizationManager;
 		this.playerCameraController = playerCameraController;
 		this.playerBehaviour = playerBehaviour;
 		this.menuManager = menuManager;
@@ -74,7 +74,7 @@ public class InteractionController : MonoBehaviour
 
 		_isInitialized = true;
 
-		HUDInteraction_MainTextInteract = this.localizationManager.GetLocalizedString("HUDInteraction_MainTextInteract");
+		
 		//HUDInteraction_MainTextInteract = "bruh";
 
 
@@ -86,6 +86,13 @@ public class InteractionController : MonoBehaviour
 		this.menuManager.OnCloseInteractionMenu += HideCanvasHUDInteraction;
 
 		Debug.Log("InteractionController Initialized");
+	}
+
+
+	public void ChangeLanguage(LocalizationManager localizationManager)
+	{
+		this.localizationManager = localizationManager;
+		HUDInteraction_MainTextInteract = this.localizationManager.GetLocalizedString("HUDInteraction_MainTextInteract");
 	}
 
 	private void ShowCanvasHUDInteraction()

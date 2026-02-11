@@ -13,7 +13,10 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 	public string InteractionObjectNameUI => interactionObjectNameUI;
 
 	public string InteractionHintMessageMain => $"Прочитать {InteractionObjectNameUI}";
+	[SerializeField] private TextAsset textFile_RU;   // Русская версия текста
+	[SerializeField] private TextAsset textFile_EN;   // Английская версия текста
 
+	private LocalizationManager localizationManager;
 	public string InteractionHintMessageAdditional => null;
 	private GameObject canvasReadNoteMenu;
 	private Button buttonExitReadNoteMenu;
@@ -24,7 +27,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 	private SaveLoadController saveLoadController;
 	
 
-	[SerializeField] private TextAsset textFile; // Поле для выбора текстового файла
+	
 
 	private Image ReadStructure;
 
@@ -49,7 +52,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		gameSceneManager.OnBeginLoadMainMenuScene += CloseAndDeactivate;
 		gameSceneManager.OnBeginLoadGameplayScene += CloseAndDeactivate;
-
+		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		//saveLoadController.OnSafeFileLoad += CloseAndDeactivate;
 
 
@@ -84,10 +87,23 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 		ImageComponent.gameObject.SetActive(true);	
 		ImageComponent.sprite = Image;
 
+		TextAsset localizedTextFile;
 		// Включаем отображение текста из выбранного файла
-		
-		
-	    descriptionText.text = textFile.text;
+		// Определяем, какой текстовый файл использовать в зависимости от текущего языка
+		if (localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+		{
+			localizedTextFile = textFile_RU;
+		}
+		else
+		{
+			localizedTextFile = textFile_EN;
+		}
+
+		// Берём текст из правильного файла
+
+
+		// Заполняем текстовую область соответствующим текстом
+		descriptionText.text = localizedTextFile.text;
 
 		canvasReadNoteMenu.SetActive(true);
 		// Подписываемся на событие OnClick кнопки ExitButton

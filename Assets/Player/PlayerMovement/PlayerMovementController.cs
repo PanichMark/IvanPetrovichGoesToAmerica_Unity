@@ -28,7 +28,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	//private Vector3 PlayerMovementDirectionWithCamera;
 	private Vector3 _playerPreviousFramePosition;
-	private Vector3 _playerPreviousFramePositionChange;
+	public Vector3 PlayerPreviousFramePositionChange { get; private set; }
 
 	private RaycastHit hitInfo;
 
@@ -120,7 +120,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		IsPlayerGrounded = Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out hitInfo, 0.3f);
 		IsPlayerAbleToStandUp = !Physics.Raycast(transform.position + new Vector3(0, PlayerUpRayYPosition, 0), Vector3.up, out hitInfo, 0.3f);
-		IsPlayerFalling = (_playerPreviousFramePositionChange.y < -0.01f && IsPlayerGrounded == false);
+		IsPlayerFalling = (PlayerPreviousFramePositionChange.y < -0.01f && IsPlayerGrounded == false);
 
 	
 		
@@ -282,7 +282,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	private void FixedUpdate()
 	{
-		_playerPreviousFramePositionChange = transform.position - _playerPreviousFramePosition;
+		PlayerPreviousFramePositionChange = transform.position - _playerPreviousFramePosition;
 		_playerPreviousFramePosition = transform.position;
 	}
 

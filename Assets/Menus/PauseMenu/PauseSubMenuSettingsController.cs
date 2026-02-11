@@ -16,7 +16,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private GameObject buttonClosePauseSubMenuSettings;
 	//private GameObject[] FPSbuttons;
 	private GameObject FOVSlider;
-
+	private Button[] buttonsChangeLanguage;
 	private char lastValidChar; // Переменная для хранения последнего корректного символа
 
 	// Интерфейсы настроек
@@ -47,7 +47,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	// Диапазон возможных значений FOV
 	private const float MIN_FOV_VALUE = 60f;
 	private const float MAX_FOV_VALUE = 120f;
-
+	private Bootstrap bootstrap;
 	// Список полей ввода для изменения клавиш
 	private GameController gameController;
 	private TMP_InputField[] KeyRebinds;
@@ -65,11 +65,12 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	new char[] {'.', '/'}, // Точка соответствует слэшу '/'
 	  };
 
-	public void Initialize(IInputDevice inputDevice, GameController gameController, GameObject mainCamera, GameObject fovDisplayText, MenuManager menuManager, PauseMenuController pauseMenuController,
-		GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings, GameObject FOVSlider, GameObject[] FPSbuttons, GameObject[] KeyRebinds)
+	public void Initialize(IInputDevice inputDevice, Bootstrap bootstrap, GameController gameController, GameObject mainCamera, GameObject fovDisplayText, MenuManager menuManager, PauseMenuController pauseMenuController,
+		GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings, GameObject FOVSlider, GameObject[] FPSbuttons, GameObject[] buttonsChangeLanguage, GameObject[] KeyRebinds)
 
 	{
 		this.gameController = gameController;
+		this.bootstrap = bootstrap;
 		//Debug.Log(mainCamera);
 		this.MainCamera = mainCamera.GetComponent<Camera>();
 		this.fovDisplayText = fovDisplayText.GetComponent<TextMeshProUGUI>();
@@ -78,6 +79,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		//this.FPSbuttons = FPSbuttons;
 		// Инициализируй массив LimitFPS_Button
 		this.FPSbuttons = new Button[FPSbuttons.Length];
+		this.buttonsChangeLanguage = new Button[buttonsChangeLanguage.Length];
 		this.KeyRebinds = new TMP_InputField[KeyRebinds.Length];
 		this.pauseMenuController = pauseMenuController;
 		this.menuManager = menuManager;
@@ -104,6 +106,11 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			this.FPSbuttons[i] = FPSbuttons[i].GetComponent<Button>();
 		}
 
+		for (int i = 0; i < this.buttonsChangeLanguage.Length; i++)
+		{
+			this.buttonsChangeLanguage[i] = buttonsChangeLanguage[i].GetComponent<Button>();
+		}
+
 		for (int i = 0; i < this.KeyRebinds.Length; i++)
 		{
 			this.KeyRebinds[i] = KeyRebinds[i].GetComponent<TMP_InputField>();
@@ -114,6 +121,10 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		this.FPSbuttons[2].onClick.AddListener(() => ChangeFrameRateLimit(90));
 		this.FPSbuttons[3].onClick.AddListener(() => ChangeFrameRateLimit(144));
 
+		//Debug.Log(this.buttonsChangeLanguage[0]);
+
+		this.buttonsChangeLanguage[0].onClick.AddListener(() => ChangeLanguage(LanguagesEnum.Russian));
+		this.buttonsChangeLanguage[1].onClick.AddListener(() => ChangeLanguage(LanguagesEnum.English));
 
 		// Выделяем активную кнопку FPS
 		ChangeFrameRateLimit(60);
@@ -150,8 +161,13 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	// Ссылка на контроллер паузы меню
 
 
-	
 
+	private void ChangeLanguage(LanguagesEnum language)
+	{
+		bootstrap.ChangeLanguage(language);
+		Debug.Log("Changed Language to: " + language);
+	}
+	
 
 	private void KeepLastCharacter(TMP_InputField field)
 	{

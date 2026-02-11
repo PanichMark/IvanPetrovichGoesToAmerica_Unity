@@ -19,10 +19,10 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	public event LoadSceneHandler OnEndLoadMainMenuScene;
 	public event LoadSceneHandler OnBeginLoadGameplayScene;
 	public event LoadSceneHandler OnEndLoadGameplayScene;
-	public void Initialize(GameController gameController, LocalizationManager localizationManager, GameObject canvasLoadingScreen, TMP_Text loadingScreenText)
+	public void Initialize(GameController gameController, GameObject canvasLoadingScreen, TMP_Text loadingScreenText)
 	{
 		this.gameController = gameController;	
-		this.localizationManager = localizationManager;
+	
 		this.canvasLoadingScreen = canvasLoadingScreen;	
 		this.loadingScreenText = loadingScreenText;
 		sceneNameText = canvasLoadingScreen.transform.Find("SceneName")?.GetComponent<TMP_Text>();
@@ -32,7 +32,10 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		Debug.Log("GameSceneManager Initialized");
 	}
 
-
+	public void ChangeLanguage(LocalizationManager localizationManager)
+	{
+		this.localizationManager = localizationManager;
+	}
 	public IEnumerator LoadScene(GameScenesEnum scene)
 	{
 

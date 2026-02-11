@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static Unity.VisualScripting.Icons;
 
 
 public class Bootstrap : MonoBehaviour
@@ -96,6 +97,7 @@ public class Bootstrap : MonoBehaviour
 	private GameObject[] FPSbuttons;
 	private GameObject FOVSlider;
 	private GameObject fovDisplayText;
+	private GameObject[] buttonsChangeLanguage;
 	private GameObject[] KeyRebinds;
 
 	// Система оружия
@@ -127,6 +129,7 @@ public class Bootstrap : MonoBehaviour
 
 	private void Awake()
 	{
+		ServiceLocator.ClearAllServices();
 		canvasBootstrap = Instantiate(canvasBootstrap);
 		loadingStatusText = canvasBootstrap.transform.Find("TextInitializationStep")?.GetComponent<TMP_Text>();
 	
@@ -165,7 +168,7 @@ public class Bootstrap : MonoBehaviour
 		//yield return new WaitForSecondsRealtime(1f);
 
 
-
+		ChangeLanguage(LanguagesEnum.Russian);
 
 
 
@@ -192,16 +195,27 @@ public class Bootstrap : MonoBehaviour
 
 	}
 
+	public void ChangeLanguage(LanguagesEnum language)
+	{
+		localizationManager.ChangeLanguage(language);
 
+		interactionController.ChangeLanguage(localizationManager);
+		gameSceneManager.ChangeLanguage(localizationManager);
+
+		ServiceLocator.RemoveService("LocalizationManager");
+		ServiceLocator.Register("LocalizationManager", localizationManager);
+
+	}
 
 	private IEnumerator InitializeInterfaces()
 	{
 		loadingStatusText.text = "Interfaces";
 
-		ServiceLocator.ClearServices();
+		
 		gameController = new GameController();
 		localizationManager = new LocalizationManager();
-		localizationManager.ChangeLanguage(LanguagesEnum.Russian);
+		
+		//localizationManager.ChangeLanguage(LanguagesEnum.Russian);
 		inputDevice = new InputKeyboard(gameController);
 		Debug.Log("INTERFACES INITIALIZED");
 		yield break;
@@ -240,7 +254,7 @@ public class Bootstrap : MonoBehaviour
 		gameSceneManagerGameObject = new GameObject("GameSceneManager");
 		gameSceneManager = gameSceneManagerGameObject.AddComponent<GameSceneManager>();
 		loadingScreenText = canvasLoadingScreen.transform.Find("LoadingScreenText")?.GetComponent<TMP_Text>();
-		gameSceneManager.Initialize(gameController, localizationManager, canvasLoadingScreen, loadingScreenText);
+		gameSceneManager.Initialize(gameController, canvasLoadingScreen, loadingScreenText);
 
 		yield break;
 	}
@@ -322,6 +336,12 @@ public class Bootstrap : MonoBehaviour
 			FindDeepChildByName(canvasPauseSubMenuSettings, "Fps144"),
 		};
 
+		buttonsChangeLanguage = new GameObject[]
+		{
+			FindDeepChildByName(canvasPauseSubMenuSettings, "LanguageRussian"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "LanguageEnglish"),
+		};
+
 		KeyRebinds = new GameObject[]
 		{
 			FindDeepChildByName(canvasPauseSubMenuSettings, "MoveForward"),
@@ -352,7 +372,7 @@ public class Bootstrap : MonoBehaviour
 		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame, buttonClosePauseSubMenuSave);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonsDeleteGame, buttonClosePauseSubMenuLoad);
 		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages, buttonClosePauseSubMenuImages);
-		pauseSubMenuSettingsController.Initialize(inputDevice, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons, KeyRebinds);
+		pauseSubMenuSettingsController.Initialize(inputDevice, this, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons, buttonsChangeLanguage, KeyRebinds);
 
 		Debug.Log("PAUSE MENU INITIALIZED");
 		yield break;
@@ -479,7 +499,7 @@ public class Bootstrap : MonoBehaviour
 		buttonExitLockpickMenu = canvasLockpickMenu.transform.Find("ExitLockpick")?.GetComponent<Button>();
 
 		// Инициализация взаимодействия
-		interactionController.Initialize(gameController, gameSceneManager, inputDevice, localizationManager, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
+		interactionController.Initialize(gameController, gameSceneManager, inputDevice, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
 			additionalInteractionText, itemsTexts, itemsImages);
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 		yield break;
@@ -517,6 +537,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("PauseMenuController", pauseMenuController);
 		ServiceLocator.Register("GameController", gameController);
 		ServiceLocator.Register("GameSceneManager", gameSceneManager);
+	
 
 
 		Debug.Log("SERVICE REGISTERED");
@@ -527,7 +548,7 @@ public class Bootstrap : MonoBehaviour
 
 	private void OnApplicationQuit()
 	{
-		ServiceLocator.ClearServices();
+		ServiceLocator.ClearAllServices();
 	}
 
 	private GameObject FindDeepChildByName(GameObject root, string targetName)

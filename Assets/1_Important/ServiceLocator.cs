@@ -24,8 +24,14 @@ public class ServiceLocator
 	}
 
 	// Новый публичный метод для очистки
-	public static void ClearServices()
+	public static void ClearAllServices()
 	{
 		services.Clear();
+	}
+
+	// Метод для удаления отдельной службы по ключу
+	public static bool RemoveService(string key)
+	{
+		return services.Remove(key);
 	}
 }
