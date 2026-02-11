@@ -540,7 +540,8 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("PauseMenuController", pauseMenuController);
 		ServiceLocator.Register("GameController", gameController);
 		ServiceLocator.Register("GameSceneManager", gameSceneManager);
-	
+		ServiceLocator.Register("PlayerMovementController", playerMovementController);
+
 
 
 		Debug.Log("SERVICE REGISTERED");

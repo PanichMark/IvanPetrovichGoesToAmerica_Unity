@@ -404,6 +404,22 @@ PrefabInstance:
       propertyPath: targetScene
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: newPlayerRotation
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: newplayerRotation
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: newPlayerPosition.x
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: newPlayerPosition.z
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1113,6 +1129,14 @@ PrefabInstance:
     - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
       propertyPath: targetScene
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: newPlayerPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6282242381716433850, guid: 6dd8c26ddeb1885488d5eb8e31672b5f, type: 3}
+      propertyPath: newPlayerPosition.z
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
