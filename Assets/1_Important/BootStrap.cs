@@ -96,6 +96,7 @@ public class Bootstrap : MonoBehaviour
 	private GameObject[] FPSbuttons;
 	private GameObject FOVSlider;
 	private GameObject fovDisplayText;
+	private GameObject[] KeyRebinds;
 
 	// Система оружия
 	private GameObject weaponSystemGameObject;
@@ -321,6 +322,28 @@ public class Bootstrap : MonoBehaviour
 			FindDeepChildByName(canvasPauseSubMenuSettings, "Fps144"),
 		};
 
+		KeyRebinds = new GameObject[]
+		{
+			FindDeepChildByName(canvasPauseSubMenuSettings, "MoveForward"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "MoveBackward"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "MoveRight"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "MoveLeft"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "Run"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "Jump"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "Crouch"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "Interact"),
+
+			FindDeepChildByName(canvasPauseSubMenuSettings, "ChangeCameraView"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "ChangeCameraShoulder"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "RightHandWeaponWheel"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "LeftHandWeaponWheel"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "RightHandWeaponAttack"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "LeftHandWeaponAttack"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "Reload"),
+			FindDeepChildByName(canvasPauseSubMenuSettings, "LegKick"),
+		};
+
+
 		buttonClosePauseSubMenuSettings = FindDeepChildByName(canvasPauseSubMenuSettings, "SettingsSubMenu close Button");
 
 		// Инициализация меню
@@ -329,7 +352,7 @@ public class Bootstrap : MonoBehaviour
 		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame, buttonClosePauseSubMenuSave);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonsDeleteGame, buttonClosePauseSubMenuLoad);
 		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages, buttonClosePauseSubMenuImages);
-		pauseSubMenuSettingsController.Initialize(inputDevice, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons);
+		pauseSubMenuSettingsController.Initialize(inputDevice, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons, KeyRebinds);
 
 		Debug.Log("PAUSE MENU INITIALIZED");
 		yield break;

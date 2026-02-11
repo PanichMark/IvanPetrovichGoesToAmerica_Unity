@@ -130,7 +130,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	public void LoadData(GameData data)
 	{
 
-		Debug.Log("This is: " + LootItemIndex + " " + interactionObjectNameSystem);
+		//Debug.Log("This is: " + LootItemIndex + " " + interactionObjectNameSystem);
 		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
 		{
 		
@@ -139,7 +139,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 				
 				WasLootItemCollected = true;
 				Destroy(gameObject);
-				Debug.Log("DESTROY: " + LootItemIndex);
+				//Debug.Log("DESTROY: " + LootItemIndex);
 			}
 			//Debug.Log("Its #: " + data.LootObjects_Scene_0_Test[LootItemIndex]);
 		}

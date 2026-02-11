@@ -41,12 +41,12 @@ public class SaveLoadController : MonoBehaviour
 		fileSaveDataName3 = "SaveGame3.json";
 		fileSaveDataName4 = "SaveGame4.json";
 		fileSaveDataName5 = "SaveGame5.json";
-		//this.saveLoadObjects = FindAllSaveLoadObjects();
-		//NewGame();
-		this.gameSceneManager.OnEndLoadGameplayScene += () => SaveGame(-1);
 		
-		//this.gameSceneManager.OnEndLoadGameplayScene += FindAllSaveLoadObjects();
-		Debug.Log("SaveLoadController Initialized");
+
+		//this.gameSceneManager.OnEndLoadGameplayScene += () => StartCoroutine(UpdateGameplaySaveLoadObjects());
+		//this.gameSceneManager.OnEndLoadGameplayScene += () => StartCoroutine(SaveGame(-1));
+
+			Debug.Log("SaveLoadController Initialized");
 
 	}
 
@@ -54,16 +54,18 @@ public class SaveLoadController : MonoBehaviour
 
 	private void AssignGameplayObjectIndex()
 	{
-
-
 		InteractionObjectLootAbstract[] lootItems = FindObjectsOfType<InteractionObjectLootAbstract>();
 
-		int NumberOfLootObjectsOnScene; // Объявляем переменную перед циклом
-		for (NumberOfLootObjectsOnScene = 0; NumberOfLootObjectsOnScene < lootItems.Length; NumberOfLootObjectsOnScene++)
+		// Сортируем массив объектов по имени
+		Array.Sort(lootItems, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
+
+		// Присваиваем индексы
+		for (int index = 0; index < lootItems.Length; index++)
 		{
-			lootItems[NumberOfLootObjectsOnScene].AssignLootItemIndex(NumberOfLootObjectsOnScene);
+			lootItems[index].AssignLootItemIndex(index);
 		}
-	//	Debug.Log(NumberOfLootObjectsOnScene + " LOOT OBJECTS ON SCENE");
+
+		//Debug.Log("LOOT OBJECTS ON SCENE: " + lootItems.Length); // Логирование
 	}
 
 
@@ -260,19 +262,19 @@ public class SaveLoadController : MonoBehaviour
 		//	Debug.Log("-----END-----");
 		foreach (ISaveLoad gameplayLoadObj in gameplaySaveLoadObjects)
 		{
-
+			//Debug.Log(gameplayLoadObj);
 			//Debug.Log(loadLoadObj);
 			gameplayLoadObj.LoadData(gameData);
 		}
 
-
+		yield return StartCoroutine(SaveGame(-1));
 
 
 		//Debug.Log("-----START-----");
 
 		//	Debug.Log("-----END-----");
 
-
+		yield break;
 	}
 
 	public void DeleteGame(int deleteSlotNumber)

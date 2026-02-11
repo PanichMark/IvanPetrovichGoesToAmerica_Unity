@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-//using System.Linq;
+using System.Linq;
 using System;
 
 public class PauseSubMenuSettingsController : MonoBehaviour
@@ -14,7 +14,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private PauseMenuController pauseMenuController;
 	// Конструктор принимает зависимость
 	private GameObject buttonClosePauseSubMenuSettings;
-	private GameObject[] FPSbuttons;
+	//private GameObject[] FPSbuttons;
 	private GameObject FOVSlider;
 
 	private char lastValidChar; // Переменная для хранения последнего корректного символа
@@ -34,7 +34,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private Camera AdditionalCamera;
 
 	// Кнопки выбора частоты кадров
-	private Button[] LimitFPS_Button;
+	private Button[] FPSbuttons;
 
 
 	// Цвет выделения активных кнопок
@@ -50,7 +50,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	// Список полей ввода для изменения клавиш
 	private GameController gameController;
-	private TMP_InputField[] inputFields;
+	private TMP_InputField[] KeyRebinds;
 
 	private readonly char[][] layoutMap = new char[][]
 	{
@@ -66,7 +66,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	  };
 
 	public void Initialize(IInputDevice inputDevice, GameController gameController, GameObject mainCamera, GameObject fovDisplayText, MenuManager menuManager, PauseMenuController pauseMenuController,
-		GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings, GameObject FOVSlider, GameObject[] FPSbuttons)
+		GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings, GameObject FOVSlider, GameObject[] FPSbuttons, GameObject[] KeyRebinds)
 
 	{
 		this.gameController = gameController;
@@ -75,9 +75,10 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		this.fovDisplayText = fovDisplayText.GetComponent<TextMeshProUGUI>();
 
 		this.FOVSlider = FOVSlider;
-		this.FPSbuttons = FPSbuttons;
+		//this.FPSbuttons = FPSbuttons;
 		// Инициализируй массив LimitFPS_Button
-		LimitFPS_Button = new Button[this.FPSbuttons.Length];
+		this.FPSbuttons = new Button[FPSbuttons.Length];
+		this.KeyRebinds = new TMP_InputField[KeyRebinds.Length];
 		this.pauseMenuController = pauseMenuController;
 		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
@@ -96,29 +97,33 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		this.fovSlider.onValueChanged.AddListener(OnFovChanged);
 		SetFOV(MIN_FOV_VALUE);
 
-		Debug.Log(this.FPSbuttons[0]);
-		
-		LimitFPS_Button[0] = this.FPSbuttons[0].GetComponent<Button>();
-		LimitFPS_Button[1] = this.FPSbuttons[1].GetComponent<Button>();
-		LimitFPS_Button[2] = this.FPSbuttons[2].GetComponent<Button>();
-		LimitFPS_Button[3] = this.FPSbuttons[3].GetComponent<Button>();
-		
+		//Debug.Log(this.FPSbuttons[0]);
 
-		LimitFPS_Button[0].onClick.AddListener(() => ChangeFrameRateLimit(30));
-		LimitFPS_Button[1].onClick.AddListener(() => ChangeFrameRateLimit(60));
-		LimitFPS_Button[2].onClick.AddListener(() => ChangeFrameRateLimit(90));
-		LimitFPS_Button[3].onClick.AddListener(() => ChangeFrameRateLimit(144));
+		for (int i = 0; i < this.FPSbuttons.Length; i++)
+		{
+			this.FPSbuttons[i] = FPSbuttons[i].GetComponent<Button>();
+		}
+
+		for (int i = 0; i < this.KeyRebinds.Length; i++)
+		{
+			this.KeyRebinds[i] = KeyRebinds[i].GetComponent<TMP_InputField>();
+		}
+
+		this.FPSbuttons[0].onClick.AddListener(() => ChangeFrameRateLimit(30));
+		this.FPSbuttons[1].onClick.AddListener(() => ChangeFrameRateLimit(60));
+		this.FPSbuttons[2].onClick.AddListener(() => ChangeFrameRateLimit(90));
+		this.FPSbuttons[3].onClick.AddListener(() => ChangeFrameRateLimit(144));
 
 
 		// Выделяем активную кнопку FPS
 		ChangeFrameRateLimit(60);
 		ApplyButtonColors(currentFrameRateLimit);
 		this.gameController.OnOpenMainMenu += () => SetFOV(60);
-		/*
+		
 		// Заполняем поля ввода клавиш начальными значениями из InputManager
 		var bindings = this.inputDevice.GetCurrentBindings().ToList();
 
-		foreach (var field in inputFields)
+		foreach (var field in this.KeyRebinds)
 		{
 			var matchingBinding = bindings.FirstOrDefault(b => b.action == field.name.Replace("InputField", ""));
 			if (matchingBinding != default)
@@ -128,7 +133,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		}
 
 		// Добавляем обработчики
-		foreach (var field in inputFields)
+		foreach (var field in this.KeyRebinds)
 		{
 			field.onValidateInput += ValidateAndConvertInput;
 			field.onEndEdit.AddListener((string text) =>
@@ -138,7 +143,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			});
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
-		*/
+		
 		Debug.Log("SettingsSubMenu Initialized");
 	}
 
@@ -229,26 +234,26 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		switch (activeFrameRate)
 		{
 			case 30:
-				HighlightButton(LimitFPS_Button[0]);
+				HighlightButton(FPSbuttons[0]);
 				break;
 			case 60:
-				HighlightButton(LimitFPS_Button[1]);
+				HighlightButton(FPSbuttons[1]);
 				break;
 			case 90:
-				HighlightButton(LimitFPS_Button[2]);
+				HighlightButton(FPSbuttons[2]);
 				break;
 			case 144:
-				HighlightButton(LimitFPS_Button[3]);
+				HighlightButton(FPSbuttons[3]);
 				break;
 		}
 	}
 
 	private void ResetAllButtons()
 	{
-		LimitFPS_Button[0].image.color = normalColor;
-		LimitFPS_Button[1].image.color = normalColor;
-		LimitFPS_Button[2].image.color = normalColor;
-		LimitFPS_Button[3].image.color = normalColor;
+		FPSbuttons[0].image.color = normalColor;
+		FPSbuttons[1].image.color = normalColor;
+		FPSbuttons[2].image.color = normalColor;
+		FPSbuttons[3].image.color = normalColor;
 	}
 
 	private void HighlightButton(Button button)
