@@ -82,6 +82,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (this.name == "ExitGame")
 		{
 			Debug.Log("EXIT GAME");
+			Application.Quit();
 		}
 		else if (this.name == "Options")
 		{
