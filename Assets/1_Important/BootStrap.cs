@@ -8,9 +8,12 @@ using UnityEngine.UI;
 
 public class Bootstrap : MonoBehaviour
 {
+	// CONFIG
+	[Header("--- CONFIGS ---")] [SerializeField] private BootStrapConfigScene configScene;
+
 	// Экран Инициализации Bootstrap
 	private GameObject tempCameraObject;
-	[SerializeField] private GameObject canvasBootstrap;
+	[Header("Bootstrap")] [SerializeField] private GameObject canvasBootstrap;
 	private TMP_Text loadingStatusText;
 
 	// Интерфейсы
@@ -20,7 +23,7 @@ public class Bootstrap : MonoBehaviour
 
 	// Система Сцен
 	private GameObject gameSceneManagerGameObject;
-	[SerializeField] private GameObject canvasLoadingScreen;
+	[Header("Loading Screen")] [SerializeField] private GameObject canvasLoadingScreen;
 	private GameSceneManager gameSceneManager;
 	private TMP_Text loadingScreenText;
 
@@ -49,7 +52,7 @@ public class Bootstrap : MonoBehaviour
 	// Игрок ресурсы
 	private GameObject playerResourcesGameObject;
 	private CanvasHUDPlayerResourcesController canvasHUDPlayerResourcesController;
-	[SerializeField] private GameObject canvasHUDPlayerResources;
+	[Header("Player Resources")] [SerializeField] private GameObject canvasHUDPlayerResources;
 	// Игрок ресурсы деньги
 	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
 	private TMP_Text playerMoneyTextGameObject;
@@ -72,7 +75,7 @@ public class Bootstrap : MonoBehaviour
 	private MenuManager menuManager;
 	// Меню паузы
 	private PauseMenuController pauseMenuController;
-	[SerializeField] private GameObject canvasPauseMenu;
+	[Header("Pause Menu")] [SerializeField] private GameObject canvasPauseMenu;
 	private GameObject[] buttonsPauseMenu;
 	// Подменю сохранения
 	private PauseSubMenuSaveController pauseSubMenuSaveController;
@@ -104,7 +107,7 @@ public class Bootstrap : MonoBehaviour
 	private WeaponController weaponController;
 	// Колесо выбора оружия
 	private WeaponWheelMenuController weaponWheelController;
-	[SerializeField] private GameObject canvasMenuWeaponWheel;
+	[Header("Weapon Wheel Menu")] [SerializeField] private GameObject canvasMenuWeaponWheel;
 	private GameObject weaponWheelSegmentPrefab;
 	private TextMeshProUGUI weaponText;
 	private TextMeshProUGUI weaponWheelName;
@@ -113,7 +116,7 @@ public class Bootstrap : MonoBehaviour
 	// Система взаимодействия
 	private GameObject interactionControllerGameObject;
 	private InteractionController interactionController;
-	[SerializeField] private GameObject canvasHUDInteraction;
+	[Header("Interaction")] [SerializeField] private GameObject canvasHUDInteraction;
 	[SerializeField] private GameObject canvasReadNoteMenu;
 	[SerializeField] private GameObject canvasLockpickMenu;
 	private TextMeshProUGUI mainInteractionText;
@@ -132,18 +135,12 @@ public class Bootstrap : MonoBehaviour
 		canvasBootstrap = Instantiate(canvasBootstrap);
 		loadingStatusText = canvasBootstrap.transform.Find("TextInitializationStep")?.GetComponent<TMP_Text>();
 	
-
-
 		Time.timeScale = 0f;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
-
-
 		tempCameraObject = new GameObject("TempCamera");
 		tempCameraObject.AddComponent<Camera>();
-
-	
 
 		StartCoroutine(SequentialInitialization());
 	}
@@ -166,35 +163,24 @@ public class Bootstrap : MonoBehaviour
 		yield return new WaitForSecondsRealtime(0.3f);
 		//yield return new WaitForSecondsRealtime(1f);
 
-
 		ChangeLanguage(LanguagesEnum.Russian);
-
-
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
-
-
-
-
-
 		yield return StartCoroutine(saveLoadController.NewGame());
-
-		//Destroy(tempCameraObject);
-		//Destroy(canvasBootstrap);
-
-
-
-	//	yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.Scene_1_Church));
-
-		yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
-
-		
-
 
 		Destroy(tempCameraObject);
 		Destroy(canvasBootstrap);
 
+		//Debug.Log(bootStrapConfig.selectedScene);
+
+		if (configScene.selectedScene.ToString() == "Scene_0_MainMenu")
+		{
+			yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
+		}
+		else yield return StartCoroutine(gameSceneManager.LoadScene(configScene.selectedScene));
+
+		
 	}
 
 	public void ChangeLanguage(LanguagesEnum language)

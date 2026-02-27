@@ -275,6 +275,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4814294911176081341, guid: 92c25c75e5130f44dbb83465860f95dc, type: 3}
     - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: configScene
+      value: 
+      objectReference: {fileID: 11400000, guid: 03981a2c660eaba468821d3a795162a2, type: 2}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: bootStrapConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 03981a2c660eaba468821d3a795162a2, type: 2}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
       propertyPath: canvasBootstrap
       value: 
       objectReference: {fileID: 6714391010334597348, guid: 08d27b996c6eb024eb92725af576e2f4, type: 3}
