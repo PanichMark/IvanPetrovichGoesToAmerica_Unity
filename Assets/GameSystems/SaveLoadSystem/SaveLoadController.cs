@@ -205,8 +205,9 @@ public class SaveLoadController : MonoBehaviour
 			yield break;
 		}
 
-		gameController.CloseMainMenu();
 		OnSafeFileLoad?.Invoke();
+		gameController.CloseMainMenu();
+		
 
 		if (loadSlotNumber == 1)
 		{

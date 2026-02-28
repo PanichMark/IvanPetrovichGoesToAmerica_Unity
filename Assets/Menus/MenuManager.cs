@@ -16,6 +16,9 @@ public class MenuManager : MonoBehaviour
 	public event OpenMenuEventHandler OnOpenLockpickMenu;
 	public event OpenMenuEventHandler OnCloseLockpickMenu;
 
+	public event OpenMenuEventHandler OnOpenAnyMenu;
+	public event OpenMenuEventHandler OnCloseAnyMenu;
+
 	public IInputDevice inputDevice;
 	private GameController gameController;
 	private SaveLoadController saveLoadController;
@@ -142,17 +145,28 @@ public class MenuManager : MonoBehaviour
 	public void OpenAnyMenu()
 	{
 		IsAnyMenuOpened = true;
-		Cursor.lockState = CursorLockMode.None;
-		Cursor.visible = true;
-		CloseInteractionHUD();
+
+		OnOpenAnyMenu?.Invoke();
+		if (!gameController.IsMainMenuOpen)
+		{
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+			CloseInteractionHUD();
+		}
 	}
 
 	public void CloseAnyMenu()
 	{
 		IsAnyMenuOpened = false;
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
-		OpenInteractionHUD();
+	
+		OnCloseAnyMenu?.Invoke();
+		if (!gameController.IsMainMenuOpen)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+			OpenInteractionHUD();
+			
+		}
 	}
 
 	public void OpenInteractionHUD()

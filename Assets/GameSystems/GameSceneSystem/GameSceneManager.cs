@@ -39,9 +39,8 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	public IEnumerator LoadScene(GameScenesEnum scene)
 	{
 
-
-		OnBeginLoadGameplayScene?.Invoke();
 		gameController.SceneLoadBegan();
+		OnBeginLoadGameplayScene?.Invoke();
 		canvasLoadingScreen.SetActive(true);
 		loadingScreenText.text = "Подготовка к загрузке...";
 		Cursor.lockState = CursorLockMode.Locked;

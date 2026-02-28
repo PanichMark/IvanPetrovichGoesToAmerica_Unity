@@ -17,6 +17,7 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnOpenSettingsSubMenu;
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
+	public event OpenPauseMenuEventHandler OnCloseAnySubMenuForMain;
 	private GameController gameController;
 	public void Initialize( IInputDevice inputDevice, GameController gameController, GameSceneManager gameSceneManager, SaveLoadController saveLoadController, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject[] buttonsPauseMenu)
 	{
@@ -27,7 +28,7 @@ public class PauseMenuController : MonoBehaviour
 		this.PauseMenuCanvas = PauseMenuCanvas;
 		this.buttonsPauseMenu = buttonsPauseMenu;
 		this.saveLoadController = saveLoadController;
-		this.buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(menuManager.ClosePauseMenu);     
+		this.buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(this.menuManager.ClosePauseMenu);     
 		this.buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
 		this.buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
 		this.buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenImagesSubMenu);              
@@ -38,7 +39,8 @@ public class PauseMenuController : MonoBehaviour
 		this.menuManager.OnClosePauseMenu += HidePauseMenu;
 
 		_isInitialized = true;
-		this.saveLoadController.OnSafeFileLoad += CloseSubMenu;
+		this.gameSceneManager.OnBeginLoadMainMenuScene += ClosePauseSubMenu;
+		this.gameSceneManager.OnBeginLoadGameplayScene += ClosePauseSubMenu;
 		Debug.Log("PauseMenu Initialized");
 	}
 	private bool _isInitialized = false;
@@ -60,9 +62,23 @@ public class PauseMenuController : MonoBehaviour
 	public void ClosePauseSubMenu()
 	{
 		OnClosePauseSubMenu?.Invoke();
-		menuManager.PauseMenuLevel.Pop(); // Убираем верхний элемент (субменю)
-		if (!gameController.IsMainMenuOpen) 
-		ShowPauseMenu(); // Показываем главное меню паузы снова
+		if (menuManager.PauseMenuLevel.Count > 0)
+		{
+			menuManager.PauseMenuLevel.Pop();
+		}
+
+		if (gameController.IsMainMenuOpen)
+		{
+			menuManager.CloseAnyMenu();
+		}
+
+		if (!gameController.IsMainMenuOpen)
+		{
+			if (gameController.IsPauseMenuAvailable)
+			{
+				ShowPauseMenu(); // Показываем главное меню паузы снова
+			}
+		}
 	}
 
 	public void ShowPauseMenu()
@@ -74,12 +90,7 @@ public class PauseMenuController : MonoBehaviour
 		PauseMenuCanvas.gameObject.SetActive(false);
 	}
 	
-	public void CloseSubMenu()
-	{
-		OnClosePauseSubMenu.Invoke();
-		if (menuManager.PauseMenuLevel.Count > 0) 
-		menuManager.PauseMenuLevel.Pop();
-	}
+	
 
 	public void OpenSaveSubMenu()
 	{
@@ -115,7 +126,7 @@ public class PauseMenuController : MonoBehaviour
 	{
 		
 		Debug.Log("MAIN MENU EXIT");
-		CloseSubMenu();
+		ClosePauseSubMenu();
 		menuManager.ClosePauseMenu();
 		StartCoroutine(gameSceneManager.LoadMainMenuScene());
 	}

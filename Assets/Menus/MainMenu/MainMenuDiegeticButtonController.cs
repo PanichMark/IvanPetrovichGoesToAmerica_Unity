@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MainMenuDiegeticButtonController : MonoBehaviour
@@ -17,6 +18,8 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private SaveLoadController saveLoadController;
 	private MenuManager menuManager;
 
+	[SerializeField] private GameObject DiegeticText;
+
 	void Awake()
 	{
 		// Регистрация текущего экземпляра компонента в списке экземпляров
@@ -25,8 +28,8 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	void OnDestroy()
 	{
-		// Убираем экземпляр из списка при уничтожении объекта
 		instances.Remove(this);
+		menuManager.OnCloseAnyMenu -= () => DiegeticText.SetActive(true);
 	}
 
 	void Start()
@@ -39,13 +42,26 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		pauseMenuController.OnClosePauseSubMenu += EnableAllColliders;
+
+		// Обработчик с проверкой наличия объекта
+		menuManager.OnCloseAnyMenu += () => {
+			if (DiegeticText != null)
+			{
+				DiegeticText.SetActive(true);
+			}
+		};
 	}
+
+	
 
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1) && menuManager.PauseMenuLevel.Count == 1)
 		{
-			pauseMenuController.CloseSubMenu();
+			menuManager.CloseAnyMenu();
+			DiegeticText.SetActive(true);
+			pauseMenuController.ClosePauseSubMenu();
+		
 			//EnableAllColliders();
 			//Debug.Log("BRUH!");
 		}
@@ -76,7 +92,9 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (name == "LoadGame")
 		{
 			Debug.Log("OPEN LOAD GAME");
+			DiegeticText.SetActive(false);
 			DisableAllColliders();
+			menuManager.OpenAnyMenu();
 			pauseMenuController.OpenLoadSubMenu();
 		}
 		else if (this.name == "ExitGame")
@@ -87,7 +105,9 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (this.name == "Options")
 		{
 			Debug.Log("OPEN OPTIONS");
+			DiegeticText.SetActive(false);
 			DisableAllColliders();
+			menuManager.OpenAnyMenu();
 			pauseMenuController.OpenSettingsSubMenu();
 		}
 		else if (this.name == "ReadNews")
