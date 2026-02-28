@@ -12,9 +12,10 @@ public class PlayerAnimationController: MonoBehaviour
 	private Camera playerCameraObject;
 	private Animator playerAnimator;
 	private bool _isInitialized = false;
+	private LegKickAttack legKickAttack;
 	// Конструктор принимает зависимость
 	public void Initialize(IInputDevice inputDevice, GameObject player, PlayerBehaviour playerBehaviour, PlayerMovementController playerMovementController,
-		PlayerCameraController playerCameraController, WeaponController weaponController)
+		PlayerCameraController playerCameraController, WeaponController weaponController, LegKickAttack legKickAttack)
 	{
 		this.inputDevice = inputDevice;
 		playerAnimator = player.GetComponent<Animator>();
@@ -22,7 +23,7 @@ public class PlayerAnimationController: MonoBehaviour
 		this.playerMovementController = playerMovementController;
 		this.playerCameraController = playerCameraController;
 		this.weaponController = weaponController;
-
+		this.legKickAttack = legKickAttack;
 		
 	
 		playerCameraObject = Camera.main;
@@ -230,9 +231,9 @@ public class PlayerAnimationController: MonoBehaviour
 				playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponLeft"), 0);
 			}
 		}
-		/*
+		
 		//Анимация атаки ногой
-		if (playerMovementController.IsPlayerLegKicking == true)
+		if (legKickAttack.IsPlayerLegKicking == true)
 		{
 			
 			playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("LegKick"), 1);
@@ -249,17 +250,17 @@ public class PlayerAnimationController: MonoBehaviour
 			//ChangePlayerLegKickAttackAnimation("LegKick");
 			playerAnimator.Play("LegKick");
 		}
-		else if (playerMovementController.IsPlayerLegKicking == false)
+		else if (legKickAttack.IsPlayerLegKicking == false)
 		{
 			playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("LegKick"), 0);
 			//playerAnimator.Play("New State");
 			//ChangePlayerLegKickAttackAnimation("New State");
 
 		}
-		wasPreviouslyKicking = playerMovementController.IsPlayerLegKicking;
+		wasPreviouslyKicking = legKickAttack.IsPlayerLegKicking;
 
 
-		*/
+		
 
 	}
 

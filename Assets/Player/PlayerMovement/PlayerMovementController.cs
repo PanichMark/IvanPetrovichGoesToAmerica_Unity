@@ -19,6 +19,8 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	private Vector3 projection;
 	private Vector3 correctedMovement;
 
+	private bool isAbleToChangeMovementType;
+
 	private bool JumpWaitOnSlope = false; // Флаг готовности прыжка
 
 	private Transform PlayerTransform;
@@ -289,60 +291,63 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	// Different player movement states scripts call this function
 	public void SetPlayerMovementState(PlayerMovementStateType playerMovementStateType)
 	{
-		PlayerMovementState newState;
+		if (isAbleToChangeMovementType)
+		{
+			PlayerMovementState newState;
 
-		if (playerMovementStateType == PlayerMovementStateType.PlayerIdle)
-		{
-			newState = new IdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
-			CurrentPlayerMovementStateType = "PlayerIdle";
-		}
-		else if (playerMovementStateType == PlayerMovementStateType.PlayerWalking)
-		{
-			newState = new WalkingPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
-			CurrentPlayerMovementStateType = "PlayerWalking";
-		}
-		else if (playerMovementStateType == PlayerMovementStateType.PlayerRunning)
-		{
-			newState = new RunningPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
-			CurrentPlayerMovementStateType = "PlayerRunning";
-		}
-		else if (playerMovementStateType == PlayerMovementStateType.PlayerJumping)
-		{
-			newState = new JumpingPlayerMovementState(this, inputDevice);
-			CurrentPlayerMovementStateType = "PlayerJumping";
-		}
-		else if (playerMovementStateType == PlayerMovementStateType.PlayerFalling)
-		{
-			newState = new FallingPlayerMovementState(this, inputDevice);
-			CurrentPlayerMovementStateType = "PlayerFalling";
-		}
-		else if (playerMovementStateType == PlayerMovementStateType.PlayerCrouchingIdle)
-		{
-			newState = new CrouchingIdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
-			CurrentPlayerMovementStateType = "PlayerCrouchingIdle";
-		}
-		else if (playerMovementStateType == PlayerMovementStateType.PlayerCrouchingWalking)
-		{
-			newState = new CrouchingWalkingPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
-			CurrentPlayerMovementStateType = "PlayerCrouchingWalking";
-		}
-		else if (playerMovementStateType == PlayerMovementStateType.PlayerSliding)
-		{
-			newState = new SlidingPlayerMovementState(this);
-			CurrentPlayerMovementStateType = "PlayerSliding";
-		}
-		else if (playerMovementStateType == PlayerMovementStateType.PlayerLedgeClimbing)
-		{
-			newState = new LedgeClimbingPlayerMovementState(this);
-			CurrentPlayerMovementStateType = "PlayerLedgeClimbing";
-		}
-		else
-		{
-			newState = null;
-		}
-		playerMovementState = newState;
+			if (playerMovementStateType == PlayerMovementStateType.PlayerIdle)
+			{
+				newState = new IdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
+				CurrentPlayerMovementStateType = "PlayerIdle";
+			}
+			else if (playerMovementStateType == PlayerMovementStateType.PlayerWalking)
+			{
+				newState = new WalkingPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
+				CurrentPlayerMovementStateType = "PlayerWalking";
+			}
+			else if (playerMovementStateType == PlayerMovementStateType.PlayerRunning)
+			{
+				newState = new RunningPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
+				CurrentPlayerMovementStateType = "PlayerRunning";
+			}
+			else if (playerMovementStateType == PlayerMovementStateType.PlayerJumping)
+			{
+				newState = new JumpingPlayerMovementState(this, inputDevice);
+				CurrentPlayerMovementStateType = "PlayerJumping";
+			}
+			else if (playerMovementStateType == PlayerMovementStateType.PlayerFalling)
+			{
+				newState = new FallingPlayerMovementState(this, inputDevice);
+				CurrentPlayerMovementStateType = "PlayerFalling";
+			}
+			else if (playerMovementStateType == PlayerMovementStateType.PlayerCrouchingIdle)
+			{
+				newState = new CrouchingIdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
+				CurrentPlayerMovementStateType = "PlayerCrouchingIdle";
+			}
+			else if (playerMovementStateType == PlayerMovementStateType.PlayerCrouchingWalking)
+			{
+				newState = new CrouchingWalkingPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
+				CurrentPlayerMovementStateType = "PlayerCrouchingWalking";
+			}
+			else if (playerMovementStateType == PlayerMovementStateType.PlayerSliding)
+			{
+				newState = new SlidingPlayerMovementState(this);
+				CurrentPlayerMovementStateType = "PlayerSliding";
+			}
+			else if (playerMovementStateType == PlayerMovementStateType.PlayerLedgeClimbing)
+			{
+				newState = new LedgeClimbingPlayerMovementState(this);
+				CurrentPlayerMovementStateType = "PlayerLedgeClimbing";
+			}
+			else
+			{
+				newState = null;
+			}
+			playerMovementState = newState;
 
-		Debug.Log("MovementState: " + CurrentPlayerMovementStateType);
+			Debug.Log("MovementState: " + CurrentPlayerMovementStateType);
+		}
 	}
 
 	// Different player movement states scripts call this function
@@ -447,22 +452,24 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	}
 
 
-	/*
+	
 	public IEnumerator DisablePlayerMovementDuringLegKickAttack()
 	{
+		playerWorldMovement.z = 0;
+		playerWorldMovement.x = 0;
 		//Debug.Log("Leg Kick Attack");
+		isAbleToChangeMovementType = false;
+		//IsPlayerLegKicking = true;
 
-		IsPlayerLegKicking = true;
+		//IsPlayerAbleToMove = false;
 
-		IsPlayerAbleToMove = false;
+		yield return new WaitForSeconds(0.9f);
+		isAbleToChangeMovementType = true;
+		//IsPlayerAbleToMove = true;
 
-		yield return new WaitForSeconds(1f);
-
-		IsPlayerAbleToMove = true;
-
-		IsPlayerLegKicking = false;
+		//IsPlayerLegKicking = false;
 	}
-	*/
+	
 
 	public bool JumpingStateWait()
 	{
@@ -539,6 +546,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		PlayerCurrentHeight = 1.75f;
 		_isInitialized = true;
+		isAbleToChangeMovementType = true;
 		Debug.Log("PlayerMovement Initialized");
 
 

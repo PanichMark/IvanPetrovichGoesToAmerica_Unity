@@ -105,6 +105,7 @@ public class Bootstrap : MonoBehaviour
 	// Система оружия
 	private GameObject weaponSystemGameObject;
 	private WeaponController weaponController;
+	private LegKickAttack legKickAttack;
 	// Колесо выбора оружия
 	private WeaponWheelMenuController weaponWheelController;
 	[Header("Weapon Wheel Menu")] [SerializeField] private GameObject canvasMenuWeaponWheel;
@@ -351,7 +352,6 @@ public class Bootstrap : MonoBehaviour
 			FindDeepChildByName(canvasPauseSubMenuSettings, "LegKick"),
 		};
 
-
 		buttonClosePauseSubMenuSettings = FindDeepChildByName(canvasPauseSubMenuSettings, "SettingsSubMenu close Button");
 
 		// Инициализация меню
@@ -369,9 +369,6 @@ public class Bootstrap : MonoBehaviour
 	private IEnumerator InitializePlayerSystems()
 	{
 		loadingStatusText.text = "Player Systems";
-
-
-	
 
 		// Получение компонентов игрока
 		playerBehaviour = playerGameObject.GetComponent<PlayerBehaviour>();
@@ -430,8 +427,6 @@ public class Bootstrap : MonoBehaviour
 		yield break;
 	}
 
-	
-
 	private IEnumerator InitializeWeaponSystem()
 	{
 		loadingStatusText.text = "Weapon System";
@@ -440,6 +435,7 @@ public class Bootstrap : MonoBehaviour
 
 		// Основной компонент оружия
 		weaponController = weaponSystemGameObject.AddComponent<WeaponController>();
+		legKickAttack = weaponSystemGameObject.AddComponent<LegKickAttack>();
 		weaponWheelController = weaponSystemGameObject.AddComponent<WeaponWheelMenuController>();
 
 		// Колесо выбора оружия
@@ -450,6 +446,7 @@ public class Bootstrap : MonoBehaviour
 
 		// Инициализация оружия
 		weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
+		legKickAttack.Initialize(inputDevice, playerGameObject, playerMovementController);
 		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController, weaponWheelSegmentPrefab,
 			centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName);
 
@@ -496,7 +493,7 @@ public class Bootstrap : MonoBehaviour
 	private IEnumerator InitializeFinalSystems()
 	{
 		playerCameraFirstPersonRender.Initialize(gameSceneManager, playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHeadParent, playerHandRightParent, playerHandLeftParent);
-		playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, playerMovementController, playerCameraController, weaponController);
+		playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, playerMovementController, playerCameraController, weaponController, legKickAttack);
 
 		Debug.Log("FINAL SYSTEMS INITIALIZED");
 		yield break;

@@ -4,41 +4,42 @@ using System.Collections;
 public class LegKickAttack : MonoBehaviour
 {
 	private IInputDevice inputDevice;
-
-	// Конструктор принимает зависимость
-	public LegKickAttack(IInputDevice inputDevice)
-	{
-		this.inputDevice = inputDevice;
-	}
-
-	PlayerMovementController playerMovementController;
-	InteractionController interactionController;
-
+	private PlayerMovementController playerMovementController;
+	//private InteractionController interactionController;
+	private GameObject cachedPlayer;
 	public bool IsPlayerLegKicking { get; private set; }
 
 	// Высота и радиус капсулы
-	float CapsuleHeight;     // Высота капсулы (примерное расстояние вдоль оси Y)
-	float CapsuleRadius;   // Радиус капсулы
-	float ForwardOffset;    // Смещение вперёд от центра игрока
+	private float CapsuleHeight;     // Высота капсулы (примерное расстояние вдоль оси Y)
+	private float CapsuleRadius;   // Радиус капсулы
+	private float ForwardOffset;    // Смещение вперёд от центра игрока
 
 	public float WeaponDamage { get; private set; } = 50;
-		
-	void Start()
+
+	// Конструктор принимает зависимость
+	public void Initialize(IInputDevice inputDevice, GameObject cachedPlayer, PlayerMovementController playerMovementController)
 	{
-		playerMovementController = GetComponent<PlayerMovementController>();
-		interactionController = GetComponent<InteractionController>();
+		this.inputDevice = inputDevice;
+		this.cachedPlayer = cachedPlayer;
+		this.playerMovementController = playerMovementController;
+		//this.interactionController = interactionController;
+
 
 		CapsuleHeight = 1.8f;      // Высота капсулы (примерное расстояние вдоль оси Y)
 		CapsuleRadius = 0.3f;      // Радиус капсулы
 		ForwardOffset = 0.5f;      // Смещение вперёд от центра игрока
+		IsPlayerLegKicking = false;
+
+		Debug.Log("LegKickAttack Initialized");
 	}
+
 
 	private void OnDrawGizmos()
 	{
 		
 		// Нижняя и верхняя точки капсулы
-		Vector3 startPoint = transform.position + transform.forward * ForwardOffset;
-		Vector3 endPoint = transform.position + transform.forward * ForwardOffset + transform.up * CapsuleHeight;
+		Vector3 startPoint = cachedPlayer.transform.position + cachedPlayer.transform.forward * ForwardOffset;
+		Vector3 endPoint = cachedPlayer.transform.position + cachedPlayer.transform.forward * ForwardOffset + cachedPlayer.transform.up * CapsuleHeight;
 
 		// Рисуем верхнюю и нижнюю полусферу
 		Gizmos.color = Color.red;
@@ -50,10 +51,14 @@ public class LegKickAttack : MonoBehaviour
 		Quaternion rotation = Quaternion.LookRotation(Vector3.right, transform.forward);
 		Gizmos.DrawWireCube(cylinderCenter, new Vector3(CapsuleRadius * 2, CapsuleHeight, CapsuleRadius * 2));
 	}
-	/*
+	
 	void Update()
 	{
-		if (inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && interactionController.CurrentPickableObject == null)
+		
+
+		if (inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && (playerMovementController.CurrentPlayerMovementStateType == "PlayerIdle" || playerMovementController.CurrentPlayerMovementStateType == "PlayerWalking"
+			|| playerMovementController.CurrentPlayerMovementStateType == "PlayerRunning" || playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
+			playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"))
 		{ 
 			LegKick();
 		}
@@ -70,13 +75,24 @@ public class LegKickAttack : MonoBehaviour
 	public void LegKick()
 	{
 		Debug.Log("LegKick attack");
-		
+
+		if (playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" || playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking")
+		{
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
+		}
+		else
+		{
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
+		}
+
+	
+
 		StartCoroutine(playerMovementController.DisablePlayerMovementDuringLegKickAttack());
 		StartCoroutine(DisableLegKickAttackActivation());
 
 		// Нижняя и верхняя точки капсулы
-		Vector3 startPoint = transform.position + transform.forward * ForwardOffset;
-		Vector3 endPoint = transform.position + transform.forward * ForwardOffset + transform.up * CapsuleHeight;
+		Vector3 startPoint = cachedPlayer.transform.position + cachedPlayer.transform.forward * ForwardOffset;
+		Vector3 endPoint = cachedPlayer.transform.position + cachedPlayer.transform.forward * ForwardOffset + cachedPlayer.transform.up * CapsuleHeight;
 
 		// Физически проверяем объекты, захваченные капсулой
 		RaycastHit[] hits = Physics.CapsuleCastAll(startPoint, endPoint, CapsuleRadius, transform.forward, 0f);
@@ -92,20 +108,14 @@ public class LegKickAttack : MonoBehaviour
 			}
 		}
 
-		if (playerMovementController.IsPlayerCrouching == false && (playerMovementController.CurrentPlayerMovementStateType != "PlayerSliding" || playerMovementController.CurrentPlayerMovementStateType != "PlayerLedgeClimbing"))
-		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
-		}
-		else if (playerMovementController.IsPlayerCrouching == true && (playerMovementController.CurrentPlayerMovementStateType != "PlayerSliding" || playerMovementController.CurrentPlayerMovementStateType != "PlayerLedgeClimbing"))
-		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
-		}
+	
+	
 	}
-	*/
+	
 	IEnumerator DisableLegKickAttackActivation()
 	{
 		IsPlayerLegKicking = true;
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0.95f);
 		IsPlayerLegKicking = false;
 	}
 
