@@ -154,16 +154,19 @@ public class InputKeyboard : IInputDevice
 			if (Input.GetKeyDown(keyBindings["Interact"]) && gameController.IsPlayerControllable)
 			{
 				lastPressTime = Time.time;
+				Debug.Log("1111");
 				isKeyInteractBeingHeld = true;
 			}
 		}
 		else if (Input.GetKeyUp(keyBindings["Interact"]) && gameController.IsPlayerControllable) // отпущена кнопка
 		{
 			isKeyInteractBeingHeld = false;
+			Debug.Log("2222");
 		}
-		else if (isKeyInteractBeingHeld && Time.time >= lastPressTime + 0.5f) // удержано дольше полсекунды
+		else if (isKeyInteractBeingHeld && Time.time >= lastPressTime + 0.5f) // проверяем реальный временной промежуток
 		{
 			isKeyInteractBeingHeld = false;
+			Debug.Log("3333");
 			return true;
 		}
 		return false;
@@ -232,6 +235,7 @@ public class InputKeyboard : IInputDevice
 
 		if (Input.GetKeyDown(keyBindings["Interact"]) && gameController.IsPlayerControllable)
 		{
+			isKeyInteractBeingHeld = false;
 			return true;
 		}
 		return false;

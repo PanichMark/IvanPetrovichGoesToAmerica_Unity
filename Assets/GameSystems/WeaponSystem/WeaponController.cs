@@ -80,12 +80,12 @@ public class WeaponController : MonoBehaviour
 		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 			return;
-		if (inputDevice.GetKeyRightHandWeaponAttack())
+		if (inputDevice.GetKeyRightHandWeaponAttack() && !menuManager.IsAnyMenuOpened)
 		{
 			RightWeaponAttack();
 		}
 
-		if (inputDevice.GetKeyLeftHandWeaponAttack())
+		if (inputDevice.GetKeyLeftHandWeaponAttack() && !menuManager.IsAnyMenuOpened)
 		{
 			LeftWeaponAttack();
 		}

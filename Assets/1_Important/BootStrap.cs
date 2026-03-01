@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
 
 public class Bootstrap : MonoBehaviour
 {
@@ -524,13 +522,9 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("GameSceneManager", gameSceneManager);
 		ServiceLocator.Register("PlayerMovementController", playerMovementController);
 
-
-
 		Debug.Log("SERVICE REGISTERED");
 		yield break;
 	}
-
-
 
 	private void OnApplicationQuit()
 	{
