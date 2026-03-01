@@ -71,9 +71,13 @@ public class Bootstrap : MonoBehaviour
 	// Меню
 	private GameObject menuManagerGameobject;
 	private MenuManager menuManager;
+	// Главное меню
+	private MainMenuReadNews mainMenuReadNews;
+	[Header("MainMenu")] [SerializeField] private GameObject canvasMainMenuReadNews;
+	private Button buttonCloseMainMenuReadNews;
 	// Меню паузы
 	private PauseMenuController pauseMenuController;
-	[Header("Pause Menu")] [SerializeField] private GameObject canvasPauseMenu;
+	[Header("PauseMenu")] [SerializeField] private GameObject canvasPauseMenu;
 	private GameObject[] buttonsPauseMenu;
 	// Подменю сохранения
 	private PauseSubMenuSaveController pauseSubMenuSaveController;
@@ -222,6 +226,7 @@ public class Bootstrap : MonoBehaviour
 	{
 		loadingStatusText.text = "Canvases";
 
+		canvasMainMenuReadNews = Instantiate(canvasMainMenuReadNews);
 		canvasPauseMenu = Instantiate(canvasPauseMenu);
 		canvasPauseSubMenuSave = Instantiate(canvasPauseSubMenuSave);
 		canvasPauseSubMenuLoad = Instantiate(canvasPauseSubMenuLoad);
@@ -265,11 +270,15 @@ public class Bootstrap : MonoBehaviour
 
 		// Контроллеры меню
 		menuManager = menuManagerGameobject.AddComponent<MenuManager>();
+		mainMenuReadNews = menuManagerGameobject.AddComponent<MainMenuReadNews>();
 		pauseMenuController = menuManagerGameobject.AddComponent<PauseMenuController>();
 		pauseSubMenuSaveController = menuManagerGameobject.AddComponent<PauseSubMenuSaveController>();
 		pauseSubMenuLoadController = menuManagerGameobject.AddComponent<PauseSubMenuLoadController>();
 		pauseSubMenuImagesController = menuManagerGameobject.AddComponent<PauseSubMenuImagesController>();
 		pauseSubMenuSettingsController = menuManagerGameobject.AddComponent<PauseSubMenuSettingsController>();
+
+		buttonCloseMainMenuReadNews = canvasMainMenuReadNews.transform.Find("ExitReadNews").GetComponent<Button>();
+		mainMenuReadNews.Initialize(inputDevice, canvasMainMenuReadNews, buttonCloseMainMenuReadNews);
 
 		// Кнопки меню
 		buttonsPauseMenu = new GameObject[]
@@ -521,6 +530,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("GameController", gameController);
 		ServiceLocator.Register("GameSceneManager", gameSceneManager);
 		ServiceLocator.Register("PlayerMovementController", playerMovementController);
+		ServiceLocator.Register("MainMenuReadNews", mainMenuReadNews);
 
 		Debug.Log("SERVICE REGISTERED");
 		yield break;

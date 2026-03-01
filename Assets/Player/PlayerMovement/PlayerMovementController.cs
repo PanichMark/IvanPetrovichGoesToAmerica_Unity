@@ -538,6 +538,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerPosition(new Vector3(0, 0, -5));
 		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 
+		isAbleToChangeMovementType = true;
 		SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
 
 		PlayerMovementSpeed = 3f;
@@ -546,7 +547,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		PlayerCurrentHeight = 1.75f;
 		_isInitialized = true;
-		isAbleToChangeMovementType = true;
+		
 		Debug.Log("PlayerMovement Initialized");
 
 

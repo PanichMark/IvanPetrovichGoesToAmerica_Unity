@@ -10,6 +10,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	private static List<MainMenuDiegeticButtonController> instances = new List<MainMenuDiegeticButtonController>();
 
+	private MainMenuReadNews mainMenuReadNews;
 	private PauseMenuController pauseMenuController;
 	private GameController gameController;
 	private Renderer _renderer;
@@ -41,6 +42,10 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		collider = GetComponent<Collider>();
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNews>("MainMenuReadNews");
+
+		mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
+		mainMenuReadNews.OnCloseMainMenuReadNews += () => DiegeticText.SetActive(true);
 		pauseMenuController.OnClosePauseSubMenu += EnableAllColliders;
 
 		// Обработчик с проверкой наличия объекта
@@ -65,6 +70,13 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			//EnableAllColliders();
 			//Debug.Log("BRUH!");
 		}
+
+		if (Input.GetKeyDown(KeyCode.Alpha1) && mainMenuReadNews.IsMainMenuReadNewsOpened)
+		{
+			mainMenuReadNews.HideCanvasMainMenuReadNews();
+		}
+
+
 	}
 
 	void OnMouseEnter()
@@ -113,6 +125,10 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (this.name == "ReadNews")
 		{
 			Debug.Log("OPEN NEWS");
+			DiegeticText.SetActive(false);
+			mainMenuReadNews.ShowCanvasMainMenuReadNews();
+			DisableAllColliders();
+			//menuManager.OpenAnyMenu();
 		}
 	}
 

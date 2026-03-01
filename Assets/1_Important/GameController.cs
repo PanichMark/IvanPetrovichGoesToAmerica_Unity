@@ -23,15 +23,17 @@ public class GameController
 		IsPlayerDead = true;
 	}
 
+	public void MakePlayerControllable()
+	{
+		IsPlayerControllable = true;
+	}
+
 	public void MakePlayerNonControllable()
 	{
 		IsPlayerControllable = false;
 	}
 
-	public void MakePlayerControllable()
-	{
-		IsPlayerControllable = true;
-	}
+
 
 	public void SceneLoadBegan()
 	{
@@ -49,6 +51,7 @@ public class GameController
 	{
 		IsMainMenuOpen = true;
 		OnOpenMainMenu?.Invoke();
+		MakePlayerNonControllable();
 		Debug.Log("Open MAINMENU");
 	}
 	public void CloseMainMenu()
