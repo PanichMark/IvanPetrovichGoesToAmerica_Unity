@@ -10,7 +10,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 	private GameSceneManager gameSceneManager;
 	public void Initialize(GameSceneManager gameSceneManager, PlayerCameraController playerCameraController, WeaponController weaponController,
 							GameObject playerFirstPersonHandRight, GameObject playerFirstPersonHandLeft,
-							GameObject playerHeadParent, GameObject playerHandRightParent, GameObject playerHandLeftParent)
+			 GameObject playerHandRightParent, GameObject playerHandLeftParent)
 	{
 		this.gameSceneManager = gameSceneManager;
 		this.playerCamera = playerCameraController;
@@ -19,7 +19,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		// Присваиваем полученные объекты
 		this.PlayerFirstPersonHandRight = playerFirstPersonHandRight;
 		this.PlayerFirstPersonHandLeft = playerFirstPersonHandLeft;
-		this.PlayerHeadParent = playerHeadParent;
+		
 		this.PlayerHandRightParent = playerHandRightParent;
 		this.PlayerHandLeftParent = playerHandLeftParent;
 
@@ -60,7 +60,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 	private GameObject PlayerFirstPersonHandRight;
 	private GameObject PlayerFirstPersonHandLeft;
-	private GameObject PlayerHeadParent;
 	private GameObject PlayerHandRightParent;
 	private GameObject PlayerHandLeftParent;
 
@@ -120,7 +119,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
 		{
-			HideBodyPart(PlayerHeadParent);
 
 			if (weaponController.RightHandWeapon != null)
 			{
@@ -164,7 +162,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		}
 		else
 		{
-			ShowBodyPart(PlayerHeadParent);
+
 			ShowBodyPart(PlayerHandRightParent);
 			ShowBodyPart(PlayerHandLeftParent);
 

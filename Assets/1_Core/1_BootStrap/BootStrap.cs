@@ -109,6 +109,7 @@ public class Bootstrap : MonoBehaviour
 	private WeaponController weaponController;
 	private LegKickAttack legKickAttack;
 	private WeaponAnimationController weaponAnimationController;
+	private WeaponFirstPersonRender weaponFirstPersonRender;
 	// Колесо выбора оружия
 	private WeaponWheelMenuController weaponWheelController;
 	[Header("Weapon Wheel Menu")] [SerializeField] private GameObject canvasMenuWeaponWheel;
@@ -161,7 +162,6 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(InitializePlayerResources());
 		yield return StartCoroutine(InitializeWeaponSystem());
 		yield return StartCoroutine(InitializeInteractionSystem());
-		yield return StartCoroutine(InitializeFinalSystems());
 		yield return StartCoroutine(RegisterAllDependencies());
 
 		yield return new WaitForSecondsRealtime(0.3f);
@@ -403,6 +403,7 @@ public class Bootstrap : MonoBehaviour
 		playerCameraController.Initialize(inputDevice, gameSceneManager, menuManager, playerMovementController, playerCollider, playerGameObject);
 		playerCameraBlurFilter.Initialize(menuManager);
 		playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, playerMovementController, playerCameraController);
+		playerCameraFirstPersonRender.Initialize(playerCameraController, playerHeadParent);
 
 		Debug.Log("PLAYER SYSTEMS INITIALIZED");
 		yield break;
@@ -447,9 +448,10 @@ public class Bootstrap : MonoBehaviour
 		legKickAttack = weaponSystemGameObject.AddComponent<LegKickAttack>();
 		weaponWheelController = weaponSystemGameObject.AddComponent<WeaponWheelMenuController>();
 		weaponAnimationController = weaponSystemGameObject.AddComponent<WeaponAnimationController>();
+		weaponFirstPersonRender = weaponSystemGameObject.AddComponent<WeaponFirstPersonRender>();
 
-	   // Колесо выбора оружия
-	   weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
+		// Колесо выбора оружия
+		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
 		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre")?.transform;
 		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name")?.GetComponent<TextMeshProUGUI>();
 		weaponWheelName = canvasMenuWeaponWheel.transform.Find("WeaponWheel Hand")?.GetComponent<TextMeshProUGUI>();
@@ -460,6 +462,7 @@ public class Bootstrap : MonoBehaviour
 		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController, weaponWheelSegmentPrefab,
 			centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName);
 		weaponAnimationController.Initialize(playerGameObject, playerBehaviour, playerCameraController, weaponController, legKickAttack);
+		weaponFirstPersonRender.Initialize(gameSceneManager, playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent);
 
 		Debug.Log("WEAPON SYSTEM INITIALIZED");
 		yield break;
@@ -498,15 +501,6 @@ public class Bootstrap : MonoBehaviour
 		interactionController.Initialize(gameController, gameSceneManager, inputDevice, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
 			additionalInteractionText, itemsTexts, itemsImages);
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
-		yield break;
-	}
-
-	private IEnumerator InitializeFinalSystems()
-	{
-		playerCameraFirstPersonRender.Initialize(gameSceneManager, playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHeadParent, playerHandRightParent, playerHandLeftParent);
-		
-
-		Debug.Log("FINAL SYSTEMS INITIALIZED");
 		yield break;
 	}
 
