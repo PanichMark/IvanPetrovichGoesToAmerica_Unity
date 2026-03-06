@@ -3,7 +3,7 @@ using System.Collections;
 
 public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, ISaveLoad, IPickable
 {
-	private LocalizationManager localizationManager;
+	protected LocalizationManager localizationManager;
 
 	public GameObject CachedPlayer { get; protected set; }
 	public Collider Collider { get; protected set; }
@@ -47,7 +47,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		PickUpObject();
 	}
 
-	public void PickUpObject()
+	public virtual void PickUpObject()
 	{
 		if (!IsObjectPickedUp)
 		{
@@ -60,7 +60,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 				RigidBody.isKinematic = true;
 
 				// Начинаем плавное перемещение
-				StartCoroutine(MoveTowardsTarget());
+				StartCoroutine(MoveTowardsInFrontOfPlayer());
 
 				// Другие настройки остаются такими же
 				transform.parent = CachedPlayer.transform;
@@ -86,7 +86,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		transform.parent = null;
 	}
 
-	IEnumerator MoveTowardsTarget()
+	IEnumerator MoveTowardsInFrontOfPlayer()
 	{
 		while (true)
 		{

@@ -42,19 +42,13 @@ public class PlayerAnimationController: MonoBehaviour
 
 	
 	private string currentPlayerMovementAnimation = "";
-	private string currentPlayerWeaponRightAnimation = "";
-	private string currentPlayerWeaponLeftAnimation = "";
-	private string currentPlayerLegKickAttackAnimation = "";
+
 
 	
 
 	
 
-	private bool wasPreviouslyKicking = false;
 
-
-
-	private float adjustedCameraAngle;
 
 
 	private void Update()
@@ -62,16 +56,7 @@ public class PlayerAnimationController: MonoBehaviour
 		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 			return;
-		// считаем поворот камеры X
-		float cameraRotationX = playerCameraObject.transform.rotation.eulerAngles.x;
-			if (cameraRotationX >= 0 && cameraRotationX < 180)
-			{
-				adjustedCameraAngle = cameraRotationX;
-			}
-			else if (cameraRotationX < 360 && cameraRotationX > -180)
-			{
-				adjustedCameraAngle = cameraRotationX - 360;
-			}
+	
 		
 	
 

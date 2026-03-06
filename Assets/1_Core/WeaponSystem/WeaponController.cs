@@ -54,11 +54,21 @@ public class WeaponController : MonoBehaviour
 		{
 			isAbleToUseRightWeapon = false;
 			isAbleToUseLeftWeapon = true;
+
+			if (RightHandWeapon != null)
+			{
+				HideWeapon(WeaponHandsEnum.RightHand);
+			}
 		};
 		this.interactionController.OnGetRidOfPickable += () =>
 		{
 			isAbleToUseRightWeapon = true;
 			isAbleToUseLeftWeapon = true;
+
+			if (RightHandWeapon != null)
+			{
+				ShowWeapon(WeaponHandsEnum.RightHand);
+			}
 		};
 
 		ResetAllWeapons(); // Сбрасываем все оружие в начале
@@ -109,7 +119,7 @@ public class WeaponController : MonoBehaviour
 			RightWeaponAttack();
 		}
 
-		if (inputDevice.GetKeyLeftHandWeaponAttack() && !menuManager.IsAnyMenuOpened && isAbleToUseRightWeapon)
+		if (inputDevice.GetKeyLeftHandWeaponAttack() && !menuManager.IsAnyMenuOpened && isAbleToUseLeftWeapon)
 		{
 			LeftWeaponAttack();
 		}
@@ -185,11 +195,11 @@ public class WeaponController : MonoBehaviour
 			// Если совпадают имена системы, убираем предыдущее оружие
 			if (isLeftHand)
 			{
-				RemoveWeapon(WeaponHandsEnum.RightHand);
+				DestroyWeapon(WeaponHandsEnum.RightHand);
 			}
 			else
 			{
-				RemoveWeapon(WeaponHandsEnum.LeftHand);
+				DestroyWeapon(WeaponHandsEnum.LeftHand);
 			}
 		}
 
@@ -198,7 +208,7 @@ public class WeaponController : MonoBehaviour
 		{
 			if (LeftHandWeapon != null)
 			{
-				RemoveWeapon(WeaponHandsEnum.LeftHand);
+				DestroyWeapon(WeaponHandsEnum.LeftHand);
 			}
 			LeftHandWeapon = weaponPrefab;
 			OnWeaponChanged?.Invoke("left");
@@ -210,7 +220,7 @@ public class WeaponController : MonoBehaviour
 		{
 			if (RightHandWeapon != null)
 			{
-				RemoveWeapon(WeaponHandsEnum.RightHand);
+				DestroyWeapon(WeaponHandsEnum.RightHand);
 			}
 			RightHandWeapon = weaponPrefab;
 			OnWeaponChanged?.Invoke("right");
@@ -244,7 +254,7 @@ public class WeaponController : MonoBehaviour
 
 	// Удаление оружия
 	// Удаление оружия
-	public void RemoveWeapon(WeaponHandsEnum handType)
+	public void DestroyWeapon(WeaponHandsEnum handType)
 	{
 		string handString = "";
 

@@ -38,10 +38,6 @@ public class WeaponAnimationController : MonoBehaviour
 
 
 
-
-
-
-	private string currentPlayerMovementAnimation = "";
 	private string currentPlayerWeaponRightAnimation = "";
 	private string currentPlayerWeaponLeftAnimation = "";
 	private string currentPlayerLegKickAttackAnimation = "";
@@ -63,8 +59,17 @@ public class WeaponAnimationController : MonoBehaviour
 		if (!_isInitialized)
 			return;
 		// считаем поворот камеры X
-	
 
+		// считаем поворот камеры X
+		float cameraRotationX = playerCameraController.transform.rotation.eulerAngles.x;
+		if (cameraRotationX >= 0 && cameraRotationX < 180)
+		{
+			adjustedCameraAngle = cameraRotationX;
+		}
+		else if (cameraRotationX < 360 && cameraRotationX > -180)
+		{
+			adjustedCameraAngle = cameraRotationX - 360;
+		}
 
 		// игрок смотрит вниз/вверх когда вооружен от 3го лица
 		if (playerBehaviour.IsPlayerArmed == true && playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
@@ -74,7 +79,7 @@ public class WeaponAnimationController : MonoBehaviour
 
 			// Шаг 2: Рассчитываем целевое значение на основе угла камеры
 			float endValue = adjustedCameraAngle * 0.0153846f;
-
+			
 			// Шаг 3: Интерполируем значение
 			float newValue = Mathf.Lerp(startValue, endValue, Time.deltaTime * 6);
 
@@ -85,7 +90,7 @@ public class WeaponAnimationController : MonoBehaviour
 		{
 			// Шаг 1: Определяем начальное значение (текущее значение параметра)
 			float startValue = playerAnimator.GetFloat("UpDown");
-
+			
 			// Шаг 2: Целевым значением теперь становится ноль
 			float endValue = 0f;
 

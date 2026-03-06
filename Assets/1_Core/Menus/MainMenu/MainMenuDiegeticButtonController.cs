@@ -32,6 +32,10 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	{
 		instances.Remove(this);
 		menuManager.OnCloseAnyMenu -= () => DiegeticText.SetActive(true);
+		mainMenuReadNews.OnCloseMainMenuReadNews -= () => DiegeticText.SetActive(true);
+		mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
+		mainMenuReadNews.OnCloseMainMenuReadNews -= playerCameraBlurFilter.DeactivateCameraBlur;
+		pauseMenuController.OnClosePauseSubMenu -= EnableAllColliders;
 	}
 
 	void Start()
@@ -48,7 +52,12 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 
 		mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
-		mainMenuReadNews.OnCloseMainMenuReadNews += () => DiegeticText.SetActive(true);
+		mainMenuReadNews.OnCloseMainMenuReadNews += () => {
+			if (DiegeticText != null)
+			{
+				DiegeticText.SetActive(true);
+			}
+		};
 		mainMenuReadNews.OnCloseMainMenuReadNews += playerCameraBlurFilter.DeactivateCameraBlur;
 
 		pauseMenuController.OnClosePauseSubMenu += EnableAllColliders;

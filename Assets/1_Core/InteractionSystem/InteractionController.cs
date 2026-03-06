@@ -207,6 +207,7 @@ public class InteractionController : MonoBehaviour
 		if (isHit && hitInfo.collider != null && hitInfo.collider.tag == "Interactable")
 		{
 			var interactableObj = hitInfo.collider.GetComponent<IInteractable>();
+			var throwableObj = hitInfo.collider.GetComponent<IThrowable>();
 			var pickableObj = hitInfo.collider.GetComponent<IPickable>();
 			var gainedObject = hitInfo.collider.GetComponent<IInteractGainedItem>();
 			var usedObject = hitInfo.collider.GetComponent<IInteractUsedItem>();
@@ -337,7 +338,7 @@ public class InteractionController : MonoBehaviour
 						}
 					}
 
-					if (pickableObj != null)
+					if (pickableObj != null && throwableObj == null)
 					{
 						playerBehaviour.DisarmPlayer();
 					}
