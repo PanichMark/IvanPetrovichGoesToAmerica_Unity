@@ -15,6 +15,11 @@ public class InteractionController : MonoBehaviour
 
 	private LocalizationManager localizationManager;
 
+	public delegate void NonThrowableHandler();
+	public event NonThrowableHandler OnPickUpThrowable;
+	public event NonThrowableHandler OnPickUpNonThrowable;
+	public event NonThrowableHandler OnGetRidOfPickable;
+
 	private string HUDInteraction_MainTextInteract;
 
 	private TextMeshProUGUI mainInteractionText; 
@@ -162,16 +167,19 @@ public class InteractionController : MonoBehaviour
 				// Сообщаем, что игрок держит объект
 				if (throwableObj != null)
 				{
-					mainInteractionText.text = $"Отпустить {inputDevice.GetNameOfKeyInteract()}\nБросить {inputDevice.GetNameOfKeyLeftHandWeaponAttack()}";
+					OnPickUpThrowable?.Invoke();
+					mainInteractionText.text = $"Отпустить {inputDevice.GetNameOfKeyInteract()}\nБросить {inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
 				}
 				else
 				{
+					OnPickUpNonThrowable?.Invoke();
 					mainInteractionText.text = $"Отпустить на {inputDevice.GetNameOfKeyInteract()}";
 				}
 
 				// При нажатии кнопки освобождаем объект
 				if (inputDevice.GetKeyInteract())
 				{
+					OnGetRidOfPickable?.Invoke();
 					pickableObj.DropOffObject();
 					CurrentPickableObject = null;
 					if (playerBehaviour.WasPlayerArmed == true)
@@ -180,8 +188,9 @@ public class InteractionController : MonoBehaviour
 					}
 				}
 
-				if (throwableObj != null && inputDevice.GetKeyLeftHandWeaponAttack())
+				if (throwableObj != null && inputDevice.GetKeyRightHandWeaponAttack())
 				{
+					OnGetRidOfPickable?.Invoke();
 					throwableObj.ThrowObject();
 					CurrentPickableObject = null;
 					if (playerBehaviour.WasPlayerArmed == true)

@@ -3349,11 +3349,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1322387107}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29e538fe88e1a9d4bae72411a8cc0b96, type: 3}
+  m_Script: {fileID: 11500000, guid: 194f481d0a4c92140bd5c952d711c607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPC_maxhealth: 200
-  NPC_name: "\u041C\u0438\u043B\u0438\u0446\u0438\u043E\u043D\u0435\u0440"
+  NPCMaxHealth: 0
+  NPCCurrentHealth: 0
+  NPC_name: 
   KillNPC: 0
 --- !u!136 &1322387109
 CapsuleCollider:
@@ -3569,11 +3570,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 919132147612757871}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0acd12d6eadc2e4ea636774987c7ee4, type: 3}
+  m_Script: {fileID: 11500000, guid: f0f68370d733ada4587d0bf029dc595d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPC_maxhealth: 200
-  NPC_name: "\u0411\u0430\u043D\u0434\u0438\u0442"
+  NPCMaxHealth: 0
+  NPCCurrentHealth: 0
+  NPC_name: 
   KillNPC: 0
 --- !u!136 &1411493068
 CapsuleCollider:
@@ -5825,11 +5827,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2670468069895787440}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65bb1d1006be7914f8e90975533b75ee, type: 3}
+  m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPC_maxhealth: 200
-  NPC_name: "\u0413\u043E\u0440\u043E\u0436\u0430\u043D\u0438\u043D"
+  NPCMaxHealth: 0
+  NPCCurrentHealth: 0
+  NPC_name: 
   KillNPC: 0
 --- !u!136 &4471956780700070503
 CapsuleCollider:
@@ -5958,10 +5961,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6329090564200080500}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29e538fe88e1a9d4bae72411a8cc0b96, type: 3}
+  m_Script: {fileID: 11500000, guid: 194f481d0a4c92140bd5c952d711c607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPC_maxhealth: 200
+  NPCMaxHealth: 0
+  NPCCurrentHealth: 0
   NPC_name: NPC_Aggressive_Policeman
   KillNPC: 1
 --- !u!136 &6673950889563946704

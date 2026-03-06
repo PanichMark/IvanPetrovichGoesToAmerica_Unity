@@ -110,6 +110,10 @@ public class Bootstrap : MonoBehaviour
 	private LegKickAttack legKickAttack;
 	private WeaponAnimationController weaponAnimationController;
 	private WeaponFirstPersonRender weaponFirstPersonRender;
+	private GameObject firstPersonLeftHandWeaponSlotGameObject;
+	private GameObject firstPersonRightHandWeaponSlotGameObject;
+	private GameObject thirdPersonLeftHandWeaponSlotGameObject;
+	private GameObject thirdPersonRightHandWeaponSlotGameObject;
 	// Колесо выбора оружия
 	private WeaponWheelMenuController weaponWheelController;
 	[Header("Weapon Wheel Menu")] [SerializeField] private GameObject canvasMenuWeaponWheel;
@@ -160,8 +164,8 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(InitializeMenuSystems());
 		yield return StartCoroutine(InitializePlayerSystems());
 		yield return StartCoroutine(InitializePlayerResources());
-		yield return StartCoroutine(InitializeWeaponSystem());
 		yield return StartCoroutine(InitializeInteractionSystem());
+		yield return StartCoroutine(InitializeWeaponSystem());
 		yield return StartCoroutine(RegisterAllDependencies());
 
 		yield return new WaitForSecondsRealtime(0.3f);
@@ -437,37 +441,6 @@ public class Bootstrap : MonoBehaviour
 		yield break;
 	}
 
-	private IEnumerator InitializeWeaponSystem()
-	{
-		loadingStatusText.text = "Weapon System";
-
-		weaponSystemGameObject = new GameObject("WeaponSystem");
-
-		// Основной компонент оружия
-		weaponController = weaponSystemGameObject.AddComponent<WeaponController>();
-		legKickAttack = weaponSystemGameObject.AddComponent<LegKickAttack>();
-		weaponWheelController = weaponSystemGameObject.AddComponent<WeaponWheelMenuController>();
-		weaponAnimationController = weaponSystemGameObject.AddComponent<WeaponAnimationController>();
-		weaponFirstPersonRender = weaponSystemGameObject.AddComponent<WeaponFirstPersonRender>();
-
-		// Колесо выбора оружия
-		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
-		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre")?.transform;
-		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name")?.GetComponent<TextMeshProUGUI>();
-		weaponWheelName = canvasMenuWeaponWheel.transform.Find("WeaponWheel Hand")?.GetComponent<TextMeshProUGUI>();
-
-		// Инициализация оружия
-		weaponController.Initialize(inputDevice, menuManager, playerBehaviour);
-		legKickAttack.Initialize(inputDevice, playerGameObject, playerMovementController);
-		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController, weaponWheelSegmentPrefab,
-			centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName);
-		weaponAnimationController.Initialize(playerGameObject, playerBehaviour, playerCameraController, weaponController, legKickAttack);
-		weaponFirstPersonRender.Initialize(gameSceneManager, playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent);
-
-		Debug.Log("WEAPON SYSTEM INITIALIZED");
-		yield break;
-	}
-
 	private IEnumerator InitializeInteractionSystem()
 	{
 		loadingStatusText.text = "Interaction System";
@@ -504,6 +477,42 @@ public class Bootstrap : MonoBehaviour
 		yield break;
 	}
 
+	private IEnumerator InitializeWeaponSystem()
+	{
+		loadingStatusText.text = "Weapon System";
+
+		weaponSystemGameObject = new GameObject("WeaponSystem");
+
+		// Основной компонент оружия
+		weaponController = weaponSystemGameObject.AddComponent<WeaponController>();
+		legKickAttack = weaponSystemGameObject.AddComponent<LegKickAttack>();
+		weaponWheelController = weaponSystemGameObject.AddComponent<WeaponWheelMenuController>();
+		weaponAnimationController = weaponSystemGameObject.AddComponent<WeaponAnimationController>();
+		weaponFirstPersonRender = weaponSystemGameObject.AddComponent<WeaponFirstPersonRender>();
+
+		// Колесо выбора оружия
+		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
+		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre")?.transform;
+		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name")?.GetComponent<TextMeshProUGUI>();
+		weaponWheelName = canvasMenuWeaponWheel.transform.Find("WeaponWheel Hand")?.GetComponent<TextMeshProUGUI>();
+
+		firstPersonLeftHandWeaponSlotGameObject = GameObject.Find("Slot1.L");
+		thirdPersonLeftHandWeaponSlotGameObject = GameObject.Find("Slot.L");
+		firstPersonRightHandWeaponSlotGameObject= GameObject.Find("Slot1.R");
+		thirdPersonRightHandWeaponSlotGameObject = GameObject.Find("Slot.R");
+
+		// Инициализация оружия
+		weaponController.Initialize(inputDevice, menuManager, playerBehaviour, interactionController);
+		legKickAttack.Initialize(inputDevice, playerGameObject, playerMovementController);
+		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController, weaponWheelSegmentPrefab,
+			centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName);
+		weaponAnimationController.Initialize(playerGameObject, playerBehaviour, playerCameraController, weaponController, legKickAttack);
+		weaponFirstPersonRender.Initialize(gameSceneManager, playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent);
+
+		Debug.Log("WEAPON SYSTEM INITIALIZED");
+		yield break;
+	}
+
 	private IEnumerator RegisterAllDependencies()
 	{
 		loadingStatusText.text = "Service Locator";
@@ -530,6 +539,11 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("PlayerMovementController", playerMovementController);
 		ServiceLocator.Register("MainMenuReadNews", mainMenuReadNews);
 		ServiceLocator.Register("PlayerCameraBlurFilter", playerCameraBlurFilter);
+
+		ServiceLocator.Register("firstPersonLeftHandWeaponSlotGameObject", firstPersonLeftHandWeaponSlotGameObject);
+		ServiceLocator.Register("firstPersonRightHandWeaponSlotGameObject", firstPersonRightHandWeaponSlotGameObject);
+		ServiceLocator.Register("thirdPersonLeftHandWeaponSlotGameObject", thirdPersonLeftHandWeaponSlotGameObject);
+		ServiceLocator.Register("thirdPersonRightHandWeaponSlotGameObject", thirdPersonRightHandWeaponSlotGameObject);
 
 		Debug.Log("SERVICE REGISTERED");
 		yield break;

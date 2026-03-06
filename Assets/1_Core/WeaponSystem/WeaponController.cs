@@ -10,6 +10,7 @@ public class WeaponController : MonoBehaviour
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
 	private PlayerBehaviour playerBehaviour;
+	private InteractionController interactionController;
 
 	// Список разблокированных видов оружия
 	public Dictionary<string, GameObject> unlockedWeapons = new Dictionary<string, GameObject>();
@@ -17,6 +18,9 @@ public class WeaponController : MonoBehaviour
 	public event OnWeaponUnlocked OnWeaponUnlocked; // Делегат для уведомления о разблокировке оружия
 
 	public event OnWeaponChanged OnWeaponChanged;
+
+	private bool isAbleToUseRightWeapon;
+	private bool isAbleToUseLeftWeapon;
 
 	public bool hasAnyWeapon { get; private set; } = false;
 
@@ -27,15 +31,35 @@ public class WeaponController : MonoBehaviour
 	public WeaponAbstract rightHandWeaponComponent { get; private set; }
 
 	// Инициализация контроллера
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, InteractionController interactionController)
 	{
 		this.inputDevice = inputDevice;
 		this.menuManager = menuManager;
 		this.playerBehaviour = playerBehaviour;
+		this.interactionController = interactionController;
+
+		isAbleToUseRightWeapon = true;
+		isAbleToUseLeftWeapon = true;
 
 		// Подписываемся на события игрока
-		playerBehaviour.OnPlayerArmed += OnPlayerArmed;
-		playerBehaviour.OnPlayerDisarmed += OnPlayerDisarmed;
+		this.playerBehaviour.OnPlayerArmed += OnPlayerArmed;
+		this.playerBehaviour.OnPlayerDisarmed += OnPlayerDisarmed;
+
+		this.interactionController.OnPickUpNonThrowable += () =>
+		{
+			isAbleToUseRightWeapon = false;
+			isAbleToUseLeftWeapon = false;
+		};
+		this.interactionController.OnPickUpThrowable += () =>
+		{
+			isAbleToUseRightWeapon = false;
+			isAbleToUseLeftWeapon = true;
+		};
+		this.interactionController.OnGetRidOfPickable += () =>
+		{
+			isAbleToUseRightWeapon = true;
+			isAbleToUseLeftWeapon = true;
+		};
 
 		ResetAllWeapons(); // Сбрасываем все оружие в начале
 		
@@ -80,12 +104,12 @@ public class WeaponController : MonoBehaviour
 		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 			return;
-		if (inputDevice.GetKeyRightHandWeaponAttack() && !menuManager.IsAnyMenuOpened)
+		if (inputDevice.GetKeyRightHandWeaponAttack() && !menuManager.IsAnyMenuOpened && isAbleToUseRightWeapon)
 		{
 			RightWeaponAttack();
 		}
 
-		if (inputDevice.GetKeyLeftHandWeaponAttack() && !menuManager.IsAnyMenuOpened)
+		if (inputDevice.GetKeyLeftHandWeaponAttack() && !menuManager.IsAnyMenuOpened && isAbleToUseRightWeapon)
 		{
 			LeftWeaponAttack();
 		}

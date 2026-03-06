@@ -28,6 +28,8 @@ public interface IInputDevice
 
 	// Информация о ключах
 	string GetNameOfKeyInteract();
+	string GetNameOfKeyRightHandWeaponAttack();
+
 	string GetNameOfKeyLeftHandWeaponAttack();
 
 	// Дополнительные полезные методы

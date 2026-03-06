@@ -316,6 +316,11 @@ public class InputGamepad : IInputDevice
 		else return false;
 	}
 
+	public string GetNameOfKeyRightHandWeaponAttack()
+	{
+		return controllerBindings["RightHandWeaponAttack"].ToString();
+	}
+
 	public string GetNameOfKeyLeftHandWeaponAttack()
 	{
 		return controllerBindings["LeftHandWeaponAttack"].ToString();

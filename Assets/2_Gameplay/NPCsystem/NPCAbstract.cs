@@ -3,9 +3,9 @@ using System.Collections;
 
 public abstract class NPCAbstract : MonoBehaviour, IInteractable
 {
-	[SerializeField][Min(0)] private float NPC_maxhealth;
-	private float NPC_currenthealth;
-	protected bool IsNPCdead => NPC_currenthealth <= 0;
+	[SerializeField][Min(0)] private float NPCMaxHealth;
+	[SerializeField][Min(0)] private float NPCCurrentHealth;
+	protected bool IsNPCdead => NPCCurrentHealth <= 0;
 	[SerializeField] protected string NPC_name;
 
 	[SerializeField] private bool KillNPC;
@@ -17,7 +17,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	public string InteractionHintAction { get; protected set; }
 	private void Start()
 	{
-		NPC_currenthealth = NPC_maxhealth;
+		NPCCurrentHealth = NPCMaxHealth;
 		//Debug.Log(NPC_currenthealth);
 
 		if (KillNPC)
@@ -45,7 +45,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	// Метод, вызываемый при получении повреждений
 	public void TakeDamage(float amount)
 	{
-		NPC_currenthealth -= amount;
+		NPCCurrentHealth -= amount;
 		if (IsNPCdead)
 		{
 			Debug.Log($"{NPC_name} is now a passive pickable object");

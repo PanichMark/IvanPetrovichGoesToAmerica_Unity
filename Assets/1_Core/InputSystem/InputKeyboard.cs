@@ -296,6 +296,11 @@ public class InputKeyboard : IInputDevice
 		else return false;
 	}
 
+	public string GetNameOfKeyRightHandWeaponAttack()
+	{
+		return keyBindings["RightHandWeaponAttack"].ToString();
+	}
+
 	public string GetNameOfKeyLeftHandWeaponAttack()
 	{
 		return keyBindings["LeftHandWeaponAttack"].ToString();

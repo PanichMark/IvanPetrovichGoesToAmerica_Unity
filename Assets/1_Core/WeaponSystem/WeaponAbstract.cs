@@ -7,7 +7,12 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 	public virtual string WeaponNameSystem { get; protected set; }
 
-	
+
+	private GameObject firstPersonLeftHandWeaponSlotGameObject;
+	private GameObject firstPersonRightHandWeaponSlotGameObject;
+	private GameObject thirdPersonLeftHandWeaponSlotGameObject;
+	private GameObject thirdPersonRightHandWeaponSlotGameObject;
+
 	public virtual Sprite WeaponIcon { get; protected set; }            // Иконка оружия
 
 	public virtual float WeaponDamage { get; protected set; }
@@ -24,6 +29,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 	private Transform firstPersonRightHandWeaponSlotTransform;
 	private Transform thirdPersonLeftHandWeaponSlotTransform;
 	private Transform thirdPersonRightHandWeaponSlotTransform;
+
+	
 
 	public virtual void WeaponAttack()
 	{
@@ -57,18 +64,22 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		if (handString == "LeftHand")
 		{
-			firstPersonLeftHandWeaponSlotTransform = GameObject.Find("Slot1.L").transform;
+			firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("firstPersonLeftHandWeaponSlotGameObject");
+			firstPersonLeftHandWeaponSlotTransform = firstPersonLeftHandWeaponSlotGameObject.transform;
 			FirstPersonWeaponModelInstance.transform.SetParent(firstPersonLeftHandWeaponSlotTransform, true);
 
-			thirdPersonLeftHandWeaponSlotTransform = GameObject.Find("Slot.L").transform;
+			thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("thirdPersonLeftHandWeaponSlotGameObject");
+			thirdPersonLeftHandWeaponSlotTransform = thirdPersonLeftHandWeaponSlotGameObject.transform;
 			ThirdPersonWeaponModelInstance.transform.SetParent(thirdPersonLeftHandWeaponSlotTransform, true);
 		}
 		else if (handString == "RightHand")
 		{
-			firstPersonRightHandWeaponSlotTransform = GameObject.Find("Slot1.R").transform;
+			firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("firstPersonRightHandWeaponSlotGameObject");
+			firstPersonRightHandWeaponSlotTransform = firstPersonRightHandWeaponSlotGameObject.transform;
 			FirstPersonWeaponModelInstance.transform.SetParent(firstPersonRightHandWeaponSlotTransform, true);
 
-			thirdPersonRightHandWeaponSlotTransform = GameObject.Find("Slot.R").transform;
+			thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("thirdPersonRightHandWeaponSlotGameObject");
+			thirdPersonRightHandWeaponSlotTransform = thirdPersonRightHandWeaponSlotGameObject.transform;
 			ThirdPersonWeaponModelInstance.transform.SetParent(thirdPersonRightHandWeaponSlotTransform, true);
 		}
 
