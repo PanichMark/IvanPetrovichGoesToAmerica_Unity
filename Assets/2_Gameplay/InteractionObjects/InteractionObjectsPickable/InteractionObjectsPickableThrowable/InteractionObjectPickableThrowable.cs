@@ -9,10 +9,12 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	public bool WasObjectDestroyed => _wasObjectDestroyed;
 	public float ObjectThrowPower => 10f;
 
+	private bool isItFirstPerson;
 	private GameObject firstPersonRightHandWeaponSlotGameObject;
 
 	[SerializeField, Min(0)] private float _health;
 
+	private GameObject thirdPersonRightHandWeaponSlotGameObject;
 	public float Health
 	{
 		get => _health;
@@ -26,17 +28,66 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		}
 	}
 
+	private PlayerCameraController playerCameraController;
+
+	private void OnDestroy()
+	{
+		playerCameraController.OnFirstPersonCameraState -= () =>
+		{
+			ThrowableObjectToFirstPerson();
+			isItFirstPerson = true;
+		};
+		playerCameraController.OnThirdPersonCameraState -= () =>
+		{
+			ThrowableObjectToThirdPerson();
+			isItFirstPerson = false;
+		};
+	}
+
 	private void Start()
 	{
 		firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("firstPersonRightHandWeaponSlotGameObject");
+		thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("thirdPersonRightHandWeaponSlotGameObject");
 		Collider = GetComponent<Collider>();
 		RigidBody = GetComponent<Rigidbody>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
+
+		playerCameraController.OnFirstPersonCameraState += () =>
+		{
+			ThrowableObjectToFirstPerson();
+			isItFirstPerson = true;
+		};
+		playerCameraController.OnThirdPersonCameraState += () =>
+		{
+			ThrowableObjectToThirdPerson();
+			isItFirstPerson = false;
+		};
 
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
 		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+	}
+
+	private void ThrowableObjectToFirstPerson()
+	{
+		if (IsObjectPickedUp)
+		{
+			transform.parent = firstPersonRightHandWeaponSlotGameObject.transform;
+			transform.position = firstPersonRightHandWeaponSlotGameObject.transform.position;
+			transform.rotation = Quaternion.Euler(0, firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		}
+	}
+
+	private void ThrowableObjectToThirdPerson()
+	{
+		if (IsObjectPickedUp)
+		{
+			transform.parent = thirdPersonRightHandWeaponSlotGameObject.transform;
+			transform.position = thirdPersonRightHandWeaponSlotGameObject.transform.position;
+			transform.rotation = Quaternion.Euler(0, thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		}
 	}
 
 	public override void PickUpObject()
@@ -51,12 +102,16 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 				Collider.enabled = false;
 				RigidBody.isKinematic = true;
 
-				// Начинаем плавное перемещение
-				StartCoroutine(MoveTowardsRightHand());
+				if (isItFirstPerson)
+				{
+					// Начинаем плавное перемещение
+					StartCoroutine(MoveTowardsRightHandFirstPerson());
+				}
+				else
+				{
+					StartCoroutine(MoveTowardsRightHandThirdPerson());
+				}
 
-				// Другие настройки остаются такими же
-				transform.parent = firstPersonRightHandWeaponSlotGameObject.transform;
-				transform.rotation = Quaternion.Euler(0, firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
 				IsObjectPickedUp = true;
 			}
 			else
@@ -65,12 +120,6 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			}
 		}
 	}
-
-
-
-
-
-
 
 
 	private void OnCollisionEnter(Collision collision)
@@ -120,7 +169,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		Destroy(gameObject); // Уничтожаем объект
 	}
 
-	private IEnumerator MoveTowardsRightHand()
+	private IEnumerator MoveTowardsRightHandFirstPerson()
 	{
 		while (true)
 		{
@@ -140,6 +189,34 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		}
 
 		// Установим последнюю позицию на случай погрешности
+		transform.parent = firstPersonRightHandWeaponSlotGameObject.transform;
 		transform.position = firstPersonRightHandWeaponSlotGameObject.transform.position;
+		transform.rotation = Quaternion.Euler(0, firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+	}
+
+	private IEnumerator MoveTowardsRightHandThirdPerson()
+	{
+		while (true)
+		{
+			// Рассчитываем новую целевую позицию каждый кадр
+			Vector3 targetPosition = thirdPersonRightHandWeaponSlotGameObject.transform.position;
+
+			// Перемещаем объект к новой позиции
+			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
+
+			// Выход из цикла, если объект вплотную приблизился к игроку
+			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
+			{
+				break;
+			}
+
+	
+			yield return null;
+		}
+
+		transform.parent = thirdPersonRightHandWeaponSlotGameObject.transform;
+		transform.position = thirdPersonRightHandWeaponSlotGameObject.transform.position;
+		transform.rotation = Quaternion.Euler(0, thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+
 	}
 }

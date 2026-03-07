@@ -31,7 +31,7 @@ public class WeaponAnimationController : MonoBehaviour
 
 
 		_isInitialized = true;
-		Debug.Log("PlayerAnimationController Initialized");
+		Debug.Log("WeaponAnimationController Initialized");
 	}
 
 

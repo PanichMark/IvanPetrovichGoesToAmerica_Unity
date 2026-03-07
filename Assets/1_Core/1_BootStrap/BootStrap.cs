@@ -125,6 +125,8 @@ public class Bootstrap : MonoBehaviour
 	// Система взаимодействия
 	private GameObject interactionControllerGameObject;
 	private InteractionController interactionController;
+	private InteractionAnimationController interactionAnimationController;
+	private InteractionFirstPersonRender interactionFirstPersonRender;
 	[Header("Interaction")] [SerializeField] private GameObject canvasHUDInteraction;
 	[SerializeField] private GameObject canvasReadNoteMenu;
 	[SerializeField] private GameObject canvasLockpickMenu;
@@ -448,6 +450,8 @@ public class Bootstrap : MonoBehaviour
 		interactionControllerGameObject = new GameObject("InteractionController");
 
 		interactionController = interactionControllerGameObject.AddComponent<InteractionController>();
+		interactionAnimationController = interactionControllerGameObject.AddComponent<InteractionAnimationController>();
+		interactionFirstPersonRender = interactionControllerGameObject.AddComponent<InteractionFirstPersonRender>();
 
 		// Элементы HUD
 		mainInteractionText = canvasHUDInteraction.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
@@ -473,6 +477,9 @@ public class Bootstrap : MonoBehaviour
 		// Инициализация взаимодействия
 		interactionController.Initialize(gameController, gameSceneManager, inputDevice, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
 			additionalInteractionText, itemsTexts, itemsImages);
+		interactionAnimationController.Initialize(playerGameObject,interactionController);
+		interactionFirstPersonRender.Initialize(gameSceneManager, playerCameraController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent, interactionController);
+
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 		yield break;
 	}
@@ -520,6 +527,7 @@ public class Bootstrap : MonoBehaviour
 		// Регистрация служб
 		ServiceLocator.Register("LocalizationManager", localizationManager);
 		ServiceLocator.Register("Player", playerGameObject);
+		ServiceLocator.Register("PlayerCameraController", playerCameraController);
 		ServiceLocator.Register("MenuManager", menuManager);
 		ServiceLocator.Register("WeaponController", weaponController);
 		ServiceLocator.Register("ExitReadNote", buttonExitReadNoteMenu);

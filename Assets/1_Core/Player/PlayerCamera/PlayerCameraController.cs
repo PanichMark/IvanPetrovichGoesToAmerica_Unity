@@ -10,7 +10,9 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private GameObject player;
 	// Конструктор принимает зависимость
 
-
+	public delegate void CameraStateHandler();
+	public event CameraStateHandler OnFirstPersonCameraState;
+	public event CameraStateHandler OnThirdPersonCameraState;
 
 	private PlayerCameraState playerCameraState;
 	private PlayerCameraStateType playerCameraStateType;
@@ -199,6 +201,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			CurrentPlayerCameraStateType = "FirstPerson";
 			movementController.GiveCurrentPlayerCameraType("FirstPerson");
 			newState = new FirstPersonPlayerCameraState(this, movementController, inputDevice);
+			OnFirstPersonCameraState?.Invoke();
 			//IsPlayerCameraFirstPerson = true;
 		}
 		else if (playerCameraStateType == PlayerCameraStateType.ThirdPerson)
@@ -206,6 +209,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			CurrentPlayerCameraStateType = "ThirdPerson";
 			movementController.GiveCurrentPlayerCameraType("ThirdPerson");
 			newState = new ThirdPersonPlayerCameraState(this, inputDevice);
+			OnThirdPersonCameraState?.Invoke();
 			//IsPlayerCameraFirstPerson = false;
 		}
 		else if (playerCameraStateType == PlayerCameraStateType.Cutscene)
