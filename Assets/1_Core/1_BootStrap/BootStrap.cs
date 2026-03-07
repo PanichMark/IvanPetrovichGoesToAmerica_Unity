@@ -477,8 +477,9 @@ public class Bootstrap : MonoBehaviour
 		// Инициализация взаимодействия
 		interactionController.Initialize(gameController, gameSceneManager, inputDevice, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
 			additionalInteractionText, itemsTexts, itemsImages);
-		interactionAnimationController.Initialize(playerGameObject,interactionController);
-		interactionFirstPersonRender.Initialize(gameSceneManager, playerCameraController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent, interactionController);
+
+		//interactionAnimationController.Initialize(playerGameObject, interactionController);
+		//interactionFirstPersonRender.Initialize(gameSceneManager, playerCameraController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent, interactionController);
 
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 		yield break;

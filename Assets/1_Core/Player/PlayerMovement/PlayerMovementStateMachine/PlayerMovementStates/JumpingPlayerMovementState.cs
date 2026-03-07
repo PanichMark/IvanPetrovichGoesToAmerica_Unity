@@ -48,17 +48,20 @@ public class JumpingPlayerMovementState : PlayerMovementState
 		playerMovementController.SetPlayerWorldMovement(playerWorldMovement);
 
 
-
+		
 		if (playerMovementController.IsPlayerFalling == true)
 		{
 			
 			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
 		}
+		
 
 
+		if (playerMovementController.IsPlayerGrounded == true)
+		{
 
-
-
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
+		}
 
 		if ( inputDevice.GetKeyJumpBeingHeld() && playerMovementController.IsPlayerAbleToClimbLedge)
 		{

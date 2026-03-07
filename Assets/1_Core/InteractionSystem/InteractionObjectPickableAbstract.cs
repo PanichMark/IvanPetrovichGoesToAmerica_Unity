@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, ISaveLoad, IPickable
 {
@@ -84,6 +85,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 		// Отцепляем объект от игрока
 		transform.parent = null;
+
+		SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByBuildIndex(1));
 	}
 
 	IEnumerator MoveTowardsInFrontOfPlayer()

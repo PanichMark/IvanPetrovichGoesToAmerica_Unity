@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,16 +64,7 @@ public class WeaponController : MonoBehaviour
 				HideWeapon(WeaponHandsEnum.RightHand);
 			}
 		};
-		this.interactionController.OnGetRidOfPickable += () =>
-		{
-			isAbleToUseRightWeapon = true;
-			isAbleToUseLeftWeapon = true;
-
-			if (RightHandWeapon != null)
-			{
-				ShowWeapon(WeaponHandsEnum.RightHand);
-			}
-		};
+		this.interactionController.OnGetRidOfPickable += OnGetRidOfPickableHandler;
 
 		ResetAllWeapons(); // Сбрасываем все оружие в начале
 		
@@ -80,7 +72,25 @@ public class WeaponController : MonoBehaviour
 		_isInitialized = true;
 		Debug.Log("WeaponController Initialized");
 	}
+	// Синхронный обработчик события
+	private void OnGetRidOfPickableHandler()
+	{
+		StartCoroutine(OnGetRidOfPickableCourutine()); // Запускаем корутину
+	}
 
+	// Ваша корутина
+	private IEnumerator OnGetRidOfPickableCourutine()
+	{
+		yield return new WaitForSecondsRealtime(0.05f); // Пауза 0.05 секунды
+		isAbleToUseRightWeapon = true;
+		isAbleToUseLeftWeapon = true;
+
+		if (RightHandWeapon != null)
+		{
+			ShowWeapon(WeaponHandsEnum.RightHand);
+		}
+		yield return null;
+	}
 	private void OnPlayerArmed()
 	{
 		// Реакция на событие "игрок вооружился": покажем оружие

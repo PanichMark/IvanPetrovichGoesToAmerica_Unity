@@ -58,7 +58,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	public float PlayerUpRayYPosition { get; private set; }
 	public float PlayerDownRayYPosition { get; private set; } = 0.1f;
-	
+	private float HowMuchUp;
 	//private float angle;
 	//private float moveFactor;
 
@@ -120,7 +120,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		playerMovementState.Update();
 
-		IsPlayerGrounded = Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out hitInfo, 0.3f);
+		IsPlayerGrounded = Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out hitInfo, HowMuchUp);
 		IsPlayerAbleToStandUp = !Physics.Raycast(transform.position + new Vector3(0, PlayerUpRayYPosition, 0), Vector3.up, out hitInfo, 0.3f);
 		IsPlayerFalling = (PlayerPreviousFramePositionChange.y < -0.01f && IsPlayerGrounded == false);
 
@@ -297,6 +297,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 			if (playerMovementStateType == PlayerMovementStateType.PlayerIdle)
 			{
+				HowMuchUp = 0.3f;
 				newState = new IdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerIdle";
 			}
@@ -312,11 +313,13 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 			}
 			else if (playerMovementStateType == PlayerMovementStateType.PlayerJumping)
 			{
+				HowMuchUp = 0;
 				newState = new JumpingPlayerMovementState(this, inputDevice);
 				CurrentPlayerMovementStateType = "PlayerJumping";
 			}
 			else if (playerMovementStateType == PlayerMovementStateType.PlayerFalling)
 			{
+				HowMuchUp = 0.3f;
 				newState = new FallingPlayerMovementState(this, inputDevice);
 				CurrentPlayerMovementStateType = "PlayerFalling";
 			}
@@ -547,7 +550,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		PlayerCurrentHeight = 1.75f;
 		_isInitialized = true;
-		
+		HowMuchUp = 0.3f;
 		Debug.Log("PlayerMovement Initialized");
 
 
