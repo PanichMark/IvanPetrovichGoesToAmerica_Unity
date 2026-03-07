@@ -6,6 +6,7 @@ using UnityEngine;
 public delegate void OnWeaponUnlocked(GameObject weaponPrefab);
 public delegate void OnWeaponChanged(string activeHand);
 
+
 public class WeaponController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
@@ -19,6 +20,7 @@ public class WeaponController : MonoBehaviour
 	public event OnWeaponUnlocked OnWeaponUnlocked; // Делегат для уведомления о разблокировке оружия
 
 	public event OnWeaponChanged OnWeaponChanged;
+
 	public bool isLeftHand {  get; private set; }
 	public bool isAbleToUseRightWeapon { get; private set; }
 	public bool isAbleToUseLeftWeapon { get; private set; }

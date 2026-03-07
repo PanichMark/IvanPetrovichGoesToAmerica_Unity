@@ -100,8 +100,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.3584906, g: 0.2608053, b: 0.15624776, a: 1}
-    m_HighlightedColor: {r: 0.81960785, g: 0.5411765, b: 0.14117648, a: 1}
-    m_PressedColor: {r: 0.81960785, g: 0.5411765, b: 0.14117648, a: 1}
+    m_HighlightedColor: {r: 0.35686275, g: 0.2627451, b: 0.15686275, a: 1}
+    m_PressedColor: {r: 0.35686275, g: 0.2627451, b: 0.15686275, a: 1}
     m_SelectedColor: {r: 0.35686275, g: 0.2627451, b: 0.15686275, a: 1}
     m_DisabledColor: {r: 0.35686275, g: 0.2627451, b: 0.15686275, a: 1}
     m_ColorMultiplier: 1
@@ -118,7 +118,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 2281701736291367829}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -179,4 +179,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dabb35f0a95335c4bbc1740464e2ec12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponPrefab: {fileID: 0}

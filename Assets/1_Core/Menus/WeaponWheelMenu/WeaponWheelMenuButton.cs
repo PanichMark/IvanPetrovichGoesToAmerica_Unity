@@ -8,11 +8,23 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	private WeaponWheelMenuController weaponWheelController;
 	private GameObject WeaponPrefab;
 	private string WeaponName;
-	private Sprite WeaponIcon;
 	private Button _button;
+
 	// Поле для хранения оригинального цвета кнопки
 	private Color originalNormalColor;
-	public void Initialize(WeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
+
+	// Текущее активное оружие
+	private GameObject currentWeapon;
+
+	// Предыдущее активное оружие
+	private GameObject previousWeapon;
+
+	public void Initialize(
+		WeaponController weaponController,
+		WeaponWheelMenuController weaponWheelController,
+		GameObject weaponPrefab,
+		WeaponAbstract weaponComponent
+	)
 	{
 		var button = GetComponent<Button>();
 		button.onClick.AddListener(() => SelectWeapon());
@@ -22,80 +34,82 @@ public class WeaponWheelMenuButton : MonoBehaviour
 		this.weaponWheelController = weaponWheelController;
 		this.WeaponPrefab = weaponPrefab;
 		WeaponName = weaponComponent.WeaponNameUI;
-		WeaponIcon = weaponComponent.WeaponIcon;
+
 		// СОХРАНЯЕМ ТЕКУЩИЙ ЦВЕТ НАЧАЛЬНОЙ КНОПКИ
 		originalNormalColor = _button.colors.normalColor;
-		// Подписываемся на событие открытия меню
-		this.weaponWheelController.OnOpenWeaponWheelMenu += OnOpenWeaponWheelMenu;
+
+		// Подписываемся на событие изменения активного оружия
+		this.weaponController.OnWeaponChanged += HandleOnWeaponChanged;
 	}
 
-	// Этот метод будет вызван при открытии меню
-	private void OnOpenWeaponWheelMenu()
+	// Метод обработки события изменения активного оружия
+	private void HandleOnWeaponChanged(string activeHand)
 	{
-		// Определяем активную руку и соответствующее ей оружие
-		GameObject activeWeapon = null;
-		if (weaponController.isLeftHand)
+		// Определяем новое активное оружие
+		currentWeapon = activeHand == "left" ?
+						weaponController.LeftHandWeapon :
+						weaponController.RightHandWeapon;
+
+		// Если оружие изменилось, обновляем цвет кнопки
+		if (currentWeapon != previousWeapon)
 		{
-			activeWeapon = weaponController.LeftHandWeapon;
-		}
-		else
-		{
-			activeWeapon = weaponController.RightHandWeapon;
+			UpdateButtonColor(currentWeapon);
 		}
 
-		//Debug.Log("Active Weapon Path: " + (activeWeapon != null ? activeWeapon.name : "NULL"));
-		//Debug.Log("Weapon Prefab Path: " + (WeaponPrefab != null ? WeaponPrefab.name : "NULL"));
-		// Если активная кнопка соответствует данному оружию, красим её в нужный цвет
+		// Обновляем предыдущее оружие
+		previousWeapon = currentWeapon;
+	}
+
+	// Этот метод будет вызван при изменении активного оружия
+	private void UpdateButtonColor(GameObject activeWeapon)
+	{
+		// Меняем цвет кнопки в зависимости от активности оружия
 		if (activeWeapon == WeaponPrefab)
 		{
-			
-			ColorBlock colors = _button.colors;
-			colors.normalColor = new Color(209f / 255f, 138f / 255f, 36f / 255f); // Золотистый цвет
-			_button.colors = colors;
+			Debug.Log("SAME");
+			ChangeButtonColor(new Color(209f / 255f, 138f / 255f, 36f / 255f));
 		}
 		else
 		{
-			// В противном случае возвращаем кнопку к исходному цвету
-			ColorBlock colors = _button.colors;
-			colors.normalColor = originalNormalColor; // Используем сохранённый оригинальный цвет
-			_button.colors = colors;
+			Debug.Log("OTHER");
+			ChangeButtonColor(originalNormalColor);
 		}
 	}
 
 	public void HoverEnter()
 	{
 		weaponWheelController.WeaponText.text = WeaponName;
+		ChangeButtonColor(new Color(209f / 255f, 138f / 255f, 36f / 255f));
 	}
 
 	public void HoverExit()
 	{
 		weaponWheelController.ShowWeaponName();
+		if (currentWeapon != WeaponPrefab)
+		{
+			ChangeButtonColor(originalNormalColor);
+		}
 	}
 
 	private void SelectWeapon()
 	{
-		// Окраска кнопки в красный при выборе оружия
-		ColorBlock colors = _button.colors;
-		colors.normalColor = new Color(209f / 255f, 138f / 255f, 36f / 255f);
-		_button.colors = colors;
-
-		// Логика выбора оружия
-		if (weaponController.isAbleToUseRightWeapon)
+		if (weaponController.isAbleToUseRightWeapon || (weaponController.isLeftHand && weaponController.isAbleToUseLeftWeapon))
 		{
 			weaponController.SelectWeapon(WeaponPrefab);
 		}
-		else
-		{
-			if (weaponController.isLeftHand && weaponController.isAbleToUseLeftWeapon)
-			{
-				weaponController.SelectWeapon(WeaponPrefab);
-			}
-		}
 	}
 
-	// Не забываем отписываться от события при уничтожении объекта
+	// Не забываем отписаться от события при уничтожении объекта
 	private void OnDestroy()
 	{
-		weaponWheelController.OnOpenWeaponWheelMenu -= OnOpenWeaponWheelMenu;
+		weaponController.OnWeaponChanged -= HandleOnWeaponChanged;
+	}
+
+	// Вспомогательная функция для смены цвета
+	private void ChangeButtonColor(Color newColor)
+	{
+		ColorBlock colors = _button.colors;
+		colors.normalColor = newColor;
+		_button.colors = colors;
 	}
 }
