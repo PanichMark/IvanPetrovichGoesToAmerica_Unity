@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class Bootstrap : MonoBehaviour
 {
 	// CONFIG
-	[Header("--- CONFIGS ---")] [SerializeField] private BootStrapConfigScene configScene;
+	[Header("--- CONFIGS ---")] [SerializeField] private ConfigScene configScene;
+	[SerializeField] private ConfigWeapons configWeapons;
 
 	// Экран Инициализации Bootstrap
 	private GameObject tempCameraObject;
@@ -170,7 +171,7 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(InitializeWeaponSystem());
 		yield return StartCoroutine(RegisterAllDependencies());
 
-		yield return new WaitForSecondsRealtime(0.3f);
+		//yield return new WaitForSecondsRealtime(0.3f);
 		//yield return new WaitForSecondsRealtime(1f);
 
 		ChangeLanguage(LanguagesEnum.Russian);
@@ -178,6 +179,13 @@ public class Bootstrap : MonoBehaviour
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
 		yield return StartCoroutine(saveLoadController.NewGame());
+
+		// Разблокировка оружий из конфига
+		GameObject[] availableWeapons = configWeapons.GetAvailableWeapons();
+		foreach (GameObject weaponPrefab in availableWeapons)
+		{
+			weaponController.UnlockWeapon(weaponPrefab);
+		}
 
 		Destroy(tempCameraObject);
 		Destroy(canvasBootstrap);
@@ -188,7 +196,9 @@ public class Bootstrap : MonoBehaviour
 		{
 			yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
 		}
+
 		else yield return StartCoroutine(gameSceneManager.LoadScene(configScene.selectedScene));
+
 
 		
 	}

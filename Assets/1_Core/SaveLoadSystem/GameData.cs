@@ -76,7 +76,4 @@ public struct LootObjectsData
 	public int LootItemIndex;
 	public string LootItemName;
 	public bool WasLootItemCollected;     
-		
 }
-
-

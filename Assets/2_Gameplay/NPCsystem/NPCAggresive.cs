@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class NPCAggresive : NPCAbstract
+public class NPCAggresive : NPCNeutral
 {
 	public override bool IsInteractionHintMessageAdditionalActive => false;
 
