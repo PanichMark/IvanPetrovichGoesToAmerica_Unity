@@ -19,12 +19,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	// Предыдущее активное оружие
 	private GameObject previousWeapon;
 
-	public void Initialize(
-		WeaponController weaponController,
-		WeaponWheelMenuController weaponWheelController,
-		GameObject weaponPrefab,
-		WeaponAbstract weaponComponent
-	)
+	public void Initialize(WeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
 	{
 		var button = GetComponent<Button>();
 		button.onClick.AddListener(() => SelectWeapon());
@@ -39,6 +34,9 @@ public class WeaponWheelMenuButton : MonoBehaviour
 		originalNormalColor = _button.colors.normalColor;
 
 		// Подписываемся на событие изменения активного оружия
+
+		this.weaponWheelController.OnOpenWeaponWheelMenu += HandleOnWeaponChanged;
+
 		this.weaponController.OnWeaponChanged += HandleOnWeaponChanged;
 	}
 
@@ -46,18 +44,32 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	private void HandleOnWeaponChanged(string activeHand)
 	{
 		// Определяем новое активное оружие
-		currentWeapon = activeHand == "left" ?
-						weaponController.LeftHandWeapon :
-						weaponController.RightHandWeapon;
+		if (activeHand == "left")
+		{
+			currentWeapon = weaponController.LeftHandWeapon;
+		}
+		else
+		{
+			currentWeapon = weaponController.RightHandWeapon;
+		}
 
 		// Если оружие изменилось, обновляем цвет кнопки
 		if (currentWeapon != previousWeapon)
 		{
 			UpdateButtonColor(currentWeapon);
+
+		}
+		else
+		{
+			UpdateButtonColor(previousWeapon);
+			//Debug.Log("rvwer");
 		}
 
 		// Обновляем предыдущее оружие
 		previousWeapon = currentWeapon;
+
+		//Debug.Log(currentWeapon);
+		//Debug.Log(previousWeapon);
 	}
 
 	// Этот метод будет вызван при изменении активного оружия
@@ -79,16 +91,12 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	public void HoverEnter()
 	{
 		weaponWheelController.WeaponText.text = WeaponName;
-		ChangeButtonColor(new Color(209f / 255f, 138f / 255f, 36f / 255f));
+		//ChangeButtonColor(new Color(209f / 255f, 138f / 255f, 36f / 255f));
 	}
 
 	public void HoverExit()
 	{
 		weaponWheelController.ShowWeaponName();
-		if (currentWeapon != WeaponPrefab)
-		{
-			ChangeButtonColor(originalNormalColor);
-		}
 	}
 
 	private void SelectWeapon()
@@ -103,6 +111,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	private void OnDestroy()
 	{
 		weaponController.OnWeaponChanged -= HandleOnWeaponChanged;
+		this.weaponWheelController.OnOpenWeaponWheelMenu -= HandleOnWeaponChanged;
 	}
 
 	// Вспомогательная функция для смены цвета

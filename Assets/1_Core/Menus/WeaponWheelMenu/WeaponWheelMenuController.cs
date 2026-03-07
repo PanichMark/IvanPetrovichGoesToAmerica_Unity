@@ -15,7 +15,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	private bool IsWeaponWheelActive = false;
 	private bool IsWeaponLeftHand = false;
 
-	public delegate void WeaponWheelMenuHandler();
+	public delegate void WeaponWheelMenuHandler(string activeHand);
 	public event WeaponWheelMenuHandler OnOpenWeaponWheelMenu;
 
 	private IInputDevice inputDevice;
@@ -81,7 +81,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	{
 		if (rightHandPressed)
 		{
-			OnOpenWeaponWheelMenu?.Invoke();
+			OnOpenWeaponWheelMenu?.Invoke("right");
 			EnableWeaponWheelMenuCanvas();
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = false;
@@ -90,7 +90,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		}
 		else if (leftHandPressed)
 		{
-			OnOpenWeaponWheelMenu?.Invoke();
+			OnOpenWeaponWheelMenu?.Invoke("left");
 			EnableWeaponWheelMenuCanvas();
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = true;
