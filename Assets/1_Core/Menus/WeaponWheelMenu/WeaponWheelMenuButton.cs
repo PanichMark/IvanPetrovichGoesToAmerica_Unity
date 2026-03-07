@@ -14,7 +14,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	private void Start()
 	{
 		var button = GetComponent<Button>();
-		button.onClick.AddListener(() => weaponController.SelectWeapon(WeaponPrefab));
+		button.onClick.AddListener(() => SelectWeapon());
 	}
 
 	public void Initialize(WeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
@@ -34,5 +34,31 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	public void HoverExit()
 	{
 		weaponWheelController.ShowWeaponName();
+	}
+
+	private void SelectWeapon()
+	{
+		/*
+		if (weaponController.isLeftHand)
+		{
+			weaponController.SelectWeapon(WeaponPrefab);
+		}
+		
+
+		isAbleToUseRightWeapon = false;
+		isAbleToUseLeftWeapon = false;
+		*/
+
+		if (weaponController.isAbleToUseRightWeapon)
+		{
+			weaponController.SelectWeapon(WeaponPrefab);
+		}
+		else
+		{
+			if (weaponController.isLeftHand && weaponController.isAbleToUseLeftWeapon)
+			{
+				weaponController.SelectWeapon(WeaponPrefab);
+			}
+		}
 	}
 }

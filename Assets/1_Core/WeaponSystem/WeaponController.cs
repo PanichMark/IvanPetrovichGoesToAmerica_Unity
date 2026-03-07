@@ -18,9 +18,9 @@ public class WeaponController : MonoBehaviour
 	public event OnWeaponUnlocked OnWeaponUnlocked; // Делегат для уведомления о разблокировке оружия
 
 	public event OnWeaponChanged OnWeaponChanged;
-
-	private bool isAbleToUseRightWeapon;
-	private bool isAbleToUseLeftWeapon;
+	public bool isLeftHand {  get; private set; }
+	public bool isAbleToUseRightWeapon { get; private set; }
+	public bool isAbleToUseLeftWeapon { get; private set; }
 
 	public bool hasAnyWeapon { get; private set; } = false;
 
@@ -29,6 +29,9 @@ public class WeaponController : MonoBehaviour
 
 	public WeaponAbstract leftHandWeaponComponent { get; private set; }
 	public WeaponAbstract rightHandWeaponComponent { get; private set; }
+
+	
+
 
 	// Инициализация контроллера
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, InteractionController interactionController)
@@ -124,7 +127,7 @@ public class WeaponController : MonoBehaviour
 			LeftWeaponAttack();
 		}
 
-		
+		isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
 
 	}
 
@@ -172,7 +175,7 @@ public class WeaponController : MonoBehaviour
 	// Выбор оружия
 	public void SelectWeapon(GameObject weaponPrefab)
 	{
-		bool isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
+		
 
 		WeaponAbstract weaponComponent = weaponPrefab.GetComponent<WeaponAbstract>();
 		if (weaponComponent == null)

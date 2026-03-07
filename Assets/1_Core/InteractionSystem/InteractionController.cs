@@ -169,11 +169,13 @@ public class InteractionController : MonoBehaviour
 				{
 					OnPickUpThrowable?.Invoke();
 					mainInteractionText.text = $"Отпустить {inputDevice.GetNameOfKeyInteract()}\nБросить {inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
+					ChangeLayerRecursively(previousInteractableObject, LayerMask.NameToLayer("Default"));
 				}
 				else
 				{
 					OnPickUpNonThrowable?.Invoke();
 					mainInteractionText.text = $"Отпустить на {inputDevice.GetNameOfKeyInteract()}";
+					ChangeLayerRecursively(previousInteractableObject, LayerMask.NameToLayer("Default"));
 				}
 
 				// При нажатии кнопки освобождаем объект
