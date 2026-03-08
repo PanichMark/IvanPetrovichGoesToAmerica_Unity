@@ -33,7 +33,7 @@ public class LegKickAttack : MonoBehaviour
 		Debug.Log("LegKickAttack Initialized");
 	}
 
-
+	/*
 	private void OnDrawGizmos()
 	{
 		
@@ -51,6 +51,7 @@ public class LegKickAttack : MonoBehaviour
 		Quaternion rotation = Quaternion.LookRotation(Vector3.right, transform.forward);
 		Gizmos.DrawWireCube(cylinderCenter, new Vector3(CapsuleRadius * 2, CapsuleHeight, CapsuleRadius * 2));
 	}
+	*/
 	
 	void Update()
 	{
