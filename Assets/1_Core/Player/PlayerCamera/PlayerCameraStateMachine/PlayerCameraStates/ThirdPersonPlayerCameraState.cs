@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class ThirdPersonPlayerCameraState : PlayerCameraState
+public class ThirdPersonPlayerCameraState : AbstractPlayerCameraState
 {
 	private IInputDevice inputDevice;
 	public ThirdPersonPlayerCameraState(PlayerCameraController playerCam, IInputDevice inputDevice)
@@ -19,7 +19,7 @@ public class ThirdPersonPlayerCameraState : PlayerCameraState
 		
 		if (inputDevice.GetKeyChangeCameraView())
 		{
-			playerCamera.SetPlayerCameraState(PlayerCameraStateType.FirstPerson);
+			playerCamera.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 		}
 		//playerCamera.ThirdPersonCameraTransform();
 	}

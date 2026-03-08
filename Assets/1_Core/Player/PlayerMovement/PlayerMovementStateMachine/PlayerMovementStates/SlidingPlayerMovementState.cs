@@ -1,6 +1,6 @@
 ﻿
 
-public class SlidingPlayerMovementState : PlayerMovementState
+public class SlidingPlayerMovementState : AbstractNPCState
 {
 	
 

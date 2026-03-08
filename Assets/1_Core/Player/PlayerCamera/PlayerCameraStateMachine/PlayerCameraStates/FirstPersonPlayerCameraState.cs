@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class FirstPersonPlayerCameraState : PlayerCameraState
+public class FirstPersonPlayerCameraState : AbstractPlayerCameraState
 {
 	private PlayerMovementController movementController;
 	private IInputDevice inputDevice;
@@ -31,7 +31,7 @@ public class FirstPersonPlayerCameraState : PlayerCameraState
 
 		if (inputDevice.GetKeyChangeCameraView())
 		{
-			playerCamera.SetPlayerCameraState(PlayerCameraStateType.ThirdPerson);
+			playerCamera.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
 		}
 
 		//playerCamera.SetPlayerCameraState(PlayerCameraStateType.FirstPerson);

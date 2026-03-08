@@ -26,7 +26,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 		Debug.Log("FirstPersonRender Initialized!");
 	}
 
-	private PlayerCameraStateType playerCameraStateType;
+	private PlayerCameraStateTypes playerCameraStateType;
 
 	//public GameObject PlayerCameraObject;
 

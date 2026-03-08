@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CutscenePlayerCameraState : PlayerCameraState
+public class CutscenePlayerCameraState : AbstractPlayerCameraState
 
 
 {

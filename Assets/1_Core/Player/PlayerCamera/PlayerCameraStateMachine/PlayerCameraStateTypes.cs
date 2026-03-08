@@ -1,4 +1,4 @@
-﻿public enum PlayerCameraStateType
+﻿public enum PlayerCameraStateTypes
 {
 	FirstPerson = 0,
 	ThirdPerson = 1,

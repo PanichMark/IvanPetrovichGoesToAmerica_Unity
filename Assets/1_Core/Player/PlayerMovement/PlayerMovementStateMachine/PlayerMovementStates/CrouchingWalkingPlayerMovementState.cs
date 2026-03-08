@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CrouchingWalkingPlayerMovementState : PlayerMovementState
+public class CrouchingWalkingPlayerMovementState : AbstractNPCState
 {
 	private IInputDevice inputDevice;
 	private Transform playerTransform;
@@ -49,32 +49,32 @@ public class CrouchingWalkingPlayerMovementState : PlayerMovementState
 
 		if (playerWorldMovement.x == 0 && playerWorldMovement.z == 0)
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerCrouchingIdle);
+			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerCrouchingIdle);
 		}
 
 		if (inputDevice.GetKeyJump() && playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerAbleToStandUp)
 		{
 			
 			playerRigidBody.AddForce(playerTransform.up * 5f, ForceMode.Impulse);
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
+			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerJumping);
 		}
 
 		if (playerMovementController.IsPlayerFalling)
 		{
 			
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
+			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerFalling);
 		}
 
 		if (inputDevice.GetKeyRun() && playerMovementController.IsPlayerAbleToStandUp)
 		{
 			
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerRunning);
+			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerRunning);
 		}
 
 		if (inputDevice.GetKeyCrouch() && playerMovementController.IsPlayerAbleToStandUp)
 		{
 			
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerWalking);
+			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerWalking);
 		}
 	}
 }

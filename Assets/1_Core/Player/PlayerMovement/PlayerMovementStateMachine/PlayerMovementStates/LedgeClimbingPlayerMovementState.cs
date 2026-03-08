@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class LedgeClimbingPlayerMovementState : PlayerMovementState
+public class LedgeClimbingPlayerMovementState : AbstractNPCState
 {
 	public LedgeClimbingPlayerMovementState(PlayerMovementController playerMovementController)
 	{

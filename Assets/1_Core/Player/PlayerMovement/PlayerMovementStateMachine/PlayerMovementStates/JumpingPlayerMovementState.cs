@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class JumpingPlayerMovementState : PlayerMovementState
+public class JumpingPlayerMovementState : AbstractNPCState
 {
 	
 
@@ -52,7 +52,7 @@ public class JumpingPlayerMovementState : PlayerMovementState
 		if (playerMovementController.IsPlayerFalling == true)
 		{
 			
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerFalling);
+			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerFalling);
 		}
 		
 
@@ -60,12 +60,12 @@ public class JumpingPlayerMovementState : PlayerMovementState
 		if (playerMovementController.IsPlayerGrounded == true)
 		{
 
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerIdle);
+			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerIdle);
 		}
 
 		if ( inputDevice.GetKeyJumpBeingHeld() && playerMovementController.IsPlayerAbleToClimbLedge)
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerLedgeClimbing);
+			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerLedgeClimbing);
 		}
 		
 

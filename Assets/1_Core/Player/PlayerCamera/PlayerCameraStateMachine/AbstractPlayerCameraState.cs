@@ -1,4 +1,4 @@
-﻿public abstract class PlayerCameraState
+﻿public abstract class AbstractPlayerCameraState
 {
 	protected PlayerCameraController playerCamera;
 

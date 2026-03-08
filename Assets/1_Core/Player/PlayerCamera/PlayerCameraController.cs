@@ -14,8 +14,8 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	public event CameraStateHandler OnFirstPersonCameraState;
 	public event CameraStateHandler OnThirdPersonCameraState;
 
-	private PlayerCameraState playerCameraState;
-	private PlayerCameraStateType playerCameraStateType;
+	private AbstractPlayerCameraState playerCameraState;
+	private PlayerCameraStateTypes playerCameraStateType;
 
 	private Vector2 MouseRotation;
 	private Vector2 MouseScrollWheel;
@@ -192,11 +192,11 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			}
 	}
 
-	public void SetPlayerCameraState(PlayerCameraStateType playerCameraStateType)
+	public void SetPlayerCameraState(PlayerCameraStateTypes playerCameraStateType)
 	{
-		PlayerCameraState newState;
+		AbstractPlayerCameraState newState;
 
-		if (playerCameraStateType == PlayerCameraStateType.FirstPerson)
+		if (playerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			CurrentPlayerCameraStateType = "FirstPerson";
 			movementController.GiveCurrentPlayerCameraType("FirstPerson");
@@ -204,7 +204,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			OnFirstPersonCameraState?.Invoke();
 			//IsPlayerCameraFirstPerson = true;
 		}
-		else if (playerCameraStateType == PlayerCameraStateType.ThirdPerson)
+		else if (playerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 		{
 			CurrentPlayerCameraStateType = "ThirdPerson";
 			movementController.GiveCurrentPlayerCameraType("ThirdPerson");
@@ -212,7 +212,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			OnThirdPersonCameraState?.Invoke();
 			//IsPlayerCameraFirstPerson = false;
 		}
-		else if (playerCameraStateType == PlayerCameraStateType.Cutscene)
+		else if (playerCameraStateType == PlayerCameraStateTypes.Cutscene)
 		{
 			CurrentPlayerCameraStateType = "Cutscene";
 			movementController.GiveCurrentPlayerCameraType("Cutscene");
@@ -289,7 +289,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		this.MouseRotation.y = data.CameraRotation.y;
 		this.IsCameraShoulderRight = data.IsCameraShoulderRight;
 
-		playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
+		playerCameraStateType = (PlayerCameraStateTypes)Enum.Parse(typeof(PlayerCameraStateTypes), CurrentPlayerCameraStateType);
 		SetPlayerCameraState(playerCameraStateType);
 
 	}
@@ -321,8 +321,8 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 
 		//playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
-		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateType.Cutscene);
-		SetPlayerCameraState(PlayerCameraStateType.FirstPerson);
+		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
+		SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 		_isInitialized = true;
 		Debug.Log("CameraController Initialized");
 	}
