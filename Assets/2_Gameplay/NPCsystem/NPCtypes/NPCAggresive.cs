@@ -7,7 +7,7 @@ public class NPCAggresive : NPCNeutral
 	override public void Interact()
 	{
 	
-
+		// Cant talk to at all
 		
 	}
 }

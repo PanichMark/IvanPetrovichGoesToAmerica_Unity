@@ -13,7 +13,7 @@ public class NPCPeaceful : NPCAbstract
 		if (_npcStateMachineController?.CurrentNPCState != "Default")
 			return;
 
-		// Выполняем само взаимодействие
-		Debug.Log($"{NPC_name} говорит что-то интересное.");
+		StopAllCoroutines(); // Останавливаем предыдущие показы, если были запущены
+		StartCoroutine(ShowAndHidePhrase()); // Начинаем процедуру показа и сокрытия фразы
 	}
 }

@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using TMPro;
+using UnityEngine;
 
 public abstract class NPCAbstract : MonoBehaviour, IInteractable
 {
@@ -8,19 +11,36 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	protected bool IsNPCdead => NPCCurrentHealth <= 0;
 	[SerializeField] protected string NPC_name;
 
+	// Словарь для фраз на разных языках
+	private Dictionary<LanguagesEnum, List<string>> localizedPhrases = new Dictionary<LanguagesEnum, List<string>>
+	{
+		{LanguagesEnum.Russian, new List<string>() },
+		{LanguagesEnum.English, new List<string>() }
+	};
 
+	private TextMeshProUGUI NPCphrasesText;
+	// Два слота для русского и английского файлов фраз
+	[SerializeField] private TextAsset russianPhraseFile;
+	[SerializeField] private TextAsset englishPhraseFile;
+	private LocalizationManager localizationManager;
 	protected NPCStateMachineController _npcStateMachineController;
 
 	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
-	public string InteractionObjectNameUI => NPC_name;
-	public string InteractionHintMessageMain => $"Поговорить с {NPC_name}";
+	public string InteractionObjectNameUI => localizationManager.GetLocalizedString(NPC_name);
+	public string InteractionHintMessageMain => $"Поговорить с {InteractionObjectNameUI}";
 	public string InteractionHintMessageAdditional => throw new System.NotImplementedException();
 	public virtual bool IsInteractionHintMessageAdditionalActive => false;
 	public string InteractionHintAction { get; protected set; }
+
 	private void Start()
 	{
-		
-		//Debug.Log(NPC_currenthealth);
+		NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("NPCphrases");
+
+		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+
+
+
+		LoadPhrasesFromFiles(); // Читаем фразы из выбранных файлов
 		_npcStateMachineController = GetComponent<NPCStateMachineController>();
 
 		if (IsNPCdead)
@@ -30,28 +50,101 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 		}
 	}
 
-	public abstract void Interact();
-
-	// Метод превращения в пассивный объект
-	public void ConvertToPickableObject()
+	// Метод загрузки фраз из обоих файлов
+	private void LoadPhrasesFromFiles()
 	{
-		gameObject.tag = "Interactable";      // Ставим тег Interactable
-		enabled = false;                      // Отключаем уникальный скрипт NPC
-		gameObject.AddComponent<Rigidbody>(); // Добавляем физический компонент
+		// Русские фразы
+		if (russianPhraseFile != null)
+		{
+			using (var reader = new StringReader(russianPhraseFile.text))
+			{
+				string line;
+				while ((line = reader.ReadLine()) != null)
+				{
+					if (!string.IsNullOrWhiteSpace(line))
+					{
+						localizedPhrases[LanguagesEnum.Russian].Add(line.Trim());
+					}
+				}
+			}
+		}
+		else
+		{
+			Debug.LogWarning("Русская версия фраз не указана!");
+		}
 
-		// Используем фабричный метод для задания имени UI
-		InteractionObjectPickable.CreateWithName(gameObject, NPC_name);
-
-		Destroy(this);                        // Уничтожаем оригинальный компонент NPC
+		// Английские фразы
+		if (englishPhraseFile != null)
+		{
+			using (var reader = new StringReader(englishPhraseFile.text))
+			{
+				string line;
+				while ((line = reader.ReadLine()) != null)
+				{
+					if (!string.IsNullOrWhiteSpace(line))
+					{
+						localizedPhrases[LanguagesEnum.English].Add(line.Trim());
+					}
+				}
+			}
+		}
+		else
+		{
+			Debug.LogWarning("Английская версия фраз не указана!");
+		}
 	}
 
-	// Метод, вызываемый при получении повреждений
+	// Метод выбора случайной фразы
+	protected IEnumerator ShowAndHidePhrase()
+	{
+		// Активация объекта с текстом
+		NPCphrasesText.gameObject.SetActive(true);
+
+		// Получить текущую фразу и сформировать полный текст с именем NPC
+		var currentLanguage = localizationManager.CurrentLanguage;
+		if (localizedPhrases[currentLanguage].Count > 0)
+		{
+			int randomIndex = Random.Range(0, localizedPhrases[currentLanguage].Count);
+			string selectedPhrase = localizedPhrases[currentLanguage][randomIndex];
+			string fullPhrase = $"{InteractionObjectNameUI}: {selectedPhrase}"; // Объединяем имя NPC и фразу
+			NPCphrasesText.text = fullPhrase;
+		}
+		else
+		{
+			Debug.LogWarning("Нет фраз для выбранного языка!");
+		}
+
+		
+		yield return new WaitForSeconds(1.5f);
+
+		// Очистка текста и скрытие объекта
+		NPCphrasesText.text = string.Empty;
+		NPCphrasesText.gameObject.SetActive(false);
+	}
+
+	public virtual void Interact()
+	{
+		StopAllCoroutines(); // Останавливаем предыдущие показы, если были запущены
+		StartCoroutine(ShowAndHidePhrase()); // Начинаем процедуру показа и сокрытия фразы
+	}
+
+	// Преобразование в пассивный объект
+	public void ConvertToPickableObject()
+	{
+		gameObject.tag = "Interactable";
+		enabled = false;
+		gameObject.AddComponent<Rigidbody>();
+		InteractionObjectPickable.CreateWithName(gameObject, NPC_name);
+		Destroy(this);
+	}
+
+	// Повреждение NPC
 	public void TakeDamage(float amount)
 	{
 		NPCCurrentHealth -= amount;
 		if (IsNPCdead)
 		{
-			Debug.Log($"{NPC_name} is now a passive pickable object");
+			Debug.Log($"{NPC_name} стал пассивным объектом");
 		}
 	}
 
@@ -59,6 +152,4 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	{
 		NPCCurrentHealth = 0;
 	}
-
-
 }

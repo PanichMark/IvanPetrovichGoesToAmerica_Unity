@@ -141,6 +141,7 @@ public class Bootstrap : MonoBehaviour
 	private TextMeshProUGUI[] itemsTexts;
 	private Image[] itemsImages;
 	private Image imageNewspaper;
+	private TextMeshProUGUI NPCphrasesText;
 
 	private void Awake()
 	{
@@ -467,6 +468,8 @@ public class Bootstrap : MonoBehaviour
 		// Элементы HUD
 		mainInteractionText = canvasHUDInteraction.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
 		additionalInteractionText = canvasHUDInteraction.transform.Find("additionalInteractionText")?.GetComponent<TextMeshProUGUI>();
+		NPCphrasesText = canvasHUDInteraction.transform.Find("NPCphrases")?.GetComponent<TextMeshProUGUI>();
+
 		itemsTexts = new TextMeshProUGUI[]
 		{
 			canvasHUDInteraction.transform.Find("Item1text").GetComponent<TextMeshProUGUI>(),
@@ -560,6 +563,8 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("PlayerMovementController", playerMovementController);
 		ServiceLocator.Register("MainMenuReadNews", mainMenuReadNews);
 		ServiceLocator.Register("PlayerCameraBlurFilter", playerCameraBlurFilter);
+
+		ServiceLocator.Register("NPCphrases", NPCphrasesText);
 
 		ServiceLocator.Register("firstPersonLeftHandWeaponSlotGameObject", firstPersonLeftHandWeaponSlotGameObject);
 		ServiceLocator.Register("firstPersonRightHandWeaponSlotGameObject", firstPersonRightHandWeaponSlotGameObject);
