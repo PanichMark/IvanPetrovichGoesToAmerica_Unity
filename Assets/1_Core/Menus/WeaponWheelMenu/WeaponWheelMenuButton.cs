@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class WeaponWheelMenuButton : MonoBehaviour
 {
@@ -35,14 +36,41 @@ public class WeaponWheelMenuButton : MonoBehaviour
 
 		// Подписываемся на событие изменения активного оружия
 
-		this.weaponWheelController.OnOpenWeaponWheelMenu += HandleOnWeaponChanged;
+		this.weaponWheelController.OnOpenWeaponWheelMenu += OnOpenWeaponWheel;
 
-		this.weaponController.OnWeaponChanged += HandleOnWeaponChanged;
+		this.weaponController.OnWeaponChanged += OnWeaponChange;
+	}
+
+	private void OnOpenWeaponWheel(string activeHand)
+	{
+
+
+		// Определяем новое активное оружие
+		if (activeHand == "left")
+		{
+			previousWeapon = weaponController.LeftHandWeapon;
+		}
+		else
+		{
+			previousWeapon = weaponController.RightHandWeapon;
+		}
+		//Debug.Log(previousWeapon);
+		HandleOnWeaponChanged(activeHand);
+	}
+
+	private void OnWeaponChange(string activeHand)
+	{
+		//Debug.Log(previousWeapon);
+		HandleOnWeaponChanged(activeHand);
+		previousWeapon = currentWeapon;
 	}
 
 	// Метод обработки события изменения активного оружия
 	private void HandleOnWeaponChanged(string activeHand)
 	{
+		
+			
+		
 		// Определяем новое активное оружие
 		if (activeHand == "left")
 		{
@@ -57,19 +85,18 @@ public class WeaponWheelMenuButton : MonoBehaviour
 		if (currentWeapon != previousWeapon)
 		{
 			UpdateButtonColor(currentWeapon);
-
+			//Debug.Log("NEW");
 		}
 		else
 		{
 			UpdateButtonColor(previousWeapon);
-			//Debug.Log("rvwer");
+			//Debug.Log("OLD");
 		}
 
-		// Обновляем предыдущее оружие
-		previousWeapon = currentWeapon;
+		// Обновляем предыдущее оружие;
 
 		//Debug.Log(currentWeapon);
-		//Debug.Log(previousWeapon);
+	
 	}
 
 	// Этот метод будет вызван при изменении активного оружия
@@ -78,12 +105,12 @@ public class WeaponWheelMenuButton : MonoBehaviour
 		// Меняем цвет кнопки в зависимости от активности оружия
 		if (activeWeapon == WeaponPrefab)
 		{
-			Debug.Log("SAME");
+			//Debug.Log("SAME");
 			ChangeButtonColor(new Color(209f / 255f, 138f / 255f, 36f / 255f));
 		}
 		else
 		{
-			Debug.Log("OTHER");
+			//Debug.Log("OTHER");
 			ChangeButtonColor(originalNormalColor);
 		}
 	}
@@ -110,8 +137,8 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	// Не забываем отписаться от события при уничтожении объекта
 	private void OnDestroy()
 	{
-		weaponController.OnWeaponChanged -= HandleOnWeaponChanged;
-		this.weaponWheelController.OnOpenWeaponWheelMenu -= HandleOnWeaponChanged;
+		weaponController.OnWeaponChanged -= OnWeaponChange;
+		this.weaponWheelController.OnOpenWeaponWheelMenu -= OnOpenWeaponWheel;
 	}
 
 	// Вспомогательная функция для смены цвета

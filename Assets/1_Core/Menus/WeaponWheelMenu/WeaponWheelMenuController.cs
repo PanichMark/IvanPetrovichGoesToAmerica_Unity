@@ -196,7 +196,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	{
 		WeaponWheelMenuCanvas.gameObject.SetActive(true);
 		menuManager.OpenWeaponWheelMenu();
-		RecreateWheel();
+		//RecreateWheel();
 	}
 
 	private void DisableWeaponWheelMenuCanvas()
