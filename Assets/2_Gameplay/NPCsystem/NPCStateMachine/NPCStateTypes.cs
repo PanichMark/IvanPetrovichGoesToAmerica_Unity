@@ -8,4 +8,6 @@
 	Searching,
 	Scared,
 	Fleeing,
+	Choked,
+	Dead
 }

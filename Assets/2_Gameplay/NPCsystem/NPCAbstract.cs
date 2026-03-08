@@ -8,7 +8,9 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	protected bool IsNPCdead => NPCCurrentHealth <= 0;
 	[SerializeField] protected string NPC_name;
 
-	[SerializeField] private bool KillNPC;
+
+	protected NPCStateMachineController _npcStateMachineController;
+
 	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
 	public string InteractionObjectNameUI => NPC_name;
 	public string InteractionHintMessageMain => $"Поговорить с {NPC_name}";
@@ -17,20 +19,21 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	public string InteractionHintAction { get; protected set; }
 	private void Start()
 	{
-		NPCCurrentHealth = NPCMaxHealth;
+		
 		//Debug.Log(NPC_currenthealth);
+		_npcStateMachineController = GetComponent<NPCStateMachineController>();
 
-		if (KillNPC)
+		if (IsNPCdead)
 		{
-			// Запускаем корутин, который через 1 секунду нанесет NPC максимальный урон
-			StartCoroutine(KillAfterDelay());
+			_npcStateMachineController.SetNPCState(NPCStateTypes.Dead);
+			ConvertToPickableObject();
 		}
 	}
 
 	public abstract void Interact();
 
 	// Метод превращения в пассивный объект
-	private void ConvertToPickableObject()
+	public void ConvertToPickableObject()
 	{
 		gameObject.tag = "Interactable";      // Ставим тег Interactable
 		enabled = false;                      // Отключаем уникальный скрипт NPC
@@ -49,14 +52,13 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 		if (IsNPCdead)
 		{
 			Debug.Log($"{NPC_name} is now a passive pickable object");
-			ConvertToPickableObject(); // Превращаемся в pickable объект
 		}
 	}
 
-	// Корутин, вызывающий смерть NPC через 1 секунду
-	IEnumerator KillAfterDelay()
+	public void SetHealthToZero()
 	{
-		yield return new WaitForSeconds(0.01f); // Ждем 1 секунду
-		TakeDamage(9999); // Наносим большой урон, вызывая смерть NPC
+		NPCCurrentHealth = 0;
 	}
+
+
 }
