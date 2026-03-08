@@ -121,6 +121,7 @@ public class Bootstrap : MonoBehaviour
 	private GameObject weaponWheelSegmentPrefab;
 	private TextMeshProUGUI weaponText;
 	private TextMeshProUGUI weaponWheelName;
+	private Image weaponIconBig;
 	private Transform centerPoint; // я думаю это можно удалить ??
 
 	// Система взаимодействия
@@ -513,6 +514,7 @@ public class Bootstrap : MonoBehaviour
 		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre")?.transform;
 		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name")?.GetComponent<TextMeshProUGUI>();
 		weaponWheelName = canvasMenuWeaponWheel.transform.Find("WeaponWheel Hand")?.GetComponent<TextMeshProUGUI>();
+		weaponIconBig = canvasMenuWeaponWheel.transform.Find("WeaponBig")?.GetComponent<Image>();
 
 		firstPersonLeftHandWeaponSlotGameObject = GameObject.Find("Slot1.L");
 		thirdPersonLeftHandWeaponSlotGameObject = GameObject.Find("Slot.L");
@@ -523,7 +525,7 @@ public class Bootstrap : MonoBehaviour
 		weaponController.Initialize(inputDevice, menuManager, playerBehaviour, interactionController);
 		legKickAttack.Initialize(inputDevice, playerGameObject, playerMovementController);
 		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController, weaponWheelSegmentPrefab,
-			centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName);
+			centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName, weaponIconBig);
 		weaponAnimationController.Initialize(playerGameObject, playerBehaviour, playerCameraController, weaponController, legKickAttack);
 		weaponFirstPersonRender.Initialize(gameSceneManager, playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent);
 

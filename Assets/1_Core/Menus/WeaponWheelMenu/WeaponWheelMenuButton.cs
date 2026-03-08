@@ -22,14 +22,17 @@ public class WeaponWheelMenuButton : MonoBehaviour
 
 	public void Initialize(WeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
 	{
-		var button = GetComponent<Button>();
-		button.onClick.AddListener(() => SelectWeapon());
-		_button = button; // Сохраняем ссылку на кнопку
+
 
 		this.weaponController = weaponController;
 		this.weaponWheelController = weaponWheelController;
 		this.WeaponPrefab = weaponPrefab;
 		WeaponName = weaponComponent.WeaponNameUI;
+
+		var button = GetComponent<Button>();
+		button.onClick.AddListener(() => SelectWeapon());
+		button.onClick.AddListener(() => this.weaponWheelController.ShowWeaponIconBig());
+		_button = button; // Сохраняем ссылку на кнопку
 
 		// СОХРАНЯЕМ ТЕКУЩИЙ ЦВЕТ НАЧАЛЬНОЙ КНОПКИ
 		originalNormalColor = _button.colors.normalColor;
@@ -124,6 +127,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	public void HoverExit()
 	{
 		weaponWheelController.ShowWeaponName();
+	
 	}
 
 	private void SelectWeapon()

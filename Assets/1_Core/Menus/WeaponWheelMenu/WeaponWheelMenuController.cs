@@ -26,7 +26,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	private bool previousRightHandPressed = false;
 	private bool previousLeftHandPressed = false;
 
-	private float radius = 135;
+	private float radius = 130;
 
 	public event System.Action<int> OnSegmentSelected;
 
@@ -34,9 +34,9 @@ public class WeaponWheelMenuController : MonoBehaviour
 	{
 		// createWheel(); // Вызывается позже при активации меню
 	}
-
+	private Image weaponIconBig;
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, WeaponController weaponController,
-		GameObject wheelSegmentPrefab, Transform centerPoint, GameObject WeaponWheelMenuCanvas, TextMeshProUGUI WeaponText, TextMeshProUGUI WeaponWheelName)
+		GameObject wheelSegmentPrefab, Transform centerPoint, GameObject WeaponWheelMenuCanvas, TextMeshProUGUI WeaponText, TextMeshProUGUI WeaponWheelName, Image weaponIconBig)
 	{
 		this.inputDevice = inputDevice;
 		this.playerBehaviour = playerBehaviour;
@@ -47,12 +47,15 @@ public class WeaponWheelMenuController : MonoBehaviour
 		this.WeaponWheelMenuCanvas = WeaponWheelMenuCanvas;
 		this.WeaponText = WeaponText;
 		this.WeaponWheelName = WeaponWheelName;
+		this.weaponIconBig = weaponIconBig;
 
-		WeaponWheelMenuCanvas.gameObject.SetActive(false);
+		//Debug.Log(this.weaponIconBig);
+
+		this.WeaponWheelMenuCanvas.gameObject.SetActive(false);
 		_isInitialized = true;
 		Debug.Log("WeaponWheel Initialized");
 
-		weaponController.OnWeaponUnlocked += OnWeaponUnlocked;
+		this.weaponController.OnWeaponUnlocked += OnWeaponUnlocked;
 	}
 
 	private void OnWeaponUnlocked(GameObject weaponPrefab)
@@ -86,6 +89,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = false;
 			ShowWeaponName();
+			ShowWeaponIconBig();
 			WeaponWheelName.text = "ПРАВАЯ РУКА";
 		}
 		else if (leftHandPressed)
@@ -95,6 +99,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = true;
 			ShowWeaponName();
+			ShowWeaponIconBig();
 			WeaponWheelName.text = "ЛЕВАЯ РУКА";
 		}
 		else
@@ -205,6 +210,36 @@ public class WeaponWheelMenuController : MonoBehaviour
 		if (!menuManager.IsPauseMenuOpened)
 		{
 			menuManager.CloseWeaponWheelMenu();
+		}
+	}
+
+	public void ShowWeaponIconBig()
+	{
+		if (IsWeaponLeftHand)
+		{
+			if (weaponController.LeftHandWeapon != null)
+			{
+				weaponIconBig.gameObject.SetActive(true);
+				weaponIconBig.sprite = weaponController.leftHandWeaponComponent.WeaponIcon;
+			}
+			else
+			{
+				weaponIconBig.gameObject.SetActive(false);
+				weaponIconBig.sprite = null;
+			}
+		}
+		else if (IsWeaponLeftHand == false)
+		{
+			if (weaponController.RightHandWeapon != null)
+			{
+				weaponIconBig.gameObject.SetActive(true);
+				weaponIconBig.sprite = weaponController.rightHandWeaponComponent.WeaponIcon;
+			}
+			else
+			{
+				weaponIconBig.gameObject.SetActive(false);
+				weaponIconBig.sprite = null;
+			}
 		}
 	}
 
