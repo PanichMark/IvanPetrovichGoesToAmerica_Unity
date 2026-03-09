@@ -23,7 +23,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			_health = value;
 			if (_health <= 0)
 			{
-				DestroyTrowableObject(); // Вызываем метод уничтожения, если здоровье стало <= 0
+				ObjectIsFullyDamaged(); // Вызываем метод уничтожения, если здоровье стало <= 0
 			}
 		}
 	}
@@ -162,7 +162,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		Health -= amount; // Уменьшаем здоровье на указанное количество единиц
 	}
 
-	public void DestroyTrowableObject()
+	public void ObjectIsFullyDamaged()
 	{
 		Debug.Log($"{InteractionObjectNameSystem} was destroyed!");
 		_wasObjectDestroyed = true; // Устанавливаем флаг, что объект разрушен

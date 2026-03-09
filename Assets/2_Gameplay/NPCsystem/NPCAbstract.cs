@@ -4,11 +4,11 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 
-public abstract class NPCAbstract : MonoBehaviour, IInteractable
+public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 {
-	[SerializeField][Min(0)] private float NPCMaxHealth;
+	private float NPCMaxHealth;
 	[SerializeField][Min(0)] private float NPCCurrentHealth;
-	protected bool IsNPCdead => NPCCurrentHealth <= 0;
+	public bool IsNPCdead => NPCCurrentHealth <= 0;
 	[SerializeField] protected string NPC_name;
 
 	// Словарь для фраз на разных языках
@@ -25,15 +25,20 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	private LocalizationManager localizationManager;
 	protected NPCStateMachineController _npcStateMachineController;
 
-	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
+	public string InteractionObjectNameSystem => NPC_name;
 	public string InteractionObjectNameUI => localizationManager.GetLocalizedString(NPC_name);
 	public string InteractionHintMessageMain => $"Поговорить с {InteractionObjectNameUI}";
 	public string InteractionHintMessageAdditional => throw new System.NotImplementedException();
 	public virtual bool IsInteractionHintMessageAdditionalActive => false;
 	public string InteractionHintAction { get; protected set; }
 
+	public bool WasObjectDestroyed => throw new System.NotImplementedException();
+
+	public float Health => NPCCurrentHealth;
+
 	private void Start()
 	{
+		NPCMaxHealth = NPCCurrentHealth;
 		NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("NPCphrases");
 
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
@@ -45,8 +50,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 
 		if (IsNPCdead)
 		{
-			_npcStateMachineController.SetNPCState(NPCStateTypes.Dead);
-			ConvertToPickableObject();
+			ObjectIsFullyDamaged();
 		}
 	}
 
@@ -115,7 +119,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 		}
 
 		
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(3.5f);
 
 		// Очистка текста и скрытие объекта
 		NPCphrasesText.text = string.Empty;
@@ -141,15 +145,35 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable
 	// Повреждение NPC
 	public void TakeDamage(float amount)
 	{
+		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {Health - amount}");
 		NPCCurrentHealth -= amount;
 		if (IsNPCdead)
 		{
-			Debug.Log($"{NPC_name} стал пассивным объектом");
+			ObjectIsFullyDamaged();
+			
 		}
 	}
 
 	public void SetHealthToZero()
 	{
+
 		NPCCurrentHealth = 0;
+	}
+
+	public void ObjectIsFullyDamaged()
+	{
+		Debug.Log($"{NPC_name} is Dead");
+		StopAllCoroutines();
+		ConvertToPickableObject();
+
+	
+			
+
+		NPCphrasesText.text = string.Empty;
+		NPCphrasesText.gameObject.SetActive(false);
+
+
+		_npcStateMachineController.SetNPCState(NPCStateTypes.Dead);
+		
 	}
 }

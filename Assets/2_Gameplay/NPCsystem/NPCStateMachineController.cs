@@ -78,12 +78,16 @@ public class NPCStateMachineController : MonoBehaviour
 			}
 			else if (playerMovementStateType == NPCStateTypes.Dead)
 			{
-				NPCabstract.SetHealthToZero();
-				NPCabstract.ConvertToPickableObject();
+				if (!NPCabstract.IsNPCdead)
+				{
+					NPCabstract.SetHealthToZero();
+				}
+				//NPCabstract.SetHealthToZero();
+				//NPCabstract.ConvertToPickableObject();
 				newState = new DeadNPCState();
 				//CurrentNPCState = "PlayerCrouchingWalking";
 			}
-		else
+			else
 			{
 				newState = null;
 			}
