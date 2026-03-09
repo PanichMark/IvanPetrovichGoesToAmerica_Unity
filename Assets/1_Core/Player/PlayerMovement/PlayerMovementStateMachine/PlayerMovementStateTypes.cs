@@ -1,5 +1,5 @@
 ﻿
-public enum NPCStateTypes
+public enum PlayerMovementStateTypes
 {
     PlayerIdle = 0,
     PlayerWalking = 1,

@@ -404,7 +404,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCMaxHealth: 50
   NPCCurrentHealth: 50
   NPC_name: NPC_Peaceful_Civilian
   russianPhraseFile: {fileID: 4900000, guid: 83ce688ca0692ca4b95dbfbdddd2f646, type: 3}
@@ -2378,7 +2377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialState: 0
+  initialState: 9
 --- !u!136 &865766843
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2414,8 +2413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCMaxHealth: 50
-  NPCCurrentHealth: 0
+  NPCCurrentHealth: 50
   NPC_name: NPC_Peaceful_Civilian
   russianPhraseFile: {fileID: 4900000, guid: 83ce688ca0692ca4b95dbfbdddd2f646, type: 3}
   englishPhraseFile: {fileID: 4900000, guid: 14747a7586d924e4d999d8743b00315e, type: 3}
@@ -3636,7 +3634,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194f481d0a4c92140bd5c952d711c607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCMaxHealth: 0
   NPCCurrentHealth: 0
   NPC_name: 
   russianPhraseFile: {fileID: 0}
@@ -3858,7 +3855,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f68370d733ada4587d0bf029dc595d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCMaxHealth: 50
   NPCCurrentHealth: 50
   NPC_name: NPC_Neutral_Bandit
   russianPhraseFile: {fileID: 4900000, guid: 81d28ab506d89214a81efbcd7917c612, type: 3}
@@ -5135,7 +5131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f68370d733ada4587d0bf029dc595d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCMaxHealth: 50
   NPCCurrentHealth: 50
   NPC_name: NPC_Neutral_Bandit
   russianPhraseFile: {fileID: 4900000, guid: 81d28ab506d89214a81efbcd7917c612, type: 3}
@@ -7403,7 +7398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194f481d0a4c92140bd5c952d711c607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCMaxHealth: 0
   NPCCurrentHealth: 0
   NPC_name: 
   russianPhraseFile: {fileID: 0}

@@ -1,4 +1,4 @@
-﻿public abstract class AbstractNPCState
+﻿public abstract class AbstractPlayerMovementState
 {
     protected PlayerMovementController playerMovementController;
 

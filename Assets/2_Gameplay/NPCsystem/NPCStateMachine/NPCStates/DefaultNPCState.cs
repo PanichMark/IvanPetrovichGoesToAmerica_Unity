@@ -2,9 +2,11 @@
 
 public class DefaultNPCState : AbstractNPCState
 {
-    public DefaultNPCState()
-    {
+	public DefaultNPCState(NPCStateMachineController npcStateMachineController)
+	{
+		this._NPCStateMachineController = npcStateMachineController;
+		_NPCStateMachineController.StartRandomMove();
+	}
 
-    }
 
 }

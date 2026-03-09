@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class IdlePlayerMovementState : AbstractNPCState
+public class IdlePlayerMovementState : AbstractPlayerMovementState
 {
 	private IInputDevice inputDevice;
 	private Transform playerTransform;
@@ -20,28 +20,28 @@ public class IdlePlayerMovementState : AbstractNPCState
 
 		if (!inputDevice.GetKeyRun() && (inputDevice.GetKeyUp() || inputDevice.GetKeyDown() || inputDevice.GetKeyRight() || inputDevice.GetKeyLeft()))
 		{
-			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerWalking);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
 		}
 
 		if (inputDevice.GetKeyRun() && (inputDevice.GetKeyUp() || inputDevice.GetKeyDown() || inputDevice.GetKeyRight() || inputDevice.GetKeyLeft()))
 		{
-			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerRunning);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerRunning);
 		}
 
 		if (inputDevice.GetKeyJump() && playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerAbleToStandUp)
 		{
 			playerRigidBody.AddForce(playerTransform.up * 5f, ForceMode.Impulse);
-			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerJumping);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerJumping);
 		}
 
 		if (playerMovementController.IsPlayerFalling)
 		{
-			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerFalling);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
 		}
 
 		if (inputDevice.GetKeyCrouch())
 		{
-			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerCrouchingIdle);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
 		}
 	}
 }

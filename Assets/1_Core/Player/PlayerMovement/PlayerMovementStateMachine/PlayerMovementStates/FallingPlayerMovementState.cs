@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FallingPlayerMovementState : AbstractNPCState
+public class FallingPlayerMovementState : AbstractPlayerMovementState
 {
 	private IInputDevice inputDevice;
 
@@ -16,19 +16,19 @@ public class FallingPlayerMovementState : AbstractNPCState
 	{
 		if (playerMovementController.IsPlayerFalling == false)
 		{
-			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerIdle);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 		}
 		
 		if (playerMovementController.IsPlayerFalling == false && inputDevice.GetKeyRun())
 		{
 
-			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerRunning);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerRunning);
 
 		}
 		 if (playerMovementController.IsPlayerFalling == false)
 		{
 
-			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerWalking);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
 		}
 		//if (playerMovementController.playerInputsList.GetKeyJump())
 		//{

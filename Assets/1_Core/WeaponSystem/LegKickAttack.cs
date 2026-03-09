@@ -79,11 +79,11 @@ public class LegKickAttack : MonoBehaviour
 
 		if (playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" || playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking")
 		{
-			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerCrouchingIdle);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
 		}
 		else
 		{
-			playerMovementController.SetPlayerMovementState(NPCStateTypes.PlayerIdle);
+			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 		}
 
 	

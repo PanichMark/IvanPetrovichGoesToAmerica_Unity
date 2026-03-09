@@ -9,8 +9,8 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	private Camera playerCamera;
 
-	private AbstractNPCState playerMovementState;
-	private NPCStateTypes playerMovementStateType;
+	private AbstractPlayerMovementState playerMovementState;
+	private PlayerMovementStateTypes playerMovementStateType;
 
 	private Vector3 playerWorldMovement;
 
@@ -157,7 +157,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		else isSmallRectangleClear = true;
 
 
-		if (isAllBoxesColliding && (isBigRectangleClear || isSmallRectangleClear) && playerMovementStateType != NPCStateTypes.PlayerLedgeClimbing)
+		if (isAllBoxesColliding && (isBigRectangleClear || isSmallRectangleClear) && playerMovementStateType != PlayerMovementStateTypes.PlayerLedgeClimbing)
 		{
 			IsPlayerAbleToClimbLedge = true;
 		}
@@ -289,56 +289,56 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	}
 
 	// Different player movement states scripts call this function
-	public void SetPlayerMovementState(NPCStateTypes playerMovementStateType)
+	public void SetPlayerMovementState(PlayerMovementStateTypes playerMovementStateType)
 	{
 		if (isAbleToChangeMovementType)
 		{
-			AbstractNPCState newState;
+			AbstractPlayerMovementState newState;
 
-			if (playerMovementStateType == NPCStateTypes.PlayerIdle)
+			if (playerMovementStateType == PlayerMovementStateTypes.PlayerIdle)
 			{
 				HowMuchUp = 0.3f;
 				newState = new IdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerIdle";
 			}
-			else if (playerMovementStateType == NPCStateTypes.PlayerWalking)
+			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerWalking)
 			{
 				newState = new WalkingPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerWalking";
 			}
-			else if (playerMovementStateType == NPCStateTypes.PlayerRunning)
+			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerRunning)
 			{
 				newState = new RunningPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerRunning";
 			}
-			else if (playerMovementStateType == NPCStateTypes.PlayerJumping)
+			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
 			{
 				HowMuchUp = 0;
 				newState = new JumpingPlayerMovementState(this, inputDevice);
 				CurrentPlayerMovementStateType = "PlayerJumping";
 			}
-			else if (playerMovementStateType == NPCStateTypes.PlayerFalling)
+			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerFalling)
 			{
 				HowMuchUp = 0.3f;
 				newState = new FallingPlayerMovementState(this, inputDevice);
 				CurrentPlayerMovementStateType = "PlayerFalling";
 			}
-			else if (playerMovementStateType == NPCStateTypes.PlayerCrouchingIdle)
+			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle)
 			{
 				newState = new CrouchingIdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerCrouchingIdle";
 			}
-			else if (playerMovementStateType == NPCStateTypes.PlayerCrouchingWalking)
+			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking)
 			{
 				newState = new CrouchingWalkingPlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerCrouchingWalking";
 			}
-			else if (playerMovementStateType == NPCStateTypes.PlayerSliding)
+			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerSliding)
 			{
 				newState = new SlidingPlayerMovementState(this);
 				CurrentPlayerMovementStateType = "PlayerSliding";
 			}
-			else if (playerMovementStateType == NPCStateTypes.PlayerLedgeClimbing)
+			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbing)
 			{
 				newState = new LedgeClimbingPlayerMovementState(this);
 				CurrentPlayerMovementStateType = "PlayerLedgeClimbing";
@@ -390,7 +390,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		PlayerRigidBody.angularVelocity = Vector3.zero;
 		PlayerRigidBody.MovePosition(PlayerRigidBody.transform.position);
 
-		SetPlayerMovementState(NPCStateTypes.PlayerCrouchingIdle);
+		SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
 		//Debug.Log("bruh");
 	}
 
@@ -436,14 +436,14 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 			//if (IsPlayerMoving == false)
 			//{
 			ChangePlayerRayPosition(1.9f);
-			SetPlayerMovementState(NPCStateTypes.PlayerIdle);
+			SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 			//}
 		}
 		else
 		{
 			//if (IsPlayerMoving == false)
 			//{
-				SetPlayerMovementState(NPCStateTypes.PlayerCrouchingIdle);
+				SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
 			//}
 		}
 	}
@@ -520,7 +520,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		this.PlayerTransform.position = data.PlayerPosition;
 		this.PlayerTransform.rotation = data.PlayerRotation;
 
-		playerMovementStateType = (NPCStateTypes)Enum.Parse(typeof(NPCStateTypes), CurrentPlayerMovementStateType);
+		playerMovementStateType = (PlayerMovementStateTypes)Enum.Parse(typeof(PlayerMovementStateTypes), CurrentPlayerMovementStateType);
 		SetPlayerMovementState(playerMovementStateType);
 	}
 
@@ -539,10 +539,10 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		_playerPreviousFramePosition = transform.position;
 		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerPosition(new Vector3(0, 0, -5));
-		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerMovementState(NPCStateTypes.PlayerIdle);
+		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 
 		isAbleToChangeMovementType = true;
-		SetPlayerMovementState(NPCStateTypes.PlayerIdle);
+		SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 
 		PlayerMovementSpeed = 3f;
 
