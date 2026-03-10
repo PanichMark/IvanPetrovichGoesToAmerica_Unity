@@ -27,7 +27,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private List<int> alarmIndices;
 
 	// Кол-во оставшихся ходов
-	private int movesLeft = 4;
+	private int movesLeft = 5;
 
 	void Start()
 	{
@@ -57,6 +57,8 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 			IsPuzzleActive = false;
 			canvasLockpickElectronicMenu.SetActive(false);
 			menuManager.CloseLockpickMenu();
+			movesLeft = 4;
+			Debug.Log("CLOSE PUZZLE");
 		}
 	}
 
@@ -90,17 +92,22 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private void InitializeButtons()
 	{
 		// Сброс количества ходов при перезапуске пазла
-		movesLeft = 4;
+		movesLeft = 5;
 
 		// Сначала очищаем состояние всех кнопок
 		foreach (var buttonObj in buttonsLockElectrical)
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			ColorBlock colors = button.colors;
-			colors.normalColor = Color.white; // Восстанавливаем первоначальный цвет
+			colors.normalColor = Color.grey; // Восстанавливаем первоначальный цвет
 			button.colors = colors;
 			button.interactable = true;       // Активируем кнопку
+			button.onClick?.RemoveAllListeners();
 		}
+
+
+		// Обновляем seed для Random
+		UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
 
 		// Список индексов кнопок
 		List<int> indices = Enumerable.Range(0, buttonsLockElectrical.Length).ToList();
@@ -120,10 +127,23 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 			Button button = buttonObj.GetComponent<Button>();
 			button.onClick.AddListener(() => OnButtonClicked(button));
 		}
+
+		/*
+		RevealAlarmButton();
+		RevealAlarmButton();
+		RevealAlarmButton();
+		RevealAlarmButton();
+		RevealAlarmButton();
+		RevealAlarmButton();
+		RevealAlarmButton();
+		RevealAlarmButton();
+		RevealAlarmButton();
+		*/
 	}
 
 	private void OnButtonClicked(Button clickedButton)
 	{
+	
 		// Определяем индекс нажатой кнопки
 		int buttonIndex = Array.IndexOf(buttonsLockElectrical, clickedButton.gameObject);
 
@@ -139,16 +159,17 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 
 		// Если кнопка нормальная: красим её в зелёный и делаем неактивной
 		ColorBlock colors = clickedButton.colors;
-		colors.normalColor = Color.green;
+		colors.disabledColor = Color.green;
 		clickedButton.colors = colors;
 		clickedButton.interactable = false;
 
 		// Раскрываем одну из случайных alarm-кнопок
 		RevealAlarmButton();
-
+	
 		// Уменьшаем счётчик ходов
 		movesLeft--;
 
+		Debug.Log(movesLeft);
 		// Завершаем пазл, если закончились ходы
 		if (movesLeft <= 0)
 		{
@@ -163,7 +184,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			ColorBlock colors = button.colors;
-			colors.normalColor = Color.red;
+			colors.disabledColor = Color.red;
 			button.colors = colors;
 			button.interactable = false;
 		}
@@ -183,7 +204,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 
 			// Красим выбранную alarm-кнопку в красный и отключаем
 			ColorBlock colors = revealedButton.colors;
-			colors.normalColor = Color.red;
+			colors.disabledColor = Color.red;
 			revealedButton.colors = colors;
 			revealedButton.interactable = false;
 		}
@@ -192,9 +213,8 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private void EndPuzzle()
 	{
 		WasUnlocked = true;
-		IsPuzzleActive = false;
-		HidePuzzleCanvas();
 		menuManager.CloseLockpickMenu();
+		CloseElectronicLockPuzzle();
 	}
 
 
