@@ -9,9 +9,10 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
 	
 	private LocalizationManager localizationManager;
-	[SerializeField] private InteractionObjectLock lockController;   // Поле для добавления контроллера замка
-											 //private bool isDoorUnlocked;
-											 //private bool WasDoorKeyFound;
+	[SerializeField] private InteractionObjectLockMechanical mechanicalLockController;   // Поле для добавления контроллера замка
+	[SerializeField] private InteractionObjectLockElectronic electronicLockController;
+	//private bool isDoorUnlocked;
+	//private bool WasDoorKeyFound;
 
 	private float doorOpeningSpeed = 200f; // Скорость открытия-закрытия
 
@@ -39,14 +40,14 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 
-		if (lockController != null && lockController.WasUnlocked == false)
+		if (mechanicalLockController != null && mechanicalLockController.WasUnlocked == false)
 		{
-			interactionHintMessageMain = lockController.InteractionHintMessageMain;
-			lockController.OnUnlockLock += UnlockDoor;
+			interactionHintMessageMain = mechanicalLockController.InteractionHintMessageMain;
+			mechanicalLockController.OnUnlockLock += UnlockDoor;
 		}
 
 
-		if (lockController == null || lockController.WasUnlocked == true)
+		if (mechanicalLockController == null || mechanicalLockController.WasUnlocked == true)
 		{
 			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 		}
@@ -60,14 +61,14 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
 
-		if (lockController != null && lockController.WasUnlocked == false)
+		if (mechanicalLockController != null && mechanicalLockController.WasUnlocked == false)
 		{
-			interactionHintMessageMain = lockController.InteractionHintMessageMain;
-			lockController.OnUnlockLock += UnlockDoor;
+			interactionHintMessageMain = mechanicalLockController.InteractionHintMessageMain;
+			mechanicalLockController.OnUnlockLock += UnlockDoor;
 		}
 
 
-		if (lockController == null || lockController.WasUnlocked == true)
+		if (mechanicalLockController == null || mechanicalLockController.WasUnlocked == true)
 		{
 			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 		}
@@ -80,22 +81,32 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	public override void Interact()
 	{
-		if (lockController != null && lockController.WasUnlocked == false)
+		if (mechanicalLockController != null && mechanicalLockController.WasUnlocked == false)
 		{
 			// Если замок установлен, сначала пытаемся открыть замок
 			Debug.Log("Запускается попытка взлома замка...");
-			lockController.Interact();
+			mechanicalLockController.Interact();
 			//Debug.Log("LMAO!");
 
 		}
 
-		if (lockController == null || lockController.WasUnlocked == true)
+		if (electronicLockController != null && electronicLockController.WasUnlocked == false)
 		{
-			// Если замка нет, сразу открываем дверь
-			PerformDoorInteraction();
-			//Debug.Log("BRUH!");
+			// Если замок установлен, сначала пытаемся открыть замок
+			Debug.Log("Запускается попытка взлома замка...");
+			electronicLockController.Interact();
+			//Debug.Log("LMAO!");
+
 		}
-		
+
+
+		if ((mechanicalLockController == null && electronicLockController == null) ||
+	mechanicalLockController?.WasUnlocked == true ||
+	electronicLockController?.WasUnlocked == true)
+		{
+			PerformDoorInteraction(); // Дверь открывается
+									  // Debug.Log("BRUH!");
+		}
 	}
 	protected virtual void PerformDoorInteraction()
 	{

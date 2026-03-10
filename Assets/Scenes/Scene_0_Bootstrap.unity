@@ -338,6 +338,14 @@ PrefabInstance:
       propertyPath: canvasPauseSubMenuSettings
       value: 
       objectReference: {fileID: 5973256293069603521, guid: e59295eb67009e948b49ab6add309082, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasLockpickElectronicMenu
+      value: 
+      objectReference: {fileID: 6687112978874478098, guid: c18885d8a26596b45bb1a1aed88d24ac, type: 3}
+    - target: {fileID: 5304466985890617425, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
+      propertyPath: canvasLockpickMechanicalMenu
+      value: 
+      objectReference: {fileID: 7539572659657130930, guid: cf1afa49f7269b042a808ccd9c3b00ec, type: 3}
     - target: {fileID: 8941166669569671294, guid: 74076ceda55eb9e44b9e247031f8ebe0, type: 3}
       propertyPath: m_Name
       value: BootStrap

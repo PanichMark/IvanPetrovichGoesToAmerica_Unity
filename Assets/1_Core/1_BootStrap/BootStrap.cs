@@ -131,11 +131,14 @@ public class Bootstrap : MonoBehaviour
 	private InteractionFirstPersonRender interactionFirstPersonRender;
 	[Header("Interaction")] [SerializeField] private GameObject canvasHUDInteraction;
 	[SerializeField] private GameObject canvasReadNoteMenu;
-	[SerializeField] private GameObject canvasLockpickMenu;
+	[SerializeField] private GameObject canvasLockpickMechanicalMenu;
+	[SerializeField] private GameObject canvasLockpickElectronicMenu;
+	private GameObject[] buttonsLockElectrical;
 	private TextMeshProUGUI mainInteractionText;
 	private TextMeshProUGUI additionalInteractionText;
 	private Button buttonExitReadNoteMenu;
-	private Button buttonExitLockpickMenu;
+	private Button buttonExitLockpickMechanicalMenu;
+	private Button buttonExitLockpickElectronicMenu;
 	private TextMeshProUGUI readableText;
 	private Image backgroundBlack;
 	private TextMeshProUGUI[] itemsTexts;
@@ -256,7 +259,8 @@ public class Bootstrap : MonoBehaviour
 		canvasHUDPlayerResources = Instantiate(canvasHUDPlayerResources);
 		canvasLoadingScreen = Instantiate(canvasLoadingScreen);
 		canvasReadNoteMenu = Instantiate(canvasReadNoteMenu);
-		canvasLockpickMenu = Instantiate(canvasLockpickMenu);
+		canvasLockpickMechanicalMenu = Instantiate(canvasLockpickMechanicalMenu);
+		canvasLockpickElectronicMenu = Instantiate(canvasLockpickElectronicMenu);
 		yield break;
 	}
 
@@ -482,11 +486,25 @@ public class Bootstrap : MonoBehaviour
 			canvasHUDInteraction.transform.Find("Image2Icon").GetComponent<Image>(),
 			canvasHUDInteraction.transform.Find("Image3Icon").GetComponent<Image>()
 		};
+
+		buttonsLockElectrical = new GameObject[]
+        {
+			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton1"),
+			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton2"),
+			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton3"),
+			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton4"),
+			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton5"),
+			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton6"),
+			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton7"),
+			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton8"),
+			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton9"),
+		};	
 		buttonExitReadNoteMenu = canvasReadNoteMenu.transform.Find("ExitReadNote")?.GetComponent<Button>();
 		imageNewspaper = canvasReadNoteMenu.transform.Find("ReadableImage")?.GetComponent<Image>();
 		readableText = canvasReadNoteMenu.transform.Find("ReadableText")?.GetComponent<TextMeshProUGUI>();
 		backgroundBlack = canvasReadNoteMenu.transform.Find("BackgroundBlack")?.GetComponent<Image>();
-		buttonExitLockpickMenu = canvasLockpickMenu.transform.Find("ExitLockpick")?.GetComponent<Button>();
+		buttonExitLockpickMechanicalMenu = canvasLockpickMechanicalMenu.transform.Find("ExitLockpickMechanical")?.GetComponent<Button>();
+		buttonExitLockpickElectronicMenu = canvasLockpickElectronicMenu.transform.Find("ExitLockpickElectronic")?.GetComponent<Button>();
 
 		// Инициализация взаимодействия
 		interactionController.Initialize(gameController, gameSceneManager, inputDevice, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
@@ -547,14 +565,16 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("MenuManager", menuManager);
 		ServiceLocator.Register("WeaponController", weaponController);
 		ServiceLocator.Register("ExitReadNote", buttonExitReadNoteMenu);
-		ServiceLocator.Register("ExitLockpick", buttonExitLockpickMenu);
+		ServiceLocator.Register("ExitLockpickMechanical", buttonExitLockpickMechanicalMenu);
 		ServiceLocator.Register("ImageNewspaper", imageNewspaper);
+		ServiceLocator.Register("ExitLockpickElectronic", buttonExitLockpickElectronicMenu);
 		ServiceLocator.Register("ReadableText", readableText);
 		ServiceLocator.Register("BackgroundBlack", backgroundBlack);
 		ServiceLocator.Register("PlayerResourcesMoneyManager", playerResourcesMoneyManager);
 		ServiceLocator.Register("PlayerResourcesHealthManager", playerResourcesHealthManager);
 		ServiceLocator.Register("PlayerResourcesManaManager", playerResourcesManaManager);
-		ServiceLocator.Register("CanvasLockpickMenu", canvasLockpickMenu);
+		ServiceLocator.Register("CanvasLockpickMechanicalMenu", canvasLockpickMechanicalMenu);
+		ServiceLocator.Register("CanvasLockpickElectronicMenu", canvasLockpickElectronicMenu);
 		ServiceLocator.Register("CanvasReadNoteMenu", canvasReadNoteMenu);
 		ServiceLocator.Register("SaveLoadController", saveLoadController);
 		ServiceLocator.Register("PauseMenuController", pauseMenuController);
@@ -563,6 +583,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("PlayerMovementController", playerMovementController);
 		ServiceLocator.Register("MainMenuReadNews", mainMenuReadNews);
 		ServiceLocator.Register("PlayerCameraBlurFilter", playerCameraBlurFilter);
+		ServiceLocator.Register("buttonsLockElectrical", buttonsLockElectrical);
 
 		ServiceLocator.Register("NPCphrases", NPCphrasesText);
 

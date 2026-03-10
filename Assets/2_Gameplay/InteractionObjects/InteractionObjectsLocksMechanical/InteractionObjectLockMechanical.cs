@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; // Подключаем пространство имен UI
 
-public class InteractionObjectLock : MonoBehaviour, IInteractable
+public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 {
 	private SaveLoadController saveLoadController;
 	private LocalizationManager localizationManager;
@@ -17,8 +17,8 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	[SerializeField] private float rotationSpeed;                // Скорость вращения
 	[SerializeField] private float moveSpeed;                    // Скорость перемещения
 	[SerializeField] private GameObject CubeFollow;              // Префаб следящего куба
-	private GameObject canvasLockpickMenu;
-	private Button buttonExitLockpickMenu;           // Кнопка закрытия пазла
+	private GameObject canvasLockpickMechanicalMenu;
+	private Button buttonExitLockpickMechanicalMenu;           // Кнопка закрытия пазла
 	private MenuManager menuManager;                             // Менеджер меню
 	private bool IsPuzzleActive;
 	public bool WasUnlocked { get; private set; } = false;                    // Название объекта интерфейса
@@ -53,13 +53,13 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	private void Awake()
 	{
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		canvasLockpickMenu = ServiceLocator.Resolve<GameObject>("CanvasLockpickMenu");
-		buttonExitLockpickMenu = ServiceLocator.Resolve<Button>("ExitLockpick");
+		canvasLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("CanvasLockpickMechanicalMenu");
+		buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<Button>("ExitLockpickMechanical");
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		gameSceneManager.OnBeginLoadMainMenuScene += OnClosePuzzle;
 		gameSceneManager.OnBeginLoadGameplayScene += OnClosePuzzle;
-		buttonText = buttonExitLockpickMenu.GetComponentInChildren<Text>();
+		buttonText = buttonExitLockpickMechanicalMenu.GetComponentInChildren<Text>();
 
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
@@ -112,7 +112,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	{
 		if (IsPuzzleActive)
 		{
-			canvasLockpickMenu.SetActive(false);
+			canvasLockpickMechanicalMenu.SetActive(false);
 			currentGearInstance.SetActive(false);
 			currentCubeFollow.SetActive(false);
 		}
@@ -122,7 +122,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 	{
 		if (IsPuzzleActive)
 		{
-			canvasLockpickMenu.SetActive(true);
+			canvasLockpickMechanicalMenu.SetActive(true);
 			currentGearInstance.SetActive(true);
 			currentCubeFollow.SetActive(true);
 		}
@@ -149,9 +149,9 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		}
 
 		// Настройка кнопок
-		canvasLockpickMenu.SetActive(true);
-		buttonExitLockpickMenu.onClick.RemoveAllListeners();      // Удаляем предыдущие события
-		buttonExitLockpickMenu.onClick.AddListener(OnClosePuzzle);// Присваиваем обработчик
+		canvasLockpickMechanicalMenu.SetActive(true);
+		buttonExitLockpickMechanicalMenu.onClick.RemoveAllListeners();      // Удаляем предыдущие события
+		buttonExitLockpickMechanicalMenu.onClick.AddListener(OnClosePuzzle);// Присваиваем обработчик
 		//ClosePuzzleButton.gameObject.SetActive(true);       // Активируем кнопку
 		
 		gameObject.tag = "Untagged"; // Меняем тег объекта
@@ -198,7 +198,7 @@ public class InteractionObjectLock : MonoBehaviour, IInteractable
 		if (IsPuzzleActive)
 		{
 			IsPuzzleActive = false;
-			canvasLockpickMenu.SetActive(false);
+			canvasLockpickMechanicalMenu.SetActive(false);
 			Destroy(currentGearInstance);
 			Destroy(currentCubeFollow);
 			gameObject.tag = "Interactable";
