@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
 
 public class NPCStateMachineController : MonoBehaviour
 {
@@ -8,12 +10,15 @@ public class NPCStateMachineController : MonoBehaviour
 	private AbstractNPCState NPCstate;
 	private NPCStateTypes NPCStateType;
 	private NPCAbstract NPCabstract;
+	private NavMeshAgent navMeshAgent;
+	[SerializeField]
+	private List<GameObject> anchorPoints = new List<GameObject>();
 	public string CurrentNPCState { get; private set; } = "PlayerIdle";
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 
 	void Start()
     {
-	
+		navMeshAgent = GetComponent<NavMeshAgent>();
 		
 		
 		NPCabstract = GetComponent<NPCAbstract>();
@@ -22,6 +27,31 @@ public class NPCStateMachineController : MonoBehaviour
 
 		SetNPCState(initialState); // Применяем выбранное состояние
 	}
+	public IEnumerator MoveBetweenAnchorPointsCourutine()
+	{
+		int nextIndex = 0;
+
+		while (true) // Меняем условие на true, чтобы постоянно повторять цикл
+		{
+			if (anchorPoints.Count > 0)
+			{
+				GameObject targetPoint = anchorPoints[nextIndex];
+				navMeshAgent.destination = targetPoint.transform.position;
+
+				while (navMeshAgent.pathPending || navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance)
+				{
+					yield return null; // Продолжаем ждать, пока путь вычисляется или пока цель не достигнута
+				}
+			}
+
+			nextIndex++; // Переносимся к следующей точке
+			if (nextIndex >= anchorPoints.Count)
+			{
+				nextIndex = 0; // Начинаем заново с первой точки
+			}
+		}
+	}
+
 
 	private Coroutine currentMovementCoroutine;
 	private void Update()
@@ -68,6 +98,30 @@ public class NPCStateMachineController : MonoBehaviour
 			StopCoroutine(currentMovementCoroutine);
 			currentMovementCoroutine = null;
 		}
+	}
+
+	public void StartAnchorMove()
+	{
+		currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCourutine());
+	}
+	public void StopAnchorMove()
+	{
+		if (currentMovementCoroutine != null)
+		{
+			StopCoroutine(currentMovementCoroutine);
+			currentMovementCoroutine = null;
+			TurnNavmeshOff();
+		}
+		
+	}
+
+	public void TurnNavmeshOn()
+	{
+		navMeshAgent.enabled = true; // Отключает работу агента
+	}
+	public void TurnNavmeshOff()
+	{
+		navMeshAgent.enabled = false; // Отключает работу агента
 	}
 	public void SetNPCState(NPCStateTypes playerMovementStateType)
 	{
