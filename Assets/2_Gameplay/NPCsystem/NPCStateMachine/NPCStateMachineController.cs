@@ -62,6 +62,10 @@ public class NPCStateMachineController : MonoBehaviour
 		//SetPlayerMovementState(NPCStateTypes.Default);
 
 		SetNPCState(initialState); // Применяем выбранное состояние
+		if (initialState == NPCStateTypes.Dead)
+		{
+			TurnNavmeshOff();
+		}
 	}
 	public IEnumerator MoveBetweenAnchorPointsCourutine()
 	{
@@ -255,7 +259,7 @@ public class NPCStateMachineController : MonoBehaviour
 				NPCabstract.SetHealthToZero();
 			}
 			//NPCabstract.SetHealthToZero();
-			//NPCabstract.ConvertToPickableObject();
+			NPCabstract.ConvertToPickableObject();
 			newState = new DeadNPCState(this);
 			//CurrentNPCState = "PlayerCrouchingWalking";
 		}

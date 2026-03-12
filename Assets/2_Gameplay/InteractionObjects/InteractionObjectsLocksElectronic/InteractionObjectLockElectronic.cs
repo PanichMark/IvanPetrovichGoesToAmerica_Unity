@@ -166,9 +166,44 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		// Завершаем пазл, если закончились ходы
 		if (movesLeft <= 0)
 		{
-			EndPuzzle();
+			StartCoroutine(SuccessfulyUnlockedFlashing());
 		}
 	}
+	private IEnumerator SuccessfulyUnlockedFlashing()
+	{
+		Debug.Log("SUCCESS FLASH");
+
+		// Отключение всех кнопок перед процедурой мигания
+		foreach (var buttonObj in buttonsLockElectrical)
+		{
+			Button button = buttonObj.GetComponent<Button>();
+			button.interactable = false; // Деактивируем кнопки
+		}
+
+		// Главный цикл мигания (все кнопки меняются синхронно)
+		for (int i = 0; i < 5; i++)
+		{
+
+
+			// Меняем цвет всех кнопок одновременно
+			foreach (var buttonObj in buttonsLockElectrical)
+			{
+				Button button = buttonObj.GetComponent<Button>();
+				ColorBlock colors = button.colors;
+
+				if ((i % 2) == 0)
+					colors.disabledColor = Color.green; // Красный цвет
+				else
+					colors.disabledColor = Color.grey; // Серый цвет
+
+				button.colors = colors;
+			}
+
+			yield return new WaitForSecondsRealtime(0.1f); // Пауза между изменениями цвета
+		}
+		EndPuzzle();
+	}
+
 
 	private IEnumerator FlashAndResetButtons()
 	{

@@ -7709,6 +7709,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 575080937374974000, guid: ecd5d519536ce7b49957fe1ea6d14137, type: 3}
+      propertyPath: stopConfigs.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 575080937374974000, guid: ecd5d519536ce7b49957fe1ea6d14137, type: 3}
       propertyPath: anchorPoints.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -7728,6 +7732,18 @@ PrefabInstance:
       propertyPath: 'anchorPoints.Array.data[3]'
       value: 
       objectReference: {fileID: 1660351304}
+    - target: {fileID: 575080937374974000, guid: ecd5d519536ce7b49957fe1ea6d14137, type: 3}
+      propertyPath: 'anchorPoints.Array.data[4]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 575080937374974000, guid: ecd5d519536ce7b49957fe1ea6d14137, type: 3}
+      propertyPath: stopConfigs.Array.data[0].anchorPoint
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 575080937374974000, guid: ecd5d519536ce7b49957fe1ea6d14137, type: 3}
+      propertyPath: stopConfigs.Array.data[0].waitDuration
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3324684043196184942, guid: ecd5d519536ce7b49957fe1ea6d14137, type: 3}
       propertyPath: m_Height
       value: 1.8
@@ -7990,7 +8006,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3588334236224502949, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: stopConfigs.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3588334236224502949, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: anchorPoints.Array.size
