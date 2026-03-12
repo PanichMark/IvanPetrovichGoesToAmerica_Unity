@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -128,17 +129,9 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 			button.onClick.AddListener(() => OnButtonClicked(button));
 		}
 
-		/*
-		RevealAlarmButton();
-		RevealAlarmButton();
-		RevealAlarmButton();
-		RevealAlarmButton();
-		RevealAlarmButton();
-		RevealAlarmButton();
-		RevealAlarmButton();
-		RevealAlarmButton();
-		RevealAlarmButton();
-		*/
+		
+
+		
 	}
 
 	private void OnButtonClicked(Button clickedButton)
@@ -152,7 +145,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		{
 			// Проигрыш: красим все кнопки в красный
 			Debug.Log("FAIL!");
-			SetAllButtonsRed();
+			StartCoroutine(FlashAndResetButtons());
 		
 			return;
 		}
@@ -177,20 +170,51 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		}
 	}
 
-	private void SetAllButtonsRed()
+	private IEnumerator FlashAndResetButtons()
 	{
-		Debug.Log("SET ALL RED");
+		Debug.Log("FLASH AND RESET BUTTONS");
+
+		// Отключение всех кнопок перед процедурой мигания
+		foreach (var buttonObj in buttonsLockElectrical)
+		{
+			Button button = buttonObj.GetComponent<Button>();
+			button.interactable = false; // Деактивируем кнопки
+		}
+
+		// Главный цикл мигания (все кнопки меняются синхронно)
+		for (int i = 0; i < 5; i++)
+		{
+		
+
+			// Меняем цвет всех кнопок одновременно
+			foreach (var buttonObj in buttonsLockElectrical)
+			{
+				Button button = buttonObj.GetComponent<Button>();
+				ColorBlock colors = button.colors;
+
+				if ((i % 2) == 0)
+					colors.disabledColor = Color.red; // Красный цвет
+				else
+					colors.disabledColor = Color.grey; // Серый цвет
+
+				button.colors = colors;
+			}
+
+			yield return new WaitForSecondsRealtime(0.1f); // Пауза между изменениями цвета
+		}
+
+		// Возврат всех кнопок в исходное состояние
 		foreach (var buttonObj in buttonsLockElectrical)
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			ColorBlock colors = button.colors;
-			colors.disabledColor = Color.red;
+			colors.normalColor = Color.grey; // Обычный серый цвет
 			button.colors = colors;
-			button.interactable = false;
+			button.interactable = true;     // Включаем кнопки обратно
 		}
-		CloseElectronicLockPuzzle();
-	}
 
+		movesLeft = 5;                     // Сброс количества попыток
+	}
 	private void RevealAlarmButton()
 	{
 		// Получаем список доступных alarm-кнопок
