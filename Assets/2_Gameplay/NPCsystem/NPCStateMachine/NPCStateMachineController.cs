@@ -17,7 +17,7 @@ public class NPCStateMachineController : MonoBehaviour
 
 	public List<GameObject> AnchorPoints => anchorPoints;
 	public float AnimationDuration => animationDuration;        // Доступны для подклассов
-
+	private int nextIndex = 0;
 	[SerializeField] private List<AnchorPointStop> stopConfigs = new List<AnchorPointStop>(); // Специальный список точек остановки
 
 	private AbstractNPCState NPCstate;
@@ -26,11 +26,32 @@ public class NPCStateMachineController : MonoBehaviour
 	private NavMeshAgent navMeshAgent;
 	public string CurrentNPCState { get; private set; } = "StationaryAction";
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
-	public bool IsAtPosition(Vector3 position, float tolerance = 2f)
+	public bool IsAtPosition(Vector3 position, float tolerance = 1f)
 	{
 		return Vector3.Distance(transform.position, position) <= tolerance;
 	}
+	private GameObject lastVisitedStopPoint; // Последняя посещённая анкорная точка
+											 // Метод для поиска индекса последней посещённой точки
+	public int FindLastVisitedStopIndex()
+	{
+		if (lastVisitedStopPoint == null)
+			return -1; // Если нет последней точки, возвращаем "-1"
 
+		// Находим индекс последней посещённой точки в общем списке
+		return anchorPoints.FindIndex(point => point == lastVisitedStopPoint);
+		
+	}
+	// ...
+
+	public void SetLastVisitedStopPoint(GameObject point)
+	{
+		lastVisitedStopPoint = point;
+	}
+
+	public GameObject GetLastVisitedStopPoint()
+	{
+		return lastVisitedStopPoint;
+	}
 	void Start()
     {
 		navMeshAgent = GetComponent<NavMeshAgent>();
@@ -44,22 +65,38 @@ public class NPCStateMachineController : MonoBehaviour
 	}
 	public IEnumerator MoveBetweenAnchorPointsCourutine()
 	{
-		int nextIndex = 0;
+		
+		int lastVisitIndex = 0;
 
-		while (true) // Меняем условие на true, чтобы постоянно повторять цикл
+		while (true)
 		{
 			if (anchorPoints.Count > 0)
 			{
+
+				if (lastVisitedStopPoint != null)
+				{
+					// Находим индекс последней посещённой точки
+					lastVisitIndex = FindLastVisitedStopIndex();
+					//lastVisitedStopPoint = null;
+				}
+				else lastVisitIndex = nextIndex++;
+
+	
+
+				// Идём к текущей точке
 				GameObject targetPoint = anchorPoints[nextIndex];
 				navMeshAgent.destination = targetPoint.transform.position;
-
+				//lastVisitedStopPoint = anchorPoints[nextIndex];
+				// Ждём, пока агент дойдет до точки
 				while (navMeshAgent.pathPending || navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance)
 				{
-					yield return null; // Продолжаем ждать, пока путь вычисляется или пока цель не достигнута
+					yield return null;
 				}
+				lastVisitedStopPoint = anchorPoints[nextIndex];
 			}
 
-			nextIndex++; // Переносимся к следующей точке
+			// Переходим к следующей точке
+			nextIndex++;
 			if (nextIndex >= anchorPoints.Count)
 			{
 				nextIndex = 0; // Начинаем заново с первой точки
@@ -71,6 +108,7 @@ public class NPCStateMachineController : MonoBehaviour
 	private Coroutine currentMovementCoroutine;
 	private void Update()
 	{
+		//Debug.Log($"LAST: {lastVisitedStopPoint}");
 		NPCstate.Update();
 	}
 	public IEnumerator RandomMoveCourutine()
