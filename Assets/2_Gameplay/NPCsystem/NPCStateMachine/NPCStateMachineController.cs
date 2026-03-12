@@ -6,15 +6,30 @@ using UnityEngine.AI;
 public class NPCStateMachineController : MonoBehaviour
 {
 	[SerializeField] private NPCStateTypes initialState = NPCStateTypes.StationaryAction;
+	private float animationDuration;
+	
+
+	// Публичные свойства для доступа
+	public List<AnchorPointStop> StopConfigs => stopConfigs;
+
+	[SerializeField]
+	private List<GameObject> anchorPoints = new List<GameObject>(); // Список анкорных точек
+
+	public List<GameObject> AnchorPoints => anchorPoints;
+	public float AnimationDuration => animationDuration;        // Доступны для подклассов
+
+	[SerializeField] private List<AnchorPointStop> stopConfigs = new List<AnchorPointStop>(); // Специальный список точек остановки
 
 	private AbstractNPCState NPCstate;
 	private NPCStateTypes NPCStateType;
 	private NPCAbstract NPCabstract;
 	private NavMeshAgent navMeshAgent;
-	[SerializeField]
-	private List<GameObject> anchorPoints = new List<GameObject>();
 	public string CurrentNPCState { get; private set; } = "StationaryAction";
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	public bool IsAtPosition(Vector3 position, float tolerance = 2f)
+	{
+		return Vector3.Distance(transform.position, position) <= tolerance;
+	}
 
 	void Start()
     {
@@ -102,15 +117,17 @@ public class NPCStateMachineController : MonoBehaviour
 
 	public void StartAnchorMove()
 	{
+		TurnNavmeshOn();
 		currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCourutine());
 	}
 	public void StopAnchorMove()
 	{
 		if (currentMovementCoroutine != null)
 		{
+			TurnNavmeshOff();
 			StopCoroutine(currentMovementCoroutine);
 			currentMovementCoroutine = null;
-			TurnNavmeshOff();
+
 		}
 		
 	}
@@ -123,81 +140,92 @@ public class NPCStateMachineController : MonoBehaviour
 	{
 		navMeshAgent.enabled = false; // Отключает работу агента
 	}
+
+	public void SetNPCState(NPCStateTypes stateType,  float animDuration)
+	{
+		this.animationDuration = animDuration;
+
+		SetNPCState(stateType);
+	}
+
 	public void SetNPCState(NPCStateTypes playerMovementStateType)
 	{
-		
-			AbstractNPCState newState;
+	
+		AbstractNPCState newState;
 
-			if (playerMovementStateType == NPCStateTypes.StationaryAction)
-			{
-				newState = new StationaryActionNPCState(this);
-				CurrentNPCState = "StationaryAction";
-				NPCabstract.gameObject.tag = "Interactable";
-			}
-			if (playerMovementStateType == NPCStateTypes.Patrolling)
-			{
-				newState = new PatrollingNPCState(this);
-				CurrentNPCState = "Patrolling";
-				NPCabstract.gameObject.tag = "Interactable";
-			}
-			else if (playerMovementStateType == NPCStateTypes.Interested)
-			{
-				newState = new InterestedNPCState();
-				//CurrentNPCState = "PlayerWalking";
-			}
-			else if (playerMovementStateType == NPCStateTypes.Alarmed)
-			{
-				newState = new AlarmedNPCState();
-				//CurrentNPCState = "PlayerRunning";
-			}
-			else if (playerMovementStateType == NPCStateTypes.Chasing)
-			{
-				
-				newState = new ChasingNPCState();
+		if (playerMovementStateType == NPCStateTypes.StationaryAction)
+		{
+		
+			newState = new StationaryActionNPCState(this, animationDuration);
+	
+			CurrentNPCState = "StationaryAction";
+			NPCabstract.gameObject.tag = "Interactable";
+		}
+		else if (playerMovementStateType == NPCStateTypes.Patrolling)
+		{
+			newState = new PatrollingNPCState(this);
+			CurrentNPCState = "Patrolling";
+			NPCabstract.gameObject.tag = "Interactable";
+		}
+		else if (playerMovementStateType == NPCStateTypes.Interested)
+		{
+			newState = new InterestedNPCState();
+			//CurrentNPCState = "PlayerWalking";
+		}
+		else if (playerMovementStateType == NPCStateTypes.Alarmed)
+		{
+			newState = new AlarmedNPCState();
+			//CurrentNPCState = "PlayerRunning";
+		}
+		else if (playerMovementStateType == NPCStateTypes.Chasing)
+		{
+
+			newState = new ChasingNPCState();
 			//	CurrentNPCState = "PlayerJumping";
-			}
-			else if (playerMovementStateType == NPCStateTypes.Attacking)
+		}
+		else if (playerMovementStateType == NPCStateTypes.Attacking)
+		{
+
+			newState = new AttackingNPCState();
+			//CurrentNPCState = "PlayerFalling";
+		}
+		else if (playerMovementStateType == NPCStateTypes.Searching)
+		{
+			newState = new SearchingNPCState();
+			//CurrentNPCState = "PlayerCrouchingIdle";
+		}
+		else if (playerMovementStateType == NPCStateTypes.Scared)
+		{
+			newState = new ScaredNPCState();
+			CurrentNPCState = "Scared";
+			NPCabstract.gameObject.tag = "Untagged";
+		}
+		else if (playerMovementStateType == NPCStateTypes.Fleeing)
+		{
+			newState = new FleeingNPCState();
+			//CurrentNPCState = "PlayerCrouchingWalking";
+		}
+		else if (playerMovementStateType == NPCStateTypes.Choked)
+		{
+			newState = new ChokedNPCState();
+			//CurrentNPCState = "PlayerCrouchingWalking";
+		}
+		else if (playerMovementStateType == NPCStateTypes.Dead)
+		{
+			if (!NPCabstract.IsNPCdead)
 			{
-				
-				newState = new AttackingNPCState();
-				//CurrentNPCState = "PlayerFalling";
+				NPCabstract.SetHealthToZero();
 			}
-			else if (playerMovementStateType == NPCStateTypes.Searching)
-			{
-				newState = new SearchingNPCState();
-				//CurrentNPCState = "PlayerCrouchingIdle";
-			}
-			else if (playerMovementStateType == NPCStateTypes.Scared)
-			{
-				newState = new ScaredNPCState();
-				CurrentNPCState = "Scared";
-				NPCabstract.gameObject.tag = "Untagged";
-			}
-			else if (playerMovementStateType == NPCStateTypes.Fleeing)
-			{
-				newState = new FleeingNPCState();
-				//CurrentNPCState = "PlayerCrouchingWalking";
-			}
-			else if (playerMovementStateType == NPCStateTypes.Choked)
-			{
-				newState = new ChokedNPCState();
-				//CurrentNPCState = "PlayerCrouchingWalking";
-			}
-			else if (playerMovementStateType == NPCStateTypes.Dead)
-			{
-				if (!NPCabstract.IsNPCdead)
-				{
-					NPCabstract.SetHealthToZero();
-				}
-				//NPCabstract.SetHealthToZero();
-				//NPCabstract.ConvertToPickableObject();
-				newState = new DeadNPCState(this);
-				//CurrentNPCState = "PlayerCrouchingWalking";
-			}
-			else
-			{
-				newState = null;
-			}
+			//NPCabstract.SetHealthToZero();
+			//NPCabstract.ConvertToPickableObject();
+			newState = new DeadNPCState(this);
+			//CurrentNPCState = "PlayerCrouchingWalking";
+		}
+		else
+		{
+			newState = null;
+			Debug.Log("ITS NULL!!!");
+		}
 			NPCstate = newState;
 
 			//Debug.Log("MovementState: " + CurrentNPCState);

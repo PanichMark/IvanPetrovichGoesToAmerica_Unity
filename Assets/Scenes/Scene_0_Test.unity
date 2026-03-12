@@ -7985,6 +7985,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3588334236224502949, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: stationaryTriggerIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3588334236224502949, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: stopConfigs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3588334236224502949, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: anchorPoints.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -8012,6 +8020,14 @@ PrefabInstance:
       propertyPath: 'anchorPoints.Array.data[5]'
       value: 
       objectReference: {fileID: 116053961}
+    - target: {fileID: 3588334236224502949, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: stopConfigs.Array.data[0].anchorPoint
+      value: 
+      objectReference: {fileID: 1378876659}
+    - target: {fileID: 3588334236224502949, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: stopConfigs.Array.data[0].waitDuration
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3796175470993337311, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: m_Name
       value: NPC_Citizen (2)

@@ -6,6 +6,5 @@ public class DeadNPCState : AbstractNPCState
 		this._NPCStateMachineController = npcStateMachineController;
 		//_NPCStateMachineController.StopRandomMove();
 		_NPCStateMachineController.StopAnchorMove();
-		_NPCStateMachineController.TurnNavmeshOff();
 	}
 }
