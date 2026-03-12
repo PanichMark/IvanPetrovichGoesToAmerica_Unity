@@ -5,7 +5,7 @@ public class NPCNeutral : NPCAbstract
 	override public void Interact()
 	{
 		// Проверяем, что NPC находится именно в состоянии Default
-		if (_npcStateMachineController?.CurrentNPCState != "Default")
+		if (_npcStateMachineController?.CurrentNPCState != "StationaryAction" && _npcStateMachineController?.CurrentNPCState != "Patrolling")
 			return;
 
 		StopAllCoroutines(); // Останавливаем предыдущие показы, если были запущены

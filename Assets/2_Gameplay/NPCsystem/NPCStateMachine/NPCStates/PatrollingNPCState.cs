@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class DefaultNPCState : AbstractNPCState
+public class PatrollingNPCState : AbstractNPCState
 {
-	public DefaultNPCState(NPCStateMachineController npcStateMachineController)
+	public PatrollingNPCState(NPCStateMachineController npcStateMachineController)
 	{
 		this._NPCStateMachineController = npcStateMachineController;
 		//_NPCStateMachineController.StartRandomMove();

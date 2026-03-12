@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class NPCStateMachineController : MonoBehaviour
 {
-	[SerializeField] private NPCStateTypes initialState = NPCStateTypes.Default;
+	[SerializeField] private NPCStateTypes initialState = NPCStateTypes.StationaryAction;
 
 	private AbstractNPCState NPCstate;
 	private NPCStateTypes NPCStateType;
@@ -13,7 +13,7 @@ public class NPCStateMachineController : MonoBehaviour
 	private NavMeshAgent navMeshAgent;
 	[SerializeField]
 	private List<GameObject> anchorPoints = new List<GameObject>();
-	public string CurrentNPCState { get; private set; } = "PlayerIdle";
+	public string CurrentNPCState { get; private set; } = "StationaryAction";
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 
 	void Start()
@@ -128,10 +128,16 @@ public class NPCStateMachineController : MonoBehaviour
 		
 			AbstractNPCState newState;
 
-			if (playerMovementStateType == NPCStateTypes.Default)
+			if (playerMovementStateType == NPCStateTypes.StationaryAction)
 			{
-				newState = new DefaultNPCState(this);
-				CurrentNPCState = "Default";
+				newState = new StationaryActionNPCState(this);
+				CurrentNPCState = "StationaryAction";
+				NPCabstract.gameObject.tag = "Interactable";
+			}
+			if (playerMovementStateType == NPCStateTypes.Patrolling)
+			{
+				newState = new PatrollingNPCState(this);
+				CurrentNPCState = "Patrolling";
 				NPCabstract.gameObject.tag = "Interactable";
 			}
 			else if (playerMovementStateType == NPCStateTypes.Interested)

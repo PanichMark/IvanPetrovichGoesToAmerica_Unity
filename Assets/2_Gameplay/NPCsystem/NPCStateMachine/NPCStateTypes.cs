@@ -1,6 +1,7 @@
 ﻿public enum NPCStateTypes
 {
-	Default,
+	StationaryAction,
+	Patrolling,
 	Interested,
 	Alarmed,
 	Chasing,
