@@ -6858,6 +6858,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: dialogueSteps.Array.data[0].LineNumber
       value: 3
       objectReference: {fileID: 0}
@@ -6880,6 +6884,42 @@ PrefabInstance:
     - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: dialogueSteps.Array.data[1].YesOptionIndex
       value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[0].LineNumber
+      value: 2345
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[1].LineNumber
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[2].LineNumber
+      value: 234
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[0].NoOptionIndex
+      value: 635
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[1].NoOptionIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[2].NoOptionIndex
+      value: 4356635
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[0].YesOptionIndex
+      value: 345
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[1].YesOptionIndex
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[2].YesOptionIndex
+      value: 54
       objectReference: {fileID: 0}
     - target: {fileID: 3588334236224502949, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: initialState
