@@ -146,6 +146,7 @@ public class Bootstrap : MonoBehaviour
 	private Image[] itemsImages;
 	private Image imageNewspaper;
 	private TextMeshProUGUI NPCphrasesText;
+	private TextMeshProUGUI NPCdialogueText;
 
 
 	private void Awake()
@@ -476,6 +477,7 @@ public class Bootstrap : MonoBehaviour
 		mainInteractionText = canvasHUDInteraction.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
 		additionalInteractionText = canvasHUDInteraction.transform.Find("additionalInteractionText")?.GetComponent<TextMeshProUGUI>();
 		NPCphrasesText = canvasHUDInteraction.transform.Find("NPCphrases")?.GetComponent<TextMeshProUGUI>();
+		NPCdialogueText = canvasDialogueMenu.transform.Find("NPCdialogue")?.GetComponent<TextMeshProUGUI>();
 
 		itemsTexts = new TextMeshProUGUI[]
 		{
@@ -589,6 +591,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("buttonsLockElectrical", buttonsLockElectrical);
 
 		ServiceLocator.Register("NPCphrases", NPCphrasesText);
+		ServiceLocator.Register("NPCdialogueText", NPCdialogueText);
 
 		ServiceLocator.Register("firstPersonLeftHandWeaponSlotGameObject", firstPersonLeftHandWeaponSlotGameObject);
 		ServiceLocator.Register("firstPersonRightHandWeaponSlotGameObject", firstPersonRightHandWeaponSlotGameObject);

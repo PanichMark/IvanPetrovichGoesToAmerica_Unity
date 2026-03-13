@@ -107,7 +107,7 @@ public class MenuManager : MonoBehaviour
 		if (PauseMenuLevel.Count > 0)
 			PauseMenuLevel.Pop();
 
-		if (!IsInteractionMenuOpened)
+		if (!IsInteractionMenuOpened && !IsDialogueMenuOpened)
 		{
 			gameController.MakePlayerControllable();
 
@@ -146,7 +146,11 @@ public class MenuManager : MonoBehaviour
 	{
 		IsAnyMenuOpened = true;
 
-		OnOpenAnyMenu?.Invoke();
+		if (!IsDialogueMenuOpened)
+		{
+			OnOpenAnyMenu?.Invoke();
+		}
+
 		if (!gameController.IsMainMenuOpen)
 		{
 			Cursor.lockState = CursorLockMode.None;
@@ -209,14 +213,14 @@ public class MenuManager : MonoBehaviour
 		Debug.Log("InteractionMenu closed");
 
 	}
-	public void OpenDialoguenMenu()
+	public void OpenDialogueMenu()
 	{
 		IsDialogueMenuOpened = true;
 		Time.timeScale = 0;
 		gameController.MakePlayerNonControllable();
 		OpenAnyMenu();
 		OnOpenDialogueMenu?.Invoke();
-
+		
 		Debug.Log("DialogueMenu opened");
 	}
 
@@ -228,6 +232,6 @@ public class MenuManager : MonoBehaviour
 		gameController.MakePlayerControllable();
 		CloseAnyMenu();
 		Debug.Log("DialogueMenu closed");
-
+	
 	}
 }
