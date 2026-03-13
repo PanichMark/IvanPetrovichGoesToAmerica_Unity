@@ -12,17 +12,23 @@ public class StationaryActionNPCState : AbstractNPCState
 		this.animationDuration = animationDuration;
 		timer = 0f;
 		_NPCStateMachineController.StopAnchorMove(); // Останавливаем патрулирование
+
 	
 	}
 
 	public override void Update()
 	{
-		timer += Time.deltaTime;
-
-		if (timer >= animationDuration)
+		if (_NPCStateMachineController.AnchorPoints.Count != 0)
 		{
-			// Возврат в патрульное состояние
-			_NPCStateMachineController.SetNPCState(NPCStateTypes.Patrolling);
+			timer += Time.deltaTime;
+
+			if (timer >= animationDuration)
+			{
+				// Возврат в патрульное состояние
+				_NPCStateMachineController.SetNPCState(NPCStateTypes.Patrolling);
+			}
 		}
+
+		
 	}
 }

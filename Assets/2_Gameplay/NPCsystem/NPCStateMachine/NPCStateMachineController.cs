@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class NPCStateMachineController : MonoBehaviour
 {
 	[SerializeField] private NPCStateTypes initialState = NPCStateTypes.StationaryAction;
-	private float animationDuration;
+	private float animationDuration = 99999f;
 	
 
 	// Публичные свойства для доступа
@@ -65,6 +65,10 @@ public class NPCStateMachineController : MonoBehaviour
 		if (initialState == NPCStateTypes.Dead)
 		{
 			TurnNavmeshOff();
+		}
+		else
+		{
+			TurnNavmeshOn();
 		}
 	}
 	public IEnumerator MoveBetweenAnchorPointsCourutine()
@@ -159,14 +163,14 @@ public class NPCStateMachineController : MonoBehaviour
 
 	public void StartAnchorMove()
 	{
-		TurnNavmeshOn();
+		
+		
 		currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCourutine());
 	}
 	public void StopAnchorMove()
 	{
 		if (currentMovementCoroutine != null)
 		{
-			TurnNavmeshOff();
 			StopCoroutine(currentMovementCoroutine);
 			currentMovementCoroutine = null;
 
@@ -261,7 +265,7 @@ public class NPCStateMachineController : MonoBehaviour
 			//NPCabstract.SetHealthToZero();
 			NPCabstract.ConvertToPickableObject();
 			newState = new DeadNPCState(this);
-			//CurrentNPCState = "PlayerCrouchingWalking";
+			CurrentNPCState = "Dead";
 		}
 		else
 		{

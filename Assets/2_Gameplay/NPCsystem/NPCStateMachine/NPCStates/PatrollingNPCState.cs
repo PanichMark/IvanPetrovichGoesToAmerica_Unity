@@ -5,6 +5,7 @@ public class PatrollingNPCState : AbstractNPCState
 	public PatrollingNPCState(NPCStateMachineController npcStateMachineController)
 	{
 		this._NPCStateMachineController = npcStateMachineController;
+		_NPCStateMachineController.TurnNavmeshOn();
 		_NPCStateMachineController.StartAnchorMove();
 
 	}
