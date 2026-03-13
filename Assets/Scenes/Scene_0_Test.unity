@@ -6855,19 +6855,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: dialogueSteps.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: dialogueSteps.Array.data[0].LineNumber
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueSteps.Array.data[1].LineNumber
+      value: 67
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: dialogueSteps.Array.data[0].NoOptionIndex
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueSteps.Array.data[1].NoOptionIndex
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: dialogueSteps.Array.data[0].YesOptionIndex
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueSteps.Array.data[1].YesOptionIndex
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 3588334236224502949, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: initialState
