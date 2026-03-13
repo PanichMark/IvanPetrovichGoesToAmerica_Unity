@@ -147,6 +147,8 @@ public class Bootstrap : MonoBehaviour
 	private Image imageNewspaper;
 	private TextMeshProUGUI NPCphrasesText;
 	private TextMeshProUGUI NPCdialogueText;
+	private Button buttonDialogueYes;
+	private Button buttonDialogueNo;
 
 
 	private void Awake()
@@ -510,6 +512,8 @@ public class Bootstrap : MonoBehaviour
 		backgroundBlack = canvasReadNoteMenu.transform.Find("BackgroundBlack")?.GetComponent<Image>();
 		buttonExitLockpickMechanicalMenu = canvasLockpickMechanicalMenu.transform.Find("ExitLockpickMechanical")?.GetComponent<Button>();
 		buttonExitLockpickElectronicMenu = canvasLockpickElectronicMenu.transform.Find("ExitLockpickElectronic")?.GetComponent<Button>();
+		buttonDialogueYes = canvasDialogueMenu.transform.Find("buttonYes")?.GetComponent<Button>();
+		buttonDialogueNo = canvasDialogueMenu.transform.Find("buttonNo")?.GetComponent<Button>();
 
 		// Инициализация взаимодействия
 		interactionController.Initialize(gameController, gameSceneManager, inputDevice, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
@@ -599,6 +603,8 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("thirdPersonRightHandWeaponSlotGameObject", thirdPersonRightHandWeaponSlotGameObject);
 
 		ServiceLocator.Register("CanvasDialogueMenu", canvasDialogueMenu);
+		ServiceLocator.Register("buttonDialogueYes", buttonDialogueYes);
+		ServiceLocator.Register("buttonDialogueNo", buttonDialogueNo);
 
 		Debug.Log("SERVICE REGISTERED");
 		yield break;
