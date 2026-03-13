@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3522397566200654189}
   - component: {fileID: 3588334236224502949}
   - component: {fileID: 8489933771308122900}
+  - component: {fileID: 577386688338599005}
   m_Layer: 0
   m_Name: NPC_Citizen
   m_TagString: Interactable
@@ -142,6 +143,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  anchorPoints: []
+  stopConfigs: []
 --- !u!195 &8489933771308122900
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -164,3 +167,17 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &577386688338599005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796175470993337311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c01eafdaa357a439d6f5079893587d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  russianDialogueFile: {fileID: 4900000, guid: 9e06478af24818a4aa9664ab996f7372, type: 3}
+  englishDialogueFile: {fileID: 4900000, guid: eaaa61d8fb9b19c459fbed79b27c8615, type: 3}

@@ -130,7 +130,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
-		menuManager.OpenLockpickMenu();
+		menuManager.OpenInteractionMenu();
 		IsPuzzleActive = true;
 		// Создание экземпляров объектов
 		currentGearInstance = Instantiate(gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
@@ -202,7 +202,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 			Destroy(currentGearInstance);
 			Destroy(currentCubeFollow);
 			gameObject.tag = "Interactable";
-			menuManager.CloseLockpickMenu();
+			menuManager.CloseInteractionMenu();
 		}
 	}
 

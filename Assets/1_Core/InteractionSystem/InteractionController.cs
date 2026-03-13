@@ -87,8 +87,8 @@ public class InteractionController : MonoBehaviour
 		this.gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDInteraction;
 		this.gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDInteraction;
 
-		this.menuManager.OnOpenInteractionMenu += ShowCanvasHUDInteraction;
-		this.menuManager.OnCloseInteractionMenu += HideCanvasHUDInteraction;
+		this.menuManager.OnOpenInteractionHUD += ShowCanvasHUDInteraction;
+		this.menuManager.OnCloseInteractionHUD += HideCanvasHUDInteraction;
 
 		Debug.Log("InteractionController Initialized");
 	}

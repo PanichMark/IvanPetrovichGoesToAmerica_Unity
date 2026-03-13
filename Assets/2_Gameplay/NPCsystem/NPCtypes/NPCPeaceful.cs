@@ -13,7 +13,17 @@ public class NPCPeaceful : NPCAbstract
 		if (_npcStateMachineController?.CurrentNPCState != "StationaryAction" && _npcStateMachineController?.CurrentNPCState != "Patrolling")
 			return;
 
-		StopAllCoroutines(); // Останавливаем предыдущие показы, если были запущены
-		StartCoroutine(ShowAndHidePhrase()); // Начинаем процедуру показа и сокрытия фразы
+	
+		if (_NPCDialogueController.RussianDialogueFile != null && _NPCDialogueController.EnglishDialogueFile != null)
+		{
+			// Если есть диалоги для текущего языка, начинаем диалог
+			_NPCDialogueController.Interact();
+		}
+		else
+		{
+			// Обычное поведение
+			StopAllCoroutines();
+			StartCoroutine(ShowAndHidePhrase());
+		}
 	}
 }

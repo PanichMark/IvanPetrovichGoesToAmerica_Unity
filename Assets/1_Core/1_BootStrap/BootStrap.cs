@@ -133,6 +133,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject canvasReadNoteMenu;
 	[SerializeField] private GameObject canvasLockpickMechanicalMenu;
 	[SerializeField] private GameObject canvasLockpickElectronicMenu;
+	[SerializeField] private GameObject canvasDialogueMenu;
 	private GameObject[] buttonsLockElectrical;
 	private TextMeshProUGUI mainInteractionText;
 	private TextMeshProUGUI additionalInteractionText;
@@ -145,6 +146,7 @@ public class Bootstrap : MonoBehaviour
 	private Image[] itemsImages;
 	private Image imageNewspaper;
 	private TextMeshProUGUI NPCphrasesText;
+
 
 	private void Awake()
 	{
@@ -261,6 +263,7 @@ public class Bootstrap : MonoBehaviour
 		canvasReadNoteMenu = Instantiate(canvasReadNoteMenu);
 		canvasLockpickMechanicalMenu = Instantiate(canvasLockpickMechanicalMenu);
 		canvasLockpickElectronicMenu = Instantiate(canvasLockpickElectronicMenu);
+		canvasDialogueMenu = Instantiate(canvasDialogueMenu);
 		yield break;
 	}
 
@@ -385,7 +388,7 @@ public class Bootstrap : MonoBehaviour
 		buttonClosePauseSubMenuSettings = FindDeepChildByName(canvasPauseSubMenuSettings, "SettingsSubMenu close Button");
 
 		// Инициализация меню
-		menuManager.Initialize(inputDevice, gameSceneManager, gameController, saveLoadController);
+		menuManager.Initialize(inputDevice, gameController, saveLoadController);
 		pauseMenuController.Initialize(inputDevice, gameController, gameSceneManager, saveLoadController, menuManager, canvasPauseMenu, buttonsPauseMenu);
 		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame, buttonClosePauseSubMenuSave);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonsDeleteGame, buttonClosePauseSubMenuLoad);
@@ -591,6 +594,8 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("firstPersonRightHandWeaponSlotGameObject", firstPersonRightHandWeaponSlotGameObject);
 		ServiceLocator.Register("thirdPersonLeftHandWeaponSlotGameObject", thirdPersonLeftHandWeaponSlotGameObject);
 		ServiceLocator.Register("thirdPersonRightHandWeaponSlotGameObject", thirdPersonRightHandWeaponSlotGameObject);
+
+		ServiceLocator.Register("CanvasDialogueMenu", canvasDialogueMenu);
 
 		Debug.Log("SERVICE REGISTERED");
 		yield break;

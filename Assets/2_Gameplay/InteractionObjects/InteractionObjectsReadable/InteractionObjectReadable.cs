@@ -84,7 +84,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
-		menuManager.OpenReadNoteMenu();
+		menuManager.OpenInteractionMenu();
 		IsReading = true;
 		ReadStructure.gameObject.SetActive(true);
 
@@ -131,7 +131,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 			descriptionText.text = null;
 			//Закрываем меню
 			canvasReadNoteMenu.SetActive(false);
-			menuManager.CloseReadNoteMenu();
+			menuManager.CloseInteractionMenu();
 
 			gameObject.tag = "Interactable";
 		}

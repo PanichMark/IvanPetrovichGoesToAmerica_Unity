@@ -29,7 +29,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 
 	// Кол-во оставшихся ходов
 	private int movesLeft = 5;
-
+	
 	void Start()
 	{
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
@@ -57,7 +57,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		{
 			IsPuzzleActive = false;
 			canvasLockpickElectronicMenu.SetActive(false);
-			menuManager.CloseLockpickMenu();
+			menuManager.CloseInteractionMenu();
 			movesLeft = 4;
 			Debug.Log("CLOSE PUZZLE");
 		}
@@ -84,7 +84,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		if (!IsPuzzleActive)
 		{
 			IsPuzzleActive = true;
-			menuManager.OpenLockpickMenu();
+			menuManager.OpenInteractionMenu();
 			InitializeButtons();
 			ShowPuzzleCanvas();
 		}
@@ -272,7 +272,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private void EndPuzzle()
 	{
 		WasUnlocked = true;
-		menuManager.CloseLockpickMenu();
+		menuManager.CloseInteractionMenu();
 		CloseElectronicLockPuzzle();
 	}
 

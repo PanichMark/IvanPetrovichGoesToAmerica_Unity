@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8117917063483882930}
   - component: {fileID: 575080937374974000}
   - component: {fileID: 3324684043196184942}
+  - component: {fileID: 6397610362618816134}
   m_Layer: 0
   m_Name: NPC_Bandit
   m_TagString: Interactable
@@ -142,6 +143,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
+  anchorPoints: []
+  stopConfigs: []
 --- !u!195 &3324684043196184942
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -164,3 +167,17 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6397610362618816134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4597056733320972622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c01eafdaa357a439d6f5079893587d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  russianDialogueFile: {fileID: 0}
+  englishDialogueFile: {fileID: 0}

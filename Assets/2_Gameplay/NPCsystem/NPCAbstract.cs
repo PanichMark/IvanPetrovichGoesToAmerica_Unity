@@ -17,7 +17,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		{LanguagesEnum.Russian, new List<string>() },
 		{LanguagesEnum.English, new List<string>() }
 	};
-
+	protected NPCDialogueController _NPCDialogueController;
 	private TextMeshProUGUI NPCphrasesText;
 	// Два слота для русского и английского файлов фраз
 	[SerializeField] private TextAsset russianPhraseFile;
@@ -42,7 +42,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("NPCphrases");
 
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-
+		_NPCDialogueController = GetComponent<NPCDialogueController>();
 
 
 		LoadPhrasesFromFiles(); // Читаем фразы из выбранных файлов
@@ -128,8 +128,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public virtual void Interact()
 	{
-		StopAllCoroutines(); // Останавливаем предыдущие показы, если были запущены
-		StartCoroutine(ShowAndHidePhrase()); // Начинаем процедуру показа и сокрытия фразы
+
 	}
 
 	// Преобразование в пассивный объект
