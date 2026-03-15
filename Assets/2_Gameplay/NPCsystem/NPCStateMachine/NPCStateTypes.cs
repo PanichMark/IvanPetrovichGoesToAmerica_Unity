@@ -9,7 +9,6 @@
 	Searching,
 	Scared,
 	Fleeing,
-	Dialogue,
 	Choked,
 	Dead
 }

@@ -12,6 +12,7 @@ public class NPCNeutral : NPCAbstract
 		if (_NPCDialogueController.RussianDialogueFile != null && _NPCDialogueController.EnglishDialogueFile != null)
 		{
 			// Если есть диалоги для текущего языка, начинаем диалог
+			_npcStateMachineController.RotateTowardsPlayer();
 			_NPCDialogueController.Interact();
 		}
 		else

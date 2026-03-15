@@ -7,8 +7,8 @@ public class NPCStateMachineController : MonoBehaviour
 {
 	[SerializeField] private NPCStateTypes initialState = NPCStateTypes.StationaryAction;
 	private float animationDuration = 99999f;
-	
-
+	private float InitialRotationY;
+	private GameObject CachedPlayer;
 	// Публичные свойства для доступа
 	public List<AnchorPointStop> StopConfigs => stopConfigs;
 
@@ -55,8 +55,8 @@ public class NPCStateMachineController : MonoBehaviour
 	void Start()
     {
 		navMeshAgent = GetComponent<NavMeshAgent>();
-		
-		
+		InitialRotationY = transform.eulerAngles.y;
+		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
 		NPCabstract = GetComponent<NPCAbstract>();
 
 		//SetPlayerMovementState(NPCStateTypes.Default);
@@ -71,6 +71,50 @@ public class NPCStateMachineController : MonoBehaviour
 			TurnNavmeshOn();
 		}
 	}
+	private IEnumerator RotateTowardsPlayerCoroutine()
+	{
+		float rotationSpeed = 160f; // Угловая скорость в градусах в секунду
+
+		// Определение желаемого угла поворота по оси Y
+		Vector3 direction = CachedPlayer.transform.position - transform.position;
+		float desiredYAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+		// Создание итогового вращения только по оси Y
+		Quaternion startRotation = transform.rotation;
+		Quaternion endRotation = Quaternion.Euler(0, desiredYAngle, 0);
+
+		while (true)
+		{
+			Debug.Log("ROTATE");
+			// Измеряем угловую дистанцию между текущим положением и целью
+			float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
+
+			// Проверяем условие завершения
+			if (angleDiff < 0.1f) // Остановимся, если разница мала
+				break;
+
+			// Поворачиваем с заданной скоростью
+			float step = rotationSpeed * Time.unscaledDeltaTime;
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
+
+			yield return null;
+		}
+
+		// Точное выравнивание на последнем этапе
+		transform.rotation = endRotation;
+	}
+
+	public void RotateTowardsPlayer()
+	{
+		if (currentRotationCoroutine != null)
+		{
+			StopCoroutine(currentRotationCoroutine);
+			
+		}
+		currentRotationCoroutine = StartCoroutine(RotateTowardsPlayerCoroutine());
+	}
+
+
 	public IEnumerator MoveBetweenAnchorPointsCourutine()
 	{
 		
@@ -112,8 +156,39 @@ public class NPCStateMachineController : MonoBehaviour
 		}
 	}
 
+	public void RotateTowardsInitialRotation()
+	{
+		if (currentRotationCoroutine != null)
+		{
+			StopCoroutine(currentRotationCoroutine);
 
+		}
+		currentRotationCoroutine = StartCoroutine(RotateBackCoroutine(InitialRotationY));
+	}
+
+	private IEnumerator RotateBackCoroutine(float targetYAngle)
+	{
+		float rotationSpeed = 180f; // Угловая скорость в градусах в секунду
+
+		Quaternion startRotation = transform.rotation;
+		Quaternion endRotation = Quaternion.Euler(0, targetYAngle, 0);
+
+		while (true)
+		{
+			float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
+			if (angleDiff < 0.1f) // Если близки к нужному положению
+				break;
+
+			float step = rotationSpeed * Time.unscaledDeltaTime;
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
+
+			yield return null;
+		}
+
+		transform.rotation = endRotation;
+	}
 	private Coroutine currentMovementCoroutine;
+	private Coroutine currentRotationCoroutine;
 	private void Update()
 	{
 		//Debug.Log($"LAST: {lastVisitedStopPoint}");
@@ -249,11 +324,6 @@ public class NPCStateMachineController : MonoBehaviour
 		else if (playerMovementStateType == NPCStateTypes.Fleeing)
 		{
 			newState = new FleeingNPCState();
-			//CurrentNPCState = "PlayerCrouchingWalking";
-		}
-		else if (playerMovementStateType == NPCStateTypes.Dialogue)
-		{
-			newState = new DialogueNPCState();
 			//CurrentNPCState = "PlayerCrouchingWalking";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Choked)

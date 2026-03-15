@@ -31,6 +31,7 @@ public class NPCDialogueController : MonoBehaviour
 	private GameSceneManager gameSceneManager;
 	private int currentDialogueStepIndex = 0; // Текущий индекс шага диалога
 	private bool CanSkip;
+	private NPCStateMachineController nPCStateMachineController;
 	public bool IsDialogueActive { get; private set; }
 	private void Start()
 	{
@@ -45,7 +46,7 @@ public class NPCDialogueController : MonoBehaviour
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		NPCdialogueText = ServiceLocator.Resolve<TextMeshProUGUI>("NPCdialogueText");
 
-
+		nPCStateMachineController = GetComponent<NPCStateMachineController>();
 
 		// Связываем управление панелями меню с открытием и закрытием паузы
 		menuManager.OnOpenPauseMenu += HideNPCDialogueCanvas;
@@ -77,6 +78,8 @@ public class NPCDialogueController : MonoBehaviour
 		IsDialogueActive = false;
 
 		DeactivateButtons();
+
+		nPCStateMachineController.RotateTowardsInitialRotation();
 	}
 	private void LoadDialogueFromFiles()
 	{
