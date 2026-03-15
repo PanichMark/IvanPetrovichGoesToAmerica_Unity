@@ -15,6 +15,7 @@ public class MenuManager : MonoBehaviour
 	public event OpenMenuEventHandler OnCloseInteractionMenu;
 	public event OpenMenuEventHandler OnOpenDialogueMenu;
 	public event OpenMenuEventHandler OnCloseDialogueMenu;
+	public event OpenMenuEventHandler OnClosePauseMenuDuringOpenedDialogueMenu;
 
 	public event OpenMenuEventHandler OnOpenAnyMenu;
 	public event OpenMenuEventHandler OnCloseAnyMenu;
@@ -72,6 +73,10 @@ public class MenuManager : MonoBehaviour
 			else if (PauseMenuLevel.Count == 1)
 			{
 				ClosePauseMenu();
+				if (IsDialogueMenuOpened)
+				{
+					OnClosePauseMenuDuringOpenedDialogueMenu?.Invoke();
+				}
 			}
 		}
 		//Debug.Log(PauseMenuLevel.Count);
@@ -145,10 +150,13 @@ public class MenuManager : MonoBehaviour
 	public void OpenAnyMenu()
 	{
 		IsAnyMenuOpened = true;
-
+		Debug.Log("--- ANY MENU ---");
 		if (!IsDialogueMenuOpened)
 		{
+		
+			Debug.Log("--- BLUR ---");
 			OnOpenAnyMenu?.Invoke();
+			
 		}
 
 		if (!gameController.IsMainMenuOpen)

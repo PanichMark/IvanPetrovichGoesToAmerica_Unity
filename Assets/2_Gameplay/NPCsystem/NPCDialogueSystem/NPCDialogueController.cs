@@ -79,7 +79,9 @@ public class NPCDialogueController : MonoBehaviour
 
 		DeactivateButtons();
 
-		nPCStateMachineController.RotateTowardsInitialRotation();
+	
+	
+		
 	}
 	private void LoadDialogueFromFiles()
 	{
@@ -166,6 +168,7 @@ public class NPCDialogueController : MonoBehaviour
 		{
 			//Debug.Log("LMAO");
 			ExitNPCDialogue(); // Завершаем диалог
+			nPCStateMachineController.RotateTowardsInitialRotation();
 			return;
 		}
 

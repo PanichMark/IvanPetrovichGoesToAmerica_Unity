@@ -70,6 +70,8 @@ public class NPCStateMachineController : MonoBehaviour
 		{
 			TurnNavmeshOn();
 		}
+		//Debug.Log(currentRotationCoroutine);
+		//currentRotationCoroutine = null;
 	}
 	private IEnumerator RotateTowardsPlayerCoroutine()
 	{
@@ -85,7 +87,7 @@ public class NPCStateMachineController : MonoBehaviour
 
 		while (true)
 		{
-			Debug.Log("ROTATE");
+			//Debug.Log("ROTATE");
 			// Измеряем угловую дистанцию между текущим положением и целью
 			float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
 
@@ -102,6 +104,7 @@ public class NPCStateMachineController : MonoBehaviour
 
 		// Точное выравнивание на последнем этапе
 		transform.rotation = endRotation;
+		//currentRotationCoroutine = null;
 	}
 
 	public void RotateTowardsPlayer()
@@ -186,9 +189,10 @@ public class NPCStateMachineController : MonoBehaviour
 		}
 
 		transform.rotation = endRotation;
+		currentRotationCoroutine = null;
 	}
 	private Coroutine currentMovementCoroutine;
-	private Coroutine currentRotationCoroutine;
+	public Coroutine currentRotationCoroutine { get; private set; }
 	private void Update()
 	{
 		//Debug.Log($"LAST: {lastVisitedStopPoint}");

@@ -19,6 +19,8 @@ public class PlayerCameraBlurFilter : MonoBehaviour
 
 		menuManager.OnOpenAnyMenu += ActivateCameraBlur;
 		menuManager.OnCloseAnyMenu += DeactivateCameraBlur;
+		menuManager.OnOpenPauseMenu += ActivateCameraBlur;
+		menuManager.OnClosePauseMenuDuringOpenedDialogueMenu += DeactivateCameraBlur;
 	}
 
 
