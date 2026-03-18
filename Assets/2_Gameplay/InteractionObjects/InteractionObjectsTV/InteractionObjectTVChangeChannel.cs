@@ -3,32 +3,48 @@
 public class InteractionObjectTVButtonChannel : MonoBehaviour, IInteractable
 {
 	[SerializeField] private string buttonChannelUI;
+
+	// 1. Добавляем ссылку на контроллер телевизора
+	[SerializeField] private TVController tvController;
+
 	public string InteractionObjectNameSystem => "buttonChannel";
-	
+
 	public string InteractionObjectNameUI => buttonChannelUI;
 
 	public string InteractionHintMessageMain => $"Нажать {buttonChannelUI}?";
+
 	[SerializeField] bool IsNextChannel;
-	public string InteractionHintAction => throw new System.NotImplementedException();
 
-	public string InteractionHintMessageAdditional => throw new System.NotImplementedException();
-
+	// Убираем заглушки, если они не нужны для работы интерфейса
+	public string InteractionHintAction => "Переключить";
+	public string InteractionHintMessageAdditional => "";
 	public bool IsInteractionHintMessageAdditionalActive => false;
 
+	// 2. Реализуем логику взаимодействия
 	public void Interact()
 	{
-		throw new System.NotImplementedException();
+		// Проверяем, что ссылка на контроллер назначена в инспекторе
+		if (tvController != null)
+		{
+			// Вызываем метод переключения на контроллере,
+			// передавая ему направление (вперед/назад)
+			tvController.SwitchChannel(IsNextChannel);
+		}
+		else
+		{
+			// Если ссылка не указана, выводим ошибку в консоль,
+			// чтобы вы не ломали голову, почему ничего не работает.
+			Debug.LogError("Ошибка: Ссылка на TVController не указана в кнопке " + gameObject.name);
+		}
 	}
 
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
-    {
-        
-    }
+	{
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	}
+
+	void Update()
+	{
+
+	}
 }

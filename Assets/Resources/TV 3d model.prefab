@@ -1,5 +1,55 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3065305127555897686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4660616089475759983}
+  - component: {fileID: 2632217421805570438}
+  m_Layer: 0
+  m_Name: TVController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4660616089475759983
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3065305127555897686}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.44410682, y: 0.16757455, z: -1.4443012}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1192938346316482813}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2632217421805570438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3065305127555897686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9141dcfff1bdb2547a6920b9d966dad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  videoPlayer: {fileID: 2220345106562115925}
+  videoClips:
+  - {fileID: 32900000, guid: 35d78581a2bd40d4e9032dc7f93ad269, type: 3}
+  - {fileID: 32900000, guid: 3b107ae606a558247bc551ad2d5ee5c2, type: 3}
+  - {fileID: 32900000, guid: fca1f1c6de81dc944b3195d8fa9bafa4, type: 3}
+  tvScreen: {fileID: 1913355202046172187}
 --- !u!1 &3106520267018795918
 GameObject:
   m_ObjectHideFlags: 0
@@ -37,6 +87,7 @@ Transform:
   - {fileID: 3552584950856344496}
   - {fileID: 9070725130368217527}
   - {fileID: 4719583569946010718}
+  - {fileID: 4660616089475759983}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5542825563576105187
@@ -215,6 +266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonChannelUI: "\u041A\u043D\u043E\u043F\u043A\u0430 \u043F\u0440\u0435\u0434\u044B\u0434\u0443\u0449\u0435\u0433\u043E
     \u043A\u0430\u043D\u0430\u043B\u0430"
+  tvController: {fileID: 2632217421805570438}
   IsNextChannel: 0
 --- !u!1 &3930228961823928884
 GameObject:
@@ -631,7 +683,7 @@ GameObject:
   - component: {fileID: 4719583569946010718}
   - component: {fileID: 2220345106562115925}
   m_Layer: 0
-  m_Name: VideoRenderer
+  m_Name: VideoPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -660,7 +712,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6594391316015471532}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 35d78581a2bd40d4e9032dc7f93ad269, type: 3}
+  m_VideoClip: {fileID: 0}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -809,4 +861,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonChannelUI: "\u041A\u043D\u043E\u043F\u043A\u0430 \u0441\u043B\u0435\u0434\u0443\u044E\u0449\u0435\u0433\u043E
     \u043A\u0430\u043D\u0430\u043B\u0430"
+  tvController: {fileID: 2632217421805570438}
   IsNextChannel: 1
