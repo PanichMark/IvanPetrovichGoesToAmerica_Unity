@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8941166669569671294
+--- !u!1 &7854876846829433716
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2372080812687470073}
-  - component: {fileID: 5304466985890617425}
+  - component: {fileID: 7968887224968274582}
+  - component: {fileID: 4006196211601909102}
   m_Layer: 0
   m_Name: BootStrap
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2372080812687470073
+--- !u!4 &7968887224968274582
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8941166669569671294}
+  m_GameObject: {fileID: 7854876846829433716}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,27 +32,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5304466985890617425
+--- !u!114 &4006196211601909102
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8941166669569671294}
+  m_GameObject: {fileID: 7854876846829433716}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3111ffddc8a1d604895768280c24a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasBootstrap: {fileID: 0}
-  canvasLoadingScreen: {fileID: 0}
-  canvasHUDPlayerResources: {fileID: 0}
-  canvasPauseMenu: {fileID: 0}
-  canvasPauseSubMenuSave: {fileID: 0}
-  canvasPauseSubMenuLoad: {fileID: 0}
-  canvasPauseSubMenuImages: {fileID: 0}
-  canvasPauseSubMenuSettings: {fileID: 0}
-  canvasMenuWeaponWheel: {fileID: 0}
-  canvasHUDInteraction: {fileID: 0}
-  canvasReadNoteMenu: {fileID: 0}
-  canvasLockpickMenu: {fileID: 0}
+  configScene: {fileID: 11400000, guid: dd27df18f0b32194a93b032278916787, type: 2}
+  configPlayerPosition: {fileID: 11400000, guid: fcf79029c9984ba4a91ea4e9a5661d81, type: 2}
+  configWeapons: {fileID: 11400000, guid: ec077fb09feb1554f87d4c81ec40e2fb, type: 2}
+  canvasBootstrap: {fileID: 6714391010334597348, guid: 08d27b996c6eb024eb92725af576e2f4, type: 3}
+  canvasLoadingScreen: {fileID: 472678922251620575, guid: fa544696e09b1264dac7627c0d42d682, type: 3}
+  canvasHUDPlayerResources: {fileID: 2273119861689627557, guid: b56cff88fa0a71d4c997dbf30e8463af, type: 3}
+  canvasMainMenuReadNews: {fileID: 5088196628814102599, guid: 2ae53a7a3f9f8e14e957fee489e7773e, type: 3}
+  canvasPauseMenu: {fileID: 8073867487923853320, guid: dbe31a4f8c1107a42a76c5855b3c2483, type: 3}
+  canvasPauseSubMenuSave: {fileID: 5903125011697291700, guid: 104664eef1b78e24294c3d4712d18631, type: 3}
+  canvasPauseSubMenuLoad: {fileID: 8269768497378364233, guid: 6b7668360b2dcbf43bcd7c76ed62cc13, type: 3}
+  canvasPauseSubMenuImages: {fileID: 3996022776004995110, guid: 7211552481043d74ea4fc5bc36150aae, type: 3}
+  canvasPauseSubMenuSettings: {fileID: 5973256293069603521, guid: e59295eb67009e948b49ab6add309082, type: 3}
+  canvasMenuWeaponWheel: {fileID: 5879893543200193792, guid: c44457cccf516d44eb926a4ac41336d9, type: 3}
+  canvasHUDInteraction: {fileID: 3487674979134261898, guid: 14a2db8b24d87894796b2a9ecea9df18, type: 3}
+  canvasReadNoteMenu: {fileID: 1408695191542219954, guid: f2531bfd9b65a3246abd9686a4fc63a4, type: 3}
+  canvasLockpickMechanicalMenu: {fileID: 7539572659657130930, guid: cf1afa49f7269b042a808ccd9c3b00ec, type: 3}
+  canvasLockpickElectronicMenu: {fileID: 6687112978874478098, guid: c18885d8a26596b45bb1a1aed88d24ac, type: 3}
+  canvasDialogueMenu: {fileID: 2369867205936427668, guid: cb2bfa7c8bc40784286bf8a61ff9f674, type: 3}

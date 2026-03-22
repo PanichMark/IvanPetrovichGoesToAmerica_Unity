@@ -8,6 +8,7 @@ public class Bootstrap : MonoBehaviour
 {
 	// CONFIG
 	[Header("--- CONFIGS ---")] [SerializeField] private ConfigScene configScene;
+	[SerializeField] private ConfigPlayerPosition configPlayerPosition;
 	[SerializeField] private ConfigWeapons configWeapons;
 
 	// Экран Инициализации Bootstrap
@@ -206,10 +207,12 @@ public class Bootstrap : MonoBehaviour
 		{
 			yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
 		}
+		else
+		{
+			yield return StartCoroutine(gameSceneManager.LoadScene(configScene.selectedScene));
+		}
 
-		else yield return StartCoroutine(gameSceneManager.LoadScene(configScene.selectedScene));
-
-
+		playerMovementController.SetPlayerPosition(configPlayerPosition.playerPosition);
 		
 	}
 
