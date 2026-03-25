@@ -173,15 +173,8 @@ public class NPCDialogueController : MonoBehaviour
 			{
 				if (dialogueBranchStructsList[i].DialogueBranchIndex == (currentDialogueStepIndex + 1))
 				{
-					// Проверка на достижение FinalNoIndex
-					if (dialogueBranchStructsList[i].FinalNoIndex == (currentDialogueStepIndex + 1))
-					{
-						currentDialogueStepIndex = dialogueBranchStructsList[i].GoToNoFinal - 1;
-						CanSkip = true;
-						DeactivateButtons();
-						DisplayNextDialogueLine(); // Продолжаем с нового индекса
-						return;
-					}
+					dialogueBranchStructIndex = i;
+
 
 					CanSkip = false;
 					ActivateButtons();
@@ -197,13 +190,9 @@ public class NPCDialogueController : MonoBehaviour
 		{
 			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToNoFinal;
 		}
-		else
-		{
-
-		}
 
 
-			Debug.Log(currentDialogueStepIndex);
+		//Debug.Log(currentDialogueStepIndex);
 	}
 
 
@@ -229,7 +218,8 @@ public class NPCDialogueController : MonoBehaviour
 		{
 			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToYesOptionIndex - 1;
 		}
-
+		buttonDialogueYes.onClick.RemoveAllListeners();
+		buttonDialogueNo.onClick.RemoveAllListeners();
 		DisplayNextDialogueLine();
 		DeactivateButtons();
 		CanSkip = true;
