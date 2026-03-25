@@ -8331,11 +8331,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3796175470993337311, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5991783505232293363, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.24
+      value: -3.79
       objectReference: {fileID: 0}
     - target: {fileID: 5991783505232293363, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8392,7 +8392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: dialogueBranchStructsList.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: dialogueSteps.Array.data[0].LineNumber
@@ -8431,6 +8431,22 @@ PrefabInstance:
       value: 234
       objectReference: {fileID: 0}
     - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[0].GoToNoFinal
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[1].GoToNoFinal
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[0].FinalNoIndex
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[1].FinalNoIndex
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: dialogueBranchStructsList.Array.data[0].NoOptionIndex
       value: 635
       objectReference: {fileID: 0}
@@ -8453,6 +8469,30 @@ PrefabInstance:
     - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: dialogueBranchStructsList.Array.data[2].YesOptionIndex
       value: 54
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[0].GoToNoOptionIndex
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[1].GoToNoOptionIndex
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[0].GoToYesOptionIndex
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[1].GoToYesOptionIndex
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[0].DialogueBranchIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 577386688338599005, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+      propertyPath: dialogueBranchStructsList.Array.data[1].DialogueBranchIndex
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3588334236224502949, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
       propertyPath: initialState

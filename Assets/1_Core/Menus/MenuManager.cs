@@ -150,11 +150,11 @@ public class MenuManager : MonoBehaviour
 	public void OpenAnyMenu()
 	{
 		IsAnyMenuOpened = true;
-		Debug.Log("--- ANY MENU ---");
+		//Debug.Log("--- ANY MENU ---");
 		if (!IsDialogueMenuOpened)
 		{
 		
-			Debug.Log("--- BLUR ---");
+			//Debug.Log("--- BLUR ---");
 			OnOpenAnyMenu?.Invoke();
 			
 		}

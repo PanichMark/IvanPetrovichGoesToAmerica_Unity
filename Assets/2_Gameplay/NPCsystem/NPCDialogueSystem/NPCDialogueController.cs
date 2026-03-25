@@ -79,9 +79,9 @@ public class NPCDialogueController : MonoBehaviour
 
 		DeactivateButtons();
 
-	
-	
-		
+
+
+
 	}
 	private void LoadDialogueFromFiles()
 	{
@@ -103,7 +103,7 @@ public class NPCDialogueController : MonoBehaviour
 		else
 		{
 			if (russianDialogueFile == null && englishDialogueFile != null)
-			Debug.LogWarning("Русская версия диалога не указана!");
+				Debug.LogWarning("Русская версия диалога не указана!");
 		}
 
 		// Английские фразы
@@ -150,70 +150,60 @@ public class NPCDialogueController : MonoBehaviour
 		IsDialogueActive = true;
 		ShowNPCDialogueCanvas();
 		DisplayNextDialogueLine(); // Показываем первую строку диалога
-		
+
 	}
-	
+
 	private void DisplayNextDialogueLine()
 	{
 		var currentLanguage = localizationManager.CurrentLanguage;
 
-
-		//Debug.Log(dialogueSteps.Count);
-		// Получаем текущий шаг диалога
-
-
-
-		// Проверяем, не вышел ли за пределы диалога
 		if (currentDialogueStepIndex >= localizedDialogue[currentLanguage].Count)
 		{
-			//Debug.Log("LMAO");
-			ExitNPCDialogue(); // Завершаем диалог
+			ExitNPCDialogue();
 			nPCStateMachineController.RotateTowardsInitialRotation();
 			return;
 		}
 
-			NPCdialogueText.text = localizedDialogue[currentLanguage][currentDialogueStepIndex];
-		
+		NPCdialogueText.text = localizedDialogue[currentLanguage][currentDialogueStepIndex];
 
+		// Проверка на финальный переход по "Нет"
 		if (dialogueBranchStructsList.Count > 0)
 		{
-			//Debug.Log(dialogueBranchStructIndex);
-
-			//var step = 0;
-			for (dialogueBranchStructIndex = 0; dialogueBranchStructIndex < dialogueBranchStructsList.Count; dialogueBranchStructIndex++)
+			for (int i = 0; i < dialogueBranchStructsList.Count; i++)
 			{
-				//Debug.Log($"index {dialogueBranchStructIndex} LineNumber {dialogueSteps[dialogueBranchStructIndex].LineNumber}");
-				//Debug.Log($"step {currentDialogueStepIndex + 1}");
-
-				if (dialogueBranchStructsList[dialogueBranchStructIndex].LineNumber == (currentDialogueStepIndex + 1))
+				if (dialogueBranchStructsList[i].DialogueBranchIndex == (currentDialogueStepIndex + 1))
 				{
+					// Проверка на достижение FinalNoIndex
+					if (dialogueBranchStructsList[i].FinalNoIndex == (currentDialogueStepIndex + 1))
+					{
+						currentDialogueStepIndex = dialogueBranchStructsList[i].GoToNoFinal - 1;
+						CanSkip = true;
+						DeactivateButtons();
+						DisplayNextDialogueLine(); // Продолжаем с нового индекса
+						return;
+					}
 
-
-					//step = dialogueSteps[dialogueStepsIndex].LineNumber;
-					//NPCdialogueText.text = localizedDialogue[currentLanguage][dialogueStepsIndex];
-					
 					CanSkip = false;
-					//Debug.Log("FOUND!");
-					//Debug.Log(dialogueBranchStructIndex);
-					//dialogueBranchStructIndex = dialogueBranchStructIndex;
-					//Debug.Log($"index {dialogueBranchStructIndex} YesIndex {dialogueSteps[dialogueBranchStructIndex].YesOptionIndex}");
 					ActivateButtons();
 					buttonDialogueYes.onClick.AddListener(() => SelectOption(true));
-
 					buttonDialogueNo.onClick.AddListener(() => SelectOption(false));
-
 					break;
 				}
-
-				
-
-
 			}
-			//Debug.Log("after loop");
 		}
+		
 		currentDialogueStepIndex++;
-		//Debug.Log(dialogueBranchStructIndex);
-		//Debug.Log("after method");
+		if (currentDialogueStepIndex == dialogueBranchStructsList[dialogueBranchStructIndex].FinalNoIndex)
+		{
+			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToNoFinal;
+		}
+		else
+		{
+
+		}
+
+
+			Debug.Log(currentDialogueStepIndex);
 	}
 
 
@@ -234,32 +224,14 @@ public class NPCDialogueController : MonoBehaviour
 	private void SelectOption(bool isYesSelected)
 	{
 		var currentLanguage = localizationManager.CurrentLanguage;
-		//var dialogueBranchStructIndex = this.dialogueBranchStructIndex;
-		//var dialogueBranchStructsList = this.dialogueBranchStructsList;
 
 		if (isYesSelected)
 		{
-			
-			//Debug.Log(dialogueBranchStructsList.Count);
-			//Debug.Log(dialogueBranchStructIndex);
-		//	Debug.Log(dialogueBranchStructsList[dialogueBranchStructIndex ].YesOptionIndex);
-			NPCdialogueText.text = localizedDialogue[currentLanguage][dialogueBranchStructsList[dialogueBranchStructIndex].YesOptionIndex];
-
-			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].YesOptionIndex;
+			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToYesOptionIndex - 1;
 		}
-		else
-		{
-			NPCdialogueText.text = localizedDialogue[currentLanguage][dialogueBranchStructsList[dialogueBranchStructIndex].NoOptionIndex];
-
-			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].NoOptionIndex;
-		}
-
-
-
 
 		DisplayNextDialogueLine();
 		DeactivateButtons();
 		CanSkip = true;
 	}
-
 }

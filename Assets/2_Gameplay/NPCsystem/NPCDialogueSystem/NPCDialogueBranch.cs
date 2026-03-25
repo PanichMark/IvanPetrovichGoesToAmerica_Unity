@@ -3,7 +3,9 @@
 [Serializable]
 public struct NPCDialogueBranch
 {
-	public int LineNumber;       // Номер строки диалога (указывается вручную, начиная с 1)
-	public int YesOptionIndex;   // Индекс ветки, если выбрали "Да" (-1, если продолжения нет)
-	public int NoOptionIndex;    // Индекс ветки, если выбрали "Нет" (-1, если продолжения нет)
+	public int DialogueBranchIndex;       // Номер строки диалога
+	public int GoToYesOptionIndex;        // Индекс ветки при выборе "Да" (-1, если нет)
+	public int GoToNoOptionIndex;         // Индекс ветки при выборе "Нет" (-1, если нет)
+	public int FinalNoIndex;              // Индекс, при котором срабатывает финальный переход по "Нет"
+	public int GoToNoFinal;               // Индекс, на который перейти при достижении FinalNoIndex
 }
