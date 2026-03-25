@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class InteractionObjectVendingMachine : MonoBehaviour, IInteractUsedItem, IInteractable
 {
-	[SerializeField] private GameObject goodsForSaleModel;
-	[SerializeField] private int goodsPrice;
-	[SerializeField] private string goodsName;
+	[SerializeField] protected GameObject goodsForSaleModel;
+	[SerializeField] protected int goodsPrice;
+	[SerializeField] protected string goodsName;
 	[SerializeField] private string vendingMachineName;
 	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
 	//[SerializeField] private string additionalInteractionHint;
@@ -34,7 +34,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractUsedItem,
 		}
 	}
 		*/
-	private void Start()
+	protected void Start()
 	{
 		playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
 
