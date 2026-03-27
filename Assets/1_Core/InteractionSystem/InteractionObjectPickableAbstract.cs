@@ -6,6 +6,12 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 {
 	protected LocalizationManager localizationManager;
 
+	protected Collider playerCollider; // Ссылка на коллайдер игрока
+	protected bool isCollisionIgnored = false; // Флаг для отслеживания игнорирования физики
+	protected bool isPlayerInsideTrigger = false; // Флаг: игрок внутри триггера объекта
+												  // Слои для Physics.IgnoreLayerCollision
+	protected int pickableLayer;
+	protected int playerLayer;
 	public GameObject CachedPlayer { get; protected set; }
 	public Collider Collider { get; protected set; }
 	public Rigidbody RigidBody { get; protected set; }
@@ -25,9 +31,13 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	void Start()
 	{
+		pickableLayer = LayerMask.NameToLayer("Pickable");
+		playerLayer = LayerMask.NameToLayer("Player");
 		Collider = GetComponent<Collider>();
 		RigidBody = GetComponent<Rigidbody>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
+		playerCollider = CachedPlayer.GetComponent<Collider>(); // Получаем коллайдер игрока
+
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
@@ -86,9 +96,48 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		// Отцепляем объект от игрока
 		transform.parent = null;
 
+		// 1. Игнорируем столкновения между слоем этого объекта (Pickable) и слоем Player
+		Physics.IgnoreLayerCollision(gameObject.layer, playerLayer, true);
+
+		// 2. Запускаем корутину, которая подождет 0.1 секунды и вернет столкновения
+		StartCoroutine(EnableCollisionAfterDelay(0.25f));
+
 		SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByBuildIndex(1));
 	}
+	// Корутина: ждет заданное время и включает столкновения обратно
+	IEnumerator EnableCollisionAfterDelay(float delay)
+	{
+		// Ждем 0.1 секунды (или другое указанное время)
+		yield return new WaitForSeconds(delay);
 
+		// Проверка нужна на случай, если объект уничтожили раньше, чем сработала корутина
+		if (this != null && gameObject != null)
+		{
+			// Возвращаем возможность столкновений между Pickable и Player
+			Physics.IgnoreLayerCollision(gameObject.layer, playerLayer, false);
+		}
+	}
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject == CachedPlayer)
+		{
+			isPlayerInsideTrigger = true;
+		}
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+		if (other.gameObject == CachedPlayer)
+		{
+			isPlayerInsideTrigger = false;
+			// Если игрок вышел из триггера — возвращаем столкновения
+			if (isCollisionIgnored && playerCollider != null)
+			{
+				Physics.IgnoreCollision(Collider, playerCollider, false);
+				isCollisionIgnored = false;
+			}
+		}
+	}
 	IEnumerator MoveTowardsInFrontOfPlayer()
 	{
 		while (true)
