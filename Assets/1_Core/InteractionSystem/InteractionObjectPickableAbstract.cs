@@ -108,21 +108,23 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		
 
 		// 2. Запускаем корутину, которая подождет 0.1 секунды и вернет столкновения
-		StartCoroutine(EnableCollisionAfterDelay(0.25f));
+		StartCoroutine(EnableCollisionAfterDelay(0.05f));
 
 		SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByBuildIndex(1));
 	}
 	//Корутина: ждет заданное время и включает столкновения обратно
-	IEnumerator EnableCollisionAfterDelay(float delay)
+	// Корутина: ждет 0.25 сек и включает столкновение обратно для конкретных объектов
+	private IEnumerator EnableCollisionAfterDelay(float delay)
 	{
-		// Ждем 0.1 секунды (или другое указанное время)
+		// Ждем 0.25 секунды
 		yield return new WaitForSeconds(delay);
 
-		// Проверка нужна на случай, если объект уничтожили раньше, чем сработала корутина
-		if (this != null && gameObject != null)
+		// Проверяем, что компоненты еще существуют
+		if (Collider != null && playerCollider != null)
 		{
-			// Возвращаем возможность столкновений между Pickable и Player
-			Physics.IgnoreLayerCollision(gameObject.layer, playerLayer, false);
+			// Включаем столкновение обратно ТОЛЬКО для этих двух объектов
+			Physics.IgnoreCollision(Collider, playerCollider, false);
+			isCollisionIgnored = false; // Сбрасываем флаг
 		}
 	}
 	void OnTriggerEnter(Collider other)

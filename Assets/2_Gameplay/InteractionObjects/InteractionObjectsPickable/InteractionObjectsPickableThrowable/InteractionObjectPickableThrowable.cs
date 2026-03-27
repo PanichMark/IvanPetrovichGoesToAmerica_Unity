@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstract, IThrowable, IDamageable
 {
@@ -46,6 +47,10 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 	private void Start()
 	{
+		pickableLayer = LayerMask.NameToLayer("Pickable");
+		playerLayer = LayerMask.NameToLayer("Player");
+		playerColliderGameObject = ServiceLocator.Resolve<GameObject>("playerColliderGameObject");
+		playerCollider = playerColliderGameObject.GetComponent<Collider>();
 		firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("firstPersonRightHandWeaponSlotGameObject");
 		thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("thirdPersonRightHandWeaponSlotGameObject");
 		Collider = GetComponent<Collider>();
@@ -137,11 +142,14 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	public void ThrowObject()
 	{
 		Debug.Log($"Throwed {InteractionObjectNameSystem}");
-		gameObject.tag = "Interactable";
+		//gameObject.tag = "Interactable";
+		Physics.IgnoreCollision(Collider, playerCollider, true);
+		isCollisionIgnored = true; // Включаем флаг, чтобы знать, что мы отключили столкновение
 		Collider.enabled = true;
 		RigidBody.isKinematic = false;
 		IsObjectPickedUp = false;
-
+		
+		//SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByBuildIndex(1));
 		_canObjectBeDestroyedOnImpact = true;
 		// Отцепляем объект от игрока
 		transform.parent = null;

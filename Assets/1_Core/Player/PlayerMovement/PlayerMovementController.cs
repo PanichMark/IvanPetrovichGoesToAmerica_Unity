@@ -297,6 +297,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 			if (playerMovementStateType == PlayerMovementStateTypes.PlayerIdle)
 			{
+				PlayerRigidBody.angularVelocity = Vector3.zero;
 				HowMuchUp = 0.3f;
 				newState = new IdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerIdle";
@@ -325,6 +326,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 			}
 			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle)
 			{
+				PlayerRigidBody.angularVelocity = Vector3.zero;
 				newState = new CrouchingIdlePlayerMovementState(this, inputDevice, PlayerTransform, PlayerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerCrouchingIdle";
 			}
