@@ -33,7 +33,9 @@ public class Bootstrap : MonoBehaviour
 
 	// Игрок
 	private GameObject playerGameObject;
+
 	private GameObject playerHeadParent;
+	private GameObject playerColliderGameObject;
 	private GameObject playerHandRightParent;
 	private GameObject playerHandLeftParent;
 	private GameObject playerFirstPersonHandRight;
@@ -41,7 +43,7 @@ public class Bootstrap : MonoBehaviour
 	// Игрок системы
 	private PlayerBehaviour playerBehaviour;
 	private PlayerMovementController playerMovementController;
-	private PlayerCapsuleCollider playerCollider;
+	private PlayerCapsuleCollider playerColliderController;
 	private PlayerAnimationController playerAnimationController;
 	// Игрок камера
 	private GameObject playerMainCameraGameObject;
@@ -409,10 +411,12 @@ public class Bootstrap : MonoBehaviour
 	{
 		loadingStatusText.text = "Player Systems";
 
+		playerColliderGameObject = FindDeepChildByName(playerGameObject, "Collider");
+
 		// Получение компонентов игрока
 		playerBehaviour = playerGameObject.GetComponent<PlayerBehaviour>();
 		playerMovementController = playerGameObject.GetComponent<PlayerMovementController>();
-		playerCollider = playerGameObject.GetComponentInChildren<PlayerCapsuleCollider>();
+		playerColliderController = playerGameObject.GetComponentInChildren<PlayerCapsuleCollider>();
 		playerAnimationController = playerGameObject.GetComponent<PlayerAnimationController>();
 
 		// Компоненты камеры игрока
@@ -430,8 +434,8 @@ public class Bootstrap : MonoBehaviour
 		// Инициализация полученных компонентов
 		playerBehaviour.Initialize(inputDevice);
 		playerMovementController.Initialize(inputDevice, gameSceneManager, playerBehaviour);
-		playerCollider.Initialize(playerMovementController);
-		playerCameraController.Initialize(inputDevice, gameSceneManager, menuManager, playerMovementController, playerCollider, playerGameObject);
+		playerColliderController.Initialize(playerMovementController);
+		playerCameraController.Initialize(inputDevice, gameSceneManager, menuManager, playerMovementController, playerColliderController, playerGameObject);
 		playerCameraBlurFilter.Initialize(menuManager);
 		playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, playerMovementController, playerCameraController);
 		playerCameraFirstPersonRender.Initialize(playerCameraController, playerHeadParent);
@@ -608,6 +612,8 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("CanvasDialogueMenu", canvasDialogueMenu);
 		ServiceLocator.Register("buttonDialogueYes", buttonDialogueYes);
 		ServiceLocator.Register("buttonDialogueNo", buttonDialogueNo);
+
+		ServiceLocator.Register("playerColliderGameObject", playerColliderGameObject); 
 
 		Debug.Log("SERVICE REGISTERED");
 		yield break;

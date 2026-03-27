@@ -9,7 +9,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	protected Collider playerCollider; // Ссылка на коллайдер игрока
 	protected bool isCollisionIgnored = false; // Флаг для отслеживания игнорирования физики
 	protected bool isPlayerInsideTrigger = false; // Флаг: игрок внутри триггера объекта
-												  // Слои для Physics.IgnoreLayerCollision
+
+	protected GameObject playerColliderGameObject; // // Слои для Physics.IgnoreLayerCollision
 	protected int pickableLayer;
 	protected int playerLayer;
 	public GameObject CachedPlayer { get; protected set; }
@@ -33,10 +34,13 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	{
 		pickableLayer = LayerMask.NameToLayer("Pickable");
 		playerLayer = LayerMask.NameToLayer("Player");
+		playerColliderGameObject  = ServiceLocator.Resolve<GameObject>("playerColliderGameObject");
+		playerCollider = playerColliderGameObject.GetComponent<Collider>();
+
 		Collider = GetComponent<Collider>();
 		RigidBody = GetComponent<Rigidbody>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
-		playerCollider = CachedPlayer.GetComponent<Collider>(); // Получаем коллайдер игрока
+	
 
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
@@ -97,14 +101,18 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		transform.parent = null;
 
 		// 1. Игнорируем столкновения между слоем этого объекта (Pickable) и слоем Player
-		Physics.IgnoreLayerCollision(gameObject.layer, playerLayer, true);
+		// 1. Игнорируем столкновения ТОЛЬКО между этим конкретным объектом и игроком
+
+		Physics.IgnoreCollision(Collider, playerCollider, true);
+		isCollisionIgnored = true; // Включаем флаг, чтобы знать, что мы отключили столкновение
+		
 
 		// 2. Запускаем корутину, которая подождет 0.1 секунды и вернет столкновения
 		StartCoroutine(EnableCollisionAfterDelay(0.25f));
 
 		SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByBuildIndex(1));
 	}
-	// Корутина: ждет заданное время и включает столкновения обратно
+	//Корутина: ждет заданное время и включает столкновения обратно
 	IEnumerator EnableCollisionAfterDelay(float delay)
 	{
 		// Ждем 0.1 секунды (или другое указанное время)
