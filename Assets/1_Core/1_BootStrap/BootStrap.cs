@@ -630,6 +630,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("MainMenuReadNews", mainMenuReadNews);
 		ServiceLocator.Register("PlayerCameraBlurFilter", playerCameraBlurFilter);
 		ServiceLocator.Register("buttonsLockElectrical", buttonsLockElectrical);
+		ServiceLocator.Register("PlayerBehaviour", playerBehaviour);
 
 		ServiceLocator.Register("NPCphrases", NPCphrasesText);
 		ServiceLocator.Register("NPCdialogueText", NPCdialogueText);

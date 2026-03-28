@@ -1,5 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 public class GameController
 {
 	public bool IsMainMenuOpen {  get; private set; }
@@ -15,6 +14,8 @@ public class GameController
 	public delegate void MainMenuEventHandler();
 	public event MainMenuEventHandler OnOpenMainMenu;
 
+	
+	
 	public GameController()
 	{
 		IsPlayerAbleToMove = true;
@@ -73,4 +74,6 @@ public class GameController
 		Debug.Log("Close MAINMENU");
 
 	}
+
+
 }

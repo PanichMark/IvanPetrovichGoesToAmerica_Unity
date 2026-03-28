@@ -96,8 +96,9 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		yield return new WaitWhile(() => !Input.anyKeyDown);
 
 		canvasLoadingScreen.SetActive(false);
-		gameController.SceneLoadEnded();
+		
 		Time.timeScale = 1f; // Возвращаем нормальный таймскейл
+		gameController.SceneLoadEnded();
 		Debug.Log($"SceneLoaded {scene}");
 
 		yield break;
@@ -161,6 +162,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 		OnEndLoadMainMenuScene?.Invoke();
+		gameController.OpenMainMenu();
 		Debug.Log("Конец загрузки ГлавногоМеню");
 		//gameController.SceneLoadEnded();
 		canvasLoadingScreen.SetActive(false);
