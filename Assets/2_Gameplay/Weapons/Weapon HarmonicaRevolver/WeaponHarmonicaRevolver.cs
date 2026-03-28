@@ -4,13 +4,25 @@ public class WeaponHarmonicaRevolver : RangedWeaponAbstract
 {
 	public override float WeaponDamage => 30f; // Устанавливаем постоянное значение урона для револьвера
 
-	
+
 	public override string WeaponNameSystem => "HarmonicaRevolver";
 	public override string WeaponNameUI => "Револьвер Гармоника";
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheelButtons/Pistol icon");
 
 
+	protected override void InitializeWeapon()
+	{
+		WeaponAmmoType = AmmoTypes.Ammo9mm;
+		// Здесь мы задаем параметры КОНКРЕТНО для этого револьвера
+		PlayerAmmoMagazineMax = 6; // Барабан на 6 патронов
+		PlayerAmmoMagazineCurrent = 6; // Начинаем с полным барабаном
 
+		// Тип патронов тоже задается здесь (или можно через инспектор)
+		
+
+		Debug.Log(PlayerAmmoMagazineMax);
+		Debug.Log(PlayerAmmoMagazineCurrent);
+	}
 }
 
 

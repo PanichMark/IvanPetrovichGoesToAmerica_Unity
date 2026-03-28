@@ -3,117 +3,95 @@ using UnityEngine;
 
 public class RangedWeaponAbstract : WeaponAbstract
 {
-	public TMP_Text PlayerAmmoText;
-	private GameObject playerCamera;
-	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
-	public int PlayerAmmoTotalMax { get; private set; }
-	public int PlayerAmmoTotalCurrent { get; private set; }
-	public int PlayerAmmoMagazineMax { get; private set; }
-	public int PlayerAmmoMagazineCurrent { get; private set; }
-	public int PlayerAmmoReserve { get; private set; }
+	private TMP_Text PlayerAmmoText;
+	protected AmmoTypes WeaponAmmoType;
 
-	private void Update()
-	{
-		Debug.Log(PlayerAmmoMagazineCurrent);
-	}
+	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
+	private GameObject playerCamera;
+
+	// Свойства для общего запаса (Total) - получаем из менеджера
+	public int PlayerAmmoTotalMax => playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].Max;
+	public int PlayerAmmoTotalCurrent => playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].Current;
+
+	// Свойства магазина (Magazine) - локальные для оружия
+	protected int PlayerAmmoMagazineMax;
+	protected int PlayerAmmoMagazineCurrent;
 
 	private void Start()
 	{
 		playerCamera = ServiceLocator.Resolve<GameObject>("playerMainCameraGameObject");
 		playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("playerResourcesAmmoManager");
 
-		PlayerAmmoTotalMax = 40;
-		PlayerAmmoTotalCurrent = 10;
-		PlayerAmmoMagazineMax = 5;
-		PlayerAmmoMagazineCurrent = 5;
-		
-
-		PlayerAmmoReserve = PlayerAmmoTotalCurrent - PlayerAmmoMagazineCurrent;
+		InitializeWeapon();
 	}
+	protected virtual void InitializeWeapon()
+	{
 
+	}
+	// Этот метод вызывается извне (например, по нажатию кнопки)
 	public override void WeaponAttack()
 	{
-		Debug.Log("Revolver Attack");
-		Shoot(WeaponDamage);
-		//PlayerAmmoManager.Instance.Shoot(WeaponDamage);
-	}
-
-	public void Shoot(float weaponDamage)
-	{
+		// Проверяем, есть ли патроны в магазине перед выстрелом
 		if (PlayerAmmoMagazineCurrent > 0)
 		{
-			// Посылаем луч от положения камеры в направлении её обзора
-			RaycastHit hitInfo;
-			if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitInfo, 100f))
-			{
-				// Проверяем, попал ли луч в объект с интерфейсом IDamageable
-				IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
-				if (damageable != null)
-				{
-					damageable.TakeDamage(weaponDamage); // Вызываем метод TakeDamage у объекта
-				}
-
-			}
-			Debug.Log("RevolverAttack");
-			PlayerAmmoMagazineCurrent--;
-			PlayerAmmoTotalCurrent--;
-			Debug.Log($"Magazine ammo remaining: {PlayerAmmoMagazineCurrent}");
+			Shoot(WeaponDamage);
 		}
 		else
 		{
-			Debug.Log("Not enought Ammo");
+			Debug.Log("Not enough Ammo");
 		}
-
 	}
 
-
-
-	public void AddAmmo(int ammoNumber)
+	// Логика самого выстрела: рейкаст и уменьшение счетчиков
+	private void Shoot(float weaponDamage)
 	{
-		// Проверяем, достигли ли мы максимального общего количества патронов
-		if (PlayerAmmoTotalCurrent >= PlayerAmmoTotalMax)
+		// --- Логика попадания ---
+		RaycastHit hitInfo;
+		if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hitInfo, 100f))
 		{
-			Debug.Log("Нельзя добавить патроны: достигнут максимум.");
-			return;
+			IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
+			if (damageable != null)
+			{
+				damageable.TakeDamage(weaponDamage);
+			}
 		}
+		Debug.Log($"{WeaponAmmoType} Attack");
 
-		// Вычисляем фактическое количество патронов, которое можно добавить
-		int actualAdded = Mathf.Min(ammoNumber, PlayerAmmoTotalMax - PlayerAmmoTotalCurrent);
+		// --- Логика боеприпасов ---
+		// 1. Уменьшаем магазин
+		PlayerAmmoMagazineCurrent--;
 
-		// Добавляем патроны к общему запасу
-		PlayerAmmoTotalCurrent += actualAdded;
-
-		// Обновляем резервные патроны
-		PlayerAmmoReserve = PlayerAmmoTotalCurrent - PlayerAmmoMagazineCurrent;
+		// 2. Уменьшаем общий запас через менеджер
+		playerResourcesAmmoManager.ModifyAmmo(WeaponAmmoType, -1);
 	}
 
-	// Метод для перезарядки магазина
 	public void Reload()
 	{
-		// Высчитываем, сколько патронов можем добавить в магазин
-		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerAmmoMagazineMax - PlayerAmmoMagazineCurrent);
-
-		// Если магазин уже полон или нет патронов в резерве, не выполняем операцию
-
-
-		if (PlayerAmmoMagazineCurrent == 5)
+		// Проверки на возможность перезарядки
+		if (PlayerAmmoMagazineCurrent >= PlayerAmmoMagazineMax)
 		{
-			Debug.Log("Magazine is alreafy full");
+			Debug.Log("Magazine is already full");
 			return;
 		}
-		else if (PlayerAmmoReserve == 0)
+
+		// Вычисляем, сколько патронов осталось в общем запасе
+		int reserve = PlayerAmmoTotalCurrent - PlayerAmmoMagazineCurrent;
+
+		if (reserve <= 0)
 		{
 			Debug.Log("Not enough Ammo to reload");
 			return;
 		}
-		else
-		{
-			Debug.Log("Reloaded");
-			// Переносим патроны из резерва в магазин
-			PlayerAmmoMagazineCurrent += ammoToAdd;
-			PlayerAmmoReserve -= ammoToAdd;
-		}
+
+		// Сколько патронов можем взять из резерва для полной зарядки
+		int ammoToAdd = Mathf.Min(reserve, PlayerAmmoMagazineMax - PlayerAmmoMagazineCurrent);
+
+		Debug.Log("Reloaded");
+
+		// Обновляем магазин
+		PlayerAmmoMagazineCurrent += ammoToAdd;
+
+		// Уменьшаем общий запас патронов на то количество, которое мы зарядили в магазин
+		playerResourcesAmmoManager.ModifyAmmo(WeaponAmmoType, -ammoToAdd);
 	}
-
-
 }
