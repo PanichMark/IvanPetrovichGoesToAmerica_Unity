@@ -57,6 +57,9 @@ public class CanvasHUDammoController : MonoBehaviour
 		this.menuManager.OnOpenDialogueMenu += HideCanvasHUDammo;
 		this.menuManager.OnCloseDialogueMenu += ShowCanvasHUDammo;
 
+
+
+
 		// Подписка на события сцен
 		this.gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDammo;
 		this.gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDammo;
@@ -65,7 +68,10 @@ public class CanvasHUDammoController : MonoBehaviour
 		this.menuManager.OnOpenWeaponWheelMenu += HideCanvasHUDammo;
 		this.menuManager.OnCloseWeaponWheelMenu += ShowCanvasHUDammo;
 
-		this.playerResourcesAmmoManager.OnAmmoChanged += UpdateAmmoDisplay;
+		// НОВЫЕ ПОДПИСКИ (раздельные)
+		this.playerResourcesAmmoManager.OnReserveAmmoChanged += UpdateReserveDisplay;
+		this.playerResourcesAmmoManager.OnMagazineAmmoChanged += UpdateMagazineDisplay;
+
 		this.weaponController.OnWeaponChanged += WeaponAmmo;
 
 		// Скрываем панели по умолчанию
@@ -89,68 +95,111 @@ public class CanvasHUDammoController : MonoBehaviour
 	}
 	private void WeaponAmmo(string activeHand)
 	{
-		// Эта логика теперь нужна только для показа/скрытия самого блока UI,
-		// а не для обновления цифр.
+		// Логика теперь нужна и для показа UI, И для обновления цифр при переключении оружия.
 		if (activeHand == "left")
 		{
 			var ranged = weaponController.LeftHandWeapon?.GetComponent<RangedWeaponAbstract>();
 			if (weaponController.LeftHandWeapon != null && ranged != null)
-			{ 
+			{
 				ShowLeftWeaponAmmo();
-				UpdatePanelText(LeftWeaponAmmoMagazineText, LeftWeaponAmmoReserveText, ranged);
+
+				// --- ДОБАВЬТЕ ЭТИ СТРОЧКИ ---
+				// Обновляем текст магазина из оружия
+				LeftWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
+
+				// Обновляем текст запаса из менеджера
+				if (playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
+				{
+					LeftWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
+				}
 			}
 			else
 			{
 				HideLeftWeaponAmmo();
 			}
 		}
-		else
+		else // Правая рука
 		{
 			var ranged = weaponController.RightHandWeapon?.GetComponent<RangedWeaponAbstract>();
 			if (weaponController.RightHandWeapon != null && ranged != null)
 			{
 				ShowRightWeaponAmmo();
-				UpdatePanelText(RightWeaponAmmoMagazineText, RightWeaponAmmoReserveText, ranged);
+
+				// --- ДОБАВЬТЕ ЭТИ СТРОЧКИ ---
+				RightWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
+
+				if (playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
+				{
+					RightWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
+				}
 			}
 			else
 			{
 				HideRightWeaponAmmo();
 			}
 		}
+
+		if(weaponController.RightHandWeapon == null)
+		{
+			HideRightWeaponAmmo();
+		}
+		if (weaponController.LeftHandWeapon == null)
+		{
+			HideLeftWeaponAmmo();
+		}
+
 	}
 
 
-	private void UpdateAmmoDisplay(AmmoTypes type, int newTotalAmount)
+	// Этот метод вызывается, когда меняется ТОЛЬКО общий запас (например, подобрали патроны)
+	private void UpdateReserveDisplay(AmmoTypes type, int newTotalAmount)
 	{
+		// Проверяем правую руку
 		if (weaponController.RightHandWeapon != null)
 		{
 			var rightRanged = weaponController.RightHandWeapon.GetComponent<RangedWeaponAbstract>();
 			if (rightRanged != null && rightRanged.WeaponAmmoType == type)
 			{
-				RightWeaponAmmoMagazineText.text = rightRanged.PlayerAmmoMagazineCurrent.ToString();
 				RightWeaponAmmoReserveText.text = newTotalAmount.ToString();
 				return;
 			}
 		}
 
+		// Проверяем левую руку
 		if (weaponController.LeftHandWeapon != null)
 		{
 			var leftRanged = weaponController.LeftHandWeapon.GetComponent<RangedWeaponAbstract>();
 			if (leftRanged != null && leftRanged.WeaponAmmoType == type)
 			{
-				LeftWeaponAmmoMagazineText.text = leftRanged.PlayerAmmoMagazineCurrent.ToString();
 				LeftWeaponAmmoReserveText.text = newTotalAmount.ToString();
 				return;
 			}
 		}
 	}
 
-	private void UpdatePanelText(TMP_Text magazineText, TMP_Text reserveText, RangedWeaponAbstract weapon)
+	// Этот метод вызывается, когда меняется ТОЛЬКО магазин (выстрел или перезарядка)
+	private void UpdateMagazineDisplay(AmmoTypes type, int newMagazineAmount)
 	{
-		magazineText.text = weapon.PlayerAmmoMagazineCurrent.ToString();
-		if (playerResourcesAmmoManager.AmmoDictionary.TryGetValue(weapon.WeaponAmmoType, out var ammoData))
+		// Проверяем правую руку
+		if (weaponController.RightHandWeapon != null)
 		{
-			reserveText.text = ammoData.Current.ToString();
+			var rightRanged = weaponController.RightHandWeapon.GetComponent<RangedWeaponAbstract>();
+			if (rightRanged != null && rightRanged.WeaponAmmoType == type)
+			{
+				RightWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
+				return;
+			}
+		}
+
+		// Проверяем левую руку
+		if (weaponController.LeftHandWeapon != null)
+		{
+			var leftRanged = weaponController.LeftHandWeapon.GetComponent<RangedWeaponAbstract>();
+			if (leftRanged != null && leftRanged.WeaponAmmoType == type)
+			{
+				LeftWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
+				return;
+			}
 		}
 	}
 

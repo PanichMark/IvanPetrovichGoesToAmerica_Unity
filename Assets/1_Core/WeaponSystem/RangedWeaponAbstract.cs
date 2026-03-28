@@ -10,13 +10,13 @@ public abstract class RangedWeaponAbstract : WeaponAbstract
 	private GameObject playerCamera;
 
 	// Свойства для общего запаса (Total) - получаем из менеджера
-	public int PlayerAmmoTotalMax => playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].Max;
-	public int PlayerAmmoTotalCurrent => playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].Current;
+	public int PlayerAmmoTotalMax => playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoMax;
+	public int PlayerAmmoTotalCurrent => playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoCurrent;
 
 	// Свойства магазина (Magazine) - локальные для оружия
 	public AmmoTypes WeaponAmmoType { get; protected set; }
-	public int PlayerAmmoMagazineCurrent { get; protected set; }
-	public int PlayerAmmoMagazineMax { get; protected set; }
+	public int MagazineAmmoCurrent { get; protected set; }
+	public int MagazineAmmoMax { get; protected set; }
 
 	private void Start()
 	{
@@ -40,7 +40,7 @@ public abstract class RangedWeaponAbstract : WeaponAbstract
 	public override void WeaponAttack()
 	{
 		// Проверяем, есть ли патроны в магазине перед выстрелом
-		if (PlayerAmmoMagazineCurrent > 0)
+		if (MagazineAmmoCurrent > 0)
 		{
 			Shoot(WeaponDamage);
 		}
@@ -67,24 +67,25 @@ public abstract class RangedWeaponAbstract : WeaponAbstract
 
 		// --- Логика боеприпасов ---
 		// 1. Уменьшаем магазин
-		PlayerAmmoMagazineCurrent--;
+		MagazineAmmoCurrent--;
 
 		// 2. Уменьшаем общий запас через менеджер
 		//Debug.Log(playerResourcesAmmoManager);
-		playerResourcesAmmoManager.ModifyAmmo(WeaponAmmoType, -1);
+		//playerResourcesAmmoManager.ModifyAmmo(WeaponAmmoType, -1);
+		playerResourcesAmmoManager.OnWeaponFired(WeaponAmmoType, MagazineAmmoCurrent);
 	}
 
 	public void Reload()
 	{
 		// Проверки на возможность перезарядки
-		if (PlayerAmmoMagazineCurrent >= PlayerAmmoMagazineMax)
+		if (MagazineAmmoCurrent >= MagazineAmmoMax)
 		{
 			Debug.Log("Magazine is already full");
 			return;
 		}
 
 		// Вычисляем, сколько патронов осталось в общем запасе
-		int reserve = PlayerAmmoTotalCurrent - PlayerAmmoMagazineCurrent;
+		int reserve = PlayerAmmoTotalCurrent;
 
 		if (reserve <= 0)
 		{
@@ -93,14 +94,15 @@ public abstract class RangedWeaponAbstract : WeaponAbstract
 		}
 
 		// Сколько патронов можем взять из резерва для полной зарядки
-		int ammoToAdd = Mathf.Min(reserve, PlayerAmmoMagazineMax - PlayerAmmoMagazineCurrent);
+		int ammoToAdd = Mathf.Min(reserve, MagazineAmmoMax - MagazineAmmoCurrent);
 
 		Debug.Log("Reloaded");
 
 		// Обновляем магазин
-		PlayerAmmoMagazineCurrent += ammoToAdd;
+		MagazineAmmoCurrent += ammoToAdd;
 
 		// Уменьшаем общий запас патронов на то количество, которое мы зарядили в магазин
-		playerResourcesAmmoManager.ModifyAmmo(WeaponAmmoType, -ammoToAdd);
+		playerResourcesAmmoManager.ModifyReserveAmmo(WeaponAmmoType, -ammoToAdd);
+		playerResourcesAmmoManager.OnWeaponFired(WeaponAmmoType, MagazineAmmoCurrent);
 	}
 }

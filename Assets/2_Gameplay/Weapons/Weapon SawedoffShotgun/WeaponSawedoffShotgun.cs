@@ -8,8 +8,8 @@ public class WeaponSawedoffShotgun : RangedWeaponAbstract
 	{
 		WeaponAmmoType = AmmoTypes.Ammo12gauge;
 		// Здесь мы задаем параметры КОНКРЕТНО для этого револьвера
-		PlayerAmmoMagazineMax = 2; // Барабан на 6 патронов
-		PlayerAmmoMagazineCurrent = 2; // Начинаем с полным барабаном
+		MagazineAmmoMax = 2; // Барабан на 6 патронов
+		MagazineAmmoCurrent = 2; // Начинаем с полным барабаном
 
 		// Тип патронов тоже задается здесь (или можно через инспектор)
 	}

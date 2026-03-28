@@ -5,6 +5,6 @@ using System;
 public struct AmmoTypeData
 {
 	public AmmoTypes Type;
-	public int Max;
-	public int Current;
+	public int TotalAmmoMax;
+	public int TotalAmmoCurrent;
 }

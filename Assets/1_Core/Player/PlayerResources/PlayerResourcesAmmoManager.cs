@@ -8,32 +8,45 @@ public delegate void OnAmmoChangedHandler(AmmoTypes type, int newAmount);
 public class PlayerResourcesAmmoManager : MonoBehaviour
 {
 	// 2. Создаем статическое событие (или обычное, если менеджер один)
-	public event OnAmmoChangedHandler OnAmmoChanged;
+	public event OnAmmoChangedHandler OnReserveAmmoChanged;
+	public event OnAmmoChangedHandler OnMagazineAmmoChanged;
 	// Используем словарь для быстрого доступа по типу патронов
 	public Dictionary<AmmoTypes, AmmoTypeData> AmmoDictionary = new Dictionary<AmmoTypes, AmmoTypeData>();
 
+	// Внутри класса PlayerResourcesAmmoManager
+
+	// Этот метод будет вызываться оружием
+	public void OnWeaponFired(AmmoTypes type, int newMagazineAmount)
+	{
+		// Здесь мы находимся внутри PlayerResourcesAmmoManager,
+		// поэтому мы имеем полное право вызывать свое событие.
+		OnMagazineAmmoChanged?.Invoke(type, newMagazineAmount);
+	}
+
 	private void Awake()
 	{
-		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { Type = AmmoTypes.Ammo9mm, Max = 100, Current = 80 };
-		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { Type = AmmoTypes.Ammo12gauge, Max = 20, Current = 10 };
+		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { Type = AmmoTypes.Ammo9mm, TotalAmmoMax = 100, TotalAmmoCurrent = 80 };
+		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { Type = AmmoTypes.Ammo12gauge, TotalAmmoMax = 20, TotalAmmoCurrent = 10 };
 	}
 
 	// Метод для изменения количества патронов (учитывает особенности struct)
-	public void ModifyAmmo(AmmoTypes type, int amount)
+	public void ModifyReserveAmmo(AmmoTypes type, int amount)
 	{
 		if (AmmoDictionary.TryGetValue(type, out AmmoTypeData data))
 		{
 			// 1. Достаем структуру из словаря
 			// 2. Изменяем ее копию
-			data.Current = Mathf.Clamp(data.Current + amount, 0, data.Max);
+			data.TotalAmmoCurrent = Mathf.Clamp(data.TotalAmmoCurrent + amount, 0, data.TotalAmmoMax);
 			// 3. Помещаем измененную копию обратно в словарь
 			AmmoDictionary[type] = data;
 
-			OnAmmoChanged.Invoke(type, data.Current);
+			OnReserveAmmoChanged?.Invoke(type, data.TotalAmmoCurrent);
 		}
 		else
 		{
 			Debug.LogWarning($"Тип патронов {type} не найден в словаре.");
 		}
 	}
+
+	
 }

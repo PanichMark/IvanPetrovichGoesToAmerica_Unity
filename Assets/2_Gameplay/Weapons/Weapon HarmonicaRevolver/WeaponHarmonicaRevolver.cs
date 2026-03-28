@@ -14,8 +14,8 @@ public class WeaponHarmonicaRevolver : RangedWeaponAbstract
 	{
 		WeaponAmmoType = AmmoTypes.Ammo9mm;
 		// Здесь мы задаем параметры КОНКРЕТНО для этого револьвера
-		PlayerAmmoMagazineMax = 5; // Барабан на 6 патронов
-		PlayerAmmoMagazineCurrent = 5; // Начинаем с полным барабаном
+		MagazineAmmoMax = 5; // Барабан на 6 патронов
+		MagazineAmmoCurrent = 5; // Начинаем с полным барабаном
 
 		// Тип патронов тоже задается здесь (или можно через инспектор)
 		
