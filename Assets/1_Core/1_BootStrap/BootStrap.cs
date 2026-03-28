@@ -586,7 +586,7 @@ public class Bootstrap : MonoBehaviour
 		weaponAnimationController.Initialize(playerGameObject, playerBehaviour, playerCameraController, weaponController, legKickAttack);
 		weaponFirstPersonRender.Initialize(gameSceneManager, playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent);
 
-		canvasHUDammoController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDammo, weaponController, playerResourcesAmmoManager,
+		canvasHUDammoController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDammo, weaponController, playerResourcesAmmoManager, playerBehaviour,
 				RightWeaponAmmoMagazine,
 		RightWeaponAmmoReserve,
 		RightWeaponAmmoSeparator,

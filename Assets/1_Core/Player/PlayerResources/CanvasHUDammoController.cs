@@ -9,6 +9,7 @@ public class CanvasHUDammoController : MonoBehaviour
 	private GameController gameController;
 	private WeaponController weaponController;
 	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
+	private PlayerBehaviour playerBehaviour;
 
 	// Ссылки на родительские объекты панелей
 	private GameObject RightWeaponAmmoMagazine;
@@ -25,7 +26,7 @@ public class CanvasHUDammoController : MonoBehaviour
 	private TMP_Text LeftWeaponAmmoReserveText;
 
 	public void Initialize(GameSceneManager gameSceneManager, GameController gameController, MenuManager menuManager, GameObject canvasHUDPlayerResources, WeaponController weaponController,
-		PlayerResourcesAmmoManager playerResourcesAmmoManager,
+		PlayerResourcesAmmoManager playerResourcesAmmoManager, PlayerBehaviour playerBehaviour,
 		GameObject RightWeaponAmmoMagazine, GameObject RightWeaponAmmoReserve, GameObject RightWeaponAmmoSeparator,
 		GameObject LeftWeaponAmmoMagazine, GameObject LeftWeaponAmmoReserve, GameObject LeftWeaponAmmoSeparator)
 	{
@@ -35,6 +36,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		this.weaponController = weaponController;
 		this.playerResourcesAmmoManager = playerResourcesAmmoManager;
 		this.gameController	= gameController;
+		this.playerBehaviour = playerBehaviour;
 
 		this.RightWeaponAmmoMagazine = RightWeaponAmmoMagazine;
 		this.RightWeaponAmmoReserve = RightWeaponAmmoReserve;
@@ -58,7 +60,8 @@ public class CanvasHUDammoController : MonoBehaviour
 		this.menuManager.OnCloseDialogueMenu += ShowCanvasHUDammo;
 
 
-
+		this.playerBehaviour.OnPlayerArmed += ShowCanvasHUDammo;
+		this.playerBehaviour.OnPlayerDisarmed += HideCanvasHUDammo;
 
 		// Подписка на события сцен
 		this.gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDammo;
