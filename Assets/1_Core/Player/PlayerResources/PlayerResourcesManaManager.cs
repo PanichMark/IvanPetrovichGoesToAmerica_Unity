@@ -38,11 +38,11 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 
 		//if (MenuManager.IsPauseMenuOpened)
 		//{
-			ManaBarSlider.gameObject.SetActive(false);
+			//ManaBarSlider.gameObject.SetActive(false);
 		//}
 		//else
 		//{
-			ManaBarSlider.gameObject.SetActive(true);
+			//ManaBarSlider.gameObject.SetActive(true);
 		//}
 	}
 

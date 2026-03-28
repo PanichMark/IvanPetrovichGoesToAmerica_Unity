@@ -38,11 +38,11 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 
 		//if (MenuManager.IsPauseMenuOpened)
 		//{
-			HealthBarSlider.gameObject.SetActive(false);
+		//	HealthBarSlider.gameObject.SetActive(false);
 		//}
 		//else
 		//{
-			HealthBarSlider.gameObject.SetActive(true);
+			//HealthBarSlider.gameObject.SetActive(true);
 		//}
 	}
 

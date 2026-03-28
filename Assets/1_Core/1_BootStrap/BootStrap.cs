@@ -53,8 +53,10 @@ public class Bootstrap : MonoBehaviour
 
 	// Игрок ресурсы
 	private GameObject playerResourcesGameObject;
-	private CanvasHUDPlayerResourcesController canvasHUDPlayerResourcesController;
-	[Header("Player Resources")] [SerializeField] private GameObject canvasHUDPlayerResources;
+	private CanvasHUDhealthAndManaController canvasHUDhealthAndManaController;
+	private CanvasHUDammoController canvasHUDammoController;
+	[Header("Player Resources")] [SerializeField] private GameObject canvasHUDhealthAndMana;
+	[SerializeField] private GameObject canvasHUDammo;
 	// Игрок ресурсы деньги
 	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
 	private TMP_Text playerMoneyTextGameObject;
@@ -70,7 +72,13 @@ public class Bootstrap : MonoBehaviour
 	private TextMeshProUGUI ManaReplenishItemNumber;
 	// Игрок ресурсы патроны
 	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
-	
+	private GameObject RightWeaponAmmoMagazine;
+	private GameObject RightWeaponAmmoReserve;
+	private GameObject RightWeaponAmmoSeparator;
+	private GameObject LeftWeaponAmmoMagazine;
+	private GameObject LeftWeaponAmmoReserve;
+	private GameObject LeftWeaponAmmoSeparator;
+
 	// Меню
 	private GameObject menuManagerGameobject;
 	private MenuManager menuManager;
@@ -265,12 +273,13 @@ public class Bootstrap : MonoBehaviour
 		canvasPauseSubMenuSettings = Instantiate(canvasPauseSubMenuSettings);
 		canvasMenuWeaponWheel = Instantiate(canvasMenuWeaponWheel);
 		canvasHUDInteraction = Instantiate(canvasHUDInteraction);
-		canvasHUDPlayerResources = Instantiate(canvasHUDPlayerResources);
+		canvasHUDhealthAndMana = Instantiate(canvasHUDhealthAndMana);
 		canvasLoadingScreen = Instantiate(canvasLoadingScreen);
 		canvasReadNoteMenu = Instantiate(canvasReadNoteMenu);
 		canvasLockpickMechanicalMenu = Instantiate(canvasLockpickMechanicalMenu);
 		canvasLockpickElectronicMenu = Instantiate(canvasLockpickElectronicMenu);
 		canvasDialogueMenu = Instantiate(canvasDialogueMenu);
+		canvasHUDammo = Instantiate(canvasHUDammo);
 		yield break;
 	}
 
@@ -450,23 +459,34 @@ public class Bootstrap : MonoBehaviour
 		playerResourcesGameObject = new GameObject("PlayerResources");
 
 		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber").GetComponent<TMP_Text>();
-		HealthBarSlider = canvasHUDPlayerResources.transform.Find("Health Slider").GetComponent<Slider>();
+		HealthBarSlider = canvasHUDhealthAndMana.transform.Find("Health Slider").GetComponent<Slider>();
 		HealingItemButton = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemButton").GetComponent<Button>();
 		HealingItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemsNumber").GetComponent<TextMeshProUGUI>();
-		ManaBarSlider = canvasHUDPlayerResources.transform.Find("Mana Slider").GetComponent<Slider>();
+		ManaBarSlider = canvasHUDhealthAndMana.transform.Find("Mana Slider").GetComponent<Slider>();
 		ManaReplenishtemButton = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemButton ").GetComponent<Button>();
 		ManaReplenishItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemsNumber").GetComponent<TextMeshProUGUI>();
 
-		canvasHUDPlayerResourcesController = playerResourcesGameObject.AddComponent<CanvasHUDPlayerResourcesController>();
+		canvasHUDhealthAndManaController = playerResourcesGameObject.AddComponent<CanvasHUDhealthAndManaController>();
+		canvasHUDammoController = playerResourcesGameObject.AddComponent<CanvasHUDammoController>();
 		playerResourcesMoneyManager = playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
 		playerResourcesHealthManager = playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
 		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
 		playerResourcesAmmoManager = playerResourcesGameObject.AddComponent<PlayerResourcesAmmoManager>();
 
-		canvasHUDPlayerResourcesController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDPlayerResources);
+		canvasHUDhealthAndManaController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDhealthAndMana);
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
 		playerResourcesHealthManager.Initialize(HealthBarSlider, HealingItemButton, HealingItemNumber);
 		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
+
+		RightWeaponAmmoMagazine = canvasHUDammo.transform.Find("RightWeaponAmmoMagazine").gameObject;
+		RightWeaponAmmoReserve = canvasHUDammo.transform.Find("RightWeaponAmmoReserve").gameObject;
+		RightWeaponAmmoSeparator = canvasHUDammo.transform.Find("RightWeaponAmmoSeparator").gameObject;
+		LeftWeaponAmmoMagazine = canvasHUDammo.transform.Find("LeftWeaponAmmoMagazine").gameObject;
+		LeftWeaponAmmoReserve = canvasHUDammo.transform.Find("LeftWeaponAmmoReserve").gameObject;
+		LeftWeaponAmmoSeparator = canvasHUDammo.transform.Find("LeftWeaponAmmoSeparator").gameObject;
+
+
+
 
 		Debug.Log("PLAYER RESOURCES INITIALIZED");
 		yield break;
@@ -565,6 +585,16 @@ public class Bootstrap : MonoBehaviour
 			centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName, weaponIconBig);
 		weaponAnimationController.Initialize(playerGameObject, playerBehaviour, playerCameraController, weaponController, legKickAttack);
 		weaponFirstPersonRender.Initialize(gameSceneManager, playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent);
+
+		canvasHUDammoController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDammo, weaponController,
+				RightWeaponAmmoMagazine,
+		RightWeaponAmmoReserve,
+		RightWeaponAmmoSeparator,
+		LeftWeaponAmmoMagazine,
+		LeftWeaponAmmoReserve,
+		LeftWeaponAmmoSeparator);
+
+	
 
 		Debug.Log("WEAPON SYSTEM INITIALIZED");
 		yield break;
