@@ -8,16 +8,29 @@ public class GameController
 	public bool IsPlayerDead { get; private set; }
 	public bool IsGameAbleToSave { get; private set; }
 
+	public bool IsPlayerPlunging { get; private set; }
+
+	public bool IsPlayerAbleToMove { get; private set;}
+
 	public delegate void MainMenuEventHandler();
 	public event MainMenuEventHandler OnOpenMainMenu;
 
 	public GameController()
 	{
+		IsPlayerAbleToMove = true;
 		Debug.Log("GameController Initialized");
 	}
 
-	
-	
+	public void StartPlunging()
+	{
+		IsPlayerAbleToMove = false;
+		IsPlayerPlunging = true;
+	}
+	public void StopPlunging()
+	{
+		IsPlayerAbleToMove = true;
+		IsPlayerPlunging = false;
+	}
 	public void PlayerIsDead()
 	{
 		IsPlayerDead = true;

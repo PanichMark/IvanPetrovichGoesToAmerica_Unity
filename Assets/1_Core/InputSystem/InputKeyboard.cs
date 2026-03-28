@@ -75,11 +75,11 @@ public class InputKeyboard : IInputDevice
 	public bool GetKeyUp()
 	{
 		if (Input.GetKey(keyBindings["MoveForward"]) &&
-			Input.GetKey(keyBindings["MoveBackward"]) && gameController.IsPlayerControllable)
+			Input.GetKey(keyBindings["MoveBackward"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return false;
 		}
-		else if (Input.GetKey(keyBindings["MoveForward"]) && gameController.IsPlayerControllable)
+		else if (Input.GetKey(keyBindings["MoveForward"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -89,11 +89,11 @@ public class InputKeyboard : IInputDevice
 	public bool GetKeyDown()
 	{
 		if (Input.GetKey(keyBindings["MoveForward"]) &&
-			Input.GetKey(keyBindings["MoveBackward"]) && gameController.IsPlayerControllable)
+			Input.GetKey(keyBindings["MoveBackward"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return false;
 		}
-		else if (Input.GetKey(keyBindings["MoveBackward"]) && gameController.IsPlayerControllable)
+		else if (Input.GetKey(keyBindings["MoveBackward"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -103,11 +103,11 @@ public class InputKeyboard : IInputDevice
 	public bool GetKeyRight()
 	{
 		if (Input.GetKey(keyBindings["MoveRight"]) &&
-			Input.GetKey(keyBindings["MoveLeft"]) && gameController.IsPlayerControllable)
+			Input.GetKey(keyBindings["MoveLeft"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return false;
 		}
-		else if (Input.GetKey(keyBindings["MoveRight"]) && gameController.IsPlayerControllable)
+		else if (Input.GetKey(keyBindings["MoveRight"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -117,11 +117,11 @@ public class InputKeyboard : IInputDevice
 	public bool GetKeyLeft()
 	{
 		if (Input.GetKey(keyBindings["MoveRight"]) &&
-			Input.GetKey(keyBindings["MoveLeft"]) && gameController.IsPlayerControllable)
+			Input.GetKey(keyBindings["MoveLeft"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return false;
 		}
-		else if (Input.GetKey(keyBindings["MoveLeft"]) && gameController.IsPlayerControllable)
+		else if (Input.GetKey(keyBindings["MoveLeft"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -183,7 +183,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyRun()
 	{
-		if (Input.GetKey(keyBindings["Run"]) && gameController.IsPlayerControllable)
+		if (Input.GetKey(keyBindings["Run"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -192,7 +192,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyJump()
 	{
-		if (Input.GetKeyDown(keyBindings["Jump"]) && gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(keyBindings["Jump"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -201,7 +201,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyJumpBeingHeld()
 	{
-		if (Input.GetKey(keyBindings["Jump"]) && gameController.IsPlayerControllable)
+		if (Input.GetKey(keyBindings["Jump"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -210,7 +210,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyCrouch()
 	{
-		if (Input.GetKeyDown(keyBindings["Crouch"]) && gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(keyBindings["Crouch"]) && gameController.IsPlayerControllable && gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
