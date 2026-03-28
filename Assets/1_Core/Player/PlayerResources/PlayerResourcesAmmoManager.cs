@@ -2,8 +2,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+// 1. Определяем делегат (сигнатуру метода)
+public delegate void OnAmmoChangedHandler(AmmoTypes type, int newAmount);
+
 public class PlayerResourcesAmmoManager : MonoBehaviour
 {
+	// 2. Создаем статическое событие (или обычное, если менеджер один)
+	public event OnAmmoChangedHandler OnAmmoChanged;
 	// Используем словарь для быстрого доступа по типу патронов
 	public Dictionary<AmmoTypes, AmmoTypeData> AmmoDictionary = new Dictionary<AmmoTypes, AmmoTypeData>();
 
@@ -23,6 +28,8 @@ public class PlayerResourcesAmmoManager : MonoBehaviour
 			data.Current = Mathf.Clamp(data.Current + amount, 0, data.Max);
 			// 3. Помещаем измененную копию обратно в словарь
 			AmmoDictionary[type] = data;
+
+			OnAmmoChanged.Invoke(type, data.Current);
 		}
 		else
 		{

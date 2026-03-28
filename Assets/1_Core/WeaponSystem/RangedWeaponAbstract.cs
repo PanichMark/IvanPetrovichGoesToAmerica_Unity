@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class RangedWeaponAbstract : WeaponAbstract
 {
 	private TMP_Text PlayerAmmoText;
-	protected AmmoTypes WeaponAmmoType;
+
 
 	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
 	private GameObject playerCamera;
@@ -14,8 +14,9 @@ public abstract class RangedWeaponAbstract : WeaponAbstract
 	public int PlayerAmmoTotalCurrent => playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].Current;
 
 	// Свойства магазина (Magazine) - локальные для оружия
-	protected int PlayerAmmoMagazineMax;
-	protected int PlayerAmmoMagazineCurrent;
+	public AmmoTypes WeaponAmmoType { get; protected set; }
+	public int PlayerAmmoMagazineCurrent { get; protected set; }
+	public int PlayerAmmoMagazineMax { get; protected set; }
 
 	private void Start()
 	{
