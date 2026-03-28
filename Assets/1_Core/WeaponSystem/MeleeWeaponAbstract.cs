@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MeleeWeaponAbstract : WeaponAbstract
+public abstract class MeleeWeaponAbstract : WeaponAbstract
 {
 
 }

@@ -187,60 +187,82 @@ public class WeaponController : MonoBehaviour
 	// Выбор оружия
 	public void SelectWeapon(GameObject weaponPrefab)
 	{
-		
+		// 1. Создаем экземпляр (копию) оружия в сцене.
+		// Это ключевой момент: мы работаем с объектом в мире, а не с шаблоном в папке Assets.
+		GameObject weaponInstance = Instantiate(weaponPrefab);
 
-		WeaponAbstract weaponComponent = weaponPrefab.GetComponent<WeaponAbstract>();
+		// 2. Получаем компонент оружия от нового экземпляра.
+		WeaponAbstract weaponComponent = weaponInstance.GetComponent<WeaponAbstract>();
 		if (weaponComponent == null)
 		{
-			Debug.LogError("Prefab must contain a WeaponClass component.");
+			Debug.LogError("Prefab must contain a WeaponAbstract component.");
+			Destroy(weaponInstance); // Удаляем неправильно созданный объект
 			return;
 		}
 
-		// Проверяем конфликт оружия в руках
-		if (isLeftHand && LeftHandWeapon != null && LeftHandWeapon == weaponPrefab ||
-			!isLeftHand && RightHandWeapon != null && RightHandWeapon == weaponPrefab)
+		// --- Блок проверки конфликтов ---
+
+		// 3. Проверка: Не пытаемся ли мы взять в ту же руку то же самое оружие?
+		bool isSameObject = (isLeftHand && LeftHandWeapon == weaponInstance) || (!isLeftHand && RightHandWeapon == weaponInstance);
+		if (isSameObject)
 		{
-			return; // Ничего не меняем, если оружие уже установлено
+			return; // Ничего не делаем
 		}
 
-		// Проверяем конфликт имен системы оружия
-		if (isLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == weaponComponent.WeaponNameSystem ||
-			!isLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == weaponComponent.WeaponNameSystem)
+		// 4. Проверка конфликта имен системы (например, нельзя два одинаковых револьвера)
+		string newWeaponSystemName = weaponComponent.WeaponNameSystem;
+
+		if (isLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
-			// Если совпадают имена системы, убираем предыдущее оружие
-			if (isLeftHand)
-			{
-				DestroyWeapon(WeaponHandsEnum.RightHand);
-			}
-			else
-			{
-				DestroyWeapon(WeaponHandsEnum.LeftHand);
-			}
+			// Если в правой руке оружие с таким же системным именем, убираем его.
+			DestroyWeapon(WeaponHandsEnum.RightHand);
+		}
+		else if (!isLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
+		{
+			// Если в левой руке оружие с таким же системным именем, убираем его.
+			DestroyWeapon(WeaponHandsEnum.LeftHand);
 		}
 
-		// Установка нового оружия
+		// --- Блок установки нового оружия ---
+
 		if (isLeftHand)
 		{
+			// Если в левой руке уже что-то есть - убираем это.
 			if (LeftHandWeapon != null)
 			{
 				DestroyWeapon(WeaponHandsEnum.LeftHand);
 			}
-			LeftHandWeapon = weaponPrefab;
+
+			// Устанавливаем НОВЫЙ экземпляр в левую руку
+			LeftHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke("left");
+
+			// Создаем модель для этой руки
 			weaponComponent.InstantiateWeaponModel(WeaponHandsEnum.LeftHand);
-			leftHandWeaponComponent = LeftHandWeapon.GetComponent<WeaponAbstract>();
+
+			// Сохраняем ссылку на компонент для быстрой работы
+			leftHandWeaponComponent = weaponComponent;
+
 			playerBehaviour.ArmPlayer();
 		}
 		else
 		{
+			// Если в правой руке уже что-то есть - убираем это.
 			if (RightHandWeapon != null)
 			{
 				DestroyWeapon(WeaponHandsEnum.RightHand);
 			}
-			RightHandWeapon = weaponPrefab;
+
+			// Устанавливаем НОВЫЙ экземпляр в правую руку
+			RightHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke("right");
+
+			// Создаем модель для этой руки
 			weaponComponent.InstantiateWeaponModel(WeaponHandsEnum.RightHand);
-			rightHandWeaponComponent = RightHandWeapon.GetComponent<WeaponAbstract>();
+
+			// Сохраняем ссылку на компонент для быстрой работы
+			rightHandWeaponComponent = weaponComponent;
+
 			playerBehaviour.ArmPlayer();
 		}
 
@@ -271,36 +293,34 @@ public class WeaponController : MonoBehaviour
 	// Удаление оружия
 	public void DestroyWeapon(WeaponHandsEnum handType)
 	{
-		string handString = "";
-
+		// Используем конструкцию switch для наглядности
 		switch (handType)
 		{
 			case WeaponHandsEnum.RightHand:
-				handString = "RightHand";
+				// Проверяем, есть ли что-то в правой руке
+				if (RightHandWeapon != null)
+				{
+					// Уничтожаем ВЕСЬ игровой объект (и скрипт, и модель)
+					Destroy(RightHandWeapon);
+
+					// Сбрасываем ссылки на объект и его компонент
+					RightHandWeapon = null;
+					rightHandWeaponComponent = null;
+				}
 				break;
+
 			case WeaponHandsEnum.LeftHand:
-				handString = "LeftHand";
+				// Проверяем, есть ли что-то в левой руке
+				if (LeftHandWeapon != null)
+				{
+					// Уничтожаем ВЕСЬ игровой объект (и скрипт, и модель)
+					Destroy(LeftHandWeapon);
+
+					// Сбрасываем ссылки на объект и его компонент
+					LeftHandWeapon = null;
+					leftHandWeaponComponent = null;
+				}
 				break;
-			default:
-				throw new ArgumentException("Неверный тип руки.");
-		}
-
-
-		if (handString == "RightHand")
-		{
-			if (RightHandWeapon != null)
-			{
-				rightHandWeaponComponent.DestroyWeaponModel();
-				RightHandWeapon = null;
-			}
-		}
-		else if (handString == "LeftHand")
-		{
-			if (LeftHandWeapon != null)
-			{
-				leftHandWeaponComponent.DestroyWeaponModel();
-				LeftHandWeapon = null;
-			}
 		}
 	}
 

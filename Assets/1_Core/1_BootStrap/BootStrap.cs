@@ -124,7 +124,7 @@ public class Bootstrap : MonoBehaviour
 	private TextMeshProUGUI weaponText;
 	private TextMeshProUGUI weaponWheelName;
 	private Image weaponIconBig;
-	private Transform centerPoint; // я думаю это можно удалить ??
+	private Transform centerPoint; // я думаю это можно удалить 
 
 	// Система взаимодействия
 	private GameObject interactionControllerGameObject;
@@ -157,7 +157,7 @@ public class Bootstrap : MonoBehaviour
 	{
 		ServiceLocator.ClearAllServices();
 		canvasBootstrap = Instantiate(canvasBootstrap);
-		loadingStatusText = canvasBootstrap.transform.Find("TextInitializationStep")?.GetComponent<TMP_Text>();
+		loadingStatusText = canvasBootstrap.transform.Find("TextInitializationStep").GetComponent<TMP_Text>();
 	
 		Time.timeScale = 0f;
 		Cursor.lockState = CursorLockMode.Locked;
@@ -278,7 +278,7 @@ public class Bootstrap : MonoBehaviour
 	{
 		gameSceneManagerGameObject = new GameObject("GameSceneManager");
 		gameSceneManager = gameSceneManagerGameObject.AddComponent<GameSceneManager>();
-		loadingScreenText = canvasLoadingScreen.transform.Find("LoadingScreenText")?.GetComponent<TMP_Text>();
+		loadingScreenText = canvasLoadingScreen.transform.Find("LoadingScreenText").GetComponent<TMP_Text>();
 		gameSceneManager.Initialize(gameController, canvasLoadingScreen, loadingScreenText);
 
 		yield break;
@@ -449,19 +449,19 @@ public class Bootstrap : MonoBehaviour
 
 		playerResourcesGameObject = new GameObject("PlayerResources");
 
-		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber")?.GetComponent<TMP_Text>();
-		HealthBarSlider = canvasHUDPlayerResources.transform.Find("Health Slider")?.GetComponent<Slider>();
-		HealingItemButton = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemButton")?.GetComponent<Button>();
-		HealingItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemsNumber")?.GetComponent<TextMeshProUGUI>();
-		ManaBarSlider = canvasHUDPlayerResources.transform.Find("Mana Slider")?.GetComponent<Slider>();
-		ManaReplenishtemButton = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemButton ")?.GetComponent<Button>();
-		ManaReplenishItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemsNumber")?.GetComponent<TextMeshProUGUI>();
+		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber").GetComponent<TMP_Text>();
+		HealthBarSlider = canvasHUDPlayerResources.transform.Find("Health Slider").GetComponent<Slider>();
+		HealingItemButton = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemButton").GetComponent<Button>();
+		HealingItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemsNumber").GetComponent<TextMeshProUGUI>();
+		ManaBarSlider = canvasHUDPlayerResources.transform.Find("Mana Slider").GetComponent<Slider>();
+		ManaReplenishtemButton = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemButton ").GetComponent<Button>();
+		ManaReplenishItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemsNumber").GetComponent<TextMeshProUGUI>();
 
 		canvasHUDPlayerResourcesController = playerResourcesGameObject.AddComponent<CanvasHUDPlayerResourcesController>();
 		playerResourcesMoneyManager = playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
 		playerResourcesHealthManager = playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
 		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
-		playerResourcesAmmoManager = playerResourcesGameObject.GetComponent<PlayerResourcesAmmoManager>();
+		playerResourcesAmmoManager = playerResourcesGameObject.AddComponent<PlayerResourcesAmmoManager>();
 
 		canvasHUDPlayerResourcesController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDPlayerResources);
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
@@ -483,10 +483,10 @@ public class Bootstrap : MonoBehaviour
 		interactionFirstPersonRender = interactionControllerGameObject.AddComponent<InteractionFirstPersonRender>();
 
 		// Элементы HUD
-		mainInteractionText = canvasHUDInteraction.transform.Find("mainInteractionText")?.GetComponent<TextMeshProUGUI>();
-		additionalInteractionText = canvasHUDInteraction.transform.Find("additionalInteractionText")?.GetComponent<TextMeshProUGUI>();
-		NPCphrasesText = canvasHUDInteraction.transform.Find("NPCphrases")?.GetComponent<TextMeshProUGUI>();
-		NPCdialogueText = canvasDialogueMenu.transform.Find("NPCdialogue")?.GetComponent<TextMeshProUGUI>();
+		mainInteractionText = canvasHUDInteraction.transform.Find("mainInteractionText").GetComponent<TextMeshProUGUI>();
+		additionalInteractionText = canvasHUDInteraction.transform.Find("additionalInteractionText").GetComponent<TextMeshProUGUI>();
+		NPCphrasesText = canvasHUDInteraction.transform.Find("NPCphrases").GetComponent<TextMeshProUGUI>();
+		NPCdialogueText = canvasDialogueMenu.transform.Find("NPCdialogue").GetComponent<TextMeshProUGUI>();
 
 		itemsTexts = new TextMeshProUGUI[]
 		{
@@ -513,14 +513,14 @@ public class Bootstrap : MonoBehaviour
 			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton8"),
 			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton9"),
 		};	
-		buttonExitReadNoteMenu = canvasReadNoteMenu.transform.Find("ExitReadNote")?.GetComponent<Button>();
-		imageNewspaper = canvasReadNoteMenu.transform.Find("ReadableImage")?.GetComponent<Image>();
-		readableText = canvasReadNoteMenu.transform.Find("ReadableText")?.GetComponent<TextMeshProUGUI>();
-		backgroundBlack = canvasReadNoteMenu.transform.Find("BackgroundBlack")?.GetComponent<Image>();
-		buttonExitLockpickMechanicalMenu = canvasLockpickMechanicalMenu.transform.Find("ExitLockpickMechanical")?.GetComponent<Button>();
-		buttonExitLockpickElectronicMenu = canvasLockpickElectronicMenu.transform.Find("ExitLockpickElectronic")?.GetComponent<Button>();
-		buttonDialogueYes = canvasDialogueMenu.transform.Find("buttonYes")?.GetComponent<Button>();
-		buttonDialogueNo = canvasDialogueMenu.transform.Find("buttonNo")?.GetComponent<Button>();
+		buttonExitReadNoteMenu = canvasReadNoteMenu.transform.Find("ExitReadNote").GetComponent<Button>();
+		imageNewspaper = canvasReadNoteMenu.transform.Find("ReadableImage").GetComponent<Image>();
+		readableText = canvasReadNoteMenu.transform.Find("ReadableText").GetComponent<TextMeshProUGUI>();
+		backgroundBlack = canvasReadNoteMenu.transform.Find("BackgroundBlack").GetComponent<Image>();
+		buttonExitLockpickMechanicalMenu = canvasLockpickMechanicalMenu.transform.Find("ExitLockpickMechanical").GetComponent<Button>();
+		buttonExitLockpickElectronicMenu = canvasLockpickElectronicMenu.transform.Find("ExitLockpickElectronic").GetComponent<Button>();
+		buttonDialogueYes = canvasDialogueMenu.transform.Find("buttonYes").GetComponent<Button>();
+		buttonDialogueNo = canvasDialogueMenu.transform.Find("buttonNo").GetComponent<Button>();
 
 		// Инициализация взаимодействия
 		interactionController.Initialize(gameController, gameSceneManager, inputDevice, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
@@ -548,10 +548,10 @@ public class Bootstrap : MonoBehaviour
 
 		// Колесо выбора оружия
 		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
-		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre")?.transform;
-		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name")?.GetComponent<TextMeshProUGUI>();
-		weaponWheelName = canvasMenuWeaponWheel.transform.Find("WeaponWheel Hand")?.GetComponent<TextMeshProUGUI>();
-		weaponIconBig = canvasMenuWeaponWheel.transform.Find("WeaponBig")?.GetComponent<Image>();
+		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre").transform;
+		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name").GetComponent<TextMeshProUGUI>();
+		weaponWheelName = canvasMenuWeaponWheel.transform.Find("WeaponWheel Hand").GetComponent<TextMeshProUGUI>();
+		weaponIconBig = canvasMenuWeaponWheel.transform.Find("WeaponBig").GetComponent<Image>();
 
 		firstPersonLeftHandWeaponSlotGameObject = GameObject.Find("Slot1.L");
 		thirdPersonLeftHandWeaponSlotGameObject = GameObject.Find("Slot.L");

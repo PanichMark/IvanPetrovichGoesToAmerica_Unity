@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class RangedWeaponAbstract : WeaponAbstract
+public abstract class RangedWeaponAbstract : WeaponAbstract
 {
 	private TMP_Text PlayerAmmoText;
 	protected AmmoTypes WeaponAmmoType;
@@ -23,11 +23,18 @@ public class RangedWeaponAbstract : WeaponAbstract
 		playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("playerResourcesAmmoManager");
 
 		InitializeWeapon();
+
+		//Debug.Log(PlayerAmmoMagazineMax);
+		//Debug.Log(PlayerAmmoMagazineCurrent);
 	}
-	protected virtual void InitializeWeapon()
+
+	private void Update()
 	{
 
+		
 	}
+
+	protected abstract void InitializeWeapon();
 	// Этот метод вызывается извне (например, по нажатию кнопки)
 	public override void WeaponAttack()
 	{
@@ -62,6 +69,7 @@ public class RangedWeaponAbstract : WeaponAbstract
 		PlayerAmmoMagazineCurrent--;
 
 		// 2. Уменьшаем общий запас через менеджер
+		//Debug.Log(playerResourcesAmmoManager);
 		playerResourcesAmmoManager.ModifyAmmo(WeaponAmmoType, -1);
 	}
 

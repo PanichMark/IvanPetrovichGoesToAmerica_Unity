@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EugenicWeaponAbstract : WeaponAbstract
+public abstract class EugenicWeaponAbstract : WeaponAbstract
 { 
 
 }

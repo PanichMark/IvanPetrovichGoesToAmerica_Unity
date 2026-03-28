@@ -14,6 +14,11 @@ public class WeaponPlungerCrossbow : RangedWeaponAbstract
 	{
 		Debug.Log("CrossbowAttack");
 	}
+
+	protected override void InitializeWeapon()
+	{
+
+	}
 }
 
 
