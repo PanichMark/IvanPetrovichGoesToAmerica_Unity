@@ -141,6 +141,8 @@ public class WeaponController : MonoBehaviour
 
 		isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
 
+		
+
 		// Проверяем нажатие кнопки перезарядки
 		if (inputDevice.GetKeyReload())
 		{
@@ -154,7 +156,7 @@ public class WeaponController : MonoBehaviour
 				(leftWeapon as RangedWeaponAbstract).Reload();
 			}
 			// 2. Если в левой руке нет оружия или оно не стрелковое, пробуем правую
-			else if (rightHandWeaponComponent != null && rightWeapon is RangedWeaponAbstract)
+			if (rightHandWeaponComponent != null && rightWeapon is RangedWeaponAbstract)
 			{
 				(rightWeapon as RangedWeaponAbstract).Reload();
 			}

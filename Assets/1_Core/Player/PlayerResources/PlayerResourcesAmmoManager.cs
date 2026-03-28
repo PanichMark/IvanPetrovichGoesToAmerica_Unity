@@ -16,7 +16,7 @@ public class PlayerResourcesAmmoManager : MonoBehaviour
 	// Внутри класса PlayerResourcesAmmoManager
 
 	// Этот метод будет вызываться оружием
-	public void OnWeaponFired(AmmoTypes type, int newMagazineAmount)
+	public void ModifyMagazineAmmo(AmmoTypes type, int newMagazineAmount)
 	{
 		// Здесь мы находимся внутри PlayerResourcesAmmoManager,
 		// поэтому мы имеем полное право вызывать свое событие.
@@ -25,8 +25,8 @@ public class PlayerResourcesAmmoManager : MonoBehaviour
 
 	private void Awake()
 	{
-		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { Type = AmmoTypes.Ammo9mm, TotalAmmoMax = 100, TotalAmmoCurrent = 80 };
-		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { Type = AmmoTypes.Ammo12gauge, TotalAmmoMax = 20, TotalAmmoCurrent = 10 };
+		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { Type = AmmoTypes.Ammo9mm, TotalAmmoMax = 99, TotalAmmoCurrent = 99 };
+		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { Type = AmmoTypes.Ammo12gauge, TotalAmmoMax = 99, TotalAmmoCurrent = 99 };
 	}
 
 	// Метод для изменения количества патронов (учитывает особенности struct)

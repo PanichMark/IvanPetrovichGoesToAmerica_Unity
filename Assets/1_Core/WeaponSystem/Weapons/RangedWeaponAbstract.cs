@@ -29,11 +29,7 @@ public abstract class RangedWeaponAbstract : WeaponAbstract
 		//Debug.Log(PlayerAmmoMagazineCurrent);
 	}
 
-	private void Update()
-	{
 
-		
-	}
 
 	protected abstract void InitializeWeapon();
 	// Этот метод вызывается извне (например, по нажатию кнопки)
@@ -72,7 +68,7 @@ public abstract class RangedWeaponAbstract : WeaponAbstract
 		// 2. Уменьшаем общий запас через менеджер
 		//Debug.Log(playerResourcesAmmoManager);
 		//playerResourcesAmmoManager.ModifyAmmo(WeaponAmmoType, -1);
-		playerResourcesAmmoManager.OnWeaponFired(WeaponAmmoType, MagazineAmmoCurrent);
+		playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
 	}
 
 	public void Reload()
@@ -103,6 +99,6 @@ public abstract class RangedWeaponAbstract : WeaponAbstract
 
 		// Уменьшаем общий запас патронов на то количество, которое мы зарядили в магазин
 		playerResourcesAmmoManager.ModifyReserveAmmo(WeaponAmmoType, -ammoToAdd);
-		playerResourcesAmmoManager.OnWeaponFired(WeaponAmmoType, MagazineAmmoCurrent);
+		playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
 	}
 }

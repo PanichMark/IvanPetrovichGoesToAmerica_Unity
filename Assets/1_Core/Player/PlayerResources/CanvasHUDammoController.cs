@@ -72,7 +72,8 @@ public class CanvasHUDammoController : MonoBehaviour
 		this.playerResourcesAmmoManager.OnReserveAmmoChanged += UpdateReserveDisplay;
 		this.playerResourcesAmmoManager.OnMagazineAmmoChanged += UpdateMagazineDisplay;
 
-		this.weaponController.OnWeaponChanged += WeaponAmmo;
+		this.weaponController.OnWeaponChanged += UpdateAmmoDisplayForActiveWeapon;
+		
 
 		// Скрываем панели по умолчанию
 		HideRightWeaponAmmo();
@@ -93,7 +94,7 @@ public class CanvasHUDammoController : MonoBehaviour
 	{
 		canvasHUDammo.SetActive(false);
 	}
-	private void WeaponAmmo(string activeHand)
+	private void UpdateAmmoDisplayForActiveWeapon(string activeHand)
 	{
 		// Логика теперь нужна и для показа UI, И для обновления цифр при переключении оружия.
 		if (activeHand == "left")
@@ -106,7 +107,7 @@ public class CanvasHUDammoController : MonoBehaviour
 				// --- ДОБАВЬТЕ ЭТИ СТРОЧКИ ---
 				// Обновляем текст магазина из оружия
 				LeftWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
-
+				
 				// Обновляем текст запаса из менеджера
 				if (playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
 				{
@@ -202,6 +203,9 @@ public class CanvasHUDammoController : MonoBehaviour
 			}
 		}
 	}
+
+	
+
 
 	public void ShowRightWeaponAmmo()
 	{

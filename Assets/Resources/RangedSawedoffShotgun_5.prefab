@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: f98f980ad508ebe4d9ad23742334b2ac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.18
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f98f980ad508ebe4d9ad23742334b2ac, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.87
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f98f980ad508ebe4d9ad23742334b2ac, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.030896
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f98f980ad508ebe4d9ad23742334b2ac, type: 3}
       propertyPath: m_LocalRotation.w
@@ -133,7 +133,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b454e2acecb97834da77f51ee2d25508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponNameUI: "\u041E\u0431\u0440\u0435\u0437"
-  WeaponNameSystem: SawedoffShorgun
-  WeaponIcon: {fileID: 21300000, guid: 4ed1ee68747d8a747a13e170572c39fb, type: 3}
-  weaponModel: {fileID: 8067495848147572535}
