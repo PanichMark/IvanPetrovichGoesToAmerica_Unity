@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class WeaponPlungerCrossbow : WeaponAbstract
 {
@@ -6,11 +7,13 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 	private float maxHookDistance = 25f;
 	private float pullSpeed = 10f;
 
+	private NPCStateMachineController npcStateMachineController;
 	// Состояние крюка для NPC
 	private GameObject hookedObject = null;
 	private Rigidbody hookedObjectRigidbody = null;
 	private bool isObjectBeingHooked = false;
 	private Collider hookedObjectCollider;
+	private NavMeshAgent hookedObjectNavMeshAgent = null;
 
 	// Ссылки на объекты
 	private GameObject playerCamera;
@@ -78,6 +81,25 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 					Debug.LogWarning($"Rigidbody добавлен к NPC: {hookedObject.name}");
 			
 				}
+				hookedObjectNavMeshAgent = hookedObject.GetComponent<NavMeshAgent>();
+				if (hookedObjectNavMeshAgent != null)
+				{
+
+					hookedObjectNavMeshAgent.enabled = false;
+				}
+
+				npcStateMachineController = hookedObject.GetComponent<NPCStateMachineController>();
+				if (npcStateMachineController != null)
+				{
+					////
+					//////
+					//ПОТОМ ПОМЕНЯТЬ НА BEING HOOKED !!!
+					//////
+					///
+
+					npcStateMachineController.SetNPCState(NPCStateTypes.Dead);
+				}
+
 				hookedObjectRigidbody.useGravity = false;
 				hookedObjectRigidbody.linearDamping = 0;
 
@@ -158,8 +180,11 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 	{
 		if (isObjectBeingHooked)
 		{
-		
-				
+			if (hookedObjectNavMeshAgent != null)
+			{
+			//	hookedObjectNavMeshAgent.enabled = true;
+			}
+
 			hookedObjectRigidbody.linearVelocity = Vector3.zero;
 
 			// Включаем гравитацию обратно для NPC, если она была отключена

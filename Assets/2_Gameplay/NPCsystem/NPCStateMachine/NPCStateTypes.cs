@@ -9,6 +9,7 @@
 	Searching,
 	Scared,
 	Fleeing,
+	BeingHooked,
 	Choked,
 	Dead
 }
