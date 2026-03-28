@@ -141,6 +141,25 @@ public class WeaponController : MonoBehaviour
 
 		isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
 
+		// Проверяем нажатие кнопки перезарядки
+		if (inputDevice.GetKeyReload())
+		{
+			// Кэшируем компоненты, чтобы не вызывать GetComponent несколько раз
+			WeaponAbstract leftWeapon = LeftHandWeapon?.GetComponent<WeaponAbstract>();
+			WeaponAbstract rightWeapon = RightHandWeapon?.GetComponent<WeaponAbstract>();
+
+			// 1. Сначала пытаемся перезарядить оружие в левой руке
+			if (leftHandWeaponComponent != null && leftWeapon is RangedWeaponAbstract)
+			{
+				(leftWeapon as RangedWeaponAbstract).Reload();
+			}
+			// 2. Если в левой руке нет оружия или оно не стрелковое, пробуем правую
+			else if (rightHandWeaponComponent != null && rightWeapon is RangedWeaponAbstract)
+			{
+				(rightWeapon as RangedWeaponAbstract).Reload();
+			}
+		}
+
 	}
 
 
@@ -302,6 +321,7 @@ public class WeaponController : MonoBehaviour
 				{
 					// Уничтожаем ВЕСЬ игровой объект (и скрипт, и модель)
 					Destroy(RightHandWeapon);
+					rightHandWeaponComponent.DestroyWeaponModel();
 
 					// Сбрасываем ссылки на объект и его компонент
 					RightHandWeapon = null;
@@ -315,6 +335,7 @@ public class WeaponController : MonoBehaviour
 				{
 					// Уничтожаем ВЕСЬ игровой объект (и скрипт, и модель)
 					Destroy(LeftHandWeapon);
+					leftHandWeaponComponent.DestroyWeaponModel();
 
 					// Сбрасываем ссылки на объект и его компонент
 					LeftHandWeapon = null;

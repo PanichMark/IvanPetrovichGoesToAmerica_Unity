@@ -2,7 +2,5 @@
 public enum AmmoTypes
 {
 	Ammo9mm,
-	Ammo12gauge,
-	AmmoSniper,
-	AmmoGrenadeLauncher
+	Ammo12gauge
 }

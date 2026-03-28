@@ -63,6 +63,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 
 	private void OnWeaponChange(string activeHand)
 	{
+		
 		//Debug.Log(previousWeapon);
 		HandleOnWeaponChanged(activeHand);
 		previousWeapon = currentWeapon;
@@ -103,18 +104,34 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	}
 
 	// Этот метод будет вызван при изменении активного оружия
+	// WeaponWheelMenuButton.cs
+
 	private void UpdateButtonColor(GameObject activeWeapon)
 	{
-		// Меняем цвет кнопки в зависимости от активности оружия
-		if (activeWeapon == WeaponPrefab)
+		// Проверяем, что активное оружие вообще существует
+		if (activeWeapon == null)
 		{
-			//Debug.Log("SAME");
-			ChangeButtonColor(new Color(209f / 255f, 138f / 255f, 36f / 255f));
-		}
-		else
-		{
-			//Debug.Log("OTHER");
 			ChangeButtonColor(originalNormalColor);
+			return;
+		}
+
+		// Получаем компонент WeaponAbstract от активного оружия в руке
+		WeaponAbstract activeWeaponComponent = activeWeapon.GetComponent<WeaponAbstract>();
+
+		// Получаем компонент WeaponAbstract от префаба, который представляет эта кнопка
+		WeaponAbstract buttonWeaponComponent = WeaponPrefab.GetComponent<WeaponAbstract>();
+
+		// Теперь сравниваем их уникальные системные имена
+		if (activeWeaponComponent != null && buttonWeaponComponent != null)
+		{
+			if (activeWeaponComponent.WeaponNameSystem == buttonWeaponComponent.WeaponNameSystem)
+			{
+				ChangeButtonColor(new Color(209f / 255f, 138f / 255f, 36f / 255f));
+			}
+			else
+			{
+				ChangeButtonColor(originalNormalColor);
+			}
 		}
 	}
 

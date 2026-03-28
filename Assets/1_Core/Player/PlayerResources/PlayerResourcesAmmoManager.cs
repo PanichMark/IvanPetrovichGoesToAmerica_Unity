@@ -10,6 +10,7 @@ public class PlayerResourcesAmmoManager : MonoBehaviour
 	private void Awake()
 	{
 		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { Type = AmmoTypes.Ammo9mm, Max = 100, Current = 80 };
+		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { Type = AmmoTypes.Ammo12gauge, Max = 20, Current = 10 };
 	}
 
 	// Метод для изменения количества патронов (учитывает особенности struct)

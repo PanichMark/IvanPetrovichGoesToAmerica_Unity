@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WeaponPlungerCrossbow : RangedWeaponAbstract
+public class WeaponPlungerCrossbow : WeaponAbstract
 {
     
 	public override string WeaponNameSystem => "PlungerCrossbow";
@@ -15,10 +15,7 @@ public class WeaponPlungerCrossbow : RangedWeaponAbstract
 		Debug.Log("CrossbowAttack");
 	}
 
-	protected override void InitializeWeapon()
-	{
-
-	}
+	
 }
 
 
