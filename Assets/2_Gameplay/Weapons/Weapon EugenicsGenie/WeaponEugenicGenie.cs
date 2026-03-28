@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WeaponEugenicGenie : WeaponAbstract
+public class WeaponEugenicGenie : EugenicWeaponAbstract
 {
  
 	public override string WeaponNameSystem => "EugenicGenie";

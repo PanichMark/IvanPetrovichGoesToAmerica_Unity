@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WeaponPlungerCrossbow : WeaponAbstract
+public class WeaponPlungerCrossbow : RangedWeaponAbstract
 {
     
 	public override string WeaponNameSystem => "PlungerCrossbow";

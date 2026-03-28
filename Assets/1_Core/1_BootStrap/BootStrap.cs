@@ -69,9 +69,8 @@ public class Bootstrap : MonoBehaviour
 	private Button ManaReplenishtemButton;
 	private TextMeshProUGUI ManaReplenishItemNumber;
 	// Игрок ресурсы патроны
-	//
-	//
-
+	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
+	
 	// Меню
 	private GameObject menuManagerGameobject;
 	private MenuManager menuManager;
@@ -462,6 +461,7 @@ public class Bootstrap : MonoBehaviour
 		playerResourcesMoneyManager = playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
 		playerResourcesHealthManager = playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
 		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
+		playerResourcesAmmoManager = playerResourcesGameObject.GetComponent<PlayerResourcesAmmoManager>();
 
 		canvasHUDPlayerResourcesController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDPlayerResources);
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
@@ -603,6 +603,7 @@ public class Bootstrap : MonoBehaviour
 
 		ServiceLocator.Register("NPCphrases", NPCphrasesText);
 		ServiceLocator.Register("NPCdialogueText", NPCdialogueText);
+		ServiceLocator.Register("playerMainCameraGameObject", playerMainCameraGameObject);
 
 		ServiceLocator.Register("firstPersonLeftHandWeaponSlotGameObject", firstPersonLeftHandWeaponSlotGameObject);
 		ServiceLocator.Register("firstPersonRightHandWeaponSlotGameObject", firstPersonRightHandWeaponSlotGameObject);
@@ -613,7 +614,10 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("buttonDialogueYes", buttonDialogueYes);
 		ServiceLocator.Register("buttonDialogueNo", buttonDialogueNo);
 
-		ServiceLocator.Register("playerColliderGameObject", playerColliderGameObject); 
+		ServiceLocator.Register("playerColliderGameObject", playerColliderGameObject);
+		ServiceLocator.Register("playerResourcesAmmoManager", playerResourcesAmmoManager); 
+
+
 
 		Debug.Log("SERVICE REGISTERED");
 		yield break;

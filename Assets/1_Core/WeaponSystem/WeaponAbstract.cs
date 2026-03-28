@@ -21,8 +21,6 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public GameObject FirstPersonWeaponModelInstance { get; protected set; } // Первая камера
 	public GameObject ThirdPersonWeaponModelInstance { get; protected set; } // Третья камера
 
-	private MeshRenderer firstPersonWeaponMeshRenderer;
-	private MeshRenderer thirdPersonWeaponMeshRenderer;
 
 	// Объекты слотов для прикрепления моделей
 	private Transform firstPersonLeftHandWeaponSlotTransform;

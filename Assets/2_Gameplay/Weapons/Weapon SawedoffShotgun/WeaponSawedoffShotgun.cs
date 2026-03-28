@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WeaponSawedoffShotgun : WeaponAbstract
+public class WeaponSawedoffShotgun : RangedWeaponAbstract
 {
 	public override void WeaponAttack()
 	{

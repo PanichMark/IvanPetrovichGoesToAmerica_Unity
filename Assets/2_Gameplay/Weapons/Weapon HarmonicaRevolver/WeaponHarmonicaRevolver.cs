@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WeaponHarmonicaRevolver : WeaponAbstract
+public class WeaponHarmonicaRevolver : RangedWeaponAbstract
 {
 	public override float WeaponDamage => 30f; // Устанавливаем постоянное значение урона для револьвера
 
@@ -10,11 +10,6 @@ public class WeaponHarmonicaRevolver : WeaponAbstract
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheelButtons/Pistol icon");
 
 
-	public override void WeaponAttack()
-	{
-		Debug.Log("Revolver Attack");
-		//PlayerAmmoManager.Instance.Shoot(WeaponDamage);
-	}
 
 }
 

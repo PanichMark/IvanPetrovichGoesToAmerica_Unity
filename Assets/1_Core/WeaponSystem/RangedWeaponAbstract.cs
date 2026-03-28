@@ -1,56 +1,42 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class PlayerAmmoManager : MonoBehaviour
+public class RangedWeaponAbstract : WeaponAbstract
 {
-
-
-	public static PlayerAmmoManager Instance { get; private set; } // Статическое поле экземпляра\
-
 	public TMP_Text PlayerAmmoText;
-
-	public int PlayerAmmoTotalMax { get; private set; } = 40;
-	public int PlayerAmmoTotalCurrent { get; private set; } = 10;
-	public int PlayerAmmoMagazineMax { get; private set; } = 5;
-	public int PlayerAmmoMagazineCurrent { get; private set; } = 5;
+	private GameObject playerCamera;
+	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
+	public int PlayerAmmoTotalMax { get; private set; }
+	public int PlayerAmmoTotalCurrent { get; private set; }
+	public int PlayerAmmoMagazineMax { get; private set; }
+	public int PlayerAmmoMagazineCurrent { get; private set; }
 	public int PlayerAmmoReserve { get; private set; }
 
-	private void Awake()
+	private void Update()
 	{
-		// Паттерн Singleton: предотвращаем создание второго экземпляра
-		if (Instance == null)
-		{
-			Instance = this;
-			//DontDestroyOnLoad(gameObject); // Сохраняется при смене уровней
-		}
-		else
-		{
-			Destroy(gameObject); // Уничтожаем лишние экземпляры
-		}
+		Debug.Log(PlayerAmmoMagazineCurrent);
 	}
+
 	private void Start()
 	{
+		playerCamera = ServiceLocator.Resolve<GameObject>("playerMainCameraGameObject");
+		playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("playerResourcesAmmoManager");
+
+		PlayerAmmoTotalMax = 40;
+		PlayerAmmoTotalCurrent = 10;
+		PlayerAmmoMagazineMax = 5;
+		PlayerAmmoMagazineCurrent = 5;
+		
+
 		PlayerAmmoReserve = PlayerAmmoTotalCurrent - PlayerAmmoMagazineCurrent;
 	}
 
-	/*
-	private void Update()
+	public override void WeaponAttack()
 	{
-		//Debug.Log("Total " + PlayerAmmoTotalCurrent);
-		//Debug.Log("Magazine " + PlayerAmmoMagazineCurrent);
-		//Debug.Log("Reserve " + PlayerAmmoReserve);
-
-		if (InputKeyboard.Instance.GetKeyReload())
-		{
-			Reload();
-		}
-
+		Debug.Log("Revolver Attack");
+		Shoot(WeaponDamage);
+		//PlayerAmmoManager.Instance.Shoot(WeaponDamage);
 	}
-	*/
-
-
-
-	
 
 	public void Shoot(float weaponDamage)
 	{
@@ -73,13 +59,13 @@ public class PlayerAmmoManager : MonoBehaviour
 			PlayerAmmoTotalCurrent--;
 			Debug.Log($"Magazine ammo remaining: {PlayerAmmoMagazineCurrent}");
 		}
-		else if (PlayerAmmoMagazineCurrent == 0)
+		else
 		{
 			Debug.Log("Not enought Ammo");
 		}
 
 	}
-	
+
 
 
 	public void AddAmmo(int ammoNumber)
@@ -131,5 +117,3 @@ public class PlayerAmmoManager : MonoBehaviour
 
 
 }
-
-

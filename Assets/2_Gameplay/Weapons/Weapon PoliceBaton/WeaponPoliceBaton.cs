@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WeaponPoliceBaton : WeaponAbstract
+public class WeaponPoliceBaton : MeleeWeaponAbstract
 {
 	PlayerMovementController playerMovementController;
 
