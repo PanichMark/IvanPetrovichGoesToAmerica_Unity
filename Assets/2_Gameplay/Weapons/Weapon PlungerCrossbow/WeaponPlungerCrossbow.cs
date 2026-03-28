@@ -4,16 +4,17 @@ using UnityEngine.AI;
 public class WeaponPlungerCrossbow : WeaponAbstract
 {
 	// Настройки крюка
-	private float maxHookDistance = 25f;
-	private float pullSpeed = 10f;
+	private float maxHookDistance = 17f;
+	private float pullSpeed = 12f;
 
 	private NPCStateMachineController npcStateMachineController;
 	// Состояние крюка для NPC
 	private GameObject hookedObject = null;
 	private Rigidbody hookedObjectRigidbody = null;
 	private bool isObjectBeingHooked = false;
-	private Collider hookedObjectCollider;
+	private Collider hookedObjectCollider = null;
 	private NavMeshAgent hookedObjectNavMeshAgent = null;
+	private NPCAbstract NPCabstract = null;
 
 	// Ссылки на объекты
 	private GameObject playerCamera;
@@ -52,7 +53,7 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 	public override void WeaponAttack()
 	{
 		// Если уже летим на крюке, новый не выпускаем
-		if (IsPlayerPlungering) return;
+		if (IsPlayerPlungering || isObjectBeingHooked) return;
 
 		if (playerCamera == null || player == null || playerRigidbody == null) return;
 
@@ -66,8 +67,8 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 
 			// Проверяем, попал ли крюк в NPC
 			// Проверяем, есть ли у объекта компонент NPCAbstract
-			if (hit.collider.gameObject.TryGetComponent<NPCAbstract>(out _) ||
-				hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _))
+			if ((hit.collider.gameObject.TryGetComponent<NPCAbstract>(out _) ||
+				hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _)))
 			{
 				hookedObject = hit.collider.gameObject;
 				hookedObjectRigidbody = hookedObject.GetComponent<Rigidbody>();
@@ -87,9 +88,9 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 
 					hookedObjectNavMeshAgent.enabled = false;
 				}
-
-				npcStateMachineController = hookedObject.GetComponent<NPCStateMachineController>();
-				if (npcStateMachineController != null)
+				NPCabstract = hookedObject?.GetComponent<NPCAbstract>();
+				npcStateMachineController = hookedObject?.GetComponent<NPCStateMachineController>();
+				if (npcStateMachineController != null && NPCabstract != null)
 				{
 					////
 					//////
@@ -143,7 +144,7 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 			// Проверяем расстояние до ФИНАЛЬНОЙ точки, а не до игрока
 			float distanceToTarget = Vector3.Distance(hookedObject.transform.position, finalPosition);
 
-			if (distanceToTarget < 0.5f) // Можно уменьшить порог, так как точка выше
+			if (distanceToTarget < 0.3f) // Можно уменьшить порог, так как точка выше
 			{
 				hookedObjectRigidbody.linearVelocity = Vector3.zero;
 				hookedObjectRigidbody.position = finalPosition; // Ставим точно в цель
@@ -166,7 +167,7 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 			float distanceToHook = Vector3.Distance(player.transform.position, hookPoint);
 
 			// Если мы близко ИЛИ если скорость стала очень маленькой (значит мы уперлись в препятствие)
-			if (distanceToHook < 1f || playerRigidbody.linearVelocity.magnitude < 0.1f)
+			if (distanceToHook < 0.5f || playerRigidbody.linearVelocity.magnitude < 0.1f)
 			{
 				// Останавливаем игрока точно в точке крюка
 				player.transform.position = hookPoint;
@@ -190,8 +191,9 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 			// Включаем гравитацию обратно для NPC, если она была отключена
 			hookedObjectRigidbody.useGravity = true;
 		//	Destroy(hookedObjectRigidbody);
-			
-
+			hookedObjectCollider = null;
+			hookedObjectNavMeshAgent = null;
+			NPCabstract = null;
 			hookedObject = null;
 			hookedObjectRigidbody = null;
 			isObjectBeingHooked = false;

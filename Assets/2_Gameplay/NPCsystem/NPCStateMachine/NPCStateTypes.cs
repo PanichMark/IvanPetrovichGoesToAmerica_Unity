@@ -11,5 +11,6 @@
 	Fleeing,
 	BeingHooked,
 	Choked,
+	Falling,
 	Dead
 }
