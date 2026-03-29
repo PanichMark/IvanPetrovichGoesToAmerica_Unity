@@ -103,4 +103,24 @@ public abstract class WeaponAbstract : MonoBehaviour
 			FirstPersonWeaponModelInstance = null;
 		}
 	}
+
+	public void FlipWeaponModel()
+	{
+		// Проверяем и переворачиваем модель для камеры от первого лица
+		if (FirstPersonWeaponModelInstance != null)
+		{
+			Vector3 fpScale = FirstPersonWeaponModelInstance.transform.localScale;
+			fpScale.x *= -1;
+			FirstPersonWeaponModelInstance.transform.localScale = fpScale;
+		}
+
+		// Проверяем и переворачиваем модель для камеры от третьего лица
+		if (ThirdPersonWeaponModelInstance != null)
+		{
+			Vector3 tpScale = ThirdPersonWeaponModelInstance.transform.localScale;
+			tpScale.x *= -1;
+			ThirdPersonWeaponModelInstance.transform.localScale = tpScale;
+		}
+	}
+
 }

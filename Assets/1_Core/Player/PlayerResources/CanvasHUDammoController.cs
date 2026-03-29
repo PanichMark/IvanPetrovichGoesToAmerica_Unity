@@ -87,7 +87,7 @@ public class CanvasHUDammoController : MonoBehaviour
 
 	private void ShowCanvasHUDammo()
 	{
-		if (!menuManager.IsInteractionMenuOpened && !menuManager.IsDialogueMenuOpened && !gameController.IsMainMenuOpen)
+		if (!menuManager.IsInteractionMenuOpened && !menuManager.IsDialogueMenuOpened && !gameController.IsMainMenuOpen && !menuManager.IsWeaponWheelMenuOpened)
 		{
 			canvasHUDammo.SetActive(true);
 		}

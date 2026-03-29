@@ -260,6 +260,7 @@ public class WeaponController : MonoBehaviour
 
 			// Создаем модель для этой руки
 			weaponComponent.InstantiateWeaponModel(WeaponHandsEnum.LeftHand);
+			weaponComponent.FlipWeaponModel();
 
 			// Сохраняем ссылку на компонент для быстрой работы
 			leftHandWeaponComponent = weaponComponent;
