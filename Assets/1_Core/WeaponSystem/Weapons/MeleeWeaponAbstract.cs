@@ -10,9 +10,9 @@ public abstract class MeleeWeaponAbstract : WeaponAbstract
 	protected float AttackDelay; // Задержка перед нанесением урона
 
 	// Ссылка на игрока, которую мы получаем через ServiceLocator ОДИН РАЗ
-	private GameObject player;
+	protected GameObject player;
 
-	private bool isAttacking = false; // Флаг для блокировки спама атакой
+	protected bool isAttacking = false; // Флаг для блокировки спама атакой
 
 	// Получаем игрока при старте объекта
 	private void Start()
@@ -21,9 +21,11 @@ public abstract class MeleeWeaponAbstract : WeaponAbstract
 
 		
 		SetUpAttackRadious();
+		PoliceBatonChoke();
 	}
 	protected abstract void SetUpAttackRadious();
 
+	protected abstract void PoliceBatonChoke();
 
 	public override void WeaponAttack()
 	{

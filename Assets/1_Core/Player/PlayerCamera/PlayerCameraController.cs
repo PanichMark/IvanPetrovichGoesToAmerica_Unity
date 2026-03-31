@@ -236,7 +236,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	}
 	public void CameraCrouching()
 	{
-		transform.position = new Vector3(transform.position.x, transform.position.y - 0.3f, transform.position.z);
+		transform.position = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
 	}
 	public void FirstPersonCameraTransform()
 	{

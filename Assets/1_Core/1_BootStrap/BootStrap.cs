@@ -133,6 +133,7 @@ public class Bootstrap : MonoBehaviour
 	private TextMeshProUGUI weaponWheelName;
 	private Image weaponIconBig;
 	private Transform centerPoint; // я думаю это можно удалить 
+	private GameObject ChokeNPCtext;
 
 	// Система взаимодействия
 	private GameObject interactionControllerGameObject;
@@ -566,6 +567,7 @@ public class Bootstrap : MonoBehaviour
 		weaponAnimationController = weaponSystemGameObject.AddComponent<WeaponAnimationController>();
 		weaponFirstPersonRender = weaponSystemGameObject.AddComponent<WeaponFirstPersonRender>();
 
+
 		// Колесо выбора оружия
 		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
 		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre").transform;
@@ -577,6 +579,8 @@ public class Bootstrap : MonoBehaviour
 		thirdPersonLeftHandWeaponSlotGameObject = GameObject.Find("Slot.L");
 		firstPersonRightHandWeaponSlotGameObject= GameObject.Find("Slot1.R");
 		thirdPersonRightHandWeaponSlotGameObject = GameObject.Find("Slot.R");
+
+		ChokeNPCtext = canvasHUDammo.transform.Find("ChokingText").gameObject;
 
 		// Инициализация оружия
 		weaponController.Initialize(inputDevice, menuManager, playerBehaviour, interactionController);
@@ -646,7 +650,9 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("buttonDialogueNo", buttonDialogueNo);
 
 		ServiceLocator.Register("playerColliderGameObject", playerColliderGameObject);
-		ServiceLocator.Register("playerResourcesAmmoManager", playerResourcesAmmoManager); 
+		ServiceLocator.Register("playerResourcesAmmoManager", playerResourcesAmmoManager);
+
+		ServiceLocator.Register("ChokeNPCtext", ChokeNPCtext);
 
 
 
