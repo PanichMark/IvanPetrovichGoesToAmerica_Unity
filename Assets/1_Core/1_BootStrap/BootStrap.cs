@@ -254,8 +254,8 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializePlayerPrefabs()
 	{
-		playerGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerGameObject"));
-		playerMainCameraGameObject = Instantiate((GameObject)Resources.Load("Bootstrap/BootstrapPlayer/PlayerCameraGameObject"));
+		playerGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/PlayerGameObject"));
+		playerMainCameraGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/PlayerCameraGameObject"));
 		
 
 		Debug.Log("PLAYER PREFABS INITIALIZED");
@@ -569,7 +569,7 @@ public class Bootstrap : MonoBehaviour
 
 
 		// Колесо выбора оружия
-		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButton");
+		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButtons/WeaponWheelButton");
 		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre").transform;
 		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name").GetComponent<TextMeshProUGUI>();
 		weaponWheelName = canvasMenuWeaponWheel.transform.Find("WeaponWheel Hand").GetComponent<TextMeshProUGUI>();
