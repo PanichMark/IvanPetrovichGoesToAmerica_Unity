@@ -54,6 +54,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 
 		FirstPersonWeaponModelInstance = Instantiate(gameObject);
+		//Debug.Log(gameObject);
 		ThirdPersonWeaponModelInstance = Instantiate(gameObject);
 
 		FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");

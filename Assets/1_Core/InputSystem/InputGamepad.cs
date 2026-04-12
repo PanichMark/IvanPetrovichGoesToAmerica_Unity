@@ -325,5 +325,22 @@ public class InputGamepad : IInputDevice
 	{
 		return controllerBindings["LeftHandWeaponAttack"].ToString();
 	}
+
+	public bool GetKeyRightHandWeaponAttackReleased()
+	{
+		if (Input.GetKeyUp(controllerBindings["RightHandWeaponAttack"]))
+		{
+			return true;
+		}
+		else return false;
+	}
+	public bool GetKeyLeftHandWeaponAttackReleased()
+	{
+		if (Input.GetKeyUp(controllerBindings["LeftHandWeaponAttack"]))
+		{
+			return true;
+		}
+		else return false;
+	}
 }
 

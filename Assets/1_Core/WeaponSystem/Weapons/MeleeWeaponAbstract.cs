@@ -20,12 +20,11 @@ public abstract class MeleeWeaponAbstract : WeaponAbstract
 		player = ServiceLocator.Resolve<GameObject>("Player");
 
 		
-		SetUpAttackRadious();
-		PoliceBatonChoke();
+		SetUpMeleeWeapon();
 	}
-	protected abstract void SetUpAttackRadious();
+	protected abstract void SetUpMeleeWeapon();
 
-	protected abstract void PoliceBatonChoke();
+	
 
 	public override void WeaponAttack()
 	{

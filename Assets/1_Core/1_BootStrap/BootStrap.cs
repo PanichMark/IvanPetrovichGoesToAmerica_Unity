@@ -654,7 +654,7 @@ public class Bootstrap : MonoBehaviour
 
 		ServiceLocator.Register("ChokeNPCtext", ChokeNPCtext);
 
-
+		ServiceLocator.Register("inputDevice", inputDevice);
 
 		Debug.Log("SERVICE REGISTERED");
 		yield break;

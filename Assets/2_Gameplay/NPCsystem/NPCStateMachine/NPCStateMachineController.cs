@@ -338,7 +338,7 @@ public class NPCStateMachineController : MonoBehaviour
 		}
 		else if (playerMovementStateType == NPCStateTypes.Choked)
 		{
-			newState = new ChokedNPCState();
+			newState = new ChokedNPCState(this);
 			//CurrentNPCState = "PlayerCrouchingWalking";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Falling)

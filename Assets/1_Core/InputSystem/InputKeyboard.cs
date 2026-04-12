@@ -305,5 +305,23 @@ public class InputKeyboard : IInputDevice
 	{
 		return keyBindings["LeftHandWeaponAttack"].ToString();
 	}
+
+	public bool GetKeyRightHandWeaponAttackReleased()
+	{
+		if (Input.GetKeyUp(keyBindings["RightHandWeaponAttack"]) && gameController.IsPlayerControllable)
+		{
+			return true;
+		}
+		else return false;
+	}
+	public bool GetKeyLeftHandWeaponAttackReleased()
+	{
+		if (Input.GetKeyUp(keyBindings["LeftHandWeaponAttack"]) && gameController.IsPlayerControllable)
+		{
+			return true;
+		}
+		else return false;
+	}
+
 }
 

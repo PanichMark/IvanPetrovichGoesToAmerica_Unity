@@ -24,6 +24,8 @@ public interface IInputDevice
 	bool GetKeyLeftHandWeaponWheel();
 	bool GetKeyRightHandWeaponAttack();
 	bool GetKeyLeftHandWeaponAttack();
+	bool GetKeyRightHandWeaponAttackReleased();
+	bool GetKeyLeftHandWeaponAttackReleased();
 
 
 	// Информация о ключах

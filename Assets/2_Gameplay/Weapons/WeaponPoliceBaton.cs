@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class WeaponPoliceBaton : MeleeWeaponAbstract
 {
@@ -15,21 +16,36 @@ public class WeaponPoliceBaton : MeleeWeaponAbstract
 	private PlayerMovementController playerMovementController;
 	// Новое поле: флаг возможности удушения
 	private bool isAbleToChoke = false;
+	private WeaponController weaponController;
+	private bool isItRightHand;
+	private IInputDevice inputDevice;
 
-	protected override void SetUpAttackRadious()
+	protected override void SetUpMeleeWeapon()
 	{
 		CapsuleHeight = 1.8f;
 		CapsuleRadius = 0.3f;
 		ForwardOffset = 0.5f;
 		AttackDelay = 0.5f;
-	}
 
-	protected override void PoliceBatonChoke()
-	{
 		ChokeNPCtext = ServiceLocator.Resolve<GameObject>("ChokeNPCtext");
 		playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
+		weaponController = ServiceLocator.Resolve<WeaponController>("WeaponController");
 
+		if (weaponController.rightHandWeaponComponent is WeaponPoliceBaton)
+		{
+			//Debug.Log("PoliceBaton is RIGHT");
+			isItRightHand = true;
+		}
+		if (weaponController.leftHandWeaponComponent is WeaponPoliceBaton)
+		{
+			//Debug.Log("PoliceBaton is LEFT");
+			isItRightHand = false;	
+		}
+
+		inputDevice = ServiceLocator.Resolve<IInputDevice>("inputDevice");
 	}
+
+
 
 	private void Update()
 	{
@@ -57,30 +73,53 @@ public class WeaponPoliceBaton : MeleeWeaponAbstract
 		npcDetected = newDetection;
 
 
-		// --- ЛОГИКА ПРОВЕРКИ СОСТОЯНИЯ ИГРОКА ---
-		// Проверяем, присел ли игрок и есть ли NPC рядом.
-		// Предполагаем, что CurrentPlayerMovementStateType - это строка или enum.
-		// Для строк используем .Equals для надежности.
+
 		bool isCrouching = playerMovementController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingIdle") ||
 						   playerMovementController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingWalking");
 
 		isAbleToChoke = npcDetected && isCrouching;
 
 
-		// Обновляем видимость текста, если он был успешно получен
-		if (ChokeNPCtext != null)
-			ChokeNPCtext.SetActive(isAbleToChoke); // Показываем текст только если можно душить
+	
+		
+		ChokeNPCtext.SetActive(isAbleToChoke); // Показываем текст только если можно душить
 	}
 
 	// НОВЫЙ МЕТОД для удушения
+	private Coroutine currentChokeCoroutine = null;
+
 	private void PerformChokeAttack()
 	{
-		Debug.Log("CHOKING!!!");
+		if (currentChokeCoroutine != null)
+			StopCoroutine(currentChokeCoroutine);
 
-		// Здесь можно добавить логику реального удушения:
-		// 1. Найти конкретного NPC в радиусе.
-		// 2. Запустить на нем анимацию или состояние "Choked".
-		// 3. Отключить его ИИ на время.
+		currentChokeCoroutine = StartCoroutine(ChokeRoutine());
+	}
+
+	private IEnumerator ChokeRoutine()
+	{
+		Debug.Log("START choke!");
+		float chokeDuration = 2f;
+		float elapsed = 0f;
+
+		while (elapsed < chokeDuration)
+		{
+			// Проверяем, не отпущена ли кнопка атаки
+			if ((isItRightHand && inputDevice.GetKeyRightHandWeaponAttackReleased()) ||
+				(!isItRightHand && inputDevice.GetKeyLeftHandWeaponAttackReleased()))
+			{
+				Debug.Log("Failed to choke!!!");
+				currentChokeCoroutine = null;
+				yield break; // Прерываем корутину
+			}
+
+			elapsed += Time.deltaTime;
+			yield return null; // Ждём следующего кадра
+		}
+
+		// Если дошли сюда — удушение успешно
+		Debug.Log("Choke SUCCESS!!!");
+		currentChokeCoroutine = null;
 	}
 
 	// ПЕРЕОПРЕДЕЛЯЕМ базовый метод атаки
