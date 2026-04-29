@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class MeleeWeaponAbstract : WeaponAbstract
+public abstract class WeaponMeleeAbstract : WeaponAbstract
 {
 	// Параметры атаки (задаются в наследниках)
 	protected float CapsuleHeight;

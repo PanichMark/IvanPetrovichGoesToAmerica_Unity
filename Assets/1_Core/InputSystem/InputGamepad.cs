@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 
@@ -29,30 +30,42 @@ public class InputGamepad : IInputDevice
 	private KeyCode _keyPauseMenu;
 
 	private Dictionary<string, string> controllerBindings = new Dictionary<string, string>()
-{
-	{"MoveForward", "Vertical"},             // Джойстик вперёд (positive)
-    {"MoveBackward", "Vertical"},            // Джойстик назад (negative)
-    {"MoveRight", "Horizontal"},             // Джойстик вправо (positive)
-    {"MoveLeft", "Horizontal"},              // Джойстик влево (negative)
-    {"Run", "Y"},                           // RB на Xbox или R2 на PlayStation
-    {"Jump", "A"},                           // A на Xbox или X на PlayStation
-    {"Crouch", "B"},                         // B на Xbox или O на PlayStation
-    {"Interact", "Y"},                       // A на Xbox или X на PlayStation
-    {"ChangeCameraView", "Y"},              // LB на Xbox или L1 на PlayStation
-    {"ChangeCameraShoulder", "Y"},          // RB на Xbox или R1 на PlayStation
-    {"RightHandWeaponWheel", "Y"},          // RT на Xbox или R2 на PlayStation
-    {"LeftHandWeaponWheel", "Y"},           // LT на Xbox или L2 на PlayStation
-    {"RightHandWeaponAttack", "Y"},         // RT на Xbox или R2 на PlayStation
-    {"LeftHandWeaponAttack", "Y"},          // LT на Xbox или L2 на PlayStation
-    {"Reload", "Y"},                         // Y на Xbox или Triangle на PlayStation
-    {"LegKick", "Y"}                         // X на Xbox или Square на PlayStation
-};
+	{
+		{"MoveForward", "Vertical"},             // Джойстик вперёд (positive)
+		{"MoveBackward", "Vertical"},            // Джойстик назад (negative)
+		{"MoveRight", "Horizontal"},             // Джойстик вправо (positive)
+		{"MoveLeft", "Horizontal"},              // Джойстик влево (negative)
+		{"Run", "Y"},                           // RB на Xbox или R2 на PlayStation
+		{"Jump", "A"},                           // A на Xbox или X на PlayStation
+		{"Crouch", "B"},                         // B на Xbox или O на PlayStation
+		{"Interact", "Y"},                       // A на Xbox или X на PlayStation
+		{"ChangeCameraView", "Y"},              // LB на Xbox или L1 на PlayStation
+		{"ChangeCameraShoulder", "Y"},          // RB на Xbox или R1 на PlayStation
+		{"RightHandWeaponWheel", "Y"},          // RT на Xbox или R2 на PlayStation
+		{"LeftHandWeaponWheel", "Y"},           // LT на Xbox или L2 на PlayStation
+		{"RightHandWeaponAttack", "Y"},         // RT на Xbox или R2 на PlayStation
+		{"LeftHandWeaponAttack", "Y"},          // LT на Xbox или L2 на PlayStation
+		{"Reload", "Y"},                         // Y на Xbox или Triangle на PlayStation
+		{"LegKick", "Y"}                         // X на Xbox или Square на PlayStation
+	};
+
+	// В классе InputGamepad
+	public IReadOnlyDictionary<string, KeyCode> CurrentBindings
+	{
+		get
+		{
+			// Было: keyBindings
+			// Стало: bruh
+			return new ReadOnlyDictionary<string, KeyCode>(bruh);
+		}
+	}
 
 
 	private Dictionary<string, KeyCode> bruh = new Dictionary<string, KeyCode>()
 	{
 		{"MoveForward", KeyCode.A},
 	};
+
 
 	public IEnumerable<(string action, KeyCode key)> GetCurrentBindings()
 	{
@@ -71,7 +84,7 @@ public class InputGamepad : IInputDevice
 		else
 			bruh[actionName] = newKey;
 	}
-
+	
 
 
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WeaponPoliceBaton : MeleeWeaponAbstract
+public class WeaponPoliceBaton : WeaponMeleeAbstract
 {
 	// Свойства оружия
 	public override float WeaponDamage => 45f;

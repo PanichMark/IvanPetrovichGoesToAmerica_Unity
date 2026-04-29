@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public abstract class RangedWeaponAbstract : WeaponAbstract
+public abstract class WeaponRangedAbstract : WeaponAbstract
 {
 	private TMP_Text PlayerAmmoText;
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WeaponHarmonicaRevolver : RangedWeaponAbstract
+public class WeaponHarmonicaRevolver : WeaponRangedAbstract
 {
 	public override float WeaponDamage => 30f; // Устанавливаем постоянное значение урона для револьвера
 

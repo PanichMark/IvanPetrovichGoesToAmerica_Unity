@@ -21,7 +21,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	// Интерфейсы настроек
 
-	private Button CloseSettingsSubMenuButton;
+	
 
 	// Ползунок для регулировки FOV
 	private Slider fovSlider;
@@ -31,7 +31,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	// Основные камеры
 	private Camera MainCamera;
-	private Camera AdditionalCamera;
+	
 
 	// Кнопки выбора частоты кадров
 	private Button[] FPSbuttons;
@@ -40,6 +40,9 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	// Цвет выделения активных кнопок
 	private Color activeColor = Color.green;
 	private Color normalColor = Color.white;
+
+	private GameObject buttonSaveSettings;
+	private GameObject buttonResetSettings;
 
 	// Текущее выбранное ограничение FPS
 	private int currentFrameRateLimit = 60;
@@ -66,7 +69,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	  };
 
 	public void Initialize(IInputDevice inputDevice, Bootstrap bootstrap, GameController gameController, GameObject mainCamera, GameObject fovDisplayText, MenuManager menuManager, PauseMenuController pauseMenuController,
-		GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings, GameObject FOVSlider, GameObject[] FPSbuttons, GameObject[] buttonsChangeLanguage, GameObject[] KeyRebinds)
+		GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings, GameObject FOVSlider, GameObject[] FPSbuttons, GameObject[] buttonsChangeLanguage, GameObject[] KeyRebinds, GameObject buttonSaveSettings, GameObject buttonResetSettings)
 
 	{
 		this.gameController = gameController;
@@ -89,9 +92,15 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		this.pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
 		this.pauseMenuController.OnClosePauseSubMenu += HideSettingsSubMenuCanvas;
 
+
+
 		this.buttonClosePauseSubMenuSettings.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
+		//this.buttonSaveSettings.GetComponent<Button>().onClick.AddListener(() => SaveSettings());
+		//this.buttonSaveSettings.GetComponent<Button>().onClick.AddListener(() => ResetSettings());
 
 		fovSlider = this.FOVSlider.GetComponent<Slider>();
+
+
 
 		
 		this.fovSlider.minValue = MIN_FOV_VALUE;
@@ -289,6 +298,63 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		{
 			Debug.LogWarning($"Некорректная клавиша: {newKeyStr}. Введите допустимое обозначение клавиши.");
 		}
+	}
+
+	// --- ДОБАВИТЬ ЭТИ МЕТОДЫ В САМЫЙ КОНЕЦ КЛАССА PauseSubMenuSettingsController ---
+
+	// Метод для кнопки "Сохранить"
+	public void SaveSettings()
+	{
+		// 1. Собираем все текущие настройки из контроллера в объект SettingsData
+		var currentData = new SettingsData();
+		//currentData.Language = bootstrap.CurrentLanguage;
+		currentData.FOV = MainCamera.fieldOfView;
+		currentData.FPSLimit = currentFrameRateLimit;
+
+		// Собираем биндинги клавиш
+		foreach (var binding in inputDevice.GetCurrentBindings())
+		{
+			currentData.KeyBindings[binding.action] = binding.key;
+		}
+
+		// 2. Передаем объект классу-хранилищу для записи на диск
+		PauseSubMenuSettingsPlayerPrefs.SaveSettings(currentData);
+
+		Debug.Log("Настройки успешно сохранены.");
+	}
+
+	// Метод для кнопки "Сбросить"
+	public void ResetSettings()
+	{
+		// 1. Удаляем все настройки из PlayerPrefs
+		PauseSubMenuSettingsPlayerPrefs.DeleteAllSettings();
+
+		// 2. Сбрасываем настройки в самом контроллере к значениям по умолчанию
+
+		// Язык по умолчанию
+		//ChangeLanguage(LanguagesEnum.Russian);
+
+		// FOV по умолчанию
+		SetFOV(MIN_FOV_VALUE);
+		fovSlider.value = MIN_FOV_VALUE;
+
+		// Лимит FPS по умолчанию
+		//ChangeFrameRateLimit(60);
+
+		// Клавиши по умолчанию (сбрасываем через InputKeyboard)
+		var defaultBindings = inputDevice.CurrentBindings;
+		foreach (var field in KeyRebinds)
+		{
+			string actionName = field.name.Replace("InputField", "");
+
+			if (defaultBindings.TryGetValue(actionName, out var defaultKey))
+			{
+				field.text = defaultKey.ToString();
+				inputDevice.RebindKey(actionName, defaultKey);
+			}
+		}
+
+		Debug.Log("Настройки сброшены к значениям по умолчанию.");
 	}
 }
 

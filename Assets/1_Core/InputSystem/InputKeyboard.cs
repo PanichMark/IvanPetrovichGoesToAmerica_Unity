@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 
@@ -42,7 +43,16 @@ public class InputKeyboard : IInputDevice
 		{"LegKick", KeyCode.Mouse2},
 	};
 
-
+	public IReadOnlyDictionary<string, KeyCode> CurrentBindings
+	{
+		get
+		{
+			// Возвращаем копию, обернутую в ReadOnlyDictionary.
+			// Теперь внешний код может только читать (foreach, ContainsKey, TryGetValue),
+			// но не может изменять значения.
+			return new ReadOnlyDictionary<string, KeyCode>(keyBindings);
+		}
+	}
 
 
 	public IEnumerable<(string action, KeyCode key)> GetCurrentBindings()

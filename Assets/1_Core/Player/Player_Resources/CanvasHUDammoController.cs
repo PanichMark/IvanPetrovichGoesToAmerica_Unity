@@ -102,7 +102,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		// Логика теперь нужна и для показа UI, И для обновления цифр при переключении оружия.
 		if (activeHand == "left")
 		{
-			var ranged = weaponController.LeftHandWeapon?.GetComponent<RangedWeaponAbstract>();
+			var ranged = weaponController.LeftHandWeapon?.GetComponent<WeaponRangedAbstract>();
 			if (weaponController.LeftHandWeapon != null && ranged != null)
 			{
 				ShowLeftWeaponAmmo();
@@ -124,7 +124,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		}
 		else // Правая рука
 		{
-			var ranged = weaponController.RightHandWeapon?.GetComponent<RangedWeaponAbstract>();
+			var ranged = weaponController.RightHandWeapon?.GetComponent<WeaponRangedAbstract>();
 			if (weaponController.RightHandWeapon != null && ranged != null)
 			{
 				ShowRightWeaponAmmo();
@@ -161,7 +161,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		// Проверяем правую руку
 		if (weaponController.RightHandWeapon != null)
 		{
-			var rightRanged = weaponController.RightHandWeapon.GetComponent<RangedWeaponAbstract>();
+			var rightRanged = weaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
 			if (rightRanged != null && rightRanged.WeaponAmmoType == type)
 			{
 				RightWeaponAmmoReserveText.text = newTotalAmount.ToString();
@@ -172,7 +172,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		// Проверяем левую руку
 		if (weaponController.LeftHandWeapon != null)
 		{
-			var leftRanged = weaponController.LeftHandWeapon.GetComponent<RangedWeaponAbstract>();
+			var leftRanged = weaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
 			if (leftRanged != null && leftRanged.WeaponAmmoType == type)
 			{
 				LeftWeaponAmmoReserveText.text = newTotalAmount.ToString();
@@ -187,7 +187,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		// Проверяем правую руку
 		if (weaponController.RightHandWeapon != null)
 		{
-			var rightRanged = weaponController.RightHandWeapon.GetComponent<RangedWeaponAbstract>();
+			var rightRanged = weaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
 			if (rightRanged != null && rightRanged.WeaponAmmoType == type)
 			{
 				RightWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
@@ -198,7 +198,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		// Проверяем левую руку
 		if (weaponController.LeftHandWeapon != null)
 		{
-			var leftRanged = weaponController.LeftHandWeapon.GetComponent<RangedWeaponAbstract>();
+			var leftRanged = weaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
 			if (leftRanged != null && leftRanged.WeaponAmmoType == type)
 			{
 				LeftWeaponAmmoMagazineText.text = newMagazineAmount.ToString();

@@ -151,14 +151,14 @@ public class WeaponController : MonoBehaviour
 			WeaponAbstract rightWeapon = RightHandWeapon?.GetComponent<WeaponAbstract>();
 
 			// 1. Сначала пытаемся перезарядить оружие в левой руке
-			if (leftHandWeaponComponent != null && leftWeapon is RangedWeaponAbstract)
+			if (leftHandWeaponComponent != null && leftWeapon is WeaponRangedAbstract)
 			{
-				(leftWeapon as RangedWeaponAbstract).Reload();
+				(leftWeapon as WeaponRangedAbstract).Reload();
 			}
 			// 2. Если в левой руке нет оружия или оно не стрелковое, пробуем правую
-			if (rightHandWeaponComponent != null && rightWeapon is RangedWeaponAbstract)
+			if (rightHandWeaponComponent != null && rightWeapon is WeaponRangedAbstract)
 			{
-				(rightWeapon as RangedWeaponAbstract).Reload();
+				(rightWeapon as WeaponRangedAbstract).Reload();
 			}
 		}
 
