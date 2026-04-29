@@ -5,11 +5,16 @@ using UnityEngine;
 
 public class InputKeyboard : IInputDevice
 {
+	// Это поле будет хранить "снимок" (копию) словаря в момент инициализации.
+	// Оно будет содержать ИЗНАЧАЛЬНЫЕ значения.
+	private readonly Dictionary<string, KeyCode> _initialBindingsSnapshot;
+
 	private GameController gameController;
 	public InputKeyboard(GameController gameController)
 	{
 		this.gameController = gameController;
 		_keyPauseMenu = KeyCode.Alpha1;
+		_initialBindingsSnapshot = new Dictionary<string, KeyCode>(keyBindings);
 		Debug.Log("InputKeyboard Initialized");
 	}
 	
@@ -56,8 +61,10 @@ public class InputKeyboard : IInputDevice
 	// Реализация нового метода из интерфейса
 	public IReadOnlyDictionary<string, KeyCode> GetDefaultBindings()
 	{
-		// Возвращаем копию, чтобы никто не мог изменить оригинал
-		return new ReadOnlyDictionary<string, KeyCode>(keyBindings);
+		// Теперь мы берем копию из нашего "снимка", сделанного при инициализации.
+		// Это гарантирует, что мы всегда получаем НАЧАЛЬНЫЕ значения.
+		var copyOfInitialBindings = new Dictionary<string, KeyCode>(_initialBindingsSnapshot);
+		return new ReadOnlyDictionary<string, KeyCode>(copyOfInitialBindings);
 	}
 
 	public IEnumerable<(string action, KeyCode key)> GetCurrentBindings()

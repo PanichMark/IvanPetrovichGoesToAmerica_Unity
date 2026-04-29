@@ -34,6 +34,8 @@ public interface IInputDevice
 
 	string GetNameOfKeyLeftHandWeaponAttack();
 
+	
+
 	// Дополнительные полезные методы
 	IEnumerable<(string action, KeyCode key)> GetCurrentBindings();
 	IReadOnlyDictionary<string, KeyCode> CurrentBindings { get; }

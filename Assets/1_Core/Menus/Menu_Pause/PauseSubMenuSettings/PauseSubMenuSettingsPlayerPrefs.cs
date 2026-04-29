@@ -30,8 +30,12 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 		PlayerPrefs.Save(); // Сохраняем биндинги клавиш
 	}
 
-	// Загрузка всех настроек в новый объект SettingsData
-	public SettingsData LoadSettings()
+	// В классе PauseSubMenuSettingsPlayerPrefs
+
+	// Убираем поле _inputDevice и метод Initialize
+
+	// Переписываем метод LoadSettings
+	public SettingsData LoadSettings(List<string> actionNamesToLoad)
 	{
 		var data = new SettingsData();
 
@@ -41,76 +45,50 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 			data.FOV = PlayerPrefs.GetFloat(KEY_FOV);
 			Debug.Log($"[Загрузка] FOV успешно загружен: {data.FOV}");
 		}
-		else
-		{
-			Debug.Log("[Загрузка] Ключ FOV не найден в PlayerPrefs. Используется значение по умолчанию.");
-		}
 
 		// --- 2. ЗАГРУЗКА БИНДИНГОВ ---
-		// Получаем строку со всеми ключами, хранящимися в PlayerPrefs
-		string allKeysString = PlayerPrefs.GetString("");
-		string[] allKeysArray = allKeysString.Split('\0'); // Разделяем на массив
-
-		// Проходим по каждому найденному ключу
-		foreach (string key in allKeysArray)
+		// Принимаем список имен действий, которые нужно загрузить
+		if (actionNamesToLoad != null && actionNamesToLoad.Count > 0)
 		{
-			// Проверяем, является ли ключ нашим биндингом и не является ли он пустой строкой
-			if (!string.IsNullOrEmpty(key) && key.StartsWith(PREFIX_KEYBINDING))
+			int loadedBindingsCount = 0;
+
+			foreach (string actionName in actionNamesToLoad)
 			{
-				// Извлекаем имя действия из ключа.
-				// Например, из "KeyBinding_Jump" получаем "Jump"
-				string actionName = key.Substring(PREFIX_KEYBINDING.Length);
-
-				// Получаем строковое значение клавиши, которое мы сохранили ранее
-				string savedValueStr = PlayerPrefs.GetString(key);
-				KeyCode parsedKeyCode;
-
-				// --- ИСПРАВЛЕННЫЙ ПАРСИНГ KEYCODE ---
-				// Пробуем распарсить строку напрямую
-				if (Enum.TryParse<KeyCode>(savedValueStr, out parsedKeyCode))
+				string key = PREFIX_KEYBINDING + actionName;
+				if (PlayerPrefs.HasKey(key))
 				{
-					// Если получилось, добавляем в словарь
-					data.KeyBindings[actionName] = parsedKeyCode;
-					Debug.Log($"[Загрузка] УСПЕШНО распарсен биндинг: {actionName} = {parsedKeyCode}");
-				}
-				else
-				{
-					// Если не получилось (например, строка "KeyCode.Space"), пробуем обрезать префикс
-					if (savedValueStr.StartsWith("KeyCode."))
+					string savedValueStr = PlayerPrefs.GetString(key);
+					KeyCode parsedKeyCode;
+
+					if (Enum.TryParse<KeyCode>(savedValueStr, out parsedKeyCode))
 					{
-						string trimmedValue = savedValueStr.Substring(8); // "KeyCode.Space" -> "Space"
+						data.KeyBindings[actionName] = parsedKeyCode;
+						loadedBindingsCount++;
+					}
+					else if (savedValueStr.StartsWith("KeyCode."))
+					{
+						string trimmedValue = savedValueStr.Substring(8);
 						if (Enum.TryParse<KeyCode>(trimmedValue, out parsedKeyCode))
 						{
 							data.KeyBindings[actionName] = parsedKeyCode;
-							Debug.Log($"[Загрузка] УСПЕШНО распарсен биндинг (с обрезкой префикса): {actionName} = {parsedKeyCode}");
+							loadedBindingsCount++;
 						}
-						else
-						{
-							Debug.LogError($"[Загрузка] ОШИБКА: Не удалось распарсить значение '{savedValueStr}' для действия '{actionName}'");
-						}
-					}
-					else
-					{
-						Debug.LogError($"[Загрузка] ОШИБКА: Неизвестный формат значения '{savedValueStr}' для действия '{actionName}'");
 					}
 				}
-				// -----------------------------------
 			}
-		}
 
-		// Лог для проверки, сколько ключей мы в итоге загрузили
-		if (data.KeyBindings.Count > 0)
-		{
-			Debug.Log($"[Загрузка] Всего успешно загружено биндингов: {data.KeyBindings.Count}");
-		}
-		else
-		{
-			Debug.LogWarning("[Загрузка] Словарь биндингов остался пустым. Проверьте формат сохраненных данных.");
+			if (loadedBindingsCount > 0)
+			{
+				Debug.Log($"[Загрузка] Всего успешно загружено биндингов: {loadedBindingsCount}");
+			}
+			else
+			{
+				Debug.LogWarning("[Загрузка] Словарь биндингов остался пустым. Проверьте формат сохраненных данных.");
+			}
 		}
 
 		return data;
 	}
-
 	// Полное удаление всех наших настроек из PlayerPrefs
 	public void ResetSettings()
 	{
