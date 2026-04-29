@@ -18,10 +18,10 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private GameObject FOVSlider;
 	private Button[] buttonsChangeLanguage;
 	private char lastValidChar; // Переменная для хранения последнего корректного символа
-
+	private PauseSubMenuSettingsPlayerPrefs pauseSubMenuSettingsPlayerPrefs;
 	// Интерфейсы настроек
 
-	
+
 
 	// Ползунок для регулировки FOV
 	private Slider fovSlider;
@@ -69,7 +69,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	  };
 
 	public void Initialize(IInputDevice inputDevice, Bootstrap bootstrap, GameController gameController, GameObject mainCamera, GameObject fovDisplayText, MenuManager menuManager, PauseMenuController pauseMenuController,
-		GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings, GameObject FOVSlider, GameObject[] FPSbuttons, GameObject[] buttonsChangeLanguage, GameObject[] KeyRebinds, GameObject buttonSaveSettings, GameObject buttonResetSettings)
+		GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings, GameObject FOVSlider, GameObject[] FPSbuttons, GameObject[] buttonsChangeLanguage, GameObject[] KeyRebinds, PauseSubMenuSettingsPlayerPrefs pauseSubMenuSettingsPlayerPrefs, GameObject buttonSaveSettings, GameObject buttonResetSettings)
 
 	{
 		this.gameController = gameController;
@@ -91,12 +91,16 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		this.buttonClosePauseSubMenuSettings = buttonClosePauseSubMenuSettings;
 		this.pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
 		this.pauseMenuController.OnClosePauseSubMenu += HideSettingsSubMenuCanvas;
-
-
+		this.buttonSaveSettings = buttonSaveSettings;
+		this.buttonResetSettings = buttonResetSettings;
+		this.pauseSubMenuSettingsPlayerPrefs = pauseSubMenuSettingsPlayerPrefs;
+		// 1. Загружаем данные из PlayerPrefs
+	
 
 		this.buttonClosePauseSubMenuSettings.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
-		//this.buttonSaveSettings.GetComponent<Button>().onClick.AddListener(() => SaveSettings());
-		//this.buttonSaveSettings.GetComponent<Button>().onClick.AddListener(() => ResetSettings());
+		// Стало:
+		this.buttonSaveSettings.GetComponent<Button>().onClick.AddListener(SaveSettings);
+		this.buttonResetSettings.GetComponent<Button>().onClick.AddListener(ResetSettings);
 
 		fovSlider = this.FOVSlider.GetComponent<Slider>();
 
@@ -106,7 +110,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		this.fovSlider.minValue = MIN_FOV_VALUE;
 		this.fovSlider.maxValue = MAX_FOV_VALUE;
 		this.fovSlider.onValueChanged.AddListener(OnFovChanged);
-		SetFOV(MIN_FOV_VALUE);
+		//SetFOV(MIN_FOV_VALUE);
 
 		//Debug.Log(this.FPSbuttons[0]);
 
@@ -163,7 +167,12 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			});
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
-		
+
+		SettingsData loadedData = pauseSubMenuSettingsPlayerPrefs.LoadSettings();
+
+		// 2. Применяем эти данные к нашему меню
+		ApplyLoadedSettings(loadedData);
+
 		Debug.Log("SettingsSubMenu Initialized");
 	}
 
@@ -309,7 +318,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		var currentData = new SettingsData();
 		//currentData.Language = bootstrap.CurrentLanguage;
 		currentData.FOV = MainCamera.fieldOfView;
-		currentData.FPSLimit = currentFrameRateLimit;
 
 		// Собираем биндинги клавиш
 		foreach (var binding in inputDevice.GetCurrentBindings())
@@ -318,31 +326,21 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		}
 
 		// 2. Передаем объект классу-хранилищу для записи на диск
-		PauseSubMenuSettingsPlayerPrefs.SaveSettings(currentData);
+		pauseSubMenuSettingsPlayerPrefs.SaveSettings(currentData);
 
-		Debug.Log("Настройки успешно сохранены.");
+		Debug.Log("GameSettings SAVED");
 	}
 
 	// Метод для кнопки "Сбросить"
 	public void ResetSettings()
 	{
-		// 1. Удаляем все настройки из PlayerPrefs
-		PauseSubMenuSettingsPlayerPrefs.DeleteAllSettings();
+		pauseSubMenuSettingsPlayerPrefs.ResetSettings();
 
-		// 2. Сбрасываем настройки в самом контроллере к значениям по умолчанию
-
-		// Язык по умолчанию
-		//ChangeLanguage(LanguagesEnum.Russian);
-
-		// FOV по умолчанию
 		SetFOV(MIN_FOV_VALUE);
 		fovSlider.value = MIN_FOV_VALUE;
 
-		// Лимит FPS по умолчанию
-		//ChangeFrameRateLimit(60);
 
-		// Клавиши по умолчанию (сбрасываем через InputKeyboard)
-		var defaultBindings = inputDevice.CurrentBindings;
+		var defaultBindings = inputDevice.GetDefaultBindings();
 		foreach (var field in KeyRebinds)
 		{
 			string actionName = field.name.Replace("InputField", "");
@@ -354,7 +352,35 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			}
 		}
 
-		Debug.Log("Настройки сброшены к значениям по умолчанию.");
+		Debug.Log("GameSettings RESET");
 	}
+	// В классе PauseSubMenuSettingsController
+
+	// Этот метод берет данные и выставляет их на UI элементы
+	private void ApplyLoadedSettings(SettingsData data)
+	{
+		// Применяем FOV, если он был сохранен
+		if (PlayerPrefs.HasKey(pauseSubMenuSettingsPlayerPrefs.KEY_FOV))
+		{
+			SetFOV(data.FOV); // Установит значение для камеры
+			fovSlider.value = data.FOV; // Установит ползунок в нужное положение
+		}
+
+		/*
+		// Применяем биндинги клавиш, если они были сохранены
+		foreach (var field in KeyRebinds)
+		{
+			string actionName = field.name.Replace("InputField", "");
+
+			if (data.KeyBindings.TryGetValue(actionName, out var savedKey))
+			{
+				field.text = savedKey.ToString(); // Обновим текст в поле ввода
+												  // inputDevice.RebindKey(actionName, savedKey); // Необязательно, если вы сразу применяете через HandleRebinding
+			}
+		}
+		*/
+		Debug.Log("GameSettings APPLIED");
+	}
+
 }
 

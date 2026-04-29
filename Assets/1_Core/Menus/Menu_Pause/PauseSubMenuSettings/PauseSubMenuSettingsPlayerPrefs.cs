@@ -1,26 +1,25 @@
-﻿// Файл: PauseSubMenuSettingsPlayerPrefs.cs
+﻿
 
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class PauseSubMenuSettingsPlayerPrefs
+public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 {
 	// Ключи для PlayerPrefs
-	private const string KEY_LANGUAGE = "Language";
-	private const string KEY_FOV = "FOV";
-	private const string KEY_FPS_LIMIT = "FPSLimit";
-	private const string PREFIX_KEYBINDING = "KeyBinding_";
+	// В теле класса
+	public string KEY_FOV { get; private set; } = "FOV";
+	public string PREFIX_KEYBINDING  { get; private set; } = "KeyBinding_";
 
 	// НОВЫЙ КЛЮЧ (если вы добавляли чувствительность мыши)
 	// private const string KEY_MOUSE_SENSITIVITY = "MouseSensitivity"; 
 
 	// Сохранение всех настроек из объекта SettingsData
-	public static void SaveSettings(SettingsData data)
+	public void SaveSettings(SettingsData data)
 	{
-		PlayerPrefs.SetInt(KEY_LANGUAGE, (int)data.Language);
+
 		PlayerPrefs.SetFloat(KEY_FOV, data.FOV);
-		PlayerPrefs.SetInt(KEY_FPS_LIMIT, data.FPSLimit);
+
 		// PlayerPrefs.SetFloat(KEY_MOUSE_SENSITIVITY, data.MouseSensitivity); 
 		PlayerPrefs.Save(); // Сохраняем основные параметры
 
@@ -32,18 +31,16 @@ public static class PauseSubMenuSettingsPlayerPrefs
 	}
 
 	// Загрузка всех настроек в новый объект SettingsData
-	public static SettingsData LoadSettings()
+	public SettingsData LoadSettings()
 	{
 		var data = new SettingsData();
 
-		if (PlayerPrefs.HasKey(KEY_LANGUAGE))
-			data.Language = (LanguagesEnum)PlayerPrefs.GetInt(KEY_LANGUAGE);
+
 
 		if (PlayerPrefs.HasKey(KEY_FOV))
 			data.FOV = PlayerPrefs.GetFloat(KEY_FOV);
 
-		if (PlayerPrefs.HasKey(KEY_FPS_LIMIT))
-			data.FPSLimit = PlayerPrefs.GetInt(KEY_FPS_LIMIT);
+	
 
 		// if (PlayerPrefs.HasKey(KEY_MOUSE_SENSITIVITY))
 		//     data.MouseSensitivity = PlayerPrefs.GetFloat(KEY_MOUSE_SENSITIVITY);
@@ -74,7 +71,7 @@ public static class PauseSubMenuSettingsPlayerPrefs
 	}
 
 	// Полное удаление всех наших настроек из PlayerPrefs
-	public static void DeleteAllSettings()
+	public void ResetSettings()
 	{
 		//PlayerPrefs.DeleteKey(KEY_LANGUAGE);
 		PlayerPrefs.DeleteKey(KEY_FOV);

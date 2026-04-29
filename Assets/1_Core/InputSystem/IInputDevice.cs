@@ -37,6 +37,8 @@ public interface IInputDevice
 	// Дополнительные полезные методы
 	IEnumerable<(string action, KeyCode key)> GetCurrentBindings();
 	IReadOnlyDictionary<string, KeyCode> CurrentBindings { get; }
+
+	IReadOnlyDictionary<string, KeyCode> GetDefaultBindings();
 	KeyCode GetBinding(string actionName);
 	void RebindKey(string actionName, KeyCode newKey);
 }

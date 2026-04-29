@@ -59,7 +59,12 @@ public class InputGamepad : IInputDevice
 			return new ReadOnlyDictionary<string, KeyCode>(bruh);
 		}
 	}
-
+	// Реализация нового метода из интерфейса
+	public IReadOnlyDictionary<string, KeyCode> GetDefaultBindings()
+	{
+		// Возвращаем копию, чтобы никто не мог изменить оригинал
+		return new ReadOnlyDictionary<string, KeyCode>(bruh);
+	}
 
 	private Dictionary<string, KeyCode> bruh = new Dictionary<string, KeyCode>()
 	{

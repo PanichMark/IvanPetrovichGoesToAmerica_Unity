@@ -53,7 +53,12 @@ public class InputKeyboard : IInputDevice
 			return new ReadOnlyDictionary<string, KeyCode>(keyBindings);
 		}
 	}
-
+	// Реализация нового метода из интерфейса
+	public IReadOnlyDictionary<string, KeyCode> GetDefaultBindings()
+	{
+		// Возвращаем копию, чтобы никто не мог изменить оригинал
+		return new ReadOnlyDictionary<string, KeyCode>(keyBindings);
+	}
 
 	public IEnumerable<(string action, KeyCode key)> GetCurrentBindings()
 	{

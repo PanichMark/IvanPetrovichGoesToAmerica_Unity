@@ -108,6 +108,7 @@ public class Bootstrap : MonoBehaviour
 	// Подменю настроек
 	private PauseSubMenuSettingsController pauseSubMenuSettingsController;
 	[SerializeField] private GameObject canvasPauseSubMenuSettings;
+	private PauseSubMenuSettingsPlayerPrefs pauseSubMenuSettingsPlayerPrefs;
 	private GameObject buttonClosePauseSubMenuSettings;
 	private GameObject[] FPSbuttons;
 	private GameObject FOVSlider;
@@ -320,6 +321,7 @@ public class Bootstrap : MonoBehaviour
 		pauseSubMenuSaveController = menuManagerGameobject.AddComponent<PauseSubMenuSaveController>();
 		pauseSubMenuLoadController = menuManagerGameobject.AddComponent<PauseSubMenuLoadController>();
 		pauseSubMenuImagesController = menuManagerGameobject.AddComponent<PauseSubMenuImagesController>();
+		pauseSubMenuSettingsPlayerPrefs = menuManagerGameobject.AddComponent<PauseSubMenuSettingsPlayerPrefs>();
 		pauseSubMenuSettingsController = menuManagerGameobject.AddComponent<PauseSubMenuSettingsController>();
 
 		buttonCloseMainMenuReadNews = canvasMainMenuReadNews.transform.Find("ExitReadNews").GetComponent<Button>();
@@ -408,6 +410,7 @@ public class Bootstrap : MonoBehaviour
 
 		buttonSaveSettings = FindDeepChildByName(canvasPauseSubMenuSettings, "SaveSettings");
 		buttonResetSettings = FindDeepChildByName(canvasPauseSubMenuSettings, "ResetSettings");
+	
 
 		// Инициализация меню
 		menuManager.Initialize(inputDevice, gameController, saveLoadController);
@@ -415,7 +418,7 @@ public class Bootstrap : MonoBehaviour
 		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame, buttonClosePauseSubMenuSave);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonsDeleteGame, buttonClosePauseSubMenuLoad);
 		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages, buttonClosePauseSubMenuImages);
-		pauseSubMenuSettingsController.Initialize(inputDevice, this, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons, buttonsChangeLanguage, KeyRebinds, buttonSaveSettings, buttonResetSettings);
+		pauseSubMenuSettingsController.Initialize(inputDevice, this, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons, buttonsChangeLanguage, KeyRebinds, pauseSubMenuSettingsPlayerPrefs, buttonSaveSettings, buttonResetSettings);
 
 		Debug.Log("PAUSE MENU INITIALIZED");
 		yield break;
