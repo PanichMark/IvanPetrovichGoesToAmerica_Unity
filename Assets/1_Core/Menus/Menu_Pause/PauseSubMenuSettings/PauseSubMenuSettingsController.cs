@@ -312,20 +312,29 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	// --- ДОБАВИТЬ ЭТИ МЕТОДЫ В САМЫЙ КОНЕЦ КЛАССА PauseSubMenuSettingsController ---
 
 	// Метод для кнопки "Сохранить"
+	// В классе PauseSubMenuSettingsController
+
 	public void SaveSettings()
 	{
-		// 1. Собираем все текущие настройки из контроллера в объект SettingsData
+		// 1. Создаем объект для сохранения
 		var currentData = new SettingsData();
-		//currentData.Language = bootstrap.CurrentLanguage;
 		currentData.FOV = MainCamera.fieldOfView;
+		// currentData.FPSLimit = currentFrameRateLimit; // Если нужно сохранять FPS, добавьте
 
-		// Собираем биндинги клавиш
-		foreach (var binding in inputDevice.GetCurrentBindings())
+		// 2. БЕРЕМ ГОТОВЫЙ СЛОВАРЬ ИЗ УСТРОЙСТВА ВВОДА
+		// Это главная правка. Мы не собираем данные вручную, а берем их из inputDevice.
+		currentData.KeyBindings = new Dictionary<string, KeyCode>(inputDevice.CurrentBindings);
+
+		// --- ОТЛАДКА: Смотрим, что именно мы сохраняем ---
+		Debug.Log("=== СОХРАНЯЕМЫЕ ДАННЫЕ ===");
+		foreach (var kvp in currentData.KeyBindings)
 		{
-			currentData.KeyBindings[binding.action] = binding.key;
+			Debug.Log($"Сохраняю: {kvp.Key} = {kvp.Value}");
 		}
+		Debug.Log("=========================");
+		// ---------------------------------
 
-		// 2. Передаем объект классу-хранилищу для записи на диск
+		// 3. Передаем объект классу-хранилищу
 		pauseSubMenuSettingsPlayerPrefs.SaveSettings(currentData);
 
 		Debug.Log("GameSettings SAVED");
@@ -359,27 +368,56 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	// Этот метод берет данные и выставляет их на UI элементы
 	private void ApplyLoadedSettings(SettingsData data)
 	{
-		// Применяем FOV, если он был сохранен
+		Debug.Log("--- ПРИМЕНЯЕМ ЗАГРУЖЕННЫЕ НАСТРОЙКИ ---");
+
+		// 1. Применяем FOV (здесь все без изменений)
 		if (PlayerPrefs.HasKey(pauseSubMenuSettingsPlayerPrefs.KEY_FOV))
 		{
-			SetFOV(data.FOV); // Установит значение для камеры
-			fovSlider.value = data.FOV; // Установит ползунок в нужное положение
+			SetFOV(data.FOV);
+			fovSlider.value = data.FOV;
+			Debug.Log($"Применен FOV: {data.FOV}");
 		}
 
-		/*
-		// Применяем биндинги клавиш, если они были сохранены
-		foreach (var field in KeyRebinds)
-		{
-			string actionName = field.name.Replace("InputField", "");
+		// 2. ПРИМЕНЯЕМ БИНДИНГИ (НОВАЯ ЛОГИКА!)
+		// Мы просто проходим по всем загруженным данным и применяем их.
+		// Нам не важно, какое поле ввода сейчас на экране.
+		// Если действие есть в данных - оно будет применено.
 
-			if (data.KeyBindings.TryGetValue(actionName, out var savedKey))
+		if (data.KeyBindings != null && data.KeyBindings.Count > 0)
+		{
+			Debug.Log("Применяем биндинги клавиш:");
+			foreach (var kvp in data.KeyBindings)
 			{
-				field.text = savedKey.ToString(); // Обновим текст в поле ввода
-												  // inputDevice.RebindKey(actionName, savedKey); // Необязательно, если вы сразу применяете через HandleRebinding
+				string actionName = kvp.Key; // Например, "Jump"
+				KeyCode savedKey = kvp.Value; // Например, "Space"
+
+				// Ищем на сцене поле ввода, которое соответствует этому действию
+				bool foundField = false;
+				foreach (var field in KeyRebinds)
+				{
+					// Получаем имя действия из имени поля ввода (например, "Jump (InputField)" -> "Jump")
+					string fieldActionName = field.name.Replace(" (InputField)", "");
+
+					if (fieldActionName == actionName)
+					{
+						// Если имя совпало - применяем!
+						field.text = savedKey.ToString();
+						inputDevice.RebindKey(actionName, savedKey);
+						Debug.Log($"УСПЕШНО применено к '{actionName}': {savedKey}");
+						foundField = true;
+						break; // Выходим из внутреннего цикла, переходим к следующему действию
+					}
+				}
+				if (!foundField)
+				{
+					Debug.LogWarning($"Поле ввода для действия '{actionName}' не найдено на сцене.");
+				}
 			}
 		}
-		*/
-		Debug.Log("GameSettings APPLIED");
+		else
+		{
+			Debug.Log("Словарь биндингов пуст. Сохраненных клавиш нет.");
+		}
 	}
 
 }
