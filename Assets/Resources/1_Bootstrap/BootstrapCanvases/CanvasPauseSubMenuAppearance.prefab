@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2695260469231173351}
   - component: {fileID: 7315342288720385036}
   m_Layer: 5
-  m_Name: CanvasPauseSubMenuImages
+  m_Name: CanvasPauseSubMenuAppearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -404,8 +404,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u041C\u0415\u041D\u042E \u0418\u041B\u041B\u042E\u0421\u0422\u0420\u0410\u0426\u0418\u0419
-    \u0418 \u0417\u0410\u041F\u0418\u0421\u041E\u041A"
+  m_text: "\u041C\u0415\u041D\u042E \u0412\u041D\u0415\u0428\u041D\u041E\u0421\u0422\u0418"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

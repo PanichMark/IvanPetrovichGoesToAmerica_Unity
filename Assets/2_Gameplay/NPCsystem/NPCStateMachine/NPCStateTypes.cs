@@ -6,11 +6,15 @@
 	Alarmed,
 	Chasing,
 	Attacking,
+	Reloading,
 	Searching,
 	Scared,
 	Fleeing,
 	BeingHooked,
-	Choked,
+	BeingChoked,
 	Falling,
+	KnockedOff,
+	BlownAway,
+	StandingUp,
 	Dead
 }

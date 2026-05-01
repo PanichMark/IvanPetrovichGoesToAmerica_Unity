@@ -102,10 +102,10 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject canvasPauseSubMenuLoad;
 	private GameObject[] buttonsLoadGame;
 	private GameObject buttonClosePauseSubMenuLoad;
-	// Подменю картинок
-	private PauseSubMenuImagesController pauseSubMenuImagesController;
-	[SerializeField] private GameObject canvasPauseSubMenuImages;
-	private GameObject buttonClosePauseSubMenuImages;
+	// Подменю внешности
+	private PauseSubMenuAppearanceController pauseSubMenuAppearanceController;
+	[SerializeField] private GameObject canvasPauseSubMenuAppearance;
+	private GameObject buttonClosePauseSubMenuAppearance;
 	// Подменю настроек
 	private PauseSubMenuSettingsController pauseSubMenuSettingsController;
 	[SerializeField] private GameObject canvasPauseSubMenuSettings;
@@ -274,7 +274,7 @@ public class Bootstrap : MonoBehaviour
 		canvasPauseMenu = Instantiate(canvasPauseMenu);
 		canvasPauseSubMenuSave = Instantiate(canvasPauseSubMenuSave);
 		canvasPauseSubMenuLoad = Instantiate(canvasPauseSubMenuLoad);
-		canvasPauseSubMenuImages = Instantiate(canvasPauseSubMenuImages);
+		canvasPauseSubMenuAppearance = Instantiate(canvasPauseSubMenuAppearance);
 		canvasPauseSubMenuSettings = Instantiate(canvasPauseSubMenuSettings);
 		canvasMenuWeaponWheel = Instantiate(canvasMenuWeaponWheel);
 		canvasHUDInteraction = Instantiate(canvasHUDInteraction);
@@ -321,7 +321,7 @@ public class Bootstrap : MonoBehaviour
 		pauseMenuController = menuManagerGameobject.AddComponent<PauseMenuController>();
 		pauseSubMenuSaveController = menuManagerGameobject.AddComponent<PauseSubMenuSaveController>();
 		pauseSubMenuLoadController = menuManagerGameobject.AddComponent<PauseSubMenuLoadController>();
-		pauseSubMenuImagesController = menuManagerGameobject.AddComponent<PauseSubMenuImagesController>();
+		pauseSubMenuAppearanceController = menuManagerGameobject.AddComponent<PauseSubMenuAppearanceController>();
 		pauseSubMenuSettingsPlayerPrefs = menuManagerGameobject.AddComponent<PauseSubMenuSettingsPlayerPrefs>();
 		pauseSubMenuSettingsController = menuManagerGameobject.AddComponent<PauseSubMenuSettingsController>();
 
@@ -334,7 +334,7 @@ public class Bootstrap : MonoBehaviour
 			FindDeepChildByName(canvasPauseMenu, "PauseMenu Resume Button"),
 			FindDeepChildByName(canvasPauseMenu, "PauseMenu Save Button"),
 			FindDeepChildByName(canvasPauseMenu, "PauseMenu Load Button"),
-			FindDeepChildByName(canvasPauseMenu, "PauseMenu Images Button"),
+			FindDeepChildByName(canvasPauseMenu, "PauseMenu Appearance Button"),
 			FindDeepChildByName(canvasPauseMenu, "PauseMenu Settings Button"),
 			FindDeepChildByName(canvasPauseMenu, "PauseMenu Exit Button")
 		};
@@ -368,7 +368,7 @@ public class Bootstrap : MonoBehaviour
 		};
 		buttonClosePauseSubMenuLoad = FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu close Button");
 
-		buttonClosePauseSubMenuImages = FindDeepChildByName(canvasPauseSubMenuImages, "ImagesSubMenu close Button");
+		buttonClosePauseSubMenuAppearance = FindDeepChildByName(canvasPauseSubMenuAppearance, "ImagesSubMenu close Button");
 		buttonSaveNewGame = FindDeepChildByName(canvasPauseSubMenuSave, "SaveNewGame");
 		FOVSlider = FindDeepChildByName(canvasPauseSubMenuSettings, "CameraFOVSlider");
 		fovDisplayText = FindDeepChildByName(canvasPauseSubMenuSettings, "CameraFOVText");
@@ -418,7 +418,7 @@ public class Bootstrap : MonoBehaviour
 		pauseMenuController.Initialize(inputDevice, gameController, gameSceneManager, saveLoadController, menuManager, canvasPauseMenu, buttonsPauseMenu);
 		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame, buttonsDeleteGame, buttonClosePauseSubMenuSave, buttonSaveNewGame);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonClosePauseSubMenuLoad);
-		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages, buttonClosePauseSubMenuImages);
+		pauseSubMenuAppearanceController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuAppearance, buttonClosePauseSubMenuAppearance);
 		pauseSubMenuSettingsController.Initialize(inputDevice, this, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons, buttonsChangeLanguage, KeyRebinds, pauseSubMenuSettingsPlayerPrefs, buttonSaveSettings, buttonResetSettings);
 
 		Debug.Log("PAUSE MENU INITIALIZED");
@@ -485,7 +485,7 @@ public class Bootstrap : MonoBehaviour
 
 		canvasHUDhealthAndManaController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDhealthAndMana);
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
-		playerResourcesHealthManager.Initialize(HealthBarSlider, HealingItemButton, HealingItemNumber);
+		playerResourcesHealthManager.Initialize(gameController, HealthBarSlider, HealingItemButton, HealingItemNumber);
 		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
 
 		RightWeaponAmmoMagazine = canvasHUDammo.transform.Find("RightWeaponAmmoMagazine").gameObject;

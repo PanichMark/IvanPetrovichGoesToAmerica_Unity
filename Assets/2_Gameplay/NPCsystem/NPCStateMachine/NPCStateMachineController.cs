@@ -314,6 +314,12 @@ public class NPCStateMachineController : MonoBehaviour
 			newState = new AttackingNPCState();
 			//CurrentNPCState = "PlayerFalling";
 		}
+		else if (playerMovementStateType == NPCStateTypes.Reloading)
+		{
+
+			newState = new ReloadingNPCState();
+			//CurrentNPCState = "PlayerFalling";
+		}
 		else if (playerMovementStateType == NPCStateTypes.Searching)
 		{
 			newState = new SearchingNPCState();
@@ -336,14 +342,29 @@ public class NPCStateMachineController : MonoBehaviour
 			CurrentNPCState = "BeingHooked";
 			//CurrentNPCState = "PlayerCrouchingWalking";
 		}
-		else if (playerMovementStateType == NPCStateTypes.Choked)
+		else if (playerMovementStateType == NPCStateTypes.BeingChoked)
 		{
-			newState = new ChokedNPCState(this);
+			newState = new BeingChokedNPCState(this);
 			//CurrentNPCState = "PlayerCrouchingWalking";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Falling)
 		{
 			newState = new FallingNPCState();
+			//CurrentNPCState = "PlayerCrouchingWalking";
+		}
+		else if (playerMovementStateType == NPCStateTypes.KnockedOff)
+		{
+			newState = new KnockedOffNPCState();
+			//CurrentNPCState = "PlayerCrouchingWalking";
+		}
+		else if (playerMovementStateType == NPCStateTypes.BlownAway)
+		{
+			newState = new BlownAwayNPCState();
+			//CurrentNPCState = "PlayerCrouchingWalking";
+		}
+		else if (playerMovementStateType == NPCStateTypes.StandingUp)
+		{
+			newState = new StandingUpNPCState();
 			//CurrentNPCState = "PlayerCrouchingWalking";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Dead)

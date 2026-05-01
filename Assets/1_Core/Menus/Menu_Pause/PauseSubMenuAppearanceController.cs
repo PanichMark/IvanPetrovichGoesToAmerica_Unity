@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PauseSubMenuImagesController : MonoBehaviour
+public class PauseSubMenuAppearanceController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;

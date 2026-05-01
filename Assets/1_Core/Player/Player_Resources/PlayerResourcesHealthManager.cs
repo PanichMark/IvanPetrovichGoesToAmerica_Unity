@@ -4,18 +4,18 @@ using UnityEngine.UI;
 
 public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 {
-	public void Initialize(Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
+	public void Initialize(GameController gameController, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
 	{
 		this.HealthBarSlider = HealthBarSlider;
 		this.HealingItemButton = HealingItemButton;
 		this.HealingItemNumber = HealingItemNumber;
-
+		this.gameController = gameController;
 		this.HealingItemButton.onClick.AddListener(() => UseHealingItem());
 
 		this.HealthBarSlider.maxValue = MaxPlayerHealth;
 		Debug.Log("PlayerResourcesHealth Initialized");
 	}
-
+	private GameController gameController;
 	private Slider HealthBarSlider;
     private Button HealingItemButton;
     private TextMeshProUGUI HealingItemNumber;
@@ -26,7 +26,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 
 	public int CurrentHealingItemsNumber { get; private set; }
 
-
+	private bool isPlayerDead;
 
 
 
@@ -36,6 +36,8 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 
         HealingItemNumber.text = CurrentHealingItemsNumber.ToString();
 
+
+		//ReceiveDamage(1);
 		//if (MenuManager.IsPauseMenuOpened)
 		//{
 		//	HealthBarSlider.gameObject.SetActive(false);
@@ -72,6 +74,19 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
         else Debug.Log("Max Healing Items");
 
 	}
+
+	public void ReceiveDamage(int Damage)
+	{
+		CurrentPlayerHealth -= Damage;
+
+		if (CurrentPlayerHealth <= 0)
+		{
+			CurrentPlayerHealth = 0;
+			isPlayerDead = true;
+			gameController.PlayerIsDead();
+		}
+	}
+
 
 	public void SaveData(ref GameData data)
 	{

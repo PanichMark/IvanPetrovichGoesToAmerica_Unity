@@ -35,6 +35,8 @@ public class GameController
 	public void PlayerIsDead()
 	{
 		IsPlayerDead = true;
+		MakePlayerNonControllable();
+		IsPauseMenuAvailable = false;
 	}
 
 	public void MakePlayerControllable()

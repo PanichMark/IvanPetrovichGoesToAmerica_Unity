@@ -1,7 +1,7 @@
 ﻿
-public class ChokedNPCState : AbstractNPCState
+public class BeingChokedNPCState : AbstractNPCState
 {
-	public ChokedNPCState(NPCStateMachineController npcStateMachineController)
+	public BeingChokedNPCState(NPCStateMachineController npcStateMachineController)
 	{
 		this._NPCStateMachineController = npcStateMachineController;
 		//_NPCStateMachineController.StopRandomMove();
