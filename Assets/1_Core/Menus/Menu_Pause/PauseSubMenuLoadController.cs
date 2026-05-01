@@ -16,12 +16,12 @@ public class PauseSubMenuLoadController : MonoBehaviour
 
 	
 	private GameObject[] buttonsLoadGame;
-	private GameObject[] buttonsDeleteGame;
+
 
 	private Text[] currentDateAndTimeTexts;
 	private Text[] currentSceneNameUITexts;
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController, GameObject canvasPauseSubMenuLoad, GameObject[] buttonsLoadGame, GameObject[] buttonsDeleteGame, GameObject buttonClosePauseSubMenuLoad)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController, GameObject canvasPauseSubMenuLoad, GameObject[] buttonsLoadGame, GameObject buttonClosePauseSubMenuLoad)
 
 	{
 		this.buttonClosePauseSubMenuLoad = buttonClosePauseSubMenuLoad;
@@ -31,7 +31,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		this.canvasPauseSubMenuLoad = canvasPauseSubMenuLoad;
 		this.saveLoadController = saveLoadController;
 		this.buttonsLoadGame = buttonsLoadGame;
-		this.buttonsDeleteGame = buttonsDeleteGame;
+		//this.buttonsDeleteGame = buttonsDeleteGame;
 
 
 		this.buttonsLoadGame[0].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(1)));
@@ -40,13 +40,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		this.buttonsLoadGame[3].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(4)));
 		this.buttonsLoadGame[4].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(5)));
 
-
-		this.buttonsDeleteGame[0].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(1));
-		this.buttonsDeleteGame[1].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(2));
-		this.buttonsDeleteGame[2].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(3));
-		this.buttonsDeleteGame[3].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(4));
-		this.buttonsDeleteGame[4].GetComponent<Button>().onClick.AddListener(() => this.saveLoadController.DeleteGame(5));
-
+	
 		this.buttonClosePauseSubMenuLoad.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
 
 		this.pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;

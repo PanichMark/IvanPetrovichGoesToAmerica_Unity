@@ -94,12 +94,13 @@ public class Bootstrap : MonoBehaviour
 	private PauseSubMenuSaveController pauseSubMenuSaveController;
 	[SerializeField] private GameObject canvasPauseSubMenuSave;
 	private GameObject[] buttonsSaveGame;
+	private GameObject[] buttonsDeleteGame;
+	private GameObject buttonSaveNewGame;
 	private GameObject buttonClosePauseSubMenuSave;
 	// Подменю загрузки
 	private PauseSubMenuLoadController pauseSubMenuLoadController;
 	[SerializeField] private GameObject canvasPauseSubMenuLoad;
 	private GameObject[] buttonsLoadGame;
-	private GameObject[] buttonsDeleteGame;
 	private GameObject buttonClosePauseSubMenuLoad;
 	// Подменю картинок
 	private PauseSubMenuImagesController pauseSubMenuImagesController;
@@ -359,16 +360,16 @@ public class Bootstrap : MonoBehaviour
 
 		buttonsDeleteGame = new GameObject[]
 		{
-			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu DELETE1 Button"),
-			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu DELETE2 Button"),
-			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu DELETE3 Button"),
-			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu DELETE4 Button"),
-			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu DELETE5 Button"),
+			FindDeepChildByName(canvasPauseSubMenuSave, "LoadSubMenu DELETE1 Button"),
+			FindDeepChildByName(canvasPauseSubMenuSave, "LoadSubMenu DELETE2 Button"),
+			FindDeepChildByName(canvasPauseSubMenuSave, "LoadSubMenu DELETE3 Button"),
+			FindDeepChildByName(canvasPauseSubMenuSave, "LoadSubMenu DELETE4 Button"),
+			FindDeepChildByName(canvasPauseSubMenuSave, "LoadSubMenu DELETE5 Button"),
 		};
 		buttonClosePauseSubMenuLoad = FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu close Button");
 
 		buttonClosePauseSubMenuImages = FindDeepChildByName(canvasPauseSubMenuImages, "ImagesSubMenu close Button");
-
+		buttonSaveNewGame = FindDeepChildByName(canvasPauseSubMenuSave, "SaveNewGame");
 		FOVSlider = FindDeepChildByName(canvasPauseSubMenuSettings, "CameraFOVSlider");
 		fovDisplayText = FindDeepChildByName(canvasPauseSubMenuSettings, "CameraFOVText");
 		FPSbuttons = new GameObject[]
@@ -415,8 +416,8 @@ public class Bootstrap : MonoBehaviour
 		// Инициализация меню
 		menuManager.Initialize(inputDevice, gameController, saveLoadController);
 		pauseMenuController.Initialize(inputDevice, gameController, gameSceneManager, saveLoadController, menuManager, canvasPauseMenu, buttonsPauseMenu);
-		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame, buttonClosePauseSubMenuSave);
-		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonsDeleteGame, buttonClosePauseSubMenuLoad);
+		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame, buttonsDeleteGame, buttonClosePauseSubMenuSave, buttonSaveNewGame);
+		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonClosePauseSubMenuLoad);
 		pauseSubMenuImagesController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuImages, buttonClosePauseSubMenuImages);
 		pauseSubMenuSettingsController.Initialize(inputDevice, this, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons, buttonsChangeLanguage, KeyRebinds, pauseSubMenuSettingsPlayerPrefs, buttonSaveSettings, buttonResetSettings);
 
