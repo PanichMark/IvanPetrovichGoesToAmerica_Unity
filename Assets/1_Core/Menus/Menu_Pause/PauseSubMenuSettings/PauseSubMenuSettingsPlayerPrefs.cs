@@ -43,7 +43,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 		if (PlayerPrefs.HasKey(KEY_FOV))
 		{
 			data.FOV = PlayerPrefs.GetFloat(KEY_FOV);
-			Debug.Log($"[Загрузка] FOV успешно загружен: {data.FOV}");
+			//Debug.Log($"[Загрузка] FOV успешно загружен: {data.FOV}");
 		}
 
 		// --- 2. ЗАГРУЗКА БИНДИНГОВ ---
@@ -79,11 +79,11 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 			if (loadedBindingsCount > 0)
 			{
-				Debug.Log($"[Загрузка] Всего успешно загружено биндингов: {loadedBindingsCount}");
+				//Debug.Log($"[Загрузка] Всего успешно загружено биндингов: {loadedBindingsCount}");
 			}
 			else
 			{
-				Debug.LogWarning("[Загрузка] Словарь биндингов остался пустым. Проверьте формат сохраненных данных.");
+				//Debug.LogWarning("[Загрузка] Словарь биндингов остался пустым. Проверьте формат сохраненных данных.");
 			}
 		}
 

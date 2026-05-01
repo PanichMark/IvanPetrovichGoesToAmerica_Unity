@@ -36,23 +36,16 @@ public abstract class WeaponAbstract : MonoBehaviour
 	}
 
 
-	public void InstantiateWeapon(object NPCweaponOwner)
+	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
 	{
-		/*
-		if (NPCweaponOwner is NPCWeaponController _NPCWeaponController)
-		{
-			// Если да, выполняем нужные действия
-			// Например, выводим информацию или вызываем методы
-			Console.WriteLine("Передан NPCWeaponController. Выполняем действия...");
-			// npcWeapon.DoSomething(); // Пример вызова метода
-		}
-		*/
-
 		ThirdPersonWeaponModelInstance = gameObject;
 
-		//thirdPersonRightHandWeaponSlotGameObject = NPCweaponOwner.
-		//thirdPersonRightHandWeaponSlotTransform = _NPCWeaponController.transform;
-		//ThirdPersonWeaponModelInstance.transform.SetParent(thirdPersonRightHandWeaponSlotTransform, true);
+		
+		thirdPersonRightHandWeaponSlotTransform = NPCweaponSlotTransform;
+		ThirdPersonWeaponModelInstance.transform.SetParent(thirdPersonRightHandWeaponSlotTransform, true);
+
+		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
+		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
 	}
 
 	// Создание модели оружия
