@@ -315,7 +315,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogWarning($"Некорректная клавиша: {newKeyStr}. Введите допустимое обозначение клавиши.");
+			//Debug.LogWarning($"Некорректная клавиша: {newKeyStr}. Введите допустимое обозначение клавиши.");
 		}
 	}
 
@@ -336,18 +336,18 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		currentData.KeyBindings = new Dictionary<string, KeyCode>(inputDevice.CurrentBindings);
 
 		// --- ОТЛАДКА: Смотрим, что именно мы сохраняем ---
-		Debug.Log("=== СОХРАНЯЕМЫЕ ДАННЫЕ ===");
+		//Debug.Log("=== СОХРАНЯЕМЫЕ ДАННЫЕ ===");
 		foreach (var kvp in currentData.KeyBindings)
 		{
-			Debug.Log($"Сохраняю: {kvp.Key} = {kvp.Value}");
+			//Debug.Log($"Сохраняю: {kvp.Key} = {kvp.Value}");
 		}
-		Debug.Log("=========================");
+		//Debug.Log("=========================");
 		// ---------------------------------
 
 		// 3. Передаем объект классу-хранилищу
 		pauseSubMenuSettingsPlayerPrefs.SaveSettings(currentData);
 
-		Debug.Log("GameSettings SAVED");
+		//Debug.Log("GameSettings SAVED");
 	}
 
 	// Метод для кнопки "Сбросить"
@@ -363,16 +363,16 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	public void ResetSettings()
 	{
 		// --- 1. СТАРТ ПРОЦЕССА ---
-		Debug.Log("=== НАЧАЛО СБРОСА НАСТРОЕК (С ПОЛНОЙ ОТЛАДКОЙ) ===");
+		//Debug.Log("=== НАЧАЛО СБРОСА НАСТРОЕК (С ПОЛНОЙ ОТЛАДКОЙ) ===");
 
 		// 1. ПОЛНОЕ УДАЛЕНИЕ всех старых данных из PlayerPrefs
-		Debug.Log("1. Удаляем старые данные из PlayerPrefs...");
+		//Debug.Log("1. Удаляем старые данные из PlayerPrefs...");
 		pauseSubMenuSettingsPlayerPrefs.ResetSettings();
-		Debug.Log("1. Старые данные УДАЛЕНЫ.");
+		//Debug.Log("1. Старые данные УДАЛЕНЫ.");
 
 
 		// --- 2. ПРОВЕРЯЕМ, ЧТО ЛЕЖИТ В ДЕФОЛТНОМ СЛОВАРЕ ---
-		Debug.Log("2. Проверяем содержимое словаря DEFAULT (inputDevice.GetDefaultBindings()):");
+		//Debug.Log("2. Проверяем содержимое словаря DEFAULT (inputDevice.GetDefaultBindings()):");
 
 		// Получаем "снимок" дефолтных значений
 		var defaultBindingsSnapshot = inputDevice.GetDefaultBindings();
@@ -380,19 +380,19 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		// Проверяем, не пустой ли он вообще
 		if (defaultBindingsSnapshot == null)
 		{
-			Debug.LogError("ОШИБКА: defaultBindingsSnapshot == null! Словарь пуст.");
+			//Debug.LogError("ОШИБКА: defaultBindingsSnapshot == null! Словарь пуст.");
 		}
 		else if (defaultBindingsSnapshot.Count == 0)
 		{
-			Debug.LogWarning("ВНИМАНИЕ: Словарь дефолтных биндингов ПУСТОЙ. В нем 0 элементов.");
+			//Debug.LogWarning("ВНИМАНИЕ: Словарь дефолтных биндингов ПУСТОЙ. В нем 0 элементов.");
 		}
 		else
 		{
 			// Если словарь не пустой, выводим его содержимое
-			Debug.Log($"Словарь содержит {defaultBindingsSnapshot.Count} элементов. Вот они:");
+			//Debug.Log($"Словарь содержит {defaultBindingsSnapshot.Count} элементов. Вот они:");
 			foreach (var kvp in defaultBindingsSnapshot)
 			{
-				Debug.Log($"   Действие: {kvp.Key} | Клавиша: {kvp.Value}");
+				//Debug.Log($"   Действие: {kvp.Key} | Клавиша: {kvp.Value}");
 			}
 		}
 		// --- КОНЕЦ ПРОВЕРКИ СЛОВАРЯ ---
@@ -407,21 +407,21 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		};
 
 		// 4. Сохраняем эти дефолтные значения в PlayerPrefs (перезапись)
-		Debug.Log("3. Сохраняем НОВЫЕ дефолтные данные в PlayerPrefs...");
-
+		//Debug.Log("3. Сохраняем НОВЫЕ дефолтные данные в PlayerPrefs...");
+		
 		// Дополнительная проверка: что именно мы собираемся сохранить?
 		if (defaultData.KeyBindings == null || defaultData.KeyBindings.Count == 0)
 		{
-			Debug.LogWarning("ВНИМАНИЕ: Объект для сохранения содержит пустой словарь KeyBindings!");
+			//Debug.LogWarning("ВНИМАНИЕ: Объект для сохранения содержит пустой словарь KeyBindings!");
 		}
 
 		pauseSubMenuSettingsPlayerPrefs.SaveSettings(defaultData);
 
-		Debug.Log("3. Данные успешно сохранены в PlayerPrefs.");
+		//Debug.Log("3. Данные успешно сохранены в PlayerPrefs.");
 
 
 		// 5. Обновляем UI и текущую логику управления НЕМЕДЛЕННО
-		Debug.Log("4. Обновляем UI и InputDevice на форме...");
+		//Debug.Log("4. Обновляем UI и InputDevice на форме...");
 
 		SetFOV(MIN_FOV_VALUE);
 		fovSlider.value = MIN_FOV_VALUE;
@@ -435,31 +435,31 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			{
 				field.text = key.ToString();
 				inputDevice.RebindKey(actionName, key);
-				Debug.Log($"   [UI] Поле '{actionName}' обновлено на: {key}");
+				//Debug.Log($"   [UI] Поле '{actionName}' обновлено на: {key}");
 			}
 			else
 			{
 				// Это важная проверка: если действие из поля ввода не нашлось в словаре дефолтов
-				Debug.LogWarning($"   [UI] ВНИМАНИЕ: Действие '{actionName}' не найдено в словаре дефолтных значений!");
+				//Debug.LogWarning($"   [UI] ВНИМАНИЕ: Действие '{actionName}' не найдено в словаре дефолтных значений!");
 			}
 		}
 
 		// --- 6. ФИНИШ ---
-		Debug.Log("=== СБРОС ЗАВЕРШЕН ===");
+		//Debug.Log("=== СБРОС ЗАВЕРШЕН ===");
 	}
 	// В классе PauseSubMenuSettingsController
 
 	// Этот метод берет данные и выставляет их на UI элементы
 	private void ApplyLoadedSettings(SettingsData data)
 	{
-		Debug.Log("--- ПРИМЕНЯЕМ ЗАГРУЖЕННЫЕ НАСТРОЙКИ ---");
+		//Debug.Log("--- ПРИМЕНЯЕМ ЗАГРУЖЕННЫЕ НАСТРОЙКИ ---");
 
 		// 1. Применяем FOV (здесь все без изменений)
 		if (PlayerPrefs.HasKey(pauseSubMenuSettingsPlayerPrefs.KEY_FOV))
 		{
 			SetFOV(data.FOV);
 			fovSlider.value = data.FOV;
-			Debug.Log($"Применен FOV: {data.FOV}");
+			//Debug.Log($"Применен FOV: {data.FOV}");
 		}
 
 		// 2. ПРИМЕНЯЕМ БИНДИНГИ (НОВАЯ ЛОГИКА!)
@@ -469,7 +469,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 		if (data.KeyBindings != null && data.KeyBindings.Count > 0)
 		{
-			Debug.Log("Применяем биндинги клавиш:");
+			//Debug.Log("Применяем биндинги клавиш:");
 			foreach (var kvp in data.KeyBindings)
 			{
 				string actionName = kvp.Key; // Например, "Jump"
@@ -487,20 +487,20 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 						// Если имя совпало - применяем!
 						field.text = savedKey.ToString();
 						inputDevice.RebindKey(actionName, savedKey);
-						Debug.Log($"УСПЕШНО применено к '{actionName}': {savedKey}");
+						//Debug.Log($"УСПЕШНО применено к '{actionName}': {savedKey}");
 						foundField = true;
 						break; // Выходим из внутреннего цикла, переходим к следующему действию
 					}
 				}
 				if (!foundField)
 				{
-					Debug.LogWarning($"Поле ввода для действия '{actionName}' не найдено на сцене.");
+					//Debug.LogWarning($"Поле ввода для действия '{actionName}' не найдено на сцене.");
 				}
 			}
 		}
 		else
 		{
-			Debug.Log("Словарь биндингов пуст. Сохраненных клавиш нет.");
+			//Debug.Log("Словарь биндингов пуст. Сохраненных клавиш нет.");
 		}
 	}
 

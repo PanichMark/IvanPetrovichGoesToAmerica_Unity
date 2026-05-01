@@ -3,17 +3,17 @@ using System.Collections;
 
 public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 {
-	private LocalizationManager localizationManager;
+	protected LocalizationManager localizationManager;
 
-	private float drawerOpeningSpeed = 3f; // Скорость открытия-закрытия ящика
+	[SerializeField] protected float OpeningSpeed = 3f; // Скорость открытия-закрытия ящика
 
-	private Coroutine currentAnimation;     // Переменная для хранения активной корутины
+	protected Coroutine currentAnimation;     // Переменная для хранения активной корутины
 
-	private Vector3 openedPosition;        // Открытое положение ящика
-	private Vector3 closedPosition;        // Закрытое положение ящика
-	[SerializeField] private float drawerOpenLength;
+	protected Vector3 openedPosition;        // Открытое положение ящика
+	protected Vector3 closedPosition;        // Закрытое положение ящика
+	[SerializeField] protected float openLengthForward;
 
-	void Start()
+	public void Start()
 	{
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
@@ -25,7 +25,7 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		closedPosition = transform.localPosition;
 
 		// Открываем ящик вперёд по оси Z на 0.45 единицы
-		openedPosition = transform.localPosition + new Vector3(0, 0, drawerOpenLength);
+		openedPosition = transform.localPosition + new Vector3(0, 0, openLengthForward);
 		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 		IsDoorOpened = false;
 	}
@@ -70,7 +70,7 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 
 		while (Mathf.Abs(transform.localPosition.z - openedPosition.z) > 0.001f)
 		{
-			transform.localPosition = Vector3.MoveTowards(transform.localPosition, openedPosition, Time.deltaTime * drawerOpeningSpeed);
+			transform.localPosition = Vector3.MoveTowards(transform.localPosition, openedPosition, Time.deltaTime * OpeningSpeed);
 			yield return null;
 		}
 
@@ -84,7 +84,7 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 
 		while (Mathf.Abs(transform.localPosition.z - closedPosition.z) > 0.001f)
 		{
-			transform.localPosition = Vector3.MoveTowards(transform.localPosition, closedPosition, Time.deltaTime * drawerOpeningSpeed);
+			transform.localPosition = Vector3.MoveTowards(transform.localPosition, closedPosition, Time.deltaTime * OpeningSpeed);
 			yield return null;
 		}
 
