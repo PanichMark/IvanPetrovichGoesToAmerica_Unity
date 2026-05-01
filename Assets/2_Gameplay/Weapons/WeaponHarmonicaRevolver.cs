@@ -10,7 +10,7 @@ public class WeaponHarmonicaRevolver : WeaponRangedAbstract
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheelButtons/Pistol icon");
 
 
-	protected override void InitializeWeapon()
+	protected override void InitializeWeaponRanged()
 	{
 		WeaponAmmoType = AmmoTypes.Ammo9mm;
 		// Здесь мы задаем параметры КОНКРЕТНО для этого револьвера

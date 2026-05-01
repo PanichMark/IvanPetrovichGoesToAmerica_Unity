@@ -23,7 +23,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		playerCamera = ServiceLocator.Resolve<GameObject>("playerMainCameraGameObject");
 		playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("playerResourcesAmmoManager");
 
-		InitializeWeapon();
+		InitializeWeaponRanged();
 
 		//Debug.Log(PlayerAmmoMagazineMax);
 		//Debug.Log(PlayerAmmoMagazineCurrent);
@@ -31,7 +31,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 
 
-	protected abstract void InitializeWeapon();
+	protected abstract void InitializeWeaponRanged();
 	// Этот метод вызывается извне (например, по нажатию кнопки)
 	public override void WeaponAttack()
 	{

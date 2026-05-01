@@ -4,7 +4,7 @@ public class WeaponSawedoffShotgun : WeaponRangedAbstract
 {
 
 	public override float WeaponDamage => 100f;
-	protected override void InitializeWeapon()
+	protected override void InitializeWeaponRanged()
 	{
 		WeaponAmmoType = AmmoTypes.Ammo12gauge;
 		// Здесь мы задаем параметры КОНКРЕТНО для этого револьвера

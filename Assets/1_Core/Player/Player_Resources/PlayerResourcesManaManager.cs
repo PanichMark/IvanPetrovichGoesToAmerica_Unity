@@ -62,6 +62,8 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		else Debug.Log("0 ManaReplenish Items");
 
 	}
+
+
 	public void AddManaReplenishItem()
 	{
 		if (CurrentManaReplenishItemsNumber < 9)
@@ -72,6 +74,13 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		else Debug.Log("Max ManaReplenish Items");
 
 	}
+
+	public void UseMana(int ManaCost)
+	{
+		CurrentPlayerMana -= ManaCost;
+		Debug.Log($"used: {ManaCost} mana");
+	}
+
 
 	public void SaveData(ref GameData data)
 	{
