@@ -308,19 +308,56 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	// Обработчик изменения клавиш
 	void HandleRebinding(string actionName, string newKeyStr)
 	{
-		KeyCode newKey;
-		if (Enum.TryParse<KeyCode>(newKeyStr, out newKey))
+		if (!Enum.TryParse<KeyCode>(newKeyStr, out KeyCode newKey))
 		{
+			//Debug.LogWarning($"Некорректная клавиша: {newKeyStr}. Введите допустимое обозначение клавиши.");
+			return;
+		}
+
+		// Получаем текущие биндинги (словарь "Действие -> Клавиша")
+		var currentBindings = inputDevice.GetCurrentBindings().ToDictionary(kvp => kvp.action, kvp => kvp.key);
+
+		// 1. Ищем, не занята ли уже эта клавиша другим действием (кроме текущего)
+		var conflictingAction = currentBindings.FirstOrDefault(kvp => kvp.Value == newKey && kvp.Key != actionName).Key;
+
+		if (conflictingAction != null)
+		{
+			// 2. Если занята — находим, какая клавиша у текущего действия (actionName)
+			KeyCode oldKeyOfThisAction = currentBindings[actionName];
+
+			// 3. Меняем местами в устройстве ввода
 			inputDevice.RebindKey(actionName, newKey);
+			inputDevice.RebindKey(conflictingAction, oldKeyOfThisAction);
+
+			// 4. Обновляем UI для обоих полей
+			UpdateInputFieldText(actionName, newKey);
+			UpdateInputFieldText(conflictingAction, oldKeyOfThisAction);
+
+			//Debug.Log($"Клавиши поменялись местами: {actionName} <-> {conflictingAction}");
 		}
 		else
 		{
-			//Debug.LogWarning($"Некорректная клавиша: {newKeyStr}. Введите допустимое обозначение клавиши.");
+			// Если клавиша свободна — просто назначаем
+			inputDevice.RebindKey(actionName, newKey);
+			UpdateInputFieldText(actionName, newKey);
 		}
 	}
 
 	// --- ДОБАВИТЬ ЭТИ МЕТОДЫ В САМЫЙ КОНЕЦ КЛАССА PauseSubMenuSettingsController ---
-
+	// Вспомогательный метод для обновления текста в InputField по имени действия
+	private void UpdateInputFieldText(string actionName, KeyCode key)
+	{
+		foreach (var field in KeyRebinds)
+		{
+			// Имя поля обычно выглядит как "JumpInputField" или "Jump (InputField)"
+			// Мы ищем по началу строки, чтобы избежать проблем с пробелами или скобками
+			if (field.name.StartsWith(actionName))
+			{
+				field.text = key.ToString();
+				break;
+			}
+		}
+	}
 	// Метод для кнопки "Сохранить"
 	// В классе PauseSubMenuSettingsController
 

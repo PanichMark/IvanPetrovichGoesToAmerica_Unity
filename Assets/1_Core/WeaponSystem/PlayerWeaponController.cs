@@ -7,7 +7,7 @@ public delegate void OnWeaponUnlocked(GameObject weaponPrefab);
 public delegate void OnWeaponChanged(string activeHand);
 
 
-public class WeaponController : MonoBehaviour
+public class PlayerWeaponController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
@@ -259,8 +259,8 @@ public class WeaponController : MonoBehaviour
 			OnWeaponChanged?.Invoke("left");
 
 			// Создаем модель для этой руки
-			weaponComponent.InstantiateWeaponModel(WeaponHandsEnum.LeftHand);
-			weaponComponent.FlipWeaponModel();
+			weaponComponent.InstantiateWeapon(WeaponHandsEnum.LeftHand);
+			weaponComponent.FlipWeapon();
 
 			// Сохраняем ссылку на компонент для быстрой работы
 			leftHandWeaponComponent = weaponComponent;
@@ -280,7 +280,7 @@ public class WeaponController : MonoBehaviour
 			OnWeaponChanged?.Invoke("right");
 
 			// Создаем модель для этой руки
-			weaponComponent.InstantiateWeaponModel(WeaponHandsEnum.RightHand);
+			weaponComponent.InstantiateWeapon(WeaponHandsEnum.RightHand);
 
 			// Сохраняем ссылку на компонент для быстрой работы
 			rightHandWeaponComponent = weaponComponent;
@@ -324,7 +324,7 @@ public class WeaponController : MonoBehaviour
 				{
 					// Уничтожаем ВЕСЬ игровой объект (и скрипт, и модель)
 					Destroy(RightHandWeapon);
-					rightHandWeaponComponent.DestroyWeaponModel();
+					rightHandWeaponComponent.DestroyWeapon();
 
 					// Сбрасываем ссылки на объект и его компонент
 					RightHandWeapon = null;
@@ -338,7 +338,7 @@ public class WeaponController : MonoBehaviour
 				{
 					// Уничтожаем ВЕСЬ игровой объект (и скрипт, и модель)
 					Destroy(LeftHandWeapon);
-					leftHandWeaponComponent.DestroyWeaponModel();
+					leftHandWeaponComponent.DestroyWeapon();
 
 					// Сбрасываем ссылки на объект и его компонент
 					LeftHandWeapon = null;

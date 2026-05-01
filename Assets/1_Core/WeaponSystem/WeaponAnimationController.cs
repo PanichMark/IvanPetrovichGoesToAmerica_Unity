@@ -7,7 +7,7 @@ public class WeaponAnimationController : MonoBehaviour
 	private PlayerBehaviour playerBehaviour;
 
 	private PlayerCameraController playerCameraController;
-	private WeaponController weaponController;
+	private PlayerWeaponController weaponController;
 
 	
 	private Animator playerAnimator;
@@ -15,7 +15,7 @@ public class WeaponAnimationController : MonoBehaviour
 	private LegKickAttack legKickAttack;
 	// Конструктор принимает зависимость
 	public void Initialize(GameObject player, PlayerBehaviour playerBehaviour,
-		PlayerCameraController playerCameraController, WeaponController weaponController, LegKickAttack legKickAttack)
+		PlayerCameraController playerCameraController, PlayerWeaponController weaponController, LegKickAttack legKickAttack)
 	{
 	
 		playerAnimator = player.GetComponent<Animator>();

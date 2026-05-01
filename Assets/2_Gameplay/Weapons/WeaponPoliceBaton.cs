@@ -16,7 +16,7 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 	private PlayerMovementController playerMovementController;
 	// Новое поле: флаг возможности удушения
 	private bool isAbleToChoke = false;
-	private WeaponController weaponController;
+	private PlayerWeaponController weaponController;
 	private bool isItRightHand;
 	private IInputDevice inputDevice;
 
@@ -29,7 +29,7 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 
 		ChokeNPCtext = ServiceLocator.Resolve<GameObject>("ChokeNPCtext");
 		playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
-		weaponController = ServiceLocator.Resolve<WeaponController>("WeaponController");
+		weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
 		if (weaponController.rightHandWeaponComponent is WeaponPoliceBaton)
 		{

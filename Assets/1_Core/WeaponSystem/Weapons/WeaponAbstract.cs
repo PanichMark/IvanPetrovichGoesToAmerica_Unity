@@ -14,7 +14,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	private GameObject thirdPersonRightHandWeaponSlotGameObject;
 
 	public virtual Sprite WeaponIcon { get; protected set; }            // Иконка оружия
-
+	
 	public virtual float WeaponDamage { get; protected set; }
 
              // Модель оружия
@@ -35,8 +35,28 @@ public abstract class WeaponAbstract : MonoBehaviour
 		// Реализация атаки должна быть в подклассах
 	}
 
+
+	public void InstantiateWeapon(object NPCweaponOwner)
+	{
+		/*
+		if (NPCweaponOwner is NPCWeaponController _NPCWeaponController)
+		{
+			// Если да, выполняем нужные действия
+			// Например, выводим информацию или вызываем методы
+			Console.WriteLine("Передан NPCWeaponController. Выполняем действия...");
+			// npcWeapon.DoSomething(); // Пример вызова метода
+		}
+		*/
+
+		ThirdPersonWeaponModelInstance = gameObject;
+
+		//thirdPersonRightHandWeaponSlotGameObject = NPCweaponOwner.
+		//thirdPersonRightHandWeaponSlotTransform = _NPCWeaponController.transform;
+		//ThirdPersonWeaponModelInstance.transform.SetParent(thirdPersonRightHandWeaponSlotTransform, true);
+	}
+
 	// Создание модели оружия
-	public void InstantiateWeaponModel(WeaponHandsEnum handType)
+	public void InstantiateWeapon(WeaponHandsEnum handType)
 	{
 		string handString = "";
 
@@ -91,7 +111,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	}
 
 	// Удаление модели оружия
-	public void DestroyWeaponModel()
+	public void DestroyWeapon()
 	{
 		if (ThirdPersonWeaponModelInstance != null)
 		{
@@ -105,7 +125,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 		}
 	}
 
-	public void FlipWeaponModel()
+	public void FlipWeapon()
 	{
 		// Проверяем и переворачиваем модель для камеры от первого лица
 		if (FirstPersonWeaponModelInstance != null)

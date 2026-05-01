@@ -5,7 +5,7 @@ using System.Collections;
 
 public class WeaponWheelMenuButton : MonoBehaviour
 {
-	private WeaponController weaponController;
+	private PlayerWeaponController weaponController;
 	private WeaponWheelMenuController weaponWheelController;
 	private GameObject WeaponPrefab;
 	private string WeaponName;
@@ -20,7 +20,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	// Предыдущее активное оружие
 	private GameObject previousWeapon;
 
-	public void Initialize(WeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
+	public void Initialize(PlayerWeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
 	{
 
 

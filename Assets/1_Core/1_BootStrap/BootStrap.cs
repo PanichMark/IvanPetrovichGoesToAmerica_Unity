@@ -120,7 +120,7 @@ public class Bootstrap : MonoBehaviour
 
 	// Система оружия
 	private GameObject weaponSystemGameObject;
-	private WeaponController weaponController;
+	private PlayerWeaponController weaponController;
 	private LegKickAttack legKickAttack;
 	private WeaponAnimationController weaponAnimationController;
 	private WeaponFirstPersonRender weaponFirstPersonRender;
@@ -569,7 +569,7 @@ public class Bootstrap : MonoBehaviour
 		weaponSystemGameObject = new GameObject("WeaponSystem");
 
 		// Основной компонент оружия
-		weaponController = weaponSystemGameObject.AddComponent<WeaponController>();
+		weaponController = weaponSystemGameObject.AddComponent<PlayerWeaponController>();
 		legKickAttack = weaponSystemGameObject.AddComponent<LegKickAttack>();
 		weaponWheelController = weaponSystemGameObject.AddComponent<WeaponWheelMenuController>();
 		weaponAnimationController = weaponSystemGameObject.AddComponent<WeaponAnimationController>();

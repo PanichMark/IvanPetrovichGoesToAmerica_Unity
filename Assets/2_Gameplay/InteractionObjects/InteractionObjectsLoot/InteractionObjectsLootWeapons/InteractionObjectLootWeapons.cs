@@ -5,12 +5,12 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 	[SerializeField] private GameObject weaponObject;
 
 
-	private WeaponController weaponController;
+	private PlayerWeaponController weaponController;
 
 	private void Awake()
 	{
 		// Запрашиваем оружие-контроллер, используя уникальный ключ
-		weaponController = ServiceLocator.Resolve<WeaponController>("WeaponController");
+		weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
 		// Получаем компонент конкретного оружия с нашего объекта
 		var weaponComponent = weaponObject.GetComponent<WeaponAbstract>();

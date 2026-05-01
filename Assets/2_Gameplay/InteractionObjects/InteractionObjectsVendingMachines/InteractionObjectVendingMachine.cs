@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class InteractionObjectVendingMachine : MonoBehaviour, IInteractUsedItem, IInteractable
+public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 {
 	[SerializeField] protected GameObject goodsForSaleModel;
 	[SerializeField] protected int goodsPrice;

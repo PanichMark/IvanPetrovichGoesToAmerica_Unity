@@ -212,7 +212,7 @@ public class InteractionController : MonoBehaviour
 			var throwableObj = hitInfo.collider.GetComponent<IThrowable>();
 			var pickableObj = hitInfo.collider.GetComponent<IPickable>();
 			var gainedObject = hitInfo.collider.GetComponent<IInteractGainedItem>();
-			var usedObject = hitInfo.collider.GetComponent<IInteractUsedItem>();
+			//var usedObject = hitInfo.collider.GetComponent<IInteractUsedItem>();
 
 			if (interactableObj != null)
 			{

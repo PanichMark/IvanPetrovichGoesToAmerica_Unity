@@ -6,9 +6,9 @@ public class WeaponFirstPersonRender : MonoBehaviour
 	private WeaponAbstract rightHandWeaponComponent;
 
 	private PlayerCameraController playerCamera;
-	private WeaponController weaponController;
+	private PlayerWeaponController weaponController;
 	private GameSceneManager gameSceneManager;
-	public void Initialize(GameSceneManager gameSceneManager, PlayerCameraController playerCameraController, WeaponController weaponController,
+	public void Initialize(GameSceneManager gameSceneManager, PlayerCameraController playerCameraController, PlayerWeaponController weaponController,
 							GameObject playerFirstPersonHandRight, GameObject playerFirstPersonHandLeft,
 			 GameObject playerHandRightParent, GameObject playerHandLeftParent)
 	{

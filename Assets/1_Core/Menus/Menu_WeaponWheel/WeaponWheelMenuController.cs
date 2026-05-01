@@ -19,7 +19,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	public event WeaponWheelMenuHandler OnOpenWeaponWheelMenu;
 
 	private IInputDevice inputDevice;
-	private WeaponController weaponController;
+	private PlayerWeaponController weaponController;
 	private PlayerBehaviour playerBehaviour;
 	private MenuManager menuManager;
 
@@ -35,7 +35,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		// createWheel(); // Вызывается позже при активации меню
 	}
 	private Image weaponIconBig;
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, WeaponController weaponController,
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, PlayerWeaponController weaponController,
 		GameObject wheelSegmentPrefab, Transform centerPoint, GameObject WeaponWheelMenuCanvas, TextMeshProUGUI WeaponText, TextMeshProUGUI WeaponWheelName, Image weaponIconBig)
 	{
 		this.inputDevice = inputDevice;
