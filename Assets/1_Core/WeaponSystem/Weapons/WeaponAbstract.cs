@@ -14,7 +14,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	private GameObject thirdPersonRightHandWeaponSlotGameObject;
 
 	public virtual Sprite WeaponIcon { get; protected set; }            // Иконка оружия
-	
+	protected bool IsThisPlayerWeapon;
 	public virtual float WeaponDamage { get; protected set; }
 
              // Модель оружия
@@ -38,6 +38,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
 	{
+		IsThisPlayerWeapon = false;
+
 		ThirdPersonWeaponModelInstance = gameObject;
 
 		
@@ -51,6 +53,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 	// Создание модели оружия
 	public void InstantiateWeapon(WeaponHandsEnum handType)
 	{
+		IsThisPlayerWeapon = true;
+
 		string handString = "";
 
 		switch (handType)

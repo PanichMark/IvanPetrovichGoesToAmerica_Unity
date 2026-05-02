@@ -9,10 +9,13 @@ public abstract class EugenicWeaponAbstract : WeaponAbstract
 
 	private void Start()
 	{
-		player = ServiceLocator.Resolve<GameObject>("Player");
-		camera = ServiceLocator.Resolve<GameObject>("playerMainCameraGameObject");
+		if (IsThisPlayerWeapon == true)
+		{
+			player = ServiceLocator.Resolve<GameObject>("Player");
+			camera = ServiceLocator.Resolve<GameObject>("playerMainCameraGameObject");
 
-		playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
+			playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
+		}
 
 		InitializeWeaponEugenic();
 	}

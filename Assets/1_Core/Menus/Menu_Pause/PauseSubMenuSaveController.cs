@@ -42,8 +42,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		{
 			int slot = i + 1;
 			int capturedSlot = slot; // Защита от замыкания в цикле
-			buttonsSaveGame[i].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(saveLoadController.SaveGame(capturedSlot)));
-			buttonsDeleteGame[i].GetComponent<Button>().onClick.AddListener(() => saveLoadController.DeleteGame(capturedSlot));
+			this.buttonsSaveGame[i].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(saveLoadController.SaveGame(capturedSlot)));
+			this.buttonsDeleteGame[i].GetComponent<Button>().onClick.AddListener(() => saveLoadController.DeleteGame(capturedSlot));
 		}
 
 		this.buttonClosePauseSubMenuSave.GetComponent<Button>().onClick.AddListener(() => pauseMenuController.ClosePauseSubMenu());
@@ -72,6 +72,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		// Подписываемся на событие удаления для обновления интерфейса
 		this.saveLoadController.OnSafeFileDelete += UpdateAllUIElements;
+		this.saveLoadController.OnSafeFileSaved += UpdateAllUIElements;
 
 		Debug.Log("SaveSubMenu Initialized");
 	}

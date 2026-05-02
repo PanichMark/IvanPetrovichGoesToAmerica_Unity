@@ -52,18 +52,18 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 	
 
 		// --- ЛОГИКА ОБНАРУЖЕНИЯ NPC ---
-		Vector3 playerPosition = player.transform.position;
-		Vector3 playerForward = player.transform.forward;
+		Vector3 playerPosition = AttackPoint.transform.position;
+		Vector3 playerForward = AttackPoint.transform.forward;
 
 		Vector3 startPoint = playerPosition + playerForward * ForwardOffset;
-		Vector3 endPoint = startPoint + player.transform.up * CapsuleHeight;
+		Vector3 endPoint = startPoint + AttackPoint.transform.up * CapsuleHeight;
 
 		Collider[] hitColliders = Physics.OverlapCapsule(startPoint, endPoint, CapsuleRadius);
 
 		bool newDetection = false;
 		foreach (var hit in hitColliders)
 		{
-			if (hit.gameObject == player) continue;
+			if (hit.gameObject == AttackPoint) continue;
 			if (hit.GetComponent<NPCAbstract>() != null)
 			{
 				newDetection = true;

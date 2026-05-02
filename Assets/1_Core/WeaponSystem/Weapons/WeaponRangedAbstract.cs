@@ -7,7 +7,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 
 	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
-	private GameObject playerCamera;
+	private GameObject ShootPoint;
 
 	// Свойства для общего запаса (Total) - получаем из менеджера
 	public int PlayerAmmoTotalMax => playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoMax;
@@ -20,8 +20,12 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	private void Start()
 	{
-		playerCamera = ServiceLocator.Resolve<GameObject>("playerMainCameraGameObject");
-		playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("playerResourcesAmmoManager");
+		if (IsThisPlayerWeapon == true)
+		{
+			ShootPoint = ServiceLocator.Resolve<GameObject>("playerMainCameraGameObject");
+			playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("playerResourcesAmmoManager");
+		}
+
 
 		InitializeWeaponRanged();
 
@@ -51,7 +55,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		// --- Логика попадания ---
 		RaycastHit hitInfo;
-		if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hitInfo, 100f))
+		if (Physics.Raycast(ShootPoint.transform.position, ShootPoint.transform.forward, out hitInfo, 100f))
 		{
 			IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
 			if (damageable != null)
@@ -68,7 +72,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		// 2. Уменьшаем общий запас через менеджер
 		//Debug.Log(playerResourcesAmmoManager);
 		//playerResourcesAmmoManager.ModifyAmmo(WeaponAmmoType, -1);
-		playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
+		if (IsThisPlayerWeapon == true)
+		{
+			playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
+		}
 	}
 
 	public void Reload()
@@ -97,8 +104,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		// Обновляем магазин
 		MagazineAmmoCurrent += ammoToAdd;
 
-		// Уменьшаем общий запас патронов на то количество, которое мы зарядили в магазин
-		playerResourcesAmmoManager.ModifyReserveAmmo(WeaponAmmoType, -ammoToAdd);
-		playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
+		if (IsThisPlayerWeapon == true)
+		{
+			// Уменьшаем общий запас патронов на то количество, которое мы зарядили в магазин
+			playerResourcesAmmoManager.ModifyReserveAmmo(WeaponAmmoType, -ammoToAdd);
+			playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
+		}
 	}
 }

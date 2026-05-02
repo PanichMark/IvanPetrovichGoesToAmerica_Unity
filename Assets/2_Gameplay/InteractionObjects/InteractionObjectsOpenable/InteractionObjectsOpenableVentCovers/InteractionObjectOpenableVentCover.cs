@@ -4,7 +4,7 @@ using System.Collections;
 public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawer
 {
 	[SerializeField] private float openLengthUp; // Добавляем новое поле для движения вверх
-
+	private Vector3 intermediatePos;
 	// Переопределяем Start, чтобы учесть новое направление
 	public void Start()
 	{
@@ -16,6 +16,8 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 		// Сначала двигаем вперёд, потом вверх
 		openedPosition = transform.localPosition + new Vector3(0, 0, openLengthForward);
 		openedPosition += new Vector3(0, openLengthUp, 0);
+
+		intermediatePos = transform.localPosition + new Vector3(0, 0, openLengthForward);
 	}
 
 	// Переопреде
@@ -54,8 +56,9 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 	{
 		Debug.Log($"Was opened {InteractionObjectNameUI}");
 		IsDoorOpened = true;
+	
 
-		Vector3 intermediatePos = transform.localPosition + new Vector3(0, 0, openLengthForward);
+		
 
 		// Двигаем вперёд
 		while (Mathf.Abs(transform.localPosition.z - intermediatePos.z) > 0.001f)
@@ -80,7 +83,7 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 		Debug.Log($"Was closed {InteractionObjectNameUI}");
 		IsDoorOpened = false;
 
-		Vector3 intermediatePos = transform.localPosition - new Vector3(0, openLengthUp, 0);
+		
 
 		// Двигаем вниз
 		while (Mathf.Abs(transform.localPosition.y - intermediatePos.y) > 0.001f)

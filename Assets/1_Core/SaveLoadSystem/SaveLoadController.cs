@@ -15,6 +15,7 @@ public class SaveLoadController : MonoBehaviour
 	public delegate void GameSafeFileHandler();
 	public event GameSafeFileHandler OnSafeFileDelete;
 	public event GameSafeFileHandler OnSafeFileLoad;
+	public event GameSafeFileHandler OnSafeFileSaved;
 
 	private GameSceneManager gameSceneManager;
 	private string fileSaveDataTEMP = "";
@@ -187,6 +188,8 @@ public class SaveLoadController : MonoBehaviour
 
 		if (saveSlotNumber != -1)
 		{
+			OnSafeFileSaved?.Invoke();
+
 			Debug.Log("Data saved to slot " + saveSlotNumber);
 		}
 

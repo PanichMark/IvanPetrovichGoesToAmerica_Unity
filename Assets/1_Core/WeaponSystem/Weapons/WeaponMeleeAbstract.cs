@@ -10,14 +10,17 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	protected float AttackDelay; // Задержка перед нанесением урона
 
 	// Ссылка на игрока, которую мы получаем через ServiceLocator ОДИН РАЗ
-	protected GameObject player;
+	protected GameObject AttackPoint;
 
 	protected bool isAttacking = false; // Флаг для блокировки спама атакой
 
 	// Получаем игрока при старте объекта
 	private void Start()
 	{
-		player = ServiceLocator.Resolve<GameObject>("Player");
+		if (IsThisPlayerWeapon == true)
+		{
+			AttackPoint = ServiceLocator.Resolve<GameObject>("Player");
+		}
 
 		
 		SetUpMeleeWeapon();
@@ -28,8 +31,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	public override void WeaponAttack()
 	{
-		// Если игрок не найден или атака уже идет - выходим
-		if (player == null || isAttacking) return;
+
 
 		isAttacking = true;
 		StartCoroutine(PerformAttack());
@@ -40,19 +42,17 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	{
 		// Определяем точки для капсулы ПЕРЕД ИГРОКОМ,
 		// используя transform игрока, который мы получили извне.
-		Vector3 playerPosition = player.transform.position;
-		Vector3 playerForward = player.transform.forward;
 
-		Vector3 startPoint = playerPosition + playerForward * ForwardOffset;
-		Vector3 endPoint = startPoint + player.transform.up * CapsuleHeight;
+		Vector3 startPoint = AttackPoint.transform.position + AttackPoint.transform.forward * ForwardOffset;
+		Vector3 endPoint = startPoint + AttackPoint.transform.up * CapsuleHeight;
 
 		// Проверяем все объекты внутри капсулы
-		RaycastHit[] hits = Physics.CapsuleCastAll(startPoint, endPoint, CapsuleRadius, playerForward, 0f);
+		RaycastHit[] hits = Physics.CapsuleCastAll(startPoint, endPoint, CapsuleRadius, AttackPoint.transform.forward, 0f);
 
 		foreach (RaycastHit hit in hits)
 		{
 			// Пропускаем самого игрока
-			if (hit.collider.gameObject == player)
+			if (hit.collider.gameObject == AttackPoint)
 				continue;
 
 			// Проверяем, можно ли нанести урон
