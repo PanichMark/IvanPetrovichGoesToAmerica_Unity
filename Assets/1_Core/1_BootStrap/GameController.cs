@@ -40,7 +40,7 @@ public class GameController
 	{
 		IsPlayerDead = true;
 		MakePlayerNonControllable();
-		IsPauseMenuAvailable = false;
+		//IsPauseMenuAvailable = false;
 		OnPlayerDeath?.Invoke();
 	}
 
@@ -67,18 +67,19 @@ public class GameController
 
 	public void SceneLoadBegan()
 	{
-	
+		if (IsPlayerDead)
+		{
+			IsPlayerDead = false;
+			OnPlayerRevive?.Invoke();
+		}
+
 		IsPauseMenuAvailable = false;
 		MakePlayerNonControllable();
 	}
 
 	public void SceneLoadEnded()
 	{
-		if (IsPlayerDead)
-		{
-			IsPlayerDead = false;
-			OnPlayerRevive?.Invoke();
-		}
+	
 
 		IsPauseMenuAvailable = true;
 		MakePlayerControllable();

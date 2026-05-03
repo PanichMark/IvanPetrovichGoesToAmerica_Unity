@@ -93,9 +93,11 @@ public class PauseMenuController : MonoBehaviour
 
 		if (!gameController.IsMainMenuOpen)
 		{
-			if (gameController.IsPauseMenuAvailable)
+			if (gameController.IsPauseMenuAvailable || gameController.IsPlayerDead)
 			{
+				//Debug.Log("BRUH!!!");
 				ShowPauseMenu(); // Показываем главное меню паузы снова
+				
 			}
 		}
 	}

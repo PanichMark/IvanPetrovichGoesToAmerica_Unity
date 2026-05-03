@@ -73,7 +73,10 @@ public class MenuManager : MonoBehaviour
 			}
 			else if (PauseMenuLevel.Count == 1)
 			{
-				ClosePauseMenu();
+				if (!gameController.IsPlayerDead)
+				{
+					ClosePauseMenu();
+				}
 				if (IsDialogueMenuOpened)
 				{
 					OnClosePauseMenuDuringOpenedDialogueMenu?.Invoke();
