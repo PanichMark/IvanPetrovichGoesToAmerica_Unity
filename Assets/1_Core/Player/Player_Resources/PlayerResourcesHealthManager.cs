@@ -4,12 +4,15 @@ using UnityEngine.UI;
 
 public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 {
-	public void Initialize(GameController gameController, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
+	private PlayerBehaviour playerBehaviour;
+
+	public void Initialize(GameController gameController, PlayerBehaviour playerBehaviour, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
 	{
 		this.HealthBarSlider = HealthBarSlider;
 		this.HealingItemButton = HealingItemButton;
 		this.HealingItemNumber = HealingItemNumber;
 		this.gameController = gameController;
+		this.playerBehaviour = playerBehaviour;
 		this.HealingItemButton.onClick.AddListener(() => UseHealingItem());
 
 		this.HealthBarSlider.maxValue = MaxPlayerHealth;
@@ -26,25 +29,26 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 
 	public int CurrentHealingItemsNumber { get; private set; }
 
-	private bool isPlayerDead;
 
 
-
-    void Update()
+	void Update()
     {
         HealthBarSlider.value = CurrentPlayerHealth;
 
         HealingItemNumber.text = CurrentHealingItemsNumber.ToString();
 
 
-		//ReceiveDamage(1);
+		if (Input.GetKeyDown(KeyCode.T))
+		{
+			ReceiveDamage(900);
+		}
 		//if (MenuManager.IsPauseMenuOpened)
 		//{
 		//	HealthBarSlider.gameObject.SetActive(false);
 		//}
 		//else
 		//{
-			//HealthBarSlider.gameObject.SetActive(true);
+		//HealthBarSlider.gameObject.SetActive(true);
 		//}
 	}
 
@@ -82,8 +86,9 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 		if (CurrentPlayerHealth <= 0)
 		{
 			CurrentPlayerHealth = 0;
-			isPlayerDead = true;
-			gameController.PlayerIsDead();
+			gameController.PlayerHasDied();
+			playerBehaviour.DisarmPlayer();
+
 		}
 	}
 

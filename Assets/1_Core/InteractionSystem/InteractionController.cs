@@ -14,7 +14,6 @@ public class InteractionController : MonoBehaviour
 	private bool _isInitialized = false;
 
 	private LocalizationManager localizationManager;
-
 	public delegate void NonThrowableHandler();
 	public event NonThrowableHandler OnPickUpThrowable;
 	public event NonThrowableHandler OnPickUpNonThrowable;
@@ -68,7 +67,7 @@ public class InteractionController : MonoBehaviour
 		this.playerBehaviour = playerBehaviour;
 		this.menuManager = menuManager;
 		this.canvasHUDInteraction = canvasHUDInteraction;	
-
+		
 		// Присваиваем новые массивы
 		this.itemsTexts = itemsTexts;
 		this.itemsImages = itemsImages;
@@ -136,14 +135,19 @@ public class InteractionController : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (!menuManager.IsAnyMenuOpened)
+		// Если меню открыто или игрок мёртв — interactionRange = 0
+		if (menuManager.IsAnyMenuOpened || gameController.IsPlayerDead)
 		{
+			interactionRange = 0;
+		}
+		else
+		{
+			// В остальных случаях определяем range по типу камеры
 			if (playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
 				interactionRange = 2.5f;
 			else if (playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
 				interactionRange = 2f + playerCameraController.PlayerCameraDistanceZ;
 		}
-		else interactionRange = 0;
 
 		if (mainInteractionText != null)
 			mainInteractionText.text = null;
@@ -162,6 +166,9 @@ public class InteractionController : MonoBehaviour
 		{
 			var pickableObj = CurrentPickableObject.GetComponent<IPickable>();
 			var throwableObj = CurrentPickableObject.GetComponent<IThrowable>();
+
+			
+
 			if (pickableObj != null && pickableObj.IsObjectPickedUp)
 			{
 				// Сообщаем, что игрок держит объект
@@ -179,7 +186,7 @@ public class InteractionController : MonoBehaviour
 				}
 
 				// При нажатии кнопки освобождаем объект
-				if (inputDevice.GetKeyInteract())
+				if (inputDevice.GetKeyInteract() || gameController.IsPlayerDead)
 				{
 					OnGetRidOfPickable?.Invoke();
 					pickableObj.DropOffObject();

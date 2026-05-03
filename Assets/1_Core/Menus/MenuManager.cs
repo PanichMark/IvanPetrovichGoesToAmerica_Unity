@@ -44,6 +44,7 @@ public class MenuManager : MonoBehaviour
 		this.saveLoadController.OnSafeFileLoad += CloseWeaponWheelMenu;
 		this.saveLoadController.OnSafeFileLoad += CloseInteractionHUD;
 		this.saveLoadController.OnSafeFileLoad += CloseInteractionMenu;
+		this.gameController.OnPlayerDeath += OpenPauseMenu;
 		this.saveLoadController.OnSafeFileLoad += CloseDialogueMenu;
 		Debug.Log("MenuManager Initialized");
 	}

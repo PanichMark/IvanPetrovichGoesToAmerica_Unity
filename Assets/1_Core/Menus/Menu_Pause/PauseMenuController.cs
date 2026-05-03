@@ -31,7 +31,7 @@ public class PauseMenuController : MonoBehaviour
 		this.buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(this.menuManager.ClosePauseMenu);     
 		this.buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
 		this.buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
-		this.buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenImagesSubMenu);              
+		this.buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenAppearanceSubMenu);              
 		this.buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);         
 		this.buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(ExitToMainMenu);
 
@@ -41,12 +41,17 @@ public class PauseMenuController : MonoBehaviour
 		_isInitialized = true;
 		this.gameSceneManager.OnBeginLoadMainMenuScene += ClosePauseSubMenu;
 		this.gameSceneManager.OnBeginLoadGameplayScene += ClosePauseSubMenu;
+		this.gameController.OnPlayerDeath += HideDeathPauseMenuButtons;
+		this.gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
 		Debug.Log("PauseMenu Initialized");
 	}
 	private bool _isInitialized = false;
 
 	private void Update()
 	{
+		//Debug.Log(gameController.IsPlayerDead);
+		//Debug.Log(gameController.IsPauseMenuAvailable);
+
 		if (!_isInitialized)
 			return;
 
@@ -57,6 +62,20 @@ public class PauseMenuController : MonoBehaviour
 
 
 		}
+	}
+
+	private void ShowDeathPauseMenuButtons()
+	{
+		buttonsPauseMenu[0].SetActive(true);
+		buttonsPauseMenu[1].SetActive(true);
+		buttonsPauseMenu[3].SetActive(true);
+	}
+
+	private void HideDeathPauseMenuButtons()
+	{
+		buttonsPauseMenu[0].SetActive(false);
+		buttonsPauseMenu[1].SetActive(false);
+		buttonsPauseMenu[3].SetActive(false);
 	}
 
 	public void ClosePauseSubMenu()
@@ -107,7 +126,7 @@ public class PauseMenuController : MonoBehaviour
 		Debug.Log("LoadSubMenu opened");
 		HidePauseMenu();
 	}
-	public void OpenImagesSubMenu()
+	public void OpenAppearanceSubMenu()
 	{
 		OnOpenImagesSubMenu?.Invoke();
 		menuManager.PauseMenuLevel.Push(2);

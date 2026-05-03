@@ -485,7 +485,7 @@ public class Bootstrap : MonoBehaviour
 
 		canvasHUDhealthAndManaController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDhealthAndMana);
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
-		playerResourcesHealthManager.Initialize(gameController, HealthBarSlider, HealingItemButton, HealingItemNumber);
+		playerResourcesHealthManager.Initialize(gameController, playerBehaviour, HealthBarSlider, HealingItemButton, HealingItemNumber);
 		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
 
 		RightWeaponAmmoMagazine = canvasHUDammo.transform.Find("RightWeaponAmmoMagazine").gameObject;

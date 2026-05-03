@@ -14,8 +14,12 @@ public class GameController
 	public delegate void MainMenuEventHandler();
 	public event MainMenuEventHandler OnOpenMainMenu;
 
-	
-	
+
+	public delegate void PlayerDeathHandler();
+	public event PlayerDeathHandler OnPlayerDeath;
+	public event PlayerDeathHandler OnPlayerRevive;
+
+
 	public GameController()
 	{
 		IsPlayerAbleToMove = true;
@@ -32,12 +36,22 @@ public class GameController
 		IsPlayerAbleToMove = true;
 		IsPlayerPlunging = false;
 	}
-	public void PlayerIsDead()
+	public void PlayerHasDied()
 	{
 		IsPlayerDead = true;
 		MakePlayerNonControllable();
 		IsPauseMenuAvailable = false;
+		OnPlayerDeath?.Invoke();
 	}
+
+	/*
+	public void PlayerIsRevived()
+	{
+		IsPlayerDead = false;
+		MakePlayerControllable();
+		IsPauseMenuAvailable = true;
+	}
+	*/
 
 	public void MakePlayerControllable()
 	{
@@ -53,12 +67,19 @@ public class GameController
 
 	public void SceneLoadBegan()
 	{
+	
 		IsPauseMenuAvailable = false;
 		MakePlayerNonControllable();
 	}
 
 	public void SceneLoadEnded()
 	{
+		if (IsPlayerDead)
+		{
+			IsPlayerDead = false;
+			OnPlayerRevive?.Invoke();
+		}
+
 		IsPauseMenuAvailable = true;
 		MakePlayerControllable();
 	}
