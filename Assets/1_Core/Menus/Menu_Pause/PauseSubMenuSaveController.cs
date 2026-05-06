@@ -1,9 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections; // Для StartCoroutine
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections; // Для StartCoroutine
+using System;
+
+
 
 public class PauseSubMenuSaveController : MonoBehaviour
 {
+	public event Action<int> OnRequestSaveFileConfirmation;
+	public event Action<int> OnRequestDeleteFileConfirmation;
+
 	// --- Поля для управления интерфейсом ---
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
@@ -42,8 +48,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		{
 			int slot = i + 1;
 			int capturedSlot = slot; // Защита от замыкания в цикле
-			this.buttonsSaveGame[i].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(saveLoadController.SaveGame(capturedSlot)));
-			this.buttonsDeleteGame[i].GetComponent<Button>().onClick.AddListener(() => saveLoadController.DeleteGame(capturedSlot));
+			this.buttonsSaveGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestSaveFileConfirmation?.Invoke(capturedSlot));
+			this.buttonsDeleteGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestDeleteFileConfirmation?.Invoke(capturedSlot));
 		}
 
 		this.buttonClosePauseSubMenuSave.GetComponent<Button>().onClick.AddListener(() => pauseMenuController.ClosePauseSubMenu());

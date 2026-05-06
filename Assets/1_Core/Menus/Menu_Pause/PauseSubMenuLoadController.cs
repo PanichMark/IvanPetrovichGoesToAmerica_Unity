@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PauseSubMenuLoadController : MonoBehaviour
 {
+	public event Action<int> OnRequestLoadFileConfirmation;
+
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
 	private PauseMenuController pauseMenuController;
@@ -34,13 +36,13 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		//this.buttonsDeleteGame = buttonsDeleteGame;
 
 
-		this.buttonsLoadGame[0].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(1)));
-		this.buttonsLoadGame[1].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(2)));
-		this.buttonsLoadGame[2].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(3)));
-		this.buttonsLoadGame[3].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(4)));
-		this.buttonsLoadGame[4].GetComponent<Button>().onClick.AddListener(() => StartCoroutine(this.saveLoadController.LoadGame(5)));
+		for (int i = 0; i < buttonsLoadGame.Length; i++)
+		{
+			int slot = i + 1;
+			this.buttonsLoadGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestLoadFileConfirmation?.Invoke(slot));
+		}
 
-	
+
 		this.buttonClosePauseSubMenuLoad.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
 
 		this.pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;
