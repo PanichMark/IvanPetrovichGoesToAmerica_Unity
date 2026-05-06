@@ -55,13 +55,15 @@ public class PauseMenuController : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		// Проверка условия перехода назад по меню
-		if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 2)
-		{
-			ClosePauseSubMenu();
+			// Проверка условия перехода назад по меню
+			if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 2)
+			{ 
+			
+				ClosePauseSubMenu();
+			}
 
 
-		}
+	
 	}
 
 	private void ShowDeathPauseMenuButtons()

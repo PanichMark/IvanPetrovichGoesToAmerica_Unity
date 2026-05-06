@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEditor.Graphs;
+using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class MenuConfirmActionController : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class MenuConfirmActionController : MonoBehaviour
 	private GameObject canvasPauseSubMenuConfirm;
 	private GameObject buttonConfirm;
 	private GameObject buttonCancel;
-
+	private MenuManager menuManager;
+	private PauseSubMenuSettingsController pauseSubMenuSettingsController;
 	// --- Данные для текущего действия ---
 	private Action onAcceptAction; // Что сделать при "Принять"
 	private int targetSlot; // Для какого слота действие
@@ -22,14 +24,17 @@ public class MenuConfirmActionController : MonoBehaviour
 
 	// --- Метод для внедрения зависимостей (DI) ---
 	public void Initialize(
+		MenuManager menuManager,
 		GameObject canvasPauseSubMenuConfirm,
 		GameObject buttonAccept,
 		GameObject buttonCancel,
 		SaveLoadController saveLoadController,
 		PauseSubMenuSaveController saveController,
 		PauseSubMenuLoadController loadController,
+		PauseSubMenuSettingsController pauseSubMenuSettingsController,
 		GameObject textShowConfirmationMessage)
 	{
+		this.menuManager = menuManager;
 		this.canvasPauseSubMenuConfirm = canvasPauseSubMenuConfirm;
 		this.buttonConfirm = buttonAccept;
 		this.buttonCancel = buttonCancel;
@@ -38,30 +43,41 @@ public class MenuConfirmActionController : MonoBehaviour
 		this.loadController = loadController;
 		this.textShowConfirmationMessage = textShowConfirmationMessage;
 		confirmationTextComponent = textShowConfirmationMessage.GetComponent<Text>();
-
+		this.pauseSubMenuSettingsController = pauseSubMenuSettingsController;
 		this.buttonConfirm.GetComponent<Button>().onClick.AddListener(() => ExecuteAccept());
 		this.buttonCancel.GetComponent<Button>().onClick.AddListener(() => ExecuteCancel());
 
 		// --- НОВОЕ: Подписываемся на события от Save и Load контроллеров ---
 		// Когда SaveController хочет спросить подтверждение, он вызовет это событие
-		this.saveController.OnRequestRewriteFileConfirmation += HandleShowForRewrite;
+		this.saveController.OnRequestRewriteSaveFileConfirmation += HandleShowForRewriteSaveFile;
 
 		// Когда LoadController хочет спросить подтверждение, он вызовет это событие
-		this.loadController.OnRequestLoadFileConfirmation += HandleShowForLoad;
-		this.saveController.OnRequestNewSaveFileConfirmation += HandleShowForNewSave;
+		this.loadController.OnRequestLoadSaveFileConfirmation += HandleShowForLoadSaveFile;
+		this.saveController.OnRequestNewSaveFileConfirmation += HandleShowForNewSaveFile;
+		this.pauseSubMenuSettingsController.OnRequestSaveSettingsConfirmation += HandleShowForSaveSettings;
+		this.pauseSubMenuSettingsController.OnRequestResetSettingsConfirmation += HandleShowForResetSettings;
 
-		this.saveController.OnRequestDeleteFileConfirmation += HandleShowForDelete;
+		this.saveController.OnRequestDeleteSaveFileConfirmation += HandleShowForDeleteSaveFile;
+
+		this.menuManager.OnOpenConfirmMenu += ShowCanvasConfirmAction;
+		this.menuManager.OnCloseConfirmMenu += HideCanvasConfirmAction;
 	}
 
+	public void ShowCanvasConfirmAction()
+	{
+		canvasPauseSubMenuConfirm.SetActive(true);
+		//onAcceptAction = null;
+	}
 	public void HideCanvasConfirmAction()
 	{
 		canvasPauseSubMenuConfirm.SetActive(false);
 		onAcceptAction = null;
 	}
 
+
 	// --- Методы-реакции на события от других контроллеров ---
 	// Этот метод вызовется из SaveController
-	private void HandleShowForRewrite(int slot)
+	private void HandleShowForRewriteSaveFile(int slot)
 	{
 		targetSlot = slot;
 		confirmationTextComponent.text = "Перезаписать игру в слоте " + slot + " ?";
@@ -69,11 +85,11 @@ public class MenuConfirmActionController : MonoBehaviour
 		// Задаем действие, которое нужно выполнить при "Принять"
 		onAcceptAction = () => StartCoroutine(saveLoadController.SaveGame(slot));
 
-		canvasPauseSubMenuConfirm.SetActive(true);
+		menuManager.OpenConfirmMenu();
 	}
 
 	// Этот метод вызовется из LoadController
-	private void HandleShowForLoad(int slot)
+	private void HandleShowForLoadSaveFile(int slot)
 	{
 		targetSlot = slot;
 		confirmationTextComponent.text = "Загрузить игру из слота " + slot + " ?";
@@ -81,10 +97,22 @@ public class MenuConfirmActionController : MonoBehaviour
 		// Задаем действие, которое нужно выполнить при "Принять"
 		onAcceptAction = () => StartCoroutine(saveLoadController.LoadGame(slot));
 
-		canvasPauseSubMenuConfirm.SetActive(true);
+		menuManager.OpenConfirmMenu();
 	}
 
-	private void HandleShowForDelete(int slot)
+	private void HandleShowForSaveSettings()
+	{
+		confirmationTextComponent.text = "Сохранить настройки?";
+		onAcceptAction = () => pauseSubMenuSettingsController.SaveSettings();
+		menuManager.OpenConfirmMenu();
+	}
+	private void HandleShowForResetSettings()
+	{
+		confirmationTextComponent.text = "Сбросить настройки по умолчанию?";
+		onAcceptAction = () => pauseSubMenuSettingsController.ResetSettings();
+		menuManager.OpenConfirmMenu();
+	}
+	private void HandleShowForDeleteSaveFile(int slot)
 	{
 		targetSlot = slot;
 		confirmationTextComponent.text = "Удалить игру в слоте " + slot + " ?";
@@ -92,11 +120,11 @@ public class MenuConfirmActionController : MonoBehaviour
 		// Задаем действие, которое нужно выполнить при "Принять"
 		onAcceptAction = () => saveLoadController.DeleteGame(slot);
 
-		canvasPauseSubMenuConfirm.SetActive(true);
+		menuManager.OpenConfirmMenu();
 	}
 	// --- НОВЫЙ МЕТОД ---
 	// Этот метод вызовется, когда пользователь нажмет "Новое сохранение"
-	private void HandleShowForNewSave(int slot)
+	private void HandleShowForNewSaveFile(int slot)
 	{
 		targetSlot = slot;
 		confirmationTextComponent.text = "Создать новое сохранение?"; 
@@ -105,12 +133,12 @@ public class MenuConfirmActionController : MonoBehaviour
 		// Задаем действие, которое нужно выполнить при "Принять"
 		onAcceptAction = () => StartCoroutine(saveLoadController.SaveGame(slot));
 
-		canvasPauseSubMenuConfirm.SetActive(true);
+		menuManager.OpenConfirmMenu();
 	}
 	private void ExecuteAccept()
 	{
 		onAcceptAction?.Invoke(); // Выполняем действие (Сохранить или Загрузить)
-		HideCanvasConfirmAction();
+		menuManager.CloseConfirmMenu(); // Вызывать при любом закрытии
 
 		// После выполнения действия нужно разблокировать интерфейс в Save/Load контроллере.
 		// Для этого можно вызвать еще одно событие или передать ссылку на метод разблокировки.
@@ -119,7 +147,7 @@ public class MenuConfirmActionController : MonoBehaviour
 
 	private void ExecuteCancel()
 	{
-		HideCanvasConfirmAction();
+		menuManager.CloseConfirmMenu(); // Вызывать при любом закрытии
 
 		// При отмене нужно сообщить Save/Load контроллеру, чтобы он разблокировал кнопки.
 	}

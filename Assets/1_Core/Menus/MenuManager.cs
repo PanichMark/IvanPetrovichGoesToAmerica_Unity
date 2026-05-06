@@ -4,21 +4,22 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
 	
-	public delegate void OpenMenuEventHandler();
-	public event OpenMenuEventHandler OnOpenPauseMenu;
-	public event OpenMenuEventHandler OnClosePauseMenu;
-	public event OpenMenuEventHandler OnOpenWeaponWheelMenu;
-	public event OpenMenuEventHandler OnCloseWeaponWheelMenu;
-	public event OpenMenuEventHandler OnOpenInteractionHUD;
-	public event OpenMenuEventHandler OnCloseInteractionHUD;
-	public event OpenMenuEventHandler OnOpenInteractionMenu;
-	public event OpenMenuEventHandler OnCloseInteractionMenu;
-	public event OpenMenuEventHandler OnOpenDialogueMenu;
-	public event OpenMenuEventHandler OnCloseDialogueMenu;
-	public event OpenMenuEventHandler OnClosePauseMenuDuringOpenedDialogueMenu;
-
-	public event OpenMenuEventHandler OnOpenAnyMenu;
-	public event OpenMenuEventHandler OnCloseAnyMenu;
+	public delegate void MenuEventHandler();
+	public event MenuEventHandler OnOpenPauseMenu;
+	public event MenuEventHandler OnClosePauseMenu;
+	public event MenuEventHandler OnOpenWeaponWheelMenu;
+	public event MenuEventHandler OnCloseWeaponWheelMenu;
+	public event MenuEventHandler OnOpenInteractionHUD;
+	public event MenuEventHandler OnCloseInteractionHUD;
+	public event MenuEventHandler OnOpenInteractionMenu;
+	public event MenuEventHandler OnCloseInteractionMenu;
+	public event MenuEventHandler OnOpenDialogueMenu;
+	public event MenuEventHandler OnCloseDialogueMenu;
+	public event MenuEventHandler OnClosePauseMenuDuringOpenedDialogueMenu;
+	public event MenuEventHandler OnOpenConfirmMenu;
+	public event MenuEventHandler OnCloseConfirmMenu;
+	public event MenuEventHandler OnOpenAnyMenu;
+	public event MenuEventHandler OnCloseAnyMenu;
 
 	public IInputDevice inputDevice;
 	private GameController gameController;
@@ -56,6 +57,7 @@ public class MenuManager : MonoBehaviour
 	public bool IsDialogueMenuOpened { get; private set; }
 
 	public bool IsInteractionHUDOpened { get; private set; }
+	public bool IsConfirmMenuOpened { get; private set; }
 
 	public bool IsInteractionMenuOpened { get; private set; }
 	void Update()
@@ -81,6 +83,10 @@ public class MenuManager : MonoBehaviour
 				{
 					OnClosePauseMenuDuringOpenedDialogueMenu?.Invoke();
 				}
+			}
+			else if (PauseMenuLevel.Count == 3)
+			{
+				CloseConfirmMenu();
 			}
 		}
 		//Debug.Log(PauseMenuLevel.Count);
@@ -246,4 +252,24 @@ public class MenuManager : MonoBehaviour
 		Debug.Log("DialogueMenu closed");
 	
 	}
+
+	public void OpenConfirmMenu()
+	{
+		IsConfirmMenuOpened = true;
+		PauseMenuLevel.Push(3); // Теперь уровень 3
+		OnOpenConfirmMenu?.Invoke();
+		//OpenAnyMenu();
+		//gameController.MakePlayerNonControllable();
+		//Time.timeScale = 0f;
+		Debug.Log("ConfirmMenu opened");
+	}
+
+	public void CloseConfirmMenu()
+	{
+		PauseMenuLevel.Pop(); // Уменьшаем с 3 до 2
+		OnCloseConfirmMenu?.Invoke();
+		IsConfirmMenuOpened = false;
+		Debug.Log("ConfirmMenu closed");
+	}
+
 }

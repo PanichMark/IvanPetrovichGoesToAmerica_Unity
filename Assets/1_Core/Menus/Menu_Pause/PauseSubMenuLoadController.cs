@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PauseSubMenuLoadController : MonoBehaviour
 {
-	public event Action<int> OnRequestLoadFileConfirmation;
+	public event Action<int> OnRequestLoadSaveFileConfirmation;
 
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
@@ -39,7 +39,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		for (int i = 0; i < buttonsLoadGame.Length; i++)
 		{
 			int slot = i + 1;
-			this.buttonsLoadGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestLoadFileConfirmation?.Invoke(slot));
+			this.buttonsLoadGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestLoadSaveFileConfirmation?.Invoke(slot));
 		}
 
 
@@ -60,15 +60,57 @@ public class PauseSubMenuLoadController : MonoBehaviour
 			currentSceneNameUITexts[i] = buttonTransform.Find("Text_CurrentSceneNameUI")?.GetComponent<Text>();
 		}
 
+		// В Initialize()
+		this.menuManager.OnOpenConfirmMenu += DisableButtons;
+		this.menuManager.OnCloseConfirmMenu += EnableButtons;
+
 		Debug.Log("LoadSubMenu Initialized");
 	}
 
 
-		
-	
+
+	private void DisableButtons()
+	{
+		// Отключаем взаимодействие с кнопками загрузки
+		foreach (var buttonObj in buttonsLoadGame)
+		{
+			Button button = buttonObj.GetComponent<Button>();
+			if (button != null)
+			{
+				button.interactable = false;
+			}
+		}
+
+		// Также отключаем кнопку закрытия подменю, если она должна быть заблокирована
+		Button closeButton = buttonClosePauseSubMenuLoad.GetComponent<Button>();
+		if (closeButton != null)
+		{
+			closeButton.interactable = false;
+		}
+	}
+
+	private void EnableButtons()
+	{
+		// Возвращаем возможность взаимодействия с кнопками загрузки
+		foreach (var buttonObj in buttonsLoadGame)
+		{
+			Button button = buttonObj.GetComponent<Button>();
+			if (button != null)
+			{
+				button.interactable = true;
+			}
+		}
+
+		// Возвращаем возможность взаимодействия с кнопкой закрытия
+		Button closeButton = buttonClosePauseSubMenuLoad.GetComponent<Button>();
+		if (closeButton != null)
+		{
+			closeButton.interactable = true;
+		}
+	}
 
 
-	
+
 	public void ShowLoadSubMenuCanvas()
 	{
 		isPauseSubMenuLoadOpened = true;

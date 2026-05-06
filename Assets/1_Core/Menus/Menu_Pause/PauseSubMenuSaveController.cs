@@ -7,9 +7,9 @@ using System;
 
 public class PauseSubMenuSaveController : MonoBehaviour
 {
-	public event Action<int> OnRequestRewriteFileConfirmation;
+	public event Action<int> OnRequestRewriteSaveFileConfirmation;
 	public event Action<int> OnRequestNewSaveFileConfirmation;
-	public event Action<int> OnRequestDeleteFileConfirmation;
+	public event Action<int> OnRequestDeleteSaveFileConfirmation;
 
 	// --- Поля для управления интерфейсом ---
 	private IInputDevice inputDevice;
@@ -49,8 +49,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		{
 			int slot = i + 1;
 			int capturedSlot = slot; // Защита от замыкания в цикле
-			this.buttonsRewriteGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestRewriteFileConfirmation?.Invoke(capturedSlot));
-			this.buttonsDeleteGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestDeleteFileConfirmation?.Invoke(capturedSlot));
+			this.buttonsRewriteGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestRewriteSaveFileConfirmation?.Invoke(capturedSlot));
+			this.buttonsDeleteGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestDeleteSaveFileConfirmation?.Invoke(capturedSlot));
 		}
 
 		this.buttonClosePauseSubMenuSave.GetComponent<Button>().onClick.AddListener(() => pauseMenuController.ClosePauseSubMenu());
@@ -90,7 +90,84 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		this.saveLoadController.OnSafeFileDelete += UpdateAllUIElements;
 		this.saveLoadController.OnSafeFileSaved += UpdateAllUIElements;
 
+		this.menuManager.OnOpenConfirmMenu += DisableButtons;
+		this.menuManager.OnCloseConfirmMenu += EnableButtons;
+
 		Debug.Log("SaveSubMenu Initialized");
+	}
+
+	private void DisableButtons()
+	{
+		// Блокируем кнопки перезаписи слотов
+		foreach (var buttonObj in buttonsRewriteGame)
+		{
+			Button button = buttonObj.GetComponent<Button>();
+			if (button != null)
+			{
+				button.interactable = false;
+			}
+		}
+
+		// Блокируем кнопки удаления слотов
+		foreach (var buttonObj in buttonsDeleteGame)
+		{
+			Button button = buttonObj.GetComponent<Button>();
+			if (button != null)
+			{
+				button.interactable = false;
+			}
+		}
+
+		// Блокируем кнопку "Новое сохранение"
+		Button newSaveButton = buttonSaveNewGame.GetComponent<Button>();
+		if (newSaveButton != null)
+		{
+			newSaveButton.interactable = false;
+		}
+
+		// Блокируем кнопку закрытия подменю
+		Button closeButton = buttonClosePauseSubMenuSave.GetComponent<Button>();
+		if (closeButton != null)
+		{
+			closeButton.interactable = false;
+		}
+	}
+
+	private void EnableButtons()
+	{
+		// Разблокируем кнопки перезаписи слотов
+		foreach (var buttonObj in buttonsRewriteGame)
+		{
+			Button button = buttonObj.GetComponent<Button>();
+			if (button != null)
+			{
+				button.interactable = true;
+			}
+		}
+
+		// Разблокируем кнопки удаления слотов
+		foreach (var buttonObj in buttonsDeleteGame)
+		{
+			Button button = buttonObj.GetComponent<Button>();
+			if (button != null)
+			{
+				button.interactable = true;
+			}
+		}
+
+		// Разблокируем кнопку "Новое сохранение"
+		Button newSaveButton = buttonSaveNewGame.GetComponent<Button>();
+		if (newSaveButton != null)
+		{
+			newSaveButton.interactable = true;
+		}
+
+		// Разблокируем кнопку закрытия подменю
+		Button closeButton = buttonClosePauseSubMenuSave.GetComponent<Button>();
+		if (closeButton != null)
+		{
+			closeButton.interactable = true;
+		}
 	}
 
 	// --- Логика поиска пустого слота ---

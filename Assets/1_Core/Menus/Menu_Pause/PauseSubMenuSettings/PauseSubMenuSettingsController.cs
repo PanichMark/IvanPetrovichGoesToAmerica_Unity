@@ -7,6 +7,11 @@ using System;
 
 public class PauseSubMenuSettingsController : MonoBehaviour
 {
+	public delegate void ChangeSettingsOpenMenuEventHandler();
+	public event ChangeSettingsOpenMenuEventHandler OnRequestSaveSettingsConfirmation;
+	public event ChangeSettingsOpenMenuEventHandler OnRequestResetSettingsConfirmation;
+
+
 	private IInputDevice inputDevice;
 	private MenuManager menuManager;
 	private bool isPauseSubMenuSettingsOpened;
@@ -99,8 +104,8 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 		this.buttonClosePauseSubMenuSettings.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
 		// Стало:
-		this.buttonSaveSettings.GetComponent<Button>().onClick.AddListener(SaveSettings);
-		this.buttonResetSettings.GetComponent<Button>().onClick.AddListener(ResetSettings);
+		this.buttonSaveSettings.GetComponent<Button>().onClick.AddListener(() => OnRequestSaveSettingsConfirmation());
+		this.buttonResetSettings.GetComponent<Button>().onClick.AddListener(() => OnRequestResetSettingsConfirmation());
 
 		fovSlider = this.FOVSlider.GetComponent<Slider>();
 
@@ -180,6 +185,8 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 		// 3. Применяем загруженные данные к UI.
 		ApplyLoadedSettings(loadedData);
+		this.menuManager.OnOpenConfirmMenu += DisableButtons;
+		this.menuManager.OnCloseConfirmMenu += EnableButtons;
 
 		Debug.Log("SettingsSubMenu Initialized");
 
@@ -187,8 +194,14 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	}
 
 	// Ссылка на контроллер паузы меню
+	private void DisableButtons()
+	{
 
+	}
+	private void EnableButtons()
+	{
 
+	}
 
 	private void ChangeLanguage(LanguagesEnum language)
 	{
