@@ -91,6 +91,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject canvasMenuConfirmAction;
 	private GameObject buttonConfirmAction;
 	private GameObject buttonCancelAction;
+	private GameObject textShowConfirmationMessage;
 	// Меню паузы
 	private PauseMenuController pauseMenuController;
 	[Header("PauseMenu")] [SerializeField] private GameObject canvasPauseMenu;
@@ -98,7 +99,7 @@ public class Bootstrap : MonoBehaviour
 	// Подменю сохранения
 	private PauseSubMenuSaveController pauseSubMenuSaveController;
 	[SerializeField] private GameObject canvasPauseSubMenuSave;
-	private GameObject[] buttonsSaveGame;
+	private GameObject[] buttonsRewriteGame;
 	private GameObject[] buttonsDeleteGame;
 	private GameObject buttonSaveNewGame;
 	private GameObject buttonClosePauseSubMenuSave;
@@ -337,6 +338,7 @@ public class Bootstrap : MonoBehaviour
 
 		buttonConfirmAction = FindDeepChildByName(canvasMenuConfirmAction, "Confirm");
 		buttonCancelAction = FindDeepChildByName(canvasMenuConfirmAction, "Cancel");
+		textShowConfirmationMessage = FindDeepChildByName(canvasMenuConfirmAction, "Text");
 
 		// Кнопки меню
 		buttonsPauseMenu = new GameObject[]
@@ -349,7 +351,7 @@ public class Bootstrap : MonoBehaviour
 			FindDeepChildByName(canvasPauseMenu, "PauseMenu Exit Button")
 		};
 
-		buttonsSaveGame = new GameObject[]
+		buttonsRewriteGame = new GameObject[]
 		{
 			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE1 Button"),
 			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE2 Button"),
@@ -426,12 +428,12 @@ public class Bootstrap : MonoBehaviour
 		// Инициализация меню
 		menuManager.Initialize(inputDevice, gameController, saveLoadController);
 		pauseMenuController.Initialize(inputDevice, gameController, gameSceneManager, saveLoadController, menuManager, canvasPauseMenu, buttonsPauseMenu);
-		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsSaveGame, buttonsDeleteGame, buttonClosePauseSubMenuSave, buttonSaveNewGame);
+		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsRewriteGame, buttonsDeleteGame, buttonClosePauseSubMenuSave, buttonSaveNewGame);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonClosePauseSubMenuLoad);
 		pauseSubMenuAppearanceController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuAppearance, buttonClosePauseSubMenuAppearance);
 		pauseSubMenuSettingsController.Initialize(inputDevice, this, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons, buttonsChangeLanguage, KeyRebinds, pauseSubMenuSettingsPlayerPrefs, buttonSaveSettings, buttonResetSettings);
 
-		menuConfirmActionController.Initialize(canvasMenuConfirmAction, buttonConfirmAction, buttonCancelAction, saveLoadController, pauseSubMenuSaveController, pauseSubMenuLoadController);
+		menuConfirmActionController.Initialize(canvasMenuConfirmAction, buttonConfirmAction, buttonCancelAction, saveLoadController, pauseSubMenuSaveController, pauseSubMenuLoadController, textShowConfirmationMessage);
 
 		Debug.Log("PAUSE MENU INITIALIZED");
 		yield break;

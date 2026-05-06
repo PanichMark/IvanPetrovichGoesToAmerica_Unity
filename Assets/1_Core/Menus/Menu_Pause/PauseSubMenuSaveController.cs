@@ -7,7 +7,8 @@ using System;
 
 public class PauseSubMenuSaveController : MonoBehaviour
 {
-	public event Action<int> OnRequestSaveFileConfirmation;
+	public event Action<int> OnRequestRewriteFileConfirmation;
+	public event Action<int> OnRequestNewSaveFileConfirmation;
 	public event Action<int> OnRequestDeleteFileConfirmation;
 
 	// --- Поля для управления интерфейсом ---
@@ -20,7 +21,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 	// --- Ссылки на кнопки (GameObjects) ---
 	private GameObject buttonClosePauseSubMenuSave;
-	private GameObject[] buttonsSaveGame;
+	private GameObject[] buttonsRewriteGame;
 	private GameObject[] buttonsDeleteGame;
 	private GameObject buttonSaveNewGame;
 
@@ -29,7 +30,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	private Text[] currentSceneNameUITexts;
 
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController,
-		GameObject canvasPauseSubMenuSave, GameObject[] buttonsSaveGame, GameObject[] buttonsDeleteGame,
+		GameObject canvasPauseSubMenuSave, GameObject[] buttonsRewriteGame, GameObject[] buttonsDeleteGame,
 		GameObject buttonClosePauseSubMenuSave, GameObject buttonSaveNewGame)
 	{
 		// Сохраняем ссылки на объекты
@@ -39,28 +40,28 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		this.menuManager = menuManager;
 		this.inputDevice = inputDevice;
 		this.canvasPauseSubMenuSave = canvasPauseSubMenuSave;
-		this.buttonsSaveGame = buttonsSaveGame;
+		this.buttonsRewriteGame = buttonsRewriteGame;
 		this.buttonsDeleteGame = buttonsDeleteGame;
 		this.saveLoadController = saveLoadController;
 
 		// 1. Инициализация слушателей кликов
-		for (int i = 0; i < buttonsSaveGame.Length; i++)
+		for (int i = 0; i < buttonsRewriteGame.Length; i++)
 		{
 			int slot = i + 1;
 			int capturedSlot = slot; // Защита от замыкания в цикле
-			this.buttonsSaveGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestSaveFileConfirmation?.Invoke(capturedSlot));
+			this.buttonsRewriteGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestRewriteFileConfirmation?.Invoke(capturedSlot));
 			this.buttonsDeleteGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestDeleteFileConfirmation?.Invoke(capturedSlot));
 		}
 
 		this.buttonClosePauseSubMenuSave.GetComponent<Button>().onClick.AddListener(() => pauseMenuController.ClosePauseSubMenu());
 
 		// 2. Инициализация текстовых полей и иконок
-		currentDateAndTimeTexts = new Text[buttonsSaveGame.Length];
-		currentSceneNameUITexts = new Text[buttonsSaveGame.Length];
+		currentDateAndTimeTexts = new Text[buttonsRewriteGame.Length];
+		currentSceneNameUITexts = new Text[buttonsRewriteGame.Length];
 
-		for (int i = 0; i < buttonsSaveGame.Length; i++)
+		for (int i = 0; i < buttonsRewriteGame.Length; i++)
 		{
-			Transform buttonTransform = buttonsSaveGame[i].transform;
+			Transform buttonTransform = buttonsRewriteGame[i].transform;
 			currentDateAndTimeTexts[i] = buttonTransform.Find("Text_CurrentDateAndTime")?.GetComponent<Text>();
 			currentSceneNameUITexts[i] = buttonTransform.Find("Text_CurrentSceneNameUI")?.GetComponent<Text>();
 
@@ -71,6 +72,15 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			Transform iconTransform = buttonTransform.Find("Level_Image");
 			if (iconTransform != null) iconTransform.gameObject.SetActive(false);
 		}
+
+		this.buttonSaveNewGame.GetComponent<Button>().onClick.AddListener(() =>
+		{
+			int slotToUse = FindFirstEmptySlot();
+			if (slotToUse != -1)
+			{
+				OnRequestNewSaveFileConfirmation?.Invoke(slotToUse);
+			}
+		});
 
 		// 3. Подписка на события
 		this.pauseMenuController.OnOpenSaveSubMenu += ShowSaveSubMenuCanvas;
@@ -125,7 +135,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 			if (!string.IsNullOrEmpty(currentSceneNameSystem)) // ЕСЛИ СЛОТ ЗАНЯТ
 			{
-				buttonsSaveGame[i].SetActive(true);
+				buttonsRewriteGame[i].SetActive(true);
 				buttonsDeleteGame[i].SetActive(true);
 
 				currentDateAndTimeTexts[i].text = currentDataAndTime;
@@ -137,7 +147,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 				// Загрузка и показ иконки сцены
 				string imagePath = $"Sprites/{currentSceneNameSystem}";
 				Sprite sprite = Resources.Load<Sprite>(imagePath);
-				Transform imageTransform = buttonsSaveGame[i].transform.Find("Level_Image");
+				Transform imageTransform = buttonsRewriteGame[i].transform.Find("Level_Image");
 
 				if (imageTransform != null)
 				{
@@ -150,13 +160,13 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			}
 			else // ЕСЛИ СЛОТ ПУСТ
 			{
-				buttonsSaveGame[i].SetActive(false);
+				buttonsRewriteGame[i].SetActive(false);
 				buttonsDeleteGame[i].SetActive(false);
 
 				if (currentDateAndTimeTexts[i] != null) currentDateAndTimeTexts[i].gameObject.SetActive(false);
 				if (currentSceneNameUITexts[i] != null) currentSceneNameUITexts[i].gameObject.SetActive(false);
 
-				Transform imageTransform = buttonsSaveGame[i].transform.Find("Level_Image");
+				Transform imageTransform = buttonsRewriteGame[i].transform.Find("Level_Image");
 				if (imageTransform != null) imageTransform.gameObject.SetActive(false);
 			}
 		}
@@ -175,19 +185,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		bool hasEmptySlot = FindFirstEmptySlot() != -1;
 		buttonSaveNewGame.SetActive(hasEmptySlot);
 
-		// Назначаем слушатель клика с обновлением интерфейса после сохранения
-		buttonSaveNewGame.GetComponent<Button>().onClick.RemoveAllListeners();
-		buttonSaveNewGame.GetComponent<Button>().onClick.AddListener(() =>
-		{
-			int slotToUse = FindFirstEmptySlot();
-			if (slotToUse != -1)
-			{
-				StartCoroutine(saveLoadController.SaveGame(slotToUse));
 
-				// Обновляем интерфейс после создания нового сохранения
-				UpdateAllUIElements();
-			}
-		});
+	
 	}
 
 	private void HideSaveSubMenuCanvas()
