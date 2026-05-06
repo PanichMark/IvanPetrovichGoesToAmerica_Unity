@@ -84,7 +84,7 @@ public class MenuManager : MonoBehaviour
 			}
 			//Debug.Log(gameController.IsMainMenuOpen);
 		}
-		Debug.Log(PauseMenuLevel.Count);
+		//Debug.Log(PauseMenuLevel.Count);
 	}
 
 	public void OpenPauseMenu()

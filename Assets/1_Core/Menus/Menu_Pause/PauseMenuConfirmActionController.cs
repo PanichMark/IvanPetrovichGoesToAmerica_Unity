@@ -56,8 +56,8 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		// Когда LoadController хочет спросить подтверждение, он вызовет это событие
 		this.loadController.OnRequestLoadSaveFileConfirmation += HandleShowForLoadSaveFile;
 		this.saveController.OnRequestNewSaveFileConfirmation += HandleShowForNewSaveFile;
-		this.pauseMenuController.OnPlanningToExitToMainMenu += HandleShowForExitToMainMenu;
-		this.pauseMenuController.OnExitToMainMenu += HideCanvasConfirmAction;
+		
+		
 		this.pauseSubMenuSettingsController.OnRequestSaveSettingsConfirmation += HandleShowForSaveSettings;
 		this.pauseSubMenuSettingsController.OnRequestResetSettingsConfirmation += HandleShowForResetSettings;
 
@@ -141,17 +141,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		pauseMenuController.OpenPauseConfirmMenu();
 	}
 
-	private void HandleShowForExitToMainMenu()
-	{
 
-		confirmationTextComponent.text = "Выйти в главное меню?";
-		// *Если у вас есть текст, раскомментируйте эту строку*
-
-		// Задаем действие, которое нужно выполнить при "Принять"
-		onAcceptAction = () => pauseMenuController.ExitToMainMenu();
-
-		pauseMenuController.OpenPauseConfirmMenu();
-	}
 	private void ExecuteAccept()
 	{
 		onAcceptAction?.Invoke(); // Выполняем действие (Сохранить или Загрузить)

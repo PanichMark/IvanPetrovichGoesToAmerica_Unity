@@ -19,7 +19,6 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnOpenLoadSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenImagesSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenSettingsSubMenu;
-	public event OpenPauseMenuEventHandler OnPlanningToExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
 	public event OpenPauseMenuEventHandler OnCloseAnySubMenuForMain;
@@ -37,8 +36,8 @@ public class PauseMenuController : MonoBehaviour
 		this.buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
 		this.buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
 		this.buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenAppearanceSubMenu);              
-		this.buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);         
-		this.buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(() => OnPlanningToExitToMainMenu());
+		this.buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);
+		this.buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(ExitToMainMenu);
 
 		this.menuManager.OnOpenPauseMenu += ShowPauseMenu;
 		this.menuManager.OnClosePauseMenu += HidePauseMenu;
@@ -71,7 +70,7 @@ public class PauseMenuController : MonoBehaviour
 			ClosePauseConfirmMenu();
 		}
 	
-		if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 2 && !isAnySubMenuOpened)
+		if (inputDevice.GetKeyPauseMenu() && gameController.IsMainMenuOpen && menuManager.PauseMenuLevel.Count == 2)
 		{
 			ClosePauseConfirmMenu();
 		}
@@ -91,8 +90,14 @@ public class PauseMenuController : MonoBehaviour
 	public void ClosePauseConfirmMenu()
 	{
 		IsPauseConfirmMenuOpened = false;
-		menuManager.PauseMenuLevel.Pop(); // Уменьшаем с 3 до 2
 		OnCloseConfirmMenu?.Invoke();
+		if (menuManager.PauseMenuLevel.Count > 0)
+		{ 
+		
+		//Debug.Log(menuManager.PauseMenuLevel.Count);
+			menuManager.PauseMenuLevel?.Pop(); // Уменьшаем с 3 до 2
+		}
+
 
 		//Debug.Log("is FALSE");
 		Debug.Log("ConfirmMenu closed");
@@ -189,5 +194,6 @@ public class PauseMenuController : MonoBehaviour
 		ClosePauseSubMenu();
 		menuManager.ClosePauseMenu();
 		StartCoroutine(gameSceneManager.LoadMainMenuScene());
+	
 	}
 }
