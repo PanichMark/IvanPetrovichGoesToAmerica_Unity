@@ -3,6 +3,10 @@ using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
+	private bool isAnySubMenuOpened;
+	public bool IsPauseConfirmMenuOpened { get; private set; }
+	public event OpenPauseMenuEventHandler OnOpenConfirmMenu;
+	public event OpenPauseMenuEventHandler OnCloseConfirmMenu;
 	private IInputDevice inputDevice;
     private MenuManager menuManager;
 	private GameObject PauseMenuCanvas;
@@ -15,6 +19,7 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnOpenLoadSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenImagesSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenSettingsSubMenu;
+	public event OpenPauseMenuEventHandler OnPlanningToExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
 	public event OpenPauseMenuEventHandler OnCloseAnySubMenuForMain;
@@ -33,7 +38,7 @@ public class PauseMenuController : MonoBehaviour
 		this.buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
 		this.buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenAppearanceSubMenu);              
 		this.buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);         
-		this.buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(ExitToMainMenu);
+		this.buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(() => OnPlanningToExitToMainMenu());
 
 		this.menuManager.OnOpenPauseMenu += ShowPauseMenu;
 		this.menuManager.OnClosePauseMenu += HidePauseMenu;
@@ -55,17 +60,43 @@ public class PauseMenuController : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-			// Проверка условия перехода назад по меню
-			if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 2)
-			{ 
-			
-				ClosePauseSubMenu();
-			}
-
-
+		// Проверка условия перехода назад по меню
+		if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 2 && !gameController.IsMainMenuOpen && !IsPauseConfirmMenuOpened)
+		{
+			ClosePauseSubMenu();
+		}
+		if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 3)
+		{
+			//Debug.Log("Main!");
+			ClosePauseConfirmMenu();
+		}
 	
+		if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 2 && !isAnySubMenuOpened)
+		{
+			ClosePauseConfirmMenu();
+		}
+
+	}
+	public void OpenPauseConfirmMenu()
+	{
+		IsPauseConfirmMenuOpened = true;
+		menuManager.PauseMenuLevel.Push(3); // Теперь уровень 3
+		OnOpenConfirmMenu?.Invoke();
+		//OpenAnyMenu();
+		//gameController.MakePlayerNonControllable();
+		//Time.timeScale = 0f;
+		Debug.Log("ConfirmMenu opened");
 	}
 
+	public void ClosePauseConfirmMenu()
+	{
+		IsPauseConfirmMenuOpened = false;
+		menuManager.PauseMenuLevel.Pop(); // Уменьшаем с 3 до 2
+		OnCloseConfirmMenu?.Invoke();
+
+		//Debug.Log("is FALSE");
+		Debug.Log("ConfirmMenu closed");
+	}
 	private void ShowDeathPauseMenuButtons()
 	{
 		buttonsPauseMenu[0].SetActive(true);
@@ -82,10 +113,12 @@ public class PauseMenuController : MonoBehaviour
 
 	public void ClosePauseSubMenu()
 	{
+		isAnySubMenuOpened = false;
 		OnClosePauseSubMenu?.Invoke();
 		if (menuManager.PauseMenuLevel.Count > 0)
 		{
 			menuManager.PauseMenuLevel.Pop();
+			//Debug.Log("LMAO!");
 		}
 
 		if (gameController.IsMainMenuOpen)
@@ -117,6 +150,7 @@ public class PauseMenuController : MonoBehaviour
 
 	public void OpenSaveSubMenu()
 	{
+		isAnySubMenuOpened = true;
 		OnOpenSaveSubMenu?.Invoke();
 		menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("SaveSubMenu opened");
@@ -125,6 +159,7 @@ public class PauseMenuController : MonoBehaviour
 
 	public void OpenLoadSubMenu()
 	{
+		isAnySubMenuOpened = true;
 		OnOpenLoadSubMenu?.Invoke();
 		menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("LoadSubMenu opened");
@@ -132,6 +167,7 @@ public class PauseMenuController : MonoBehaviour
 	}
 	public void OpenAppearanceSubMenu()
 	{
+		isAnySubMenuOpened = true;
 		OnOpenImagesSubMenu?.Invoke();
 		menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("ImagesSubMenu opened");
@@ -139,6 +175,7 @@ public class PauseMenuController : MonoBehaviour
 	}
 	public void OpenSettingsSubMenu()
 	{
+		isAnySubMenuOpened = true;
 		OnOpenSettingsSubMenu?.Invoke();
 		menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("SettingsSubMenu opened");
@@ -147,7 +184,7 @@ public class PauseMenuController : MonoBehaviour
 	
 	public void ExitToMainMenu()
 	{
-		
+		OnExitToMainMenu?.Invoke();
 		Debug.Log("MAIN MENU EXIT");
 		ClosePauseSubMenu();
 		menuManager.ClosePauseMenu();

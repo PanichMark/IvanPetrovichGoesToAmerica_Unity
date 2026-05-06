@@ -185,8 +185,8 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 		// 3. Применяем загруженные данные к UI.
 		ApplyLoadedSettings(loadedData);
-		this.menuManager.OnOpenConfirmMenu += DisableButtons;
-		this.menuManager.OnCloseConfirmMenu += EnableButtons;
+		this.pauseMenuController.OnOpenConfirmMenu += DisableButtons;
+		this.pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
 		Debug.Log("SettingsSubMenu Initialized");
 
@@ -196,11 +196,70 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	// Ссылка на контроллер паузы меню
 	private void DisableButtons()
 	{
+		// 1. Блокируем управляющие кнопки (Сохранить, Сбросить, Закрыть)
+		Button saveButton = buttonSaveSettings.GetComponent<Button>();
+		if (saveButton != null) saveButton.interactable = false;
 
+		Button resetButton = buttonResetSettings.GetComponent<Button>();
+		if (resetButton != null) resetButton.interactable = false;
+
+		Button closeButton = buttonClosePauseSubMenuSettings.GetComponent<Button>();
+		if (closeButton != null) closeButton.interactable = false;
+
+		// 2. Блокируем кнопки выбора языка
+		foreach (var button in buttonsChangeLanguage)
+		{
+			if (button != null) button.interactable = false;
+		}
+
+		// 3. Блокируем кнопки выбора FPS
+		foreach (var button in FPSbuttons)
+		{
+			if (button != null) button.interactable = false;
+		}
+
+		// 4. Блокируем ползунок FOV
+		if (fovSlider != null) fovSlider.interactable = false;
+
+		// 5. Блокируем поля для переназначения клавиш (KeyRebinds)
+		foreach (var field in KeyRebinds)
+		{
+			if (field != null) field.interactable = false;
+		}
 	}
+
 	private void EnableButtons()
 	{
+		// 1. Разблокируем управляющие кнопки
+		Button saveButton = buttonSaveSettings.GetComponent<Button>();
+		if (saveButton != null) saveButton.interactable = true;
 
+		Button resetButton = buttonResetSettings.GetComponent<Button>();
+		if (resetButton != null) resetButton.interactable = true;
+
+		Button closeButton = buttonClosePauseSubMenuSettings.GetComponent<Button>();
+		if (closeButton != null) closeButton.interactable = true;
+
+		// 2. Разблокируем кнопки выбора языка
+		foreach (var button in buttonsChangeLanguage)
+		{
+			if (button != null) button.interactable = true;
+		}
+
+		// 3. Разблокируем кнопки выбора FPS
+		foreach (var button in FPSbuttons)
+		{
+			if (button != null) button.interactable = true;
+		}
+
+		// 4. Разблокируем ползунок FOV
+		if (fovSlider != null) fovSlider.interactable = true;
+
+		// 5. Разблокируем поля для переназначения клавиш (KeyRebinds)
+		foreach (var field in KeyRebinds)
+		{
+			if (field != null) field.interactable = true;
+		}
 	}
 
 	private void ChangeLanguage(LanguagesEnum language)

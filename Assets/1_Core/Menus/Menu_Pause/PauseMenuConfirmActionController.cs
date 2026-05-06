@@ -3,9 +3,9 @@ using UnityEditor.Graphs;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuConfirmActionController : MonoBehaviour
+public class PauseMenuConfirmActionController : MonoBehaviour
 {
-	
+	private PauseMenuController pauseMenuController;
 	// --- Поля для компонентов ---
 	private GameObject canvasPauseSubMenuConfirm;
 	private GameObject buttonConfirm;
@@ -25,6 +25,7 @@ public class MenuConfirmActionController : MonoBehaviour
 	// --- Метод для внедрения зависимостей (DI) ---
 	public void Initialize(
 		MenuManager menuManager,
+		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuConfirm,
 		GameObject buttonAccept,
 		GameObject buttonCancel,
@@ -34,6 +35,7 @@ public class MenuConfirmActionController : MonoBehaviour
 		PauseSubMenuSettingsController pauseSubMenuSettingsController,
 		GameObject textShowConfirmationMessage)
 	{
+		this.pauseMenuController = pauseMenuController;
 		this.menuManager = menuManager;
 		this.canvasPauseSubMenuConfirm = canvasPauseSubMenuConfirm;
 		this.buttonConfirm = buttonAccept;
@@ -54,13 +56,15 @@ public class MenuConfirmActionController : MonoBehaviour
 		// Когда LoadController хочет спросить подтверждение, он вызовет это событие
 		this.loadController.OnRequestLoadSaveFileConfirmation += HandleShowForLoadSaveFile;
 		this.saveController.OnRequestNewSaveFileConfirmation += HandleShowForNewSaveFile;
+		this.pauseMenuController.OnPlanningToExitToMainMenu += HandleShowForExitToMainMenu;
+		this.pauseMenuController.OnExitToMainMenu += HideCanvasConfirmAction;
 		this.pauseSubMenuSettingsController.OnRequestSaveSettingsConfirmation += HandleShowForSaveSettings;
 		this.pauseSubMenuSettingsController.OnRequestResetSettingsConfirmation += HandleShowForResetSettings;
 
 		this.saveController.OnRequestDeleteSaveFileConfirmation += HandleShowForDeleteSaveFile;
 
-		this.menuManager.OnOpenConfirmMenu += ShowCanvasConfirmAction;
-		this.menuManager.OnCloseConfirmMenu += HideCanvasConfirmAction;
+		this.pauseMenuController.OnOpenConfirmMenu += ShowCanvasConfirmAction;
+		this.pauseMenuController.OnCloseConfirmMenu += HideCanvasConfirmAction;
 	}
 
 	public void ShowCanvasConfirmAction()
@@ -85,7 +89,7 @@ public class MenuConfirmActionController : MonoBehaviour
 		// Задаем действие, которое нужно выполнить при "Принять"
 		onAcceptAction = () => StartCoroutine(saveLoadController.SaveGame(slot));
 
-		menuManager.OpenConfirmMenu();
+		pauseMenuController.OpenPauseConfirmMenu();
 	}
 
 	// Этот метод вызовется из LoadController
@@ -97,20 +101,20 @@ public class MenuConfirmActionController : MonoBehaviour
 		// Задаем действие, которое нужно выполнить при "Принять"
 		onAcceptAction = () => StartCoroutine(saveLoadController.LoadGame(slot));
 
-		menuManager.OpenConfirmMenu();
+		pauseMenuController.OpenPauseConfirmMenu();
 	}
 
 	private void HandleShowForSaveSettings()
 	{
 		confirmationTextComponent.text = "Сохранить настройки?";
 		onAcceptAction = () => pauseSubMenuSettingsController.SaveSettings();
-		menuManager.OpenConfirmMenu();
+		pauseMenuController.OpenPauseConfirmMenu();
 	}
 	private void HandleShowForResetSettings()
 	{
-		confirmationTextComponent.text = "Сбросить настройки по умолчанию?";
+		confirmationTextComponent.text = "Сбросить настройки?";
 		onAcceptAction = () => pauseSubMenuSettingsController.ResetSettings();
-		menuManager.OpenConfirmMenu();
+		pauseMenuController.OpenPauseConfirmMenu();
 	}
 	private void HandleShowForDeleteSaveFile(int slot)
 	{
@@ -120,12 +124,13 @@ public class MenuConfirmActionController : MonoBehaviour
 		// Задаем действие, которое нужно выполнить при "Принять"
 		onAcceptAction = () => saveLoadController.DeleteGame(slot);
 
-		menuManager.OpenConfirmMenu();
+		pauseMenuController.OpenPauseConfirmMenu();
 	}
 	// --- НОВЫЙ МЕТОД ---
 	// Этот метод вызовется, когда пользователь нажмет "Новое сохранение"
 	private void HandleShowForNewSaveFile(int slot)
 	{
+		//Debug.Log("BRUH!");
 		targetSlot = slot;
 		confirmationTextComponent.text = "Создать новое сохранение?"; 
 		// *Если у вас есть текст, раскомментируйте эту строку*
@@ -133,12 +138,24 @@ public class MenuConfirmActionController : MonoBehaviour
 		// Задаем действие, которое нужно выполнить при "Принять"
 		onAcceptAction = () => StartCoroutine(saveLoadController.SaveGame(slot));
 
-		menuManager.OpenConfirmMenu();
+		pauseMenuController.OpenPauseConfirmMenu();
+	}
+
+	private void HandleShowForExitToMainMenu()
+	{
+
+		confirmationTextComponent.text = "Выйти в главное меню?";
+		// *Если у вас есть текст, раскомментируйте эту строку*
+
+		// Задаем действие, которое нужно выполнить при "Принять"
+		onAcceptAction = () => pauseMenuController.ExitToMainMenu();
+
+		pauseMenuController.OpenPauseConfirmMenu();
 	}
 	private void ExecuteAccept()
 	{
 		onAcceptAction?.Invoke(); // Выполняем действие (Сохранить или Загрузить)
-		menuManager.CloseConfirmMenu(); // Вызывать при любом закрытии
+		pauseMenuController.ClosePauseConfirmMenu(); // Вызывать при любом закрытии
 
 		// После выполнения действия нужно разблокировать интерфейс в Save/Load контроллере.
 		// Для этого можно вызвать еще одно событие или передать ссылку на метод разблокировки.
@@ -147,7 +164,7 @@ public class MenuConfirmActionController : MonoBehaviour
 
 	private void ExecuteCancel()
 	{
-		menuManager.CloseConfirmMenu(); // Вызывать при любом закрытии
+		pauseMenuController.ClosePauseConfirmMenu(); // Вызывать при любом закрытии
 
 		// При отмене нужно сообщить Save/Load контроллеру, чтобы он разблокировал кнопки.
 	}

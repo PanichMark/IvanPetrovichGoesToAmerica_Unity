@@ -90,8 +90,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		this.saveLoadController.OnSafeFileDelete += UpdateAllUIElements;
 		this.saveLoadController.OnSafeFileSaved += UpdateAllUIElements;
 
-		this.menuManager.OnOpenConfirmMenu += DisableButtons;
-		this.menuManager.OnCloseConfirmMenu += EnableButtons;
+		this.pauseMenuController.OnOpenConfirmMenu += DisableButtons;
+		this.pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
 		Debug.Log("SaveSubMenu Initialized");
 	}

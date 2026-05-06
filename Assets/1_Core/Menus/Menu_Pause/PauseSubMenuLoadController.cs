@@ -61,8 +61,8 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		}
 
 		// В Initialize()
-		this.menuManager.OnOpenConfirmMenu += DisableButtons;
-		this.menuManager.OnCloseConfirmMenu += EnableButtons;
+		this.pauseMenuController.OnOpenConfirmMenu += DisableButtons;
+		this.pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
 		Debug.Log("LoadSubMenu Initialized");
 	}

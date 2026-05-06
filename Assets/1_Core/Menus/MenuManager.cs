@@ -16,8 +16,6 @@ public class MenuManager : MonoBehaviour
 	public event MenuEventHandler OnOpenDialogueMenu;
 	public event MenuEventHandler OnCloseDialogueMenu;
 	public event MenuEventHandler OnClosePauseMenuDuringOpenedDialogueMenu;
-	public event MenuEventHandler OnOpenConfirmMenu;
-	public event MenuEventHandler OnCloseConfirmMenu;
 	public event MenuEventHandler OnOpenAnyMenu;
 	public event MenuEventHandler OnCloseAnyMenu;
 
@@ -57,7 +55,7 @@ public class MenuManager : MonoBehaviour
 	public bool IsDialogueMenuOpened { get; private set; }
 
 	public bool IsInteractionHUDOpened { get; private set; }
-	public bool IsConfirmMenuOpened { get; private set; }
+	
 
 	public bool IsInteractionMenuOpened { get; private set; }
 	void Update()
@@ -71,7 +69,7 @@ public class MenuManager : MonoBehaviour
 		{
 			if (PauseMenuLevel.Count == 0)
 			{
-				OpenPauseMenu();   
+				OpenPauseMenu();
 			}
 			else if (PauseMenuLevel.Count == 1)
 			{
@@ -84,13 +82,9 @@ public class MenuManager : MonoBehaviour
 					OnClosePauseMenuDuringOpenedDialogueMenu?.Invoke();
 				}
 			}
-			else if (PauseMenuLevel.Count == 3)
-			{
-				CloseConfirmMenu();
-			}
+			//Debug.Log(gameController.IsMainMenuOpen);
 		}
-		//Debug.Log(PauseMenuLevel.Count);
-		//Debug.Log(gameController.IsMainMenuOpen);
+		Debug.Log(PauseMenuLevel.Count);
 	}
 
 	public void OpenPauseMenu()
@@ -253,23 +247,7 @@ public class MenuManager : MonoBehaviour
 	
 	}
 
-	public void OpenConfirmMenu()
-	{
-		IsConfirmMenuOpened = true;
-		PauseMenuLevel.Push(3); // Теперь уровень 3
-		OnOpenConfirmMenu?.Invoke();
-		//OpenAnyMenu();
-		//gameController.MakePlayerNonControllable();
-		//Time.timeScale = 0f;
-		Debug.Log("ConfirmMenu opened");
-	}
 
-	public void CloseConfirmMenu()
-	{
-		PauseMenuLevel.Pop(); // Уменьшаем с 3 до 2
-		OnCloseConfirmMenu?.Invoke();
-		IsConfirmMenuOpened = false;
-		Debug.Log("ConfirmMenu closed");
-	}
+
 
 }
