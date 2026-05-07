@@ -23,6 +23,7 @@ public class InputGamepad : IInputDevice
 
 	private float lastPressTime = 0f;
 	private bool isKeyInteractBeingHeld = false;
+	private bool isKeySkipCutsceneBeingHeld = false;
 
 	private bool isRightHandWeaponWheelOpened = false;
 	private bool isLeftHandWeaponWheelOpened = false;
@@ -359,6 +360,27 @@ public class InputGamepad : IInputDevice
 			return true;
 		}
 		else return false;
+	}
+	public bool GetKeySkipCutscene()
+	{
+		if (!isKeySkipCutsceneBeingHeld)
+		{
+			if (Input.GetKeyDown(controllerBindings["Interact"]))
+			{
+				lastPressTime = Time.time;
+				isKeySkipCutsceneBeingHeld = true;
+			}
+		}
+		else if (Input.GetKeyUp(controllerBindings["Interact"])) // отпущена кнопка
+		{
+			isKeySkipCutsceneBeingHeld = false;
+		}
+		else if (isKeySkipCutsceneBeingHeld && Time.time >= lastPressTime + 0.5f) // удержано дольше полсекунды
+		{
+			isKeySkipCutsceneBeingHeld = false;
+			return true;
+		}
+		return false;
 	}
 }
 

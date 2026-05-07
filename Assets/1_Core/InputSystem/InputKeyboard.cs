@@ -21,6 +21,7 @@ public class InputKeyboard : IInputDevice
 
 	private float lastPressTime = 0f;
 	private bool isKeyInteractBeingHeld = false;
+	private bool isKeySkipCutsceneBeingHeld = false;
 
 	private bool isRightHandWeaponWheelOpened = false;
 	private bool isLeftHandWeaponWheelOpened = false;
@@ -343,6 +344,31 @@ public class InputKeyboard : IInputDevice
 			return true;
 		}
 		else return false;
+	}
+
+	public bool GetKeySkipCutscene()
+	{
+		if (!isKeySkipCutsceneBeingHeld)
+		{
+			if (Input.GetKeyDown(keyBindings["Interact"]) && gameController.IsPlayerControllable)
+			{
+				lastPressTime = Time.time;
+				//Debug.Log("1111");
+				isKeySkipCutsceneBeingHeld = true;
+			}
+		}
+		else if (Input.GetKeyUp(keyBindings["Interact"]) && gameController.IsPlayerControllable) // отпущена кнопка
+		{
+			isKeySkipCutsceneBeingHeld = false;
+			//Debug.Log("2222");
+		}
+		else if (isKeySkipCutsceneBeingHeld && Time.time >= lastPressTime + 0.5f) // проверяем реальный временной промежуток
+		{
+			isKeySkipCutsceneBeingHeld = false;
+			//Debug.Log("3333");
+			return true;
+		}
+		return false;
 	}
 
 }

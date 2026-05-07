@@ -20,6 +20,8 @@ public interface IInputDevice
 	bool GetKeyCrouch();
 	bool GetKeyLegKick();
 	bool GetKeyInteract();
+
+	bool GetKeySkipCutscene();
 	bool GetKeyRightHandWeaponWheel();
 	bool GetKeyLeftHandWeaponWheel();
 	bool GetKeyRightHandWeaponAttack();
