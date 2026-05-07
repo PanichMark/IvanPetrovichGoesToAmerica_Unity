@@ -8989,6 +8989,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338397409}
   m_CullTransparentMesh: 1
+--- !u!1 &1338593069 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3796175470993337311, guid: 1cd58945ed237b64698456abd90a710b, type: 3}
+  m_PrefabInstance: {fileID: 5357485281341742731}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1378876659
 GameObject:
   m_ObjectHideFlags: 0
@@ -11605,8 +11610,11 @@ MonoBehaviour:
   newPlayerPosition: {x: -5, y: 0, z: 5}
   shouldLoadScene: 0
   sceneToLoadAfterCutscene: 3
-  affectedNPC: {fileID: 287853388}
-  stateToSetAfterCutscene: 16
+  npcStateChanges:
+  - npcObject: {fileID: 287853388}
+    stateToSet: 16
+  - npcObject: {fileID: 1338593069}
+    stateToSet: 16
   weaponPrefabToUnlock: {fileID: 5726397282783717853, guid: 6226550dd22049a4c99bce4bd2cf49ff, type: 3}
 --- !u!320 &1942361021
 PlayableDirector:

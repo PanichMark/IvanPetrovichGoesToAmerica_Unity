@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(PlayableDirector))]
@@ -18,10 +19,10 @@ public class CutsceneController : MonoBehaviour
 	[Header("Cutscene")][SerializeField] bool shouldLoadScene;
 	[SerializeField] private GameScenesEnum sceneToLoadAfterCutscene;
 
-	[Header("NPC")] [SerializeField] private GameObject affectedNPC;
-	[SerializeField] private NPCStateTypes stateToSetAfterCutscene;
+	[Header("NPC Settings")]
+	[SerializeField] private List<CutsceneDataNPC> npcStateChanges = new List<CutsceneDataNPC>();
 
-
+	private bool WasCutsceneSkipped;
 
 	private GameController gameController;
 	[Header("Weapon")] [SerializeField] private GameObject weaponPrefabToUnlock;
@@ -65,15 +66,21 @@ public class CutsceneController : MonoBehaviour
 
 
 
-		// 2. Проверка для смены состояния NPC
-		if (affectedNPC != null)
+		// --- ПРОВЕРКА СПИСКА NPC ---
+		// Логика: Если в списке есть хотя бы один валидный элемент -> флаг = true.
+		
+
+		if (npcStateChanges != null && npcStateChanges.Count > 0)
 		{
-			npcController = affectedNPC.GetComponent<NPCStateMachineController>();
-			if (npcController != null)
+			// Проверяем, что хотя бы у одного NPC в списке есть компонент контроллера
+			foreach (var data in npcStateChanges)
 			{
-				shouldChangeNPCState = true;
+				if (data.npcObject != null && data.npcObject.GetComponent<NPCStateMachineController>() != null)
+				{
+					shouldChangeNPCState = true;
+					break; // Нашли хотя бы один рабочий вариант, выходим из цикла
+				}
 			}
-			// Если компонент не найден, флаг остается false
 		}
 		// Если affectedNPC не задан, флаг остается false
 
@@ -144,7 +151,10 @@ public class CutsceneController : MonoBehaviour
 	// --- ОБРАБОТЧИКИ СОБЫТИЙ TIMELINE И ЗАГРУЗКИ ---
 	private void OnTimelineStopped(PlayableDirector aDirector)
 	{
-		ExecutePostCutsceneActions();
+		if (!WasCutsceneSkipped)
+		{
+			ExecutePostCutsceneActions();
+		}
 	}
 
 	private void StopCutsceneOnLoad()
@@ -158,9 +168,10 @@ public class CutsceneController : MonoBehaviour
 
 	private void SkipCutscene()
 	{
+		WasCutsceneSkipped = true;
 		director.Stop();
 		director.stopped -= OnTimelineStopped;
-
+		//WasCutsceneSkipped = true;
 		ExecutePostCutsceneActions();
 	}
 
@@ -169,13 +180,26 @@ public class CutsceneController : MonoBehaviour
 	// Здесь нет проверок на null!
 	private void ExecutePostCutsceneActions()
 	{
+		menuManager.CloseCutsceneMenu();
 		gameController.MakePlayerControllable();
 		// 1. Загрузка сцены (ЕСЛИ ФЛАГ ПОЗВОЛЯЕТ)
 
 		// 2. Смена состояния NPC (ЕСЛИ ФЛАГ ПОЗВОЛЯЕТ)
+		// 2. СМЕНА СОСТОЯНИЯ ВСЕХ NPC ИЗ СПИСКА
 		if (shouldChangeNPCState)
 		{
-			npcController.SetNPCState(stateToSetAfterCutscene);
+			foreach (var data in npcStateChanges)
+			{
+				if (data.npcObject != null)
+				{
+					var controller = data.npcObject.GetComponent<NPCStateMachineController>();
+					if (controller != null)
+					{
+						controller.SetNPCState(data.stateToSet);
+						Debug.Log($"Катсцена {gameObject.name} изменила состояние NPC {data.npcObject.name} на {data.stateToSet}.");
+					}
+				}
+			}
 		}
 
 		// 3. Разблокировка оружия (ЕСЛИ ФЛАГ ПОЗВОЛЯЕТ)
@@ -216,6 +240,7 @@ public class CutsceneController : MonoBehaviour
 	}
 	public void TriggerCutscene()
 	{
+		menuManager.OpenCutsceneMenu();
 		IsCutscenePlaying = true;
 		// Если катсцена уже играет, останавливаем её перед повторным запуском
 		if (director.state == PlayState.Playing)

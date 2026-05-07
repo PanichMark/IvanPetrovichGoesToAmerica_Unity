@@ -20,6 +20,8 @@ public class CanvasHUDhealthAndManaController : MonoBehaviour
 		this.menuManager.OnCloseInteractionMenu += ShowCanvasHUDhealthAndMana;
 		this.menuManager.OnOpenDialogueMenu += HideCanvasHUDhealthAndMana;
 		this.menuManager.OnCloseDialogueMenu += ShowCanvasHUDhealthAndMana;
+		this.menuManager.OnOpenCutsceneMenu += HideCanvasHUDhealthAndMana;
+		this.menuManager.OnCloseCutsceneMenu += ShowCanvasHUDhealthAndMana;
 		Debug.Log("CanvasHUDhealthAndMana Initialized");
         this.gameController = gameController;
         this.gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDhealthAndMana;
