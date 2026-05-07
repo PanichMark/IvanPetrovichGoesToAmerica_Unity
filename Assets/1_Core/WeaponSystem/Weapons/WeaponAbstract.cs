@@ -28,8 +28,16 @@ public abstract class WeaponAbstract : MonoBehaviour
 	private Transform thirdPersonLeftHandWeaponSlotTransform;
 	private Transform thirdPersonRightHandWeaponSlotTransform;
 
-	
+	public void MakeOwnerPlayer()
+	{
+		IsThisPlayerWeapon = true;
+	}
 
+
+	public void MakeOwnerNPC()
+	{
+		IsThisPlayerWeapon = false;
+	}
 	public virtual void WeaponAttack()
 	{
 		// Реализация атаки должна быть в подклассах
@@ -38,7 +46,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
 	{
-		IsThisPlayerWeapon = false;
+		//Debug.Log("BRUH!");
+		MakeOwnerNPC();
 
 		ThirdPersonWeaponModelInstance = gameObject;
 
@@ -50,9 +59,17 @@ public abstract class WeaponAbstract : MonoBehaviour
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
 	}
 
+	public void InstantiateFirstPersonWeaponInstance()
+	{
+		FirstPersonWeaponModelInstance = Instantiate(gameObject);
+		WeaponAbstract FirstPersonWeaponModelInstanceComponent = FirstPersonWeaponModelInstance.GetComponent<WeaponAbstract>();
+		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer();
+	}
+
 	// Создание модели оружия
 	public void InstantiateWeapon(WeaponHandsEnum handType)
 	{
+		//Debug.Log("PLAYER");
 		IsThisPlayerWeapon = true;
 
 		string handString = "";
@@ -70,9 +87,12 @@ public abstract class WeaponAbstract : MonoBehaviour
 		}
 
 
-		FirstPersonWeaponModelInstance = Instantiate(gameObject);
+		//object FirstPersonWeaponModelAbstractClass = FirstPersonWeaponModelInstance.GetComponent<WeaponAbstract>();
+		//FirstPersonWeaponModelAbstractClass.Make
 		//Debug.Log(gameObject);
 		ThirdPersonWeaponModelInstance = gameObject;
+		InstantiateFirstPersonWeaponInstance();
+		//FirstPersonWeaponModelInstance = gameObject;
 
 		FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
 		foreach (Transform child in FirstPersonWeaponModelInstance.transform)

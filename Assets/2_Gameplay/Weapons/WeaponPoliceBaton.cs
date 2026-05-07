@@ -22,6 +22,8 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 
 	protected override void SetUpMeleeWeapon()
 	{
+		
+
 		CapsuleHeight = 1.8f;
 		CapsuleRadius = 0.3f;
 		ForwardOffset = 0.5f;
@@ -49,8 +51,8 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 
 	private void Update()
 	{
-	
 
+		//Debug.Log(AttackPoint);
 		// --- ЛОГИКА ОБНАРУЖЕНИЯ NPC ---
 		Vector3 playerPosition = AttackPoint.transform.position;
 		Vector3 playerForward = AttackPoint.transform.forward;

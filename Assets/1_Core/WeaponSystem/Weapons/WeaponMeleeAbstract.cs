@@ -17,9 +17,12 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	// Получаем игрока при старте объекта
 	private void Start()
 	{
+		//Debug.Log(IsThisPlayerWeapon);
+
 		if (IsThisPlayerWeapon == true)
 		{
 			AttackPoint = ServiceLocator.Resolve<GameObject>("Player");
+			//Debug.Log(AttackPoint);
 		}
 
 		

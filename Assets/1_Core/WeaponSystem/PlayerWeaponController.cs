@@ -259,7 +259,9 @@ public class PlayerWeaponController : MonoBehaviour
 			OnWeaponChanged?.Invoke("left");
 
 			// Создаем модель для этой руки
+			//Debug.Log("LMAO");
 			weaponComponent.InstantiateWeapon(WeaponHandsEnum.LeftHand);
+			//weaponComponent.FirstPersonWeaponModelInstance.Ma
 			weaponComponent.FlipWeapon();
 
 			// Сохраняем ссылку на компонент для быстрой работы
