@@ -350,14 +350,14 @@ public class InputKeyboard : IInputDevice
 	{
 		if (!isKeySkipCutsceneBeingHeld)
 		{
-			if (Input.GetKeyDown(keyBindings["Interact"]) && gameController.IsPlayerControllable)
+			if (Input.GetKeyDown(KeyCode.Space) && gameController.IsPlayerControllable)
 			{
 				lastPressTime = Time.time;
 				//Debug.Log("1111");
 				isKeySkipCutsceneBeingHeld = true;
 			}
 		}
-		else if (Input.GetKeyUp(keyBindings["Interact"]) && gameController.IsPlayerControllable) // отпущена кнопка
+		else if (Input.GetKeyUp(KeyCode.Space) && gameController.IsPlayerControllable) // отпущена кнопка
 		{
 			isKeySkipCutsceneBeingHeld = false;
 			//Debug.Log("2222");
