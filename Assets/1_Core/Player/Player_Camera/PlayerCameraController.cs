@@ -216,7 +216,14 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		{
 			CurrentPlayerCameraStateType = "Cutscene";
 			movementController.GiveCurrentPlayerCameraType("Cutscene");
-			newState = new CutscenePlayerCameraState(this, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(20, -12, 0));
+			newState = new CutscenePlayerCameraState();
+			//IsPlayerCameraFirstPerson = false;
+		}
+		else if (playerCameraStateType == PlayerCameraStateTypes.MainMenu)
+		{
+			CurrentPlayerCameraStateType = "MainMenu";
+			movementController.GiveCurrentPlayerCameraType("MainMenu");
+			newState = new MainMenuPlayerCameraState(this, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(20, -12, 0));
 			//IsPlayerCameraFirstPerson = false;
 		}
 		else
@@ -252,11 +259,11 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
 
 	}
-	public void CutsceneCameraTransformPosition(Vector3 position)
+	public void SetCameraMainMenuPosition(Vector3 position)
 	{
 		transform.position = position;
 	}
-	public void CutsceneCameraTransformRotation(Quaternion rotation)
+	public void SetCameraMainMenuRotation(Quaternion rotation)
 	{
 		transform.rotation = rotation;
 	}
@@ -321,7 +328,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 
 		//playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
-		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
+		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
 		SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 		_isInitialized = true;
 		Debug.Log("CameraController Initialized");

@@ -11,6 +11,7 @@ public class CutsceneController : MonoBehaviour
 	private IInputDevice inputDevice;
 	private PlayerWeaponController playerWeaponController;
 	private SaveLoadController saveLoadController;
+	private PlayerCameraController playerCameraController;
 
 	// --- НАСТРОЙКИ В ИНСПЕКТОРЕ ---
 	[Header("Cutscene")][SerializeField] bool ShouldMovePlayer;
@@ -51,6 +52,7 @@ public class CutsceneController : MonoBehaviour
 		RealPlayer = ServiceLocator.Resolve<GameObject>("Player");
 		MainCamera = ServiceLocator.Resolve<GameObject>("playerMainCameraGameObject");
 		// Получаем все зависимости (без проверок на null)
+		playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 		playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 		gameController = ServiceLocator.Resolve<GameController>("GameController");
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
@@ -157,8 +159,19 @@ public class CutsceneController : MonoBehaviour
 		}
 	}
 
+	private void CutsceneStopTime()
+	{
+		Time.timeScale = 0f;
+		Debug.Log("Cutscene Time = 0");
+	}
+	private void CutsceneResumeTime()
+	{
+		Time.timeScale = 1f;
+		Debug.Log("Cutscene Time = 1");
+	}
 	private void StopCutsceneOnLoad()
 	{
+		//Time.timeScale = 1f;
 		Debug.Log($"Катсцена {gameObject.name} остановлена из-за загрузки сохранения.");
 		IsCutscenePlaying = false;	
 		SkipCutscene();
@@ -180,6 +193,7 @@ public class CutsceneController : MonoBehaviour
 	// Здесь нет проверок на null!
 	private void ExecutePostCutsceneActions()
 	{
+		CutsceneResumeTime();
 		menuManager.CloseCutsceneMenu();
 		gameController.MakePlayerControllable();
 		// 1. Загрузка сцены (ЕСЛИ ФЛАГ ПОЗВОЛЯЕТ)
@@ -232,6 +246,7 @@ public class CutsceneController : MonoBehaviour
 	// --- МЕТОДЫ ДЛЯ УПРАВЛЕНИЯ ПАУЗОЙ ОТ МЕНЮ ---
 	private void PauseCutscene()
 	{
+
 		IsCutscenePlaying = false;
 		director.Pause();
 		//isPausedByMenu = true;
@@ -240,6 +255,8 @@ public class CutsceneController : MonoBehaviour
 	}
 	public void TriggerCutscene()
 	{
+		CutsceneStopTime();
+		playerCameraController.SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
 		menuManager.OpenCutsceneMenu();
 		IsCutscenePlaying = true;
 		// Если катсцена уже играет, останавливаем её перед повторным запуском

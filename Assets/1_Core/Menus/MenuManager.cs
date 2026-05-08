@@ -18,6 +18,7 @@ public class MenuManager : MonoBehaviour
 	public event MenuEventHandler OnOpenCutsceneMenu;
 	public event MenuEventHandler OnCloseCutsceneMenu;
 	public event MenuEventHandler OnClosePauseMenuDuringOpenedDialogueMenu;
+	public event MenuEventHandler OnClosePauseMenuDuringOpenedCutsceneMenu;
 	public event MenuEventHandler OnOpenAnyMenu;
 	public event MenuEventHandler OnCloseAnyMenu;
 
@@ -111,26 +112,36 @@ public class MenuManager : MonoBehaviour
 
 	public void ClosePauseMenu()
 	{
-
+		
 		OnClosePauseMenu?.Invoke();
+		
 	
 
 		IsPauseMenuOpened = false;
 		if (PauseMenuLevel.Count > 0)
 			PauseMenuLevel.Pop();
 
-		if (!IsInteractionMenuOpened && !IsDialogueMenuOpened)
+		if ((!IsInteractionMenuOpened && !IsDialogueMenuOpened))
 		{
-			gameController.MakePlayerControllable();
+			if (!IsCutsceneMenuOpened)
+			{
+				gameController.MakePlayerControllable();
 
-			
 
-			CloseAnyMenu();
-			Time.timeScale = 1f;
+
+				CloseAnyMenu();
+				Time.timeScale = 1f;
+			}
+			else
+			{
+				OnClosePauseMenuDuringOpenedCutsceneMenu?.Invoke();
+			}
 		}
-		
+		else
 
-		Debug.Log("PauseMenu closed");
+
+
+			Debug.Log("PauseMenu closed");
 	}
 
 	
@@ -194,6 +205,7 @@ public class MenuManager : MonoBehaviour
 				Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = true;
 			}
+
 		
 		}
 	}
