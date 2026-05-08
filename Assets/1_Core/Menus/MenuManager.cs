@@ -153,8 +153,13 @@ public class MenuManager : MonoBehaviour
 			Time.timeScale = 1f;
 		}
 
+		if(!IsPauseMenuOpened && IsCutsceneMenuOpened)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+		}
 
-			Debug.Log("PauseMenu closed");
+		Debug.Log("PauseMenu closed");
 	}
 
 	
