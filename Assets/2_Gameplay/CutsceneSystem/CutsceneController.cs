@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Codice.Client.Common.GameUI;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -13,7 +14,6 @@ public class CutsceneController : MonoBehaviour
 	private PlayerWeaponController playerWeaponController;
 	private SaveLoadController saveLoadController;
 	private PlayerCameraController playerCameraController;
-
 	// --- НАСТРОЙКИ В ИНСПЕКТОРЕ ---
 	[Header("Cutscene")][SerializeField] bool ShouldMovePlayer;
 	[SerializeField] Vector3 newPlayerPosition;
@@ -33,7 +33,7 @@ public class CutsceneController : MonoBehaviour
 	// По умолчанию все действия выключены.
 	private bool shouldChangeNPCState = false;
 	private bool shouldUnlockWeapon = false;
-
+	
 	private PlayerMovementController playerMovementController;
 	// Полученный компонент NPC.
 	private NPCStateMachineController npcController;
@@ -46,7 +46,7 @@ public class CutsceneController : MonoBehaviour
 	private GameObject RealPlayer;
 	private GameObject MainCamera;
 
-
+	private bool WasCutsceneCanceled;
 	// --- ИНИЦИАЛИЗАЦИЯ В START ---
 	private void Start()
 	{
@@ -61,7 +61,7 @@ public class CutsceneController : MonoBehaviour
 		inputDevice = ServiceLocator.Resolve<IInputDevice>("inputDevice");
 		playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
-
+		
 		director = GetComponent<PlayableDirector>();
 
 		// --- ПРОВЕРКА ПОЛЕЙ НА NULL И УСТАНОВКА ФЛАГОВ (ТОЛЬКО ЗДЕСЬ!) ---
@@ -93,13 +93,15 @@ public class CutsceneController : MonoBehaviour
 			shouldUnlockWeapon = true;
 		}
 		// Если префаб не задан, флаг остается false
-
+		
 
 		// Подписываемся на события (без проверок на null)
+		gameSceneManager.OnBeginLoadGameplayScene += StopCutsceneOnLoad;
+		gameSceneManager.OnBeginLoadMainMenuScene += StopCutsceneOnLoad;
 		director.stopped += OnTimelineStopped;
 		menuManager.OnOpenPauseMenu += PauseCutscene;
 		menuManager.OnClosePauseMenu += ResumeCutscene;
-		saveLoadController.OnSafeFileLoad += StopCutsceneOnLoad;
+		//saveLoadController.OnSafeFileLoad += StopCutsceneOnLoad;
 
 		RebindProxyObjects();
 		isInitialized = true;
@@ -114,9 +116,10 @@ public class CutsceneController : MonoBehaviour
 
 		menuManager.OnOpenPauseMenu -= PauseCutscene;
 		menuManager.OnClosePauseMenu -= ResumeCutscene;
-	
 
-		saveLoadController.OnSafeFileLoad -= StopCutsceneOnLoad;
+		gameSceneManager.OnBeginLoadGameplayScene -= StopCutsceneOnLoad;
+		gameSceneManager.OnBeginLoadMainMenuScene -= StopCutsceneOnLoad;
+		//saveLoadController.OnSafeFileLoad -= StopCutsceneOnLoad;
 	}
 
 	// --- В вашем классе CutsceneController ---
@@ -163,10 +166,15 @@ public class CutsceneController : MonoBehaviour
 	// --- ОБРАБОТЧИКИ СОБЫТИЙ TIMELINE И ЗАГРУЗКИ ---
 	private void OnTimelineStopped(PlayableDirector aDirector)
 	{
-		//if (!WasCutsceneSkipped)
-		//{
+		if (WasCutsceneSkipped || WasCutsceneCanceled)
+		{
+		
+		}
+		else
+		{
+			Debug.Log("ON_TIME_STOPPED");
 			ExecutePostCutsceneActions();
-		//}
+		}
 	}
 
 	private void CutsceneStopTime()
@@ -181,24 +189,34 @@ public class CutsceneController : MonoBehaviour
 	}
 	private void StopCutsceneOnLoad()
 	{
-		//Time.timeScale = 1f;
-		//if (director.playableGraph.IsValid())
-		//{
+		
+		
+			//Time.timeScale = 1f;
+			//if (director.playableGraph.IsValid())
+			//{
 			Debug.Log($"Катсцена {gameObject.name} остановлена из-за загрузки сохранения.");
-			IsCutscenePlaying = false;
-			SkipCutscene();
 
-			saveLoadController.OnSafeFileLoad -= StopCutsceneOnLoad;
+		
+		WasCutsceneCanceled = true;
+		IsCutscenePlaying = false;
+		director.Stop();
+		director.stopped -= OnTimelineStopped;
+		//CutsceneResumeTime();
+		menuManager.CloseCutsceneMenu();
+		//gameController.MakePlayerControllable();
+		Destroy(gameObject);
+		//saveLoadController.OnSafeFileLoad -= StopCutsceneOnLoad;
 		//}
+
 	}
 
 	private void SkipCutscene()
 	{
 		WasCutsceneSkipped = true;
-		director.Stop();
-		director.stopped -= OnTimelineStopped;
+	
 		//WasCutsceneSkipped = true;
 		ExecutePostCutsceneActions();
+		//Destroy(this);
 	}
 
 	// --- ГЛАВНЫЙ МЕТОД: ВЫПОЛНЕНИЕ ДЕЙСТВИЙ ПОСЛЕ КАТСЦЕНЫ ---
@@ -206,17 +224,23 @@ public class CutsceneController : MonoBehaviour
 	// Здесь нет проверок на null!
 	private void ExecutePostCutsceneActions()
 	{
-		
 			
+			//WasCutsceneSkipped = true;
+
 			IsCutscenePlaying = false;
 			CutsceneResumeTime();
 			menuManager.CloseCutsceneMenu();
 			gameController.MakePlayerControllable();
-		// 1. Загрузка сцены (ЕСЛИ ФЛАГ ПОЗВОЛЯЕТ)
-		playerCameraController.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
-		// 2. Смена состояния NPC (ЕСЛИ ФЛАГ ПОЗВОЛЯЕТ)
-		// 2. СМЕНА СОСТОЯНИЯ ВСЕХ NPC ИЗ СПИСКА
-		if (shouldChangeNPCState)
+
+			// 1. Загрузка сцены (ЕСЛИ ФЛАГ ПОЗВОЛЯЕТ)
+			playerCameraController.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
+		
+		
+		
+
+			// 2. Смена состояния NPC (ЕСЛИ ФЛАГ ПОЗВОЛЯЕТ)
+			// 2. СМЕНА СОСТОЯНИЯ ВСЕХ NPC ИЗ СПИСКА
+			if (shouldChangeNPCState)
 			{
 				foreach (var data in npcStateChanges)
 				{
@@ -238,11 +262,7 @@ public class CutsceneController : MonoBehaviour
 				playerWeaponController.UnlockWeapon(weaponPrefabToUnlock);
 				//Debug.Log($"Катсцена {gameObject.name} разблокировала оружие: {weaponPrefabToUnlock.name}");
 			}
-			/*
-			Debug.Log(shouldLoadScene);
-			Debug.Log(sceneToLoadAfterCutscene);
-			Debug.Log(gameSceneManager);
-			*/
+		
 			if (ShouldMovePlayer)
 			{
 				playerMovementController.SetPlayerPosition(newPlayerPosition);
@@ -253,7 +273,7 @@ public class CutsceneController : MonoBehaviour
 
 				gameSceneManager.StartCoroutine(gameSceneManager.LoadScene(sceneToLoadAfterCutscene));
 			}
-
+			
 
 			Destroy(gameObject);
 			Debug.Log("Post-cutscene actions executed.");
@@ -263,13 +283,14 @@ public class CutsceneController : MonoBehaviour
 	// --- МЕТОДЫ ДЛЯ УПРАВЛЕНИЯ ПАУЗОЙ ОТ МЕНЮ ---
 	private void PauseCutscene()
 	{
-		
+		if (!WasCutsceneSkipped)
+		{
 			IsCutscenePlaying = false;
 			director.Pause();
 			//isPausedByMenu = true;
 			//gameController.MakePlayerNonControllable();
 			Debug.Log($"Катсцена {gameObject.name} поставлена на паузу.");
-		
+		}	
 	}
 	public void TriggerCutscene()
 	{
@@ -299,14 +320,15 @@ public class CutsceneController : MonoBehaviour
 	}
 	private void ResumeCutscene()
 	{
-		
+		if (!WasCutsceneSkipped)
+		{
 			director.Resume();
 			IsCutscenePlaying = true;
 			gameController.MakePlayerNonControllable();
 			//isPausedByMenu = false;
 			Debug.Log($"Катсцена {gameObject.name} возобновлена.");
-		
 
+		}
 		// Проверка на случай, если катсцена была остановлена вручную во время паузы меню.
 		//if (director.playableGraph.IsPlaying())
 		//{
