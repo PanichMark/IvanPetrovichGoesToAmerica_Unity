@@ -136,7 +136,7 @@ public class InteractionController : MonoBehaviour
 			return;
 
 		// Если меню открыто или игрок мёртв — interactionRange = 0
-		if (menuManager.IsAnyMenuOpened || gameController.IsPlayerDead)
+		if (menuManager.IsAnyMenuOpened || gameController.IsPlayerDead || menuManager.IsCutsceneMenuOpened)
 		{
 			interactionRange = 0;
 		}
