@@ -3749,7 +3749,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 0}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -11628,7 +11628,7 @@ PlayableDirector:
   m_PlayableAsset: {fileID: 11400000, guid: e6fddedaa7c5db141ad37b13878f8663, type: 2}
   m_InitialState: 0
   m_WrapMode: 2
-  m_DirectorUpdateMode: 1
+  m_DirectorUpdateMode: 2
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: 277881401745760951, guid: e6fddedaa7c5db141ad37b13878f8663, type: 2}

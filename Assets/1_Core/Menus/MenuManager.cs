@@ -107,7 +107,7 @@ public class MenuManager : MonoBehaviour
 		//Debug.Log(IsCutsceneMenuOpened);
 		//Debug.Log(IsInteractionMenuOpened);
 		//Debug.Log(IsDialogueMenuOpened);
-		Debug.Log(IsAnyMenuOpened);
+		//Debug.Log(IsAnyMenuOpened);
 	}
 
 	public void OpenPauseMenu()
@@ -249,19 +249,26 @@ public class MenuManager : MonoBehaviour
 			//Debug.Log(IsPauseMenuOpened);
 			//Debug.Log(IsCutsceneMenuOpened);
 
+
+			//Debug.Log(IsPauseMenuOpened);
+			//Debug.Log(IsDialogueMenuOpened);
+			//Debug.Log(IsCutsceneMenuOpened);
+
 			if (IsCutsceneMenuOpened && !IsPauseMenuOpened)
 			{
-
+				//Debug.Log("1");
 				Cursor.lockState = CursorLockMode.Locked;
 				Cursor.visible = false;
 			}
 			if (!IsCutsceneMenuOpened)
 			{
+				//Debug.Log("2");
 				Cursor.lockState = CursorLockMode.Locked;
 				Cursor.visible = false;
 			}
 			if (IsDialogueMenuOpened)
 			{
+				//Debug.Log("3");
 				Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = true;
 			}

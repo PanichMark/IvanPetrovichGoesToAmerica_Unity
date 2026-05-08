@@ -352,7 +352,7 @@ public class InputKeyboard : IInputDevice
 		{
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				lastPressTime = Time.time;
+				lastPressTime = Time.unscaledTime;
 				//Debug.Log("1111");
 				isKeySkipCutsceneBeingHeld = true;
 			}
@@ -362,7 +362,7 @@ public class InputKeyboard : IInputDevice
 			isKeySkipCutsceneBeingHeld = false;
 			//Debug.Log("2222");
 		}
-		else if (isKeySkipCutsceneBeingHeld && Time.time >= lastPressTime + 0.5f) // проверяем реальный временной промежуток
+		else if (isKeySkipCutsceneBeingHeld && Time.unscaledTime >= lastPressTime + 0.5f) // проверяем реальный временной промежуток
 		{
 			isKeySkipCutsceneBeingHeld = false;
 			//Debug.Log("3333");
