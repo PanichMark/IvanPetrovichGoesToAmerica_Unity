@@ -124,6 +124,9 @@ public class Bootstrap : MonoBehaviour
 	private GameObject[] KeyRebinds;
 	private GameObject buttonSaveSettings;
 	private GameObject buttonResetSettings;
+	//Меню Катсцены
+	[SerializeField] private GameObject canvasCutscene;
+	private CutsceneMenuController cutsceneMenuController;
 
 	// Система оружия
 	private GameObject weaponSystemGameObject;
@@ -292,6 +295,7 @@ public class Bootstrap : MonoBehaviour
 		canvasDialogueMenu = Instantiate(canvasDialogueMenu);
 		canvasHUDammo = Instantiate(canvasHUDammo);
 		canvasMenuConfirmAction = Instantiate(canvasMenuConfirmAction);
+		canvasCutscene = Instantiate(canvasCutscene);
 		yield break;
 	}
 
@@ -332,6 +336,7 @@ public class Bootstrap : MonoBehaviour
 		pauseSubMenuSettingsPlayerPrefs = menuManagerGameobject.AddComponent<PauseSubMenuSettingsPlayerPrefs>();
 		pauseSubMenuSettingsController = menuManagerGameobject.AddComponent<PauseSubMenuSettingsController>();
 		menuConfirmActionController = menuManagerGameobject.AddComponent<PauseMenuConfirmActionController>();
+		cutsceneMenuController = menuManagerGameobject.AddComponent<CutsceneMenuController>();
 
 		buttonCloseMainMenuReadNews = canvasMainMenuReadNews.transform.Find("ExitReadNews").GetComponent<Button>();
 		mainMenuReadNews.Initialize(inputDevice, canvasMainMenuReadNews, buttonCloseMainMenuReadNews);
@@ -426,7 +431,7 @@ public class Bootstrap : MonoBehaviour
 	
 
 		// Инициализация меню
-		menuManager.Initialize(inputDevice, gameController, saveLoadController);
+		menuManager.Initialize(inputDevice, gameController, gameSceneManager);
 		pauseMenuController.Initialize(inputDevice, gameController, gameSceneManager, saveLoadController, menuManager, canvasPauseMenu, buttonsPauseMenu);
 		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsRewriteGame, buttonsDeleteGame, buttonClosePauseSubMenuSave, buttonSaveNewGame);
 		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonClosePauseSubMenuLoad);
@@ -434,6 +439,8 @@ public class Bootstrap : MonoBehaviour
 		pauseSubMenuSettingsController.Initialize(inputDevice, this, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons, buttonsChangeLanguage, KeyRebinds, pauseSubMenuSettingsPlayerPrefs, buttonSaveSettings, buttonResetSettings);
 
 		menuConfirmActionController.Initialize(menuManager, pauseMenuController, canvasMenuConfirmAction, buttonConfirmAction, buttonCancelAction, saveLoadController, pauseSubMenuSaveController, pauseSubMenuLoadController, pauseSubMenuSettingsController, textShowConfirmationMessage);
+
+		cutsceneMenuController.Initialize(menuManager, gameSceneManager, canvasCutscene);
 
 		Debug.Log("PAUSE MENU INITIALIZED");
 		yield break;

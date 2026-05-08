@@ -25,16 +25,16 @@ public class MenuManager : MonoBehaviour
 	public bool IsCutsceneMenuOpened {  get; private set; }
 	public IInputDevice inputDevice;
 	private GameController gameController;
-	private SaveLoadController saveLoadController;
+	private GameSceneManager gameSceneManager;
 
 
 	public Stack<int> PauseMenuLevel = new Stack<int>();
 
-	public void Initialize(IInputDevice inputDevice, GameController gameController, SaveLoadController saveLoadController)
+	public void Initialize(IInputDevice inputDevice, GameController gameController, GameSceneManager gameSceneManager)
 	{
 		this.inputDevice = inputDevice;
 		this.gameController = gameController;
-		this.saveLoadController = saveLoadController;
+		this.gameSceneManager = gameSceneManager;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
@@ -43,12 +43,22 @@ public class MenuManager : MonoBehaviour
 		IsWeaponWheelMenuOpened = false;
 		IsAnyMenuOpened = false;
 		_isInitialized = true;
-		this.saveLoadController.OnSafeFileLoad += ClosePauseMenu;
-		this.saveLoadController.OnSafeFileLoad += CloseWeaponWheelMenu;
-		this.saveLoadController.OnSafeFileLoad += CloseInteractionHUD;
-		this.saveLoadController.OnSafeFileLoad += CloseInteractionMenu;
 		this.gameController.OnPlayerDeath += OpenPauseMenu;
-		this.saveLoadController.OnSafeFileLoad += CloseDialogueMenu;
+
+		this.gameSceneManager.OnBeginLoadGameplayScene += ClosePauseMenu;
+		this.gameSceneManager.OnBeginLoadGameplayScene += CloseWeaponWheelMenu;
+		this.gameSceneManager.OnBeginLoadGameplayScene += CloseInteractionHUD;
+		this.gameSceneManager.OnBeginLoadGameplayScene += CloseInteractionMenu;
+		this.gameSceneManager.OnBeginLoadGameplayScene += CloseDialogueMenu;
+		this.gameSceneManager.OnBeginLoadGameplayScene += CloseCutsceneMenu;
+
+
+		this.gameSceneManager.OnBeginLoadMainMenuScene += ClosePauseMenu;
+		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseWeaponWheelMenu;
+		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseInteractionHUD;
+		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseInteractionMenu;
+		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseDialogueMenu;
+		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseCutsceneMenu;
 		Debug.Log("MenuManager Initialized");
 	}
 	private bool _isInitialized = false;
@@ -85,10 +95,17 @@ public class MenuManager : MonoBehaviour
 				{
 					OnClosePauseMenuDuringOpenedDialogueMenu?.Invoke();
 				}
+				if (IsCutsceneMenuOpened)
+				{
+					OnClosePauseMenuDuringOpenedCutsceneMenu?.Invoke();
+				}
 			}
 			//Debug.Log(gameController.IsMainMenuOpen);
 		}
 		//Debug.Log(PauseMenuLevel.Count);
+		Debug.Log(IsCutsceneMenuOpened);
+		//Debug.Log(IsInteractionMenuOpened);
+		//Debug.Log(IsDialogueMenuOpened);
 	}
 
 	public void OpenPauseMenu()
@@ -98,12 +115,12 @@ public class MenuManager : MonoBehaviour
 			CloseWeaponWheelMenu();
 		}
 		PauseMenuLevel.Push(1);
-		OnOpenPauseMenu?.Invoke(); 
-		
+		OnOpenPauseMenu?.Invoke();
+		IsPauseMenuOpened = true;
 		OpenAnyMenu();
 		gameController.MakePlayerNonControllable();
 
-		IsPauseMenuOpened = true;
+		
 
 		Time.timeScale = 0f;
 
@@ -118,27 +135,21 @@ public class MenuManager : MonoBehaviour
 	
 
 		IsPauseMenuOpened = false;
+		CloseAnyMenu();
 		if (PauseMenuLevel.Count > 0)
 			PauseMenuLevel.Pop();
 
-		if ((!IsInteractionMenuOpened && !IsDialogueMenuOpened))
+		if (IsInteractionMenuOpened || IsDialogueMenuOpened || IsCutsceneMenuOpened)
 		{
-			if (!IsCutsceneMenuOpened)
-			{
-				gameController.MakePlayerControllable();
-
-
-
-				CloseAnyMenu();
-				Time.timeScale = 1f;
-			}
-			else
-			{
-				OnClosePauseMenuDuringOpenedCutsceneMenu?.Invoke();
-			}
+			
+			
+			
 		}
 		else
-
+		{
+			gameController.MakePlayerControllable();
+			Time.timeScale = 1f;
+		}
 
 
 			Debug.Log("PauseMenu closed");
@@ -147,6 +158,7 @@ public class MenuManager : MonoBehaviour
 	
 	public void OpenCutsceneMenu()
 	{
+		Debug.Log("OPENM CUTSCENE MENU!!!");
 		IsCutsceneMenuOpened = true;
 		OpenAnyMenu();
 
@@ -156,9 +168,12 @@ public class MenuManager : MonoBehaviour
 
 	public void CloseCutsceneMenu()
 	{
+		Debug.Log("CLOSE CUTSCENE MENU!!!");
+		
 		CloseAnyMenu();
-		IsCutsceneMenuOpened = false;
+		
 		OnCloseCutsceneMenu?.Invoke();
+		IsCutsceneMenuOpened = false;
 		Debug.Log("CutsceneMenu closed");
 	}
 	public void OpenWeaponWheelMenu()
@@ -182,6 +197,7 @@ public class MenuManager : MonoBehaviour
 
 	public void OpenAnyMenu()
 	{
+		//Debug.Log("Opened any menu");
 		IsAnyMenuOpened = true;
 		//Debug.Log("--- ANY MENU ---");
 		if (IsDialogueMenuOpened || IsCutsceneMenuOpened)
@@ -200,27 +216,48 @@ public class MenuManager : MonoBehaviour
 		{
 			CloseInteractionHUD();
 
-			if (!IsCutsceneMenuOpened)
+			//Debug.Log(IsPauseMenuOpened);
+			//Debug.Log(IsCutsceneMenuOpened);
+
+			if (IsCutsceneMenuOpened && IsPauseMenuOpened)
+			{
+				
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
+			}
+			if(!IsCutsceneMenuOpened)
 			{
 				Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = true;
 			}
 
-		
 		}
 	}
 
 	public void CloseAnyMenu()
 	{
+		Debug.Log("CloseAnyMenu");
 		IsAnyMenuOpened = false;
 	
 		OnCloseAnyMenu?.Invoke();
 		if (!gameController.IsMainMenuOpen)
 		{
-			Cursor.lockState = CursorLockMode.Locked;
-			Cursor.visible = false;
 			OpenInteractionHUD();
-			
+
+			//Debug.Log(IsPauseMenuOpened);
+			//Debug.Log(IsCutsceneMenuOpened);
+
+			if (IsCutsceneMenuOpened && !IsPauseMenuOpened)
+			{
+
+				Cursor.lockState = CursorLockMode.Locked;
+				Cursor.visible = false;
+			}
+			if (!IsCutsceneMenuOpened)
+			{
+				Cursor.lockState = CursorLockMode.Locked;
+				Cursor.visible = false;
+			}
 		}
 	}
 
