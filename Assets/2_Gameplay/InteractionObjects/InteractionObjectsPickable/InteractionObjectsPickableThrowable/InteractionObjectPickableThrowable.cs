@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstract, IThrowable, IDamageable
 {
 	private bool _wasObjectDestroyed;
-
 	private bool _canObjectBeDestroyedOnImpact;
 	public bool WasObjectDestroyed => _wasObjectDestroyed;
 	public float ObjectThrowPower => 10f;
@@ -24,7 +23,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			_health = value;
 			if (_health <= 0)
 			{
-				ObjectIsFullyDamaged(); // Вызываем метод уничтожения, если здоровье стало <= 0
+				ObjectIsFullyDamaged();
 			}
 		}
 	}
@@ -109,7 +108,6 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 				if (isItFirstPerson)
 				{
-					// Начинаем плавное перемещение
 					StartCoroutine(MoveTowardsRightHandFirstPerson());
 				}
 				else
@@ -126,7 +124,6 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		}
 	}
 
-
 	private void OnCollisionEnter(Collision collision)
 	{
 		if (_canObjectBeDestroyedOnImpact)
@@ -138,56 +135,51 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			Debug.Log($"{InteractionObjectNameSystem} was destroyed on impact!");
 		}
 	}
-	
+
 	public void ThrowObject()
 	{
 		Debug.Log($"Throwed {InteractionObjectNameSystem}");
-		//gameObject.tag = "Interactable";
+
 		Physics.IgnoreCollision(Collider, playerCollider, true);
-		isCollisionIgnored = true; // Включаем флаг, чтобы знать, что мы отключили столкновение
+		isCollisionIgnored = true;
 		Collider.enabled = true;
 		RigidBody.isKinematic = false;
 		IsObjectPickedUp = false;
-		
-		//SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByBuildIndex(1));
+
 		_canObjectBeDestroyedOnImpact = true;
-		// Отцепляем объект от игрока
+
 		transform.parent = null;
 
-		////////////////
-		// FIX!!!!!!!!!!!!!!!!!!!!!!!
 		Vector3 throwDirection = CachedPlayer.transform.forward - Camera.main.transform.up * Mathf.Tan(Camera.main.transform.eulerAngles.x * Mathf.Deg2Rad);
 		throwDirection.Normalize();
 
 		RigidBody.AddForce(throwDirection * ObjectThrowPower, ForceMode.Impulse);
-		//FIX!!!!!!!!!!!
-		/////////////
 	}
 
 	public void TakeDamage(float amount)
 	{
 		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {Health - amount}");
-		Health -= amount; // Уменьшаем здоровье на указанное количество единиц
+
+		Health -= amount;
 	}
 
 	public void ObjectIsFullyDamaged()
 	{
 		Debug.Log($"{InteractionObjectNameSystem} was destroyed!");
-		_wasObjectDestroyed = true; // Устанавливаем флаг, что объект разрушен
-		Destroy(gameObject); // Уничтожаем объект
+
+		_wasObjectDestroyed = true;
+
+		Destroy(gameObject);
 	}
 
 	private IEnumerator MoveTowardsRightHandFirstPerson()
 	{
 		while (true)
 		{
-			// Рассчитываем новую целевую позицию каждый кадр
 			Vector3 targetPosition = firstPersonRightHandWeaponSlotGameObject.transform.position;
 
-			// Перемещаем объект к новой позиции
 			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
 
-			// Выход из цикла, если объект вплотную приблизился к игроку
 			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
 			{
 				break;
@@ -196,7 +188,6 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			yield return null;
 		}
 
-		// Установим последнюю позицию на случай погрешности
 		transform.parent = firstPersonRightHandWeaponSlotGameObject.transform;
 		transform.position = firstPersonRightHandWeaponSlotGameObject.transform.position;
 		transform.rotation = Quaternion.Euler(0, firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
@@ -206,25 +197,20 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	{
 		while (true)
 		{
-			// Рассчитываем новую целевую позицию каждый кадр
 			Vector3 targetPosition = thirdPersonRightHandWeaponSlotGameObject.transform.position;
 
-			// Перемещаем объект к новой позиции
 			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
 
-			// Выход из цикла, если объект вплотную приблизился к игроку
 			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
 			{
 				break;
 			}
 
-	
 			yield return null;
 		}
 
 		transform.parent = thirdPersonRightHandWeaponSlotGameObject.transform;
 		transform.position = thirdPersonRightHandWeaponSlotGameObject.transform.position;
 		transform.rotation = Quaternion.Euler(0, thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
-
 	}
 }

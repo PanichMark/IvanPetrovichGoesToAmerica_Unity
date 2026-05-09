@@ -6,32 +6,28 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
 	private PlayerResourcesManaManager playerResourcesManaManager;
 
-
-	public override string InteractionHintMessageAdditional => $"Максимум {InteractionObjectNameUI}";
-
-
-
+	public override string InteractionHintMessageAdditional => $"Maximum {InteractionObjectNameUI}";
 
 	public override void Interact()
 	{
 		if (playerResourcesManaManager.CurrentManaReplenishItemsNumber < 9)
 		{
 			base.Interact();
-			Debug.Log($"Вы подняли {InteractionObjectNameUI}");
-			
+			Debug.Log($"You picked up {InteractionObjectNameUI}");
+
 			playerResourcesManaManager.AddManaReplenishItem();
 			isAdditionalInteractionHintActive = false;
 			WasLootItemCollected = true;
 		}
-		//else Debug.Log("Can't pick up more ManaReplenish Items");
-		else isAdditionalInteractionHintActive = true;
+		else
+		{
+			isAdditionalInteractionHintActive = true;
+		}
 	}
 
 	protected override void ThisMethodSetsActionName()
 	{
-	
 		playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 	}
 }
-

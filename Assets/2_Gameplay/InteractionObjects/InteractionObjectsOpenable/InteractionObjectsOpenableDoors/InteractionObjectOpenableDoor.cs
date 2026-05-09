@@ -3,35 +3,29 @@ using System.Collections;
 
 public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 {
-	//public override string InteractionItemName => "Дверь";
-
 	protected bool isAdditionalInteractionHintActive;
 	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
-	
+
 	private LocalizationManager localizationManager;
-	[SerializeField] private InteractionObjectLockMechanical mechanicalLockController;   // Поле для добавления контроллера замка
+	[SerializeField] private InteractionObjectLockMechanical mechanicalLockController;
 	[SerializeField] private InteractionObjectLockElectronic electronicLockController;
-	//private bool isDoorUnlocked;
-	//private bool WasDoorKeyFound;
 
-	private float doorOpeningSpeed = 200f; // Скорость открытия-закрытия
+	private float doorOpeningSpeed = 200f;
+	private Coroutine currentAnimation;
 
-	private Coroutine currentAnimation;     // Переменная для хранения активной корутины
-
-	private Quaternion openedRotation;       // Угловое положение открытой двери
-	private Quaternion closedRotation;     // Угловое положение закрытой двери
+	private Quaternion openedRotation;
+	private Quaternion closedRotation;
 	[SerializeField] private int doorOpenAngle;
-	
-	public override string InteractionHintMessageAdditional => $"{InteractionObjectNameUI} заперта!";
+
+	public override string InteractionHintMessageAdditional => $"{InteractionObjectNameUI} is locked!";
 
 	void Start()
 	{
 		IsDoorOpened = false;
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
-	
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-		// Настройка состояний вращения
+
 		Vector3 openedEulerAngles = new Vector3(0, 0, doorOpenAngle);
 		openedRotation = Quaternion.Euler(openedEulerAngles);
 
@@ -40,39 +34,36 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 
-		if (mechanicalLockController != null && mechanicalLockController.WasUnlocked == false)
+		if (mechanicalLockController != null && !mechanicalLockController.WasUnlocked)
 		{
 			interactionHintMessageMain = mechanicalLockController.InteractionHintMessageMain;
 			mechanicalLockController.OnUnlockLock += UnlockDoor;
 		}
 
-
-		if (mechanicalLockController == null || mechanicalLockController.WasUnlocked == true)
+		if (mechanicalLockController == null || mechanicalLockController.WasUnlocked)
 		{
 			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 		}
-
-
 	}
+
 	public void ChangeLanguage()
 	{
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
-
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
 
-		if (mechanicalLockController != null && mechanicalLockController.WasUnlocked == false)
+		if (mechanicalLockController != null && !mechanicalLockController.WasUnlocked)
 		{
 			interactionHintMessageMain = mechanicalLockController.InteractionHintMessageMain;
 			mechanicalLockController.OnUnlockLock += UnlockDoor;
 		}
 
-
-		if (mechanicalLockController == null || mechanicalLockController.WasUnlocked == true)
+		if (mechanicalLockController == null || mechanicalLockController.WasUnlocked)
 		{
 			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 		}
 	}
+
 	private void UnlockDoor()
 	{
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
@@ -81,38 +72,30 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	public override void Interact()
 	{
-		if (mechanicalLockController != null && mechanicalLockController.WasUnlocked == false)
+		if (mechanicalLockController != null && !mechanicalLockController.WasUnlocked)
 		{
-			// Если замок установлен, сначала пытаемся открыть замок
-			Debug.Log("Запускается попытка взлома замка...");
+			Debug.Log("Attempting to unlock the lock...");
 			mechanicalLockController.Interact();
-			//Debug.Log("LMAO!");
-
 		}
 
-		if (electronicLockController != null && electronicLockController.WasUnlocked == false)
+		if (electronicLockController != null && !electronicLockController.WasUnlocked)
 		{
-			// Если замок установлен, сначала пытаемся открыть замок
-			Debug.Log("Запускается попытка взлома замка...");
+			Debug.Log("Attempting to unlock the lock...");
 			electronicLockController.Interact();
-			//Debug.Log("LMAO!");
-
 		}
-
 
 		if ((mechanicalLockController == null && electronicLockController == null) ||
-	mechanicalLockController?.WasUnlocked == true ||
-	electronicLockController?.WasUnlocked == true)
+			mechanicalLockController?.WasUnlocked == true ||
+			electronicLockController?.WasUnlocked == true)
 		{
-			PerformDoorInteraction(); // Дверь открывается
-									  // Debug.Log("BRUH!");
+			PerformDoorInteraction();
 		}
 	}
+
 	protected virtual void PerformDoorInteraction()
 	{
 		isAdditionalInteractionHintActive = false;
 
-		// Останавливаем ранее запущенную корутину, если она существует
 		if (currentAnimation != null)
 		{
 			StopCoroutine(currentAnimation);
@@ -120,30 +103,26 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 		if (!IsDoorOpened)
 		{
-			Debug.Log($"Was opened {InteractionObjectNameUI}");
+			Debug.Log($"Opened {InteractionObjectNameUI}");
 			IsDoorOpened = true;
 			InteractionHintAction = localizationManager.GetLocalizedString("CloseDoor");
 			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-			currentAnimation = StartCoroutine(OpenDoor()); // Начинаем новую корутину
+			currentAnimation = StartCoroutine(OpenDoor());
 		}
 		else
 		{
-			Debug.Log($"Was closed {InteractionObjectNameUI}");
+			Debug.Log($"Closed {InteractionObjectNameUI}");
 			IsDoorOpened = false;
 			InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
 			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-			currentAnimation = StartCoroutine(CloseDoor()); // Начинаем новую корутину
+			currentAnimation = StartCoroutine(CloseDoor());
 		}
 	}
-	private void Update()
-	{
-		//Debug.Log(currentAnimation);
-	}
+
+	private void Update() { }
 
 	IEnumerator OpenDoor()
 	{
-	
-		
 		while (Quaternion.Angle(transform.localRotation, openedRotation) > 0.1f)
 		{
 			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, openedRotation, Time.deltaTime * doorOpeningSpeed);
@@ -155,8 +134,6 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	IEnumerator CloseDoor()
 	{
-	
-	
 		while (Quaternion.Angle(transform.localRotation, closedRotation) > 0.1f)
 		{
 			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, closedRotation, Time.deltaTime * doorOpeningSpeed);
@@ -166,4 +143,3 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 		currentAnimation = null;
 	}
 }
-

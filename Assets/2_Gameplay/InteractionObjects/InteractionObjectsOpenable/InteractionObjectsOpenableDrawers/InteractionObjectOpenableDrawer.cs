@@ -5,12 +5,12 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 {
 	protected LocalizationManager localizationManager;
 
-	[SerializeField] protected float OpeningSpeed = 3f; // Скорость открытия-закрытия ящика
+	[SerializeField] protected float OpeningSpeed = 3f;
 
-	protected Coroutine currentAnimation;     // Переменная для хранения активной корутины
+	protected Coroutine currentAnimation;
 
-	protected Vector3 openedPosition;        // Открытое положение ящика
-	protected Vector3 closedPosition;        // Закрытое положение ящика
+	protected Vector3 openedPosition;
+	protected Vector3 closedPosition;
 	[SerializeField] protected float openLengthForward;
 
 	public void Start()
@@ -18,14 +18,12 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 
-
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
 		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-		// Начальное положение закрылого ящика
-		closedPosition = transform.localPosition;
 
-		// Открываем ящик вперёд по оси Z на 0.45 единицы
+		closedPosition = transform.localPosition;
 		openedPosition = transform.localPosition + new Vector3(0, 0, openLengthForward);
+
 		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 		IsDoorOpened = false;
 	}
@@ -35,15 +33,12 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 
-
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
 		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 	}
 
-
 	public override void Interact()
 	{
-		// Останавливаем ранее запущенную корутину, если она существует
 		if (currentAnimation != null)
 		{
 			StopCoroutine(currentAnimation);
@@ -53,13 +48,13 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		{
 			InteractionHintAction = localizationManager.GetLocalizedString("CloseDoor");
 			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-			currentAnimation = StartCoroutine(OpenDrawer()); // Начинаем новую корутину
+			currentAnimation = StartCoroutine(OpenDrawer());
 		}
 		else
 		{
 			InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
 			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-			currentAnimation = StartCoroutine(CloseDrawer()); // Начинаем новую корутину
+			currentAnimation = StartCoroutine(CloseDrawer());
 		}
 	}
 
@@ -91,4 +86,3 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		currentAnimation = null;
 	}
 }
-
