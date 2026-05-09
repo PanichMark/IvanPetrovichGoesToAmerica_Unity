@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class BootstrapSubSystemWeapon
+public class BootstrapSubProcessWeaponSystem
 {
 	private GameObject weaponSystemGameObject;
 	public PlayerWeaponController weaponController { get; private set; }
@@ -22,14 +22,14 @@ public class BootstrapSubSystemWeapon
 	private Image weaponIconBig;
 	private GameObject ChokeNPCtext;
 
-	private BootstrapSubSystemScene bootstrapSubSystemScene;
+	private BootstrapSubProcessSceneSystem bootstrapSubSystemScene;
 	private GameController gameController;
-	private BootstrapSubSystemPlayerSystems bootstrapSubSystemPlayerSystems;
-	private BootstrapSubSystemMenu bootstrapSubSystemMenu;
+	private BootstrapSubProcessPlayerSystems bootstrapSubSystemPlayerSystems;
+	private BootstrapSubProcessMenuSystem bootstrapSubSystemMenu;
 	private IInputDevice inputDevice;
 	private GameObject playerGameObject;
 	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
-	private BootstrapSubSystemInteraction bootstrapSubSystemInteraction;
+	private BootstrapSubProcessInteractionSystem bootstrapSubSystemInteraction;
 	private CanvasHUDammoController canvasHUDammoController;
 	private GameObject canvasHUDammo;
 	private GameObject RightWeaponAmmoMagazine;
@@ -39,15 +39,15 @@ public class BootstrapSubSystemWeapon
 	private GameObject LeftWeaponAmmoReserve;
 	private GameObject LeftWeaponAmmoSeparator;
 
-	public BootstrapSubSystemWeapon(
-		BootstrapSubSystemScene bootstrapSubSystemScene,
+	public BootstrapSubProcessWeaponSystem(
+		BootstrapSubProcessSceneSystem bootstrapSubSystemScene,
 		GameController gameController,
-		BootstrapSubSystemPlayerSystems bootstrapSubSystemPlayerSystems,
-		BootstrapSubSystemMenu bootstrapSubSystemMenu,
+		BootstrapSubProcessPlayerSystems bootstrapSubSystemPlayerSystems,
+		BootstrapSubProcessMenuSystem bootstrapSubSystemMenu,
 		IInputDevice inputDevice,
 		GameObject playerGameObject,
 		PlayerResourcesAmmoManager playerResourcesAmmoManager,
-		BootstrapSubSystemInteraction bootstrapSubSystemInteraction,
+		BootstrapSubProcessInteractionSystem bootstrapSubSystemInteraction,
 		CanvasHUDammoController canvasHUDammoController,
 		GameObject canvasHUDammo,
 		GameObject RightWeaponAmmoMagazine,
@@ -103,13 +103,13 @@ public class BootstrapSubSystemWeapon
 
 		ChokeNPCtext = canvasHUDammo.transform.Find("ChokingText").gameObject;
 
-		weaponController.Initialize(inputDevice, bootstrapSubSystemMenu.menuManager, bootstrapSubSystemPlayerSystems.playerBehaviour, bootstrapSubSystemInteraction.interactionController);
-		legKickAttack.Initialize(inputDevice, playerGameObject, bootstrapSubSystemPlayerSystems.playerMovementController);
+		weaponController.Initialize(inputDevice, bootstrapSubSystemMenu.MenuManager, bootstrapSubSystemPlayerSystems.PlayerBehaviour, bootstrapSubSystemInteraction.InteractionController);
+		legKickAttack.Initialize(inputDevice, playerGameObject, bootstrapSubSystemPlayerSystems.PlayerMovementController);
 
 		weaponWheelController.Initialize(
 			inputDevice,
-			bootstrapSubSystemMenu.menuManager,
-			bootstrapSubSystemPlayerSystems.playerBehaviour,
+			bootstrapSubSystemMenu.MenuManager,
+			bootstrapSubSystemPlayerSystems.PlayerBehaviour,
 			weaponController,
 			weaponWheelSegmentPrefab,
 			canvasMenuWeaponWheel,
@@ -119,7 +119,7 @@ public class BootstrapSubSystemWeapon
 
 		weaponAnimationController.Initialize(
 			playerGameObject,
-			bootstrapSubSystemPlayerSystems.playerBehaviour,
+			bootstrapSubSystemPlayerSystems.PlayerBehaviour,
 			bootstrapSubSystemPlayerSystems.playerCameraController,
 			weaponController,
 			legKickAttack);
@@ -128,19 +128,19 @@ public class BootstrapSubSystemWeapon
 			bootstrapSubSystemScene.gameSceneManager,
 			bootstrapSubSystemPlayerSystems.playerCameraController,
 			weaponController,
-			bootstrapSubSystemPlayerSystems.playerFirstPersonHandRight,
-			bootstrapSubSystemPlayerSystems.playerFirstPersonHandLeft,
-			bootstrapSubSystemPlayerSystems.playerHandRightParent,
-			bootstrapSubSystemPlayerSystems.playerHandLeftParent);
+			bootstrapSubSystemPlayerSystems.PlayerFirstPersonHandRightGameObject,
+			bootstrapSubSystemPlayerSystems.PlayerFirstPersonHandLeftGameObject,
+			bootstrapSubSystemPlayerSystems.PlayerHandRightParentGameObject,
+			bootstrapSubSystemPlayerSystems.PlayerHandLeftParentGameObject);
 
 		canvasHUDammoController.Initialize(
 			bootstrapSubSystemScene.gameSceneManager,
 			gameController,
-			bootstrapSubSystemMenu.menuManager,
+			bootstrapSubSystemMenu.MenuManager,
 			canvasHUDammo,
 			weaponController,
 			playerResourcesAmmoManager,
-			bootstrapSubSystemPlayerSystems.playerBehaviour,
+			bootstrapSubSystemPlayerSystems.PlayerBehaviour,
 			RightWeaponAmmoMagazine,
 			RightWeaponAmmoReserve,
 			RightWeaponAmmoSeparator,

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class BootstrapSubSystemSaveLoad
+public class BootstrapSubProcessSaveLoadSystem
 {
 	private GameObject dataSaveLoadControllerGameObject;
 	public SaveLoadController saveLoadController { get; private set; }
@@ -9,7 +9,7 @@ public class BootstrapSubSystemSaveLoad
 	private GameSceneManager gameSceneManager;
 	private GameController gameController;
 
-	public BootstrapSubSystemSaveLoad(GameSceneManager gameSceneManager, GameController gameController)
+	public BootstrapSubProcessSaveLoadSystem(GameSceneManager gameSceneManager, GameController gameController)
 	{
 		this.gameSceneManager = gameSceneManager;
 		this.gameController = gameController;

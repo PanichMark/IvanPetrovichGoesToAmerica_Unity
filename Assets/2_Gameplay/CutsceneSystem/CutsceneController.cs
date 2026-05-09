@@ -201,7 +201,7 @@ public class CutsceneController : MonoBehaviour
 		if (shouldLoadScene)
 		{
 
-			gameSceneManager.StartCoroutine(gameSceneManager.LoadScene(sceneToLoadAfterCutscene));
+			gameSceneManager.StartCoroutine(gameSceneManager.LoadGameplayScene(sceneToLoadAfterCutscene));
 		}
 			
 		Destroy(gameObject);

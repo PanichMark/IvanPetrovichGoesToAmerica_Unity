@@ -30,7 +30,7 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 
 		DontDestroyOnLoad(parentTransform.gameObject);
 
-		yield return StartCoroutine(gameSceneManager.LoadScene(targetScene));
+		yield return StartCoroutine(gameSceneManager.LoadGameplayScene(targetScene));
 
 		playerMovementController.SetPlayerPosition(newPlayerPosition);
 		playerMovementController.SetPlayerRotation(newPlayerRotation);

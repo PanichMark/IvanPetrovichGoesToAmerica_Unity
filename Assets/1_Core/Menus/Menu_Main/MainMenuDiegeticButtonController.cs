@@ -172,7 +172,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	{
 		DontDestroyOnLoad(gameObject);
 		yield return StartCoroutine(saveLoadController.NewGame());
-		yield return StartCoroutine(gameSceneManager.LoadScene(GameScenesEnum.Scene_0_Test));
+		yield return StartCoroutine(gameSceneManager.LoadGameplayScene(GameScenesEnum.Scene_0_Test));
 		
 		Destroy(gameObject);
 	}

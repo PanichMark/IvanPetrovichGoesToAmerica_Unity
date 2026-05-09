@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BootstrapSubSystemScene
+public class BootstrapSubProcessSceneSystem
 {
 	public GameSceneManager gameSceneManager { get; private set; }
 	private TMP_Text loadingScreenText;
@@ -13,7 +13,7 @@ public class BootstrapSubSystemScene
 	private GameObject canvasLoadingScreen;
 	private GameController gameController;
 
-	public BootstrapSubSystemScene(GameController gameController, GameObject canvasLoadingScreen)
+	public BootstrapSubProcessSceneSystem(GameController gameController, GameObject canvasLoadingScreen)
 	{
 		this.gameController = gameController;
 		this.canvasLoadingScreen = canvasLoadingScreen;

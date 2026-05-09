@@ -7,13 +7,13 @@ using UnityEngine.UI;
 
 public class GameSceneManager : MonoBehaviour, ISaveLoad
 {
-	private GameController gameController;
-	private LocalizationManager localizationManager;
+	private GameController _gameController;
+	private LocalizationManager _localizationManager;
 
-	private GameObject canvasLoadingScreen;
-	private TMP_Text loadingScreenText;
-	private TMP_Text sceneNameText;
-	private Image sceneLoadingScreenImage;
+	private GameObject _canvasLoadingScreen;
+	private TMP_Text _textLoadingScreenStatus;
+	private TMP_Text _textSceneName;
+	private Image _imageLoadingScreen;
 	
 	public delegate void LoadSceneHandler();
 	public event LoadSceneHandler OnBeginLoadMainMenuScene;
@@ -21,29 +21,29 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	public event LoadSceneHandler OnBeginLoadGameplayScene;
 	public event LoadSceneHandler OnEndLoadGameplayScene;
 
-	public void Initialize(GameController gameController, GameObject canvasLoadingScreen, TMP_Text loadingScreenText, TMP_Text sceneNameText, Image sceneLoadingScreenImage)
+	public void Initialize(GameController gameController, GameObject canvasLoadingScreen, TMP_Text textLoadingScreenStatus, TMP_Text textSceneName, Image imageLoadingScreen)
 	{
-		this.gameController = gameController;	
+		_gameController = gameController;	
 
-		this.canvasLoadingScreen = canvasLoadingScreen;	
-		this.loadingScreenText = loadingScreenText;
-		this.sceneNameText = sceneNameText;
-		this.sceneLoadingScreenImage = sceneLoadingScreenImage;
+		_canvasLoadingScreen = canvasLoadingScreen;	
+		_textLoadingScreenStatus = textLoadingScreenStatus;
+		_textSceneName = textSceneName;
+		_imageLoadingScreen = imageLoadingScreen;
 
 		Debug.Log("GameSceneManager Initialized");
 	}
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		this.localizationManager = localizationManager;
+		this._localizationManager = localizationManager;
 	}
-	public IEnumerator LoadScene(GameScenesEnum scene)
+	public IEnumerator LoadGameplayScene(GameScenesEnum scene)
 	{
 
-		gameController.SceneLoadBegan();
+		_gameController.SceneLoadBegan();
 		OnBeginLoadGameplayScene?.Invoke();
-		canvasLoadingScreen.SetActive(true);
-		loadingScreenText.text = "Подготовка к загрузке...";
+		_canvasLoadingScreen.SetActive(true);
+		_textLoadingScreenStatus.text = "Подготовка к загрузке...";
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		
@@ -53,8 +53,8 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 		Sprite spriteToUse = Resources.Load<Sprite>($"Sprites/{sceneName}");
 
-		sceneLoadingScreenImage.sprite = spriteToUse;
-		sceneNameText.text = localizationManager.GetLocalizedString(sceneName);
+		_imageLoadingScreen.sprite = spriteToUse;
+		_textSceneName.text = _localizationManager.GetLocalizedString(sceneName);
 
 		if (SceneManager.sceneCount > 1)
 		{
@@ -62,18 +62,18 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
 			{
-				loadingScreenText.text = "Выгрузка предыдущей сцены...";
+				_textLoadingScreenStatus.text = "Выгрузка предыдущей сцены...";
 				Debug.Log($"Scene_{loadedScene.name} UNloading started");
 
 				SceneManager.UnloadSceneAsync(loadedScene);
 				yield return new WaitUntil(() => !loadedScene.isLoaded);
 
 				Debug.Log($"Scene_{loadedScene.name} UNloading ended");
-				loadingScreenText.text = "Предыдущая сцена выгружена.";
+				_textLoadingScreenStatus.text = "Предыдущая сцена выгружена.";
 			}
 		}
 
-		loadingScreenText.text = "Начало загрузки сцены: " + sceneName;
+		_textLoadingScreenStatus.text = "Начало загрузки сцены: " + sceneName;
 		Debug.Log($"{sceneName} loading started");
 
 		AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive); 
@@ -81,20 +81,20 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		while (!operation.isDone)
 		{
 			float progress = Mathf.Clamp01(operation.progress / 0.9f);
-			loadingScreenText.text = $"Загрузка... {progress * 100:F1}%";
+			_textLoadingScreenStatus.text = $"Загрузка... {progress * 100:F1}%";
 			yield return null;
 		}
 	
 		Debug.Log($"{sceneName} loading ended");
-		loadingScreenText.text = "Нажмите любую клавишу";
+		_textLoadingScreenStatus.text = "Нажмите любую клавишу";
 		OnEndLoadGameplayScene?.Invoke();
 	
 		yield return new WaitWhile(() => !Input.anyKeyDown);
 
-		canvasLoadingScreen.SetActive(false);
+		_canvasLoadingScreen.SetActive(false);
 		
 		Time.timeScale = 1f; 
-		gameController.SceneLoadEnded();
+		_gameController.SceneLoadEnded();
 		Debug.Log($"SceneLoaded {scene}");
 
 		yield break;
@@ -102,9 +102,9 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 	public IEnumerator LoadMainMenuScene()
 	{
-		gameController.OpenMainMenu();
+		_gameController.OpenMainMenu();
 		OnBeginLoadMainMenuScene?.Invoke();
-		canvasLoadingScreen.SetActive(true);
+		_canvasLoadingScreen.SetActive(true);
 
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
@@ -117,14 +117,14 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
 			{
 
-				loadingScreenText.text = "Выгрузка предыдущей сцены...";
+				_textLoadingScreenStatus.text = "Выгрузка предыдущей сцены...";
 				Debug.Log("Начало выгрузки сцены: " + loadedScene.name);
 
 				SceneManager.UnloadSceneAsync(loadedScene);
 				yield return new WaitUntil(() => !loadedScene.isLoaded);
 
 				Debug.Log("Завершение выгрузки сцены: " + loadedScene.name);
-				loadingScreenText.text = "Предыдущая сцена выгружена.";
+				_textLoadingScreenStatus.text = "Предыдущая сцена выгружена.";
 			}
 		}
 		Debug.Log("Scene_MainMenu loading started");
@@ -142,10 +142,10 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 		OnEndLoadMainMenuScene?.Invoke();
-		gameController.OpenMainMenu();
+		_gameController.OpenMainMenu();
 		Debug.Log("Scene_MainMenu loading ended");
 	
-		canvasLoadingScreen.SetActive(false);
+		_canvasLoadingScreen.SetActive(false);
 		yield break;
 	}
 

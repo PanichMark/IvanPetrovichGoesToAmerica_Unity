@@ -134,7 +134,7 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 
 		if (IsPlayerPlungering)
 		{
-			gameController.StartPlunging();
+			gameController.PlayerStartedPlunging();
 			Vector3 directionToHook = (hookPoint - player.transform.position).normalized;
 
 			playerRigidbody.linearVelocity = directionToHook * pullSpeed;
@@ -189,7 +189,7 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 
 			IsPlayerPlungering = false;
 			Debug.Log("Притяжение завершено.");
-			gameController.StopPlunging();
+			gameController.PlayerStoppedPlunging();
 			playerCollider.SetActive(true);
 		}
 	}

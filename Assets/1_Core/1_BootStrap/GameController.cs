@@ -38,12 +38,12 @@ public class GameController
 		OnPlayerDeath?.Invoke();
 	}
 
-	public void StartPlunging()
+	public void PlayerStartedPlunging()
 	{
 		IsPlayerAbleToMove = false;
 		IsPlayerPlunging = true;
 	}
-	public void StopPlunging()
+	public void PlayerStoppedPlunging()
 	{
 		IsPlayerAbleToMove = true;
 		IsPlayerPlunging = false;

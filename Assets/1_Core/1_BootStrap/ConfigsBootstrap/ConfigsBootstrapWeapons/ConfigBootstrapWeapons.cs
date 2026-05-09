@@ -7,24 +7,24 @@ public class ConfigBootstrapWeapons : ScriptableObject
 {
 	[Header("Доступные виды оружия")]
 	[Tooltip("Список доступных оружий (указываются Prefab'ы оружия).")]
-	public WeaponPrefabEntry[] availableWeapons;
+
+	public WeaponPrefabEntry[] AvailableWeapons;
 
 	[Serializable]
 	public struct WeaponPrefabEntry
 	{
-		public GameObject weaponPrefab; // Сам префаб оружия
-		public bool isUnlocked;        // Доступность оружия
+		public GameObject WeaponPrefab; 
+		public bool IsWeaponUnlocked;       
 	}
-
 
 	public GameObject[] GetAvailableWeapons()
 	{
 		List<GameObject> result = new List<GameObject>();
-		foreach (var entry in availableWeapons)
+		foreach (var entry in AvailableWeapons)
 		{
-			if (entry.isUnlocked)
+			if (entry.IsWeaponUnlocked)
 			{
-				result.Add(entry.weaponPrefab);
+				result.Add(entry.WeaponPrefab);
 			}
 		}
 		return result.ToArray();
