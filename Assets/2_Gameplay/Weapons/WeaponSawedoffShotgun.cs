@@ -2,21 +2,17 @@
 
 public class WeaponSawedoffShotgun : WeaponRangedAbstract
 {
-
-	public override float WeaponDamage => 100f;
-	protected override void InitializeWeaponRanged()
-	{
-		WeaponAmmoType = AmmoTypes.Ammo12gauge;
-		// Здесь мы задаем параметры КОНКРЕТНО для этого револьвера
-		MagazineAmmoMax = 2; // Барабан на 6 патронов
-		MagazineAmmoCurrent = 2; // Начинаем с полным барабаном
-
-		// Тип патронов тоже задается здесь (или можно через инспектор)
-	}
-
 	public override string WeaponNameSystem => "SawedOffShotgun";
 	public override string WeaponNameUI => "Дробовик Обрез";
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheelButtons/Shotgun Icon");
+	public override float WeaponDamage => 100f;
 
+	protected override void InitializeWeaponRanged()
+	{
+		WeaponAmmoType = AmmoTypes.Ammo12gauge;
+
+		MagazineAmmoMax = 2; 
+		MagazineAmmoCurrent = 2; 
+
+	}
 }
-

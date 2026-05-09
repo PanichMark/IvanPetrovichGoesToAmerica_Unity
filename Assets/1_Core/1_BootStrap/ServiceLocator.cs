@@ -9,7 +9,7 @@ public class ServiceLocator
 	{
 		if (services.ContainsKey(key))
 		{
-			throw new ArgumentException($"Служба с ключом '{key}' уже зарегистрирована.", nameof(key));
+			throw new ArgumentException($"Service '{key}' was already registered", nameof(key));
 		}
 		services[key] = serviceInstance;
 	}
@@ -18,18 +18,16 @@ public class ServiceLocator
 	{
 		if (!services.TryGetValue(key, out var result))
 		{
-			throw new KeyNotFoundException($"Не найдено службы с ключом '{key}'.");
+			throw new KeyNotFoundException($"Service '{key}' not found");
 		}
 		return (T)result;
 	}
 
-	// Новый публичный метод для очистки
 	public static void ClearAllServices()
 	{
 		services.Clear();
 	}
 
-	// Метод для удаления отдельной службы по ключу
 	public static bool RemoveService(string key)
 	{
 		return services.Remove(key);

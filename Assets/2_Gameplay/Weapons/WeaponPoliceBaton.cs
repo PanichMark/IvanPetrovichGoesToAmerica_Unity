@@ -3,27 +3,23 @@ using System.Collections;
 
 public class WeaponPoliceBaton : WeaponMeleeAbstract
 {
-	// Свойства оружия
+	private IInputDevice inputDevice;
+	private PlayerMovementController playerMovementController;
+	private PlayerWeaponController weaponController;
+
+	private GameObject ChokeNPCtext;
+
+	private bool isAbleToChoke = false;
+	private bool npcDetected = false;
+	private bool isItRightHand;
+
 	public override float WeaponDamage => 45f;
 	public override string WeaponNameSystem => "PoliceBaton";
 	public override string WeaponNameUI => "Милицейская Дубинка";
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheelButtons/Baton icon");
 
-	private GameObject ChokeNPCtext;
-	// Состояние окружения
-	private bool npcDetected = false;
-	// Ссылка на контроллер движения игрока
-	private PlayerMovementController playerMovementController;
-	// Новое поле: флаг возможности удушения
-	private bool isAbleToChoke = false;
-	private PlayerWeaponController weaponController;
-	private bool isItRightHand;
-	private IInputDevice inputDevice;
-
 	protected override void SetUpMeleeWeapon()
 	{
-		
-
 		CapsuleHeight = 1.8f;
 		CapsuleRadius = 0.3f;
 		ForwardOffset = 0.5f;
@@ -35,25 +31,17 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 
 		if (weaponController.rightHandWeaponComponent is WeaponPoliceBaton)
 		{
-			//Debug.Log("PoliceBaton is RIGHT");
 			isItRightHand = true;
 		}
 		if (weaponController.leftHandWeaponComponent is WeaponPoliceBaton)
 		{
-			//Debug.Log("PoliceBaton is LEFT");
 			isItRightHand = false;	
 		}
 
 		inputDevice = ServiceLocator.Resolve<IInputDevice>("inputDevice");
 	}
-
-
-
 	private void Update()
 	{
-
-		//Debug.Log(AttackPoint);
-		// --- ЛОГИКА ОБНАРУЖЕНИЯ NPC ---
 		Vector3 playerPosition = AttackPoint.transform.position;
 		Vector3 playerForward = AttackPoint.transform.forward;
 
@@ -74,20 +62,14 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 		}
 		npcDetected = newDetection;
 
-
-
 		bool isCrouching = playerMovementController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingIdle") ||
 						   playerMovementController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingWalking");
 
 		isAbleToChoke = npcDetected && isCrouching;
 
-
-	
-		
-		ChokeNPCtext.SetActive(isAbleToChoke); // Показываем текст только если можно душить
+		ChokeNPCtext.SetActive(isAbleToChoke);
 	}
 
-	// НОВЫЙ МЕТОД для удушения
 	private Coroutine currentChokeCoroutine = null;
 
 	private void PerformChokeAttack()
@@ -106,35 +88,30 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 
 		while (elapsed < chokeDuration)
 		{
-			// Проверяем, не отпущена ли кнопка атаки
 			if ((isItRightHand && inputDevice.GetKeyRightHandWeaponAttackReleased()) ||
 				(!isItRightHand && inputDevice.GetKeyLeftHandWeaponAttackReleased()))
 			{
 				Debug.Log("Failed to choke!!!");
 				currentChokeCoroutine = null;
-				yield break; // Прерываем корутину
+				yield break; 
 			}
 
 			elapsed += Time.deltaTime;
-			yield return null; // Ждём следующего кадра
+			yield return null; 
 		}
 
-		// Если дошли сюда — удушение успешно
 		Debug.Log("Choke SUCCESS!!!");
 		currentChokeCoroutine = null;
 	}
 
-	// ПЕРЕОПРЕДЕЛЯЕМ базовый метод атаки
 	public override void WeaponAttack()
 	{
-		// Если условия для удушения выполнены - используем спец. атаку
 		if (isAbleToChoke)
 		{
 			PerformChokeAttack();
-			return; // Выходим, чтобы не вызывать базовую атаку дубинкой
+			return; 
 		}
 
-		// Если условия не выполнены, вызываем обычную атаку из базового класса
 		base.WeaponAttack();
 	}
 }

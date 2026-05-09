@@ -26,6 +26,8 @@ public class Bootstrap : MonoBehaviour
 	[Header("Loading Screen")] [SerializeField] private GameObject canvasLoadingScreen;
 	private GameSceneManager gameSceneManager;
 	private TMP_Text loadingScreenText;
+	private TMP_Text sceneNameText;
+	private Image sceneLoadingScreenImage;
 
 	// Система сохранений
 	private GameObject dataSaveLoadControllerGameObject;
@@ -304,7 +306,9 @@ public class Bootstrap : MonoBehaviour
 		gameSceneManagerGameObject = new GameObject("GameSceneManager");
 		gameSceneManager = gameSceneManagerGameObject.AddComponent<GameSceneManager>();
 		loadingScreenText = canvasLoadingScreen.transform.Find("LoadingScreenText").GetComponent<TMP_Text>();
-		gameSceneManager.Initialize(gameController, canvasLoadingScreen, loadingScreenText);
+		sceneNameText = canvasLoadingScreen.transform.Find("SceneName").GetComponent<TMP_Text>();
+		sceneLoadingScreenImage = canvasLoadingScreen.transform.Find("BackgroundImage").GetComponent<Image>();
+		gameSceneManager.Initialize(gameController, canvasLoadingScreen, loadingScreenText, sceneNameText, sceneLoadingScreenImage);
 
 		yield break;
 	}
