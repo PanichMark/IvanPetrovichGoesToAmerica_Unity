@@ -21,6 +21,20 @@ public class Bootstrap : MonoBehaviour
 	private LocalizationManager localizationManager;
 	private GameController gameController;
 
+	///////
+	///////
+	
+	private BootstrapSubSystemMenu bootstrapSubSystemMenu;
+	[Header("MainMenu")][SerializeField] private GameObject canvasMainMenuReadNews;
+	[Header("PauseMenu")][SerializeField] private GameObject canvasPauseMenu;
+	[SerializeField] private GameObject canvasMenuConfirmAction;
+	[SerializeField] private GameObject canvasPauseSubMenuSave;
+	[SerializeField] private GameObject canvasPauseSubMenuLoad;
+	[SerializeField] private GameObject canvasPauseSubMenuAppearance;
+	[SerializeField] private GameObject canvasPauseSubMenuSettings;
+	[SerializeField] private GameObject canvasCutscene;
+
+
 	// Система Сцен
 	private GameObject gameSceneManagerGameObject;
 	[Header("Loading Screen")] [SerializeField] private GameObject canvasLoadingScreen;
@@ -81,6 +95,7 @@ public class Bootstrap : MonoBehaviour
 	private GameObject LeftWeaponAmmoReserve;
 	private GameObject LeftWeaponAmmoSeparator;
 
+	/*
 	// Меню
 	private GameObject menuManagerGameobject;
 	private MenuManager menuManager;
@@ -129,6 +144,7 @@ public class Bootstrap : MonoBehaviour
 	//Меню Катсцены
 	[SerializeField] private GameObject canvasCutscene;
 	private CutsceneMenuController cutsceneMenuController;
+	*/
 
 	// Система оружия
 	private GameObject weaponSystemGameObject;
@@ -195,17 +211,29 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator SequentialInitialization()
 	{
+		bootstrapSubSystemMenu = new BootstrapSubSystemMenu(this, inputDevice, gameController, gameSceneManager,
+		saveLoadController, playerMainCameraGameObject, canvasMainMenuReadNews,
+		canvasPauseMenu, canvasMenuConfirmAction,canvasPauseSubMenuSave,
+		canvasPauseSubMenuLoad, canvasPauseSubMenuAppearance, canvasPauseSubMenuSettings, canvasCutscene);
+
+
+		yield return StartCoroutine(bootstrapSubSystemMenu.InitializeMenuSystems());
+
+
+
+		/*
 		yield return StartCoroutine(InitializeInterfaces());
 		yield return StartCoroutine(InitializePlayerPrefabs());
 		yield return StartCoroutine(InitializeCanvases());
 		yield return StartCoroutine(InitializeSceneSystem());
 		yield return StartCoroutine(InitializeSavingSystem());
-		yield return StartCoroutine(InitializeMenuSystems());
+		////yield return StartCoroutine(InitializeMenuSystems());
 		yield return StartCoroutine(InitializePlayerSystems());
 		yield return StartCoroutine(InitializePlayerResources());
 		yield return StartCoroutine(InitializeInteractionSystem());
 		yield return StartCoroutine(InitializeWeaponSystem());
 		yield return StartCoroutine(RegisterAllDependencies());
+		*/
 
 		//yield return new WaitForSecondsRealtime(0.3f);
 		//yield return new WaitForSecondsRealtime(1f);
@@ -324,131 +352,7 @@ public class Bootstrap : MonoBehaviour
 		yield break;
 	}
 
-	private IEnumerator InitializeMenuSystems()
-	{
-		loadingStatusText.text = "Menu Systems";
-
-		menuManagerGameobject = new GameObject("MenuManager");
-
-		// Контроллеры меню
-		menuManager = menuManagerGameobject.AddComponent<MenuManager>();
-		mainMenuReadNews = menuManagerGameobject.AddComponent<MainMenuReadNews>();
-		pauseMenuController = menuManagerGameobject.AddComponent<PauseMenuController>();
-		pauseSubMenuSaveController = menuManagerGameobject.AddComponent<PauseSubMenuSaveController>();
-		pauseSubMenuLoadController = menuManagerGameobject.AddComponent<PauseSubMenuLoadController>();
-		pauseSubMenuAppearanceController = menuManagerGameobject.AddComponent<PauseSubMenuAppearanceController>();
-		pauseSubMenuSettingsPlayerPrefs = menuManagerGameobject.AddComponent<PauseSubMenuSettingsPlayerPrefs>();
-		pauseSubMenuSettingsController = menuManagerGameobject.AddComponent<PauseSubMenuSettingsController>();
-		menuConfirmActionController = menuManagerGameobject.AddComponent<PauseMenuConfirmActionController>();
-		cutsceneMenuController = menuManagerGameobject.AddComponent<CutsceneMenuController>();
-
-		buttonCloseMainMenuReadNews = canvasMainMenuReadNews.transform.Find("ExitReadNews").GetComponent<Button>();
-		mainMenuReadNews.Initialize(inputDevice, canvasMainMenuReadNews, buttonCloseMainMenuReadNews);
-
-		buttonConfirmAction = FindDeepChildByName(canvasMenuConfirmAction, "Confirm");
-		buttonCancelAction = FindDeepChildByName(canvasMenuConfirmAction, "Cancel");
-		textShowConfirmationMessage = FindDeepChildByName(canvasMenuConfirmAction, "Text");
-
-		// Кнопки меню
-		buttonsPauseMenu = new GameObject[]
-		{
-			FindDeepChildByName(canvasPauseMenu, "PauseMenu Resume Button"),
-			FindDeepChildByName(canvasPauseMenu, "PauseMenu Save Button"),
-			FindDeepChildByName(canvasPauseMenu, "PauseMenu Load Button"),
-			FindDeepChildByName(canvasPauseMenu, "PauseMenu Appearance Button"),
-			FindDeepChildByName(canvasPauseMenu, "PauseMenu Settings Button"),
-			FindDeepChildByName(canvasPauseMenu, "PauseMenu Exit Button")
-		};
-
-		buttonsRewriteGame = new GameObject[]
-		{
-			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE1 Button"),
-			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE2 Button"),
-			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE3 Button"),
-			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE4 Button"),
-			FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu SAVE5 Button"),
-		};
-		buttonClosePauseSubMenuSave = FindDeepChildByName(canvasPauseSubMenuSave, "SaveSubMenu close Button");
-
-		buttonsLoadGame = new GameObject[]
-		{
-			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu LOAD1 Button"),
-			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu LOAD2 Button"),
-			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu LOAD3 Button"),
-			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu LOAD4 Button"),
-			FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu LOAD5 Button"),
-		};
-
-		buttonsDeleteGame = new GameObject[]
-		{
-			FindDeepChildByName(canvasPauseSubMenuSave, "LoadSubMenu DELETE1 Button"),
-			FindDeepChildByName(canvasPauseSubMenuSave, "LoadSubMenu DELETE2 Button"),
-			FindDeepChildByName(canvasPauseSubMenuSave, "LoadSubMenu DELETE3 Button"),
-			FindDeepChildByName(canvasPauseSubMenuSave, "LoadSubMenu DELETE4 Button"),
-			FindDeepChildByName(canvasPauseSubMenuSave, "LoadSubMenu DELETE5 Button"),
-		};
-		buttonClosePauseSubMenuLoad = FindDeepChildByName(canvasPauseSubMenuLoad, "LoadSubMenu close Button");
-
-		buttonClosePauseSubMenuAppearance = FindDeepChildByName(canvasPauseSubMenuAppearance, "ImagesSubMenu close Button");
-		buttonSaveNewGame = FindDeepChildByName(canvasPauseSubMenuSave, "SaveNewGame");
-		FOVSlider = FindDeepChildByName(canvasPauseSubMenuSettings, "CameraFOVSlider");
-		fovDisplayText = FindDeepChildByName(canvasPauseSubMenuSettings, "CameraFOVText");
-		FPSbuttons = new GameObject[]
-		{
-			FindDeepChildByName(canvasPauseSubMenuSettings, "Fps30"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "Fps60"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "Fps90"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "Fps144"),
-		};
-
-		buttonsChangeLanguage = new GameObject[]
-		{
-			FindDeepChildByName(canvasPauseSubMenuSettings, "LanguageRussian"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "LanguageEnglish"),
-		};
-
-		KeyRebinds = new GameObject[]
-		{
-			FindDeepChildByName(canvasPauseSubMenuSettings, "MoveForward"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "MoveBackward"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "MoveRight"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "MoveLeft"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "Run"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "Jump"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "Crouch"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "Interact"),
-
-			FindDeepChildByName(canvasPauseSubMenuSettings, "ChangeCameraView"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "ChangeCameraShoulder"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "RightHandWeaponWheel"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "LeftHandWeaponWheel"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "RightHandWeaponAttack"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "LeftHandWeaponAttack"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "Reload"),
-			FindDeepChildByName(canvasPauseSubMenuSettings, "LegKick"),
-		};
-
-		buttonClosePauseSubMenuSettings = FindDeepChildByName(canvasPauseSubMenuSettings, "SettingsSubMenu close Button");
-
-		buttonSaveSettings = FindDeepChildByName(canvasPauseSubMenuSettings, "SaveSettings");
-		buttonResetSettings = FindDeepChildByName(canvasPauseSubMenuSettings, "ResetSettings");
 	
-
-		// Инициализация меню
-		menuManager.Initialize(inputDevice, gameController, gameSceneManager);
-		pauseMenuController.Initialize(inputDevice, gameController, gameSceneManager, saveLoadController, menuManager, canvasPauseMenu, buttonsPauseMenu);
-		pauseSubMenuSaveController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuSave, buttonsRewriteGame, buttonsDeleteGame, buttonClosePauseSubMenuSave, buttonSaveNewGame);
-		pauseSubMenuLoadController.Initialize(inputDevice, menuManager, pauseMenuController, saveLoadController, canvasPauseSubMenuLoad, buttonsLoadGame, buttonClosePauseSubMenuLoad);
-		pauseSubMenuAppearanceController.Initialize(inputDevice, menuManager, pauseMenuController, canvasPauseSubMenuAppearance, buttonClosePauseSubMenuAppearance);
-		pauseSubMenuSettingsController.Initialize(inputDevice, this, gameController, playerMainCameraGameObject, fovDisplayText, menuManager, pauseMenuController, canvasPauseSubMenuSettings, buttonClosePauseSubMenuSettings, FOVSlider, FPSbuttons, buttonsChangeLanguage, KeyRebinds, pauseSubMenuSettingsPlayerPrefs, buttonSaveSettings, buttonResetSettings);
-
-		menuConfirmActionController.Initialize(menuManager, pauseMenuController, canvasMenuConfirmAction, buttonConfirmAction, buttonCancelAction, saveLoadController, pauseSubMenuSaveController, pauseSubMenuLoadController, pauseSubMenuSettingsController, textShowConfirmationMessage);
-
-		cutsceneMenuController.Initialize(menuManager, gameSceneManager, canvasCutscene);
-
-		Debug.Log("PAUSE MENU INITIALIZED");
-		yield break;
-	}
 
 	private IEnumerator InitializePlayerSystems()
 	{
@@ -661,11 +565,11 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("CanvasLockpickElectronicMenu", canvasLockpickElectronicMenu);
 		ServiceLocator.Register("CanvasReadNoteMenu", canvasReadNoteMenu);
 		ServiceLocator.Register("SaveLoadController", saveLoadController);
-		ServiceLocator.Register("PauseMenuController", pauseMenuController);
+		
 		ServiceLocator.Register("GameController", gameController);
 		ServiceLocator.Register("GameSceneManager", gameSceneManager);
 		ServiceLocator.Register("PlayerMovementController", playerMovementController);
-		ServiceLocator.Register("MainMenuReadNews", mainMenuReadNews);
+		
 		ServiceLocator.Register("PlayerCameraBlurFilter", playerCameraBlurFilter);
 		ServiceLocator.Register("buttonsLockElectrical", buttonsLockElectrical);
 		ServiceLocator.Register("PlayerBehaviour", playerBehaviour);
@@ -699,7 +603,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.ClearAllServices();
 	}
 
-	private GameObject FindDeepChildByName(GameObject root, string targetName)
+	public GameObject FindDeepChildByName(GameObject root, string targetName)
 	{
 		Queue<Transform> queue = new Queue<Transform>();
 		queue.Enqueue(root.transform);
