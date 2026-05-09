@@ -5,8 +5,7 @@ using TMPro;
 
 public class WeaponWheelMenuController : MonoBehaviour
 {
-	private GameObject wheelSegmentPrefab;          
-	//private Transform centerPoint;                  
+	private GameObject wheelSegmentPrefab;                    
 	private GameObject WeaponWheelMenuCanvas;            
 	public TextMeshProUGUI WeaponText { get; private set; }            
 	public TextMeshProUGUI WeaponWheelName { get; private set; }       
@@ -23,6 +22,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	private PlayerBehaviour playerBehaviour;
 	private MenuManager menuManager;
 
+	private bool isHoveringOverButton;
 	private bool previousRightHandPressed = false;
 	private bool previousLeftHandPressed = false;
 
@@ -30,7 +30,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 	public event System.Action<int> OnSegmentSelected;
 
-	private Image weaponIconBig;
+	public Image WeaponIcon {  get; private set; }
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, PlayerWeaponController weaponController,
 		GameObject wheelSegmentPrefab, GameObject WeaponWheelMenuCanvas, TextMeshProUGUI WeaponText, TextMeshProUGUI WeaponWheelName, Image weaponIconBig)
 	{
@@ -39,11 +39,10 @@ public class WeaponWheelMenuController : MonoBehaviour
 		this.weaponController = weaponController;
 		this.menuManager = menuManager;
 		this.wheelSegmentPrefab = wheelSegmentPrefab;
-		//this.centerPoint = centerPoint;
 		this.WeaponWheelMenuCanvas = WeaponWheelMenuCanvas;
 		this.WeaponText = WeaponText;
 		this.WeaponWheelName = WeaponWheelName;
-		this.weaponIconBig = weaponIconBig;
+		this.WeaponIcon = weaponIconBig;
 
 		this.WeaponWheelMenuCanvas.gameObject.SetActive(false);
 		_isInitialized = true;
@@ -82,7 +81,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = false;
 			ShowWeaponName();
-			ShowWeaponIconBig();
+			ShowWeaponIcon();
 			WeaponWheelName.text = "ПРАВАЯ РУКА";
 		}
 		else if (leftHandPressed)
@@ -92,7 +91,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 			IsWeaponWheelActive = true;
 			IsWeaponLeftHand = true;
 			ShowWeaponName();
-			ShowWeaponIconBig();
+			ShowWeaponIcon();
 			WeaponWheelName.text = "ЛЕВАЯ РУКА";
 		}
 		else
@@ -202,32 +201,38 @@ public class WeaponWheelMenuController : MonoBehaviour
 		}
 	}
 
-	public void ShowWeaponIconBig()
+	public void ShowWeaponIcon()
 	{
 		if (IsWeaponLeftHand)
 		{
 			if (weaponController.LeftHandWeapon != null)
 			{
-				weaponIconBig.gameObject.SetActive(true);
-				weaponIconBig.sprite = weaponController.leftHandWeaponComponent.WeaponIcon;
+				WeaponIcon.gameObject.SetActive(true);
+				WeaponIcon.sprite = weaponController.leftHandWeaponComponent.WeaponIcon;
 			}
 			else
 			{
-				weaponIconBig.gameObject.SetActive(false);
-				weaponIconBig.sprite = null;
+				if (!isHoveringOverButton)
+				{
+					WeaponIcon.gameObject.SetActive(false);
+				}
+				WeaponIcon.sprite = null;
 			}
 		}
 		else if (IsWeaponLeftHand == false)
 		{
 			if (weaponController.RightHandWeapon != null)
 			{
-				weaponIconBig.gameObject.SetActive(true);
-				weaponIconBig.sprite = weaponController.rightHandWeaponComponent.WeaponIcon;
+				WeaponIcon.gameObject.SetActive(true);
+				WeaponIcon.sprite = weaponController.rightHandWeaponComponent.WeaponIcon;
 			}
 			else
 			{
-				weaponIconBig.gameObject.SetActive(false);
-				weaponIconBig.sprite = null;
+				if (!isHoveringOverButton)
+				{
+					WeaponIcon.gameObject.SetActive(false);
+				}
+				WeaponIcon.sprite = null;
 			}
 		}
 	}

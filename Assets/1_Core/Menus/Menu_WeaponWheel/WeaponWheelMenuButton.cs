@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class WeaponWheelMenuButton : MonoBehaviour
@@ -7,6 +8,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	private WeaponWheelMenuController weaponWheelController;
 	private GameObject WeaponPrefab;
 	private string WeaponName;
+	private Sprite WeaponIcon;
 	private Button _button;
 
 	private Color originalNormalColor;
@@ -21,10 +23,12 @@ public class WeaponWheelMenuButton : MonoBehaviour
 		this.weaponWheelController = weaponWheelController;
 		this.WeaponPrefab = weaponPrefab;
 		WeaponName = weaponComponent.WeaponNameUI;
+		WeaponIcon = weaponComponent.WeaponIcon;
 
 		var button = GetComponent<Button>();
 		button.onClick.AddListener(() => SelectWeapon());
-		button.onClick.AddListener(() => this.weaponWheelController.ShowWeaponIconBig());
+		button.onClick.AddListener(() => this.weaponWheelController.ShowWeaponIcon());
+
 		_button = button; 
 
 		originalNormalColor = _button.colors.normalColor;
@@ -100,12 +104,15 @@ public class WeaponWheelMenuButton : MonoBehaviour
 
 	public void HoverEnter()
 	{
+		weaponWheelController.WeaponIcon.gameObject.SetActive(true);
 		weaponWheelController.WeaponText.text = WeaponName;
+		weaponWheelController.WeaponIcon.sprite = WeaponIcon;
 	}
 
 	public void HoverExit()
 	{
 		weaponWheelController.ShowWeaponName();
+		weaponWheelController.ShowWeaponIcon();
 	}
 
 	private void SelectWeapon()
@@ -119,7 +126,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	private void OnDestroy()
 	{
 		weaponController.OnWeaponChanged -= OnWeaponChange;
-		this.weaponWheelController.OnOpenWeaponWheelMenu -= OnOpenWeaponWheel;
+		weaponWheelController.OnOpenWeaponWheelMenu -= OnOpenWeaponWheel;
 	}
 
 	private void ChangeButtonColor(Color newColor)
