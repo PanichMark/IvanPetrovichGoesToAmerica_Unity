@@ -14,7 +14,7 @@ public class BootstrapSubProcessPlayerResources
 	private GameObject _canvasHUDammo;
 
 	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
-	private TMP_Text _playerMoneyTextGameObject;
+	private TMP_Text _textPlayerMoneyNumber;
 
 	private PlayerResourcesHealthManager _playerResourcesHealthManager;
 	private Slider _sliderHealthBar;
@@ -27,11 +27,11 @@ public class BootstrapSubProcessPlayerResources
 	private TextMeshProUGUI _textManaReplenishItemNumber;
 
 	public PlayerResourcesAmmoManager PlayerResourcesAmmoManager { get; private set; }
-	public GameObject RightWeaponAmmoMagazine { get; private set; }
-	public GameObject RightWeaponAmmoReserve { get; private set; }
+	public GameObject TextRightWeaponAmmoMagazineNumber { get; private set; }
+	public GameObject TextRightWeaponAmmoReserveNumber { get; private set; }
 	public GameObject RightWeaponAmmoSeparator { get; private set; }
-	public GameObject LeftWeaponAmmoMagazine { get; private set; }
-	public GameObject LeftWeaponAmmoReserve { get; private set; }
+	public GameObject TextLeftWeaponAmmoMagazineNumber { get; private set; }
+	public GameObject TextLeftWeaponAmmoReserveNumber { get; private set; }
 	public GameObject LeftWeaponAmmoSeparator { get; private set; }
 
 	private GameObject _canvasPauseMenu;
@@ -67,13 +67,13 @@ public class BootstrapSubProcessPlayerResources
 	{
 		_playerResourcesGameObject = new GameObject("PlayerResources");
 
-		_playerMoneyTextGameObject = _canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber").GetComponent<TMP_Text>();
-		_sliderHealthBar = _canvasHUDhealthAndMana.transform.Find("Health Slider").GetComponent<Slider>();
-		_buttonUseHealingItem = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "HealingItemButton").GetComponent<Button>();
-		_textHealingItemNumber = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "HealingItemsNumber").GetComponent<TextMeshProUGUI>();
-		_sliderManaBar = _canvasHUDhealthAndMana.transform.Find("Mana Slider").GetComponent<Slider>();
-		_buttonUseManaReplenishItem = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "ManaReplenishItemButton ").GetComponent<Button>();
-		_textManaReplenishItemNumber = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "ManaReplenishItemsNumber").GetComponent<TextMeshProUGUI>();
+		_textPlayerMoneyNumber = _canvasPauseMenu.transform.Find("TextPlayerMoneyNumber").GetComponent<TMP_Text>();
+		_sliderHealthBar = _canvasHUDhealthAndMana.transform.Find("SliderHealthBar").GetComponent<Slider>();
+		_buttonUseHealingItem = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "ButtonUseHealingItem").GetComponent<Button>();
+		_textHealingItemNumber = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "TextHealingItemNumber").GetComponent<TextMeshProUGUI>();
+		_sliderManaBar = _canvasHUDhealthAndMana.transform.Find("SliderManaBar").GetComponent<Slider>();
+		_buttonUseManaReplenishItem = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "ButtonUseManaReplenishItem").GetComponent<Button>();
+		_textManaReplenishItemNumber = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "TextManaReplenishItemNumber").GetComponent<TextMeshProUGUI>();
 
 		_canvasHUDhealthAndManaController = _playerResourcesGameObject.AddComponent<CanvasHUDhealthAndManaController>();
 		CanvasHUDammoController = _playerResourcesGameObject.AddComponent<CanvasHUDammoController>();
@@ -82,22 +82,22 @@ public class BootstrapSubProcessPlayerResources
 		_playerResourcesManaManager = _playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
 		PlayerResourcesAmmoManager = _playerResourcesGameObject.AddComponent<PlayerResourcesAmmoManager>();
 
-		_canvasHUDhealthAndManaController.Initialize(_bootstrapSubProcessSceneSystem.gameSceneManager, _gameController, _bootstrapSubProcessMenuSystem.MenuManager, _canvasHUDhealthAndMana);
-		_playerResourcesMoneyManager.Initialize(_playerMoneyTextGameObject);
+		_canvasHUDhealthAndManaController.Initialize(_bootstrapSubProcessSceneSystem.GameSceneManager, _gameController, _bootstrapSubProcessMenuSystem.MenuManager, _canvasHUDhealthAndMana);
+		_playerResourcesMoneyManager.Initialize(_textPlayerMoneyNumber);
 		_playerResourcesHealthManager.Initialize(_gameController, _bootstrapSubProcessPlayerSystems.PlayerBehaviour, _sliderHealthBar, _buttonUseHealingItem, _textHealingItemNumber);
 		_playerResourcesManaManager.Initialize(_sliderManaBar, _buttonUseManaReplenishItem, _textManaReplenishItemNumber);
 
-		RightWeaponAmmoMagazine = _canvasHUDammo.transform.Find("RightWeaponAmmoMagazine").gameObject;
-		RightWeaponAmmoReserve = _canvasHUDammo.transform.Find("RightWeaponAmmoReserve").gameObject;
+		TextRightWeaponAmmoMagazineNumber = _canvasHUDammo.transform.Find("TextRightWeaponAmmoMagazineNumber").gameObject;
+		TextRightWeaponAmmoReserveNumber = _canvasHUDammo.transform.Find("TextRightWeaponAmmoReserveNumber").gameObject;
 		RightWeaponAmmoSeparator = _canvasHUDammo.transform.Find("RightWeaponAmmoSeparator").gameObject;
-		LeftWeaponAmmoMagazine = _canvasHUDammo.transform.Find("LeftWeaponAmmoMagazine").gameObject;
-		LeftWeaponAmmoReserve = _canvasHUDammo.transform.Find("LeftWeaponAmmoReserve").gameObject;
+		TextLeftWeaponAmmoMagazineNumber = _canvasHUDammo.transform.Find("TextLeftWeaponAmmoMagazineNumber").gameObject;
+		TextLeftWeaponAmmoReserveNumber = _canvasHUDammo.transform.Find("TextLeftWeaponAmmoReserveNumber").gameObject;
 		LeftWeaponAmmoSeparator = _canvasHUDammo.transform.Find("LeftWeaponAmmoSeparator").gameObject;
 
 		ServiceLocator.Register("PlayerResourcesMoneyManager", _playerResourcesMoneyManager);
 		ServiceLocator.Register("PlayerResourcesHealthManager", _playerResourcesHealthManager);
 		ServiceLocator.Register("PlayerResourcesManaManager", _playerResourcesManaManager);
-		ServiceLocator.Register("playerResourcesAmmoManager", PlayerResourcesAmmoManager);
+		ServiceLocator.Register("PlayerResourcesAmmoManager", PlayerResourcesAmmoManager);
 
 		Debug.Log("PLAYER RESOURCES INITIALIZED");
 

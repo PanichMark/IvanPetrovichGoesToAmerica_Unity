@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7712032163922703091}
   - component: {fileID: 1639529461169944100}
   m_Layer: 5
-  m_Name: BackgroundBlack
+  m_Name: ImageNoteBlackBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 1405693967402830619}
   - component: {fileID: 6054287451796871201}
   m_Layer: 5
-  m_Name: ReadableText
+  m_Name: TextNote
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 5963963239508995390}
   - component: {fileID: 1438037580064199245}
   m_Layer: 5
-  m_Name: ExitReadNote
+  m_Name: ButtonExitReadNoteMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -528,7 +528,7 @@ GameObject:
   - component: {fileID: 1130393272510348293}
   - component: {fileID: 8730635001652630967}
   m_Layer: 5
-  m_Name: ReadableImage
+  m_Name: ImageNote
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

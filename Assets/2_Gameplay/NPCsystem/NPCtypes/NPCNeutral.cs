@@ -8,11 +8,11 @@ public class NPCNeutral : NPCAbstract
 			_npcStateMachineController?.CurrentNPCState != "Patrolling")
 			return;
 
-		if (_NPCDialogueController.RussianDialogueFile != null &&
-			_NPCDialogueController.EnglishDialogueFile != null)
+		if (_NPCdialogueController.RussianDialogueFile != null &&
+			_NPCdialogueController.EnglishDialogueFile != null)
 		{
 			_npcStateMachineController.RotateTowardsPlayer();
-			_NPCDialogueController.Interact();
+			_NPCdialogueController.Interact();
 		}
 		else
 		{

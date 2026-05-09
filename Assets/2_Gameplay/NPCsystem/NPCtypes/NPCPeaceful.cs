@@ -14,11 +14,11 @@ public class NPCPeaceful : NPCAbstract
 			return;
 
 		// Если есть диалоги для текущего языка, начинаем диалог.
-		if (_NPCDialogueController.RussianDialogueFile != null &&
-			_NPCDialogueController.EnglishDialogueFile != null)
+		if (_NPCdialogueController.RussianDialogueFile != null &&
+			_NPCdialogueController.EnglishDialogueFile != null)
 		{
 			_npcStateMachineController.RotateTowardsPlayer();
-			_NPCDialogueController.Interact();
+			_NPCdialogueController.Interact();
 		}
 		else
 		{

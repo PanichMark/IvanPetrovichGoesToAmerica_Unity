@@ -2,9 +2,9 @@
 
 public class WeaponEugenicGenie : EugenicWeaponAbstract
 {
-	float attackRange = 5f;
-	float knockbackForce = 10f;
-	int damageAmount = 100;
+	private float attackRange = 5f;
+	private float knockbackForce = 10f;
+	private int damageAmount = 100;
 	public override string WeaponNameSystem => "EugenicGenie";
 	public override string WeaponNameUI => "Дыхание Джинна";
 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1081707121780984021}
   - component: {fileID: 8358106845230062407}
   m_Layer: 5
-  m_Name: LeftWeaponAmmoMagazine
+  m_Name: TextLeftWeaponAmmoMagazineNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 2307907930965842354}
   - component: {fileID: 2130787923990775013}
   m_Layer: 5
-  m_Name: LeftWeaponAmmoReserve
+  m_Name: TextLeftWeaponAmmoReserveNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 1334200287658562829}
   - component: {fileID: 8399143479905682997}
   m_Layer: 5
-  m_Name: RightWeaponAmmoReserve
+  m_Name: TextRightWeaponAmmoReserveNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 888534255958866895}
   - component: {fileID: 7078808339642648835}
   m_Layer: 5
-  m_Name: RightWeaponAmmoMagazine
+  m_Name: TextRightWeaponAmmoMagazineNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -692,7 +692,7 @@ GameObject:
   - component: {fileID: 5328199589445032148}
   - component: {fileID: 8331044044507037529}
   m_Layer: 5
-  m_Name: ChokingText
+  m_Name: TextChokeNPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

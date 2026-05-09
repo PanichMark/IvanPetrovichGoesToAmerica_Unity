@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WeaponSawedoffShotgun : WeaponRangedAbstract
+public class WeaponSawedOffShotgun : WeaponRangedAbstract
 {
 	public override string WeaponNameSystem => "SawedOffShotgun";
 	public override string WeaponNameUI => "Дробовик Обрез";
@@ -13,6 +13,5 @@ public class WeaponSawedoffShotgun : WeaponRangedAbstract
 
 		MagazineAmmoMax = 2; 
 		MagazineAmmoCurrent = 2; 
-
 	}
 }

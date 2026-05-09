@@ -6,26 +6,26 @@ using UnityEngine;
 
 public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 {
-	private float NPCMaxHealth;
-	[SerializeField][Min(0)] private float NPCCurrentHealth;
-	public bool IsNPCdead => NPCCurrentHealth <= 0;
-	[SerializeField] protected string NPC_name;
+	private float _NPCmaxHealth;
+	[SerializeField][Min(0)] private float _NPCcurrentHealth;
+	public bool IsNPCdead => _NPCcurrentHealth <= 0;
+	[SerializeField] protected string _NPCname;
 
-	private Dictionary<LanguagesEnum, List<string>> localizedPhrases = new Dictionary<LanguagesEnum, List<string>>
+	private Dictionary<LanguagesEnum, List<string>> _localizedNPSphrases = new Dictionary<LanguagesEnum, List<string>>
 	{
 		{LanguagesEnum.Russian, new List<string>() },
 		{LanguagesEnum.English, new List<string>() }
 	};
 
-	protected NPCDialogueController _NPCDialogueController;
+	protected NPCDialogueController _NPCdialogueController;
 	private TextMeshProUGUI NPCphrasesText;
 	[SerializeField] private TextAsset russianPhraseFile;
 	[SerializeField] private TextAsset englishPhraseFile;
 	private LocalizationManager localizationManager;
 	protected NPCStateMachineController _npcStateMachineController;
 
-	public string InteractionObjectNameSystem => NPC_name;
-	public string InteractionObjectNameUI => localizationManager.GetLocalizedString(NPC_name);
+	public string InteractionObjectNameSystem => _NPCname;
+	public string InteractionObjectNameUI => localizationManager.GetLocalizedString(_NPCname);
 	public string InteractionHintMessageMain => $"Talk to {InteractionObjectNameUI}";
 	public string InteractionHintMessageAdditional => throw new System.NotImplementedException();
 	public virtual bool IsInteractionHintMessageAdditionalActive => false;
@@ -33,14 +33,14 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public bool WasObjectDestroyed => throw new System.NotImplementedException();
 
-	public float Health => NPCCurrentHealth;
+	public float Health => _NPCcurrentHealth;
 
 	private void Start()
 	{
-		NPCMaxHealth = NPCCurrentHealth;
+		_NPCmaxHealth = _NPCcurrentHealth;
 		NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("NPCphrases");
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_NPCDialogueController = GetComponent<NPCDialogueController>();
+		_NPCdialogueController = GetComponent<NPCDialogueController>();
 
 		LoadPhrasesFromFiles();
 		_npcStateMachineController = GetComponent<NPCStateMachineController>();
@@ -62,7 +62,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 				{
 					if (!string.IsNullOrWhiteSpace(line))
 					{
-						localizedPhrases[LanguagesEnum.Russian].Add(line.Trim());
+						_localizedNPSphrases[LanguagesEnum.Russian].Add(line.Trim());
 					}
 				}
 			}
@@ -81,7 +81,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 				{
 					if (!string.IsNullOrWhiteSpace(line))
 					{
-						localizedPhrases[LanguagesEnum.English].Add(line.Trim());
+						_localizedNPSphrases[LanguagesEnum.English].Add(line.Trim());
 					}
 				}
 			}
@@ -97,10 +97,10 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		NPCphrasesText.gameObject.SetActive(true);
 
 		var currentLanguage = localizationManager.CurrentLanguage;
-		if (localizedPhrases[currentLanguage].Count > 0)
+		if (_localizedNPSphrases[currentLanguage].Count > 0)
 		{
-			int randomIndex = Random.Range(0, localizedPhrases[currentLanguage].Count);
-			string selectedPhrase = localizedPhrases[currentLanguage][randomIndex];
+			int randomIndex = Random.Range(0, _localizedNPSphrases[currentLanguage].Count);
+			string selectedPhrase = _localizedNPSphrases[currentLanguage][randomIndex];
 			string fullPhrase = $"{InteractionObjectNameUI}: {selectedPhrase}";
 			NPCphrasesText.text = fullPhrase;
 		}
@@ -124,14 +124,14 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		gameObject.tag = "Interactable";
 		enabled = false;
 		gameObject.AddComponent<Rigidbody>();
-		InteractionObjectPickable.CreateWithName(gameObject, NPC_name);
+		InteractionObjectPickable.CreateWithName(gameObject, _NPCname);
 		Destroy(this);
 	}
 
 	public void TakeDamage(float amount)
 	{
 		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {Health - amount}");
-		NPCCurrentHealth -= amount;
+		_NPCcurrentHealth -= amount;
 
 		if (IsNPCdead)
 		{
@@ -141,12 +141,12 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public void SetHealthToZero()
 	{
-		NPCCurrentHealth = 0;
+		_NPCcurrentHealth = 0;
 	}
 
 	public void ObjectIsFullyDamaged()
 	{
-		Debug.Log($"{NPC_name} is Dead");
+		Debug.Log($"{_NPCname} is Dead");
 
 		StopAllCoroutines();
 		ConvertToPickableObject();

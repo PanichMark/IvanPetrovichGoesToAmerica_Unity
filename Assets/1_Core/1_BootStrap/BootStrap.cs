@@ -31,7 +31,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasPauseSubMenuLoad;
 	[SerializeField] private GameObject _canvasPauseSubMenuAppearance;
 	[SerializeField] private GameObject _canvasPauseSubMenuSettings;
-	[SerializeField] private GameObject _canvasCutscene;
+	[SerializeField] private GameObject _canvasMenuCutscene;
 
 	// Система Сцен
 	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
@@ -92,17 +92,17 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessSceneSystem = new BootstrapSubProcessSceneSystem(_gameController, _canvasLoadingScreen);
 		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.InitializeSceneSystem());
 
-		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(_bootstrapSubProcessSceneSystem.gameSceneManager, _gameController);
+		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(_bootstrapSubProcessSceneSystem.GameSceneManager, _gameController);
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.InitializeSaveLoadSystem());
 
-		_bootstrapSubProcessMenuSystem = new BootstrapSubProcessMenuSystem(this, _inputDevice, _gameController, _bootstrapSubProcessSceneSystem.gameSceneManager,
-			_bootstrapSubProcessSaveLoadSystem.saveLoadController, _playerCameraGameObject, _canvasMainMenuReadNews,
+		_bootstrapSubProcessMenuSystem = new BootstrapSubProcessMenuSystem(this, _inputDevice, _gameController, _bootstrapSubProcessSceneSystem.GameSceneManager,
+			_bootstrapSubProcessSaveLoadSystem.SaveLoadController, _playerCameraGameObject, _canvasMainMenuReadNews,
 			_canvasPauseMenu, _canvasMenuConfirmAction, _canvasPauseSubMenuSave,
-			_canvasPauseSubMenuLoad, _canvasPauseSubMenuAppearance, _canvasPauseSubMenuSettings, _canvasCutscene);
+			_canvasPauseSubMenuLoad, _canvasPauseSubMenuAppearance, _canvasPauseSubMenuSettings, _canvasMenuCutscene);
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.InitializeMenuSystems());
 
 		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(_inputDevice,
-			_bootstrapSubProcessSceneSystem.gameSceneManager,
+			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			this,
 			_playerGameObject,
 			_playerCameraGameObject,
@@ -124,9 +124,9 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessInteractionSystem(this,
 			_bootstrapSubProcessMenuSystem,
 			_gameController,
-			_bootstrapSubProcessSceneSystem.gameSceneManager,
+			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_inputDevice,
-			_bootstrapSubProcessPlayerSystems.playerCameraController,
+			_bootstrapSubProcessPlayerSystems.PlayerCameraController,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			_canvasHUDInteraction,
 			_canvasMenuNote,
@@ -146,11 +146,11 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessInteractionSystem,
 			_bootstrapSubProcessPlayerResources.CanvasHUDammoController,
 			_canvasHUDammo,
-			_bootstrapSubProcessPlayerResources.RightWeaponAmmoMagazine,
-			_bootstrapSubProcessPlayerResources.RightWeaponAmmoReserve,
+			_bootstrapSubProcessPlayerResources.TextRightWeaponAmmoMagazineNumber,
+			_bootstrapSubProcessPlayerResources.TextRightWeaponAmmoReserveNumber,
 			_bootstrapSubProcessPlayerResources.RightWeaponAmmoSeparator,
-			_bootstrapSubProcessPlayerResources.LeftWeaponAmmoMagazine,
-			_bootstrapSubProcessPlayerResources.LeftWeaponAmmoReserve,
+			_bootstrapSubProcessPlayerResources.TextLeftWeaponAmmoMagazineNumber,
+			_bootstrapSubProcessPlayerResources.TextLeftWeaponAmmoReserveNumber,
 			_bootstrapSubProcessPlayerResources.LeftWeaponAmmoSeparator,
 			_canvasMenuWeaponWheel);
 		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
@@ -161,12 +161,12 @@ public class Bootstrap : MonoBehaviour
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
-		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.saveLoadController.NewGame());
+		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.SaveLoadController.NewGame());
 
 		GameObject[] availableWeapons = _configBootstrapWeapons.GetAvailableWeapons();
 		foreach (GameObject weaponPrefab in availableWeapons)
 		{
-			_bootstrapSubProcessWeaponSystem.weaponController.UnlockWeapon(weaponPrefab);
+			_bootstrapSubProcessWeaponSystem.WeaponController.UnlockWeapon(weaponPrefab);
 		}
 
 		Destroy(_bootstrapTemporaryCameraGameObject);
@@ -174,11 +174,11 @@ public class Bootstrap : MonoBehaviour
 
 		if (_configBootstrapScene.SelectedScene.ToString() == "Scene_0_MainMenu")
 		{
-			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.gameSceneManager.LoadMainMenuScene());
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadMainMenuScene());
 		}
 		else
 		{
-			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.gameSceneManager.LoadGameplayScene(_configBootstrapScene.SelectedScene));
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene(_configBootstrapScene.SelectedScene));
 		}
 
 		_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_configBootstrapPlayerPosition.PlayerPosition);
@@ -188,7 +188,7 @@ public class Bootstrap : MonoBehaviour
 	{
 		_localizationManager.ChangeLanguage(language);
 		_bootstrapSubProcessInteractionSystem.InteractionController.ChangeLanguage(_localizationManager);
-		_bootstrapSubProcessSceneSystem.gameSceneManager.ChangeLanguage(_localizationManager);
+		_bootstrapSubProcessSceneSystem.GameSceneManager.ChangeLanguage(_localizationManager);
 		ServiceLocator.RemoveService("LocalizationManager");
 		ServiceLocator.Register("LocalizationManager", _localizationManager);
 	}
@@ -228,7 +228,7 @@ public class Bootstrap : MonoBehaviour
 		_canvasMenuDialogue = Instantiate(_canvasMenuDialogue);
 		_canvasHUDammo = Instantiate(_canvasHUDammo);
 		_canvasMenuConfirmAction = Instantiate(_canvasMenuConfirmAction);
-		_canvasCutscene = Instantiate(_canvasCutscene);
+		_canvasMenuCutscene = Instantiate(_canvasMenuCutscene);
 
 		Debug.Log("CANVASES INITIALIZED");
 		yield break;
@@ -238,7 +238,8 @@ public class Bootstrap : MonoBehaviour
 	{
 		ServiceLocator.Register("LocalizationManager", _localizationManager);
 		ServiceLocator.Register("GameController", _gameController);
-		ServiceLocator.Register("inputDevice", _inputDevice);
+		ServiceLocator.Register("InputDevice", _inputDevice);
+
 		Debug.Log("BOOTSTRAP SERVICES REGISTERED");
 		yield break;
 	}

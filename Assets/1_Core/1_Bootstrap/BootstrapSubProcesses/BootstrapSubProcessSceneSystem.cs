@@ -5,32 +5,32 @@ using UnityEngine.UI;
 
 public class BootstrapSubProcessSceneSystem
 {
-	public GameSceneManager gameSceneManager { get; private set; }
-	private TMP_Text loadingScreenText;
-	private TMP_Text sceneNameText;
-	private Image sceneLoadingScreenImage;
-	private GameObject gameSceneManagerGameObject;
-	private GameObject canvasLoadingScreen;
-	private GameController gameController;
+	public GameSceneManager GameSceneManager { get; private set; }
+	private TMP_Text _textLoadingScreenStatus;
+	private TMP_Text _textSceneName;
+	private Image _imageLoadingScreen;
+	private GameObject _gameSceneManagerGameObject;
+	private GameObject _canvasLoadingScreen;
+	private GameController _gameController;
 
 	public BootstrapSubProcessSceneSystem(GameController gameController, GameObject canvasLoadingScreen)
 	{
-		this.gameController = gameController;
-		this.canvasLoadingScreen = canvasLoadingScreen;
+		_gameController = gameController;
+		_canvasLoadingScreen = canvasLoadingScreen;
 	}
 
 	public IEnumerator InitializeSceneSystem()
 	{
-		gameSceneManagerGameObject = new GameObject("GameSceneManager");
-		gameSceneManager = gameSceneManagerGameObject.AddComponent<GameSceneManager>();
+		_gameSceneManagerGameObject = new GameObject("GameSceneManager");
+		GameSceneManager = _gameSceneManagerGameObject.AddComponent<GameSceneManager>();
 
-		loadingScreenText = canvasLoadingScreen.transform.Find("LoadingScreenText").GetComponent<TMP_Text>();
-		sceneNameText = canvasLoadingScreen.transform.Find("SceneName").GetComponent<TMP_Text>();
-		sceneLoadingScreenImage = canvasLoadingScreen.transform.Find("BackgroundImage").GetComponent<Image>();
+		_textLoadingScreenStatus = _canvasLoadingScreen.transform.Find("TextLoadingScreenStatus").GetComponent<TMP_Text>();
+		_textSceneName = _canvasLoadingScreen.transform.Find("TextSceneName").GetComponent<TMP_Text>();
+		_imageLoadingScreen = _canvasLoadingScreen.transform.Find("ImageLoadingScreen").GetComponent<Image>();
 
-		gameSceneManager.Initialize(gameController, canvasLoadingScreen, loadingScreenText, sceneNameText, sceneLoadingScreenImage);
+		GameSceneManager.Initialize(_gameController, _canvasLoadingScreen, _textLoadingScreenStatus, _textSceneName, _imageLoadingScreen);
 
-		ServiceLocator.Register("GameSceneManager", gameSceneManager);
+		ServiceLocator.Register("GameSceneManager", GameSceneManager);
 
 		yield break;
 	}

@@ -3,25 +3,25 @@ using UnityEngine;
 
 public class BootstrapSubProcessSaveLoadSystem
 {
-	private GameObject dataSaveLoadControllerGameObject;
-	public SaveLoadController saveLoadController { get; private set; }
+	private GameObject _saveLoadControllerGameObject;
+	public SaveLoadController SaveLoadController { get; private set; }
 
-	private GameSceneManager gameSceneManager;
-	private GameController gameController;
+	private GameSceneManager _gameSceneManager;
+	private GameController _gameController;
 
 	public BootstrapSubProcessSaveLoadSystem(GameSceneManager gameSceneManager, GameController gameController)
 	{
-		this.gameSceneManager = gameSceneManager;
-		this.gameController = gameController;
+		_gameSceneManager = gameSceneManager;
+		_gameController = gameController;
 	}
 
 	public IEnumerator InitializeSaveLoadSystem()
 	{
-		dataSaveLoadControllerGameObject = new GameObject("DataSaveLoadController");
-		saveLoadController = dataSaveLoadControllerGameObject.AddComponent<SaveLoadController>();
-		saveLoadController.Initialize(gameSceneManager, gameController);
+		_saveLoadControllerGameObject = new GameObject("DataSaveLoadController");
+		SaveLoadController = _saveLoadControllerGameObject.AddComponent<SaveLoadController>();
+		SaveLoadController.Initialize(_gameSceneManager, _gameController);
 
-		ServiceLocator.Register("SaveLoadController", saveLoadController);
+		ServiceLocator.Register("SaveLoadController", SaveLoadController);
 
 		Debug.Log("SAVE SYSTEM INITIALIZED");
 		yield break;

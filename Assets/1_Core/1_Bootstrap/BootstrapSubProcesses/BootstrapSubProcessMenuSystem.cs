@@ -111,69 +111,70 @@ public class BootstrapSubProcessMenuSystem
 		_pauseMenuConfirmActionController = _menuManagerGameobject.AddComponent<PauseMenuConfirmActionController>();
 		_cutsceneMenuController = _menuManagerGameobject.AddComponent<CutsceneMenuController>();
 
-		_buttonCloseMainMenuReadNews = _canvasMainMenuReadNews.transform.Find("ExitReadNews").GetComponent<Button>();
+		_buttonCloseMainMenuReadNews = _canvasMainMenuReadNews.transform.Find("ButtonCloseMainMenuReadNews").GetComponent<Button>();
 		_mainMenuReadNews.Initialize(_inputDevice, _canvasMainMenuReadNews, _buttonCloseMainMenuReadNews);
 
-		_buttonConfirmAction = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "Confirm");
-		_buttonCancelAction = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "Cancel");
-		_textConfirmationMessage = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "Text");
+		_buttonConfirmAction = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "ButtonConfirmAction");
+		_buttonCancelAction = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "ButtonCancelAction");
+		_textConfirmationMessage = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "TextConfirmationMessage");
 
 		_buttonsPauseMenu = new[]
 		{
-			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "PauseMenu Resume Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "PauseMenu Save Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "PauseMenu Load Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "PauseMenu Appearance Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "PauseMenu Settings Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "PauseMenu Exit Button")
+			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "ButtonPauseMenuResume"),
+			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "ButtonPauseMenuSave"),
+			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "ButtonPauseMenuLoad"),
+			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "ButtonPauseMenuAppearance"),
+			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "ButtonPauseMenuSettings"),
+			_bootstrap.FindDeepGameObject(_canvasPauseMenu, "ButtonPauseMenuExitToMainMenu")
 		};
 
 		_buttonsRewriteGameFile = new[]
 		{
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "SaveSubMenu SAVE1 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "SaveSubMenu SAVE2 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "SaveSubMenu SAVE3 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "SaveSubMenu SAVE4 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "SaveSubMenu SAVE5 Button")
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonRewriteGameFile1"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonRewriteGameFile2"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonRewriteGameFile3"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonRewriteGameFile4"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonRewriteGameFile5")
 		};
 
-		_buttonClosePauseSubMenuSave = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "SaveSubMenu close Button");
+		_buttonClosePauseSubMenuSave = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonClosePauseSubMenuSave");
+
+		_buttonsDeleteGameFile = new[]
+{
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonDeleteGameFile1"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonDeleteGameFile2"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonDeleteGameFile3"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonDeleteGameFile4"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonDeleteGameFile5")
+		};
 
 		_buttonsLoadGameFile = new[]
 		{
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "LoadSubMenu LOAD1 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "LoadSubMenu LOAD2 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "LoadSubMenu LOAD3 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "LoadSubMenu LOAD4 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "LoadSubMenu LOAD5 Button")
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "ButtonLoadGameFile1"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "ButtonLoadGameFile2"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "ButtonLoadGameFile3"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "ButtonLoadGameFile4"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "ButtonLoadGameFile5")
 		};
 
-		_buttonsDeleteGameFile = new[]
-		{
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "LoadSubMenu DELETE1 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "LoadSubMenu DELETE2 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "LoadSubMenu DELETE3 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "LoadSubMenu DELETE4 Button"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "LoadSubMenu DELETE5 Button")
-		};
+		_buttonClosePauseSubMenuLoad = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "ButtonClosePauseSubMenuLoad");
 
-		_buttonClosePauseSubMenuLoad = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "LoadSubMenu close Button");
+		_buttonSaveNewGameFile = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonSaveNewGameFile");
+		_sliderChangeFOV = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "SliderChangeFOV");
+		_textFOV = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "TextFOV");
 
-		_buttonSaveNewGameFile = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "SaveNewGame");
-		_sliderChangeFOV = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "CameraFOVSlider");
-		_textFOV = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "CameraFOVText");
 		_buttonsChangeFPS = new GameObject[]
 		{
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "Fps30"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "Fps60"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "Fps90"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "Fps144"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonChangeFPS_30"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonChangeFPS_60"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonChangeFPS_90"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonChangeFPS_144")
 		};
 
 		_buttonsChangeLanguage = new GameObject[]
 		{
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "LanguageRussian"),
-			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "LanguageEnglish"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonChangeLanguage_Russian"),
+			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonChangeLanguage_English"),
 		};
 
 		_KeyRebinds = new GameObject[]
@@ -197,10 +198,10 @@ public class BootstrapSubProcessMenuSystem
 			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "LegKick"),
 		};
 
-		_buttonClosePauseSubMenuSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "SettingsSubMenu close Button");
-		_buttonClosePauseSubMenuAppearance = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuAppearance, "AppearanceSubMenu close Button");
-		_buttonSaveSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "SaveSettings");
-		_buttonResetSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ResetSettings");
+		_buttonClosePauseSubMenuSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonClosePauseSubMenuSettings");
+		_buttonClosePauseSubMenuAppearance = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuAppearance, "ButtonClosePauseSubMenuAppearance");
+		_buttonSaveSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonSaveSettings");
+		_buttonResetSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonResetSettings");
 
 		MenuManager.Initialize(_inputDevice, _gameController, _gameSceneManager);
 		_pauseMenuController.Initialize(_inputDevice, _gameController, _gameSceneManager, _saveLoadController, MenuManager, _canvasPauseMenu, _buttonsPauseMenu);

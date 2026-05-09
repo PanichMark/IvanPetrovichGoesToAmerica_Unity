@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6125495038587341279}
   - component: {fileID: 6855308820212117586}
   m_Layer: 5
-  m_Name: ElectronicLockButton3
+  m_Name: ButtonLockElectronic3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 2529858705973330355}
   - component: {fileID: 393490353197170943}
   m_Layer: 5
-  m_Name: ElectronicLockButton2
+  m_Name: ButtonLockElectronic2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 6318997829027409654}
   - component: {fileID: 1551265904817809801}
   m_Layer: 5
-  m_Name: ElectronicLockButton6
+  m_Name: ButtonLockElectronic6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 8688750673441199591}
   - component: {fileID: 1146095630002166304}
   m_Layer: 5
-  m_Name: ElectronicLockButton9
+  m_Name: ButtonLockElectronic9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -572,7 +572,7 @@ GameObject:
   - component: {fileID: 850201864129123585}
   - component: {fileID: 5194321998800708942}
   m_Layer: 5
-  m_Name: ElectronicLockButton8
+  m_Name: ButtonLockElectronic8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -692,7 +692,7 @@ GameObject:
   - component: {fileID: 802507793616607745}
   - component: {fileID: 8565834015958799318}
   m_Layer: 5
-  m_Name: ElectronicLockButton5
+  m_Name: ButtonLockElectronic5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -812,7 +812,7 @@ GameObject:
   - component: {fileID: 274268412427853413}
   - component: {fileID: 3616460783424064482}
   m_Layer: 5
-  m_Name: ExitLockpickElectronic
+  m_Name: ButtonExitLockpickElectronicMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -933,7 +933,7 @@ GameObject:
   - component: {fileID: 619872292780937143}
   - component: {fileID: 5982050069137398156}
   m_Layer: 5
-  m_Name: ElectronicLockButton7
+  m_Name: ButtonLockElectronic7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1053,7 +1053,7 @@ GameObject:
   - component: {fileID: 4554303365671249922}
   - component: {fileID: 7525047585677991758}
   m_Layer: 5
-  m_Name: ElectronicLockButton1
+  m_Name: ButtonLockElectronic1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1192,15 +1192,15 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7323755472670607088}
-  - {fileID: 8477940799520356196}
-  - {fileID: 1662914832090025517}
-  - {fileID: 3478362025711656532}
+  - {fileID: 6718762922226523087}
   - {fileID: 5024355308398648771}
   - {fileID: 1829813657912743712}
-  - {fileID: 6718762922226523087}
+  - {fileID: 3478362025711656532}
+  - {fileID: 8477940799520356196}
+  - {fileID: 1662914832090025517}
+  - {fileID: 439362386904139691}
   - {fileID: 1325477616062745906}
   - {fileID: 7090926852268080298}
-  - {fileID: 439362386904139691}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1284,7 +1284,7 @@ GameObject:
   - component: {fileID: 6651597666695380981}
   - component: {fileID: 6013491292929540427}
   m_Layer: 5
-  m_Name: ElectronicLockButton4
+  m_Name: ButtonLockElectronic4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2687320164562196461}
   - component: {fileID: 6113968042013347523}
   m_Layer: 5
-  m_Name: 'ManaReplenishItemButton '
+  m_Name: ButtonUseManaReplenishItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 8063413588361427188}
   - component: {fileID: 3658872902167697267}
   m_Layer: 5
-  m_Name: HealingItemsNumber
+  m_Name: TextHealingItemNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -394,7 +394,7 @@ GameObject:
   - component: {fileID: 1963757535774546349}
   - component: {fileID: 895258848945397689}
   m_Layer: 5
-  m_Name: ManaReplenishItemsNumber
+  m_Name: TextManaReplenishItemNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -755,7 +755,7 @@ GameObject:
   - component: {fileID: 7326475432516024398}
   - component: {fileID: 8062704993099934285}
   m_Layer: 5
-  m_Name: WeaponBig
+  m_Name: ImageWeaponWheelWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -830,7 +830,7 @@ GameObject:
   - component: {fileID: 5873583575388780456}
   - component: {fileID: 1168429204670249881}
   m_Layer: 5
-  m_Name: WeaponWheel Hand
+  m_Name: TextWeaponWheelHandType
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1248,7 +1248,7 @@ GameObject:
   - component: {fileID: 1979992740665435007}
   - component: {fileID: 6897791819879495892}
   m_Layer: 5
-  m_Name: Selected Weapon Name
+  m_Name: TextWeaponWheelWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1386,7 +1386,7 @@ GameObject:
   - component: {fileID: 1041381500237012491}
   - component: {fileID: 5707319870021029061}
   m_Layer: 5
-  m_Name: HealingItemButton
+  m_Name: ButtonUseHealingItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 854776328449019758}
   - component: {fileID: 5353847253327849417}
   m_Layer: 5
-  m_Name: NPCdialogue
+  m_Name: TextDialogue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -392,7 +392,7 @@ GameObject:
   - component: {fileID: 863292923471474229}
   - component: {fileID: 7712525107691704383}
   m_Layer: 0
-  m_Name: buttonYes
+  m_Name: ButtonDialogueYes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -649,7 +649,7 @@ GameObject:
   - component: {fileID: 6930533188478006731}
   - component: {fileID: 7874648434859794006}
   m_Layer: 0
-  m_Name: buttonNo
+  m_Name: ButtonDialogueNo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
