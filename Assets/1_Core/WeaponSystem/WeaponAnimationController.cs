@@ -38,6 +38,8 @@ public class WeaponAnimationController : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
+		
+
 		float cameraRotationX = playerCameraController.transform.rotation.eulerAngles.x;
 		if (cameraRotationX >= 0 && cameraRotationX < 180)
 		{

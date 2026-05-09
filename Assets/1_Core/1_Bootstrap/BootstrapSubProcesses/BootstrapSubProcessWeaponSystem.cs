@@ -96,16 +96,16 @@ public class BootstrapSubProcessWeaponSystem
 		_textWeaponWheelHandType = _canvasMenuWeaponWheel.transform.Find("TextWeaponWheelHandType").GetComponent<TextMeshProUGUI>();
 		_imageWeaponWheelWeapon = _canvasMenuWeaponWheel.transform.Find("ImageWeaponWheelWeapon").GetComponent<Image>();
 
-		_firstPersonLeftHandWeaponSlotGameObject = GameObject.Find("FirstPersonLeftHandWeaponSlotGameObject");
-		_thirdPersonLeftHandWeaponSlotGameObject = GameObject.Find("ThirdPersonLeftHandWeaponSlotGameObject");
-		_firstPersonRightHandWeaponSlotGameObject = GameObject.Find("FirstPersonRightHandWeaponSlotGameObject");
-		_thirdPersonRightHandWeaponSlotGameObject = GameObject.Find("ThirdPersonRightHandWeaponSlotGameObject");
+		_firstPersonLeftHandWeaponSlotGameObject = GameObject.Find("FirstPersonWeaponSlot.L");
+		_thirdPersonLeftHandWeaponSlotGameObject = GameObject.Find("ThirdPersonWeaponSlot.L");
+		_firstPersonRightHandWeaponSlotGameObject = GameObject.Find("FirstPersonWeaponSlot.R");
+		_thirdPersonRightHandWeaponSlotGameObject = GameObject.Find("ThirdPersonWeaponSlot.R");
 
 		_textChokeNPC = _canvasHUDammo.transform.Find("TextChokeNPC").gameObject;
 
 		WeaponController.Initialize(_inputDevice, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessPlayerSystems.PlayerBehaviour, _bootstrapSubProcessInteractionSystem.InteractionController);
 		_legKickAttack.Initialize(_inputDevice, _playerGameObject, _bootstrapSubProcessPlayerSystems.PlayerMovementController);
-
+	
 		_weaponWheelController.Initialize(
 			_inputDevice,
 			_bootstrapSubProcessMenuSystem.MenuManager,
@@ -130,8 +130,8 @@ public class BootstrapSubProcessWeaponSystem
 			WeaponController,
 			_bootstrapSubProcessPlayerSystems.PlayerFirstPersonHandRightGameObject,
 			_bootstrapSubProcessPlayerSystems.PlayerFirstPersonHandLeftGameObject,
-			_bootstrapSubProcessPlayerSystems.PlayerHandRightParentGameObject,
-			_bootstrapSubProcessPlayerSystems.PlayerHandLeftParentGameObject);
+			_bootstrapSubProcessPlayerSystems.PlayerThirdPersonHandRightParentGameObject,
+			_bootstrapSubProcessPlayerSystems.PlayerThirdPersonHandLeftParentGameObject);
 
 		_canvasHUDammoController.Initialize(
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
