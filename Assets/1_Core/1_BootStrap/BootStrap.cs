@@ -44,28 +44,15 @@ public class Bootstrap : MonoBehaviour
 	private Image sceneLoadingScreenImage;
 
 	// Система сохранений
-	private GameObject dataSaveLoadControllerGameObject;
-	private SaveLoadController saveLoadController;
+	private BootstrapSubSystemSaveLoad bootstrapSubSystemSaveLoad;
+	//private GameObject dataSaveLoadControllerGameObject;
+	//private SaveLoadController saveLoadController;
 
 	// Игрок
-	private GameObject playerGameObject;
 
-	private GameObject playerHeadParent;
-	private GameObject playerColliderGameObject;
-	private GameObject playerHandRightParent;
-	private GameObject playerHandLeftParent;
-	private GameObject playerFirstPersonHandRight;
-	private GameObject playerFirstPersonHandLeft;
-	// Игрок системы
-	private PlayerBehaviour playerBehaviour;
-	private PlayerMovementController playerMovementController;
-	private PlayerCapsuleCollider playerColliderController;
-	private PlayerAnimationController playerAnimationController;
-	// Игрок камера
+	private BootstrapSubSystemPlayerSystems bootstrapSubSystemPlayerSystems;
+	private GameObject playerGameObject;
 	private GameObject playerMainCameraGameObject;
-	private PlayerCameraController playerCameraController;
-	private PlayerCameraBlurFilter playerCameraBlurFilter;
-	private PlayerCameraFirstPersonRender playerCameraFirstPersonRender;
 
 	// Игрок ресурсы
 	private GameObject playerResourcesGameObject;
@@ -95,56 +82,7 @@ public class Bootstrap : MonoBehaviour
 	private GameObject LeftWeaponAmmoReserve;
 	private GameObject LeftWeaponAmmoSeparator;
 
-	/*
-	// Меню
-	private GameObject menuManagerGameobject;
-	private MenuManager menuManager;
-	// Главное меню
-	private MainMenuReadNews mainMenuReadNews;
-	[Header("MainMenu")] [SerializeField] private GameObject canvasMainMenuReadNews;
-	private Button buttonCloseMainMenuReadNews;
-	//Меню подтверждения
-	private PauseMenuConfirmActionController menuConfirmActionController;
-	[SerializeField] private GameObject canvasMenuConfirmAction;
-	private GameObject buttonConfirmAction;
-	private GameObject buttonCancelAction;
-	private GameObject textShowConfirmationMessage;
-	// Меню паузы
-	private PauseMenuController pauseMenuController;
-	[Header("PauseMenu")] [SerializeField] private GameObject canvasPauseMenu;
-	private GameObject[] buttonsPauseMenu;
-	// Подменю сохранения
-	private PauseSubMenuSaveController pauseSubMenuSaveController;
-	[SerializeField] private GameObject canvasPauseSubMenuSave;
-	private GameObject[] buttonsRewriteGame;
-	private GameObject[] buttonsDeleteGame;
-	private GameObject buttonSaveNewGame;
-	private GameObject buttonClosePauseSubMenuSave;
-	// Подменю загрузки
-	private PauseSubMenuLoadController pauseSubMenuLoadController;
-	[SerializeField] private GameObject canvasPauseSubMenuLoad;
-	private GameObject[] buttonsLoadGame;
-	private GameObject buttonClosePauseSubMenuLoad;
-	// Подменю внешности
-	private PauseSubMenuAppearanceController pauseSubMenuAppearanceController;
-	[SerializeField] private GameObject canvasPauseSubMenuAppearance;
-	private GameObject buttonClosePauseSubMenuAppearance;
-	// Подменю настроек
-	private PauseSubMenuSettingsController pauseSubMenuSettingsController;
-	[SerializeField] private GameObject canvasPauseSubMenuSettings;
-	private PauseSubMenuSettingsPlayerPrefs pauseSubMenuSettingsPlayerPrefs;
-	private GameObject buttonClosePauseSubMenuSettings;
-	private GameObject[] FPSbuttons;
-	private GameObject FOVSlider;
-	private GameObject fovDisplayText;
-	private GameObject[] buttonsChangeLanguage;
-	private GameObject[] KeyRebinds;
-	private GameObject buttonSaveSettings;
-	private GameObject buttonResetSettings;
-	//Меню Катсцены
-	[SerializeField] private GameObject canvasCutscene;
-	private CutsceneMenuController cutsceneMenuController;
-	*/
+	
 
 	// Система оружия
 	private GameObject weaponSystemGameObject;
@@ -167,30 +105,14 @@ public class Bootstrap : MonoBehaviour
 	private GameObject ChokeNPCtext;
 
 	// Система взаимодействия
-	private GameObject interactionControllerGameObject;
-	private InteractionController interactionController;
-	private InteractionAnimationController interactionAnimationController;
-	private InteractionFirstPersonRender interactionFirstPersonRender;
+
+	private BootstrapSubSystemInteraction bootstrapSubSystemInteraction;
 	[Header("Interaction")] [SerializeField] private GameObject canvasHUDInteraction;
 	[SerializeField] private GameObject canvasReadNoteMenu;
 	[SerializeField] private GameObject canvasLockpickMechanicalMenu;
 	[SerializeField] private GameObject canvasLockpickElectronicMenu;
 	[SerializeField] private GameObject canvasDialogueMenu;
-	private GameObject[] buttonsLockElectrical;
-	private TextMeshProUGUI mainInteractionText;
-	private TextMeshProUGUI additionalInteractionText;
-	private Button buttonExitReadNoteMenu;
-	private Button buttonExitLockpickMechanicalMenu;
-	private Button buttonExitLockpickElectronicMenu;
-	private TextMeshProUGUI readableText;
-	private Image backgroundBlack;
-	private TextMeshProUGUI[] itemsTexts;
-	private Image[] itemsImages;
-	private Image imageNewspaper;
-	private TextMeshProUGUI NPCphrasesText;
-	private TextMeshProUGUI NPCdialogueText;
-	private Button buttonDialogueYes;
-	private Button buttonDialogueNo;
+
 
 
 	private void Awake()
@@ -211,29 +133,56 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator SequentialInitialization()
 	{
-		bootstrapSubSystemMenu = new BootstrapSubSystemMenu(this, inputDevice, gameController, gameSceneManager,
-		saveLoadController, playerMainCameraGameObject, canvasMainMenuReadNews,
-		canvasPauseMenu, canvasMenuConfirmAction,canvasPauseSubMenuSave,
-		canvasPauseSubMenuLoad, canvasPauseSubMenuAppearance, canvasPauseSubMenuSettings, canvasCutscene);
-
-
-		yield return StartCoroutine(bootstrapSubSystemMenu.InitializeMenuSystems());
+	
 
 
 
-		/*
+		
 		yield return StartCoroutine(InitializeInterfaces());
 		yield return StartCoroutine(InitializePlayerPrefabs());
 		yield return StartCoroutine(InitializeCanvases());
 		yield return StartCoroutine(InitializeSceneSystem());
-		yield return StartCoroutine(InitializeSavingSystem());
-		////yield return StartCoroutine(InitializeMenuSystems());
-		yield return StartCoroutine(InitializePlayerSystems());
+
+		///
+		bootstrapSubSystemSaveLoad = new BootstrapSubSystemSaveLoad(gameSceneManager, gameController);
+		yield return StartCoroutine(bootstrapSubSystemSaveLoad.InitializeSaveLoadSystem());
+		//
+		bootstrapSubSystemMenu = new BootstrapSubSystemMenu(this, inputDevice, gameController, gameSceneManager,
+	bootstrapSubSystemSaveLoad.saveLoadController, playerMainCameraGameObject, canvasMainMenuReadNews,
+	canvasPauseMenu, canvasMenuConfirmAction, canvasPauseSubMenuSave,
+	canvasPauseSubMenuLoad, canvasPauseSubMenuAppearance, canvasPauseSubMenuSettings, canvasCutscene);
+		yield return StartCoroutine(bootstrapSubSystemMenu.InitializeMenuSystems());
+		//
+		bootstrapSubSystemPlayerSystems = new BootstrapSubSystemPlayerSystems(inputDevice,
+	gameSceneManager,
+	this,
+	playerGameObject,
+	playerMainCameraGameObject,
+	bootstrapSubSystemMenu);
+		yield return StartCoroutine(bootstrapSubSystemPlayerSystems.InitializePlayerSystems());
+		///
 		yield return StartCoroutine(InitializePlayerResources());
-		yield return StartCoroutine(InitializeInteractionSystem());
+
+		//
+		bootstrapSubSystemInteraction = new BootstrapSubSystemInteraction(this,
+	bootstrapSubSystemMenu,
+	gameController,
+	gameSceneManager,
+	inputDevice,
+	bootstrapSubSystemPlayerSystems.playerCameraController,
+	bootstrapSubSystemPlayerSystems.playerBehaviour,
+	canvasHUDInteraction,
+	canvasReadNoteMenu,
+	canvasLockpickMechanicalMenu,
+	canvasLockpickElectronicMenu,
+	canvasDialogueMenu);
+	   yield return StartCoroutine(bootstrapSubSystemInteraction.InitializeInteractionSystem());
+		//
+
+
 		yield return StartCoroutine(InitializeWeaponSystem());
 		yield return StartCoroutine(RegisterAllDependencies());
-		*/
+		
 
 		//yield return new WaitForSecondsRealtime(0.3f);
 		//yield return new WaitForSecondsRealtime(1f);
@@ -242,7 +191,7 @@ public class Bootstrap : MonoBehaviour
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
-		yield return StartCoroutine(saveLoadController.NewGame());
+		yield return StartCoroutine(bootstrapSubSystemSaveLoad.saveLoadController.NewGame());
 
 		// Разблокировка оружий из конфига
 		GameObject[] availableWeapons = configWeapons.GetAvailableWeapons();
@@ -265,7 +214,7 @@ public class Bootstrap : MonoBehaviour
 			yield return StartCoroutine(gameSceneManager.LoadScene(configScene.selectedScene));
 		}
 
-		playerMovementController.SetPlayerPosition(configPlayerPosition.playerPosition);
+		bootstrapSubSystemPlayerSystems.playerMovementController.SetPlayerPosition(configPlayerPosition.playerPosition);
 		
 	}
 
@@ -273,7 +222,7 @@ public class Bootstrap : MonoBehaviour
 	{
 		localizationManager.ChangeLanguage(language);
 
-		interactionController.ChangeLanguage(localizationManager);
+		bootstrapSubSystemInteraction.interactionController.ChangeLanguage(localizationManager);
 		gameSceneManager.ChangeLanguage(localizationManager);
 
 		ServiceLocator.RemoveService("LocalizationManager");
@@ -341,55 +290,11 @@ public class Bootstrap : MonoBehaviour
 		yield break;
 	}
 
-	private IEnumerator InitializeSavingSystem()
-	{
-		loadingStatusText.text = "Saving System";
 
-		dataSaveLoadControllerGameObject = new GameObject("DataSaveLoadController");
-		saveLoadController = dataSaveLoadControllerGameObject.AddComponent<SaveLoadController>();
-		saveLoadController.Initialize(gameSceneManager, gameController);
-		Debug.Log("SAVE SYSTEM INITIALIZED");
-		yield break;
-	}
 
 	
 
-	private IEnumerator InitializePlayerSystems()
-	{
-		loadingStatusText.text = "Player Systems";
-
-		playerColliderGameObject = FindDeepChildByName(playerGameObject, "Collider");
-
-		// Получение компонентов игрока
-		playerBehaviour = playerGameObject.GetComponent<PlayerBehaviour>();
-		playerMovementController = playerGameObject.GetComponent<PlayerMovementController>();
-		playerColliderController = playerGameObject.GetComponentInChildren<PlayerCapsuleCollider>();
-		playerAnimationController = playerGameObject.GetComponent<PlayerAnimationController>();
-
-		// Компоненты камеры игрока
-		playerCameraController = playerMainCameraGameObject.GetComponent<PlayerCameraController>();
-		playerCameraBlurFilter = playerMainCameraGameObject.GetComponent<PlayerCameraBlurFilter>();
-		playerCameraFirstPersonRender = playerMainCameraGameObject.GetComponent<PlayerCameraFirstPersonRender>();
-
-		// Внутренние объекты игрока
-		playerFirstPersonHandRight = FindDeepChildByName(playerMainCameraGameObject, "UNITY HandRight");
-		playerFirstPersonHandLeft = FindDeepChildByName(playerMainCameraGameObject, "UNITY  HandLeft");
-		playerHeadParent = FindDeepChildByName(playerGameObject, "UNITY PlayerHead");
-		playerHandRightParent = FindDeepChildByName(playerGameObject, "UNITY HandRight");
-		playerHandLeftParent = FindDeepChildByName(playerGameObject, "UNITY  HandLeft");
-
-		// Инициализация полученных компонентов
-		playerBehaviour.Initialize(inputDevice);
-		playerMovementController.Initialize(inputDevice, gameSceneManager, playerBehaviour);
-		playerColliderController.Initialize(playerMovementController);
-		playerCameraController.Initialize(inputDevice, gameSceneManager, menuManager, playerMovementController, playerColliderController, playerGameObject);
-		playerCameraBlurFilter.Initialize(menuManager);
-		playerAnimationController.Initialize(inputDevice, playerGameObject, playerBehaviour, playerMovementController, playerCameraController);
-		playerCameraFirstPersonRender.Initialize(playerCameraController, playerHeadParent);
-
-		Debug.Log("PLAYER SYSTEMS INITIALIZED");
-		yield break;
-	}
+	
 
 	private IEnumerator InitializePlayerResources()
 	{
@@ -412,9 +317,9 @@ public class Bootstrap : MonoBehaviour
 		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
 		playerResourcesAmmoManager = playerResourcesGameObject.AddComponent<PlayerResourcesAmmoManager>();
 
-		canvasHUDhealthAndManaController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDhealthAndMana);
+		canvasHUDhealthAndManaController.Initialize(gameSceneManager, gameController, bootstrapSubSystemMenu.menuManager, canvasHUDhealthAndMana);
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
-		playerResourcesHealthManager.Initialize(gameController, playerBehaviour, HealthBarSlider, HealingItemButton, HealingItemNumber);
+		playerResourcesHealthManager.Initialize(gameController, bootstrapSubSystemPlayerSystems.playerBehaviour, HealthBarSlider, HealingItemButton, HealingItemNumber);
 		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
 
 		RightWeaponAmmoMagazine = canvasHUDammo.transform.Find("RightWeaponAmmoMagazine").gameObject;
@@ -431,66 +336,7 @@ public class Bootstrap : MonoBehaviour
 		yield break;
 	}
 
-	private IEnumerator InitializeInteractionSystem()
-	{
-		loadingStatusText.text = "Interaction System";
-
-		interactionControllerGameObject = new GameObject("InteractionController");
-
-		interactionController = interactionControllerGameObject.AddComponent<InteractionController>();
-		interactionAnimationController = interactionControllerGameObject.AddComponent<InteractionAnimationController>();
-		interactionFirstPersonRender = interactionControllerGameObject.AddComponent<InteractionFirstPersonRender>();
-
-		// Элементы HUD
-		mainInteractionText = canvasHUDInteraction.transform.Find("mainInteractionText").GetComponent<TextMeshProUGUI>();
-		additionalInteractionText = canvasHUDInteraction.transform.Find("additionalInteractionText").GetComponent<TextMeshProUGUI>();
-		NPCphrasesText = canvasHUDInteraction.transform.Find("NPCphrases").GetComponent<TextMeshProUGUI>();
-		NPCdialogueText = canvasDialogueMenu.transform.Find("NPCdialogue").GetComponent<TextMeshProUGUI>();
-
-		itemsTexts = new TextMeshProUGUI[]
-		{
-			canvasHUDInteraction.transform.Find("Item1text").GetComponent<TextMeshProUGUI>(),
-			canvasHUDInteraction.transform.Find("Item2text").GetComponent<TextMeshProUGUI>(),
-			canvasHUDInteraction.transform.Find("Item3text").GetComponent<TextMeshProUGUI>()
-		};
-		itemsImages = new Image[]
-		{
-			canvasHUDInteraction.transform.Find("Image1Icon").GetComponent<Image>(),
-			canvasHUDInteraction.transform.Find("Image2Icon").GetComponent<Image>(),
-			canvasHUDInteraction.transform.Find("Image3Icon").GetComponent<Image>()
-		};
-
-		buttonsLockElectrical = new GameObject[]
-        {
-			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton1"),
-			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton2"),
-			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton3"),
-			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton4"),
-			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton5"),
-			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton6"),
-			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton7"),
-			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton8"),
-			FindDeepChildByName(canvasLockpickElectronicMenu, "ElectronicLockButton9"),
-		};	
-		buttonExitReadNoteMenu = canvasReadNoteMenu.transform.Find("ExitReadNote").GetComponent<Button>();
-		imageNewspaper = canvasReadNoteMenu.transform.Find("ReadableImage").GetComponent<Image>();
-		readableText = canvasReadNoteMenu.transform.Find("ReadableText").GetComponent<TextMeshProUGUI>();
-		backgroundBlack = canvasReadNoteMenu.transform.Find("BackgroundBlack").GetComponent<Image>();
-		buttonExitLockpickMechanicalMenu = canvasLockpickMechanicalMenu.transform.Find("ExitLockpickMechanical").GetComponent<Button>();
-		buttonExitLockpickElectronicMenu = canvasLockpickElectronicMenu.transform.Find("ExitLockpickElectronic").GetComponent<Button>();
-		buttonDialogueYes = canvasDialogueMenu.transform.Find("buttonYes").GetComponent<Button>();
-		buttonDialogueNo = canvasDialogueMenu.transform.Find("buttonNo").GetComponent<Button>();
-
-		// Инициализация взаимодействия
-		interactionController.Initialize(gameController, gameSceneManager, inputDevice, menuManager, playerCameraController, playerBehaviour, canvasHUDInteraction, mainInteractionText,
-			additionalInteractionText, itemsTexts, itemsImages);
-
-		//interactionAnimationController.Initialize(playerGameObject, interactionController);
-		//interactionFirstPersonRender.Initialize(gameSceneManager, playerCameraController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent, interactionController);
-
-		Debug.Log("INTERACTION SYSTEM INITIALIZED");
-		yield break;
-	}
+	
 
 	private IEnumerator InitializeWeaponSystem()
 	{
@@ -521,14 +367,14 @@ public class Bootstrap : MonoBehaviour
 		ChokeNPCtext = canvasHUDammo.transform.Find("ChokingText").gameObject;
 
 		// Инициализация оружия
-		weaponController.Initialize(inputDevice, menuManager, playerBehaviour, interactionController);
-		legKickAttack.Initialize(inputDevice, playerGameObject, playerMovementController);
-		weaponWheelController.Initialize(inputDevice, menuManager, playerBehaviour, weaponController, weaponWheelSegmentPrefab,
+		weaponController.Initialize(inputDevice, bootstrapSubSystemMenu.menuManager, bootstrapSubSystemPlayerSystems.playerBehaviour, bootstrapSubSystemInteraction.interactionController);
+		legKickAttack.Initialize(inputDevice, playerGameObject, bootstrapSubSystemPlayerSystems.playerMovementController);
+		weaponWheelController.Initialize(inputDevice, bootstrapSubSystemMenu.menuManager, bootstrapSubSystemPlayerSystems.playerBehaviour, weaponController, weaponWheelSegmentPrefab,
 			centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName, weaponIconBig);
-		weaponAnimationController.Initialize(playerGameObject, playerBehaviour, playerCameraController, weaponController, legKickAttack);
-		weaponFirstPersonRender.Initialize(gameSceneManager, playerCameraController, weaponController, playerFirstPersonHandRight, playerFirstPersonHandLeft, playerHandRightParent, playerHandLeftParent);
+		weaponAnimationController.Initialize(playerGameObject, bootstrapSubSystemPlayerSystems.playerBehaviour, bootstrapSubSystemPlayerSystems.playerCameraController, weaponController, legKickAttack);
+		weaponFirstPersonRender.Initialize(gameSceneManager, bootstrapSubSystemPlayerSystems.playerCameraController, weaponController, bootstrapSubSystemPlayerSystems.playerFirstPersonHandRight, bootstrapSubSystemPlayerSystems.playerFirstPersonHandLeft, bootstrapSubSystemPlayerSystems.playerHandRightParent, bootstrapSubSystemPlayerSystems.playerHandLeftParent);
 
-		canvasHUDammoController.Initialize(gameSceneManager, gameController, menuManager, canvasHUDammo, weaponController, playerResourcesAmmoManager, playerBehaviour,
+		canvasHUDammoController.Initialize(gameSceneManager, gameController, bootstrapSubSystemMenu.menuManager, canvasHUDammo, weaponController, playerResourcesAmmoManager, bootstrapSubSystemPlayerSystems.playerBehaviour,
 				RightWeaponAmmoMagazine,
 		RightWeaponAmmoReserve,
 		RightWeaponAmmoSeparator,
@@ -549,33 +395,23 @@ public class Bootstrap : MonoBehaviour
 		// Регистрация служб
 		ServiceLocator.Register("LocalizationManager", localizationManager);
 		ServiceLocator.Register("Player", playerGameObject);
-		ServiceLocator.Register("PlayerCameraController", playerCameraController);
-		ServiceLocator.Register("MenuManager", menuManager);
+		
+		
 		ServiceLocator.Register("WeaponController", weaponController);
-		ServiceLocator.Register("ExitReadNote", buttonExitReadNoteMenu);
-		ServiceLocator.Register("ExitLockpickMechanical", buttonExitLockpickMechanicalMenu);
-		ServiceLocator.Register("ImageNewspaper", imageNewspaper);
-		ServiceLocator.Register("ExitLockpickElectronic", buttonExitLockpickElectronicMenu);
-		ServiceLocator.Register("ReadableText", readableText);
-		ServiceLocator.Register("BackgroundBlack", backgroundBlack);
+	
 		ServiceLocator.Register("PlayerResourcesMoneyManager", playerResourcesMoneyManager);
 		ServiceLocator.Register("PlayerResourcesHealthManager", playerResourcesHealthManager);
 		ServiceLocator.Register("PlayerResourcesManaManager", playerResourcesManaManager);
 		ServiceLocator.Register("CanvasLockpickMechanicalMenu", canvasLockpickMechanicalMenu);
 		ServiceLocator.Register("CanvasLockpickElectronicMenu", canvasLockpickElectronicMenu);
 		ServiceLocator.Register("CanvasReadNoteMenu", canvasReadNoteMenu);
-		ServiceLocator.Register("SaveLoadController", saveLoadController);
+		
 		
 		ServiceLocator.Register("GameController", gameController);
 		ServiceLocator.Register("GameSceneManager", gameSceneManager);
-		ServiceLocator.Register("PlayerMovementController", playerMovementController);
-		
-		ServiceLocator.Register("PlayerCameraBlurFilter", playerCameraBlurFilter);
-		ServiceLocator.Register("buttonsLockElectrical", buttonsLockElectrical);
-		ServiceLocator.Register("PlayerBehaviour", playerBehaviour);
+	
 
-		ServiceLocator.Register("NPCphrases", NPCphrasesText);
-		ServiceLocator.Register("NPCdialogueText", NPCdialogueText);
+	
 		ServiceLocator.Register("playerMainCameraGameObject", playerMainCameraGameObject);
 
 		ServiceLocator.Register("firstPersonLeftHandWeaponSlotGameObject", firstPersonLeftHandWeaponSlotGameObject);
@@ -584,10 +420,9 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("thirdPersonRightHandWeaponSlotGameObject", thirdPersonRightHandWeaponSlotGameObject);
 
 		ServiceLocator.Register("CanvasDialogueMenu", canvasDialogueMenu);
-		ServiceLocator.Register("buttonDialogueYes", buttonDialogueYes);
-		ServiceLocator.Register("buttonDialogueNo", buttonDialogueNo);
+	
 
-		ServiceLocator.Register("playerColliderGameObject", playerColliderGameObject);
+
 		ServiceLocator.Register("playerResourcesAmmoManager", playerResourcesAmmoManager);
 
 		ServiceLocator.Register("ChokeNPCtext", ChokeNPCtext);

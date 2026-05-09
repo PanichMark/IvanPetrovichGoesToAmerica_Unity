@@ -16,7 +16,7 @@ public class BootstrapSubSystemMenu
 
 	// Меню
 	private GameObject menuManagerGameobject;
-	private MenuManager menuManager;
+	public MenuManager menuManager {  get; private set; }
 	// Главное меню
 	private MainMenuReadNews mainMenuReadNews;
 	private GameObject canvasMainMenuReadNews;
@@ -208,6 +208,8 @@ public class BootstrapSubSystemMenu
 
 		cutsceneMenuController.Initialize(menuManager, gameSceneManager, canvasCutscene);
 
+		ServiceLocator.Register("MenuManager", menuManager);
+		Debug.Log(menuManager);
 		ServiceLocator.Register("PauseMenuController", pauseMenuController);
 		ServiceLocator.Register("MainMenuReadNews", mainMenuReadNews);
 

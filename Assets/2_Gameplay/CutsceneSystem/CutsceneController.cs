@@ -84,7 +84,7 @@ public class CutsceneController : MonoBehaviour
 
 		isInitialized = true;
 
-		Debug.Log($"Cutscene {gameObject.name} initialized");
+		//Debug.Log($"Cutscene {gameObject.name} initialized");
 	}
 
 	private void OnDestroy()
