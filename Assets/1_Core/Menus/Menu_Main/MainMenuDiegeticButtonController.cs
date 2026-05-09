@@ -19,6 +19,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private Collider collider;
 	private SaveLoadController saveLoadController;
 	private MenuManager menuManager;
+	private KeyCode _keyCloseMenu;
 
 	[SerializeField] private GameObject DiegeticText;
 
@@ -26,6 +27,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	{
 		// Регистрация текущего экземпляра компонента в списке экземпляров
 		instances.Add(this);
+		_keyCloseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
 	}
 
 	void OnDestroy()
@@ -75,7 +77,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Alpha1) && menuManager.PauseMenuLevel.Count == 1)
+		if (Input.GetKeyDown(_keyCloseMenu) && menuManager.PauseMenuLevel.Count == 1)
 		{
 			menuManager.CloseAnyMenu();
 			DiegeticText.SetActive(true);
@@ -85,7 +87,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			//Debug.Log("BRUH!");
 		}
 
-		if (Input.GetKeyDown(KeyCode.Alpha1) && mainMenuReadNews.IsMainMenuReadNewsOpened)
+		if (Input.GetKeyDown(_keyCloseMenu) && mainMenuReadNews.IsMainMenuReadNewsOpened)
 		{
 			mainMenuReadNews.HideCanvasMainMenuReadNews();
 			playerCameraBlurFilter.DeactivateCameraBlur();

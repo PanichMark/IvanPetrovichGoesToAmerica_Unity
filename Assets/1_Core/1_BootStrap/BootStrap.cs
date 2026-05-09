@@ -6,9 +6,11 @@ public class Bootstrap : MonoBehaviour
 {
 	// CONFIG
 	[Header("--- CONFIGS ---")]
+	[SerializeField] private ConfigBootstrapKeyPauseMenu _configBootstrapKeyPauseMenu;
 	[SerializeField] private ConfigBootstrapScene _configBootstrapScene;
 	[SerializeField] private ConfigBootstrapPlayerPosition _configBootstrapPlayerPosition;
 	[SerializeField] private ConfigBootstrapWeapons _configBootstrapWeapons;
+	private KeyCode _keyPauseMenu;
 
 	// Экран Инициализации Bootstrap
 	private GameObject _bootstrapTemporaryCameraGameObject;
@@ -195,9 +197,10 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeInterfaces()
 	{
+		_keyPauseMenu = _configBootstrapKeyPauseMenu.KeyPauseMenu;
 		_gameController = new GameController();
 		_localizationManager = new LocalizationManager();
-		_inputDevice = new InputKeyboard(_gameController);
+		_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
 		Debug.Log("INTERFACES INITIALIZED");
 		yield break;
 	}
@@ -239,6 +242,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("LocalizationManager", _localizationManager);
 		ServiceLocator.Register("GameController", _gameController);
 		ServiceLocator.Register("InputDevice", _inputDevice);
+		ServiceLocator.Register("KeyPauseMenu", _keyPauseMenu);
 
 		Debug.Log("BOOTSTRAP SERVICES REGISTERED");
 		yield break;

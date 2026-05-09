@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentArmatureRoot: {fileID: 3655643396765934408}
-  childArmatureRoot: {fileID: 6647728260825781966}
+  childArmatureRoots:
+  - {fileID: 6647728260825781966}
 --- !u!1 &204839991022361387
 GameObject:
   m_ObjectHideFlags: 0
