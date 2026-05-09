@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 
-public class InteractionObjectReadable : MonoBehaviour, IInteractable
+public class InteractionObjectNote : MonoBehaviour, IInteractable
 {
 	public string InteractionObjectNameSystem => null;
 
@@ -18,8 +18,8 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 
 	private LocalizationManager localizationManager;
 	public string InteractionHintMessageAdditional => null;
-	private GameObject canvasReadNoteMenu;
-	private Button buttonExitReadNoteMenu;
+	private GameObject canvasNoteMenu;
+	private Button buttonExitNoteMenu;
 
 	[SerializeField] private Sprite Image;
 
@@ -41,11 +41,11 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 	{
 		// Разрешаем объекты по строке-ключу
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		buttonExitReadNoteMenu = ServiceLocator.Resolve<Button>("ButtonExitReadNoteMenu");     // Предполагаемый ключ
+		buttonExitNoteMenu = ServiceLocator.Resolve<Button>("ButtonExitReadNoteMenu");     // Предполагаемый ключ
 		ImageComponent = ServiceLocator.Resolve<Image>("ImageNote"); // Предполагаемый ключ
 		descriptionText = ServiceLocator.Resolve<TextMeshProUGUI>("TextNote");
 		BackgroundBack = ServiceLocator.Resolve<Image>("ImageNoteBlackBackground");
-		canvasReadNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuNote");
+		canvasNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuNote");
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		//Debug.Log(ReadStructure);
 		//menuManager.OnCloseReadNoteMenu += CloseAndDeactivate;
@@ -61,8 +61,8 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 
 
 
-		menuManager.OnOpenPauseMenu += HideReadNoteCanvas;
-		menuManager.OnClosePauseMenu += ShowReadNoteCanvas;
+		menuManager.OnOpenPauseMenu += HideNoteCanvas;
+		menuManager.OnClosePauseMenu += ShowNoteCanvas;
 
 		if (textFile_RU == null || textFile_EN == null)
 		{
@@ -77,19 +77,19 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 	}
 
-	private void HideReadNoteCanvas()
+	private void HideNoteCanvas()
 	{
 		if (IsReading)
 		{
-			canvasReadNoteMenu.SetActive(false);
+			canvasNoteMenu.SetActive(false);
 		}
 	}
 
-	private void ShowReadNoteCanvas()
+	private void ShowNoteCanvas()
 	{
 		if (IsReading)
 		{
-			canvasReadNoteMenu.SetActive(true);
+			canvasNoteMenu.SetActive(true);
 		}
 	}
 
@@ -99,7 +99,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 		menuManager.OpenInteractionMenu();
 		IsReading = true;
 
-		canvasReadNoteMenu.SetActive(true);
+		canvasNoteMenu.SetActive(true);
 
 		ImageComponent.gameObject.SetActive(true);
 		ImageComponent.sprite = Image;
@@ -149,7 +149,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 			// Заполняем текстовую область соответствующим текстом
 
 			// Подписываемся на событие OnClick кнопки ExitButton
-			buttonExitReadNoteMenu.GetComponent<Button>().onClick.AddListener(CloseAndDeactivate);
+			buttonExitNoteMenu.GetComponent<Button>().onClick.AddListener(CloseAndDeactivate);
 		//ExitButton.gameObject.SetActive(true);
 
 		gameObject.tag = "Untagged";
@@ -167,7 +167,7 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 			ImageComponent.sprite = null;
 			descriptionText.text = null;
 			//Закрываем меню
-			canvasReadNoteMenu.SetActive(false);
+			canvasNoteMenu.SetActive(false);
 			menuManager.CloseInteractionMenu();
 
 			gameObject.tag = "Interactable";
