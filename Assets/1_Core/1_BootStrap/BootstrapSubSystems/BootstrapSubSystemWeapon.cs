@@ -1,13 +1,12 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BootstrapSubSystemWeapon
 {
 	private GameObject weaponSystemGameObject;
-	public PlayerWeaponController weaponController {  get; private set; }
+	public PlayerWeaponController weaponController { get; private set; }
 	private LegKickAttack legKickAttack;
 	private WeaponAnimationController weaponAnimationController;
 	private WeaponFirstPersonRender weaponFirstPersonRender;
@@ -15,7 +14,6 @@ public class BootstrapSubSystemWeapon
 	private GameObject firstPersonRightHandWeaponSlotGameObject;
 	private GameObject thirdPersonLeftHandWeaponSlotGameObject;
 	private GameObject thirdPersonRightHandWeaponSlotGameObject;
-	// Колесо выбора оружия
 	private WeaponWheelMenuController weaponWheelController;
 	private GameObject canvasMenuWeaponWheel;
 	private GameObject weaponWheelSegmentPrefab;
@@ -23,7 +21,6 @@ public class BootstrapSubSystemWeapon
 	private TextMeshProUGUI weaponWheelName;
 	private Image weaponIconBig;
 	private GameObject ChokeNPCtext;
-
 
 	private BootstrapSubSystemScene bootstrapSubSystemScene;
 	private GameController gameController;
@@ -42,7 +39,6 @@ public class BootstrapSubSystemWeapon
 	private GameObject LeftWeaponAmmoReserve;
 	private GameObject LeftWeaponAmmoSeparator;
 
-	// Конструктор с присваиванием this.поле = параметр
 	public BootstrapSubSystemWeapon(
 		BootstrapSubSystemScene bootstrapSubSystemScene,
 		GameController gameController,
@@ -80,30 +76,22 @@ public class BootstrapSubSystemWeapon
 		this.LeftWeaponAmmoMagazine = LeftWeaponAmmoMagazine;
 		this.LeftWeaponAmmoReserve = LeftWeaponAmmoReserve;
 		this.LeftWeaponAmmoSeparator = LeftWeaponAmmoSeparator;
+
 		this.canvasMenuWeaponWheel = canvasMenuWeaponWheel;
-
-
-
-
 	}
 
 	public IEnumerator InitializeWeaponSystem()
 	{
-		//loadingStatusText.text = "Weapon System";
-
 		weaponSystemGameObject = new GameObject("WeaponSystem");
 
-		// Основной компонент оружия
 		weaponController = weaponSystemGameObject.AddComponent<PlayerWeaponController>();
 		legKickAttack = weaponSystemGameObject.AddComponent<LegKickAttack>();
 		weaponWheelController = weaponSystemGameObject.AddComponent<WeaponWheelMenuController>();
 		weaponAnimationController = weaponSystemGameObject.AddComponent<WeaponAnimationController>();
 		weaponFirstPersonRender = weaponSystemGameObject.AddComponent<WeaponFirstPersonRender>();
 
-
-		// Колесо выбора оружия
 		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButtons/WeaponWheelButton");
-		
+
 		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name").GetComponent<TextMeshProUGUI>();
 		weaponWheelName = canvasMenuWeaponWheel.transform.Find("WeaponWheel Hand").GetComponent<TextMeshProUGUI>();
 		weaponIconBig = canvasMenuWeaponWheel.transform.Find("WeaponBig").GetComponent<Image>();
@@ -115,22 +103,50 @@ public class BootstrapSubSystemWeapon
 
 		ChokeNPCtext = canvasHUDammo.transform.Find("ChokingText").gameObject;
 
-		// Инициализация оружия
 		weaponController.Initialize(inputDevice, bootstrapSubSystemMenu.menuManager, bootstrapSubSystemPlayerSystems.playerBehaviour, bootstrapSubSystemInteraction.interactionController);
 		legKickAttack.Initialize(inputDevice, playerGameObject, bootstrapSubSystemPlayerSystems.playerMovementController);
-		weaponWheelController.Initialize(inputDevice, bootstrapSubSystemMenu.menuManager, bootstrapSubSystemPlayerSystems.playerBehaviour, weaponController, weaponWheelSegmentPrefab,
-	 canvasMenuWeaponWheel, weaponText, weaponWheelName, weaponIconBig);
-		weaponAnimationController.Initialize(playerGameObject, bootstrapSubSystemPlayerSystems.playerBehaviour, bootstrapSubSystemPlayerSystems.playerCameraController, weaponController, legKickAttack);
-		weaponFirstPersonRender.Initialize(bootstrapSubSystemScene.gameSceneManager, bootstrapSubSystemPlayerSystems.playerCameraController, weaponController, bootstrapSubSystemPlayerSystems.playerFirstPersonHandRight, bootstrapSubSystemPlayerSystems.playerFirstPersonHandLeft, bootstrapSubSystemPlayerSystems.playerHandRightParent, bootstrapSubSystemPlayerSystems.playerHandLeftParent);
 
-		canvasHUDammoController.Initialize(bootstrapSubSystemScene.gameSceneManager, gameController, bootstrapSubSystemMenu.menuManager, canvasHUDammo, weaponController, playerResourcesAmmoManager, bootstrapSubSystemPlayerSystems.playerBehaviour,
-				RightWeaponAmmoMagazine,
-		RightWeaponAmmoReserve,
-		RightWeaponAmmoSeparator,
-		LeftWeaponAmmoMagazine,
-		LeftWeaponAmmoReserve,
-		LeftWeaponAmmoSeparator);
+		weaponWheelController.Initialize(
+			inputDevice,
+			bootstrapSubSystemMenu.menuManager,
+			bootstrapSubSystemPlayerSystems.playerBehaviour,
+			weaponController,
+			weaponWheelSegmentPrefab,
+			canvasMenuWeaponWheel,
+			weaponText,
+			weaponWheelName,
+			weaponIconBig);
 
+		weaponAnimationController.Initialize(
+			playerGameObject,
+			bootstrapSubSystemPlayerSystems.playerBehaviour,
+			bootstrapSubSystemPlayerSystems.playerCameraController,
+			weaponController,
+			legKickAttack);
+
+		weaponFirstPersonRender.Initialize(
+			bootstrapSubSystemScene.gameSceneManager,
+			bootstrapSubSystemPlayerSystems.playerCameraController,
+			weaponController,
+			bootstrapSubSystemPlayerSystems.playerFirstPersonHandRight,
+			bootstrapSubSystemPlayerSystems.playerFirstPersonHandLeft,
+			bootstrapSubSystemPlayerSystems.playerHandRightParent,
+			bootstrapSubSystemPlayerSystems.playerHandLeftParent);
+
+		canvasHUDammoController.Initialize(
+			bootstrapSubSystemScene.gameSceneManager,
+			gameController,
+			bootstrapSubSystemMenu.menuManager,
+			canvasHUDammo,
+			weaponController,
+			playerResourcesAmmoManager,
+			bootstrapSubSystemPlayerSystems.playerBehaviour,
+			RightWeaponAmmoMagazine,
+			RightWeaponAmmoReserve,
+			RightWeaponAmmoSeparator,
+			LeftWeaponAmmoMagazine,
+			LeftWeaponAmmoReserve,
+			LeftWeaponAmmoSeparator);
 
 		ServiceLocator.Register("WeaponController", weaponController);
 		ServiceLocator.Register("firstPersonLeftHandWeaponSlotGameObject", firstPersonLeftHandWeaponSlotGameObject);
@@ -139,8 +155,8 @@ public class BootstrapSubSystemWeapon
 		ServiceLocator.Register("thirdPersonRightHandWeaponSlotGameObject", thirdPersonRightHandWeaponSlotGameObject);
 		ServiceLocator.Register("ChokeNPCtext", ChokeNPCtext);
 
-
 		Debug.Log("WEAPON SYSTEM INITIALIZED");
+
 		yield break;
 	}
 }

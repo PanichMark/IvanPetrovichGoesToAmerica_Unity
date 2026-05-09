@@ -1,8 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BootstrapSubSystemPlayerResources
 {
@@ -10,24 +9,24 @@ public class BootstrapSubSystemPlayerResources
 
 	private GameObject playerResourcesGameObject;
 	private CanvasHUDhealthAndManaController canvasHUDhealthAndManaController;
-	public CanvasHUDammoController canvasHUDammoController {  get; private set; }
+	public CanvasHUDammoController canvasHUDammoController { get; private set; }
 	private GameObject canvasHUDhealthAndMana;
 	private GameObject canvasHUDammo;
-	// Игрок ресурсы деньги
+
 	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
 	private TMP_Text playerMoneyTextGameObject;
-	// Игрок ресурсы здоровье
+
 	private PlayerResourcesHealthManager playerResourcesHealthManager;
 	private Slider HealthBarSlider;
 	private Button HealingItemButton;
 	private TextMeshProUGUI HealingItemNumber;
-	// Игрок ресурсы мана
+
 	private PlayerResourcesManaManager playerResourcesManaManager;
 	private Slider ManaBarSlider;
 	private Button ManaReplenishtemButton;
 	private TextMeshProUGUI ManaReplenishItemNumber;
-	// Игрок ресурсы патроны
-	public PlayerResourcesAmmoManager playerResourcesAmmoManager {  get; private set; }
+
+	public PlayerResourcesAmmoManager playerResourcesAmmoManager { get; private set; }
 	public GameObject RightWeaponAmmoMagazine { get; private set; }
 	public GameObject RightWeaponAmmoReserve { get; private set; }
 	public GameObject RightWeaponAmmoSeparator { get; private set; }
@@ -43,15 +42,15 @@ public class BootstrapSubSystemPlayerResources
 	private BootstrapSubSystemPlayerSystems bootstrapSubSystemPlayerSystems;
 
 	public BootstrapSubSystemPlayerResources(
-	GameObject canvasPauseMenu,
-	GameObject canvasMenuWeaponWheel,
-	BootstrapSubSystemScene bootstrapSubSystemScene,
-	GameController gameController,
-	BootstrapSubSystemMenu bootstrapSubSystemMenu,
-	BootstrapSubSystemPlayerSystems bootstrapSubSystemPlayerSystems,
-	GameObject canvasHUDhealthAndMana,
-	Bootstrap bootstrap,
-	GameObject canvasHUDammo)
+		GameObject canvasPauseMenu,
+		GameObject canvasMenuWeaponWheel,
+		BootstrapSubSystemScene bootstrapSubSystemScene,
+		GameController gameController,
+		BootstrapSubSystemMenu bootstrapSubSystemMenu,
+		BootstrapSubSystemPlayerSystems bootstrapSubSystemPlayerSystems,
+		GameObject canvasHUDhealthAndMana,
+		Bootstrap bootstrap,
+		GameObject canvasHUDammo)
 	{
 		this.canvasPauseMenu = canvasPauseMenu;
 		this.canvasMenuWeaponWheel = canvasMenuWeaponWheel;
@@ -66,8 +65,6 @@ public class BootstrapSubSystemPlayerResources
 
 	public IEnumerator InitializePlayerResources()
 	{
-		//loadingStatusText.text = "Player Resources";
-
 		playerResourcesGameObject = new GameObject("PlayerResources");
 
 		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber").GetComponent<TMP_Text>();
@@ -103,6 +100,7 @@ public class BootstrapSubSystemPlayerResources
 		ServiceLocator.Register("playerResourcesAmmoManager", playerResourcesAmmoManager);
 
 		Debug.Log("PLAYER RESOURCES INITIALIZED");
+
 		yield break;
 	}
 }
