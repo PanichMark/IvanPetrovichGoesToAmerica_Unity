@@ -1,29 +1,41 @@
 ﻿using UnityEngine;
 public class GameController
 {
+	public bool IsPlayerControllable { get; private set; }
+	public bool IsPlayerAbleToMove { get; private set;}
+	public bool IsPlayerDead { get; private set; }
+	public bool IsPlayerPlunging { get; private set; }
 	public bool IsMainMenuOpen {  get; private set; }
 	public bool IsPauseMenuAvailable { get; private set; }
-	public bool IsPlayerControllable { get; private set; }
-	public bool IsPlayerDead { get; private set; }
-	public bool IsGameAbleToSave { get; private set; }
-
-	public bool IsPlayerPlunging { get; private set; }
-
-	public bool IsPlayerAbleToMove { get; private set;}
-
-	public delegate void MainMenuEventHandler();
-	public event MainMenuEventHandler OnOpenMainMenu;
-
-
+	
 	public delegate void PlayerDeathHandler();
 	public event PlayerDeathHandler OnPlayerDeath;
 	public event PlayerDeathHandler OnPlayerRevive;
 
+	public delegate void MainMenuEventHandler();
+	public event MainMenuEventHandler OnOpenMainMenu;
 
 	public GameController()
 	{
 		IsPlayerAbleToMove = true;
 		Debug.Log("GameController Initialized");
+	}
+
+	public void MakePlayerControllable()
+	{
+		IsPlayerControllable = true;
+	}
+
+	public void MakePlayerNonControllable()
+	{
+		IsPlayerControllable = false;
+	}
+
+	public void PlayerHasDied()
+	{
+		IsPlayerDead = true;
+		MakePlayerNonControllable();
+		OnPlayerDeath?.Invoke();
 	}
 
 	public void StartPlunging()
@@ -36,34 +48,20 @@ public class GameController
 		IsPlayerAbleToMove = true;
 		IsPlayerPlunging = false;
 	}
-	public void PlayerHasDied()
+
+	public void OpenMainMenu()
 	{
-		IsPlayerDead = true;
+		IsMainMenuOpen = true;
+		OnOpenMainMenu?.Invoke();
 		MakePlayerNonControllable();
-		//IsPauseMenuAvailable = false;
-		OnPlayerDeath?.Invoke();
+		Debug.Log("MainMenu opened");
 	}
 
-	/*
-	public void PlayerIsRevived()
+	public void CloseMainMenu()
 	{
-		IsPlayerDead = false;
-		MakePlayerControllable();
-		IsPauseMenuAvailable = true;
+		IsMainMenuOpen = false;
+		Debug.Log("MainMeni closed");
 	}
-	*/
-
-	public void MakePlayerControllable()
-	{
-		IsPlayerControllable = true;
-	}
-
-	public void MakePlayerNonControllable()
-	{
-		IsPlayerControllable = false;
-	}
-
-
 
 	public void SceneLoadBegan()
 	{
@@ -79,25 +77,7 @@ public class GameController
 
 	public void SceneLoadEnded()
 	{
-	
-
 		IsPauseMenuAvailable = true;
 		MakePlayerControllable();
 	}
-
-	public void OpenMainMenu()
-	{
-		IsMainMenuOpen = true;
-		OnOpenMainMenu?.Invoke();
-		MakePlayerNonControllable();
-		Debug.Log("Open MAINMENU");
-	}
-	public void CloseMainMenu()
-	{
-		IsMainMenuOpen = false;
-		Debug.Log("Close MAINMENU");
-
-	}
-
-
 }
