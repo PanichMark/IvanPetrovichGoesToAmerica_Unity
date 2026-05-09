@@ -6,7 +6,7 @@ using TMPro;
 public class WeaponWheelMenuController : MonoBehaviour
 {
 	private GameObject wheelSegmentPrefab;          
-	private Transform centerPoint;                  
+	//private Transform centerPoint;                  
 	private GameObject WeaponWheelMenuCanvas;            
 	public TextMeshProUGUI WeaponText { get; private set; }            
 	public TextMeshProUGUI WeaponWheelName { get; private set; }       
@@ -32,14 +32,14 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 	private Image weaponIconBig;
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, PlayerWeaponController weaponController,
-		GameObject wheelSegmentPrefab, Transform centerPoint, GameObject WeaponWheelMenuCanvas, TextMeshProUGUI WeaponText, TextMeshProUGUI WeaponWheelName, Image weaponIconBig)
+		GameObject wheelSegmentPrefab, GameObject WeaponWheelMenuCanvas, TextMeshProUGUI WeaponText, TextMeshProUGUI WeaponWheelName, Image weaponIconBig)
 	{
 		this.inputDevice = inputDevice;
 		this.playerBehaviour = playerBehaviour;
 		this.weaponController = weaponController;
 		this.menuManager = menuManager;
 		this.wheelSegmentPrefab = wheelSegmentPrefab;
-		this.centerPoint = centerPoint;
+		//this.centerPoint = centerPoint;
 		this.WeaponWheelMenuCanvas = WeaponWheelMenuCanvas;
 		this.WeaponText = WeaponText;
 		this.WeaponWheelName = WeaponWheelName;

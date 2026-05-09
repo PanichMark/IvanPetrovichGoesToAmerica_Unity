@@ -36,12 +36,10 @@ public class Bootstrap : MonoBehaviour
 
 
 	// Система Сцен
+	private BootstrapSubSystemScene bootstrapSubSystemScene;
 	private GameObject gameSceneManagerGameObject;
 	[Header("Loading Screen")] [SerializeField] private GameObject canvasLoadingScreen;
-	private GameSceneManager gameSceneManager;
-	private TMP_Text loadingScreenText;
-	private TMP_Text sceneNameText;
-	private Image sceneLoadingScreenImage;
+
 
 	// Система сохранений
 	private BootstrapSubSystemSaveLoad bootstrapSubSystemSaveLoad;
@@ -82,27 +80,12 @@ public class Bootstrap : MonoBehaviour
 	private GameObject LeftWeaponAmmoReserve;
 	private GameObject LeftWeaponAmmoSeparator;
 
-	
+
 
 	// Система оружия
-	private GameObject weaponSystemGameObject;
-	private PlayerWeaponController weaponController;
-	private LegKickAttack legKickAttack;
-	private WeaponAnimationController weaponAnimationController;
-	private WeaponFirstPersonRender weaponFirstPersonRender;
-	private GameObject firstPersonLeftHandWeaponSlotGameObject;
-	private GameObject firstPersonRightHandWeaponSlotGameObject;
-	private GameObject thirdPersonLeftHandWeaponSlotGameObject;
-	private GameObject thirdPersonRightHandWeaponSlotGameObject;
-	// Колесо выбора оружия
-	private WeaponWheelMenuController weaponWheelController;
+	private BootstrapSubSystemWeapon bootstrapSubSystemWeapon;
 	[Header("Weapon Wheel Menu")] [SerializeField] private GameObject canvasMenuWeaponWheel;
-	private GameObject weaponWheelSegmentPrefab;
-	private TextMeshProUGUI weaponText;
-	private TextMeshProUGUI weaponWheelName;
-	private Image weaponIconBig;
-	private Transform centerPoint; // я думаю это можно удалить 
-	private GameObject ChokeNPCtext;
+
 
 	// Система взаимодействия
 
@@ -141,20 +124,23 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(InitializeInterfaces());
 		yield return StartCoroutine(InitializePlayerPrefabs());
 		yield return StartCoroutine(InitializeCanvases());
-		yield return StartCoroutine(InitializeSceneSystem());
 
 		///
-		bootstrapSubSystemSaveLoad = new BootstrapSubSystemSaveLoad(gameSceneManager, gameController);
+		bootstrapSubSystemScene = new BootstrapSubSystemScene(gameController, canvasLoadingScreen);
+		yield return StartCoroutine(bootstrapSubSystemScene.InitializeSceneSystem());
+
+		///
+		bootstrapSubSystemSaveLoad = new BootstrapSubSystemSaveLoad(bootstrapSubSystemScene.gameSceneManager, gameController);
 		yield return StartCoroutine(bootstrapSubSystemSaveLoad.InitializeSaveLoadSystem());
 		//
-		bootstrapSubSystemMenu = new BootstrapSubSystemMenu(this, inputDevice, gameController, gameSceneManager,
+		bootstrapSubSystemMenu = new BootstrapSubSystemMenu(this, inputDevice, gameController, bootstrapSubSystemScene.gameSceneManager,
 	bootstrapSubSystemSaveLoad.saveLoadController, playerMainCameraGameObject, canvasMainMenuReadNews,
 	canvasPauseMenu, canvasMenuConfirmAction, canvasPauseSubMenuSave,
 	canvasPauseSubMenuLoad, canvasPauseSubMenuAppearance, canvasPauseSubMenuSettings, canvasCutscene);
 		yield return StartCoroutine(bootstrapSubSystemMenu.InitializeMenuSystems());
 		//
 		bootstrapSubSystemPlayerSystems = new BootstrapSubSystemPlayerSystems(inputDevice,
-	gameSceneManager,
+	bootstrapSubSystemScene.gameSceneManager,
 	this,
 	playerGameObject,
 	playerMainCameraGameObject,
@@ -167,7 +153,7 @@ public class Bootstrap : MonoBehaviour
 		bootstrapSubSystemInteraction = new BootstrapSubSystemInteraction(this,
 	bootstrapSubSystemMenu,
 	gameController,
-	gameSceneManager,
+	bootstrapSubSystemScene.gameSceneManager,
 	inputDevice,
 	bootstrapSubSystemPlayerSystems.playerCameraController,
 	bootstrapSubSystemPlayerSystems.playerBehaviour,
@@ -179,8 +165,28 @@ public class Bootstrap : MonoBehaviour
 	   yield return StartCoroutine(bootstrapSubSystemInteraction.InitializeInteractionSystem());
 		//
 
-
-		yield return StartCoroutine(InitializeWeaponSystem());
+		//
+		bootstrapSubSystemWeapon = new BootstrapSubSystemWeapon(
+	bootstrapSubSystemScene,
+	gameController,
+	bootstrapSubSystemPlayerSystems,
+	bootstrapSubSystemMenu,
+	inputDevice,
+	playerGameObject,
+	playerResourcesAmmoManager,
+	bootstrapSubSystemInteraction,
+	canvasHUDammoController,
+	canvasHUDammo,
+	RightWeaponAmmoMagazine,
+	RightWeaponAmmoReserve,
+	RightWeaponAmmoSeparator,
+	LeftWeaponAmmoMagazine,
+	LeftWeaponAmmoReserve,
+	LeftWeaponAmmoSeparator,
+	canvasMenuWeaponWheel
+);
+		yield return StartCoroutine(bootstrapSubSystemWeapon.InitializeWeaponSystem());
+		//
 		yield return StartCoroutine(RegisterAllDependencies());
 		
 
@@ -197,7 +203,7 @@ public class Bootstrap : MonoBehaviour
 		GameObject[] availableWeapons = configWeapons.GetAvailableWeapons();
 		foreach (GameObject weaponPrefab in availableWeapons)
 		{
-			weaponController.UnlockWeapon(weaponPrefab);
+			bootstrapSubSystemWeapon.weaponController.UnlockWeapon(weaponPrefab);
 		}
 
 		Destroy(tempCameraObject);
@@ -207,11 +213,11 @@ public class Bootstrap : MonoBehaviour
 
 		if (configScene.selectedScene.ToString() == "Scene_0_MainMenu")
 		{
-			yield return StartCoroutine(gameSceneManager.LoadMainMenuScene());
+			yield return StartCoroutine(bootstrapSubSystemScene.gameSceneManager.LoadMainMenuScene());
 		}
 		else
 		{
-			yield return StartCoroutine(gameSceneManager.LoadScene(configScene.selectedScene));
+			yield return StartCoroutine(bootstrapSubSystemScene.gameSceneManager.LoadScene(configScene.selectedScene));
 		}
 
 		bootstrapSubSystemPlayerSystems.playerMovementController.SetPlayerPosition(configPlayerPosition.playerPosition);
@@ -223,7 +229,7 @@ public class Bootstrap : MonoBehaviour
 		localizationManager.ChangeLanguage(language);
 
 		bootstrapSubSystemInteraction.interactionController.ChangeLanguage(localizationManager);
-		gameSceneManager.ChangeLanguage(localizationManager);
+		bootstrapSubSystemScene.gameSceneManager.ChangeLanguage(localizationManager);
 
 		ServiceLocator.RemoveService("LocalizationManager");
 		ServiceLocator.Register("LocalizationManager", localizationManager);
@@ -278,17 +284,7 @@ public class Bootstrap : MonoBehaviour
 		yield break;
 	}
 
-	private IEnumerator InitializeSceneSystem()
-	{
-		gameSceneManagerGameObject = new GameObject("GameSceneManager");
-		gameSceneManager = gameSceneManagerGameObject.AddComponent<GameSceneManager>();
-		loadingScreenText = canvasLoadingScreen.transform.Find("LoadingScreenText").GetComponent<TMP_Text>();
-		sceneNameText = canvasLoadingScreen.transform.Find("SceneName").GetComponent<TMP_Text>();
-		sceneLoadingScreenImage = canvasLoadingScreen.transform.Find("BackgroundImage").GetComponent<Image>();
-		gameSceneManager.Initialize(gameController, canvasLoadingScreen, loadingScreenText, sceneNameText, sceneLoadingScreenImage);
 
-		yield break;
-	}
 
 
 
@@ -317,7 +313,7 @@ public class Bootstrap : MonoBehaviour
 		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
 		playerResourcesAmmoManager = playerResourcesGameObject.AddComponent<PlayerResourcesAmmoManager>();
 
-		canvasHUDhealthAndManaController.Initialize(gameSceneManager, gameController, bootstrapSubSystemMenu.menuManager, canvasHUDhealthAndMana);
+		canvasHUDhealthAndManaController.Initialize(bootstrapSubSystemScene.gameSceneManager, gameController, bootstrapSubSystemMenu.menuManager, canvasHUDhealthAndMana);
 		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
 		playerResourcesHealthManager.Initialize(gameController, bootstrapSubSystemPlayerSystems.playerBehaviour, HealthBarSlider, HealingItemButton, HealingItemNumber);
 		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
@@ -338,55 +334,7 @@ public class Bootstrap : MonoBehaviour
 
 	
 
-	private IEnumerator InitializeWeaponSystem()
-	{
-		loadingStatusText.text = "Weapon System";
 
-		weaponSystemGameObject = new GameObject("WeaponSystem");
-
-		// Основной компонент оружия
-		weaponController = weaponSystemGameObject.AddComponent<PlayerWeaponController>();
-		legKickAttack = weaponSystemGameObject.AddComponent<LegKickAttack>();
-		weaponWheelController = weaponSystemGameObject.AddComponent<WeaponWheelMenuController>();
-		weaponAnimationController = weaponSystemGameObject.AddComponent<WeaponAnimationController>();
-		weaponFirstPersonRender = weaponSystemGameObject.AddComponent<WeaponFirstPersonRender>();
-
-
-		// Колесо выбора оружия
-		weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButtons/WeaponWheelButton");
-		centerPoint = canvasMenuWeaponWheel.transform.Find("Centre").transform;
-		weaponText = canvasMenuWeaponWheel.transform.Find("Selected Weapon Name").GetComponent<TextMeshProUGUI>();
-		weaponWheelName = canvasMenuWeaponWheel.transform.Find("WeaponWheel Hand").GetComponent<TextMeshProUGUI>();
-		weaponIconBig = canvasMenuWeaponWheel.transform.Find("WeaponBig").GetComponent<Image>();
-
-		firstPersonLeftHandWeaponSlotGameObject = GameObject.Find("Slot1.L");
-		thirdPersonLeftHandWeaponSlotGameObject = GameObject.Find("Slot.L");
-		firstPersonRightHandWeaponSlotGameObject= GameObject.Find("Slot1.R");
-		thirdPersonRightHandWeaponSlotGameObject = GameObject.Find("Slot.R");
-
-		ChokeNPCtext = canvasHUDammo.transform.Find("ChokingText").gameObject;
-
-		// Инициализация оружия
-		weaponController.Initialize(inputDevice, bootstrapSubSystemMenu.menuManager, bootstrapSubSystemPlayerSystems.playerBehaviour, bootstrapSubSystemInteraction.interactionController);
-		legKickAttack.Initialize(inputDevice, playerGameObject, bootstrapSubSystemPlayerSystems.playerMovementController);
-		weaponWheelController.Initialize(inputDevice, bootstrapSubSystemMenu.menuManager, bootstrapSubSystemPlayerSystems.playerBehaviour, weaponController, weaponWheelSegmentPrefab,
-			centerPoint, canvasMenuWeaponWheel, weaponText, weaponWheelName, weaponIconBig);
-		weaponAnimationController.Initialize(playerGameObject, bootstrapSubSystemPlayerSystems.playerBehaviour, bootstrapSubSystemPlayerSystems.playerCameraController, weaponController, legKickAttack);
-		weaponFirstPersonRender.Initialize(gameSceneManager, bootstrapSubSystemPlayerSystems.playerCameraController, weaponController, bootstrapSubSystemPlayerSystems.playerFirstPersonHandRight, bootstrapSubSystemPlayerSystems.playerFirstPersonHandLeft, bootstrapSubSystemPlayerSystems.playerHandRightParent, bootstrapSubSystemPlayerSystems.playerHandLeftParent);
-
-		canvasHUDammoController.Initialize(gameSceneManager, gameController, bootstrapSubSystemMenu.menuManager, canvasHUDammo, weaponController, playerResourcesAmmoManager, bootstrapSubSystemPlayerSystems.playerBehaviour,
-				RightWeaponAmmoMagazine,
-		RightWeaponAmmoReserve,
-		RightWeaponAmmoSeparator,
-		LeftWeaponAmmoMagazine,
-		LeftWeaponAmmoReserve,
-		LeftWeaponAmmoSeparator);
-
-	
-
-		Debug.Log("WEAPON SYSTEM INITIALIZED");
-		yield break;
-	}
 
 	private IEnumerator RegisterAllDependencies()
 	{
@@ -397,7 +345,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("Player", playerGameObject);
 		
 		
-		ServiceLocator.Register("WeaponController", weaponController);
+	
 	
 		ServiceLocator.Register("PlayerResourcesMoneyManager", playerResourcesMoneyManager);
 		ServiceLocator.Register("PlayerResourcesHealthManager", playerResourcesHealthManager);
@@ -408,16 +356,13 @@ public class Bootstrap : MonoBehaviour
 		
 		
 		ServiceLocator.Register("GameController", gameController);
-		ServiceLocator.Register("GameSceneManager", gameSceneManager);
+		
 	
 
 	
 		ServiceLocator.Register("playerMainCameraGameObject", playerMainCameraGameObject);
 
-		ServiceLocator.Register("firstPersonLeftHandWeaponSlotGameObject", firstPersonLeftHandWeaponSlotGameObject);
-		ServiceLocator.Register("firstPersonRightHandWeaponSlotGameObject", firstPersonRightHandWeaponSlotGameObject);
-		ServiceLocator.Register("thirdPersonLeftHandWeaponSlotGameObject", thirdPersonLeftHandWeaponSlotGameObject);
-		ServiceLocator.Register("thirdPersonRightHandWeaponSlotGameObject", thirdPersonRightHandWeaponSlotGameObject);
+		
 
 		ServiceLocator.Register("CanvasDialogueMenu", canvasDialogueMenu);
 	
@@ -425,7 +370,7 @@ public class Bootstrap : MonoBehaviour
 
 		ServiceLocator.Register("playerResourcesAmmoManager", playerResourcesAmmoManager);
 
-		ServiceLocator.Register("ChokeNPCtext", ChokeNPCtext);
+	
 
 		ServiceLocator.Register("inputDevice", inputDevice);
 
