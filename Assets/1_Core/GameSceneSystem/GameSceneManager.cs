@@ -74,7 +74,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		}
 
 		loadingScreenText.text = "Начало загрузки сцены: " + sceneName;
-		Debug.Log($"Scene_{sceneName} loading started");
+		Debug.Log($"{sceneName} loading started");
 
 		AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive); 
 
@@ -85,7 +85,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 			yield return null;
 		}
 	
-		Debug.Log($"Scene_{sceneName} loading ended");
+		Debug.Log($"{sceneName} loading ended");
 		loadingScreenText.text = "Нажмите любую клавишу";
 		OnEndLoadGameplayScene?.Invoke();
 	
