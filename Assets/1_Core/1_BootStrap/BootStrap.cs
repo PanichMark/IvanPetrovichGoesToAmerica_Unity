@@ -14,7 +14,7 @@ public class Bootstrap : MonoBehaviour
 	// Экран Инициализации Bootstrap
 	private GameObject tempCameraObject;
 	[Header("Bootstrap")] [SerializeField] private GameObject canvasBootstrap;
-	private TMP_Text loadingStatusText;
+	
 
 	// Интерфейсы
 	private IInputDevice inputDevice;
@@ -53,32 +53,10 @@ public class Bootstrap : MonoBehaviour
 	private GameObject playerMainCameraGameObject;
 
 	// Игрок ресурсы
-	private GameObject playerResourcesGameObject;
-	private CanvasHUDhealthAndManaController canvasHUDhealthAndManaController;
-	private CanvasHUDammoController canvasHUDammoController;
+	
+	private BootstrapSubSystemPlayerResources bootstrapSubSystemPlayerResources;
 	[Header("Player Resources")] [SerializeField] private GameObject canvasHUDhealthAndMana;
 	[SerializeField] private GameObject canvasHUDammo;
-	// Игрок ресурсы деньги
-	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
-	private TMP_Text playerMoneyTextGameObject;
-	// Игрок ресурсы здоровье
-	private PlayerResourcesHealthManager playerResourcesHealthManager;
-	private Slider HealthBarSlider;
-	private Button HealingItemButton;
-	private TextMeshProUGUI HealingItemNumber;
-	// Игрок ресурсы мана
-	private PlayerResourcesManaManager playerResourcesManaManager;
-	private Slider ManaBarSlider;
-	private Button ManaReplenishtemButton;
-	private TextMeshProUGUI ManaReplenishItemNumber;
-	// Игрок ресурсы патроны
-	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
-	private GameObject RightWeaponAmmoMagazine;
-	private GameObject RightWeaponAmmoReserve;
-	private GameObject RightWeaponAmmoSeparator;
-	private GameObject LeftWeaponAmmoMagazine;
-	private GameObject LeftWeaponAmmoReserve;
-	private GameObject LeftWeaponAmmoSeparator;
 
 
 
@@ -102,7 +80,7 @@ public class Bootstrap : MonoBehaviour
 	{
 		ServiceLocator.ClearAllServices();
 		canvasBootstrap = Instantiate(canvasBootstrap);
-		loadingStatusText = canvasBootstrap.transform.Find("TextInitializationStep").GetComponent<TMP_Text>();
+		
 	
 		Time.timeScale = 0f;
 		Cursor.lockState = CursorLockMode.Locked;
@@ -147,7 +125,19 @@ public class Bootstrap : MonoBehaviour
 	bootstrapSubSystemMenu);
 		yield return StartCoroutine(bootstrapSubSystemPlayerSystems.InitializePlayerSystems());
 		///
-		yield return StartCoroutine(InitializePlayerResources());
+
+		bootstrapSubSystemPlayerResources = new BootstrapSubSystemPlayerResources(
+	canvasPauseMenu,
+	canvasMenuWeaponWheel,
+	bootstrapSubSystemScene,
+	gameController,
+	bootstrapSubSystemMenu,
+	bootstrapSubSystemPlayerSystems,
+	canvasHUDhealthAndMana,
+	this,
+	canvasHUDammo
+);
+		yield return StartCoroutine(bootstrapSubSystemPlayerResources.InitializePlayerResources());
 
 		//
 		bootstrapSubSystemInteraction = new BootstrapSubSystemInteraction(this,
@@ -173,21 +163,21 @@ public class Bootstrap : MonoBehaviour
 	bootstrapSubSystemMenu,
 	inputDevice,
 	playerGameObject,
-	playerResourcesAmmoManager,
+	bootstrapSubSystemPlayerResources.playerResourcesAmmoManager,
 	bootstrapSubSystemInteraction,
-	canvasHUDammoController,
+	bootstrapSubSystemPlayerResources.canvasHUDammoController,
 	canvasHUDammo,
-	RightWeaponAmmoMagazine,
-	RightWeaponAmmoReserve,
-	RightWeaponAmmoSeparator,
-	LeftWeaponAmmoMagazine,
-	LeftWeaponAmmoReserve,
-	LeftWeaponAmmoSeparator,
+	bootstrapSubSystemPlayerResources.RightWeaponAmmoMagazine,
+	bootstrapSubSystemPlayerResources.RightWeaponAmmoReserve,
+	bootstrapSubSystemPlayerResources.RightWeaponAmmoSeparator,
+	bootstrapSubSystemPlayerResources.LeftWeaponAmmoMagazine,
+	bootstrapSubSystemPlayerResources.LeftWeaponAmmoReserve,
+	bootstrapSubSystemPlayerResources.LeftWeaponAmmoSeparator,
 	canvasMenuWeaponWheel
 );
 		yield return StartCoroutine(bootstrapSubSystemWeapon.InitializeWeaponSystem());
 		//
-		yield return StartCoroutine(RegisterAllDependencies());
+		yield return StartCoroutine(RegisterBootstrapDependencies());
 		
 
 		//yield return new WaitForSecondsRealtime(0.3f);
@@ -238,7 +228,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeInterfaces()
 	{
-		loadingStatusText.text = "Interfaces";
+		
 
 		
 		gameController = new GameController();
@@ -262,7 +252,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeCanvases()
 	{
-		loadingStatusText.text = "Canvases";
+		
 
 		canvasMainMenuReadNews = Instantiate(canvasMainMenuReadNews);
 		canvasPauseMenu = Instantiate(canvasPauseMenu);
@@ -292,86 +282,29 @@ public class Bootstrap : MonoBehaviour
 
 	
 
-	private IEnumerator InitializePlayerResources()
-	{
-		loadingStatusText.text = "Player Resources";
-
-		playerResourcesGameObject = new GameObject("PlayerResources");
-
-		playerMoneyTextGameObject = canvasPauseMenu.transform.Find("PauseMenu PlayerMoneyNumber").GetComponent<TMP_Text>();
-		HealthBarSlider = canvasHUDhealthAndMana.transform.Find("Health Slider").GetComponent<Slider>();
-		HealingItemButton = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemButton").GetComponent<Button>();
-		HealingItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "HealingItemsNumber").GetComponent<TextMeshProUGUI>();
-		ManaBarSlider = canvasHUDhealthAndMana.transform.Find("Mana Slider").GetComponent<Slider>();
-		ManaReplenishtemButton = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemButton ").GetComponent<Button>();
-		ManaReplenishItemNumber = FindDeepChildByName(canvasMenuWeaponWheel, "ManaReplenishItemsNumber").GetComponent<TextMeshProUGUI>();
-
-		canvasHUDhealthAndManaController = playerResourcesGameObject.AddComponent<CanvasHUDhealthAndManaController>();
-		canvasHUDammoController = playerResourcesGameObject.AddComponent<CanvasHUDammoController>();
-		playerResourcesMoneyManager = playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
-		playerResourcesHealthManager = playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
-		playerResourcesManaManager = playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
-		playerResourcesAmmoManager = playerResourcesGameObject.AddComponent<PlayerResourcesAmmoManager>();
-
-		canvasHUDhealthAndManaController.Initialize(bootstrapSubSystemScene.gameSceneManager, gameController, bootstrapSubSystemMenu.menuManager, canvasHUDhealthAndMana);
-		playerResourcesMoneyManager.Initialize(playerMoneyTextGameObject);
-		playerResourcesHealthManager.Initialize(gameController, bootstrapSubSystemPlayerSystems.playerBehaviour, HealthBarSlider, HealingItemButton, HealingItemNumber);
-		playerResourcesManaManager.Initialize(ManaBarSlider, ManaReplenishtemButton, ManaReplenishItemNumber);
-
-		RightWeaponAmmoMagazine = canvasHUDammo.transform.Find("RightWeaponAmmoMagazine").gameObject;
-		RightWeaponAmmoReserve = canvasHUDammo.transform.Find("RightWeaponAmmoReserve").gameObject;
-		RightWeaponAmmoSeparator = canvasHUDammo.transform.Find("RightWeaponAmmoSeparator").gameObject;
-		LeftWeaponAmmoMagazine = canvasHUDammo.transform.Find("LeftWeaponAmmoMagazine").gameObject;
-		LeftWeaponAmmoReserve = canvasHUDammo.transform.Find("LeftWeaponAmmoReserve").gameObject;
-		LeftWeaponAmmoSeparator = canvasHUDammo.transform.Find("LeftWeaponAmmoSeparator").gameObject;
-
-
-
-
-		Debug.Log("PLAYER RESOURCES INITIALIZED");
-		yield break;
-	}
+	
 
 	
 
 
 
-	private IEnumerator RegisterAllDependencies()
+	private IEnumerator RegisterBootstrapDependencies()
 	{
-		loadingStatusText.text = "Service Locator";
+		
 
 		// Регистрация служб
 		ServiceLocator.Register("LocalizationManager", localizationManager);
-		ServiceLocator.Register("Player", playerGameObject);
 		
-		
-	
-	
-		ServiceLocator.Register("PlayerResourcesMoneyManager", playerResourcesMoneyManager);
-		ServiceLocator.Register("PlayerResourcesHealthManager", playerResourcesHealthManager);
-		ServiceLocator.Register("PlayerResourcesManaManager", playerResourcesManaManager);
-		ServiceLocator.Register("CanvasLockpickMechanicalMenu", canvasLockpickMechanicalMenu);
-		ServiceLocator.Register("CanvasLockpickElectronicMenu", canvasLockpickElectronicMenu);
-		ServiceLocator.Register("CanvasReadNoteMenu", canvasReadNoteMenu);
 		
 		
 		ServiceLocator.Register("GameController", gameController);
 		
-	
-
-	
-		ServiceLocator.Register("playerMainCameraGameObject", playerMainCameraGameObject);
+		
 
 		
 
-		ServiceLocator.Register("CanvasDialogueMenu", canvasDialogueMenu);
+		
 	
-
-
-		ServiceLocator.Register("playerResourcesAmmoManager", playerResourcesAmmoManager);
-
-	
-
 		ServiceLocator.Register("inputDevice", inputDevice);
 
 		Debug.Log("SERVICE REGISTERED");

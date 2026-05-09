@@ -137,7 +137,10 @@ public class BootstrapSubSystemInteraction
 		ServiceLocator.Register("NPCdialogueText", NPCdialogueText);
 		ServiceLocator.Register("buttonDialogueYes", buttonDialogueYes);
 		ServiceLocator.Register("buttonDialogueNo", buttonDialogueNo);
-
+		ServiceLocator.Register("CanvasLockpickMechanicalMenu", canvasLockpickMechanicalMenu);
+		ServiceLocator.Register("CanvasLockpickElectronicMenu", canvasLockpickElectronicMenu);
+		ServiceLocator.Register("CanvasReadNoteMenu", canvasReadNoteMenu);
+		ServiceLocator.Register("CanvasDialogueMenu", canvasDialogueMenu);
 
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 		yield break;

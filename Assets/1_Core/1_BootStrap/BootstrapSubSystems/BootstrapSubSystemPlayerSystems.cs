@@ -87,7 +87,8 @@ public class BootstrapSubSystemPlayerSystems
 		ServiceLocator.Register("PlayerMovementController", playerMovementController);
 
 		ServiceLocator.Register("PlayerCameraBlurFilter", playerCameraBlurFilter);
-
+		ServiceLocator.Register("Player", playerGameObject);
+		ServiceLocator.Register("playerMainCameraGameObject", playerMainCameraGameObject);
 		ServiceLocator.Register("PlayerBehaviour", playerBehaviour);
 		ServiceLocator.Register("playerColliderGameObject", playerColliderGameObject);
 		Debug.Log("PLAYER SYSTEMS INITIALIZED");
