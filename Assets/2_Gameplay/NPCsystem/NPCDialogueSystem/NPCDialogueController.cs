@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
@@ -18,21 +16,20 @@ public class NPCDialogueController : MonoBehaviour
 	public TextAsset RussianDialogueFile => russianDialogueFile;
 	private LocalizationManager localizationManager;
 	public TextAsset EnglishDialogueFile => englishDialogueFile;
-	// Словарь для фраз на разных языках
 	private Dictionary<LanguagesEnum, List<string>> localizedDialogue = new Dictionary<LanguagesEnum, List<string>>
 	{
-		{LanguagesEnum.Russian, new List<string>() },
-		{LanguagesEnum.English, new List<string>() }
+		{ LanguagesEnum.Russian, new List<string>() },
+		{ LanguagesEnum.English, new List<string>() }
 	};
-	private TextMeshProUGUI NPCdialogueText;
-	// Публичное свойство, дающее доступ к приватному словарю только для чтения
 	public Dictionary<LanguagesEnum, List<string>> LocalizedDialogue => localizedDialogue;
+	private TextMeshProUGUI NPCdialogueText;
 	private GameObject canvasDialogueMenu;
 	private GameSceneManager gameSceneManager;
-	private int currentDialogueStepIndex = 0; // Текущий индекс шага диалога
+	private int currentDialogueStepIndex = 0;
 	private bool CanSkip;
 	private NPCStateMachineController nPCStateMachineController;
 	public bool IsDialogueActive { get; private set; }
+
 	private void Start()
 	{
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
@@ -48,24 +45,23 @@ public class NPCDialogueController : MonoBehaviour
 
 		nPCStateMachineController = GetComponent<NPCStateMachineController>();
 
-		// Связываем управление панелями меню с открытием и закрытием паузы
 		menuManager.OnOpenPauseMenu += HideNPCDialogueCanvas;
 		menuManager.OnClosePauseMenu += ShowNPCDialogueCanvas;
 
-		// Закрываем головоломку при смене сцены
 		gameSceneManager.OnBeginLoadMainMenuScene += ExitNPCDialogue;
 		gameSceneManager.OnBeginLoadGameplayScene += ExitNPCDialogue;
 
 		CanSkip = true;
-
 	}
+
 	private void Update()
 	{
 		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && IsDialogueActive && CanSkip && !menuManager.IsPauseMenuOpened)
 		{
-			DisplayNextDialogueLine(); // Показываем следующую строку диалога по нажатию пробела
+			DisplayNextDialogueLine();
 		}
 	}
+
 	private void ExitNPCDialogue()
 	{
 		buttonDialogueYes.onClick.RemoveAllListeners();
@@ -78,14 +74,10 @@ public class NPCDialogueController : MonoBehaviour
 		IsDialogueActive = false;
 
 		DeactivateButtons();
-
-
-
-
 	}
+
 	private void LoadDialogueFromFiles()
 	{
-		// Русские фразы
 		if (russianDialogueFile != null)
 		{
 			using (var reader = new StringReader(russianDialogueFile.text))
@@ -100,13 +92,11 @@ public class NPCDialogueController : MonoBehaviour
 				}
 			}
 		}
-		else
+		else if (englishDialogueFile != null)
 		{
-			if (russianDialogueFile == null && englishDialogueFile != null)
-				Debug.LogWarning("Русская версия диалога не указана!");
+			Debug.LogWarning("Russian dialogue file is not set!");
 		}
 
-		// Английские фразы
 		if (englishDialogueFile != null)
 		{
 			using (var reader = new StringReader(englishDialogueFile.text))
@@ -121,36 +111,34 @@ public class NPCDialogueController : MonoBehaviour
 				}
 			}
 		}
-		else
+		else if (russianDialogueFile != null)
 		{
-			if (russianDialogueFile != null && englishDialogueFile == null)
-				Debug.LogWarning("Английская версия диалога не указана!");
+			Debug.LogWarning("English dialogue file is not set!");
 		}
 	}
+
 	public void ShowNPCDialogueCanvas()
 	{
 		if (IsDialogueActive)
-		{
 			canvasDialogueMenu.SetActive(true);
-		}
 	}
+
 	private void HideNPCDialogueCanvas()
 	{
 		if (IsDialogueActive)
-		{
 			canvasDialogueMenu.SetActive(false);
-		}
 	}
+
 	public void Interact()
 	{
 		currentDialogueStepIndex = 0;
 		dialogueBranchStructIndex = 0;
-		//dialogueStepsIndex = 0;
+
 		menuManager.OpenDialogueMenu();
 		IsDialogueActive = true;
-		ShowNPCDialogueCanvas();
-		DisplayNextDialogueLine(); // Показываем первую строку диалога
 
+		ShowNPCDialogueCanvas();
+		DisplayNextDialogueLine();
 	}
 
 	private void DisplayNextDialogueLine()
@@ -166,7 +154,6 @@ public class NPCDialogueController : MonoBehaviour
 
 		NPCdialogueText.text = localizedDialogue[currentLanguage][currentDialogueStepIndex];
 
-		// Проверка на финальный переход по "Нет"
 		if (dialogueBranchStructsList.Count > 0)
 		{
 			for (int i = 0; i < dialogueBranchStructsList.Count; i++)
@@ -174,8 +161,6 @@ public class NPCDialogueController : MonoBehaviour
 				if (dialogueBranchStructsList[i].DialogueBranchIndex == (currentDialogueStepIndex + 1))
 				{
 					dialogueBranchStructIndex = i;
-
-
 					CanSkip = false;
 					ActivateButtons();
 					buttonDialogueYes.onClick.AddListener(() => SelectOption(true));
@@ -184,20 +169,12 @@ public class NPCDialogueController : MonoBehaviour
 				}
 			}
 		}
-		
+
 		currentDialogueStepIndex++;
+
 		if (currentDialogueStepIndex == dialogueBranchStructsList[dialogueBranchStructIndex].FinalNoIndex)
-		{
 			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToNoFinal;
-		}
-
-
-		//Debug.Log(currentDialogueStepIndex);
 	}
-
-
-
-
 
 	private void ActivateButtons()
 	{
@@ -210,18 +187,21 @@ public class NPCDialogueController : MonoBehaviour
 		buttonDialogueYes.gameObject.SetActive(false);
 		buttonDialogueNo.gameObject.SetActive(false);
 	}
+
 	private void SelectOption(bool isYesSelected)
 	{
 		var currentLanguage = localizationManager.CurrentLanguage;
 
 		if (isYesSelected)
-		{
 			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToYesOptionIndex - 1;
-		}
+
 		buttonDialogueYes.onClick.RemoveAllListeners();
 		buttonDialogueNo.onClick.RemoveAllListeners();
+
 		DisplayNextDialogueLine();
+
 		DeactivateButtons();
+
 		CanSkip = true;
 	}
 }

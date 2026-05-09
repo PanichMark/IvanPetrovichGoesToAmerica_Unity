@@ -11,14 +11,14 @@ public class InteractionObjectElevatorController : MonoBehaviour
 
 	void Start()
 	{
-		// Запоминаем начальную позицию лифта как нижнюю точку
 		lowerYPosition = transform.position.y;
 	}
 
-	// Публичный метод для вызова извне (кнопками)
 	public void RequestMove(bool moveUp)
 	{
-		if (isMoving) return;
+		if (isMoving)
+			return;
+
 		StartCoroutine(MoveElevator(moveUp));
 	}
 

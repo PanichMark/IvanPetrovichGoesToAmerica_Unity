@@ -2,27 +2,27 @@
 
 public class NPCPeaceful : NPCAbstract
 {
-	// Приватная ссылка на контроллер состояний NPC
-	
-	// Получаем ссылку на контроллер состояний NPC в методе Start
-	
+	// Ссылка на контроллер состояний NPC.
 
-	override public void Interact()
+	// Получаем ссылку на контроллер состояний NPC в методе Start.
+
+	public override void Interact()
 	{
-		// Проверяем, что NPC находится именно в состоянии Default
-		if (_npcStateMachineController?.CurrentNPCState != "StationaryAction" && _npcStateMachineController?.CurrentNPCState != "Patrolling")
+		// Проверяем, что NPC находится в подходящем состоянии.
+		if (_npcStateMachineController?.CurrentNPCState != "StationaryAction" &&
+			_npcStateMachineController?.CurrentNPCState != "Patrolling")
 			return;
 
-	
-		if (_NPCDialogueController.RussianDialogueFile != null && _NPCDialogueController.EnglishDialogueFile != null)
+		// Если есть диалоги для текущего языка, начинаем диалог.
+		if (_NPCDialogueController.RussianDialogueFile != null &&
+			_NPCDialogueController.EnglishDialogueFile != null)
 		{
-			// Если есть диалоги для текущего языка, начинаем диалог
 			_npcStateMachineController.RotateTowardsPlayer();
 			_NPCDialogueController.Interact();
 		}
 		else
 		{
-			// Обычное поведение
+			// Обычное поведение.
 			StopAllCoroutines();
 			StartCoroutine(ShowAndHidePhrase());
 		}

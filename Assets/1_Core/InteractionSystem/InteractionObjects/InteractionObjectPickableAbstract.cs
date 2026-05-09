@@ -6,11 +6,11 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 {
 	protected LocalizationManager localizationManager;
 
-	protected Collider playerCollider; // Ссылка на коллайдер игрока
-	protected bool isCollisionIgnored = false; // Флаг для отслеживания игнорирования физики
-	protected bool isPlayerInsideTrigger = false; // Флаг: игрок внутри триггера объекта
+	protected Collider playerCollider;
+	protected bool isCollisionIgnored = false;
+	protected bool isPlayerInsideTrigger = false;
 
-	protected GameObject playerColliderGameObject; // // Слои для Physics.IgnoreLayerCollision
+	protected GameObject playerColliderGameObject;
 	protected int pickableLayer;
 	protected int playerLayer;
 	public GameObject CachedPlayer { get; protected set; }
@@ -22,31 +22,48 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	public virtual string InteractionObjectNameUI { get; protected set; }
 	public string InteractionHintMessageMain => $"{InteractionHintAction} {InteractionObjectNameUI}?";
 
-	public string InteractionHintAction {  get; protected set; }
+	public string InteractionHintAction { get; protected set; }
 
 	public virtual string InteractionHintMessageAdditional => null;
 	public virtual bool IsInteractionHintMessageAdditionalActive => false;
 
 	public bool IsObjectPickedUp { get; protected set; }
 
-
 	void Start()
 	{
 		pickableLayer = LayerMask.NameToLayer("Pickable");
 		playerLayer = LayerMask.NameToLayer("Player");
-		playerColliderGameObject  = ServiceLocator.Resolve<GameObject>("playerColliderGameObject");
+		playerColliderGameObject = ServiceLocator.Resolve<GameObject>("playerColliderGameObject");
 		playerCollider = playerColliderGameObject.GetComponent<Collider>();
 
 		Collider = GetComponent<Collider>();
 		RigidBody = GetComponent<Rigidbody>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
-	
 
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
 		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
 		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+	}
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject == CachedPlayer)
+			isPlayerInsideTrigger = true;
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+		if (other.gameObject == CachedPlayer)
+		{
+			isPlayerInsideTrigger = false;
+			if (isCollisionIgnored && playerCollider != null)
+			{
+				Physics.IgnoreCollision(Collider, playerCollider, false);
+				isCollisionIgnored = false;
+			}
+		}
 	}
 
 	public void ChangeLanguage()
@@ -69,15 +86,12 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			if (CachedPlayer != null)
 			{
 				Debug.Log($"Picked up {InteractionObjectNameSystem}");
-				
 				gameObject.tag = "Untagged";
 				Collider.enabled = false;
 				RigidBody.isKinematic = true;
 
-				// Начинаем плавное перемещение
 				StartCoroutine(MoveTowardsInFrontOfPlayer());
 
-				// Другие настройки остаются такими же
 				transform.parent = CachedPlayer.transform;
 				transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
 				IsObjectPickedUp = true;
@@ -97,87 +111,51 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		RigidBody.isKinematic = false;
 		IsObjectPickedUp = false;
 
-		// Отцепляем объект от игрока
 		transform.parent = null;
 
-		// 1. Игнорируем столкновения между слоем этого объекта (Pickable) и слоем Player
-		// 1. Игнорируем столкновения ТОЛЬКО между этим конкретным объектом и игроком
-
 		Physics.IgnoreCollision(Collider, playerCollider, true);
-		isCollisionIgnored = true; // Включаем флаг, чтобы знать, что мы отключили столкновение
-		
+		isCollisionIgnored = true;
 
-		// 2. Запускаем корутину, которая подождет 0.1 секунды и вернет столкновения
 		StartCoroutine(EnableCollisionAfterDelay(0.05f));
 
 		SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByBuildIndex(1));
 	}
-	//Корутина: ждет заданное время и включает столкновения обратно
-	// Корутина: ждет 0.25 сек и включает столкновение обратно для конкретных объектов
+
 	private IEnumerator EnableCollisionAfterDelay(float delay)
 	{
-		// Ждем 0.25 секунды
 		yield return new WaitForSeconds(delay);
 
-		// Проверяем, что компоненты еще существуют
 		if (Collider != null && playerCollider != null)
 		{
-			// Включаем столкновение обратно ТОЛЬКО для этих двух объектов
 			Physics.IgnoreCollision(Collider, playerCollider, false);
-			isCollisionIgnored = false; // Сбрасываем флаг
-		}
-	}
-	void OnTriggerEnter(Collider other)
-	{
-		if (other.gameObject == CachedPlayer)
-		{
-			isPlayerInsideTrigger = true;
+			isCollisionIgnored = false;
 		}
 	}
 
-	void OnTriggerExit(Collider other)
-	{
-		if (other.gameObject == CachedPlayer)
-		{
-			isPlayerInsideTrigger = false;
-			// Если игрок вышел из триггера — возвращаем столкновения
-			if (isCollisionIgnored && playerCollider != null)
-			{
-				Physics.IgnoreCollision(Collider, playerCollider, false);
-				isCollisionIgnored = false;
-			}
-		}
-	}
 	IEnumerator MoveTowardsInFrontOfPlayer()
 	{
 		while (true)
 		{
-			// Рассчитываем новую целевую позицию каждый кадр
 			Vector3 targetPosition = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.5f + Vector3.up * 1f;
-
-			// Перемещаем объект к новой позиции
 			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
 
-			// Выход из цикла, если объект вплотную приблизился к игроку
 			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
-			{
 				break;
-			}
 
 			yield return null;
 		}
 
-		// Установим последнюю позицию на случай погрешности
 		transform.position = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.5f + Vector3.up * 1f;
 	}
 
+
 	public void SaveData(ref GameData data)
 	{
-		
+
 	}
 
 	public void LoadData(GameData data)
 	{
-		
+
 	}
 }

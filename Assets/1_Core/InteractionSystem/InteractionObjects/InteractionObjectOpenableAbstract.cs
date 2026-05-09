@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System;
 
-
 public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IInteractable
 {
+	public delegate void DoorStateChangedHandler(bool isOpened);
+	public event DoorStateChangedHandler OnDoorStateChanged;
 
 	[SerializeField] protected string interactionObjectNameSystem;
 	public virtual string InteractionObjectNameSystem => interactionObjectNameSystem;
-	// Приватное поле, видимое в инспекторе
+
 	private LocalizationManager localizationManager;
 	public virtual string InteractionObjectNameUI { get; protected set; }
 
-	// Свойство подсказки теперь учитывает состояние двери
 	protected string interactionHintMessageMain;
 	public virtual string InteractionHintMessageMain => interactionHintMessageMain;
 	public virtual string InteractionHintMessageAdditional => null;
@@ -22,10 +22,5 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 
 	public int DoorIndex { get; protected set; }
 
-	
-
 	public abstract void Interact();
-
-
 }
-

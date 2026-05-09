@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 public class InteractionObjectLightSwitch : MonoBehaviour, IInteractable
 {
+	public delegate void InteractionDelegate();
+
 	[SerializeField] private List<GameObject> lightsList = new List<GameObject>();
-	[SerializeField] private bool isButtonActivate = true; // true = только включает, false = только выключает
+	[SerializeField] private bool isButtonActivate = true;
 
 	public Color emissionColorOn = Color.white;
 
-	// --- Свойства интерфейса IInteractable ---
 	public string InteractionObjectNameSystem => "LightSwitch";
 	public string InteractionObjectNameUI => "Свет";
 	public string InteractionHintMessageMain => $"Включить/выключить {InteractionObjectNameUI}";
@@ -17,12 +18,10 @@ public class InteractionObjectLightSwitch : MonoBehaviour, IInteractable
 	public bool IsInteractionHintMessageAdditionalActive => false;
 	public string InteractionHintAction => "";
 
-	// Кэшируем материалы и рендереры для быстрого доступа
 	private List<Material> cachedMaterials = new List<Material>();
 
 	void Start()
 	{
-		// Очищаем списки на случай повторного вызова
 		cachedMaterials.Clear();
 
 		foreach (var obj in lightsList)
@@ -32,17 +31,13 @@ public class InteractionObjectLightSwitch : MonoBehaviour, IInteractable
 			Renderer renderer = obj.GetComponent<Renderer>();
 			if (renderer != null)
 			{
-				// Кэшируем ИСХОДНЫЙ материал объекта
 				cachedMaterials.Add(renderer.material);
-
-
 			}
 		}
 	}
 
 	public void Interact()
 	{
-		// Определяем действие на основе флага
 		bool shouldTurnOn = isButtonActivate;
 		bool shouldTurnOff = !isButtonActivate;
 
@@ -59,7 +54,6 @@ public class InteractionObjectLightSwitch : MonoBehaviour, IInteractable
 				cachedMaterials[i].SetColor("_EmissionColor", Color.black);
 			}
 
-			// Обновляем GI. Мы знаем, что у i-го объекта есть Renderer, так как он был в списке.
 			lightsList[i].GetComponent<Renderer>().UpdateGIMaterials();
 		}
 	}

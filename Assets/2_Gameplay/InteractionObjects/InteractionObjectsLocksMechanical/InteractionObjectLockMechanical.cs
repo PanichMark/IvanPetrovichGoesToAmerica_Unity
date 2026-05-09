@@ -1,55 +1,63 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // Подключаем пространство имен UI
+using UnityEngine.UI;
 
 public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 {
-	private SaveLoadController saveLoadController;
-	private LocalizationManager localizationManager;
-
 	public delegate void UnlockLockEventHandler();
 	public event UnlockLockEventHandler OnUnlockLock;
 
-	[SerializeField] private GameObject gearPrefab;               // Префаб шестерёнки
-	[SerializeField] private int segmentsCount;                  // Количество сегментов вращения
-	[SerializeField] private float rotationSpeed;                // Скорость вращения
-	[SerializeField] private float moveSpeed;                    // Скорость перемещения
-	[SerializeField] private GameObject CubeFollow;              // Префаб следящего куба
+	[SerializeField] private GameObject gearPrefab;
+	[SerializeField] private int segmentsCount;
+	[SerializeField] private float rotationSpeed;
+	[SerializeField] private float moveSpeed;
+	[SerializeField] private GameObject CubeFollow;
+
+	private SaveLoadController saveLoadController;
+	private LocalizationManager localizationManager;
 	private GameObject canvasLockpickMechanicalMenu;
-	private Button buttonExitLockpickMechanicalMenu;           // Кнопка закрытия пазла
-	private MenuManager menuManager;                             // Менеджер меню
+	private Button buttonExitLockpickMechanicalMenu;
+	private MenuManager menuManager;
+	private GameSceneManager gameSceneManager;
+
 	private bool IsPuzzleActive;
-	public bool WasUnlocked { get; private set; } = false;                    // Название объекта интерфейса
-	private bool isMovingOrRotating = false;                     // Блокировка взаимодействия
-	private GameObject currentGearInstance;                      // Текущий экземпляр шестерёнки
-	private GameObject currentCubeFollow;                        // Текущий экземпляр куба
-	private MeshCollider EndCollider;                            // Коллайдер объекта "END"
-	private float rotationStep;                                  // Шаг угла вращения
-	private float movementStep;                                  // Шаг перемещения
-	private MeshCollider CentreZoneCollider;                     // Центровый коллайдер
-	private MeshCollider UpZoneCollider;                         // Верхняя зона
-	private MeshCollider DownZoneCollider;                       // Нижняя зона
-	private MeshCollider LeftZoneCollider;                       // Левая зона
-	private MeshCollider RightZoneCollider;                      // Правая зона
-	private bool _canMoveUp = true;                              // Возможность двигаться вверх
-	private bool _canMoveDown = true;                            // Возможность двигаться вниз
-	private bool _canMoveLeft = true;                            // Возможность двигаться влево
-	private bool _canMoveRight = true;                           // Возможность двигаться вправо
-	private List<MeshCollider> cachedWallColliders;              // Кэшированные коллайдеры стен
+	public bool WasUnlocked { get; private set; } = false;
+	private bool isMovingOrRotating = false;
+	private GameObject currentGearInstance;
+	private GameObject currentCubeFollow;
+	private MeshCollider EndCollider;
+	private float rotationStep;
+	private float movementStep;
+	private MeshCollider CentreZoneCollider;
+	private MeshCollider UpZoneCollider;
+	private MeshCollider DownZoneCollider;
+	private MeshCollider LeftZoneCollider;
+	private MeshCollider RightZoneCollider;
+
+	private bool _canMoveUp = true;
+	private bool _canMoveDown = true;
+	private bool _canMoveLeft = true;
+	private bool _canMoveRight = true;
+
+	private List<MeshCollider> cachedWallColliders;
 
 	[SerializeField] private string interactionObjectNameSystem;
 	public string InteractionObjectNameSystem => interactionObjectNameSystem;
+
 	private string interactionHintMessageMain;
 	public string InteractionHintMessageMain => interactionHintMessageMain;
+
 	public string InteractionHintAction { get; protected set; }
+
 	public string InteractionHintMessageAdditional => null;
+
 	public bool IsInteractionHintMessageAdditionalActive => false;
-	public string InteractionObjectNameUI {  get; protected set; }
+
+	public string InteractionObjectNameUI { get; protected set; }
+
 	private Text buttonText;
-	private GameSceneManager gameSceneManager;
-	
+
 	private void Awake()
 	{
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
@@ -73,7 +81,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
 		menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
 	}
-	
+
 	public void ChangeLanguage()
 	{
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
@@ -82,14 +90,12 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 		buttonText.text = localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
 		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-
 	}
 
 	private void Update()
 	{
 		if (!isMovingOrRotating && currentGearInstance != null && !menuManager.IsPauseMenuOpened)
 		{
-			// Движение возможно только в открытых направлениях
 			if (_canMoveUp && Input.GetKeyDown(KeyCode.UpArrow))
 			{
 				StartCoroutine(RotateGear(rotationStep));
@@ -108,6 +114,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 			}
 		}
 	}
+
 	private void HidePuzzleCanvas()
 	{
 		if (IsPuzzleActive)
@@ -132,12 +139,11 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	{
 		menuManager.OpenInteractionMenu();
 		IsPuzzleActive = true;
-		// Создание экземпляров объектов
+
 		currentGearInstance = Instantiate(gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
 		currentGearInstance.transform.LookAt(Camera.main.transform);
 		currentGearInstance.transform.Translate(-0.05f, 0f, 0f, Space.Self);
 
-		// Определение коллайдера объекта "END"
 		Transform endTransform = currentGearInstance.transform.Find("END");
 		if (endTransform != null)
 		{
@@ -145,22 +151,18 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		}
 		else
 		{
-			Debug.LogError("Объект с именем \"END\" не найден.");
+			Debug.LogError("END object not found.");
 		}
 
-		// Настройка кнопок
 		canvasLockpickMechanicalMenu.SetActive(true);
-		buttonExitLockpickMechanicalMenu.onClick.RemoveAllListeners();      // Удаляем предыдущие события
-		buttonExitLockpickMechanicalMenu.onClick.AddListener(OnClosePuzzle);// Присваиваем обработчик
-		//ClosePuzzleButton.gameObject.SetActive(true);       // Активируем кнопку
-		
-		gameObject.tag = "Untagged"; // Меняем тег объекта
+		buttonExitLockpickMechanicalMenu.onClick.RemoveAllListeners();
+		buttonExitLockpickMechanicalMenu.onClick.AddListener(OnClosePuzzle);
 
-		// Создание куба
+		gameObject.tag = "Untagged";
+
 		currentCubeFollow = Instantiate(CubeFollow, GetCubeSpawnPosition(), Quaternion.identity);
 		currentCubeFollow.transform.LookAt(Camera.main.transform);
 
-		// Поиск детекторов зон коллизий
 		Transform root = currentCubeFollow.transform;
 		CentreZoneCollider = root.Find("CentreZone")?.GetComponent<MeshCollider>();
 		UpZoneCollider = root.Find("UpZone")?.GetComponent<MeshCollider>();
@@ -168,7 +170,6 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		LeftZoneCollider = root.Find("LeftZone")?.GetComponent<MeshCollider>();
 		RightZoneCollider = root.Find("RightZone")?.GetComponent<MeshCollider>();
 
-		// Поиск группы "Walls" и сохранение коллайдеров
 		Transform wallsGroup = currentGearInstance.transform.Find("Walls");
 		if (wallsGroup != null)
 		{
@@ -176,21 +177,19 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		}
 		else
 		{
-			Debug.LogError("Группа 'Walls' не найдена.");
+			Debug.LogError("Walls group not found.");
 		}
 
 		CheckForIntersection();
 
-		// Проверка детекторов зон
 		if (UpZoneCollider == null || DownZoneCollider == null ||
 			LeftZoneCollider == null || RightZoneCollider == null)
 		{
-			Debug.LogWarning("Не удалось присвоить детекторы зон!");
+			Debug.LogWarning("Failed to assign zone detectors!");
 		}
 
-		// Расчёт шагов вращения и перемещения
 		rotationStep = 360f / segmentsCount;
-		movementStep = 0.1f; // Расстояние шага в метрах
+		movementStep = 0.1f;
 	}
 
 	private void OnClosePuzzle()
@@ -217,7 +216,6 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 			_canMoveLeft = true;
 			_canMoveRight = true;
 
-			// Проверка пересечения с ранее сохранённым списком коллайдеров
 			if (cachedWallColliders != null)
 			{
 				foreach (var collider in cachedWallColliders)
@@ -230,15 +228,14 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 			}
 			else
 			{
-				Debug.LogError("Список коллайдеров не заполнен.");
+				Debug.LogError("Wall colliders list is not populated.");
 			}
 
-			// Дополнительная проверка на пересечение с объектом "END"
 			if (EndCollider != null && IsIntersectingWithCollider(CentreZoneCollider, EndCollider))
 			{
-				Debug.Log("Центр пересекся с объектом 'END'.");
+				Debug.Log("Center intersected with END object.");
 				WasUnlocked = true;
-				OnClosePuzzle(); // Автоматически закрываем пазл
+				OnClosePuzzle();
 				OnUnlockLock?.Invoke();
 			}
 		}
@@ -248,22 +245,24 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	{
 		Vector3 direction;
 		float distance;
-		return Physics.ComputePenetration(firstCollider, firstCollider.transform.position, firstCollider.transform.rotation,
-										  secondCollider, secondCollider.transform.position, secondCollider.transform.rotation,
-										  out direction, out distance);
+
+		return Physics.ComputePenetration(
+			firstCollider, firstCollider.transform.position, firstCollider.transform.rotation,
+			secondCollider, secondCollider.transform.position, secondCollider.transform.rotation,
+			out direction, out distance);
 	}
 
 	IEnumerator RotateGear(float targetAngle)
 	{
 		isMovingOrRotating = true;
 		Quaternion startRotation = currentGearInstance.transform.rotation;
-		Quaternion endRotation = startRotation * Quaternion.Euler(new Vector3(targetAngle, 0, 0)); // Вращение по оси X
+		Quaternion endRotation = startRotation * Quaternion.Euler(new Vector3(targetAngle, 0, 0));
 
 		float elapsedTime = 0f;
 		while (elapsedTime < 1f)
 		{
 			currentGearInstance.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime);
-			elapsedTime += Time.unscaledDeltaTime * rotationSpeed; // Используем unscaledDeltaTime
+			elapsedTime += Time.unscaledDeltaTime * rotationSpeed;
 			yield return null;
 		}
 
@@ -282,7 +281,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		while (elapsedTime < 1f)
 		{
 			currentGearInstance.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime);
-			elapsedTime += Time.unscaledDeltaTime * moveSpeed; // Используем unscaledDeltaTime
+			elapsedTime += Time.unscaledDeltaTime * moveSpeed;
 			yield return null;
 		}
 
@@ -301,7 +300,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		while (elapsedTime < 1f)
 		{
 			currentGearInstance.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime);
-			elapsedTime += Time.unscaledDeltaTime * moveSpeed; // Используем unscaledDeltaTime
+			elapsedTime += Time.unscaledDeltaTime * moveSpeed;
 			yield return null;
 		}
 
@@ -313,62 +312,12 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	private Vector3 GetPuzzleSpawnPosition()
 	{
 		var camPos = Camera.main.transform.position;
-		return camPos + Camera.main.transform.forward * 1f; // Спауним впереди камеры
+		return camPos + Camera.main.transform.forward * 1f; // Spawn in front of the camera.
 	}
 
 	private Vector3 GetCubeSpawnPosition()
 	{
 		var camPos = Camera.main.transform.position;
-		return camPos + Camera.main.transform.forward * 0.7f; // Немного ближе к камере
+		return camPos + Camera.main.transform.forward * 0.7f; // Spawn slightly closer to the camera.
 	}
-		
-/*	private void OnDrawGizmos()
-	{
-		if (currentGearInstance != null && Application.isPlaying)
-		{
-			// Поиск группы "PuzzleWalls" внутри currentGearInstance
-			Transform wallsGroup = currentGearInstance.transform.Find("Walls");
-
-			if (wallsGroup != null)
-			{
-				// Получаем все коллайдеры дочерних объектов внутри группы "PuzzleWalls"
-				MeshCollider[] childColliders = wallsGroup.GetComponentsInChildren<MeshCollider>();
-
-				// Отображаем коллайдеры внутри группы "PuzzleWalls" зеленым цветом
-				Gizmos.color = Color.green;
-
-				foreach (MeshCollider col in childColliders)
-				{
-					// Рисуем границу сетки (wireframe) коллайдера
-					Gizmos.DrawWireMesh(col.sharedMesh, col.transform.position, col.transform.rotation, col.transform.lossyScale);
-				}
-			}
-
-
-			// Теперь рисуем остальные зоны (они тоже MeshCollider)
-			if (UpZoneCollider != null)
-			{
-				Gizmos.color = Color.red;
-				Gizmos.DrawWireMesh(((MeshCollider)UpZoneCollider).sharedMesh, ((MeshCollider)UpZoneCollider).transform.position, ((MeshCollider)UpZoneCollider).transform.rotation, ((MeshCollider)UpZoneCollider).transform.lossyScale);
-			}
-
-			if (DownZoneCollider != null)
-			{
-				Gizmos.color = Color.red;
-				Gizmos.DrawWireMesh(((MeshCollider)DownZoneCollider).sharedMesh, ((MeshCollider)DownZoneCollider).transform.position, ((MeshCollider)DownZoneCollider).transform.rotation, ((MeshCollider)DownZoneCollider).transform.lossyScale);
-			}
-
-			if (LeftZoneCollider != null)
-			{
-				Gizmos.color = Color.red;
-				Gizmos.DrawWireMesh(((MeshCollider)LeftZoneCollider).sharedMesh, ((MeshCollider)LeftZoneCollider).transform.position, ((MeshCollider)LeftZoneCollider).transform.rotation, ((MeshCollider)LeftZoneCollider).transform.lossyScale);
-			}
-
-			if (RightZoneCollider != null)
-			{
-				Gizmos.color = Color.red;
-				Gizmos.DrawWireMesh(((MeshCollider)RightZoneCollider).sharedMesh, ((MeshCollider)RightZoneCollider).transform.position, ((MeshCollider)RightZoneCollider).transform.rotation, ((MeshCollider)RightZoneCollider).transform.lossyScale);
-			}
-		}
-	}	*/
 }

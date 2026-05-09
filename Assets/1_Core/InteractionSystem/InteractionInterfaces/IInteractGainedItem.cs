@@ -1,10 +1,6 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public interface IInteractGainedItem
 {
-public Sprite GainedItemImage { get; }
+	public Sprite GainedItemImage { get; }
 }
-
-

@@ -22,14 +22,10 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private GameObject canvasLockpickElectronicMenu;
 	private SaveLoadController saveLoadController;
 	private GameSceneManager gameSceneManager;
-	private LocalizationManager localizationManager;
 
-	// Список индексов кнопок-"alarm"
 	private List<int> alarmIndices;
-
-	// Кол-во оставшихся ходов
 	private int movesLeft = 5;
-	
+
 	void Start()
 	{
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
@@ -39,14 +35,11 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>("buttonsLockElectrical");
 
-		// Добавляем обработчик закрытия головоломки при выходе
 		buttonExitLockpickElectronicMenu.onClick.AddListener(CloseElectronicLockPuzzle);
 
-		// Связываем управление панелями меню с открытием и закрытием паузы
 		menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
 		menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
 
-		// Закрываем головоломку при смене сцены
 		gameSceneManager.OnBeginLoadMainMenuScene += CloseElectronicLockPuzzle;
 		gameSceneManager.OnBeginLoadGameplayScene += CloseElectronicLockPuzzle;
 	}
@@ -66,17 +59,13 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private void ShowPuzzleCanvas()
 	{
 		if (IsPuzzleActive)
-		{
 			canvasLockpickElectronicMenu.SetActive(true);
-		}
 	}
 
 	private void HidePuzzleCanvas()
 	{
 		if (IsPuzzleActive)
-		{
 			canvasLockpickElectronicMenu.SetActive(false);
-		}
 	}
 
 	public void Interact()
@@ -92,176 +81,133 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 
 	private void InitializeButtons()
 	{
-		// Сброс количества ходов при перезапуске пазла
 		movesLeft = 5;
 
-		// Сначала очищаем состояние всех кнопок
 		foreach (var buttonObj in buttonsLockElectrical)
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			ColorBlock colors = button.colors;
-			colors.normalColor = Color.grey; // Восстанавливаем первоначальный цвет
+			colors.normalColor = Color.grey;
 			button.colors = colors;
-			button.interactable = true;       // Активируем кнопку
+			button.interactable = true;
 			button.onClick?.RemoveAllListeners();
 		}
 
-
-		// Обновляем seed для Random
 		UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
 
-		// Список индексов кнопок
 		List<int> indices = Enumerable.Range(0, buttonsLockElectrical.Length).ToList();
 
-		// Случайно выбираем 4 кнопки из 9 и помечаем их как "alarm"
 		alarmIndices = new List<int>();
 		while (alarmIndices.Count < 4)
 		{
 			int index = UnityEngine.Random.Range(0, indices.Count);
-			alarmIndices.Add(indices[index]); // Запоминаем индексы alarm-кнопок
-			indices.RemoveAt(index);          // Исключаем выбранный индекс из дальнейшего выбора
+			alarmIndices.Add(indices[index]);
+			indices.RemoveAt(index);
 		}
 
-		// Добавляем обработчики нажатия на каждую кнопку
 		foreach (var buttonObj in buttonsLockElectrical)
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			button.onClick.AddListener(() => OnButtonClicked(button));
 		}
-
-		
-
-		
 	}
 
 	private void OnButtonClicked(Button clickedButton)
 	{
-	
-		// Определяем индекс нажатой кнопки
 		int buttonIndex = Array.IndexOf(buttonsLockElectrical, clickedButton.gameObject);
 
-		// Проверяем, является ли данная кнопка "alarm"
-		if (alarmIndices.Contains(buttonIndex)) // Если нажали на alarm-кнопку
+		if (alarmIndices.Contains(buttonIndex))
 		{
-			// Проигрыш: красим все кнопки в красный
 			Debug.Log("FAIL!");
 			StartCoroutine(FlashAndResetButtons());
-		
 			return;
 		}
 
-		// Если кнопка нормальная: красим её в зелёный и делаем неактивной
 		ColorBlock colors = clickedButton.colors;
 		colors.disabledColor = Color.green;
 		clickedButton.colors = colors;
 		clickedButton.interactable = false;
 
-		// Раскрываем одну из случайных alarm-кнопок
 		RevealAlarmButton();
-	
-		// Уменьшаем счётчик ходов
+
 		movesLeft--;
 
 		Debug.Log(movesLeft);
-		// Завершаем пазл, если закончились ходы
+
 		if (movesLeft <= 0)
-		{
 			StartCoroutine(SuccessfulyUnlockedFlashing());
-		}
 	}
+
 	private IEnumerator SuccessfulyUnlockedFlashing()
 	{
 		Debug.Log("SUCCESS FLASH");
 
-		// Отключение всех кнопок перед процедурой мигания
 		foreach (var buttonObj in buttonsLockElectrical)
 		{
 			Button button = buttonObj.GetComponent<Button>();
-			button.interactable = false; // Деактивируем кнопки
+			button.interactable = false;
 		}
 
-		// Главный цикл мигания (все кнопки меняются синхронно)
 		for (int i = 0; i < 5; i++)
 		{
-
-
-			// Меняем цвет всех кнопок одновременно
 			foreach (var buttonObj in buttonsLockElectrical)
 			{
 				Button button = buttonObj.GetComponent<Button>();
 				ColorBlock colors = button.colors;
-
-				if ((i % 2) == 0)
-					colors.disabledColor = Color.green; // Красный цвет
-				else
-					colors.disabledColor = Color.grey; // Серый цвет
-
+				colors.disabledColor = (i % 2 == 0) ? Color.green : Color.grey;
 				button.colors = colors;
 			}
 
-			yield return new WaitForSecondsRealtime(0.1f); // Пауза между изменениями цвета
+			yield return new WaitForSecondsRealtime(0.1f);
 		}
+
 		EndPuzzle();
 	}
-
 
 	private IEnumerator FlashAndResetButtons()
 	{
 		Debug.Log("FLASH AND RESET BUTTONS");
 
-		// Отключение всех кнопок перед процедурой мигания
 		foreach (var buttonObj in buttonsLockElectrical)
 		{
 			Button button = buttonObj.GetComponent<Button>();
-			button.interactable = false; // Деактивируем кнопки
+			button.interactable = false;
 		}
 
-		// Главный цикл мигания (все кнопки меняются синхронно)
 		for (int i = 0; i < 5; i++)
 		{
-		
-
-			// Меняем цвет всех кнопок одновременно
 			foreach (var buttonObj in buttonsLockElectrical)
 			{
 				Button button = buttonObj.GetComponent<Button>();
 				ColorBlock colors = button.colors;
-
-				if ((i % 2) == 0)
-					colors.disabledColor = Color.red; // Красный цвет
-				else
-					colors.disabledColor = Color.grey; // Серый цвет
-
+				colors.disabledColor = (i % 2 == 0) ? Color.red : Color.grey;
 				button.colors = colors;
 			}
 
-			yield return new WaitForSecondsRealtime(0.1f); // Пауза между изменениями цвета
+			yield return new WaitForSecondsRealtime(0.1f);
 		}
 
-		// Возврат всех кнопок в исходное состояние
 		foreach (var buttonObj in buttonsLockElectrical)
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			ColorBlock colors = button.colors;
-			colors.normalColor = Color.grey; // Обычный серый цвет
+			colors.normalColor = Color.grey;
 			button.colors = colors;
-			button.interactable = true;     // Включаем кнопки обратно
+			button.interactable = true;
 		}
 
-		movesLeft = 5;                     // Сброс количества попыток
+		movesLeft = 5;
 	}
+
 	private void RevealAlarmButton()
 	{
-		// Получаем список доступных alarm-кнопок
 		List<Button> availableAlarms = GetAvailableAlarmButtons();
 
 		if (availableAlarms.Any())
 		{
-			// Выбираем случайную из доступных alarm-кнопок
 			int randomIndex = UnityEngine.Random.Range(0, availableAlarms.Count);
 			Button revealedButton = availableAlarms[randomIndex];
 
-			// Красим выбранную alarm-кнопку в красный и отключаем
 			ColorBlock colors = revealedButton.colors;
 			colors.disabledColor = Color.red;
 			revealedButton.colors = colors;
@@ -276,19 +222,18 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		CloseElectronicLockPuzzle();
 	}
 
-
-
 	private List<Button> GetAvailableAlarmButtons()
 	{
 		List<Button> result = new List<Button>();
+
 		foreach (int index in alarmIndices)
 		{
 			Button button = buttonsLockElectrical[index].GetComponent<Button>();
-			if (button.interactable) // Только активные кнопки включаем в выбор
-			{
+
+			if (button.interactable)
 				result.Add(button);
-			}
 		}
+
 		return result;
 	}
 }

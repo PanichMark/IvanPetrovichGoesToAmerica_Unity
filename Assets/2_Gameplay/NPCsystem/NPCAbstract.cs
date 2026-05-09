@@ -11,15 +11,14 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	public bool IsNPCdead => NPCCurrentHealth <= 0;
 	[SerializeField] protected string NPC_name;
 
-	// Словарь для фраз на разных языках
 	private Dictionary<LanguagesEnum, List<string>> localizedPhrases = new Dictionary<LanguagesEnum, List<string>>
 	{
 		{LanguagesEnum.Russian, new List<string>() },
 		{LanguagesEnum.English, new List<string>() }
 	};
+
 	protected NPCDialogueController _NPCDialogueController;
 	private TextMeshProUGUI NPCphrasesText;
-	// Два слота для русского и английского файлов фраз
 	[SerializeField] private TextAsset russianPhraseFile;
 	[SerializeField] private TextAsset englishPhraseFile;
 	private LocalizationManager localizationManager;
@@ -27,7 +26,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public string InteractionObjectNameSystem => NPC_name;
 	public string InteractionObjectNameUI => localizationManager.GetLocalizedString(NPC_name);
-	public string InteractionHintMessageMain => $"Поговорить с {InteractionObjectNameUI}";
+	public string InteractionHintMessageMain => $"Talk to {InteractionObjectNameUI}";
 	public string InteractionHintMessageAdditional => throw new System.NotImplementedException();
 	public virtual bool IsInteractionHintMessageAdditionalActive => false;
 	public string InteractionHintAction { get; protected set; }
@@ -40,12 +39,10 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	{
 		NPCMaxHealth = NPCCurrentHealth;
 		NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("NPCphrases");
-
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_NPCDialogueController = GetComponent<NPCDialogueController>();
 
-
-		LoadPhrasesFromFiles(); // Читаем фразы из выбранных файлов
+		LoadPhrasesFromFiles();
 		_npcStateMachineController = GetComponent<NPCStateMachineController>();
 
 		if (IsNPCdead)
@@ -54,10 +51,8 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		}
 	}
 
-	// Метод загрузки фраз из обоих файлов
 	private void LoadPhrasesFromFiles()
 	{
-		// Русские фразы
 		if (russianPhraseFile != null)
 		{
 			using (var reader = new StringReader(russianPhraseFile.text))
@@ -74,10 +69,9 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		}
 		else
 		{
-			Debug.LogWarning("Русская версия фраз не указана!");
+			Debug.LogWarning("Russian phrase file is not assigned!");
 		}
 
-		// Английские фразы
 		if (englishPhraseFile != null)
 		{
 			using (var reader = new StringReader(englishPhraseFile.text))
@@ -94,44 +88,37 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		}
 		else
 		{
-			Debug.LogWarning("Английская версия фраз не указана!");
+			Debug.LogWarning("English phrase file is not assigned!");
 		}
 	}
 
-	// Метод выбора случайной фразы
 	protected IEnumerator ShowAndHidePhrase()
 	{
-		// Активация объекта с текстом
 		NPCphrasesText.gameObject.SetActive(true);
 
-		// Получить текущую фразу и сформировать полный текст с именем NPC
 		var currentLanguage = localizationManager.CurrentLanguage;
 		if (localizedPhrases[currentLanguage].Count > 0)
 		{
 			int randomIndex = Random.Range(0, localizedPhrases[currentLanguage].Count);
 			string selectedPhrase = localizedPhrases[currentLanguage][randomIndex];
-			string fullPhrase = $"{InteractionObjectNameUI}: {selectedPhrase}"; // Объединяем имя NPC и фразу
+			string fullPhrase = $"{InteractionObjectNameUI}: {selectedPhrase}";
 			NPCphrasesText.text = fullPhrase;
 		}
 		else
 		{
-			Debug.LogWarning("Нет фраз для выбранного языка!");
+			Debug.LogWarning("No phrases available for the selected language!");
 		}
 
-		
 		yield return new WaitForSeconds(3.5f);
 
-		// Очистка текста и скрытие объекта
 		NPCphrasesText.text = string.Empty;
 		NPCphrasesText.gameObject.SetActive(false);
 	}
 
 	public virtual void Interact()
 	{
-
 	}
 
-	// Преобразование в пассивный объект
 	public void ConvertToPickableObject()
 	{
 		gameObject.tag = "Interactable";
@@ -141,38 +128,32 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		Destroy(this);
 	}
 
-	// Повреждение NPC
 	public void TakeDamage(float amount)
 	{
 		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {Health - amount}");
 		NPCCurrentHealth -= amount;
+
 		if (IsNPCdead)
 		{
 			ObjectIsFullyDamaged();
-			
 		}
 	}
 
 	public void SetHealthToZero()
 	{
-
 		NPCCurrentHealth = 0;
 	}
 
 	public void ObjectIsFullyDamaged()
 	{
 		Debug.Log($"{NPC_name} is Dead");
+
 		StopAllCoroutines();
 		ConvertToPickableObject();
-
-	
-			
 
 		NPCphrasesText.text = string.Empty;
 		NPCphrasesText.gameObject.SetActive(false);
 
-
 		_npcStateMachineController.SetNPCState(NPCStateTypes.Dead);
-		
 	}
 }
