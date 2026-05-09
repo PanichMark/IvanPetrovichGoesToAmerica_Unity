@@ -16,7 +16,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		this.playerCamera = playerCameraController;
 		this.weaponController = weaponController;
 
-		// Присваиваем полученные объекты
 		this.PlayerFirstPersonHandRight = playerFirstPersonHandRight;
 		this.PlayerFirstPersonHandLeft = playerFirstPersonHandLeft;
 		
@@ -25,9 +24,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 		this.gameSceneManager.OnBeginLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandRight);
 		this.gameSceneManager.OnBeginLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandLeft);
-		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandRight);
-		//playerCameraFirstPersonRender.HideFirstPersonHand(playerFirstPersonHandLeft);
-		// Регистрация события смены оружия
 		this.weaponController.OnWeaponChanged += RegisterWeapons;
 		_isInitialized = true;
 		Debug.Log("FirstPersonRender Initialized!");
@@ -35,7 +31,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 	private PlayerCameraStateTypes playerCameraStateType;
 
-	//public GameObject PlayerCameraObject;
 
 	private void RegisterWeapons(string handType)
 	{
@@ -62,15 +57,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 	private GameObject PlayerFirstPersonHandLeft;
 	private GameObject PlayerHandRightParent;
 	private GameObject PlayerHandLeftParent;
-
-	void Start()
-	{
-		//playerCamera = PlayerCameraObject.GetComponent<PlayerCameraController>();
-		//weaponController = GetComponent<WeaponController>();
-
-	}
-
-
 
 	private void Update()
 	{
@@ -111,7 +97,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		}
 	}
 
-
 	void FixedUpdate()
 	{
 		if (!_isInitialized)
@@ -119,10 +104,8 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
 		{
-
 			if (weaponController.RightHandWeapon != null)
 			{
-
 				if (rightHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 				{
 					HideBodyPart(PlayerHandRightParent);
@@ -133,7 +116,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 					ShowBodyPart(PlayerHandRightParent);
 					HideFirstPersonHand(PlayerFirstPersonHandRight);
 				}
-
 			}
 			else
 			{
@@ -162,7 +144,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		}
 		else
 		{
-
 			ShowBodyPart(PlayerHandRightParent);
 			ShowBodyPart(PlayerHandLeftParent);
 
@@ -173,10 +154,8 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 	public void ShowBodyPart(GameObject rootObj)
 	{
-		// Получаем все рендеры (включая дочерние объекты)
 		Renderer[] renderers = rootObj.GetComponentsInChildren<Renderer>(true);
 
-		// Перебираем все рендеры и включаем отбрасывание теней
 		foreach (Renderer renderer in renderers)
 		{
 			if (renderer is MeshRenderer || renderer is SkinnedMeshRenderer)
@@ -188,10 +167,8 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 	public void HideBodyPart(GameObject rootObj)
 	{
-		// Получаем все рендеры (включая дочерние объекты)
 		Renderer[] renderers = rootObj.GetComponentsInChildren<Renderer>(true);
 
-		// Перебираем все рендеры и включаем отбрасывание теней
 		foreach (Renderer renderer in renderers)
 		{
 			if (renderer is MeshRenderer || renderer is SkinnedMeshRenderer)
@@ -203,10 +180,8 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 	public void ShowFirstPersonHand(GameObject rootObj)
 	{
-		// Получаем все рендеры (включая дочерние объекты)
 		Renderer[] renderers = rootObj.GetComponentsInChildren<Renderer>(true);
 
-		// Перебираем все рендеры и включаем отбрасывание теней
 		foreach (Renderer renderer in renderers)
 		{
 			if (renderer is MeshRenderer || renderer is SkinnedMeshRenderer)
@@ -218,10 +193,8 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 	public void HideFirstPersonHand(GameObject rootObj)
 	{
-		// Получаем все рендеры (включая дочерние объекты)
 		Renderer[] renderers = rootObj.GetComponentsInChildren<Renderer>(true);
 
-		// Перебираем все рендеры и включаем отбрасывание теней
 		foreach (Renderer renderer in renderers)
 		{
 			if (renderer is MeshRenderer || renderer is SkinnedMeshRenderer)
@@ -233,22 +206,21 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 	public void ShowPlayerWeapon(GameObject weaponRoot, bool castShadows)
 	{
-		//Debug.Log($"Show{weaponRoot}");
 		Renderer[] renderers = weaponRoot.GetComponentsInChildren<Renderer>(true);
 
 		foreach (Renderer renderer in renderers)
 		{
 			if (renderer is MeshRenderer || renderer is SkinnedMeshRenderer)
 			{
-				renderer.enabled = true;                                   // Включаем рендер
+				renderer.enabled = true;                                
 
 				if (castShadows)
 				{
-					renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;  // Включаем отбрасывание теней
+					renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;  
 				}
 				else
 				{
-					renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; // Отключаем отбрасывание теней
+					renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 				}
 			}
 		}
@@ -256,7 +228,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 	public void HidePlayerWeapon(GameObject weaponRoot, bool allowShadows)
 	{
-		//Debug.Log($"Hide{weaponRoot}");
 		Renderer[] renderers = weaponRoot.GetComponentsInChildren<Renderer>(true);
 
 		foreach (Renderer renderer in renderers)
@@ -274,16 +245,13 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 				if (!allowShadows)
 				{
-					renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; // Полностью отключаем отбрасывание теней
+					renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; 
 				}
 				else
 				{
-					renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly; // Оставляем только отбрасывание теней
+					renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly; 
 				}
-
 			}
 		}
 	}
 }
-
-

@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-
-
 public class CanvasHUDhealthAndManaController : MonoBehaviour
 {
     private MenuManager menuManager;

@@ -2,19 +2,8 @@
 {
 	protected PlayerCameraController playerCamera;
 
-
-	
-
-
-
-
-
-
-
 	public virtual void Update()
 	{
-	//
+
 	}
 }
-
-

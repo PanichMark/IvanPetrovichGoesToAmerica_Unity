@@ -1,5 +1,4 @@
-﻿// AmmoType.cs
-public enum AmmoTypes
+﻿public enum AmmoTypes
 {
 	Ammo9mm,
 	Ammo12gauge

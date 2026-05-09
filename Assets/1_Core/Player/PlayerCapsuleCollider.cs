@@ -1,18 +1,13 @@
 ﻿using UnityEngine;
 public class PlayerCapsuleCollider : MonoBehaviour
 {
-
 	private CapsuleCollider CapsuleCollider;
 	
 	private PlayerMovementController movementController;
-	// Конструктор принимает зависимость
-
-
 
 	private bool _isInitialized = false;
 	void Update()
     {
-		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 			return;
 		if (movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
@@ -28,8 +23,6 @@ public class PlayerCapsuleCollider : MonoBehaviour
 			transform.position = transform.parent.position+new Vector3(0f, 1f, 0f);
 			transform.localScale = new Vector3(1f, 1f, 1f);
 		}
-
-
 
 		if (movementController.CurrentPlayerMovementStateType == "PlayerLedgeClimbing")
 		{
@@ -49,5 +42,3 @@ public class PlayerCapsuleCollider : MonoBehaviour
 		Debug.Log("PlayerCollider Initialized");
 	}
 }
-
-

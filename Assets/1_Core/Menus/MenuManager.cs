@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-	
 	public delegate void MenuEventHandler();
 	public event MenuEventHandler OnOpenPauseMenu;
 	public event MenuEventHandler OnClosePauseMenu;
@@ -21,12 +20,10 @@ public class MenuManager : MonoBehaviour
 	public event MenuEventHandler OnClosePauseMenuDuringOpenedCutsceneMenu;
 	public event MenuEventHandler OnOpenAnyMenu;
 	public event MenuEventHandler OnCloseAnyMenu;
-
 	public bool IsCutsceneMenuOpened {  get; private set; }
 	public IInputDevice inputDevice;
 	private GameController gameController;
 	private GameSceneManager gameSceneManager;
-
 
 	public Stack<int> PauseMenuLevel = new Stack<int>();
 
@@ -38,7 +35,6 @@ public class MenuManager : MonoBehaviour
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
-		
 		IsPauseMenuOpened = false;
 		IsWeaponWheelMenuOpened = false;
 		IsAnyMenuOpened = false;
@@ -61,6 +57,7 @@ public class MenuManager : MonoBehaviour
 		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseCutsceneMenu;
 		Debug.Log("MenuManager Initialized");
 	}
+
 	private bool _isInitialized = false;
 	
 	public bool IsPauseMenuOpened { get; private set; }
@@ -70,14 +67,11 @@ public class MenuManager : MonoBehaviour
 
 	public bool IsInteractionHUDOpened { get; private set; }
 	
-
 	public bool IsInteractionMenuOpened { get; private set; }
 	void Update()
 	{
 		if (!_isInitialized)
 			return;
-
-		//Debug.Log(PauseMenuLevel.Count);
 
 		if (inputDevice.GetKeyPauseMenu() && !gameController.IsMainMenuOpen)
 		{
@@ -100,14 +94,7 @@ public class MenuManager : MonoBehaviour
 					OnClosePauseMenuDuringOpenedCutsceneMenu?.Invoke();
 				}
 			}
-			//Debug.Log(gameController.IsMainMenuOpen);
 		}
-		//Debug.Log(Time.deltaTime);
-		//Debug.Log(PauseMenuLevel.Count);
-		//Debug.Log(IsCutsceneMenuOpened);
-		//Debug.Log(IsInteractionMenuOpened);
-		//Debug.Log(IsDialogueMenuOpened);
-		//Debug.Log(IsAnyMenuOpened);
 	}
 
 	public void OpenPauseMenu()
@@ -116,13 +103,12 @@ public class MenuManager : MonoBehaviour
 		{
 			CloseWeaponWheelMenu();
 		}
+
 		PauseMenuLevel.Push(1);
 		OnOpenPauseMenu?.Invoke();
 		IsPauseMenuOpened = true;
 		OpenAnyMenu();
 		gameController.MakePlayerNonControllable();
-
-		
 
 		Time.timeScale = 0f;
 
@@ -131,19 +117,14 @@ public class MenuManager : MonoBehaviour
 
 	public void ClosePauseMenu()
 	{
-		
 		OnClosePauseMenu?.Invoke();
 		
-	
-
 		IsPauseMenuOpened = false;
 		if (PauseMenuLevel.Count > 0)
 			PauseMenuLevel.Pop();
 
 		if (IsInteractionMenuOpened || IsDialogueMenuOpened || IsCutsceneMenuOpened)
 		{
-			
-			
 			
 		}
 		else
@@ -165,7 +146,6 @@ public class MenuManager : MonoBehaviour
 	
 	public void OpenCutsceneMenu()
 	{
-	
 		IsCutsceneMenuOpened = true;
 		OpenAnyMenu();
 
@@ -175,8 +155,6 @@ public class MenuManager : MonoBehaviour
 
 	public void CloseCutsceneMenu()
 	{
-		
-		
 		CloseAnyMenu();
 		
 		OnCloseCutsceneMenu?.Invoke();
@@ -189,9 +167,7 @@ public class MenuManager : MonoBehaviour
 		IsWeaponWheelMenuOpened = true;
 		OnOpenWeaponWheelMenu?.Invoke();
 
-
 		Debug.Log("WeaponWheelMenu opened");
-	
 	}
 
 	public void CloseWeaponWheelMenu()
@@ -204,15 +180,11 @@ public class MenuManager : MonoBehaviour
 
 	public void OpenAnyMenu()
 	{
-		//Debug.Log("Opened any menu");
 		IsAnyMenuOpened = true;
-		//Debug.Log("--- ANY MENU ---");
+
 		if (IsDialogueMenuOpened || IsCutsceneMenuOpened)
 		{
-		
-			//Debug.Log("--- BLUR ---");
-			
-			
+
 		}
 		else
 		{
@@ -222,9 +194,6 @@ public class MenuManager : MonoBehaviour
 		if (!gameController.IsMainMenuOpen)
 		{
 			CloseInteractionHUD();
-
-			//Debug.Log(IsPauseMenuOpened);
-			//Debug.Log(IsCutsceneMenuOpened);
 
 			if (IsCutsceneMenuOpened && IsPauseMenuOpened)
 			{
@@ -237,7 +206,6 @@ public class MenuManager : MonoBehaviour
 				Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = true;
 			}
-
 		}
 	}
 
@@ -251,29 +219,18 @@ public class MenuManager : MonoBehaviour
 		{
 			OpenInteractionHUD();
 
-			//Debug.Log(IsPauseMenuOpened);
-			//Debug.Log(IsCutsceneMenuOpened);
-
-
-			//Debug.Log(IsPauseMenuOpened);
-			//Debug.Log(IsDialogueMenuOpened);
-			//Debug.Log(IsCutsceneMenuOpened);
-
 			if (IsCutsceneMenuOpened && !IsPauseMenuOpened)
 			{
-				//Debug.Log("1");
 				Cursor.lockState = CursorLockMode.Locked;
 				Cursor.visible = false;
 			}
 			if (!IsCutsceneMenuOpened)
 			{
-				//Debug.Log("2");
 				Cursor.lockState = CursorLockMode.Locked;
 				Cursor.visible = false;
 			}
 			if (IsDialogueMenuOpened)
 			{
-				//Debug.Log("3");
 				Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = true;
 			}
@@ -285,8 +242,6 @@ public class MenuManager : MonoBehaviour
 		IsInteractionHUDOpened = true;
 		OnOpenInteractionHUD?.Invoke();
 		
-		
-
 		Debug.Log("InteractionHUD opened");
 	}
 
@@ -297,7 +252,6 @@ public class MenuManager : MonoBehaviour
 		IsInteractionHUDOpened = false;
 
 		Debug.Log("InteractionHUD closed");
-
 	}
 
 	public void OpenInteractionMenu()
@@ -318,7 +272,6 @@ public class MenuManager : MonoBehaviour
 		gameController.MakePlayerControllable();
 		CloseAnyMenu();
 		Debug.Log("InteractionMenu closed");
-
 	}
 	public void OpenDialogueMenu()
 	{
@@ -339,10 +292,5 @@ public class MenuManager : MonoBehaviour
 		gameController.MakePlayerControllable();
 		CloseAnyMenu();
 		Debug.Log("DialogueMenu closed");
-	
 	}
-
-
-
-
 }

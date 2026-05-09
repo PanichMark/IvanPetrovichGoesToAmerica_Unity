@@ -8,7 +8,6 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private PlayerMovementController movementController;
 	private PlayerCapsuleCollider playerCollider;
 	private GameObject player;
-	// Конструктор принимает зависимость
 
 	public delegate void CameraStateHandler();
 	public event CameraStateHandler OnFirstPersonCameraState;
@@ -20,9 +19,6 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private Vector2 MouseRotation;
 	private Vector2 MouseScrollWheel;
 
-	//private Vector3 CameraForward;
-	//private Vector3 CameraRight;
-
 	private RaycastHit hit;
 
 	public bool IsAbleToZoomCameraOut { get; private set; } = true;
@@ -31,7 +27,6 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	public float PlayerCameraDistanceY { get; private set; }
 	public float PlayerCameraDistanceZ { get; private set; }
 
-	//public float CameraRotationY { get; private set; }
 	private float MouseRotationLimit = 65f;
 
 	public string CurrentPlayerCameraStateType { get; private set; } = "ThirdPerson";
@@ -45,25 +40,16 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private float startTransitionTime; 
 	public float transitionDelay { get; private set; } = 0.5f;
 
-
 	private bool _isInitialized = false;
-
 
 	void Update()
 	{
-		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 		{
-			//Debug.Log("bruh");
 			return;
 			
 		}
 
-		
-
-		//Debug.Log(CurrentPlayerCameraStateType);
-
-	
 
 		if (MouseScrollWheel.y < 0 && IsAbleToZoomCameraOut == true && CurrentPlayerCameraStateType != "FirstPerson")
 		{
@@ -87,19 +73,8 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 				PlayerCameraDistanceZ -= 0.35f;
 			}
 		}
-
 		
 		playerCameraState.Update();
-	
-
-	
-
-	
-	
-		
-
-
-
 
 		if (inputDevice.GetKeyChangeCameraShoulder() && CurrentPlayerCameraStateType != "FirstPerson")
 		{
@@ -119,25 +94,21 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		{
 			if (Physics.Linecast(playerCollider.transform.position, transform.position, out hit))
 			{
-				// Камера снова видит игрока
+
 				if (!canReturn)
 				{
-					// Запускаем обратный отсчёт
 					canReturn = true;
 					startTransitionTime = Time.time;
 				}
 				else
 				{
-					// Проверяем, прошёл ли период ожидания
 					if (Time.time - startTransitionTime >= transitionDelay)
 					{
 						if (PlayerCameraDistanceZ >= 0.75f)
 						{
-							// Потеря контакта с игроком, идём на минимальное расстояние
 							PlayerCameraDistanceZ = Mathf.Lerp(PlayerCameraDistanceZ, hit.distance, Time.deltaTime * 4f);
 							IsAbleToZoomCameraOut = false;
 						}
-						//else 
 					}
 				}
 			}
@@ -146,39 +117,12 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 				if (PlayerCameraDistanceZ <= 5f)
 				{
 					IsAbleToZoomCameraOut = true;
-					// Начинаем постепенное удаление камеры
-					//	PlayerCameraDistanceZ = Mathf.Lerp(PlayerCameraDistanceZ, 5f, Time.deltaTime * 4f);
 				}
 
-				canReturn = false; // Отменяем возвращение
+				canReturn = false; 
 			}
 		}
-		
-
-
-
-
-
-		//CameraForward = transform.forward;
-		//CameraRight = transform.right;
-
-		
-		
-		//CameraRotationY = transform.eulerAngles.y;
-
-
-
-
-
-
-
-
-
 	}
-
-	// Корутина для плавного перемещения камеры
-
-
 
 	private void FixedUpdate()
 	{
@@ -202,7 +146,6 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			movementController.GiveCurrentPlayerCameraType("FirstPerson");
 			newState = new FirstPersonPlayerCameraState(this, movementController, inputDevice);
 			OnFirstPersonCameraState?.Invoke();
-			//IsPlayerCameraFirstPerson = true;
 		}
 		else if (playerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 		{
@@ -210,21 +153,18 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			movementController.GiveCurrentPlayerCameraType("ThirdPerson");
 			newState = new ThirdPersonPlayerCameraState(this, inputDevice);
 			OnThirdPersonCameraState?.Invoke();
-			//IsPlayerCameraFirstPerson = false;
 		}
 		else if (playerCameraStateType == PlayerCameraStateTypes.Cutscene)
 		{
 			CurrentPlayerCameraStateType = "Cutscene";
 			movementController.GiveCurrentPlayerCameraType("Cutscene");
 			newState = new CutscenePlayerCameraState();
-			//IsPlayerCameraFirstPerson = false;
 		}
 		else if (playerCameraStateType == PlayerCameraStateTypes.MainMenu)
 		{
 			CurrentPlayerCameraStateType = "MainMenu";
 			movementController.GiveCurrentPlayerCameraType("MainMenu");
 			newState = new MainMenuPlayerCameraState(this, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(20, -12, 0));
-			//IsPlayerCameraFirstPerson = false;
 		}
 		else
 		{
@@ -233,25 +173,23 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		Debug.Log("CameraState: " + CurrentPlayerCameraStateType);
 		playerCameraState = newState;
 	}
+
 	public void CameraStanding()
 	{
-		
-		// Восстанавливаем оригинальную высоту камеры
 		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-		
-
 	}
+
 	public void CameraCrouching()
 	{
 		transform.position = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
 	}
+
 	public void FirstPersonCameraTransform()
 	{
-
-			transform.position = player.transform.position + Quaternion.Euler(0, MouseRotation.y, 0) *
-			new Vector3(0, movementController.PlayerCurrentHeight - 0.13f, 0.1f);
-		
+		transform.position = player.transform.position + Quaternion.Euler(0, MouseRotation.y, 0) *
+		new Vector3(0, movementController.PlayerCurrentHeight - 0.13f, 0.1f);
 	}
+
 	public void ThirdPersonCameraTransform()
 	{
 	
@@ -259,10 +197,12 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
 
 	}
+
 	public void SetCameraMainMenuPosition(Vector3 position)
 	{
 		transform.position = position;
 	}
+
 	public void SetCameraMainMenuRotation(Quaternion rotation)
 	{
 		transform.rotation = rotation;
@@ -272,6 +212,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	{
 		return _currentPlayerCameraType.ToString();
 	}
+
 	public string GetPreviousPlayerCameraType()
 	{
 		return _previousPlayerCameraType.ToString();
@@ -288,7 +229,6 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 	public void LoadData(GameData data)
 	{
-
 		this.CurrentPlayerCameraStateType = data.CurrentPlayerCameraStateType;
 		this.PlayerCameraDistanceY = data.PlayerCameraDistanceY;
 		this.PlayerCameraDistanceZ = data.PlayerCameraDistanceZ;
@@ -298,7 +238,6 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 		playerCameraStateType = (PlayerCameraStateTypes)Enum.Parse(typeof(PlayerCameraStateTypes), CurrentPlayerCameraStateType);
 		SetPlayerCameraState(playerCameraStateType);
-
 	}
 	public void RotateCamera()
 	{
@@ -317,23 +256,19 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		this.gameSceneManager = gameSceneManager;
 		this.inputDevice = inputDevice;
 		this.menuManager = menuManager;
-		this.movementController = movementController; // Новый аргумент
+		this.movementController = movementController; 
 		this.playerCollider = playerCollider;
 		this.player = playerModel;
-
 
 		PlayerCameraDistanceX = -0.85f;
 		PlayerCameraDistanceY = -1.75f;
 		PlayerCameraDistanceZ = 3.25f;
 
-
-		//playerCameraStateType = (PlayerCameraStateType)Enum.Parse(typeof(PlayerCameraStateType), CurrentPlayerCameraStateType);
 		this.gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
 		SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 		_isInitialized = true;
 		Debug.Log("CameraController Initialized");
 	}
+
 	private GameSceneManager gameSceneManager;
 }
-
-

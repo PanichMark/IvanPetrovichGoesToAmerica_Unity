@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering;
 
-
 public class PlayerCameraBlurFilter : MonoBehaviour
 {
 	private MenuManager menuManager;
@@ -23,7 +22,6 @@ public class PlayerCameraBlurFilter : MonoBehaviour
 		menuManager.OnClosePauseMenuDuringOpenedDialogueMenu += DeactivateCameraBlur;
 		menuManager.OnClosePauseMenuDuringOpenedCutsceneMenu += DeactivateCameraBlur;
 	}
-
 
 	public void ActivateCameraBlur()
 	{

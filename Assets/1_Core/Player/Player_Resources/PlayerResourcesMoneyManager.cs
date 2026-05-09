@@ -3,12 +3,9 @@ using TMPro;
 
 public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
 {
-	
 	private TMP_Text playerMoneyText;
-
     public int PlayerMoney { get; private set; }
 	
-
 	public void Initialize(TMP_Text playerMoneyText)
 	{
 		this.playerMoneyText = playerMoneyText;
@@ -17,10 +14,6 @@ public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
 		UpdateMoneyDisplay();
 		Debug.Log("PlayerResourcesMoney Initialized");
 	}
-
-	
-
-
 
 	public void AddMoney(int moneyAmmount)
     {
@@ -31,9 +24,10 @@ public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
         else
         {
             PlayerMoney += moneyAmmount;
-			UpdateMoneyDisplay(); // После изменения сразу обновить интерфейс
+			UpdateMoneyDisplay(); 
 		}
     }
+
 	public void DeductMoney(int moneyAmmount)
 	{
 		if (moneyAmmount > 0)
@@ -47,13 +41,13 @@ public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
 		else
 		{
 			PlayerMoney += moneyAmmount;
-			UpdateMoneyDisplay(); // После изменения сразу обновить интерфейс
+			UpdateMoneyDisplay(); 
 		}
 	}
 	private void UpdateMoneyDisplay()
 	{
 
-		playerMoneyText.text = PlayerMoney.ToString(); // Форматируем текст для вывода суммы
+		playerMoneyText.text = PlayerMoney.ToString();
 		
 	}
 
@@ -68,5 +62,3 @@ public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
 		UpdateMoneyDisplay();
 	}
 }
-
-

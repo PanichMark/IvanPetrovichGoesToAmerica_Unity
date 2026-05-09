@@ -26,24 +26,11 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 
 	public int CurrentManaReplenishItemsNumber { get; private set; }
 
-	
-
-	
-
 	void Update()
 	{
 		ManaBarSlider.value = CurrentPlayerMana;
 
 		ManaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
-
-		//if (MenuManager.IsPauseMenuOpened)
-		//{
-			//ManaBarSlider.gameObject.SetActive(false);
-		//}
-		//else
-		//{
-			//ManaBarSlider.gameObject.SetActive(true);
-		//}
 	}
 
 	private void UseManaReplenishItem()
@@ -62,7 +49,6 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		else Debug.Log("0 ManaReplenish Items");
 
 	}
-
 
 	public void AddManaReplenishItem()
 	{
@@ -94,5 +80,3 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		CurrentManaReplenishItemsNumber = data.ManaReplenishItems;
 	}
 }
-
-

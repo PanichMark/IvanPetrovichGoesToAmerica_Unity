@@ -1,10 +1,8 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -43,84 +41,39 @@ public class SaveLoadController : MonoBehaviour
 		fileSaveDataName4 = "SaveGame4.json";
 		fileSaveDataName5 = "SaveGame5.json";
 
-
 		this.gameSceneManager.OnEndLoadGameplayScene += () => StartCoroutine(OnSceneLoadUpdateGameplayObjects());
 		
-
 		Debug.Log("SaveLoadController Initialized");
-
 	}
-
-
-
 	private void AssignGameplayObjectIndex()
 	{
 		InteractionObjectLootAbstract[] lootItems = FindObjectsOfType<InteractionObjectLootAbstract>();
 
-		// Сортируем массив объектов по имени
 		Array.Sort(lootItems, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
 
-		// Присваиваем индексы
 		for (int index = 0; index < lootItems.Length; index++)
 		{
 			lootItems[index].AssignLootItemIndex(index);
 		}
-
-		//Debug.Log("LOOT OBJECTS ON SCENE: " + lootItems.Length); // Логирование
 	}
 
-
-
-
-
-
-
-
-
-
-
-	/*
-	public void NewGame()
-	{
-		this.gameData = new GameData();
-		//Debug.Log(gameData.HealingItems);
-		whatSaveNumberWasLoaded = 0;
-		SaveGame(-1);
-
-
-		foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
-		{
-			dataPersistenceObj.LoadData(gameData);
-		}
-	}
-	*/
 	public IEnumerator NewGame()
 	{
 		this.persistentSaveLoadObjects = FindAllPersistentSaveLoadObjects();
-		// Шаг 1: Создание нового объекта GameData с начальными значениями
 		this.gameData = new GameData();
 
-		// Шаг 2: Настройка обработки файла для временного хранилища
 		this.fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileSaveDataTEMP);
 
-		// Шаг 3: Сохранение текущего состояния в временный файл
 		fileDataHandler.Save(this.gameData);
 
-		//yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
-
-		// Шаг 4: Теперь обновляем каждый объект, реализующий IDataPersistence,
-		// используя ранее созданные данные из временного файла
 		foreach (ISaveLoad saveLoadObj in persistentSaveLoadObjects)
 		{
 			saveLoadObj.LoadData(this.gameData);
 		}
 
-
 		Debug.Log("--- New Game Started ---");
 		yield break;
 	}
-
-
 
 	public IEnumerator SaveGame(int saveSlotNumber)
 	{
@@ -130,26 +83,12 @@ public class SaveLoadController : MonoBehaviour
 		{
 			this.fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileSaveDataTEMP);
 
-
 			if (this.gameData == null)
 			{
 				Debug.Log("NO GAMEDATA TO SAVE");
 				yield break;
 			}
-			//else this.gameData = fileDataHandler.Load();
-
 		}
-		
-		/*
-		foreach (ISaveLoad dataPersistenceObj in saveLoadObjects)
-		{
-			dataPersistenceObj.SaveData(ref gameData);
-		}
-		
-
-		fileDataHandler.Save(gameData);
-		*/
-		
 		
 		if (saveSlotNumber == 1)
         {
@@ -177,8 +116,6 @@ public class SaveLoadController : MonoBehaviour
 			saveLoadObj.SaveData(ref gameData);
 		}
 
-		//yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
-
 		foreach (ISaveLoad saveLoadObj in gameplaySaveLoadObjects)
 		{
 			saveLoadObj.SaveData(ref gameData);
@@ -192,9 +129,6 @@ public class SaveLoadController : MonoBehaviour
 
 			Debug.Log("Data saved to slot " + saveSlotNumber);
 		}
-
-		
-
 
 		IsSavingFinished = true;
 		yield break;
@@ -211,7 +145,6 @@ public class SaveLoadController : MonoBehaviour
 		OnSafeFileLoad?.Invoke();
 		gameController.CloseMainMenu();
 		
-
 		if (loadSlotNumber == 1)
 		{
 			this.fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileSaveDataName1);
@@ -238,31 +171,15 @@ public class SaveLoadController : MonoBehaviour
 			
 		}
 
-
-
-
-		// Загружаем данные из файла
 		this.gameData = fileDataHandler.Load();
 
-		// Извлекаем имя сцены из данных
 		SceneNameToLoad = gameData.CurrentSceneNameSystem;
 
 		foreach (ISaveLoad persistentLoadObj in persistentSaveLoadObjects)
 		{
-
-			//Debug.Log(loadLoadObj);
 			persistentLoadObj.LoadData(gameData);
 		}
-
-		// Начинаем загрузку сцены через GameSceneManager
 		yield return StartCoroutine(gameSceneManager.LoadScene((GameScenesEnum)Enum.Parse(typeof(GameScenesEnum), SceneNameToLoad)));
-
-	
-
-
-		//Debug.Log("-----START-----");
-
-		//	Debug.Log("-----END-----");
 
 		yield break;
 	}
@@ -271,22 +188,14 @@ public class SaveLoadController : MonoBehaviour
 	{
 		yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
 
-		//saveLoadObjects = FindAllSaveLoadObjects();
-
-		//	Debug.Log("-----START-----");
-
-		//	Debug.Log("-----END-----");
 		foreach (ISaveLoad gameplayLoadObj in gameplaySaveLoadObjects)
 		{
-			//Debug.Log(gameplayLoadObj);
-			//Debug.Log(loadLoadObj);
 			gameplayLoadObj.LoadData(gameData);
 		}
 
 		yield return StartCoroutine(SaveGame(-1));
 		yield break;
 	}
-
 
 	public void DeleteGame(int deleteSlotNumber)
 	{
@@ -338,11 +247,6 @@ public class SaveLoadController : MonoBehaviour
 		}
 	}
 
-
-
-
-
-	// Расширенный метод, возвращающий имя уровня, сумму денег и имя сцены
 	public Tuple<string, string, string>[] GetExtendedSaveInfo()
 	{
 		List<Tuple<string, string, string>> extendedInfo = new List<Tuple<string, string, string>>();
@@ -356,7 +260,6 @@ public class SaveLoadController : MonoBehaviour
 		return extendedInfo.ToArray();
 	}
 
-	// Вспомогательный метод для получения расширённой информации
 	private Tuple<string, string, string> GetExtendedSaveDataForFile(string fileName)
 	{
 		try
@@ -375,16 +278,15 @@ public class SaveLoadController : MonoBehaviour
 			}
 			else
 			{
-				return new Tuple<string, string, string>(null, null, null); // Значения по умолчанию, если данных нет
+				return new Tuple<string, string, string>(null, null, null); 
 			}
 		}
 		catch (Exception e)
 		{
 			Debug.LogWarning($"Ошибка при чтении файла '{fileName}'\n{e.Message}");
-			return new Tuple<string, string, string>(null, null, null); // Безопасное значение по умолчанию
+			return new Tuple<string, string, string>(null, null, null); 
 		}
 	}
-
 
 	private List<ISaveLoad> FindAllPersistentSaveLoadObjects()
 	{
@@ -395,7 +297,6 @@ public class SaveLoadController : MonoBehaviour
 
 	private List<ISaveLoad> FindAllGameplaySaveLoadObjects()
 	{
-		// Объекты на постоянной сцене (индекс 0)
 		IEnumerable<ISaveLoad> gameplaySceneObjects = SceneManager.GetSceneAt(1).GetRootGameObjects()
 																  .SelectMany(go => go.GetComponentsInChildren<MonoBehaviour>())
 																  .OfType<ISaveLoad>();
@@ -403,19 +304,15 @@ public class SaveLoadController : MonoBehaviour
 		return new List<ISaveLoad>(gameplaySceneObjects);
 	}
 
-	// Метод, вызываемый после загрузки новой сцены
 	public IEnumerator UpdateGameplaySaveLoadObjects()
 	{
-		// Здесь сбросим старые ссылки на объекты сцены
 		if (gameplaySaveLoadObjects != null)
-		gameplaySaveLoadObjects.Clear(); // Очищаем коллекцию
+		gameplaySaveLoadObjects.Clear();
 
 		AssignGameplayObjectIndex();
 
-		gameplaySaveLoadObjects = FindAllGameplaySaveLoadObjects(); // Пересоздаем список новых объектов сцены
+		gameplaySaveLoadObjects = FindAllGameplaySaveLoadObjects();
 
 		yield break;
 	}
 }
-
-

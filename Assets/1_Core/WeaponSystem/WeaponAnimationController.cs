@@ -3,21 +3,17 @@ using UnityEngine;
 
 public class WeaponAnimationController : MonoBehaviour
 {
-	
 	private PlayerBehaviour playerBehaviour;
 
 	private PlayerCameraController playerCameraController;
 	private PlayerWeaponController weaponController;
 
-	
 	private Animator playerAnimator;
 	private bool _isInitialized = false;
 	private LegKickAttack legKickAttack;
-	// Конструктор принимает зависимость
 	public void Initialize(GameObject player, PlayerBehaviour playerBehaviour,
 		PlayerCameraController playerCameraController, PlayerWeaponController weaponController, LegKickAttack legKickAttack)
 	{
-	
 		playerAnimator = player.GetComponent<Animator>();
 		this.playerBehaviour = playerBehaviour;
 	
@@ -25,42 +21,23 @@ public class WeaponAnimationController : MonoBehaviour
 		this.weaponController = weaponController;
 		this.legKickAttack = legKickAttack;
 
-
-		
-
-
-
 		_isInitialized = true;
 		Debug.Log("WeaponAnimationController Initialized");
 	}
-
-
-
-
 
 	private string currentPlayerWeaponRightAnimation = "";
 	private string currentPlayerWeaponLeftAnimation = "";
 	private string currentPlayerLegKickAttackAnimation = "";
 
-
-
-
-
 	private bool wasPreviouslyKicking = false;
-
-
 
 	private float adjustedCameraAngle;
 
-
 	private void Update()
 	{
-		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 			return;
-		// считаем поворот камеры X
 
-		// считаем поворот камеры X
 		float cameraRotationX = playerCameraController.transform.rotation.eulerAngles.x;
 		if (cameraRotationX >= 0 && cameraRotationX < 180)
 		{
@@ -71,33 +48,24 @@ public class WeaponAnimationController : MonoBehaviour
 			adjustedCameraAngle = cameraRotationX - 360;
 		}
 
-		// игрок смотрит вниз/вверх когда вооружен от 3го лица
 		if (playerBehaviour.IsPlayerArmed == true && playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
 		{
-			// Шаг 1: Определяем начальное значение (текущее значение параметра)
 			float startValue = playerAnimator.GetFloat("UpDown");
 
-			// Шаг 2: Рассчитываем целевое значение на основе угла камеры
 			float endValue = adjustedCameraAngle * 0.0153846f;
-			
-			// Шаг 3: Интерполируем значение
+	
 			float newValue = Mathf.Lerp(startValue, endValue, Time.deltaTime * 6);
 
-			// Шаг 4: Обновляем параметр в аниматоре
 			playerAnimator.SetFloat("UpDown", newValue);
 		}
 		else
 		{
-			// Шаг 1: Определяем начальное значение (текущее значение параметра)
 			float startValue = playerAnimator.GetFloat("UpDown");
 			
-			// Шаг 2: Целевым значением теперь становится ноль
 			float endValue = 0f;
 
-			// Шаг 3: Интерполируем значение от текущего до нуля
 			float newValue = Mathf.Lerp(startValue, endValue, Time.deltaTime * 6);
 
-			// Шаг 4: Обновляем параметр в аниматоре
 			playerAnimator.SetFloat("UpDown", newValue);
 		}
 
@@ -106,14 +74,6 @@ public class WeaponAnimationController : MonoBehaviour
 			playerAnimator.SetFloat("UpDown", 0);
 		}
 
-
-
-	
-
-
-
-
-		// анимации оружия
 		if (weaponController.RightHandWeapon != null)
 		{
 			if (weaponController.rightHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
@@ -166,7 +126,6 @@ public class WeaponAnimationController : MonoBehaviour
 			}
 		}
 
-		//Анимация атаки ногой
 		if (legKickAttack.IsPlayerLegKicking == true)
 		{
 
@@ -174,34 +133,17 @@ public class WeaponAnimationController : MonoBehaviour
 
 			if (!wasPreviouslyKicking)
 			{
-				playerAnimator.Play("LegKick", 4, 0f); // третий аргумент сбрасывает анимацию на начало
-													   //Debug.Log("LMAO");
+				playerAnimator.Play("LegKick", 4, 0f); 
 			}
 
-			//wasPreviouslyKicking = true;
-			// Начинаем анимацию сначала
-
-			//ChangePlayerLegKickAttackAnimation("LegKick");
 			playerAnimator.Play("LegKick");
 		}
 		else if (legKickAttack.IsPlayerLegKicking == false)
 		{
 			playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("LegKick"), 0);
-			//playerAnimator.Play("New State");
-			//ChangePlayerLegKickAttackAnimation("New State");
-
 		}
 		wasPreviouslyKicking = legKickAttack.IsPlayerLegKicking;
-
-
-
-
 	}
-
-
-
-	
-
 
 	private void ChangePlayerWeaponRightAnimation(string animation, float crossfade = 0.2f)
 	{
@@ -230,6 +172,3 @@ public class WeaponAnimationController : MonoBehaviour
 		}
 	}
 }
-
-
-

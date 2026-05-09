@@ -29,27 +29,16 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 
 	public int CurrentHealingItemsNumber { get; private set; }
 
-
-
 	void Update()
     {
         HealthBarSlider.value = CurrentPlayerHealth;
 
         HealingItemNumber.text = CurrentHealingItemsNumber.ToString();
 
-
 		if (Input.GetKeyDown(KeyCode.T))
 		{
 			ReceiveDamage(900);
 		}
-		//if (MenuManager.IsPauseMenuOpened)
-		//{
-		//	HealthBarSlider.gameObject.SetActive(false);
-		//}
-		//else
-		//{
-		//HealthBarSlider.gameObject.SetActive(true);
-		//}
 	}
 
     private void UseHealingItem()
@@ -92,7 +81,6 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 		}
 	}
 
-
 	public void SaveData(ref GameData data)
 	{
 		data.PlayerHealth = CurrentPlayerHealth;
@@ -105,5 +93,3 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 		CurrentHealingItemsNumber = data.HealingItems;
 	}
 }
-
-

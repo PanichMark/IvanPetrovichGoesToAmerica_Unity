@@ -6,7 +6,6 @@ using UnityEngine;
 public delegate void OnWeaponUnlocked(GameObject weaponPrefab);
 public delegate void OnWeaponChanged(string activeHand);
 
-
 public class PlayerWeaponController : MonoBehaviour
 {
 	private IInputDevice inputDevice;
@@ -14,13 +13,12 @@ public class PlayerWeaponController : MonoBehaviour
 	private PlayerBehaviour playerBehaviour;
 	private InteractionController interactionController;
 
-	// Список разблокированных видов оружия
+
 	public Dictionary<string, GameObject> unlockedWeapons = new Dictionary<string, GameObject>();
 
-	public event OnWeaponUnlocked OnWeaponUnlocked; // Делегат для уведомления о разблокировке оружия
+	public event OnWeaponUnlocked OnWeaponUnlocked; 
 
 	public event OnWeaponChanged OnWeaponChanged;
-
 	public bool isLeftHand {  get; private set; }
 	public bool isAbleToUseRightWeapon { get; private set; }
 	public bool isAbleToUseLeftWeapon { get; private set; }
@@ -33,10 +31,6 @@ public class PlayerWeaponController : MonoBehaviour
 	public WeaponAbstract leftHandWeaponComponent { get; private set; }
 	public WeaponAbstract rightHandWeaponComponent { get; private set; }
 
-	
-
-
-	// Инициализация контроллера
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, InteractionController interactionController)
 	{
 		this.inputDevice = inputDevice;
@@ -47,7 +41,6 @@ public class PlayerWeaponController : MonoBehaviour
 		isAbleToUseRightWeapon = true;
 		isAbleToUseLeftWeapon = true;
 
-		// Подписываемся на события игрока
 		this.playerBehaviour.OnPlayerArmed += OnPlayerArmed;
 		this.playerBehaviour.OnPlayerDisarmed += OnPlayerDisarmed;
 
@@ -68,22 +61,20 @@ public class PlayerWeaponController : MonoBehaviour
 		};
 		this.interactionController.OnGetRidOfPickable += OnGetRidOfPickableHandler;
 
-		ResetAllWeapons(); // Сбрасываем все оружие в начале
+		ResetAllWeapons(); 
 		
-
 		_isInitialized = true;
 		Debug.Log("WeaponController Initialized");
 	}
-	// Синхронный обработчик события
+	
 	private void OnGetRidOfPickableHandler()
 	{
-		StartCoroutine(OnGetRidOfPickableCourutine()); // Запускаем корутину
+		StartCoroutine(OnGetRidOfPickableCourutine()); 
 	}
 
-	// Ваша корутина
 	private IEnumerator OnGetRidOfPickableCourutine()
 	{
-		yield return new WaitForSecondsRealtime(0.05f); // Пауза 0.05 секунды
+		yield return new WaitForSecondsRealtime(0.05f);
 		isAbleToUseRightWeapon = true;
 		isAbleToUseLeftWeapon = true;
 
@@ -95,38 +86,33 @@ public class PlayerWeaponController : MonoBehaviour
 	}
 	private void OnPlayerArmed()
 	{
-		// Реакция на событие "игрок вооружился": покажем оружие
 		if (rightHandWeaponComponent != null)
 		{
-			ShowWeapon(WeaponHandsEnum.RightHand); // Показать оружие правой руки
+			ShowWeapon(WeaponHandsEnum.RightHand); 
 		}
 
 		if (leftHandWeaponComponent != null)
 		{
-			ShowWeapon(WeaponHandsEnum.LeftHand); // Показать оружие левой руки
+			ShowWeapon(WeaponHandsEnum.LeftHand);
 		}
 	}
-
 	private void OnPlayerDisarmed()
 	{
-		// Реакция на событие "игрок обезоружился": спрячем оружие
 		if (rightHandWeaponComponent != null)
 		{
-			HideWeapon(WeaponHandsEnum.RightHand); // Скрыть оружие правой руки
+			HideWeapon(WeaponHandsEnum.RightHand); 
 		}
 
 		if (leftHandWeaponComponent != null)
 		{
-			HideWeapon(WeaponHandsEnum.LeftHand); // Скрыть оружие левой руки
+			HideWeapon(WeaponHandsEnum.LeftHand); 
 		}
 	}
-
 
 	private bool _isInitialized = false;
 
 	private void Update()
 	{
-		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 			return;
 		if (inputDevice.GetKeyRightHandWeaponAttack() && !menuManager.IsAnyMenuOpened && isAbleToUseRightWeapon)
@@ -141,34 +127,24 @@ public class PlayerWeaponController : MonoBehaviour
 
 		isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
 
-		
-
-		// Проверяем нажатие кнопки перезарядки
 		if (inputDevice.GetKeyReload())
 		{
-			// Кэшируем компоненты, чтобы не вызывать GetComponent несколько раз
 			WeaponAbstract leftWeapon = LeftHandWeapon?.GetComponent<WeaponAbstract>();
 			WeaponAbstract rightWeapon = RightHandWeapon?.GetComponent<WeaponAbstract>();
 
-			// 1. Сначала пытаемся перезарядить оружие в левой руке
 			if (leftHandWeaponComponent != null && leftWeapon is WeaponRangedAbstract)
 			{
 				(leftWeapon as WeaponRangedAbstract).Reload();
 			}
-			// 2. Если в левой руке нет оружия или оно не стрелковое, пробуем правую
 			if (rightHandWeaponComponent != null && rightWeapon is WeaponRangedAbstract)
 			{
 				(rightWeapon as WeaponRangedAbstract).Reload();
 			}
 		}
-
 	}
 
-
-	// Единственный метод разблокировки оружия
 	public void UnlockWeapon(GameObject weaponPrefab)
 	{
-		// Выделяем имя оружия и индекс из имени префаба
 		string[] parts = weaponPrefab.name.Split('_');
 		if (parts.Length != 2)
 		{
@@ -176,115 +152,89 @@ public class PlayerWeaponController : MonoBehaviour
 			return;
 		}
 
-		string weaponName = parts[0]; // Имя оружия
-		int index = int.Parse(parts[1]); // Индекс оружия
+		string weaponName = parts[0]; 
+		int index = int.Parse(parts[1]); 
 
-		// Создаем ключ в формате "ИмяОружия_Индекс"
 		string key = $"{weaponName}_{index}";
 
-		// Добавляем оружие в словарь
 		unlockedWeapons[key] = weaponPrefab;
 		SetHasAnyWeapon();
 
-		// Вызываем делегат для уведомления о разблокировке оружия
 		OnWeaponUnlocked?.Invoke(weaponPrefab);
 
 		Debug.Log($"Unlocked {weaponPrefab}");
 	}
 
-	// Устанавливаем флаг наличия оружия
 	private void SetHasAnyWeapon()
 	{
 		hasAnyWeapon = true;
 	}
 
-	// Сброс всех доступных видов оружия
 	public void ResetAllWeapons()
 	{
 		unlockedWeapons.Clear();
 		hasAnyWeapon = false;
 	}
 
-	// Выбор оружия
 	public void SelectWeapon(GameObject weaponPrefab)
 	{
-		// 1. Создаем экземпляр (копию) оружия в сцене.
-		// Это ключевой момент: мы работаем с объектом в мире, а не с шаблоном в папке Assets.
 		GameObject weaponInstance = Instantiate(weaponPrefab);
 
-		// 2. Получаем компонент оружия от нового экземпляра.
 		WeaponAbstract weaponComponent = weaponInstance.GetComponent<WeaponAbstract>();
 		if (weaponComponent == null)
 		{
 			Debug.LogError("Prefab must contain a WeaponAbstract component.");
-			Destroy(weaponInstance); // Удаляем неправильно созданный объект
+			Destroy(weaponInstance);
 			return;
 		}
 
-		// --- Блок проверки конфликтов ---
-
-		// 3. Проверка: Не пытаемся ли мы взять в ту же руку то же самое оружие?
 		bool isSameObject = (isLeftHand && LeftHandWeapon == weaponInstance) || (!isLeftHand && RightHandWeapon == weaponInstance);
 		if (isSameObject)
 		{
-			return; // Ничего не делаем
+			return; 
 		}
 
-		// 4. Проверка конфликта имен системы (например, нельзя два одинаковых револьвера)
 		string newWeaponSystemName = weaponComponent.WeaponNameSystem;
 
 		if (isLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
-			// Если в правой руке оружие с таким же системным именем, убираем его.
 			DestroyWeapon(WeaponHandsEnum.RightHand);
 		}
 		else if (!isLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
-			// Если в левой руке оружие с таким же системным именем, убираем его.
 			DestroyWeapon(WeaponHandsEnum.LeftHand);
 		}
 
-		// --- Блок установки нового оружия ---
 
 		if (isLeftHand)
 		{
-			// Если в левой руке уже что-то есть - убираем это.
 			if (LeftHandWeapon != null)
 			{
 				DestroyWeapon(WeaponHandsEnum.LeftHand);
 			}
 
-			// Устанавливаем НОВЫЙ экземпляр в левую руку
 			LeftHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke("left");
 
-			// Создаем модель для этой руки
-			//Debug.Log("LMAO");
 			weaponComponent.InstantiateWeapon(WeaponHandsEnum.LeftHand);
-			//weaponComponent.FirstPersonWeaponModelInstance.Ma
 			weaponComponent.FlipWeapon();
 
-			// Сохраняем ссылку на компонент для быстрой работы
 			leftHandWeaponComponent = weaponComponent;
 
 			playerBehaviour.ArmPlayer();
 		}
 		else
 		{
-			// Если в правой руке уже что-то есть - убираем это.
 			if (RightHandWeapon != null)
 			{
 				DestroyWeapon(WeaponHandsEnum.RightHand);
 			}
 
-			// Устанавливаем НОВЫЙ экземпляр в правую руку
 			RightHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke("right");
 
-			// Создаем модель для этой руки
 			weaponComponent.InstantiateWeapon(WeaponHandsEnum.RightHand);
 
-			// Сохраняем ссылку на компонент для быстрой работы
 			rightHandWeaponComponent = weaponComponent;
 
 			playerBehaviour.ArmPlayer();
@@ -294,7 +244,6 @@ public class PlayerWeaponController : MonoBehaviour
 				  " | RightHand: " + (RightHandWeapon ? RightHandWeapon.name : "null"));
 	}
 
-	// Атака оружием
 	public void RightWeaponAttack()
 	{
 		if (RightHandWeapon != null)
@@ -313,36 +262,27 @@ public class PlayerWeaponController : MonoBehaviour
 		}
 	}
 
-	// Удаление оружия
-	// Удаление оружия
 	public void DestroyWeapon(WeaponHandsEnum handType)
 	{
-		// Используем конструкцию switch для наглядности
 		switch (handType)
 		{
 			case WeaponHandsEnum.RightHand:
-				// Проверяем, есть ли что-то в правой руке
 				if (RightHandWeapon != null)
 				{
-					// Уничтожаем ВЕСЬ игровой объект (и скрипт, и модель)
 					Destroy(RightHandWeapon);
 					rightHandWeaponComponent.DestroyWeapon();
 
-					// Сбрасываем ссылки на объект и его компонент
 					RightHandWeapon = null;
 					rightHandWeaponComponent = null;
 				}
 				break;
 
 			case WeaponHandsEnum.LeftHand:
-				// Проверяем, есть ли что-то в левой руке
 				if (LeftHandWeapon != null)
 				{
-					// Уничтожаем ВЕСЬ игровой объект (и скрипт, и модель)
 					Destroy(LeftHandWeapon);
 					leftHandWeaponComponent.DestroyWeapon();
 
-					// Сбрасываем ссылки на объект и его компонент
 					LeftHandWeapon = null;
 					leftHandWeaponComponent = null;
 				}
@@ -366,7 +306,6 @@ public class PlayerWeaponController : MonoBehaviour
 				throw new ArgumentException("Неверный тип руки.");
 		}
 
-		// Теперь используем обработанное строковое значение дальше
 		if (handString == "RightHand" && rightHandWeaponComponent != null)
 		{
 			if (rightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
@@ -419,8 +358,6 @@ public class PlayerWeaponController : MonoBehaviour
 		}
 	}
 
-
-	// Сбор разблокированных видов оружия
 	public List<GameObject> CollectActiveWeapons()
 	{
 		return new List<GameObject>(unlockedWeapons.Values);

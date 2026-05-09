@@ -11,7 +11,6 @@ public class CanvasHUDammoController : MonoBehaviour
 	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
 	private PlayerBehaviour playerBehaviour;
 
-	// Ссылки на родительские объекты панелей
 	private GameObject RightWeaponAmmoMagazine;
 	private GameObject RightWeaponAmmoReserve;
 	private GameObject RightWeaponAmmoSeparator;
@@ -19,7 +18,6 @@ public class CanvasHUDammoController : MonoBehaviour
 	private GameObject LeftWeaponAmmoReserve;
 	private GameObject LeftWeaponAmmoSeparator;
 
-	// Ссылки на текстовые компоненты
 	private TMP_Text RightWeaponAmmoMagazineText;
 	private TMP_Text RightWeaponAmmoReserveText;
 	private TMP_Text LeftWeaponAmmoMagazineText;
@@ -45,13 +43,11 @@ public class CanvasHUDammoController : MonoBehaviour
 		this.LeftWeaponAmmoReserve = LeftWeaponAmmoReserve;
 		this.LeftWeaponAmmoSeparator = LeftWeaponAmmoSeparator;
 
-		// Получаем компоненты TextMeshPro из переданных GameObjects
 		RightWeaponAmmoMagazineText = RightWeaponAmmoMagazine.GetComponent<TMP_Text>();
 		RightWeaponAmmoReserveText = RightWeaponAmmoReserve.GetComponent<TMP_Text>();
 		LeftWeaponAmmoMagazineText = LeftWeaponAmmoMagazine.GetComponent<TMP_Text>();
 		LeftWeaponAmmoReserveText = LeftWeaponAmmoReserve.GetComponent<TMP_Text>();
 
-		// Подписка на события меню
 		this.menuManager.OnOpenPauseMenu += HideCanvasHUDammo;
 		this.menuManager.OnClosePauseMenu += ShowCanvasHUDammo;
 		this.menuManager.OnOpenInteractionMenu += HideCanvasHUDammo;
@@ -63,22 +59,17 @@ public class CanvasHUDammoController : MonoBehaviour
 		this.playerBehaviour.OnPlayerArmed += ShowCanvasHUDammo;
 		this.playerBehaviour.OnPlayerDisarmed += HideCanvasHUDammo;
 
-		// Подписка на события сцен
 		this.gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDammo;
 		this.gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDammo;
 
-		// Подписка на игровые события
 		this.menuManager.OnOpenWeaponWheelMenu += HideCanvasHUDammo;
 		this.menuManager.OnCloseWeaponWheelMenu += ShowCanvasHUDammo;
 
-		// НОВЫЕ ПОДПИСКИ (раздельные)
 		this.playerResourcesAmmoManager.OnReserveAmmoChanged += UpdateReserveDisplay;
 		this.playerResourcesAmmoManager.OnMagazineAmmoChanged += UpdateMagazineDisplay;
 
 		this.weaponController.OnWeaponChanged += UpdateAmmoDisplayForActiveWeapon;
-		
 
-		// Скрываем панели по умолчанию
 		HideRightWeaponAmmo();
 		HideLeftWeaponAmmo();
 
@@ -99,7 +90,6 @@ public class CanvasHUDammoController : MonoBehaviour
 	}
 	private void UpdateAmmoDisplayForActiveWeapon(string activeHand)
 	{
-		// Логика теперь нужна и для показа UI, И для обновления цифр при переключении оружия.
 		if (activeHand == "left")
 		{
 			var ranged = weaponController.LeftHandWeapon?.GetComponent<WeaponRangedAbstract>();
@@ -107,11 +97,8 @@ public class CanvasHUDammoController : MonoBehaviour
 			{
 				ShowLeftWeaponAmmo();
 
-				// --- ДОБАВЬТЕ ЭТИ СТРОЧКИ ---
-				// Обновляем текст магазина из оружия
 				LeftWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
-				
-				// Обновляем текст запаса из менеджера
+
 				if (playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
 				{
 					LeftWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
@@ -122,14 +109,13 @@ public class CanvasHUDammoController : MonoBehaviour
 				HideLeftWeaponAmmo();
 			}
 		}
-		else // Правая рука
+		else 
 		{
 			var ranged = weaponController.RightHandWeapon?.GetComponent<WeaponRangedAbstract>();
 			if (weaponController.RightHandWeapon != null && ranged != null)
 			{
 				ShowRightWeaponAmmo();
 
-				// --- ДОБАВЬТЕ ЭТИ СТРОЧКИ ---
 				RightWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
 
 				if (playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
@@ -154,11 +140,8 @@ public class CanvasHUDammoController : MonoBehaviour
 
 	}
 
-
-	// Этот метод вызывается, когда меняется ТОЛЬКО общий запас (например, подобрали патроны)
 	private void UpdateReserveDisplay(AmmoTypes type, int newTotalAmount)
 	{
-		// Проверяем правую руку
 		if (weaponController.RightHandWeapon != null)
 		{
 			var rightRanged = weaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
@@ -169,7 +152,6 @@ public class CanvasHUDammoController : MonoBehaviour
 			}
 		}
 
-		// Проверяем левую руку
 		if (weaponController.LeftHandWeapon != null)
 		{
 			var leftRanged = weaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
@@ -181,10 +163,8 @@ public class CanvasHUDammoController : MonoBehaviour
 		}
 	}
 
-	// Этот метод вызывается, когда меняется ТОЛЬКО магазин (выстрел или перезарядка)
 	private void UpdateMagazineDisplay(AmmoTypes type, int newMagazineAmount)
 	{
-		// Проверяем правую руку
 		if (weaponController.RightHandWeapon != null)
 		{
 			var rightRanged = weaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
@@ -195,7 +175,6 @@ public class CanvasHUDammoController : MonoBehaviour
 			}
 		}
 
-		// Проверяем левую руку
 		if (weaponController.LeftHandWeapon != null)
 		{
 			var leftRanged = weaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
@@ -206,9 +185,6 @@ public class CanvasHUDammoController : MonoBehaviour
 			}
 		}
 	}
-
-	
-
 
 	public void ShowRightWeaponAmmo()
 	{

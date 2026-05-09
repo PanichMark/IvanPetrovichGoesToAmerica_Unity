@@ -8,12 +8,10 @@ public class PlayerAnimationController: MonoBehaviour
 	private PlayerMovementController playerMovementController;
 	private PlayerCameraController playerCameraController;
 
-
 	private Camera playerCameraObject;
 	private Animator playerAnimator;
 	private bool _isInitialized = false;
 
-	// Конструктор принимает зависимость
 	public void Initialize(IInputDevice inputDevice, GameObject player, PlayerBehaviour playerBehaviour, PlayerMovementController playerMovementController,
 		PlayerCameraController playerCameraController)
 	{
@@ -23,47 +21,21 @@ public class PlayerAnimationController: MonoBehaviour
 		this.playerMovementController = playerMovementController;
 		this.playerCameraController = playerCameraController;
 	
-		
-	
 		playerCameraObject = Camera.main;
 		
 		ChangePlayerMovementAnimation("Idle");
-
 
 		_isInitialized = true;
 		Debug.Log("PlayerAnimationController Initialized");
 	}
 
-
-	
-
-	
-	
-
-	
 	private string currentPlayerMovementAnimation = "";
-
-
-	
-
-	
-
-
-
 
 	private void Update()
 	{
-		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 			return;
-	
-		
-	
 
-
-
-
-			// анимации PlayerMovement state машины
 		if (playerMovementController.CurrentPlayerMovementStateType == "PlayerIdle")
 		{
 			
@@ -126,13 +98,7 @@ public class PlayerAnimationController: MonoBehaviour
 		{
 			ChangePlayerMovementAnimation("Ledge Climbing");
 		}
-
-
-
 	}
-
-
-
 
 	private void ChangePlayerMovementAnimation(string animation, float crossfade = 0.2f)
 	{
@@ -142,8 +108,4 @@ public class PlayerAnimationController: MonoBehaviour
 			playerAnimator.CrossFade(animation, crossfade);
 		}
 	}
-
 }
-
-
-

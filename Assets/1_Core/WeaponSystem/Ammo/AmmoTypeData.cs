@@ -1,7 +1,6 @@
-﻿// AmmoTypeData.cs
-using System;
+﻿using System;
 
-[Serializable] // Чтобы Unity показывала поля в Инспекторе
+[Serializable] 
 public struct AmmoTypeData
 {
 	public AmmoTypes Type;

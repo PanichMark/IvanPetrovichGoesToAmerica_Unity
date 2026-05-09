@@ -4,25 +4,20 @@ using UnityEngine;
 public abstract class WeaponAbstract : MonoBehaviour
 {
 	public virtual string WeaponNameUI { get; protected set; }
-
 	public virtual string WeaponNameSystem { get; protected set; }
-
 
 	private GameObject firstPersonLeftHandWeaponSlotGameObject;
 	private GameObject firstPersonRightHandWeaponSlotGameObject;
 	private GameObject thirdPersonLeftHandWeaponSlotGameObject;
 	private GameObject thirdPersonRightHandWeaponSlotGameObject;
 
-	public virtual Sprite WeaponIcon { get; protected set; }            // Иконка оружия
+	public virtual Sprite WeaponIcon { get; protected set; }           
 	protected bool IsThisPlayerWeapon;
 	public virtual float WeaponDamage { get; protected set; }
 
-             // Модель оружия
-	public GameObject FirstPersonWeaponModelInstance { get; protected set; } // Первая камера
-	public GameObject ThirdPersonWeaponModelInstance { get; protected set; } // Третья камера
+	public GameObject FirstPersonWeaponModelInstance { get; protected set; }
+	public GameObject ThirdPersonWeaponModelInstance { get; protected set; } 
 
-
-	// Объекты слотов для прикрепления моделей
 	private Transform firstPersonLeftHandWeaponSlotTransform;
 	private Transform firstPersonRightHandWeaponSlotTransform;
 	private Transform thirdPersonLeftHandWeaponSlotTransform;
@@ -33,20 +28,17 @@ public abstract class WeaponAbstract : MonoBehaviour
 		IsThisPlayerWeapon = true;
 	}
 
-
 	public void MakeOwnerNPC()
 	{
 		IsThisPlayerWeapon = false;
 	}
 	public virtual void WeaponAttack()
 	{
-		// Реализация атаки должна быть в подклассах
-	}
 
+	}
 
 	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
 	{
-		//Debug.Log("BRUH!");
 		MakeOwnerNPC();
 
 		ThirdPersonWeaponModelInstance = gameObject;
@@ -66,10 +58,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer();
 	}
 
-	// Создание модели оружия
 	public void InstantiateWeapon(WeaponHandsEnum handType)
 	{
-		//Debug.Log("PLAYER");
 		IsThisPlayerWeapon = true;
 
 		string handString = "";
@@ -86,13 +76,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 				throw new ArgumentException("Неверный тип руки.");
 		}
 
-
-		//object FirstPersonWeaponModelAbstractClass = FirstPersonWeaponModelInstance.GetComponent<WeaponAbstract>();
-		//FirstPersonWeaponModelAbstractClass.Make
-		//Debug.Log(gameObject);
 		ThirdPersonWeaponModelInstance = gameObject;
 		InstantiateFirstPersonWeaponInstance();
-		//FirstPersonWeaponModelInstance = gameObject;
 
 		FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
 		foreach (Transform child in FirstPersonWeaponModelInstance.transform)
@@ -124,10 +109,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
-		
 	}
 
-	// Удаление модели оружия
 	public void DestroyWeapon()
 	{
 		if (ThirdPersonWeaponModelInstance != null)
@@ -144,7 +127,6 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 	public void FlipWeapon()
 	{
-		// Проверяем и переворачиваем модель для камеры от первого лица
 		if (FirstPersonWeaponModelInstance != null)
 		{
 			Vector3 fpScale = FirstPersonWeaponModelInstance.transform.localScale;
@@ -152,7 +134,6 @@ public abstract class WeaponAbstract : MonoBehaviour
 			FirstPersonWeaponModelInstance.transform.localScale = fpScale;
 		}
 
-		// Проверяем и переворачиваем модель для камеры от третьего лица
 		if (ThirdPersonWeaponModelInstance != null)
 		{
 			Vector3 tpScale = ThirdPersonWeaponModelInstance.transform.localScale;
@@ -160,5 +141,4 @@ public abstract class WeaponAbstract : MonoBehaviour
 			ThirdPersonWeaponModelInstance.transform.localScale = tpScale;
 		}
 	}
-
 }

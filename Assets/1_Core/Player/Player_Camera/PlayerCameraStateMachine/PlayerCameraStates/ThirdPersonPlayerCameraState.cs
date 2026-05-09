@@ -9,9 +9,6 @@ public class ThirdPersonPlayerCameraState : AbstractPlayerCameraState
 	
 	}
 
-	// Деструктор, который очищает экземпляр
-	
-
 	public override void Update()
 	{
 		playerCamera.RotateCamera();
@@ -21,12 +18,5 @@ public class ThirdPersonPlayerCameraState : AbstractPlayerCameraState
 		{
 			playerCamera.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 		}
-		//playerCamera.ThirdPersonCameraTransform();
 	}
-
 }
-
-
-	
-
-

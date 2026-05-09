@@ -5,11 +5,11 @@ using TMPro;
 
 public class WeaponWheelMenuController : MonoBehaviour
 {
-	private GameObject wheelSegmentPrefab;           // Префаб сегмента
-	private Transform centerPoint;                   // Центр круга
-	private GameObject WeaponWheelMenuCanvas;            // Canvas меню выбора оружия
-	public TextMeshProUGUI WeaponText { get; private set; }               // Текущий выбор оружия
-	public TextMeshProUGUI WeaponWheelName { get; private set; }       // Название меню (левая/правая рука)
+	private GameObject wheelSegmentPrefab;          
+	private Transform centerPoint;                  
+	private GameObject WeaponWheelMenuCanvas;            
+	public TextMeshProUGUI WeaponText { get; private set; }            
+	public TextMeshProUGUI WeaponWheelName { get; private set; }       
 
 	private List<GameObject> wheelSegments = new List<GameObject>();
 	private bool IsWeaponWheelActive = false;
@@ -30,10 +30,6 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 	public event System.Action<int> OnSegmentSelected;
 
-	void Start()
-	{
-		// createWheel(); // Вызывается позже при активации меню
-	}
 	private Image weaponIconBig;
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, PlayerWeaponController weaponController,
 		GameObject wheelSegmentPrefab, Transform centerPoint, GameObject WeaponWheelMenuCanvas, TextMeshProUGUI WeaponText, TextMeshProUGUI WeaponWheelName, Image weaponIconBig)
@@ -49,8 +45,6 @@ public class WeaponWheelMenuController : MonoBehaviour
 		this.WeaponWheelName = WeaponWheelName;
 		this.weaponIconBig = weaponIconBig;
 
-		//Debug.Log(this.weaponIconBig);
-
 		this.WeaponWheelMenuCanvas.gameObject.SetActive(false);
 		_isInitialized = true;
 		Debug.Log("WeaponWheel Initialized");
@@ -65,7 +59,6 @@ public class WeaponWheelMenuController : MonoBehaviour
 	private bool _isInitialized = false;
 	void Update()
 	{
-		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 			return;
 		bool currentRightHandPressed = inputDevice.GetKeyRightHandWeaponWheel();
@@ -130,15 +123,13 @@ public class WeaponWheelMenuController : MonoBehaviour
 			GameObject segmentInstance = Instantiate(wheelSegmentPrefab);
 			segmentInstance.name = $"Segment {i + 1}";
 
-			// Ставим сегмент как прямой ребёнок канваса
 			segmentInstance.transform.SetParent(WeaponWheelMenuCanvas.transform, false);
 
 			Button button = segmentInstance.GetComponent<Button>();
 			button.onClick.AddListener(() => OnSegmentSelected?.Invoke(i));
 
-			// Получаем RectTransform кнопки
 			RectTransform buttonRectTransform = button.GetComponent<RectTransform>();
-			buttonRectTransform.sizeDelta = new Vector2(50, 50); // уменьшаем размеры кнопок
+			buttonRectTransform.sizeDelta = new Vector2(50, 50);
 
 			GameObject iconObject = new GameObject("Icon");
 			iconObject.transform.SetParent(button.transform, false);
@@ -161,12 +152,11 @@ public class WeaponWheelMenuController : MonoBehaviour
 			iconImage.fillAmount = 1f;
 
 			RectTransform iconRectTransform = iconObject.GetComponent<RectTransform>();
-			iconRectTransform.sizeDelta = new Vector2(50, 50); // уменьшенные размеры иконки
+			iconRectTransform.sizeDelta = new Vector2(50, 50);
 			iconRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
 			iconRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
 			iconRectTransform.pivot = new Vector2(0.5f, 0.5f);
 
-			// Локальная позиция определяется относительно центра канваса
 			float adjustedAngle = i * angleStep + 90f;
 			Vector3 positionOnCircle = CalculatePositionOnCircle(adjustedAngle, radius);
 			segmentInstance.transform.localPosition = positionOnCircle;
@@ -201,7 +191,6 @@ public class WeaponWheelMenuController : MonoBehaviour
 	{
 		WeaponWheelMenuCanvas.gameObject.SetActive(true);
 		menuManager.OpenWeaponWheelMenu();
-		//RecreateWheel();
 	}
 
 	private void DisableWeaponWheelMenuCanvas()

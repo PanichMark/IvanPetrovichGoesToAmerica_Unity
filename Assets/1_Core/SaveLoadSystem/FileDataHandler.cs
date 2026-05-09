@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Collections;
 using System;
 using System.IO;
 
@@ -8,7 +6,6 @@ public class FileDataHandler
 {
 	public delegate void GameSafeFileDeleteHandler();
 	public event GameSafeFileDeleteHandler OnSafeFileDelete;
-
 
 	private string dataDirPath = "";
 
@@ -70,7 +67,6 @@ public class FileDataHandler
 		}
 	}
 
-	// Новый метод для специфической загрузки отдельных файлов
 	public GameData LoadFromFile(string fileName)
 	{
 		string fullPath = Path.Combine(dataDirPath, fileName);
@@ -97,5 +93,3 @@ public class FileDataHandler
 		return loadedData;
 	}
 }
-
-

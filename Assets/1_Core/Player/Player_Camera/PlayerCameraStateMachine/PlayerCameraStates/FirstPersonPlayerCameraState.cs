@@ -16,9 +16,6 @@ public class FirstPersonPlayerCameraState : AbstractPlayerCameraState
 		playerCamera.RotateCamera();
 		this.playerCamera.FirstPersonCameraTransform();
 
-		
-
-		// Проверка на специфичные состояния движения
 		if (
 			movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
 			movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking" ||
@@ -33,11 +30,5 @@ public class FirstPersonPlayerCameraState : AbstractPlayerCameraState
 		{
 			playerCamera.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
 		}
-
-		//playerCamera.SetPlayerCameraState(PlayerCameraStateType.FirstPerson);
 	}
-
-	
 }
-
-

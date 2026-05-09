@@ -7,14 +7,12 @@ public class PlayerBehaviour : MonoBehaviour
 	public bool WasPlayerArmed { get; private set; }
 	public bool IsPlayerArmed { get; private set; } = false;
 
-	// Делегаты для уведомлений
 	public delegate void OnPlayerEventHandler();
 	public event OnPlayerEventHandler OnPlayerArmed;
 	public event OnPlayerEventHandler OnPlayerDisarmed;
 	private bool _isInitialized = false;
 	void Update()
 	{
-		// Если инициализация не завершена, ничего не делаем
 		if (!_isInitialized)
 			return;
 		if (inputDevice.GetKeyHideWeapons())
@@ -30,7 +28,6 @@ public class PlayerBehaviour : MonoBehaviour
 			IsPlayerArmed = true;
 			WasPlayerArmed = false;
 
-			// Вызвать событие OnPlayerArmed
 			OnPlayerArmed?.Invoke();
 
 			Debug.Log("Player Armed");
@@ -44,7 +41,6 @@ public class PlayerBehaviour : MonoBehaviour
 			IsPlayerArmed = false;
 			WasPlayerArmed = true;
 
-			// Вызвать событие OnPlayerDisarmed
 			OnPlayerDisarmed?.Invoke();
 
 			Debug.Log("Player Disarmed");

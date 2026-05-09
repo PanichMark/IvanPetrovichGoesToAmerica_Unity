@@ -16,7 +16,6 @@ public class GameData
 	public Vector3 PlayerPosition;
 	public Quaternion PlayerRotation;
 
-
 	//Camera
 	public string CurrentPlayerCameraStateType;
 	public float PlayerCameraDistanceY;

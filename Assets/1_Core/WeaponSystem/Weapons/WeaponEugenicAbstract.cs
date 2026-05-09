@@ -22,4 +22,3 @@ public abstract class EugenicWeaponAbstract : WeaponAbstract
 
 	protected abstract void InitializeWeaponEugenic();
 }
-
