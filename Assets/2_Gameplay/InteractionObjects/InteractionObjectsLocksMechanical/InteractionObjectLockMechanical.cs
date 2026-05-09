@@ -61,8 +61,8 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	private void Awake()
 	{
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		canvasLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("CanvasLockpickMechanicalMenu");
-		buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<Button>("ExitLockpickMechanical");
+		canvasLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickMechanical");
+		buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<Button>("ButtonExitLockpickMechanicalMenu");
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		gameSceneManager.OnBeginLoadMainMenuScene += OnClosePuzzle;

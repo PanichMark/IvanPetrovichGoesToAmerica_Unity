@@ -41,11 +41,11 @@ public class InteractionObjectReadable : MonoBehaviour, IInteractable
 	{
 		// Разрешаем объекты по строке-ключу
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		buttonExitReadNoteMenu = ServiceLocator.Resolve<Button>("ExitReadNote");     // Предполагаемый ключ
-		ImageComponent = ServiceLocator.Resolve<Image>("ImageNewspaper"); // Предполагаемый ключ
-		descriptionText = ServiceLocator.Resolve<TextMeshProUGUI>("ReadableText");
-		BackgroundBack = ServiceLocator.Resolve<Image>("BackgroundBlack");
-		canvasReadNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasReadNoteMenu");
+		buttonExitReadNoteMenu = ServiceLocator.Resolve<Button>("ButtonExitReadNoteMenu");     // Предполагаемый ключ
+		ImageComponent = ServiceLocator.Resolve<Image>("ImageNote"); // Предполагаемый ключ
+		descriptionText = ServiceLocator.Resolve<TextMeshProUGUI>("TextNote");
+		BackgroundBack = ServiceLocator.Resolve<Image>("ImageNoteBlackBackground");
+		canvasReadNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuNote");
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		//Debug.Log(ReadStructure);
 		//menuManager.OnCloseReadNoteMenu += CloseAndDeactivate;

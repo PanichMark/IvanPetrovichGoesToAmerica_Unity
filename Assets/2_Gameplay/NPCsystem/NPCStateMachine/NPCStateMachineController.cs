@@ -55,7 +55,7 @@ public class NPCStateMachineController : MonoBehaviour
 	{
 		navMeshAgent = GetComponent<NavMeshAgent>();
 		initialRotationY = transform.eulerAngles.y;
-		cachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
+		cachedPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
 		npcAbstract = GetComponent<NPCAbstract>();
 
 		SetNPCState(initialState);

@@ -35,13 +35,13 @@ public class NPCDialogueController : MonoBehaviour
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		LoadDialogueFromFiles();
 
-		buttonDialogueYes = ServiceLocator.Resolve<Button>("buttonDialogueYes");
-		buttonDialogueNo = ServiceLocator.Resolve<Button>("buttonDialogueNo");
+		buttonDialogueYes = ServiceLocator.Resolve<Button>("ButtonDialogueYes");
+		buttonDialogueNo = ServiceLocator.Resolve<Button>("ButtonDialogueNo");
 
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		canvasDialogueMenu = ServiceLocator.Resolve<GameObject>("CanvasDialogueMenu");
+		canvasDialogueMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuDialogue");
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		NPCdialogueText = ServiceLocator.Resolve<TextMeshProUGUI>("NPCdialogueText");
+		NPCdialogueText = ServiceLocator.Resolve<TextMeshProUGUI>("TextDialogue");
 
 		nPCStateMachineController = GetComponent<NPCStateMachineController>();
 

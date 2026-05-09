@@ -17,7 +17,7 @@ public class BootstrapSubProcessInteractionSystem
 	public InteractionController InteractionController { get; private set; }
 	private InteractionAnimationController _interactionAnimationController;
 	private InteractionFirstPersonRender _interactionFirstPersonRender;
-	private GameObject[] _buttonsLockElectrical;
+	private GameObject[] _buttonsLockElectronic;
 	private TextMeshProUGUI _textMainInteraction;
 	private TextMeshProUGUI _textAdditionalInteraction;
 	private Button _buttonExitReadNoteMenu;
@@ -93,7 +93,7 @@ public class BootstrapSubProcessInteractionSystem
 			_canvasHUDInteraction.transform.Find("ImageGainedItem3").GetComponent<Image>()
 		};
 
-		_buttonsLockElectrical = new GameObject[]
+		_buttonsLockElectronic = new GameObject[]
 		{
 			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic1"),
 			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic2"),
@@ -138,7 +138,7 @@ public class BootstrapSubProcessInteractionSystem
 		ServiceLocator.Register("TextNote", _textNote);
 		ServiceLocator.Register("ImageNoteBlackBackground", _imageNoteBlackBackground);
 
-		ServiceLocator.Register("ButtonsLockElectrical", _buttonsLockElectrical);
+		ServiceLocator.Register("ButtonsLockElectronic", _buttonsLockElectronic);
 
 		ServiceLocator.Register("TextNPCphrases", _textPhrase);
 		ServiceLocator.Register("TextDialogue", _textDialogue);

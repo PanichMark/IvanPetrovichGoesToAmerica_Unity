@@ -38,7 +38,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	private void Start()
 	{
 		_NPCmaxHealth = _NPCcurrentHealth;
-		NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("NPCphrases");
+		NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("TextNPCphrases");
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_NPCdialogueController = GetComponent<NPCDialogueController>();
 

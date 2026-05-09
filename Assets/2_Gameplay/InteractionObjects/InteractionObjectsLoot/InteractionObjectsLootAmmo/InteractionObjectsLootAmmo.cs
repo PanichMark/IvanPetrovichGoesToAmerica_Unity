@@ -16,6 +16,6 @@ public class InteractionObjectsLootAmmo : InteractionObjectLootAbstract
 
 	protected override void ThisMethodSetsActionName()
 	{
-		playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("playerResourcesAmmoManager");
+		playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 	}
 }

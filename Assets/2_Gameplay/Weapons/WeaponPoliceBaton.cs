@@ -25,7 +25,7 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 		ForwardOffset = 0.5f;
 		AttackDelay = 0.5f;
 
-		ChokeNPCtext = ServiceLocator.Resolve<GameObject>("ChokeNPCtext");
+		ChokeNPCtext = ServiceLocator.Resolve<GameObject>("TextChokeNPC");
 		playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 		weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
@@ -38,7 +38,7 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 			isItRightHand = false;	
 		}
 
-		inputDevice = ServiceLocator.Resolve<IInputDevice>("inputDevice");
+		inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
 	}
 	private void Update()
 	{

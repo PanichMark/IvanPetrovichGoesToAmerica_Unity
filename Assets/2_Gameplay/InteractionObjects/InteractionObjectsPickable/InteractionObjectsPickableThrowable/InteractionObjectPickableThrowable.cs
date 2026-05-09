@@ -48,13 +48,13 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	{
 		pickableLayer = LayerMask.NameToLayer("Pickable");
 		playerLayer = LayerMask.NameToLayer("Player");
-		playerColliderGameObject = ServiceLocator.Resolve<GameObject>("playerColliderGameObject");
+		playerColliderGameObject = ServiceLocator.Resolve<GameObject>("PlayerColliderGameObject");
 		playerCollider = playerColliderGameObject.GetComponent<Collider>();
-		firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("firstPersonRightHandWeaponSlotGameObject");
-		thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("thirdPersonRightHandWeaponSlotGameObject");
+		firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
+		thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonRightHandWeaponSlotGameObject");
 		Collider = GetComponent<Collider>();
 		RigidBody = GetComponent<Rigidbody>();
-		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
+		CachedPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 
@@ -98,29 +98,22 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	{
 		if (!IsObjectPickedUp)
 		{
-			if (firstPersonRightHandWeaponSlotGameObject != null)
+			Debug.Log($"Picked up {InteractionObjectNameSystem}");
+
+			gameObject.tag = "Untagged";
+			Collider.enabled = false;
+			RigidBody.isKinematic = true;
+
+			if (isItFirstPerson)
 			{
-				Debug.Log($"Picked up {InteractionObjectNameSystem}");
-
-				gameObject.tag = "Untagged";
-				Collider.enabled = false;
-				RigidBody.isKinematic = true;
-
-				if (isItFirstPerson)
-				{
-					StartCoroutine(MoveTowardsRightHandFirstPerson());
-				}
-				else
-				{
-					StartCoroutine(MoveTowardsRightHandThirdPerson());
-				}
-
-				IsObjectPickedUp = true;
+				StartCoroutine(MoveTowardsRightHandFirstPerson());
 			}
 			else
 			{
-				Debug.Log("Player not found!");
+				StartCoroutine(MoveTowardsRightHandThirdPerson());
 			}
+
+			IsObjectPickedUp = true;
 		}
 	}
 

@@ -44,14 +44,14 @@ public class CutsceneController : MonoBehaviour
 	
 	private void Start()
 	{
-		RealPlayer = ServiceLocator.Resolve<GameObject>("Player");
-		MainCamera = ServiceLocator.Resolve<GameObject>("playerMainCameraGameObject");
+		RealPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
+		MainCamera = ServiceLocator.Resolve<GameObject>("PlayerCameraGameObject");
 		playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 		playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 		gameController = ServiceLocator.Resolve<GameController>("GameController");
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		inputDevice = ServiceLocator.Resolve<IInputDevice>("inputDevice");
+		inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
 		playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		

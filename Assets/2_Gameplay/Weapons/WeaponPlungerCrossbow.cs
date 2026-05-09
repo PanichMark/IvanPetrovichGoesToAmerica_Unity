@@ -34,11 +34,11 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 
 	private void Start()
 	{
-		playerCamera = ServiceLocator.Resolve<GameObject>("playerMainCameraGameObject");
-		player = ServiceLocator.Resolve<GameObject>("Player");
+		playerCamera = ServiceLocator.Resolve<GameObject>("PlayerCameraGameObject");
+		player = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
 		playerRigidbody = player.GetComponent<Rigidbody>();
 		gameController = ServiceLocator.Resolve<GameController>("GameController");
-		playerCollider = ServiceLocator.Resolve<GameObject>("playerColliderGameObject");
+		playerCollider = ServiceLocator.Resolve<GameObject>("PlayerColliderGameObject");
 		
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		playerBehaviour = ServiceLocator.Resolve<PlayerBehaviour>("PlayerBehaviour");

@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 3221052312731442239}
   - component: {fileID: 5253923185428568856}
   m_Layer: 0
-  m_Name: UNITY  HandLeft
+  m_Name: PlayerHandLeftParentGameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2304,7 +2304,7 @@ GameObject:
   - component: {fileID: 2576270363926722669}
   - component: {fileID: 4645217535869843846}
   m_Layer: 0
-  m_Name: UNITY PlayerHead
+  m_Name: PlayerHeadParentGameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2638,7 +2638,7 @@ GameObject:
   - component: {fileID: 8456755852774420646}
   - component: {fileID: 8449928755288226889}
   m_Layer: 0
-  m_Name: UNITY HandRight
+  m_Name: PlayerHandRightParentGameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

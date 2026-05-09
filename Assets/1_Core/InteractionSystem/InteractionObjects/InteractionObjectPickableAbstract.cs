@@ -33,12 +33,12 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	{
 		pickableLayer = LayerMask.NameToLayer("Pickable");
 		playerLayer = LayerMask.NameToLayer("Player");
-		playerColliderGameObject = ServiceLocator.Resolve<GameObject>("playerColliderGameObject");
+		playerColliderGameObject = ServiceLocator.Resolve<GameObject>("PlayerColliderGameObject");
 		playerCollider = playerColliderGameObject.GetComponent<Collider>();
 
 		Collider = GetComponent<Collider>();
 		RigidBody = GetComponent<Rigidbody>();
-		CachedPlayer = ServiceLocator.Resolve<GameObject>("Player");
+		CachedPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
 
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 

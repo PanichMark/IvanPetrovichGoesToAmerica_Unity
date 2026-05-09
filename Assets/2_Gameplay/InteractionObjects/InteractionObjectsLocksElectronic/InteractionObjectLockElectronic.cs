@@ -29,11 +29,11 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	void Start()
 	{
 		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		canvasLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("CanvasLockpickElectronicMenu");
-		buttonExitLockpickElectronicMenu = ServiceLocator.Resolve<Button>("ExitLockpickElectronic");
+		canvasLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickElectronic");
+		buttonExitLockpickElectronicMenu = ServiceLocator.Resolve<Button>("ButtonExitLockpickElectronicMenu");
 		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>("buttonsLockElectrical");
+		buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>("ButtonsLockElectronic");
 
 		buttonExitLockpickElectronicMenu.onClick.AddListener(CloseElectronicLockPuzzle);
 
