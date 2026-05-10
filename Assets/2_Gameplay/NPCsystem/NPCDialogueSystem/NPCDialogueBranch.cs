@@ -1,11 +1,13 @@
 ﻿using System;
+using UnityEngine;
 
 [Serializable]
 public struct NPCDialogueBranch
 {
-	public int DialogueBranchIndex;      
-	public int GoToYesOptionIndex;      
-	public int GoToNoOptionIndex;        
-	public int FinalNoIndex;             
-	public int GoToNoFinal;             
+	public int DialogueBranchLine;      
+	public int GoToNoOptionLine;        
+	public int FinalYesLine;
+	public int GoToYesFinalLine;
+	public GameObject ActionOnYesAnswer;
+	public GameObject ActionOnNoAnswer;
 }

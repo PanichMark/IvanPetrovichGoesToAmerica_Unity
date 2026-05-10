@@ -15,6 +15,7 @@ public class NPCDialogueController : MonoBehaviour
 	private Button buttonDialogueNo;
 	public TextAsset RussianDialogueFile => russianDialogueFile;
 	private LocalizationManager localizationManager;
+	private bool PerformActionOnYesFinal;
 	public TextAsset EnglishDialogueFile => englishDialogueFile;
 	private Dictionary<LanguagesEnum, List<string>> localizedDialogue = new Dictionary<LanguagesEnum, List<string>>
 	{
@@ -64,16 +65,26 @@ public class NPCDialogueController : MonoBehaviour
 
 	private void ExitNPCDialogue()
 	{
-		buttonDialogueYes.onClick.RemoveAllListeners();
-		buttonDialogueNo.onClick.RemoveAllListeners();
+		if (IsDialogueActive)
+		{
 
-		currentDialogueStepIndex = 0;
-		dialogueBranchStructIndex = 0;
-		menuManager.CloseDialogueMenu();
-		HideNPCDialogueCanvas();
-		IsDialogueActive = false;
+			buttonDialogueYes.onClick.RemoveAllListeners();
+			buttonDialogueNo.onClick.RemoveAllListeners();
 
-		DeactivateButtons();
+
+			currentDialogueStepIndex = 0;
+			dialogueBranchStructIndex = 0;
+			menuManager.CloseDialogueMenu();
+			HideNPCDialogueCanvas();
+			IsDialogueActive = false;
+			DeactivateButtons();
+
+			if (PerformActionOnYesFinal)
+			{
+				dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<IInteractable>().Interact();
+				PerformActionOnYesFinal = false;
+			}
+		}
 	}
 
 	private void LoadDialogueFromFiles()
@@ -158,7 +169,7 @@ public class NPCDialogueController : MonoBehaviour
 		{
 			for (int i = 0; i < dialogueBranchStructsList.Count; i++)
 			{
-				if (dialogueBranchStructsList[i].DialogueBranchIndex == (currentDialogueStepIndex + 1))
+				if (dialogueBranchStructsList[i].DialogueBranchLine == (currentDialogueStepIndex + 1))
 				{
 					dialogueBranchStructIndex = i;
 					CanSkip = false;
@@ -172,8 +183,15 @@ public class NPCDialogueController : MonoBehaviour
 
 		currentDialogueStepIndex++;
 
-		if (currentDialogueStepIndex == dialogueBranchStructsList[dialogueBranchStructIndex].FinalNoIndex)
-			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToNoFinal;
+		if (currentDialogueStepIndex == dialogueBranchStructsList[dialogueBranchStructIndex].FinalYesLine)
+		{
+			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToYesFinalLine;
+
+			if (dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer != null)
+			{
+				PerformActionOnYesFinal = true;
+			}
+		}
 	}
 
 	private void ActivateButtons()
@@ -192,8 +210,8 @@ public class NPCDialogueController : MonoBehaviour
 	{
 		var currentLanguage = localizationManager.CurrentLanguage;
 
-		if (isYesSelected)
-			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToYesOptionIndex - 1;
+		if (!isYesSelected)
+			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToNoOptionLine - 1;
 
 		buttonDialogueYes.onClick.RemoveAllListeners();
 		buttonDialogueNo.onClick.RemoveAllListeners();
