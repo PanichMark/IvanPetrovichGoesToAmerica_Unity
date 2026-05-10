@@ -3,20 +3,20 @@ using System.Collections;
 
 public class InteractionObjectElevatorController : MonoBehaviour
 {
-	[SerializeField] private float elevatorSpeed = 2f;
-	[SerializeField] private float upperYPosition = 10f;
+	[SerializeField] private float _elevatorSpeed = 2f;
+	[SerializeField] private float _upperYPosition = 10f;
 
-	private float lowerYPosition;
-	private bool isMoving = false;
+	private float _lowerYPosition;
+	private bool _isMoving = false;
 
 	void Start()
 	{
-		lowerYPosition = transform.position.y;
+		_lowerYPosition = transform.position.y;
 	}
 
 	public void RequestMove(bool moveUp)
 	{
-		if (isMoving)
+		if (_isMoving)
 			return;
 
 		StartCoroutine(MoveElevator(moveUp));
@@ -24,9 +24,9 @@ public class InteractionObjectElevatorController : MonoBehaviour
 
 	private IEnumerator MoveElevator(bool moveUp)
 	{
-		isMoving = true;
+		_isMoving = true;
 
-		float targetY = moveUp ? upperYPosition : lowerYPosition;
+		float targetY = moveUp ? _upperYPosition : _lowerYPosition;
 		Vector3 targetPosition = transform.position;
 		targetPosition.y = targetY;
 
@@ -35,12 +35,12 @@ public class InteractionObjectElevatorController : MonoBehaviour
 			transform.position = Vector3.MoveTowards(
 				transform.position,
 				targetPosition,
-				elevatorSpeed * Time.deltaTime
+				_elevatorSpeed * Time.deltaTime
 			);
 			yield return null;
 		}
 
 		transform.position = targetPosition;
-		isMoving = false;
+		_isMoving = false;
 	}
 }

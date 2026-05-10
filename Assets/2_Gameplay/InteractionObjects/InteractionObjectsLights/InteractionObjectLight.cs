@@ -11,28 +11,28 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable
 	public string InteractionHintAction => "";
 
 	public GameObject lightObject;
-	private bool isLightTurnedOn = false;
-	private Material cachedMaterial;
+	private bool _isLightTurnedOn = false;
+	private Material _cachedMaterial;
 	public Color emissionColorOn = Color.white;
 
 	void Start()
 	{
-		cachedMaterial = lightObject.GetComponent<Renderer>().material;
-		cachedMaterial.SetColor("_EmissionColor", Color.black);
+		_cachedMaterial = lightObject.GetComponent<Renderer>().material;
+		_cachedMaterial.SetColor("_EmissionColor", Color.black);
 	}
 
 	public void Interact()
 	{
-		if (isLightTurnedOn)
+		if (_isLightTurnedOn)
 		{
-			isLightTurnedOn = false;
-			cachedMaterial.SetColor("_EmissionColor", Color.black);
+			_isLightTurnedOn = false;
+			_cachedMaterial.SetColor("_EmissionColor", Color.black);
 			Debug.Log("Light turned off.");
 		}
 		else
 		{
-			isLightTurnedOn = true;
-			cachedMaterial.SetColor("_EmissionColor", emissionColorOn);
+			_isLightTurnedOn = true;
+			_cachedMaterial.SetColor("_EmissionColor", emissionColorOn);
 			Debug.Log("Light turned on.");
 		}
 	}

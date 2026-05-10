@@ -3,36 +3,36 @@ using UnityEngine.Rendering;
 
 public class PlayerCameraBlurFilter : MonoBehaviour
 {
-	private MenuManager menuManager;
-	private Volume volumeMainCamera;
-	private Volume volumeFirstPersonCamera;
+	private MenuManager _menuManager;
+	private Volume _thirdPersonCameraVolume;
+	private Volume _firstPersonCameraVolume;
 
 	public void Initialize(MenuManager manager)
 	{
-		menuManager = manager;
+		_menuManager = manager;
 
-		volumeMainCamera = GetComponent<Volume>();
+		_thirdPersonCameraVolume = GetComponent<Volume>();
 		Transform firstPersonCameraTransform = transform.Find("FirstPerson Camera");
-		volumeFirstPersonCamera = firstPersonCameraTransform.GetComponent<Volume>();
+		_firstPersonCameraVolume = firstPersonCameraTransform.GetComponent<Volume>();
 		Debug.Log("CameraBlurFilter initialized.");
 
-		menuManager.OnOpenAnyMenu += ActivateCameraBlur;
-		menuManager.OnCloseAnyMenu += DeactivateCameraBlur;
-		menuManager.OnOpenPauseMenu += ActivateCameraBlur;
-		menuManager.OnClosePauseMenuDuringOpenedDialogueMenu += DeactivateCameraBlur;
-		menuManager.OnClosePauseMenuDuringOpenedCutsceneMenu += DeactivateCameraBlur;
+		_menuManager.OnOpenAnyMenu += ActivateCameraBlur;
+		_menuManager.OnCloseAnyMenu += DeactivateCameraBlur;
+		_menuManager.OnOpenPauseMenu += ActivateCameraBlur;
+		_menuManager.OnClosePauseMenuDuringOpenedDialogueMenu += DeactivateCameraBlur;
+		_menuManager.OnClosePauseMenuDuringOpenedCutsceneMenu += DeactivateCameraBlur;
 	}
 
 	public void ActivateCameraBlur()
 	{
-		volumeMainCamera.enabled = true;
-		volumeFirstPersonCamera.enabled = true;
+		_thirdPersonCameraVolume.enabled = true;
+		_firstPersonCameraVolume.enabled = true;
 		Debug.Log("Active CameraBlur");
 	}
 	public void DeactivateCameraBlur()
 	{
-		volumeMainCamera.enabled = false;
-		volumeFirstPersonCamera.enabled = false;
+		_thirdPersonCameraVolume.enabled = false;
+		_firstPersonCameraVolume.enabled = false;
 		Debug.Log("Deactive CameraBlur");
 	}
 }

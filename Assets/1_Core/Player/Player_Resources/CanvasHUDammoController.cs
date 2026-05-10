@@ -3,72 +3,72 @@ using UnityEngine;
 
 public class CanvasHUDammoController : MonoBehaviour
 {
-	private MenuManager menuManager;
-	private GameObject canvasHUDammo;
-	private GameSceneManager gameSceneManager;
-	private GameController gameController;
-	private PlayerWeaponController weaponController;
-	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
-	private PlayerBehaviour playerBehaviour;
+	private MenuManager _menuManager;
+	private GameObject _canvasHUDammo;
+	private GameSceneManager _gameSceneManager;
+	private GameController _gameController;
+	private PlayerWeaponController _playerWeaponController;
+	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
+	private PlayerBehaviour _playerBehaviour;
 
-	private GameObject RightWeaponAmmoMagazine;
-	private GameObject RightWeaponAmmoReserve;
-	private GameObject RightWeaponAmmoSeparator;
-	private GameObject LeftWeaponAmmoMagazine;
-	private GameObject LeftWeaponAmmoReserve;
-	private GameObject LeftWeaponAmmoSeparator;
+	private GameObject _rightWeaponAmmoMagazine;
+	private GameObject _rightWeaponAmmoReserve;
+	private GameObject _rightWeaponAmmoSeparator;
+	private GameObject _leftWeaponAmmoMagazine;
+	private GameObject _leftWeaponAmmoReserve;
+	private GameObject _leftWeaponAmmoSeparator;
 
-	private TMP_Text RightWeaponAmmoMagazineText;
-	private TMP_Text RightWeaponAmmoReserveText;
-	private TMP_Text LeftWeaponAmmoMagazineText;
-	private TMP_Text LeftWeaponAmmoReserveText;
+	private TMP_Text _rightWeaponAmmoMagazineText;
+	private TMP_Text _rightWeaponAmmoReserveText;
+	private TMP_Text _leftWeaponAmmoMagazineText;
+	private TMP_Text _leftWeaponAmmoReserveText;
 
 	public void Initialize(GameSceneManager gameSceneManager, GameController gameController, MenuManager menuManager, GameObject canvasHUDPlayerResources, PlayerWeaponController weaponController,
 		PlayerResourcesAmmoManager playerResourcesAmmoManager, PlayerBehaviour playerBehaviour,
 		GameObject RightWeaponAmmoMagazine, GameObject RightWeaponAmmoReserve, GameObject RightWeaponAmmoSeparator,
 		GameObject LeftWeaponAmmoMagazine, GameObject LeftWeaponAmmoReserve, GameObject LeftWeaponAmmoSeparator)
 	{
-		this.gameSceneManager = gameSceneManager;
-		this.menuManager = menuManager;
-		this.canvasHUDammo = canvasHUDPlayerResources;
-		this.weaponController = weaponController;
-		this.playerResourcesAmmoManager = playerResourcesAmmoManager;
-		this.gameController	= gameController;
-		this.playerBehaviour = playerBehaviour;
+		_gameSceneManager = gameSceneManager;
+		_menuManager = menuManager;
+		_canvasHUDammo = canvasHUDPlayerResources;
+		_playerWeaponController = weaponController;
+		_playerResourcesAmmoManager = playerResourcesAmmoManager;
+		_gameController	= gameController;
+		_playerBehaviour = playerBehaviour;
 
-		this.RightWeaponAmmoMagazine = RightWeaponAmmoMagazine;
-		this.RightWeaponAmmoReserve = RightWeaponAmmoReserve;
-		this.RightWeaponAmmoSeparator = RightWeaponAmmoSeparator;
-		this.LeftWeaponAmmoMagazine = LeftWeaponAmmoMagazine;
-		this.LeftWeaponAmmoReserve = LeftWeaponAmmoReserve;
-		this.LeftWeaponAmmoSeparator = LeftWeaponAmmoSeparator;
+		_rightWeaponAmmoMagazine = RightWeaponAmmoMagazine;
+		_rightWeaponAmmoReserve = RightWeaponAmmoReserve;
+		_rightWeaponAmmoSeparator = RightWeaponAmmoSeparator;
+		_leftWeaponAmmoMagazine = LeftWeaponAmmoMagazine;
+		_leftWeaponAmmoReserve = LeftWeaponAmmoReserve;
+		_leftWeaponAmmoSeparator = LeftWeaponAmmoSeparator;
 
-		RightWeaponAmmoMagazineText = RightWeaponAmmoMagazine.GetComponent<TMP_Text>();
-		RightWeaponAmmoReserveText = RightWeaponAmmoReserve.GetComponent<TMP_Text>();
-		LeftWeaponAmmoMagazineText = LeftWeaponAmmoMagazine.GetComponent<TMP_Text>();
-		LeftWeaponAmmoReserveText = LeftWeaponAmmoReserve.GetComponent<TMP_Text>();
+		_rightWeaponAmmoMagazineText = RightWeaponAmmoMagazine.GetComponent<TMP_Text>();
+		_rightWeaponAmmoReserveText = RightWeaponAmmoReserve.GetComponent<TMP_Text>();
+		_leftWeaponAmmoMagazineText = LeftWeaponAmmoMagazine.GetComponent<TMP_Text>();
+		_leftWeaponAmmoReserveText = LeftWeaponAmmoReserve.GetComponent<TMP_Text>();
 
-		this.menuManager.OnOpenPauseMenu += HideCanvasHUDammo;
-		this.menuManager.OnClosePauseMenu += ShowCanvasHUDammo;
-		this.menuManager.OnOpenInteractionMenu += HideCanvasHUDammo;
-		this.menuManager.OnCloseInteractionMenu += ShowCanvasHUDammo;
-		this.menuManager.OnOpenDialogueMenu += HideCanvasHUDammo;
-		this.menuManager.OnCloseDialogueMenu += ShowCanvasHUDammo;
+		_menuManager.OnOpenPauseMenu += HideCanvasHUDammo;
+		_menuManager.OnClosePauseMenu += ShowCanvasHUDammo;
+		_menuManager.OnOpenInteractionMenu += HideCanvasHUDammo;
+		_menuManager.OnCloseInteractionMenu += ShowCanvasHUDammo;
+		_menuManager.OnOpenDialogueMenu += HideCanvasHUDammo;
+		_menuManager.OnCloseDialogueMenu += ShowCanvasHUDammo;
 
 
-		this.playerBehaviour.OnPlayerArmed += ShowCanvasHUDammo;
-		this.playerBehaviour.OnPlayerDisarmed += HideCanvasHUDammo;
+		_playerBehaviour.OnPlayerArmed += ShowCanvasHUDammo;
+		_playerBehaviour.OnPlayerDisarmed += HideCanvasHUDammo;
 
-		this.gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDammo;
-		this.gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDammo;
+		_gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDammo;
+		_gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDammo;
 
-		this.menuManager.OnOpenWeaponWheelMenu += HideCanvasHUDammo;
-		this.menuManager.OnCloseWeaponWheelMenu += ShowCanvasHUDammo;
+		_menuManager.OnOpenWeaponWheelMenu += HideCanvasHUDammo;
+		_menuManager.OnCloseWeaponWheelMenu += ShowCanvasHUDammo;
 
-		this.playerResourcesAmmoManager.OnReserveAmmoChanged += UpdateReserveDisplay;
-		this.playerResourcesAmmoManager.OnMagazineAmmoChanged += UpdateMagazineDisplay;
+		_playerResourcesAmmoManager.OnReserveAmmoChanged += UpdateReserveDisplay;
+		_playerResourcesAmmoManager.OnMagazineAmmoChanged += UpdateMagazineDisplay;
 
-		this.weaponController.OnWeaponChanged += UpdateAmmoDisplayForActiveWeapon;
+		_playerWeaponController.OnWeaponChanged += UpdateAmmoDisplayForActiveWeapon;
 
 		HideRightWeaponAmmo();
 		HideLeftWeaponAmmo();
@@ -78,30 +78,30 @@ public class CanvasHUDammoController : MonoBehaviour
 
 	private void ShowCanvasHUDammo()
 	{
-		if (!menuManager.IsInteractionMenuOpened && !menuManager.IsDialogueMenuOpened && !gameController.IsMainMenuOpen && !menuManager.IsWeaponWheelMenuOpened)
+		if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_gameController.IsMainMenuOpen && !_menuManager.IsWeaponWheelMenuOpened)
 		{
-			canvasHUDammo.SetActive(true);
+			_canvasHUDammo.SetActive(true);
 		}
 	}
 
 	public void HideCanvasHUDammo()
 	{
-		canvasHUDammo.SetActive(false);
+		_canvasHUDammo.SetActive(false);
 	}
 	private void UpdateAmmoDisplayForActiveWeapon(string activeHand)
 	{
 		if (activeHand == "left")
 		{
-			var ranged = weaponController.LeftHandWeapon?.GetComponent<WeaponRangedAbstract>();
-			if (weaponController.LeftHandWeapon != null && ranged != null)
+			var ranged = _playerWeaponController.LeftHandWeapon?.GetComponent<WeaponRangedAbstract>();
+			if (_playerWeaponController.LeftHandWeapon != null && ranged != null)
 			{
 				ShowLeftWeaponAmmo();
 
-				LeftWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
+				_leftWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
 
-				if (playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
+				if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
 				{
-					LeftWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
+					_leftWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
 				}
 			}
 			else
@@ -111,16 +111,16 @@ public class CanvasHUDammoController : MonoBehaviour
 		}
 		else 
 		{
-			var ranged = weaponController.RightHandWeapon?.GetComponent<WeaponRangedAbstract>();
-			if (weaponController.RightHandWeapon != null && ranged != null)
+			var ranged = _playerWeaponController.RightHandWeapon?.GetComponent<WeaponRangedAbstract>();
+			if (_playerWeaponController.RightHandWeapon != null && ranged != null)
 			{
 				ShowRightWeaponAmmo();
 
-				RightWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
+				_rightWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
 
-				if (playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
+				if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
 				{
-					RightWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
+					_rightWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
 				}
 			}
 			else
@@ -129,11 +129,11 @@ public class CanvasHUDammoController : MonoBehaviour
 			}
 		}
 
-		if(weaponController.RightHandWeapon == null)
+		if(_playerWeaponController.RightHandWeapon == null)
 		{
 			HideRightWeaponAmmo();
 		}
-		if (weaponController.LeftHandWeapon == null)
+		if (_playerWeaponController.LeftHandWeapon == null)
 		{
 			HideLeftWeaponAmmo();
 		}
@@ -142,22 +142,22 @@ public class CanvasHUDammoController : MonoBehaviour
 
 	private void UpdateReserveDisplay(AmmoTypes type, int newTotalAmount)
 	{
-		if (weaponController.RightHandWeapon != null)
+		if (_playerWeaponController.RightHandWeapon != null)
 		{
-			var rightRanged = weaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
+			var rightRanged = _playerWeaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
 			if (rightRanged != null && rightRanged.WeaponAmmoType == type)
 			{
-				RightWeaponAmmoReserveText.text = newTotalAmount.ToString();
+				_rightWeaponAmmoReserveText.text = newTotalAmount.ToString();
 				return;
 			}
 		}
 
-		if (weaponController.LeftHandWeapon != null)
+		if (_playerWeaponController.LeftHandWeapon != null)
 		{
-			var leftRanged = weaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
+			var leftRanged = _playerWeaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
 			if (leftRanged != null && leftRanged.WeaponAmmoType == type)
 			{
-				LeftWeaponAmmoReserveText.text = newTotalAmount.ToString();
+				_leftWeaponAmmoReserveText.text = newTotalAmount.ToString();
 				return;
 			}
 		}
@@ -165,22 +165,22 @@ public class CanvasHUDammoController : MonoBehaviour
 
 	private void UpdateMagazineDisplay(AmmoTypes type, int newMagazineAmount)
 	{
-		if (weaponController.RightHandWeapon != null)
+		if (_playerWeaponController.RightHandWeapon != null)
 		{
-			var rightRanged = weaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
+			var rightRanged = _playerWeaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
 			if (rightRanged != null && rightRanged.WeaponAmmoType == type)
 			{
-				RightWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
+				_rightWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
 				return;
 			}
 		}
 
-		if (weaponController.LeftHandWeapon != null)
+		if (_playerWeaponController.LeftHandWeapon != null)
 		{
-			var leftRanged = weaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
+			var leftRanged = _playerWeaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
 			if (leftRanged != null && leftRanged.WeaponAmmoType == type)
 			{
-				LeftWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
+				_leftWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
 				return;
 			}
 		}
@@ -188,29 +188,29 @@ public class CanvasHUDammoController : MonoBehaviour
 
 	public void ShowRightWeaponAmmo()
 	{
-		RightWeaponAmmoMagazine.SetActive(true);
-		RightWeaponAmmoReserve.SetActive(true);
-		RightWeaponAmmoSeparator.SetActive(true);
+		_rightWeaponAmmoMagazine.SetActive(true);
+		_rightWeaponAmmoReserve.SetActive(true);
+		_rightWeaponAmmoSeparator.SetActive(true);
 	}
 
 	public void HideRightWeaponAmmo()
 	{
-		RightWeaponAmmoMagazine.SetActive(false);
-		RightWeaponAmmoReserve.SetActive(false);
-		RightWeaponAmmoSeparator.SetActive(false);
+		_rightWeaponAmmoMagazine.SetActive(false);
+		_rightWeaponAmmoReserve.SetActive(false);
+		_rightWeaponAmmoSeparator.SetActive(false);
 	}
 
 	public void ShowLeftWeaponAmmo()
 	{
-		LeftWeaponAmmoMagazine.SetActive(true);
-		LeftWeaponAmmoReserve.SetActive(true);
-		LeftWeaponAmmoSeparator.SetActive(true);
+		_leftWeaponAmmoMagazine.SetActive(true);
+		_leftWeaponAmmoReserve.SetActive(true);
+		_leftWeaponAmmoSeparator.SetActive(true);
 	}
 
 	public void HideLeftWeaponAmmo()
 	{
-		LeftWeaponAmmoMagazine.SetActive(false);
-		LeftWeaponAmmoReserve.SetActive(false);
-		LeftWeaponAmmoSeparator.SetActive(false);
+		_leftWeaponAmmoMagazine.SetActive(false);
+		_leftWeaponAmmoReserve.SetActive(false);
+		_leftWeaponAmmoSeparator.SetActive(false);
 	}
 }

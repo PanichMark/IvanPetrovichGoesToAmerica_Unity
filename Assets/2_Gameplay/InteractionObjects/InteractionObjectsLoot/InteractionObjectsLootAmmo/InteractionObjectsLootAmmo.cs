@@ -2,20 +2,20 @@
 
 public class InteractionObjectsLootAmmo : InteractionObjectLootAbstract
 {
-	PlayerResourcesAmmoManager playerResourcesAmmoManager;
+	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 
-	[SerializeField] AmmoTypes ammoTypes;
-	[SerializeField] int AmmoCapacity;
+	[SerializeField] private AmmoTypes _ammoTypes;
+	[SerializeField] private int _AmmoCapacity;
 
 	public override void Interact()
 	{
 		base.Interact();
 		Debug.Log($"Picked up {InteractionObjectNameUI}");
-		playerResourcesAmmoManager.ModifyReserveAmmo(ammoTypes, AmmoCapacity);
+		_playerResourcesAmmoManager.ModifyReserveAmmo(_ammoTypes, _AmmoCapacity);
 	}
 
 	protected override void ThisMethodSetsActionName()
 	{
-		playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
+		_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 	}
 }

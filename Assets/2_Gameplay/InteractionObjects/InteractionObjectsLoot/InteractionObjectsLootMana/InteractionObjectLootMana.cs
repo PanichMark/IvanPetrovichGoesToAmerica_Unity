@@ -2,32 +2,32 @@
 
 public class InteractionObjectLootMana : InteractionObjectLootAbstract
 {
-	private bool isAdditionalInteractionHintActive;
-	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
-	private PlayerResourcesManaManager playerResourcesManaManager;
+	private bool _isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageAdditionalActive => _isAdditionalInteractionHintActive;
+	private PlayerResourcesManaManager _playerResourcesManaManager;
 
 	public override string InteractionHintMessageAdditional => $"Maximum {InteractionObjectNameUI}";
 
 	public override void Interact()
 	{
-		if (playerResourcesManaManager.CurrentManaReplenishItemsNumber < 9)
+		if (_playerResourcesManaManager.CurrentManaReplenishItemsNumber < 9)
 		{
 			base.Interact();
 			Debug.Log($"You picked up {InteractionObjectNameUI}");
 
-			playerResourcesManaManager.AddManaReplenishItem();
-			isAdditionalInteractionHintActive = false;
+			_playerResourcesManaManager.AddManaReplenishItem();
+			_isAdditionalInteractionHintActive = false;
 			WasLootItemCollected = true;
 		}
 		else
 		{
-			isAdditionalInteractionHintActive = true;
+			_isAdditionalInteractionHintActive = true;
 		}
 	}
 
 	protected override void ThisMethodSetsActionName()
 	{
-		playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+		_playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }

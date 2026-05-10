@@ -1,22 +1,22 @@
 ﻿using UnityEngine;
 public class PlayerCapsuleCollider : MonoBehaviour
 {
-	private CapsuleCollider CapsuleCollider;
+	private CapsuleCollider _playerCollider;
 	
-	private PlayerMovementController movementController;
+	private PlayerMovementController _playerMovementController;
 
 	private bool _isInitialized = false;
+
 	void Update()
     {
 		if (!_isInitialized)
 			return;
-		if (movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
-			|| movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"
-			|| movementController.CurrentPlayerMovementStateType == "PlayerSliding")
+		if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
+			|| _playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"
+			|| _playerMovementController.CurrentPlayerMovementStateType == "PlayerSliding")
 		{
             transform.position = transform.parent.position+new Vector3(0f, 0.5f, 0f);
             transform.localScale = new Vector3(1f,  0.5f, 1f);
-			
         }
 		else 
 		{
@@ -24,20 +24,20 @@ public class PlayerCapsuleCollider : MonoBehaviour
 			transform.localScale = new Vector3(1f, 1f, 1f);
 		}
 
-		if (movementController.CurrentPlayerMovementStateType == "PlayerLedgeClimbing")
+		if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerLedgeClimbing")
 		{
-			CapsuleCollider.enabled = false;
+			_playerCollider.enabled = false;
 		}
 		else 
 		{
-			CapsuleCollider.enabled = true;
+			_playerCollider.enabled = true;
 		}
 	}
 
 	public void Initialize(PlayerMovementController movementController)
 	{
-		this.movementController = movementController; // Новый аргумент
-		CapsuleCollider = GetComponent<CapsuleCollider>();
+		_playerMovementController = movementController; // Новый аргумент
+		_playerCollider = GetComponent<CapsuleCollider>();
 		_isInitialized = true;
 		Debug.Log("PlayerCollider Initialized");
 	}

@@ -4,36 +4,38 @@ using UnityEngine.UI;
 
 public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 {
-	private PlayerBehaviour playerBehaviour;
+	private PlayerBehaviour _playerBehaviour;
 
-	public void Initialize(GameController gameController, PlayerBehaviour playerBehaviour, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
-	{
-		this.HealthBarSlider = HealthBarSlider;
-		this.HealingItemButton = HealingItemButton;
-		this.HealingItemNumber = HealingItemNumber;
-		this.gameController = gameController;
-		this.playerBehaviour = playerBehaviour;
-		this.HealingItemButton.onClick.AddListener(() => UseHealingItem());
+	private GameController _gameController;
+	private Slider _sliderHealthBar;
+	private Button _buttonHealingItem;
+	private TextMeshProUGUI _healingItemNumber;
+	public int MaxPlayerHealth { get; private set; } = 100;
+	public int CurrentPlayerHealth { get; private set; }
 
-		this.HealthBarSlider.maxValue = MaxPlayerHealth;
-		Debug.Log("PlayerResourcesHealth Initialized");
-	}
-	private GameController gameController;
-	private Slider HealthBarSlider;
-    private Button HealingItemButton;
-    private TextMeshProUGUI HealingItemNumber;
-    public int MaxPlayerHealth { get; private set; } = 100;
-    public int CurrentPlayerHealth { get; private set; }
-
-    public int MaxHealingItemsNumber { get; private set; } = 9;
+	public int MaxHealingItemsNumber { get; private set; } = 9;
 
 	public int CurrentHealingItemsNumber { get; private set; }
 
+	public void Initialize(GameController gameController, PlayerBehaviour playerBehaviour, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
+	{
+		_sliderHealthBar = HealthBarSlider;
+		_buttonHealingItem = HealingItemButton;
+		_healingItemNumber = HealingItemNumber;
+		_gameController = gameController;
+		_playerBehaviour = playerBehaviour;
+		_buttonHealingItem.onClick.AddListener(() => UseHealingItem());
+
+		_sliderHealthBar.maxValue = MaxPlayerHealth;
+		Debug.Log("PlayerResourcesHealth Initialized");
+	}
+
+
 	void Update()
     {
-        HealthBarSlider.value = CurrentPlayerHealth;
+        _sliderHealthBar.value = CurrentPlayerHealth;
 
-        HealingItemNumber.text = CurrentHealingItemsNumber.ToString();
+        _healingItemNumber.text = CurrentHealingItemsNumber.ToString();
 
 		if (Input.GetKeyDown(KeyCode.T))
 		{
@@ -55,7 +57,6 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
             else Debug.Log("Health is already Full");
 		}
 		else Debug.Log("0 Healing Items");
-
 	}
     public void AddHealingItem()
     {
@@ -65,7 +66,6 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 			CurrentHealingItemsNumber++;
 		}
         else Debug.Log("Max Healing Items");
-
 	}
 
 	public void ReceiveDamage(int Damage)
@@ -75,9 +75,8 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 		if (CurrentPlayerHealth <= 0)
 		{
 			CurrentPlayerHealth = 0;
-			gameController.PlayerHasDied();
-			playerBehaviour.DisarmPlayer();
-
+			_gameController.PlayerHasDied();
+			_playerBehaviour.DisarmPlayer();
 		}
 	}
 

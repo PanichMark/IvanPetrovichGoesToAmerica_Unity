@@ -5,24 +5,24 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 {
 	protected LocalizationManager localizationManager;
 
-	[SerializeField] protected float OpeningSpeed = 3f;
+	[SerializeField] protected float _openingSpeed = 3f;
 
-	protected Coroutine currentAnimation;
+	protected Coroutine _currentAnimation;
 
-	protected Vector3 openedPosition;
-	protected Vector3 closedPosition;
-	[SerializeField] protected float openLengthForward;
+	protected Vector3 _openedPosition;
+	protected Vector3 _closedPosition;
+	[SerializeField] protected float _openLengthForward;
 
 	public void Start()
 	{
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 
-		closedPosition = transform.localPosition;
-		openedPosition = transform.localPosition + new Vector3(0, 0, openLengthForward);
+		_closedPosition = transform.localPosition;
+		_openedPosition = transform.localPosition + new Vector3(0, 0, _openLengthForward);
 
 		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 		IsDoorOpened = false;
@@ -31,30 +31,30 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 	public void ChangeLanguage()
 	{
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+		InteractionObjectNameUI = localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 
 		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 	}
 
 	public override void Interact()
 	{
-		if (currentAnimation != null)
+		if (_currentAnimation != null)
 		{
-			StopCoroutine(currentAnimation);
+			StopCoroutine(_currentAnimation);
 		}
 
 		if (!IsDoorOpened)
 		{
 			InteractionHintAction = localizationManager.GetLocalizedString("CloseDoor");
-			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-			currentAnimation = StartCoroutine(OpenDrawer());
+			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			_currentAnimation = StartCoroutine(OpenDrawer());
 		}
 		else
 		{
 			InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-			currentAnimation = StartCoroutine(CloseDrawer());
+			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			_currentAnimation = StartCoroutine(CloseDrawer());
 		}
 	}
 
@@ -63,13 +63,13 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		Debug.Log($"Was opened {InteractionObjectNameUI}");
 		IsDoorOpened = true;
 
-		while (Mathf.Abs(transform.localPosition.z - openedPosition.z) > 0.001f)
+		while (Mathf.Abs(transform.localPosition.z - _openedPosition.z) > 0.001f)
 		{
-			transform.localPosition = Vector3.MoveTowards(transform.localPosition, openedPosition, Time.deltaTime * OpeningSpeed);
+			transform.localPosition = Vector3.MoveTowards(transform.localPosition, _openedPosition, Time.deltaTime * _openingSpeed);
 			yield return null;
 		}
 
-		currentAnimation = null;
+		_currentAnimation = null;
 	}
 
 	IEnumerator CloseDrawer()
@@ -77,12 +77,12 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		Debug.Log($"Was closed {InteractionObjectNameUI}");
 		IsDoorOpened = false;
 
-		while (Mathf.Abs(transform.localPosition.z - closedPosition.z) > 0.001f)
+		while (Mathf.Abs(transform.localPosition.z - _closedPosition.z) > 0.001f)
 		{
-			transform.localPosition = Vector3.MoveTowards(transform.localPosition, closedPosition, Time.deltaTime * OpeningSpeed);
+			transform.localPosition = Vector3.MoveTowards(transform.localPosition, _closedPosition, Time.deltaTime * _openingSpeed);
 			yield return null;
 		}
 
-		currentAnimation = null;
+		_currentAnimation = null;
 	}
 }

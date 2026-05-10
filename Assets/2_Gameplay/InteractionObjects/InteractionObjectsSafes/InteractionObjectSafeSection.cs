@@ -5,18 +5,18 @@ public class InteractionObjectSafeSection : MonoBehaviour, IInteractable
 {
 	public delegate void InteractionDelegate();
 
-	[SerializeField] private int safeSectionSlotNumber;
-	[SerializeField][Range(0, 9)] private int correctSectionPosition;
+	[SerializeField] private int _safeSectionSlotNumber;
+	[SerializeField][Range(0, 9)] private int _correctSectionPosition;
 
-	public int CorrectSectionPosition => correctSectionPosition;
+	public int CorrectSectionPosition => _correctSectionPosition;
 	public bool IsSectionPositionCorrect { get; private set; }
 	public int currentSectionPosition { get; private set; }
 
-	private float sectionRotationSpeed = 0.15f;
-	private Coroutine sectionCoroutine;
+	private float _sectionRotationSpeed = 0.15f;
+	private Coroutine _sectionCoroutine;
 
 	public string InteractionHintAction { get; protected set; }
-	public string InteractionObjectNameUI => safeSectionSlotNumber.ToString();
+	public string InteractionObjectNameUI => _safeSectionSlotNumber.ToString();
 	public virtual string InteractionHintMessageMain => $"Rotate section #{InteractionObjectNameUI}";
 	public virtual string InteractionHintMessageAdditional => null;
 	public virtual bool IsInteractionHintMessageAdditionalActive => false;
@@ -24,9 +24,9 @@ public class InteractionObjectSafeSection : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
-		if (sectionCoroutine == null)
+		if (_sectionCoroutine == null)
 		{
-			sectionCoroutine = StartCoroutine(RotateSmoothly(sectionRotationSpeed));
+			_sectionCoroutine = StartCoroutine(RotateSmoothly(_sectionRotationSpeed));
 		}
 	}
 
@@ -48,13 +48,13 @@ public class InteractionObjectSafeSection : MonoBehaviour, IInteractable
 
 		Debug.Log($"Section #{InteractionObjectNameUI} new position is {currentSectionPosition}");
 
-		IsSectionPositionCorrect = currentSectionPosition == correctSectionPosition;
+		IsSectionPositionCorrect = currentSectionPosition == _correctSectionPosition;
 
 		if (IsSectionPositionCorrect)
 			Debug.Log($"Section #{InteractionObjectNameUI} CORRECT");
 
 		transform.localRotation = rotateTo;
-		sectionCoroutine = null;
+		_sectionCoroutine = null;
 	}
 
 	public void SetSectionPositionToCorrect()

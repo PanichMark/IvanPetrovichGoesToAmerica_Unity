@@ -6,14 +6,14 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 	public delegate void DoorStateChangedHandler(bool isOpened);
 	public event DoorStateChangedHandler OnDoorStateChanged;
 
-	[SerializeField] protected string interactionObjectNameSystem;
-	public virtual string InteractionObjectNameSystem => interactionObjectNameSystem;
+	[SerializeField] protected string _interactionObjectNameSystem;
+	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
-	private LocalizationManager localizationManager;
+	private LocalizationManager _localizationManager;
 	public virtual string InteractionObjectNameUI { get; protected set; }
 
-	protected string interactionHintMessageMain;
-	public virtual string InteractionHintMessageMain => interactionHintMessageMain;
+	protected string _interactionHintMessageMain;
+	public virtual string InteractionHintMessageMain => _interactionHintMessageMain;
 	public virtual string InteractionHintMessageAdditional => null;
 	public virtual bool IsInteractionHintMessageAdditionalActive => false;
 

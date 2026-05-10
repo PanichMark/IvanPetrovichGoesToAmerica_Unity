@@ -4,21 +4,21 @@ using UnityEngine.SceneManagement;
 
 public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, ISaveLoad, IPickable
 {
-	protected LocalizationManager localizationManager;
+	protected LocalizationManager _localizationManager;
 
-	protected Collider playerCollider;
-	protected bool isCollisionIgnored = false;
-	protected bool isPlayerInsideTrigger = false;
+	protected Collider _playerCollider;
+	protected bool _isCollisionIgnored = false;
+	protected bool _isPlayerInsideTrigger = false;
 
-	protected GameObject playerColliderGameObject;
-	protected int pickableLayer;
-	protected int playerLayer;
+	protected GameObject _playerColliderGameObject;
+	protected int _pickableLayer;
+	protected int _playerLayer;
 	public GameObject CachedPlayer { get; protected set; }
 	public Collider Collider { get; protected set; }
 	public Rigidbody RigidBody { get; protected set; }
 
-	[SerializeField] protected string interactionObjectNameSystem;
-	public virtual string InteractionObjectNameSystem => interactionObjectNameSystem;
+	[SerializeField] protected string _interactionObjectNameSystem;
+	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
 	public virtual string InteractionObjectNameUI { get; protected set; }
 	public string InteractionHintMessageMain => $"{InteractionHintAction} {InteractionObjectNameUI}?";
 
@@ -31,47 +31,47 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	void Start()
 	{
-		pickableLayer = LayerMask.NameToLayer("Pickable");
-		playerLayer = LayerMask.NameToLayer("Player");
-		playerColliderGameObject = ServiceLocator.Resolve<GameObject>("PlayerColliderGameObject");
-		playerCollider = playerColliderGameObject.GetComponent<Collider>();
+		_pickableLayer = LayerMask.NameToLayer("Pickable");
+		_playerLayer = LayerMask.NameToLayer("Player");
+		_playerColliderGameObject = ServiceLocator.Resolve<GameObject>("PlayerColliderGameObject");
+		_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
 
 		Collider = GetComponent<Collider>();
 		RigidBody = GetComponent<Rigidbody>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
 
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
-		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
-		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
+		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 	}
 
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject == CachedPlayer)
-			isPlayerInsideTrigger = true;
+			_isPlayerInsideTrigger = true;
 	}
 
 	void OnTriggerExit(Collider other)
 	{
 		if (other.gameObject == CachedPlayer)
 		{
-			isPlayerInsideTrigger = false;
-			if (isCollisionIgnored && playerCollider != null)
+			_isPlayerInsideTrigger = false;
+			if (_isCollisionIgnored && _playerCollider != null)
 			{
-				Physics.IgnoreCollision(Collider, playerCollider, false);
-				isCollisionIgnored = false;
+				Physics.IgnoreCollision(Collider, _playerCollider, false);
+				_isCollisionIgnored = false;
 			}
 		}
 	}
 
 	public void ChangeLanguage()
 	{
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
-		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
 	}
 
 	public void Interact()
@@ -113,8 +113,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 		transform.parent = null;
 
-		Physics.IgnoreCollision(Collider, playerCollider, true);
-		isCollisionIgnored = true;
+		Physics.IgnoreCollision(Collider, _playerCollider, true);
+		_isCollisionIgnored = true;
 
 		StartCoroutine(EnableCollisionAfterDelay(0.05f));
 
@@ -125,10 +125,10 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	{
 		yield return new WaitForSeconds(delay);
 
-		if (Collider != null && playerCollider != null)
+		if (Collider != null && _playerCollider != null)
 		{
-			Physics.IgnoreCollision(Collider, playerCollider, false);
-			isCollisionIgnored = false;
+			Physics.IgnoreCollision(Collider, _playerCollider, false);
+			_isCollisionIgnored = false;
 		}
 	}
 

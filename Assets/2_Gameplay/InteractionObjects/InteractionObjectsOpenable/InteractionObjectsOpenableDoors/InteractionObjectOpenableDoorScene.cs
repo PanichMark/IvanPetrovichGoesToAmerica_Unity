@@ -3,16 +3,16 @@ using System.Collections;
 
 public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 {
-	private GameSceneManager gameSceneManager;
-	[SerializeField] private GameScenesEnum targetScene;
-	[SerializeField] private Vector3 newPlayerPosition;
-	[SerializeField] private int newPlayerRotation;
-	private PlayerMovementController playerMovementController;
+	private GameSceneManager _gameSceneManager;
+	[SerializeField] private GameScenesEnum _targetScene;
+	[SerializeField] private Vector3 _newPlayerPosition;
+	[SerializeField] private int _newPlayerRotation;
+	private PlayerMovementController _playerMovementController;
 
 	private void Start()
 	{
-		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
+		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 	}
 
 	protected override void PerformDoorInteraction()
@@ -22,7 +22,7 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 
 	private IEnumerator LoadGameplayScene()
 	{
-		Debug.Log("LOADING: " + targetScene);
+		Debug.Log("LOADING: " + _targetScene);
 
 		Transform parentTransform = transform.parent;
 		if (parentTransform == null)
@@ -30,10 +30,10 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 
 		DontDestroyOnLoad(parentTransform.gameObject);
 
-		yield return StartCoroutine(gameSceneManager.LoadGameplayScene(targetScene));
+		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(_targetScene));
 
-		playerMovementController.SetPlayerPosition(newPlayerPosition);
-		playerMovementController.SetPlayerRotation(newPlayerRotation);
+		_playerMovementController.SetPlayerPosition(_newPlayerPosition);
+		_playerMovementController.SetPlayerRotation(_newPlayerRotation);
 
 		Destroy(parentTransform.gameObject);
 	}

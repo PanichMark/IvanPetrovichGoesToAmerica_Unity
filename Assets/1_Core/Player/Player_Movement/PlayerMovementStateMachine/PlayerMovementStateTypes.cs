@@ -1,15 +1,12 @@
-﻿
-public enum PlayerMovementStateTypes
+﻿public enum PlayerMovementStateTypes
 {
-    PlayerIdle = 0,
-    PlayerWalking = 1,
-    PlayerRunning = 2,
-    PlayerJumping = 3,
-    PlayerFalling = 4,
-    PlayerCrouchingIdle = 5,
-    PlayerCrouchingWalking = 6,
-    PlayerSliding = 7,
-    PlayerLedgeClimbing = 8,
+    PlayerIdle,
+    PlayerWalking,
+	PlayerCrouchingIdle,
+	PlayerCrouchingWalking,
+	PlayerRunning,
+    PlayerJumping,
+    PlayerFalling,
+    PlayerSliding,
+    PlayerLedgeClimbing,
 }
-
-

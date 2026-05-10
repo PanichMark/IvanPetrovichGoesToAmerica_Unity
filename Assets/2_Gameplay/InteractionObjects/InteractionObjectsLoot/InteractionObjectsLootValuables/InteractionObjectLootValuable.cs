@@ -2,22 +2,22 @@
 
 public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 {
-	[SerializeField] private int moneyValue;
+	[SerializeField] private int _moneyValue;
 
-	private PlayerResourcesMoneyManager playerResourcesMoneyManager;
+	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
 
 	public override void Interact()
 	{
 		base.Interact();
-		Debug.Log($"Picked up {InteractionObjectNameUI}, received {moneyValue} rubles");
+		Debug.Log($"Picked up {InteractionObjectNameUI}, received {_moneyValue} rubles");
 
-		playerResourcesMoneyManager.AddMoney(moneyValue);
+		_playerResourcesMoneyManager.AddMoney(_moneyValue);
 		WasLootItemCollected = true;
 	}
 
 	protected override void ThisMethodSetsActionName()
 	{
-		playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }

@@ -2,15 +2,15 @@
 
 public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 {
-	[SerializeField] private GameObject weaponObject;
+	[SerializeField] private GameObject _weaponObject;
 
-	private PlayerWeaponController weaponController;
+	private PlayerWeaponController _weaponController;
 
 	private void Awake()
 	{
-		weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
+		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
-		var weaponComponent = weaponObject.GetComponent<WeaponAbstract>();
+		var weaponComponent = _weaponObject.GetComponent<WeaponAbstract>();
 		LootObjectImage = weaponComponent.WeaponIcon;
 	}
 
@@ -18,11 +18,11 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 	{
 		base.Interact();
 		Debug.Log($"You picked up {InteractionObjectNameUI}");
-		weaponController.UnlockWeapon(weaponObject);
+		_weaponController.UnlockWeapon(_weaponObject);
 	}
 
 	protected override void ThisMethodSetsActionName()
 	{
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }

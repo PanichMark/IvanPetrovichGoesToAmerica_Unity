@@ -8,54 +8,54 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 	public string InteractionObjectNameUI => null;
 	public string InteractionHintMessageMain => "Open safe";
 	public virtual string InteractionHintMessageAdditional => "Wrong combination!";
-	public virtual bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
+	public virtual bool IsInteractionHintMessageAdditionalActive => _isAdditionalInteractionHintActive;
 
-	private bool isAdditionalInteractionHintActive;
-	private bool wasSafeOpened;
-	private bool isInStartMethod;
+	private bool _isAdditionalInteractionHintActive;
+	private bool _isSafeOpened;
+	private bool _isInStartMethod;
 
 	public GameObject SafeDoor;
-	private Transform safeDoorTransform;
+	private Transform _safeDoorTransform;
 
 	public GameObject SafeRotatorySection1;
 	public GameObject SafeRotatorySection2;
 	public GameObject SafeRotatorySection3;
-	private InteractionObjectSafeSection section1;
-	private InteractionObjectSafeSection section2;
-	private InteractionObjectSafeSection section3;
+	private InteractionObjectSafeSection _section1;
+	private InteractionObjectSafeSection _section2;
+	private InteractionObjectSafeSection _section3;
 
-	private float safeDoorOpeningSpeed = 100f;
-	private Quaternion safeDoorOpenedRotation;
+	private float _safeDoorOpeningSpeed = 100f;
+	private Quaternion _safeDoorOpenedRotation;
 
 	void Start()
 	{
-		isInStartMethod = true;
+		_isInStartMethod = true;
 
-		safeDoorTransform = SafeDoor.GetComponent<Transform>();
+		_safeDoorTransform = SafeDoor.GetComponent<Transform>();
 
-		section1 = SafeRotatorySection1.GetComponent<InteractionObjectSafeSection>();
-		section2 = SafeRotatorySection2.GetComponent<InteractionObjectSafeSection>();
-		section3 = SafeRotatorySection3.GetComponent<InteractionObjectSafeSection>();
+		_section1 = SafeRotatorySection1.GetComponent<InteractionObjectSafeSection>();
+		_section2 = SafeRotatorySection2.GetComponent<InteractionObjectSafeSection>();
+		_section3 = SafeRotatorySection3.GetComponent<InteractionObjectSafeSection>();
 
 		Vector3 openedEulerAngles = new Vector3(0, -90, 0);
-		safeDoorOpenedRotation = Quaternion.Euler(openedEulerAngles);
+		_safeDoorOpenedRotation = Quaternion.Euler(openedEulerAngles);
 
-		if (wasSafeOpened)
+		if (_isSafeOpened)
 		{
-			safeDoorTransform.localRotation = safeDoorOpenedRotation;
-			section1.SetSectionPositionToCorrect();
-			section2.SetSectionPositionToCorrect();
-			section3.SetSectionPositionToCorrect();
+			_safeDoorTransform.localRotation = _safeDoorOpenedRotation;
+			_section1.SetSectionPositionToCorrect();
+			_section2.SetSectionPositionToCorrect();
+			_section3.SetSectionPositionToCorrect();
 		}
 
 		CheckRotatorySectionCorrection();
 
-		isInStartMethod = false;
+		_isInStartMethod = false;
 	}
 
 	public void Interact()
 	{
-		if (!wasSafeOpened)
+		if (!_isSafeOpened)
 		{
 			CheckRotatorySectionCorrection();
 		}
@@ -69,60 +69,60 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 		SafeRotatorySection2.tag = "Untagged";
 		SafeRotatorySection3.tag = "Untagged";
 
-		while (Quaternion.Angle(safeDoorTransform.localRotation, safeDoorOpenedRotation) > 0.1f)
+		while (Quaternion.Angle(_safeDoorTransform.localRotation, _safeDoorOpenedRotation) > 0.1f)
 		{
-			safeDoorTransform.localRotation = Quaternion.RotateTowards(
-				safeDoorTransform.localRotation,
-				safeDoorOpenedRotation,
-				Time.deltaTime * safeDoorOpeningSpeed);
+			_safeDoorTransform.localRotation = Quaternion.RotateTowards(
+				_safeDoorTransform.localRotation,
+				_safeDoorOpenedRotation,
+				Time.deltaTime * _safeDoorOpeningSpeed);
 			yield return null;
 		}
 	}
 
 	private void CheckRotatorySectionCorrection()
 	{
-		if (section1.currentSectionPosition == section1.CorrectSectionPosition)
-			section1.SetSectionPositionToCorrect();
-		if (section2.currentSectionPosition == section2.CorrectSectionPosition)
-			section2.SetSectionPositionToCorrect();
-		if (section3.currentSectionPosition == section3.CorrectSectionPosition)
-			section3.SetSectionPositionToCorrect();
+		if (_section1.currentSectionPosition == _section1.CorrectSectionPosition)
+			_section1.SetSectionPositionToCorrect();
+		if (_section2.currentSectionPosition == _section2.CorrectSectionPosition)
+			_section2.SetSectionPositionToCorrect();
+		if (_section3.currentSectionPosition == _section3.CorrectSectionPosition)
+			_section3.SetSectionPositionToCorrect();
 
-		if (section1.IsSectionPositionCorrect && section2.IsSectionPositionCorrect && section3.IsSectionPositionCorrect)
+		if (_section1.IsSectionPositionCorrect && _section2.IsSectionPositionCorrect && _section3.IsSectionPositionCorrect)
 		{
-			if (!isInStartMethod)
+			if (!_isInStartMethod)
 				Debug.Log("SAFE CORRECT");
 
-			isAdditionalInteractionHintActive = false;
-			wasSafeOpened = true;
+			_isAdditionalInteractionHintActive = false;
+			_isSafeOpened = true;
 
 			StartCoroutine(OpenSafeDoor());
 		}
 		else
 		{
-			if (!isInStartMethod)
+			if (!_isInStartMethod)
 			{
 				Debug.Log("SAFE FAILED");
-				isAdditionalInteractionHintActive = true;
+				_isAdditionalInteractionHintActive = true;
 			}
 		}
 
-		if (wasSafeOpened)
+		if (_isSafeOpened)
 		{
-			float yAngle = section1.CorrectSectionPosition != 0 ? 360f / 10 * section1.CorrectSectionPosition : 0f;
+			float yAngle = _section1.CorrectSectionPosition != 0 ? 360f / 10 * _section1.CorrectSectionPosition : 0f;
 			Vector3 openedEulerAngles = new Vector3(0, yAngle, 0);
 			var sectionCorrectPositionRotation = Quaternion.Euler(openedEulerAngles);
-			section1.transform.localRotation = sectionCorrectPositionRotation;
+			_section1.transform.localRotation = sectionCorrectPositionRotation;
 
-			yAngle = section2.CorrectSectionPosition != 0 ? 360f / 10 * section2.CorrectSectionPosition : 0f;
+			yAngle = _section2.CorrectSectionPosition != 0 ? 360f / 10 * _section2.CorrectSectionPosition : 0f;
 			openedEulerAngles = new Vector3(0, yAngle, 0);
 			sectionCorrectPositionRotation = Quaternion.Euler(openedEulerAngles);
-			section2.transform.localRotation = sectionCorrectPositionRotation;
+			_section2.transform.localRotation = sectionCorrectPositionRotation;
 
-			yAngle = section3.CorrectSectionPosition != 0 ? 360f / 10 * section3.CorrectSectionPosition : 0f;
+			yAngle = _section3.CorrectSectionPosition != 0 ? 360f / 10 * _section3.CorrectSectionPosition : 0f;
 			openedEulerAngles = new Vector3(0, yAngle, 0);
 			sectionCorrectPositionRotation = Quaternion.Euler(openedEulerAngles);
-			section3.transform.localRotation = sectionCorrectPositionRotation;
+			_section3.transform.localRotation = sectionCorrectPositionRotation;
 		}
 	}
 }

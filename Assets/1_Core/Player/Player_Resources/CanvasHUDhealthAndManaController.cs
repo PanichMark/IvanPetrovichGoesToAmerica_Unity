@@ -1,42 +1,43 @@
 ﻿using UnityEngine;
 public class CanvasHUDhealthAndManaController : MonoBehaviour
 {
-    private MenuManager menuManager;
-    private GameObject canvasHUDhealthAndMana;
-    private GameSceneManager gameSceneManager;
-    private GameController gameController;
+    private MenuManager _menuManager;
+    private GameObject _canvasHUDhealthAndMana;
+    private GameSceneManager _gameSceneManager;
+    private GameController _gameController;
 
     public void Initialize (GameSceneManager gameSceneManager, GameController gameController, MenuManager menuManager, GameObject canvasHUDPlayerResources)
     {
-        this.gameSceneManager = gameSceneManager;
-        this.menuManager = menuManager;
-        this.canvasHUDhealthAndMana = canvasHUDPlayerResources;
+        _gameSceneManager = gameSceneManager;
+        _menuManager = menuManager;
+        _canvasHUDhealthAndMana = canvasHUDPlayerResources;
 
-		this.menuManager.OnOpenPauseMenu += HideCanvasHUDhealthAndMana;
-		this.menuManager.OnClosePauseMenu += ShowCanvasHUDhealthAndMana;
-		this.menuManager.OnOpenInteractionMenu += HideCanvasHUDhealthAndMana;
-		this.menuManager.OnCloseInteractionMenu += ShowCanvasHUDhealthAndMana;
-		this.menuManager.OnOpenDialogueMenu += HideCanvasHUDhealthAndMana;
-		this.menuManager.OnCloseDialogueMenu += ShowCanvasHUDhealthAndMana;
-		this.menuManager.OnOpenCutsceneMenu += HideCanvasHUDhealthAndMana;
-		this.menuManager.OnCloseCutsceneMenu += ShowCanvasHUDhealthAndMana;
+		_menuManager.OnOpenPauseMenu += HideCanvasHUDhealthAndMana;
+		_menuManager.OnClosePauseMenu += ShowCanvasHUDhealthAndMana;
+		_menuManager.OnOpenInteractionMenu += HideCanvasHUDhealthAndMana;
+		_menuManager.OnCloseInteractionMenu += ShowCanvasHUDhealthAndMana;
+		_menuManager.OnOpenDialogueMenu += HideCanvasHUDhealthAndMana;
+		_menuManager.OnCloseDialogueMenu += ShowCanvasHUDhealthAndMana;
+		_menuManager.OnOpenCutsceneMenu += HideCanvasHUDhealthAndMana;
+		_menuManager.OnCloseCutsceneMenu += ShowCanvasHUDhealthAndMana;
+        _gameController = gameController;
+        _gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDhealthAndMana;
+		_gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDhealthAndMana;
+
 		Debug.Log("CanvasHUDhealthAndMana Initialized");
-        this.gameController = gameController;
-        this.gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDhealthAndMana;
-		this.gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDhealthAndMana;
 	}
     private void ShowCanvasHUDhealthAndMana()
     {
-       if (!menuManager.IsInteractionMenuOpened && !menuManager.IsDialogueMenuOpened && !menuManager.IsCutsceneMenuOpened && !gameController.IsMainMenuOpen)
+       if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_menuManager.IsCutsceneMenuOpened && !_gameController.IsMainMenuOpen)
        {
 
-           canvasHUDhealthAndMana.SetActive(true);
+           _canvasHUDhealthAndMana.SetActive(true);
            Debug.Log("Show canvasHUDhealthAndMana");
        }
     }
 	public void HideCanvasHUDhealthAndMana()
 	{
-		canvasHUDhealthAndMana.SetActive(false);
+		_canvasHUDhealthAndMana.SetActive(false);
 		Debug.Log("Hide canvasHUDhealthAndMana");
 	}
 }

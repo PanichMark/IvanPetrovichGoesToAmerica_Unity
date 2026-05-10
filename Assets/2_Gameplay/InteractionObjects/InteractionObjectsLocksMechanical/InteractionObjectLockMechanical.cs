@@ -8,45 +8,45 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	public delegate void UnlockLockEventHandler();
 	public event UnlockLockEventHandler OnUnlockLock;
 
-	[SerializeField] private GameObject gearPrefab;
-	[SerializeField] private int segmentsCount;
-	[SerializeField] private float rotationSpeed;
-	[SerializeField] private float moveSpeed;
-	[SerializeField] private GameObject CubeFollow;
+	[SerializeField] private GameObject _gearPrefab;
+	[SerializeField] private int _segmentsCount;
+	[SerializeField] private float _rotationSpeed;
+	[SerializeField] private float _moveSpeed;
+	[SerializeField] private GameObject _cubeFollow;
 
-	private SaveLoadController saveLoadController;
-	private LocalizationManager localizationManager;
-	private GameObject canvasLockpickMechanicalMenu;
-	private Button buttonExitLockpickMechanicalMenu;
-	private MenuManager menuManager;
-	private GameSceneManager gameSceneManager;
+	private SaveLoadController _saveLoadController;
+	private LocalizationManager _localizationManager;
+	private GameObject _canvasLockpickMechanicalMenu;
+	private Button _buttonExitLockpickMechanicalMenu;
+	private MenuManager _menuManager;
+	private GameSceneManager _gameSceneManager;
 
-	private bool IsPuzzleActive;
+	private bool _iIsPuzzleActive;
 	public bool WasUnlocked { get; private set; } = false;
-	private bool isMovingOrRotating = false;
-	private GameObject currentGearInstance;
-	private GameObject currentCubeFollow;
-	private MeshCollider EndCollider;
-	private float rotationStep;
-	private float movementStep;
-	private MeshCollider CentreZoneCollider;
-	private MeshCollider UpZoneCollider;
-	private MeshCollider DownZoneCollider;
-	private MeshCollider LeftZoneCollider;
-	private MeshCollider RightZoneCollider;
+	private bool _isMovingOrRotating = false;
+	private GameObject _currentGearInstance;
+	private GameObject _currentCubeFollow;
+	private MeshCollider _endCollider;
+	private float _rotationStep;
+	private float _movementStep;
+	private MeshCollider _centreZoneCollider;
+	private MeshCollider _upZoneCollider;
+	private MeshCollider _downZoneCollider;
+	private MeshCollider _leftZoneCollider;
+	private MeshCollider _rightZoneCollider;
 
 	private bool _canMoveUp = true;
 	private bool _canMoveDown = true;
 	private bool _canMoveLeft = true;
 	private bool _canMoveRight = true;
 
-	private List<MeshCollider> cachedWallColliders;
+	private List<MeshCollider> _cachedWallColliders;
 
-	[SerializeField] private string interactionObjectNameSystem;
-	public string InteractionObjectNameSystem => interactionObjectNameSystem;
+	[SerializeField] private string _interactionObjectNameSystem;
+	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
-	private string interactionHintMessageMain;
-	public string InteractionHintMessageMain => interactionHintMessageMain;
+	private string _interactionHintMessageMain;
+	public string InteractionHintMessageMain => _interactionHintMessageMain;
 
 	public string InteractionHintAction { get; protected set; }
 
@@ -56,53 +56,53 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	public string InteractionObjectNameUI { get; protected set; }
 
-	private Text buttonText;
+	private Text _buttonText;
 
 	private void Awake()
 	{
-		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		canvasLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickMechanical");
-		buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<Button>("ButtonExitLockpickMechanicalMenu");
-		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
-		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		gameSceneManager.OnBeginLoadMainMenuScene += OnClosePuzzle;
-		gameSceneManager.OnBeginLoadGameplayScene += OnClosePuzzle;
-		buttonText = buttonExitLockpickMechanicalMenu.GetComponentInChildren<Text>();
+		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		_canvasLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickMechanical");
+		_buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<Button>("ButtonExitLockpickMechanicalMenu");
+		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
+		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_gameSceneManager.OnBeginLoadMainMenuScene += OnClosePuzzle;
+		_gameSceneManager.OnBeginLoadGameplayScene += OnClosePuzzle;
+		_buttonText = _buttonExitLockpickMechanicalMenu.GetComponentInChildren<Text>();
 
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
-		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
 
-		buttonText.text = localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
-		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
+		_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 
-		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 
-		menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
-		menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
+		_menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
+		_menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
 	}
 
 	public void ChangeLanguage()
 	{
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
-		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
 
-		buttonText.text = localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
-		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
+		_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 	}
 
 	private void Update()
 	{
-		if (!isMovingOrRotating && currentGearInstance != null && !menuManager.IsPauseMenuOpened)
+		if (!_isMovingOrRotating && _currentGearInstance != null && !_menuManager.IsPauseMenuOpened)
 		{
 			if (_canMoveUp && Input.GetKeyDown(KeyCode.UpArrow))
 			{
-				StartCoroutine(RotateGear(rotationStep));
+				StartCoroutine(RotateGear(_rotationStep));
 			}
 			else if (_canMoveDown && Input.GetKeyDown(KeyCode.DownArrow))
 			{
-				StartCoroutine(RotateGear(-rotationStep));
+				StartCoroutine(RotateGear(-_rotationStep));
 			}
 			else if (_canMoveRight && Input.GetKeyDown(KeyCode.RightArrow))
 			{
@@ -117,63 +117,63 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	private void HidePuzzleCanvas()
 	{
-		if (IsPuzzleActive)
+		if (_iIsPuzzleActive)
 		{
-			canvasLockpickMechanicalMenu.SetActive(false);
-			currentGearInstance.SetActive(false);
-			currentCubeFollow.SetActive(false);
+			_canvasLockpickMechanicalMenu.SetActive(false);
+			_currentGearInstance.SetActive(false);
+			_currentCubeFollow.SetActive(false);
 		}
 	}
 
 	private void ShowPuzzleCanvas()
 	{
-		if (IsPuzzleActive)
+		if (_iIsPuzzleActive)
 		{
-			canvasLockpickMechanicalMenu.SetActive(true);
-			currentGearInstance.SetActive(true);
-			currentCubeFollow.SetActive(true);
+			_canvasLockpickMechanicalMenu.SetActive(true);
+			_currentGearInstance.SetActive(true);
+			_currentCubeFollow.SetActive(true);
 		}
 	}
 
 	public void Interact()
 	{
-		menuManager.OpenInteractionMenu();
-		IsPuzzleActive = true;
+		_menuManager.OpenInteractionMenu();
+		_iIsPuzzleActive = true;
 
-		currentGearInstance = Instantiate(gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
-		currentGearInstance.transform.LookAt(Camera.main.transform);
-		currentGearInstance.transform.Translate(-0.05f, 0f, 0f, Space.Self);
+		_currentGearInstance = Instantiate(_gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
+		_currentGearInstance.transform.LookAt(Camera.main.transform);
+		_currentGearInstance.transform.Translate(-0.05f, 0f, 0f, Space.Self);
 
-		Transform endTransform = currentGearInstance.transform.Find("END");
+		Transform endTransform = _currentGearInstance.transform.Find("END");
 		if (endTransform != null)
 		{
-			EndCollider = endTransform.GetComponent<MeshCollider>();
+			_endCollider = endTransform.GetComponent<MeshCollider>();
 		}
 		else
 		{
 			Debug.LogError("END object not found.");
 		}
 
-		canvasLockpickMechanicalMenu.SetActive(true);
-		buttonExitLockpickMechanicalMenu.onClick.RemoveAllListeners();
-		buttonExitLockpickMechanicalMenu.onClick.AddListener(OnClosePuzzle);
+		_canvasLockpickMechanicalMenu.SetActive(true);
+		_buttonExitLockpickMechanicalMenu.onClick.RemoveAllListeners();
+		_buttonExitLockpickMechanicalMenu.onClick.AddListener(OnClosePuzzle);
 
 		gameObject.tag = "Untagged";
 
-		currentCubeFollow = Instantiate(CubeFollow, GetCubeSpawnPosition(), Quaternion.identity);
-		currentCubeFollow.transform.LookAt(Camera.main.transform);
+		_currentCubeFollow = Instantiate(_cubeFollow, GetCubeSpawnPosition(), Quaternion.identity);
+		_currentCubeFollow.transform.LookAt(Camera.main.transform);
 
-		Transform root = currentCubeFollow.transform;
-		CentreZoneCollider = root.Find("CentreZone")?.GetComponent<MeshCollider>();
-		UpZoneCollider = root.Find("UpZone")?.GetComponent<MeshCollider>();
-		DownZoneCollider = root.Find("DownZone")?.GetComponent<MeshCollider>();
-		LeftZoneCollider = root.Find("LeftZone")?.GetComponent<MeshCollider>();
-		RightZoneCollider = root.Find("RightZone")?.GetComponent<MeshCollider>();
+		Transform root = _currentCubeFollow.transform;
+		_centreZoneCollider = root.Find("CentreZone")?.GetComponent<MeshCollider>();
+		_upZoneCollider = root.Find("UpZone")?.GetComponent<MeshCollider>();
+		_downZoneCollider = root.Find("DownZone")?.GetComponent<MeshCollider>();
+		_leftZoneCollider = root.Find("LeftZone")?.GetComponent<MeshCollider>();
+		_rightZoneCollider = root.Find("RightZone")?.GetComponent<MeshCollider>();
 
-		Transform wallsGroup = currentGearInstance.transform.Find("Walls");
+		Transform wallsGroup = _currentGearInstance.transform.Find("Walls");
 		if (wallsGroup != null)
 		{
-			cachedWallColliders = new List<MeshCollider>(wallsGroup.GetComponentsInChildren<MeshCollider>());
+			_cachedWallColliders = new List<MeshCollider>(wallsGroup.GetComponentsInChildren<MeshCollider>());
 		}
 		else
 		{
@@ -182,26 +182,26 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 		CheckForIntersection();
 
-		if (UpZoneCollider == null || DownZoneCollider == null ||
-			LeftZoneCollider == null || RightZoneCollider == null)
+		if (_upZoneCollider == null || _downZoneCollider == null ||
+			_leftZoneCollider == null || _rightZoneCollider == null)
 		{
 			Debug.LogWarning("Failed to assign zone detectors!");
 		}
 
-		rotationStep = 360f / segmentsCount;
-		movementStep = 0.1f;
+		_rotationStep = 360f / _segmentsCount;
+		_movementStep = 0.1f;
 	}
 
 	private void OnClosePuzzle()
 	{
-		if (IsPuzzleActive)
+		if (_iIsPuzzleActive)
 		{
-			IsPuzzleActive = false;
-			canvasLockpickMechanicalMenu.SetActive(false);
-			Destroy(currentGearInstance);
-			Destroy(currentCubeFollow);
+			_iIsPuzzleActive = false;
+			_canvasLockpickMechanicalMenu.SetActive(false);
+			Destroy(_currentGearInstance);
+			Destroy(_currentCubeFollow);
 			gameObject.tag = "Interactable";
-			menuManager.CloseInteractionMenu();
+			_menuManager.CloseInteractionMenu();
 		}
 	}
 
@@ -209,21 +209,21 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	{
 		Physics.SyncTransforms();
 
-		if (currentCubeFollow != null && currentGearInstance != null)
+		if (_currentCubeFollow != null && _currentGearInstance != null)
 		{
 			_canMoveUp = true;
 			_canMoveDown = true;
 			_canMoveLeft = true;
 			_canMoveRight = true;
 
-			if (cachedWallColliders != null)
+			if (_cachedWallColliders != null)
 			{
-				foreach (var collider in cachedWallColliders)
+				foreach (var collider in _cachedWallColliders)
 				{
-					if (IsIntersectingWithCollider(UpZoneCollider, collider)) _canMoveUp = false;
-					if (IsIntersectingWithCollider(DownZoneCollider, collider)) _canMoveDown = false;
-					if (IsIntersectingWithCollider(LeftZoneCollider, collider)) _canMoveLeft = false;
-					if (IsIntersectingWithCollider(RightZoneCollider, collider)) _canMoveRight = false;
+					if (IsIntersectingWithCollider(_upZoneCollider, collider)) _canMoveUp = false;
+					if (IsIntersectingWithCollider(_downZoneCollider, collider)) _canMoveDown = false;
+					if (IsIntersectingWithCollider(_leftZoneCollider, collider)) _canMoveLeft = false;
+					if (IsIntersectingWithCollider(_rightZoneCollider, collider)) _canMoveRight = false;
 				}
 			}
 			else
@@ -231,7 +231,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 				Debug.LogError("Wall colliders list is not populated.");
 			}
 
-			if (EndCollider != null && IsIntersectingWithCollider(CentreZoneCollider, EndCollider))
+			if (_endCollider != null && IsIntersectingWithCollider(_centreZoneCollider, _endCollider))
 			{
 				Debug.Log("Center intersected with END object.");
 				WasUnlocked = true;
@@ -254,59 +254,59 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	IEnumerator RotateGear(float targetAngle)
 	{
-		isMovingOrRotating = true;
-		Quaternion startRotation = currentGearInstance.transform.rotation;
+		_isMovingOrRotating = true;
+		Quaternion startRotation = _currentGearInstance.transform.rotation;
 		Quaternion endRotation = startRotation * Quaternion.Euler(new Vector3(targetAngle, 0, 0));
 
 		float elapsedTime = 0f;
 		while (elapsedTime < 1f)
 		{
-			currentGearInstance.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime);
-			elapsedTime += Time.unscaledDeltaTime * rotationSpeed;
+			_currentGearInstance.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime);
+			elapsedTime += Time.unscaledDeltaTime * _rotationSpeed;
 			yield return null;
 		}
 
-		currentGearInstance.transform.rotation = endRotation;
+		_currentGearInstance.transform.rotation = endRotation;
 		CheckForIntersection();
-		isMovingOrRotating = false;
+		_isMovingOrRotating = false;
 	}
 
 	IEnumerator MoveRight()
 	{
-		isMovingOrRotating = true;
-		Vector3 startPosition = currentGearInstance.transform.position;
-		Vector3 endPosition = startPosition + currentGearInstance.transform.right * movementStep;
+		_isMovingOrRotating = true;
+		Vector3 startPosition = _currentGearInstance.transform.position;
+		Vector3 endPosition = startPosition + _currentGearInstance.transform.right * _movementStep;
 
 		float elapsedTime = 0f;
 		while (elapsedTime < 1f)
 		{
-			currentGearInstance.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime);
-			elapsedTime += Time.unscaledDeltaTime * moveSpeed;
+			_currentGearInstance.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime);
+			elapsedTime += Time.unscaledDeltaTime * _moveSpeed;
 			yield return null;
 		}
 
-		currentGearInstance.transform.position = endPosition;
+		_currentGearInstance.transform.position = endPosition;
 		CheckForIntersection();
-		isMovingOrRotating = false;
+		_isMovingOrRotating = false;
 	}
 
 	IEnumerator MoveLeft()
 	{
-		isMovingOrRotating = true;
-		Vector3 startPosition = currentGearInstance.transform.position;
-		Vector3 endPosition = startPosition - currentGearInstance.transform.right * movementStep;
+		_isMovingOrRotating = true;
+		Vector3 startPosition = _currentGearInstance.transform.position;
+		Vector3 endPosition = startPosition - _currentGearInstance.transform.right * _movementStep;
 
 		float elapsedTime = 0f;
 		while (elapsedTime < 1f)
 		{
-			currentGearInstance.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime);
-			elapsedTime += Time.unscaledDeltaTime * moveSpeed;
+			_currentGearInstance.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime);
+			elapsedTime += Time.unscaledDeltaTime * _moveSpeed;
 			yield return null;
 		}
 
-		currentGearInstance.transform.position = endPosition;
+		_currentGearInstance.transform.position = endPosition;
 		CheckForIntersection();
-		isMovingOrRotating = false;
+		_isMovingOrRotating = false;
 	}
 
 	private Vector3 GetPuzzleSpawnPosition()

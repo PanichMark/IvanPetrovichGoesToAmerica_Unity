@@ -2,34 +2,34 @@
 
 public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 {
-	private PlayerResourcesHealthManager playerResourcesHealthManager;
-	private bool isAdditionalInteractionHintActive;
+	private PlayerResourcesHealthManager _playerResourcesHealthManager;
+	private bool _isAdditionalInteractionHintActive;
 
-	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageAdditionalActive => _isAdditionalInteractionHintActive;
 
 	public override string InteractionHintMessageAdditional => $"Максимум {InteractionObjectNameUI}";
 
 	public override void Interact()
 	{
-		if (playerResourcesHealthManager.CurrentHealingItemsNumber < 9)
+		if (_playerResourcesHealthManager.CurrentHealingItemsNumber < 9)
 		{
 			base.Interact();
 			Debug.Log($"You picked up {InteractionObjectNameUI}");
 
-			playerResourcesHealthManager.AddHealingItem();
-			isAdditionalInteractionHintActive = false;
+			_playerResourcesHealthManager.AddHealingItem();
+			_isAdditionalInteractionHintActive = false;
 			WasLootItemCollected = true;
 		}
 		else
 		{
-			isAdditionalInteractionHintActive = true;
+			_isAdditionalInteractionHintActive = true;
 		}
 	}
 
 	protected override void ThisMethodSetsActionName()
 	{
-		playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
+		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
 
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }

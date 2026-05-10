@@ -3,37 +3,37 @@ using System.Collections;
 
 public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawer
 {
-	[SerializeField] private float openLengthUp;
-	private Vector3 intermediatePos;
+	[SerializeField] private float _openLengthUp;
+	private Vector3 _intermediatePos;
 
 	public void Start()
 	{
 		base.Start();
 
-		closedPosition = transform.localPosition;
-		openedPosition = transform.localPosition + new Vector3(0, 0, openLengthForward);
-		openedPosition += new Vector3(0, openLengthUp, 0);
-		intermediatePos = transform.localPosition + new Vector3(0, 0, openLengthForward);
+		_closedPosition = transform.localPosition;
+		_openedPosition = transform.localPosition + new Vector3(0, 0, _openLengthForward);
+		_openedPosition += new Vector3(0, _openLengthUp, 0);
+		_intermediatePos = transform.localPosition + new Vector3(0, 0, _openLengthForward);
 	}
 
 	public override void Interact()
 	{
-		if (currentAnimation != null)
+		if (_currentAnimation != null)
 		{
-			StopCoroutine(currentAnimation);
+			StopCoroutine(_currentAnimation);
 		}
 
 		if (!IsDoorOpened)
 		{
 			InteractionHintAction = localizationManager.GetLocalizedString("CloseDoor");
-			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-			currentAnimation = StartCoroutine(OpenVentCover());
+			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			_currentAnimation = StartCoroutine(OpenVentCover());
 		}
 		else
 		{
 			InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-			currentAnimation = StartCoroutine(CloseVentCover());
+			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			_currentAnimation = StartCoroutine(CloseVentCover());
 		}
 	}
 
@@ -42,19 +42,19 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 		Debug.Log($"Was opened {InteractionObjectNameUI}");
 		IsDoorOpened = true;
 
-		while (Mathf.Abs(transform.localPosition.z - intermediatePos.z) > 0.001f)
+		while (Mathf.Abs(transform.localPosition.z - _intermediatePos.z) > 0.001f)
 		{
-			transform.localPosition = Vector3.MoveTowards(transform.localPosition, intermediatePos, Time.deltaTime * OpeningSpeed);
+			transform.localPosition = Vector3.MoveTowards(transform.localPosition, _intermediatePos, Time.deltaTime * _openingSpeed);
 			yield return null;
 		}
 
-		while (Mathf.Abs(transform.localPosition.y - openedPosition.y) > 0.001f)
+		while (Mathf.Abs(transform.localPosition.y - _openedPosition.y) > 0.001f)
 		{
-			transform.localPosition = Vector3.MoveTowards(transform.localPosition, openedPosition, Time.deltaTime * OpeningSpeed);
+			transform.localPosition = Vector3.MoveTowards(transform.localPosition, _openedPosition, Time.deltaTime * _openingSpeed);
 			yield return null;
 		}
 
-		currentAnimation = null;
+		_currentAnimation = null;
 	}
 
 	IEnumerator CloseVentCover()
@@ -62,18 +62,18 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 		Debug.Log($"Was closed {InteractionObjectNameUI}");
 		IsDoorOpened = false;
 
-		while (Mathf.Abs(transform.localPosition.y - intermediatePos.y) > 0.001f)
+		while (Mathf.Abs(transform.localPosition.y - _intermediatePos.y) > 0.001f)
 		{
-			transform.localPosition = Vector3.MoveTowards(transform.localPosition, intermediatePos, Time.deltaTime * OpeningSpeed);
+			transform.localPosition = Vector3.MoveTowards(transform.localPosition, _intermediatePos, Time.deltaTime * _openingSpeed);
 			yield return null;
 		}
 
-		while (Mathf.Abs(transform.localPosition.z - closedPosition.z) > 0.001f)
+		while (Mathf.Abs(transform.localPosition.z - _closedPosition.z) > 0.001f)
 		{
-			transform.localPosition = Vector3.MoveTowards(transform.localPosition, closedPosition, Time.deltaTime * OpeningSpeed);
+			transform.localPosition = Vector3.MoveTowards(transform.localPosition, _closedPosition, Time.deltaTime * _openingSpeed);
 			yield return null;
 		}
 
-		currentAnimation = null;
+		_currentAnimation = null;
 	}
 }

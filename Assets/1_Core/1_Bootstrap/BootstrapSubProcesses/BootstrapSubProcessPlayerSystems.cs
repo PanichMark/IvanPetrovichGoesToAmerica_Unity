@@ -20,7 +20,7 @@ public class BootstrapSubProcessPlayerSystems
 	public PlayerBehaviour PlayerBehaviour { get; private set; }
 	public PlayerMovementController PlayerMovementController { get; private set; }
 	private PlayerCapsuleCollider _playerColliderController;
-	private PlayerAnimationController _playerAnimationController;
+	private PlayerMovementAnimationController _playerAnimationController;
 
 	public PlayerCameraController PlayerCameraController { get; private set; }
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
@@ -48,7 +48,7 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerBehaviour = _playerGameObject.GetComponent<PlayerBehaviour>();
 		PlayerMovementController = _playerGameObject.GetComponent<PlayerMovementController>();
 		_playerColliderController = _playerGameObject.GetComponentInChildren<PlayerCapsuleCollider>();
-		_playerAnimationController = _playerGameObject.GetComponent<PlayerAnimationController>();
+		_playerAnimationController = _playerGameObject.GetComponent<PlayerMovementAnimationController>();
 
 		PlayerCameraController = _playerCameraGameObject.GetComponent<PlayerCameraController>();
 		_playerCameraBlurFilter = _playerCameraGameObject.GetComponent<PlayerCameraBlurFilter>();

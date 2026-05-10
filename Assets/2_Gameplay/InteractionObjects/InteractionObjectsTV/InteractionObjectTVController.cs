@@ -7,48 +7,50 @@ public class InteractionObjectTVController : MonoBehaviour
 {
 	public delegate void ChannelChangedHandler(int channelIndex);
 
-	[SerializeField] private VideoPlayer videoPlayer;
-	[SerializeField] private List<VideoClip> videoClips = new List<VideoClip>();
-	[SerializeField] private RawImage tvScreen;
+	private VideoPlayer _videoPlayer;
+	[SerializeField] private List<VideoClip> _videoClips = new List<VideoClip>();
+	private RawImage _tvScreen;
 
-	private int currentChannelIndex = 0;
+	private int _currentChannelIndex = 0;
 
 	void Start()
 	{
+		_videoPlayer = GetComponent<VideoPlayer>();
+		_tvScreen = transform.parent.Find("CanvasTV").Find("ImageTV").GetComponent<RawImage>();
 		PlayChannel(0);
 	}
 
 	public void SwitchChannel(bool isNext)
 	{
-		videoPlayer.Stop();
+		_videoPlayer.Stop();
 
 		if (isNext)
 		{
-			currentChannelIndex++;
-			if (currentChannelIndex >= videoClips.Count)
-				currentChannelIndex = 0;
+			_currentChannelIndex++;
+			if (_currentChannelIndex >= _videoClips.Count)
+				_currentChannelIndex = 0;
 		}
 		else
 		{
-			currentChannelIndex--;
-			if (currentChannelIndex < 0)
-				currentChannelIndex = videoClips.Count - 1;
+			_currentChannelIndex--;
+			if (_currentChannelIndex < 0)
+				_currentChannelIndex = _videoClips.Count - 1;
 		}
 
-		PlayChannel(currentChannelIndex);
+		PlayChannel(_currentChannelIndex);
 	}
 
 	private void PlayChannel(int index)
 	{
-		if (index < 0 || index >= videoClips.Count)
+		if (index < 0 || index >= _videoClips.Count)
 		{
 			Debug.LogError("Invalid channel index: " + index);
 			return;
 		}
 
-		videoPlayer.clip = videoClips[index];
-		videoPlayer.Play();
+		_videoPlayer.clip = _videoClips[index];
+		_videoPlayer.Play();
 
-		tvScreen.texture = videoPlayer.texture;
+		_tvScreen.texture = _videoPlayer.texture;
 	}
 }

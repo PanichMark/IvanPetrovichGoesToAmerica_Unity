@@ -4,21 +4,9 @@ using UnityEngine.UI;
 
 public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 {
-	public void Initialize(Slider ManaBarSlider, Button ManaReplenishtemButton, TextMeshProUGUI ManaReplenishItemNumber)
-	{
-
-		this.ManaBarSlider = ManaBarSlider;
-		this.ManaReplenishtemButton = ManaReplenishtemButton;	
-		this.ManaReplenishItemNumber = ManaReplenishItemNumber;
-		this.ManaReplenishtemButton.onClick.AddListener(() => UseManaReplenishItem());
-
-		this.ManaBarSlider.maxValue = MaxPlayerMana;
-		Debug.Log("PlayerResourcesMana Initialized");
-	}
-
-	private Slider ManaBarSlider;
-	private Button ManaReplenishtemButton;
-	private TextMeshProUGUI ManaReplenishItemNumber;
+	private Slider _sliderManaBar;
+	private Button _buttonManaReplenishtem;
+	private TextMeshProUGUI _manaReplenishItemNumber;
 	public int MaxPlayerMana { get; private set; } = 100;
 	public int CurrentPlayerMana { get; private set; }
 
@@ -26,11 +14,22 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 
 	public int CurrentManaReplenishItemsNumber { get; private set; }
 
+	public void Initialize(Slider ManaBarSlider, Button ManaReplenishtemButton, TextMeshProUGUI ManaReplenishItemNumber)
+	{
+		_sliderManaBar = ManaBarSlider;
+		_buttonManaReplenishtem = ManaReplenishtemButton;	
+		_manaReplenishItemNumber = ManaReplenishItemNumber;
+		_buttonManaReplenishtem.onClick.AddListener(() => UseManaReplenishItem());
+
+		_sliderManaBar.maxValue = MaxPlayerMana;
+		Debug.Log("PlayerResourcesMana Initialized");
+	}
+
 	void Update()
 	{
-		ManaBarSlider.value = CurrentPlayerMana;
+		_sliderManaBar.value = CurrentPlayerMana;
 
-		ManaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+		_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
 	}
 
 	private void UseManaReplenishItem()
@@ -47,7 +46,6 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 			else Debug.Log("Mana is already Full");
 		}
 		else Debug.Log("0 ManaReplenish Items");
-
 	}
 
 	public void AddManaReplenishItem()
@@ -58,7 +56,6 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 			CurrentManaReplenishItemsNumber++;
 		}
 		else Debug.Log("Max ManaReplenish Items");
-
 	}
 
 	public void UseMana(int ManaCost)
@@ -66,7 +63,6 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		CurrentPlayerMana -= ManaCost;
 		Debug.Log($"used: {ManaCost} mana");
 	}
-
 
 	public void SaveData(ref GameData data)
 	{

@@ -4,18 +4,17 @@ public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 {
 	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
 
-	private string PowerButtonName = "Кнопка питания телевизора";
+	private string _powerButtonName = "Кнопка питания телевизора";
 
-	public string InteractionObjectNameUI => PowerButtonName;
+	public string InteractionObjectNameUI => _powerButtonName;
 
-	public string InteractionHintMessageMain => $"Нажать {PowerButtonName}?";
+	public string InteractionHintMessageMain => $"Нажать {_powerButtonName}?";
 
-	[SerializeField]
-	private GameObject TVscreen;
+	private GameObject _tvScreen;
 
 	public string InteractionHintAction => throw new System.NotImplementedException();
 
-	private bool IsTVturnedOn;
+	private bool _isTVturnedOn;
 
 	public string InteractionHintMessageAdditional => throw new System.NotImplementedException();
 
@@ -23,21 +22,22 @@ public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
-		if (IsTVturnedOn)
+		if (_isTVturnedOn)
 		{
-			TVscreen.SetActive(false);
-			IsTVturnedOn = false;
+			_tvScreen.SetActive(false);
+			_isTVturnedOn = false;
 		}
 		else
 		{
-			TVscreen.SetActive(true);
-			IsTVturnedOn = true;
+			_tvScreen.SetActive(true);
+			_isTVturnedOn = true;
 		}
 	}
 
 	void Start()
 	{
-		TVscreen.SetActive(false);
-		IsTVturnedOn = false;
+		_tvScreen = transform.parent.Find("CanvasTV").gameObject;
+		_tvScreen.SetActive(false);
+		_isTVturnedOn = false;
 	}
 }

@@ -1,37 +1,35 @@
 ﻿using UnityEngine;
 public class PlayerCameraFirstPersonRender : MonoBehaviour
 {
-	private PlayerCameraController playerCamera;
-
-	public void Initialize(PlayerCameraController playerCameraController, GameObject playerHeadParent)
-	{
-		this.playerCamera = playerCameraController;
-
-		this.PlayerHeadParent = playerHeadParent;
-
-		_isInitialized = true;
-		Debug.Log("FirstPersonRender Initialized!");
-	}
-
-	private PlayerCameraStateTypes playerCameraStateType;
+	private PlayerCameraController _playerCamera;
 
 	private bool _isInitialized = false;
 
-	private GameObject PlayerHeadParent;
+	private GameObject _playerHeadParent;
+
+	public void Initialize(PlayerCameraController playerCameraController, GameObject playerHeadParent)
+	{
+		_playerCamera = playerCameraController;
+
+		_playerHeadParent = playerHeadParent;
+
+		_isInitialized = true;
+
+		Debug.Log("FirstPersonRender Initialized!");
+	}
 
 	void Update()
 	{
 		if (!_isInitialized)
 			return;
 
-		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson") 
+		if (_playerCamera.CurrentPlayerCameraStateType == "FirstPerson") 
 		{
-			HideBodyPart(PlayerHeadParent);
-	
+			HideBodyPart(_playerHeadParent);
 		}		
 		else 
 		{
-			ShowBodyPart(PlayerHeadParent);
+			ShowBodyPart(_playerHeadParent);
 		}
 	}
 	

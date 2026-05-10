@@ -6,103 +6,101 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 {
 	public string InteractionObjectNameSystem => null;
 
-	[SerializeField] private string interactionObjectNameUI;
+	[SerializeField] private string _interactionObjectNameUI;
 
-	private MenuManager menuManager;
-	private bool IsReading;
-	public string InteractionObjectNameUI => interactionObjectNameUI;
+	private MenuManager _menuManager;
+	private bool _IsReading;
+	public string InteractionObjectNameUI => _interactionObjectNameUI;
 
 	public string InteractionHintMessageMain => $"Прочитать {InteractionObjectNameUI}";
-	[SerializeField] private TextAsset textFile_RU;   // Русская версия текста
-	[SerializeField] private TextAsset textFile_EN;   // Английская версия текста
+	[SerializeField] private TextAsset _textFile_RU;   // Русская версия текста
+	[SerializeField] private TextAsset _textFile_EN;   // Английская версия текста
 
-	private LocalizationManager localizationManager;
+	private LocalizationManager _localizationManager;
 	public string InteractionHintMessageAdditional => null;
-	private GameObject canvasNoteMenu;
-	private Button buttonExitNoteMenu;
+	private GameObject _canvasNoteMenu;
+	private Button _buttonExitNoteMenu;
 
-	[SerializeField] private Sprite Image;
+	[SerializeField] private Sprite _image;
 
 	public string InteractionHintAction { get; protected set; }
-	private SaveLoadController saveLoadController;
-	private bool isThereText;
+	private bool _isThereText;
 
 
-	private RectTransform ImageRectTransform;
-	private Image BackgroundBack;
+	private RectTransform _imageRectTransform;
+	private Image _backgroundBack;
 
-	private TextMeshProUGUI descriptionText;
+	private TextMeshProUGUI _descriptionText;
 
-	private Image ImageComponent;
+	private Image _imageComponent;
 
 	public bool IsInteractionHintMessageAdditionalActive => false;
-	private GameSceneManager gameSceneManager;
+	private GameSceneManager _gameSceneManager;
 	private void Start()
 	{
 		// Разрешаем объекты по строке-ключу
-		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		buttonExitNoteMenu = ServiceLocator.Resolve<Button>("ButtonExitReadNoteMenu");     // Предполагаемый ключ
-		ImageComponent = ServiceLocator.Resolve<Image>("ImageNote"); // Предполагаемый ключ
-		descriptionText = ServiceLocator.Resolve<TextMeshProUGUI>("TextNote");
-		BackgroundBack = ServiceLocator.Resolve<Image>("ImageNoteBlackBackground");
-		canvasNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuNote");
-		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
+		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		_buttonExitNoteMenu = ServiceLocator.Resolve<Button>("ButtonExitReadNoteMenu");     // Предполагаемый ключ
+		_imageComponent = ServiceLocator.Resolve<Image>("ImageNote"); // Предполагаемый ключ
+		_descriptionText = ServiceLocator.Resolve<TextMeshProUGUI>("TextNote");
+		_backgroundBack = ServiceLocator.Resolve<Image>("ImageNoteBlackBackground");
+		_canvasNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuNote");
 		//Debug.Log(ReadStructure);
 		//menuManager.OnCloseReadNoteMenu += CloseAndDeactivate;
-		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		gameSceneManager.OnBeginLoadMainMenuScene += CloseAndDeactivate;
-		gameSceneManager.OnBeginLoadGameplayScene += CloseAndDeactivate;
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_gameSceneManager.OnBeginLoadMainMenuScene += CloseAndDeactivate;
+		_gameSceneManager.OnBeginLoadGameplayScene += CloseAndDeactivate;
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		//saveLoadController.OnSafeFileLoad += CloseAndDeactivate;
 
 
-		ImageRectTransform = ImageComponent.gameObject.GetComponent<RectTransform>();
-		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		_imageRectTransform = _imageComponent.gameObject.GetComponent<RectTransform>();
+		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 
 
 
-		menuManager.OnOpenPauseMenu += HideNoteCanvas;
-		menuManager.OnClosePauseMenu += ShowNoteCanvas;
+		_menuManager.OnOpenPauseMenu += HideNoteCanvas;
+		_menuManager.OnClosePauseMenu += ShowNoteCanvas;
 
-		if (textFile_RU == null || textFile_EN == null)
+		if (_textFile_RU == null || _textFile_EN == null)
 		{
-			isThereText = false;
+			_isThereText = false;
 		}
-		else isThereText = true;
+		else _isThereText = true;
 		
 	}
 
 	public void ChangeLanguage()
 	{
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 	}
 
 	private void HideNoteCanvas()
 	{
-		if (IsReading)
+		if (_IsReading)
 		{
-			canvasNoteMenu.SetActive(false);
+			_canvasNoteMenu.SetActive(false);
 		}
 	}
 
 	private void ShowNoteCanvas()
 	{
-		if (IsReading)
+		if (_IsReading)
 		{
-			canvasNoteMenu.SetActive(true);
+			_canvasNoteMenu.SetActive(true);
 		}
 	}
 
 	public void Interact()
 	{
 		//Debug.Log(isThereText);
-		menuManager.OpenInteractionMenu();
-		IsReading = true;
+		_menuManager.OpenInteractionMenu();
+		_IsReading = true;
 
-		canvasNoteMenu.SetActive(true);
+		_canvasNoteMenu.SetActive(true);
 
-		ImageComponent.gameObject.SetActive(true);
-		ImageComponent.sprite = Image;
+		_imageComponent.gameObject.SetActive(true);
+		_imageComponent.sprite = _image;
 
 	
 
@@ -111,36 +109,36 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		
 		// Включаем отображение текста из выбранного файла
 		// Определяем, какой текстовый файл использовать в зависимости от текущего языка
-		if (isThereText)
+		if (_isThereText)
 		{
 			TextAsset localizedTextFile;
 
-			if (localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+			if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
 			{
-				localizedTextFile = textFile_RU;
+				localizedTextFile = _textFile_RU;
 			}
 			else
 			{
-				localizedTextFile = textFile_EN;
+				localizedTextFile = _textFile_EN;
 			}
 
-			BackgroundBack.gameObject.SetActive(true);
-			descriptionText.text = localizedTextFile.text;
+			_backgroundBack.gameObject.SetActive(true);
+			_descriptionText.text = localizedTextFile.text;
 
 			// Устанавливаем новую позицию
-			ImageRectTransform.anchoredPosition = new Vector2(-184, -48);
+			_imageRectTransform.anchoredPosition = new Vector2(-184, -48);
 
 			// Устанавливаем поворот по оси Z (в градусах)
-			ImageRectTransform.localEulerAngles = new Vector3(0, 0, 11.5f);
+			_imageRectTransform.localEulerAngles = new Vector3(0, 0, 11.5f);
 
 		}
 		else
 		{
 			// Устанавливаем новую позицию
-			ImageRectTransform.anchoredPosition = new Vector2(0,0);
+			_imageRectTransform.anchoredPosition = new Vector2(0,0);
 
 			// Устанавливаем поворот по оси Z (в градусах)
-			ImageRectTransform.localEulerAngles = new Vector3(0, 0, 0);
+			_imageRectTransform.localEulerAngles = new Vector3(0, 0, 0);
 		}
 
 			// Берём текст из правильного файла
@@ -149,7 +147,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 			// Заполняем текстовую область соответствующим текстом
 
 			// Подписываемся на событие OnClick кнопки ExitButton
-			buttonExitNoteMenu.GetComponent<Button>().onClick.AddListener(CloseAndDeactivate);
+			_buttonExitNoteMenu.GetComponent<Button>().onClick.AddListener(CloseAndDeactivate);
 		//ExitButton.gameObject.SetActive(true);
 
 		gameObject.tag = "Untagged";
@@ -158,17 +156,17 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	// Новый метод для закрытия меню и деактивации элементов
 	private void CloseAndDeactivate()
 	{
-		if (IsReading)
+		if (_IsReading)
 		{
-			IsReading = false;
+			_IsReading = false;
 			// Деактивируем объекты
-			BackgroundBack.gameObject.SetActive(false);
+			_backgroundBack.gameObject.SetActive(false);
 			//ExitButton.gameObject.SetActive(false);
-			ImageComponent.sprite = null;
-			descriptionText.text = null;
+			_imageComponent.sprite = null;
+			_descriptionText.text = null;
 			//Закрываем меню
-			canvasNoteMenu.SetActive(false);
-			menuManager.CloseInteractionMenu();
+			_canvasNoteMenu.SetActive(false);
+			_menuManager.CloseInteractionMenu();
 
 			gameObject.tag = "Interactable";
 		}

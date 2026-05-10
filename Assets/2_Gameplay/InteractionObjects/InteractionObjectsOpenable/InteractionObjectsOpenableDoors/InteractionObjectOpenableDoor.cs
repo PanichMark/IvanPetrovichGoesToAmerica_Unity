@@ -3,90 +3,90 @@ using System.Collections;
 
 public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 {
-	protected bool isAdditionalInteractionHintActive;
-	public override bool IsInteractionHintMessageAdditionalActive => isAdditionalInteractionHintActive;
+	protected bool _isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageAdditionalActive => _isAdditionalInteractionHintActive;
 
-	private LocalizationManager localizationManager;
-	[SerializeField] private InteractionObjectLockMechanical mechanicalLockController;
-	[SerializeField] private InteractionObjectLockElectronic electronicLockController;
+	private LocalizationManager _localizationManager;
+	[SerializeField] private InteractionObjectLockMechanical _mechanicalLockController;
+	[SerializeField] private InteractionObjectLockElectronic _electronicLockController;
 
-	private float doorOpeningSpeed = 200f;
-	private Coroutine currentAnimation;
+	private float _doorOpeningSpeed = 200f;
+	private Coroutine _currentAnimation;
 
-	private Quaternion openedRotation;
-	private Quaternion closedRotation;
-	[SerializeField] private int doorOpenAngle;
+	private Quaternion _openedRotation;
+	private Quaternion _closedRotation;
+	[SerializeField] private int _doorOpenAngle;
 
 	public override string InteractionHintMessageAdditional => $"{InteractionObjectNameUI} is locked!";
 
 	void Start()
 	{
 		IsDoorOpened = false;
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
-		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		InteractionHintAction = _localizationManager.GetLocalizedString("OpenDoor");
 
-		Vector3 openedEulerAngles = new Vector3(0, 0, doorOpenAngle);
-		openedRotation = Quaternion.Euler(openedEulerAngles);
+		Vector3 openedEulerAngles = new Vector3(0, 0, _doorOpenAngle);
+		_openedRotation = Quaternion.Euler(openedEulerAngles);
 
 		Vector3 closedEulerAngles = new Vector3(0, 0, 0);
-		closedRotation = Quaternion.Euler(closedEulerAngles);
+		_closedRotation = Quaternion.Euler(closedEulerAngles);
 
-		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 
-		if (mechanicalLockController != null && !mechanicalLockController.WasUnlocked)
+		if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
 		{
-			interactionHintMessageMain = mechanicalLockController.InteractionHintMessageMain;
-			mechanicalLockController.OnUnlockLock += UnlockDoor;
+			_interactionHintMessageMain = _mechanicalLockController.InteractionHintMessageMain;
+			_mechanicalLockController.OnUnlockLock += UnlockDoor;
 		}
 
-		if (mechanicalLockController == null || mechanicalLockController.WasUnlocked)
+		if (_mechanicalLockController == null || _mechanicalLockController.WasUnlocked)
 		{
-			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 		}
 	}
 
 	public void ChangeLanguage()
 	{
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(interactionObjectNameSystem);
-		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		InteractionHintAction = _localizationManager.GetLocalizedString("OpenDoor");
 
-		if (mechanicalLockController != null && !mechanicalLockController.WasUnlocked)
+		if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
 		{
-			interactionHintMessageMain = mechanicalLockController.InteractionHintMessageMain;
-			mechanicalLockController.OnUnlockLock += UnlockDoor;
+			_interactionHintMessageMain = _mechanicalLockController.InteractionHintMessageMain;
+			_mechanicalLockController.OnUnlockLock += UnlockDoor;
 		}
 
-		if (mechanicalLockController == null || mechanicalLockController.WasUnlocked)
+		if (_mechanicalLockController == null || _mechanicalLockController.WasUnlocked)
 		{
-			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 		}
 	}
 
 	private void UnlockDoor()
 	{
-		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-		interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		InteractionHintAction = _localizationManager.GetLocalizedString("OpenDoor");
+		_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
 	}
 
 	public override void Interact()
 	{
-		if (mechanicalLockController != null && !mechanicalLockController.WasUnlocked)
+		if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
 		{
 			Debug.Log("Attempting to unlock the lock...");
-			mechanicalLockController.Interact();
+			_mechanicalLockController.Interact();
 		}
 
-		if (electronicLockController != null && !electronicLockController.WasUnlocked)
+		if (_electronicLockController != null && !_electronicLockController.WasUnlocked)
 		{
 			Debug.Log("Attempting to unlock the lock...");
-			electronicLockController.Interact();
+			_electronicLockController.Interact();
 		}
 
-		if ((mechanicalLockController == null && electronicLockController == null) ||
-			mechanicalLockController?.WasUnlocked == true ||
-			electronicLockController?.WasUnlocked == true)
+		if ((_mechanicalLockController == null && _electronicLockController == null) ||
+			_mechanicalLockController?.WasUnlocked == true ||
+			_electronicLockController?.WasUnlocked == true)
 		{
 			PerformDoorInteraction();
 		}
@@ -94,28 +94,28 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	protected virtual void PerformDoorInteraction()
 	{
-		isAdditionalInteractionHintActive = false;
+		_isAdditionalInteractionHintActive = false;
 
-		if (currentAnimation != null)
+		if (_currentAnimation != null)
 		{
-			StopCoroutine(currentAnimation);
+			StopCoroutine(_currentAnimation);
 		}
 
 		if (!IsDoorOpened)
 		{
 			Debug.Log($"Opened {InteractionObjectNameUI}");
 			IsDoorOpened = true;
-			InteractionHintAction = localizationManager.GetLocalizedString("CloseDoor");
-			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-			currentAnimation = StartCoroutine(OpenDoor());
+			InteractionHintAction = _localizationManager.GetLocalizedString("CloseDoor");
+			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			_currentAnimation = StartCoroutine(OpenDoor());
 		}
 		else
 		{
 			Debug.Log($"Closed {InteractionObjectNameUI}");
 			IsDoorOpened = false;
-			InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-			interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
-			currentAnimation = StartCoroutine(CloseDoor());
+			InteractionHintAction = _localizationManager.GetLocalizedString("OpenDoor");
+			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			_currentAnimation = StartCoroutine(CloseDoor());
 		}
 	}
 
@@ -123,23 +123,23 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	IEnumerator OpenDoor()
 	{
-		while (Quaternion.Angle(transform.localRotation, openedRotation) > 0.1f)
+		while (Quaternion.Angle(transform.localRotation, _openedRotation) > 0.1f)
 		{
-			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, openedRotation, Time.deltaTime * doorOpeningSpeed);
+			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, _openedRotation, Time.deltaTime * _doorOpeningSpeed);
 			yield return null;
 		}
 
-		currentAnimation = null;
+		_currentAnimation = null;
 	}
 
 	IEnumerator CloseDoor()
 	{
-		while (Quaternion.Angle(transform.localRotation, closedRotation) > 0.1f)
+		while (Quaternion.Angle(transform.localRotation, _closedRotation) > 0.1f)
 		{
-			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, closedRotation, Time.deltaTime * doorOpeningSpeed);
+			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, _closedRotation, Time.deltaTime * _doorOpeningSpeed);
 			yield return null;
 		}
 
-		currentAnimation = null;
+		_currentAnimation = null;
 	}
 }

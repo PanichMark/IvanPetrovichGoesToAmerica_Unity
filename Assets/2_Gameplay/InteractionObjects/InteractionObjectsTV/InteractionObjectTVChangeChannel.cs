@@ -4,30 +4,31 @@ public class InteractionObjectTVButtonChannel : MonoBehaviour, IInteractable
 {
 	public delegate void InteractionDelegate();
 
-	[SerializeField] private string buttonChannelUI;
-	[SerializeField] private InteractionObjectTVController tvController;
-	[SerializeField] private bool IsNextChannel;
+	[SerializeField] private string _buttonChannelUI;
+	private InteractionObjectTVController _tvController;
+	[SerializeField] private bool _isNextChannel;
 
 	public string InteractionObjectNameSystem => "buttonChannel";
-	public string InteractionObjectNameUI => buttonChannelUI;
-	public string InteractionHintMessageMain => $"Press {buttonChannelUI}?";
+	public string InteractionObjectNameUI => _buttonChannelUI;
+	public string InteractionHintMessageMain => $"Press {_buttonChannelUI}?";
 	public string InteractionHintAction => "Switch";
 	public string InteractionHintMessageAdditional => "";
 	public bool IsInteractionHintMessageAdditionalActive => false;
 
-	private void Start() { }
-
-	private void Update() { }
-
 	public void Interact()
 	{
-		if (tvController != null)
+		if (_tvController != null)
 		{
-			tvController.SwitchChannel(IsNextChannel);
+			_tvController.SwitchChannel(_isNextChannel);
 		}
 		else
 		{
 			Debug.LogError("Error: TVController reference is not set on button " + gameObject.name);
 		}
+	}
+
+	private void Start()
+	{
+		_tvController = transform.parent.Find("TVController").gameObject.GetComponent<InteractionObjectTVController>();
 	}
 }

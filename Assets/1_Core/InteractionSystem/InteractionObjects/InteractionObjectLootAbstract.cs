@@ -9,10 +9,10 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 {
 	public delegate void InteractionDelegate();
 
-	[SerializeField] protected string interactionObjectNameSystem;
-	public virtual string InteractionObjectNameSystem => interactionObjectNameSystem;
+	[SerializeField] protected string _interactionObjectNameSystem;
+	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
-	protected LocalizationManager localizationManager;
+	protected LocalizationManager _localizationManager;
 	public Collider Collider { get; protected set; }
 
 	public virtual string InteractionObjectNameUI { get; protected set; }
@@ -25,19 +25,19 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	private void Start()
 	{
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		Collider = GetComponent<Collider>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
 
-		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
+		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
 		ThisMethodSetsActionName();
-		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 	}
 
 	public void ChangeLanguage()
 	{
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionHintAction = localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
 		ThisMethodSetsActionName();
 	}
 

@@ -10,10 +10,8 @@ public class PlayerResourcesAmmoManager : MonoBehaviour
 
 	public Dictionary<AmmoTypes, AmmoTypeData> AmmoDictionary = new Dictionary<AmmoTypes, AmmoTypeData>();
 
-
 	public void ModifyMagazineAmmo(AmmoTypes type, int newMagazineAmount)
 	{
-
 		OnMagazineAmmoChanged?.Invoke(type, newMagazineAmount);
 	}
 

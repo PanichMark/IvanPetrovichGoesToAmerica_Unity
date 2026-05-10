@@ -5,50 +5,50 @@ public class InteractionObjectVendingMachineChooseAmmoType : MonoBehaviour, IInt
 {
 	public delegate void AmmoTypeChangedHandler();
 
-	[SerializeField] private InteractionObjectVendingMachineAmmo vendingMachine;
-	[SerializeField] private string Name = "Выбор патронов";
-	[SerializeField] private float rotationDuration = 1f;
-	[SerializeField] private Vector3 rotationAxis = Vector3.right;
-	[SerializeField] private float rotationAngle = 90f;
+	[SerializeField] private InteractionObjectVendingMachineAmmo _vendingMachine;
+	[SerializeField] private string _name = "Выбор патронов";
+	[SerializeField] private float _rotationDuration = 1f;
+	[SerializeField] private Vector3 _rotationAxis = Vector3.right;
+	[SerializeField] private float _rotationAngle = 90f;
 
-	public string InteractionObjectNameSystem => Name;
-	public string InteractionObjectNameUI => Name;
+	public string InteractionObjectNameSystem => _name;
+	public string InteractionObjectNameUI => _name;
 	public string InteractionHintMessageMain => "Сменить тип патронов";
 	public string InteractionHintAction => "Сменить";
 	public string InteractionHintMessageAdditional => "Подождите!";
 
-	private bool isBusy = false;
+	private bool _isBusy = false;
 
-	public bool IsInteractionHintMessageAdditionalActive => isBusy;
+	public bool IsInteractionHintMessageAdditionalActive => _isBusy;
 
 	public void Interact()
 	{
-		if (isBusy)
+		if (_isBusy)
 			return;
 
-		vendingMachine.SetCurrentAmmoType(vendingMachine.currentAmmoIndex + 1);
+		_vendingMachine.SetCurrentAmmoType(_vendingMachine.currentAmmoIndex + 1);
 		StartCoroutine(RotateAndChangeAmmo());
-		isBusy = true;
+		_isBusy = true;
 	}
 
 	private IEnumerator RotateAndChangeAmmo()
 	{
 		Quaternion startRotation = transform.rotation;
-		Quaternion endRotation = startRotation * Quaternion.Euler(rotationAxis * rotationAngle);
+		Quaternion endRotation = startRotation * Quaternion.Euler(_rotationAxis * _rotationAngle);
 
 		float elapsedTime = 0f;
 
-		while (elapsedTime < rotationDuration)
+		while (elapsedTime < _rotationDuration)
 		{
-			transform.rotation = Quaternion.Lerp(startRotation, endRotation, elapsedTime / rotationDuration);
+			transform.rotation = Quaternion.Lerp(startRotation, endRotation, elapsedTime / _rotationDuration);
 			elapsedTime += Time.deltaTime;
 			yield return null;
 		}
 
 		transform.rotation = endRotation;
 
-		Debug.Log($"Selected ammo type: {vendingMachine.ammoTypes[vendingMachine.currentAmmoIndex].ammoName}");
+		Debug.Log($"Selected ammo type: {_vendingMachine.ammoTypes[_vendingMachine.currentAmmoIndex].ammoName}");
 
-		isBusy = false;
+		_isBusy = false;
 	}
 }
