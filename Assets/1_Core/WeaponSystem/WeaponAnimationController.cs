@@ -10,9 +10,9 @@ public class WeaponAnimationController : MonoBehaviour
 
 	private Animator playerAnimator;
 	private bool _isInitialized = false;
-	private LegKickAttack legKickAttack;
+	private LegKickAttackController legKickAttack;
 	public void Initialize(GameObject player, PlayerBehaviour playerBehaviour,
-		PlayerCameraController playerCameraController, PlayerWeaponController weaponController, LegKickAttack legKickAttack)
+		PlayerCameraController playerCameraController, PlayerWeaponController weaponController, LegKickAttackController legKickAttack)
 	{
 		playerAnimator = player.GetComponent<Animator>();
 		this.playerBehaviour = playerBehaviour;

@@ -3,16 +3,18 @@ using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
-	private bool isAnySubMenuOpened;
+	private bool _isAnySubMenuOpened;
 	public bool IsPauseConfirmMenuOpened { get; private set; }
 	public event OpenPauseMenuEventHandler OnOpenConfirmMenu;
 	public event OpenPauseMenuEventHandler OnCloseConfirmMenu;
-	private IInputDevice inputDevice;
-    private MenuManager menuManager;
-	private GameObject PauseMenuCanvas;
-	private SaveLoadController saveLoadController;
-	private GameObject[] buttonsPauseMenu;
-	private GameSceneManager gameSceneManager;
+	private IInputDevice _inputDevice;
+    private MenuManager _menuManager;
+	private GameObject _pauseMenuCanvas;
+	private SaveLoadController _saveLoadController;
+	private bool _isInitialized = false;
+	private GameController _gameController;
+	private GameObject[] _buttonsPauseMenu;
+	private GameSceneManager _gameSceneManager;
 	public delegate void OpenPauseMenuEventHandler();
 	public event OpenPauseMenuEventHandler OnClosePauseMenu;
 	public event OpenPauseMenuEventHandler OnOpenSaveSubMenu;
@@ -22,68 +24,60 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
 	public event OpenPauseMenuEventHandler OnCloseAnySubMenuForMain;
-	private GameController gameController;
+
 	public void Initialize( IInputDevice inputDevice, GameController gameController, GameSceneManager gameSceneManager, SaveLoadController saveLoadController, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject[] buttonsPauseMenu)
 	{
-		this.gameSceneManager = gameSceneManager;
-		this.gameController = gameController;
-		this.inputDevice = inputDevice;
-		this.menuManager = menuManager;
-		this.PauseMenuCanvas = PauseMenuCanvas;
-		this.buttonsPauseMenu = buttonsPauseMenu;
-		this.saveLoadController = saveLoadController;
-		this.buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(this.menuManager.ClosePauseMenu);     
-		this.buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
-		this.buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
-		this.buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenAppearanceSubMenu);              
-		this.buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);
-		this.buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(ExitToMainMenu);
+		_gameSceneManager = gameSceneManager;
+		_gameController = gameController;
+		_inputDevice = inputDevice;
+		_menuManager = menuManager;
+		_pauseMenuCanvas = PauseMenuCanvas;
+		_buttonsPauseMenu = buttonsPauseMenu;
+		_saveLoadController = saveLoadController;
+		_buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(this._menuManager.ClosePauseMenu);     
+		_buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
+		_buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
+		_buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenAppearanceSubMenu);              
+		_buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);
+		_buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(ExitToMainMenu);
 
-		this.menuManager.OnOpenPauseMenu += ShowPauseMenu;
-		this.menuManager.OnClosePauseMenu += HidePauseMenu;
+		_menuManager.OnOpenPauseMenu += ShowPauseMenu;
+		_menuManager.OnClosePauseMenu += HidePauseMenu;
 
 		_isInitialized = true;
-		this.gameSceneManager.OnBeginLoadMainMenuScene += ClosePauseSubMenu;
-		this.gameSceneManager.OnBeginLoadGameplayScene += ClosePauseSubMenu;
-		this.gameController.OnPlayerDeath += HideDeathPauseMenuButtons;
-		this.gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
+		_gameSceneManager.OnBeginLoadMainMenuScene += ClosePauseSubMenu;
+		_gameSceneManager.OnBeginLoadGameplayScene += ClosePauseSubMenu;
+		_gameController.OnPlayerDeath += HideDeathPauseMenuButtons;
+		_gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
+
 		Debug.Log("PauseMenu Initialized");
 	}
-	private bool _isInitialized = false;
 
 	private void Update()
 	{
-		//Debug.Log(gameController.IsPlayerDead);
-		//Debug.Log(gameController.IsPauseMenuAvailable);
-
 		if (!_isInitialized)
 			return;
 
-		// Проверка условия перехода назад по меню
-		if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 2 && !gameController.IsMainMenuOpen && !IsPauseConfirmMenuOpened)
+		if (_inputDevice.GetKeyPauseMenu() && _menuManager.PauseMenuLevel.Count == 2 && !_gameController.IsMainMenuOpen && !IsPauseConfirmMenuOpened)
 		{
 			ClosePauseSubMenu();
 		}
-		if (inputDevice.GetKeyPauseMenu() && menuManager.PauseMenuLevel.Count == 3)
-		{
-			//Debug.Log("Main!");
-			ClosePauseConfirmMenu();
-		}
-	
-		if (inputDevice.GetKeyPauseMenu() && gameController.IsMainMenuOpen && menuManager.PauseMenuLevel.Count == 2)
+		if (_inputDevice.GetKeyPauseMenu() && _menuManager.PauseMenuLevel.Count == 3)
 		{
 			ClosePauseConfirmMenu();
 		}
-
+		if (_inputDevice.GetKeyPauseMenu() && _gameController.IsMainMenuOpen && _menuManager.PauseMenuLevel.Count == 2)
+		{
+			ClosePauseConfirmMenu();
+		}
 	}
+
 	public void OpenPauseConfirmMenu()
 	{
 		IsPauseConfirmMenuOpened = true;
-		menuManager.PauseMenuLevel.Push(3); // Теперь уровень 3
+		_menuManager.PauseMenuLevel.Push(3);
 		OnOpenConfirmMenu?.Invoke();
-		//OpenAnyMenu();
-		//gameController.MakePlayerNonControllable();
-		//Time.timeScale = 0f;
+
 		Debug.Log("ConfirmMenu opened");
 	}
 
@@ -91,98 +85,89 @@ public class PauseMenuController : MonoBehaviour
 	{
 		IsPauseConfirmMenuOpened = false;
 		OnCloseConfirmMenu?.Invoke();
-		if (menuManager.PauseMenuLevel.Count > 0)
+		if (_menuManager.PauseMenuLevel.Count > 0)
 		{ 
-		
-		//Debug.Log(menuManager.PauseMenuLevel.Count);
-			menuManager.PauseMenuLevel?.Pop(); // Уменьшаем с 3 до 2
+			_menuManager.PauseMenuLevel?.Pop();
 		}
 
-
-		//Debug.Log("is FALSE");
 		Debug.Log("ConfirmMenu closed");
 	}
 	private void ShowDeathPauseMenuButtons()
 	{
-		buttonsPauseMenu[0].SetActive(true);
-		buttonsPauseMenu[1].SetActive(true);
-		buttonsPauseMenu[3].SetActive(true);
+		_buttonsPauseMenu[0].SetActive(true);
+		_buttonsPauseMenu[1].SetActive(true);
+		_buttonsPauseMenu[3].SetActive(true);
 	}
 
 	private void HideDeathPauseMenuButtons()
 	{
-		buttonsPauseMenu[0].SetActive(false);
-		buttonsPauseMenu[1].SetActive(false);
-		buttonsPauseMenu[3].SetActive(false);
+		_buttonsPauseMenu[0].SetActive(false);
+		_buttonsPauseMenu[1].SetActive(false);
+		_buttonsPauseMenu[3].SetActive(false);
 	}
 
 	public void ClosePauseSubMenu()
 	{
-		isAnySubMenuOpened = false;
+		_isAnySubMenuOpened = false;
 		OnClosePauseSubMenu?.Invoke();
-		if (menuManager.PauseMenuLevel.Count > 0)
+		if (_menuManager.PauseMenuLevel.Count > 0)
 		{
-			menuManager.PauseMenuLevel.Pop();
-			//Debug.Log("LMAO!");
+			_menuManager.PauseMenuLevel.Pop();
 		}
 
-		if (gameController.IsMainMenuOpen)
+		if (_gameController.IsMainMenuOpen)
 		{
-			menuManager.CloseAnyMenu();
+			_menuManager.CloseAnyMenu();
 		}
 
-		if (!gameController.IsMainMenuOpen)
+		if (!_gameController.IsMainMenuOpen)
 		{
-			if (gameController.IsPauseMenuAvailable || gameController.IsPlayerDead)
+			if (_gameController.IsPauseMenuAvailable || _gameController.IsPlayerDead)
 			{
-				//Debug.Log("BRUH!!!");
-				ShowPauseMenu(); // Показываем главное меню паузы снова
-				
+				ShowPauseMenu(); 
 			}
 		}
 	}
 
 	public void ShowPauseMenu()
 	{
-		PauseMenuCanvas.gameObject.SetActive(true);
+		_pauseMenuCanvas.gameObject.SetActive(true);
 	}
 	public void HidePauseMenu()
 	{
-		PauseMenuCanvas.gameObject.SetActive(false);
+		_pauseMenuCanvas.gameObject.SetActive(false);
 	}
-	
-	
 
 	public void OpenSaveSubMenu()
 	{
-		isAnySubMenuOpened = true;
+		_isAnySubMenuOpened = true;
 		OnOpenSaveSubMenu?.Invoke();
-		menuManager.PauseMenuLevel.Push(2);
+		_menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("SaveSubMenu opened");
 		HidePauseMenu();
 	}
 
 	public void OpenLoadSubMenu()
 	{
-		isAnySubMenuOpened = true;
+		_isAnySubMenuOpened = true;
 		OnOpenLoadSubMenu?.Invoke();
-		menuManager.PauseMenuLevel.Push(2);
+		_menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("LoadSubMenu opened");
 		HidePauseMenu();
 	}
 	public void OpenAppearanceSubMenu()
 	{
-		isAnySubMenuOpened = true;
+		_isAnySubMenuOpened = true;
 		OnOpenImagesSubMenu?.Invoke();
-		menuManager.PauseMenuLevel.Push(2);
+		_menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("ImagesSubMenu opened");
 		HidePauseMenu();
 	}
 	public void OpenSettingsSubMenu()
 	{
-		isAnySubMenuOpened = true;
+		_isAnySubMenuOpened = true;
 		OnOpenSettingsSubMenu?.Invoke();
-		menuManager.PauseMenuLevel.Push(2);
+		_menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("SettingsSubMenu opened");
 		HidePauseMenu();
 	}
@@ -192,8 +177,7 @@ public class PauseMenuController : MonoBehaviour
 		OnExitToMainMenu?.Invoke();
 		Debug.Log("MAIN MENU EXIT");
 		ClosePauseSubMenu();
-		menuManager.ClosePauseMenu();
-		StartCoroutine(gameSceneManager.LoadMainMenuScene());
-	
+		_menuManager.ClosePauseMenu();
+		StartCoroutine(_gameSceneManager.LoadMainMenuScene());
 	}
 }

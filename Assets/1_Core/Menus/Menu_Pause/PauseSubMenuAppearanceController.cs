@@ -3,41 +3,40 @@ using UnityEngine.UI;
 
 public class PauseSubMenuAppearanceController : MonoBehaviour
 {
-	private IInputDevice inputDevice;
-	private MenuManager menuManager;
+	private IInputDevice _inputDevice;
+	private MenuManager _menuManager;
 
-	private bool isPauseSubMenuAppearanceOpened;
-	private GameObject canvasPauseSubMenuAppearance;
-	private PauseMenuController pauseMenuController;
-	private GameObject buttonClosePauseSubMenuAppearance;
+	private bool _isPauseSubMenuAppearanceOpened;
+	private GameObject _canvasPauseSubMenuAppearance;
+	private PauseMenuController _pauseMenuController;
+	private GameObject _buttonClosePauseSubMenuAppearance;
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuAppearance, GameObject buttonClosePauseSubMenuAppearance)
-
 	{
-		this.buttonClosePauseSubMenuAppearance = buttonClosePauseSubMenuAppearance;
-		this.pauseMenuController = pauseMenuController;
-		this.menuManager = menuManager;
-		this.inputDevice = inputDevice;
-		this.canvasPauseSubMenuAppearance = canvasPauseSubMenuAppearance;
-		this.pauseMenuController.OnOpenImagesSubMenu += ShowAppearanceSubMenuCanvas;
-		this.pauseMenuController.OnClosePauseSubMenu += HideAppearanceSubMenuCanvas;
+		_buttonClosePauseSubMenuAppearance = buttonClosePauseSubMenuAppearance;
+		_pauseMenuController = pauseMenuController;
+		_menuManager = menuManager;
+		_inputDevice = inputDevice;
+		_canvasPauseSubMenuAppearance = canvasPauseSubMenuAppearance;
+		_pauseMenuController.OnOpenImagesSubMenu += ShowAppearanceSubMenuCanvas;
+		_pauseMenuController.OnClosePauseSubMenu += HideAppearanceSubMenuCanvas;
 
-		this.buttonClosePauseSubMenuAppearance.GetComponent<Button>().onClick.AddListener(() => this.pauseMenuController.ClosePauseSubMenu());
-
+		_buttonClosePauseSubMenuAppearance.GetComponent<Button>().onClick.AddListener(() => this._pauseMenuController.ClosePauseSubMenu());
 
 		Debug.Log("ImagesSubMenu Initialized");
 	}
 
 	private void ShowAppearanceSubMenuCanvas()
 	{
-		isPauseSubMenuAppearanceOpened = true;
-		canvasPauseSubMenuAppearance.gameObject.SetActive(true);
+		_isPauseSubMenuAppearanceOpened = true;
+		_canvasPauseSubMenuAppearance.gameObject.SetActive(true);
 	}
+
 	private void HideAppearanceSubMenuCanvas()
 	{
-		if (isPauseSubMenuAppearanceOpened)
+		if (_isPauseSubMenuAppearanceOpened)
 		{
-			isPauseSubMenuAppearanceOpened = false;
-			canvasPauseSubMenuAppearance.gameObject.SetActive(false);
+			_isPauseSubMenuAppearanceOpened = false;
+			_canvasPauseSubMenuAppearance.gameObject.SetActive(false);
 			Debug.Log("AppearanceSubMenu closed");
 		}
 	}

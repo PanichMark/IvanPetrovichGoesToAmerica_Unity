@@ -101,7 +101,6 @@ public class BootstrapSubProcessMenuSystem
 		_menuManagerGameobject = new GameObject("Bootstrap_MenuSystem");
 
 		MenuManager = _menuManagerGameobject.AddComponent<MenuManager>();
-		_mainMenuReadNews = _menuManagerGameobject.AddComponent<MainMenuReadNews>();
 		_pauseMenuController = _menuManagerGameobject.AddComponent<PauseMenuController>();
 		_pauseSubMenuSaveController = _menuManagerGameobject.AddComponent<PauseSubMenuSaveController>();
 		_pauseSubMenuLoadController = _menuManagerGameobject.AddComponent<PauseSubMenuLoadController>();
@@ -109,6 +108,7 @@ public class BootstrapSubProcessMenuSystem
 		_pauseSubMenuSettingsPlayerPrefs = _menuManagerGameobject.AddComponent<PauseSubMenuSettingsPlayerPrefs>();
 		_pauseSubMenuSettingsController = _menuManagerGameobject.AddComponent<PauseSubMenuSettingsController>();
 		_pauseMenuConfirmActionController = _menuManagerGameobject.AddComponent<PauseMenuConfirmActionController>();
+		_mainMenuReadNews = _menuManagerGameobject.AddComponent<MainMenuReadNews>();
 		_cutsceneMenuController = _menuManagerGameobject.AddComponent<CutsceneMenuController>();
 
 		_buttonCloseMainMenuReadNews = _canvasMainMenuReadNews.transform.Find("ButtonCloseMainMenuReadNews").GetComponent<Button>();

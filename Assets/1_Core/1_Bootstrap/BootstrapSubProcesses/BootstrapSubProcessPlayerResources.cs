@@ -75,12 +75,12 @@ public class BootstrapSubProcessPlayerResources
 		_buttonUseManaReplenishItem = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "ButtonUseManaReplenishItem").GetComponent<Button>();
 		_textManaReplenishItemNumber = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "TextManaReplenishItemNumber").GetComponent<TextMeshProUGUI>();
 
-		_canvasHUDhealthAndManaController = _playerResourcesGameObject.AddComponent<CanvasHUDhealthAndManaController>();
-		//CanvasHUDammoController = _playerResourcesGameObject.AddComponent<CanvasHUDammoController>();
-		_playerResourcesMoneyManager = _playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
 		_playerResourcesHealthManager = _playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
 		_playerResourcesManaManager = _playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
-		//PlayerResourcesAmmoManager = _playerResourcesGameObject.AddComponent<PlayerResourcesAmmoManager>();
+		_canvasHUDhealthAndManaController = _playerResourcesGameObject.AddComponent<CanvasHUDhealthAndManaController>();
+		_playerResourcesMoneyManager = _playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
+		PlayerResourcesAmmoManager = _playerResourcesGameObject.AddComponent<PlayerResourcesAmmoManager>();
+		CanvasHUDammoController = _playerResourcesGameObject.AddComponent<CanvasHUDammoController>();
 
 		_canvasHUDhealthAndManaController.Initialize(_bootstrapSubProcessSceneSystem.GameSceneManager, _gameController, _bootstrapSubProcessMenuSystem.MenuManager, _canvasHUDhealthAndMana);
 		_playerResourcesMoneyManager.Initialize(_textPlayerMoneyNumber);

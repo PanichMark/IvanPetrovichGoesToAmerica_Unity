@@ -7,7 +7,7 @@ public class BootstrapSubProcessWeaponSystem
 {
 	private GameObject _weaponSystemGameObject;
 	public PlayerWeaponController WeaponController { get; private set; }
-	private LegKickAttack _legKickAttack;
+	private LegKickAttackController _legKickAttackController;
 	private WeaponAnimationController _weaponAnimationController;
 	private WeaponFirstPersonRender _weaponFirstPersonRender;
 	private GameObject _firstPersonLeftHandWeaponSlotGameObject;
@@ -85,10 +85,10 @@ public class BootstrapSubProcessWeaponSystem
 		_weaponSystemGameObject = new GameObject("Bootstrap_WeaponSystem");
 
 		WeaponController = _weaponSystemGameObject.AddComponent<PlayerWeaponController>();
-		_legKickAttack = _weaponSystemGameObject.AddComponent<LegKickAttack>();
 		_weaponWheelController = _weaponSystemGameObject.AddComponent<WeaponWheelMenuController>();
 		_weaponAnimationController = _weaponSystemGameObject.AddComponent<WeaponAnimationController>();
 		_weaponFirstPersonRender = _weaponSystemGameObject.AddComponent<WeaponFirstPersonRender>();
+		_legKickAttackController = _weaponSystemGameObject.AddComponent<LegKickAttackController>();
 
 		_weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheel/WeaponWheelSegmentPrefab");
 
@@ -104,7 +104,7 @@ public class BootstrapSubProcessWeaponSystem
 		_textChokeNPC = _canvasHUDammo.transform.Find("TextChokeNPC").gameObject;
 
 		WeaponController.Initialize(_inputDevice, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessPlayerSystems.PlayerBehaviour, _bootstrapSubProcessInteractionSystem.InteractionController);
-		_legKickAttack.Initialize(_inputDevice, _playerGameObject, _bootstrapSubProcessPlayerSystems.PlayerMovementController);
+		_legKickAttackController.Initialize(_inputDevice, _playerGameObject, _bootstrapSubProcessPlayerSystems.PlayerMovementController);
 	
 		_weaponWheelController.Initialize(
 			_inputDevice,
@@ -122,7 +122,7 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			_bootstrapSubProcessPlayerSystems.PlayerCameraController,
 			WeaponController,
-			_legKickAttack);
+			_legKickAttackController);
 
 		_weaponFirstPersonRender.Initialize(
 			_bootstrapSubProcessSceneSystem.GameSceneManager,

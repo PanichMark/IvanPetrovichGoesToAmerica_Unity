@@ -89,8 +89,8 @@ public class Bootstrap : MonoBehaviour
 	private IEnumerator SequentialInitialization()
 	{
 		yield return StartCoroutine(InitializeInterfaces());
-		yield return StartCoroutine(InitializePlayerPrefabs());
 		yield return StartCoroutine(InitializeCanvases());
+		yield return StartCoroutine(InitializePlayerPrefabs());
 
 		_bootstrapSubProcessSceneSystem = new BootstrapSubProcessSceneSystem(_gameController, _canvasLoadingScreen);
 		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.InitializeSceneSystem());
@@ -208,14 +208,6 @@ public class Bootstrap : MonoBehaviour
 		yield break;
 	}
 
-	private IEnumerator InitializePlayerPrefabs()
-	{
-		_playerGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerGameObject"));
-		_playerCameraGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerCameraGameObject"));
-		Debug.Log("PLAYER PREFABS INITIALIZED");
-		yield break;
-	}
-
 	private IEnumerator InitializeCanvases()
 	{
 		_canvasMainMenuReadNews = Instantiate(_canvasMainMenuReadNews);
@@ -237,6 +229,14 @@ public class Bootstrap : MonoBehaviour
 		_canvasMenuCutscene = Instantiate(_canvasMenuCutscene);
 
 		Debug.Log("CANVASES INITIALIZED");
+		yield break;
+	}
+
+	private IEnumerator InitializePlayerPrefabs()
+	{
+		_playerGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerGameObject"));
+		_playerCameraGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerCameraGameObject"));
+		Debug.Log("PLAYER PREFABS INITIALIZED");
 		yield break;
 	}
 
