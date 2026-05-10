@@ -6,6 +6,7 @@ public class Bootstrap : MonoBehaviour
 {
 	// CONFIG
 	[Header("--- CONFIGS ---")]
+	[SerializeField] private ConfigBootstrapInitializationScreenDuration _configBootstrapInitializationScreenDuration;
 	[SerializeField] private ConfigBootstrapKeyPauseMenu _configBootstrapKeyPauseMenu;
 	[SerializeField] private ConfigBootstrapScene _configBootstrapScene;
 	[SerializeField] private ConfigBootstrapPlayerPosition _configBootstrapPlayerPosition;
@@ -158,6 +159,8 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
 
 		yield return StartCoroutine(RegisterBootstrapDependencies());
+
+		yield return new WaitForSecondsRealtime(_configBootstrapInitializationScreenDuration.InitializationScreenDuration);
 
 		ChangeLanguage(LanguagesEnum.Russian);
 

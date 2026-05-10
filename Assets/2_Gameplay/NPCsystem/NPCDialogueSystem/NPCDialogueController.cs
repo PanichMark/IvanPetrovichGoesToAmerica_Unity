@@ -81,7 +81,14 @@ public class NPCDialogueController : MonoBehaviour
 
 			if (PerformActionOnYesFinal)
 			{
-				dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<IInteractable>().Interact();
+				if (dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<IInteractable>() != null)
+				{
+					dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<IInteractable>().Interact();
+				}
+				if (dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>() != null)
+				{
+					dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>().TriggerCutscene();
+				}
 				PerformActionOnYesFinal = false;
 			}
 		}
