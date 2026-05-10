@@ -98,7 +98,7 @@ public class BootstrapSubProcessMenuSystem
 
 	public IEnumerator InitializeMenuSystems()
 	{
-		_menuManagerGameobject = new GameObject("MenuManager");
+		_menuManagerGameobject = new GameObject("Bootstrap_MenuSystem");
 
 		MenuManager = _menuManagerGameobject.AddComponent<MenuManager>();
 		_mainMenuReadNews = _menuManagerGameobject.AddComponent<MainMenuReadNews>();

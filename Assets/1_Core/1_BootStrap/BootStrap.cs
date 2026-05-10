@@ -210,8 +210,8 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializePlayerPrefabs()
 	{
-		_playerGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/PlayerGameObject"));
-		_playerCameraGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/PlayerCameraGameObject"));
+		_playerGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerGameObject"));
+		_playerCameraGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerCameraGameObject"));
 		Debug.Log("PLAYER PREFABS INITIALIZED");
 		yield break;
 	}

@@ -29,7 +29,7 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 	public override string WeaponNameSystem => "PlungerCrossbow";
 
 	public override string WeaponNameUI => "Абордажный Арбалет";
-	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheelButtons/CrossBow icon");
+	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponPlungerCrossbowIcon");
 	public override float WeaponDamage => 0; 
 
 	private void Start()

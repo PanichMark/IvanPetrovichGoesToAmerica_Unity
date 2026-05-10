@@ -82,7 +82,7 @@ public class BootstrapSubProcessWeaponSystem
 
 	public IEnumerator InitializeWeaponSystem()
 	{
-		_weaponSystemGameObject = new GameObject("WeaponSystem");
+		_weaponSystemGameObject = new GameObject("Bootstrap_WeaponSystem");
 
 		WeaponController = _weaponSystemGameObject.AddComponent<PlayerWeaponController>();
 		_legKickAttack = _weaponSystemGameObject.AddComponent<LegKickAttack>();
@@ -90,7 +90,7 @@ public class BootstrapSubProcessWeaponSystem
 		_weaponAnimationController = _weaponSystemGameObject.AddComponent<WeaponAnimationController>();
 		_weaponFirstPersonRender = _weaponSystemGameObject.AddComponent<WeaponFirstPersonRender>();
 
-		_weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheelButtons/WeaponWheelSegmentPrefab");
+		_weaponWheelSegmentPrefab = Resources.Load<GameObject>("WeaponWheel/WeaponWheelSegmentPrefab");
 
 		_textWeaponWheelWeapon = _canvasMenuWeaponWheel.transform.Find("TextWeaponWheelWeapon").GetComponent<TextMeshProUGUI>();
 		_textWeaponWheelHandType = _canvasMenuWeaponWheel.transform.Find("TextWeaponWheelHandType").GetComponent<TextMeshProUGUI>();
@@ -130,8 +130,8 @@ public class BootstrapSubProcessWeaponSystem
 			WeaponController,
 			_bootstrapSubProcessPlayerSystems.PlayerFirstPersonHandRightGameObject,
 			_bootstrapSubProcessPlayerSystems.PlayerFirstPersonHandLeftGameObject,
-			_bootstrapSubProcessPlayerSystems.PlayerThirdPersonHandRightParentGameObject,
-			_bootstrapSubProcessPlayerSystems.PlayerThirdPersonHandLeftParentGameObject);
+			_bootstrapSubProcessPlayerSystems.PlayerThirdPersonHandRightGameObject,
+			_bootstrapSubProcessPlayerSystems.PlayerThirdPersonHandLeftGameObject);
 
 		_canvasHUDammoController.Initialize(
 			_bootstrapSubProcessSceneSystem.GameSceneManager,

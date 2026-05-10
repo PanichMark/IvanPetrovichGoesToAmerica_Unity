@@ -21,7 +21,7 @@ public class BootstrapSubProcessSceneSystem
 
 	public IEnumerator InitializeSceneSystem()
 	{
-		_gameSceneManagerGameObject = new GameObject("GameSceneManager");
+		_gameSceneManagerGameObject = new GameObject("Bootstrap_GameSceneSystem");
 		GameSceneManager = _gameSceneManagerGameObject.AddComponent<GameSceneManager>();
 
 		_textLoadingScreenStatus = _canvasLoadingScreen.transform.Find("TextLoadingScreenStatus").GetComponent<TMP_Text>();

@@ -12,8 +12,8 @@ public class BootstrapSubProcessPlayerSystems
 
 	private GameObject _playerHeadParentGameObject;
 	private GameObject _playerColliderGameObject;
-	public GameObject PlayerThirdPersonHandRightParentGameObject { get; private set; }
-	public GameObject PlayerThirdPersonHandLeftParentGameObject { get; private set; }
+	public GameObject PlayerThirdPersonHandRightGameObject { get; private set; }
+	public GameObject PlayerThirdPersonHandLeftGameObject { get; private set; }
 	public GameObject PlayerFirstPersonHandRightGameObject { get; private set; }
 	public GameObject PlayerFirstPersonHandLeftGameObject { get; private set; }
 
@@ -57,8 +57,8 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerFirstPersonHandRightGameObject = _bootstrap.FindDeepGameObject(_playerCameraGameObject, "PlayerFirstPersonHandRightGameObject");
 		PlayerFirstPersonHandLeftGameObject = _bootstrap.FindDeepGameObject(_playerCameraGameObject, "PlayerFirstPersonHandLeftGameObject");
 		_playerHeadParentGameObject = _bootstrap.FindDeepGameObject(_playerGameObject, "PlayerHeadGameObject");
-		PlayerThirdPersonHandRightParentGameObject = _bootstrap.FindDeepGameObject(_playerGameObject, "PlayerThirdPersonHandRightParentGameObject");
-		PlayerThirdPersonHandLeftParentGameObject = _bootstrap.FindDeepGameObject(_playerGameObject, "PlayerThirdPersonHandLeftParentGameObject");
+		PlayerThirdPersonHandRightGameObject = _bootstrap.FindDeepGameObject(_playerGameObject, "PlayerThirdPersonHandRightGameObject");
+		PlayerThirdPersonHandLeftGameObject = _bootstrap.FindDeepGameObject(_playerGameObject, "PlayerThirdPersonHandLeftGameObject");
 
 		PlayerBehaviour.Initialize(_inputDevice);
 		PlayerMovementController.Initialize(_inputDevice, _gameSceneManager, PlayerBehaviour);

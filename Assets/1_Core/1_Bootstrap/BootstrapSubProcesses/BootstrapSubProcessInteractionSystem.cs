@@ -68,7 +68,7 @@ public class BootstrapSubProcessInteractionSystem
 
 	public IEnumerator InitializeInteractionSystem()
 	{
-		interactionControllerGameObject = new GameObject("InteractionController");
+		interactionControllerGameObject = new GameObject("Bootstrap_InteractionSystem");
 
 		InteractionController = interactionControllerGameObject.AddComponent<InteractionController>();
 		_interactionAnimationController = interactionControllerGameObject.AddComponent<InteractionAnimationController>();

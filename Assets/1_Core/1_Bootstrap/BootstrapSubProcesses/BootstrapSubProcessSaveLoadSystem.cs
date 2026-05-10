@@ -17,7 +17,7 @@ public class BootstrapSubProcessSaveLoadSystem
 
 	public IEnumerator InitializeSaveLoadSystem()
 	{
-		_saveLoadControllerGameObject = new GameObject("DataSaveLoadController");
+		_saveLoadControllerGameObject = new GameObject("Bootstrap_SaveLoadSystem");
 		SaveLoadController = _saveLoadControllerGameObject.AddComponent<SaveLoadController>();
 		SaveLoadController.Initialize(_gameSceneManager, _gameController);
 
