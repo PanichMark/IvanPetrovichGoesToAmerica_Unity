@@ -7,7 +7,6 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	public event Action<int> OnRequestRewriteSaveFileConfirmation;
 	public event Action<int> OnRequestNewSaveFileConfirmation;
 	public event Action<int> OnRequestDeleteSaveFileConfirmation;
-
 	
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
@@ -157,7 +156,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		for (int i = 0; i < extendedSaveInfos.Length; i++)
 		{
-			if (string.IsNullOrEmpty(extendedSaveInfos[i].Item3)) 
+			if (string.IsNullOrEmpty(extendedSaveInfos[i].SafefileSceneSystemNameForIcon)) 
 				return i + 1;
 		}
 		return -1;
@@ -181,9 +180,9 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		for (int i = 0; i < extendedSaveInfos.Length; i++)
 		{
-			string currentDataAndTime = extendedSaveInfos[i].Item1;
-			string currentSceneNameUI = extendedSaveInfos[i].Item2;
-			string currentSceneNameSystem = extendedSaveInfos[i].Item3;
+			string currentDataAndTime = extendedSaveInfos[i].SavefileDateTimeForUI;
+			string currentSceneNameUI = extendedSaveInfos[i].SafefileSceneUINameForUI;
+			string currentSceneNameSystem = extendedSaveInfos[i].SafefileSceneSystemNameForIcon;
 
 			if (!string.IsNullOrEmpty(currentSceneNameSystem)) 
 			{

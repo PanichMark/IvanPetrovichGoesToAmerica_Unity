@@ -14,7 +14,7 @@ public class Bootstrap : MonoBehaviour
 	private KeyCode _keyPauseMenu;
 
 	// Экран Инициализации Bootstrap
-	private GameObject _bootstrapTemporaryCameraGameObject;
+	private GameObject _gameObjectBootstrapTemporaryCamera;
 	[Header("Bootstrap")]
 	[SerializeField] private GameObject _canvasBootstrap;
 
@@ -63,7 +63,7 @@ public class Bootstrap : MonoBehaviour
 	// Система взаимодействия
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
 	[Header("Interaction")]
-	[SerializeField] private GameObject _canvasHUDInteraction;
+	[SerializeField] private GameObject _canvasHUDinteraction;
 	[SerializeField] private GameObject _canvasMenuNote;
 	[SerializeField] private GameObject _canvasMenuLockpickMechanical;
 	[SerializeField] private GameObject _canvasMenuLockpickElectronic;
@@ -76,8 +76,8 @@ public class Bootstrap : MonoBehaviour
 		Time.timeScale = 0f;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-		_bootstrapTemporaryCameraGameObject = new GameObject("TempCamera");
-		_bootstrapTemporaryCameraGameObject.AddComponent<Camera>();
+		_gameObjectBootstrapTemporaryCamera = new GameObject("TempCamera");
+		_gameObjectBootstrapTemporaryCamera.AddComponent<Camera>();
 		StartCoroutine(SequentialInitialization());
 	}
 
@@ -131,7 +131,7 @@ public class Bootstrap : MonoBehaviour
 			_inputDevice,
 			_bootstrapSubProcessPlayerSystems.PlayerCameraController,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
-			_canvasHUDInteraction,
+			_canvasHUDinteraction,
 			_canvasMenuNote,
 			_canvasMenuLockpickMechanical,
 			_canvasMenuLockpickElectronic,
@@ -174,7 +174,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessWeaponSystem.WeaponController.UnlockWeapon(weaponPrefab);
 		}
 
-		Destroy(_bootstrapTemporaryCameraGameObject);
+		Destroy(_gameObjectBootstrapTemporaryCamera);
 		Destroy(_canvasBootstrap);
 
 		if (_configBootstrapScene.SelectedScene.ToString() == "Scene_0_MainMenu")
@@ -217,7 +217,7 @@ public class Bootstrap : MonoBehaviour
 		_canvasPauseSubMenuAppearance = Instantiate(_canvasPauseSubMenuAppearance);
 		_canvasPauseSubMenuSettings = Instantiate(_canvasPauseSubMenuSettings);
 		_canvasMenuWeaponWheel = Instantiate(_canvasMenuWeaponWheel);
-		_canvasHUDInteraction = Instantiate(_canvasHUDInteraction);
+		_canvasHUDinteraction = Instantiate(_canvasHUDinteraction);
 		_canvasHUDhealthAndMana = Instantiate(_canvasHUDhealthAndMana);
 		_canvasLoadingScreen = Instantiate(_canvasLoadingScreen);
 		_canvasMenuNote = Instantiate(_canvasMenuNote);

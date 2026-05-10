@@ -7,7 +7,7 @@ public class BootstrapSubProcessPlayerResources
 {
 	private Bootstrap _bootstrap;
 
-	private GameObject _playerResourcesGameObject;
+	private GameObject _gameObjectBootstrapPlayerResources;
 	private CanvasHUDhealthAndManaController _canvasHUDhealthAndManaController;
 	public CanvasHUDammoController CanvasHUDammoController { get; private set; }
 	private GameObject _canvasHUDhealthAndMana;
@@ -65,7 +65,7 @@ public class BootstrapSubProcessPlayerResources
 
 	public IEnumerator InitializePlayerResources()
 	{
-		_playerResourcesGameObject = new GameObject("Bootstrap_PlayerResources");
+		_gameObjectBootstrapPlayerResources = new GameObject("Bootstrap_PlayerResources");
 
 		_textPlayerMoneyNumber = _canvasPauseMenu.transform.Find("TextPlayerMoneyNumber").GetComponent<TMP_Text>();
 		_sliderHealthBar = _canvasHUDhealthAndMana.transform.Find("SliderHealthBar").GetComponent<Slider>();
@@ -75,12 +75,12 @@ public class BootstrapSubProcessPlayerResources
 		_buttonUseManaReplenishItem = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "ButtonUseManaReplenishItem").GetComponent<Button>();
 		_textManaReplenishItemNumber = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "TextManaReplenishItemNumber").GetComponent<TextMeshProUGUI>();
 
-		_playerResourcesHealthManager = _playerResourcesGameObject.AddComponent<PlayerResourcesHealthManager>();
-		_playerResourcesManaManager = _playerResourcesGameObject.AddComponent<PlayerResourcesManaManager>();
-		_canvasHUDhealthAndManaController = _playerResourcesGameObject.AddComponent<CanvasHUDhealthAndManaController>();
-		_playerResourcesMoneyManager = _playerResourcesGameObject.AddComponent<PlayerResourcesMoneyManager>();
-		PlayerResourcesAmmoManager = _playerResourcesGameObject.AddComponent<PlayerResourcesAmmoManager>();
-		CanvasHUDammoController = _playerResourcesGameObject.AddComponent<CanvasHUDammoController>();
+		_playerResourcesHealthManager = _gameObjectBootstrapPlayerResources.AddComponent<PlayerResourcesHealthManager>();
+		_playerResourcesManaManager = _gameObjectBootstrapPlayerResources.AddComponent<PlayerResourcesManaManager>();
+		_canvasHUDhealthAndManaController = _gameObjectBootstrapPlayerResources.AddComponent<CanvasHUDhealthAndManaController>();
+		_playerResourcesMoneyManager = _gameObjectBootstrapPlayerResources.AddComponent<PlayerResourcesMoneyManager>();
+		PlayerResourcesAmmoManager = _gameObjectBootstrapPlayerResources.AddComponent<PlayerResourcesAmmoManager>();
+		CanvasHUDammoController = _gameObjectBootstrapPlayerResources.AddComponent<CanvasHUDammoController>();
 
 		_canvasHUDhealthAndManaController.Initialize(_bootstrapSubProcessSceneSystem.GameSceneManager, _gameController, _bootstrapSubProcessMenuSystem.MenuManager, _canvasHUDhealthAndMana);
 		_playerResourcesMoneyManager.Initialize(_textPlayerMoneyNumber);

@@ -18,14 +18,14 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	};
 
 	protected NPCDialogueController _NPCdialogueController;
-	private TextMeshProUGUI NPCphrasesText;
-	[SerializeField] private TextAsset russianPhraseFile;
-	[SerializeField] private TextAsset englishPhraseFile;
-	private LocalizationManager localizationManager;
+	private TextMeshProUGUI _NPCphrasesText;
+	[SerializeField] private TextAsset _russianPhraseFile;
+	[SerializeField] private TextAsset _englishPhraseFile;
+	private LocalizationManager _localizationManager;
 	protected NPCStateMachineController _npcStateMachineController;
 
 	public string InteractionObjectNameSystem => _NPCname;
-	public string InteractionObjectNameUI => localizationManager.GetLocalizedString(_NPCname);
+	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_NPCname);
 	public string InteractionHintMessageMain => $"Talk to {InteractionObjectNameUI}";
 	public string InteractionHintMessageAdditional => throw new System.NotImplementedException();
 	public virtual bool IsInteractionHintMessageAdditionalActive => false;
@@ -38,8 +38,8 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	private void Start()
 	{
 		_NPCmaxHealth = _NPCcurrentHealth;
-		NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("TextNPCphrases");
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("TextNPCphrases");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_NPCdialogueController = GetComponent<NPCDialogueController>();
 
 		LoadPhrasesFromFiles();
@@ -53,9 +53,9 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	private void LoadPhrasesFromFiles()
 	{
-		if (russianPhraseFile != null)
+		if (_russianPhraseFile != null)
 		{
-			using (var reader = new StringReader(russianPhraseFile.text))
+			using (var reader = new StringReader(_russianPhraseFile.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
@@ -72,9 +72,9 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 			Debug.LogWarning("Russian phrase file is not assigned!");
 		}
 
-		if (englishPhraseFile != null)
+		if (_englishPhraseFile != null)
 		{
-			using (var reader = new StringReader(englishPhraseFile.text))
+			using (var reader = new StringReader(_englishPhraseFile.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
@@ -94,15 +94,15 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	protected IEnumerator ShowAndHidePhrase()
 	{
-		NPCphrasesText.gameObject.SetActive(true);
+		_NPCphrasesText.gameObject.SetActive(true);
 
-		var currentLanguage = localizationManager.CurrentLanguage;
+		var currentLanguage = _localizationManager.CurrentLanguage;
 		if (_localizedNPSphrases[currentLanguage].Count > 0)
 		{
 			int randomIndex = Random.Range(0, _localizedNPSphrases[currentLanguage].Count);
 			string selectedPhrase = _localizedNPSphrases[currentLanguage][randomIndex];
 			string fullPhrase = $"{InteractionObjectNameUI}: {selectedPhrase}";
-			NPCphrasesText.text = fullPhrase;
+			_NPCphrasesText.text = fullPhrase;
 		}
 		else
 		{
@@ -111,8 +111,8 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 		yield return new WaitForSeconds(3.5f);
 
-		NPCphrasesText.text = string.Empty;
-		NPCphrasesText.gameObject.SetActive(false);
+		_NPCphrasesText.text = string.Empty;
+		_NPCphrasesText.gameObject.SetActive(false);
 	}
 
 	public virtual void Interact()
@@ -151,8 +151,8 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		StopAllCoroutines();
 		ConvertToPickableObject();
 
-		NPCphrasesText.text = string.Empty;
-		NPCphrasesText.gameObject.SetActive(false);
+		_NPCphrasesText.text = string.Empty;
+		_NPCphrasesText.gameObject.SetActive(false);
 
 		_npcStateMachineController.SetNPCState(NPCStateTypes.Dead);
 	}

@@ -432,7 +432,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		PlayerCurrentHeight = 1.75f;
 		_isInitialized = true;
 		_howMuchUp = 0.3f;
-		Debug.Log("PlayerMovement Initialized");
 
+		Debug.Log("PlayerMovement Initialized");
 	}
 }

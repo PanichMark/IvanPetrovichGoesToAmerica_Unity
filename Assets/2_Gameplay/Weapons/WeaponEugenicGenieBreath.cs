@@ -2,9 +2,9 @@
 
 public class WeaponEugenicGenieBreath : EugenicWeaponAbstract
 {
-	private float attackRange = 5f;
-	private float knockbackForce = 10f;
-	private int damageAmount = 100;
+	private float _attackRange = 5f;
+	private float _knockbackForce = 10f;
+	private int _damageAmount = 100;
 	public override string WeaponNameSystem => "EugenicGenie";
 	public override string WeaponNameUI => "Дыхание Джинна";
 
@@ -26,15 +26,15 @@ public class WeaponEugenicGenieBreath : EugenicWeaponAbstract
 
 				Vector3 attackOrigin = player.transform.position + player.transform.forward * 1.5f;
 
-				Collider[] hitColliders = Physics.OverlapSphere(attackOrigin, attackRange);
+				Collider[] hitColliders = Physics.OverlapSphere(attackOrigin, _attackRange);
 
 				foreach (Collider hit in hitColliders)
 				{
 					IDamageable damageable = hit.GetComponent<IDamageable>();
 					if (damageable != null)
 					{
-						damageable.TakeDamage(damageAmount);
-						Debug.Log($"Нанесено {damageAmount} урона объекту: {hit.name}");
+						damageable.TakeDamage(_damageAmount);
+						Debug.Log($"Нанесено {_damageAmount} урона объекту: {hit.name}");
 					}
 				}
 
@@ -45,7 +45,7 @@ public class WeaponEugenicGenieBreath : EugenicWeaponAbstract
 					{
 						Vector3 knockbackDirection = camera.transform.forward.normalized;
 
-						rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+						rb.AddForce(knockbackDirection * _knockbackForce, ForceMode.Impulse);
 						Debug.Log($"Отброшен Rigidbody: {hit.name}");
 					}
 				}

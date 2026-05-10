@@ -1,46 +1,44 @@
-﻿using NUnit;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CutsceneMenuController : MonoBehaviour
 {
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
-	private MenuManager menuManager;
-	private GameObject canvasCutscene;
-	private GameSceneManager gameSceneManager;
+	private MenuManager _menuManager;
+	private GameObject _canvasCutscene;
+	private GameSceneManager _gameSceneManager;
+
 	public void Initialize(MenuManager menuManager, GameSceneManager gameSceneManager, GameObject canvasCutscene)
 	{
-		this.menuManager = menuManager;
+		_menuManager = menuManager;
 
-		this.canvasCutscene = canvasCutscene;
-		this.gameSceneManager = gameSceneManager;
+		_canvasCutscene = canvasCutscene;
+		_gameSceneManager = gameSceneManager;
 
-		this.menuManager.OnOpenCutsceneMenu += ShowCanvasCutscene;
-		this.menuManager.OnCloseCutsceneMenu += HideCanvasCutscene;
+		_menuManager.OnOpenCutsceneMenu += ShowCanvasCutscene;
+		_menuManager.OnCloseCutsceneMenu += HideCanvasCutscene;
 
-		this.menuManager.OnOpenPauseMenu += HideCanvasCutscene;
-		this.menuManager.OnClosePauseMenu += ShowCanvasCutscene;
+		_menuManager.OnOpenPauseMenu += HideCanvasCutscene;
+		_menuManager.OnClosePauseMenu += ShowCanvasCutscene;
 
-		this.gameSceneManager.OnBeginLoadGameplayScene += HideCanvasCutscene;
-		this.gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasCutscene;
+		_gameSceneManager.OnBeginLoadGameplayScene += HideCanvasCutscene;
+		_gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasCutscene;
+
+		Debug.Log("CutsceneMenuController Initialized");
 	}
 
 	private void ShowCanvasCutscene()
 	{
-		//Debug.Log("SHOWHSOWW!!!");
-		if (menuManager.IsCutsceneMenuOpened)
+		if (_menuManager.IsCutsceneMenuOpened)
 		{
-
-			canvasCutscene.SetActive(true);
+			_canvasCutscene.SetActive(true);
 			Debug.Log("Show CutsceneMenu");
 		}
 	}
 
 	private void HideCanvasCutscene()
 	{
-		//Debug.Log("BRUHH!!!!");
-		if (menuManager.IsCutsceneMenuOpened)
+		if (_menuManager.IsCutsceneMenuOpened)
 		{
-			canvasCutscene.SetActive(false);
+			_canvasCutscene.SetActive(false);
 			Debug.Log("Hide CutsceneMenu");
 		}
 	}

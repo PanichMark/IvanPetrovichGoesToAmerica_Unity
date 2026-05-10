@@ -20,18 +20,30 @@ public class MenuManager : MonoBehaviour
 	public event MenuEventHandler OnClosePauseMenuDuringOpenedCutsceneMenu;
 	public event MenuEventHandler OnOpenAnyMenu;
 	public event MenuEventHandler OnCloseAnyMenu;
+
+	private bool _isInitialized = false;
+
+	public bool IsPauseMenuOpened { get; private set; }
+	public bool IsWeaponWheelMenuOpened { get; private set; }
+	public bool IsAnyMenuOpened { get; private set; }
+	public bool IsDialogueMenuOpened { get; private set; }
+
+	public bool IsInteractionHUDOpened { get; private set; }
+
+	public bool IsInteractionMenuOpened { get; private set; }
+
 	public bool IsCutsceneMenuOpened {  get; private set; }
-	public IInputDevice inputDevice;
-	private GameController gameController;
-	private GameSceneManager gameSceneManager;
+	private IInputDevice _inputDevice;
+	private GameController _gameController;
+	private GameSceneManager _gameSceneManager;
 
 	public Stack<int> PauseMenuLevel = new Stack<int>();
 
 	public void Initialize(IInputDevice inputDevice, GameController gameController, GameSceneManager gameSceneManager)
 	{
-		this.inputDevice = inputDevice;
-		this.gameController = gameController;
-		this.gameSceneManager = gameSceneManager;
+		_inputDevice = inputDevice;
+		_gameController = gameController;
+		_gameSceneManager = gameSceneManager;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
@@ -39,41 +51,31 @@ public class MenuManager : MonoBehaviour
 		IsWeaponWheelMenuOpened = false;
 		IsAnyMenuOpened = false;
 		_isInitialized = true;
-		this.gameController.OnPlayerDeath += OpenPauseMenu;
+		_gameController.OnPlayerDeath += OpenPauseMenu;
 
-		this.gameSceneManager.OnBeginLoadGameplayScene += ClosePauseMenu;
-		this.gameSceneManager.OnBeginLoadGameplayScene += CloseWeaponWheelMenu;
-		this.gameSceneManager.OnBeginLoadGameplayScene += CloseInteractionHUD;
-		this.gameSceneManager.OnBeginLoadGameplayScene += CloseInteractionMenu;
-		this.gameSceneManager.OnBeginLoadGameplayScene += CloseDialogueMenu;
-		this.gameSceneManager.OnBeginLoadGameplayScene += CloseCutsceneMenu;
+		_gameSceneManager.OnBeginLoadGameplayScene += ClosePauseMenu;
+		_gameSceneManager.OnBeginLoadGameplayScene += CloseWeaponWheelMenu;
+		_gameSceneManager.OnBeginLoadGameplayScene += CloseInteractionHUD;
+		_gameSceneManager.OnBeginLoadGameplayScene += CloseInteractionMenu;
+		_gameSceneManager.OnBeginLoadGameplayScene += CloseDialogueMenu;
+		_gameSceneManager.OnBeginLoadGameplayScene += CloseCutsceneMenu;
 
+		_gameSceneManager.OnBeginLoadMainMenuScene += ClosePauseMenu;
+		_gameSceneManager.OnBeginLoadMainMenuScene += CloseWeaponWheelMenu;
+		_gameSceneManager.OnBeginLoadMainMenuScene += CloseInteractionHUD;
+		_gameSceneManager.OnBeginLoadMainMenuScene += CloseInteractionMenu;
+		_gameSceneManager.OnBeginLoadMainMenuScene += CloseDialogueMenu;
+		_gameSceneManager.OnBeginLoadMainMenuScene += CloseCutsceneMenu;
 
-		this.gameSceneManager.OnBeginLoadMainMenuScene += ClosePauseMenu;
-		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseWeaponWheelMenu;
-		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseInteractionHUD;
-		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseInteractionMenu;
-		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseDialogueMenu;
-		this.gameSceneManager.OnBeginLoadMainMenuScene += CloseCutsceneMenu;
 		Debug.Log("MenuManager Initialized");
 	}
 
-	private bool _isInitialized = false;
-	
-	public bool IsPauseMenuOpened { get; private set; }
-	public bool IsWeaponWheelMenuOpened { get; private set; }
-	public bool IsAnyMenuOpened { get; private set; }
-	public bool IsDialogueMenuOpened { get; private set; }
-
-	public bool IsInteractionHUDOpened { get; private set; }
-	
-	public bool IsInteractionMenuOpened { get; private set; }
 	void Update()
 	{
 		if (!_isInitialized)
 			return;
 
-		if (inputDevice.GetKeyPauseMenu() && !gameController.IsMainMenuOpen)
+		if (_inputDevice.GetKeyPauseMenu() && !_gameController.IsMainMenuOpen)
 		{
 			if (PauseMenuLevel.Count == 0)
 			{
@@ -81,7 +83,7 @@ public class MenuManager : MonoBehaviour
 			}
 			else if (PauseMenuLevel.Count == 1)
 			{
-				if (!gameController.IsPlayerDead)
+				if (!_gameController.IsPlayerDead)
 				{
 					ClosePauseMenu();
 				}
@@ -108,7 +110,7 @@ public class MenuManager : MonoBehaviour
 		OnOpenPauseMenu?.Invoke();
 		IsPauseMenuOpened = true;
 		OpenAnyMenu();
-		gameController.MakePlayerNonControllable();
+		_gameController.MakePlayerNonControllable();
 
 		Time.timeScale = 0f;
 
@@ -130,7 +132,7 @@ public class MenuManager : MonoBehaviour
 		else
 		{
 			CloseAnyMenu();
-			gameController.MakePlayerControllable();
+			_gameController.MakePlayerControllable();
 			Time.timeScale = 1f;
 		}
 
@@ -191,7 +193,7 @@ public class MenuManager : MonoBehaviour
 			OnOpenAnyMenu?.Invoke();
 		}
 
-		if (!gameController.IsMainMenuOpen)
+		if (!_gameController.IsMainMenuOpen)
 		{
 			CloseInteractionHUD();
 
@@ -215,7 +217,7 @@ public class MenuManager : MonoBehaviour
 		IsAnyMenuOpened = false;
 	
 		OnCloseAnyMenu?.Invoke();
-		if (!gameController.IsMainMenuOpen)
+		if (!_gameController.IsMainMenuOpen)
 		{
 			OpenInteractionHUD();
 
@@ -258,7 +260,7 @@ public class MenuManager : MonoBehaviour
 	{
 		IsInteractionMenuOpened = true;
 		Time.timeScale = 0;
-		gameController.MakePlayerNonControllable();
+		_gameController.MakePlayerNonControllable();
 		OpenAnyMenu();
 		OnOpenInteractionMenu?.Invoke();
 		
@@ -269,7 +271,7 @@ public class MenuManager : MonoBehaviour
 		IsInteractionMenuOpened = false;
 		Time.timeScale = 1;
 		OnCloseInteractionMenu?.Invoke();
-		gameController.MakePlayerControllable();
+		_gameController.MakePlayerControllable();
 		CloseAnyMenu();
 		Debug.Log("InteractionMenu closed");
 	}
@@ -277,7 +279,7 @@ public class MenuManager : MonoBehaviour
 	{
 		IsDialogueMenuOpened = true;
 		Time.timeScale = 0;
-		gameController.MakePlayerNonControllable();
+		_gameController.MakePlayerNonControllable();
 		OpenAnyMenu();
 		OnOpenDialogueMenu?.Invoke();
 		
@@ -289,7 +291,7 @@ public class MenuManager : MonoBehaviour
 		IsDialogueMenuOpened = false;
 		Time.timeScale = 1;
 		OnCloseDialogueMenu?.Invoke();
-		gameController.MakePlayerControllable();
+		_gameController.MakePlayerControllable();
 		CloseAnyMenu();
 		Debug.Log("DialogueMenu closed");
 	}

@@ -51,7 +51,7 @@ public class InputGamepad : IInputDevice
 	};
 
 	// В классе InputGamepad
-	public IReadOnlyDictionary<string, KeyCode> CurrentBindings
+	public IReadOnlyDictionary<string, KeyCode> CurrentKeyboardKeyBindings
 	{
 		get
 		{
@@ -61,7 +61,7 @@ public class InputGamepad : IInputDevice
 		}
 	}
 	// Реализация нового метода из интерфейса
-	public IReadOnlyDictionary<string, KeyCode> GetDefaultBindings()
+	public IReadOnlyDictionary<string, KeyCode> GetDefaultKeyBindings()
 	{
 		// Возвращаем копию, чтобы никто не мог изменить оригинал
 		return new ReadOnlyDictionary<string, KeyCode>(bruh);
@@ -73,7 +73,7 @@ public class InputGamepad : IInputDevice
 	};
 
 
-	public IEnumerable<(string action, KeyCode key)> GetCurrentBindings()
+	public IEnumerable<(string action, KeyCode key)> GetCurrentKeyBindings()
 	{
 		return bruh.Select(kvp => (kvp.Key, kvp.Value));
 	}

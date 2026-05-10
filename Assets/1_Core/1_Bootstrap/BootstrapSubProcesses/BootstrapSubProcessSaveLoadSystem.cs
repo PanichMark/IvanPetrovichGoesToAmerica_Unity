@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BootstrapSubProcessSaveLoadSystem
 {
-	private GameObject _saveLoadControllerGameObject;
+	private GameObject _gameObjectBootstrapSaveLoadSystem;
 	public SaveLoadController SaveLoadController { get; private set; }
 
 	private GameSceneManager _gameSceneManager;
@@ -17,8 +17,8 @@ public class BootstrapSubProcessSaveLoadSystem
 
 	public IEnumerator InitializeSaveLoadSystem()
 	{
-		_saveLoadControllerGameObject = new GameObject("Bootstrap_SaveLoadSystem");
-		SaveLoadController = _saveLoadControllerGameObject.AddComponent<SaveLoadController>();
+		_gameObjectBootstrapSaveLoadSystem = new GameObject("Bootstrap_SaveLoadSystem");
+		SaveLoadController = _gameObjectBootstrapSaveLoadSystem.AddComponent<SaveLoadController>();
 		SaveLoadController.Initialize(_gameSceneManager, _gameController);
 
 		ServiceLocator.Register("SaveLoadController", SaveLoadController);

@@ -247,9 +247,9 @@ public class SaveLoadController : MonoBehaviour
 		}
 	}
 
-	public Tuple<string, string, string>[] GetExtendedSaveInfo()
+	public (string SavefileDateTimeForUI, string SafefileSceneUINameForUI, string SafefileSceneSystemNameForIcon)[] GetExtendedSaveInfo()
 	{
-		List<Tuple<string, string, string>> extendedInfo = new List<Tuple<string, string, string>>();
+		var extendedInfo = new List<(string DateTime, string SceneNameUI, string SceneNameSystem)>();
 
 		extendedInfo.Add(GetExtendedSaveDataForFile(_fileSaveDataName1));
 		extendedInfo.Add(GetExtendedSaveDataForFile(_fileSaveDataName2));
@@ -260,28 +260,28 @@ public class SaveLoadController : MonoBehaviour
 		return extendedInfo.ToArray();
 	}
 
-	private Tuple<string, string, string> GetExtendedSaveDataForFile(string fileName)
+	private (string SafefileDateTimeForUI, string SafefileSceneNameUIForUI, string SafefileSceneSystemNameForIcon) GetExtendedSaveDataForFile(string fileName)
 	{
 		try
 		{
 			GameData gameData = _fileDataHandler.LoadFromFile(fileName);
 			if (gameData != null)
 			{
-				return new Tuple<string, string, string>(
-					gameData.CurrentDateAndTime, 
-					gameData.CurrentSceneNameUI,       
-					gameData.CurrentSceneNameSystem  
+				return (
+					gameData.CurrentDateAndTime,
+					gameData.CurrentSceneNameUI,
+					gameData.CurrentSceneNameSystem
 				);
 			}
 			else
 			{
-				return new Tuple<string, string, string>(null, null, null); 
+				return (null, null, null);
 			}
 		}
 		catch (Exception e)
 		{
 			Debug.LogWarning($"Ошибка при чтении файла '{fileName}'\n{e.Message}");
-			return new Tuple<string, string, string>(null, null, null); 
+			return (null, null, null);
 		}
 	}
 

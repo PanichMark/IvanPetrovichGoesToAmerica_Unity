@@ -13,23 +13,23 @@ public class BootstrapSubProcessInteractionSystem
 	private PlayerCameraController _playerCameraController;
 	private PlayerBehaviour _playerBehaviour;
 
-	private GameObject interactionControllerGameObject;
+	private GameObject _gameObjectBootstrapInteractionSystem;
 	public InteractionController InteractionController { get; private set; }
 	private InteractionAnimationController _interactionAnimationController;
 	private InteractionFirstPersonRender _interactionFirstPersonRender;
 	private GameObject[] _buttonsLockElectronic;
-	private TextMeshProUGUI _textMainInteraction;
-	private TextMeshProUGUI _textAdditionalInteraction;
-	private Button _buttonExitReadNoteMenu;
-	private Button _buttonExitLockpickMechanicalMenu;
-	private Button _buttonExitLockpickElectronicMenu;
+	private TextMeshProUGUI _textMainInteractionMessage;
+	private TextMeshProUGUI _textAdditionalInteractionMessage;
+	private Button _buttonCloseMenuNote;
+	private Button _buttonCloseMenuLockpickMechanical;
+	private Button _buttonCloseMenuLockpickElectronic;
 	private TextMeshProUGUI _textNote;
 	private Image _imageNoteBlackBackground;
 	private TextMeshProUGUI[] _textsGainedItems;
 	private Image[] _imagesGainedItems;
 	private Image _imageNote;
-	private TextMeshProUGUI _textPhrase;
-	private TextMeshProUGUI _textDialogue;
+	private TextMeshProUGUI _textPhraseLine;
+	private TextMeshProUGUI _textDialogueLine;
 	private Button _buttonDialogueYes;
 	private Button _buttonDialogueNo;
 
@@ -68,16 +68,16 @@ public class BootstrapSubProcessInteractionSystem
 
 	public IEnumerator InitializeInteractionSystem()
 	{
-		interactionControllerGameObject = new GameObject("Bootstrap_InteractionSystem");
+		_gameObjectBootstrapInteractionSystem = new GameObject("Bootstrap_InteractionSystem");
 
-		InteractionController = interactionControllerGameObject.AddComponent<InteractionController>();
-		_interactionAnimationController = interactionControllerGameObject.AddComponent<InteractionAnimationController>();
-		_interactionFirstPersonRender = interactionControllerGameObject.AddComponent<InteractionFirstPersonRender>();
+		InteractionController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionController>();
+		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
+		_interactionFirstPersonRender = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionFirstPersonRender>();
 
-		_textMainInteraction = _canvasHUDInteraction.transform.Find("TextMainInteraction").GetComponent<TextMeshProUGUI>();
-		_textAdditionalInteraction = _canvasHUDInteraction.transform.Find("TextAdditionalInteraction").GetComponent<TextMeshProUGUI>();
-		_textPhrase = _canvasHUDInteraction.transform.Find("TextPhrase").GetComponent<TextMeshProUGUI>();
-		_textDialogue = _canvasMenuDialogue.transform.Find("TextDialogue").GetComponent<TextMeshProUGUI>();
+		_textMainInteractionMessage = _canvasHUDInteraction.transform.Find("TextMainInteraction").GetComponent<TextMeshProUGUI>();
+		_textAdditionalInteractionMessage = _canvasHUDInteraction.transform.Find("TextAdditionalInteraction").GetComponent<TextMeshProUGUI>();
+		_textPhraseLine = _canvasHUDInteraction.transform.Find("TextPhrase").GetComponent<TextMeshProUGUI>();
+		_textDialogueLine = _canvasMenuDialogue.transform.Find("TextDialogue").GetComponent<TextMeshProUGUI>();
 
 		_textsGainedItems = new TextMeshProUGUI[]
 		{
@@ -107,13 +107,13 @@ public class BootstrapSubProcessInteractionSystem
 
 		};
 
-		_buttonExitReadNoteMenu = _canvasMenuNote.transform.Find("ButtonExitReadNoteMenu").GetComponent<Button>();
+		_buttonCloseMenuNote = _canvasMenuNote.transform.Find("ButtonExitReadNoteMenu").GetComponent<Button>();
 		_imageNote = _canvasMenuNote.transform.Find("ImageNote").GetComponent<Image>();
 		_textNote = _canvasMenuNote.transform.Find("TextNote").GetComponent<TextMeshProUGUI>();
 		_imageNoteBlackBackground = _canvasMenuNote.transform.Find("ImageNoteBlackBackground").GetComponent<Image>();
 
-		_buttonExitLockpickMechanicalMenu = _canvasMenuLockpickMechanical.transform.Find("ButtonExitLockpickMechanicalMenu").GetComponent<Button>();
-		_buttonExitLockpickElectronicMenu = _canvasMenuLockpickElectronic.transform.Find("ButtonExitLockpickElectronicMenu").GetComponent<Button>();
+		_buttonCloseMenuLockpickMechanical = _canvasMenuLockpickMechanical.transform.Find("ButtonExitLockpickMechanicalMenu").GetComponent<Button>();
+		_buttonCloseMenuLockpickElectronic = _canvasMenuLockpickElectronic.transform.Find("ButtonExitLockpickElectronicMenu").GetComponent<Button>();
 
 		_buttonDialogueYes = _canvasMenuDialogue.transform.Find("ButtonDialogueYes").GetComponent<Button>();
 		_buttonDialogueNo = _canvasMenuDialogue.transform.Find("ButtonDialogueNo").GetComponent<Button>();
@@ -126,22 +126,22 @@ public class BootstrapSubProcessInteractionSystem
 			_playerCameraController,
 			_playerBehaviour,
 			_canvasHUDInteraction,
-			_textMainInteraction,
-			_textAdditionalInteraction,
+			_textMainInteractionMessage,
+			_textAdditionalInteractionMessage,
 			_textsGainedItems,
 			_imagesGainedItems);
 
-		ServiceLocator.Register("ButtonExitReadNoteMenu", _buttonExitReadNoteMenu);
-		ServiceLocator.Register("ButtonExitLockpickMechanicalMenu", _buttonExitLockpickMechanicalMenu);
+		ServiceLocator.Register("ButtonExitReadNoteMenu", _buttonCloseMenuNote);
+		ServiceLocator.Register("ButtonExitLockpickMechanicalMenu", _buttonCloseMenuLockpickMechanical);
 		ServiceLocator.Register("ImageNote", _imageNote);
-		ServiceLocator.Register("ButtonExitLockpickElectronicMenu", _buttonExitLockpickElectronicMenu);
+		ServiceLocator.Register("ButtonExitLockpickElectronicMenu", _buttonCloseMenuLockpickElectronic);
 		ServiceLocator.Register("TextNote", _textNote);
 		ServiceLocator.Register("ImageNoteBlackBackground", _imageNoteBlackBackground);
 
 		ServiceLocator.Register("ButtonsLockElectronic", _buttonsLockElectronic);
 
-		ServiceLocator.Register("TextNPCphrases", _textPhrase);
-		ServiceLocator.Register("TextDialogue", _textDialogue);
+		ServiceLocator.Register("TextNPCphrases", _textPhraseLine);
+		ServiceLocator.Register("TextDialogue", _textDialogueLine);
 
 		ServiceLocator.Register("ButtonDialogueYes", _buttonDialogueYes);
 		ServiceLocator.Register("ButtonDialogueNo", _buttonDialogueNo);

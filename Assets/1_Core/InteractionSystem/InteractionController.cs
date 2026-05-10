@@ -2,50 +2,49 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Rendering;
 
 public class InteractionController : MonoBehaviour
 {
-	private IInputDevice inputDevice;
-	private GameObject canvasHUDInteraction;
+	private IInputDevice _inputDevice;
+	private GameObject _canvasHUDinteraction;
 
-	private float interactionRange = 50f; // Диапазон взаимодействия
+	private float _interactionRange = 50f; 
 
 	private bool _isInitialized = false;
 
-	private LocalizationManager localizationManager;
+	private LocalizationManager _localizationManager;
 	public delegate void NonThrowableHandler();
 	public event NonThrowableHandler OnPickUpThrowable;
 	public event NonThrowableHandler OnPickUpNonThrowable;
 	public event NonThrowableHandler OnGetRidOfPickable;
 
-	private string HUDInteraction_MainTextInteract;
+	private string _HUDInteractionMainTextInteract;
 
-	private TextMeshProUGUI mainInteractionText; 
-	private TextMeshProUGUI additionalInteractionText;
+	private TextMeshProUGUI _mainInteractionText; 
+	private TextMeshProUGUI _additionalInteractionText;
 
-	private TextMeshProUGUI[] itemsTexts; 
-	private Image[] itemsImages; 
+	private TextMeshProUGUI[] _itemsTexts; 
+	private Image[] _itemsImages; 
 
-	private MenuManager menuManager;
+	private MenuManager _menuManager;
 
-	private Sprite NoItemImageExeption;
+	private Sprite _noItemImageExeption;
 
-	private PlayerCameraController playerCameraController;
-	//public GameObject PlayerCameraObject;
+	private PlayerCameraController _playerCameraController;
 
-	private Coroutine showAdditionalHintCoroutine;
 
-	private PlayerBehaviour playerBehaviour;
+	private Coroutine _showAdditionalHintCoroutine;
 
-	private RaycastHit hitInfo;
-	private bool isHit;
+	private PlayerBehaviour _playerBehaviour;
 
-	private GameObject previousInteractableObject; // Переменная для хранения предыдущего объекта
-	private GameObject currentInteractableObject; // Текущий объект взаимодействия
+	private RaycastHit _hitInfo;
+	private bool _isHit;
+
+	private GameObject _previousInteractableObject;
+	private GameObject _currentInteractableObject; 
 	public GameObject CurrentPickableObject { get; private set; }
-	private GameSceneManager gameSceneManager;
-	private GameController gameController;
+	private GameSceneManager _gameSceneManager;
+	private GameController _gameController;
 	public void Initialize(GameController gameController,
 		GameSceneManager gameSceneManager,
 		IInputDevice inputDevice,
@@ -55,79 +54,69 @@ public class InteractionController : MonoBehaviour
 		GameObject canvasHUDInteraction,
 		TextMeshProUGUI mainInteractionText,
 		TextMeshProUGUI additionalInteractionText,
-		TextMeshProUGUI[] itemsTexts, // Передача массива
-		Image[] itemsImages // Передача массива
+		TextMeshProUGUI[] itemsTexts, 
+		Image[] itemsImages 
 	)
 	{
-		this.gameController = gameController;
-		this.gameSceneManager = gameSceneManager;
-		this.inputDevice = inputDevice;
-		//this.localizationManager = localizationManager;
-		this.playerCameraController = playerCameraController;
-		this.playerBehaviour = playerBehaviour;
-		this.menuManager = menuManager;
-		this.canvasHUDInteraction = canvasHUDInteraction;	
+		_gameController = gameController;
+		_gameSceneManager = gameSceneManager;
+		_inputDevice = inputDevice;
+		_playerCameraController = playerCameraController;
+		_playerBehaviour = playerBehaviour;
+		_menuManager = menuManager;
+		_canvasHUDinteraction = canvasHUDInteraction;	
 		
-		// Присваиваем новые массивы
-		this.itemsTexts = itemsTexts;
-		this.itemsImages = itemsImages;
 
-		// Старые параметры
-		this.mainInteractionText = mainInteractionText;
-		this.additionalInteractionText = additionalInteractionText;
+		_itemsTexts = itemsTexts;
+		_itemsImages = itemsImages;
+
+		_mainInteractionText = mainInteractionText;
+		_additionalInteractionText = additionalInteractionText;
 
 		_isInitialized = true;
 
-		
-		//HUDInteraction_MainTextInteract = "bruh";
+		_gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDInteraction;
+		_gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDInteraction;
 
-
-
-		this.gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDInteraction;
-		this.gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDInteraction;
-
-		this.menuManager.OnOpenInteractionHUD += ShowCanvasHUDInteraction;
-		this.menuManager.OnCloseInteractionHUD += HideCanvasHUDInteraction;
+		_menuManager.OnOpenInteractionHUD += ShowCanvasHUDInteraction;
+		_menuManager.OnCloseInteractionHUD += HideCanvasHUDInteraction;
 
 		Debug.Log("InteractionController Initialized");
 	}
 
-
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		this.localizationManager = localizationManager;
-		HUDInteraction_MainTextInteract = this.localizationManager.GetLocalizedString("HUDInteraction_MainTextInteract");
+		_localizationManager = localizationManager;
+		_HUDInteractionMainTextInteract = this._localizationManager.GetLocalizedString("HUDInteraction_MainTextInteract");
 	}
 
 	private void ShowCanvasHUDInteraction()
 	{
-		if (!gameController.IsMainMenuOpen)
-		canvasHUDInteraction.gameObject.SetActive(true);
+		if (!_gameController.IsMainMenuOpen)
+		_canvasHUDinteraction.gameObject.SetActive(true);
 
-		itemsTexts[2].text = null;
-		itemsTexts[2].gameObject.SetActive(false);
-		itemsImages[2].sprite = null;
-		itemsImages[2].gameObject.SetActive(false);
+		_itemsTexts[2].text = null;
+		_itemsTexts[2].gameObject.SetActive(false);
+		_itemsImages[2].sprite = null;
+		_itemsImages[2].gameObject.SetActive(false);
 		
-		itemsTexts[1].text = null;
-		itemsTexts[1].gameObject.SetActive(false);
-		itemsImages[1].sprite = null;
-		itemsImages[1].gameObject.SetActive(false);
+		_itemsTexts[1].text = null;
+		_itemsTexts[1].gameObject.SetActive(false);
+		_itemsImages[1].sprite = null;
+		_itemsImages[1].gameObject.SetActive(false);
 		
-		itemsTexts[0].text = null;
-		itemsTexts[0].gameObject.SetActive(false);
-		itemsImages[0].sprite = null;
-		itemsImages[0].gameObject.SetActive(false);
+		_itemsTexts[0].text = null;
+		_itemsTexts[0].gameObject.SetActive(false);
+		_itemsImages[0].sprite = null;
+		_itemsImages[0].gameObject.SetActive(false);
 		
 	}
 
 	private void HideCanvasHUDInteraction()
 	{
-		canvasHUDInteraction.gameObject.SetActive(false);
+		_canvasHUDinteraction.gameObject.SetActive(false);
 	
 	}
-
-
 
 	void Update()
 	{
@@ -136,38 +125,35 @@ public class InteractionController : MonoBehaviour
 			return;
 
 		// Если меню открыто или игрок мёртв — interactionRange = 0
-		if (menuManager.IsAnyMenuOpened || gameController.IsPlayerDead || menuManager.IsCutsceneMenuOpened)
+		if (_menuManager.IsAnyMenuOpened || _gameController.IsPlayerDead || _menuManager.IsCutsceneMenuOpened)
 		{
-			interactionRange = 0;
+			_interactionRange = 0;
 		}
 		else
 		{
 			// В остальных случаях определяем range по типу камеры
-			if (playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
-				interactionRange = 2.5f;
-			else if (playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
-				interactionRange = 2f + playerCameraController.PlayerCameraDistanceZ;
+			if (_playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
+				_interactionRange = 2.5f;
+			else if (_playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
+				_interactionRange = 2f + _playerCameraController.PlayerCameraDistanceZ;
 		}
 
-		if (mainInteractionText != null)
-			mainInteractionText.text = null;
+		if (_mainInteractionText != null)
+			_mainInteractionText.text = null;
 
-		if (showAdditionalHintCoroutine == null)
-			additionalInteractionText.text = null;
+		if (_showAdditionalHintCoroutine == null)
+			_additionalInteractionText.text = null;
 
-		if (playerCameraController != null)
+		if (_playerCameraController != null)
 		{
-			isHit = Physics.Raycast(playerCameraController.transform.position, playerCameraController.transform.forward, out hitInfo, interactionRange);
+			_isHit = Physics.Raycast(_playerCameraController.transform.position, _playerCameraController.transform.forward, out _hitInfo, _interactionRange);
 		}
 		
-
 		// Если у нас есть захваченный объект, запрещаем любое другое взаимодействие
 		if (CurrentPickableObject != null)
 		{
 			var pickableObj = CurrentPickableObject.GetComponent<IPickable>();
 			var throwableObj = CurrentPickableObject.GetComponent<IThrowable>();
-
-			
 
 			if (pickableObj != null && pickableObj.IsObjectPickedUp)
 			{
@@ -175,36 +161,36 @@ public class InteractionController : MonoBehaviour
 				if (throwableObj != null)
 				{
 					OnPickUpThrowable?.Invoke();
-					mainInteractionText.text = $"Отпустить {inputDevice.GetNameOfKeyInteract()}\nБросить {inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
-					ChangeLayerRecursively(previousInteractableObject, LayerMask.NameToLayer("Default"));
+					_mainInteractionText.text = $"Отпустить {_inputDevice.GetNameOfKeyInteract()}\nБросить {_inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
+					ChangeLayerRecursively(_previousInteractableObject, LayerMask.NameToLayer("Default"));
 				}
 				else
 				{
 					OnPickUpNonThrowable?.Invoke();
-					mainInteractionText.text = $"Отпустить на {inputDevice.GetNameOfKeyInteract()}";
-					ChangeLayerRecursively(previousInteractableObject, LayerMask.NameToLayer("Default"));
+					_mainInteractionText.text = $"Отпустить на {_inputDevice.GetNameOfKeyInteract()}";
+					ChangeLayerRecursively(_previousInteractableObject, LayerMask.NameToLayer("Default"));
 				}
 
 				// При нажатии кнопки освобождаем объект
-				if (inputDevice.GetKeyInteract() || gameController.IsPlayerDead)
+				if (_inputDevice.GetKeyInteract() || _gameController.IsPlayerDead)
 				{
 					OnGetRidOfPickable?.Invoke();
 					pickableObj.DropOffObject();
 					CurrentPickableObject = null;
-					if (playerBehaviour.WasPlayerArmed == true)
+					if (_playerBehaviour.WasPlayerArmed == true)
 					{
-						playerBehaviour.ArmPlayer();
+						_playerBehaviour.ArmPlayer();
 					}
 				}
 
-				if (throwableObj != null && inputDevice.GetKeyRightHandWeaponAttack())
+				if (throwableObj != null && _inputDevice.GetKeyRightHandWeaponAttack())
 				{
 					OnGetRidOfPickable?.Invoke();
 					throwableObj.ThrowObject();
 					CurrentPickableObject = null;
-					if (playerBehaviour.WasPlayerArmed == true)
+					if (_playerBehaviour.WasPlayerArmed == true)
 					{
-						playerBehaviour.ArmPlayer();
+						_playerBehaviour.ArmPlayer();
 					}
 				}
 
@@ -213,133 +199,130 @@ public class InteractionController : MonoBehaviour
 		}
 
 		// Нормальная обработка объектов
-		if (isHit && hitInfo.collider != null && hitInfo.collider.tag == "Interactable")
+		if (_isHit && _hitInfo.collider != null && _hitInfo.collider.tag == "Interactable")
 		{
-			var interactableObj = hitInfo.collider.GetComponent<IInteractable>();
-			var throwableObj = hitInfo.collider.GetComponent<IThrowable>();
-			var pickableObj = hitInfo.collider.GetComponent<IPickable>();
-			var gainedObject = hitInfo.collider.GetComponent<IInteractGainedItem>();
+			var interactableObj = _hitInfo.collider.GetComponent<IInteractable>();
+			var throwableObj = _hitInfo.collider.GetComponent<IThrowable>();
+			var pickableObj = _hitInfo.collider.GetComponent<IPickable>();
+			var gainedObject = _hitInfo.collider.GetComponent<IInteractGainedItem>();
 			//var usedObject = hitInfo.collider.GetComponent<IInteractUsedItem>();
 
 			if (interactableObj != null)
 			{
-				GameObject renderer = hitInfo.collider.gameObject;
+				GameObject renderer = _hitInfo.collider.gameObject;
 
 				if (renderer != null)
 				{
 					// Подсветка текущего объекта
-					currentInteractableObject = renderer;
+					_currentInteractableObject = renderer;
 
 					// Если сменился объект, меняем слои для правильного рендеринга
-					if (previousInteractableObject != null && previousInteractableObject != currentInteractableObject)
+					if (_previousInteractableObject != null && _previousInteractableObject != _currentInteractableObject)
 					{
-						ChangeLayerRecursively(previousInteractableObject, LayerMask.NameToLayer("Default"));
+						ChangeLayerRecursively(_previousInteractableObject, LayerMask.NameToLayer("Default"));
 					}
 
 					// Применяем новый слой Outline
-					ChangeLayerRecursively(currentInteractableObject, LayerMask.NameToLayer("Outline"));
+					ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Outline"));
 				}
 
-				if (currentInteractableObject != null)
+				if (_currentInteractableObject != null)
 				{
 					// Подсказка для взаимодействия
-					mainInteractionText.text = $"{interactableObj.InteractionHintMessageMain}\n{HUDInteraction_MainTextInteract} {inputDevice.GetNameOfKeyInteract()}";
+					_mainInteractionText.text = $"{interactableObj.InteractionHintMessageMain}\n{_HUDInteractionMainTextInteract} {_inputDevice.GetNameOfKeyInteract()}";
 					
 				}
 
 				// Если это стандартный объект IInteractable, обрабатываем нажатие
-				if (inputDevice.GetKeyInteract())
+				if (_inputDevice.GetKeyInteract())
 				{
-					
 					interactableObj.Interact();
 				
-
-
 					if (interactableObj.IsInteractionHintMessageAdditionalActive == true)
 					{
-						additionalInteractionText.text = interactableObj.InteractionHintMessageAdditional;
-						if (showAdditionalHintCoroutine != null)
-							StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
+						_additionalInteractionText.text = interactableObj.InteractionHintMessageAdditional;
+						if (_showAdditionalHintCoroutine != null)
+							StopCoroutine(_showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
 
-						showAdditionalHintCoroutine = StartCoroutine(ShowHintForSeconds());
+						_showAdditionalHintCoroutine = StartCoroutine(ShowHintForSeconds());
 					}
 					else
 					{
-						if (showAdditionalHintCoroutine != null)
+						if (_showAdditionalHintCoroutine != null)
 						{
-							StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
+							StopCoroutine(_showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
 						}
 
 						if (gainedObject != null)
 						{
-							if (!itemsTexts[0].gameObject.activeInHierarchy)
+							if (!_itemsTexts[0].gameObject.activeInHierarchy)
 							{
-								itemsTexts[0].gameObject.SetActive(true);
-								itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
+								_itemsTexts[0].gameObject.SetActive(true);
+								_itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
 
-								itemsImages[0].gameObject.SetActive(true);
-								if (gainedObject.GainedItemImage != null)
+								_itemsImages[0].gameObject.SetActive(true);
+								if (gainedObject.ImageGainedItem != null)
 								{
-									itemsImages[0].sprite = gainedObject.GainedItemImage;
+									_itemsImages[0].sprite = gainedObject.ImageGainedItem;
 								}
 								else
 								{
-									itemsImages[0].sprite = NoItemImageExeption;
+									_itemsImages[0].sprite = _noItemImageExeption;
 								}
 							}
-							else if (itemsTexts[0].gameObject.activeInHierarchy && !itemsTexts[1].gameObject.activeInHierarchy)
+							else if (_itemsTexts[0].gameObject.activeInHierarchy && !_itemsTexts[1].gameObject.activeInHierarchy)
 							{
-								itemsTexts[1].gameObject.SetActive(true);
-								itemsTexts[1].text = itemsTexts[0].text;
-								itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
+								_itemsTexts[1].gameObject.SetActive(true);
+								_itemsTexts[1].text = _itemsTexts[0].text;
+								_itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
 
-								itemsImages[1].gameObject.SetActive(true);
-								itemsImages[1].sprite = itemsImages[0].sprite;
-								if (gainedObject.GainedItemImage != null)
+								_itemsImages[1].gameObject.SetActive(true);
+								_itemsImages[1].sprite = _itemsImages[0].sprite;
+								if (gainedObject.ImageGainedItem != null)
 								{
-									itemsImages[0].sprite = gainedObject.GainedItemImage;
+									_itemsImages[0].sprite = gainedObject.ImageGainedItem;
 								}
 								else
 								{
-									itemsImages[0].sprite = NoItemImageExeption;
+									_itemsImages[0].sprite = _noItemImageExeption;
 								}
 							}
-							else if (itemsTexts[1].gameObject.activeInHierarchy && itemsTexts[0].gameObject.activeInHierarchy)
+							else if (_itemsTexts[1].gameObject.activeInHierarchy && _itemsTexts[0].gameObject.activeInHierarchy)
 							{
-								itemsTexts[2].gameObject.SetActive(true);
-								itemsTexts[2].text = itemsTexts[1].text;
-								itemsTexts[1].text = itemsTexts[0].text;
-								itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
+								_itemsTexts[2].gameObject.SetActive(true);
+								_itemsTexts[2].text = _itemsTexts[1].text;
+								_itemsTexts[1].text = _itemsTexts[0].text;
+								_itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
 
-								itemsImages[2].gameObject.SetActive(true);
-								itemsImages[2].sprite = itemsImages[1].sprite;
-								itemsImages[1].sprite = itemsImages[0].sprite;
-								if (gainedObject.GainedItemImage != null)
+								_itemsImages[2].gameObject.SetActive(true);
+								_itemsImages[2].sprite = _itemsImages[1].sprite;
+								_itemsImages[1].sprite = _itemsImages[0].sprite;
+								if (gainedObject.ImageGainedItem != null)
 								{
-									itemsImages[0].sprite = gainedObject.GainedItemImage;
+									_itemsImages[0].sprite = gainedObject.ImageGainedItem;
 								}
 								else
 								{
-									itemsImages[0].sprite = NoItemImageExeption;
+									_itemsImages[0].sprite = _noItemImageExeption;
 								}
 							}
-							else if (itemsTexts[2].gameObject.activeInHierarchy &&
-									 itemsTexts[0].gameObject.activeInHierarchy &&
-									 itemsTexts[1].gameObject.activeInHierarchy)
+							else if (_itemsTexts[2].gameObject.activeInHierarchy &&
+									 _itemsTexts[0].gameObject.activeInHierarchy &&
+									 _itemsTexts[1].gameObject.activeInHierarchy)
 							{
-								itemsTexts[2].text = itemsTexts[1].text;
-								itemsTexts[1].text = itemsTexts[0].text;
-								itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
+								_itemsTexts[2].text = _itemsTexts[1].text;
+								_itemsTexts[1].text = _itemsTexts[0].text;
+								_itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
 
-								itemsImages[2].sprite = itemsImages[1].sprite;
-								itemsImages[1].sprite = itemsImages[0].sprite;
-								if (gainedObject.GainedItemImage != null)
+								_itemsImages[2].sprite = _itemsImages[1].sprite;
+								_itemsImages[1].sprite = _itemsImages[0].sprite;
+								if (gainedObject.ImageGainedItem != null)
 								{
-									itemsImages[0].sprite = gainedObject.GainedItemImage;
+									_itemsImages[0].sprite = gainedObject.ImageGainedItem;
 								}
 								else
 								{
-									itemsImages[0].sprite = NoItemImageExeption;
+									_itemsImages[0].sprite = _noItemImageExeption;
 								}
 							}
 
@@ -349,7 +332,7 @@ public class InteractionController : MonoBehaviour
 
 					if (pickableObj != null && throwableObj == null)
 					{
-						playerBehaviour.DisarmPlayer();
+						_playerBehaviour.DisarmPlayer();
 					}
 
 					// Кэшируем захваченный объект, если это IPickable
@@ -367,30 +350,28 @@ public class InteractionController : MonoBehaviour
 		else
 		{
 			// Очистка текущих объектов
-			if (currentInteractableObject != null)
+			if (_currentInteractableObject != null)
 			{
-				ChangeLayerRecursively(currentInteractableObject, LayerMask.NameToLayer("Default"));
+				ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Default"));
 
-				if (showAdditionalHintCoroutine != null)
+				if (_showAdditionalHintCoroutine != null)
 				{
-					StopCoroutine(showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
-					additionalInteractionText.text = null;
+					StopCoroutine(_showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
+					_additionalInteractionText.text = null;
 				}
 			}
 
-			currentInteractableObject = null;
+			_currentInteractableObject = null;
 		}
 
-	
-
 		// Помечаем текущий объект как предыдущий
-		previousInteractableObject = currentInteractableObject;
+		_previousInteractableObject = _currentInteractableObject;
 	}
 
 	IEnumerator ShowHintForSeconds()
 	{
 		yield return new WaitForSeconds(1f); // Ждем
-		additionalInteractionText.text = null;
+		_additionalInteractionText.text = null;
 	}
 
 	IEnumerator ShowItemsGained()
@@ -398,29 +379,29 @@ public class InteractionController : MonoBehaviour
 		yield return new WaitForSeconds(2f);
 
 		// Начинаем проверку с третьего элемента (если активен)
-		if (itemsTexts[2].gameObject.activeInHierarchy)
+		if (_itemsTexts[2].gameObject.activeInHierarchy)
 		{
-			itemsTexts[2].text = null;
-			itemsTexts[2].gameObject.SetActive(false);
+			_itemsTexts[2].text = null;
+			_itemsTexts[2].gameObject.SetActive(false);
 
-			itemsImages[2].sprite = null;
-			itemsImages[2].gameObject.SetActive(false);
+			_itemsImages[2].sprite = null;
+			_itemsImages[2].gameObject.SetActive(false);
 		}
-		else if (itemsTexts[1].gameObject.activeInHierarchy)
+		else if (_itemsTexts[1].gameObject.activeInHierarchy)
 		{
-			itemsTexts[1].text = null;
-			itemsTexts[1].gameObject.SetActive(false);
+			_itemsTexts[1].text = null;
+			_itemsTexts[1].gameObject.SetActive(false);
 
-			itemsImages[1].sprite = null;
-			itemsImages[1].gameObject.SetActive(false);
+			_itemsImages[1].sprite = null;
+			_itemsImages[1].gameObject.SetActive(false);
 		}
-		else if (itemsTexts[0].gameObject.activeInHierarchy)
+		else if (_itemsTexts[0].gameObject.activeInHierarchy)
 		{
-			itemsTexts[0].text = null;
-			itemsTexts[0].gameObject.SetActive(false);
+			_itemsTexts[0].text = null;
+			_itemsTexts[0].gameObject.SetActive(false);
 
-			itemsImages[0].sprite = null;
-			itemsImages[0].gameObject.SetActive(false);
+			_itemsImages[0].sprite = null;
+			_itemsImages[0].gameObject.SetActive(false);
 		}
 	}
 

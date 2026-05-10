@@ -2,21 +2,21 @@
 
 public class NPCWeaponController : MonoBehaviour
 {
-	[SerializeField] private GameObject NPCWeapon;
+	[SerializeField] private GameObject _NPCweapon;
 	public Vector3 NPCWeaponSlotTransform { get; private set; }
-	private Transform palmTransform;
+	private Transform _palmTransform;
 
 	private void Start()
 	{
-		palmTransform = transform.Find("Armature_Human_Male_Strong/Root/Spine/Arm.R/Forearm.R/Palm.R");
+		_palmTransform = transform.Find("Armature_Human_Male_Strong/Root/Spine/Arm.R/Forearm.R/Palm.R");
 
-		if (palmTransform == null)
+		if (_palmTransform == null)
 		{
 			Debug.LogError("Palm transform not found!");
 			return;
 		}
 
-		GameObject weaponInstance = Instantiate(NPCWeapon);
+		GameObject weaponInstance = Instantiate(_NPCweapon);
 		WeaponAbstract weaponComponent = weaponInstance.GetComponent<WeaponAbstract>();
 
 		if (weaponComponent == null)
@@ -25,7 +25,7 @@ public class NPCWeaponController : MonoBehaviour
 			return;
 		}
 
-		weaponComponent.InstantiateWeapon(palmTransform);
+		weaponComponent.InstantiateWeapon(_palmTransform);
 	}
 
 	private void Update()

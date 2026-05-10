@@ -2,38 +2,30 @@
 
 public class HintMessageController : MonoBehaviour
 {
-	[SerializeField] private GameObject noteObject;
-	private Collider triggerZone;
+	[SerializeField] private GameObject _noteObject;
+	private Collider _triggerZone;
 
-	private InteractionObjectNote interactionNote;
-	private GameObject playerCollider;
+	private InteractionObjectNote _interactionNote;
+	private GameObject _playerCollider;
 
 	private void Awake()
 	{
-		// Получаем компонент заметки
-		interactionNote = noteObject.GetComponent<InteractionObjectNote>();
+		_interactionNote = _noteObject.GetComponent<InteractionObjectNote>();
 
-		// Получаем ссылку на игрока ОДИН РАЗ при старте
-		playerCollider = ServiceLocator.Resolve<GameObject>("PlayerColliderGameObject");
+		_playerCollider = ServiceLocator.Resolve<GameObject>("PlayerColliderGameObject");
 
-		// Настраиваем зону триггера
-	
+		_triggerZone = GetComponent<Collider>();
 
-		triggerZone = GetComponent<Collider>();
-
-		triggerZone.isTrigger = true;
+		_triggerZone.isTrigger = true;
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
-		// Срабатывает ТОЛЬКО для игрока, полученного из ServiceLocator
-		if (other.gameObject == playerCollider)
+		if (other.gameObject == _playerCollider)
 		{
-			// Вызываем метод взаимодействия с заметкой
-			interactionNote.Interact();
+			_interactionNote.Interact();
 
-			// Отключаем триггер, чтобы событие не повторялось
-			triggerZone.enabled = false;
+			_triggerZone.enabled = false;
 		}
 	}
 }

@@ -2,18 +2,18 @@
 
 public class InteractionFirstPersonRender : MonoBehaviour
 {
-	private PlayerCameraController playerCamera;
-	private InteractionController interactionController;
-	private GameSceneManager gameSceneManager;
+	private PlayerCameraController _playerCamera;
+	private InteractionController _interactionController;
+	private GameSceneManager _gameSceneManager;
 
-	private bool AreBothArmsBusy;
-	private bool IsRightArmBusy;
+	private bool _areBothArmsBusy;
+	private bool _isRightArmBusy;
 	private bool _isInitialized = false;
 
-	private GameObject PlayerFirstPersonHandRight;
-	private GameObject PlayerFirstPersonHandLeft;
-	private GameObject PlayerHandRightParent;
-	private GameObject PlayerHandLeftParent;
+	private GameObject _PlayerFirstPersonHandRight;
+	private GameObject _PlayerFirstPersonHandLeft;
+	private GameObject _PlayerThirdPersonRightHand;
+	private GameObject _PlayerThirdPersonLeftHand;
 
 	public void Initialize(
 		GameSceneManager gameSceneManager,
@@ -24,24 +24,24 @@ public class InteractionFirstPersonRender : MonoBehaviour
 		GameObject playerHandLeftParent,
 		InteractionController interactionController)
 	{
-		this.gameSceneManager = gameSceneManager;
-		this.playerCamera = playerCameraController;
+		_gameSceneManager = gameSceneManager;
+		_playerCamera = playerCameraController;
 
-		this.PlayerFirstPersonHandRight = playerFirstPersonHandRight;
-		this.PlayerFirstPersonHandLeft = playerFirstPersonHandLeft;
-		this.interactionController = interactionController;
-		this.PlayerHandRightParent = playerHandRightParent;
-		this.PlayerHandLeftParent = playerHandLeftParent;
+		_PlayerFirstPersonHandRight = playerFirstPersonHandRight;
+		_PlayerFirstPersonHandLeft = playerFirstPersonHandLeft;
+		_interactionController = interactionController;
+		_PlayerThirdPersonRightHand = playerHandRightParent;
+		_PlayerThirdPersonLeftHand = playerHandLeftParent;
 
-		this.gameSceneManager.OnBeginLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandRight);
-		this.gameSceneManager.OnBeginLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandLeft);
+		_gameSceneManager.OnBeginLoadMainMenuScene += () => HideFirstPersonHand(this._PlayerFirstPersonHandRight);
+		_gameSceneManager.OnBeginLoadMainMenuScene += () => HideFirstPersonHand(this._PlayerFirstPersonHandLeft);
 
-		this.interactionController.OnPickUpNonThrowable += () => AreBothArmsBusy = true;
-		this.interactionController.OnPickUpThrowable += () => IsRightArmBusy = true;
-		this.interactionController.OnGetRidOfPickable += () =>
+		_interactionController.OnPickUpNonThrowable += () => _areBothArmsBusy = true;
+		_interactionController.OnPickUpThrowable += () => _isRightArmBusy = true;
+		_interactionController.OnGetRidOfPickable += () =>
 		{
-			AreBothArmsBusy = false;
-			IsRightArmBusy = false;
+			_areBothArmsBusy = false;
+			_isRightArmBusy = false;
 		};
 
 		_isInitialized = true;
@@ -53,49 +53,49 @@ public class InteractionFirstPersonRender : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
 		{
-			if (AreBothArmsBusy)
+			if (_areBothArmsBusy)
 			{
-				ShowBodyPart(PlayerHandRightParent);
-				HideFirstPersonHand(PlayerFirstPersonHandRight);
-				ShowBodyPart(PlayerHandLeftParent);
-				HideFirstPersonHand(PlayerFirstPersonHandLeft);
+				ShowBodyPart(_PlayerThirdPersonRightHand);
+				HideFirstPersonHand(_PlayerFirstPersonHandRight);
+				ShowBodyPart(_PlayerThirdPersonLeftHand);
+				HideFirstPersonHand(_PlayerFirstPersonHandLeft);
 			}
-			else if (IsRightArmBusy)
+			else if (_isRightArmBusy)
 			{
-				HideBodyPart(PlayerHandRightParent);
-				ShowFirstPersonHand(PlayerFirstPersonHandRight);
+				HideBodyPart(_PlayerThirdPersonRightHand);
+				ShowFirstPersonHand(_PlayerFirstPersonHandRight);
 			}
 			else
 			{
-				ShowBodyPart(PlayerHandRightParent);
-				HideFirstPersonHand(PlayerFirstPersonHandRight);
-				ShowBodyPart(PlayerHandLeftParent);
-				HideFirstPersonHand(PlayerFirstPersonHandLeft);
+				ShowBodyPart(_PlayerThirdPersonRightHand);
+				HideFirstPersonHand(_PlayerFirstPersonHandRight);
+				ShowBodyPart(_PlayerThirdPersonLeftHand);
+				HideFirstPersonHand(_PlayerFirstPersonHandLeft);
 			}
 		}
 
-		if (playerCamera.CurrentPlayerCameraStateType == "ThirdPerson")
+		if (_playerCamera.CurrentPlayerCameraStateType == "ThirdPerson")
 		{
-			if (AreBothArmsBusy)
+			if (_areBothArmsBusy)
 			{
-				ShowBodyPart(PlayerHandRightParent);
-				HideFirstPersonHand(PlayerFirstPersonHandRight);
-				ShowBodyPart(PlayerHandLeftParent);
-				HideFirstPersonHand(PlayerFirstPersonHandLeft);
+				ShowBodyPart(_PlayerThirdPersonRightHand);
+				HideFirstPersonHand(_PlayerFirstPersonHandRight);
+				ShowBodyPart(_PlayerThirdPersonLeftHand);
+				HideFirstPersonHand(_PlayerFirstPersonHandLeft);
 			}
-			else if (IsRightArmBusy)
+			else if (_isRightArmBusy)
 			{
-				ShowBodyPart(PlayerHandRightParent);
-				HideFirstPersonHand(PlayerFirstPersonHandRight);
+				ShowBodyPart(_PlayerThirdPersonRightHand);
+				HideFirstPersonHand(_PlayerFirstPersonHandRight);
 			}
 			else
 			{
-				ShowBodyPart(PlayerHandRightParent);
-				HideFirstPersonHand(PlayerFirstPersonHandRight);
-				ShowBodyPart(PlayerHandLeftParent);
-				HideFirstPersonHand(PlayerFirstPersonHandLeft);
+				ShowBodyPart(_PlayerThirdPersonRightHand);
+				HideFirstPersonHand(_PlayerFirstPersonHandRight);
+				ShowBodyPart(_PlayerThirdPersonLeftHand);
+				HideFirstPersonHand(_PlayerFirstPersonHandLeft);
 			}
 		}
 	}

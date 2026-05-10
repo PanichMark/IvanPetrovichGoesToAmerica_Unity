@@ -1,75 +1,77 @@
 ﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class WeaponWheelMenuController : MonoBehaviour
 {
-	private GameObject wheelSegmentPrefab;                    
-	private GameObject WeaponWheelMenuCanvas;            
+	private GameObject _weaponWheelSegment;                    
+	private GameObject _weaponWheelMenuCanvas;            
 	public TextMeshProUGUI WeaponText { get; private set; }            
 	public TextMeshProUGUI WeaponWheelName { get; private set; }       
 
-	private List<GameObject> wheelSegments = new List<GameObject>();
-	private bool IsWeaponWheelActive = false;
-	private bool IsWeaponLeftHand = false;
+	private List<GameObject> _wheelSegments = new List<GameObject>();
+	private bool _isWeaponWheelActive = false;
+	private bool _isWeaponLeftHand = false;
 
 	public delegate void WeaponWheelMenuHandler(string activeHand);
 	public event WeaponWheelMenuHandler OnOpenWeaponWheelMenu;
 
-	private IInputDevice inputDevice;
-	private PlayerWeaponController weaponController;
-	private PlayerBehaviour playerBehaviour;
-	private MenuManager menuManager;
+	private IInputDevice _inputDevice;
+	private PlayerWeaponController _weaponController;
+	private PlayerBehaviour _playerBehaviour;
+	private MenuManager _menuManager;
 
-	private bool isHoveringOverButton;
-	private bool previousRightHandPressed = false;
-	private bool previousLeftHandPressed = false;
-
-	private float radius = 130;
+	private bool _isHoveringOverButton;
+	private bool _previousRightHandPressed = false;
+	private bool _previousLeftHandPressed = false;
+	private bool _isInitialized = false;
+	private float _radius = 130;
 
 	public event System.Action<int> OnSegmentSelected;
 
 	public Image WeaponIcon {  get; private set; }
+
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, PlayerWeaponController weaponController,
-		GameObject wheelSegmentPrefab, GameObject WeaponWheelMenuCanvas, TextMeshProUGUI WeaponText, TextMeshProUGUI WeaponWheelName, Image weaponIconBig)
+		GameObject wheelSegmentPrefab, GameObject weaponWheelMenuCanvas, TextMeshProUGUI weaponText, TextMeshProUGUI weaponWheelName, Image weaponIconBig)
 	{
-		this.inputDevice = inputDevice;
-		this.playerBehaviour = playerBehaviour;
-		this.weaponController = weaponController;
-		this.menuManager = menuManager;
-		this.wheelSegmentPrefab = wheelSegmentPrefab;
-		this.WeaponWheelMenuCanvas = WeaponWheelMenuCanvas;
-		this.WeaponText = WeaponText;
-		this.WeaponWheelName = WeaponWheelName;
-		this.WeaponIcon = weaponIconBig;
+		_inputDevice = inputDevice;
+		_playerBehaviour = playerBehaviour;
+		_weaponController = weaponController;
+		_menuManager = menuManager;
+		_weaponWheelSegment = wheelSegmentPrefab;
+		_weaponWheelMenuCanvas = weaponWheelMenuCanvas;
+		WeaponText = weaponText;
+		WeaponWheelName = weaponWheelName;
+		WeaponIcon = weaponIconBig;
 
-		this.WeaponWheelMenuCanvas.gameObject.SetActive(false);
+		_weaponWheelMenuCanvas.gameObject.SetActive(false);
 		_isInitialized = true;
-		Debug.Log("WeaponWheel Initialized");
 
-		this.weaponController.OnWeaponUnlocked += OnWeaponUnlocked;
+		_weaponController.OnWeaponUnlocked += OnWeaponUnlocked;
+
+		Debug.Log("WeaponWheel Initialized");
 	}
 
 	private void OnWeaponUnlocked(GameObject weaponPrefab)
 	{
 		RecreateWheel();
 	}
-	private bool _isInitialized = false;
+	
 	void Update()
 	{
 		if (!_isInitialized)
 			return;
-		bool currentRightHandPressed = inputDevice.GetKeyRightHandWeaponWheel();
-		bool currentLeftHandPressed = inputDevice.GetKeyLeftHandWeaponWheel();
+		bool currentRightHandPressed = _inputDevice.GetKeyRightHandWeaponWheel();
+		bool currentLeftHandPressed = _inputDevice.GetKeyLeftHandWeaponWheel();
 
-		if ((currentRightHandPressed != previousRightHandPressed || currentLeftHandPressed != previousLeftHandPressed) && weaponController.hasAnyWeapon)
+		if ((currentRightHandPressed != _previousRightHandPressed || currentLeftHandPressed != _previousLeftHandPressed) && _weaponController.hasAnyWeapon)
 		{
 			HandleWeaponWheel(currentRightHandPressed, currentLeftHandPressed);
 		}
 
-		previousRightHandPressed = currentRightHandPressed;
-		previousLeftHandPressed = currentLeftHandPressed;
+		_previousRightHandPressed = currentRightHandPressed;
+		_previousLeftHandPressed = currentLeftHandPressed;
 	}
 
 	void HandleWeaponWheel(bool rightHandPressed, bool leftHandPressed)
@@ -78,8 +80,8 @@ public class WeaponWheelMenuController : MonoBehaviour
 		{
 			OnOpenWeaponWheelMenu?.Invoke("right");
 			EnableWeaponWheelMenuCanvas();
-			IsWeaponWheelActive = true;
-			IsWeaponLeftHand = false;
+			_isWeaponWheelActive = true;
+			_isWeaponLeftHand = false;
 			ShowWeaponName();
 			ShowWeaponIcon();
 			WeaponWheelName.text = "ПРАВАЯ РУКА";
@@ -88,8 +90,8 @@ public class WeaponWheelMenuController : MonoBehaviour
 		{
 			OnOpenWeaponWheelMenu?.Invoke("left");
 			EnableWeaponWheelMenuCanvas();
-			IsWeaponWheelActive = true;
-			IsWeaponLeftHand = true;
+			_isWeaponWheelActive = true;
+			_isWeaponLeftHand = true;
 			ShowWeaponName();
 			ShowWeaponIcon();
 			WeaponWheelName.text = "ЛЕВАЯ РУКА";
@@ -97,13 +99,13 @@ public class WeaponWheelMenuController : MonoBehaviour
 		else
 		{
 			DisableWeaponWheelMenuCanvas();
-			IsWeaponWheelActive = false;
+			_isWeaponWheelActive = false;
 		}
 	}
 
 	void CreateWheel()
 	{
-		List<GameObject> activeWeapons = weaponController.CollectActiveWeapons();
+		List<GameObject> activeWeapons = _weaponController.CollectActiveWeapons();
 
 		if (activeWeapons.Count == 0)
 			return;
@@ -119,10 +121,10 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 		for (int i = 0; i < activeWeapons.Count; i++)
 		{
-			GameObject segmentInstance = Instantiate(wheelSegmentPrefab);
+			GameObject segmentInstance = Instantiate(_weaponWheelSegment);
 			segmentInstance.name = $"Segment {i + 1}";
 
-			segmentInstance.transform.SetParent(WeaponWheelMenuCanvas.transform, false);
+			segmentInstance.transform.SetParent(_weaponWheelMenuCanvas.transform, false);
 
 			Button button = segmentInstance.GetComponent<Button>();
 			button.onClick.AddListener(() => OnSegmentSelected?.Invoke(i));
@@ -157,16 +159,16 @@ public class WeaponWheelMenuController : MonoBehaviour
 			iconRectTransform.pivot = new Vector2(0.5f, 0.5f);
 
 			float adjustedAngle = i * angleStep + 90f;
-			Vector3 positionOnCircle = CalculatePositionOnCircle(adjustedAngle, radius);
+			Vector3 positionOnCircle = CalculatePositionOnCircle(adjustedAngle, _radius);
 			segmentInstance.transform.localPosition = positionOnCircle;
 
 			WeaponWheelMenuButton buttonScript = segmentInstance.GetComponent<WeaponWheelMenuButton>();
 			if (buttonScript != null)
 			{
-				buttonScript.Initialize(weaponController, this, activeWeapons[i], weaponComponent);
+				buttonScript.Initialize(_weaponController, this, activeWeapons[i], weaponComponent);
 			}
 
-			wheelSegments.Add(segmentInstance);
+			_wheelSegments.Add(segmentInstance);
 		}
 	}
 
@@ -179,56 +181,56 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 	public void RecreateWheel()
 	{
-		foreach (var seg in wheelSegments)
+		foreach (var seg in _wheelSegments)
 			Destroy(seg.gameObject);
 
-		wheelSegments.Clear();
+		_wheelSegments.Clear();
 		CreateWheel();
 	}
 
 	private void EnableWeaponWheelMenuCanvas()
 	{
-		WeaponWheelMenuCanvas.gameObject.SetActive(true);
-		menuManager.OpenWeaponWheelMenu();
+		_weaponWheelMenuCanvas.gameObject.SetActive(true);
+		_menuManager.OpenWeaponWheelMenu();
 	}
 
 	private void DisableWeaponWheelMenuCanvas()
 	{
-		WeaponWheelMenuCanvas.gameObject.SetActive(false);
-		if (!menuManager.IsPauseMenuOpened)
+		_weaponWheelMenuCanvas.gameObject.SetActive(false);
+		if (!_menuManager.IsPauseMenuOpened)
 		{
-			menuManager.CloseWeaponWheelMenu();
+			_menuManager.CloseWeaponWheelMenu();
 		}
 	}
 
 	public void ShowWeaponIcon()
 	{
-		if (IsWeaponLeftHand)
+		if (_isWeaponLeftHand)
 		{
-			if (weaponController.LeftHandWeapon != null)
+			if (_weaponController.LeftHandWeapon != null)
 			{
 				WeaponIcon.gameObject.SetActive(true);
-				WeaponIcon.sprite = weaponController.leftHandWeaponComponent.WeaponIcon;
+				WeaponIcon.sprite = _weaponController.leftHandWeaponComponent.WeaponIcon;
 			}
 			else
 			{
-				if (!isHoveringOverButton)
+				if (!_isHoveringOverButton)
 				{
 					WeaponIcon.gameObject.SetActive(false);
 				}
 				WeaponIcon.sprite = null;
 			}
 		}
-		else if (IsWeaponLeftHand == false)
+		else if (_isWeaponLeftHand == false)
 		{
-			if (weaponController.RightHandWeapon != null)
+			if (_weaponController.RightHandWeapon != null)
 			{
 				WeaponIcon.gameObject.SetActive(true);
-				WeaponIcon.sprite = weaponController.rightHandWeaponComponent.WeaponIcon;
+				WeaponIcon.sprite = _weaponController.rightHandWeaponComponent.WeaponIcon;
 			}
 			else
 			{
-				if (!isHoveringOverButton)
+				if (!_isHoveringOverButton)
 				{
 					WeaponIcon.gameObject.SetActive(false);
 				}
@@ -239,22 +241,22 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 	public void ShowWeaponName()
 	{
-		if (IsWeaponLeftHand)
+		if (_isWeaponLeftHand)
 		{
-			if (weaponController.LeftHandWeapon != null)
+			if (_weaponController.LeftHandWeapon != null)
 			{
-				WeaponText.text = weaponController.leftHandWeaponComponent.WeaponNameUI;
+				WeaponText.text = _weaponController.leftHandWeaponComponent.WeaponNameUI;
 			}
 			else
 			{
 				WeaponText.text = "";
 			}
 		}
-		else if (IsWeaponLeftHand == false)
+		else if (_isWeaponLeftHand == false)
 		{
-			if (weaponController.RightHandWeapon != null)
+			if (_weaponController.RightHandWeapon != null)
 			{
-				WeaponText.text = weaponController.rightHandWeaponComponent.WeaponNameUI;
+				WeaponText.text = _weaponController.rightHandWeaponComponent.WeaponNameUI;
 			}
 			else
 			{

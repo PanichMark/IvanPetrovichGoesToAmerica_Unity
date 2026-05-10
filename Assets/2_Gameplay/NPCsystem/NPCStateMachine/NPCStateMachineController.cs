@@ -7,26 +7,26 @@ public class NPCStateMachineController : MonoBehaviour
 {
 	public delegate void StateChangeHandler();
 
-	[SerializeField] private NPCStateTypes initialState = NPCStateTypes.StationaryAction;
-	private float animationDuration = 99999f;
-	private float initialRotationY;
-	private GameObject cachedPlayer;
+	[SerializeField] private NPCStateTypes _initialState = NPCStateTypes.StationaryAction;
+	private float _animationDuration = 99999f;
+	private float _initialRotationY;
+	private GameObject _cachedPlayer;
 
-	[SerializeField] private List<GameObject> anchorPoints = new List<GameObject>();
-	[SerializeField] private List<AnchorPointStop> stopConfigs = new List<AnchorPointStop>();
+	[SerializeField] private List<GameObject> _anchorPoints = new List<GameObject>();
+	[SerializeField] private List<AnchorPointStop> _stopConfigs = new List<AnchorPointStop>();
 
-	private AbstractNPCState npcState;
-	private NPCStateTypes npcStateType;
-	private NPCAbstract npcAbstract;
-	private NavMeshAgent navMeshAgent;
-	private int nextIndex = 0;
-	private GameObject lastVisitedStopPoint;
-	private Coroutine currentMovementCoroutine;
+	private AbstractNPCState _NPCstate;
+	private NPCStateTypes _NPCstateType;
+	private NPCAbstract _NPCabstract;
+	private NavMeshAgent _navMeshAgent;
+	private int _nextIndex = 0;
+	private GameObject _lastVisitedStopPoint;
+	private Coroutine _currentMovementCoroutine;
 
 	public string CurrentNPCState { get; private set; } = "StationaryAction";
-	public List<AnchorPointStop> StopConfigs => stopConfigs;
-	public List<GameObject> AnchorPoints => anchorPoints;
-	public float AnimationDuration => animationDuration;
+	public List<AnchorPointStop> StopConfigs => _stopConfigs;
+	public List<GameObject> AnchorPoints => _anchorPoints;
+	public float AnimationDuration => _animationDuration;
 	public Coroutine currentRotationCoroutine { get; private set; }
 
 	public bool IsAtPosition(Vector3 position, float tolerance = 1f)
@@ -36,31 +36,31 @@ public class NPCStateMachineController : MonoBehaviour
 
 	public int FindLastVisitedStopIndex()
 	{
-		if (lastVisitedStopPoint == null)
+		if (_lastVisitedStopPoint == null)
 			return -1;
-		return anchorPoints.FindIndex(point => point == lastVisitedStopPoint);
+		return _anchorPoints.FindIndex(point => point == _lastVisitedStopPoint);
 	}
 
 	public void SetLastVisitedStopPoint(GameObject point)
 	{
-		lastVisitedStopPoint = point;
+		_lastVisitedStopPoint = point;
 	}
 
 	public GameObject GetLastVisitedStopPoint()
 	{
-		return lastVisitedStopPoint;
+		return _lastVisitedStopPoint;
 	}
 
 	void Start()
 	{
-		navMeshAgent = GetComponent<NavMeshAgent>();
-		initialRotationY = transform.eulerAngles.y;
-		cachedPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
-		npcAbstract = GetComponent<NPCAbstract>();
+		_navMeshAgent = GetComponent<NavMeshAgent>();
+		_initialRotationY = transform.eulerAngles.y;
+		_cachedPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
+		_NPCabstract = GetComponent<NPCAbstract>();
 
-		SetNPCState(initialState);
+		SetNPCState(_initialState);
 
-		if (initialState == NPCStateTypes.Dead)
+		if (_initialState == NPCStateTypes.Dead)
 			TurnNavmeshOff();
 		else
 			TurnNavmeshOn();
@@ -69,7 +69,7 @@ public class NPCStateMachineController : MonoBehaviour
 	private IEnumerator RotateTowardsPlayerCoroutine()
 	{
 		float rotationSpeed = 160f;
-		Vector3 direction = cachedPlayer.transform.position - transform.position;
+		Vector3 direction = _cachedPlayer.transform.position - transform.position;
 		float desiredYAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
 		Quaternion startRotation = transform.rotation;
 		Quaternion endRotation = Quaternion.Euler(0, desiredYAngle, 0);
@@ -100,23 +100,23 @@ public class NPCStateMachineController : MonoBehaviour
 
 		while (true)
 		{
-			if (anchorPoints.Count > 0)
+			if (_anchorPoints.Count > 0)
 			{
-				if (lastVisitedStopPoint != null)
+				if (_lastVisitedStopPoint != null)
 					lastVisitIndex = FindLastVisitedStopIndex();
 				else
-					lastVisitIndex = nextIndex++;
+					lastVisitIndex = _nextIndex++;
 
-				GameObject targetPoint = anchorPoints[nextIndex];
-				navMeshAgent.destination = targetPoint.transform.position;
-				while (navMeshAgent.pathPending || navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance)
+				GameObject targetPoint = _anchorPoints[_nextIndex];
+				_navMeshAgent.destination = targetPoint.transform.position;
+				while (_navMeshAgent.pathPending || _navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
 					yield return null;
-				lastVisitedStopPoint = anchorPoints[nextIndex];
+				_lastVisitedStopPoint = _anchorPoints[_nextIndex];
 			}
 
-			nextIndex++;
-			if (nextIndex >= anchorPoints.Count)
-				nextIndex = 0;
+			_nextIndex++;
+			if (_nextIndex >= _anchorPoints.Count)
+				_nextIndex = 0;
 		}
 	}
 
@@ -124,7 +124,7 @@ public class NPCStateMachineController : MonoBehaviour
 	{
 		if (currentRotationCoroutine != null)
 			StopCoroutine(currentRotationCoroutine);
-		currentRotationCoroutine = StartCoroutine(RotateBackCoroutine(initialRotationY));
+		currentRotationCoroutine = StartCoroutine(RotateBackCoroutine(_initialRotationY));
 	}
 
 	private IEnumerator RotateBackCoroutine(float targetYAngle)
@@ -149,7 +149,7 @@ public class NPCStateMachineController : MonoBehaviour
 
 	private void Update()
 	{
-		npcState.Update();
+		_NPCstate.Update();
 	}
 
 	public IEnumerator RandomMoveCoroutine()
@@ -177,45 +177,45 @@ public class NPCStateMachineController : MonoBehaviour
 
 	public void StartRandomMove()
 	{
-		currentMovementCoroutine = StartCoroutine(RandomMoveCoroutine());
+		_currentMovementCoroutine = StartCoroutine(RandomMoveCoroutine());
 	}
 
 	public void StopRandomMove()
 	{
-		if (currentMovementCoroutine != null)
+		if (_currentMovementCoroutine != null)
 		{
-			StopCoroutine(currentMovementCoroutine);
-			currentMovementCoroutine = null;
+			StopCoroutine(_currentMovementCoroutine);
+			_currentMovementCoroutine = null;
 		}
 	}
 
 	public void StartAnchorMove()
 	{
-		currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCoroutine());
+		_currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCoroutine());
 	}
 
 	public void StopAnchorMove()
 	{
-		if (currentMovementCoroutine != null)
+		if (_currentMovementCoroutine != null)
 		{
-			StopCoroutine(currentMovementCoroutine);
-			currentMovementCoroutine = null;
+			StopCoroutine(_currentMovementCoroutine);
+			_currentMovementCoroutine = null;
 		}
 	}
 
 	public void TurnNavmeshOn()
 	{
-		navMeshAgent.enabled = true;
+		_navMeshAgent.enabled = true;
 	}
 
 	public void TurnNavmeshOff()
 	{
-		navMeshAgent.enabled = false;
+		_navMeshAgent.enabled = false;
 	}
 
 	public void SetNPCState(NPCStateTypes stateType, float animDuration)
 	{
-		animationDuration = animDuration;
+		_animationDuration = animDuration;
 		SetNPCState(stateType);
 	}
 
@@ -225,15 +225,15 @@ public class NPCStateMachineController : MonoBehaviour
 
 		if (playerMovementStateType == NPCStateTypes.StationaryAction)
 		{
-			newState = new StationaryActionNPCState(this, animationDuration);
+			newState = new StationaryActionNPCState(this, _animationDuration);
 			CurrentNPCState = "StationaryAction";
-			npcAbstract.gameObject.tag = "Interactable";
+			_NPCabstract.gameObject.tag = "Interactable";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Patrolling)
 		{
 			newState = new PatrollingNPCState(this);
 			CurrentNPCState = "Patrolling";
-			npcAbstract.gameObject.tag = "Interactable";
+			_NPCabstract.gameObject.tag = "Interactable";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Interested)
 			newState = new InterestedNPCState();
@@ -251,7 +251,7 @@ public class NPCStateMachineController : MonoBehaviour
 		{
 			newState = new ScaredNPCState();
 			CurrentNPCState = "Scared";
-			npcAbstract.gameObject.tag = "Untagged";
+			_NPCabstract.gameObject.tag = "Untagged";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Fleeing)
 			newState = new FleeingNPCState();
@@ -272,9 +272,9 @@ public class NPCStateMachineController : MonoBehaviour
 			newState = new StandingUpNPCState();
 		else if (playerMovementStateType == NPCStateTypes.Dead)
 		{
-			if (!npcAbstract.IsNPCdead)
-				npcAbstract.SetHealthToZero();
-			npcAbstract.ConvertToPickableObject();
+			if (!_NPCabstract.IsNPCdead)
+				_NPCabstract.SetHealthToZero();
+			_NPCabstract.ConvertToPickableObject();
 			newState = new DeadNPCState(this);
 			CurrentNPCState = "Dead";
 		}
@@ -284,6 +284,6 @@ public class NPCStateMachineController : MonoBehaviour
 			return;
 		}
 
-		npcState = newState;
+		_NPCstate = newState;
 	}
 }

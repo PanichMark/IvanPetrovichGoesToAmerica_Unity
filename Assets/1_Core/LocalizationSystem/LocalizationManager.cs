@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-
 public class LocalizationManager
 {
 	private Dictionary<string, Dictionary<string, string>> _localizations = new Dictionary<string, Dictionary<string, string>>();
 
-	public LanguagesEnum CurrentLanguage { get; private set; } = LanguagesEnum.English; // Начальный язык по умолчанию
+	public LanguagesEnum CurrentLanguage { get; private set; } = LanguagesEnum.English; 
 	public delegate void ChangeLanguageEvent();
 	public event ChangeLanguageEvent OnLanguageChangeEvent;
+
 	public LocalizationManager()
 	{
 		LoadFromCsv();
@@ -18,15 +18,11 @@ public class LocalizationManager
 		Debug.Log("Localization Manager Initialized");
 	}
 
-
 	public void ChangeLanguage(LanguagesEnum language)
 	{
 		CurrentLanguage = language;
-		//Debug.Log($"Lozalization{language} Initialized");
 		OnLanguageChangeEvent?.Invoke();
 	}
-
-	
 
 	public string GetLocalizedString(string key)
 	{
@@ -60,7 +56,7 @@ public class LocalizationManager
 				if (values.Length >= 3)
 				{
 					string key = values[0];
-					string ruValue = values[1].Trim('"'); // Удаляем возможные двойные кавычки
+					string ruValue = values[1].Trim('"'); 
 					string enValue = values[2].Trim('"');
 
 					if (!_localizations.ContainsKey(key))
@@ -72,6 +68,7 @@ public class LocalizationManager
 			}
 		}
 	}
+
 	public string GetLocalizedText(TextAsset textFilePath)
 	{
 
@@ -90,6 +87,5 @@ public class LocalizationManager
 			default:
 				throw new NotImplementedException("Данный язык пока не поддерживается");
 		}
-
 	}
 }

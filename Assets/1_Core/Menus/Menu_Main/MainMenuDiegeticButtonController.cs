@@ -1,99 +1,91 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MainMenuDiegeticButtonController : MonoBehaviour
 {
-	public Material defaultMaterial;     // Материал по умолчанию
-	public Material hoverMaterial;      // Материал при наведении (белый)
+	public Material defaultMaterial;     
+	public Material hoverMaterial;     
 
-	private static List<MainMenuDiegeticButtonController> instances = new List<MainMenuDiegeticButtonController>();
+	private static List<MainMenuDiegeticButtonController> _instances = new List<MainMenuDiegeticButtonController>();
 
-	private PlayerCameraBlurFilter playerCameraBlurFilter;
-	private MainMenuReadNews mainMenuReadNews;
-	private PauseMenuController pauseMenuController;
-	private GameController gameController;
+	private PlayerCameraBlurFilter _playerCameraBlurFilter;
+	private MainMenuReadNewsController _mainMenuReadNews;
+	private PauseMenuController _pauseMenuController;
+	private GameController _gameController;
 	private Renderer _renderer;
-	private GameSceneManager gameSceneManager;
-	private Collider collider;
-	private SaveLoadController saveLoadController;
-	private MenuManager menuManager;
+	private GameSceneManager _gameSceneManager;
+	private Collider _collider;
+	private SaveLoadController _saveLoadController;
+	private MenuManager _menuManager;
 	private KeyCode _keyCloseMenu;
 
-	[SerializeField] private GameObject DiegeticText;
+	[SerializeField] private GameObject _DiegeticText;
 
 	void Awake()
 	{
-		// Регистрация текущего экземпляра компонента в списке экземпляров
-		instances.Add(this);
+		_instances.Add(this);
 		_keyCloseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
 	}
 
 	void OnDestroy()
 	{
-		instances.Remove(this);
-		menuManager.OnCloseAnyMenu -= () => DiegeticText.SetActive(true);
-		mainMenuReadNews.OnCloseMainMenuReadNews -= () => DiegeticText.SetActive(true);
-		mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
-		mainMenuReadNews.OnCloseMainMenuReadNews -= playerCameraBlurFilter.DeactivateCameraBlur;
-		pauseMenuController.OnClosePauseSubMenu -= EnableAllColliders;
+		_instances.Remove(this);
+		_menuManager.OnCloseAnyMenu -= () => _DiegeticText.SetActive(true);
+		_mainMenuReadNews.OnCloseMainMenuReadNews -= () => _DiegeticText.SetActive(true);
+		_mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
+		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
+		_pauseMenuController.OnClosePauseSubMenu -= EnableAllColliders;
 	}
 
 	void Start()
 	{
-		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_renderer = GetComponent<Renderer>();
-		pauseMenuController = ServiceLocator.Resolve<PauseMenuController>("PauseMenuController");
-		gameController = ServiceLocator.Resolve<GameController>("GameController");
-		collider = GetComponent<Collider>();
-		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
-		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNews>("MainMenuReadNews");
-		playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
+		_pauseMenuController = ServiceLocator.Resolve<PauseMenuController>("PauseMenuController");
+		_gameController = ServiceLocator.Resolve<GameController>("GameController");
+		_collider = GetComponent<Collider>();
+		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
+		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		_mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNewsController>("MainMenuReadNews");
+		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
 
 
-		mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
-		mainMenuReadNews.OnCloseMainMenuReadNews += () => {
-			if (DiegeticText != null)
+		_mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
+		_mainMenuReadNews.OnCloseMainMenuReadNews += () =>
+		{
+			if (_DiegeticText != null)
 			{
-				DiegeticText.SetActive(true);
+				_DiegeticText.SetActive(true);
 			}
 		};
-		mainMenuReadNews.OnCloseMainMenuReadNews += playerCameraBlurFilter.DeactivateCameraBlur;
+		_mainMenuReadNews.OnCloseMainMenuReadNews += _playerCameraBlurFilter.DeactivateCameraBlur;
 
-		pauseMenuController.OnClosePauseSubMenu += EnableAllColliders;
+		_pauseMenuController.OnClosePauseSubMenu += EnableAllColliders;
 
-		// Обработчик с проверкой наличия объекта
-		menuManager.OnCloseAnyMenu += () => {
-			if (DiegeticText != null)
+		_menuManager.OnCloseAnyMenu += () =>
+		{
+			if (_DiegeticText != null)
 			{
-				DiegeticText.SetActive(true);
+				_DiegeticText.SetActive(true);
 			}
 		};
 	}
 
-	
-
 	private void Update()
 	{
-		if (Input.GetKeyDown(_keyCloseMenu) && menuManager.PauseMenuLevel.Count == 1)
+		if (Input.GetKeyDown(_keyCloseMenu) && _menuManager.PauseMenuLevel.Count == 1)
 		{
-			menuManager.CloseAnyMenu();
-			DiegeticText.SetActive(true);
-			pauseMenuController.ClosePauseSubMenu();
-		
-			//EnableAllColliders();
-			//Debug.Log("BRUH!");
+			_menuManager.CloseAnyMenu();
+			_DiegeticText.SetActive(true);
+			_pauseMenuController.ClosePauseSubMenu();
 		}
 
-		if (Input.GetKeyDown(_keyCloseMenu) && mainMenuReadNews.IsMainMenuReadNewsOpened)
+		if (Input.GetKeyDown(_keyCloseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)
 		{
-			mainMenuReadNews.HideCanvasMainMenuReadNews();
-			playerCameraBlurFilter.DeactivateCameraBlur();
+			_mainMenuReadNews.HideCanvasMainMenuReadNews();
+			_playerCameraBlurFilter.DeactivateCameraBlur();
 		}
-
-
 	}
 
 	void OnMouseEnter()
@@ -108,23 +100,20 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		// Отключение коллайдеров у всех объектов с данным компонентом
-
 		if (name == "NewGame")
 		{
 			Debug.Log("START NEW GAME");
 			DisableAllColliders();
-			gameController.CloseMainMenu();
+			_gameController.CloseMainMenu();
 			StartCoroutine(StartNewGame());
-
 		}
 		else if (name == "LoadGame")
 		{
 			Debug.Log("OPEN LOAD GAME");
-			DiegeticText.SetActive(false);
+			_DiegeticText.SetActive(false);
 			DisableAllColliders();
-			menuManager.OpenAnyMenu();
-			pauseMenuController.OpenLoadSubMenu();
+			_menuManager.OpenAnyMenu();
+			_pauseMenuController.OpenLoadSubMenu();
 		}
 		else if (this.name == "ExitGame")
 		{
@@ -134,38 +123,35 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (this.name == "Options")
 		{
 			Debug.Log("OPEN OPTIONS");
-			DiegeticText.SetActive(false);
+			_DiegeticText.SetActive(false);
 			DisableAllColliders();
-			menuManager.OpenAnyMenu();
-			pauseMenuController.OpenSettingsSubMenu();
+			_menuManager.OpenAnyMenu();
+			_pauseMenuController.OpenSettingsSubMenu();
 		}
 		else if (this.name == "ReadNews")
 		{
 			Debug.Log("OPEN NEWS");
-			DiegeticText.SetActive(false);
-			mainMenuReadNews.ShowCanvasMainMenuReadNews();
+			_DiegeticText.SetActive(false);
+			_mainMenuReadNews.ShowCanvasMainMenuReadNews();
 			DisableAllColliders();
-			playerCameraBlurFilter.ActivateCameraBlur();
-			//menuManager.OpenAnyMenu();
+			_playerCameraBlurFilter.ActivateCameraBlur();
 		}
 	}
 
-	// Методы для обработки коллайдеров всех объектов с данным компонентом
 	public void EnableAllColliders()
 	{
-		foreach (var instance in instances)
+		foreach (var instance in _instances)
 		{
-			var colliderInstance = instance.collider;
-				colliderInstance.enabled = true;
+			var colliderInstance = instance._collider;
+			colliderInstance.enabled = true;
 		}
 	}
 
-	// Методы для обработки коллайдеров всех объектов с данным компонентом
 	private void DisableAllColliders()
 	{
-		foreach (var instance in instances)
+		foreach (var instance in _instances)
 		{
-			var colliderInstance = instance.collider;
+			var colliderInstance = instance._collider;
 			colliderInstance.enabled = false;
 		}
 	}
@@ -173,8 +159,8 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	IEnumerator StartNewGame()
 	{
 		DontDestroyOnLoad(gameObject);
-		yield return StartCoroutine(saveLoadController.NewGame());
-		yield return StartCoroutine(gameSceneManager.LoadGameplayScene(GameScenesEnum.Scene_0_Test));
+		yield return StartCoroutine(_saveLoadController.NewGame());
+		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesEnum.Scene_0_Test));
 		
 		Destroy(gameObject);
 	}

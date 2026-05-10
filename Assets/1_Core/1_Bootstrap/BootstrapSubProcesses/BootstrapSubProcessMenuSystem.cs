@@ -9,14 +9,14 @@ public class BootstrapSubProcessMenuSystem
 	private GameController _gameController;
 	private GameSceneManager _gameSceneManager;
 	private SaveLoadController _saveLoadController;
-	private GameObject _playerCameraGameObject;
+	private GameObject _gameObjectPlayerCamera;
 
 	// Меню
-	private GameObject _menuManagerGameobject;
+	private GameObject _gameObjectBootstrapMenuSystem;
 	public MenuManager MenuManager { get; private set; }
 
 	// Главное меню
-	private MainMenuReadNews _mainMenuReadNews;
+	private MainMenuReadNewsController _mainMenuReadNewsController;
 	private GameObject _canvasMainMenuReadNews;
 	private Button _buttonCloseMainMenuReadNews;
 
@@ -25,7 +25,7 @@ public class BootstrapSubProcessMenuSystem
 	private GameObject _canvasMenuConfirmAction;
 	private GameObject _buttonConfirmAction;
 	private GameObject _buttonCancelAction;
-	private GameObject _textConfirmationMessage;
+	private GameObject _textConfirmActionMessage;
 
 	// Меню паузы
 	private PauseMenuController _pauseMenuController;
@@ -37,7 +37,7 @@ public class BootstrapSubProcessMenuSystem
 	private GameObject _canvasPauseSubMenuSave;
 	private GameObject[] _buttonsRewriteGameFile;
 	private GameObject[] _buttonsDeleteGameFile;
-	private GameObject _buttonSaveNewGameFile;
+	private GameObject _buttonCreateNewGameFile;
 	private GameObject _buttonClosePauseSubMenuSave;
 
 	// Подменю загрузки
@@ -59,10 +59,10 @@ public class BootstrapSubProcessMenuSystem
 	private GameObject _sliderChangeFOV;
 	private GameObject _textFOV;
 	private GameObject[] _buttonsChangeLanguage;
-	private GameObject[] _KeyRebinds;
-	private GameObject _buttonSaveSettings;
+	private GameObject[] _inputFieldsKeyRebinds;
+	private GameObject _buttonSaveGameSettings;
 	private GameObject _buttonClosePauseSubMenuSettings;
-	private GameObject _buttonResetSettings;
+	private GameObject _buttonResetGameSettings;
 
 	// Меню катсцены
 	private GameObject _canvasMenuCutscene;
@@ -85,7 +85,7 @@ public class BootstrapSubProcessMenuSystem
 		_gameController = gameController;
 		_gameSceneManager = gameSceneManager;
 		_saveLoadController = saveLoadController;
-		_playerCameraGameObject = playerCameraGameObject;
+		_gameObjectPlayerCamera = playerCameraGameObject;
 		_canvasMainMenuReadNews = canvasMainMenuReadNews;
 		_canvasPauseMenu = canvasPauseMenu;
 		_canvasMenuConfirmAction = canvasMenuConfirmAction;
@@ -98,25 +98,25 @@ public class BootstrapSubProcessMenuSystem
 
 	public IEnumerator InitializeMenuSystems()
 	{
-		_menuManagerGameobject = new GameObject("Bootstrap_MenuSystem");
+		_gameObjectBootstrapMenuSystem = new GameObject("Bootstrap_MenuSystem");
 
-		MenuManager = _menuManagerGameobject.AddComponent<MenuManager>();
-		_pauseMenuController = _menuManagerGameobject.AddComponent<PauseMenuController>();
-		_pauseSubMenuSaveController = _menuManagerGameobject.AddComponent<PauseSubMenuSaveController>();
-		_pauseSubMenuLoadController = _menuManagerGameobject.AddComponent<PauseSubMenuLoadController>();
-		_pauseSubMenuAppearanceController = _menuManagerGameobject.AddComponent<PauseSubMenuAppearanceController>();
-		_pauseSubMenuSettingsPlayerPrefs = _menuManagerGameobject.AddComponent<PauseSubMenuSettingsPlayerPrefs>();
-		_pauseSubMenuSettingsController = _menuManagerGameobject.AddComponent<PauseSubMenuSettingsController>();
-		_pauseMenuConfirmActionController = _menuManagerGameobject.AddComponent<PauseMenuConfirmActionController>();
-		_mainMenuReadNews = _menuManagerGameobject.AddComponent<MainMenuReadNews>();
-		_cutsceneMenuController = _menuManagerGameobject.AddComponent<CutsceneMenuController>();
+		MenuManager = _gameObjectBootstrapMenuSystem.AddComponent<MenuManager>();
+		_pauseMenuController = _gameObjectBootstrapMenuSystem.AddComponent<PauseMenuController>();
+		_pauseSubMenuSaveController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSaveController>();
+		_pauseSubMenuLoadController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuLoadController>();
+		_pauseSubMenuAppearanceController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuAppearanceController>();
+		_pauseSubMenuSettingsPlayerPrefs = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsPlayerPrefs>();
+		_pauseSubMenuSettingsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsController>();
+		_pauseMenuConfirmActionController = _gameObjectBootstrapMenuSystem.AddComponent<PauseMenuConfirmActionController>();
+		_mainMenuReadNewsController = _gameObjectBootstrapMenuSystem.AddComponent<MainMenuReadNewsController>();
+		_cutsceneMenuController = _gameObjectBootstrapMenuSystem.AddComponent<CutsceneMenuController>();
 
 		_buttonCloseMainMenuReadNews = _canvasMainMenuReadNews.transform.Find("ButtonCloseMainMenuReadNews").GetComponent<Button>();
-		_mainMenuReadNews.Initialize(_inputDevice, _canvasMainMenuReadNews, _buttonCloseMainMenuReadNews);
+		_mainMenuReadNewsController.Initialize(_inputDevice, _canvasMainMenuReadNews, _buttonCloseMainMenuReadNews);
 
 		_buttonConfirmAction = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "ButtonConfirmAction");
 		_buttonCancelAction = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "ButtonCancelAction");
-		_textConfirmationMessage = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "TextConfirmationMessage");
+		_textConfirmActionMessage = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "TextConfirmationMessage");
 
 		_buttonsPauseMenu = new[]
 		{
@@ -159,7 +159,7 @@ public class BootstrapSubProcessMenuSystem
 
 		_buttonClosePauseSubMenuLoad = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuLoad, "ButtonClosePauseSubMenuLoad");
 
-		_buttonSaveNewGameFile = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonSaveNewGameFile");
+		_buttonCreateNewGameFile = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSave, "ButtonSaveNewGameFile");
 		_sliderChangeFOV = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "SliderChangeFOV");
 		_textFOV = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "TextFOV");
 
@@ -177,7 +177,7 @@ public class BootstrapSubProcessMenuSystem
 			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonChangeLanguage_English"),
 		};
 
-		_KeyRebinds = new GameObject[]
+		_inputFieldsKeyRebinds = new GameObject[]
 		{
 			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "MoveForward"),
 			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "MoveBackward"),
@@ -200,23 +200,23 @@ public class BootstrapSubProcessMenuSystem
 
 		_buttonClosePauseSubMenuSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonClosePauseSubMenuSettings");
 		_buttonClosePauseSubMenuAppearance = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuAppearance, "ButtonClosePauseSubMenuAppearance");
-		_buttonSaveSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonSaveSettings");
-		_buttonResetSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonResetSettings");
+		_buttonSaveGameSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonSaveSettings");
+		_buttonResetGameSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonResetSettings");
 
 		MenuManager.Initialize(_inputDevice, _gameController, _gameSceneManager);
 		_pauseMenuController.Initialize(_inputDevice, _gameController, _gameSceneManager, _saveLoadController, MenuManager, _canvasPauseMenu, _buttonsPauseMenu);
-		_pauseSubMenuSaveController.Initialize(_inputDevice, MenuManager, _pauseMenuController, _saveLoadController, _canvasPauseSubMenuSave, _buttonsRewriteGameFile, _buttonsDeleteGameFile, _buttonClosePauseSubMenuSave, _buttonSaveNewGameFile);
+		_pauseSubMenuSaveController.Initialize(_inputDevice, MenuManager, _pauseMenuController, _saveLoadController, _canvasPauseSubMenuSave, _buttonsRewriteGameFile, _buttonsDeleteGameFile, _buttonClosePauseSubMenuSave, _buttonCreateNewGameFile);
 		_pauseSubMenuLoadController.Initialize(_inputDevice, MenuManager, _pauseMenuController, _saveLoadController, _canvasPauseSubMenuLoad, _buttonsLoadGameFile, _buttonClosePauseSubMenuLoad);
 		_pauseSubMenuAppearanceController.Initialize(_inputDevice, MenuManager, _pauseMenuController, _canvasPauseSubMenuAppearance, _buttonClosePauseSubMenuAppearance);
-		_pauseSubMenuSettingsController.Initialize(_inputDevice, _bootstrap, _gameController, _playerCameraGameObject, _textFOV, MenuManager, _pauseMenuController, _canvasPauseSubMenuSettings, _buttonClosePauseSubMenuSettings, _sliderChangeFOV, _buttonsChangeFPS, _buttonsChangeLanguage, _KeyRebinds, _pauseSubMenuSettingsPlayerPrefs, _buttonSaveSettings, _buttonResetSettings);
+		_pauseSubMenuSettingsController.Initialize(_inputDevice, _bootstrap, _gameController, _gameObjectPlayerCamera, _textFOV, MenuManager, _pauseMenuController, _canvasPauseSubMenuSettings, _buttonClosePauseSubMenuSettings, _sliderChangeFOV, _buttonsChangeFPS, _buttonsChangeLanguage, _inputFieldsKeyRebinds, _pauseSubMenuSettingsPlayerPrefs, _buttonSaveGameSettings, _buttonResetGameSettings);
 
-		_pauseMenuConfirmActionController.Initialize(MenuManager, _pauseMenuController, _canvasMenuConfirmAction, _buttonConfirmAction, _buttonCancelAction, _saveLoadController, _pauseSubMenuSaveController, _pauseSubMenuLoadController, _pauseSubMenuSettingsController, _textConfirmationMessage);
+		_pauseMenuConfirmActionController.Initialize(MenuManager, _pauseMenuController, _canvasMenuConfirmAction, _buttonConfirmAction, _buttonCancelAction, _saveLoadController, _pauseSubMenuSaveController, _pauseSubMenuLoadController, _pauseSubMenuSettingsController, _textConfirmActionMessage);
 
 		_cutsceneMenuController.Initialize(MenuManager, _gameSceneManager, _canvasMenuCutscene);
 
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", _pauseMenuController);
-		ServiceLocator.Register("MainMenuReadNews", _mainMenuReadNews);
+		ServiceLocator.Register("MainMenuReadNews", _mainMenuReadNewsController);
 
 		Debug.Log("MENU INITIALIZED");
 		yield break;

@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class CopyAnimationToChildArmatures : MonoBehaviour
 {
-	public Transform parentArmatureRoot; // Родительская арматура
-	public List<Transform> childArmatureRoots = new List<Transform>(); // Список дочерних арматур
+	public Transform parentArmatureRoot;
+	public List<Transform> childArmatureRoots = new List<Transform>(); 
 
-	// Для каждого дочернего корня храним свою карту костей
-	private List<Dictionary<string, Transform>> childBonesMaps = new List<Dictionary<string, Transform>>();
+	private List<Dictionary<string, Transform>> _childBonesMaps = new List<Dictionary<string, Transform>>();
 
 	void Start()
 	{
@@ -19,23 +18,19 @@ public class CopyAnimationToChildArmatures : MonoBehaviour
 		if (!parentArmatureRoot || childArmatureRoots.Count == 0)
 			return;
 
-		// Получаем все кости родительской арматуры
 		Transform[] parentBones = parentArmatureRoot.GetComponentsInChildren<Transform>(true);
 
-		// Проходим по каждому дочернему корню
 		for (int i = 0; i < childArmatureRoots.Count; i++)
 		{
 			Transform childRoot = childArmatureRoots[i];
-			Dictionary<string, Transform> childBonesMap = childBonesMaps[i];
+			Dictionary<string, Transform> childBonesMap = _childBonesMaps[i];
 
 			if (!childRoot)
 				continue;
 
-			// Копируем позицию и поворот корня
 			childRoot.position = parentArmatureRoot.position;
 			childRoot.rotation = parentArmatureRoot.rotation;
 
-			// Синхронизируем каждую кость по имени
 			foreach (Transform bone in parentBones)
 			{
 				string name = bone.name;
@@ -43,7 +38,6 @@ public class CopyAnimationToChildArmatures : MonoBehaviour
 				{
 					childBone.localPosition = bone.localPosition;
 					childBone.localRotation = bone.localRotation;
-					// childBone.localScale = bone.localScale; // Если нужно копировать масштаб
 				}
 			}
 		}
@@ -51,7 +45,7 @@ public class CopyAnimationToChildArmatures : MonoBehaviour
 
 	private void BuildChildBonesMaps()
 	{
-		childBonesMaps.Clear();
+		_childBonesMaps.Clear();
 		foreach (var childRoot in childArmatureRoots)
 		{
 			if (childRoot == null) continue;
@@ -61,7 +55,7 @@ public class CopyAnimationToChildArmatures : MonoBehaviour
 			{
 				bonesMap[transform.name] = transform;
 			}
-			childBonesMaps.Add(bonesMap);
+			_childBonesMaps.Add(bonesMap);
 		}
 	}
 }

@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class MainMenuReadNews : MonoBehaviour
+public class MainMenuReadNewsController : MonoBehaviour
 {
-	private IInputDevice inputDevice;
-	private Button buttonCloseMainMenuReadNews;
-	private GameObject canvasMainMenuReadNews;
+	private IInputDevice _inputDevice;
+	private Button _buttonCloseMainMenuReadNews;
+	private GameObject _canvasMainMenuReadNews;
 
 	public delegate void MainMenuReadNewsHandler();
 	public event MainMenuReadNewsHandler OnCloseMainMenuReadNews;
@@ -14,29 +14,25 @@ public class MainMenuReadNews : MonoBehaviour
 
 	public void Initialize(IInputDevice inputDevice, GameObject canvasMainMenuReadNews, Button buttonCloseMainMenuReadNews)
 	{
-		this.inputDevice = inputDevice;
-		this.canvasMainMenuReadNews = canvasMainMenuReadNews;
-		this.buttonCloseMainMenuReadNews = buttonCloseMainMenuReadNews;
+		_inputDevice = inputDevice;
+		_canvasMainMenuReadNews = canvasMainMenuReadNews;
+		_buttonCloseMainMenuReadNews = buttonCloseMainMenuReadNews;
 		
-
-		this.buttonCloseMainMenuReadNews.onClick.AddListener(() => HideCanvasMainMenuReadNews());
+		_buttonCloseMainMenuReadNews.onClick.AddListener(() => HideCanvasMainMenuReadNews());
 	
-
-
 		Debug.Log("MainMenuReadNews Initialized");
 	}
 
 	public void ShowCanvasMainMenuReadNews()
 	{
 		IsMainMenuReadNewsOpened = true;
-		canvasMainMenuReadNews.SetActive(true);
+		_canvasMainMenuReadNews.SetActive(true);
 	}
 
 	public void HideCanvasMainMenuReadNews()
 	{
 		IsMainMenuReadNewsOpened = false;
 		OnCloseMainMenuReadNews?.Invoke();
-		canvasMainMenuReadNews.SetActive(false);
+		_canvasMainMenuReadNews.SetActive(false);
 	}
-
 }

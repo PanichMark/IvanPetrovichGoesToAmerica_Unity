@@ -9,7 +9,7 @@ public class BootstrapSubProcessSceneSystem
 	private TMP_Text _textLoadingScreenStatus;
 	private TMP_Text _textSceneName;
 	private Image _imageLoadingScreen;
-	private GameObject _gameSceneManagerGameObject;
+	private GameObject _gameObjectBootstrapGameSceneSystem;
 	private GameObject _canvasLoadingScreen;
 	private GameController _gameController;
 
@@ -21,8 +21,8 @@ public class BootstrapSubProcessSceneSystem
 
 	public IEnumerator InitializeSceneSystem()
 	{
-		_gameSceneManagerGameObject = new GameObject("Bootstrap_GameSceneSystem");
-		GameSceneManager = _gameSceneManagerGameObject.AddComponent<GameSceneManager>();
+		_gameObjectBootstrapGameSceneSystem = new GameObject("Bootstrap_GameSceneSystem");
+		GameSceneManager = _gameObjectBootstrapGameSceneSystem.AddComponent<GameSceneManager>();
 
 		_textLoadingScreenStatus = _canvasLoadingScreen.transform.Find("TextLoadingScreenStatus").GetComponent<TMP_Text>();
 		_textSceneName = _canvasLoadingScreen.transform.Find("TextSceneName").GetComponent<TMP_Text>();

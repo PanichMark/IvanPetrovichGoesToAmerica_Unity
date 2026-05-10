@@ -53,7 +53,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public TextMeshProUGUI GainedItemtext => null;
 
-	public virtual Sprite GainedItemImage => LootObjectImage;
+	public virtual Sprite ImageGainedItem => LootObjectImage;
 
 	internal void AssignLootItemIndex(int index)
 	{

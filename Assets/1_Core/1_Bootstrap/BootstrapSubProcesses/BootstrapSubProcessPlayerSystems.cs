@@ -6,21 +6,21 @@ public class BootstrapSubProcessPlayerSystems
 	private IInputDevice _inputDevice;
 	private GameSceneManager _gameSceneManager;
 	private Bootstrap _bootstrap;
-	private GameObject _playerGameObject;
-	private GameObject _playerCameraGameObject;
+	private GameObject _gameObjectPlayer;
+	private GameObject _gameObjectPlayerCamera;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 
-	private GameObject _playerHeadParentGameObject;
-	private GameObject _playerColliderGameObject;
-	public GameObject PlayerThirdPersonHandRightGameObject { get; private set; }
-	public GameObject PlayerThirdPersonHandLeftGameObject { get; private set; }
-	public GameObject PlayerFirstPersonHandRightGameObject { get; private set; }
-	public GameObject PlayerFirstPersonHandLeftGameObject { get; private set; }
+	private GameObject _gameObjectPlayerHead;
+	private GameObject _gameObjectPlayerCollider;
+	public GameObject GameObjectPlayerThirdPersonHandRight { get; private set; }
+	public GameObject GameObjectPlayerThirdPersonHandLeft { get; private set; }
+	public GameObject GameObjectPlayerFirstPersonHandRight { get; private set; }
+	public GameObject GameObjectPlayerFirstPersonHandLeft { get; private set; }
 
 	public PlayerBehaviour PlayerBehaviour { get; private set; }
 	public PlayerMovementController PlayerMovementController { get; private set; }
 	private PlayerCapsuleCollider _playerColliderController;
-	private PlayerMovementAnimationController _playerAnimationController;
+	private PlayerMovementAnimationController _playerMovementAnimationController;
 
 	public PlayerCameraController PlayerCameraController { get; private set; }
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
@@ -36,46 +36,46 @@ public class BootstrapSubProcessPlayerSystems
 		_inputDevice = inputDevice;
 		_gameSceneManager = gameSceneManager;
 		_bootstrap = bootstrap;
-		_playerGameObject = playerGameObject;
-		_playerCameraGameObject = playerMainCameraGameObject;
+		_gameObjectPlayer = playerGameObject;
+		_gameObjectPlayerCamera = playerMainCameraGameObject;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 	}
 
 	public IEnumerator InitializePlayerSystems()
 	{
-		_playerColliderGameObject = _bootstrap.FindDeepGameObject(_playerGameObject, "Collider");
+		_gameObjectPlayerCollider = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Collider");
 
-		PlayerBehaviour = _playerGameObject.GetComponent<PlayerBehaviour>();
-		PlayerMovementController = _playerGameObject.GetComponent<PlayerMovementController>();
-		_playerColliderController = _playerGameObject.GetComponentInChildren<PlayerCapsuleCollider>();
-		_playerAnimationController = _playerGameObject.GetComponent<PlayerMovementAnimationController>();
+		PlayerBehaviour = _gameObjectPlayer.GetComponent<PlayerBehaviour>();
+		PlayerMovementController = _gameObjectPlayer.GetComponent<PlayerMovementController>();
+		_playerColliderController = _gameObjectPlayer.GetComponentInChildren<PlayerCapsuleCollider>();
+		_playerMovementAnimationController = _gameObjectPlayer.GetComponent<PlayerMovementAnimationController>();
 
-		PlayerCameraController = _playerCameraGameObject.GetComponent<PlayerCameraController>();
-		_playerCameraBlurFilter = _playerCameraGameObject.GetComponent<PlayerCameraBlurFilter>();
-		_playerCameraFirstPersonRender = _playerCameraGameObject.GetComponent<PlayerCameraFirstPersonRender>();
+		PlayerCameraController = _gameObjectPlayerCamera.GetComponent<PlayerCameraController>();
+		_playerCameraBlurFilter = _gameObjectPlayerCamera.GetComponent<PlayerCameraBlurFilter>();
+		_playerCameraFirstPersonRender = _gameObjectPlayerCamera.GetComponent<PlayerCameraFirstPersonRender>();
 
-		PlayerFirstPersonHandRightGameObject = _bootstrap.FindDeepGameObject(_playerCameraGameObject, "PlayerFirstPersonHandRightGameObject");
-		PlayerFirstPersonHandLeftGameObject = _bootstrap.FindDeepGameObject(_playerCameraGameObject, "PlayerFirstPersonHandLeftGameObject");
-		_playerHeadParentGameObject = _bootstrap.FindDeepGameObject(_playerGameObject, "PlayerHeadGameObject");
-		PlayerThirdPersonHandRightGameObject = _bootstrap.FindDeepGameObject(_playerGameObject, "PlayerThirdPersonHandRightGameObject");
-		PlayerThirdPersonHandLeftGameObject = _bootstrap.FindDeepGameObject(_playerGameObject, "PlayerThirdPersonHandLeftGameObject");
+		GameObjectPlayerFirstPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonHandRightGameObject");
+		GameObjectPlayerFirstPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonHandLeftGameObject");
+		_gameObjectPlayerHead = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHeadGameObject");
+		GameObjectPlayerThirdPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonHandRightGameObject");
+		GameObjectPlayerThirdPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonHandLeftGameObject");
 
 		PlayerBehaviour.Initialize(_inputDevice);
 		PlayerMovementController.Initialize(_inputDevice, _gameSceneManager, PlayerBehaviour);
 		_playerColliderController.Initialize(PlayerMovementController);
-		PlayerCameraController.Initialize(_inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, PlayerMovementController, _playerColliderController, _playerGameObject);
+		PlayerCameraController.Initialize(_inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, PlayerMovementController, _playerColliderController, _gameObjectPlayer);
 		_playerCameraBlurFilter.Initialize(_bootstrapSubProcessMenuSystem.MenuManager);
-		_playerAnimationController.Initialize(_inputDevice, _playerGameObject, PlayerBehaviour, PlayerMovementController, PlayerCameraController);
-		_playerCameraFirstPersonRender.Initialize(PlayerCameraController, _playerHeadParentGameObject);
+		_playerMovementAnimationController.Initialize(_inputDevice, _gameObjectPlayer, PlayerBehaviour, PlayerMovementController, PlayerCameraController);
+		_playerCameraFirstPersonRender.Initialize(PlayerCameraController, _gameObjectPlayerHead);
 
 		ServiceLocator.Register("PlayerCameraController", PlayerCameraController);
 		ServiceLocator.Register("PlayerMovementController", PlayerMovementController);
 
 		ServiceLocator.Register("PlayerCameraBlurFilter", _playerCameraBlurFilter);
-		ServiceLocator.Register("PlayerGameObject", _playerGameObject);
-		ServiceLocator.Register("PlayerCameraGameObject", _playerCameraGameObject);
+		ServiceLocator.Register("PlayerGameObject", _gameObjectPlayer);
+		ServiceLocator.Register("PlayerCameraGameObject", _gameObjectPlayerCamera);
 		ServiceLocator.Register("PlayerBehaviour", PlayerBehaviour);
-		ServiceLocator.Register("PlayerColliderGameObject", _playerColliderGameObject);
+		ServiceLocator.Register("PlayerColliderGameObject", _gameObjectPlayerCollider);
 
 		Debug.Log("PLAYER SYSTEMS INITIALIZED");
 

@@ -122,7 +122,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		ApplyButtonColors(_currentFrameRateLimit);
 		_gameController.OnOpenMainMenu += () => SetFOV(60);
 
-		var bindings = _inputDevice.GetCurrentBindings().ToList();
+		var bindings = _inputDevice.GetCurrentKeyBindings().ToList();
 
 		foreach (var field in _KeyRebinds)
 		{
@@ -144,7 +144,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
 
-		var defaultBindings = _inputDevice.GetDefaultBindings();
+		var defaultBindings = _inputDevice.GetDefaultKeyBindings();
 		List<string> actionNames = new List<string>(defaultBindings.Keys);
 
 		SettingsData loadedData = pauseSubMenuSettingsPlayerPrefs.LoadSettings(actionNames);
@@ -330,7 +330,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			return;
 		}
 
-		var currentBindings = _inputDevice.GetCurrentBindings().ToDictionary(kvp => kvp.action, kvp => kvp.key);
+		var currentBindings = _inputDevice.GetCurrentKeyBindings().ToDictionary(kvp => kvp.action, kvp => kvp.key);
 
 		var conflictingAction = currentBindings.FirstOrDefault(kvp => kvp.Value == newKey && kvp.Key != actionName).Key;
 
@@ -343,11 +343,9 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 			UpdateInputFieldText(actionName, newKey);
 			UpdateInputFieldText(conflictingAction, oldKeyOfThisAction);
-
 		}
 		else
 		{
-
 			_inputDevice.RebindKey(actionName, newKey);
 			UpdateInputFieldText(actionName, newKey);
 		}
@@ -370,17 +368,16 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		var currentData = new SettingsData();
 		currentData.FOV = _mainCamera.fieldOfView;
 
-		currentData.KeyBindings = new Dictionary<string, KeyCode>(_inputDevice.CurrentBindings);
+		currentData.KeyBindings = new Dictionary<string, KeyCode>(_inputDevice.CurrentKeyboardKeyBindings);
 
 		_pauseSubMenuSettingsPlayerPrefs.SaveSettings(currentData);
-
 	}
 
 	public void ResetSettings()
 	{
 		_pauseSubMenuSettingsPlayerPrefs.ResetSettings();
 
-		var defaultBindingsSnapshot = _inputDevice.GetDefaultBindings();
+		var defaultBindingsSnapshot = _inputDevice.GetDefaultKeyBindings();
 
 		SettingsData defaultData = new SettingsData
 		{
@@ -415,7 +412,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 		if (data.KeyBindings != null && data.KeyBindings.Count > 0)
 		{
-		
 			foreach (var kvp in data.KeyBindings)
 			{
 				string actionName = kvp.Key; 

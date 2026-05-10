@@ -4,49 +4,49 @@ using UnityEngine.UI;
 
 public class WeaponWheelMenuButton : MonoBehaviour
 {
-	private PlayerWeaponController weaponController;
-	private WeaponWheelMenuController weaponWheelController;
-	private GameObject WeaponPrefab;
-	private string WeaponName;
-	private Sprite WeaponIcon;
+	private PlayerWeaponController _weaponController;
+	private WeaponWheelMenuController _weaponWheelController;
+	private GameObject _WeaponPrefab;
+	private string _WeaponName;
+	private Sprite _WeaponIcon;
 	private Button _button;
 
-	private Color originalNormalColor;
+	private Color _originalNormalColor;
 
-	private GameObject currentWeapon;
+	private GameObject _currentWeapon;
 
-	private GameObject previousWeapon;
+	private GameObject _previousWeapon;
 
 	public void Initialize(PlayerWeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
 	{
-		this.weaponController = weaponController;
-		this.weaponWheelController = weaponWheelController;
-		this.WeaponPrefab = weaponPrefab;
-		WeaponName = weaponComponent.WeaponNameUI;
-		WeaponIcon = weaponComponent.WeaponIcon;
+		_weaponController = weaponController;
+		_weaponWheelController = weaponWheelController;
+		_WeaponPrefab = weaponPrefab;
+		_WeaponName = weaponComponent.WeaponNameUI;
+		_WeaponIcon = weaponComponent.WeaponIcon;
 
 		var button = GetComponent<Button>();
 		button.onClick.AddListener(() => SelectWeapon());
-		button.onClick.AddListener(() => this.weaponWheelController.ShowWeaponIcon());
+		button.onClick.AddListener(() => this._weaponWheelController.ShowWeaponIcon());
 
 		_button = button; 
 
-		originalNormalColor = _button.colors.normalColor;
+		_originalNormalColor = _button.colors.normalColor;
 
-		this.weaponWheelController.OnOpenWeaponWheelMenu += OnOpenWeaponWheel;
+		_weaponWheelController.OnOpenWeaponWheelMenu += OnOpenWeaponWheel;
 
-		this.weaponController.OnWeaponChanged += OnWeaponChange;
+		_weaponController.OnWeaponChanged += OnWeaponChange;
 	}
 
 	private void OnOpenWeaponWheel(string activeHand)
 	{
 		if (activeHand == "left")
 		{
-			previousWeapon = weaponController.LeftHandWeapon;
+			_previousWeapon = _weaponController.LeftHandWeapon;
 		}
 		else
 		{
-			previousWeapon = weaponController.RightHandWeapon;
+			_previousWeapon = _weaponController.RightHandWeapon;
 		}
 		HandleOnWeaponChanged(activeHand);
 	}
@@ -54,26 +54,26 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	private void OnWeaponChange(string activeHand)
 	{
 		HandleOnWeaponChanged(activeHand);
-		previousWeapon = currentWeapon;
+		_previousWeapon = _currentWeapon;
 	}
 
 	private void HandleOnWeaponChanged(string activeHand)
 	{
 		if (activeHand == "left")
 		{
-			currentWeapon = weaponController.LeftHandWeapon;
+			_currentWeapon = _weaponController.LeftHandWeapon;
 		}
 		else
 		{
-			currentWeapon = weaponController.RightHandWeapon;
+			_currentWeapon = _weaponController.RightHandWeapon;
 		}
-		if (currentWeapon != previousWeapon)
+		if (_currentWeapon != _previousWeapon)
 		{
-			UpdateButtonColor(currentWeapon);
+			UpdateButtonColor(_currentWeapon);
 		}
 		else
 		{
-			UpdateButtonColor(previousWeapon);
+			UpdateButtonColor(_previousWeapon);
 		}
 	}
 
@@ -81,13 +81,13 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	{
 		if (activeWeapon == null)
 		{
-			ChangeButtonColor(originalNormalColor);
+			ChangeButtonColor(_originalNormalColor);
 			return;
 		}
 
 		WeaponAbstract activeWeaponComponent = activeWeapon.GetComponent<WeaponAbstract>();
 
-		WeaponAbstract buttonWeaponComponent = WeaponPrefab.GetComponent<WeaponAbstract>();
+		WeaponAbstract buttonWeaponComponent = _WeaponPrefab.GetComponent<WeaponAbstract>();
 
 		if (activeWeaponComponent != null && buttonWeaponComponent != null)
 		{
@@ -97,36 +97,36 @@ public class WeaponWheelMenuButton : MonoBehaviour
 			}
 			else
 			{
-				ChangeButtonColor(originalNormalColor);
+				ChangeButtonColor(_originalNormalColor);
 			}
 		}
 	}
 
 	public void HoverEnter()
 	{
-		weaponWheelController.WeaponIcon.gameObject.SetActive(true);
-		weaponWheelController.WeaponText.text = WeaponName;
-		weaponWheelController.WeaponIcon.sprite = WeaponIcon;
+		_weaponWheelController.WeaponIcon.gameObject.SetActive(true);
+		_weaponWheelController.WeaponText.text = _WeaponName;
+		_weaponWheelController.WeaponIcon.sprite = _WeaponIcon;
 	}
 
 	public void HoverExit()
 	{
-		weaponWheelController.ShowWeaponName();
-		weaponWheelController.ShowWeaponIcon();
+		_weaponWheelController.ShowWeaponName();
+		_weaponWheelController.ShowWeaponIcon();
 	}
 
 	private void SelectWeapon()
 	{
-		if (weaponController.isAbleToUseRightWeapon || (weaponController.isLeftHand && weaponController.isAbleToUseLeftWeapon))
+		if (_weaponController.isAbleToUseRightWeapon || (_weaponController.isLeftHand && _weaponController.isAbleToUseLeftWeapon))
 		{
-			weaponController.SelectWeapon(WeaponPrefab);
+			_weaponController.SelectWeapon(_WeaponPrefab);
 		}
 	}
 
 	private void OnDestroy()
 	{
-		weaponController.OnWeaponChanged -= OnWeaponChange;
-		weaponWheelController.OnOpenWeaponWheelMenu -= OnOpenWeaponWheel;
+		_weaponController.OnWeaponChanged -= OnWeaponChange;
+		_weaponWheelController.OnOpenWeaponWheelMenu -= OnOpenWeaponWheel;
 	}
 
 	private void ChangeButtonColor(Color newColor)

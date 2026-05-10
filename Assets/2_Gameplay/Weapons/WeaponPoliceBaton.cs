@@ -3,15 +3,15 @@ using System.Collections;
 
 public class WeaponPoliceBaton : WeaponMeleeAbstract
 {
-	private IInputDevice inputDevice;
-	private PlayerMovementController playerMovementController;
-	private PlayerWeaponController weaponController;
+	private IInputDevice _inputDevice;
+	private PlayerMovementController _playerMovementController;
+	private PlayerWeaponController _weaponController;
 
-	private GameObject ChokeNPCtext;
+	private GameObject _chokeNPCtext;
 
-	private bool isAbleToChoke = false;
-	private bool npcDetected = false;
-	private bool isItRightHand;
+	private bool _isAbleToChoke = false;
+	private bool _npcDetected = false;
+	private bool _isItRightHand;
 
 	public override float WeaponDamage => 45f;
 	public override string WeaponNameSystem => "PoliceBaton";
@@ -25,20 +25,20 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 		ForwardOffset = 0.5f;
 		AttackDelay = 0.5f;
 
-		ChokeNPCtext = ServiceLocator.Resolve<GameObject>("TextChokeNPC");
-		playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
-		weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
+		_chokeNPCtext = ServiceLocator.Resolve<GameObject>("TextChokeNPC");
+		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
+		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
-		if (weaponController.rightHandWeaponComponent is WeaponPoliceBaton)
+		if (_weaponController.rightHandWeaponComponent is WeaponPoliceBaton)
 		{
-			isItRightHand = true;
+			_isItRightHand = true;
 		}
-		if (weaponController.leftHandWeaponComponent is WeaponPoliceBaton)
+		if (_weaponController.leftHandWeaponComponent is WeaponPoliceBaton)
 		{
-			isItRightHand = false;	
+			_isItRightHand = false;	
 		}
 
-		inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
+		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
 	}
 	private void Update()
 	{
@@ -60,14 +60,14 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 				break;
 			}
 		}
-		npcDetected = newDetection;
+		_npcDetected = newDetection;
 
-		bool isCrouching = playerMovementController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingIdle") ||
-						   playerMovementController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingWalking");
+		bool isCrouching = _playerMovementController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingIdle") ||
+						   _playerMovementController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingWalking");
 
-		isAbleToChoke = npcDetected && isCrouching;
+		_isAbleToChoke = _npcDetected && isCrouching;
 
-		ChokeNPCtext.SetActive(isAbleToChoke);
+		_chokeNPCtext.SetActive(_isAbleToChoke);
 	}
 
 	private Coroutine currentChokeCoroutine = null;
@@ -88,8 +88,8 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 
 		while (elapsed < chokeDuration)
 		{
-			if ((isItRightHand && inputDevice.GetKeyRightHandWeaponAttackReleased()) ||
-				(!isItRightHand && inputDevice.GetKeyLeftHandWeaponAttackReleased()))
+			if ((_isItRightHand && _inputDevice.GetKeyRightHandWeaponAttackReleased()) ||
+				(!_isItRightHand && _inputDevice.GetKeyLeftHandWeaponAttackReleased()))
 			{
 				Debug.Log("Failed to choke!!!");
 				currentChokeCoroutine = null;
@@ -106,7 +106,7 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 
 	public override void WeaponAttack()
 	{
-		if (isAbleToChoke)
+		if (_isAbleToChoke)
 		{
 			PerformChokeAttack();
 			return; 

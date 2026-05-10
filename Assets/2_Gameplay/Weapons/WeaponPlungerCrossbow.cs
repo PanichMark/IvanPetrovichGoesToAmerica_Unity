@@ -3,28 +3,28 @@ using UnityEngine.AI;
 
 public class WeaponPlungerCrossbow : WeaponAbstract
 {
-	private GameController gameController;
-	private GameSceneManager gameSceneManager;
-	private PlayerBehaviour playerBehaviour;
+	private GameController _gameController;
+	private GameSceneManager _gameSceneManager;
+	private PlayerBehaviour _playerBehaviour;
 
-	private GameObject player;
-	private GameObject playerCollider;
-	private GameObject playerCamera;
-	private Rigidbody playerRigidbody;
-	private bool IsPlayerPlungering = false;
+	private GameObject _player;
+	private GameObject _playerCollider;
+	private GameObject _playerCamera;
+	private Rigidbody _playerRigidbody;
+	private bool _isPlayerPlungering = false;
 
-	private GameObject hookedObject = null;
-	private Rigidbody hookedObjectRigidbody = null;
-	private bool isObjectBeingHooked = false;
-	private Collider hookedObjectCollider = null;
+	private GameObject _hookedObject = null;
+	private Rigidbody _hookedObjectRigidbody = null;
+	private bool _isObjectBeingHooked = false;
+	private Collider _hookedObjectCollider = null;
 
-	private NPCStateMachineController npcStateMachineController;
-	private NPCAbstract NPCabstract = null;
-	private NavMeshAgent hookedObjectNavMeshAgent = null;
+	private NPCStateMachineController _NPCstateMachineController;
+	private NPCAbstract _NPCabstract = null;
+	private NavMeshAgent _hookedObjectNavMeshAgent = null;
 
-	private Vector3 hookPoint;
-	private float maxHookDistance = 17f;
-	private float pullSpeed = 12f;
+	private Vector3 _hookPoint;
+	private float _maxHookDistance = 17f;
+	private float _pullSpeed = 12f;
 
 	public override string WeaponNameSystem => "PlungerCrossbow";
 
@@ -34,76 +34,75 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 
 	private void Start()
 	{
-		playerCamera = ServiceLocator.Resolve<GameObject>("PlayerCameraGameObject");
-		player = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
-		playerRigidbody = player.GetComponent<Rigidbody>();
-		gameController = ServiceLocator.Resolve<GameController>("GameController");
-		playerCollider = ServiceLocator.Resolve<GameObject>("PlayerColliderGameObject");
+		_playerCamera = ServiceLocator.Resolve<GameObject>("PlayerCameraGameObject");
+		_player = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
+		_playerRigidbody = _player.GetComponent<Rigidbody>();
+		_gameController = ServiceLocator.Resolve<GameController>("GameController");
+		_playerCollider = ServiceLocator.Resolve<GameObject>("PlayerColliderGameObject");
 		
-		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		playerBehaviour = ServiceLocator.Resolve<PlayerBehaviour>("PlayerBehaviour");
+		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviour>("PlayerBehaviour");
 
-		gameSceneManager.OnBeginLoadMainMenuScene += StopPlungingCompletely;
-		gameSceneManager.OnBeginLoadGameplayScene += StopPlungingCompletely;
-		playerBehaviour.OnPlayerDisarmed += StopPlunging;
+		_gameSceneManager.OnBeginLoadMainMenuScene += StopPlungingCompletely;
+		_gameSceneManager.OnBeginLoadGameplayScene += StopPlungingCompletely;
+		_playerBehaviour.OnPlayerDisarmed += StopPlunging;
 	}
 
 	public override void WeaponAttack()
 	{
-		if (IsPlayerPlungering || isObjectBeingHooked) return;
+		if (_isPlayerPlungering || _isObjectBeingHooked) return;
 
-		if (playerCamera == null || player == null || playerRigidbody == null) return;
+		if (_playerCamera == null || _player == null || _playerRigidbody == null) return;
 
-		Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+		Ray ray = new Ray(_playerCamera.transform.position, _playerCamera.transform.forward);
 		RaycastHit hit;
 
-		if (Physics.Raycast(ray, out hit, maxHookDistance))
+		if (Physics.Raycast(ray, out hit, _maxHookDistance))
 		{
-			hookPoint = hit.point;
+			_hookPoint = hit.point;
 
 			if ((hit.collider.gameObject.TryGetComponent<NPCAbstract>(out _) ||
 				hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _)))
 			{
-				hookedObject = hit.collider.gameObject;
-				hookedObjectRigidbody = hookedObject.GetComponent<Rigidbody>();
-				hookedObjectCollider = hookedObject.GetComponent<Collider>();
+				_hookedObject = hit.collider.gameObject;
+				_hookedObjectRigidbody = _hookedObject.GetComponent<Rigidbody>();
+				_hookedObjectCollider = _hookedObject.GetComponent<Collider>();
 
-				if (hookedObjectRigidbody == null)
+				if (_hookedObjectRigidbody == null)
 				{
-					hookedObjectRigidbody = hookedObject.AddComponent<Rigidbody>();
-					Debug.LogWarning($"Rigidbody добавлен к NPC: {hookedObject.name}");
+					_hookedObjectRigidbody = _hookedObject.AddComponent<Rigidbody>();
+					Debug.LogWarning($"Rigidbody добавлен к NPC: {_hookedObject.name}");
 			
 				}
-				hookedObjectNavMeshAgent = hookedObject.GetComponent<NavMeshAgent>();
-				if (hookedObjectNavMeshAgent != null)
+				_hookedObjectNavMeshAgent = _hookedObject.GetComponent<NavMeshAgent>();
+				if (_hookedObjectNavMeshAgent != null)
 				{
 
-					hookedObjectNavMeshAgent.enabled = false;
+					_hookedObjectNavMeshAgent.enabled = false;
 				}
-				NPCabstract = hookedObject?.GetComponent<NPCAbstract>();
-				npcStateMachineController = hookedObject?.GetComponent<NPCStateMachineController>();
-				if (npcStateMachineController != null && NPCabstract != null)
+				_NPCabstract = _hookedObject?.GetComponent<NPCAbstract>();
+				_NPCstateMachineController = _hookedObject?.GetComponent<NPCStateMachineController>();
+				if (_NPCstateMachineController != null && _NPCabstract != null)
 				{
 					//////
 					//ПОТОМ ПОМЕНЯТЬ НА BEING HOOKED !!!
 					//////
-					npcStateMachineController.SetNPCState(NPCStateTypes.Dead);
+					_NPCstateMachineController.SetNPCState(NPCStateTypes.Dead);
 				}
 
-				hookedObjectRigidbody.useGravity = false;
-				hookedObjectRigidbody.linearDamping = 0;
+				_hookedObjectRigidbody.useGravity = false;
+				_hookedObjectRigidbody.linearDamping = 0;
 
-
-				isObjectBeingHooked = true;
-				IsPlayerPlungering = false;
+				_isObjectBeingHooked = true;
+				_isPlayerPlungering = false;
 				Debug.Log("Крюк зацепил NPC!");
 			}
 			else 
 			{
-				playerCollider.SetActive(false);
-				IsPlayerPlungering = true; 
-				playerRigidbody.useGravity = false;
-				isObjectBeingHooked = false;
+				_playerCollider.SetActive(false);
+				_isPlayerPlungering = true; 
+				_playerRigidbody.useGravity = false;
+				_isObjectBeingHooked = false;
 				Debug.Log($"Крюк зацепился за: {hit.collider.name}");
 			}
 		}
@@ -111,40 +110,40 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 
 	private void FixedUpdate()
 	{
-		if (isObjectBeingHooked)
+		if (_isObjectBeingHooked)
 		{
-			Vector3 finalPosition = player.transform.position;
+			Vector3 finalPosition = _player.transform.position;
 			finalPosition.y += 0.5f;
-			finalPosition += player.transform.forward * 1.5f;
+			finalPosition += _player.transform.forward * 1.5f;
 
-			Vector3 directionToTarget = (finalPosition - hookedObject.transform.position).normalized;
+			Vector3 directionToTarget = (finalPosition - _hookedObject.transform.position).normalized;
 
-			hookedObjectRigidbody.linearVelocity = directionToTarget * pullSpeed;
+			_hookedObjectRigidbody.linearVelocity = directionToTarget * _pullSpeed;
 
-			float distanceToTarget = Vector3.Distance(hookedObject.transform.position, finalPosition);
+			float distanceToTarget = Vector3.Distance(_hookedObject.transform.position, finalPosition);
 
 			if (distanceToTarget < 0.3f)
 			{
-				hookedObjectRigidbody.linearVelocity = Vector3.zero;
-				hookedObjectRigidbody.position = finalPosition;
+				_hookedObjectRigidbody.linearVelocity = Vector3.zero;
+				_hookedObjectRigidbody.position = finalPosition;
 
 				StopHookingObject();
 			}
 		}
 
-		if (IsPlayerPlungering)
+		if (_isPlayerPlungering)
 		{
-			gameController.PlayerStartedPlunging();
-			Vector3 directionToHook = (hookPoint - player.transform.position).normalized;
+			_gameController.PlayerStartedPlunging();
+			Vector3 directionToHook = (_hookPoint - _player.transform.position).normalized;
 
-			playerRigidbody.linearVelocity = directionToHook * pullSpeed;
+			_playerRigidbody.linearVelocity = directionToHook * _pullSpeed;
 
-			float distanceToHook = Vector3.Distance(player.transform.position, hookPoint);
+			float distanceToHook = Vector3.Distance(_player.transform.position, _hookPoint);
 
-			if (distanceToHook < 0.5f || playerRigidbody.linearVelocity.magnitude < 0.1f)
+			if (distanceToHook < 0.5f || _playerRigidbody.linearVelocity.magnitude < 0.1f)
 			{
-				player.transform.position = hookPoint;
-				playerRigidbody.linearVelocity = Vector3.zero;
+				_player.transform.position = _hookPoint;
+				_playerRigidbody.linearVelocity = Vector3.zero;
 
 				StopPlunging();
 			}
@@ -152,51 +151,51 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 	}
 	private void StopHookingObject()
 	{
-		if (isObjectBeingHooked)
+		if (_isObjectBeingHooked)
 		{
-			if (hookedObjectNavMeshAgent != null)
+			if (_hookedObjectNavMeshAgent != null)
 			{
 			//hookedObjectNavMeshAgent.enabled = true;
 			}
 
-			hookedObjectRigidbody.linearVelocity = Vector3.zero;
+			_hookedObjectRigidbody.linearVelocity = Vector3.zero;
 
-			hookedObjectRigidbody.useGravity = true;
-			hookedObjectCollider = null;
-			hookedObjectNavMeshAgent = null;
-			NPCabstract = null;
-			hookedObject = null;
-			hookedObjectRigidbody = null;
-			isObjectBeingHooked = false;
+			_hookedObjectRigidbody.useGravity = true;
+			_hookedObjectCollider = null;
+			_hookedObjectNavMeshAgent = null;
+			_NPCabstract = null;
+			_hookedObject = null;
+			_hookedObjectRigidbody = null;
+			_isObjectBeingHooked = false;
 			Debug.Log("Притяжение NPC завершено.");
 		}
 	}
 
 	private void OnDestroy()
 	{
-		gameSceneManager.OnBeginLoadMainMenuScene -= StopPlungingCompletely;
-		gameSceneManager.OnBeginLoadGameplayScene -= StopPlungingCompletely;
-		playerBehaviour.OnPlayerDisarmed -= StopPlunging;
+		_gameSceneManager.OnBeginLoadMainMenuScene -= StopPlungingCompletely;
+		_gameSceneManager.OnBeginLoadGameplayScene -= StopPlungingCompletely;
+		_playerBehaviour.OnPlayerDisarmed -= StopPlunging;
 
 		StopPlunging();
 	}
 
 	private void StopPlunging()
 	{
-		if (IsPlayerPlungering)
+		if (_isPlayerPlungering)
 		{
-			playerRigidbody.useGravity = true;
+			_playerRigidbody.useGravity = true;
 
-			IsPlayerPlungering = false;
+			_isPlayerPlungering = false;
 			Debug.Log("Притяжение завершено.");
-			gameController.PlayerStoppedPlunging();
-			playerCollider.SetActive(true);
+			_gameController.PlayerStoppedPlunging();
+			_playerCollider.SetActive(true);
 		}
 	}
 
 	private void StopPlungingCompletely()
 	{
-		playerRigidbody.linearVelocity = Vector3.zero;
+		_playerRigidbody.linearVelocity = Vector3.zero;
 		StopPlunging();
 	}
 }

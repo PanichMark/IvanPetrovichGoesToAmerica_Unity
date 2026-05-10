@@ -29,9 +29,8 @@ public interface IInputDevice
 	string GetNameOfKeyRightHandWeaponAttack();
 	string GetNameOfKeyLeftHandWeaponAttack();
 
-	IEnumerable<(string action, KeyCode key)> GetCurrentBindings();
-	IReadOnlyDictionary<string, KeyCode> CurrentBindings { get; }
-	IReadOnlyDictionary<string, KeyCode> GetDefaultBindings();
-	KeyCode GetBinding(string actionName);
+	IEnumerable<(string action, KeyCode key)> GetCurrentKeyBindings();
+	IReadOnlyDictionary<string, KeyCode> CurrentKeyboardKeyBindings { get; }
+	IReadOnlyDictionary<string, KeyCode> GetDefaultKeyBindings();
 	void RebindKey(string actionName, KeyCode newKey);
 }

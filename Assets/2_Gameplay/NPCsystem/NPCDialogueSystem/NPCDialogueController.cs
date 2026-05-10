@@ -6,58 +6,58 @@ using UnityEngine.UI;
 
 public class NPCDialogueController : MonoBehaviour
 {
-	[SerializeField] private TextAsset russianDialogueFile;
-	[SerializeField] private TextAsset englishDialogueFile;
-	[SerializeField] private List<NPCDialogueBranch> dialogueBranchStructsList;
-	private int dialogueBranchStructIndex;
-	private MenuManager menuManager;
-	private Button buttonDialogueYes;
-	private Button buttonDialogueNo;
-	public TextAsset RussianDialogueFile => russianDialogueFile;
-	private LocalizationManager localizationManager;
-	private bool PerformActionOnYesFinal;
-	public TextAsset EnglishDialogueFile => englishDialogueFile;
-	private Dictionary<LanguagesEnum, List<string>> localizedDialogue = new Dictionary<LanguagesEnum, List<string>>
+	[SerializeField] private TextAsset _russianDialogueFile;
+	[SerializeField] private TextAsset _englishDialogueFile;
+	[SerializeField] private List<NPCDialogueBranch> _dialogueBranchStructsList;
+	private int _dialogueBranchStructIndex;
+	private MenuManager _menuManager;
+	private Button _buttonDialogueYes;
+	private Button _buttonDialogueNo;
+	public TextAsset RussianDialogueFile => _russianDialogueFile;
+	private LocalizationManager _localizationManager;
+	private bool _PerformActionOnYesFinal;
+	public TextAsset EnglishDialogueFile => _englishDialogueFile;
+	private Dictionary<LanguagesEnum, List<string>> _localizedDialogue = new Dictionary<LanguagesEnum, List<string>>
 	{
 		{ LanguagesEnum.Russian, new List<string>() },
 		{ LanguagesEnum.English, new List<string>() }
 	};
-	public Dictionary<LanguagesEnum, List<string>> LocalizedDialogue => localizedDialogue;
-	private TextMeshProUGUI NPCdialogueText;
-	private GameObject canvasDialogueMenu;
-	private GameSceneManager gameSceneManager;
-	private int currentDialogueStepIndex = 0;
-	private bool CanSkip;
-	private NPCStateMachineController nPCStateMachineController;
+	public Dictionary<LanguagesEnum, List<string>> LocalizedDialogue => _localizedDialogue;
+	private TextMeshProUGUI _NPCdialogueText;
+	private GameObject _canvasDialogueMenu;
+	private GameSceneManager _gameSceneManager;
+	private int _currentDialogueStepIndex;
+	private bool _canSkip;
+	private NPCStateMachineController _NPCstateMachineController;
 	public bool IsDialogueActive { get; private set; }
 
 	private void Start()
 	{
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		LoadDialogueFromFiles();
 
-		buttonDialogueYes = ServiceLocator.Resolve<Button>("ButtonDialogueYes");
-		buttonDialogueNo = ServiceLocator.Resolve<Button>("ButtonDialogueNo");
+		_buttonDialogueYes = ServiceLocator.Resolve<Button>("ButtonDialogueYes");
+		_buttonDialogueNo = ServiceLocator.Resolve<Button>("ButtonDialogueNo");
 
-		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		canvasDialogueMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuDialogue");
-		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		NPCdialogueText = ServiceLocator.Resolve<TextMeshProUGUI>("TextDialogue");
+		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		_canvasDialogueMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuDialogue");
+		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_NPCdialogueText = ServiceLocator.Resolve<TextMeshProUGUI>("TextDialogue");
 
-		nPCStateMachineController = GetComponent<NPCStateMachineController>();
+		_NPCstateMachineController = GetComponent<NPCStateMachineController>();
 
-		menuManager.OnOpenPauseMenu += HideNPCDialogueCanvas;
-		menuManager.OnClosePauseMenu += ShowNPCDialogueCanvas;
+		_menuManager.OnOpenPauseMenu += HideNPCDialogueCanvas;
+		_menuManager.OnClosePauseMenu += ShowNPCDialogueCanvas;
 
-		gameSceneManager.OnBeginLoadMainMenuScene += ExitNPCDialogue;
-		gameSceneManager.OnBeginLoadGameplayScene += ExitNPCDialogue;
+		_gameSceneManager.OnBeginLoadMainMenuScene += ExitNPCDialogue;
+		_gameSceneManager.OnBeginLoadGameplayScene += ExitNPCDialogue;
 
-		CanSkip = true;
+		_canSkip = true;
 	}
 
 	private void Update()
 	{
-		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && IsDialogueActive && CanSkip && !menuManager.IsPauseMenuOpened)
+		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && IsDialogueActive && _canSkip && !_menuManager.IsPauseMenuOpened)
 		{
 			DisplayNextDialogueLine();
 		}
@@ -67,69 +67,67 @@ public class NPCDialogueController : MonoBehaviour
 	{
 		if (IsDialogueActive)
 		{
+			_buttonDialogueYes.onClick.RemoveAllListeners();
+			_buttonDialogueNo.onClick.RemoveAllListeners();
 
-			buttonDialogueYes.onClick.RemoveAllListeners();
-			buttonDialogueNo.onClick.RemoveAllListeners();
-
-
-			currentDialogueStepIndex = 0;
-			dialogueBranchStructIndex = 0;
-			menuManager.CloseDialogueMenu();
+			_currentDialogueStepIndex = 0;
+			_dialogueBranchStructIndex = 0;
+			_menuManager.CloseDialogueMenu();
 			HideNPCDialogueCanvas();
 			IsDialogueActive = false;
 			DeactivateButtons();
 
-			if (PerformActionOnYesFinal)
+			if (_PerformActionOnYesFinal)
 			{
-				if (dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<IInteractable>() != null)
+				if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<IInteractable>() != null)
 				{
-					dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<IInteractable>().Interact();
+					_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<IInteractable>().Interact();
 				}
-				if (dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>() != null)
+				if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>() != null)
 				{
-					dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>().TriggerCutscene();
+					_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>().TriggerCutscene();
 				}
-				PerformActionOnYesFinal = false;
+				_PerformActionOnYesFinal = false;
 			}
 		}
 	}
 
 	private void LoadDialogueFromFiles()
 	{
-		if (russianDialogueFile != null)
+		if (_russianDialogueFile != null)
 		{
-			using (var reader = new StringReader(russianDialogueFile.text))
+			using (var reader = new StringReader(_russianDialogueFile.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
 				{
 					if (!string.IsNullOrWhiteSpace(line))
 					{
-						localizedDialogue[LanguagesEnum.Russian].Add(line.Trim());
+						_localizedDialogue[LanguagesEnum.Russian].Add(line.Trim());
 					}
 				}
 			}
 		}
-		else if (englishDialogueFile != null)
+		else if (_englishDialogueFile != null)
 		{
 			Debug.LogWarning("Russian dialogue file is not set!");
 		}
 
-		if (englishDialogueFile != null)
+		if (_englishDialogueFile != null)
 		{
-			using (var reader = new StringReader(englishDialogueFile.text))
+			using (var reader = new StringReader(_englishDialogueFile.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
 				{
 					if (!string.IsNullOrWhiteSpace(line))
 					{
-						localizedDialogue[LanguagesEnum.English].Add(line.Trim());
+						_localizedDialogue[LanguagesEnum.English].Add(line.Trim());
 					}
 				}
 			}
 		}
-		else if (russianDialogueFile != null)
+		else if (_russianDialogueFile != null)
 		{
 			Debug.LogWarning("English dialogue file is not set!");
 		}
@@ -138,21 +136,21 @@ public class NPCDialogueController : MonoBehaviour
 	public void ShowNPCDialogueCanvas()
 	{
 		if (IsDialogueActive)
-			canvasDialogueMenu.SetActive(true);
+			_canvasDialogueMenu.SetActive(true);
 	}
 
 	private void HideNPCDialogueCanvas()
 	{
 		if (IsDialogueActive)
-			canvasDialogueMenu.SetActive(false);
+			_canvasDialogueMenu.SetActive(false);
 	}
 
 	public void Interact()
 	{
-		currentDialogueStepIndex = 0;
-		dialogueBranchStructIndex = 0;
+		_currentDialogueStepIndex = 0;
+		_dialogueBranchStructIndex = 0;
 
-		menuManager.OpenDialogueMenu();
+		_menuManager.OpenDialogueMenu();
 		IsDialogueActive = true;
 
 		ShowNPCDialogueCanvas();
@@ -161,72 +159,72 @@ public class NPCDialogueController : MonoBehaviour
 
 	private void DisplayNextDialogueLine()
 	{
-		var currentLanguage = localizationManager.CurrentLanguage;
+		var currentLanguage = _localizationManager.CurrentLanguage;
 
-		if (currentDialogueStepIndex >= localizedDialogue[currentLanguage].Count)
+		if (_currentDialogueStepIndex >= _localizedDialogue[currentLanguage].Count)
 		{
 			ExitNPCDialogue();
-			nPCStateMachineController.RotateTowardsInitialRotation();
+			_NPCstateMachineController.RotateTowardsInitialRotation();
 			return;
 		}
 
-		NPCdialogueText.text = localizedDialogue[currentLanguage][currentDialogueStepIndex];
+		_NPCdialogueText.text = _localizedDialogue[currentLanguage][_currentDialogueStepIndex];
 
-		if (dialogueBranchStructsList.Count > 0)
+		if (_dialogueBranchStructsList.Count > 0)
 		{
-			for (int i = 0; i < dialogueBranchStructsList.Count; i++)
+			for (int i = 0; i < _dialogueBranchStructsList.Count; i++)
 			{
-				if (dialogueBranchStructsList[i].DialogueBranchLine == (currentDialogueStepIndex + 1))
+				if (_dialogueBranchStructsList[i].DialogueBranchLine == (_currentDialogueStepIndex + 1))
 				{
-					dialogueBranchStructIndex = i;
-					CanSkip = false;
+					_dialogueBranchStructIndex = i;
+					_canSkip = false;
 					ActivateButtons();
-					buttonDialogueYes.onClick.AddListener(() => SelectOption(true));
-					buttonDialogueNo.onClick.AddListener(() => SelectOption(false));
+					_buttonDialogueYes.onClick.AddListener(() => SelectOption(true));
+					_buttonDialogueNo.onClick.AddListener(() => SelectOption(false));
 					break;
 				}
 			}
 		}
 
-		currentDialogueStepIndex++;
+		_currentDialogueStepIndex++;
 
-		if (currentDialogueStepIndex == dialogueBranchStructsList[dialogueBranchStructIndex].FinalYesLine)
+		if (_currentDialogueStepIndex == _dialogueBranchStructsList[_dialogueBranchStructIndex].FinalYesLine)
 		{
-			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToYesFinalLine;
+			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToYesFinalLine;
 
-			if (dialogueBranchStructsList[dialogueBranchStructIndex].ActionOnYesAnswer != null)
+			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer != null)
 			{
-				PerformActionOnYesFinal = true;
+				_PerformActionOnYesFinal = true;
 			}
 		}
 	}
 
 	private void ActivateButtons()
 	{
-		buttonDialogueYes.gameObject.SetActive(true);
-		buttonDialogueNo.gameObject.SetActive(true);
+		_buttonDialogueYes.gameObject.SetActive(true);
+		_buttonDialogueNo.gameObject.SetActive(true);
 	}
 
 	private void DeactivateButtons()
 	{
-		buttonDialogueYes.gameObject.SetActive(false);
-		buttonDialogueNo.gameObject.SetActive(false);
+		_buttonDialogueYes.gameObject.SetActive(false);
+		_buttonDialogueNo.gameObject.SetActive(false);
 	}
 
 	private void SelectOption(bool isYesSelected)
 	{
-		var currentLanguage = localizationManager.CurrentLanguage;
+		var currentLanguage = _localizationManager.CurrentLanguage;
 
 		if (!isYesSelected)
-			currentDialogueStepIndex = dialogueBranchStructsList[dialogueBranchStructIndex].GoToNoOptionLine - 1;
+			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1;
 
-		buttonDialogueYes.onClick.RemoveAllListeners();
-		buttonDialogueNo.onClick.RemoveAllListeners();
+		_buttonDialogueYes.onClick.RemoveAllListeners();
+		_buttonDialogueNo.onClick.RemoveAllListeners();
 
 		DisplayNextDialogueLine();
 
 		DeactivateButtons();
 
-		CanSkip = true;
+		_canSkip = true;
 	}
 }

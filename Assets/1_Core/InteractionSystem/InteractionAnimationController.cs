@@ -3,83 +3,84 @@ using UnityEngine;
 
 public class InteractionAnimationController : MonoBehaviour
 {
-	private InteractionController interactionController;
-	private Animator playerAnimator;
+	private InteractionController _interactionController;
+	private Animator _playerAnimator;
 
-	private string currentPlayerWeaponRightAnimation = "";
-	private string currentPlayerWeaponLeftAnimation = "";
-	private string currentPlayerLegKickAttackAnimation = "";
+	private string _currentPlayerRightHandWeaponAnimation = "";
+	private string _currentPlayerLeftHandWeaponAnimation = "";
+	private string _currentPlayerLegKickAttackAnimation = "";
 
 	public void Initialize(GameObject player, InteractionController interactionController)
 	{
-		playerAnimator = player.GetComponent<Animator>();
-		this.interactionController = interactionController;
+		_playerAnimator = player.GetComponent<Animator>();
+		_interactionController = interactionController;
 
-		this.interactionController.OnPickUpNonThrowable += PickUpBothHands;
-		this.interactionController.OnPickUpThrowable += PickUpRightHand;
-		this.interactionController.OnGetRidOfPickable += () =>
+		_interactionController.OnPickUpNonThrowable += PickUpWithBothHands;
+		_interactionController.OnPickUpThrowable += PickUpWithRightHand;
+		_interactionController.OnGetRidOfPickable += () =>
 		{
-			DropBothHands();
-			DropRightHand();
+			DropBothWithHands();
+			DropWithRightHand();
 		};
 
 		Debug.Log("InteractionAnimationController Initialized");
 	}
 
-	private void PickUpBothHands()
+	private void PickUpWithBothHands()
 	{
-		playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponRight"), 1);
-		ChangePlayerWeaponRightAnimation("EquipRightWeapon");
+		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 1);
+		ChangePlayerRightHandWeaponAnimation("EquipRightWeapon");
 
-		playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponLeft"), 1);
-		ChangePlayerWeaponLeftAnimation("EquipLeftWeapon");
+		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeft"), 1);
+		ChangePlayerLeftHandWeaponAnimation("EquipLeftWeapon");
 	}
 
-	private void DropBothHands()
+	private void DropBothWithHands()
 	{
-		playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponRight"), 0);
-		ChangePlayerWeaponRightAnimation("UnequipRightWeapon");
+		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 0);
+		ChangePlayerRightHandWeaponAnimation("UnequipRightWeapon");
 
-		playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponLeft"), 0);
-		ChangePlayerWeaponLeftAnimation("UnequipLeftWeapon");
+		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeft"), 0);
+		ChangePlayerLeftHandWeaponAnimation("UnequipLeftWeapon");
 	}
 
-	private void PickUpRightHand()
+	private void PickUpWithRightHand()
 	{
-		playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponRight"), 1);
-		ChangePlayerWeaponRightAnimation("EquipRightWeapon");
+		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 1);
+		ChangePlayerRightHandWeaponAnimation("EquipRightWeapon");
 	}
 
-	private void DropRightHand()
+	private void DropWithRightHand()
 	{
-		playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponRight"), 0);
-		ChangePlayerWeaponRightAnimation("UnequipRightWeapon");
+		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 0);
+		ChangePlayerRightHandWeaponAnimation("UnequipRightWeapon");
 	}
 
-	private void ChangePlayerWeaponRightAnimation(string animation, float crossfade = 0.2f)
+	private void ChangePlayerRightHandWeaponAnimation(string animation, float crossfade = 0.2f)
 	{
-		if (currentPlayerWeaponRightAnimation != animation)
+		if (_currentPlayerRightHandWeaponAnimation != animation)
 		{
-			currentPlayerWeaponRightAnimation = animation;
-			playerAnimator.CrossFade(animation, crossfade);
+			_currentPlayerRightHandWeaponAnimation = animation;
+			_playerAnimator.CrossFade(animation, crossfade);
 		}
 	}
 
-	private void ChangePlayerWeaponLeftAnimation(string animation, float crossfade = 0.2f)
+	private void ChangePlayerLeftHandWeaponAnimation(string animation, float crossfade = 0.2f)
 	{
-		if (currentPlayerWeaponLeftAnimation != animation)
+		if (_currentPlayerLeftHandWeaponAnimation != animation)
 		{
-			currentPlayerWeaponLeftAnimation = animation;
-			playerAnimator.CrossFade(animation, crossfade);
+			_currentPlayerLeftHandWeaponAnimation = animation;
+			_playerAnimator.CrossFade(animation, crossfade);
 		}
 	}
 
+	////??????? idk
 	private void ChangePlayerLegKickAttackAnimation(string animation, float crossfade = 0.2f)
 	{
-		if (currentPlayerLegKickAttackAnimation != animation)
+		if (_currentPlayerLegKickAttackAnimation != animation)
 		{
-			currentPlayerLegKickAttackAnimation = animation;
-			playerAnimator.CrossFade(animation, crossfade);
+			_currentPlayerLegKickAttackAnimation = animation;
+			_playerAnimator.CrossFade(animation, crossfade);
 		}
 	}
 }
