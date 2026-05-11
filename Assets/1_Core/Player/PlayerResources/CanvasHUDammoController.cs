@@ -23,14 +23,24 @@ public class CanvasHUDammoController : MonoBehaviour
 	private TMP_Text _leftWeaponAmmoMagazineText;
 	private TMP_Text _leftWeaponAmmoReserveText;
 
-	public void Initialize(GameSceneManager gameSceneManager, GameController gameController, MenuManager menuManager, GameObject canvasHUDPlayerResources, PlayerWeaponController weaponController,
-		PlayerResourcesAmmoManager playerResourcesAmmoManager, PlayerBehaviour playerBehaviour,
-		GameObject RightWeaponAmmoMagazine, GameObject RightWeaponAmmoReserve, GameObject RightWeaponAmmoSeparator,
-		GameObject LeftWeaponAmmoMagazine, GameObject LeftWeaponAmmoReserve, GameObject LeftWeaponAmmoSeparator)
+	public void Initialize(
+		GameController gameController,
+		GameSceneManager gameSceneManager,
+		MenuManager menuManager,
+		PlayerBehaviour playerBehaviour,
+		PlayerWeaponController weaponController,
+		PlayerResourcesAmmoManager playerResourcesAmmoManager,
+		GameObject canvasHUDammo,
+		GameObject RightWeaponAmmoMagazine,
+		GameObject RightWeaponAmmoReserve,
+		GameObject RightWeaponAmmoSeparator,
+		GameObject LeftWeaponAmmoMagazine,
+		GameObject LeftWeaponAmmoReserve,
+		GameObject LeftWeaponAmmoSeparator)
 	{
 		_gameSceneManager = gameSceneManager;
 		_menuManager = menuManager;
-		_canvasHUDammo = canvasHUDPlayerResources;
+		_canvasHUDammo = canvasHUDammo;
 		_playerWeaponController = weaponController;
 		_playerResourcesAmmoManager = playerResourcesAmmoManager;
 		_gameController	= gameController;

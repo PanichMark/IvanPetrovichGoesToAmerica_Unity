@@ -205,7 +205,7 @@ public class InteractionController : MonoBehaviour
 			var interactableObj = _hitInfo.collider.GetComponent<IInteractable>();
 			var throwableObj = _hitInfo.collider.GetComponent<IThrowable>();
 			var pickableObj = _hitInfo.collider.GetComponent<IPickable>();
-			var gainedObject = _hitInfo.collider.GetComponent<IInteractGainedItem>();
+			var gainedObject = _hitInfo.collider.GetComponent<IGainedItem>();
 			//var usedObject = hitInfo.collider.GetComponent<IInteractUsedItem>();
 
 			if (interactableObj != null)
@@ -239,9 +239,9 @@ public class InteractionController : MonoBehaviour
 				{
 					interactableObj.Interact();
 				
-					if (interactableObj.IsInteractionHintMessageAdditionalActive == true)
+					if (interactableObj.IsInteractionHintMessageFailActive == true)
 					{
-						_additionalInteractionText.text = interactableObj.InteractionHintMessageAdditional;
+						_additionalInteractionText.text = interactableObj.InteractionHintMessageFail;
 						if (_showAdditionalHintCoroutine != null)
 							StopCoroutine(_showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
 
@@ -262,9 +262,9 @@ public class InteractionController : MonoBehaviour
 								_itemsTexts[0].text = interactableObj.InteractionObjectNameUI;
 
 								_itemsImages[0].gameObject.SetActive(true);
-								if (gainedObject.ImageGainedItem != null)
+								if (gainedObject.IconGainedItem != null)
 								{
-									_itemsImages[0].sprite = gainedObject.ImageGainedItem;
+									_itemsImages[0].sprite = gainedObject.IconGainedItem;
 								}
 								else
 								{
@@ -279,9 +279,9 @@ public class InteractionController : MonoBehaviour
 
 								_itemsImages[1].gameObject.SetActive(true);
 								_itemsImages[1].sprite = _itemsImages[0].sprite;
-								if (gainedObject.ImageGainedItem != null)
+								if (gainedObject.IconGainedItem != null)
 								{
-									_itemsImages[0].sprite = gainedObject.ImageGainedItem;
+									_itemsImages[0].sprite = gainedObject.IconGainedItem;
 								}
 								else
 								{
@@ -298,9 +298,9 @@ public class InteractionController : MonoBehaviour
 								_itemsImages[2].gameObject.SetActive(true);
 								_itemsImages[2].sprite = _itemsImages[1].sprite;
 								_itemsImages[1].sprite = _itemsImages[0].sprite;
-								if (gainedObject.ImageGainedItem != null)
+								if (gainedObject.IconGainedItem != null)
 								{
-									_itemsImages[0].sprite = gainedObject.ImageGainedItem;
+									_itemsImages[0].sprite = gainedObject.IconGainedItem;
 								}
 								else
 								{
@@ -317,9 +317,9 @@ public class InteractionController : MonoBehaviour
 
 								_itemsImages[2].sprite = _itemsImages[1].sprite;
 								_itemsImages[1].sprite = _itemsImages[0].sprite;
-								if (gainedObject.ImageGainedItem != null)
+								if (gainedObject.IconGainedItem != null)
 								{
-									_itemsImages[0].sprite = gainedObject.ImageGainedItem;
+									_itemsImages[0].sprite = gainedObject.IconGainedItem;
 								}
 								else
 								{

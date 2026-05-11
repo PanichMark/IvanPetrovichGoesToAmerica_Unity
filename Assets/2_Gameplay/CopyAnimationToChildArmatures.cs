@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class CopyAnimationToChildArmatures : MonoBehaviour
 {
-	public Transform parentArmatureRoot;
-	public List<Transform> childArmatureRoots = new List<Transform>(); 
+	[SerializeField] private Transform _parentArmatureRoot;
+	[SerializeField] private List<Transform> _childArmatureRoots = new List<Transform>(); 
 
 	private List<Dictionary<string, Transform>> _childBonesMaps = new List<Dictionary<string, Transform>>();
 
@@ -15,21 +15,21 @@ public class CopyAnimationToChildArmatures : MonoBehaviour
 
 	void LateUpdate()
 	{
-		if (!parentArmatureRoot || childArmatureRoots.Count == 0)
+		if (!_parentArmatureRoot || _childArmatureRoots.Count == 0)
 			return;
 
-		Transform[] parentBones = parentArmatureRoot.GetComponentsInChildren<Transform>(true);
+		Transform[] parentBones = _parentArmatureRoot.GetComponentsInChildren<Transform>(true);
 
-		for (int i = 0; i < childArmatureRoots.Count; i++)
+		for (int i = 0; i < _childArmatureRoots.Count; i++)
 		{
-			Transform childRoot = childArmatureRoots[i];
+			Transform childRoot = _childArmatureRoots[i];
 			Dictionary<string, Transform> childBonesMap = _childBonesMaps[i];
 
 			if (!childRoot)
 				continue;
 
-			childRoot.position = parentArmatureRoot.position;
-			childRoot.rotation = parentArmatureRoot.rotation;
+			childRoot.position = _parentArmatureRoot.position;
+			childRoot.rotation = _parentArmatureRoot.rotation;
 
 			foreach (Transform bone in parentBones)
 			{
@@ -46,7 +46,7 @@ public class CopyAnimationToChildArmatures : MonoBehaviour
 	private void BuildChildBonesMaps()
 	{
 		_childBonesMaps.Clear();
-		foreach (var childRoot in childArmatureRoots)
+		foreach (var childRoot in _childArmatureRoots)
 		{
 			if (childRoot == null) continue;
 

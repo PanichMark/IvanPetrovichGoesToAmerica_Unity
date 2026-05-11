@@ -27,9 +27,9 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	public string InteractionObjectNameSystem => _NPCname;
 	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_NPCname);
 	public string InteractionHintMessageMain => $"Talk to {InteractionObjectNameUI}";
-	public string InteractionHintMessageAdditional => throw new System.NotImplementedException();
-	public virtual bool IsInteractionHintMessageAdditionalActive => false;
-	public string InteractionHintAction { get; protected set; }
+	public string InteractionHintMessageFail => throw new System.NotImplementedException();
+	public virtual bool IsInteractionHintMessageFailActive => false;
+	public string InteractionHintMessageAction { get; protected set; }
 
 	public bool WasObjectDestroyed => throw new System.NotImplementedException();
 

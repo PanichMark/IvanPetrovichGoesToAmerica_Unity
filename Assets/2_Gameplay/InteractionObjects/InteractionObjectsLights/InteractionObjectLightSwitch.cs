@@ -14,9 +14,9 @@ public class InteractionObjectLightSwitch : MonoBehaviour, IInteractable
 	public string InteractionObjectNameUI => "Свет";
 	public string InteractionHintMessageMain => $"Включить/выключить {InteractionObjectNameUI}";
 	public string HintAction => "Взаимодействие";
-	public string InteractionHintMessageAdditional => "";
-	public bool IsInteractionHintMessageAdditionalActive => false;
-	public string InteractionHintAction => "";
+	public string InteractionHintMessageFail => "";
+	public bool IsInteractionHintMessageFailActive => false;
+	public string InteractionHintMessageAction => "";
 
 	private List<Material> _cachedMaterials = new List<Material>();
 

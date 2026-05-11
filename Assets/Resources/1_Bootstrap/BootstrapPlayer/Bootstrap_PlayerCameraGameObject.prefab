@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f75768928756f2049bf935b552dd7251, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentArmatureRoot: {fileID: 3655643396765934408}
-  childArmatureRoots:
+  _parentArmatureRoot: {fileID: 3655643396765934408}
+  _childArmatureRoots:
   - {fileID: 6647728260825781966}
 --- !u!1 &204839991022361387
 GameObject:

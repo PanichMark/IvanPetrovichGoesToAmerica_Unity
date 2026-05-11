@@ -14,12 +14,12 @@ public class InteractionObjectVendingMachineChooseAmmoType : MonoBehaviour, IInt
 	public string InteractionObjectNameSystem => _name;
 	public string InteractionObjectNameUI => _name;
 	public string InteractionHintMessageMain => "Сменить тип патронов";
-	public string InteractionHintAction => "Сменить";
-	public string InteractionHintMessageAdditional => "Подождите!";
+	public string InteractionHintMessageAction => "Сменить";
+	public string InteractionHintMessageFail => "Подождите!";
 
 	private bool _isBusy = false;
 
-	public bool IsInteractionHintMessageAdditionalActive => _isBusy;
+	public bool IsInteractionHintMessageFailActive => _isBusy;
 
 	public void Interact()
 	{

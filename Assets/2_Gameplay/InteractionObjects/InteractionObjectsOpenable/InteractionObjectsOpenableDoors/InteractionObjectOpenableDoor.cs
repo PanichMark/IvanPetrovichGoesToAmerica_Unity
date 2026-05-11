@@ -4,7 +4,7 @@ using System.Collections;
 public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 {
 	protected bool _isAdditionalInteractionHintActive;
-	public override bool IsInteractionHintMessageAdditionalActive => _isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
 	private LocalizationManager _localizationManager;
 	[SerializeField] private InteractionObjectLockMechanical _mechanicalLockController;
@@ -17,14 +17,14 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	private Quaternion _closedRotation;
 	[SerializeField] private int _doorOpenAngle;
 
-	public override string InteractionHintMessageAdditional => $"{InteractionObjectNameUI} is locked!";
+	public override string InteractionHintMessageFail => $"{InteractionObjectNameUI} is locked!";
 
 	void Start()
 	{
 		IsDoorOpened = false;
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintAction = _localizationManager.GetLocalizedString("OpenDoor");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("OpenDoor");
 
 		Vector3 openedEulerAngles = new Vector3(0, 0, _doorOpenAngle);
 		_openedRotation = Quaternion.Euler(openedEulerAngles);
@@ -42,7 +42,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 		if (_mechanicalLockController == null || _mechanicalLockController.WasUnlocked)
 		{
-			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 		}
 	}
 
@@ -50,7 +50,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintAction = _localizationManager.GetLocalizedString("OpenDoor");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("OpenDoor");
 
 		if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
 		{
@@ -60,14 +60,14 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 		if (_mechanicalLockController == null || _mechanicalLockController.WasUnlocked)
 		{
-			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 		}
 	}
 
 	private void UnlockDoor()
 	{
-		InteractionHintAction = _localizationManager.GetLocalizedString("OpenDoor");
-		_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("OpenDoor");
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 	}
 
 	public override void Interact()
@@ -105,16 +105,16 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 		{
 			Debug.Log($"Opened {InteractionObjectNameUI}");
 			IsDoorOpened = true;
-			InteractionHintAction = _localizationManager.GetLocalizedString("CloseDoor");
-			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("CloseDoor");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 			_currentAnimation = StartCoroutine(OpenDoor());
 		}
 		else
 		{
 			Debug.Log($"Closed {InteractionObjectNameUI}");
 			IsDoorOpened = false;
-			InteractionHintAction = _localizationManager.GetLocalizedString("OpenDoor");
-			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("OpenDoor");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 			_currentAnimation = StartCoroutine(CloseDoor());
 		}
 	}

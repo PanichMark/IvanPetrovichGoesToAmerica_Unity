@@ -53,7 +53,7 @@ public class SaveLoadController : MonoBehaviour
 
 		for (int index = 0; index < lootItems.Length; index++)
 		{
-			lootItems[index].AssignLootItemIndex(index);
+			lootItems[index].AssignLootObjectsIndex(index);
 		}
 	}
 

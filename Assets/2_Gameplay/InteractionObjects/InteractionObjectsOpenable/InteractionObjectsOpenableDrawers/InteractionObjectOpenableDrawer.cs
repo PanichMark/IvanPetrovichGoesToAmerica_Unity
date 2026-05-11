@@ -18,8 +18,8 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 
-		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-		_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		InteractionHintMessageAction = localizationManager.GetLocalizedString("OpenDoor");
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 
 		_closedPosition = transform.localPosition;
 		_openedPosition = transform.localPosition + new Vector3(0, 0, _openLengthForward);
@@ -33,8 +33,8 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 
-		InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-		_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		InteractionHintMessageAction = localizationManager.GetLocalizedString("OpenDoor");
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 	}
 
 	public override void Interact()
@@ -46,14 +46,14 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 
 		if (!IsDoorOpened)
 		{
-			InteractionHintAction = localizationManager.GetLocalizedString("CloseDoor");
-			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			InteractionHintMessageAction = localizationManager.GetLocalizedString("CloseDoor");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 			_currentAnimation = StartCoroutine(OpenDrawer());
 		}
 		else
 		{
-			InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			InteractionHintMessageAction = localizationManager.GetLocalizedString("OpenDoor");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 			_currentAnimation = StartCoroutine(CloseDrawer());
 		}
 	}

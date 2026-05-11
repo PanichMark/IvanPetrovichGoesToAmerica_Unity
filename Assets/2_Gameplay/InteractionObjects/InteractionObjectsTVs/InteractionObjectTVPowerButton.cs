@@ -12,13 +12,13 @@ public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 
 	private GameObject _tvScreen;
 
-	public string InteractionHintAction => throw new System.NotImplementedException();
+	public string InteractionHintMessageAction => throw new System.NotImplementedException();
 
 	private bool _isTVturnedOn;
 
-	public string InteractionHintMessageAdditional => throw new System.NotImplementedException();
+	public string InteractionHintMessageFail => throw new System.NotImplementedException();
 
-	public bool IsInteractionHintMessageAdditionalActive => false;
+	public bool IsInteractionHintMessageFailActive => false;
 
 	public void Interact()
 	{

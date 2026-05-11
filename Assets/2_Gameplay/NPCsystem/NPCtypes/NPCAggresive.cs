@@ -1,6 +1,6 @@
 ﻿public class NPCAggresive : NPCNeutral
 {
-	public override bool IsInteractionHintMessageAdditionalActive => false;
+	public override bool IsInteractionHintMessageFailActive => false;
 
 	override public void Interact()
 	{

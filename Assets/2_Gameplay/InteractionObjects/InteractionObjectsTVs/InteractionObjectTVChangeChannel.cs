@@ -11,9 +11,9 @@ public class InteractionObjectTVButtonChannel : MonoBehaviour, IInteractable
 	public string InteractionObjectNameSystem => "buttonChannel";
 	public string InteractionObjectNameUI => _buttonChannelUI;
 	public string InteractionHintMessageMain => $"Press {_buttonChannelUI}?";
-	public string InteractionHintAction => "Switch";
-	public string InteractionHintMessageAdditional => "";
-	public bool IsInteractionHintMessageAdditionalActive => false;
+	public string InteractionHintMessageAction => "Switch";
+	public string InteractionHintMessageFail => "";
+	public bool IsInteractionHintMessageFailActive => false;
 
 	public void Interact()
 	{

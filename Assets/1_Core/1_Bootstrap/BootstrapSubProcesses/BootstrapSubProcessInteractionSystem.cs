@@ -22,8 +22,8 @@ public class BootstrapSubProcessInteractionSystem
 	private InteractionFirstPersonRender _interactionFirstPersonRender;
 
 	private GameObject _canvasHUDInteraction;
-	private TextMeshProUGUI _textMainInteractionMessage;
-	private TextMeshProUGUI _textAdditionalInteractionMessage;
+	private TextMeshProUGUI _textInteractionMessageMain;
+	private TextMeshProUGUI _textInteractionMessageFail;
 	private TextMeshProUGUI[] _textsGainedItems;
 	private Image[] _imagesGainedItems;
 
@@ -82,8 +82,8 @@ public class BootstrapSubProcessInteractionSystem
 		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
 		_interactionFirstPersonRender = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionFirstPersonRender>();
 
-		_textMainInteractionMessage = _canvasHUDInteraction.transform.Find("TextMainInteraction").GetComponent<TextMeshProUGUI>();
-		_textAdditionalInteractionMessage = _canvasHUDInteraction.transform.Find("TextAdditionalInteraction").GetComponent<TextMeshProUGUI>();
+		_textInteractionMessageMain = _canvasHUDInteraction.transform.Find("TextMainInteraction").GetComponent<TextMeshProUGUI>();
+		_textInteractionMessageFail = _canvasHUDInteraction.transform.Find("TextAdditionalInteraction").GetComponent<TextMeshProUGUI>();
 		_textPhraseLine = _canvasHUDInteraction.transform.Find("TextPhrase").GetComponent<TextMeshProUGUI>();
 		_textDialogueLine = _canvasMenuDialogue.transform.Find("TextDialogue").GetComponent<TextMeshProUGUI>();
 
@@ -133,8 +133,8 @@ public class BootstrapSubProcessInteractionSystem
 			_playerBehaviour,
 			_playerCameraController,
 			_canvasHUDInteraction,
-			_textMainInteractionMessage,
-			_textAdditionalInteractionMessage,
+			_textInteractionMessageMain,
+			_textInteractionMessageFail,
 			_textsGainedItems,
 			_imagesGainedItems);
 

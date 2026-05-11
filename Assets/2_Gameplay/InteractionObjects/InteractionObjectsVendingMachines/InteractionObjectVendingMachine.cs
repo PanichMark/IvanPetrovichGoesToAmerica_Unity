@@ -13,10 +13,10 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 	private bool _isAdditionalInteractionHintActive;
 
 	public virtual string InteractionHintMessageMain => $"Купить {_goodsName} в {InteractionObjectNameUI} за {_goodsPrice} рублей?";
-	public virtual string InteractionHintMessageAdditional => "Недостаточно денег!";
-	public string InteractionHintAction { get; protected set; }
+	public virtual string InteractionHintMessageFail => "Недостаточно денег!";
+	public string InteractionHintMessageAction { get; protected set; }
 	public string InteractionObjectNameSystem => _vendingMachineName;
-	public virtual bool IsInteractionHintMessageAdditionalActive => _isAdditionalInteractionHintActive;
+	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
 	public virtual string InteractionObjectNameUI => _vendingMachineName;
 

@@ -95,7 +95,7 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessSceneSystem = new BootstrapSubProcessSceneSystem(_gameController, _canvasLoadingScreen);
 		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.InitializeSceneSystem());
 
-		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(_bootstrapSubProcessSceneSystem.GameSceneManager, _gameController);
+		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(_gameController, _bootstrapSubProcessSceneSystem.GameSceneManager);
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.InitializeSaveLoadSystem());
 
 		_bootstrapSubProcessMenuSystem = new BootstrapSubProcessMenuSystem(
@@ -152,14 +152,15 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(_bootstrapSubProcessInteractionSystem.InitializeInteractionSystem());
 
 		_bootstrapSubProcessWeaponSystem = new BootstrapSubProcessWeaponSystem(
-			_bootstrapSubProcessSceneSystem,
 			_gameController,
-			_bootstrapSubProcessPlayerSystems,
-			_bootstrapSubProcessMenuSystem,
 			_inputDevice,
+			_bootstrapSubProcessSceneSystem,
+			_bootstrapSubProcessMenuSystem,
+			_bootstrapSubProcessPlayerSystems,
+			_bootstrapSubProcessInteractionSystem,
+			_canvasMenuWeaponWheel,
 			_playerGameObject,
 			_bootstrapSubProcessPlayerResources.PlayerResourcesAmmoManager,
-			_bootstrapSubProcessInteractionSystem,
 			_bootstrapSubProcessPlayerResources.CanvasHUDammoController,
 			_canvasHUDammo,
 			_bootstrapSubProcessPlayerResources.TextRightWeaponAmmoMagazineNumber,
@@ -167,8 +168,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessPlayerResources.RightWeaponAmmoSeparator,
 			_bootstrapSubProcessPlayerResources.TextLeftWeaponAmmoMagazineNumber,
 			_bootstrapSubProcessPlayerResources.TextLeftWeaponAmmoReserveNumber,
-			_bootstrapSubProcessPlayerResources.LeftWeaponAmmoSeparator,
-			_canvasMenuWeaponWheel);
+			_bootstrapSubProcessPlayerResources.LeftWeaponAmmoSeparator);
 		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
 
 		yield return StartCoroutine(RegisterBootstrapDependencies());
@@ -182,9 +182,12 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.SaveLoadController.NewGame());
 
 		GameObject[] availableWeapons = _configBootstrapWeapons.GetAvailableWeapons();
-		foreach (GameObject weaponPrefab in availableWeapons)
+		if (availableWeapons != null)
 		{
-			_bootstrapSubProcessWeaponSystem.WeaponController.UnlockWeapon(weaponPrefab);
+			foreach (GameObject weaponPrefab in availableWeapons)
+			{
+				_bootstrapSubProcessWeaponSystem.WeaponController.UnlockWeapon(weaponPrefab);
+			}
 		}
 
 		Destroy(_gameObjectBootstrapTemporaryCamera);

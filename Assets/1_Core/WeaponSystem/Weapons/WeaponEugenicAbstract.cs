@@ -11,8 +11,8 @@ public abstract class EugenicWeaponAbstract : WeaponAbstract
 	{
 		if (IsThisPlayerWeapon == true)
 		{
-			player = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
-			camera = ServiceLocator.Resolve<GameObject>("PlayerCameraGameObject");
+			player = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
+			camera = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 
 			playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
 		}

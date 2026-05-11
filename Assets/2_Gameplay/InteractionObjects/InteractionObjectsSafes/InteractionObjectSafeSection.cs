@@ -15,11 +15,11 @@ public class InteractionObjectSafeSection : MonoBehaviour, IInteractable
 	private float _sectionRotationSpeed = 0.15f;
 	private Coroutine _sectionCoroutine;
 
-	public string InteractionHintAction { get; protected set; }
+	public string InteractionHintMessageAction { get; protected set; }
 	public string InteractionObjectNameUI => _safeSectionSlotNumber.ToString();
 	public virtual string InteractionHintMessageMain => $"Rotate section #{InteractionObjectNameUI}";
-	public virtual string InteractionHintMessageAdditional => null;
-	public virtual bool IsInteractionHintMessageAdditionalActive => false;
+	public virtual string InteractionHintMessageFail => null;
+	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionObjectNameSystem => null;
 
 	public void Interact()

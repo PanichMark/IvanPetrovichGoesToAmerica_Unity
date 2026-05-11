@@ -6,6 +6,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 {
 	protected LocalizationManager _localizationManager;
 
+	[SerializeField] protected string _interactionObjectNameSystem;
+
 	protected Collider _playerCollider;
 	protected bool _isCollisionIgnored = false;
 	protected bool _isPlayerInsideTrigger = false;
@@ -13,19 +15,19 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	protected GameObject _playerColliderGameObject;
 	protected int _pickableLayer;
 	protected int _playerLayer;
+
 	public GameObject CachedPlayer { get; protected set; }
 	public Collider Collider { get; protected set; }
 	public Rigidbody RigidBody { get; protected set; }
 
-	[SerializeField] protected string _interactionObjectNameSystem;
 	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
 	public virtual string InteractionObjectNameUI { get; protected set; }
-	public string InteractionHintMessageMain => $"{InteractionHintAction} {InteractionObjectNameUI}?";
 
-	public string InteractionHintAction { get; protected set; }
+	public string InteractionHintMessageAction { get; protected set; }
+	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 
-	public virtual string InteractionHintMessageAdditional => null;
-	public virtual bool IsInteractionHintMessageAdditionalActive => false;
+	public virtual string InteractionHintMessageFail => null;
+	public virtual bool IsInteractionHintMessageFailActive => false;
 
 	public bool IsObjectPickedUp { get; protected set; }
 
@@ -43,7 +45,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
 		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 	}
 
@@ -71,7 +73,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
 	}
 
 	public void Interact()
@@ -147,7 +149,6 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 		transform.position = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.5f + Vector3.up * 1f;
 	}
-
 
 	public void SaveData(ref GameData data)
 	{

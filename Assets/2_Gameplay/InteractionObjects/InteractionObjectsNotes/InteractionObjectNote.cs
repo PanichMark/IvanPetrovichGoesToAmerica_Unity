@@ -17,13 +17,13 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	[SerializeField] private TextAsset _textFile_EN;   // Английская версия текста
 
 	private LocalizationManager _localizationManager;
-	public string InteractionHintMessageAdditional => null;
+	public string InteractionHintMessageFail => null;
 	private GameObject _canvasNoteMenu;
 	private Button _buttonExitNoteMenu;
 
 	[SerializeField] private Sprite _image;
 
-	public string InteractionHintAction { get; protected set; }
+	public string InteractionHintMessageAction { get; protected set; }
 	private bool _isThereText;
 
 
@@ -34,7 +34,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	private Image _imageComponent;
 
-	public bool IsInteractionHintMessageAdditionalActive => false;
+	public bool IsInteractionHintMessageFailActive => false;
 	private GameSceneManager _gameSceneManager;
 	private void Start()
 	{

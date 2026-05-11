@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WeaponAnimationController : MonoBehaviour
 {
@@ -11,8 +10,12 @@ public class WeaponAnimationController : MonoBehaviour
 	private Animator playerAnimator;
 	private bool _isInitialized = false;
 	private LegKickAttackController legKickAttack;
-	public void Initialize(GameObject player, PlayerBehaviour playerBehaviour,
-		PlayerCameraController playerCameraController, PlayerWeaponController weaponController, LegKickAttackController legKickAttack)
+	public void Initialize(
+		PlayerBehaviour playerBehaviour,
+		PlayerCameraController playerCameraController,
+		PlayerWeaponController weaponController,
+		LegKickAttackController legKickAttack,
+		GameObject player)
 	{
 		playerAnimator = player.GetComponent<Animator>();
 		this.playerBehaviour = playerBehaviour;
@@ -22,6 +25,7 @@ public class WeaponAnimationController : MonoBehaviour
 		this.legKickAttack = legKickAttack;
 
 		_isInitialized = true;
+
 		Debug.Log("WeaponAnimationController Initialized");
 	}
 

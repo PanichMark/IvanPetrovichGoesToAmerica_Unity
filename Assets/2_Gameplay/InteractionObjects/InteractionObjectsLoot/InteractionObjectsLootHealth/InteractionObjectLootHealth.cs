@@ -5,9 +5,9 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 	private PlayerResourcesHealthManager _playerResourcesHealthManager;
 	private bool _isAdditionalInteractionHintActive;
 
-	public override bool IsInteractionHintMessageAdditionalActive => _isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
-	public override string InteractionHintMessageAdditional => $"Максимум {InteractionObjectNameUI}";
+	public override string InteractionHintMessageFail => $"Максимум {InteractionObjectNameUI}";
 
 	public override void Interact()
 	{

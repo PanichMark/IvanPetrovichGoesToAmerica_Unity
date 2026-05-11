@@ -4,11 +4,11 @@ using System.Collections;
 public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 {
 	public virtual string InteractionObjectNameSystem => null;
-	public string InteractionHintAction { get; protected set; }
+	public string InteractionHintMessageAction { get; protected set; }
 	public string InteractionObjectNameUI => null;
 	public string InteractionHintMessageMain => "Open safe";
-	public virtual string InteractionHintMessageAdditional => "Wrong combination!";
-	public virtual bool IsInteractionHintMessageAdditionalActive => _isAdditionalInteractionHintActive;
+	public virtual string InteractionHintMessageFail => "Wrong combination!";
+	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
 	private bool _isAdditionalInteractionHintActive;
 	private bool _isSafeOpened;

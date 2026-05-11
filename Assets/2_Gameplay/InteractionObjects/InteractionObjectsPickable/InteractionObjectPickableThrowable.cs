@@ -70,7 +70,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		};
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
 		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 	}
 

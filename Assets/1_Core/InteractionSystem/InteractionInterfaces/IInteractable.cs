@@ -3,9 +3,9 @@
 	string InteractionObjectNameSystem { get; }
 	string InteractionObjectNameUI { get; }
 	string InteractionHintMessageMain { get; }
-	string InteractionHintAction { get; }
-	string InteractionHintMessageAdditional { get; }
-	bool IsInteractionHintMessageAdditionalActive { get; }
+	string InteractionHintMessageAction { get; }
+	string InteractionHintMessageFail { get; }
+	bool IsInteractionHintMessageFailActive { get; }
 
 	void Interact();
 }

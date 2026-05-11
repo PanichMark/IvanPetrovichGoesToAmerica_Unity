@@ -14,7 +14,7 @@ public class LegKickAttackController : MonoBehaviour
 
 	public float WeaponDamage { get; private set; } = 50;
 
-	public void Initialize(IInputDevice inputDevice, GameObject cachedPlayer, PlayerMovementController playerMovementController)
+	public void Initialize(IInputDevice inputDevice, PlayerMovementController playerMovementController, GameObject cachedPlayer)
 	{
 		_inputDevice = inputDevice;
 		_cachedPlayer = cachedPlayer;

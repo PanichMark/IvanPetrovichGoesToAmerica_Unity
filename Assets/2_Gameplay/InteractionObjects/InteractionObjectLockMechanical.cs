@@ -48,11 +48,11 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	private string _interactionHintMessageMain;
 	public string InteractionHintMessageMain => _interactionHintMessageMain;
 
-	public string InteractionHintAction { get; protected set; }
+	public string InteractionHintMessageAction { get; protected set; }
 
-	public string InteractionHintMessageAdditional => null;
+	public string InteractionHintMessageFail => null;
 
-	public bool IsInteractionHintMessageAdditionalActive => false;
+	public bool IsInteractionHintMessageFailActive => false;
 
 	public string InteractionObjectNameUI { get; protected set; }
 
@@ -71,10 +71,10 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
 
 		_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
-		_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 
 		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 
@@ -86,10 +86,10 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
 
 		_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
-		_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 	}
 
 	private void Update()

@@ -8,9 +8,9 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable
 	public string InteractionObjectNameSystem => "Elevator Button";
 	public string InteractionObjectNameUI => "Button";
 	public string InteractionHintMessageMain => "Press to call the elevator";
-	public string InteractionHintAction => "Press";
-	public string InteractionHintMessageAdditional => "";
-	public bool IsInteractionHintMessageAdditionalActive => false;
+	public string InteractionHintMessageAction => "Press";
+	public string InteractionHintMessageFail => "";
+	public bool IsInteractionHintMessageFailActive => false;
 
 	public void Interact()
 	{

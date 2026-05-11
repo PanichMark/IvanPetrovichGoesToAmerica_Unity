@@ -32,8 +32,16 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 	public Image WeaponIcon {  get; private set; }
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, PlayerWeaponController weaponController,
-		GameObject wheelSegmentPrefab, GameObject weaponWheelMenuCanvas, TextMeshProUGUI weaponText, TextMeshProUGUI weaponWheelName, Image weaponIconBig)
+	public void Initialize(
+		IInputDevice inputDevice,
+		MenuManager menuManager,
+		PlayerBehaviour playerBehaviour,
+		PlayerWeaponController weaponController,
+		GameObject weaponWheelMenuCanvas,
+		GameObject wheelSegmentPrefab,
+		TextMeshProUGUI weaponText,
+		Image weaponIconBig,
+		TextMeshProUGUI weaponWheelName)
 	{
 		_inputDevice = inputDevice;
 		_playerBehaviour = playerBehaviour;

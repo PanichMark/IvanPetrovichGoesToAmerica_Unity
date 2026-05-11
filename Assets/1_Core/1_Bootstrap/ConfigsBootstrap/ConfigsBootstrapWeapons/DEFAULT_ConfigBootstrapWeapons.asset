@@ -12,14 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7882385c998929a49a54e2d960bc1504, type: 3}
   m_Name: DEFAULT_ConfigBootstrapWeapons
   m_EditorClassIdentifier: 
-  AvailableWeapons:
-  - WeaponPrefab: {fileID: 7853468888140780316, guid: 49643d32c6595304f84297c5ab491994, type: 3}
-    IsWeaponUnlocked: 1
-  - WeaponPrefab: {fileID: 5726397282783717853, guid: 6226550dd22049a4c99bce4bd2cf49ff, type: 3}
-    IsWeaponUnlocked: 1
-  - WeaponPrefab: {fileID: 8067495848147572535, guid: 352472863b2c0ed4f9ea117ade74bfb5, type: 3}
-    IsWeaponUnlocked: 1
-  - WeaponPrefab: {fileID: 1750464879899684084, guid: 8c327820676d5d2459974b0f29cfade5, type: 3}
-    IsWeaponUnlocked: 1
-  - WeaponPrefab: {fileID: 765562863778996623, guid: 365964d639e756047950d9cb38ee7afe, type: 3}
-    IsWeaponUnlocked: 1
+  AvailableWeapons: []

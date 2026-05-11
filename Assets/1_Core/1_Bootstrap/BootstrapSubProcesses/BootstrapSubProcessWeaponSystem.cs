@@ -5,31 +5,37 @@ using TMPro;
 
 public class BootstrapSubProcessWeaponSystem
 {
+	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
+	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
+	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
+	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
+
+	private GameController _gameController;
+	private IInputDevice _inputDevice;
+
 	private GameObject _GameObjectBootstrapWeaponSystem;
+
 	public PlayerWeaponController WeaponController { get; private set; }
-	private LegKickAttackController _legKickAttackController;
-	private WeaponAnimationController _weaponAnimationController;
-	private WeaponFirstPersonRender _weaponFirstPersonRender;
-	private GameObject _gameObjectFirstPersonLeftHandWeaponSlot;
 	private GameObject _gameObjectFirstPersonRightHandWeaponSlot;
-	private GameObject _gameObjectThirdPersonLeftHandWeaponSlot;
+	private GameObject _gameObjectFirstPersonLeftHandWeaponSlot;
 	private GameObject _gameObjectThirdPersonRightHandWeaponSlot;
+	private GameObject _gameObjectThirdPersonLeftHandWeaponSlot;
+
 	private WeaponWheelMenuController _weaponWheelController;
 	private GameObject _canvasMenuWeaponWheel;
 	private GameObject _gameObjectWeaponWheelSegment;
-	private TextMeshProUGUI _textWeaponWheelWeapon;
+	private TextMeshProUGUI _textWeaponWheelWeaponName;
+	private Image _imageWeaponWheelWeaponIcon;
 	private TextMeshProUGUI _textWeaponWheelHandType;
-	private Image _imageWeaponWheelIconWeapon;
-	private GameObject _textChokeNPC;
 
-	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
-	private GameController _gameController;
-	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
-	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
-	private IInputDevice _inputDevice;
+	private WeaponAnimationController _weaponAnimationController;
+
+	private WeaponFirstPersonRender _weaponFirstPersonRender;
+
+	private LegKickAttackController _legKickAttackController;
 	private GameObject _gameObjectPlayer;
+
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
-	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
 	private CanvasHUDammoController _canvasHUDammoController;
 	private GameObject _canvasHUDammo;
 	private GameObject _rightWeaponAmmoMagazine;
@@ -38,16 +44,18 @@ public class BootstrapSubProcessWeaponSystem
 	private GameObject _leftWeaponAmmoMagazine;
 	private GameObject _leftWeaponAmmoReserve;
 	private GameObject _leftWeaponAmmoSeparator;
+	private GameObject _textChokeNPC;
 
 	public BootstrapSubProcessWeaponSystem(
-		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
 		GameController gameController,
-		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
-		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		IInputDevice inputDevice,
+		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
+		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
+		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
+		BootstrapSubProcessInteractionSystem bootstrapSubSystemInteraction,
+		GameObject canvasMenuWeaponWheel,
 		GameObject playerGameObject,
 		PlayerResourcesAmmoManager playerResourcesAmmoManager,
-		BootstrapSubProcessInteractionSystem bootstrapSubSystemInteraction,
 		CanvasHUDammoController canvasHUDammoController,
 		GameObject canvasHUDammo,
 		GameObject RightWeaponAmmoMagazine,
@@ -55,29 +63,25 @@ public class BootstrapSubProcessWeaponSystem
 		GameObject RightWeaponAmmoSeparator,
 		GameObject LeftWeaponAmmoMagazine,
 		GameObject LeftWeaponAmmoReserve,
-		GameObject LeftWeaponAmmoSeparator,
-		GameObject canvasMenuWeaponWheel)
+		GameObject LeftWeaponAmmoSeparator)
 	{
-		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
 		_gameController = gameController;
-		_bootstrapSubProcessPlayerSystems = bootstrapSubProcessPlayerSystems;
-		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_inputDevice = inputDevice;
+		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
+		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
+		_bootstrapSubProcessPlayerSystems = bootstrapSubProcessPlayerSystems;
+		_bootstrapSubProcessInteractionSystem = bootstrapSubSystemInteraction;
+		_canvasMenuWeaponWheel = canvasMenuWeaponWheel;
 		_gameObjectPlayer = playerGameObject;
 		_playerResourcesAmmoManager = playerResourcesAmmoManager;
-		_bootstrapSubProcessInteractionSystem = bootstrapSubSystemInteraction;
 		_canvasHUDammoController = canvasHUDammoController;
 		_canvasHUDammo = canvasHUDammo;
-
 		_rightWeaponAmmoMagazine = RightWeaponAmmoMagazine;
 		_rightWeaponAmmoReserve = RightWeaponAmmoReserve;
 		_rightWeaponAmmoSeparator = RightWeaponAmmoSeparator;
-
 		_leftWeaponAmmoMagazine = LeftWeaponAmmoMagazine;
 		_leftWeaponAmmoReserve = LeftWeaponAmmoReserve;
 		_leftWeaponAmmoSeparator = LeftWeaponAmmoSeparator;
-
-		_canvasMenuWeaponWheel = canvasMenuWeaponWheel;
 	}
 
 	public IEnumerator InitializeWeaponSystem()
@@ -92,37 +96,45 @@ public class BootstrapSubProcessWeaponSystem
 
 		_gameObjectWeaponWheelSegment = Resources.Load<GameObject>("WeaponWheel/WeaponWheelSegment");
 
-		_textWeaponWheelWeapon = _canvasMenuWeaponWheel.transform.Find("TextWeaponWheelWeapon").GetComponent<TextMeshProUGUI>();
+		_textWeaponWheelWeaponName = _canvasMenuWeaponWheel.transform.Find("TextWeaponWheelWeapon").GetComponent<TextMeshProUGUI>();
+		_imageWeaponWheelWeaponIcon = _canvasMenuWeaponWheel.transform.Find("ImageWeaponWheelWeapon").GetComponent<Image>();
 		_textWeaponWheelHandType = _canvasMenuWeaponWheel.transform.Find("TextWeaponWheelHandType").GetComponent<TextMeshProUGUI>();
-		_imageWeaponWheelIconWeapon = _canvasMenuWeaponWheel.transform.Find("ImageWeaponWheelWeapon").GetComponent<Image>();
 
-		_gameObjectFirstPersonLeftHandWeaponSlot = GameObject.Find("FirstPersonWeaponSlot.L");
-		_gameObjectThirdPersonLeftHandWeaponSlot = GameObject.Find("ThirdPersonWeaponSlot.L");
 		_gameObjectFirstPersonRightHandWeaponSlot = GameObject.Find("FirstPersonWeaponSlot.R");
+		_gameObjectFirstPersonLeftHandWeaponSlot = GameObject.Find("FirstPersonWeaponSlot.L");
 		_gameObjectThirdPersonRightHandWeaponSlot = GameObject.Find("ThirdPersonWeaponSlot.R");
-
+		_gameObjectThirdPersonLeftHandWeaponSlot = GameObject.Find("ThirdPersonWeaponSlot.L");
+	
 		_textChokeNPC = _canvasHUDammo.transform.Find("TextChokeNPC").gameObject;
 
-		WeaponController.Initialize(_inputDevice, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessPlayerSystems.PlayerBehaviour, _bootstrapSubProcessInteractionSystem.InteractionController);
-		_legKickAttackController.Initialize(_inputDevice, _gameObjectPlayer, _bootstrapSubProcessPlayerSystems.PlayerMovementController);
+		WeaponController.Initialize(
+			_inputDevice,
+			_bootstrapSubProcessMenuSystem.MenuManager,
+			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+			_bootstrapSubProcessInteractionSystem.InteractionController);
+
+		_legKickAttackController.Initialize(
+			_inputDevice,
+			_bootstrapSubProcessPlayerSystems.PlayerMovementController,
+			_gameObjectPlayer);
 	
 		_weaponWheelController.Initialize(
 			_inputDevice,
 			_bootstrapSubProcessMenuSystem.MenuManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			WeaponController,
-			_gameObjectWeaponWheelSegment,
 			_canvasMenuWeaponWheel,
-			_textWeaponWheelWeapon,
-			_textWeaponWheelHandType,
-			_imageWeaponWheelIconWeapon);
+			_gameObjectWeaponWheelSegment,
+			_textWeaponWheelWeaponName,
+			_imageWeaponWheelWeaponIcon,
+			_textWeaponWheelHandType);
 
 		_weaponAnimationController.Initialize(
-			_gameObjectPlayer,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			_bootstrapSubProcessPlayerSystems.PlayerCameraController,
 			WeaponController,
-			_legKickAttackController);
+			_legKickAttackController,
+			_gameObjectPlayer);
 
 		_weaponFirstPersonRender.Initialize(
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
@@ -134,13 +146,13 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessPlayerSystems.GameObjectPlayerThirdPersonHandLeft);
 
 		_canvasHUDammoController.Initialize(
-			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_gameController,
+			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessMenuSystem.MenuManager,
-			_canvasHUDammo,
+			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			WeaponController,
 			_playerResourcesAmmoManager,
-			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+			_canvasHUDammo,
 			_rightWeaponAmmoMagazine,
 			_rightWeaponAmmoReserve,
 			_rightWeaponAmmoSeparator,
@@ -149,14 +161,15 @@ public class BootstrapSubProcessWeaponSystem
 			_leftWeaponAmmoSeparator);
 
 		ServiceLocator.Register("WeaponController", WeaponController);
+
 		ServiceLocator.Register("FirstPersonLeftHandWeaponSlotGameObject", _gameObjectFirstPersonLeftHandWeaponSlot);
 		ServiceLocator.Register("FirstPersonRightHandWeaponSlotGameObject", _gameObjectFirstPersonRightHandWeaponSlot);
 		ServiceLocator.Register("ThirdPersonLeftHandWeaponSlotGameObject", _gameObjectThirdPersonLeftHandWeaponSlot);
 		ServiceLocator.Register("ThirdPersonRightHandWeaponSlotGameObject", _gameObjectThirdPersonRightHandWeaponSlot);
+
 		ServiceLocator.Register("TextChokeNPC", _textChokeNPC);
 
 		Debug.Log("WEAPON SYSTEM INITIALIZED");
-
 		yield break;
 	}
 }

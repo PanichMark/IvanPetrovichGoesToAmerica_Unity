@@ -3,10 +3,10 @@
 public class InteractionObjectLootMana : InteractionObjectLootAbstract
 {
 	private bool _isAdditionalInteractionHintActive;
-	public override bool IsInteractionHintMessageAdditionalActive => _isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 	private PlayerResourcesManaManager _playerResourcesManaManager;
 
-	public override string InteractionHintMessageAdditional => $"Maximum {InteractionObjectNameUI}";
+	public override string InteractionHintMessageFail => $"Maximum {InteractionObjectNameUI}";
 
 	public override void Interact()
 	{

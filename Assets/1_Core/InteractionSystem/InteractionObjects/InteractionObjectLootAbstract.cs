@@ -5,31 +5,38 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractable, IInteractGainedItem, ISaveLoad
+public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractable, IGainedItem, ISaveLoad
 {
-	public delegate void InteractionDelegate();
-
 	[SerializeField] protected string _interactionObjectNameSystem;
 	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
+	public GameObject GameObjectPlayer { get; protected set; }
 	protected LocalizationManager _localizationManager;
-	public Collider Collider { get; protected set; }
+	public Collider LootObjectCollider { get; protected set; }
+	public string InteractionHintMessageAction { get; protected set; }
 
+	public virtual bool WasLootItemCollected { get; protected set; }
+
+	public int LootObjectIndex { get; protected set; }
+
+	public TextMeshProUGUI NameGainedItem => null;
+
+	public virtual Sprite IconGainedItem => LootObjectIcon;
 	public virtual string InteractionObjectNameUI { get; protected set; }
 
-	public Sprite LootObjectImage;
+	public Sprite LootObjectIcon { get; protected set; }
 
-	public virtual string InteractionHintMessageMain => $"{InteractionHintAction} {InteractionObjectNameUI}";
-	public virtual string InteractionHintMessageAdditional => null;
-	public virtual bool IsInteractionHintMessageAdditionalActive => false;
+	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+	public virtual string InteractionHintMessageFail => null;
+	public virtual bool IsInteractionHintMessageFailActive => false;
 
 	private void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		Collider = GetComponent<Collider>();
-		CachedPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
+		LootObjectCollider = GetComponent<Collider>();
+		GameObjectPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
 
-		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
 		ThisMethodSetsActionName();
 		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 	}
@@ -37,36 +44,27 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	public void ChangeLanguage()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionHintAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
 		ThisMethodSetsActionName();
 	}
 
 	protected virtual void ThisMethodSetsActionName()
 	{
+
 	}
 
-	public string InteractionHintAction { get; protected set; }
-
-	public virtual bool WasLootItemCollected { get; protected set; }
-
-	public int LootItemIndex { get; protected set; }
-
-	public TextMeshProUGUI GainedItemtext => null;
-
-	public virtual Sprite ImageGainedItem => LootObjectImage;
-
-	internal void AssignLootItemIndex(int index)
+	internal void AssignLootObjectsIndex(int index)
 	{
-		LootItemIndex = index;
+		LootObjectIndex = index;
 	}
 
 	public virtual void Interact()
 	{
-		if (CachedPlayer != null)
+		if (GameObjectPlayer != null)
 		{
-			Collider.enabled = false;
+			LootObjectCollider.enabled = false;
 			gameObject.tag = "Untagged";
-			StartCoroutine(MoveTowardsTarget());
+			StartCoroutine(MoveTowardsPlayer());
 		}
 		else
 		{
@@ -74,13 +72,11 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		}
 	}
 
-	public GameObject CachedPlayer { get; protected set; }
-
-	IEnumerator MoveTowardsTarget()
+	IEnumerator MoveTowardsPlayer()
 	{
 		while (true)
 		{
-			Vector3 targetPosition = CachedPlayer.transform.position + Vector3.up * 1f;
+			Vector3 targetPosition = GameObjectPlayer.transform.position + Vector3.up * 1f;
 			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
 
 			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
@@ -97,16 +93,16 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	{
 		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
 		{
-			data.LootObjects_Scene_0_Test[LootItemIndex].LootItemIndex = LootItemIndex;
-			data.LootObjects_Scene_0_Test[LootItemIndex].LootItemName = InteractionObjectNameSystem;
-			data.LootObjects_Scene_0_Test[LootItemIndex].WasLootItemCollected = WasLootItemCollected;
+			data.LootObjects_Scene_0_Test[LootObjectIndex].LootItemIndex = LootObjectIndex;
+			data.LootObjects_Scene_0_Test[LootObjectIndex].LootItemName = InteractionObjectNameSystem;
+			data.LootObjects_Scene_0_Test[LootObjectIndex].WasLootItemCollected = WasLootItemCollected;
 		}
 
 		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_StreetMain))
 		{
-			data.LootObjects_Scene_1_StreetMain[LootItemIndex].LootItemIndex = LootItemIndex;
-			data.LootObjects_Scene_1_StreetMain[LootItemIndex].LootItemName = InteractionObjectNameSystem;
-			data.LootObjects_Scene_1_StreetMain[LootItemIndex].WasLootItemCollected = WasLootItemCollected;
+			data.LootObjects_Scene_1_StreetMain[LootObjectIndex].LootItemIndex = LootObjectIndex;
+			data.LootObjects_Scene_1_StreetMain[LootObjectIndex].LootItemName = InteractionObjectNameSystem;
+			data.LootObjects_Scene_1_StreetMain[LootObjectIndex].WasLootItemCollected = WasLootItemCollected;
 		}
 	}
 
@@ -114,7 +110,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	{
 		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
 		{
-			if (data.LootObjects_Scene_0_Test[LootItemIndex].WasLootItemCollected)
+			if (data.LootObjects_Scene_0_Test[LootObjectIndex].WasLootItemCollected)
 			{
 				WasLootItemCollected = true;
 				Destroy(gameObject);
@@ -123,7 +119,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_StreetMain))
 		{
-			if (data.LootObjects_Scene_1_StreetMain[LootItemIndex].WasLootItemCollected)
+			if (data.LootObjects_Scene_1_StreetMain[LootObjectIndex].WasLootItemCollected)
 			{
 				WasLootItemCollected = true;
 				Destroy(gameObject);

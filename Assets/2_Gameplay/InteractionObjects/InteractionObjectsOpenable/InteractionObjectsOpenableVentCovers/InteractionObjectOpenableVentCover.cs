@@ -25,14 +25,14 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 
 		if (!IsDoorOpened)
 		{
-			InteractionHintAction = localizationManager.GetLocalizedString("CloseDoor");
-			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			InteractionHintMessageAction = localizationManager.GetLocalizedString("CloseDoor");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 			_currentAnimation = StartCoroutine(OpenVentCover());
 		}
 		else
 		{
-			InteractionHintAction = localizationManager.GetLocalizedString("OpenDoor");
-			_interactionHintMessageMain = $"{InteractionHintAction} {InteractionObjectNameUI}";
+			InteractionHintMessageAction = localizationManager.GetLocalizedString("OpenDoor");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 			_currentAnimation = StartCoroutine(CloseVentCover());
 		}
 	}

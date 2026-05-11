@@ -19,7 +19,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		if (IsThisPlayerWeapon == true)
 		{
-			ShootPoint = ServiceLocator.Resolve<GameObject>("PlayerCameraGameObject");
+			ShootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 			playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 		}
 

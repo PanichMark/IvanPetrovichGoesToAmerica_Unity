@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,11 +34,10 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		this._localizationManager = localizationManager;
+		_localizationManager = localizationManager;
 	}
 	public IEnumerator LoadGameplayScene(GameScenesEnum scene)
 	{
-
 		_gameController.SceneLoadBegan();
 		OnBeginLoadingGameplayScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
@@ -157,5 +155,6 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 	public void LoadData(GameData data)
 	{
+
 	}
 }

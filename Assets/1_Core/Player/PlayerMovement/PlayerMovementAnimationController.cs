@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovementAnimationController: MonoBehaviour
 {
@@ -11,8 +10,12 @@ public class PlayerMovementAnimationController: MonoBehaviour
 	private Animator _playerAnimator;
 	private bool _isInitialized = false;
 
-	public void Initialize(IInputDevice inputDevice, GameObject player, PlayerBehaviour playerBehaviour, PlayerMovementController playerMovementController,
-		PlayerCameraController playerCameraController)
+	public void Initialize(
+		IInputDevice inputDevice,
+		PlayerBehaviour playerBehaviour,
+		PlayerMovementController playerMovementController,
+		PlayerCameraController playerCameraController,
+		GameObject player)
 	{
 		_inputDevice = inputDevice;
 		_playerAnimator = player.GetComponent<Animator>();

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PauseMenuConfirmActionController : MonoBehaviour
+public class ConfirmActionMenuController : MonoBehaviour
 {
 	private PauseMenuController _pauseMenuController;
 	private GameObject _canvasPauseSubMenuConfirm;

@@ -16,7 +16,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	{
 		if (IsThisPlayerWeapon == true)
 		{
-			AttackPoint = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
+			AttackPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
 		}
 		
 		SetUpMeleeWeapon();

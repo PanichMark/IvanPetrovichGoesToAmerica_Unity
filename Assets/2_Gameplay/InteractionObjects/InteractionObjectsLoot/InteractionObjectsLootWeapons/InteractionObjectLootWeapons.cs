@@ -11,7 +11,7 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
 		var weaponComponent = _weaponObject.GetComponent<WeaponAbstract>();
-		LootObjectImage = weaponComponent.WeaponIcon;
+		LootObjectIcon = weaponComponent.WeaponIcon;
 	}
 
 	public override void Interact()

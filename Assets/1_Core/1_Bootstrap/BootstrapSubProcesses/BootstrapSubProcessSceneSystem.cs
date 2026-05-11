@@ -5,13 +5,16 @@ using UnityEngine.UI;
 
 public class BootstrapSubProcessSceneSystem
 {
+	private GameObject _gameObjectBootstrapGameSceneSystem;
+
+	private GameController _gameController;
 	public GameSceneManager GameSceneManager { get; private set; }
+
+	private GameObject _canvasLoadingScreen;
+
 	private TMP_Text _textLoadingScreenStatus;
 	private TMP_Text _textSceneName;
 	private Image _imageLoadingScreen;
-	private GameObject _gameObjectBootstrapGameSceneSystem;
-	private GameObject _canvasLoadingScreen;
-	private GameController _gameController;
 
 	public BootstrapSubProcessSceneSystem(GameController gameController, GameObject canvasLoadingScreen)
 	{
@@ -32,6 +35,7 @@ public class BootstrapSubProcessSceneSystem
 
 		ServiceLocator.Register("GameSceneManager", GameSceneManager);
 
+		Debug.Log("SCENE SYSTEM INITIALIZED");
 		yield break;
 	}
 }

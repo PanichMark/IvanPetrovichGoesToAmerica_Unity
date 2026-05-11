@@ -1,24 +1,25 @@
 ﻿using UnityEngine;
-using System;
+
+public delegate void DoorStateChangedHandler(bool isOpened);
 
 public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IInteractable
 {
-	public delegate void DoorStateChangedHandler(bool isOpened);
 	public event DoorStateChangedHandler OnDoorStateChanged;
 
 	[SerializeField] protected string _interactionObjectNameSystem;
-	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
-	private LocalizationManager _localizationManager;
-	public virtual string InteractionObjectNameUI { get; protected set; }
+	protected LocalizationManager _localizationManager;
 
 	protected string _interactionHintMessageMain;
+
+	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
+	public virtual string InteractionObjectNameUI { get; protected set; }
 	public virtual string InteractionHintMessageMain => _interactionHintMessageMain;
-	public virtual string InteractionHintMessageAdditional => null;
-	public virtual bool IsInteractionHintMessageAdditionalActive => false;
+	public virtual string InteractionHintMessageFail => null;
+	public virtual bool IsInteractionHintMessageFailActive => false;
+	public string InteractionHintMessageAction { get; protected set; }
 
 	public virtual bool IsDoorOpened { get; protected set; }
-	public string InteractionHintAction { get; protected set; }
 
 	public int DoorIndex { get; protected set; }
 

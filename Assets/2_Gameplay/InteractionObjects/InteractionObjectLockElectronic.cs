@@ -11,10 +11,10 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	public string InteractionObjectNameSystem => throw new NotImplementedException();
 	public string InteractionObjectNameUI => "Электронный замок";
 	public string InteractionHintMessageMain => "Взломать?";
-	public string InteractionHintAction => throw new NotImplementedException();
-	public string InteractionHintMessageAdditional => throw new NotImplementedException();
+	public string InteractionHintMessageAction => throw new NotImplementedException();
+	public string InteractionHintMessageFail => throw new NotImplementedException();
 	private bool _isPuzzleActive;
-	public bool IsInteractionHintMessageAdditionalActive => throw new NotImplementedException();
+	public bool IsInteractionHintMessageFailActive => throw new NotImplementedException();
 
 	private Button _buttonExitLockpickElectronicMenu;
 	private GameObject[] _buttonsLockElectrical;
