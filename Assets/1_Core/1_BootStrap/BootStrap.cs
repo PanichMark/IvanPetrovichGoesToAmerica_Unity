@@ -98,30 +98,42 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(_bootstrapSubProcessSceneSystem.GameSceneManager, _gameController);
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.InitializeSaveLoadSystem());
 
-		_bootstrapSubProcessMenuSystem = new BootstrapSubProcessMenuSystem(this, _inputDevice, _gameController, _bootstrapSubProcessSceneSystem.GameSceneManager,
-			_bootstrapSubProcessSaveLoadSystem.SaveLoadController, _playerCameraGameObject, _canvasMainMenuReadNews,
-			_canvasPauseMenu, _canvasMenuConfirmAction, _canvasPauseSubMenuSave,
-			_canvasPauseSubMenuLoad, _canvasPauseSubMenuAppearance, _canvasPauseSubMenuSettings, _canvasMenuCutscene);
+		_bootstrapSubProcessMenuSystem = new BootstrapSubProcessMenuSystem(
+			this,
+			_gameController,
+			_inputDevice,
+			_bootstrapSubProcessSceneSystem.GameSceneManager,
+			_bootstrapSubProcessSaveLoadSystem.SaveLoadController,
+			_playerCameraGameObject,
+			_canvasPauseMenu,
+			_canvasPauseSubMenuSave,
+			_canvasPauseSubMenuLoad,
+			_canvasPauseSubMenuAppearance,
+			_canvasPauseSubMenuSettings,
+			_canvasMenuConfirmAction,
+			_canvasMainMenuReadNews,
+			_canvasMenuCutscene);
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.InitializeMenuSystems());
 
-		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(_inputDevice,
-			_bootstrapSubProcessSceneSystem.GameSceneManager,
+		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(
 			this,
+			_bootstrapSubProcessMenuSystem,
+			_inputDevice,
+			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_playerGameObject,
-			_playerCameraGameObject,
-			_bootstrapSubProcessMenuSystem);
+			_playerCameraGameObject);
 		yield return StartCoroutine(_bootstrapSubProcessPlayerSystems.InitializePlayerSystems());
 
 		_bootstrapSubProcessPlayerResources = new BootstrapSubProcessPlayerResources(
-			_canvasPauseMenu,
-			_canvasMenuWeaponWheel,
-			_bootstrapSubProcessSceneSystem,
+			this, 
 			_gameController,
+			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
 			_bootstrapSubProcessPlayerSystems,
+			_canvasPauseMenu,
 			_canvasHUDhealthAndMana,
-			this,
-			_canvasHUDammo);
+			_canvasHUDammo,
+			_canvasMenuWeaponWheel);
 		yield return StartCoroutine(_bootstrapSubProcessPlayerResources.InitializePlayerResources());
 
 		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessInteractionSystem(

@@ -23,9 +23,16 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	private Text[] _currentDateAndTimeTexts;
 	private Text[] _currentSceneNameUITexts;
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController,
-		GameObject canvasPauseSubMenuSave, GameObject[] buttonsRewriteGame, GameObject[] buttonsDeleteGame,
-		GameObject buttonClosePauseSubMenuSave, GameObject buttonSaveNewGame)
+	public void Initialize(
+		IInputDevice inputDevice,
+		SaveLoadController saveLoadController,
+		MenuManager menuManager,
+		PauseMenuController pauseMenuController,
+		GameObject canvasPauseSubMenuSave,
+		GameObject buttonSaveNewGame,
+		GameObject[] buttonsRewriteGame,
+		GameObject[] buttonsDeleteGame,
+		GameObject buttonClosePauseSubMenuSave)
 	{
 		_buttonClosePauseSubMenuSave = buttonClosePauseSubMenuSave;
 		_buttonSaveNewGame = buttonSaveNewGame;

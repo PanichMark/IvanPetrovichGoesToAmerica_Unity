@@ -3,42 +3,46 @@ using UnityEngine;
 
 public class BootstrapSubProcessPlayerSystems
 {
-	private IInputDevice _inputDevice;
-	private GameSceneManager _gameSceneManager;
 	private Bootstrap _bootstrap;
-	private GameObject _gameObjectPlayer;
-	private GameObject _gameObjectPlayerCamera;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 
-	private GameObject _gameObjectPlayerHead;
+	private IInputDevice _inputDevice;
+	private GameSceneManager _gameSceneManager;
+
+	private GameObject _gameObjectPlayer;
 	private GameObject _gameObjectPlayerCollider;
+	private GameObject _gameObjectPlayerHead;
 	public GameObject GameObjectPlayerThirdPersonHandRight { get; private set; }
 	public GameObject GameObjectPlayerThirdPersonHandLeft { get; private set; }
 	public GameObject GameObjectPlayerFirstPersonHandRight { get; private set; }
 	public GameObject GameObjectPlayerFirstPersonHandLeft { get; private set; }
 
+	private GameObject _gameObjectPlayerCamera;
+
 	public PlayerBehaviour PlayerBehaviour { get; private set; }
 	public PlayerMovementController PlayerMovementController { get; private set; }
 	private PlayerCapsuleCollider _playerColliderController;
-	private PlayerMovementAnimationController _playerMovementAnimationController;
-
+	
 	public PlayerCameraController PlayerCameraController { get; private set; }
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
 	private PlayerCameraFirstPersonRender _playerCameraFirstPersonRender;
 
-	public BootstrapSubProcessPlayerSystems(IInputDevice inputDevice,
-		GameSceneManager gameSceneManager,
+	private PlayerMovementAnimationController _playerMovementAnimationController;
+
+	public BootstrapSubProcessPlayerSystems(
 		Bootstrap bootstrap,
+		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
+		IInputDevice inputDevice,
+		GameSceneManager gameSceneManager,
 		GameObject playerGameObject,
-		GameObject playerMainCameraGameObject,
-		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem)
+		GameObject playerMainCameraGameObject)
 	{
+		_bootstrap = bootstrap;
+		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_inputDevice = inputDevice;
 		_gameSceneManager = gameSceneManager;
-		_bootstrap = bootstrap;
 		_gameObjectPlayer = playerGameObject;
 		_gameObjectPlayerCamera = playerMainCameraGameObject;
-		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 	}
 
 	public IEnumerator InitializePlayerSystems()

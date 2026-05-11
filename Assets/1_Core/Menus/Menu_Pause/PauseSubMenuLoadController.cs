@@ -20,7 +20,14 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	private Text[] _currentDateAndTimeTexts;
 	private Text[] _currentSceneNameUITexts;
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, SaveLoadController saveLoadController, GameObject canvasPauseSubMenuLoad, GameObject[] buttonsLoadGame, GameObject buttonClosePauseSubMenuLoad)
+	public void Initialize(
+		IInputDevice inputDevice,
+		SaveLoadController saveLoadController,
+		MenuManager menuManager,
+		PauseMenuController pauseMenuController,
+		GameObject canvasPauseSubMenuLoad,
+		GameObject[] buttonsLoadGame,
+		GameObject buttonClosePauseSubMenuLoad)
 	{
 		_buttonClosePauseSubMenuLoad = buttonClosePauseSubMenuLoad;
 		_pauseMenuController = pauseMenuController;

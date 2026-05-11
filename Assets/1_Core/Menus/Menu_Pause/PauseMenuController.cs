@@ -25,7 +25,14 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
 	public event OpenPauseMenuEventHandler OnCloseAnySubMenuForMain;
 
-	public void Initialize( IInputDevice inputDevice, GameController gameController, GameSceneManager gameSceneManager, SaveLoadController saveLoadController, MenuManager menuManager, GameObject PauseMenuCanvas, GameObject[] buttonsPauseMenu)
+	public void Initialize(
+		GameController gameController,
+		IInputDevice inputDevice,
+		GameSceneManager gameSceneManager,
+		MenuManager menuManager,
+		GameObject PauseMenuCanvas,
+		GameObject[] buttonsPauseMenu,
+		SaveLoadController saveLoadController)
 	{
 		_gameSceneManager = gameSceneManager;
 		_gameController = gameController;

@@ -58,9 +58,23 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	new char[] {'.', '/'},
 	  };
 
-	public void Initialize(IInputDevice inputDevice, Bootstrap bootstrap, GameController gameController, GameObject mainCamera, GameObject fovDisplayText, MenuManager menuManager, PauseMenuController pauseMenuController,
-		GameObject canvasPauseSubMenuSettings, GameObject buttonClosePauseSubMenuSettings, GameObject FOVSlider, GameObject[] FPSbuttons, GameObject[] buttonsChangeLanguage, GameObject[] KeyRebinds, PauseSubMenuSettingsPlayerPrefs pauseSubMenuSettingsPlayerPrefs, GameObject buttonSaveSettings, GameObject buttonResetSettings)
-
+	public void Initialize(
+		Bootstrap bootstrap,
+		GameController gameController,
+		IInputDevice inputDevice,
+		MenuManager menuManager,
+		PauseMenuController pauseMenuController,
+		PauseSubMenuSettingsPlayerPrefs pauseSubMenuSettingsPlayerPrefs,
+		GameObject canvasPauseSubMenuSettings,
+		GameObject FOVSlider, 
+		GameObject fovDisplayText,
+		GameObject[] FPSbuttons, 
+		GameObject[] buttonsChangeLanguage,
+		GameObject[] KeyRebinds,
+		GameObject buttonSaveSettings,
+		GameObject buttonResetSettings,
+		GameObject buttonClosePauseSubMenuSettings,
+		GameObject mainCamera)
 	{
 		_gameController = gameController;
 		_bootstrap = bootstrap;

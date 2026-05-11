@@ -39,7 +39,7 @@ public class MenuManager : MonoBehaviour
 
 	public Stack<int> PauseMenuLevel = new Stack<int>();
 
-	public void Initialize(IInputDevice inputDevice, GameController gameController, GameSceneManager gameSceneManager)
+	public void Initialize(GameController gameController, IInputDevice inputDevice, GameSceneManager gameSceneManager)
 	{
 		_inputDevice = inputDevice;
 		_gameController = gameController;

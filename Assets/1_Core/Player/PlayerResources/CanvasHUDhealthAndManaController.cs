@@ -6,7 +6,7 @@ public class CanvasHUDhealthAndManaController : MonoBehaviour
     private GameSceneManager _gameSceneManager;
     private GameController _gameController;
 
-    public void Initialize (GameSceneManager gameSceneManager, GameController gameController, MenuManager menuManager, GameObject canvasHUDPlayerResources)
+    public void Initialize (GameController gameController, GameSceneManager gameSceneManager, MenuManager menuManager, GameObject canvasHUDPlayerResources)
     {
         _gameSceneManager = gameSceneManager;
         _menuManager = menuManager;

@@ -6,7 +6,7 @@ public class CutsceneMenuController : MonoBehaviour
 	private GameObject _canvasCutscene;
 	private GameSceneManager _gameSceneManager;
 
-	public void Initialize(MenuManager menuManager, GameSceneManager gameSceneManager, GameObject canvasCutscene)
+	public void Initialize(GameSceneManager gameSceneManager, MenuManager menuManager, GameObject canvasCutscene)
 	{
 		_menuManager = menuManager;
 

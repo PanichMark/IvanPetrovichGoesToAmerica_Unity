@@ -21,15 +21,15 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	private PauseSubMenuLoadController _loadController;
 
 	public void Initialize(
+		SaveLoadController saveLoadController,
 		MenuManager menuManager,
 		PauseMenuController pauseMenuController,
-		GameObject canvasPauseSubMenuConfirm,
-		GameObject buttonAccept,
-		GameObject buttonCancel,
-		SaveLoadController saveLoadController,
 		PauseSubMenuSaveController saveController,
 		PauseSubMenuLoadController loadController,
 		PauseSubMenuSettingsController pauseSubMenuSettingsController,
+		GameObject canvasPauseSubMenuConfirm,
+		GameObject buttonAccept,
+		GameObject buttonCancel,
 		GameObject textShowConfirmationMessage)
 	{
 		_pauseMenuController = pauseMenuController;
