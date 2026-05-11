@@ -53,19 +53,19 @@ public class MenuManager : MonoBehaviour
 		_isInitialized = true;
 		_gameController.OnPlayerDeath += OpenPauseMenu;
 
-		_gameSceneManager.OnBeginLoadGameplayScene += ClosePauseMenu;
-		_gameSceneManager.OnBeginLoadGameplayScene += CloseWeaponWheelMenu;
-		_gameSceneManager.OnBeginLoadGameplayScene += CloseInteractionHUD;
-		_gameSceneManager.OnBeginLoadGameplayScene += CloseInteractionMenu;
-		_gameSceneManager.OnBeginLoadGameplayScene += CloseDialogueMenu;
-		_gameSceneManager.OnBeginLoadGameplayScene += CloseCutsceneMenu;
+		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseMenu;
+		_gameSceneManager.OnBeginLoadingGameplayScene += CloseWeaponWheelMenu;
+		_gameSceneManager.OnBeginLoadingGameplayScene += CloseInteractionHUD;
+		_gameSceneManager.OnBeginLoadingGameplayScene += CloseInteractionMenu;
+		_gameSceneManager.OnBeginLoadingGameplayScene += CloseDialogueMenu;
+		_gameSceneManager.OnBeginLoadingGameplayScene += CloseCutsceneMenu;
 
-		_gameSceneManager.OnBeginLoadMainMenuScene += ClosePauseMenu;
-		_gameSceneManager.OnBeginLoadMainMenuScene += CloseWeaponWheelMenu;
-		_gameSceneManager.OnBeginLoadMainMenuScene += CloseInteractionHUD;
-		_gameSceneManager.OnBeginLoadMainMenuScene += CloseInteractionMenu;
-		_gameSceneManager.OnBeginLoadMainMenuScene += CloseDialogueMenu;
-		_gameSceneManager.OnBeginLoadMainMenuScene += CloseCutsceneMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += ClosePauseMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseWeaponWheelMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseInteractionHUD;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseInteractionMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseDialogueMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseCutsceneMenu;
 
 		Debug.Log("MenuManager Initialized");
 	}

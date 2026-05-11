@@ -43,8 +43,8 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviour>("PlayerBehaviour");
 
-		_gameSceneManager.OnBeginLoadMainMenuScene += StopPlungingCompletely;
-		_gameSceneManager.OnBeginLoadGameplayScene += StopPlungingCompletely;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += StopPlungingCompletely;
+		_gameSceneManager.OnBeginLoadingGameplayScene += StopPlungingCompletely;
 		_playerBehaviour.OnPlayerDisarmed += StopPlunging;
 	}
 
@@ -173,8 +173,8 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 
 	private void OnDestroy()
 	{
-		_gameSceneManager.OnBeginLoadMainMenuScene -= StopPlungingCompletely;
-		_gameSceneManager.OnBeginLoadGameplayScene -= StopPlungingCompletely;
+		_gameSceneManager.OnBeginLoadingMainMenuScene -= StopPlungingCompletely;
+		_gameSceneManager.OnBeginLoadingGameplayScene -= StopPlungingCompletely;
 		_playerBehaviour.OnPlayerDisarmed -= StopPlunging;
 
 		StopPlunging();

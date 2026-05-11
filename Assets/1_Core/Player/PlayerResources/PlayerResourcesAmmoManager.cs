@@ -15,10 +15,12 @@ public class PlayerResourcesAmmoManager : MonoBehaviour
 		OnMagazineAmmoChanged?.Invoke(type, newMagazineAmount);
 	}
 
-	private void Awake()
+	private PlayerResourcesAmmoManager()
 	{
 		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { Type = AmmoTypes.Ammo9mm, TotalAmmoMax = 99, TotalAmmoCurrent = 99 };
 		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { Type = AmmoTypes.Ammo12gauge, TotalAmmoMax = 99, TotalAmmoCurrent = 99 };
+
+		Debug.Log("PlayerResourcesAmmo Initialized");
 	}
 
 	public void ModifyReserveAmmo(AmmoTypes type, int amount)

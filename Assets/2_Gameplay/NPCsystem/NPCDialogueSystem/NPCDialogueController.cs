@@ -49,8 +49,8 @@ public class NPCDialogueController : MonoBehaviour
 		_menuManager.OnOpenPauseMenu += HideNPCDialogueCanvas;
 		_menuManager.OnClosePauseMenu += ShowNPCDialogueCanvas;
 
-		_gameSceneManager.OnBeginLoadMainMenuScene += ExitNPCDialogue;
-		_gameSceneManager.OnBeginLoadGameplayScene += ExitNPCDialogue;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += ExitNPCDialogue;
+		_gameSceneManager.OnBeginLoadingGameplayScene += ExitNPCDialogue;
 
 		_canSkip = true;
 	}

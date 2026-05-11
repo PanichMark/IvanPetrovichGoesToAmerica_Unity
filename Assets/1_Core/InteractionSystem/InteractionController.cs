@@ -45,12 +45,13 @@ public class InteractionController : MonoBehaviour
 	public GameObject CurrentPickableObject { get; private set; }
 	private GameSceneManager _gameSceneManager;
 	private GameController _gameController;
-	public void Initialize(GameController gameController,
-		GameSceneManager gameSceneManager,
+	public void Initialize(
+		GameController gameController,
 		IInputDevice inputDevice,
+		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
-		PlayerCameraController playerCameraController,
 		PlayerBehaviour playerBehaviour,
+		PlayerCameraController playerCameraController,
 		GameObject canvasHUDInteraction,
 		TextMeshProUGUI mainInteractionText,
 		TextMeshProUGUI additionalInteractionText,
@@ -75,8 +76,8 @@ public class InteractionController : MonoBehaviour
 
 		_isInitialized = true;
 
-		_gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDInteraction;
-		_gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDInteraction;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDInteraction;
+		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDInteraction;
 
 		_menuManager.OnOpenInteractionHUD += ShowCanvasHUDInteraction;
 		_menuManager.OnCloseInteractionHUD += HideCanvasHUDInteraction;

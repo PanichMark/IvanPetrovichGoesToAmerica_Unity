@@ -21,10 +21,10 @@ public class CanvasHUDhealthAndManaController : MonoBehaviour
 		_menuManager.OnOpenCutsceneMenu += HideCanvasHUDhealthAndMana;
 		_menuManager.OnCloseCutsceneMenu += ShowCanvasHUDhealthAndMana;
         _gameController = gameController;
-        _gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDhealthAndMana;
-		_gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDhealthAndMana;
+        _gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDhealthAndMana;
+		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDhealthAndMana;
 
-		Debug.Log("CanvasHUDhealthAndMana Initialized");
+		Debug.Log("CanvasHUDhealthAndManaController Initialized");
 	}
     private void ShowCanvasHUDhealthAndMana()
     {

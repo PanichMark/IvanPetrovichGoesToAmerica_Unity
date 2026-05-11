@@ -40,8 +40,8 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		_menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
 		_menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
 
-		_gameSceneManager.OnBeginLoadMainMenuScene += CloseElectronicLockPuzzle;
-		_gameSceneManager.OnBeginLoadGameplayScene += CloseElectronicLockPuzzle;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseElectronicLockPuzzle;
+		_gameSceneManager.OnBeginLoadingGameplayScene += CloseElectronicLockPuzzle;
 	}
 
 	private void CloseElectronicLockPuzzle()

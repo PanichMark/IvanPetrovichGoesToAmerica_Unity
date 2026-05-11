@@ -7,45 +7,53 @@ public class BootstrapSubProcessInteractionSystem
 {
 	private Bootstrap _bootstrap;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
+
 	private GameController _gameController;
-	private GameSceneManager _gameSceneManager;
 	private IInputDevice _inputDevice;
-	private PlayerCameraController _playerCameraController;
+
+	private GameSceneManager _gameSceneManager;
+
 	private PlayerBehaviour _playerBehaviour;
+	private PlayerCameraController _playerCameraController;
 
 	private GameObject _gameObjectBootstrapInteractionSystem;
 	public InteractionController InteractionController { get; private set; }
 	private InteractionAnimationController _interactionAnimationController;
 	private InteractionFirstPersonRender _interactionFirstPersonRender;
-	private GameObject[] _buttonsLockElectronic;
+
+	private GameObject _canvasHUDInteraction;
 	private TextMeshProUGUI _textMainInteractionMessage;
 	private TextMeshProUGUI _textAdditionalInteractionMessage;
-	private Button _buttonCloseMenuNote;
-	private Button _buttonCloseMenuLockpickMechanical;
-	private Button _buttonCloseMenuLockpickElectronic;
-	private TextMeshProUGUI _textNote;
-	private Image _imageNoteBlackBackground;
 	private TextMeshProUGUI[] _textsGainedItems;
 	private Image[] _imagesGainedItems;
+
+	private GameObject _canvasMenuNote;
+	private TextMeshProUGUI _textNote;
 	private Image _imageNote;
+	private Image _imageNoteBlackBackground;
+	private Button _buttonCloseMenuNote;
+
+	private GameObject _canvasMenuLockpickMechanical;
+	private Button _buttonCloseMenuLockpickMechanical;
+
+	private GameObject _canvasMenuLockpickElectronic;
+	private GameObject[] _buttonsLockElectronic;
+	private Button _buttonCloseMenuLockpickElectronic;
+
+	private GameObject _canvasMenuDialogue;
 	private TextMeshProUGUI _textPhraseLine;
 	private TextMeshProUGUI _textDialogueLine;
 	private Button _buttonDialogueYes;
 	private Button _buttonDialogueNo;
 
-	private GameObject _canvasHUDInteraction;
-	private GameObject _canvasMenuNote;
-	private GameObject _canvasMenuLockpickMechanical;
-	private GameObject _canvasMenuLockpickElectronic;
-	private GameObject _canvasMenuDialogue;
-
-	public BootstrapSubProcessInteractionSystem(Bootstrap bootstrap,
+	public BootstrapSubProcessInteractionSystem(
+		Bootstrap bootstrap,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		GameController gameController,
-		GameSceneManager gameSceneManager,
 		IInputDevice inputDevice,
-		PlayerCameraController playerCameraController,
+		GameSceneManager gameSceneManager,
 		PlayerBehaviour playerBehaviour,
+		PlayerCameraController playerCameraController,
 		GameObject canvasHUDInteraction,
 		GameObject canvasMenuNote,
 		GameObject canvasMenuLockpickMechanical,
@@ -55,10 +63,10 @@ public class BootstrapSubProcessInteractionSystem
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_gameController = gameController;
-		_gameSceneManager = gameSceneManager;
 		_inputDevice = inputDevice;
-		_playerCameraController = playerCameraController;
+		_gameSceneManager = gameSceneManager;
 		_playerBehaviour = playerBehaviour;
+		_playerCameraController = playerCameraController;
 		_canvasHUDInteraction = canvasHUDInteraction;
 		_canvasMenuNote = canvasMenuNote;
 		_canvasMenuLockpickMechanical = canvasMenuLockpickMechanical;
@@ -93,6 +101,13 @@ public class BootstrapSubProcessInteractionSystem
 			_canvasHUDInteraction.transform.Find("ImageGainedItem3").GetComponent<Image>()
 		};
 
+		_buttonCloseMenuNote = _canvasMenuNote.transform.Find("ButtonExitReadNoteMenu").GetComponent<Button>();
+		_imageNote = _canvasMenuNote.transform.Find("ImageNote").GetComponent<Image>();
+		_textNote = _canvasMenuNote.transform.Find("TextNote").GetComponent<TextMeshProUGUI>();
+		_imageNoteBlackBackground = _canvasMenuNote.transform.Find("ImageNoteBlackBackground").GetComponent<Image>();
+
+		_buttonCloseMenuLockpickMechanical = _canvasMenuLockpickMechanical.transform.Find("ButtonExitLockpickMechanicalMenu").GetComponent<Button>();
+
 		_buttonsLockElectronic = new GameObject[]
 		{
 			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic1"),
@@ -104,15 +119,7 @@ public class BootstrapSubProcessInteractionSystem
 			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic7"),
 			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic8"),
 			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic9")
-
 		};
-
-		_buttonCloseMenuNote = _canvasMenuNote.transform.Find("ButtonExitReadNoteMenu").GetComponent<Button>();
-		_imageNote = _canvasMenuNote.transform.Find("ImageNote").GetComponent<Image>();
-		_textNote = _canvasMenuNote.transform.Find("TextNote").GetComponent<TextMeshProUGUI>();
-		_imageNoteBlackBackground = _canvasMenuNote.transform.Find("ImageNoteBlackBackground").GetComponent<Image>();
-
-		_buttonCloseMenuLockpickMechanical = _canvasMenuLockpickMechanical.transform.Find("ButtonExitLockpickMechanicalMenu").GetComponent<Button>();
 		_buttonCloseMenuLockpickElectronic = _canvasMenuLockpickElectronic.transform.Find("ButtonExitLockpickElectronicMenu").GetComponent<Button>();
 
 		_buttonDialogueYes = _canvasMenuDialogue.transform.Find("ButtonDialogueYes").GetComponent<Button>();
@@ -120,38 +127,35 @@ public class BootstrapSubProcessInteractionSystem
 
 		InteractionController.Initialize(
 			_gameController,
-			_gameSceneManager,
 			_inputDevice,
+			_gameSceneManager,
 			_bootstrapSubProcessMenuSystem.MenuManager,
-			_playerCameraController,
 			_playerBehaviour,
+			_playerCameraController,
 			_canvasHUDInteraction,
 			_textMainInteractionMessage,
 			_textAdditionalInteractionMessage,
 			_textsGainedItems,
 			_imagesGainedItems);
 
-		ServiceLocator.Register("ButtonExitReadNoteMenu", _buttonCloseMenuNote);
-		ServiceLocator.Register("ButtonExitLockpickMechanicalMenu", _buttonCloseMenuLockpickMechanical);
-		ServiceLocator.Register("ImageNote", _imageNote);
-		ServiceLocator.Register("ButtonExitLockpickElectronicMenu", _buttonCloseMenuLockpickElectronic);
+		ServiceLocator.Register("CanvasMenuNote", _canvasMenuNote);
 		ServiceLocator.Register("TextNote", _textNote);
+		ServiceLocator.Register("ImageNote", _imageNote);
 		ServiceLocator.Register("ImageNoteBlackBackground", _imageNoteBlackBackground);
-
-		ServiceLocator.Register("ButtonsLockElectronic", _buttonsLockElectronic);
-
-		ServiceLocator.Register("TextNPCphrases", _textPhraseLine);
-		ServiceLocator.Register("TextDialogue", _textDialogueLine);
-
-		ServiceLocator.Register("ButtonDialogueYes", _buttonDialogueYes);
-		ServiceLocator.Register("ButtonDialogueNo", _buttonDialogueNo);
+		ServiceLocator.Register("ButtonCloseReadNoteMenu", _buttonCloseMenuNote);
 
 		ServiceLocator.Register("CanvasMenuLockpickMechanical", _canvasMenuLockpickMechanical);
-		ServiceLocator.Register("CanvasMenuLockpickElectronic", _canvasMenuLockpickElectronic);
+		ServiceLocator.Register("ButtonCloseLockpickMechanicalMenu", _buttonCloseMenuLockpickMechanical);
 
-		ServiceLocator.Register("CanvasMenuNote", _canvasMenuNote);
+		ServiceLocator.Register("CanvasMenuLockpickElectronic", _canvasMenuLockpickElectronic);
+		ServiceLocator.Register("ButtonsLockElectronic", _buttonsLockElectronic);
+		ServiceLocator.Register("ButtonCloseLockpickElectronicMenu", _buttonCloseMenuLockpickElectronic);
 
 		ServiceLocator.Register("CanvasMenuDialogue", _canvasMenuDialogue);
+		ServiceLocator.Register("TextPhraseLine", _textPhraseLine);
+		ServiceLocator.Register("TextDialogueLine", _textDialogueLine);
+		ServiceLocator.Register("ButtonDialogueYes", _buttonDialogueYes);
+		ServiceLocator.Register("ButtonDialogueNo", _buttonDialogueNo);
 
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 

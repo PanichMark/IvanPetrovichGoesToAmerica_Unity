@@ -263,7 +263,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		PlayerCameraDistanceY = -1.75f;
 		PlayerCameraDistanceZ = 3.25f;
 
-		_gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
 		SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 		_isInitialized = true;
 

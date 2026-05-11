@@ -419,8 +419,8 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		_playerRigidBody = GetComponent<Rigidbody>();
 
 		_playerPreviousFramePosition = transform.position;
-		_gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerPosition(new Vector3(0, 0, -5));
-		_gameSceneManager.OnBeginLoadMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerPosition(new Vector3(0, 0, -5));
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 
 		_isAbleToChangeMovementType = true;
 		SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);

@@ -16,10 +16,10 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	private Image _imageLoadingScreen;
 	
 	public delegate void LoadSceneHandler();
-	public event LoadSceneHandler OnBeginLoadMainMenuScene;
-	public event LoadSceneHandler OnEndLoadMainMenuScene;
-	public event LoadSceneHandler OnBeginLoadGameplayScene;
-	public event LoadSceneHandler OnEndLoadGameplayScene;
+	public event LoadSceneHandler OnBeginLoadingMainMenuScene;
+	public event LoadSceneHandler OnEndLoadingMainMenuScene;
+	public event LoadSceneHandler OnBeginLoadingGameplayScene;
+	public event LoadSceneHandler OnEndLoadingGameplayScene;
 
 	public void Initialize(GameController gameController, GameObject canvasLoadingScreen, TMP_Text textLoadingScreenStatus, TMP_Text textSceneName, Image imageLoadingScreen)
 	{
@@ -41,7 +41,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	{
 
 		_gameController.SceneLoadBegan();
-		OnBeginLoadGameplayScene?.Invoke();
+		OnBeginLoadingGameplayScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
 		_textLoadingScreenStatus.text = "Подготовка к загрузке...";
 		Cursor.lockState = CursorLockMode.Locked;
@@ -87,7 +87,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	
 		Debug.Log($"{sceneName} loading ended");
 		_textLoadingScreenStatus.text = "Нажмите любую клавишу";
-		OnEndLoadGameplayScene?.Invoke();
+		OnEndLoadingGameplayScene?.Invoke();
 	
 		yield return new WaitWhile(() => !Input.anyKeyDown);
 
@@ -103,7 +103,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	public IEnumerator LoadMainMenuScene()
 	{
 		_gameController.OpenMainMenu();
-		OnBeginLoadMainMenuScene?.Invoke();
+		OnBeginLoadingMainMenuScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
 
 		Cursor.lockState = CursorLockMode.Locked;
@@ -141,7 +141,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		Time.timeScale = 1f; 
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
-		OnEndLoadMainMenuScene?.Invoke();
+		OnEndLoadingMainMenuScene?.Invoke();
 		_gameController.OpenMainMenu();
 		Debug.Log("Scene_MainMenu loading ended");
 	

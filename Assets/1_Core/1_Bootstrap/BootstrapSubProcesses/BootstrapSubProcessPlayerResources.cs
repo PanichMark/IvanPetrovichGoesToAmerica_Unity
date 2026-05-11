@@ -79,13 +79,7 @@ public class BootstrapSubProcessPlayerResources
 		_playerResourcesManaManager = _gameObjectBootstrapPlayerResources.AddComponent<PlayerResourcesManaManager>();
 		_canvasHUDhealthAndManaController = _gameObjectBootstrapPlayerResources.AddComponent<CanvasHUDhealthAndManaController>();
 		_playerResourcesMoneyManager = _gameObjectBootstrapPlayerResources.AddComponent<PlayerResourcesMoneyManager>();
-		PlayerResourcesAmmoManager = _gameObjectBootstrapPlayerResources.AddComponent<PlayerResourcesAmmoManager>();
 		CanvasHUDammoController = _gameObjectBootstrapPlayerResources.AddComponent<CanvasHUDammoController>();
-
-		_canvasHUDhealthAndManaController.Initialize(_bootstrapSubProcessSceneSystem.GameSceneManager, _gameController, _bootstrapSubProcessMenuSystem.MenuManager, _canvasHUDhealthAndMana);
-		_playerResourcesMoneyManager.Initialize(_textPlayerMoneyNumber);
-		_playerResourcesHealthManager.Initialize(_gameController, _bootstrapSubProcessPlayerSystems.PlayerBehaviour, _sliderHealthBar, _buttonUseHealingItem, _textHealingItemNumber);
-		_playerResourcesManaManager.Initialize(_sliderManaBar, _buttonUseManaReplenishItem, _textManaReplenishItemNumber);
 
 		TextRightWeaponAmmoMagazineNumber = _canvasHUDammo.transform.Find("TextRightWeaponAmmoMagazineNumber").gameObject;
 		TextRightWeaponAmmoReserveNumber = _canvasHUDammo.transform.Find("TextRightWeaponAmmoReserveNumber").gameObject;
@@ -93,6 +87,12 @@ public class BootstrapSubProcessPlayerResources
 		TextLeftWeaponAmmoMagazineNumber = _canvasHUDammo.transform.Find("TextLeftWeaponAmmoMagazineNumber").gameObject;
 		TextLeftWeaponAmmoReserveNumber = _canvasHUDammo.transform.Find("TextLeftWeaponAmmoReserveNumber").gameObject;
 		LeftWeaponAmmoSeparator = _canvasHUDammo.transform.Find("LeftWeaponAmmoSeparator").gameObject;
+
+		_playerResourcesHealthManager.Initialize(_gameController, _bootstrapSubProcessPlayerSystems.PlayerBehaviour, _sliderHealthBar, _buttonUseHealingItem, _textHealingItemNumber);
+		_playerResourcesManaManager.Initialize(_sliderManaBar, _buttonUseManaReplenishItem, _textManaReplenishItemNumber);
+		_canvasHUDhealthAndManaController.Initialize(_bootstrapSubProcessSceneSystem.GameSceneManager, _gameController, _bootstrapSubProcessMenuSystem.MenuManager, _canvasHUDhealthAndMana);
+		PlayerResourcesAmmoManager = _gameObjectBootstrapPlayerResources.AddComponent<PlayerResourcesAmmoManager>();
+		_playerResourcesMoneyManager.Initialize(_textPlayerMoneyNumber);
 
 		ServiceLocator.Register("PlayerResourcesMoneyManager", _playerResourcesMoneyManager);
 		ServiceLocator.Register("PlayerResourcesHealthManager", _playerResourcesHealthManager);

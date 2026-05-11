@@ -19,9 +19,9 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasBootstrap;
 
 	// Интерфейсы
+	private GameController _gameController;
 	private IInputDevice _inputDevice;
 	private LocalizationManager _localizationManager;
-	private GameController _gameController;
 
 	// Меню
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
@@ -29,11 +29,11 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasMainMenuReadNews;
 	[Header("PauseMenu")]
 	[SerializeField] private GameObject _canvasPauseMenu;
-	[SerializeField] private GameObject _canvasMenuConfirmAction;
 	[SerializeField] private GameObject _canvasPauseSubMenuSave;
 	[SerializeField] private GameObject _canvasPauseSubMenuLoad;
 	[SerializeField] private GameObject _canvasPauseSubMenuAppearance;
 	[SerializeField] private GameObject _canvasPauseSubMenuSettings;
+	[SerializeField] private GameObject _canvasMenuConfirmAction;
 	[SerializeField] private GameObject _canvasMenuCutscene;
 
 	// Система Сцен
@@ -124,13 +124,14 @@ public class Bootstrap : MonoBehaviour
 			_canvasHUDammo);
 		yield return StartCoroutine(_bootstrapSubProcessPlayerResources.InitializePlayerResources());
 
-		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessInteractionSystem(this,
+		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessInteractionSystem(
+			this,
 			_bootstrapSubProcessMenuSystem,
 			_gameController,
-			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_inputDevice,
-			_bootstrapSubProcessPlayerSystems.PlayerCameraController,
+			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+			_bootstrapSubProcessPlayerSystems.PlayerCameraController,
 			_canvasHUDinteraction,
 			_canvasMenuNote,
 			_canvasMenuLockpickMechanical,
@@ -189,11 +190,11 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_configBootstrapPlayerPosition.PlayerPosition);
 	}
 
-	public void ChangeLanguage(LanguagesEnum language)
+	public void ChangeLanguage(LanguagesEnum newLanguage)
 	{
-		_localizationManager.ChangeLanguage(language);
-		_bootstrapSubProcessInteractionSystem.InteractionController.ChangeLanguage(_localizationManager);
+		_localizationManager.ChangeLanguage(newLanguage);
 		_bootstrapSubProcessSceneSystem.GameSceneManager.ChangeLanguage(_localizationManager);
+		_bootstrapSubProcessInteractionSystem.InteractionController.ChangeLanguage(_localizationManager);
 		ServiceLocator.RemoveService("LocalizationManager");
 		ServiceLocator.Register("LocalizationManager", _localizationManager);
 	}
@@ -202,8 +203,8 @@ public class Bootstrap : MonoBehaviour
 	{
 		_keyPauseMenu = _configBootstrapKeyPauseMenu.KeyPauseMenu;
 		_gameController = new GameController();
-		_localizationManager = new LocalizationManager();
 		_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
+		_localizationManager = new LocalizationManager();
 		Debug.Log("INTERFACES INITIALIZED");
 		yield break;
 	}

@@ -59,8 +59,8 @@ public class CanvasHUDammoController : MonoBehaviour
 		_playerBehaviour.OnPlayerArmed += ShowCanvasHUDammo;
 		_playerBehaviour.OnPlayerDisarmed += HideCanvasHUDammo;
 
-		_gameSceneManager.OnBeginLoadMainMenuScene += HideCanvasHUDammo;
-		_gameSceneManager.OnBeginLoadGameplayScene += ShowCanvasHUDammo;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDammo;
+		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDammo;
 
 		_menuManager.OnOpenWeaponWheelMenu += HideCanvasHUDammo;
 		_menuManager.OnCloseWeaponWheelMenu += ShowCanvasHUDammo;
@@ -73,7 +73,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		HideRightWeaponAmmo();
 		HideLeftWeaponAmmo();
 
-		Debug.Log("CanvasHUDammo Initialized");
+		Debug.Log("CanvasHUDammoController Initialized");
 	}
 
 	private void ShowCanvasHUDammo()

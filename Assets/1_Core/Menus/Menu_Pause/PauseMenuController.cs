@@ -45,8 +45,8 @@ public class PauseMenuController : MonoBehaviour
 		_menuManager.OnClosePauseMenu += HidePauseMenu;
 
 		_isInitialized = true;
-		_gameSceneManager.OnBeginLoadMainMenuScene += ClosePauseSubMenu;
-		_gameSceneManager.OnBeginLoadGameplayScene += ClosePauseSubMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += ClosePauseSubMenu;
+		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseSubMenu;
 		_gameController.OnPlayerDeath += HideDeathPauseMenuButtons;
 		_gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
 

@@ -74,8 +74,8 @@ public class CutsceneController : MonoBehaviour
 			shouldUnlockWeapon = true;
 		}
 
-		gameSceneManager.OnBeginLoadGameplayScene += CancelCutsceneOnLoad;
-		gameSceneManager.OnBeginLoadMainMenuScene += CancelCutsceneOnLoad;
+		gameSceneManager.OnBeginLoadingGameplayScene += CancelCutsceneOnLoad;
+		gameSceneManager.OnBeginLoadingMainMenuScene += CancelCutsceneOnLoad;
 		director.stopped += OnTimelineStopped;
 		menuManager.OnOpenPauseMenu += PauseCutscene;
 		menuManager.OnClosePauseMenu += ResumeCutscene;
@@ -94,8 +94,8 @@ public class CutsceneController : MonoBehaviour
 		menuManager.OnOpenPauseMenu -= PauseCutscene;
 		menuManager.OnClosePauseMenu -= ResumeCutscene;
 
-		gameSceneManager.OnBeginLoadGameplayScene -= CancelCutsceneOnLoad;
-		gameSceneManager.OnBeginLoadMainMenuScene -= CancelCutsceneOnLoad;
+		gameSceneManager.OnBeginLoadingGameplayScene -= CancelCutsceneOnLoad;
+		gameSceneManager.OnBeginLoadingMainMenuScene -= CancelCutsceneOnLoad;
 	}
 
 

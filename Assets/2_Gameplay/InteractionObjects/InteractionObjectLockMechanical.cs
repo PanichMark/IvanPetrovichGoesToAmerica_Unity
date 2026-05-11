@@ -65,8 +65,8 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		_buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<Button>("ButtonExitLockpickMechanicalMenu");
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		_gameSceneManager.OnBeginLoadMainMenuScene += OnClosePuzzle;
-		_gameSceneManager.OnBeginLoadGameplayScene += OnClosePuzzle;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
+		_gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;
 		_buttonText = _buttonExitLockpickMechanicalMenu.GetComponentInChildren<Text>();
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");

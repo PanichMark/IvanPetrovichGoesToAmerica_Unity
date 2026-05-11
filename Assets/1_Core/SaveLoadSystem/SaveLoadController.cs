@@ -41,7 +41,7 @@ public class SaveLoadController : MonoBehaviour
 		_fileSaveDataName4 = "SaveGame4.json";
 		_fileSaveDataName5 = "SaveGame5.json";
 
-		_gameSceneManager.OnEndLoadGameplayScene += () => StartCoroutine(OnSceneLoadUpdateGameplayObjects());
+		_gameSceneManager.OnEndLoadingGameplayScene += () => StartCoroutine(OnSceneLoadUpdateGameplayObjects());
 		
 		Debug.Log("SaveLoadController Initialized");
 	}

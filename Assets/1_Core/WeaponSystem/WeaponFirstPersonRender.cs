@@ -22,8 +22,8 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		this.PlayerHandRightParent = playerHandRightParent;
 		this.PlayerHandLeftParent = playerHandLeftParent;
 
-		this.gameSceneManager.OnBeginLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandRight);
-		this.gameSceneManager.OnBeginLoadMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandLeft);
+		this.gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandRight);
+		this.gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandLeft);
 		this.weaponController.OnWeaponChanged += RegisterWeapons;
 		_isInitialized = true;
 		Debug.Log("WeaponFirstPersonRender Initialized!");
