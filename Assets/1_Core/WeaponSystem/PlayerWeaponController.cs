@@ -10,7 +10,7 @@ public class PlayerWeaponController : MonoBehaviour
 {
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
-	private PlayerBehaviour _playerBehaviour;
+	private PlayerBehaviourController _playerBehaviour;
 	private InteractionController _interactionController;
 
 
@@ -31,7 +31,7 @@ public class PlayerWeaponController : MonoBehaviour
 	public WeaponAbstract LeftHandWeaponComponent { get; private set; }
 	public WeaponAbstract RightHandWeaponComponent { get; private set; }
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, InteractionController interactionController)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviourController playerBehaviour, InteractionController interactionController)
 	{
 		_inputDevice = inputDevice;
 		_menuManager = menuManager;

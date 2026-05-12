@@ -13,7 +13,7 @@ public class BootstrapSubProcessInteractionSystem
 
 	private GameSceneManager _gameSceneManager;
 
-	private PlayerBehaviour _playerBehaviour;
+	private PlayerBehaviourController _playerBehaviour;
 	private PlayerCameraController _playerCameraController;
 
 	private GameObject _gameObjectBootstrapInteractionSystem;
@@ -52,7 +52,7 @@ public class BootstrapSubProcessInteractionSystem
 		GameController gameController,
 		IInputDevice inputDevice,
 		GameSceneManager gameSceneManager,
-		PlayerBehaviour playerBehaviour,
+		PlayerBehaviourController playerBehaviour,
 		PlayerCameraController playerCameraController,
 		GameObject canvasHUDInteraction,
 		GameObject canvasMenuNote,

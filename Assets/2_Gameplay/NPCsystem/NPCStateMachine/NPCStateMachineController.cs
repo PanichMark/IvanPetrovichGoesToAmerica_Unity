@@ -13,9 +13,9 @@ public class NPCStateMachineController : MonoBehaviour
 	private GameObject _cachedPlayer;
 
 	[SerializeField] private List<GameObject> _anchorPoints = new List<GameObject>();
-	[SerializeField] private List<AnchorPointStop> _stopConfigs = new List<AnchorPointStop>();
+	[SerializeField] private List<NPCAnchorData> _stopConfigs = new List<NPCAnchorData>();
 
-	private AbstractNPCState _NPCstate;
+	private NPCStateAbstract _NPCstate;
 	private NPCStateTypes _NPCstateType;
 	private NPCAbstract _NPCabstract;
 	private NavMeshAgent _navMeshAgent;
@@ -24,7 +24,7 @@ public class NPCStateMachineController : MonoBehaviour
 	private Coroutine _currentMovementCoroutine;
 
 	public string CurrentNPCState { get; private set; } = "StationaryAction";
-	public List<AnchorPointStop> StopConfigs => _stopConfigs;
+	public List<NPCAnchorData> StopConfigs => _stopConfigs;
 	public List<GameObject> AnchorPoints => _anchorPoints;
 	public float AnimationDuration => _animationDuration;
 	public Coroutine currentRotationCoroutine { get; private set; }
@@ -221,61 +221,61 @@ public class NPCStateMachineController : MonoBehaviour
 
 	public void SetNPCState(NPCStateTypes playerMovementStateType)
 	{
-		AbstractNPCState newState;
+		NPCStateAbstract newState;
 
 		if (playerMovementStateType == NPCStateTypes.StationaryAction)
 		{
-			newState = new StationaryActionNPCState(this, _animationDuration);
+			newState = new NPCStateStationaryAction(this, _animationDuration);
 			CurrentNPCState = "StationaryAction";
 			_NPCabstract.gameObject.tag = "Interactable";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Patrolling)
 		{
-			newState = new PatrollingNPCState(this);
+			newState = new NPCStatePatrolling(this);
 			CurrentNPCState = "Patrolling";
 			_NPCabstract.gameObject.tag = "Interactable";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Interested)
-			newState = new InterestedNPCState();
+			newState = new NPCStateInterested();
 		else if (playerMovementStateType == NPCStateTypes.Alarmed)
-			newState = new AlarmedNPCState();
+			newState = new NPCStateAlarmed();
 		else if (playerMovementStateType == NPCStateTypes.Chasing)
-			newState = new ChasingNPCState();
+			newState = new NPCStateChasing();
 		else if (playerMovementStateType == NPCStateTypes.Attacking)
-			newState = new AttackingNPCState();
+			newState = new NPCStateAttacking();
 		else if (playerMovementStateType == NPCStateTypes.Reloading)
-			newState = new ReloadingNPCState();
+			newState = new NPCStateReloading();
 		else if (playerMovementStateType == NPCStateTypes.Searching)
-			newState = new SearchingNPCState();
+			newState = new NPCStateSearching();
 		else if (playerMovementStateType == NPCStateTypes.Scared)
 		{
-			newState = new ScaredNPCState();
+			newState = new NPCStateScared();
 			CurrentNPCState = "Scared";
 			_NPCabstract.gameObject.tag = "Untagged";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Fleeing)
-			newState = new FleeingNPCState();
+			newState = new NPCStateFleeing();
 		else if (playerMovementStateType == NPCStateTypes.BeingHooked)
 		{
-			newState = new BeingHookedNPCState(this);
+			newState = new NPCStateBeingHooked(this);
 			CurrentNPCState = "BeingHooked";
 		}
 		else if (playerMovementStateType == NPCStateTypes.BeingChoked)
-			newState = new BeingChokedNPCState(this);
+			newState = new NPCStateBeingChoked(this);
 		else if (playerMovementStateType == NPCStateTypes.Falling)
-			newState = new FallingNPCState();
+			newState = new NPCStateFalling();
 		else if (playerMovementStateType == NPCStateTypes.KnockedOff)
-			newState = new KnockedOffNPCState();
+			newState = new NPCStateKnockedOff();
 		else if (playerMovementStateType == NPCStateTypes.BlownAway)
-			newState = new BlownAwayNPCState();
+			newState = new NPCStateBlownAway();
 		else if (playerMovementStateType == NPCStateTypes.StandingUp)
-			newState = new StandingUpNPCState();
+			newState = new NPCStateStandingUp();
 		else if (playerMovementStateType == NPCStateTypes.Dead)
 		{
 			if (!_NPCabstract.IsNPCdead)
 				_NPCabstract.SetHealthToZero();
 			_NPCabstract.ConvertToPickableObject();
-			newState = new DeadNPCState(this);
+			newState = new NPCStateDead(this);
 			CurrentNPCState = "Dead";
 		}
 		else

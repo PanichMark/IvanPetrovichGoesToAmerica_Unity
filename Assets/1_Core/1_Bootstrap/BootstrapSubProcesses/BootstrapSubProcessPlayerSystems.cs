@@ -19,9 +19,9 @@ public class BootstrapSubProcessPlayerSystems
 
 	private GameObject _gameObjectPlayerCamera;
 
-	public PlayerBehaviour PlayerBehaviour { get; private set; }
+	public PlayerBehaviourController PlayerBehaviour { get; private set; }
 	public PlayerMovementController PlayerMovementController { get; private set; }
-	private PlayerCapsuleCollider _playerColliderController;
+	private PlayerColliderController _playerColliderController;
 	
 	public PlayerCameraController PlayerCameraController { get; private set; }
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
@@ -49,9 +49,9 @@ public class BootstrapSubProcessPlayerSystems
 	{
 		_gameObjectPlayerCollider = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Collider");
 
-		PlayerBehaviour = _gameObjectPlayer.GetComponent<PlayerBehaviour>();
+		PlayerBehaviour = _gameObjectPlayer.GetComponent<PlayerBehaviourController>();
 		PlayerMovementController = _gameObjectPlayer.GetComponent<PlayerMovementController>();
-		_playerColliderController = _gameObjectPlayer.GetComponentInChildren<PlayerCapsuleCollider>();
+		_playerColliderController = _gameObjectPlayer.GetComponentInChildren<PlayerColliderController>();
 		_playerMovementAnimationController = _gameObjectPlayer.GetComponent<PlayerMovementAnimationController>();
 
 		PlayerCameraController = _gameObjectPlayerCamera.GetComponent<PlayerCameraController>();

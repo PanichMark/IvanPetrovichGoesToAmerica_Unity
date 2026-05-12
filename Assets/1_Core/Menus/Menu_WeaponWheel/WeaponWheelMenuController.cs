@@ -19,7 +19,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 	private IInputDevice _inputDevice;
 	private PlayerWeaponController _weaponController;
-	private PlayerBehaviour _playerBehaviour;
+	private PlayerBehaviourController _playerBehaviour;
 	private MenuManager _menuManager;
 
 	private bool _isHoveringOverButton;
@@ -35,7 +35,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	public void Initialize(
 		IInputDevice inputDevice,
 		MenuManager menuManager,
-		PlayerBehaviour playerBehaviour,
+		PlayerBehaviourController playerBehaviour,
 		PlayerWeaponController weaponController,
 		GameObject weaponWheelMenuCanvas,
 		GameObject wheelSegmentPrefab,

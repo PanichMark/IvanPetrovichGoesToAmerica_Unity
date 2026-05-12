@@ -6,14 +6,14 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
 	private PlayerMovementController _movementController;
-	private PlayerCapsuleCollider _playerCollider;
+	private PlayerColliderController _playerCollider;
 	private GameObject _player;
 
 	public delegate void CameraStateHandler();
 	public event CameraStateHandler OnFirstPersonCameraState;
 	public event CameraStateHandler OnThirdPersonCameraState;
 
-	private AbstractPlayerCameraState _playerCameraState;
+	private PlayerCameraStateAbstract _playerCameraState;
 	private PlayerCameraStateTypes _playerCameraStateType;
 
 	private Vector2 _MouseRotation;
@@ -136,33 +136,33 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 	public void SetPlayerCameraState(PlayerCameraStateTypes playerCameraStateType)
 	{
-		AbstractPlayerCameraState newState;
+		PlayerCameraStateAbstract newState;
 
 		if (playerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			CurrentPlayerCameraStateType = "FirstPerson";
 			_movementController.GiveCurrentPlayerCameraType("FirstPerson");
-			newState = new FirstPersonPlayerCameraState(this, _movementController, _inputDevice);
+			newState = new PlayerCameraStateFirstPerson(this, _movementController, _inputDevice);
 			OnFirstPersonCameraState?.Invoke();
 		}
 		else if (playerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 		{
 			CurrentPlayerCameraStateType = "ThirdPerson";
 			_movementController.GiveCurrentPlayerCameraType("ThirdPerson");
-			newState = new ThirdPersonPlayerCameraState(this, _inputDevice);
+			newState = new PlayerCameraStateThirdPerson(this, _inputDevice);
 			OnThirdPersonCameraState?.Invoke();
 		}
 		else if (playerCameraStateType == PlayerCameraStateTypes.Cutscene)
 		{
 			CurrentPlayerCameraStateType = "Cutscene";
 			_movementController.GiveCurrentPlayerCameraType("Cutscene");
-			newState = new CutscenePlayerCameraState();
+			newState = new PlayerCameraStateCutscene();
 		}
 		else if (playerCameraStateType == PlayerCameraStateTypes.MainMenu)
 		{
 			CurrentPlayerCameraStateType = "MainMenu";
 			_movementController.GiveCurrentPlayerCameraType("MainMenu");
-			newState = new MainMenuPlayerCameraState(this, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(20, -12, 0));
+			newState = new PlayerCameraStateMainMenu(this, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(20, -12, 0));
 		}
 		else
 		{
@@ -249,7 +249,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, MenuManager menuManager, PlayerMovementController movementController, PlayerCapsuleCollider playerCollider, GameObject playerModel)
+	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, MenuManager menuManager, PlayerMovementController movementController, PlayerColliderController playerCollider, GameObject playerModel)
 	{
 		_gameSceneManager = gameSceneManager;
 		_inputDevice = inputDevice;

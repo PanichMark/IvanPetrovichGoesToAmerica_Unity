@@ -9,7 +9,7 @@ public class CanvasHUDammoController : MonoBehaviour
 	private GameController _gameController;
 	private PlayerWeaponController _playerWeaponController;
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
-	private PlayerBehaviour _playerBehaviour;
+	private PlayerBehaviourController _playerBehaviour;
 
 	private GameObject _rightWeaponAmmoMagazine;
 	private GameObject _rightWeaponAmmoReserve;
@@ -27,7 +27,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		GameController gameController,
 		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
-		PlayerBehaviour playerBehaviour,
+		PlayerBehaviourController playerBehaviour,
 		PlayerWeaponController weaponController,
 		PlayerResourcesAmmoManager playerResourcesAmmoManager,
 		GameObject canvasHUDammo,

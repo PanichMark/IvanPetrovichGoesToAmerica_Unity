@@ -35,7 +35,7 @@ public class InteractionController : MonoBehaviour
 
 	private Coroutine _showAdditionalHintCoroutine;
 
-	private PlayerBehaviour _playerBehaviour;
+	private PlayerBehaviourController _playerBehaviour;
 
 	private RaycastHit _hitInfo;
 	private bool _isHit;
@@ -50,7 +50,7 @@ public class InteractionController : MonoBehaviour
 		IInputDevice inputDevice,
 		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
-		PlayerBehaviour playerBehaviour,
+		PlayerBehaviourController playerBehaviour,
 		PlayerCameraController playerCameraController,
 		GameObject canvasHUDInteraction,
 		TextMeshProUGUI mainInteractionText,

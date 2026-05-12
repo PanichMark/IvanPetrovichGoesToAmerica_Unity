@@ -9,8 +9,8 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private ConfigBootstrapInitializationScreenDuration _configBootstrapInitializationScreenDuration;
 	[SerializeField] private ConfigBootstrapKeyPauseMenu _configBootstrapKeyPauseMenu;
 	[SerializeField] private ConfigBootstrapScene _configBootstrapScene;
-	[SerializeField] private ConfigBootstrapPlayerPosition _configBootstrapPlayerPosition;
-	[SerializeField] private ConfigBootstrapWeapons _configBootstrapWeapons;
+	[SerializeField] private ConfigBootstrapPlayerTransform _configBootstrapPlayerPosition;
+	[SerializeField] private ConfigBootstrapPlayerWeapons _configBootstrapWeapons;
 	private KeyCode _keyPauseMenu;
 
 	// Экран Инициализации Bootstrap

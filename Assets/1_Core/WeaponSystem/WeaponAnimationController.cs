@@ -2,7 +2,7 @@
 
 public class WeaponAnimationController : MonoBehaviour
 {
-	private PlayerBehaviour _playerBehaviour;
+	private PlayerBehaviourController _playerBehaviour;
 
 	private PlayerCameraController _playerCameraController;
 	private PlayerWeaponController _weaponController;
@@ -18,7 +18,7 @@ public class WeaponAnimationController : MonoBehaviour
 
 	private float _adjustedCameraAngle;
 	public void Initialize(
-		PlayerBehaviour playerBehaviour,
+		PlayerBehaviourController playerBehaviour,
 		PlayerCameraController playerCameraController,
 		PlayerWeaponController weaponController,
 		LegKickAttackController legKickAttack,

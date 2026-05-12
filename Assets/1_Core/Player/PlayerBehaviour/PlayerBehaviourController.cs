@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerBehaviour : MonoBehaviour
+public class PlayerBehaviourController : MonoBehaviour
 {
 	private IInputDevice _inputDevice;
 

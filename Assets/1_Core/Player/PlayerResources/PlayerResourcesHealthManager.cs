@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 {
-	private PlayerBehaviour _playerBehaviour;
+	private PlayerBehaviourController _playerBehaviour;
 
 	private GameController _gameController;
 	private Slider _sliderHealthBar;
@@ -17,7 +17,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 
 	public int CurrentHealingItemsNumber { get; private set; }
 
-	public void Initialize(GameController gameController, PlayerBehaviour playerBehaviour, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
+	public void Initialize(GameController gameController, PlayerBehaviourController playerBehaviour, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
 	{
 		_sliderHealthBar = HealthBarSlider;
 		_buttonHealingItem = HealingItemButton;

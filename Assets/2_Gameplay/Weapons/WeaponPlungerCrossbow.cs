@@ -5,7 +5,7 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 {
 	private GameController _gameController;
 	private GameSceneManager _gameSceneManager;
-	private PlayerBehaviour _playerBehaviour;
+	private PlayerBehaviourController _playerBehaviour;
 
 	private GameObject _player;
 	private GameObject _playerCollider;
@@ -41,7 +41,7 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 		_playerCollider = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
 		
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviour>("PlayerBehaviour");
+		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>("PlayerBehaviour");
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += StopPlungingCompletely;
 		_gameSceneManager.OnBeginLoadingGameplayScene += StopPlungingCompletely;

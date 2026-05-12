@@ -3,7 +3,7 @@
 public class PlayerMovementAnimationController: MonoBehaviour
 {
 	private IInputDevice _inputDevice;
-	private PlayerBehaviour _playerBehaviour;
+	private PlayerBehaviourController _playerBehaviour;
 	private PlayerMovementController _playerMovementController;
 	private PlayerCameraController _playerCameraController;
 	private string _currentPlayerMovementAnimation = "";
@@ -12,7 +12,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 
 	public void Initialize(
 		IInputDevice inputDevice,
-		PlayerBehaviour playerBehaviour,
+		PlayerBehaviourController playerBehaviour,
 		PlayerMovementController playerMovementController,
 		PlayerCameraController playerCameraController,
 		GameObject player)

@@ -4,11 +4,11 @@ using System;
 public class PlayerMovementController : MonoBehaviour, ISaveLoad
 {
 	private IInputDevice _inputDevice;
-	private PlayerBehaviour _playerBehaviour;
+	private PlayerBehaviourController _playerBehaviour;
 
 	private Camera _playerCamera;
 
-	private AbstractPlayerMovementState _playerMovementState;
+	private PlayerMovementStateAbstract _playerMovementState;
 	private PlayerMovementStateTypes _playerMovementStateType;
 
 	private Vector3 _playerWorldMovement;
@@ -202,56 +202,56 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	{
 		if (_isAbleToChangeMovementType)
 		{
-			AbstractPlayerMovementState newState;
+			PlayerMovementStateAbstract newState;
 
 			if (playerMovementStateType == PlayerMovementStateTypes.PlayerIdle)
 			{
 				_playerRigidBody.angularVelocity = Vector3.zero;
 				_howMuchUp = 0.3f;
-				newState = new IdlePlayerMovementState(this, _inputDevice, _playerTransform, _playerRigidBody);
+				newState = new PlayerMovementStateIdle(this, _inputDevice, _playerTransform, _playerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerIdle";
 			}
 			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerWalking)
 			{
-				newState = new WalkingPlayerMovementState(this, _inputDevice, _playerTransform, _playerRigidBody);
+				newState = new PlayerMovementStateWalking(this, _inputDevice, _playerTransform, _playerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerWalking";
 			}
 			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerRunning)
 			{
-				newState = new RunningPlayerMovementState(this, _inputDevice, _playerTransform, _playerRigidBody);
+				newState = new PlayerMovementStateRunning(this, _inputDevice, _playerTransform, _playerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerRunning";
 			}
 			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
 			{
 				_howMuchUp = 0;
-				newState = new JumpingPlayerMovementState(this, _inputDevice);
+				newState = new PlayerMovementStateJumping(this, _inputDevice);
 				CurrentPlayerMovementStateType = "PlayerJumping";
 			}
 			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerFalling)
 			{
 				_howMuchUp = 0.3f;
-				newState = new FallingPlayerMovementState(this, _inputDevice);
+				newState = new PlayerMovementStateFalling(this, _inputDevice);
 				CurrentPlayerMovementStateType = "PlayerFalling";
 			}
 			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle)
 			{
 				_playerRigidBody.angularVelocity = Vector3.zero;
-				newState = new CrouchingIdlePlayerMovementState(this, _inputDevice, _playerTransform, _playerRigidBody);
+				newState = new PlayerMovementStateCrouchingIdle(this, _inputDevice, _playerTransform, _playerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerCrouchingIdle";
 			}
 			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking)
 			{
-				newState = new CrouchingWalkingPlayerMovementState(this, _inputDevice, _playerTransform, _playerRigidBody);
+				newState = new PlayerMovementStateCrouchingWalking(this, _inputDevice, _playerTransform, _playerRigidBody);
 				CurrentPlayerMovementStateType = "PlayerCrouchingWalking";
 			}
 			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerSliding)
 			{
-				newState = new SlidingPlayerMovementState(this);
+				newState = new PlayerMovementStateSliding(this);
 				CurrentPlayerMovementStateType = "PlayerSliding";
 			}
 			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbing)
 			{
-				newState = new LedgeClimbingPlayerMovementState(this);
+				newState = new PlayerMovementStateLedgeClimbing(this);
 				CurrentPlayerMovementStateType = "PlayerLedgeClimbing";
 			}
 			else
@@ -406,7 +406,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		SetPlayerMovementState(_playerMovementStateType);
 	}
 
-	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, PlayerBehaviour playerBehaviour)
+	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, PlayerBehaviourController playerBehaviour)
 	{
 		_gameSceneManager = gameSceneManager;
 		_inputDevice = inputDevice;
