@@ -1,6 +1,6 @@
 ﻿public abstract class AbstractPlayerMovementState
 {
-    protected PlayerMovementController playerMovementController;
+    protected PlayerMovementController _playerMovementController;
 
 	public virtual void Update()
     {

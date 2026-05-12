@@ -8,58 +8,58 @@ public delegate void OnWeaponChanged(string activeHand);
 
 public class PlayerWeaponController : MonoBehaviour
 {
-	private IInputDevice inputDevice;
-	private MenuManager menuManager;
-	private PlayerBehaviour playerBehaviour;
-	private InteractionController interactionController;
+	private IInputDevice _inputDevice;
+	private MenuManager _menuManager;
+	private PlayerBehaviour _playerBehaviour;
+	private InteractionController _interactionController;
 
 
-	public Dictionary<string, GameObject> unlockedWeapons = new Dictionary<string, GameObject>();
+	public Dictionary<string, GameObject> UnlockedWeapons = new Dictionary<string, GameObject>();
 
 	public event OnWeaponUnlocked OnWeaponUnlocked; 
 
 	public event OnWeaponChanged OnWeaponChanged;
-	public bool isLeftHand {  get; private set; }
-	public bool isAbleToUseRightWeapon { get; private set; }
-	public bool isAbleToUseLeftWeapon { get; private set; }
+	public bool IsLeftHand {  get; private set; }
+	public bool IsAbleToUseRightWeapon { get; private set; }
+	public bool IsAbleToUseLeftWeapon { get; private set; }
 
-	public bool hasAnyWeapon { get; private set; } = false;
+	public bool HasAnyWeapon { get; private set; } = false;
 
 	public GameObject LeftHandWeapon { get; private set; }
 	public GameObject RightHandWeapon { get; private set; }
 
-	public WeaponAbstract leftHandWeaponComponent { get; private set; }
-	public WeaponAbstract rightHandWeaponComponent { get; private set; }
+	public WeaponAbstract LeftHandWeaponComponent { get; private set; }
+	public WeaponAbstract RightHandWeaponComponent { get; private set; }
 
 	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviour playerBehaviour, InteractionController interactionController)
 	{
-		this.inputDevice = inputDevice;
-		this.menuManager = menuManager;
-		this.playerBehaviour = playerBehaviour;
-		this.interactionController = interactionController;
+		_inputDevice = inputDevice;
+		_menuManager = menuManager;
+		_playerBehaviour = playerBehaviour;
+		_interactionController = interactionController;
 
-		isAbleToUseRightWeapon = true;
-		isAbleToUseLeftWeapon = true;
+		IsAbleToUseRightWeapon = true;
+		IsAbleToUseLeftWeapon = true;
 
-		this.playerBehaviour.OnPlayerArmed += OnPlayerArmed;
-		this.playerBehaviour.OnPlayerDisarmed += OnPlayerDisarmed;
+		_playerBehaviour.OnPlayerArmed += OnPlayerArmed;
+		_playerBehaviour.OnPlayerDisarmed += OnPlayerDisarmed;
 
-		this.interactionController.OnPickUpNonThrowable += () =>
+		_interactionController.OnPickUpNonThrowable += () =>
 		{
-			isAbleToUseRightWeapon = false;
-			isAbleToUseLeftWeapon = false;
+			IsAbleToUseRightWeapon = false;
+			IsAbleToUseLeftWeapon = false;
 		};
-		this.interactionController.OnPickUpThrowable += () =>
+		_interactionController.OnPickUpThrowable += () =>
 		{
-			isAbleToUseRightWeapon = false;
-			isAbleToUseLeftWeapon = true;
+			IsAbleToUseRightWeapon = false;
+			IsAbleToUseLeftWeapon = true;
 
 			if (RightHandWeapon != null)
 			{
 				HideWeapon(WeaponHandsEnum.RightHand);
 			}
 		};
-		this.interactionController.OnGetRidOfPickable += OnGetRidOfPickableHandler;
+		_interactionController.OnGetRidOfPickable += OnGetRidOfPickableHandler;
 
 		ResetAllWeapons(); 
 		
@@ -75,8 +75,8 @@ public class PlayerWeaponController : MonoBehaviour
 	private IEnumerator OnGetRidOfPickableCourutine()
 	{
 		yield return new WaitForSecondsRealtime(0.05f);
-		isAbleToUseRightWeapon = true;
-		isAbleToUseLeftWeapon = true;
+		IsAbleToUseRightWeapon = true;
+		IsAbleToUseLeftWeapon = true;
 
 		if (RightHandWeapon != null)
 		{
@@ -86,24 +86,24 @@ public class PlayerWeaponController : MonoBehaviour
 	}
 	private void OnPlayerArmed()
 	{
-		if (rightHandWeaponComponent != null)
+		if (RightHandWeaponComponent != null)
 		{
 			ShowWeapon(WeaponHandsEnum.RightHand); 
 		}
 
-		if (leftHandWeaponComponent != null)
+		if (LeftHandWeaponComponent != null)
 		{
 			ShowWeapon(WeaponHandsEnum.LeftHand);
 		}
 	}
 	private void OnPlayerDisarmed()
 	{
-		if (rightHandWeaponComponent != null)
+		if (RightHandWeaponComponent != null)
 		{
 			HideWeapon(WeaponHandsEnum.RightHand); 
 		}
 
-		if (leftHandWeaponComponent != null)
+		if (LeftHandWeaponComponent != null)
 		{
 			HideWeapon(WeaponHandsEnum.LeftHand); 
 		}
@@ -115,28 +115,28 @@ public class PlayerWeaponController : MonoBehaviour
 	{
 		if (!_isInitialized)
 			return;
-		if (inputDevice.GetKeyRightHandWeaponAttack() && !menuManager.IsAnyMenuOpened && isAbleToUseRightWeapon)
+		if (_inputDevice.GetKeyRightHandWeaponAttack() && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
 		{
 			RightWeaponAttack();
 		}
 
-		if (inputDevice.GetKeyLeftHandWeaponAttack() && !menuManager.IsAnyMenuOpened && isAbleToUseLeftWeapon)
+		if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
 		{
 			LeftWeaponAttack();
 		}
 
-		isLeftHand = inputDevice.GetKeyLeftHandWeaponWheel();
+		IsLeftHand = _inputDevice.GetKeyLeftHandWeaponWheel();
 
-		if (inputDevice.GetKeyReload())
+		if (_inputDevice.GetKeyReload())
 		{
 			WeaponAbstract leftWeapon = LeftHandWeapon?.GetComponent<WeaponAbstract>();
 			WeaponAbstract rightWeapon = RightHandWeapon?.GetComponent<WeaponAbstract>();
 
-			if (leftHandWeaponComponent != null && leftWeapon is WeaponRangedAbstract)
+			if (LeftHandWeaponComponent != null && leftWeapon is WeaponRangedAbstract)
 			{
 				(leftWeapon as WeaponRangedAbstract).Reload();
 			}
-			if (rightHandWeaponComponent != null && rightWeapon is WeaponRangedAbstract)
+			if (RightHandWeaponComponent != null && rightWeapon is WeaponRangedAbstract)
 			{
 				(rightWeapon as WeaponRangedAbstract).Reload();
 			}
@@ -157,7 +157,7 @@ public class PlayerWeaponController : MonoBehaviour
 
 		string key = $"{weaponName}_{index}";
 
-		unlockedWeapons[key] = weaponPrefab;
+		UnlockedWeapons[key] = weaponPrefab;
 		SetHasAnyWeapon();
 
 		OnWeaponUnlocked?.Invoke(weaponPrefab);
@@ -167,13 +167,13 @@ public class PlayerWeaponController : MonoBehaviour
 
 	private void SetHasAnyWeapon()
 	{
-		hasAnyWeapon = true;
+		HasAnyWeapon = true;
 	}
 
 	public void ResetAllWeapons()
 	{
-		unlockedWeapons.Clear();
-		hasAnyWeapon = false;
+		UnlockedWeapons.Clear();
+		HasAnyWeapon = false;
 	}
 
 	public void SelectWeapon(GameObject weaponPrefab)
@@ -188,7 +188,7 @@ public class PlayerWeaponController : MonoBehaviour
 			return;
 		}
 
-		bool isSameObject = (isLeftHand && LeftHandWeapon == weaponInstance) || (!isLeftHand && RightHandWeapon == weaponInstance);
+		bool isSameObject = (IsLeftHand && LeftHandWeapon == weaponInstance) || (!IsLeftHand && RightHandWeapon == weaponInstance);
 		if (isSameObject)
 		{
 			return; 
@@ -196,17 +196,17 @@ public class PlayerWeaponController : MonoBehaviour
 
 		string newWeaponSystemName = weaponComponent.WeaponNameSystem;
 
-		if (isLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
+		if (IsLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
 			DestroyWeapon(WeaponHandsEnum.RightHand);
 		}
-		else if (!isLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
+		else if (!IsLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
 			DestroyWeapon(WeaponHandsEnum.LeftHand);
 		}
 
 
-		if (isLeftHand)
+		if (IsLeftHand)
 		{
 			if (LeftHandWeapon != null)
 			{
@@ -219,9 +219,9 @@ public class PlayerWeaponController : MonoBehaviour
 			weaponComponent.InstantiateWeapon(WeaponHandsEnum.LeftHand);
 			weaponComponent.FlipWeapon();
 
-			leftHandWeaponComponent = weaponComponent;
+			LeftHandWeaponComponent = weaponComponent;
 
-			playerBehaviour.ArmPlayer();
+			_playerBehaviour.ArmPlayer();
 		}
 		else
 		{
@@ -235,9 +235,9 @@ public class PlayerWeaponController : MonoBehaviour
 
 			weaponComponent.InstantiateWeapon(WeaponHandsEnum.RightHand);
 
-			rightHandWeaponComponent = weaponComponent;
+			RightHandWeaponComponent = weaponComponent;
 
-			playerBehaviour.ArmPlayer();
+			_playerBehaviour.ArmPlayer();
 		}
 
 		Debug.Log("LeftHand: " + (LeftHandWeapon ? LeftHandWeapon.name : "null") +
@@ -248,8 +248,8 @@ public class PlayerWeaponController : MonoBehaviour
 	{
 		if (RightHandWeapon != null)
 		{
-			rightHandWeaponComponent.WeaponAttack();
-			playerBehaviour.ArmPlayer();
+			RightHandWeaponComponent.WeaponAttack();
+			_playerBehaviour.ArmPlayer();
 		}
 	}
 
@@ -257,8 +257,8 @@ public class PlayerWeaponController : MonoBehaviour
 	{
 		if (LeftHandWeapon != null)
 		{
-			leftHandWeaponComponent.WeaponAttack();
-			playerBehaviour.ArmPlayer();
+			LeftHandWeaponComponent.WeaponAttack();
+			_playerBehaviour.ArmPlayer();
 		}
 	}
 
@@ -270,10 +270,10 @@ public class PlayerWeaponController : MonoBehaviour
 				if (RightHandWeapon != null)
 				{
 					Destroy(RightHandWeapon);
-					rightHandWeaponComponent.DestroyWeapon();
+					RightHandWeaponComponent.DestroyWeapon();
 
 					RightHandWeapon = null;
-					rightHandWeaponComponent = null;
+					RightHandWeaponComponent = null;
 				}
 				break;
 
@@ -281,10 +281,10 @@ public class PlayerWeaponController : MonoBehaviour
 				if (LeftHandWeapon != null)
 				{
 					Destroy(LeftHandWeapon);
-					leftHandWeaponComponent.DestroyWeapon();
+					LeftHandWeaponComponent.DestroyWeapon();
 
 					LeftHandWeapon = null;
-					leftHandWeaponComponent = null;
+					LeftHandWeaponComponent = null;
 				}
 				break;
 		}
@@ -306,21 +306,21 @@ public class PlayerWeaponController : MonoBehaviour
 				throw new ArgumentException("Неверный тип руки.");
 		}
 
-		if (handString == "RightHand" && rightHandWeaponComponent != null)
+		if (handString == "RightHand" && RightHandWeaponComponent != null)
 		{
-			if (rightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
-				rightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
+			if (RightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+				RightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
 
-			if (rightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
-				rightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+			if (RightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+				RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
 		}
-		else if (handString == "LeftHand" && leftHandWeaponComponent != null)
+		else if (handString == "LeftHand" && LeftHandWeaponComponent != null)
 		{
-			if (leftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
-				leftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
+			if (LeftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+				LeftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
 
-			if (leftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
-				leftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+			if (LeftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+				LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
 		}
 	}
 
@@ -340,26 +340,26 @@ public class PlayerWeaponController : MonoBehaviour
 				throw new ArgumentException("Неверный тип руки.");
 		}
 
-		if (handString == "RightHand" && rightHandWeaponComponent != null)
+		if (handString == "RightHand" && RightHandWeaponComponent != null)
 		{
-			if (rightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
-				rightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
+			if (RightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+				RightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
 
-			if (rightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
-				rightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
+			if (RightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+				RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
 		}
-		else if (handString == "LeftHand" && leftHandWeaponComponent != null)
+		else if (handString == "LeftHand" && LeftHandWeaponComponent != null)
 		{
-			if (leftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
-				leftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
+			if (LeftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+				LeftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
 
-			if (leftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
-				leftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
+			if (LeftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+				LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
 		}
 	}
 
 	public List<GameObject> CollectActiveWeapons()
 	{
-		return new List<GameObject>(unlockedWeapons.Values);
+		return new List<GameObject>(UnlockedWeapons.Values);
 	}
 }

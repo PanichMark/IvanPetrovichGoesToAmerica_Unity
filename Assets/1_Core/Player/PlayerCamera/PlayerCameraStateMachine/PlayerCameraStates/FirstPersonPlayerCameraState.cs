@@ -1,34 +1,33 @@
-﻿using UnityEngine;
-public class FirstPersonPlayerCameraState : AbstractPlayerCameraState
+﻿public class FirstPersonPlayerCameraState : AbstractPlayerCameraState
 {
-	private PlayerMovementController movementController;
-	private IInputDevice inputDevice;
+	private PlayerMovementController _movementController;
+	private IInputDevice _inputDevice;
 	public FirstPersonPlayerCameraState(PlayerCameraController playerCam, PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
-		playerCamera = playerCam;
-		movementController = playerMovementController;
+		_playerCamera = playerCam;
+		_movementController = playerMovementController;
 
-		this .inputDevice = inputDevice;	
+		_inputDevice = inputDevice;	
 	}
 
 	public override void Update()
 	{
-		playerCamera.RotateCamera();
-		this.playerCamera.FirstPersonCameraTransform();
+		_playerCamera.RotateCamera();
+		_playerCamera.FirstPersonCameraTransform();
 
 		if (
-			movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
-			movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking" ||
-			movementController.CurrentPlayerMovementStateType == "PlayerSliding"
+			_movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
+			_movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking" ||
+			_movementController.CurrentPlayerMovementStateType == "PlayerSliding"
 		)
 		{
-			playerCamera.CameraCrouching();
+			_playerCamera.CameraCrouching();
 		}
-		else playerCamera.CameraStanding();
+		else _playerCamera.CameraStanding();
 
-		if (inputDevice.GetKeyChangeCameraView())
+		if (_inputDevice.GetKeyChangeCameraView())
 		{
-			playerCamera.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
+			_playerCamera.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
 		}
 	}
 }

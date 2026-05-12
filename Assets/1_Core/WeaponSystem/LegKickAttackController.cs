@@ -8,9 +8,9 @@ public class LegKickAttackController : MonoBehaviour
 	private GameObject _cachedPlayer;
 	public bool IsPlayerLegKicking { get; private set; }
 
-	private float _CapsuleHeight;    
-	private float _CapsuleRadius;  
-	private float _ForwardOffset;   
+	private float _capsuleHeight;    
+	private float _capsuleRadius;  
+	private float _forwardOffset;   
 
 	public float WeaponDamage { get; private set; } = 50;
 
@@ -20,9 +20,9 @@ public class LegKickAttackController : MonoBehaviour
 		_cachedPlayer = cachedPlayer;
 		_playerMovementController = playerMovementController;
 
-		_CapsuleHeight = 1.8f;   
-		_CapsuleRadius = 0.3f;     
-		_ForwardOffset = 0.5f;      
+		_capsuleHeight = 1.8f;   
+		_capsuleRadius = 0.3f;     
+		_forwardOffset = 0.5f;      
 		IsPlayerLegKicking = false;
 
 		Debug.Log("LegKickAttack Initialized");
@@ -39,9 +39,9 @@ public class LegKickAttackController : MonoBehaviour
 
 		if (!_playerMovementController.IsPlayerCrouching)
 		{
-			_CapsuleHeight = 1.8f;
+			_capsuleHeight = 1.8f;
 		}
-		else _CapsuleHeight = 1;
+		else _capsuleHeight = 1;
 	}
 	
 	public void LegKick()
@@ -60,10 +60,10 @@ public class LegKickAttackController : MonoBehaviour
 		StartCoroutine(_playerMovementController.DisablePlayerMovementDuringLegKickAttack());
 		StartCoroutine(DisableLegKickAttackActivation());
 
-		Vector3 startPoint = _cachedPlayer.transform.position + _cachedPlayer.transform.forward * _ForwardOffset;
-		Vector3 endPoint = _cachedPlayer.transform.position + _cachedPlayer.transform.forward * _ForwardOffset + _cachedPlayer.transform.up * _CapsuleHeight;
+		Vector3 startPoint = _cachedPlayer.transform.position + _cachedPlayer.transform.forward * _forwardOffset;
+		Vector3 endPoint = _cachedPlayer.transform.position + _cachedPlayer.transform.forward * _forwardOffset + _cachedPlayer.transform.up * _capsuleHeight;
 
-		RaycastHit[] hits = Physics.CapsuleCastAll(startPoint, endPoint, _CapsuleRadius, transform.forward, 0f);
+		RaycastHit[] hits = Physics.CapsuleCastAll(startPoint, endPoint, _capsuleRadius, transform.forward, 0f);
 
 		foreach (RaycastHit hit in hits)
 		{

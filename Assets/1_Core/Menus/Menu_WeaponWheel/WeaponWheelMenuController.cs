@@ -73,7 +73,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		bool currentRightHandPressed = _inputDevice.GetKeyRightHandWeaponWheel();
 		bool currentLeftHandPressed = _inputDevice.GetKeyLeftHandWeaponWheel();
 
-		if ((currentRightHandPressed != _previousRightHandPressed || currentLeftHandPressed != _previousLeftHandPressed) && _weaponController.hasAnyWeapon)
+		if ((currentRightHandPressed != _previousRightHandPressed || currentLeftHandPressed != _previousLeftHandPressed) && _weaponController.HasAnyWeapon)
 		{
 			HandleWeaponWheel(currentRightHandPressed, currentLeftHandPressed);
 		}
@@ -218,7 +218,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 			if (_weaponController.LeftHandWeapon != null)
 			{
 				WeaponIcon.gameObject.SetActive(true);
-				WeaponIcon.sprite = _weaponController.leftHandWeaponComponent.WeaponIcon;
+				WeaponIcon.sprite = _weaponController.LeftHandWeaponComponent.WeaponIcon;
 			}
 			else
 			{
@@ -234,7 +234,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 			if (_weaponController.RightHandWeapon != null)
 			{
 				WeaponIcon.gameObject.SetActive(true);
-				WeaponIcon.sprite = _weaponController.rightHandWeaponComponent.WeaponIcon;
+				WeaponIcon.sprite = _weaponController.RightHandWeaponComponent.WeaponIcon;
 			}
 			else
 			{
@@ -253,7 +253,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		{
 			if (_weaponController.LeftHandWeapon != null)
 			{
-				WeaponText.text = _weaponController.leftHandWeaponComponent.WeaponNameUI;
+				WeaponText.text = _weaponController.LeftHandWeaponComponent.WeaponNameUI;
 			}
 			else
 			{
@@ -264,7 +264,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		{
 			if (_weaponController.RightHandWeapon != null)
 			{
-				WeaponText.text = _weaponController.rightHandWeaponComponent.WeaponNameUI;
+				WeaponText.text = _weaponController.RightHandWeaponComponent.WeaponNameUI;
 			}
 			else
 			{

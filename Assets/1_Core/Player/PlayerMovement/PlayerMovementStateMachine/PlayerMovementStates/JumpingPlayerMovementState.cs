@@ -1,78 +1,64 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class JumpingPlayerMovementState : AbstractPlayerMovementState
 {
-	
-
-	private IInputDevice inputDevice;
-	private Vector3 playerWorldMovement;
+	private IInputDevice _inputDevice;
+	private Vector3 _playerWorldMovement;
 
 	public JumpingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
-		this.playerMovementController = playerMovementController;
-		this.inputDevice = inputDevice;
-		//Debug.Log("Player Walking");
-		this.playerMovementController.ChangePlayerRayPosition(1.9f);
-	
+		_playerMovementController = playerMovementController;
+		_inputDevice = inputDevice;
+		_playerMovementController.ChangePlayerRayPosition(1.9f);
+
 	}
 
 	public override void Update()
 	{
-		if (inputDevice.GetKeyRight())
+		if (_inputDevice.GetKeyRight())
 		{
-			playerWorldMovement.x = 1;
+			_playerWorldMovement.x = 1;
 		}
-		else if (inputDevice.GetKeyLeft())
+		else if (_inputDevice.GetKeyLeft())
 		{
-			playerWorldMovement.x = -1;
-		}
-		else
-		{
-			playerWorldMovement.x = 0;
-		}
-
-		if (inputDevice.GetKeyUp())
-		{
-			playerWorldMovement.z = 1;
-		}
-		else if (inputDevice.GetKeyDown())
-		{
-			playerWorldMovement.z = -1;
+			_playerWorldMovement.x = -1;
 		}
 		else
 		{
-			playerWorldMovement.z = 0;
+			_playerWorldMovement.x = 0;
 		}
 
-		playerMovementController.SetPlayerWorldMovement(playerWorldMovement);
-
-
-		
-		if (playerMovementController.IsPlayerFalling == true)
+		if (_inputDevice.GetKeyUp())
 		{
-			
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
+			_playerWorldMovement.z = 1;
 		}
-		
+		else if (_inputDevice.GetKeyDown())
+		{
+			_playerWorldMovement.z = -1;
+		}
+		else
+		{
+			_playerWorldMovement.z = 0;
+		}
+
+		_playerMovementController.SetPlayerWorldMovement(_playerWorldMovement);
 
 
-		if (playerMovementController.IsPlayerGrounded == true)
+		if (_playerMovementController.IsPlayerFalling == true)
 		{
 
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
 		}
 
-		if ( inputDevice.GetKeyJumpBeingHeld() && playerMovementController.IsPlayerAbleToClimbLedge)
+		if (_playerMovementController.IsPlayerGrounded == true)
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerLedgeClimbing);
-		}
-		
 
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+		}
+
+		if (_inputDevice.GetKeyJumpBeingHeld() && _playerMovementController.IsPlayerAbleToClimbLedge)
+		{
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerLedgeClimbing);
+		}
 	}
-
-	
-
 }
-
-

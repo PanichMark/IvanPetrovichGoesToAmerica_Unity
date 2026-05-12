@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 8706231987240365794}
   - component: {fileID: 3228905917586244085}
   m_Layer: 0
-  m_Name: Cylinder.003
+  m_Name: SafeSection3
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,8 +319,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb5e8d73c7effa4b9bad36547f3125a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  safeSectionSlotNumber: 3
-  correctSectionPosition: 1
+  _safeSectionSlotNumber: 2
+  _correctSectionPosition: 3
 --- !u!1 &5059931937669228407
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 5279544945354166076}
   - component: {fileID: 5172207742799070850}
   m_Layer: 0
-  m_Name: Cylinder.002
+  m_Name: SafeSection2
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -443,8 +443,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb5e8d73c7effa4b9bad36547f3125a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  safeSectionSlotNumber: 2
-  correctSectionPosition: 5
+  _safeSectionSlotNumber: 0
+  _correctSectionPosition: 0
 --- !u!1 &7015984648205224947
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 5145851620262333165}
   - component: {fileID: 7581594794377340937}
   m_Layer: 0
-  m_Name: Cube.001
+  m_Name: SafeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -571,7 +571,7 @@ GameObject:
   - component: {fileID: 55785352054031836}
   - component: {fileID: 2132122053083188771}
   m_Layer: 0
-  m_Name: Cylinder.001
+  m_Name: SafeSection1
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -657,8 +657,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb5e8d73c7effa4b9bad36547f3125a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  safeSectionSlotNumber: 1
-  correctSectionPosition: 4
+  _safeSectionSlotNumber: 0
+  _correctSectionPosition: 0
 --- !u!64 &2132122053083188771
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -803,7 +803,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26aab8041386daf449a7f13075f80ccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SafeDoor: {fileID: 7015984648205224947}
-  SafeRotatorySection1: {fileID: 8055399886074799410}
-  SafeRotatorySection2: {fileID: 5059931937669228407}
-  SafeRotatorySection3: {fileID: 3641484556880735531}

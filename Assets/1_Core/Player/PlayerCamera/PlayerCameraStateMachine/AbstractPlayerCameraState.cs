@@ -1,6 +1,6 @@
 ﻿public abstract class AbstractPlayerCameraState
 {
-	protected PlayerCameraController playerCamera;
+	protected PlayerCameraController _playerCamera;
 
 	public virtual void Update()
 	{

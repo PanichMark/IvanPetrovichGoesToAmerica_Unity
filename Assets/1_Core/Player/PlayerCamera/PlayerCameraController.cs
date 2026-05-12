@@ -47,7 +47,6 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		if (!_isInitialized)
 		{
 			return;
-			
 		}
 
 		if (_MouseScrollWheel.y < 0 && IsAbleToZoomCameraOut == true && CurrentPlayerCameraStateType != "FirstPerson")

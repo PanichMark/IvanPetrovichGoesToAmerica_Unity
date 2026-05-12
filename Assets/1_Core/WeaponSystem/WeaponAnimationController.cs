@@ -2,14 +2,21 @@
 
 public class WeaponAnimationController : MonoBehaviour
 {
-	private PlayerBehaviour playerBehaviour;
+	private PlayerBehaviour _playerBehaviour;
 
-	private PlayerCameraController playerCameraController;
-	private PlayerWeaponController weaponController;
+	private PlayerCameraController _playerCameraController;
+	private PlayerWeaponController _weaponController;
 
-	private Animator playerAnimator;
+	private Animator _playerAnimator;
 	private bool _isInitialized = false;
-	private LegKickAttackController legKickAttack;
+	private LegKickAttackController _legKickAttack;
+	private string _currentPlayerWeaponRightAnimation = "";
+	private string _currentPlayerWeaponLeftAnimation = "";
+	private string _currentPlayerLegKickAttackAnimation = "";
+
+	private bool _wasPreviouslyKicking = false;
+
+	private float _adjustedCameraAngle;
 	public void Initialize(
 		PlayerBehaviour playerBehaviour,
 		PlayerCameraController playerCameraController,
@@ -17,108 +24,98 @@ public class WeaponAnimationController : MonoBehaviour
 		LegKickAttackController legKickAttack,
 		GameObject player)
 	{
-		playerAnimator = player.GetComponent<Animator>();
-		this.playerBehaviour = playerBehaviour;
+		_playerAnimator = player.GetComponent<Animator>();
+		_playerBehaviour = playerBehaviour;
 	
-		this.playerCameraController = playerCameraController;
-		this.weaponController = weaponController;
-		this.legKickAttack = legKickAttack;
+		_playerCameraController = playerCameraController;
+		_weaponController = weaponController;
+		_legKickAttack = legKickAttack;
 
 		_isInitialized = true;
 
 		Debug.Log("WeaponAnimationController Initialized");
 	}
 
-	private string currentPlayerWeaponRightAnimation = "";
-	private string currentPlayerWeaponLeftAnimation = "";
-	private string currentPlayerLegKickAttackAnimation = "";
-
-	private bool wasPreviouslyKicking = false;
-
-	private float adjustedCameraAngle;
-
 	private void Update()
 	{
 		if (!_isInitialized)
 			return;
 
-		
-
-		float cameraRotationX = playerCameraController.transform.rotation.eulerAngles.x;
+		float cameraRotationX = _playerCameraController.transform.rotation.eulerAngles.x;
 		if (cameraRotationX >= 0 && cameraRotationX < 180)
 		{
-			adjustedCameraAngle = cameraRotationX;
+			_adjustedCameraAngle = cameraRotationX;
 		}
 		else if (cameraRotationX < 360 && cameraRotationX > -180)
 		{
-			adjustedCameraAngle = cameraRotationX - 360;
+			_adjustedCameraAngle = cameraRotationX - 360;
 		}
 
-		if (playerBehaviour.IsPlayerArmed == true && playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
+		if (_playerBehaviour.IsPlayerArmed == true && _playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
 		{
-			float startValue = playerAnimator.GetFloat("UpDown");
+			float startValue = _playerAnimator.GetFloat("UpDown");
 
-			float endValue = adjustedCameraAngle * 0.0153846f;
+			float endValue = _adjustedCameraAngle * 0.0153846f;
 	
 			float newValue = Mathf.Lerp(startValue, endValue, Time.deltaTime * 6);
 
-			playerAnimator.SetFloat("UpDown", newValue);
+			_playerAnimator.SetFloat("UpDown", newValue);
 		}
 		else
 		{
-			float startValue = playerAnimator.GetFloat("UpDown");
+			float startValue = _playerAnimator.GetFloat("UpDown");
 			
 			float endValue = 0f;
 
 			float newValue = Mathf.Lerp(startValue, endValue, Time.deltaTime * 6);
 
-			playerAnimator.SetFloat("UpDown", newValue);
+			_playerAnimator.SetFloat("UpDown", newValue);
 		}
 
-		if (playerBehaviour.IsPlayerArmed == true && playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerBehaviour.IsPlayerArmed == true && _playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
 		{
-			playerAnimator.SetFloat("UpDown", 0);
+			_playerAnimator.SetFloat("UpDown", 0);
 		}
 
-		if (weaponController.RightHandWeapon != null)
+		if (_weaponController.RightHandWeapon != null)
 		{
-			if (weaponController.rightHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
+			if (_weaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 			{
-				playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponRight"), 1);
+				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 1);
 				ChangePlayerWeaponRightAnimation("EquipRightWeapon");
 			}
 			else
 			{
 				ChangePlayerWeaponRightAnimation("UnequipRightWeapon");
-				if (playerAnimator.GetCurrentAnimatorStateInfo(playerAnimator.GetLayerIndex("WeaponRight")).IsName("UnequipRightWeapon") && playerAnimator.GetCurrentAnimatorStateInfo(playerAnimator.GetLayerIndex("WeaponRight")).normalizedTime >= 0.99f)
+				if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRight")).IsName("UnequipRightWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRight")).normalizedTime >= 0.99f)
 				{
-					playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponRight"), 0);
+					_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 0);
 				}
 			}
 		}
 		else
 		{
 			ChangePlayerWeaponRightAnimation("UnequipRightWeapon");
-			if (playerAnimator.GetCurrentAnimatorStateInfo(playerAnimator.GetLayerIndex("WeaponRight")).IsName("UnequipRightWeapon") && playerAnimator.GetCurrentAnimatorStateInfo(playerAnimator.GetLayerIndex("WeaponRight")).normalizedTime >= 0.99f)
+			if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRight")).IsName("UnequipRightWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRight")).normalizedTime >= 0.99f)
 			{
-				playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponRight"), 0);
+				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 0);
 			}
 		}
 
-		if (weaponController.LeftHandWeapon != null)
+		if (_weaponController.LeftHandWeapon != null)
 		{
-			if (weaponController.leftHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
+			if (_weaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 			{
-				playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponLeft"), 1);
+				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeft"), 1);
 				ChangePlayerWeaponLeftAnimation("EquipLeftWeapon");
 			}
 			else
 			{
 				ChangePlayerWeaponLeftAnimation("UnequipLeftWeapon");
 
-				if (playerAnimator.GetCurrentAnimatorStateInfo(playerAnimator.GetLayerIndex("WeaponLeft")).IsName("UnequipLeftWeapon") && playerAnimator.GetCurrentAnimatorStateInfo(playerAnimator.GetLayerIndex("WeaponLeft")).normalizedTime >= 0.99f)
+				if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeft")).IsName("UnequipLeftWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeft")).normalizedTime >= 0.99f)
 				{
-					playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponLeft"), 0);
+					_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeft"), 0);
 				}
 			}
 		}
@@ -126,55 +123,55 @@ public class WeaponAnimationController : MonoBehaviour
 		{
 			ChangePlayerWeaponLeftAnimation("UnequipLeftWeapon");
 
-			if (playerAnimator.GetCurrentAnimatorStateInfo(playerAnimator.GetLayerIndex("WeaponLeft")).IsName("UnequipLeftWeapon") && playerAnimator.GetCurrentAnimatorStateInfo(playerAnimator.GetLayerIndex("WeaponLeft")).normalizedTime >= 0.99f)
+			if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeft")).IsName("UnequipLeftWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeft")).normalizedTime >= 0.99f)
 			{
-				playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("WeaponLeft"), 0);
+				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeft"), 0);
 			}
 		}
 
-		if (legKickAttack.IsPlayerLegKicking == true)
+		if (_legKickAttack.IsPlayerLegKicking == true)
 		{
 
-			playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("LegKick"), 1);
+			_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("LegKick"), 1);
 
-			if (!wasPreviouslyKicking)
+			if (!_wasPreviouslyKicking)
 			{
-				playerAnimator.Play("LegKick", 4, 0f); 
+				_playerAnimator.Play("LegKick", 4, 0f); 
 			}
 
-			playerAnimator.Play("LegKick");
+			_playerAnimator.Play("LegKick");
 		}
-		else if (legKickAttack.IsPlayerLegKicking == false)
+		else if (_legKickAttack.IsPlayerLegKicking == false)
 		{
-			playerAnimator.SetLayerWeight(playerAnimator.GetLayerIndex("LegKick"), 0);
+			_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("LegKick"), 0);
 		}
-		wasPreviouslyKicking = legKickAttack.IsPlayerLegKicking;
+		_wasPreviouslyKicking = _legKickAttack.IsPlayerLegKicking;
 	}
 
 	private void ChangePlayerWeaponRightAnimation(string animation, float crossfade = 0.2f)
 	{
-		if (currentPlayerWeaponRightAnimation != animation)
+		if (_currentPlayerWeaponRightAnimation != animation)
 		{
-			currentPlayerWeaponRightAnimation = animation;
-			playerAnimator.CrossFade(animation, crossfade);
+			_currentPlayerWeaponRightAnimation = animation;
+			_playerAnimator.CrossFade(animation, crossfade);
 		}
 	}
 
 	private void ChangePlayerWeaponLeftAnimation(string animation, float crossfade = 0.2f)
 	{
-		if (currentPlayerWeaponLeftAnimation != animation)
+		if (_currentPlayerWeaponLeftAnimation != animation)
 		{
-			currentPlayerWeaponLeftAnimation = animation;
-			playerAnimator.CrossFade(animation, crossfade);
+			_currentPlayerWeaponLeftAnimation = animation;
+			_playerAnimator.CrossFade(animation, crossfade);
 		}
 	}
 
 	private void ChangePlayerLegKickAttackAnimation(string animation, float crossfade = 0.2f)
 	{
-		if (currentPlayerLegKickAttackAnimation != animation)
+		if (_currentPlayerLegKickAttackAnimation != animation)
 		{
-			currentPlayerLegKickAttackAnimation = animation;
-			playerAnimator.CrossFade(animation, crossfade);
+			_currentPlayerLegKickAttackAnimation = animation;
+			_playerAnimator.CrossFade(animation, crossfade);
 		}
 	}
 }

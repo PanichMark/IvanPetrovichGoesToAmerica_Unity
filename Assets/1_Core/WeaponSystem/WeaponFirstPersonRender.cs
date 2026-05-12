@@ -1,98 +1,101 @@
 ﻿using UnityEngine;
 public class WeaponFirstPersonRender : MonoBehaviour
 {
-	private WeaponAbstract leftHandWeaponComponent;
+	private WeaponAbstract _leftHandWeaponComponent;
 
-	private WeaponAbstract rightHandWeaponComponent;
+	private WeaponAbstract _rightHandWeaponComponent;
+	private PlayerCameraStateTypes _playerCameraStateType;
+	private PlayerCameraController _playerCamera;
+	private PlayerWeaponController _weaponController;
+	private GameSceneManager _gameSceneManager;
+	private bool _isInitialized = false;
 
-	private PlayerCameraController playerCamera;
-	private PlayerWeaponController weaponController;
-	private GameSceneManager gameSceneManager;
-	public void Initialize(GameSceneManager gameSceneManager, PlayerCameraController playerCameraController, PlayerWeaponController weaponController,
-							GameObject playerFirstPersonHandRight, GameObject playerFirstPersonHandLeft,
-			 GameObject playerHandRightParent, GameObject playerHandLeftParent)
+	private GameObject _playerFirstPersonHandRight;
+	private GameObject _playerFirstPersonHandLeft;
+	private GameObject _playerHandRightParent;
+	private GameObject _playerHandLeftParent;
+	public void Initialize(
+		GameSceneManager gameSceneManager,
+		PlayerCameraController playerCameraController,
+		PlayerWeaponController weaponController,
+		GameObject playerFirstPersonHandRight,
+		GameObject playerFirstPersonHandLeft,
+		GameObject playerHandRightParent,
+		GameObject playerHandLeftParent)
 	{
-		this.gameSceneManager = gameSceneManager;
-		this.playerCamera = playerCameraController;
-		this.weaponController = weaponController;
+		_gameSceneManager = gameSceneManager;
+		_playerCamera = playerCameraController;
+		_weaponController = weaponController;
 
-		this.PlayerFirstPersonHandRight = playerFirstPersonHandRight;
-		this.PlayerFirstPersonHandLeft = playerFirstPersonHandLeft;
+		_playerFirstPersonHandRight = playerFirstPersonHandRight;
+		_playerFirstPersonHandLeft = playerFirstPersonHandLeft;
 		
-		this.PlayerHandRightParent = playerHandRightParent;
-		this.PlayerHandLeftParent = playerHandLeftParent;
+		_playerHandRightParent = playerHandRightParent;
+		_playerHandLeftParent = playerHandLeftParent;
 
-		this.gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandRight);
-		this.gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(this.PlayerFirstPersonHandLeft);
-		this.weaponController.OnWeaponChanged += RegisterWeapons;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(this._playerFirstPersonHandRight);
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(this._playerFirstPersonHandLeft);
+		_weaponController.OnWeaponChanged += RegisterWeapons;
 		_isInitialized = true;
+
 		Debug.Log("WeaponFirstPersonRender Initialized!");
 	}
-
-	private PlayerCameraStateTypes playerCameraStateType;
-
 
 	private void RegisterWeapons(string handType)
 	{
 		if (handType == "left")
 		{
-			if (weaponController.LeftHandWeapon != null)
+			if (_weaponController.LeftHandWeapon != null)
 			{
-				leftHandWeaponComponent = weaponController.LeftHandWeapon.GetComponent<WeaponAbstract>();
+				_leftHandWeaponComponent = _weaponController.LeftHandWeapon.GetComponent<WeaponAbstract>();
 			}
-			else leftHandWeaponComponent = null;
+			else _leftHandWeaponComponent = null;
 		}
 		else
 		{
-			if (weaponController.RightHandWeapon != null)
+			if (_weaponController.RightHandWeapon != null)
 			{
-				rightHandWeaponComponent = weaponController.RightHandWeapon.GetComponent<WeaponAbstract>();
+				_rightHandWeaponComponent = _weaponController.RightHandWeapon.GetComponent<WeaponAbstract>();
 			}
-			else rightHandWeaponComponent = null;
+			else _rightHandWeaponComponent = null;
 		}
 	}
-	private bool _isInitialized = false;
-
-	private GameObject PlayerFirstPersonHandRight;
-	private GameObject PlayerFirstPersonHandLeft;
-	private GameObject PlayerHandRightParent;
-	private GameObject PlayerHandLeftParent;
 
 	private void Update()
 	{
 		if (!_isInitialized)
 			return;
 
-		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
 		{
-			if (rightHandWeaponComponent != null &&
-				rightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+			if (_rightHandWeaponComponent != null &&
+				_rightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
 			{
-				ShowPlayerWeapon(rightHandWeaponComponent.FirstPersonWeaponModelInstance, true);
-				HidePlayerWeapon(rightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
+				ShowPlayerWeapon(_rightHandWeaponComponent.FirstPersonWeaponModelInstance, true);
+				HidePlayerWeapon(_rightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
 			}
 
-			if (leftHandWeaponComponent != null &&
-				leftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+			if (_leftHandWeaponComponent != null &&
+				_leftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
 			{
-				ShowPlayerWeapon(leftHandWeaponComponent.FirstPersonWeaponModelInstance, true);
-				HidePlayerWeapon(leftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
+				ShowPlayerWeapon(_leftHandWeaponComponent.FirstPersonWeaponModelInstance, true);
+				HidePlayerWeapon(_leftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
 			}
 		}
 		else
 		{
-			if (rightHandWeaponComponent != null &&
-				rightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+			if (_rightHandWeaponComponent != null &&
+				_rightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
 			{
-				ShowPlayerWeapon(rightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
-				HidePlayerWeapon(rightHandWeaponComponent.FirstPersonWeaponModelInstance, true);
+				ShowPlayerWeapon(_rightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
+				HidePlayerWeapon(_rightHandWeaponComponent.FirstPersonWeaponModelInstance, true);
 			}
 
-			if (leftHandWeaponComponent != null &&
-				leftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+			if (_leftHandWeaponComponent != null &&
+				_leftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
 			{
-				ShowPlayerWeapon(leftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
-				HidePlayerWeapon(leftHandWeaponComponent.FirstPersonWeaponModelInstance, true);
+				ShowPlayerWeapon(_leftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
+				HidePlayerWeapon(_leftHandWeaponComponent.FirstPersonWeaponModelInstance, true);
 			}
 		}
 	}
@@ -102,53 +105,53 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
 		{
-			if (weaponController.RightHandWeapon != null)
+			if (_weaponController.RightHandWeapon != null)
 			{
-				if (rightHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
+				if (_rightHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 				{
-					HideBodyPart(PlayerHandRightParent);
-					ShowFirstPersonHand(PlayerFirstPersonHandRight);
+					HideBodyPart(_playerHandRightParent);
+					ShowFirstPersonHand(_playerFirstPersonHandRight);
 				}
 				else
 				{
-					ShowBodyPart(PlayerHandRightParent);
-					HideFirstPersonHand(PlayerFirstPersonHandRight);
+					ShowBodyPart(_playerHandRightParent);
+					HideFirstPersonHand(_playerFirstPersonHandRight);
 				}
 			}
 			else
 			{
-				ShowBodyPart(PlayerHandRightParent);
-				HideFirstPersonHand(PlayerFirstPersonHandRight);
+				ShowBodyPart(_playerHandRightParent);
+				HideFirstPersonHand(_playerFirstPersonHandRight);
 			}
 
-			if (weaponController.LeftHandWeapon != null)
+			if (_weaponController.LeftHandWeapon != null)
 			{
-				if (leftHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
+				if (_leftHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 				{
-					HideBodyPart(PlayerHandLeftParent);
-					ShowFirstPersonHand(PlayerFirstPersonHandLeft);
+					HideBodyPart(_playerHandLeftParent);
+					ShowFirstPersonHand(_playerFirstPersonHandLeft);
 				}
 				else
 				{
-					ShowBodyPart(PlayerHandLeftParent);
-					HideFirstPersonHand(PlayerFirstPersonHandLeft);
+					ShowBodyPart(_playerHandLeftParent);
+					HideFirstPersonHand(_playerFirstPersonHandLeft);
 				}
 			}
 			else
 			{
-				ShowBodyPart(PlayerHandLeftParent);
-				HideFirstPersonHand(PlayerFirstPersonHandLeft);
+				ShowBodyPart(_playerHandLeftParent);
+				HideFirstPersonHand(_playerFirstPersonHandLeft);
 			}
 		}
 		else
 		{
-			ShowBodyPart(PlayerHandRightParent);
-			ShowBodyPart(PlayerHandLeftParent);
+			ShowBodyPart(_playerHandRightParent);
+			ShowBodyPart(_playerHandLeftParent);
 
-			HideFirstPersonHand(PlayerFirstPersonHandRight);
-			HideFirstPersonHand(PlayerFirstPersonHandLeft);
+			HideFirstPersonHand(_playerFirstPersonHandRight);
+			HideFirstPersonHand(_playerFirstPersonHandLeft);
 		}
 	}
 
@@ -234,7 +237,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		{
 			if (renderer is MeshRenderer || renderer is SkinnedMeshRenderer)
 			{
-				if (playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
+				if (_playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
 				{
 					renderer.enabled = true;
 				}

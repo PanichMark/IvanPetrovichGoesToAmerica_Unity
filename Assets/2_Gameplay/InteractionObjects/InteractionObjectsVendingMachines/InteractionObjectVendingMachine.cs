@@ -7,7 +7,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 
 	[SerializeField] protected GameObject _goodsForSaleModel;
 	[SerializeField] protected int _goodsPrice;
-	[SerializeField] protected string _goodsName;
+	protected string _goodsName;
 	[SerializeField] private string _vendingMachineName;
 	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
 	private bool _isAdditionalInteractionHintActive;
@@ -22,6 +22,9 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 
 	protected void Start()
 	{
+		var Good = _goodsForSaleModel.GetComponent<InteractionObjectLootAbstract>();
+		_goodsName = Good.InteractionObjectNameSystem;
+
 		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
 	}
 

@@ -117,7 +117,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 
 	private void SelectWeapon()
 	{
-		if (_weaponController.isAbleToUseRightWeapon || (_weaponController.isLeftHand && _weaponController.isAbleToUseLeftWeapon))
+		if (_weaponController.IsAbleToUseRightWeapon || (_weaponController.IsLeftHand && _weaponController.IsAbleToUseLeftWeapon))
 		{
 			_weaponController.SelectWeapon(_WeaponPrefab);
 		}

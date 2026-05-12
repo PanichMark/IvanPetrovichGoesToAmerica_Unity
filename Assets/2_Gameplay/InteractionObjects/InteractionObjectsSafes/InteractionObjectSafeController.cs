@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 {
@@ -14,12 +15,12 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 	private bool _isSafeOpened;
 	private bool _isInStartMethod;
 
-	public GameObject SafeDoor;
+	private	GameObject _safeDoor;
 	private Transform _safeDoorTransform;
 
-	public GameObject SafeRotatorySection1;
-	public GameObject SafeRotatorySection2;
-	public GameObject SafeRotatorySection3;
+	private GameObject _safeRotatorySection1;
+	private GameObject _safeRotatorySection2;
+	private GameObject _safeRotatorySection3;
 	private InteractionObjectSafeSection _section1;
 	private InteractionObjectSafeSection _section2;
 	private InteractionObjectSafeSection _section3;
@@ -31,11 +32,17 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 	{
 		_isInStartMethod = true;
 
-		_safeDoorTransform = SafeDoor.GetComponent<Transform>();
 
-		_section1 = SafeRotatorySection1.GetComponent<InteractionObjectSafeSection>();
-		_section2 = SafeRotatorySection2.GetComponent<InteractionObjectSafeSection>();
-		_section3 = SafeRotatorySection3.GetComponent<InteractionObjectSafeSection>();
+		_safeDoor = transform.parent.gameObject;
+		_safeDoorTransform = _safeDoor.GetComponent<Transform>();
+
+		_safeRotatorySection1 = transform.parent.Find("SafeSection1").gameObject;
+		_safeRotatorySection2 = transform.parent.Find("SafeSection2").gameObject;
+		_safeRotatorySection3 = transform.parent.Find("SafeSection3").gameObject;
+
+		_section1 = _safeRotatorySection1.GetComponent<InteractionObjectSafeSection>();
+		_section2 = _safeRotatorySection2.GetComponent<InteractionObjectSafeSection>();
+		_section3 = _safeRotatorySection3.GetComponent<InteractionObjectSafeSection>();
 
 		Vector3 openedEulerAngles = new Vector3(0, -90, 0);
 		_safeDoorOpenedRotation = Quaternion.Euler(openedEulerAngles);
@@ -65,9 +72,9 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 	{
 		gameObject.tag = "Untagged";
 
-		SafeRotatorySection1.tag = "Untagged";
-		SafeRotatorySection2.tag = "Untagged";
-		SafeRotatorySection3.tag = "Untagged";
+		_safeRotatorySection1.tag = "Untagged";
+		_safeRotatorySection2.tag = "Untagged";
+		_safeRotatorySection3.tag = "Untagged";
 
 		while (Quaternion.Angle(_safeDoorTransform.localRotation, _safeDoorOpenedRotation) > 0.1f)
 		{

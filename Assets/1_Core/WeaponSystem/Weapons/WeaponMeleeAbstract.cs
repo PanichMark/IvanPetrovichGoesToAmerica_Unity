@@ -1,22 +1,22 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 public abstract class WeaponMeleeAbstract : WeaponAbstract
 {
-	protected float CapsuleHeight;
-	protected float CapsuleRadius;
-	protected float ForwardOffset;
-	protected float AttackDelay;
+	protected float _capsuleHeight;
+	protected float _capsuleRadius;
+	protected float _forwardOffset;
+	protected float _attackDelay;
 
-	protected GameObject AttackPoint;
+	protected GameObject _attackPoint;
 
-	protected bool isAttacking = false;
+	protected bool _isAttacking = false;
 
 	private void Start()
 	{
-		if (IsThisPlayerWeapon == true)
+		if (_isThisPlayerWeapon == true)
 		{
-			AttackPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
+			_attackPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
 		}
 		
 		SetUpMeleeWeapon();
@@ -26,30 +26,30 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	public override void WeaponAttack()
 	{
-		isAttacking = true;
+		_isAttacking = true;
 		StartCoroutine(PerformAttack());
 	}
 
 	private IEnumerator PerformAttack()
 	{
-		Vector3 startPoint = AttackPoint.transform.position + AttackPoint.transform.forward * ForwardOffset;
-		Vector3 endPoint = startPoint + AttackPoint.transform.up * CapsuleHeight;
+		Vector3 startPoint = _attackPoint.transform.position + _attackPoint.transform.forward * _forwardOffset;
+		Vector3 endPoint = startPoint + _attackPoint.transform.up * _capsuleHeight;
 
-		RaycastHit[] hits = Physics.CapsuleCastAll(startPoint, endPoint, CapsuleRadius, AttackPoint.transform.forward, 0f);
+		RaycastHit[] hits = Physics.CapsuleCastAll(startPoint, endPoint, _capsuleRadius, _attackPoint.transform.forward, 0f);
 
 		foreach (RaycastHit hit in hits)
 		{
-			if (hit.collider.gameObject == AttackPoint)
+			if (hit.collider.gameObject == _attackPoint)
 				continue;
 
 			if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
 			{
-				StartCoroutine(DelayDamage(damageable, AttackDelay));
+				StartCoroutine(DelayDamage(damageable, _attackDelay));
 			}
 		}
 
-		yield return new WaitForSeconds(AttackDelay + 0.1f);
-		isAttacking = false;
+		yield return new WaitForSeconds(_attackDelay + 0.1f);
+		_isAttacking = false;
 	}
 
 	private IEnumerator DelayDamage(IDamageable target, float delayTime)

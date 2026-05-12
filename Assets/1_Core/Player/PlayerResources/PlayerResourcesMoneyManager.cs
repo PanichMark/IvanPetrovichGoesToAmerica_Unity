@@ -55,7 +55,7 @@ public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
 
 	public void LoadData(GameData data)
 	{
-		this.PlayerMoney = data.PlayerMoney;
+		PlayerMoney = data.PlayerMoney;
 		UpdateMoneyDisplay();
 	}
 }

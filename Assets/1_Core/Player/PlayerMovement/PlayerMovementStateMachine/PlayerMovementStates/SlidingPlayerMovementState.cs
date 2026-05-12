@@ -1,23 +1,13 @@
-﻿
-
-public class SlidingPlayerMovementState : AbstractPlayerMovementState
+﻿public class SlidingPlayerMovementState : AbstractPlayerMovementState
 {
-	
-
 	public SlidingPlayerMovementState(PlayerMovementController playerMovementController)
 	{
-		this.playerMovementController = playerMovementController;
+		_playerMovementController = playerMovementController;
 
-		//Debug.Log("Player Sliding");
-		playerMovementController.ChangePlayerMovementSpeed(0f);
-		playerMovementController.ChangePlayerRotationSpeed(0);
-		playerMovementController.ChangePlayerRayPosition(1.2f);
-		playerMovementController.StartPlayerSliding();
+		_playerMovementController.ChangePlayerMovementSpeed(0f);
+		_playerMovementController.ChangePlayerRotationSpeed(0);
+		_playerMovementController.ChangePlayerRayPosition(1.2f);
+		_playerMovementController.StartPlayerSliding();
 
 	}
-	
-
-
-	
 }
-

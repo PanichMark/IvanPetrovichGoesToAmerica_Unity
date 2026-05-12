@@ -2,76 +2,76 @@
 
 public class WalkingPlayerMovementState : AbstractPlayerMovementState
 {
-    private IInputDevice inputDevice;
-	private Transform playerTransform;
-	private Rigidbody playerRigidBody;
-	private Vector3 playerWorldMovement;
+    private IInputDevice _inputDevice;
+	private Transform _playerTransform;
+	private Rigidbody _playerRigidBody;
+	private Vector3 _playerWorldMovement;
 
 	public WalkingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice, Transform playerTransform, Rigidbody playerRigidBody)
     {
-        this.playerMovementController = playerMovementController;
-        this.inputDevice = inputDevice;
-		this.playerTransform = playerTransform;
-		this.playerRigidBody = playerRigidBody;
+        _playerMovementController = playerMovementController;
+        _inputDevice = inputDevice;
+		_playerTransform = playerTransform;
+		_playerRigidBody = playerRigidBody;
 
-		playerMovementController.ChangePlayerMovementSpeed(3);
-		playerMovementController.ChangePlayerRayPosition(1.9f);
+		_playerMovementController.ChangePlayerMovementSpeed(3);
+		_playerMovementController.ChangePlayerRayPosition(1.9f);
 	}
 
     public override void Update()
     {
-		if (inputDevice.GetKeyRight())
+		if (_inputDevice.GetKeyRight())
 		{
-			playerWorldMovement.x = 1;
+			_playerWorldMovement.x = 1;
 		}
-		else if (inputDevice.GetKeyLeft())
+		else if (_inputDevice.GetKeyLeft())
 		{
-			playerWorldMovement.x = -1;
-		}
-		else
-		{
-			playerWorldMovement.x = 0;
-		}
-
-		if (inputDevice.GetKeyUp())
-		{
-			playerWorldMovement.z = 1;
-		}
-		else if (inputDevice.GetKeyDown())
-		{
-			playerWorldMovement.z = -1;
+			_playerWorldMovement.x = -1;
 		}
 		else
 		{
-			playerWorldMovement.z = 0;
+			_playerWorldMovement.x = 0;
 		}
 
-		playerMovementController.SetPlayerWorldMovement(playerWorldMovement);
-
-		if (playerWorldMovement.x == 0 && playerWorldMovement.z == 0)
+		if (_inputDevice.GetKeyUp())
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+			_playerWorldMovement.z = 1;
+		}
+		else if (_inputDevice.GetKeyDown())
+		{
+			_playerWorldMovement.z = -1;
+		}
+		else
+		{
+			_playerWorldMovement.z = 0;
 		}
 
-		if (inputDevice.GetKeyJump() && playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerAbleToStandUp)
+		_playerMovementController.SetPlayerWorldMovement(_playerWorldMovement);
+
+		if (_playerWorldMovement.x == 0 && _playerWorldMovement.z == 0)
 		{
-			playerRigidBody.AddForce(playerTransform.up * 5f, ForceMode.Impulse);
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerJumping);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 		}
 
-		if (playerMovementController.IsPlayerFalling)
+		if (_inputDevice.GetKeyJump() && _playerMovementController.IsPlayerGrounded && _playerMovementController.IsPlayerAbleToStandUp)
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
+			_playerRigidBody.AddForce(_playerTransform.up * 5f, ForceMode.Impulse);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerJumping);
 		}
 
-		if (inputDevice.GetKeyRun())
+		if (_playerMovementController.IsPlayerFalling)
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerRunning);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
 		}
 
-		if (inputDevice.GetKeyCrouch())
+		if (_inputDevice.GetKeyRun())
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingWalking);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerRunning);
+		}
+
+		if (_inputDevice.GetKeyCrouch())
+		{
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingWalking);
 		}
 	}
 }

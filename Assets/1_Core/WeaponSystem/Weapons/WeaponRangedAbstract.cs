@@ -3,13 +3,13 @@ using UnityEngine;
 
 public abstract class WeaponRangedAbstract : WeaponAbstract
 {
-	private TMP_Text PlayerAmmoText;
+	private TMP_Text _playerAmmoText;
 
-	private PlayerResourcesAmmoManager playerResourcesAmmoManager;
-	private GameObject ShootPoint;
+	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
+	private GameObject _shootPoint;
 
-	public int PlayerAmmoTotalMax => playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoMax;
-	public int PlayerAmmoTotalCurrent => playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoCurrent;
+	public int PlayerAmmoTotalMax => _playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoMax;
+	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoCurrent;
 
 	public AmmoTypes WeaponAmmoType { get; protected set; }
 	public int MagazineAmmoCurrent { get; protected set; }
@@ -17,10 +17,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	private void Start()
 	{
-		if (IsThisPlayerWeapon == true)
+		if (_isThisPlayerWeapon == true)
 		{
-			ShootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
-			playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
+			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
+			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 		}
 
 		InitializeWeaponRanged();
@@ -43,7 +43,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	private void Shoot(float weaponDamage)
 	{
 		RaycastHit hitInfo;
-		if (Physics.Raycast(ShootPoint.transform.position, ShootPoint.transform.forward, out hitInfo, 100f))
+		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))
 		{
 			IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
 			if (damageable != null)
@@ -55,9 +55,9 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		MagazineAmmoCurrent--;
 
-		if (IsThisPlayerWeapon == true)
+		if (_isThisPlayerWeapon == true)
 		{
-			playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
+			_playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
 		}
 	}
 
@@ -83,10 +83,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		MagazineAmmoCurrent += ammoToAdd;
 
-		if (IsThisPlayerWeapon == true)
+		if (_isThisPlayerWeapon == true)
 		{
-			playerResourcesAmmoManager.ModifyReserveAmmo(WeaponAmmoType, -ammoToAdd);
-			playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
+			_playerResourcesAmmoManager.ModifyReserveAmmo(WeaponAmmoType, -ammoToAdd);
+			_playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
 		}
 	}
 }

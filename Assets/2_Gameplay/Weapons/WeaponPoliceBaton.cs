@@ -20,20 +20,20 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 
 	protected override void SetUpMeleeWeapon()
 	{
-		CapsuleHeight = 1.8f;
-		CapsuleRadius = 0.3f;
-		ForwardOffset = 0.5f;
-		AttackDelay = 0.5f;
+		_capsuleHeight = 1.8f;
+		_capsuleRadius = 0.3f;
+		_forwardOffset = 0.5f;
+		_attackDelay = 0.5f;
 
 		_chokeNPCtext = ServiceLocator.Resolve<GameObject>("TextChokeNPC");
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
-		if (_weaponController.rightHandWeaponComponent is WeaponPoliceBaton)
+		if (_weaponController.RightHandWeaponComponent is WeaponPoliceBaton)
 		{
 			_isItRightHand = true;
 		}
-		if (_weaponController.leftHandWeaponComponent is WeaponPoliceBaton)
+		if (_weaponController.LeftHandWeaponComponent is WeaponPoliceBaton)
 		{
 			_isItRightHand = false;	
 		}
@@ -42,18 +42,18 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 	}
 	private void Update()
 	{
-		Vector3 playerPosition = AttackPoint.transform.position;
-		Vector3 playerForward = AttackPoint.transform.forward;
+		Vector3 playerPosition = _attackPoint.transform.position;
+		Vector3 playerForward = _attackPoint.transform.forward;
 
-		Vector3 startPoint = playerPosition + playerForward * ForwardOffset;
-		Vector3 endPoint = startPoint + AttackPoint.transform.up * CapsuleHeight;
+		Vector3 startPoint = playerPosition + playerForward * _forwardOffset;
+		Vector3 endPoint = startPoint + _attackPoint.transform.up * _capsuleHeight;
 
-		Collider[] hitColliders = Physics.OverlapCapsule(startPoint, endPoint, CapsuleRadius);
+		Collider[] hitColliders = Physics.OverlapCapsule(startPoint, endPoint, _capsuleRadius);
 
 		bool newDetection = false;
 		foreach (var hit in hitColliders)
 		{
-			if (hit.gameObject == AttackPoint) continue;
+			if (hit.gameObject == _attackPoint) continue;
 			if (hit.GetComponent<NPCAbstract>() != null)
 			{
 				newDetection = true;

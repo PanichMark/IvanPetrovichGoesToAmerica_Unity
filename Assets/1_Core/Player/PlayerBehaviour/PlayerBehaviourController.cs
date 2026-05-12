@@ -2,7 +2,7 @@
 
 public class PlayerBehaviour : MonoBehaviour
 {
-	private IInputDevice inputDevice;
+	private IInputDevice _inputDevice;
 
 	public bool WasPlayerArmed { get; private set; }
 	public bool IsPlayerArmed { get; private set; } = false;
@@ -15,7 +15,7 @@ public class PlayerBehaviour : MonoBehaviour
 	{
 		if (!_isInitialized)
 			return;
-		if (inputDevice.GetKeyHideWeapons())
+		if (_inputDevice.GetKeyHideWeapons())
 		{
 			DisarmPlayer();
 		}
@@ -53,7 +53,7 @@ public class PlayerBehaviour : MonoBehaviour
 
 	public void Initialize(IInputDevice inputDevice)
 	{
-		this.inputDevice = inputDevice;
+		this._inputDevice = inputDevice;
 		_isInitialized = true;
 		Debug.Log("PlayerBehaviour Initialized");
 	}

@@ -17,14 +17,14 @@ public class WeaponEugenicGenieBreath : EugenicWeaponAbstract
 
 	public override void WeaponAttack()
 	{
-		if (IsThisPlayerWeapon == true)
+		if (_isThisPlayerWeapon == true)
 		{
 
 			if (playerResourcesManaManager.CurrentPlayerMana >= ManaCost)
 			{
 				playerResourcesManaManager.UseMana(ManaCost);
 
-				Vector3 attackOrigin = player.transform.position + player.transform.forward * 1.5f;
+				Vector3 attackOrigin = _player.transform.position + _player.transform.forward * 1.5f;
 
 				Collider[] hitColliders = Physics.OverlapSphere(attackOrigin, _attackRange);
 
@@ -43,7 +43,7 @@ public class WeaponEugenicGenieBreath : EugenicWeaponAbstract
 					Rigidbody rb = hit.GetComponent<Rigidbody>();
 					if (rb != null && !rb.isKinematic)
 					{
-						Vector3 knockbackDirection = camera.transform.forward.normalized;
+						Vector3 knockbackDirection = _camera.transform.forward.normalized;
 
 						rb.AddForce(knockbackDirection * _knockbackForce, ForceMode.Impulse);
 						Debug.Log($"Отброшен Rigidbody: {hit.name}");

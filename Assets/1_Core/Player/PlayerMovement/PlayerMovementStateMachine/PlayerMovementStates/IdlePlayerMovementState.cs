@@ -2,46 +2,46 @@
 
 public class IdlePlayerMovementState : AbstractPlayerMovementState
 {
-	private IInputDevice inputDevice;
-	private Transform playerTransform;
-	private Rigidbody playerRigidBody;
+	private IInputDevice _inputDevice;
+	private Transform _playerTransform;
+	private Rigidbody _playerRigidBody;
 
 	public IdlePlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice, Transform playerTransform, Rigidbody playerRigidBody)
 	{
-		this.playerMovementController = playerMovementController;
-		this.inputDevice = inputDevice;
-		this.playerTransform = playerTransform;
-		this.playerRigidBody = playerRigidBody;
-		playerMovementController.ChangePlayerRayPosition(1.9f);
+		_playerMovementController = playerMovementController;
+		_inputDevice = inputDevice;
+		_playerTransform = playerTransform;
+		_playerRigidBody = playerRigidBody;
+		_playerMovementController.ChangePlayerRayPosition(1.9f);
 	}
 
 	public override void Update()
 	{
 
-		if (!inputDevice.GetKeyRun() && (inputDevice.GetKeyUp() || inputDevice.GetKeyDown() || inputDevice.GetKeyRight() || inputDevice.GetKeyLeft()))
+		if (!_inputDevice.GetKeyRun() && (_inputDevice.GetKeyUp() || _inputDevice.GetKeyDown() || _inputDevice.GetKeyRight() || _inputDevice.GetKeyLeft()))
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
 		}
 
-		if (inputDevice.GetKeyRun() && (inputDevice.GetKeyUp() || inputDevice.GetKeyDown() || inputDevice.GetKeyRight() || inputDevice.GetKeyLeft()))
+		if (_inputDevice.GetKeyRun() && (_inputDevice.GetKeyUp() || _inputDevice.GetKeyDown() || _inputDevice.GetKeyRight() || _inputDevice.GetKeyLeft()))
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerRunning);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerRunning);
 		}
 
-		if (inputDevice.GetKeyJump() && playerMovementController.IsPlayerGrounded && playerMovementController.IsPlayerAbleToStandUp)
+		if (_inputDevice.GetKeyJump() && _playerMovementController.IsPlayerGrounded && _playerMovementController.IsPlayerAbleToStandUp)
 		{
-			playerRigidBody.AddForce(playerTransform.up * 5f, ForceMode.Impulse);
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerJumping);
+			_playerRigidBody.AddForce(_playerTransform.up * 5f, ForceMode.Impulse);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerJumping);
 		}
 
-		if (playerMovementController.IsPlayerFalling)
+		if (_playerMovementController.IsPlayerFalling)
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
 		}
 
-		if (inputDevice.GetKeyCrouch())
+		if (_inputDevice.GetKeyCrouch())
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
 		}
 	}
 }

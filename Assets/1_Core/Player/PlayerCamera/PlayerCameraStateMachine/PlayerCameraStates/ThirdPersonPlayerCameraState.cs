@@ -1,22 +1,20 @@
-﻿using UnityEngine;
-public class ThirdPersonPlayerCameraState : AbstractPlayerCameraState
+﻿public class ThirdPersonPlayerCameraState : AbstractPlayerCameraState
 {
-	private IInputDevice inputDevice;
+	private IInputDevice _inputDevice;
 	public ThirdPersonPlayerCameraState(PlayerCameraController playerCam, IInputDevice inputDevice)
 	{
-		playerCamera = playerCam;
-		this.inputDevice = inputDevice;
-	
+		_playerCamera = playerCam;
+		_inputDevice = inputDevice;
 	}
 
 	public override void Update()
 	{
-		playerCamera.RotateCamera();
-		this.playerCamera.ThirdPersonCameraTransform();
+		_playerCamera.RotateCamera();
+		_playerCamera.ThirdPersonCameraTransform();
 		
-		if (inputDevice.GetKeyChangeCameraView())
+		if (_inputDevice.GetKeyChangeCameraView())
 		{
-			playerCamera.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
+			_playerCamera.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 		}
 	}
 }

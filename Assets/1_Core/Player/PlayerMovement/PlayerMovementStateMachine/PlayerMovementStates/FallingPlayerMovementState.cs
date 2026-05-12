@@ -1,50 +1,26 @@
-﻿using UnityEngine;
-
-public class FallingPlayerMovementState : AbstractPlayerMovementState
+﻿public class FallingPlayerMovementState : AbstractPlayerMovementState
 {
-	private IInputDevice inputDevice;
+	private IInputDevice _inputDevice;
 
 	public FallingPlayerMovementState(PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
-		this.playerMovementController = playerMovementController;
-		this.inputDevice = inputDevice;
-		//Debug.Log("Player Walking");
-
+		_playerMovementController = playerMovementController;
+		_inputDevice = inputDevice;
 	}
 
 	public override void Update()
 	{
-		if (playerMovementController.IsPlayerFalling == false)
+		if (_playerMovementController.IsPlayerFalling == false)
 		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 		}
-		
-		if (playerMovementController.IsPlayerFalling == false && inputDevice.GetKeyRun())
+		if (_playerMovementController.IsPlayerFalling == false && _inputDevice.GetKeyRun())
 		{
-
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerRunning);
-
+		_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerRunning);
 		}
-		 if (playerMovementController.IsPlayerFalling == false)
+		if (_playerMovementController.IsPlayerFalling == false)
 		{
-
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
+			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
 		}
-		//if (playerMovementController.playerInputsList.GetKeyJump())
-		//{
-		//	playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerJumping);
-		//}
-
-		 /*
-		if (inputDevice.GetKeyJumpBeingHeld())
-		{
-			playerMovementController.SetPlayerMovementState(PlayerMovementStateType.PlayerLedgeClimbing);
-
-		}
-		 */
 	}
-
-
 }
-
-
