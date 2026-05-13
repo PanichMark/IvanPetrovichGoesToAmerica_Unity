@@ -5,6 +5,7 @@ public class LegKickAttackController : MonoBehaviour
 {
 	private IInputDevice _inputDevice;
 	private PlayerMovementController _playerMovementController;
+	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private GameObject _cachedPlayer;
 	public bool IsPlayerLegKicking { get; private set; }
 
@@ -14,11 +15,12 @@ public class LegKickAttackController : MonoBehaviour
 
 	public float WeaponDamage { get; private set; } = 50;
 
-	public void Initialize(IInputDevice inputDevice, PlayerMovementController playerMovementController, GameObject cachedPlayer)
+	public void Initialize(IInputDevice inputDevice, PlayerMovementController playerMovementController, PlayerMovementStateMachineController playerMovementStateMachineController, GameObject cachedPlayer)
 	{
 		_inputDevice = inputDevice;
 		_cachedPlayer = cachedPlayer;
 		_playerMovementController = playerMovementController;
+		_playerMovementStateMachineController = playerMovementStateMachineController;
 
 		_capsuleHeight = 1.8f;   
 		_capsuleRadius = 0.3f;     
@@ -30,9 +32,9 @@ public class LegKickAttackController : MonoBehaviour
 	
 	void Update()
 	{
-		if (_inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && (_playerMovementController.CurrentPlayerMovementStateType == "PlayerIdle" || _playerMovementController.CurrentPlayerMovementStateType == "PlayerWalking"
-			|| _playerMovementController.CurrentPlayerMovementStateType == "PlayerRunning" || _playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
-			_playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"))
+		if (_inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerIdle" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerWalking"
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerRunning" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
+			_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"))
 		{ 
 			LegKick();
 		}
@@ -48,13 +50,13 @@ public class LegKickAttackController : MonoBehaviour
 	{
 		Debug.Log("LegKick attack");
 
-		if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" || _playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking")
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking")
 		{
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
 		}
 		else
 		{
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 		}
 
 		StartCoroutine(_playerMovementController.DisablePlayerMovementDuringLegKickAttack());

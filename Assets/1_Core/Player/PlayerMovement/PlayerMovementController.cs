@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
+
 public class PlayerMovementController : MonoBehaviour, ISaveLoad
 {
+	public event System.Action<PlayerMovementStateTypes> OnPlayerMovementStateChanged;
+
 	private IInputDevice _inputDevice;
 	private PlayerBehaviourController _playerBehaviour;
 
 	private Camera _playerCamera;
 
-	private PlayerMovementStateAbstract _playerMovementState;
 	private PlayerMovementStateTypes _playerMovementStateType;
 
 	private Vector3 _playerWorldMovement;
@@ -90,8 +91,6 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	{
 		if (!_isInitialized)
 			return;
-	
-		_playerMovementState.Update();
 
 		IsPlayerGrounded = Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out _hitInfo, _howMuchUp);
 		IsPlayerAbleToStandUp = !Physics.Raycast(transform.position + new Vector3(0, PlayerUpRayYPosition, 0), Vector3.up, out _hitInfo, 0.3f);
@@ -198,71 +197,6 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		_playerPreviousFramePosition = transform.position;
 	}
 
-	public void SetPlayerMovementState(PlayerMovementStateTypes playerMovementStateType)
-	{
-		if (_isAbleToChangeMovementType)
-		{
-			PlayerMovementStateAbstract newState;
-
-			if (playerMovementStateType == PlayerMovementStateTypes.PlayerIdle)
-			{
-				_playerRigidBody.angularVelocity = Vector3.zero;
-				_howMuchUp = 0.3f;
-				newState = new PlayerMovementStateIdle(this, _inputDevice, _playerTransform, _playerRigidBody);
-				CurrentPlayerMovementStateType = "PlayerIdle";
-			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerWalking)
-			{
-				newState = new PlayerMovementStateWalking(this, _inputDevice, _playerTransform, _playerRigidBody);
-				CurrentPlayerMovementStateType = "PlayerWalking";
-			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerRunning)
-			{
-				newState = new PlayerMovementStateRunning(this, _inputDevice, _playerTransform, _playerRigidBody);
-				CurrentPlayerMovementStateType = "PlayerRunning";
-			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
-			{
-				_howMuchUp = 0;
-				newState = new PlayerMovementStateJumping(this, _inputDevice);
-				CurrentPlayerMovementStateType = "PlayerJumping";
-			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerFalling)
-			{
-				_howMuchUp = 0.3f;
-				newState = new PlayerMovementStateFalling(this, _inputDevice);
-				CurrentPlayerMovementStateType = "PlayerFalling";
-			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle)
-			{
-				_playerRigidBody.angularVelocity = Vector3.zero;
-				newState = new PlayerMovementStateCrouchingIdle(this, _inputDevice, _playerTransform, _playerRigidBody);
-				CurrentPlayerMovementStateType = "PlayerCrouchingIdle";
-			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking)
-			{
-				newState = new PlayerMovementStateCrouchingWalking(this, _inputDevice, _playerTransform, _playerRigidBody);
-				CurrentPlayerMovementStateType = "PlayerCrouchingWalking";
-			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerSliding)
-			{
-				newState = new PlayerMovementStateSliding(this);
-				CurrentPlayerMovementStateType = "PlayerSliding";
-			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbing)
-			{
-				newState = new PlayerMovementStateLedgeClimbing(this);
-				CurrentPlayerMovementStateType = "PlayerLedgeClimbing";
-			}
-			else
-			{
-				newState = null;
-			}
-			_playerMovementState = newState;
-
-			Debug.Log("MovementState: " + CurrentPlayerMovementStateType);
-		}
-	}
 
 	public float ChangePlayerMovementSpeed(float SetSpeed)
 	{
@@ -294,7 +228,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		_playerRigidBody.angularVelocity = Vector3.zero;
 		_playerRigidBody.MovePosition(_playerRigidBody.transform.position);
 
-		SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
+		OnPlayerMovementStateChanged?.Invoke(PlayerMovementStateTypes.PlayerCrouchingIdle);
 	}
 
 	public void StartPlayerSliding()
@@ -333,11 +267,11 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		if (Big == true)
 		{
 			ChangePlayerRayPosition(1.9f);
-			SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+			OnPlayerMovementStateChanged?.Invoke(PlayerMovementStateTypes.PlayerIdle);
 		}
 		else
 		{
-			SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
+			OnPlayerMovementStateChanged?.Invoke(PlayerMovementStateTypes.PlayerCrouchingIdle);
 		}
 	}
 
@@ -391,19 +325,14 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	}
 	public void SaveData(ref GameData data)
 	{
-		data.CurrentPlayerMovementStateType = CurrentPlayerMovementStateType;
 		data.PlayerPosition = _playerTransform.position;
 		data.PlayerRotation = _playerTransform.rotation;
 	}
 
 	public void LoadData(GameData data)
 	{
-		CurrentPlayerMovementStateType = data.CurrentPlayerMovementStateType;
 		_playerTransform.position = data.PlayerPosition;
 		_playerTransform.rotation = data.PlayerRotation;
-
-		_playerMovementStateType = (PlayerMovementStateTypes)Enum.Parse(typeof(PlayerMovementStateTypes), CurrentPlayerMovementStateType);
-		SetPlayerMovementState(_playerMovementStateType);
 	}
 
 	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, PlayerBehaviourController playerBehaviour)
@@ -420,10 +349,8 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		_playerPreviousFramePosition = transform.position;
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerPosition(new Vector3(0, 0, -5));
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 
 		_isAbleToChangeMovementType = true;
-		SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 
 		PlayerMovementSpeed = 3f;
 

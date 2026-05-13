@@ -5,8 +5,9 @@ public class PlayerMovementStateJumping : PlayerMovementStateAbstract
 	private IInputDevice _inputDevice;
 	private Vector3 _playerWorldMovement;
 
-	public PlayerMovementStateJumping(PlayerMovementController playerMovementController, IInputDevice inputDevice)
+	public PlayerMovementStateJumping(PlayerMovementStateMachineController  playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
+		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerMovementController = playerMovementController;
 		_inputDevice = inputDevice;
 		_playerMovementController.ChangePlayerRayPosition(1.9f);
@@ -47,18 +48,18 @@ public class PlayerMovementStateJumping : PlayerMovementStateAbstract
 		if (_playerMovementController.IsPlayerFalling == true)
 		{
 
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
 		}
 
 		if (_playerMovementController.IsPlayerGrounded == true)
 		{
 
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 		}
 
 		if (_inputDevice.GetKeyJumpBeingHeld() && _playerMovementController.IsPlayerAbleToClimbLedge)
 		{
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerLedgeClimbing);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerLedgeClimbing);
 		}
 	}
 }

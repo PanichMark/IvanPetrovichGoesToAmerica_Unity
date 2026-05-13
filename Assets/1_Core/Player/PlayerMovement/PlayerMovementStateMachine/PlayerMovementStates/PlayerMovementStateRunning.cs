@@ -7,8 +7,9 @@ public class PlayerMovementStateRunning : PlayerMovementStateAbstract
 	private Rigidbody _playerRigidBody;
 	private Vector3 _playerWorldMovement;
 
-	public PlayerMovementStateRunning(PlayerMovementController playerMovementController, IInputDevice inputDevice, Transform playerTransform, Rigidbody playerRigidBody)
+	public PlayerMovementStateRunning(PlayerMovementStateMachineController  playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice, Transform playerTransform, Rigidbody playerRigidBody)
 	{
+		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerMovementController = playerMovementController;
 		_inputDevice = inputDevice;
 		_playerTransform = playerTransform;
@@ -50,28 +51,28 @@ public class PlayerMovementStateRunning : PlayerMovementStateAbstract
 
 		if (_playerWorldMovement.x == 0 && _playerWorldMovement.z == 0)
 		{
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 		}
 
 		if (_inputDevice.GetKeyJump() && _playerMovementController.IsPlayerGrounded && _playerMovementController.IsPlayerAbleToStandUp)
 		{
 			_playerRigidBody.AddForce(_playerTransform.up * 5f, ForceMode.Impulse);
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerJumping);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerJumping);
 		}
 
 		if (_playerMovementController.IsPlayerFalling)
 		{
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerFalling);
 		}
 
 		if (!_inputDevice.GetKeyRun())
 		{
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
 		}
 
 		if (_inputDevice.GetKeyCrouch())
 		{
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerSliding);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerSliding);
 		}
 	}
 }

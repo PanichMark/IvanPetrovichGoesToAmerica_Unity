@@ -2,9 +2,9 @@
 {
 	private IInputDevice _inputDevice;
 
-	public PlayerMovementStateFalling(PlayerMovementController playerMovementController, IInputDevice inputDevice)
+	public PlayerMovementStateFalling(PlayerMovementStateMachineController playerMovementStateMachineController, IInputDevice inputDevice)
 	{
-		_playerMovementController = playerMovementController;
+		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_inputDevice = inputDevice;
 	}
 
@@ -12,15 +12,15 @@
 	{
 		if (_playerMovementController.IsPlayerFalling == false)
 		{
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 		}
 		if (_playerMovementController.IsPlayerFalling == false && _inputDevice.GetKeyRun())
 		{
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerRunning);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerRunning);
 		}
 		if (_playerMovementController.IsPlayerFalling == false)
 		{
-			_playerMovementController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
 		}
 	}
 }
