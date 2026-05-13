@@ -15,6 +15,7 @@ public class BootstrapSubProcessInteractionSystem
 
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerCameraController _playerCameraController;
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
 	private GameObject _gameObjectBootstrapInteractionSystem;
 	public InteractionController InteractionController { get; private set; }
@@ -54,6 +55,7 @@ public class BootstrapSubProcessInteractionSystem
 		GameSceneManager gameSceneManager,
 		PlayerBehaviourController playerBehaviour,
 		PlayerCameraController playerCameraController,
+		PlayerCameraStateMachineController playerCameraStateMachineController,
 		GameObject canvasHUDInteraction,
 		GameObject canvasMenuNote,
 		GameObject canvasMenuLockpickMechanical,
@@ -67,6 +69,7 @@ public class BootstrapSubProcessInteractionSystem
 		_gameSceneManager = gameSceneManager;
 		_playerBehaviour = playerBehaviour;
 		_playerCameraController = playerCameraController;
+		_playerCameraStateMachineController = playerCameraStateMachineController;
 		_canvasHUDInteraction = canvasHUDInteraction;
 		_canvasMenuNote = canvasMenuNote;
 		_canvasMenuLockpickMechanical = canvasMenuLockpickMechanical;
@@ -132,6 +135,7 @@ public class BootstrapSubProcessInteractionSystem
 			_bootstrapSubProcessMenuSystem.MenuManager,
 			_playerBehaviour,
 			_playerCameraController,
+			_playerCameraStateMachineController,
 			_canvasHUDInteraction,
 			_textInteractionMessageMain,
 			_textInteractionMessageFail,

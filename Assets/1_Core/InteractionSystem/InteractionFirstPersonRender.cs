@@ -2,7 +2,7 @@
 
 public class InteractionFirstPersonRender : MonoBehaviour
 {
-	private PlayerCameraController _playerCamera;
+	private PlayerCameraStateMachineController _playerCameraStateMachine;
 	private InteractionController _interactionController;
 	private GameSceneManager _gameSceneManager;
 
@@ -17,7 +17,7 @@ public class InteractionFirstPersonRender : MonoBehaviour
 
 	public void Initialize(
 		GameSceneManager gameSceneManager,
-		PlayerCameraController playerCameraController,
+		PlayerCameraStateMachineController playerCameraStateMachineController,
 		GameObject playerFirstPersonHandRight,
 		GameObject playerFirstPersonHandLeft,
 		GameObject playerHandRightParent,
@@ -25,7 +25,7 @@ public class InteractionFirstPersonRender : MonoBehaviour
 		InteractionController interactionController)
 	{
 		_gameSceneManager = gameSceneManager;
-		_playerCamera = playerCameraController;
+		_playerCameraStateMachine = playerCameraStateMachineController;
 
 		_PlayerFirstPersonHandRight = playerFirstPersonHandRight;
 		_PlayerFirstPersonHandLeft = playerFirstPersonHandLeft;
@@ -53,7 +53,7 @@ public class InteractionFirstPersonRender : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (_playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")
 		{
 			if (_areBothArmsBusy)
 			{
@@ -76,7 +76,7 @@ public class InteractionFirstPersonRender : MonoBehaviour
 			}
 		}
 
-		if (_playerCamera.CurrentPlayerCameraStateType == "ThirdPerson")
+		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "ThirdPerson")
 		{
 			if (_areBothArmsBusy)
 			{

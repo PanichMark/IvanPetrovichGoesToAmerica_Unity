@@ -1,36 +1,35 @@
-﻿using Codice.Client.Common.GameUI;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
 [ExecuteAlways]
 public class CutsceneController : MonoBehaviour
 {
-	private IInputDevice inputDevice;
-	private GameController gameController;
-	private GameSceneManager gameSceneManager;
-	private SaveLoadController saveLoadController;
-	private MenuManager menuManager;
+	private IInputDevice _inputDevice;
+	private GameController _gameController;
+	private GameSceneManager _gameSceneManager;
+	private SaveLoadController _saveLoadController;
+	private MenuManager _menuManager;
 
-	private PlayerMovementController playerMovementController;
-	private PlayerCameraController playerCameraController;
-	private PlayerWeaponController playerWeaponController;
+	private PlayerMovementController _playerMovementController;
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
+	private PlayerWeaponController _playerWeaponController;
 
-	private NPCStateMachineController npcController;
+	private NPCStateMachineController _NPCcontroller;
 
-	private PlayableDirector director;
+	private PlayableDirector _director;
 
-	private GameObject RealPlayer;
-	private GameObject MainCamera;
+	private GameObject _playerProxy;
+	private GameObject _playerCameraProxy;
 
 	public bool IsCutscenePlaying { get; private set; }
-	private bool WasCutsceneSkipped;
-	private bool WasCutsceneCanceled;
+	private bool _wasCutsceneSkipped;
+	private bool _wasCutsceneCanceled;
 
-	private bool shouldChangeNPCState = false;
-	private bool shouldUnlockWeapon = false;
+	private bool _shouldChangeNPCState = false;
+	private bool _shouldUnlockWeapon = false;
 
-	private bool isInitialized;
+	private bool _isInitialized;
 
 	[Header("Cutscene")] [SerializeField] bool ShouldMovePlayer;
 	[SerializeField] Vector3 newPlayerPosition;
@@ -44,18 +43,18 @@ public class CutsceneController : MonoBehaviour
 	
 	private void Start()
 	{
-		RealPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
-		MainCamera = ServiceLocator.Resolve<GameObject>("PlayerCameraGameObject");
-		playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
-		playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
-		gameController = ServiceLocator.Resolve<GameController>("GameController");
-		gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
-		playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
-		saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
+		_playerProxy = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
+		_playerCameraProxy = ServiceLocator.Resolve<GameObject>("PlayerCameraGameObject");
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
+		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
+		_gameController = ServiceLocator.Resolve<GameController>("GameController");
+		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
+		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
+		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		
-		director = GetComponent<PlayableDirector>();
+		_director = GetComponent<PlayableDirector>();
 
 		if (npcStateChanges != null && npcStateChanges.Count > 0)
 		{
@@ -63,7 +62,7 @@ public class CutsceneController : MonoBehaviour
 			{
 				if (data.npcObject != null && data.npcObject.GetComponent<NPCStateMachineController>() != null)
 				{
-					shouldChangeNPCState = true;
+					_shouldChangeNPCState = true;
 					break; 
 				}
 			}
@@ -71,40 +70,40 @@ public class CutsceneController : MonoBehaviour
 
 		if (weaponPrefabToUnlock != null)
 		{
-			shouldUnlockWeapon = true;
+			_shouldUnlockWeapon = true;
 		}
 
-		gameSceneManager.OnBeginLoadingGameplayScene += CancelCutsceneOnLoad;
-		gameSceneManager.OnBeginLoadingMainMenuScene += CancelCutsceneOnLoad;
-		director.stopped += OnTimelineStopped;
-		menuManager.OnOpenPauseMenu += PauseCutscene;
-		menuManager.OnClosePauseMenu += ResumeCutscene;
+		_gameSceneManager.OnBeginLoadingGameplayScene += CancelCutsceneOnLoad;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += CancelCutsceneOnLoad;
+		_director.stopped += OnTimelineStopped;
+		_menuManager.OnOpenPauseMenu += PauseCutscene;
+		_menuManager.OnClosePauseMenu += ResumeCutscene;
 
 		RebindProxyObjects();
 
-		isInitialized = true;
+		_isInitialized = true;
 
 		//Debug.Log($"Cutscene {gameObject.name} initialized");
 	}
 
 	private void OnDestroy()
 	{
-		director.stopped -= OnTimelineStopped;
+		_director.stopped -= OnTimelineStopped;
 
-		menuManager.OnOpenPauseMenu -= PauseCutscene;
-		menuManager.OnClosePauseMenu -= ResumeCutscene;
+		_menuManager.OnOpenPauseMenu -= PauseCutscene;
+		_menuManager.OnClosePauseMenu -= ResumeCutscene;
 
-		gameSceneManager.OnBeginLoadingGameplayScene -= CancelCutsceneOnLoad;
-		gameSceneManager.OnBeginLoadingMainMenuScene -= CancelCutsceneOnLoad;
+		_gameSceneManager.OnBeginLoadingGameplayScene -= CancelCutsceneOnLoad;
+		_gameSceneManager.OnBeginLoadingMainMenuScene -= CancelCutsceneOnLoad;
 	}
 
 
 	private void Update()
 	{
-		if (!isInitialized)
+		if (!_isInitialized)
 			return;
 
-		if (IsCutscenePlaying && inputDevice.GetKeySkipCutscene())
+		if (IsCutscenePlaying && _inputDevice.GetKeySkipCutscene())
 		{
 			SkipCutscene();
 		}
@@ -115,13 +114,13 @@ public class CutsceneController : MonoBehaviour
 		var playerProxy = transform.Find("Player_Proxy")?.gameObject;
 		var cameraProxy = transform.Find("MainCamera_Proxy")?.gameObject;
 
-		director.SetGenericBinding(playerProxy, RealPlayer.transform);
-		director.SetGenericBinding(cameraProxy, MainCamera.transform);
+		_director.SetGenericBinding(playerProxy, _playerProxy.transform);
+		_director.SetGenericBinding(cameraProxy, _playerCameraProxy.transform);
 	}
 
 	private void OnTimelineStopped(PlayableDirector aDirector)
 	{
-		if (WasCutsceneSkipped || WasCutsceneCanceled)
+		if (_wasCutsceneSkipped || _wasCutsceneCanceled)
 		{
 		
 		}
@@ -148,17 +147,17 @@ public class CutsceneController : MonoBehaviour
 	{
 		Debug.Log($"Cutscene {gameObject.name} Cancelled");
 
-		WasCutsceneCanceled = true;
+		_wasCutsceneCanceled = true;
 		IsCutscenePlaying = false;
-		director.Stop();
-		director.stopped -= OnTimelineStopped;
-		menuManager.CloseCutsceneMenu();
+		_director.Stop();
+		_director.stopped -= OnTimelineStopped;
+		_menuManager.CloseCutsceneMenu();
 		Destroy(gameObject);
 	}
 
 	private void SkipCutscene()
 	{
-		WasCutsceneSkipped = true;
+		_wasCutsceneSkipped = true;
 	
 		ExecutePostCutsceneActions();
 	}
@@ -167,12 +166,12 @@ public class CutsceneController : MonoBehaviour
 	{
 		IsCutscenePlaying = false;
 		CutsceneResumeTime();
-		menuManager.CloseCutsceneMenu();
-		gameController.MakePlayerControllable();
+		_menuManager.CloseCutsceneMenu();
+		_gameController.MakePlayerControllable();
 
-		playerCameraController.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
+		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
 		
-		if (shouldChangeNPCState)
+		if (_shouldChangeNPCState)
 		{
 			foreach (var data in npcStateChanges)
 			{
@@ -188,20 +187,20 @@ public class CutsceneController : MonoBehaviour
 			}
 		}
 
-		if (shouldUnlockWeapon)
+		if (_shouldUnlockWeapon)
 		{
-			playerWeaponController.UnlockWeapon(weaponPrefabToUnlock);
+			_playerWeaponController.UnlockWeapon(weaponPrefabToUnlock);
 		}
 		
 		if (ShouldMovePlayer)
 		{
-			playerMovementController.SetPlayerPosition(newPlayerPosition);
+			_playerMovementController.SetPlayerPosition(newPlayerPosition);
 		}
 
 		if (shouldLoadScene)
 		{
 
-			gameSceneManager.StartCoroutine(gameSceneManager.LoadGameplayScene(sceneToLoadAfterCutscene));
+			_gameSceneManager.StartCoroutine(_gameSceneManager.LoadGameplayScene(sceneToLoadAfterCutscene));
 		}
 			
 		Destroy(gameObject);
@@ -210,10 +209,10 @@ public class CutsceneController : MonoBehaviour
 
 	private void PauseCutscene()
 	{
-		if (!WasCutsceneSkipped)
+		if (!_wasCutsceneSkipped)
 		{
 			IsCutscenePlaying = false;
-			director.Pause();
+			_director.Pause();
 			Debug.Log($"Cutscene {gameObject.name} paused");
 		}	
 	}
@@ -221,29 +220,29 @@ public class CutsceneController : MonoBehaviour
 	public void TriggerCutscene()
 	{
 		Debug.Log("CUTSCENE!!!");
-		director.Play();
+		_director.Play();
 
 		CutsceneStopTime();
 
 		RebindProxyObjects();
 
-		playerCameraController.SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
-		menuManager.OpenCutsceneMenu();
+		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
+		_menuManager.OpenCutsceneMenu();
 
 		IsCutscenePlaying = true;
 
-		gameController.MakePlayerNonControllable();
+		_gameController.MakePlayerNonControllable();
 
 		Debug.Log($"Cutscene {gameObject.name} was triggered");
 	}
 
 	private void ResumeCutscene()
 	{
-		if (!WasCutsceneSkipped)
+		if (!_wasCutsceneSkipped)
 		{
-			director.Resume();
+			_director.Resume();
 			IsCutscenePlaying = true;
-			gameController.MakePlayerNonControllable();
+			_gameController.MakePlayerNonControllable();
 		
 			Debug.Log($"Cutscene {gameObject.name} resumed");
 

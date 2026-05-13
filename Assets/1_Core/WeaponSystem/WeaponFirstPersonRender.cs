@@ -5,7 +5,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 	private WeaponAbstract _rightHandWeaponComponent;
 	private PlayerCameraStateTypes _playerCameraStateType;
-	private PlayerCameraController _playerCamera;
+	private PlayerCameraStateMachineController _playerCameraStateMachine;
 	private PlayerWeaponController _weaponController;
 	private GameSceneManager _gameSceneManager;
 	private bool _isInitialized = false;
@@ -16,7 +16,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 	private GameObject _playerHandLeftParent;
 	public void Initialize(
 		GameSceneManager gameSceneManager,
-		PlayerCameraController playerCameraController,
+		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerWeaponController weaponController,
 		GameObject playerFirstPersonHandRight,
 		GameObject playerFirstPersonHandLeft,
@@ -24,7 +24,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		GameObject playerHandLeftParent)
 	{
 		_gameSceneManager = gameSceneManager;
-		_playerCamera = playerCameraController;
+		_playerCameraStateMachine = playerCameraStateMachineController;
 		_weaponController = weaponController;
 
 		_playerFirstPersonHandRight = playerFirstPersonHandRight;
@@ -33,8 +33,8 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		_playerHandRightParent = playerHandRightParent;
 		_playerHandLeftParent = playerHandLeftParent;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(this._playerFirstPersonHandRight);
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(this._playerFirstPersonHandLeft);
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(_playerFirstPersonHandRight);
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(_playerFirstPersonHandLeft);
 		_weaponController.OnWeaponChanged += RegisterWeapons;
 		_isInitialized = true;
 
@@ -66,7 +66,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (_playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")
 		{
 			if (_rightHandWeaponComponent != null &&
 				_rightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
@@ -105,7 +105,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (_playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")
 		{
 			if (_weaponController.RightHandWeapon != null)
 			{
@@ -237,7 +237,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		{
 			if (renderer is MeshRenderer || renderer is SkinnedMeshRenderer)
 			{
-				if (_playerCamera.CurrentPlayerCameraStateType == "FirstPerson")
+				if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")
 				{
 					renderer.enabled = true;
 				}

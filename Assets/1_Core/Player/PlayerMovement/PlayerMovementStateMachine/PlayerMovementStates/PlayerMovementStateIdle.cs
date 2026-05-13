@@ -6,14 +6,17 @@ public class PlayerMovementStateIdle : PlayerMovementStateAbstract
 	private Transform _playerTransform;
 	private Rigidbody _playerRigidBody;
 
-	public PlayerMovementStateIdle(PlayerMovementStateMachineController  playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice, Transform playerTransform, Rigidbody playerRigidBody)
+	public PlayerMovementStateIdle(PlayerMovementStateMachineController  playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerMovementController = playerMovementController;
 		_inputDevice = inputDevice;
-		_playerTransform = playerTransform;
-		_playerRigidBody = playerRigidBody;
+		_playerTransform = _playerMovementController.PlayerTransform;
+		_playerRigidBody = _playerMovementController.PlayerRigidBody;
+
 		_playerMovementController.ChangePlayerRayPosition(1.9f);
+		_playerMovementController.StopPlayerRigidBpdyVelocity();
+		_playerMovementController.SetPlayerFloorDetectionRayCastLengthToDefault();
 	}
 
 	public override void Update()

@@ -4,8 +4,8 @@ public class PlayerMovementAnimationController: MonoBehaviour
 {
 	private IInputDevice _inputDevice;
 	private PlayerBehaviourController _playerBehaviour;
-	private PlayerMovementController _playerMovementController;
-	private PlayerCameraController _playerCameraController;
+	private PlayerMovementStateMachineController _playerMovementStateMachineController;
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private string _currentPlayerMovementAnimation = "";
 	private Animator _playerAnimator;
 	private bool _isInitialized = false;
@@ -13,15 +13,15 @@ public class PlayerMovementAnimationController: MonoBehaviour
 	public void Initialize(
 		IInputDevice inputDevice,
 		PlayerBehaviourController playerBehaviour,
-		PlayerMovementController playerMovementController,
-		PlayerCameraController playerCameraController,
+		PlayerMovementStateMachineController playerMovementStateMachineController,
+		PlayerCameraStateMachineController playerCameraStateMachineController,
 		GameObject player)
 	{
 		_inputDevice = inputDevice;
 		_playerAnimator = player.GetComponent<Animator>();
 		_playerBehaviour = playerBehaviour;
-		_playerMovementController = playerMovementController;
-		_playerCameraController = playerCameraController;
+		_playerMovementStateMachineController = playerMovementStateMachineController;
+		_playerCameraStateMachineController = playerCameraStateMachineController;
 		
 		ChangePlayerMovementAnimation("Idle");
 
@@ -34,14 +34,14 @@ public class PlayerMovementAnimationController: MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerIdle")
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerIdle")
 		{
 			
 			ChangePlayerMovementAnimation("Idle");
 		}
-		else if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerWalking")
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerWalking")
 		{
-			if (_playerBehaviour.IsPlayerArmed == true || (_playerCameraController.CurrentPlayerCameraStateType == "FirstPerson"))
+			if (_playerBehaviour.IsPlayerArmed == true || (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson"))
 			{
 				if (_inputDevice.GetKeyUp())
 				{
@@ -62,37 +62,37 @@ public class PlayerMovementAnimationController: MonoBehaviour
 			}
 			else ChangePlayerMovementAnimation("Walking Forward");
 		}
-		else if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerRunning")
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerRunning")
 		{
 
 			ChangePlayerMovementAnimation("Running");
 		}
-		else if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerJumping")
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerJumping")
 		{
 
 			ChangePlayerMovementAnimation("Jumping");
 		}
-		else if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerFalling")
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerFalling")
 		{
 
 			ChangePlayerMovementAnimation("Falling");
 		}
-		else if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle")
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle")
 		{
 
 			ChangePlayerMovementAnimation("CrouchingIdle");
 		}
-		else if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking")
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking")
 		{
 
 			ChangePlayerMovementAnimation("CrouchingWalking");
 		}
-		else if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerSliding")
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerSliding")
 		{
 
 			ChangePlayerMovementAnimation("Sliding");
 		}
-		else if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerLedgeClimbing")
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerLedgeClimbing")
 		{
 			ChangePlayerMovementAnimation("Ledge Climbing");
 		}

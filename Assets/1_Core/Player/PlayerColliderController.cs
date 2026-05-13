@@ -3,7 +3,7 @@ public class PlayerColliderController : MonoBehaviour
 {
 	private CapsuleCollider _playerCollider;
 	
-	private PlayerMovementController _playerMovementController;
+	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 
 	private bool _isInitialized = false;
 
@@ -11,9 +11,9 @@ public class PlayerColliderController : MonoBehaviour
     {
 		if (!_isInitialized)
 			return;
-		if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
-			|| _playerMovementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"
-			|| _playerMovementController.CurrentPlayerMovementStateType == "PlayerSliding")
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerSliding")
 		{
             transform.position = transform.parent.position+new Vector3(0f, 0.5f, 0f);
             transform.localScale = new Vector3(1f,  0.5f, 1f);
@@ -24,7 +24,7 @@ public class PlayerColliderController : MonoBehaviour
 			transform.localScale = new Vector3(1f, 1f, 1f);
 		}
 
-		if (_playerMovementController.CurrentPlayerMovementStateType == "PlayerLedgeClimbing")
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerLedgeClimbing")
 		{
 			_playerCollider.enabled = false;
 		}
@@ -34,9 +34,9 @@ public class PlayerColliderController : MonoBehaviour
 		}
 	}
 
-	public void Initialize(PlayerMovementController movementController)
+	public void Initialize(PlayerMovementStateMachineController movementController)
 	{
-		_playerMovementController = movementController; // Новый аргумент
+		_playerMovementStateMachineController = movementController; // Новый аргумент
 		_playerCollider = GetComponent<CapsuleCollider>();
 		_isInitialized = true;
 		Debug.Log("PlayerCollider Initialized");

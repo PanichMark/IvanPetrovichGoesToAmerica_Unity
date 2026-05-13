@@ -144,6 +144,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			_bootstrapSubProcessPlayerSystems.PlayerCameraController,
+			_bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController,
 			_canvasHUDinteraction,
 			_canvasMenuNote,
 			_canvasMenuLockpickMechanical,

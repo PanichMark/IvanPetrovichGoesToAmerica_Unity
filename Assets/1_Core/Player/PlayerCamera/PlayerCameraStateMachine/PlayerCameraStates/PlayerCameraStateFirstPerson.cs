@@ -2,11 +2,14 @@
 {
 	private PlayerMovementController _movementController;
 	private IInputDevice _inputDevice;
-	public PlayerCameraStateFirstPerson(PlayerCameraController playerCam, PlayerMovementController playerMovementController, IInputDevice inputDevice)
+	private PlayerMovementStateMachineController _playerMovementStateMachineController;
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
+	public PlayerCameraStateFirstPerson(PlayerCameraController playerCam, PlayerCameraStateMachineController playerCameraStateMachineController, PlayerMovementController playerMovementController, PlayerMovementStateMachineController playerMovementStateMachineController, IInputDevice inputDevice)
 	{
 		_playerCamera = playerCam;
 		_movementController = playerMovementController;
-
+		_playerMovementStateMachineController = playerMovementStateMachineController;
+		_playerCameraStateMachineController = playerCameraStateMachineController;
 		_inputDevice = inputDevice;	
 	}
 
@@ -16,9 +19,9 @@
 		_playerCamera.FirstPersonCameraTransform();
 
 		if (
-			_movementController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
-			_movementController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking" ||
-			_movementController.CurrentPlayerMovementStateType == "PlayerSliding"
+			_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
+			_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking" ||
+			_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerSliding"
 		)
 		{
 			_playerCamera.CameraCrouching();
@@ -27,7 +30,7 @@
 
 		if (_inputDevice.GetKeyChangeCameraView())
 		{
-			_playerCamera.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
+			_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
 		}
 	}
 }

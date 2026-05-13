@@ -31,7 +31,7 @@ public class InteractionController : MonoBehaviour
 	private Sprite _noItemImageExeption;
 
 	private PlayerCameraController _playerCameraController;
-
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
 	private Coroutine _showAdditionalHintCoroutine;
 
@@ -52,6 +52,7 @@ public class InteractionController : MonoBehaviour
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
 		PlayerCameraController playerCameraController,
+		PlayerCameraStateMachineController playerCameraStateMachineController,
 		GameObject canvasHUDInteraction,
 		TextMeshProUGUI mainInteractionText,
 		TextMeshProUGUI additionalInteractionText,
@@ -63,6 +64,7 @@ public class InteractionController : MonoBehaviour
 		_gameSceneManager = gameSceneManager;
 		_inputDevice = inputDevice;
 		_playerCameraController = playerCameraController;
+		_playerCameraStateMachineController = playerCameraStateMachineController;
 		_playerBehaviour = playerBehaviour;
 		_menuManager = menuManager;
 		_canvasHUDinteraction = canvasHUDInteraction;	
@@ -133,9 +135,9 @@ public class InteractionController : MonoBehaviour
 		else
 		{
 			// В остальных случаях определяем range по типу камеры
-			if (_playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
+			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
 				_interactionRange = 2.5f;
-			else if (_playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
+			else if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "ThirdPerson")
 				_interactionRange = 2f + _playerCameraController.PlayerCameraDistanceZ;
 		}
 

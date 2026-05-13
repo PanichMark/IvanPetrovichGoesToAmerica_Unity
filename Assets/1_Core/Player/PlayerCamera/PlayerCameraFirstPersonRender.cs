@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 public class PlayerCameraFirstPersonRender : MonoBehaviour
 {
-	private PlayerCameraController _playerCamera;
+	private PlayerCameraStateMachineController _playerStateMachineCamera;
 
 	private bool _isInitialized = false;
 
 	private GameObject _playerHeadParent;
 
-	public void Initialize(PlayerCameraController playerCameraController, GameObject playerHeadParent)
+	public void Initialize(PlayerCameraStateMachineController playerCameraStateMachineController, GameObject playerHeadParent)
 	{
-		_playerCamera = playerCameraController;
+		_playerStateMachineCamera = playerCameraStateMachineController;
 
 		_playerHeadParent = playerHeadParent;
 
@@ -23,7 +23,7 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		if (_playerCamera.CurrentPlayerCameraStateType == "FirstPerson") 
+		if (_playerStateMachineCamera.CurrentPlayerCameraStateType == "FirstPerson") 
 		{
 			HideBodyPart(_playerHeadParent);
 		}		

@@ -2,10 +2,13 @@
 {
 	private IInputDevice _inputDevice;
 
-	public PlayerMovementStateFalling(PlayerMovementStateMachineController playerMovementStateMachineController, IInputDevice inputDevice)
+	public PlayerMovementStateFalling(PlayerMovementStateMachineController playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		_playerMovementStateMachineController = playerMovementStateMachineController;
+		_playerMovementController = playerMovementController;
 		_inputDevice = inputDevice;
+
+		_playerMovementController.SetPlayerFloorDetectionRayCastLengthToDefault();
 	}
 
 	public override void Update()

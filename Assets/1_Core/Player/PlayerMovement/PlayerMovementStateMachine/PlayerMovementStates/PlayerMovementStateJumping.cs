@@ -11,7 +11,7 @@ public class PlayerMovementStateJumping : PlayerMovementStateAbstract
 		_playerMovementController = playerMovementController;
 		_inputDevice = inputDevice;
 		_playerMovementController.ChangePlayerRayPosition(1.9f);
-
+		_playerMovementController.SetPlayerFloorDetectionRayCastLengthToZero();
 	}
 
 	public override void Update()

@@ -10,8 +10,6 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	private Camera _playerCamera;
 
-	private PlayerMovementStateTypes _playerMovementStateType;
-
 	private Vector3 _playerWorldMovement;
 
 	private Vector3 _playerMovement;
@@ -19,12 +17,12 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	private Vector3 _projection;
 	private Vector3 _correctedMovement;
 	private GameSceneManager _gameSceneManager;
-	private bool _isAbleToChangeMovementType;
+	public bool IsAbleToChangeMovementType {  get; private set; }
 
 	private bool _jumpWaitOnSlope = false; 
 
-	private Transform _playerTransform;
-	private Rigidbody _playerRigidBody;
+	public Transform PlayerTransform {  get; private set; }
+	public Rigidbody PlayerRigidBody { get; private set; }
 
 	private string _currentPlayerCameraType = "";
 
@@ -33,7 +31,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	private RaycastHit _hitInfo;
 
-	public string CurrentPlayerMovementStateType { get; private set; } = "PlayerIdle";
+	//public string CurrentPlayerMovementStateType { get; private set; } = "PlayerIdle";
 
 	public float PlayerMovementSpeed { get; private set; }
 	public float PlayerRotationSpeed { get; private set; }
@@ -42,6 +40,8 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	public float PlayerCurrentHeight { get; private set; }
 
+	public bool IsPlayerJumping { get; private set; }
+	public bool IsPlayerSliding { get; private set; }
 	public bool IsPlayerGrounded { get; private set; }
 	public bool IsPlayerCrouching { get; private set; }
 	public bool IsPlayerAbleToStandUp { get; private set; }
@@ -49,10 +49,11 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	public bool IsPlayerAbleToClimbLedge { get; private set; }
 	public bool IsPlayerOnSlope { get; private set; }
+	public bool IsPlayerLedgeClimbing { get; private set; }
 
 	public float PlayerUpRayYPosition { get; private set; }
 	public float PlayerDownRayYPosition { get; private set; } = 0.1f;
-	private float _howMuchUp; //?????
+	private float _playerFloorDetectionRayCastLength;
 
 	private bool _isInitialized = false;
 
@@ -92,11 +93,20 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		if (!_isInitialized)
 			return;
 
-		IsPlayerGrounded = Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out _hitInfo, _howMuchUp);
+		IsPlayerGrounded = Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out _hitInfo, _playerFloorDetectionRayCastLength);
 		IsPlayerAbleToStandUp = !Physics.Raycast(transform.position + new Vector3(0, PlayerUpRayYPosition, 0), Vector3.up, out _hitInfo, 0.3f);
 		IsPlayerFalling = (PlayerPreviousFramePositionChange.y < -0.01f && IsPlayerGrounded == false);
 
-		bool isAllBoxesColliding;
+		if (!IsPlayerGrounded && !IsPlayerFalling)
+		{
+			IsPlayerJumping = true;
+		}
+		else
+		{
+			IsPlayerJumping = false;
+		}
+
+			bool isAllBoxesColliding;
 		bool isBigRectangleClear;
 		bool isSmallRectangleClear;
 
@@ -123,7 +133,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		}
 		else isSmallRectangleClear = true;
 
-		if (isAllBoxesColliding && (isBigRectangleClear || isSmallRectangleClear) && _playerMovementStateType != PlayerMovementStateTypes.PlayerLedgeClimbing)
+		if (isAllBoxesColliding && (isBigRectangleClear || isSmallRectangleClear) && IsPlayerLedgeClimbing)
 		{
 			IsPlayerAbleToClimbLedge = true;
 		}
@@ -146,28 +156,28 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		if (IsPlayerGrounded == true && IsPlayerOnSlope == true)
 		{
-			_playerRigidBody.useGravity = false;
+			PlayerRigidBody.useGravity = false;
 
-			if (CurrentPlayerMovementStateType == "PlayerJumping" || CurrentPlayerMovementStateType == "PlayerSliding")
+			if (IsPlayerJumping || IsPlayerSliding)
 			{
 				
 			}
-			else _playerRigidBody.linearVelocity = Vector3.zero;
+			else PlayerRigidBody.linearVelocity = Vector3.zero;
 		}
         else
         {
-			_playerRigidBody.useGravity = true;
+			PlayerRigidBody.useGravity = true;
 		}
 
 		if (IsPlayerOnSlope == true)
 		{
 			_correctedMovement = _playerMovement * PlayerMovementSpeed * Time.deltaTime;
 			_projection = Vector3.Project(_correctedMovement, _hitInfo.normal);
-			_playerRigidBody.MovePosition(_playerRigidBody.position + _correctedMovement - _projection);
+			PlayerRigidBody.MovePosition(PlayerRigidBody.position + _correctedMovement - _projection);
 		}
 		else
 		{
-			_playerRigidBody.MovePosition(_playerRigidBody.position + _playerMovement * PlayerMovementSpeed * Time.deltaTime);
+			PlayerRigidBody.MovePosition(PlayerRigidBody.position + _playerMovement * PlayerMovementSpeed * Time.deltaTime);
 		}
 
 		var PlayerMovementDirectionWithCamera = (_playerWorldMovement.z * _playerCamera.transform.forward + _playerWorldMovement.x * _playerCamera.transform.right);
@@ -204,8 +214,25 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		return PlayerMovementSpeed;
 	}
 
+	public void StopPlayerRigidBpdyVelocity()
+	{
+		PlayerRigidBody.angularVelocity = Vector3.zero;
+	}
+
+	public void SetPlayerFloorDetectionRayCastLengthToDefault()
+	{
+		_playerFloorDetectionRayCastLength = 0.3f;
+	}
+
+	public void SetPlayerFloorDetectionRayCastLengthToZero()
+	{
+		_playerFloorDetectionRayCastLength = 0;
+	}
+
 	IEnumerator PlayerSlidingCourutine()
 	{
+		IsPlayerSliding = true;
+
 		if (IsPlayerOnSlope)
 		{
 			Vector3 horizontalPlaneNormal = Vector3.ProjectOnPlane(_playerMovement, _hitInfo.normal);
@@ -214,21 +241,22 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 			Vector3 finalMovementDir = (horizontalPlaneNormal + slopeCorrection).normalized;
 
-			_playerRigidBody.AddForce(finalMovementDir * PlayerSlidingSpeed / 1.75f, ForceMode.Impulse);
+			PlayerRigidBody.AddForce(finalMovementDir * PlayerSlidingSpeed / 1.75f, ForceMode.Impulse);
 		}
 		else
 		{
-			_playerRigidBody.AddForce(_playerMovement * PlayerSlidingSpeed, ForceMode.Impulse);
+			PlayerRigidBody.AddForce(_playerMovement * PlayerSlidingSpeed, ForceMode.Impulse);
 		}
 
 		yield return new WaitForSeconds(1f);
 
-		_playerRigidBody.AddForce(Vector3.zero, ForceMode.Acceleration);
-		_playerRigidBody.linearVelocity = Vector3.zero;
-		_playerRigidBody.angularVelocity = Vector3.zero;
-		_playerRigidBody.MovePosition(_playerRigidBody.transform.position);
+		PlayerRigidBody.AddForce(Vector3.zero, ForceMode.Acceleration);
+		PlayerRigidBody.linearVelocity = Vector3.zero;
+		PlayerRigidBody.angularVelocity = Vector3.zero;
+		PlayerRigidBody.MovePosition(PlayerRigidBody.transform.position);
 
 		OnPlayerMovementStateChanged?.Invoke(PlayerMovementStateTypes.PlayerCrouchingIdle);
+		IsPlayerSliding = false;
 	}
 
 	public void StartPlayerSliding()
@@ -238,6 +266,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	IEnumerator PlayerLedgeClimbingCourutine()
 	{
+		IsPlayerLedgeClimbing = true;
 		bool Big;
 
 		if (Physics.OverlapBox(transform.position + transform.forward * 1.1f + new Vector3(0, 3, 0), new Vector3(1.25f, 2.25f, 1.25f) * 0.5f, Quaternion.identity).Length > 0)
@@ -246,23 +275,23 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		}
 		else Big = true;
 
-		_playerRigidBody.AddForce(transform.up * 7f, ForceMode.Impulse);
+		PlayerRigidBody.AddForce(transform.up * 7f, ForceMode.Impulse);
 
 		yield return new WaitForSeconds(0.3f);
 
-		_playerRigidBody.AddForce(Vector3.zero, ForceMode.Acceleration);
-		_playerRigidBody.linearVelocity = Vector3.zero;
-		_playerRigidBody.angularVelocity = Vector3.zero;
-		_playerRigidBody.MovePosition(_playerRigidBody.transform.position);
+		PlayerRigidBody.AddForce(Vector3.zero, ForceMode.Acceleration);
+		PlayerRigidBody.linearVelocity = Vector3.zero;
+		PlayerRigidBody.angularVelocity = Vector3.zero;
+		PlayerRigidBody.MovePosition(PlayerRigidBody.transform.position);
 
-		_playerRigidBody.AddForce(transform.forward * 5f, ForceMode.Impulse);
+		PlayerRigidBody.AddForce(transform.forward * 5f, ForceMode.Impulse);
 
 		yield return new WaitForSeconds(0.2f);
 		
-		_playerRigidBody.AddForce(Vector3.zero, ForceMode.Acceleration);
-		_playerRigidBody.linearVelocity = Vector3.zero;
-		_playerRigidBody.angularVelocity = Vector3.zero;
-		_playerRigidBody.MovePosition(_playerRigidBody.transform.position);
+		PlayerRigidBody.AddForce(Vector3.zero, ForceMode.Acceleration);
+		PlayerRigidBody.linearVelocity = Vector3.zero;
+		PlayerRigidBody.angularVelocity = Vector3.zero;
+		PlayerRigidBody.MovePosition(PlayerRigidBody.transform.position);
 
 		if (Big == true)
 		{
@@ -273,6 +302,8 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		{
 			OnPlayerMovementStateChanged?.Invoke(PlayerMovementStateTypes.PlayerCrouchingIdle);
 		}
+
+		IsPlayerLedgeClimbing = false;
 	}
 
 	public void StartPlayerLedgeClimbing()
@@ -285,10 +316,10 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		_playerWorldMovement.z = 0;
 		_playerWorldMovement.x = 0;
 
-		_isAbleToChangeMovementType = false;
+		IsAbleToChangeMovementType = false;
 
 		yield return new WaitForSeconds(0.9f);
-		_isAbleToChangeMovementType = true;
+		IsAbleToChangeMovementType = true;
 	}
 	
 	public bool JumpingStateWait()
@@ -325,14 +356,14 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	}
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerPosition = _playerTransform.position;
-		data.PlayerRotation = _playerTransform.rotation;
+		data.PlayerPosition = PlayerTransform.position;
+		data.PlayerRotation = PlayerTransform.rotation;
 	}
 
 	public void LoadData(GameData data)
 	{
-		_playerTransform.position = data.PlayerPosition;
-		_playerTransform.rotation = data.PlayerRotation;
+		PlayerTransform.position = data.PlayerPosition;
+		PlayerTransform.rotation = data.PlayerRotation;
 	}
 
 	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, PlayerBehaviourController playerBehaviour)
@@ -344,13 +375,13 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		PlayerRotationSpeed = 300f;
 
-		_playerTransform = GetComponent<Transform>();
-		_playerRigidBody = GetComponent<Rigidbody>();
+		PlayerTransform = GetComponent<Transform>();
+		PlayerRigidBody = GetComponent<Rigidbody>();
 
 		_playerPreviousFramePosition = transform.position;
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerPosition(new Vector3(0, 0, -5));
 
-		_isAbleToChangeMovementType = true;
+		IsAbleToChangeMovementType = true;
 
 		PlayerMovementSpeed = 3f;
 
@@ -358,7 +389,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		PlayerCurrentHeight = 1.75f;
 		_isInitialized = true;
-		_howMuchUp = 0.3f;
+		_playerFloorDetectionRayCastLength = 0.3f;
 
 		Debug.Log("PlayerMovement Initialized");
 	}

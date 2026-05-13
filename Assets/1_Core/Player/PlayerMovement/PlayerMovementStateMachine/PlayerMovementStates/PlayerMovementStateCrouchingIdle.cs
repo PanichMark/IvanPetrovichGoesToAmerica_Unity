@@ -6,16 +6,17 @@ public class PlayerMovementStateCrouchingIdle : PlayerMovementStateAbstract
 	private Transform _playerTransform;
 	private Rigidbody _playerRigidBody;
 
-	public PlayerMovementStateCrouchingIdle(PlayerMovementStateMachineController playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice, Transform playerTransform, Rigidbody playerRigidBody)
+	public PlayerMovementStateCrouchingIdle(PlayerMovementStateMachineController playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerMovementController = playerMovementController;
 		_inputDevice = inputDevice;
-		_playerTransform = playerTransform;
-		_playerRigidBody = playerRigidBody;
+		_playerTransform = _playerMovementController.PlayerTransform;
+		_playerRigidBody = _playerMovementController.PlayerRigidBody;
 
 		_playerMovementController.ChangePlayerRayPosition(1.2f);
 		_playerMovementController.ChangePlayerRotationSpeed(300f);
+		_playerMovementController.StopPlayerRigidBpdyVelocity();
 	}
 
 	public override void Update()

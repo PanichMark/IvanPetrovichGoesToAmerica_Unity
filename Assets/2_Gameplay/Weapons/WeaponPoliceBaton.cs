@@ -4,7 +4,7 @@ using System.Collections;
 public class WeaponPoliceBaton : WeaponMeleeAbstract
 {
 	private IInputDevice _inputDevice;
-	private PlayerMovementController _playerMovementController;
+	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerWeaponController _weaponController;
 
 	private GameObject _chokeNPCtext;
@@ -26,7 +26,7 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 		_attackDelay = 0.5f;
 
 		_chokeNPCtext = ServiceLocator.Resolve<GameObject>("TextChokeNPC");
-		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
+		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>("PlayerMovementStateMachineController");
 		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
 		if (_weaponController.RightHandWeaponComponent is WeaponPoliceBaton)
@@ -62,8 +62,8 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 		}
 		_npcDetected = newDetection;
 
-		bool isCrouching = _playerMovementController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingIdle") ||
-						   _playerMovementController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingWalking");
+		bool isCrouching = _playerMovementStateMachineController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingIdle") ||
+						   _playerMovementStateMachineController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingWalking");
 
 		_isAbleToChoke = _npcDetected && isCrouching;
 

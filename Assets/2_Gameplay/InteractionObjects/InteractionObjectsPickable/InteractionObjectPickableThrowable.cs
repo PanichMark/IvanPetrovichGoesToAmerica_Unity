@@ -28,16 +28,16 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		}
 	}
 
-	private PlayerCameraController playerCameraController;
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
 	private void OnDestroy()
 	{
-		playerCameraController.OnFirstPersonCameraState -= () =>
+		_playerCameraStateMachineController.OnFirstPersonCameraState -= () =>
 		{
 			ThrowableObjectToFirstPerson();
 			_isItFirstPerson = true;
 		};
-		playerCameraController.OnThirdPersonCameraState -= () =>
+		_playerCameraStateMachineController.OnThirdPersonCameraState -= () =>
 		{
 			ThrowableObjectToThirdPerson();
 			_isItFirstPerson = false;
@@ -56,14 +56,14 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		RigidBody = GetComponent<Rigidbody>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 
-		playerCameraController.OnFirstPersonCameraState += () =>
+		_playerCameraStateMachineController.OnFirstPersonCameraState += () =>
 		{
 			ThrowableObjectToFirstPerson();
 			_isItFirstPerson = true;
 		};
-		playerCameraController.OnThirdPersonCameraState += () =>
+		_playerCameraStateMachineController.OnThirdPersonCameraState += () =>
 		{
 			ThrowableObjectToThirdPerson();
 			_isItFirstPerson = false;

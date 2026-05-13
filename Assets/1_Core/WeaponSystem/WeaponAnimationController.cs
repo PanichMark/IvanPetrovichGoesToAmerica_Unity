@@ -4,7 +4,7 @@ public class WeaponAnimationController : MonoBehaviour
 {
 	private PlayerBehaviourController _playerBehaviour;
 
-	private PlayerCameraController _playerCameraController;
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private PlayerWeaponController _weaponController;
 
 	private Animator _playerAnimator;
@@ -19,7 +19,7 @@ public class WeaponAnimationController : MonoBehaviour
 	private float _adjustedCameraAngle;
 	public void Initialize(
 		PlayerBehaviourController playerBehaviour,
-		PlayerCameraController playerCameraController,
+		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerWeaponController weaponController,
 		LegKickAttackController legKickAttack,
 		GameObject player)
@@ -27,7 +27,7 @@ public class WeaponAnimationController : MonoBehaviour
 		_playerAnimator = player.GetComponent<Animator>();
 		_playerBehaviour = playerBehaviour;
 	
-		_playerCameraController = playerCameraController;
+		_playerCameraStateMachineController = playerCameraStateMachineController;
 		_weaponController = weaponController;
 		_legKickAttack = legKickAttack;
 
@@ -41,7 +41,7 @@ public class WeaponAnimationController : MonoBehaviour
 		if (!_isInitialized)
 			return;
 
-		float cameraRotationX = _playerCameraController.transform.rotation.eulerAngles.x;
+		float cameraRotationX = _playerCameraStateMachineController.transform.rotation.eulerAngles.x;
 		if (cameraRotationX >= 0 && cameraRotationX < 180)
 		{
 			_adjustedCameraAngle = cameraRotationX;
@@ -51,7 +51,7 @@ public class WeaponAnimationController : MonoBehaviour
 			_adjustedCameraAngle = cameraRotationX - 360;
 		}
 
-		if (_playerBehaviour.IsPlayerArmed == true && _playerCameraController.CurrentPlayerCameraStateType == "ThirdPerson")
+		if (_playerBehaviour.IsPlayerArmed == true && _playerCameraStateMachineController.CurrentPlayerCameraStateType == "ThirdPerson")
 		{
 			float startValue = _playerAnimator.GetFloat("UpDown");
 
@@ -72,7 +72,7 @@ public class WeaponAnimationController : MonoBehaviour
 			_playerAnimator.SetFloat("UpDown", newValue);
 		}
 
-		if (_playerBehaviour.IsPlayerArmed == true && _playerCameraController.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerBehaviour.IsPlayerArmed == true && _playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
 		{
 			_playerAnimator.SetFloat("UpDown", 0);
 		}

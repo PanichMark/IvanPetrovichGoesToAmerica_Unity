@@ -25,6 +25,7 @@ public class BootstrapSubProcessPlayerSystems
 	private PlayerColliderController _playerColliderController;
 	
 	public PlayerCameraController PlayerCameraController { get; private set; }
+	public PlayerCameraStateMachineController PlayerCameraStateMachineController { get; private set; }
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
 	private PlayerCameraFirstPersonRender _playerCameraFirstPersonRender;
 
@@ -57,6 +58,7 @@ public class BootstrapSubProcessPlayerSystems
 		_playerMovementAnimationController = _gameObjectPlayer.GetComponent<PlayerMovementAnimationController>();
 
 		PlayerCameraController = _gameObjectPlayerCamera.GetComponent<PlayerCameraController>();
+		PlayerCameraStateMachineController = _gameObjectPlayerCamera.GetComponent<PlayerCameraStateMachineController>();
 		_playerCameraBlurFilter = _gameObjectPlayerCamera.GetComponent<PlayerCameraBlurFilter>();
 		_playerCameraFirstPersonRender = _gameObjectPlayerCamera.GetComponent<PlayerCameraFirstPersonRender>();
 
@@ -68,16 +70,19 @@ public class BootstrapSubProcessPlayerSystems
 
 		PlayerBehaviour.Initialize(_inputDevice);
 		PlayerMovementController.Initialize(_inputDevice, _gameSceneManager, PlayerBehaviour);
-		PlayerMovementStateMachineController.Initialize();
-		_playerColliderController.Initialize(PlayerMovementController);
-		PlayerCameraController.Initialize(_inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, PlayerMovementController, _playerColliderController, _gameObjectPlayer);
+		PlayerMovementStateMachineController.Initialize(_inputDevice, _gameSceneManager, PlayerMovementController);
+		_playerColliderController.Initialize(PlayerMovementStateMachineController);
+		PlayerCameraController.Initialize(_inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, PlayerMovementController, PlayerMovementStateMachineController, _playerColliderController, _gameObjectPlayer);
+		PlayerCameraStateMachineController.Initialize(_inputDevice, _gameSceneManager, PlayerMovementController, PlayerMovementStateMachineController, PlayerCameraController);
 		_playerCameraBlurFilter.Initialize(_bootstrapSubProcessMenuSystem.MenuManager);
-		_playerCameraFirstPersonRender.Initialize(PlayerCameraController, _gameObjectPlayerHead);
-		_playerMovementAnimationController.Initialize(_inputDevice, PlayerBehaviour, PlayerMovementController, PlayerCameraController, _gameObjectPlayer);
+		_playerCameraFirstPersonRender.Initialize(PlayerCameraStateMachineController, _gameObjectPlayerHead);
+		_playerMovementAnimationController.Initialize(_inputDevice, PlayerBehaviour, PlayerMovementStateMachineController, PlayerCameraStateMachineController, _gameObjectPlayer);
 
 		ServiceLocator.Register("PlayerBehaviour", PlayerBehaviour);
 		ServiceLocator.Register("PlayerMovementController", PlayerMovementController);
+		ServiceLocator.Register("PlayerMovementStateMachineController", PlayerMovementStateMachineController);
 		ServiceLocator.Register("PlayerCameraController", PlayerCameraController);
+		ServiceLocator.Register("PlayerCameraStateMachineController", PlayerCameraStateMachineController);
 		ServiceLocator.Register("PlayerCameraBlurFilter", _playerCameraBlurFilter);
 
 		ServiceLocator.Register("GameObjectPlayer", _gameObjectPlayer);

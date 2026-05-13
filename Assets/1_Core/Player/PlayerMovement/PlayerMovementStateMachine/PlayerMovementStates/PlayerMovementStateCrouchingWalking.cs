@@ -7,13 +7,13 @@ public class PlayerMovementStateCrouchingWalking : PlayerMovementStateAbstract
 	private Rigidbody _playerRigidBody;
 	private Vector3 _playerWorldMovement;
 
-	public PlayerMovementStateCrouchingWalking(PlayerMovementStateMachineController  playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice, Transform playerTransform, Rigidbody playerRigidBody)
+	public PlayerMovementStateCrouchingWalking(PlayerMovementStateMachineController  playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerMovementController = playerMovementController;
 		_inputDevice = inputDevice;
-		_playerTransform = playerTransform;
-		_playerRigidBody = playerRigidBody;
+		_playerTransform = _playerMovementController.PlayerTransform;
+		_playerRigidBody = _playerMovementController.PlayerRigidBody;
 
 		_playerMovementController.ChangePlayerMovementSpeed(1.8f);
 		_playerMovementController.ChangePlayerRayPosition(1.2f);
