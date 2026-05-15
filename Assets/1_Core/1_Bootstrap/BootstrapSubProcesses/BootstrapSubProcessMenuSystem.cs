@@ -200,7 +200,7 @@ public class BootstrapSubProcessMenuSystem
 		_pauseSubMenuLoadController.Initialize(_inputDevice, _saveLoadController, MenuManager, _pauseMenuController, _canvasPauseSubMenuLoad, _buttonsLoadGameFile, _buttonClosePauseSubMenuLoad);
 		_pauseSubMenuAppearanceController.Initialize(_inputDevice, MenuManager, _pauseMenuController, _canvasPauseSubMenuAppearance, _buttonClosePauseSubMenuAppearance);
 		_pauseSubMenuSettingsController.Initialize(_bootstrap, _gameController, _inputDevice, MenuManager, _pauseMenuController, _pauseSubMenuSettingsPlayerPrefs, _canvasPauseSubMenuSettings, _sliderChangeFOV, _textFOV, _buttonsChangeFPS, _buttonsChangeLanguage, _inputFieldsKeyRebinds, _buttonSaveGameSettings, _buttonResetGameSettings, _buttonClosePauseSubMenuSettings, _gameObjectPlayerCamera);
-		_confirmActionMenuController.Initialize(_saveLoadController, MenuManager, _pauseMenuController, _pauseSubMenuSaveController, _pauseSubMenuLoadController, _pauseSubMenuSettingsController, _canvasMenuConfirmAction, _buttonConfirmAction, _buttonCancelAction, _textConfirmActionMessage);
+		_confirmActionMenuController.Initialize(_gameSceneManager, _saveLoadController, MenuManager, _pauseMenuController, _pauseSubMenuSaveController, _pauseSubMenuLoadController, _pauseSubMenuSettingsController, _canvasMenuConfirmAction, _buttonConfirmAction, _buttonCancelAction, _textConfirmActionMessage);
 		_mainMenuReadNewsController.Initialize(_inputDevice, _canvasMainMenuReadNews, _buttonCloseMainMenuReadNews);
 		_cutsceneMenuController.Initialize(_gameSceneManager, MenuManager, _canvasMenuCutscene);
 

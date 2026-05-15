@@ -20,9 +20,10 @@ public class MenuManager : MonoBehaviour
 	public event MenuEventHandler OnClosePauseMenuDuringOpenedCutsceneMenu;
 	public event MenuEventHandler OnOpenAnyMenu;
 	public event MenuEventHandler OnCloseAnyMenu;
+	public event MenuEventHandler OnCloseConfirmationOnExitToMainMenu;
 
 	private bool _isInitialized = false;
-
+	public bool IsConfirmationOnExitToMainMenuOpened { get; private set; }
 	public bool IsPauseMenuOpened { get; private set; }
 	public bool IsWeaponWheelMenuOpened { get; private set; }
 	public bool IsAnyMenuOpened { get; private set; }
@@ -86,6 +87,7 @@ public class MenuManager : MonoBehaviour
 				if (!_gameController.IsPlayerDead)
 				{
 					ClosePauseMenu();
+					Debug.Log("BRUH!");
 				}
 				if (IsDialogueMenuOpened)
 				{
@@ -96,7 +98,26 @@ public class MenuManager : MonoBehaviour
 					OnClosePauseMenuDuringOpenedCutsceneMenu?.Invoke();
 				}
 			}
+			else if (PauseMenuLevel.Count == 2 && IsConfirmationOnExitToMainMenuOpened == true)
+			{
+				OnCloseConfirmationOnExitToMainMenu?.Invoke();
+				CloseConfirmationOnExitToMainMenu();
+			}
 		}
+		//Debug.Log(PauseMenuLevel.Count);
+		//Debug.Log(IsConfirmationOnExitToMainMenuOpened);
+	}
+
+	public void OpenConfirmationOnExitToMainMenu()
+	{
+		IsConfirmationOnExitToMainMenuOpened = true;
+		//Debug.Log("Lmao");
+	}
+
+	public void CloseConfirmationOnExitToMainMenu()
+	{
+		//Debug.Log("Bruh");
+		IsConfirmationOnExitToMainMenuOpened = false;
 	}
 
 	public void OpenPauseMenu()

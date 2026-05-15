@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
@@ -41,7 +42,7 @@ public class PauseMenuController : MonoBehaviour
 		_pauseMenuCanvas = PauseMenuCanvas;
 		_buttonsPauseMenu = buttonsPauseMenu;
 		_saveLoadController = saveLoadController;
-		_buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(this._menuManager.ClosePauseMenu);     
+		_buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(_menuManager.ClosePauseMenu);     
 		_buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
 		_buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
 		_buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenAppearanceSubMenu);              
@@ -56,6 +57,8 @@ public class PauseMenuController : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseSubMenu;
 		_gameController.OnPlayerDeath += HideDeathPauseMenuButtons;
 		_gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
+
+		_menuManager.OnCloseConfirmationOnExitToMainMenu += ClosePauseConfirmMenu;
 
 		Debug.Log("PauseMenu Initialized");
 	}
@@ -182,9 +185,5 @@ public class PauseMenuController : MonoBehaviour
 	public void ExitToMainMenu()
 	{
 		OnExitToMainMenu?.Invoke();
-		Debug.Log("MAIN MENU EXIT");
-		ClosePauseSubMenu();
-		_menuManager.ClosePauseMenu();
-		StartCoroutine(_gameSceneManager.LoadMainMenuScene());
 	}
 }

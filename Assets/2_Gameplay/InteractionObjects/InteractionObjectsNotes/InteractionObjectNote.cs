@@ -9,7 +9,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	[SerializeField] private string _interactionObjectNameUI;
 
 	private MenuManager _menuManager;
-	private bool _IsReading;
+	private bool _isReading;
 	public string InteractionObjectNameUI => _interactionObjectNameUI;
 
 	public string InteractionHintMessageMain => $"Прочитать {InteractionObjectNameUI}";
@@ -38,26 +38,20 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	private GameSceneManager _gameSceneManager;
 	private void Start()
 	{
-		// Разрешаем объекты по строке-ключу
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_buttonExitNoteMenu = ServiceLocator.Resolve<Button>("ButtonExitReadNoteMenu");     // Предполагаемый ключ
-		_imageComponent = ServiceLocator.Resolve<Image>("ImageNote"); // Предполагаемый ключ
+		_buttonExitNoteMenu = ServiceLocator.Resolve<Button>("ButtonExitReadNoteMenu");    
+		_imageComponent = ServiceLocator.Resolve<Image>("ImageNote"); 
 		_descriptionText = ServiceLocator.Resolve<TextMeshProUGUI>("TextNote");
 		_backgroundBack = ServiceLocator.Resolve<Image>("ImageNoteBlackBackground");
 		_canvasNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuNote");
-		//Debug.Log(ReadStructure);
-		//menuManager.OnCloseReadNoteMenu += CloseAndDeactivate;
+
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseAndDeactivate;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		//saveLoadController.OnSafeFileLoad += CloseAndDeactivate;
-
 
 		_imageRectTransform = _imageComponent.gameObject.GetComponent<RectTransform>();
 		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
-
-
 
 		_menuManager.OnOpenPauseMenu += HideNoteCanvas;
 		_menuManager.OnClosePauseMenu += ShowNoteCanvas;
@@ -77,7 +71,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	private void HideNoteCanvas()
 	{
-		if (_IsReading)
+		if (_isReading)
 		{
 			_canvasNoteMenu.SetActive(false);
 		}
@@ -85,7 +79,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	private void ShowNoteCanvas()
 	{
-		if (_IsReading)
+		if (_isReading)
 		{
 			_canvasNoteMenu.SetActive(true);
 		}
@@ -93,22 +87,14 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
-		//Debug.Log(isThereText);
 		_menuManager.OpenInteractionMenu();
-		_IsReading = true;
+		_isReading = true;
 
 		_canvasNoteMenu.SetActive(true);
 
 		_imageComponent.gameObject.SetActive(true);
 		_imageComponent.sprite = _image;
 
-	
-
-		
-
-		
-		// Включаем отображение текста из выбранного файла
-		// Определяем, какой текстовый файл использовать в зависимости от текущего языка
 		if (_isThereText)
 		{
 			TextAsset localizedTextFile;
@@ -141,12 +127,6 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 			_imageRectTransform.localEulerAngles = new Vector3(0, 0, 0);
 		}
 
-			// Берём текст из правильного файла
-
-
-			// Заполняем текстовую область соответствующим текстом
-
-			// Подписываемся на событие OnClick кнопки ExitButton
 			_buttonExitNoteMenu.GetComponent<Button>().onClick.AddListener(CloseAndDeactivate);
 		//ExitButton.gameObject.SetActive(true);
 
@@ -156,9 +136,9 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	// Новый метод для закрытия меню и деактивации элементов
 	private void CloseAndDeactivate()
 	{
-		if (_IsReading)
+		if (_isReading)
 		{
-			_IsReading = false;
+			_isReading = false;
 			// Деактивируем объекты
 			_backgroundBack.gameObject.SetActive(false);
 			//ExitButton.gameObject.SetActive(false);

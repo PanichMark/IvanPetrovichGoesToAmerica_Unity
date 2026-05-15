@@ -43,7 +43,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 			_buttonsLoadGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestLoadSaveFileConfirmation?.Invoke(slot));
 		}
 
-		_buttonClosePauseSubMenuLoad.GetComponent<Button>().onClick.AddListener(() => this._pauseMenuController.ClosePauseSubMenu());
+		_buttonClosePauseSubMenuLoad.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
 
 		_pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;
 		_pauseMenuController.OnClosePauseSubMenu += HideLoadSubMenuCanvas;

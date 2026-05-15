@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor.Graphs;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ public class ConfirmActionMenuController : MonoBehaviour
 	private GameObject _buttonCancel;
 	private MenuManager _menuManager;
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
-
+	private GameSceneManager _gameSceneManager;
 	private Action _onAcceptAction;
 	private int _targetSlot; 
 	private GameObject _textShowConfirmationMessage;
@@ -21,6 +22,7 @@ public class ConfirmActionMenuController : MonoBehaviour
 	private PauseSubMenuLoadController _loadController;
 
 	public void Initialize(
+		GameSceneManager gameSceneManager,
 		SaveLoadController saveLoadController,
 		MenuManager menuManager,
 		PauseMenuController pauseMenuController,
@@ -32,6 +34,7 @@ public class ConfirmActionMenuController : MonoBehaviour
 		GameObject buttonCancel,
 		GameObject textShowConfirmationMessage)
 	{
+		_gameSceneManager = gameSceneManager;
 		_pauseMenuController = pauseMenuController;
 		_menuManager = menuManager;
 		_canvasPauseSubMenuConfirm = canvasPauseSubMenuConfirm;
@@ -47,7 +50,6 @@ public class ConfirmActionMenuController : MonoBehaviour
 		_buttonCancel.GetComponent<Button>().onClick.AddListener(() => ExecuteCancel());
 
 		_saveController.OnRequestRewriteSaveFileConfirmation += HandleShowForRewriteSaveFile;
-
 	
 		_loadController.OnRequestLoadSaveFileConfirmation += HandleShowForLoadSaveFile;
 		_saveController.OnRequestNewSaveFileConfirmation += HandleShowForNewSaveFile;
@@ -59,6 +61,8 @@ public class ConfirmActionMenuController : MonoBehaviour
 
 		_pauseMenuController.OnOpenConfirmMenu += ShowCanvasConfirmAction;
 		_pauseMenuController.OnCloseConfirmMenu += HideCanvasConfirmAction;
+
+		_pauseMenuController.OnExitToMainMenu += HandleShowForExitToMainMenu;
 	}
 
 	public void ShowCanvasConfirmAction()
@@ -71,7 +75,6 @@ public class ConfirmActionMenuController : MonoBehaviour
 		_canvasPauseSubMenuConfirm.SetActive(false);
 		_onAcceptAction = null;
 	}
-
 
 	private void HandleShowForRewriteSaveFile(int slot)
 	{
@@ -99,12 +102,14 @@ public class ConfirmActionMenuController : MonoBehaviour
 		_onAcceptAction = () => _pauseSubMenuSettingsController.SaveSettings();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
+
 	private void HandleShowForResetSettings()
 	{
 		_confirmationTextComponent.text = "Сбросить настройки?";
 		_onAcceptAction = () => _pauseSubMenuSettingsController.ResetSettings();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
+
 	private void HandleShowForDeleteSaveFile(int slot)
 	{
 		_targetSlot = slot;
@@ -124,6 +129,17 @@ public class ConfirmActionMenuController : MonoBehaviour
 
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
+	
+	private void HandleShowForExitToMainMenu()
+	{
+		_menuManager.OpenConfirmationOnExitToMainMenu();
+
+		_confirmationTextComponent.text = "Выйти в главное меню?";
+
+		_onAcceptAction = () => StartCoroutine(_gameSceneManager.LoadMainMenuScene());
+
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
 
 	private void ExecuteAccept()
 	{
@@ -133,6 +149,11 @@ public class ConfirmActionMenuController : MonoBehaviour
 
 	private void ExecuteCancel()
 	{
+		if (_menuManager.IsConfirmationOnExitToMainMenuOpened)
+		{
+			_menuManager.CloseConfirmationOnExitToMainMenu();
+		}
+
 		_pauseMenuController.ClosePauseConfirmMenu(); 
 	}
 }

@@ -52,7 +52,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			_buttonsDeleteGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestDeleteSaveFileConfirmation?.Invoke(capturedSlot));
 		}
 
-		_buttonClosePauseSubMenuSave.GetComponent<Button>().onClick.AddListener(() => pauseMenuController.ClosePauseSubMenu());
+		_buttonClosePauseSubMenuSave.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
 
 		_currentDateAndTimeTexts = new Text[buttonsRewriteGame.Length];
 		_currentSceneNameUITexts = new Text[buttonsRewriteGame.Length];

@@ -1,5 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class WeaponRangedAbstract : WeaponAbstract
 {
@@ -29,7 +28,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		{
 			Shoot(WeaponDamage);
 
-			// Просто вызываем Action, если на него кто-то подписан (HUD)
 			_playerResourcesAmmoManager.OnMagazineAmmoChanged?.Invoke(WeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 		else
@@ -52,13 +50,12 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		PlayerMagazineAmmoCurrent--;
 	}
-	// Метод для установки типа патронов (нужен для загрузки данных)
+	
 	public void SetWeaponAmmoType(AmmoTypes type)
 	{
 		WeaponAmmoType = type;
 	}
 
-	// Метод для установки параметров магазина
 	public void SetMagazineProperties(int maxAmmo, int currentAmmo)
 	{
 		PlayerMagazineAmmoMax = maxAmmo;
@@ -82,14 +79,12 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		int ammoToAdd = Mathf.Min(reserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 
-		// Правильный способ изменить структуру в словаре
 		var data = _playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType];
 		data.TotalAmmoCurrent -= ammoToAdd;
 		_playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType] = data;
 
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
-		// Вызываем Actions для обновления HUD
 		_playerResourcesAmmoManager.OnReserveAmmoChanged?.Invoke(WeaponAmmoType, data.TotalAmmoCurrent);
 		_playerResourcesAmmoManager.OnMagazineAmmoChanged?.Invoke(WeaponAmmoType, PlayerMagazineAmmoCurrent);
 
