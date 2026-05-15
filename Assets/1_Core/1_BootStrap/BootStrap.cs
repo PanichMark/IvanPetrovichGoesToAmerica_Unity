@@ -11,6 +11,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private ConfigBootstrapScene _configBootstrapScene;
 	[SerializeField] private ConfigBootstrapPlayerTransform _configBootstrapPlayerPosition;
 	[SerializeField] private ConfigBootstrapPlayerWeapons _configBootstrapWeapons;
+	[SerializeField] private ConfigBootstrapPlayerResourcesAmmo _configBootstrapPlayerResourcesAmmo;
 	private KeyCode _keyPauseMenu;
 
 	// Экран Инициализации Bootstrap
@@ -191,6 +192,19 @@ public class Bootstrap : MonoBehaviour
 				_bootstrapSubProcessWeaponSystem.WeaponController.UnlockWeapon(weaponPrefab);
 			}
 		}
+
+		var startAmmoEntries = _configBootstrapPlayerResourcesAmmo.GetStartAmmoEntries();
+		if (startAmmoEntries != null && startAmmoEntries.Length > 0)
+		{
+			foreach (var ammoEntry in startAmmoEntries)
+			{
+				_bootstrapSubProcessPlayerResources.PlayerResourcesAmmoManager.SetNewInitialAmmo(
+					ammoEntry.AmmoType,
+					ammoEntry.StartAmount
+				);
+			}
+		}
+
 
 		Destroy(_gameObjectBootstrapTemporaryCamera);
 		Destroy(_canvasBootstrap);

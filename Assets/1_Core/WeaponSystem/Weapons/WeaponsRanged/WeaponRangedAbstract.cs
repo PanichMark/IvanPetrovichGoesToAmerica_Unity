@@ -52,7 +52,18 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		PlayerMagazineAmmoCurrent--;
 	}
+	// Метод для установки типа патронов (нужен для загрузки данных)
+	public void SetWeaponAmmoType(AmmoTypes type)
+	{
+		WeaponAmmoType = type;
+	}
 
+	// Метод для установки параметров магазина
+	public void SetMagazineProperties(int maxAmmo, int currentAmmo)
+	{
+		PlayerMagazineAmmoMax = maxAmmo;
+		PlayerMagazineAmmoCurrent = currentAmmo;
+	}
 	public void Reload()
 	{
 		if (PlayerMagazineAmmoCurrent >= PlayerMagazineAmmoMax)

@@ -188,6 +188,7 @@ public class PlayerWeaponController : MonoBehaviour
 			return;
 		}
 
+		// --- СОХРАНЕНИЕ МАГАЗИНА ТЕКУЩЕГО ОРУЖИЯ В РУКЕ ---
 		WeaponRangedAbstract rangedToSave = null;
 		if (IsLeftHand && LeftHandWeapon != null)
 		{
@@ -207,6 +208,8 @@ public class PlayerWeaponController : MonoBehaviour
 				_ammoManager.WeaponDictionary[key] = data;
 			}
 		}
+		// --- КОНЕЦ СОХРАНЕНИЯ ---
+
 
 		bool isSameObject = (IsLeftHand && LeftHandWeapon == weaponInstance) || (!IsLeftHand && RightHandWeapon == weaponInstance);
 		if (isSameObject)
@@ -223,6 +226,18 @@ public class PlayerWeaponController : MonoBehaviour
 		else if (!IsLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
 			DestroyWeapon(WeaponHandsEnum.LeftHand);
+		}
+
+		// --- ЗАГРУЗКА ДАННЫХ ДЛЯ НОВОГО ОРУЖИЯ ---
+		if (weaponComponent is WeaponRangedAbstract rangedNew)
+		{
+			WeaponRangedTypes newKey = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedNew.WeaponNameSystem);
+			if (_ammoManager.WeaponDictionary.TryGetValue(newKey, out var newData))
+			{
+				// Используем новые публичные методы
+				rangedNew.SetWeaponAmmoType(newData.AmmoType);
+				rangedNew.SetMagazineProperties(newData.MagazineAmmoMax, newData.MagazineAmmoCurrent);
+			}
 		}
 
 		if (IsLeftHand)
@@ -260,9 +275,6 @@ public class PlayerWeaponController : MonoBehaviour
 
 			_playerBehaviour.ArmPlayer();
 		}
-
-		Debug.Log("LeftHand: " + (LeftHandWeapon ? LeftHandWeapon.name : "null") +
-				  " | RightHand: " + (RightHandWeapon ? RightHandWeapon.name : "null"));
 	}
 
 	public void RightWeaponAttack()

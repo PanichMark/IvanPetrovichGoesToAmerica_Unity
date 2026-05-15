@@ -11,10 +11,30 @@ public class PlayerResourcesAmmoManager : MonoBehaviour
 	public Dictionary<AmmoTypes, AmmoTypeData> AmmoDictionary = new Dictionary<AmmoTypes, AmmoTypeData>();
 	public Dictionary<WeaponRangedTypes, WeaponRangedTypeData> WeaponDictionary = new Dictionary<WeaponRangedTypes, WeaponRangedTypeData>();
 
+	public void SetNewInitialAmmo(AmmoTypes type, int newAmount)
+	{
+		// Проверяем, есть ли такой тип патронов в словаре
+		if (AmmoDictionary.TryGetValue(type, out var data))
+		{
+			// Ограничиваем новое значение, чтобы оно не выходило за рамки максимума и не было меньше нуля
+			int clampedAmount = Mathf.Clamp(newAmount, 0, data.TotalAmmoMax);
+
+			// Если количество действительно изменилось, обновляем данные
+			if (data.TotalAmmoCurrent != clampedAmount)
+			{
+				data.TotalAmmoCurrent = clampedAmount;
+				AmmoDictionary[type] = data; // Обновляем запись в словаре
+
+				// Вызываем событие, чтобы HUD обновил отображение
+				OnReserveAmmoChanged?.Invoke(type, data.TotalAmmoCurrent);
+			}
+		}
+	}
+
 	public void Initialize()
 	{
-		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoType = AmmoTypes.Ammo9mm, TotalAmmoMax = 99, TotalAmmoCurrent = 99 };
-		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoType = AmmoTypes.Ammo12gauge, TotalAmmoMax = 99, TotalAmmoCurrent = 99 };
+		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoType = AmmoTypes.Ammo9mm, TotalAmmoMax = 999, TotalAmmoCurrent = 25 };
+		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoType = AmmoTypes.Ammo12gauge, TotalAmmoMax = 999, TotalAmmoCurrent = 10 };
 
 		WeaponDictionary[WeaponRangedTypes.HarmonicaRevolver] = new WeaponRangedTypeData
 		{
