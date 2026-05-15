@@ -39,19 +39,21 @@ public class InteractionController : MonoBehaviour
 
 	private IInteractable _lookedAtIInteractable;
 	private IPickable _lookedAtIPickable;
-	private IThrowable _lookedAtIThrowableObject;
+	private IThrowable _lookedAtIThrowable;
 
 	private IGainedItem _lookedAtIGainedItem;
 
-	private IPickable _currentIPickable;
-	private IThrowable _currentIThrowable;
+	private bool _isLookingAtNewInteractionObject;
+
+	private IPickable _inHandsIPickable;
+	private IThrowable _inHandsIThrowable;
 
 	private RaycastHit _hitObject;
 	private bool _isInteractionObjectLookedAt;
 
 	private GameObject _previousInteractableObject;
 	private GameObject _currentInteractableObject; 
-	public GameObject CurrentPickableObject { get; private set; }
+	public GameObject InHandsPickableObject { get; private set; }
 	private GameSceneManager _gameSceneManager;
 	private GameController _gameController;
 
@@ -106,7 +108,7 @@ public class InteractionController : MonoBehaviour
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		_HUDInteractionMainTextInteract = this._localizationManager.GetLocalizedString("HUDInteraction_MainTextInteract");
+		_HUDInteractionMainTextInteract = _localizationManager.GetLocalizedString("HUDInteraction_MainTextInteract");
 	}
 
 	private void ShowCanvasHUDInteraction()
@@ -159,48 +161,45 @@ public class InteractionController : MonoBehaviour
 
 	private void PickUpInteractableObject()
 	{
-		if (CurrentPickableObject != null)
-		{
-			_currentIPickable = CurrentPickableObject.GetComponent<IPickable>();
-			_currentIThrowable = CurrentPickableObject.GetComponent<IThrowable>();
+		_inHandsIPickable = InHandsPickableObject.GetComponent<IPickable>();
+		_inHandsIThrowable = InHandsPickableObject.GetComponent<IThrowable>();
 			
-			if (_currentIThrowable != null)
-			{
-				OnPickUpThrowableObject?.Invoke();
-				_mainInteractionText.text = $"Отпустить {_inputDevice.GetNameOfKeyInteract()}\nБросить {_inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
-				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
-			}
-			else
-			{
-				OnPickUpNonThrowableObject?.Invoke();
-				_mainInteractionText.text = $"Отпустить на {_inputDevice.GetNameOfKeyInteract()}";
-				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
-			}
+		if (_inHandsIThrowable != null)
+		{
+			OnPickUpThrowableObject?.Invoke();
+			_mainInteractionText.text = $"Отпустить {_inputDevice.GetNameOfKeyInteract()}\nБросить {_inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
+			ChangeLayerRecursively(InHandsPickableObject, LayerMask.NameToLayer("Default"));
+		}
+		else
+		{
+			OnPickUpNonThrowableObject?.Invoke();
+			_mainInteractionText.text = $"Отпустить на {_inputDevice.GetNameOfKeyInteract()}";
+			ChangeLayerRecursively(InHandsPickableObject, LayerMask.NameToLayer("Default"));
+			_playerBehaviour.DisarmPlayer();
+		}
 
-			if (_inputDevice.GetKeyInteract() || _gameController.IsPlayerDead)
+		if (_inputDevice.GetKeyInteract() || _gameController.IsPlayerDead)
+		{
+			OnGetRidOfPickableObject?.Invoke();
+			_inHandsIPickable.DropOffObject();
+			InHandsPickableObject = null;
+			if (_playerBehaviour.WasPlayerArmed == true)
 			{
-				OnGetRidOfPickableObject?.Invoke();
-				_currentIPickable.DropOffObject();
-				CurrentPickableObject = null;
-				if (_playerBehaviour.WasPlayerArmed == true)
-				{
-					_playerBehaviour.ArmPlayer();
-				}
+				_playerBehaviour.ArmPlayer();
 			}
+		}
 
-			if (_currentIThrowable != null && _inputDevice.GetKeyRightHandWeaponAttack())
+		if (_inHandsIThrowable != null && _inputDevice.GetKeyRightHandWeaponAttack())
+		{
+			OnGetRidOfPickableObject?.Invoke();
+			_inHandsIThrowable.ThrowObject();
+			InHandsPickableObject = null;
+			if (_playerBehaviour.WasPlayerArmed == true)
 			{
-				OnGetRidOfPickableObject?.Invoke();
-				_currentIThrowable.ThrowObject();
-				CurrentPickableObject = null;
-				if (_playerBehaviour.WasPlayerArmed == true)
-				{
-					_playerBehaviour.ArmPlayer();
-				}
+				_playerBehaviour.ArmPlayer();
 			}
 		}
 	}
-
 
 	void Update()
 	{
@@ -217,61 +216,60 @@ public class InteractionController : MonoBehaviour
 			_additionalInteractionText.text = null;
 		}
 
-
-
-		PickUpInteractableObject();
-
-
-		////
-
-		// Если у нас есть захваченный объект, запрещаем любое другое взаимодействие
-
-
-		// Нормальная обработка объектов
 		if (_isInteractionObjectLookedAt && _hitObject.collider.tag == "Interactable")
 		{
-			//Debug.Log("INTEARCT!!!");
 			_lookedAtIInteractable = _hitObject.collider.GetComponent<IInteractable>();
-			_lookedAtIThrowableObject = _hitObject.collider.GetComponent<IThrowable>();
+			_lookedAtIThrowable = _hitObject.collider.GetComponent<IThrowable>();
 			_lookedAtIPickable = _hitObject.collider.GetComponent<IPickable>();
 			_lookedAtIGainedItem = _hitObject.collider.GetComponent<IGainedItem>();
 
 			if (_lookedAtIInteractable != null)
 			{
-				GameObject renderer = _hitObject.collider.gameObject;
+				_currentInteractableObject = _hitObject.collider.gameObject;
+				_previousInteractableObject = _currentInteractableObject;
 
-				if (renderer != null)
+				if (_isLookingAtNewInteractionObject)
 				{
-					// Подсветка текущего объекта
-					_currentInteractableObject = renderer;
+					_isLookingAtNewInteractionObject = false;
 
-					// Если сменился объект, меняем слои для правильного рендеринга
+					ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Outline"));
+					_mainInteractionText.text = $"{_lookedAtIInteractable.InteractionHintMessageMain}\n{_HUDInteractionMainTextInteract} {_inputDevice.GetNameOfKeyInteract()}";
+
 					if (_previousInteractableObject != null && _previousInteractableObject != _currentInteractableObject)
 					{
 						ChangeLayerRecursively(_previousInteractableObject, LayerMask.NameToLayer("Default"));
 					}
-
-					// Применяем новый слой Outline
-					ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Outline"));
 				}
-
-				if (_currentInteractableObject != null)
+				else
 				{
-					// Подсказка для взаимодействия
-					_mainInteractionText.text = $"{_lookedAtIInteractable.InteractionHintMessageMain}\n{_HUDInteractionMainTextInteract} {_inputDevice.GetNameOfKeyInteract()}";
-					
+					_isLookingAtNewInteractionObject = true;
+
+					ChangeLayerRecursively(_previousInteractableObject, LayerMask.NameToLayer("Default"));
+
+					_currentInteractableObject = null;
+					_mainInteractionText.text = null;
+
+					if (_showAdditionalHintCoroutine != null)
+					{
+						StopCoroutine(_showAdditionalHintCoroutine);
+						_additionalInteractionText.text = null;
+					}
 				}
 
-				// Если это стандартный объект IInteractable, обрабатываем нажатие
 				if (_inputDevice.GetKeyInteract())
 				{
 					_lookedAtIInteractable.Interact();
+					if (_lookedAtIPickable != null)
+					{
+						InHandsPickableObject = _currentInteractableObject;
+						PickUpInteractableObject();
+					}
 				
 					if (_lookedAtIInteractable.IsInteractionHintMessageFailActive == true)
 					{
 						_additionalInteractionText.text = _lookedAtIInteractable.InteractionHintMessageFail;
 						if (_showAdditionalHintCoroutine != null)
-							StopCoroutine(_showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
+							StopCoroutine(_showAdditionalHintCoroutine); 
 
 						_showAdditionalHintCoroutine = StartCoroutine(ShowHintForSeconds());
 					}
@@ -279,7 +277,7 @@ public class InteractionController : MonoBehaviour
 					{
 						if (_showAdditionalHintCoroutine != null)
 						{
-							StopCoroutine(_showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
+							StopCoroutine(_showAdditionalHintCoroutine);
 						}
 
 						if (_lookedAtIGainedItem != null)
@@ -358,17 +356,6 @@ public class InteractionController : MonoBehaviour
 							StartCoroutine(ShowItemsGained());
 						}
 					}
-
-					if (_lookedAtIPickable != null && _lookedAtIThrowableObject == null)
-					{
-						_playerBehaviour.DisarmPlayer();
-					}
-
-					// Кэшируем захваченный объект, если это IPickable
-					if (_lookedAtIPickable != null && _lookedAtIPickable.IsObjectPickedUp)
-					{
-						CurrentPickableObject = renderer;
-					}
 				}
 			}
 			else
@@ -378,41 +365,15 @@ public class InteractionController : MonoBehaviour
 		}
 		else
 		{
-			// Очистка текущих объектов
 			if (_currentInteractableObject != null)
 			{
-				ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Default"));
 
-				if (_showAdditionalHintCoroutine != null)
-				{
-					StopCoroutine(_showAdditionalHintCoroutine); // Останавливаем предыдущую корутину, если она запущена
-					_additionalInteractionText.text = null;
-				}
 			}
 
 			_currentInteractableObject = null;
 		}
 
-		// Помечаем текущий объект как предыдущий
-		_previousInteractableObject = _currentInteractableObject;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	IEnumerator ShowHintForSeconds()
 	{
@@ -453,7 +414,7 @@ public class InteractionController : MonoBehaviour
 
 	private void ChangeLayerRecursively(GameObject obj, int layerIndex)
 	{
-		//Debug.Log(_previousInteractableObject);
+		Debug.Log(_currentInteractableObject);
 		obj.layer = layerIndex;
 		foreach (Transform child in obj.transform)
 		{
