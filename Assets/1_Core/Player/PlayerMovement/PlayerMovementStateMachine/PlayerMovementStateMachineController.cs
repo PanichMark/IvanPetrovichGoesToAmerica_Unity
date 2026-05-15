@@ -11,7 +11,6 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 	private PlayerMovementStateTypes _playerMovementStateType;
 
 	public string CurrentPlayerMovementStateType { get; private set; }
-	private bool _isAbleToChangeMovementType;
 
 	private bool _isInitialized;
 
@@ -23,8 +22,6 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 		_inputDevice = inputDevice;
 		_gameSceneManager = gameSceneManager;
 		_playerMovementController = playerMovementController;
-
-		_isAbleToChangeMovementType = _playerMovementController.IsAbleToChangeMovementType;
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 
@@ -47,7 +44,7 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 
 	public void SetPlayerMovementState(PlayerMovementStateTypes playerMovementStateType)
 	{
-		if (_isAbleToChangeMovementType)
+		if (_playerMovementController.IsAbleToChangeMovementType)
 		{
 			PlayerMovementStateAbstract newState;
 

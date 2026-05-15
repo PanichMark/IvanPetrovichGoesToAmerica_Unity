@@ -36,9 +36,9 @@ public class InteractionFirstPersonRender : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(this._PlayerFirstPersonHandRight);
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(this._PlayerFirstPersonHandLeft);
 
-		_interactionController.OnPickUpNonThrowable += () => _areBothArmsBusy = true;
-		_interactionController.OnPickUpThrowable += () => _isRightArmBusy = true;
-		_interactionController.OnGetRidOfPickable += () =>
+		_interactionController.OnPickUpNonThrowableObject += () => _areBothArmsBusy = true;
+		_interactionController.OnPickUpThrowableObject += () => _isRightArmBusy = true;
+		_interactionController.OnGetRidOfPickableObject += () =>
 		{
 			_areBothArmsBusy = false;
 			_isRightArmBusy = false;

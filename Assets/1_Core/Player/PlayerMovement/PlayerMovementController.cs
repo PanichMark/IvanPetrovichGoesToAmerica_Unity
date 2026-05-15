@@ -31,8 +31,6 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	private RaycastHit _hitInfo;
 
-	//public string CurrentPlayerMovementStateType { get; private set; } = "PlayerIdle";
-
 	public float PlayerMovementSpeed { get; private set; }
 	public float PlayerRotationSpeed { get; private set; }
 
@@ -133,7 +131,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		}
 		else isSmallRectangleClear = true;
 
-		if (isAllBoxesColliding && (isBigRectangleClear || isSmallRectangleClear) && IsPlayerLedgeClimbing)
+		if (isAllBoxesColliding && (isBigRectangleClear || isSmallRectangleClear) && !IsPlayerLedgeClimbing)
 		{
 			IsPlayerAbleToClimbLedge = true;
 		}

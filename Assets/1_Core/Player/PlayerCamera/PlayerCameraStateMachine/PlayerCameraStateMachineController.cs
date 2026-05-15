@@ -21,6 +21,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 	public string CurrentPlayerCameraStateType { get; private set; }
 
 	public delegate void CameraStateHandler();
+	public event CameraStateHandler OnCameraStateChanged;
 	public event CameraStateHandler OnFirstPersonCameraState;
 	public event CameraStateHandler OnThirdPersonCameraState;
 
@@ -92,6 +93,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 		{
 			newState = null;
 		}
+		OnCameraStateChanged?.Invoke();
 		Debug.Log("CameraState: " + CurrentPlayerCameraStateType);
 		_playerCameraState = newState;
 	}

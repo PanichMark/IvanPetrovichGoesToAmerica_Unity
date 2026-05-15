@@ -13,10 +13,10 @@ public class InteractionController : MonoBehaviour
 	private bool _isInitialized = false;
 
 	private LocalizationManager _localizationManager;
-	public delegate void NonThrowableHandler();
-	public event NonThrowableHandler OnPickUpThrowable;
-	public event NonThrowableHandler OnPickUpNonThrowable;
-	public event NonThrowableHandler OnGetRidOfPickable;
+	public delegate void PickableObjectsHandler();
+	public event PickableObjectsHandler OnPickUpThrowableObject;
+	public event PickableObjectsHandler OnPickUpNonThrowableObject;
+	public event PickableObjectsHandler OnGetRidOfPickableObject;
 
 	private string _HUDInteractionMainTextInteract;
 
@@ -28,7 +28,7 @@ public class InteractionController : MonoBehaviour
 
 	private MenuManager _menuManager;
 
-	private Sprite _noItemImageExeption;
+	private Sprite _ImageMissing;
 
 	private PlayerCameraController _playerCameraController;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
@@ -37,14 +37,15 @@ public class InteractionController : MonoBehaviour
 
 	private PlayerBehaviourController _playerBehaviour;
 
-	private RaycastHit _hitInfo;
-	private bool _isHit;
+	private RaycastHit _hitObject;
+	private bool _isInteractionObjectLookedAt;
 
 	private GameObject _previousInteractableObject;
 	private GameObject _currentInteractableObject; 
 	public GameObject CurrentPickableObject { get; private set; }
 	private GameSceneManager _gameSceneManager;
 	private GameController _gameController;
+
 	public void Initialize(
 		GameController gameController,
 		IInputDevice inputDevice,
@@ -57,8 +58,7 @@ public class InteractionController : MonoBehaviour
 		TextMeshProUGUI mainInteractionText,
 		TextMeshProUGUI additionalInteractionText,
 		TextMeshProUGUI[] itemsTexts, 
-		Image[] itemsImages 
-	)
+		Image[] itemsImages)
 	{
 		_gameController = gameController;
 		_gameSceneManager = gameSceneManager;
@@ -68,7 +68,6 @@ public class InteractionController : MonoBehaviour
 		_playerBehaviour = playerBehaviour;
 		_menuManager = menuManager;
 		_canvasHUDinteraction = canvasHUDInteraction;	
-		
 
 		_itemsTexts = itemsTexts;
 		_itemsImages = itemsImages;
@@ -83,6 +82,14 @@ public class InteractionController : MonoBehaviour
 
 		_menuManager.OnOpenInteractionHUD += ShowCanvasHUDInteraction;
 		_menuManager.OnCloseInteractionHUD += HideCanvasHUDInteraction;
+
+		_gameController.OnPlayerDeath += ChangeInteractionRange;
+		_gameController.OnPlayerRevive += ChangeInteractionRange;
+		_menuManager.OnOpenAnyMenu += ChangeInteractionRange;
+		_menuManager.OnCloseAnyMenu += ChangeInteractionRange;
+		_menuManager.OnOpenCutsceneMenu += ChangeInteractionRange;
+		_menuManager.OnCloseCutsceneMenu += ChangeInteractionRange;
+		_playerCameraStateMachineController.OnCameraStateChanged += ChangeInteractionRange;
 
 		Debug.Log("InteractionController Initialized");
 	}
@@ -112,46 +119,58 @@ public class InteractionController : MonoBehaviour
 		_itemsTexts[0].gameObject.SetActive(false);
 		_itemsImages[0].sprite = null;
 		_itemsImages[0].gameObject.SetActive(false);
-		
 	}
 
 	private void HideCanvasHUDInteraction()
 	{
 		_canvasHUDinteraction.gameObject.SetActive(false);
-	
 	}
 
-	void Update()
-	{
-		// Если инициализация не завершена, ничего не делаем
-		if (!_isInitialized)
-			return;
 
-		// Если меню открыто или игрок мёртв — interactionRange = 0
+	private void ChangeInteractionRange()
+	{
+		//Debug.Log("RANGE");
+		//ADD ON THAT FROM INPUT DEVICE!!!
+		//	_interactionRange = 2f + _playerCameraController.PlayerCameraDistanceZ;
 		if (_menuManager.IsAnyMenuOpened || _gameController.IsPlayerDead || _menuManager.IsCutsceneMenuOpened)
 		{
 			_interactionRange = 0;
 		}
 		else
 		{
-			// В остальных случаях определяем range по типу камеры
 			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
+			{
 				_interactionRange = 2.5f;
+			}
 			else if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "ThirdPerson")
+			{
 				_interactionRange = 2f + _playerCameraController.PlayerCameraDistanceZ;
+			}
 		}
+	}
 
-		if (_mainInteractionText != null)
-			_mainInteractionText.text = null;
+	void Update()
+	{
+		if (!_isInitialized)
+			return;
 
-		if (_showAdditionalHintCoroutine == null)
-			_additionalInteractionText.text = null;
-
-		if (_playerCameraController != null)
+		if (_isInteractionObjectLookedAt = Physics.Raycast(_playerCameraController.transform.position, _playerCameraController.transform.forward, out _hitObject, _interactionRange))
 		{
-			_isHit = Physics.Raycast(_playerCameraController.transform.position, _playerCameraController.transform.forward, out _hitInfo, _interactionRange);
+
 		}
-		
+		else
+		{
+			_mainInteractionText.text = null;
+			_additionalInteractionText.text = null;
+		}
+
+
+
+
+
+
+		////
+
 		// Если у нас есть захваченный объект, запрещаем любое другое взаимодействие
 		if (CurrentPickableObject != null)
 		{
@@ -163,13 +182,13 @@ public class InteractionController : MonoBehaviour
 				// Сообщаем, что игрок держит объект
 				if (throwableObj != null)
 				{
-					OnPickUpThrowable?.Invoke();
+					OnPickUpThrowableObject?.Invoke();
 					_mainInteractionText.text = $"Отпустить {_inputDevice.GetNameOfKeyInteract()}\nБросить {_inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
 					ChangeLayerRecursively(_previousInteractableObject, LayerMask.NameToLayer("Default"));
 				}
 				else
 				{
-					OnPickUpNonThrowable?.Invoke();
+					OnPickUpNonThrowableObject?.Invoke();
 					_mainInteractionText.text = $"Отпустить на {_inputDevice.GetNameOfKeyInteract()}";
 					ChangeLayerRecursively(_previousInteractableObject, LayerMask.NameToLayer("Default"));
 				}
@@ -177,7 +196,7 @@ public class InteractionController : MonoBehaviour
 				// При нажатии кнопки освобождаем объект
 				if (_inputDevice.GetKeyInteract() || _gameController.IsPlayerDead)
 				{
-					OnGetRidOfPickable?.Invoke();
+					OnGetRidOfPickableObject?.Invoke();
 					pickableObj.DropOffObject();
 					CurrentPickableObject = null;
 					if (_playerBehaviour.WasPlayerArmed == true)
@@ -188,7 +207,7 @@ public class InteractionController : MonoBehaviour
 
 				if (throwableObj != null && _inputDevice.GetKeyRightHandWeaponAttack())
 				{
-					OnGetRidOfPickable?.Invoke();
+					OnGetRidOfPickableObject?.Invoke();
 					throwableObj.ThrowObject();
 					CurrentPickableObject = null;
 					if (_playerBehaviour.WasPlayerArmed == true)
@@ -202,17 +221,17 @@ public class InteractionController : MonoBehaviour
 		}
 
 		// Нормальная обработка объектов
-		if (_isHit && _hitInfo.collider != null && _hitInfo.collider.tag == "Interactable")
+		if (_isInteractionObjectLookedAt && _hitObject.collider != null && _hitObject.collider.tag == "Interactable")
 		{
-			var interactableObj = _hitInfo.collider.GetComponent<IInteractable>();
-			var throwableObj = _hitInfo.collider.GetComponent<IThrowable>();
-			var pickableObj = _hitInfo.collider.GetComponent<IPickable>();
-			var gainedObject = _hitInfo.collider.GetComponent<IGainedItem>();
+			var interactableObj = _hitObject.collider.GetComponent<IInteractable>();
+			var throwableObj = _hitObject.collider.GetComponent<IThrowable>();
+			var pickableObj = _hitObject.collider.GetComponent<IPickable>();
+			var gainedObject = _hitObject.collider.GetComponent<IGainedItem>();
 			//var usedObject = hitInfo.collider.GetComponent<IInteractUsedItem>();
 
 			if (interactableObj != null)
 			{
-				GameObject renderer = _hitInfo.collider.gameObject;
+				GameObject renderer = _hitObject.collider.gameObject;
 
 				if (renderer != null)
 				{
@@ -270,7 +289,7 @@ public class InteractionController : MonoBehaviour
 								}
 								else
 								{
-									_itemsImages[0].sprite = _noItemImageExeption;
+									_itemsImages[0].sprite = _ImageMissing;
 								}
 							}
 							else if (_itemsTexts[0].gameObject.activeInHierarchy && !_itemsTexts[1].gameObject.activeInHierarchy)
@@ -287,7 +306,7 @@ public class InteractionController : MonoBehaviour
 								}
 								else
 								{
-									_itemsImages[0].sprite = _noItemImageExeption;
+									_itemsImages[0].sprite = _ImageMissing;
 								}
 							}
 							else if (_itemsTexts[1].gameObject.activeInHierarchy && _itemsTexts[0].gameObject.activeInHierarchy)
@@ -306,7 +325,7 @@ public class InteractionController : MonoBehaviour
 								}
 								else
 								{
-									_itemsImages[0].sprite = _noItemImageExeption;
+									_itemsImages[0].sprite = _ImageMissing;
 								}
 							}
 							else if (_itemsTexts[2].gameObject.activeInHierarchy &&
@@ -325,7 +344,7 @@ public class InteractionController : MonoBehaviour
 								}
 								else
 								{
-									_itemsImages[0].sprite = _noItemImageExeption;
+									_itemsImages[0].sprite = _ImageMissing;
 								}
 							}
 
@@ -370,6 +389,23 @@ public class InteractionController : MonoBehaviour
 		// Помечаем текущий объект как предыдущий
 		_previousInteractableObject = _currentInteractableObject;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	IEnumerator ShowHintForSeconds()
 	{
