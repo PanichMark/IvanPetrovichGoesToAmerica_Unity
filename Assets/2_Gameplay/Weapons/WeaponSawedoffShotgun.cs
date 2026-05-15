@@ -12,6 +12,6 @@ public class WeaponSawedOffShotgun : WeaponRangedAbstract
 		WeaponAmmoType = AmmoTypes.Ammo12gauge;
 
 		MagazineAmmoMax = 2; 
-		MagazineAmmoCurrent = 2; 
+		PlayerMagazineAmmoCurrent = 2; 
 	}
 }

@@ -98,6 +98,7 @@ public class CanvasHUDammoController : MonoBehaviour
 	{
 		_canvasHUDammo.SetActive(false);
 	}
+
 	private void UpdateAmmoDisplayForActiveWeapon(string activeHand)
 	{
 		if (activeHand == "left")
@@ -106,8 +107,8 @@ public class CanvasHUDammoController : MonoBehaviour
 			if (_playerWeaponController.LeftHandWeapon != null && ranged != null)
 			{
 				ShowLeftWeaponAmmo();
-
-				_leftWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
+				Debug.Log(ranged.PlayerMagazineAmmoCurrent.ToString());
+				_leftWeaponAmmoMagazineText.text = ranged.PlayerMagazineAmmoCurrent.ToString();
 
 				if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
 				{
@@ -126,7 +127,7 @@ public class CanvasHUDammoController : MonoBehaviour
 			{
 				ShowRightWeaponAmmo();
 
-				_rightWeaponAmmoMagazineText.text = ranged.MagazineAmmoCurrent.ToString();
+				_rightWeaponAmmoMagazineText.text = ranged.PlayerMagazineAmmoCurrent.ToString();
 
 				if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
 				{

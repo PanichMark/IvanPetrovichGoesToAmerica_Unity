@@ -12,8 +12,9 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoCurrent;
 
 	public AmmoTypes WeaponAmmoType { get; protected set; }
-	public int MagazineAmmoCurrent { get; protected set; }
+	public int PlayerMagazineAmmoCurrent { get; protected set; }
 	public int MagazineAmmoMax { get; protected set; }
+	public int NPCmagazineAmmoCurrent { get; protected set; }
 
 	private void Start()
 	{
@@ -30,7 +31,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	
 	public override void WeaponAttack()
 	{
-		if (MagazineAmmoCurrent > 0)
+		if (PlayerMagazineAmmoCurrent > 0)
 		{
 			Shoot(WeaponDamage);
 		}
@@ -53,17 +54,18 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 		Debug.Log($"{WeaponAmmoType} Attack");
 
-		MagazineAmmoCurrent--;
-
-		if (_isThisPlayerWeapon == true && MagazineAmmoCurrent > 0)
+		if (_isThisPlayerWeapon == true)
 		{
-			_playerResourcesAmmoManager.RemoveAmmoFromMagazine(WeaponAmmoType, MagazineAmmoCurrent);
+			_playerResourcesAmmoManager.RemoveAmmoFromMagazine(WeaponAmmoType, PlayerMagazineAmmoCurrent);
+			PlayerMagazineAmmoCurrent--;
 		}
+
+		
 	}
 
 	public void Reload()
 	{
-		if (MagazineAmmoCurrent >= MagazineAmmoMax)
+		if (PlayerMagazineAmmoCurrent >= MagazineAmmoMax)
 		{
 			Debug.Log("Magazine is already full");
 			return;
@@ -77,16 +79,16 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			return;
 		}
 
-		int ammoToAdd = Mathf.Min(reserve, MagazineAmmoMax - MagazineAmmoCurrent);
+		int ammoToAdd = Mathf.Min(reserve, MagazineAmmoMax - PlayerMagazineAmmoCurrent);
 
 		Debug.Log("Reloaded");
 
-		MagazineAmmoCurrent += ammoToAdd;
+		PlayerMagazineAmmoCurrent += ammoToAdd;
 
 		if (_isThisPlayerWeapon == true)
 		{
 			_playerResourcesAmmoManager.RemoveAmmoFromReserve(WeaponAmmoType, ammoToAdd);
-			_playerResourcesAmmoManager.AddAmmoToMagazine(WeaponAmmoType, MagazineAmmoCurrent);
+			_playerResourcesAmmoManager.AddAmmoToMagazine(WeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 	}
 }
