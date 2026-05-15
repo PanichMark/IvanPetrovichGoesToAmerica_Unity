@@ -12,7 +12,7 @@ public class WeaponHarmonicaRevolver : WeaponRangedAbstract
 	{
 		WeaponAmmoType = AmmoTypes.Ammo9mm;
 
-		MagazineAmmoMax = 5; 
+		PlayerMagazineAmmoMax = 5; 
 		PlayerMagazineAmmoCurrent = 5; 
 	}
 }

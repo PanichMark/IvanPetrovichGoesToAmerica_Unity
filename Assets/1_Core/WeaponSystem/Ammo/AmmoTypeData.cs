@@ -3,7 +3,7 @@
 [Serializable] 
 public struct AmmoTypeData
 {
-	public AmmoTypes Type;
+	public AmmoTypes AmmoType;
 	public int TotalAmmoMax;
 	public int TotalAmmoCurrent;
 }

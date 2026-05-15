@@ -12,8 +12,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoCurrent;
 
 	public AmmoTypes WeaponAmmoType { get; protected set; }
+
+	public int PlayerMagazineAmmoMax { get; protected set; }
 	public int PlayerMagazineAmmoCurrent { get; protected set; }
-	public int MagazineAmmoMax { get; protected set; }
+
+	public int NPCmagazineAmmoMax { get; protected set; }
 	public int NPCmagazineAmmoCurrent { get; protected set; }
 
 	private void Start()
@@ -65,7 +68,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	public void Reload()
 	{
-		if (PlayerMagazineAmmoCurrent >= MagazineAmmoMax)
+		if (PlayerMagazineAmmoCurrent >= PlayerMagazineAmmoMax)
 		{
 			Debug.Log("Magazine is already full");
 			return;
@@ -79,7 +82,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			return;
 		}
 
-		int ammoToAdd = Mathf.Min(reserve, MagazineAmmoMax - PlayerMagazineAmmoCurrent);
+		int ammoToAdd = Mathf.Min(reserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 
 		Debug.Log("Reloaded");
 
