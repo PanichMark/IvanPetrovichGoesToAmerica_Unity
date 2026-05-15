@@ -12,7 +12,7 @@ public class PlayerWeaponController : MonoBehaviour
 	private MenuManager _menuManager;
 	private PlayerBehaviourController _playerBehaviour;
 	private InteractionController _interactionController;
-
+	private PlayerResourcesAmmoManager _ammoManager;
 
 	public Dictionary<string, GameObject> UnlockedWeapons = new Dictionary<string, GameObject>();
 
@@ -31,11 +31,12 @@ public class PlayerWeaponController : MonoBehaviour
 	public WeaponAbstract LeftHandWeaponComponent { get; private set; }
 	public WeaponAbstract RightHandWeaponComponent { get; private set; }
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviourController playerBehaviour, InteractionController interactionController)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviourController playerBehaviour, PlayerResourcesAmmoManager ammoManager, InteractionController interactionController)
 	{
 		_inputDevice = inputDevice;
 		_menuManager = menuManager;
 		_playerBehaviour = playerBehaviour;
+		_ammoManager = ammoManager;
 		_interactionController = interactionController;
 
 		IsAbleToUseRightWeapon = true;
@@ -179,7 +180,6 @@ public class PlayerWeaponController : MonoBehaviour
 	public void SelectWeapon(GameObject weaponPrefab)
 	{
 		GameObject weaponInstance = Instantiate(weaponPrefab);
-
 		WeaponAbstract weaponComponent = weaponInstance.GetComponent<WeaponAbstract>();
 		if (weaponComponent == null)
 		{
@@ -188,10 +188,30 @@ public class PlayerWeaponController : MonoBehaviour
 			return;
 		}
 
+		WeaponRangedAbstract rangedToSave = null;
+		if (IsLeftHand && LeftHandWeapon != null)
+		{
+			rangedToSave = LeftHandWeaponComponent as WeaponRangedAbstract;
+		}
+		else if (!IsLeftHand && RightHandWeapon != null)
+		{
+			rangedToSave = RightHandWeaponComponent as WeaponRangedAbstract;
+		}
+
+		if (rangedToSave != null)
+		{
+			WeaponRangedTypes key = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedToSave.WeaponNameSystem);
+			if (_ammoManager.WeaponDictionary.TryGetValue(key, out var data))
+			{
+				data.MagazineAmmoCurrent = rangedToSave.PlayerMagazineAmmoCurrent;
+				_ammoManager.WeaponDictionary[key] = data;
+			}
+		}
+
 		bool isSameObject = (IsLeftHand && LeftHandWeapon == weaponInstance) || (!IsLeftHand && RightHandWeapon == weaponInstance);
 		if (isSameObject)
 		{
-			return; 
+			return;
 		}
 
 		string newWeaponSystemName = weaponComponent.WeaponNameSystem;
@@ -205,19 +225,19 @@ public class PlayerWeaponController : MonoBehaviour
 			DestroyWeapon(WeaponHandsEnum.LeftHand);
 		}
 
-
 		if (IsLeftHand)
 		{
 			if (LeftHandWeapon != null)
 			{
-				DestroyWeapon(WeaponHandsEnum.LeftHand);
+				Destroy(LeftHandWeapon);
+				LeftHandWeaponComponent.DestroyWeaponModel();
 			}
 
 			LeftHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke("left");
 
 			weaponComponent.InstantiateWeapon(WeaponHandsEnum.LeftHand);
-			weaponComponent.FlipWeapon();
+			weaponComponent.FlipWeaponModel();
 
 			LeftHandWeaponComponent = weaponComponent;
 
@@ -227,7 +247,8 @@ public class PlayerWeaponController : MonoBehaviour
 		{
 			if (RightHandWeapon != null)
 			{
-				DestroyWeapon(WeaponHandsEnum.RightHand);
+				Destroy(RightHandWeapon);
+				RightHandWeaponComponent.DestroyWeaponModel();
 			}
 
 			RightHandWeapon = weaponInstance;
@@ -264,97 +285,109 @@ public class PlayerWeaponController : MonoBehaviour
 
 	public void DestroyWeapon(WeaponHandsEnum handType)
 	{
-		switch (handType)
+		if (handType == WeaponHandsEnum.RightHand)
 		{
-			case WeaponHandsEnum.RightHand:
-				if (RightHandWeapon != null)
+			// Сохраняем магазин, если оружие огнестрельное
+			if (RightHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
+			{
+				WeaponRangedTypes key = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedWeapon.WeaponNameSystem);
+				if (_ammoManager.WeaponDictionary.TryGetValue(key, out var data))
 				{
-					Destroy(RightHandWeapon);
-					RightHandWeaponComponent.DestroyWeapon();
-
-					RightHandWeapon = null;
-					RightHandWeaponComponent = null;
+					data.MagazineAmmoCurrent = rangedWeapon.PlayerMagazineAmmoCurrent;
+					_ammoManager.WeaponDictionary[key] = data;
 				}
-				break;
+			}
 
-			case WeaponHandsEnum.LeftHand:
-				if (LeftHandWeapon != null)
+			if (RightHandWeapon != null)
+			{
+				Destroy(RightHandWeapon);
+				RightHandWeaponComponent.DestroyWeaponModel();
+
+				RightHandWeapon = null;
+				RightHandWeaponComponent = null;
+			}
+		}
+		else if (handType == WeaponHandsEnum.LeftHand)
+		{
+			// Сохраняем магазин, если оружие огнестрельное
+			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
+			{
+				WeaponRangedTypes key = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedWeapon.WeaponNameSystem);
+				if (_ammoManager.WeaponDictionary.TryGetValue(key, out var data))
 				{
-					Destroy(LeftHandWeapon);
-					LeftHandWeaponComponent.DestroyWeapon();
-
-					LeftHandWeapon = null;
-					LeftHandWeaponComponent = null;
+					data.MagazineAmmoCurrent = rangedWeapon.PlayerMagazineAmmoCurrent;
+					_ammoManager.WeaponDictionary[key] = data;
 				}
-				break;
+			}
+
+			if (LeftHandWeapon != null)
+			{
+				Destroy(LeftHandWeapon);
+				LeftHandWeaponComponent.DestroyWeaponModel();
+
+				LeftHandWeapon = null;
+				LeftHandWeaponComponent = null;
+			}
 		}
 	}
 
 	public void ShowWeapon(WeaponHandsEnum handType)
 	{
-		string handString = "";
-
-		switch (handType)
+		if (handType == WeaponHandsEnum.RightHand)
 		{
-			case WeaponHandsEnum.RightHand:
-				handString = "RightHand";
-				break;
-			case WeaponHandsEnum.LeftHand:
-				handString = "LeftHand";
-				break;
-			default:
-				throw new ArgumentException("Неверный тип руки.");
+			if (RightHandWeaponComponent != null)
+			{
+				if (RightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+					RightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
+
+				if (RightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+					RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+			}
 		}
-
-		if (handString == "RightHand" && RightHandWeaponComponent != null)
+		else if (handType == WeaponHandsEnum.LeftHand)
 		{
-			if (RightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
-				RightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
+			if (LeftHandWeaponComponent != null)
+			{
+				if (LeftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+					LeftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
 
-			if (RightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
-				RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+				if (LeftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+					LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+			}
 		}
-		else if (handString == "LeftHand" && LeftHandWeaponComponent != null)
+		else
 		{
-			if (LeftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
-				LeftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
-
-			if (LeftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
-				LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+			throw new ArgumentException("Неверный тип руки.");
 		}
 	}
 
 	public void HideWeapon(WeaponHandsEnum handType)
 	{
-		string handString = "";
-
-		switch (handType)
+		if (handType == WeaponHandsEnum.RightHand)
 		{
-			case WeaponHandsEnum.RightHand:
-				handString = "RightHand";
-				break;
-			case WeaponHandsEnum.LeftHand:
-				handString = "LeftHand";
-				break;
-			default:
-				throw new ArgumentException("Неверный тип руки.");
+			if (RightHandWeaponComponent != null)
+			{
+				if (RightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+					RightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
+
+				if (RightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+					RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
+			}
 		}
-
-		if (handString == "RightHand" && RightHandWeaponComponent != null)
+		else if (handType == WeaponHandsEnum.LeftHand)
 		{
-			if (RightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
-				RightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
+			if (LeftHandWeaponComponent != null)
+			{
+				if (LeftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+					LeftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
 
-			if (RightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
-				RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
+				if (LeftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+					LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
+			}
 		}
-		else if (handString == "LeftHand" && LeftHandWeaponComponent != null)
+		else
 		{
-			if (LeftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
-				LeftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
-
-			if (LeftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
-				LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
+			throw new ArgumentException("Неверный тип руки.");
 		}
 	}
 

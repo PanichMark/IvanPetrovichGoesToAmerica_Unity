@@ -158,6 +158,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
 			_bootstrapSubProcessPlayerSystems,
+			_bootstrapSubProcessPlayerResources,
 			_bootstrapSubProcessInteractionSystem,
 			_canvasMenuWeaponWheel,
 			_playerGameObject,

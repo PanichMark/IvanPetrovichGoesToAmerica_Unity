@@ -8,6 +8,7 @@ public class BootstrapSubProcessWeaponSystem
 	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
+	private BootstrapSubProcessPlayerResources _bootstrapSubProcessPlayerResources;
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
 
 	private GameController _gameController;
@@ -52,6 +53,7 @@ public class BootstrapSubProcessWeaponSystem
 		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
+		BootstrapSubProcessPlayerResources bootstrapSubProcessPlayerResources,
 		BootstrapSubProcessInteractionSystem bootstrapSubSystemInteraction,
 		GameObject canvasMenuWeaponWheel,
 		GameObject playerGameObject,
@@ -71,6 +73,7 @@ public class BootstrapSubProcessWeaponSystem
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_bootstrapSubProcessPlayerSystems = bootstrapSubProcessPlayerSystems;
 		_bootstrapSubProcessInteractionSystem = bootstrapSubSystemInteraction;
+		_bootstrapSubProcessPlayerResources = bootstrapSubProcessPlayerResources;
 		_canvasMenuWeaponWheel = canvasMenuWeaponWheel;
 		_gameObjectPlayer = playerGameObject;
 		_playerResourcesAmmoManager = playerResourcesAmmoManager;
@@ -111,6 +114,7 @@ public class BootstrapSubProcessWeaponSystem
 			_inputDevice,
 			_bootstrapSubProcessMenuSystem.MenuManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+			_bootstrapSubProcessPlayerResources.PlayerResourcesAmmoManager,
 			_bootstrapSubProcessInteractionSystem.InteractionController);
 
 		_legKickAttackController.Initialize(

@@ -3,8 +3,6 @@ using UnityEngine;
 
 public abstract class WeaponRangedAbstract : WeaponAbstract
 {
-	private TMP_Text _playerAmmoText;
-
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private GameObject _shootPoint;
 
@@ -14,29 +12,25 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public AmmoTypes WeaponAmmoType { get; protected set; }
 
 	public int PlayerMagazineAmmoMax { get; protected set; }
-	public int PlayerMagazineAmmoCurrent { get; protected set; }
-
-	public int NPCmagazineAmmoMax { get; protected set; }
-	public int NPCmagazineAmmoCurrent { get; protected set; }
+	public int PlayerMagazineAmmoCurrent { get; set; }
 
 	private void Start()
 	{
-		if (_isThisPlayerWeapon == true)
+		if (_isThisPlayerWeapon)
 		{
 			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 		}
-
-		InitializeWeaponRanged();
 	}
 
-	protected abstract void InitializeWeaponRanged();
-	
 	public override void WeaponAttack()
 	{
 		if (PlayerMagazineAmmoCurrent > 0)
 		{
 			Shoot(WeaponDamage);
+
+			// Просто вызываем Action, если на него кто-то подписан (HUD)
+			_playerResourcesAmmoManager.OnMagazineAmmoChanged?.Invoke(WeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 		else
 		{
@@ -55,15 +49,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 				damageable.TakeDamage(weaponDamage);
 			}
 		}
-		Debug.Log($"{WeaponAmmoType} Attack");
 
-		if (_isThisPlayerWeapon == true)
-		{
-			_playerResourcesAmmoManager.RemoveAmmoFromMagazine(WeaponAmmoType, PlayerMagazineAmmoCurrent);
-			PlayerMagazineAmmoCurrent--;
-		}
-
-		
+		PlayerMagazineAmmoCurrent--;
 	}
 
 	public void Reload()
@@ -84,14 +71,17 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		int ammoToAdd = Mathf.Min(reserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 
-		Debug.Log("Reloaded");
+		// Правильный способ изменить структуру в словаре
+		var data = _playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType];
+		data.TotalAmmoCurrent -= ammoToAdd;
+		_playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType] = data;
 
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
-		if (_isThisPlayerWeapon == true)
-		{
-			_playerResourcesAmmoManager.RemoveAmmoFromReserve(WeaponAmmoType, ammoToAdd);
-			_playerResourcesAmmoManager.AddAmmoToMagazine(WeaponAmmoType, PlayerMagazineAmmoCurrent);
-		}
+		// Вызываем Actions для обновления HUD
+		_playerResourcesAmmoManager.OnReserveAmmoChanged?.Invoke(WeaponAmmoType, data.TotalAmmoCurrent);
+		_playerResourcesAmmoManager.OnMagazineAmmoChanged?.Invoke(WeaponAmmoType, PlayerMagazineAmmoCurrent);
+
+		Debug.Log("Reloaded");
 	}
 }

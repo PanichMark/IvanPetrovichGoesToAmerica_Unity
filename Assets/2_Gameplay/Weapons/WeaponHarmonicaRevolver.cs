@@ -7,12 +7,4 @@ public class WeaponHarmonicaRevolver : WeaponRangedAbstract
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponHarmoniceRevolverIcon");
 
 	public override float WeaponDamage => 30f;
-
-	protected override void InitializeWeaponRanged()
-	{
-		WeaponAmmoType = AmmoTypes.Ammo9mm;
-
-		PlayerMagazineAmmoMax = 5; 
-		PlayerMagazineAmmoCurrent = 5; 
-	}
 }

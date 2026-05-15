@@ -4,7 +4,7 @@
 public struct WeaponRangedTypeData
 {
 	public WeaponRangedTypes RagnedWeaponType;
-	public AmmoTypeData AmmoType;
+	public AmmoTypes AmmoType;
 	public int MagazineAmmoMax;
 	public int MagazineAmmoCurrent;
 }

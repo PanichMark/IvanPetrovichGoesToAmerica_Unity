@@ -63,16 +63,17 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		string handString = "";
 
-		switch (handType)
+		if (handType == WeaponHandsEnum.RightHand)
 		{
-			case WeaponHandsEnum.RightHand:
-				handString = "RightHand";
-				break;
-			case WeaponHandsEnum.LeftHand:
-				handString = "LeftHand";
-				break;
-			default:
-				throw new ArgumentException("Неверный тип руки.");
+			handString = "RightHand";
+		}
+		else if (handType == WeaponHandsEnum.LeftHand)
+		{
+			handString = "LeftHand";
+		}
+		else
+		{
+			throw new ArgumentException("Неверный тип руки.");
 		}
 
 		ThirdPersonWeaponModelInstance = gameObject;
@@ -110,7 +111,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
 	}
 
-	public void DestroyWeapon()
+	public void DestroyWeaponModel()
 	{
 		if (ThirdPersonWeaponModelInstance != null)
 		{
@@ -124,7 +125,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 		}
 	}
 
-	public void FlipWeapon()
+	public void FlipWeaponModel()
 	{
 		if (FirstPersonWeaponModelInstance != null)
 		{
