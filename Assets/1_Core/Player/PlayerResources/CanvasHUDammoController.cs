@@ -147,7 +147,6 @@ public class CanvasHUDammoController : MonoBehaviour
 		{
 			HideLeftWeaponAmmo();
 		}
-
 	}
 
 	private void UpdateReserveDisplay(AmmoTypes type, int newTotalAmount)

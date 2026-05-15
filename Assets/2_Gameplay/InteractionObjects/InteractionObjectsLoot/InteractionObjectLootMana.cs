@@ -2,8 +2,8 @@
 
 public class InteractionObjectLootMana : InteractionObjectLootAbstract
 {
-	private bool _isAdditionalInteractionHintActive;
-	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
+	private bool _isInteractionHintMessageFailActive;
+	public override bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
 	private PlayerResourcesManaManager _playerResourcesManaManager;
 
 	public override string InteractionHintMessageFail => $"Maximum {InteractionObjectNameUI}";
@@ -16,12 +16,12 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 			Debug.Log($"You picked up {InteractionObjectNameUI}");
 
 			_playerResourcesManaManager.AddManaReplenishItem();
-			_isAdditionalInteractionHintActive = false;
+			_isInteractionHintMessageFailActive = false;
 			WasLootItemCollected = true;
 		}
 		else
 		{
-			_isAdditionalInteractionHintActive = true;
+			_isInteractionHintMessageFailActive = true;
 		}
 	}
 

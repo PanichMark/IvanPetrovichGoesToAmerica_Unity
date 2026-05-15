@@ -44,12 +44,12 @@ public class PlayerWeaponController : MonoBehaviour
 		_playerBehaviour.OnPlayerArmed += OnPlayerArmed;
 		_playerBehaviour.OnPlayerDisarmed += OnPlayerDisarmed;
 
-		_interactionController.OnPickUpNonThrowableObject += () =>
+		_interactionController.OnPickUpNonThrowable += () =>
 		{
 			IsAbleToUseRightWeapon = false;
 			IsAbleToUseLeftWeapon = false;
 		};
-		_interactionController.OnPickUpThrowableObject += () =>
+		_interactionController.OnPickUpThrowable += () =>
 		{
 			IsAbleToUseRightWeapon = false;
 			IsAbleToUseLeftWeapon = true;
@@ -59,7 +59,7 @@ public class PlayerWeaponController : MonoBehaviour
 				HideWeapon(WeaponHandsEnum.RightHand);
 			}
 		};
-		_interactionController.OnGetRidOfPickableObject += OnGetRidOfPickableHandler;
+		_interactionController.OnGetRidOfPickable += OnGetRidOfPickableHandler;
 
 		ResetAllWeapons(); 
 		

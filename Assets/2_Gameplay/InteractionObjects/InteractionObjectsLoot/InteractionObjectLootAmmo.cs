@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectsLootAmmo : InteractionObjectLootAbstract
+public class InteractionObjectLootAmmo : InteractionObjectLootAbstract
 {
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 
 	[SerializeField] private AmmoTypes _ammoTypes;
-	[SerializeField] private int _AmmoCapacity;
+	[SerializeField] private int _ammoCapacity;
 
 	public override void Interact()
 	{
 		base.Interact();
 		Debug.Log($"Picked up {InteractionObjectNameUI}");
-		_playerResourcesAmmoManager.ModifyReserveAmmo(_ammoTypes, _AmmoCapacity);
+		_playerResourcesAmmoManager.AddAmmoToReserve(_ammoTypes, _ammoCapacity);
 	}
 
 	protected override void ThisMethodSetsActionName()

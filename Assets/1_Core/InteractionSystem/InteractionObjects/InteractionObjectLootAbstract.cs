@@ -34,7 +34,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		LootObjectCollider = GetComponent<Collider>();
-		GameObjectPlayer = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
+		GameObjectPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
 		ThisMethodSetsActionName();

@@ -3,9 +3,9 @@
 public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 {
 	private PlayerResourcesHealthManager _playerResourcesHealthManager;
-	private bool _isAdditionalInteractionHintActive;
+	private bool _isInteractionHintMessageFailActive;
 
-	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
 
 	public override string InteractionHintMessageFail => $"Максимум {InteractionObjectNameUI}";
 
@@ -17,12 +17,12 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 			Debug.Log($"You picked up {InteractionObjectNameUI}");
 
 			_playerResourcesHealthManager.AddHealingItem();
-			_isAdditionalInteractionHintActive = false;
+			_isInteractionHintMessageFailActive = false;
 			WasLootItemCollected = true;
 		}
 		else
 		{
-			_isAdditionalInteractionHintActive = true;
+			_isInteractionHintMessageFailActive = true;
 		}
 	}
 

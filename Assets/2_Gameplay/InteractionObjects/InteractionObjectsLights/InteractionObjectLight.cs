@@ -10,15 +10,15 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable
 	public bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction => "";
 
-	public GameObject lightObject;
+	[SerializeField] private GameObject _lightObject;
 	private bool _isLightTurnedOn = false;
-	private Material _cachedMaterial;
-	public Color emissionColorOn = Color.white;
+	private Material _lightMaterial;
+	[SerializeField] private Color _lightEmissionColor = Color.white;
 
 	void Start()
 	{
-		_cachedMaterial = lightObject.GetComponent<Renderer>().material;
-		_cachedMaterial.SetColor("_EmissionColor", Color.black);
+		_lightMaterial = _lightObject.GetComponent<Renderer>().material;
+		_lightMaterial.SetColor("_EmissionColor", Color.black);
 	}
 
 	public void Interact()
@@ -26,13 +26,13 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable
 		if (_isLightTurnedOn)
 		{
 			_isLightTurnedOn = false;
-			_cachedMaterial.SetColor("_EmissionColor", Color.black);
+			_lightMaterial.SetColor("_EmissionColor", Color.black);
 			Debug.Log("Light turned off.");
 		}
 		else
 		{
 			_isLightTurnedOn = true;
-			_cachedMaterial.SetColor("_EmissionColor", emissionColorOn);
+			_lightMaterial.SetColor("_EmissionColor", _lightEmissionColor);
 			Debug.Log("Light turned on.");
 		}
 	}

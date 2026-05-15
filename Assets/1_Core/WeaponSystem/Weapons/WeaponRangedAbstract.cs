@@ -55,9 +55,9 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		MagazineAmmoCurrent--;
 
-		if (_isThisPlayerWeapon == true)
+		if (_isThisPlayerWeapon == true && MagazineAmmoCurrent > 0)
 		{
-			_playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
+			_playerResourcesAmmoManager.RemoveAmmoFromMagazine(WeaponAmmoType, MagazineAmmoCurrent);
 		}
 	}
 
@@ -85,8 +85,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		if (_isThisPlayerWeapon == true)
 		{
-			_playerResourcesAmmoManager.ModifyReserveAmmo(WeaponAmmoType, -ammoToAdd);
-			_playerResourcesAmmoManager.ModifyMagazineAmmo(WeaponAmmoType, MagazineAmmoCurrent);
+			_playerResourcesAmmoManager.RemoveAmmoFromReserve(WeaponAmmoType, ammoToAdd);
+			_playerResourcesAmmoManager.AddAmmoToMagazine(WeaponAmmoType, MagazineAmmoCurrent);
 		}
 	}
 }

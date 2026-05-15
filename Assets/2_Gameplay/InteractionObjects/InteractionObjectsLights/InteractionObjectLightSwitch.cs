@@ -3,12 +3,11 @@ using System.Collections.Generic;
 
 public class InteractionObjectLightSwitch : MonoBehaviour, IInteractable
 {
-	public delegate void InteractionDelegate();
 
-	[SerializeField] private List<GameObject> _lightsList = new List<GameObject>();
-	[SerializeField] private bool _isButtonActivate = true;
+	[SerializeField] private List<GameObject> _lightObjectsList = new List<GameObject>();
+	[SerializeField] private bool _isThisTurnOnButton = true;
 
-	public Color emissionColorOn = Color.white;
+	[SerializeField] private Color _lightEmmisionColor = Color.white;
 
 	public string InteractionObjectNameSystem => "LightSwitch";
 	public string InteractionObjectNameUI => "Свет";
@@ -18,43 +17,43 @@ public class InteractionObjectLightSwitch : MonoBehaviour, IInteractable
 	public bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction => "";
 
-	private List<Material> _cachedMaterials = new List<Material>();
+	private List<Material> _lightMaterialsList = new List<Material>();
 
 	void Start()
 	{
-		_cachedMaterials.Clear();
+		_lightMaterialsList.Clear();
 
-		foreach (var obj in _lightsList)
+		foreach (var obj in _lightObjectsList)
 		{
 			if (obj == null) continue;
 
 			Renderer renderer = obj.GetComponent<Renderer>();
 			if (renderer != null)
 			{
-				_cachedMaterials.Add(renderer.material);
+				_lightMaterialsList.Add(renderer.material);
 			}
 		}
 	}
 
 	public void Interact()
 	{
-		bool shouldTurnOn = _isButtonActivate;
-		bool shouldTurnOff = !_isButtonActivate;
+		bool shouldTurnOn = _isThisTurnOnButton;
+		bool shouldTurnOff = !_isThisTurnOnButton;
 
-		for (int i = 0; i < _cachedMaterials.Count; i++)
+		for (int i = 0; i < _lightMaterialsList.Count; i++)
 		{
-			if (_cachedMaterials[i] == null) continue;
+			if (_lightMaterialsList[i] == null) continue;
 
 			if (shouldTurnOn)
 			{
-				_cachedMaterials[i].SetColor("_EmissionColor", emissionColorOn);
+				_lightMaterialsList[i].SetColor("_EmissionColor", _lightEmmisionColor);
 			}
 			else if (shouldTurnOff)
 			{
-				_cachedMaterials[i].SetColor("_EmissionColor", Color.black);
+				_lightMaterialsList[i].SetColor("_EmissionColor", Color.black);
 			}
 
-			_lightsList[i].GetComponent<Renderer>().UpdateGIMaterials();
+			_lightObjectsList[i].GetComponent<Renderer>().UpdateGIMaterials();
 		}
 	}
 }

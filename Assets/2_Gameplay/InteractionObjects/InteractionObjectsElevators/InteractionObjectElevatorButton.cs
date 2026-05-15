@@ -2,8 +2,8 @@
 
 public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable
 {
-	[SerializeField] private InteractionObjectElevatorController _elevatorController;
-	[SerializeField] private bool _isButtonUp;
+	[SerializeField] private InteractionObjectElevatorController _targetElevator;
+	[SerializeField] private bool _isThisGoUpButton;
 
 	public string InteractionObjectNameSystem => "Elevator Button";
 	public string InteractionObjectNameUI => "Button";
@@ -14,12 +14,12 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
-		if (_elevatorController == null)
+		if (_targetElevator == null)
 		{
 			Debug.LogError("Elevator Controller is not assigned to the button!", this);
 			return;
 		}
 
-		_elevatorController.RequestMove(_isButtonUp);
+		_targetElevator.MoveElevator(_isThisGoUpButton);
 	}
 }

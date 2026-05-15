@@ -3,44 +3,49 @@ using System.Collections;
 
 public class InteractionObjectElevatorController : MonoBehaviour
 {
-	[SerializeField] private float _elevatorSpeed = 2f;
-	[SerializeField] private float _upperYPosition = 10f;
+	[SerializeField] private float _elevatorSpeed;
+	[SerializeField] private float _elevatorUpPosition;
 
-	private float _lowerYPosition;
-	private bool _isMoving = false;
+	private float _elevatorDownPosition;
+	private bool _isElevatorMoving = false;
 
 	void Start()
 	{
-		_lowerYPosition = transform.position.y;
+		_elevatorDownPosition = transform.position.y;
 	}
 
-	public void RequestMove(bool moveUp)
+	public void MoveElevator(bool moveUp)
 	{
-		if (_isMoving)
+		if (_isElevatorMoving)
 			return;
 
-		StartCoroutine(MoveElevator(moveUp));
+		StartCoroutine(ElevatorAnimation(moveUp));
 	}
 
-	private IEnumerator MoveElevator(bool moveUp)
+	private IEnumerator ElevatorAnimation(bool moveElevatorUp)
 	{
-		_isMoving = true;
+		_isElevatorMoving = true;
 
-		float targetY = moveUp ? _upperYPosition : _lowerYPosition;
+		float targetY;
+		if (moveElevatorUp)
+		{
+			targetY = _elevatorUpPosition;
+		}
+		else
+		{
+			targetY = _elevatorDownPosition;
+		}
+
 		Vector3 targetPosition = transform.position;
 		targetPosition.y = targetY;
 
 		while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
 		{
-			transform.position = Vector3.MoveTowards(
-				transform.position,
-				targetPosition,
-				_elevatorSpeed * Time.deltaTime
-			);
+			transform.position = Vector3.MoveTowards(transform.position, targetPosition, _elevatorSpeed * Time.deltaTime);
 			yield return null;
 		}
 
 		transform.position = targetPosition;
-		_isMoving = false;
+		_isElevatorMoving = false;
 	}
 }
