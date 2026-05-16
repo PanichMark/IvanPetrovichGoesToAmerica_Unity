@@ -1,9 +1,8 @@
 ﻿using System;
-using UnityEditor.Graphs;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConfirmActionMenuController : MonoBehaviour
+public class PauseMenuConfirmActionController : MonoBehaviour
 {
 	private PauseMenuController _pauseMenuController;
 	private GameObject _canvasPauseSubMenuConfirm;

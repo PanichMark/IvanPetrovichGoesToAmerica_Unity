@@ -38,7 +38,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	private void Start()
 	{
 		_NPCmaxHealth = _NPCcurrentHealth;
-		_NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("TextNPCphrases");
+		_NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("TextPhraseLine");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_NPCdialogueController = GetComponent<NPCDialogueController>();
 
@@ -117,6 +117,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public virtual void Interact()
 	{
+
 	}
 
 	public void ConvertToPickableObject()

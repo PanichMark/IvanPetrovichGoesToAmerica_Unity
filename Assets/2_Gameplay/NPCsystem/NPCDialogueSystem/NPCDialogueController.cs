@@ -42,7 +42,7 @@ public class NPCDialogueController : MonoBehaviour
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_canvasDialogueMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuDialogue");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		_NPCdialogueText = ServiceLocator.Resolve<TextMeshProUGUI>("TextDialogue");
+		_NPCdialogueText = ServiceLocator.Resolve<TextMeshProUGUI>("TextDialogueLine");
 
 		_NPCstateMachineController = GetComponent<NPCStateMachineController>();
 

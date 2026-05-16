@@ -48,25 +48,25 @@ MonoBehaviour:
   _configBootstrapKeyPauseMenu: {fileID: 11400000, guid: 27c59f544162d4c45a0fd0c1994f6b80, type: 2}
   _configBootstrapScene: {fileID: 11400000, guid: dd27df18f0b32194a93b032278916787, type: 2}
   _configBootstrapPlayerPosition: {fileID: 11400000, guid: a42fc05e7db07674e9239b404ac2274f, type: 2}
-  _configBootstrapWeapons: {fileID: 11400000, guid: aa28a77eb73cd4b4ab26448ef7973740, type: 2}
-  _configBootstrapPlayerResourcesAmmo: {fileID: 11400000, guid: 2702b645586224643ade4cdfbc95a007, type: 2}
+  _configBootstrapPlayerWeapons: {fileID: 11400000, guid: c9e310553e195574d976e4b9d55a52f6, type: 2}
+  _configBootstrapPlayerResourcesAmmo: {fileID: 11400000, guid: ba889de390a4d7648af20ff7494b8832, type: 2}
   _configPauseSubMenuTutorial: {fileID: 11400000, guid: a9950b32476893548be19642507325b2, type: 2}
   _canvasBootstrap: {fileID: 6714391010334597348, guid: 08d27b996c6eb024eb92725af576e2f4, type: 3}
-  _canvasMainMenuReadNews: {fileID: 5088196628814102599, guid: 2ae53a7a3f9f8e14e957fee489e7773e, type: 3}
+  _canvasLoadingScreen: {fileID: 472678922251620575, guid: fa544696e09b1264dac7627c0d42d682, type: 3}
   _canvasPauseMenu: {fileID: 8073867487923853320, guid: dbe31a4f8c1107a42a76c5855b3c2483, type: 3}
   _canvasPauseSubMenuSave: {fileID: 5903125011697291700, guid: 104664eef1b78e24294c3d4712d18631, type: 3}
   _canvasPauseSubMenuLoad: {fileID: 8269768497378364233, guid: 6b7668360b2dcbf43bcd7c76ed62cc13, type: 3}
   _canvasPauseSubMenuAppearance: {fileID: 3996022776004995110, guid: 7211552481043d74ea4fc5bc36150aae, type: 3}
   _canvasPauseSubMenuTutorial: {fileID: 9007672131740602156, guid: e54e3075776696742b98a781b2e668bb, type: 3}
   _canvasPauseSubMenuSettings: {fileID: 5973256293069603521, guid: e59295eb67009e948b49ab6add309082, type: 3}
-  _canvasMenuConfirmAction: {fileID: 6687278301934337374, guid: 0a9b945291032064d9135ddd212ebc01, type: 3}
-  _canvasMenuCutscene: {fileID: 5044422707526274748, guid: b3627b6c4cc99cd408f4c0bd29f5a20e, type: 3}
+  _canvasPauseMenuConfirmAction: {fileID: 6687278301934337374, guid: 0a9b945291032064d9135ddd212ebc01, type: 3}
+  _canvasMainMenuReadNews: {fileID: 5088196628814102599, guid: 2ae53a7a3f9f8e14e957fee489e7773e, type: 3}
+  _canvasHUDinteraction: {fileID: 3487674979134261898, guid: 14a2db8b24d87894796b2a9ecea9df18, type: 3}
   _canvasHUDhealthAndMana: {fileID: 2273119861689627557, guid: b56cff88fa0a71d4c997dbf30e8463af, type: 3}
   _canvasHUDammo: {fileID: 7881737827081216030, guid: 5dc631800390ba94299385bb1f83e8d0, type: 3}
-  _canvasLoadingScreen: {fileID: 472678922251620575, guid: fa544696e09b1264dac7627c0d42d682, type: 3}
   _canvasMenuWeaponWheel: {fileID: 5879893543200193792, guid: c44457cccf516d44eb926a4ac41336d9, type: 3}
-  _canvasHUDinteraction: {fileID: 3487674979134261898, guid: 14a2db8b24d87894796b2a9ecea9df18, type: 3}
   _canvasMenuNote: {fileID: 1408695191542219954, guid: f2531bfd9b65a3246abd9686a4fc63a4, type: 3}
   _canvasMenuLockpickMechanical: {fileID: 7539572659657130930, guid: cf1afa49f7269b042a808ccd9c3b00ec, type: 3}
   _canvasMenuLockpickElectronic: {fileID: 6687112978874478098, guid: c18885d8a26596b45bb1a1aed88d24ac, type: 3}
   _canvasMenuDialogue: {fileID: 2369867205936427668, guid: cb2bfa7c8bc40784286bf8a61ff9f674, type: 3}
+  _canvasMenuCutscene: {fileID: 5044422707526274748, guid: b3627b6c4cc99cd408f4c0bd29f5a20e, type: 3}
