@@ -24,8 +24,7 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnOpenTutorialSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenSettingsSubMenu;
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
-	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
-	public event OpenPauseMenuEventHandler OnCloseAnySubMenuForMain;
+	public event OpenPauseMenuEventHandler OnCloseAnyPauseSubMenu;
 
 	public void Initialize(
 		GameController gameController,
@@ -54,7 +53,6 @@ public class PauseMenuController : MonoBehaviour
 		_menuManager.OnOpenPauseMenu += ShowPauseMenu;
 		_menuManager.OnClosePauseMenu += HidePauseMenu;
 
-		_isInitialized = true;
 		_gameSceneManager.OnBeginLoadingMainMenuScene += ClosePauseSubMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseSubMenu;
 		_gameController.OnPlayerDeath += HideDeathPauseMenuButtons;
@@ -63,6 +61,8 @@ public class PauseMenuController : MonoBehaviour
 		_menuManager.OnOpenConfirmationOnExitToMainMenu += DisableButtons;
 		_menuManager.OnCloseConfirmationOnExitToMainMenu += ClosePauseConfirmMenu;
 		_menuManager.OnCloseConfirmationOnExitToMainMenu += EnableButtons;
+
+		_isInitialized = true;
 
 		Debug.Log("PauseMenu Initialized");
 	}
@@ -144,7 +144,7 @@ public class PauseMenuController : MonoBehaviour
 	public void ClosePauseSubMenu()
 	{
 		_isAnySubMenuOpened = false;
-		OnClosePauseSubMenu?.Invoke();
+		OnCloseAnyPauseSubMenu?.Invoke();
 		if (_menuManager.PauseMenuLevel.Count > 0)
 		{
 			_menuManager.PauseMenuLevel.Pop();

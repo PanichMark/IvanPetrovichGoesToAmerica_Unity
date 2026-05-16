@@ -80,7 +80,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		});
 
 		_pauseMenuController.OnOpenSaveSubMenu += ShowSaveSubMenuCanvas;
-		_pauseMenuController.OnClosePauseSubMenu += HideSaveSubMenuCanvas;
+		_pauseMenuController.OnCloseAnyPauseSubMenu += HideSaveSubMenuCanvas;
 
 		_saveLoadController.OnSafeFileDelete += UpdateAllUIElements;
 		_saveLoadController.OnSafeFileSaved += UpdateAllUIElements;

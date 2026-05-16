@@ -8,6 +8,8 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 	private GameObject _buttonNextTutorial;
 	private GameObject _buttonPreviousTutorial;
 
+
+
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
 	private PauseMenuController _pauseMenuController;
@@ -28,11 +30,10 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		_buttonNextTutorial = buttonNextTutorial;
 		_buttonPreviousTutorial = buttonPreviousTutorial;
 
-		_pauseMenuController.OnOpenAppearanceSubMenu += ShowAppearanceSubMenuCanvas;
-		_pauseMenuController.OnClosePauseSubMenu += HideAppearanceSubMenuCanvas;
-
+		_pauseMenuController.OnOpenTutorialSubMenu += ShowAppearanceSubMenuCanvas;
+		_pauseMenuController.OnCloseAnyPauseSubMenu += HideAppearanceSubMenuCanvas;
+	
 		_buttonClosePauseSubMenuTutorial.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
-
 
 		Debug.Log("TutorialSubMenu Initialized");
 	}

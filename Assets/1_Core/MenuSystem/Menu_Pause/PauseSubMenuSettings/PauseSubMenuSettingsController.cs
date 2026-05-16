@@ -93,7 +93,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
 		_buttonClosePauseSubMenuSettings = buttonClosePauseSubMenuSettings;
 		_pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
-		_pauseMenuController.OnClosePauseSubMenu += HideSettingsSubMenuCanvas;
+		_pauseMenuController.OnCloseAnyPauseSubMenu += HideSettingsSubMenuCanvas;
 		_buttonSaveSettings = buttonSaveSettings;
 		_buttonResetSettings = buttonResetSettings;
 		_pauseSubMenuSettingsPlayerPrefs = pauseSubMenuSettingsPlayerPrefs;

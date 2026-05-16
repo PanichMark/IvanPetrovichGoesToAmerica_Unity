@@ -46,7 +46,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		_buttonClosePauseSubMenuLoad.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
 
 		_pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;
-		_pauseMenuController.OnClosePauseSubMenu += HideLoadSubMenuCanvas;
+		_pauseMenuController.OnCloseAnyPauseSubMenu += HideLoadSubMenuCanvas;
 		_saveLoadController.OnSafeFileDelete += RefreshLoadButtonLabels;
 
 		_currentDateAndTimeTexts = new Text[_buttonsLoadGame.Length]; 

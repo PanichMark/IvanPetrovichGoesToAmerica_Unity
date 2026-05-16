@@ -35,7 +35,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= () => _DiegeticText.SetActive(true);
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
-		_pauseMenuController.OnClosePauseSubMenu -= EnableAllColliders;
+		_pauseMenuController.OnCloseAnyPauseSubMenu -= EnableAllColliders;
 	}
 
 	void Start()
@@ -61,7 +61,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		};
 		_mainMenuReadNews.OnCloseMainMenuReadNews += _playerCameraBlurFilter.DeactivateCameraBlur;
 
-		_pauseMenuController.OnClosePauseSubMenu += EnableAllColliders;
+		_pauseMenuController.OnCloseAnyPauseSubMenu += EnableAllColliders;
 
 		_menuManager.OnCloseAnyMenu += () =>
 		{
@@ -115,12 +115,12 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			_menuManager.OpenAnyMenu();
 			_pauseMenuController.OpenLoadSubMenu();
 		}
-		else if (this.name == "ExitGame")
+		else if (name == "ExitGame")
 		{
 			Debug.Log("EXIT GAME");
 			Application.Quit();
 		}
-		else if (this.name == "Options")
+		else if (name == "Options")
 		{
 			Debug.Log("OPEN OPTIONS");
 			_DiegeticText.SetActive(false);
@@ -128,7 +128,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			_menuManager.OpenAnyMenu();
 			_pauseMenuController.OpenSettingsSubMenu();
 		}
-		else if (this.name == "ReadNews")
+		else if (name == "ReadNews")
 		{
 			Debug.Log("OPEN NEWS");
 			_DiegeticText.SetActive(false);

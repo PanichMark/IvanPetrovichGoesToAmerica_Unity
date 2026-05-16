@@ -18,7 +18,7 @@ public class PauseSubMenuAppearanceController : MonoBehaviour
 		_inputDevice = inputDevice;
 		_canvasPauseSubMenuAppearance = canvasPauseSubMenuAppearance;
 		_pauseMenuController.OnOpenAppearanceSubMenu += ShowAppearanceSubMenuCanvas;
-		_pauseMenuController.OnClosePauseSubMenu += HideAppearanceSubMenuCanvas;
+		_pauseMenuController.OnCloseAnyPauseSubMenu += HideAppearanceSubMenuCanvas;
 
 		_buttonClosePauseSubMenuAppearance.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
 
