@@ -121,9 +121,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515f74e1d455a20489d9890cc85903ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionObjectNameSystem: InteractionOpenableDoor_Door
-  lockController: {fileID: 0}
-  doorOpenAngle: 90
+  _interactionObjectNameSystem: 
+  _mechanicalLockController: {fileID: 0}
+  _electronicLockController: {fileID: 0}
+  _doorOpenAngle: 90
 --- !u!1 &5018545827671430844
 GameObject:
   m_ObjectHideFlags: 0

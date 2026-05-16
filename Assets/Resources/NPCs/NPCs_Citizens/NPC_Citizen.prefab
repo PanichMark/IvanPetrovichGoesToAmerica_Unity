@@ -103,10 +103,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCCurrentHealth: 50
-  NPC_name: NPC_Peaceful_Civilian
-  russianPhraseFile: {fileID: 4900000, guid: 83ce688ca0692ca4b95dbfbdddd2f646, type: 3}
-  englishPhraseFile: {fileID: 4900000, guid: 14747a7586d924e4d999d8743b00315e, type: 3}
+  _NPCcurrentHealth: 100
+  _NPCname: 
+  _russianPhraseFile: {fileID: 0}
+  _englishPhraseFile: {fileID: 0}
 --- !u!136 &3522397566200654189
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -142,9 +142,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialState: 0
-  anchorPoints: []
-  stopConfigs: []
+  _initialState: 0
+  _anchorPoints: []
+  _stopConfigs: []
 --- !u!195 &8489933771308122900
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -179,6 +179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30c01eafdaa357a439d6f5079893587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianDialogueFile: {fileID: 4900000, guid: 9e06478af24818a4aa9664ab996f7372, type: 3}
-  englishDialogueFile: {fileID: 4900000, guid: eaaa61d8fb9b19c459fbed79b27c8615, type: 3}
-  dialogueBranchStructsList: []
+  _russianDialogueFile: {fileID: 0}
+  _englishDialogueFile: {fileID: 0}
+  _dialogueBranchStructsList: []

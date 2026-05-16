@@ -126,10 +126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f68370d733ada4587d0bf029dc595d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCCurrentHealth: 50
-  NPC_name: NPC_Neutral_Bandit
-  russianPhraseFile: {fileID: 4900000, guid: 81d28ab506d89214a81efbcd7917c612, type: 3}
-  englishPhraseFile: {fileID: 4900000, guid: 0554a50ba6dc0424295fd12d7448eca4, type: 3}
+  _NPCcurrentHealth: 100
+  _NPCname: 
+  _russianPhraseFile: {fileID: 0}
+  _englishPhraseFile: {fileID: 0}
 --- !u!114 &575080937374974000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,9 +142,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialState: 0
-  anchorPoints: []
-  stopConfigs: []
+  _initialState: 0
+  _anchorPoints: []
+  _stopConfigs: []
 --- !u!195 &3324684043196184942
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -179,6 +179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30c01eafdaa357a439d6f5079893587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  russianDialogueFile: {fileID: 0}
-  englishDialogueFile: {fileID: 0}
-  dialogueBranchStructsList: []
+  _russianDialogueFile: {fileID: 0}
+  _englishDialogueFile: {fileID: 0}
+  _dialogueBranchStructsList: []

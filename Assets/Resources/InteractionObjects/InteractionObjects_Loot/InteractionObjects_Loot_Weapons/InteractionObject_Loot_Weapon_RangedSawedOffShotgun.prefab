@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7118745416288004488}
   - component: {fileID: 2173877549678940509}
   m_Layer: 0
-  m_Name: InteractionObject_Loot_Weapon_SawedOffShotgun
+  m_Name: InteractionObject_Loot_Weapon_RangedSawedOffShotgun
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,9 +67,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5fb92d919352d142bd32d533ff243cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionObjectNameSystem: InteractionLootWeapon_SawedOffShotgun
-  LootObjectImage: {fileID: 21300000, guid: 4ed1ee68747d8a747a13e170572c39fb, type: 3}
-  weaponObject: {fileID: 8067495848147572535, guid: 352472863b2c0ed4f9ea117ade74bfb5, type: 3}
+  _interactionObjectNameSystem: 
+  _weapon: {fileID: 3469521110233497714, guid: 352472863b2c0ed4f9ea117ade74bfb5, type: 3}
 --- !u!1 &2979206936766872934
 GameObject:
   m_ObjectHideFlags: 0

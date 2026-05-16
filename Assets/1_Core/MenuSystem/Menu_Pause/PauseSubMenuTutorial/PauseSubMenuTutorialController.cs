@@ -19,7 +19,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 
 	private List<InteractionObjectNoteData> _tutorialNotes = new List<InteractionObjectNoteData>();
 	private int _currentNoteIndex = 0;
-
+	private bool _isInitialized;
 	private TextMeshProUGUI _textComponent;
 	private Image _imageComponent;
 
@@ -57,8 +57,30 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		_buttonNextTutorial.GetComponent<Button>().onClick.AddListener(() => OnNextTutorial());
 		_buttonPreviousTutorial.GetComponent<Button>().onClick.AddListener(() => OnPreviousTutorial());
 
+		_isInitialized = true;
+
 		Debug.Log("TutorialSubMenu Initialized");
 	}
+
+	private void Update()
+	{
+		if (!_isInitialized)
+			return;
+
+		if (_isPauseSubMenuTutorialOpened)
+		{
+			if (Input.GetKeyDown(KeyCode.RightArrow))
+			{
+				OnNextTutorial();
+			}
+
+			if (Input.GetKeyDown(KeyCode.LeftArrow))
+			{
+				OnPreviousTutorial();
+			}
+		}
+	}
+
 
 	private void ShowAppearanceSubMenuCanvas()
 	{
