@@ -12,10 +12,12 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 	private TextMeshProUGUI _healingItemNumber;
 	public int MaxPlayerHealth { get; private set; } = 100;
 	public int CurrentPlayerHealth { get; private set; }
-
+	private int _healingItemEffect = 34;
 	public int MaxHealingItemsNumber { get; private set; } = 9;
 
 	public int CurrentHealingItemsNumber { get; private set; }
+
+	private bool _isInitialized;
 
 	public void Initialize(GameController gameController, PlayerBehaviourController playerBehaviour, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
 	{
@@ -27,15 +29,17 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 		_buttonHealingItem.onClick.AddListener(() => UseHealingItem());
 
 		_sliderHealthBar.maxValue = MaxPlayerHealth;
+
+		_isInitialized = true;
+
 		Debug.Log("PlayerResourcesHealth Initialized");
 	}
 
 
 	void Update()
     {
-        _sliderHealthBar.value = CurrentPlayerHealth;
-
-        _healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+		if (!_isInitialized)
+			return;
 
 		if (Input.GetKeyDown(KeyCode.T))
 		{
@@ -48,22 +52,37 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
         if (CurrentHealingItemsNumber > 0)
         {
             if (CurrentPlayerHealth < MaxPlayerHealth)
-            {
-            Debug.Log("Used Healing Item");
-            CurrentHealingItemsNumber--;
+            {	
+				CurrentHealingItemsNumber--;
 
-                CurrentPlayerHealth += 34;
-            }
+                CurrentPlayerHealth += _healingItemEffect;
+
+				if (CurrentPlayerHealth >= MaxPlayerHealth)
+				{
+					CurrentPlayerHealth = MaxPlayerHealth;
+				}
+
+				Debug.Log(CurrentPlayerHealth);
+				_sliderHealthBar.value = CurrentPlayerHealth;
+
+				_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+
+				Debug.Log("Used Healing Item");
+			}
             else Debug.Log("Health is already Full");
 		}
 		else Debug.Log("0 Healing Items");
 	}
+
     public void AddHealingItem()
     {
 		if (CurrentHealingItemsNumber < 9)
-        {
-			Debug.Log("Added Healing Item");
+		{ 
 			CurrentHealingItemsNumber++;
+
+			_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+
+			Debug.Log("Added Healing Item");
 		}
         else Debug.Log("Max Healing Items");
 	}
@@ -71,6 +90,8 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 	public void ReceiveDamage(int Damage)
 	{
 		CurrentPlayerHealth -= Damage;
+
+		_sliderHealthBar.value = CurrentPlayerHealth;
 
 		if (CurrentPlayerHealth <= 0)
 		{
@@ -90,5 +111,9 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 	{
 		CurrentPlayerHealth = data.PlayerHealth;
 		CurrentHealingItemsNumber = data.HealingItems;
+
+		_sliderHealthBar.value = CurrentPlayerHealth;
+
+		_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
 	}
 }

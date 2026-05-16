@@ -36,6 +36,8 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasPauseSubMenuSettings;
 	[SerializeField] private GameObject _canvasMenuConfirmAction;
 	[SerializeField] private GameObject _canvasMenuCutscene;
+	[SerializeField] private GameObject _canvasHUDhealthAndMana;
+	[SerializeField] private GameObject _canvasHUDammo;
 
 	// Система Сцен
 	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
@@ -49,12 +51,6 @@ public class Bootstrap : MonoBehaviour
 	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
 	private GameObject _playerGameObject;
 	private GameObject _playerCameraGameObject;
-
-	// Игрок ресурсы
-	private BootstrapSubProcessPlayerResources _bootstrapSubProcessPlayerResources;
-	[Header("Player Resources")]
-	[SerializeField] private GameObject _canvasHUDhealthAndMana;
-	[SerializeField] private GameObject _canvasHUDammo;
 
 	// Система оружия
 	private BootstrapSubProcessWeaponSystem _bootstrapSubProcessWeaponSystem;
@@ -101,6 +97,7 @@ public class Bootstrap : MonoBehaviour
 
 		_bootstrapSubProcessMenuSystem = new BootstrapSubProcessMenuSystem(
 			this,
+			_bootstrapSubProcessSceneSystem,
 			_gameController,
 			_inputDevice,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
@@ -113,29 +110,21 @@ public class Bootstrap : MonoBehaviour
 			_canvasPauseSubMenuSettings,
 			_canvasMenuConfirmAction,
 			_canvasMainMenuReadNews,
-			_canvasMenuCutscene);
+			_canvasMenuCutscene,
+			_canvasMenuWeaponWheel,
+			_canvasHUDhealthAndMana,
+			_canvasHUDammo);
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.InitializeMenuSystems());
 
 		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(
 			this,
 			_bootstrapSubProcessMenuSystem,
+			_gameController,
 			_inputDevice,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_playerGameObject,
 			_playerCameraGameObject);
 		yield return StartCoroutine(_bootstrapSubProcessPlayerSystems.InitializePlayerSystems());
-
-		_bootstrapSubProcessPlayerResources = new BootstrapSubProcessPlayerResources(
-			this, 
-			_gameController,
-			_bootstrapSubProcessSceneSystem,
-			_bootstrapSubProcessMenuSystem,
-			_bootstrapSubProcessPlayerSystems,
-			_canvasPauseMenu,
-			_canvasHUDhealthAndMana,
-			_canvasHUDammo,
-			_canvasMenuWeaponWheel);
-		yield return StartCoroutine(_bootstrapSubProcessPlayerResources.InitializePlayerResources());
 
 		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessInteractionSystem(
 			this,
@@ -159,19 +148,17 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
 			_bootstrapSubProcessPlayerSystems,
-			_bootstrapSubProcessPlayerResources,
 			_bootstrapSubProcessInteractionSystem,
 			_canvasMenuWeaponWheel,
 			_playerGameObject,
-			_bootstrapSubProcessPlayerResources.PlayerResourcesAmmoManager,
-			_bootstrapSubProcessPlayerResources.CanvasHUDammoController,
+			_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager,
 			_canvasHUDammo,
-			_bootstrapSubProcessPlayerResources.TextRightWeaponAmmoMagazineNumber,
-			_bootstrapSubProcessPlayerResources.TextRightWeaponAmmoReserveNumber,
-			_bootstrapSubProcessPlayerResources.RightWeaponAmmoSeparator,
-			_bootstrapSubProcessPlayerResources.TextLeftWeaponAmmoMagazineNumber,
-			_bootstrapSubProcessPlayerResources.TextLeftWeaponAmmoReserveNumber,
-			_bootstrapSubProcessPlayerResources.LeftWeaponAmmoSeparator);
+			_bootstrapSubProcessMenuSystem.TextRightWeaponAmmoMagazineNumber,
+			_bootstrapSubProcessMenuSystem.TextRightWeaponAmmoReserveNumber,
+			_bootstrapSubProcessMenuSystem.RightWeaponAmmoSeparator,
+			_bootstrapSubProcessMenuSystem.TextLeftWeaponAmmoMagazineNumber,
+			_bootstrapSubProcessMenuSystem.TextLeftWeaponAmmoReserveNumber,
+			_bootstrapSubProcessMenuSystem.LeftWeaponAmmoSeparator);
 		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
 
 		yield return StartCoroutine(RegisterBootstrapDependencies());
@@ -198,7 +185,7 @@ public class Bootstrap : MonoBehaviour
 		{
 			foreach (var ammoEntry in startAmmoEntries)
 			{
-				_bootstrapSubProcessPlayerResources.PlayerResourcesAmmoManager.SetNewInitialAmmo(
+				_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager.SetNewInitialAmmo(
 					ammoEntry.AmmoType,
 					ammoEntry.StartAmount
 				);

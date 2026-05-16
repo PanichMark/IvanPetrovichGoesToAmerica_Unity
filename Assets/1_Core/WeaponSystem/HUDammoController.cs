@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class CanvasHUDammoController : MonoBehaviour
+public class HUDammoController : MonoBehaviour
 {
 	private MenuManager _menuManager;
 	private GameObject _canvasHUDammo;

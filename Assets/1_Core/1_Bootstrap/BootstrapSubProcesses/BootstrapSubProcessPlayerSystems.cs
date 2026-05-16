@@ -1,11 +1,14 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BootstrapSubProcessPlayerSystems
 {
 	private Bootstrap _bootstrap;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 
+	private GameController _gameController;
 	private IInputDevice _inputDevice;
 	private GameSceneManager _gameSceneManager;
 
@@ -31,9 +34,18 @@ public class BootstrapSubProcessPlayerSystems
 
 	private PlayerMovementAnimationController _playerMovementAnimationController;
 
+	private PlayerResourcesHealthManager _playerResourcesHealthManager;
+
+	private PlayerResourcesManaManager _playerResourcesManaManager;
+
+	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
+
+	public PlayerResourcesAmmoManager PlayerResourcesAmmoManager { get; private set; }
+
 	public BootstrapSubProcessPlayerSystems(
 		Bootstrap bootstrap,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
+		GameController gameController,
 		IInputDevice inputDevice,
 		GameSceneManager gameSceneManager,
 		GameObject playerGameObject,
@@ -41,6 +53,7 @@ public class BootstrapSubProcessPlayerSystems
 	{
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
+		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_gameSceneManager = gameSceneManager;
 		_gameObjectPlayer = playerGameObject;
@@ -62,6 +75,11 @@ public class BootstrapSubProcessPlayerSystems
 		_playerCameraBlurFilter = _gameObjectPlayerCamera.GetComponent<PlayerCameraBlurFilter>();
 		_playerCameraFirstPersonRender = _gameObjectPlayerCamera.GetComponent<PlayerCameraFirstPersonRender>();
 
+		_playerResourcesHealthManager = _gameObjectPlayer.GetComponent<PlayerResourcesHealthManager>();
+		_playerResourcesManaManager = _gameObjectPlayer.GetComponent<PlayerResourcesManaManager>();
+		_playerResourcesMoneyManager = _gameObjectPlayer.GetComponent<PlayerResourcesMoneyManager>();
+		PlayerResourcesAmmoManager = _gameObjectPlayer.GetComponent<PlayerResourcesAmmoManager>();
+
 		_gameObjectPlayerHead = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHeadGameObject");
 		GameObjectPlayerFirstPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonHandRightGameObject");
 		GameObjectPlayerFirstPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonHandLeftGameObject");
@@ -71,12 +89,20 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerBehaviour.Initialize(_inputDevice);
 		PlayerMovementController.Initialize(_inputDevice, _gameSceneManager, PlayerBehaviour);
 		PlayerMovementStateMachineController.Initialize(_inputDevice, _gameSceneManager, PlayerMovementController);
+
 		_playerColliderController.Initialize(PlayerMovementStateMachineController);
+
 		PlayerCameraController.Initialize(_inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, PlayerMovementController, PlayerMovementStateMachineController, _playerColliderController, _gameObjectPlayer);
 		PlayerCameraStateMachineController.Initialize(_inputDevice, _gameSceneManager, PlayerMovementController, PlayerMovementStateMachineController, PlayerCameraController);
 		_playerCameraBlurFilter.Initialize(_bootstrapSubProcessMenuSystem.MenuManager);
 		_playerCameraFirstPersonRender.Initialize(PlayerCameraStateMachineController, _gameObjectPlayerHead);
+
 		_playerMovementAnimationController.Initialize(_inputDevice, PlayerBehaviour, PlayerMovementStateMachineController, PlayerCameraStateMachineController, _gameObjectPlayer);
+
+		_playerResourcesHealthManager.Initialize(_gameController, PlayerBehaviour, _bootstrapSubProcessMenuSystem.SliderHealthBar, _bootstrapSubProcessMenuSystem.ButtonUseHealingItem, _bootstrapSubProcessMenuSystem.TextHealingItemNumber);
+		_playerResourcesManaManager.Initialize(_bootstrapSubProcessMenuSystem.SliderManaBar, _bootstrapSubProcessMenuSystem.ButtonUseManaReplenishItem, _bootstrapSubProcessMenuSystem.TextManaReplenishItemNumber);
+		_playerResourcesMoneyManager.Initialize(_bootstrapSubProcessMenuSystem.TextPlayerMoneyNumber);
+		PlayerResourcesAmmoManager.Initialize();
 
 		ServiceLocator.Register("PlayerBehaviour", PlayerBehaviour);
 		ServiceLocator.Register("PlayerMovementController", PlayerMovementController);
@@ -88,7 +114,12 @@ public class BootstrapSubProcessPlayerSystems
 		ServiceLocator.Register("GameObjectPlayer", _gameObjectPlayer);
 		ServiceLocator.Register("GameObjectPlayerCollider", _gameObjectPlayerCollider);
 		ServiceLocator.Register("GameObjectPlayerCamera", _gameObjectPlayerCamera);
-	
+
+		ServiceLocator.Register("PlayerResourcesHealthManager", _playerResourcesHealthManager);
+		ServiceLocator.Register("PlayerResourcesManaManager", _playerResourcesManaManager);
+		ServiceLocator.Register("PlayerResourcesMoneyManager", _playerResourcesMoneyManager);
+		ServiceLocator.Register("PlayerResourcesAmmoManager", PlayerResourcesAmmoManager);
+
 		Debug.Log("PLAYER SYSTEMS INITIALIZED");
 
 		yield break;

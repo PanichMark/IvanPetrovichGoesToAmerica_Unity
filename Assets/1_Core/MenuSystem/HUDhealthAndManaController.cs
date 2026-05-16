@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-public class CanvasHUDhealthAndManaController : MonoBehaviour
+public class HUDhealthAndManaController : MonoBehaviour
 {
     private MenuManager _menuManager;
     private GameObject _canvasHUDhealthAndMana;

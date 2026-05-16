@@ -10,10 +10,12 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 	public int MaxPlayerMana { get; private set; } = 100;
 	public int CurrentPlayerMana { get; private set; }
 
+	private int _manaItemEffect = 34;
 	public int MaxManaReplenishItemsNumber { get; private set; } = 9;
 
 	public int CurrentManaReplenishItemsNumber { get; private set; }
 
+	private bool _isInitialized;
 	public void Initialize(Slider ManaBarSlider, Button ManaReplenishtemButton, TextMeshProUGUI ManaReplenishItemNumber)
 	{
 		_sliderManaBar = ManaBarSlider;
@@ -22,14 +24,16 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		_buttonManaReplenishtem.onClick.AddListener(() => UseManaReplenishItem());
 
 		_sliderManaBar.maxValue = MaxPlayerMana;
+
+		_isInitialized = true;
+
 		Debug.Log("PlayerResourcesMana Initialized");
 	}
 
 	void Update()
 	{
-		_sliderManaBar.value = CurrentPlayerMana;
-
-		_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+		if (!_isInitialized)
+			return;
 	}
 
 	private void UseManaReplenishItem()
@@ -38,10 +42,20 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		{
 			if (CurrentPlayerMana < MaxPlayerMana)
 			{
-				Debug.Log("Used ManaReplenish Item");
 				CurrentManaReplenishItemsNumber--;
 
-				CurrentPlayerMana += 34;
+				CurrentPlayerMana += _manaItemEffect;
+
+				if (CurrentPlayerMana >= MaxPlayerMana)
+				{
+					CurrentPlayerMana = MaxPlayerMana;
+				}
+
+				_sliderManaBar.value = CurrentPlayerMana;
+
+				_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+
+				Debug.Log("Used ManaReplenish Item");
 			}
 			else Debug.Log("Mana is already Full");
 		}
@@ -52,8 +66,11 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 	{
 		if (CurrentManaReplenishItemsNumber < 9)
 		{
-			Debug.Log("Added ManaReplenish Item");
 			CurrentManaReplenishItemsNumber++;
+
+			_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+
+			Debug.Log("Added ManaReplenish Item");
 		}
 		else Debug.Log("Max ManaReplenish Items");
 	}
@@ -61,6 +78,9 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 	public void UseMana(int ManaCost)
 	{
 		CurrentPlayerMana -= ManaCost;
+
+		_sliderManaBar.value = CurrentPlayerMana;
+
 		Debug.Log($"used: {ManaCost} mana");
 	}
 
@@ -74,5 +94,9 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 	{
 		CurrentPlayerMana = data.PlayerMana;
 		CurrentManaReplenishItemsNumber = data.ManaReplenishItems;
+
+		_sliderManaBar.value = CurrentPlayerMana;
+
+		_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
 	}
 }

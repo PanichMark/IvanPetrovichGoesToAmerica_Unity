@@ -1,10 +1,13 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BootstrapSubProcessMenuSystem
 {
 	private Bootstrap _bootstrap;
+
+	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
 
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
@@ -62,8 +65,34 @@ public class BootstrapSubProcessMenuSystem
 	private CutsceneMenuController _cutsceneMenuController;
 	private GameObject _canvasMenuCutscene;
 
+	private HUDhealthAndManaController _HUDhealthAndManaController;
+	private GameObject _canvasHUDhealthAndMana;
+	public Slider SliderHealthBar { get; private set; }
+	public Button ButtonUseHealingItem {  get; private set; }
+	public TextMeshProUGUI TextHealingItemNumber { get; private set; }
+	public Slider SliderManaBar {  get; private set; }
+	public Button ButtonUseManaReplenishItem {  get; private set; }
+	public TextMeshProUGUI TextManaReplenishItemNumber { get; private set; }
+
+	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
+	public TMP_Text TextPlayerMoneyNumber { get; private set; }
+
+	public PlayerResourcesAmmoManager PlayerResourcesAmmoManager { get; private set; }
+	public HUDammoController HUDammoController { get; private set; }
+
+	private GameObject _canvasHUDammo;
+	public GameObject TextRightWeaponAmmoMagazineNumber { get; private set; }
+	public GameObject TextRightWeaponAmmoReserveNumber { get; private set; }
+	public GameObject RightWeaponAmmoSeparator { get; private set; }
+	public GameObject TextLeftWeaponAmmoMagazineNumber { get; private set; }
+	public GameObject TextLeftWeaponAmmoReserveNumber { get; private set; }
+	public GameObject LeftWeaponAmmoSeparator { get; private set; }
+
+	private GameObject _canvasMenuWeaponWheel;
+
 	public BootstrapSubProcessMenuSystem(
 		Bootstrap bootstrap,
+		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
 		GameController gameController,
 		IInputDevice inputDevice,
 		GameSceneManager gameSceneManager,
@@ -76,9 +105,13 @@ public class BootstrapSubProcessMenuSystem
 		GameObject canvasPauseSubMenuSettings,
 		GameObject canvasMenuConfirmAction,
 		GameObject canvasMainMenuReadNews,
-		GameObject canvasMenuCutscene)
+		GameObject canvasMenuCutscene,
+		GameObject canvasMenuWeaponWheel,
+		GameObject canvasHUDhealthAndMana,
+		GameObject canvasHUDammo)
 	{
 		_bootstrap = bootstrap;
+		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
 		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_gameSceneManager = gameSceneManager;
@@ -92,6 +125,10 @@ public class BootstrapSubProcessMenuSystem
 		_canvasMenuConfirmAction = canvasMenuConfirmAction;
 		_canvasMainMenuReadNews = canvasMainMenuReadNews;
 		_canvasMenuCutscene = canvasMenuCutscene;
+		_canvasMenuWeaponWheel = canvasMenuWeaponWheel;
+		_canvasMenuWeaponWheel = canvasMenuWeaponWheel;
+		_canvasHUDhealthAndMana = canvasHUDhealthAndMana;
+		_canvasHUDammo = canvasHUDammo;
 	}
 
 	public IEnumerator InitializeMenuSystems()
@@ -108,6 +145,24 @@ public class BootstrapSubProcessMenuSystem
 		_confirmActionMenuController = _gameObjectBootstrapMenuSystem.AddComponent<ConfirmActionMenuController>();
 		_mainMenuReadNewsController = _gameObjectBootstrapMenuSystem.AddComponent<MainMenuReadNewsController>();
 		_cutsceneMenuController = _gameObjectBootstrapMenuSystem.AddComponent<CutsceneMenuController>();
+		_HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
+
+		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
+
+		SliderHealthBar = _canvasHUDhealthAndMana.transform.Find("SliderHealthBar").GetComponent<Slider>();
+		ButtonUseHealingItem = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "ButtonUseHealingItem").GetComponent<Button>();
+		TextHealingItemNumber = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "TextHealingItemNumber").GetComponent<TextMeshProUGUI>();
+		SliderManaBar = _canvasHUDhealthAndMana.transform.Find("SliderManaBar").GetComponent<Slider>();
+		ButtonUseManaReplenishItem = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "ButtonUseManaReplenishItem").GetComponent<Button>();
+		TextManaReplenishItemNumber = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "TextManaReplenishItemNumber").GetComponent<TextMeshProUGUI>();
+		TextPlayerMoneyNumber = _canvasPauseMenu.transform.Find("TextPlayerMoneyNumber").GetComponent<TMP_Text>();
+
+		TextRightWeaponAmmoMagazineNumber = _canvasHUDammo.transform.Find("TextRightWeaponAmmoMagazineNumber").gameObject;
+		TextRightWeaponAmmoReserveNumber = _canvasHUDammo.transform.Find("TextRightWeaponAmmoReserveNumber").gameObject;
+		RightWeaponAmmoSeparator = _canvasHUDammo.transform.Find("RightWeaponAmmoSeparator").gameObject;
+		TextLeftWeaponAmmoMagazineNumber = _canvasHUDammo.transform.Find("TextLeftWeaponAmmoMagazineNumber").gameObject;
+		TextLeftWeaponAmmoReserveNumber = _canvasHUDammo.transform.Find("TextLeftWeaponAmmoReserveNumber").gameObject;
+		LeftWeaponAmmoSeparator = _canvasHUDammo.transform.Find("LeftWeaponAmmoSeparator").gameObject;
 
 		_buttonsPauseMenu = new[]
 		{
@@ -193,7 +248,10 @@ public class BootstrapSubProcessMenuSystem
 		_buttonSaveGameSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonSaveSettings");
 		_buttonResetGameSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonResetSettings");
 		_buttonClosePauseSubMenuSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonClosePauseSubMenuSettings");
-	
+
+		SliderHealthBar = _canvasHUDhealthAndMana.transform.Find("SliderHealthBar").GetComponent<Slider>();
+		SliderManaBar = _canvasHUDhealthAndMana.transform.Find("SliderManaBar").GetComponent<Slider>();
+
 		MenuManager.Initialize(_gameController, _inputDevice, _gameSceneManager);
 		_pauseMenuController.Initialize(_gameController, _inputDevice, _gameSceneManager, MenuManager, _canvasPauseMenu, _buttonsPauseMenu, _saveLoadController);
 		_pauseSubMenuSaveController.Initialize(_inputDevice, _saveLoadController, MenuManager, _pauseMenuController, _canvasPauseSubMenuSave, _buttonCreateNewGameFile, _buttonsRewriteGameFile, _buttonsDeleteGameFile, _buttonClosePauseSubMenuSave);
@@ -203,6 +261,7 @@ public class BootstrapSubProcessMenuSystem
 		_confirmActionMenuController.Initialize(_gameSceneManager, _saveLoadController, MenuManager, _pauseMenuController, _pauseSubMenuSaveController, _pauseSubMenuLoadController, _pauseSubMenuSettingsController, _canvasMenuConfirmAction, _buttonConfirmAction, _buttonCancelAction, _textConfirmActionMessage);
 		_mainMenuReadNewsController.Initialize(_inputDevice, _canvasMainMenuReadNews, _buttonCloseMainMenuReadNews);
 		_cutsceneMenuController.Initialize(_gameSceneManager, MenuManager, _canvasMenuCutscene);
+		_HUDhealthAndManaController.Initialize(_gameController, _bootstrapSubProcessSceneSystem.GameSceneManager, MenuManager, _canvasHUDhealthAndMana);
 
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", _pauseMenuController);
