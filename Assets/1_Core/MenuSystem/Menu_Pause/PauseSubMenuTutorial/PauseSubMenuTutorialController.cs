@@ -104,6 +104,8 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 	{
 		InteractionObjectNoteData data = _tutorialNotes[_currentNoteIndex];
 
+		Debug.Log($"Showing TutorialNote #{_currentNoteIndex + 1}");
+
 		string textToShow = data.NoteText_RU.text;
 		
 		_textComponent.text = textToShow;
@@ -111,6 +113,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		if (_imageComponent != null)
 		{
 			Sprite spriteToShow = data.NoteImage;
+			_imageComponent.sprite = spriteToShow;
 			if (spriteToShow != null)
 			{
 				_imageComponent.sprite = spriteToShow;
