@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "ConfigBootstrapPlayerResourcesAmmo", menuName = "Scriptable Objects/Configs/ConfigsBootstrap/ConfigsBootstrapPlayerResources/Ammo")]
+[CreateAssetMenu(fileName = "ConfigBootstrapPlayerResourcesAmmo", menuName = "Configs/ConfigsBootstrap/ConfigsBootstrapPlayerResources/Ammo")]
 public class ConfigBootstrapPlayerResourcesAmmo : ScriptableObject
 {
 	[Serializable]

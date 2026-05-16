@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "ConfigBootstrapInitializationScreenDuration", menuName = "Scriptable Objects/Configs/ConfigsBootstrap/ConfigBootstrapInitializationScreenDuration")]
+[CreateAssetMenu(fileName = "ConfigBootstrapInitializationScreenDuration", menuName = "Configs/ConfigsBootstrap/ConfigBootstrapInitializationScreenDuration")]
 public class ConfigBootstrapInitializationScreenDuration : ScriptableObject
 {
 	public float InitializationScreenDuration;

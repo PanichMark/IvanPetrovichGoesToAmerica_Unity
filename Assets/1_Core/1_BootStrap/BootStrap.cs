@@ -5,14 +5,17 @@ using UnityEngine;
 public class Bootstrap : MonoBehaviour
 {
 	// CONFIG
-	[Header("--- CONFIGS ---")]
+	[Header("--- INITIALIZATION CONFIGS ---")]
 	[SerializeField] private ConfigBootstrapInitializationScreenDuration _configBootstrapInitializationScreenDuration;
 	[SerializeField] private ConfigBootstrapKeyPauseMenu _configBootstrapKeyPauseMenu;
 	[SerializeField] private ConfigBootstrapScene _configBootstrapScene;
 	[SerializeField] private ConfigBootstrapPlayerTransform _configBootstrapPlayerPosition;
 	[SerializeField] private ConfigBootstrapPlayerWeapons _configBootstrapWeapons;
 	[SerializeField] private ConfigBootstrapPlayerResourcesAmmo _configBootstrapPlayerResourcesAmmo;
-	private KeyCode _keyPauseMenu;
+
+	[Header("--- GAME CONFIGS ---")]
+	[SerializeField] private TutorialNotesList _configPauseSubMenuTutorial;
+	public TutorialNotesList ConfigPauseSubMenuTutorial => _configPauseSubMenuTutorial;
 
 	// Экран Инициализации Bootstrap
 	private GameObject _gameObjectBootstrapTemporaryCamera;
@@ -23,6 +26,7 @@ public class Bootstrap : MonoBehaviour
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
 	private LocalizationManager _localizationManager;
+	private KeyCode _keyPauseMenu; // Кнопка открывания/закрывания меню паузы
 
 	// Меню
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
