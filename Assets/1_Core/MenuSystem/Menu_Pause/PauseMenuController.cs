@@ -20,7 +20,8 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnClosePauseMenu;
 	public event OpenPauseMenuEventHandler OnOpenSaveSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenLoadSubMenu;
-	public event OpenPauseMenuEventHandler OnOpenImagesSubMenu;
+	public event OpenPauseMenuEventHandler OnOpenAppearanceSubMenu;
+	public event OpenPauseMenuEventHandler OnOpenTutorialSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenSettingsSubMenu;
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnClosePauseSubMenu;
@@ -45,9 +46,10 @@ public class PauseMenuController : MonoBehaviour
 		_buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(_menuManager.ClosePauseMenu);     
 		_buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
 		_buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
-		_buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenAppearanceSubMenu);              
-		_buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);
-		_buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(ExitToMainMenu);
+		_buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenAppearanceSubMenu);
+		_buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenTutorialSubMenu);
+		_buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);
+		_buttonsPauseMenu[6].GetComponent<Button>().onClick.AddListener(ExitToMainMenu);
 
 		_menuManager.OnOpenPauseMenu += ShowPauseMenu;
 		_menuManager.OnClosePauseMenu += HidePauseMenu;
@@ -128,6 +130,7 @@ public class PauseMenuController : MonoBehaviour
 		_buttonsPauseMenu[0].SetActive(true);
 		_buttonsPauseMenu[1].SetActive(true);
 		_buttonsPauseMenu[3].SetActive(true);
+		_buttonsPauseMenu[4].SetActive(true);
 	}
 
 	private void HideDeathPauseMenuButtons()
@@ -135,6 +138,7 @@ public class PauseMenuController : MonoBehaviour
 		_buttonsPauseMenu[0].SetActive(false);
 		_buttonsPauseMenu[1].SetActive(false);
 		_buttonsPauseMenu[3].SetActive(false);
+		_buttonsPauseMenu[4].SetActive(false);
 	}
 
 	public void ClosePauseSubMenu()
@@ -186,14 +190,25 @@ public class PauseMenuController : MonoBehaviour
 		Debug.Log("LoadSubMenu opened");
 		HidePauseMenu();
 	}
+
 	public void OpenAppearanceSubMenu()
 	{
 		_isAnySubMenuOpened = true;
-		OnOpenImagesSubMenu?.Invoke();
+		OnOpenAppearanceSubMenu?.Invoke();
 		_menuManager.PauseMenuLevel.Push(2);
-		Debug.Log("ImagesSubMenu opened");
+		Debug.Log("AppearanceSubMenu opened");
 		HidePauseMenu();
 	}
+
+	public void OpenTutorialSubMenu()
+	{
+		_isAnySubMenuOpened = true;
+		OnOpenTutorialSubMenu?.Invoke();
+		_menuManager.PauseMenuLevel.Push(2);
+		Debug.Log("TutorialSubMenu opened");
+		HidePauseMenu();
+	}
+
 	public void OpenSettingsSubMenu()
 	{
 		_isAnySubMenuOpened = true;

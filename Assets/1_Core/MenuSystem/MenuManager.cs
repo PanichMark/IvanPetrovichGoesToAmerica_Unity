@@ -88,7 +88,6 @@ public class MenuManager : MonoBehaviour
 				if (!_gameController.IsPlayerDead)
 				{
 					ClosePauseMenu();
-					//Debug.Log("BRUH!");
 				}
 				if (IsDialogueMenuOpened)
 				{
@@ -105,8 +104,6 @@ public class MenuManager : MonoBehaviour
 				CloseConfirmationOnExitToMainMenu();
 			}
 		}
-		//Debug.Log(PauseMenuLevel.Count);
-		//Debug.Log(IsConfirmationOnExitToMainMenuOpened);
 	}
 
 	public void OpenConfirmationOnExitToMainMenu()

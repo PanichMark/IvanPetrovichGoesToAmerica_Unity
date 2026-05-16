@@ -33,6 +33,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasPauseSubMenuSave;
 	[SerializeField] private GameObject _canvasPauseSubMenuLoad;
 	[SerializeField] private GameObject _canvasPauseSubMenuAppearance;
+	[SerializeField] private GameObject _canvasPauseSubMenuTutorial;
 	[SerializeField] private GameObject _canvasPauseSubMenuSettings;
 	[SerializeField] private GameObject _canvasMenuConfirmAction;
 	[SerializeField] private GameObject _canvasMenuCutscene;
@@ -106,6 +107,7 @@ public class Bootstrap : MonoBehaviour
 			_canvasPauseMenu,
 			_canvasPauseSubMenuSave,
 			_canvasPauseSubMenuLoad,
+			_canvasPauseSubMenuTutorial,
 			_canvasPauseSubMenuAppearance,
 			_canvasPauseSubMenuSettings,
 			_canvasMenuConfirmAction,
@@ -246,6 +248,7 @@ public class Bootstrap : MonoBehaviour
 		_canvasHUDammo = Instantiate(_canvasHUDammo);
 		_canvasMenuConfirmAction = Instantiate(_canvasMenuConfirmAction);
 		_canvasMenuCutscene = Instantiate(_canvasMenuCutscene);
+		_canvasPauseSubMenuTutorial = Instantiate(_canvasPauseSubMenuTutorial);
 
 		Debug.Log("CANVASES INITIALIZED");
 		yield break;
