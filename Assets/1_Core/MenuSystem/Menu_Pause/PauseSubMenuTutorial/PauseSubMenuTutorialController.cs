@@ -17,7 +17,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 	private PauseMenuController _pauseMenuController;
 	private bool _isPauseSubMenuTutorialOpened;
 
-	private List<NoteData> _tutorialNotes = new List<NoteData>();
+	private List<InteractionObjectNoteData> _tutorialNotes = new List<InteractionObjectNoteData>();
 	private int _currentNoteIndex = 0;
 
 	private TextMeshProUGUI _textComponent;
@@ -32,7 +32,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		GameObject buttonPreviousTutorial,
 		GameObject tutorialNoteText,
 		GameObject tutorialNoteImage,
-		List<NoteData> tutorialNotes)
+		List<InteractionObjectNoteData> tutorialNotes)
 	{
 		_menuManager = menuManager;
 		_pauseMenuController = pauseMenuController;
@@ -102,15 +102,15 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 
 	private void UpdateUIWithCurrentNote()
 	{
-		NoteData data = _tutorialNotes[_currentNoteIndex];
+		InteractionObjectNoteData data = _tutorialNotes[_currentNoteIndex];
 
-		string textToShow = data.Text_RU.text;
+		string textToShow = data.NoteText_RU.text;
 		
 		_textComponent.text = textToShow;
 
 		if (_imageComponent != null)
 		{
-			Sprite spriteToShow = data.Image;
+			Sprite spriteToShow = data.NoteImage;
 			if (spriteToShow != null)
 			{
 				_imageComponent.sprite = spriteToShow;

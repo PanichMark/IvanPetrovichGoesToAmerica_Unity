@@ -10,7 +10,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	public string InteractionObjectNameUI => _interactionObjectNameUI;
 
 	// Заменяем поля на ссылку на ScriptableObject
-	[SerializeField] private NoteData noteData;
+	[SerializeField] private InteractionObjectNoteData noteData;
 
 	private MenuManager _menuManager;
 	private bool _isReading;
@@ -42,7 +42,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 			return; // Останавливаем инициализацию, если данных нет
 		}
 
-		_isThereText = (noteData.Text_RU != null && noteData.Text_EN != null);
+		_isThereText = (noteData.NoteText_RU != null && noteData.NoteText_EN != null);
 
 		// Остальная инициализация остается прежней
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
@@ -98,7 +98,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 		// Используем данные из ScriptableObject напрямую
 		_imageComponent.gameObject.SetActive(true);
-		_imageComponent.sprite = noteData.Image;
+		_imageComponent.sprite = noteData.NoteImage;
 
 		if (_isThereText)
 		{
@@ -106,8 +106,8 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 			var _localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 			localizedTextFile = (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
-				? noteData.Text_RU
-				: noteData.Text_EN;
+				? noteData.NoteText_RU
+				: noteData.NoteText_EN;
 
 			_backgroundBack.gameObject.SetActive(true);
 			_descriptionText.text = localizedTextFile.text;
