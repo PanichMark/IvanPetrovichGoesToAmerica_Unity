@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2151144761444843108
+--- !u!1 &3164508963345200717
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,128 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5240049386504546340}
-  - component: {fileID: 4483883847311020711}
-  - component: {fileID: 3895360236453502418}
+  - component: {fileID: 4093994162167187299}
+  - component: {fileID: 1957720338540051952}
+  - component: {fileID: 4187507322203004678}
   m_Layer: 0
-  m_Name: RangedHarmonicaRevolver_3
+  m_Name: UNITY PlungerCrossbowBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5240049386504546340
+--- !u!4 &4093994162167187299
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2151144761444843108}
+  m_GameObject: {fileID: 3164508963345200717}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7552693236883265341}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &1957720338540051952
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3164508963345200717}
+  m_Mesh: {fileID: -6194578219828239604, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
+--- !u!23 &4187507322203004678
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3164508963345200717}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 96b0ef4b48853a243a3b3f5f6e3dc78a, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6141407380874793440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7552693236883265341}
+  - component: {fileID: 2962544025509660874}
+  - component: {fileID: 2538468994636503740}
+  m_Layer: 0
+  m_Name: idx6_PlungerCrossbow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7552693236883265341
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6141407380874793440}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3534193635123159324}
-  - {fileID: 3786155685615179657}
-  - {fileID: 1880569035215099442}
+  - {fileID: 4093994162167187299}
+  - {fileID: 5983616536187719425}
+  - {fileID: 5377186964852862443}
+  - {fileID: 5212804054194411987}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &4483883847311020711
+--- !u!23 &2962544025509660874
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2151144761444843108}
+  m_GameObject: {fileID: 6141407380874793440}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -81,19 +168,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3895360236453502418
+--- !u!114 &2538468994636503740
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2151144761444843108}
+  m_GameObject: {fileID: 6141407380874793440}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a66aa19e11c5e4fa4366efb78f34cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c4ca3ddbebf0fd47b94f04f7099a567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6945490461067645592
+--- !u!1 &6947429149025290432
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,46 +188,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1880569035215099442}
-  - component: {fileID: 2105425547966046605}
-  - component: {fileID: 3295232369303748130}
+  - component: {fileID: 5983616536187719425}
+  - component: {fileID: 5662362599041109778}
+  - component: {fileID: 781466795805172468}
   m_Layer: 0
-  m_Name: UNITY HarmonicaGun
+  m_Name: UNITY PlungerCrossbowDisc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1880569035215099442
+--- !u!4 &5983616536187719425
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6945490461067645592}
+  m_GameObject: {fileID: 6947429149025290432}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5240049386504546340}
+  m_Father: {fileID: 7552693236883265341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2105425547966046605
+--- !u!33 &5662362599041109778
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6945490461067645592}
-  m_Mesh: {fileID: -1820889625587465607, guid: f5016e0d89cf39740a98dfb36892b75d, type: 3}
---- !u!23 &3295232369303748130
+  m_GameObject: {fileID: 6947429149025290432}
+  m_Mesh: {fileID: -849696863519967328, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
+--- !u!23 &781466795805172468
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6945490461067645592}
+  m_GameObject: {fileID: 6947429149025290432}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -157,7 +244,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 660b649c21002c04f9a20b56c04979be, type: 2}
+  - {fileID: 2100000, guid: 96b0ef4b48853a243a3b3f5f6e3dc78a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -179,7 +266,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &7755875843088855682
+--- !u!1 &7440211891031431086
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,46 +274,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3786155685615179657}
-  - component: {fileID: 4111229968890395742}
-  - component: {fileID: 3477904862325939925}
+  - component: {fileID: 5377186964852862443}
+  - component: {fileID: 8232593675736680469}
+  - component: {fileID: 4618487859381048032}
   m_Layer: 0
-  m_Name: UNITY HarmonicaCartridge
+  m_Name: UNITY PlungerCrossbowProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3786155685615179657
+--- !u!4 &5377186964852862443
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7755875843088855682}
+  m_GameObject: {fileID: 7440211891031431086}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5240049386504546340}
+  m_Father: {fileID: 7552693236883265341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4111229968890395742
+--- !u!33 &8232593675736680469
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7755875843088855682}
-  m_Mesh: {fileID: -8831183453529931533, guid: f5016e0d89cf39740a98dfb36892b75d, type: 3}
---- !u!23 &3477904862325939925
+  m_GameObject: {fileID: 7440211891031431086}
+  m_Mesh: {fileID: -5040180719448318721, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
+--- !u!23 &4618487859381048032
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7755875843088855682}
+  m_GameObject: {fileID: 7440211891031431086}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -243,7 +330,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 660b649c21002c04f9a20b56c04979be, type: 2}
+  - {fileID: 2100000, guid: 96b0ef4b48853a243a3b3f5f6e3dc78a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -265,7 +352,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &7787471234635251740
+--- !u!1 &8326060748985801575
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -273,46 +360,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3534193635123159324}
-  - component: {fileID: 2676098528326143222}
-  - component: {fileID: 4207880360852458549}
+  - component: {fileID: 5212804054194411987}
+  - component: {fileID: 4505628550852924895}
+  - component: {fileID: 8907028639209289274}
   m_Layer: 0
-  m_Name: UNITY HarmonicaBullet
+  m_Name: UNITY PlungerCrossbowRope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3534193635123159324
+--- !u!4 &5212804054194411987
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7787471234635251740}
+  m_GameObject: {fileID: 8326060748985801575}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5240049386504546340}
+  m_Father: {fileID: 7552693236883265341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2676098528326143222
+--- !u!33 &4505628550852924895
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7787471234635251740}
-  m_Mesh: {fileID: 8968747897976216289, guid: f5016e0d89cf39740a98dfb36892b75d, type: 3}
---- !u!23 &4207880360852458549
+  m_GameObject: {fileID: 8326060748985801575}
+  m_Mesh: {fileID: -1206145331394003102, guid: cf854d101f227644683c98b35f6a83d1, type: 3}
+--- !u!23 &8907028639209289274
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7787471234635251740}
+  m_GameObject: {fileID: 8326060748985801575}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -329,7 +416,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 660b649c21002c04f9a20b56c04979be, type: 2}
+  - {fileID: 2100000, guid: 96b0ef4b48853a243a3b3f5f6e3dc78a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

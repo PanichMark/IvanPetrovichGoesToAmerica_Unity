@@ -16,7 +16,7 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 	public override float WeaponDamage => 45f;
 	public override string WeaponNameSystem => "PoliceBaton";
 	public override string WeaponNameUI => "Милицейская Дубинка";
-	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponPoliceBatonIcon");
+	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponMeleePoliceBatonIcon");
 
 	protected override void SetUpMeleeWeapon()
 	{

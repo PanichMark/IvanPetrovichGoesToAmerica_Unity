@@ -96,6 +96,9 @@ public class PauseMenuController : MonoBehaviour
 	{
 		for (int i = 0; i < _buttonsPauseMenu.Length; i++)
 		{
+			if (i == 3)
+				continue; // SKIP! - Appearance SubMenu
+
 			_buttonsPauseMenu[i].GetComponent<Button>().interactable = true;
 		}
 	}

@@ -107,10 +107,10 @@ public class CanvasHUDammoController : MonoBehaviour
 			if (_playerWeaponController.LeftHandWeapon != null && ranged != null)
 			{
 				ShowLeftWeaponAmmo();
-				Debug.Log(ranged.PlayerMagazineAmmoCurrent.ToString());
+
 				_leftWeaponAmmoMagazineText.text = ranged.PlayerMagazineAmmoCurrent.ToString();
 
-				if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
+				if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.PlayerWeaponAmmoType, out var ammoData))
 				{
 					_leftWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
 				}
@@ -129,7 +129,7 @@ public class CanvasHUDammoController : MonoBehaviour
 
 				_rightWeaponAmmoMagazineText.text = ranged.PlayerMagazineAmmoCurrent.ToString();
 
-				if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.WeaponAmmoType, out var ammoData))
+				if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.PlayerWeaponAmmoType, out var ammoData))
 				{
 					_rightWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
 				}
@@ -155,7 +155,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		if (_playerWeaponController.RightHandWeapon != null)
 		{
 			var rightRanged = _playerWeaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
-			if (rightRanged != null && rightRanged.WeaponAmmoType == type)
+			if (rightRanged != null && rightRanged.PlayerWeaponAmmoType == type)
 			{
 				_rightWeaponAmmoReserveText.text = newTotalAmount.ToString();
 				return;
@@ -165,7 +165,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		if (_playerWeaponController.LeftHandWeapon != null)
 		{
 			var leftRanged = _playerWeaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
-			if (leftRanged != null && leftRanged.WeaponAmmoType == type)
+			if (leftRanged != null && leftRanged.PlayerWeaponAmmoType == type)
 			{
 				_leftWeaponAmmoReserveText.text = newTotalAmount.ToString();
 				return;
@@ -178,7 +178,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		if (_playerWeaponController.RightHandWeapon != null)
 		{
 			var rightRanged = _playerWeaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
-			if (rightRanged != null && rightRanged.WeaponAmmoType == type)
+			if (rightRanged != null && rightRanged.PlayerWeaponAmmoType == type)
 			{
 				_rightWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
 				return;
@@ -188,7 +188,7 @@ public class CanvasHUDammoController : MonoBehaviour
 		if (_playerWeaponController.LeftHandWeapon != null)
 		{
 			var leftRanged = _playerWeaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
-			if (leftRanged != null && leftRanged.WeaponAmmoType == type)
+			if (leftRanged != null && leftRanged.PlayerWeaponAmmoType == type)
 			{
 				_leftWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
 				return;

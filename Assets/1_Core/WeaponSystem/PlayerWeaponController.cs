@@ -24,7 +24,7 @@ public class PlayerWeaponController : MonoBehaviour
 	public bool IsAbleToUseLeftWeapon { get; private set; }
 
 	public bool HasAnyWeapon { get; private set; } = false;
-
+	private bool _isInitialized = false;
 	public GameObject LeftHandWeapon { get; private set; }
 	public GameObject RightHandWeapon { get; private set; }
 
@@ -85,6 +85,7 @@ public class PlayerWeaponController : MonoBehaviour
 		}
 		yield return null;
 	}
+
 	private void OnPlayerArmed()
 	{
 		if (RightHandWeaponComponent != null)
@@ -97,6 +98,7 @@ public class PlayerWeaponController : MonoBehaviour
 			ShowWeapon(WeaponHandsEnum.LeftHand);
 		}
 	}
+
 	private void OnPlayerDisarmed()
 	{
 		if (RightHandWeaponComponent != null)
@@ -109,8 +111,6 @@ public class PlayerWeaponController : MonoBehaviour
 			HideWeapon(WeaponHandsEnum.LeftHand); 
 		}
 	}
-
-	private bool _isInitialized = false;
 
 	private void Update()
 	{
@@ -146,24 +146,43 @@ public class PlayerWeaponController : MonoBehaviour
 
 	public void UnlockWeapon(GameObject weaponPrefab)
 	{
-		string[] parts = weaponPrefab.name.Split('_');
-		if (parts.Length != 2)
+		int index = ExtractWeaponIndex(weaponPrefab.name);
+
+		if (index == -1)
 		{
-			Debug.LogError("Некорректное имя префаба оружия!");
+			Debug.LogError($"Некорректное имя префаба оружия: {weaponPrefab.name}. Ожидается формат 'idx[ЧИСЛО]_[Название]'.");
 			return;
 		}
 
-		string weaponName = parts[0]; 
-		int index = int.Parse(parts[1]); 
+		string[] parts = weaponPrefab.name.Split('_');
+		string weaponName = parts.Length > 1 ? parts[1] : "Unknown";
 
-		string key = $"{weaponName}_{index}";
+		string key = $"idx{index}_{weaponName}";
 
 		UnlockedWeapons[key] = weaponPrefab;
 		SetHasAnyWeapon();
 
 		OnWeaponUnlocked?.Invoke(weaponPrefab);
 
-		Debug.Log($"Unlocked {weaponPrefab}");
+		Debug.Log($"Unlocked {key}");
+	}
+
+	public int ExtractWeaponIndex(string name)
+	{
+		int idxPos = name.IndexOf("idx");
+		if (idxPos == -1)
+			return -1; 
+
+		int nextUnderscorePos = name.IndexOf('_', idxPos + 3);
+		if (nextUnderscorePos == -1)
+			return -1;
+
+		string numberStr = name.Substring(idxPos + 3, nextUnderscorePos - (idxPos + 3));
+
+		if (int.TryParse(numberStr, out int result))
+			return result;
+
+		return -1;
 	}
 
 	private void SetHasAnyWeapon()
@@ -188,7 +207,6 @@ public class PlayerWeaponController : MonoBehaviour
 			return;
 		}
 
-		// --- СОХРАНЕНИЕ МАГАЗИНА ТЕКУЩЕГО ОРУЖИЯ В РУКЕ ---
 		WeaponRangedAbstract rangedToSave = null;
 		if (IsLeftHand && LeftHandWeapon != null)
 		{
@@ -208,8 +226,6 @@ public class PlayerWeaponController : MonoBehaviour
 				_ammoManager.WeaponDictionary[key] = data;
 			}
 		}
-		// --- КОНЕЦ СОХРАНЕНИЯ ---
-
 
 		bool isSameObject = (IsLeftHand && LeftHandWeapon == weaponInstance) || (!IsLeftHand && RightHandWeapon == weaponInstance);
 		if (isSameObject)
@@ -228,15 +244,13 @@ public class PlayerWeaponController : MonoBehaviour
 			DestroyWeapon(WeaponHandsEnum.LeftHand);
 		}
 
-		// --- ЗАГРУЗКА ДАННЫХ ДЛЯ НОВОГО ОРУЖИЯ ---
 		if (weaponComponent is WeaponRangedAbstract rangedNew)
 		{
 			WeaponRangedTypes newKey = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedNew.WeaponNameSystem);
 			if (_ammoManager.WeaponDictionary.TryGetValue(newKey, out var newData))
 			{
-				// Используем новые публичные методы
-				rangedNew.SetWeaponAmmoType(newData.AmmoType);
-				rangedNew.SetMagazineProperties(newData.MagazineAmmoMax, newData.MagazineAmmoCurrent);
+				rangedNew.SetPlayerWeaponAmmoType(newData.AmmoType);
+				rangedNew.SetPlayerMagazineProperties(newData.MagazineAmmoMax, newData.MagazineAmmoCurrent);
 			}
 		}
 
@@ -299,7 +313,6 @@ public class PlayerWeaponController : MonoBehaviour
 	{
 		if (handType == WeaponHandsEnum.RightHand)
 		{
-			// Сохраняем магазин, если оружие огнестрельное
 			if (RightHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
 			{
 				WeaponRangedTypes key = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedWeapon.WeaponNameSystem);
@@ -321,7 +334,6 @@ public class PlayerWeaponController : MonoBehaviour
 		}
 		else if (handType == WeaponHandsEnum.LeftHand)
 		{
-			// Сохраняем магазин, если оружие огнестрельное
 			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
 			{
 				WeaponRangedTypes key = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedWeapon.WeaponNameSystem);

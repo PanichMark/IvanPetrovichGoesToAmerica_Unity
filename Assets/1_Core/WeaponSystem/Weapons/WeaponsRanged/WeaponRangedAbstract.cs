@@ -5,10 +5,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private GameObject _shootPoint;
 
-	public int PlayerAmmoTotalMax => _playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoMax;
-	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType].TotalAmmoCurrent;
+	public int PlayerAmmoTotalMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoMax;
+	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoCurrent;
 
-	public AmmoTypes WeaponAmmoType { get; protected set; }
+	public AmmoTypes PlayerWeaponAmmoType { get; protected set; }
 
 	public int PlayerMagazineAmmoMax { get; protected set; }
 	public int PlayerMagazineAmmoCurrent { get; set; }
@@ -24,19 +24,20 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	public override void WeaponAttack()
 	{
-		if (PlayerMagazineAmmoCurrent > 0)
+		if (_isThisPlayerWeapon)
 		{
-			Shoot(WeaponDamage);
-
-			_playerResourcesAmmoManager.OnMagazineAmmoChanged?.Invoke(WeaponAmmoType, PlayerMagazineAmmoCurrent);
-		}
-		else
-		{
-			Debug.Log("Not enough Ammo");
+			if (PlayerMagazineAmmoCurrent > 0)
+			{
+				ShootPlayerWeapon(WeaponDamage);
+			}
+			else
+			{
+				Debug.Log("Not enough Ammo");
+			}
 		}
 	}
 
-	private void Shoot(float weaponDamage)
+	private void ShootPlayerWeapon(float weaponDamage)
 	{
 		RaycastHit hitInfo;
 		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))
@@ -49,19 +50,24 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 
 		PlayerMagazineAmmoCurrent--;
-	}
-	
-	public void SetWeaponAmmoType(AmmoTypes type)
-	{
-		WeaponAmmoType = type;
+
+		_playerResourcesAmmoManager.OnMagazineAmmoChanged?.Invoke(PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 	}
 
-	public void SetMagazineProperties(int maxAmmo, int currentAmmo)
+	public void ShootNPCweapon()
 	{
-		PlayerMagazineAmmoMax = maxAmmo;
-		PlayerMagazineAmmoCurrent = currentAmmo;
+		// TODO
 	}
+
 	public void Reload()
+	{
+		if (_isThisPlayerWeapon)
+		{
+			ReloadPlayerWeapon();
+		}
+	}
+
+	public void ReloadPlayerWeapon()
 	{
 		if (PlayerMagazineAmmoCurrent >= PlayerMagazineAmmoMax)
 		{
@@ -79,15 +85,31 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		int ammoToAdd = Mathf.Min(reserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 
-		var data = _playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType];
+		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 		data.TotalAmmoCurrent -= ammoToAdd;
-		_playerResourcesAmmoManager.AmmoDictionary[WeaponAmmoType] = data;
+		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
 
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
-		_playerResourcesAmmoManager.OnReserveAmmoChanged?.Invoke(WeaponAmmoType, data.TotalAmmoCurrent);
-		_playerResourcesAmmoManager.OnMagazineAmmoChanged?.Invoke(WeaponAmmoType, PlayerMagazineAmmoCurrent);
+		_playerResourcesAmmoManager.OnReserveAmmoChanged?.Invoke(PlayerWeaponAmmoType, data.TotalAmmoCurrent);
+		_playerResourcesAmmoManager.OnMagazineAmmoChanged?.Invoke(PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 
 		Debug.Log("Reloaded");
+	}
+
+	public void ReloadNPCweapon()
+	{
+		// TODO
+	}
+
+	public void SetPlayerWeaponAmmoType(AmmoTypes type)
+	{
+		PlayerWeaponAmmoType = type;
+	}
+
+	public void SetPlayerMagazineProperties(int maxAmmo, int currentAmmo)
+	{
+		PlayerMagazineAmmoMax = maxAmmo;
+		PlayerMagazineAmmoCurrent = currentAmmo;
 	}
 }

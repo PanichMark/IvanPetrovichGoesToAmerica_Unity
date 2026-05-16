@@ -120,8 +120,8 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 		activeWeapons.Sort((a, b) =>
 		{
-			int indexA = int.Parse(a.name.Split('_')[1]);
-			int indexB = int.Parse(b.name.Split('_')[1]);
+			int indexA = _weaponController.ExtractWeaponIndex(a.name);
+			int indexB = _weaponController.ExtractWeaponIndex(b.name);
 			return indexA.CompareTo(indexB);
 		});
 
