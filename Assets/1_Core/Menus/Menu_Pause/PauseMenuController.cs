@@ -58,7 +58,9 @@ public class PauseMenuController : MonoBehaviour
 		_gameController.OnPlayerDeath += HideDeathPauseMenuButtons;
 		_gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
 
+		_menuManager.OnOpenConfirmationOnExitToMainMenu += DisableButtons;
 		_menuManager.OnCloseConfirmationOnExitToMainMenu += ClosePauseConfirmMenu;
+		_menuManager.OnCloseConfirmationOnExitToMainMenu += EnableButtons;
 
 		Debug.Log("PauseMenu Initialized");
 	}
@@ -79,6 +81,22 @@ public class PauseMenuController : MonoBehaviour
 		if (_inputDevice.GetKeyPauseMenu() && _gameController.IsMainMenuOpen && _menuManager.PauseMenuLevel.Count == 2)
 		{
 			ClosePauseConfirmMenu();
+		}
+	}
+
+	private void DisableButtons()
+	{
+		for (int i = 0; i < _buttonsPauseMenu.Length; i++)
+		{
+			_buttonsPauseMenu[i].GetComponent<Button>().interactable = false;
+		}
+	}
+
+	private void EnableButtons()
+	{
+		for (int i = 0; i < _buttonsPauseMenu.Length; i++)
+		{
+			_buttonsPauseMenu[i].GetComponent<Button>().interactable = true;
 		}
 	}
 

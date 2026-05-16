@@ -136,7 +136,11 @@ public class ConfirmActionMenuController : MonoBehaviour
 
 		_confirmationTextComponent.text = "Выйти в главное меню?";
 
-		_onAcceptAction = () => StartCoroutine(_gameSceneManager.LoadMainMenuScene());
+		_onAcceptAction = () => 
+		{
+			_menuManager.CloseConfirmationOnExitToMainMenu();
+			StartCoroutine(_gameSceneManager.LoadMainMenuScene()); 
+		};
 
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
@@ -153,7 +157,9 @@ public class ConfirmActionMenuController : MonoBehaviour
 		{
 			_menuManager.CloseConfirmationOnExitToMainMenu();
 		}
-
-		_pauseMenuController.ClosePauseConfirmMenu(); 
+		else
+		{
+			_pauseMenuController.ClosePauseConfirmMenu();
+		}
 	}
 }
