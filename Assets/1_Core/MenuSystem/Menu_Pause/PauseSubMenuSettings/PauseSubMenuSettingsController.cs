@@ -399,6 +399,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		SettingsData defaultData = new SettingsData
 		{
 			FOV = _MIN_FOV_VALUE,
+			Language = _localizationManager.CurrentLanguage.ToString(),
 			KeyBindings = defaultBindingsSnapshot.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
 		};
 

@@ -112,8 +112,6 @@ public class Bootstrap : MonoBehaviour
 
 		Destroy(_canvasBootstrap);
 
-		PlayerPrefs.DeleteAll();
-
 		if (_firstLaunchPlayerPrefs.IsFirstLaunch || _firstGameLaunch.IsFirstGameLaunch)
 		{
 			yield return StartCoroutine(ChooseFirstLanguage());
@@ -122,9 +120,6 @@ public class Bootstrap : MonoBehaviour
 		{
 			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString("Language")));
 		}
-
-		string savedLang = PlayerPrefs.GetString("Language");
-		Debug.Log("Считано из PlayerPrefs: " + savedLang);
 
 		Destroy(_gameObjectBootstrapTemporaryCamera);
 

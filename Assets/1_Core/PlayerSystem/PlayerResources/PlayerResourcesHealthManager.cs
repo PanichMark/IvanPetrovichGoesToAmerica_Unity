@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
@@ -35,13 +36,12 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 		Debug.Log("PlayerResourcesHealth Initialized");
 	}
 
-
 	void Update()
     {
 		if (!_isInitialized)
 			return;
 
-		if (Input.GetKeyDown(KeyCode.T))
+		if (Input.GetKeyDown(KeyCode.T) && SceneManager.GetSceneAt(1).name != "Scene_0_MainMenu")
 		{
 			ReceiveDamage(900);
 		}

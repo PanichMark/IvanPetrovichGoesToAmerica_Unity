@@ -70,8 +70,11 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 		return data;
 	}
+
 	public void ResetSettings()
 	{
+		string currentLanguage = PlayerPrefs.GetString(Language);
+
 		PlayerPrefs.DeleteKey(FOV);
 
 		string allKeysString = PlayerPrefs.GetString("");
@@ -85,6 +88,10 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 			}
 		}
 
+		PlayerPrefs.SetString(Language, currentLanguage);
+
 		PlayerPrefs.Save();
+
+		Debug.Log("RESET SETTINGS!!");
 	}
 }
