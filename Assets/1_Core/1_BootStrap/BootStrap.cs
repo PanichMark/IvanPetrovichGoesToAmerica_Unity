@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bootstrap : MonoBehaviour
 {
 	[Header("--- BOOTSTRAP CONFIGS ---")]
+	[SerializeField] private ConfigBootstrapFirstGameLaunch _configBootstrapFirstGameLaunch;
 	[SerializeField] private ConfigBootstrapInitializationScreenDuration _configBootstrapInitializationScreenDuration;
 	[SerializeField] private ConfigBootstrapKeyPauseMenu _configBootstrapKeyPauseMenu;
 	[SerializeField] private ConfigBootstrapScene _configBootstrapScene;
@@ -20,6 +22,7 @@ public class Bootstrap : MonoBehaviour
 
 	[Header("Bootstrap")]
 	[SerializeField] private GameObject _canvasBootstrap;
+	[SerializeField] private GameObject _canvasChooseLanguage;
 
 	[Header("Loading Screen")]
 	[SerializeField] private GameObject _canvasLoadingScreen;
@@ -51,6 +54,10 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasMenuLockpickElectronic;
 	[SerializeField] private GameObject _canvasMenuDialogue;
 	[SerializeField] private GameObject _canvasMenuCutscene;
+
+	private FirstLaunchPlayerPrefs _firstLaunchPlayerPrefs;
+	private Button _buttonRussianLangage;
+	private Button _buttonEnglishLanguage;
 
 	private GameObject _gameObjectBootstrapTemporaryCamera;
 
@@ -104,8 +111,14 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.SaveLoadController.NewGame());
 
-		Destroy(_gameObjectBootstrapTemporaryCamera);
 		Destroy(_canvasBootstrap);
+
+		if (_configBootstrapFirstGameLaunch.IsFirstGameLaunch || _firstLaunchPlayerPrefs.IsFirstLaunch)
+		{
+			yield return StartCoroutine(ChooseFirstLanguage());
+		}
+
+		Destroy(_gameObjectBootstrapTemporaryCamera);
 
 		yield return StartCoroutine(LoadFirstGameplayScene());
 
@@ -137,6 +150,8 @@ public class Bootstrap : MonoBehaviour
 
 		_localizationManager = new LocalizationManager();
 
+		_firstLaunchPlayerPrefs = new FirstLaunchPlayerPrefs();
+
 		Debug.Log("INTERFACES INITIALIZED");
 		yield break;
 	}
@@ -144,6 +159,7 @@ public class Bootstrap : MonoBehaviour
 	private IEnumerator InitializeCanvases()
 	{
 		_canvasLoadingScreen = Instantiate(_canvasLoadingScreen);
+		_canvasChooseLanguage = Instantiate(_canvasChooseLanguage);
 
 		_canvasPauseMenu = Instantiate(_canvasPauseMenu);
 		_canvasPauseSubMenuSave = Instantiate(_canvasPauseSubMenuSave);
@@ -171,6 +187,40 @@ public class Bootstrap : MonoBehaviour
 
 		Debug.Log("CANVASES INITIALIZED");
 		yield break;
+	}
+
+	private IEnumerator ChooseFirstLanguage()
+	{
+		Cursor.lockState = CursorLockMode.None; 
+		Cursor.visible = true;
+
+		_canvasChooseLanguage.SetActive(true);
+
+		_buttonRussianLangage = FindDeepGameObject(_canvasChooseLanguage, "Russian").GetComponent<Button>();
+		_buttonEnglishLanguage = FindDeepGameObject(_canvasChooseLanguage, "English").GetComponent<Button>();
+
+		bool languageSelected = false;
+
+		_buttonRussianLangage.onClick.AddListener(() =>
+		{
+			_localizationManager.ChangeLanguage(LanguagesEnum.Russian);
+			languageSelected = true;
+		});
+
+		_buttonEnglishLanguage.onClick.AddListener(() =>
+		{
+			_localizationManager.ChangeLanguage(LanguagesEnum.English);
+			languageSelected = true;
+		});
+
+		yield return new WaitUntil(() => languageSelected);
+
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
+		Destroy(_canvasChooseLanguage);
+
+		_firstLaunchPlayerPrefs.ResetFirstLaunchFlag();
 	}
 
 	private IEnumerator InitializePlayerPrefabs()
