@@ -1,16 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 {
 	public string FOV { get; private set; } = "FOV";
 
 	public string Language { get; private set; } = "Language";
-
+	private IInputDevice _inputDevice;
 	public string KeybindingsPrefix  { get; private set; } = "KeyBinding_";
+	
+	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 
-	public void SaveSettings(SettingsData data)
+	public void Initialize(IInputDevice inputDevice, PauseSubMenuSettingsController pauseSubMenuSettingsController)
+	{
+		_inputDevice = inputDevice;
+		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
+
+		var defaultBindings = _inputDevice.GetDefaultKeyBindings();
+		List<string> actionNames = new List<string>(defaultBindings.Keys);
+
+		LoadSettings(actionNames);
+
+		_pauseSubMenuSettingsController.OnSaveSettingsData += SaveSettings;
+		_pauseSubMenuSettingsController.OnResetSettingsData += ResetSettings;
+		
+		Debug.Log("SettingsPlayerPrefs Initialized");
+	}
+
+	public void SaveSettings(PlayerPrefsData data)
 	{
 		PlayerPrefs.SetFloat(FOV, data.FOV);
 
@@ -24,19 +43,13 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 		PlayerPrefs.Save(); 
 	}
 
-	public SettingsData LoadSettings(List<string> actionNamesToLoad)
+	public void LoadSettings(List<string> actionNamesToLoad)
 	{
-		var data = new SettingsData();
+		var data = new PlayerPrefsData();
 
-		if (PlayerPrefs.HasKey(FOV))
-		{
-			data.FOV = PlayerPrefs.GetFloat(FOV);
-		}
+		data.FOV = PlayerPrefs.GetFloat(FOV);
 
-		if (PlayerPrefs.HasKey(Language))
-		{
-			data.Language = PlayerPrefs.GetString(Language);
-		}
+		data.Language = PlayerPrefs.GetString(Language);
 
 		if (actionNamesToLoad != null && actionNamesToLoad.Count > 0)
 		{
@@ -68,7 +81,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 			}
 		}
 
-		return data;
+		_pauseSubMenuSettingsController.ApplyLoadedSettings(data);
 	}
 
 	public void ResetSettings()

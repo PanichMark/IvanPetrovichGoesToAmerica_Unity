@@ -7,9 +7,15 @@ using System;
 
 public class PauseSubMenuSettingsController : MonoBehaviour
 {
-	public delegate void ChangeSettingsOpenMenuEventHandler();
-	public event ChangeSettingsOpenMenuEventHandler OnRequestSaveSettingsConfirmation;
-	public event ChangeSettingsOpenMenuEventHandler OnRequestResetSettingsConfirmation;
+	public delegate void ConfirmChangeSettingsEventHandler();
+	public event ConfirmChangeSettingsEventHandler OnRequestSaveSettingsConfirmation;
+	public event ConfirmChangeSettingsEventHandler OnRequestResetSettingsConfirmation;
+
+	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
+	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsData;
+
+	public delegate void ResetPlayerPrefsSettingsEventHandler();
+	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsData;
 
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
@@ -20,7 +26,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private GameObject _sliderFOVgameObject;
 	private Button[] _buttonsChangeLanguage;
 	private char _lastValidChar; 
-	private PauseSubMenuSettingsPlayerPrefs _pauseSubMenuSettingsPlayerPrefs;
 	private LocalizationManager _localizationManager;
 	private Slider _sliderFOV;
 
@@ -65,7 +70,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PauseMenuController pauseMenuController,
-		PauseSubMenuSettingsPlayerPrefs pauseSubMenuSettingsPlayerPrefs,
 		GameObject canvasPauseSubMenuSettings,
 		GameObject FOVSlider, 
 		GameObject fovDisplayText,
@@ -97,9 +101,8 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_pauseMenuController.OnCloseAnyPauseSubMenu += HideSettingsSubMenuCanvas;
 		_buttonSaveSettings = buttonSaveSettings;
 		_buttonResetSettings = buttonResetSettings;
-		_pauseSubMenuSettingsPlayerPrefs = pauseSubMenuSettingsPlayerPrefs;
 		
-		_buttonClosePauseSubMenuSettings.GetComponent<Button>().onClick.AddListener(() => this._pauseMenuController.ClosePauseSubMenu());
+		_buttonClosePauseSubMenuSettings.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
 		
 		_buttonSaveSettings.GetComponent<Button>().onClick.AddListener(() => OnRequestSaveSettingsConfirmation());
 		_buttonResetSettings.GetComponent<Button>().onClick.AddListener(() => OnRequestResetSettingsConfirmation());
@@ -159,12 +162,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
 
-		var defaultBindings = _inputDevice.GetDefaultKeyBindings();
-		List<string> actionNames = new List<string>(defaultBindings.Keys);
-
-		SettingsData loadedData = pauseSubMenuSettingsPlayerPrefs.LoadSettings(actionNames);
-
-		ApplyLoadedSettings(loadedData);
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
@@ -380,30 +377,30 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	public void SaveSettings()
 	{
-		var currentData = new SettingsData();
+		var currentData = new PlayerPrefsData();
 		currentData.FOV = _mainCamera.fieldOfView;
 
 		currentData.Language = _localizationManager.CurrentLanguage.ToString();
 
 		currentData.KeyBindings = new Dictionary<string, KeyCode>(_inputDevice.CurrentKeyboardKeyBindings);
 
-		_pauseSubMenuSettingsPlayerPrefs.SaveSettings(currentData);
+		OnSaveSettingsData?.Invoke(currentData);
 	}
 
 	public void ResetSettings()
 	{
-		_pauseSubMenuSettingsPlayerPrefs.ResetSettings();
+		OnResetSettingsData?.Invoke();
 
 		var defaultBindingsSnapshot = _inputDevice.GetDefaultKeyBindings();
 
-		SettingsData defaultData = new SettingsData
+		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
 			FOV = _MIN_FOV_VALUE,
 			Language = _localizationManager.CurrentLanguage.ToString(),
 			KeyBindings = defaultBindingsSnapshot.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
 		};
 
-		_pauseSubMenuSettingsPlayerPrefs.SaveSettings(defaultData);
+		OnSaveSettingsData?.Invoke(defaultData);
 
 		SetFOV(_MIN_FOV_VALUE);
 		_sliderFOV.value = _MIN_FOV_VALUE;
@@ -420,13 +417,10 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		}
 	}
 
-	private void ApplyLoadedSettings(SettingsData data)
+	public void ApplyLoadedSettings(PlayerPrefsData data)
 	{
-		if (PlayerPrefs.HasKey(_pauseSubMenuSettingsPlayerPrefs.FOV))
-		{
-			SetFOV(data.FOV);
-			_sliderFOV.value = data.FOV;
-		}
+		SetFOV(data.FOV);
+		_sliderFOV.value = data.FOV;
 
 		if (data.KeyBindings != null && data.KeyBindings.Count > 0)
 		{

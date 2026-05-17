@@ -56,7 +56,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasMenuDialogue;
 	[SerializeField] private GameObject _canvasMenuCutscene;
 
-	private FirstLaunchPlayerPrefs _firstLaunchPlayerPrefs;
+	private PlayerPrefsData _playerPrefsData;
 	private Button _buttonRussianLangage;
 	private Button _buttonEnglishLanguage;
 
@@ -112,7 +112,9 @@ public class Bootstrap : MonoBehaviour
 
 		Destroy(_canvasBootstrap);
 
-		if (_firstLaunchPlayerPrefs.IsFirstLaunch || _firstGameLaunch.IsFirstGameLaunch)
+		//PlayerPrefs.DeleteAll();
+
+		if (_playerPrefsData.IsFirstLaunch || _firstGameLaunch.IsFirstGameLaunch)
 		{
 			yield return StartCoroutine(ChooseFirstLanguage());
 		}
@@ -153,7 +155,7 @@ public class Bootstrap : MonoBehaviour
 
 		_localizationManager = new LocalizationManager();
 
-		_firstLaunchPlayerPrefs = new FirstLaunchPlayerPrefs();
+		_playerPrefsData = new PlayerPrefsData();
 
 		Debug.Log("INTERFACES INITIALIZED");
 		yield break;
@@ -225,7 +227,7 @@ public class Bootstrap : MonoBehaviour
 
 		Destroy(_canvasChooseLanguage);
 
-		_firstLaunchPlayerPrefs.SetNotFirstLaunch();
+		_playerPrefsData.SetNotFirstLaunch();
 	}
 
 	private IEnumerator InitializePlayerPrefabs()

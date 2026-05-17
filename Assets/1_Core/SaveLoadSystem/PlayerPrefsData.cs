@@ -1,7 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public  class FirstLaunchPlayerPrefs
+public class PlayerPrefsData
 {
+	public float FOV { get; set; }
+
+	public string Language { get; set; }
+
+	public Dictionary<string, KeyCode> KeyBindings { get; set; } = new Dictionary<string, KeyCode>();
+
 	private const string KEY_IS_FIRST_LAUNCH = "IsGameLaunchedForTheFirstTime";
 
 	public bool IsFirstLaunch
