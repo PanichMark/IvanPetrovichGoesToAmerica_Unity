@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 {
-	public string KEY_FOV { get; private set; } = "FOV";
-	public string PREFIX_KEYBINDING  { get; private set; } = "KeyBinding_";
+	public string FOV { get; private set; } = "FOV";
+
+	public string Language { get; private set; } = "Language";
+
+	public string KeybindingsPrefix  { get; private set; } = "KeyBinding_";
 
 	public void SaveSettings(SettingsData data)
 	{
-		PlayerPrefs.SetFloat(KEY_FOV, data.FOV);
+		PlayerPrefs.SetFloat(FOV, data.FOV);
 
-		PlayerPrefs.Save(); 
+		PlayerPrefs.SetString(Language, data.Language);
 
 		foreach (var binding in data.KeyBindings)
 		{
-			PlayerPrefs.SetString(PREFIX_KEYBINDING + binding.Key, binding.Value.ToString());
+			PlayerPrefs.SetString(KeybindingsPrefix + binding.Key, binding.Value.ToString());
 		}
+
 		PlayerPrefs.Save(); 
 	}
 
@@ -24,9 +28,14 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	{
 		var data = new SettingsData();
 
-		if (PlayerPrefs.HasKey(KEY_FOV))
+		if (PlayerPrefs.HasKey(FOV))
 		{
-			data.FOV = PlayerPrefs.GetFloat(KEY_FOV);
+			data.FOV = PlayerPrefs.GetFloat(FOV);
+		}
+
+		if (PlayerPrefs.HasKey(Language))
+		{
+			data.Language = PlayerPrefs.GetString(Language);
 		}
 
 		if (actionNamesToLoad != null && actionNamesToLoad.Count > 0)
@@ -35,7 +44,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 			foreach (string actionName in actionNamesToLoad)
 			{
-				string key = PREFIX_KEYBINDING + actionName;
+				string key = KeybindingsPrefix + actionName;
 				if (PlayerPrefs.HasKey(key))
 				{
 					string savedValueStr = PlayerPrefs.GetString(key);
@@ -63,14 +72,14 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	}
 	public void ResetSettings()
 	{
-		PlayerPrefs.DeleteKey(KEY_FOV);
+		PlayerPrefs.DeleteKey(FOV);
 
 		string allKeysString = PlayerPrefs.GetString("");
 		string[] allKeysArray = allKeysString.Split('\0');
 
 		foreach (string key in allKeysArray)
 		{
-			if (!string.IsNullOrEmpty(key) && key.StartsWith(PREFIX_KEYBINDING))
+			if (!string.IsNullOrEmpty(key) && key.StartsWith(KeybindingsPrefix))
 			{
 				PlayerPrefs.DeleteKey(key);
 			}

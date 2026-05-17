@@ -52,6 +52,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		Sprite spriteToUse = Resources.Load<Sprite>($"Sprites/Sprites_LoadingScreens/{sceneName}");
 
 		_imageLoadingScreen.sprite = spriteToUse;
+		
 		_textSceneName.text = _localizationManager.GetLocalizedString(sceneName);
 
 		if (SceneManager.sceneCount > 1)

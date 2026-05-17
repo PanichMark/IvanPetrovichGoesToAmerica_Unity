@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,19 +7,19 @@ using UnityEngine.UI;
 public class Bootstrap : MonoBehaviour
 {
 	[Header("--- BOOTSTRAP CONFIGS ---")]
-	[SerializeField] private ConfigBootstrapFirstGameLaunch _configBootstrapFirstGameLaunch;
-	[SerializeField] private ConfigBootstrapInitializationScreenDuration _configBootstrapInitializationScreenDuration;
-	[SerializeField] private ConfigBootstrapKeyPauseMenu _configBootstrapKeyPauseMenu;
-	[SerializeField] private ConfigBootstrapScene _configBootstrapScene;
+	[SerializeField] private ConfigBootstrapFirstGameLaunch _firstGameLaunch;
+	[SerializeField] private ConfigBootstrapInitializationScreenDuration _initializationScreenDuration;
+	[SerializeField] private ConfigBootstrapKeyPauseMenu _pauseMenuKey;
+	[SerializeField] private ConfigBootstrapScene _sceneToLoad;
 
 	[Header("--- PLAYER CONFIGs ---")]
-	[SerializeField] private ConfigBootstrapPlayerTransform _configBootstrapPlayerPosition;
-	[SerializeField] private ConfigBootstrapPlayerWeapons _configBootstrapPlayerWeapons;
-	[SerializeField] private ConfigBootstrapPlayerResourcesAmmo _configBootstrapPlayerResourcesAmmo;
+	[SerializeField] private ConfigBootstrapPlayerTransform _playerPosition;
+	[SerializeField] private ConfigBootstrapPlayerWeapons _playerWeapons;
+	[SerializeField] private ConfigBootstrapPlayerResourcesAmmo _playerAmmo;
 
 	[Header("--- TUTORIAL CONFIG ---")]
-	[SerializeField] private TutorialNotesList _configPauseSubMenuTutorial;
-	public TutorialNotesList ConfigPauseSubMenuTutorial => _configPauseSubMenuTutorial;
+	[SerializeField] private TutorialNotesList _tutorialNotes;
+	public TutorialNotesList ConfigPauseSubMenuTutorial => _tutorialNotes;
 
 	[Header("Bootstrap")]
 	[SerializeField] private GameObject _canvasBootstrap;
@@ -103,9 +104,7 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(BootstrapSystemsInitialization());
 
-		yield return new WaitForSecondsRealtime(_configBootstrapInitializationScreenDuration.InitializationScreenDuration);
-
-		ChangeLanguage(LanguagesEnum.Russian);
+		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration);
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
@@ -113,10 +112,19 @@ public class Bootstrap : MonoBehaviour
 
 		Destroy(_canvasBootstrap);
 
-		if (_configBootstrapFirstGameLaunch.IsFirstGameLaunch || _firstLaunchPlayerPrefs.IsFirstLaunch)
+		PlayerPrefs.DeleteAll();
+
+		if (_firstLaunchPlayerPrefs.IsFirstLaunch || _firstGameLaunch.IsFirstGameLaunch)
 		{
 			yield return StartCoroutine(ChooseFirstLanguage());
 		}
+		else
+		{
+			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString("Language")));
+		}
+
+		string savedLang = PlayerPrefs.GetString("Language");
+		Debug.Log("Считано из PlayerPrefs: " + savedLang);
 
 		Destroy(_gameObjectBootstrapTemporaryCamera);
 
@@ -145,7 +153,7 @@ public class Bootstrap : MonoBehaviour
 	{
 		_gameController = new GameController();
 
-		_keyPauseMenu = _configBootstrapKeyPauseMenu.KeyPauseMenu;
+		_keyPauseMenu = _pauseMenuKey.KeyPauseMenu;
 		_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
 
 		_localizationManager = new LocalizationManager();
@@ -203,13 +211,15 @@ public class Bootstrap : MonoBehaviour
 
 		_buttonRussianLangage.onClick.AddListener(() =>
 		{
-			_localizationManager.ChangeLanguage(LanguagesEnum.Russian);
+			ChangeLanguage(LanguagesEnum.Russian);
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsController.SaveSettings();
 			languageSelected = true;
 		});
 
 		_buttonEnglishLanguage.onClick.AddListener(() =>
 		{
-			_localizationManager.ChangeLanguage(LanguagesEnum.English);
+			ChangeLanguage(LanguagesEnum.English);
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsController.SaveSettings();
 			languageSelected = true;
 		});
 
@@ -220,7 +230,7 @@ public class Bootstrap : MonoBehaviour
 
 		Destroy(_canvasChooseLanguage);
 
-		_firstLaunchPlayerPrefs.ResetFirstLaunchFlag();
+		_firstLaunchPlayerPrefs.SetNotFirstLaunch();
 	}
 
 	private IEnumerator InitializePlayerPrefabs()
@@ -251,6 +261,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessSceneSystem,
 			_gameController,
 			_inputDevice,
+			_localizationManager,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessSaveLoadSystem.SaveLoadController,
 			_playerCameraGameObject,
@@ -351,19 +362,19 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator LoadFirstGameplayScene()
 	{
-		if (_configBootstrapScene.SelectedScene.ToString() == "Scene_0_MainMenu")
+		if (_sceneToLoad.SelectedScene.ToString() == "Scene_0_MainMenu")
 		{
 			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadMainMenuScene());
 		}
 		else
 		{
-			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene(_configBootstrapScene.SelectedScene));
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene(_sceneToLoad.SelectedScene));
 		}
 	}
 
 	private void ApplyBootstrapPlayerConfigs()
 	{
-		GameObject[] availableWeapons = _configBootstrapPlayerWeapons.GetAvailableWeapons();
+		GameObject[] availableWeapons = _playerWeapons.GetAvailableWeapons();
 		if (availableWeapons != null)
 		{
 			foreach (GameObject weaponPrefab in availableWeapons)
@@ -372,7 +383,7 @@ public class Bootstrap : MonoBehaviour
 			}
 		}
 
-		var startAmmoEntries = _configBootstrapPlayerResourcesAmmo.GetStartAmmoEntries();
+		var startAmmoEntries = _playerAmmo.GetStartAmmoEntries();
 		if (startAmmoEntries != null && startAmmoEntries.Length > 0)
 		{
 			foreach (var ammoEntry in startAmmoEntries)
@@ -384,7 +395,7 @@ public class Bootstrap : MonoBehaviour
 			}
 		}
 
-		_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_configBootstrapPlayerPosition.PlayerPosition);
+		_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerPosition.PlayerPosition);
 	}
 
 	public GameObject FindDeepGameObject(GameObject root, string targetName)

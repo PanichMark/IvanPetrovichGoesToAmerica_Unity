@@ -21,7 +21,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private Button[] _buttonsChangeLanguage;
 	private char _lastValidChar; 
 	private PauseSubMenuSettingsPlayerPrefs _pauseSubMenuSettingsPlayerPrefs;
-
+	private LocalizationManager _localizationManager;
 	private Slider _sliderFOV;
 
 	private TextMeshProUGUI _fovDisplayText;
@@ -62,6 +62,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		Bootstrap bootstrap,
 		GameController gameController,
 		IInputDevice inputDevice,
+		LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PauseMenuController pauseMenuController,
 		PauseSubMenuSettingsPlayerPrefs pauseSubMenuSettingsPlayerPrefs,
@@ -78,7 +79,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	{
 		_gameController = gameController;
 		_bootstrap = bootstrap;
-	
+		_localizationManager = localizationManager;
 		_mainCamera = mainCamera.GetComponent<Camera>();
 		_fovDisplayText = fovDisplayText.GetComponent<TextMeshProUGUI>();
 
@@ -382,6 +383,8 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		var currentData = new SettingsData();
 		currentData.FOV = _mainCamera.fieldOfView;
 
+		currentData.Language = _localizationManager.CurrentLanguage.ToString();
+
 		currentData.KeyBindings = new Dictionary<string, KeyCode>(_inputDevice.CurrentKeyboardKeyBindings);
 
 		_pauseSubMenuSettingsPlayerPrefs.SaveSettings(currentData);
@@ -418,7 +421,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	private void ApplyLoadedSettings(SettingsData data)
 	{
-		if (PlayerPrefs.HasKey(_pauseSubMenuSettingsPlayerPrefs.KEY_FOV))
+		if (PlayerPrefs.HasKey(_pauseSubMenuSettingsPlayerPrefs.FOV))
 		{
 			SetFOV(data.FOV);
 			_sliderFOV.value = data.FOV;

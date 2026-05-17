@@ -7,7 +7,7 @@ public class LocalizationManager
 {
 	private Dictionary<string, Dictionary<string, string>> _localizations = new Dictionary<string, Dictionary<string, string>>();
 
-	public LanguagesEnum CurrentLanguage { get; private set; } = LanguagesEnum.English; 
+	public LanguagesEnum CurrentLanguage { get; private set; }
 	public delegate void ChangeLanguageEvent();
 	public event ChangeLanguageEvent OnLanguageChangeEvent;
 

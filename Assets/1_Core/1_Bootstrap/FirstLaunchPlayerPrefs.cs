@@ -10,8 +10,9 @@ public  class FirstLaunchPlayerPrefs
 		set => PlayerPrefs.SetInt(KEY_IS_FIRST_LAUNCH, value ? 1 : 0);
 	}
 
-	public  void ResetFirstLaunchFlag()
+	public void SetNotFirstLaunch()
 	{
-		IsFirstLaunch = false;
+		PlayerPrefs.SetInt(KEY_IS_FIRST_LAUNCH, 0);
+		PlayerPrefs.Save();
 	}
 }
