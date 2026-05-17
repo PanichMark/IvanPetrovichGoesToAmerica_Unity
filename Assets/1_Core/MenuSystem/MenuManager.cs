@@ -53,7 +53,7 @@ public class MenuManager : MonoBehaviour
 		IsWeaponWheelMenuOpened = false;
 		IsAnyMenuOpened = false;
 		_isInitialized = true;
-		_gameController.OnPlayerDeath += OpenPauseMenu;
+		_gameController.OnPlayerLateDeath += OpenPauseMenu;
 
 		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseWeaponWheelMenu;

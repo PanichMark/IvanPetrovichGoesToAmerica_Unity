@@ -82,6 +82,8 @@ public class InteractionController : MonoBehaviour
 		_menuManager.OnOpenInteractionHUD += ShowCanvasHUDInteraction;
 		_menuManager.OnCloseInteractionHUD += HideCanvasHUDInteraction;
 
+		_gameController.OnPlayerEarlyDeath += HideCanvasHUDInteraction;
+
 		Debug.Log("InteractionController Initialized");
 	}
 
@@ -94,7 +96,9 @@ public class InteractionController : MonoBehaviour
 	private void ShowCanvasHUDInteraction()
 	{
 		if (!_gameController.IsMainMenuOpen)
+		{
 			_canvasHUDinteraction.SetActive(true);
+		}
 
 		ResetItemsUI();
 	}

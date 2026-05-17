@@ -55,7 +55,7 @@ public class PauseMenuController : MonoBehaviour
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += ClosePauseSubMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseSubMenu;
-		_gameController.OnPlayerDeath += HideDeathPauseMenuButtons;
+		_gameController.OnPlayerLateDeath += HideDeathPauseMenuButtons;
 		_gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
 
 		_menuManager.OnOpenConfirmationOnExitToMainMenu += DisableButtons;
@@ -125,12 +125,12 @@ public class PauseMenuController : MonoBehaviour
 
 		Debug.Log("ConfirmMenu closed");
 	}
+
 	private void ShowDeathPauseMenuButtons()
 	{
 		_buttonsPauseMenu[0].SetActive(true);
 		_buttonsPauseMenu[1].SetActive(true);
 		_buttonsPauseMenu[3].SetActive(true);
-		_buttonsPauseMenu[4].SetActive(true);
 	}
 
 	private void HideDeathPauseMenuButtons()
@@ -138,7 +138,6 @@ public class PauseMenuController : MonoBehaviour
 		_buttonsPauseMenu[0].SetActive(false);
 		_buttonsPauseMenu[1].SetActive(false);
 		_buttonsPauseMenu[3].SetActive(false);
-		_buttonsPauseMenu[4].SetActive(false);
 	}
 
 	public void ClosePauseSubMenu()

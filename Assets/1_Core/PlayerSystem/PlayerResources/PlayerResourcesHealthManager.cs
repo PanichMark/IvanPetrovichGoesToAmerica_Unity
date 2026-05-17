@@ -2,11 +2,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 {
-	private PlayerBehaviourController _playerBehaviour;
-
 	private GameController _gameController;
 	private Slider _sliderHealthBar;
 	private Button _buttonHealingItem;
@@ -20,13 +19,12 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 
 	private bool _isInitialized;
 
-	public void Initialize(GameController gameController, PlayerBehaviourController playerBehaviour, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
+	public void Initialize(GameController gameController, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
 	{
 		_sliderHealthBar = HealthBarSlider;
 		_buttonHealingItem = HealingItemButton;
 		_healingItemNumber = HealingItemNumber;
 		_gameController = gameController;
-		_playerBehaviour = playerBehaviour;
 		_buttonHealingItem.onClick.AddListener(() => UseHealingItem());
 
 		_sliderHealthBar.maxValue = MaxPlayerHealth;
@@ -96,8 +94,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 		if (CurrentPlayerHealth <= 0)
 		{
 			CurrentPlayerHealth = 0;
-			_gameController.PlayerHasDied();
-			_playerBehaviour.DisarmPlayer();
+			StartCoroutine(_gameController.PlayerHasDied());
 		}
 	}
 

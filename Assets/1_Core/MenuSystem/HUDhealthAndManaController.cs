@@ -23,9 +23,11 @@ public class HUDhealthAndManaController : MonoBehaviour
         _gameController = gameController;
         _gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDhealthAndMana;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDhealthAndMana;
+        _gameController.OnPlayerEarlyDeath += HideCanvasHUDhealthAndMana;
 
 		Debug.Log("CanvasHUDhealthAndManaController Initialized");
 	}
+
     private void ShowCanvasHUDhealthAndMana()
     {
        if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_menuManager.IsCutsceneMenuOpened && !_gameController.IsMainMenuOpen)
@@ -35,6 +37,7 @@ public class HUDhealthAndManaController : MonoBehaviour
            Debug.Log("Show canvasHUDhealthAndMana");
        }
     }
+
 	public void HideCanvasHUDhealthAndMana()
 	{
 		_canvasHUDhealthAndMana.SetActive(false);

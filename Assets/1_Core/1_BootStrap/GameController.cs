@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 public class GameController
 {
 	public bool IsPlayerControllable { get; private set; }
@@ -9,7 +10,8 @@ public class GameController
 	public bool IsPauseMenuAvailable { get; private set; }
 	
 	public delegate void PlayerDeathHandler();
-	public event PlayerDeathHandler OnPlayerDeath;
+	public event PlayerDeathHandler OnPlayerEarlyDeath;
+	public event PlayerDeathHandler OnPlayerLateDeath;
 	public event PlayerDeathHandler OnPlayerRevive;
 
 	public delegate void MainMenuEventHandler();
@@ -31,11 +33,15 @@ public class GameController
 		IsPlayerControllable = false;
 	}
 
-	public void PlayerHasDied()
+	public IEnumerator PlayerHasDied()
 	{
 		IsPlayerDead = true;
 		MakePlayerNonControllable();
-		OnPlayerDeath?.Invoke();
+		OnPlayerEarlyDeath?.Invoke();
+
+		yield return new WaitForSecondsRealtime(1f);
+
+		OnPlayerLateDeath?.Invoke();
 	}
 
 	public void PlayerStartedPlunging()
