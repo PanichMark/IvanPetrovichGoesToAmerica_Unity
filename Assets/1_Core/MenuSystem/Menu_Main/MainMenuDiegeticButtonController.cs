@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class MainMenuDiegeticButtonController : MonoBehaviour
 {
-	public Material defaultMaterial;     
-	public Material hoverMaterial;     
+	private Material _defaultMaterial;     
+	private Material _hoverMaterial;
+	private GameObject _CanvasDiegeticText;
 
 	private static List<MainMenuDiegeticButtonController> _instances = new List<MainMenuDiegeticButtonController>();
 
@@ -18,70 +19,58 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private Collider _collider;
 	private SaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
-	private KeyCode _keyCloseMenu;
-
-	[SerializeField] private GameObject _DiegeticText;
-
-	void Awake()
-	{
-		_instances.Add(this);
-		_keyCloseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
-	}
-
-	void OnDestroy()
-	{
-		_instances.Remove(this);
-		_menuManager.OnCloseAnyMenu -= () => _DiegeticText.SetActive(true);
-		_mainMenuReadNews.OnCloseMainMenuReadNews -= () => _DiegeticText.SetActive(true);
-		_mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
-		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
-		_pauseMenuController.OnCloseAnyPauseSubMenu -= EnableAllColliders;
-	}
+	private KeyCode _keyPauseMenu;
 
 	void Start()
 	{
-		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_instances.Add(this);
+
+		_collider = GetComponent<Collider>();
 		_renderer = GetComponent<Renderer>();
+		_defaultMaterial = _renderer.material;
+		_hoverMaterial = Resources.Load<Material>("Materials/Material_MainMenuDiegeticButton");
+
+		_CanvasDiegeticText = GameObject.Find("CanvasDiegeticText");
+
+		_keyPauseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
+		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_pauseMenuController = ServiceLocator.Resolve<PauseMenuController>("PauseMenuController");
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
-		_collider = GetComponent<Collider>();
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNewsController>("MainMenuReadNews");
 		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
 
-
 		_mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
-		_mainMenuReadNews.OnCloseMainMenuReadNews += () =>
-		{
-			if (_DiegeticText != null)
-			{
-				_DiegeticText.SetActive(true);
-			}
-		};
+		_mainMenuReadNews.OnCloseMainMenuReadNews += () => _CanvasDiegeticText.SetActive(true);
+
 		_mainMenuReadNews.OnCloseMainMenuReadNews += _playerCameraBlurFilter.DeactivateCameraBlur;
 
 		_pauseMenuController.OnCloseAnyPauseSubMenu += EnableAllColliders;
 
-		_menuManager.OnCloseAnyMenu += () =>
-		{
-			if (_DiegeticText != null)
-			{
-				_DiegeticText.SetActive(true);
-			}
-		};
+		_menuManager.OnCloseAnyMenu += () => _CanvasDiegeticText.SetActive(true);
+	}
+
+	void OnDestroy()
+	{
+		_instances.Remove(this);
+		_menuManager.OnCloseAnyMenu -= () => _CanvasDiegeticText.SetActive(true);
+		_mainMenuReadNews.OnCloseMainMenuReadNews -= () => _CanvasDiegeticText.SetActive(true);
+		_mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
+		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
+		_pauseMenuController.OnCloseAnyPauseSubMenu -= EnableAllColliders;
 	}
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(_keyCloseMenu) && _menuManager.PauseMenuLevel.Count == 1)
+		if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 1)
 		{
 			_menuManager.CloseAnyMenu();
-			_DiegeticText.SetActive(true);
+			_CanvasDiegeticText.SetActive(true);
 			_pauseMenuController.ClosePauseSubMenu();
 		}
 
-		if (Input.GetKeyDown(_keyCloseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)
+		if (Input.GetKeyDown(_keyPauseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)
 		{
 			_mainMenuReadNews.HideCanvasMainMenuReadNews();
 			_playerCameraBlurFilter.DeactivateCameraBlur();
@@ -90,12 +79,12 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	void OnMouseEnter()
 	{
-		_renderer.material = hoverMaterial;
+		_renderer.material = _hoverMaterial;
 	}
 
 	void OnMouseExit()
 	{
-		_renderer.material = defaultMaterial;
+		_renderer.material = _defaultMaterial;
 	}
 
 	void OnMouseDown()
@@ -110,7 +99,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (name == "LoadGame")
 		{
 			Debug.Log("OPEN LOAD GAME");
-			_DiegeticText.SetActive(false);
+			_CanvasDiegeticText.SetActive(false);
 			DisableAllColliders();
 			_menuManager.OpenAnyMenu();
 			_pauseMenuController.OpenLoadSubMenu();
@@ -120,10 +109,10 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			Debug.Log("EXIT GAME");
 			Application.Quit();
 		}
-		else if (name == "Options")
+		else if (name == "Settings")
 		{
-			Debug.Log("OPEN OPTIONS");
-			_DiegeticText.SetActive(false);
+			Debug.Log("OPEN SETTINGS");
+			_CanvasDiegeticText.SetActive(false);
 			DisableAllColliders();
 			_menuManager.OpenAnyMenu();
 			_pauseMenuController.OpenSettingsSubMenu();
@@ -131,7 +120,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (name == "ReadNews")
 		{
 			Debug.Log("OPEN NEWS");
-			_DiegeticText.SetActive(false);
+			_CanvasDiegeticText.SetActive(false);
 			_mainMenuReadNews.ShowCanvasMainMenuReadNews();
 			DisableAllColliders();
 			_playerCameraBlurFilter.ActivateCameraBlur();
@@ -159,9 +148,10 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	IEnumerator StartNewGame()
 	{
 		DontDestroyOnLoad(gameObject);
+
 		yield return StartCoroutine(_saveLoadController.NewGame());
-		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesEnum.Scene_0_Test));
-		
+		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesEnum.Scene0_Test));
+
 		Destroy(gameObject);
 	}
 }

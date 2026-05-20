@@ -1,9 +1,10 @@
 ﻿public enum GameScenesEnum
 {
-	Scene_0_MainMenu,
-	Scene_0_Test,
-	Scene_1_Church,
-	Scene_1_StreetMain,
-	Scene_1_RevenueHouse,
-	Scene_1_InnerYard
+	Scene0_MainMenu,
+	Scene0_EndTitles,
+	Scene0_Test,
+	Scene1_Church,
+	Scene1_Street,
+	Scene1_RevenueHouse,
+	Scene1_InnerYard
 }

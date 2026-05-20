@@ -354,7 +354,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator LoadFirstGameplayScene()
 	{
-		if (_sceneToLoad.SelectedScene.ToString() == "Scene_0_MainMenu")
+		if (_sceneToLoad.SelectedScene.ToString() == "Scene0_MainMenu")
 		{
 			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadMainMenuScene());
 		}

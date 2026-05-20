@@ -127,7 +127,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 			}
 		}
 		Debug.Log("Scene_MainMenu loading started");
-		AsyncOperation operation = SceneManager.LoadSceneAsync("Scene_0_MainMenu", LoadSceneMode.Additive);
+		AsyncOperation operation = SceneManager.LoadSceneAsync("Scene0_MainMenu", LoadSceneMode.Additive);
 
 		while (!operation.isDone)
 		{
