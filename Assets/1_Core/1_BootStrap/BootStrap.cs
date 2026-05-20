@@ -387,7 +387,10 @@ public class Bootstrap : MonoBehaviour
 			}
 		}
 
-		_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerPosition.PlayerPosition);
+		if (_sceneToLoad.SelectedScene.ToString() != "Scene0_MainMenu")
+		{
+			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerPosition.PlayerPosition);
+		}
 	}
 
 	public GameObject FindDeepGameObject(GameObject root, string targetName)
