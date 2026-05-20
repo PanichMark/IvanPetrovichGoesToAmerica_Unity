@@ -1,6 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class NPCStateUnconscious
+public class NPCStateUnconscious: NPCStateAbstract
 {
-    
+	public NPCStateUnconscious()
+	{
+
+	}
 }

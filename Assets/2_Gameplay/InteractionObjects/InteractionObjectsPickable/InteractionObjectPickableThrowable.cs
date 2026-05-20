@@ -15,7 +15,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	[SerializeField, Min(0)] private float _health;
 
 	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
-	public float Health
+	public float CurrentHealth
 	{
 		get => _health;
 		set
@@ -151,9 +151,9 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 	public void TakeDamage(float amount)
 	{
-		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {Health - amount}");
+		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
 
-		Health -= amount;
+		CurrentHealth -= amount;
 	}
 
 	public void ObjectIsFullyDamaged()

@@ -236,40 +236,72 @@ public class NPCStateMachineController : MonoBehaviour
 			_NPCabstract.gameObject.tag = "Interactable";
 		}
 		else if (playerMovementStateType == NPCStateTypes.Interested)
+		{
 			newState = new NPCStateInterested();
-		else if (playerMovementStateType == NPCStateTypes.Alarmed)
-			newState = new NPCStateAlarmed();
-		else if (playerMovementStateType == NPCStateTypes.Chasing)
-			newState = new NPCStateChasing();
-		else if (playerMovementStateType == NPCStateTypes.Attacking)
-			newState = new NPCStateAttacking();
-		else if (playerMovementStateType == NPCStateTypes.Reloading)
-			newState = new NPCStateReloading();
+		}
 		else if (playerMovementStateType == NPCStateTypes.Searching)
+		{
 			newState = new NPCStateSearching();
+		}
+		else if (playerMovementStateType == NPCStateTypes.Alarmed)
+		{
+			newState = new NPCStateAlarmed();
+		}
+		else if (playerMovementStateType == NPCStateTypes.Chasing)
+		{
+			newState = new NPCStateChasing();
+		}
+		else if (playerMovementStateType == NPCStateTypes.Attacking)
+		{
+			newState = new NPCStateAttacking();
+		}
+		else if (playerMovementStateType == NPCStateTypes.Reloading)
+		{
+			newState = new NPCStateReloading();
+		}
 		else if (playerMovementStateType == NPCStateTypes.Scared)
 		{
 			newState = new NPCStateScared();
 			CurrentNPCState = "Scared";
 			_NPCabstract.gameObject.tag = "Untagged";
 		}
+		else if (playerMovementStateType == NPCStateTypes.Hysteric)
+		{
+			newState = new NPCStateHysteric();
+		}
 		else if (playerMovementStateType == NPCStateTypes.Fleeing)
+		{
 			newState = new NPCStateFleeing();
+		}
+		else if (playerMovementStateType == NPCStateTypes.BeingChoked)
+		{
+			newState = new NPCStateBeingChoked(this);
+		}
 		else if (playerMovementStateType == NPCStateTypes.BeingHooked)
 		{
 			newState = new NPCStateBeingHooked(this);
 			CurrentNPCState = "BeingHooked";
 		}
-		else if (playerMovementStateType == NPCStateTypes.BeingChoked)
-			newState = new NPCStateBeingChoked(this);
-		else if (playerMovementStateType == NPCStateTypes.Falling)
-			newState = new NPCStateFalling();
 		else if (playerMovementStateType == NPCStateTypes.KnockedOff)
+		{
 			newState = new NPCStateKnockedOff();
+		}
 		else if (playerMovementStateType == NPCStateTypes.BlownAway)
+		{
 			newState = new NPCStateBlownAway();
+		}
+		else if (playerMovementStateType == NPCStateTypes.Falling)
+		{
+			newState = new NPCStateFalling();
+		}
 		else if (playerMovementStateType == NPCStateTypes.StandingUp)
+		{
 			newState = new NPCStateStandingUp();
+		}
+		else if (playerMovementStateType == NPCStateTypes.Unconscious)
+		{
+			newState = new NPCStateUnconscious();
+		}
 		else if (playerMovementStateType == NPCStateTypes.Dead)
 		{
 			if (!_NPCabstract.IsNPCdead)

@@ -6,10 +6,13 @@ using UnityEngine;
 
 public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 {
-	private float _NPCmaxHealth;
-	[SerializeField][Min(0)] private float _NPCcurrentHealth;
-	public bool IsNPCdead => _NPCcurrentHealth <= 0;
 	[SerializeField] protected string _NPCname;
+
+	[SerializeField] NPCconfigBodyType _NPCconfigBodyType;
+
+	[SerializeField] NPCconfigHealth _NPCconfigHealth;
+	public bool IsNPCdead => _NPCconfigHealth.NPCCurrentHealth <= 0;
+
 
 	private Dictionary<LanguagesEnum, List<string>> _localizedNPSphrases = new Dictionary<LanguagesEnum, List<string>>
 	{
@@ -33,11 +36,10 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public bool WasObjectDestroyed => throw new System.NotImplementedException();
 
-	public float Health => _NPCcurrentHealth;
+	public float CurrentHealth => _NPCconfigHealth.NPCCurrentHealth;
 
 	private void Start()
 	{
-		_NPCmaxHealth = _NPCcurrentHealth;
 		_NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("TextPhraseLine");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_NPCdialogueController = GetComponent<NPCDialogueController>();
@@ -131,8 +133,8 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public void TakeDamage(float amount)
 	{
-		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {Health - amount}");
-		_NPCcurrentHealth -= amount;
+		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
+		_NPCconfigHealth.NPCCurrentHealth -= amount;
 
 		if (IsNPCdead)
 		{
@@ -142,7 +144,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public void SetHealthToZero()
 	{
-		_NPCcurrentHealth = 0;
+		_NPCconfigHealth.NPCCurrentHealth = 0;
 	}
 
 	public void ObjectIsFullyDamaged()
