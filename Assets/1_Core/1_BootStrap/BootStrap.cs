@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Bootstrap : MonoBehaviour
 {
+	public delegate void SettingsDataEventHandler();
+	public event SettingsDataEventHandler OnLoadSettingsData;
+
 	[Header("--- BOOTSTRAP CONFIGS ---")]
 	[SerializeField] private ConfigBootstrapFirstGameLaunch _firstGameLaunch;
 	[SerializeField] private ConfigBootstrapInitializationScreenDuration _initializationScreenDuration;
@@ -128,14 +131,13 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(LoadFirstGameplayScene());
 
 		ApplyBootstrapPlayerConfigs();
+		OnLoadSettingsData?.Invoke();	
 	}
 
 	private IEnumerator BootstrapSystemsInitialization()
 	{
 		yield return StartCoroutine(InitializeInterfaces());
 		yield return StartCoroutine(InitializeCanvases());
-		yield return StartCoroutine(InitializePlayerPrefabs());
-
 		yield return StartCoroutine(InitializeSceneSystem());
 		yield return StartCoroutine(InitializeSaveLoadSystem());
 		yield return StartCoroutine(InitializeMenuSystem());
@@ -230,15 +232,6 @@ public class Bootstrap : MonoBehaviour
 		_playerPrefsData.SetNotFirstLaunch();
 	}
 
-	private IEnumerator InitializePlayerPrefabs()
-	{
-		_playerGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerGameObject"));
-		_playerCameraGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerCameraGameObject"));
-
-		Debug.Log("PLAYER PREFABS INITIALIZED");
-		yield break;
-	}
-
 	private IEnumerator InitializeSceneSystem()
 	{
 		_bootstrapSubProcessSceneSystem = new BootstrapSubProcessSceneSystem(_gameController, _canvasLoadingScreen);
@@ -261,7 +254,6 @@ public class Bootstrap : MonoBehaviour
 			_localizationManager,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessSaveLoadSystem.SaveLoadController,
-			_playerCameraGameObject,
 			_canvasPauseMenu,
 			_canvasPauseSubMenuSave,
 			_canvasPauseSubMenuLoad,
@@ -279,6 +271,9 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializePlayerSystems()
 	{
+		_playerGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerGameObject"));
+		_playerCameraGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerCameraGameObject"));
+
 		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(
 			this,
 			_bootstrapSubProcessMenuSystem,

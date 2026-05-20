@@ -7,21 +7,23 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 {
 	public string FOV { get; private set; } = "FOV";
 
+	private Bootstrap _bootstrap;
 	public string Language { get; private set; } = "Language";
 	private IInputDevice _inputDevice;
 	public string KeybindingsPrefix  { get; private set; } = "KeyBinding_";
 	
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 
-	public void Initialize(IInputDevice inputDevice, PauseSubMenuSettingsController pauseSubMenuSettingsController)
+	public void Initialize(Bootstrap bootstrap, IInputDevice inputDevice, PauseSubMenuSettingsController pauseSubMenuSettingsController)
 	{
+		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
 		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
 
 		var defaultBindings = _inputDevice.GetDefaultKeyBindings();
 		List<string> actionNames = new List<string>(defaultBindings.Keys);
 
-		LoadSettings(actionNames);
+		_bootstrap.OnLoadSettingsData += () => LoadSettings(actionNames);
 
 		_pauseSubMenuSettingsController.OnSaveSettingsData += SaveSettings;
 		_pauseSubMenuSettingsController.OnResetSettingsData += ResetSettings;
@@ -81,7 +83,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 			}
 		}
 
-		_pauseSubMenuSettingsController.ApplyLoadedSettings(data);
+		_pauseSubMenuSettingsController.ApplySystemLoadedSettings(data);
 	}
 
 	public void ResetSettings()

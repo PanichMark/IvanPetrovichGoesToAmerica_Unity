@@ -14,8 +14,14 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsData;
 
+	public delegate void SavePlayerPrefsCameraSettingsEventHandler();
+	public event SavePlayerPrefsCameraSettingsEventHandler OnSaveCameraSettingsData;
+
 	public delegate void ResetPlayerPrefsSettingsEventHandler();
 	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsData;
+	private float _FOV;
+	public delegate void MainCameraFOVeventHandle(float newFov, float MIN_FOV_VALUE, float MAX_FOV_VALUE);
+	public event MainCameraFOVeventHandle OnMainCameraFOVchanged;
 
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
@@ -30,8 +36,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private Slider _sliderFOV;
 
 	private TextMeshProUGUI _fovDisplayText;
-
-	private Camera _mainCamera;
 	
 	private Button[] _FPSbuttons;
 
@@ -78,13 +82,11 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		GameObject[] KeyRebinds,
 		GameObject buttonSaveSettings,
 		GameObject buttonResetSettings,
-		GameObject buttonClosePauseSubMenuSettings,
-		GameObject mainCamera)
+		GameObject buttonClosePauseSubMenuSettings)
 	{
 		_gameController = gameController;
 		_bootstrap = bootstrap;
 		_localizationManager = localizationManager;
-		_mainCamera = mainCamera.GetComponent<Camera>();
 		_fovDisplayText = fovDisplayText.GetComponent<TextMeshProUGUI>();
 
 		_sliderFOVgameObject = FOVSlider;
@@ -288,8 +290,8 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	private void SetFOV(float newFov)
 	{
-		_mainCamera.fieldOfView = Mathf.Clamp(newFov, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
-		
+		OnMainCameraFOVchanged?.Invoke(newFov, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
+
 		_fovDisplayText.text = ((int)newFov).ToString();
 	}
 
@@ -375,10 +377,18 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		}
 	}
 
+	public void GetCameraCurrentFOV(float FOV)
+	{
+		_FOV = FOV;
+	}
+
 	public void SaveSettings()
 	{
 		var currentData = new PlayerPrefsData();
-		currentData.FOV = _mainCamera.fieldOfView;
+
+		OnSaveCameraSettingsData?.Invoke();
+
+		currentData.FOV = _FOV;
 
 		currentData.Language = _localizationManager.CurrentLanguage.ToString();
 
@@ -417,7 +427,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		}
 	}
 
-	public void ApplyLoadedSettings(PlayerPrefsData data)
+	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
 		SetFOV(data.FOV);
 		_sliderFOV.value = data.FOV;

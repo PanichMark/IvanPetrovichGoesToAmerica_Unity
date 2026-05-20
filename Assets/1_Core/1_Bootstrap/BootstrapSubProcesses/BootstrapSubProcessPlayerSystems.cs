@@ -92,7 +92,7 @@ public class BootstrapSubProcessPlayerSystems
 
 		_playerColliderController.Initialize(PlayerMovementStateMachineController);
 
-		PlayerCameraController.Initialize(_inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, PlayerMovementController, PlayerMovementStateMachineController, _playerColliderController, _gameObjectPlayer);
+		PlayerCameraController.Initialize(_inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsController, PlayerMovementController, PlayerMovementStateMachineController, _playerColliderController, _gameObjectPlayer, _gameObjectPlayerCamera);
 		PlayerCameraStateMachineController.Initialize(_inputDevice, _gameSceneManager, PlayerMovementController, PlayerMovementStateMachineController, PlayerCameraController);
 		_playerCameraBlurFilter.Initialize(_bootstrapSubProcessMenuSystem.MenuManager);
 		_playerCameraFirstPersonRender.Initialize(PlayerCameraStateMachineController, _gameObjectPlayerHead);

@@ -8,14 +8,17 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private PlayerMovementController _movementController;
 	private PlayerColliderController _playerCollider;
 	private GameObject _player;
+	private GameObject _playerCamera;
 
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private bool _isCameraFirstPerson;
-
+	private Camera _mainCamera;
 	private Vector2 _mouseRotation;
 	private Vector2 _mouseScrollWheel;
 	private GameSceneManager _gameSceneManager;
 	private RaycastHit _hit;
+
+	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 
 	public bool IsAbleToZoomCameraOut { get; private set; } = true;
 
@@ -136,46 +139,6 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	/*
-	public void SetPlayerCameraState(PlayerCameraStateTypes playerCameraStateType)
-	{
-		PlayerCameraStateAbstract newState;
-
-		if (playerCameraStateType == PlayerCameraStateTypes.FirstPerson)
-		{
-			CurrentPlayerCameraStateType = "FirstPerson";
-			_movementController.GiveCurrentPlayerCameraType("FirstPerson");
-			newState = new PlayerCameraStateFirstPerson(this, _movementController, _playerMovementStateMachineController, _inputDevice);
-			OnFirstPersonCameraState?.Invoke();
-		}
-		else if (playerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
-		{
-			CurrentPlayerCameraStateType = "ThirdPerson";
-			_movementController.GiveCurrentPlayerCameraType("ThirdPerson");
-			newState = new PlayerCameraStateThirdPerson(this, _inputDevice);
-			OnThirdPersonCameraState?.Invoke();
-		}
-		else if (playerCameraStateType == PlayerCameraStateTypes.Cutscene)
-		{
-			CurrentPlayerCameraStateType = "Cutscene";
-			_movementController.GiveCurrentPlayerCameraType("Cutscene");
-			newState = new PlayerCameraStateCutscene();
-		}
-		else if (playerCameraStateType == PlayerCameraStateTypes.MainMenu)
-		{
-			CurrentPlayerCameraStateType = "MainMenu";
-			_movementController.GiveCurrentPlayerCameraType("MainMenu");
-			newState = new PlayerCameraStateMainMenu(this, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(20, -12, 0));
-		}
-		else
-		{
-			newState = null;
-		}
-		Debug.Log("CameraState: " + CurrentPlayerCameraStateType);
-		_playerCameraState = newState;
-	}
-	*/
-
 	public void CameraStanding()
 	{
 		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
@@ -249,18 +212,35 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, MenuManager menuManager, PlayerMovementController movementController, PlayerMovementStateMachineController playerMovementStateMachineController, PlayerColliderController playerCollider, GameObject playerModel)
+	private void SetCameraFOV(float newFov, float MIN_FOV_VALUE, float MAX_FOV_VALUE)
+	{
+		_mainCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
+	}
+
+	private void SendCameraFOV()
+	{
+		_pauseSubMenuSettingsController.GetCameraCurrentFOV(_mainCamera.fieldOfView);
+	}
+
+
+	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, MenuManager menuManager, PauseSubMenuSettingsController pauseSubMenuSettingsController, PlayerMovementController movementController, PlayerMovementStateMachineController playerMovementStateMachineController, PlayerColliderController playerCollider, GameObject playerModel, GameObject playerCamera)
 	{
 		_gameSceneManager = gameSceneManager;
 		_inputDevice = inputDevice;
 		_menuManager = menuManager;
+		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
 		_movementController = movementController; 
 		_playerCollider = playerCollider;
 		_player = playerModel;
+		_playerCamera = playerCamera;
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		PlayerCameraDistanceX = -0.85f;
 		PlayerCameraDistanceY = -1.75f;
 		PlayerCameraDistanceZ = 3.25f;
+		_mainCamera = _playerCamera.GetComponent<Camera>();
+
+		_pauseSubMenuSettingsController.OnMainCameraFOVchanged += SetCameraFOV;
+		_pauseSubMenuSettingsController.OnSaveCameraSettingsData += SendCameraFOV;
 
 		_isInitialized = true;
 
