@@ -29,30 +29,37 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private GameObject _canvasPauseSubMenuSettings;
 	private PauseMenuController _pauseMenuController;
 	private GameObject _buttonClosePauseSubMenuSettings;
-	private GameObject _sliderFOVgameObject;
-	private Button[] _buttonsChangeLanguage;
-	private char _lastValidChar; 
+	private Bootstrap _bootstrap;
+	private GameController _gameController;
 	private LocalizationManager _localizationManager;
-	private Slider _sliderFOV;
-
-	private TextMeshProUGUI _fovDisplayText;
 	
+	private GameObject _subSettingsSectionGeneral;
+	private GameObject _buttonSubSettingsSectionGeneral;
+	private GameObject _sliderFOVgameObject;
+	private Slider _sliderFOV;
+	private TextMeshProUGUI _fovDisplayText;
+	private const float _MIN_FOV_VALUE = 60f;
+	private const float _MAX_FOV_VALUE = 120f;
 	private Button[] _FPSbuttons;
+	private int _currentFrameRateLimit = 60;
+
+	private GameObject _subSettingsSectionControls;
+	private GameObject _buttonSubSettingsSectionControls;
+	private TMP_InputField[] _KeyRebinds;
+
+	private GameObject _subSettingsSectionGraphics;
+	private GameObject _buttonSubSettingsSectionGraphics;
+
+	private GameObject _subSettingsSectionAudio;
+	private GameObject _buttonSubSettingsSectionAudio;
+	private Button[] _buttonsChangeLanguage;
+	private char _lastValidChar;
 
 	private Color _activeColor = Color.green;
 	private Color _normalColor = Color.white;
 
 	private GameObject _buttonSaveSettings;
 	private GameObject _buttonResetSettings;
-
-	private int _currentFrameRateLimit = 60;
-
-	private const float _MIN_FOV_VALUE = 60f;
-	private const float _MAX_FOV_VALUE = 120f;
-	private Bootstrap _bootstrap;
-
-	private GameController _gameController;
-	private TMP_InputField[] _KeyRebinds;
 
 	private readonly char[][] _layoutMap = new char[][]
 	{
@@ -75,11 +82,19 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		MenuManager menuManager,
 		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuSettings,
+		GameObject subSettingsSectionGeneral,
+		GameObject buttonSubSettingsSectionGeneral,
 		GameObject FOVSlider, 
 		GameObject fovDisplayText,
-		GameObject[] FPSbuttons, 
-		GameObject[] buttonsChangeLanguage,
+		GameObject[] FPSbuttons,
+		GameObject subSettingsSectionControls,
+		GameObject buttonSubSettingsSectionControls,
 		GameObject[] KeyRebinds,
+		GameObject subSettingsSectionGraphics,
+		GameObject buttonSubSettingsSectionGraphics,
+		GameObject subSettingsSectionAudio,
+		GameObject buttonSubSettingsSectionAudio,
+		GameObject[] buttonsChangeLanguage,
 		GameObject buttonSaveSettings,
 		GameObject buttonResetSettings,
 		GameObject buttonClosePauseSubMenuSettings)
@@ -91,6 +106,18 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 		_sliderFOVgameObject = FOVSlider;
 	
+		_subSettingsSectionGeneral = subSettingsSectionGeneral;
+		_buttonSubSettingsSectionGeneral = buttonSubSettingsSectionGeneral;
+
+		_subSettingsSectionControls = buttonSubSettingsSectionControls;
+		_buttonSubSettingsSectionControls = buttonSubSettingsSectionControls;
+
+		_subSettingsSectionGraphics = buttonSubSettingsSectionGraphics;
+		_buttonSubSettingsSectionGraphics = buttonSubSettingsSectionGraphics;
+
+		_subSettingsSectionAudio = buttonSubSettingsSectionAudio;
+		_buttonSubSettingsSectionAudio = buttonSubSettingsSectionAudio;
+
 		_FPSbuttons = new Button[FPSbuttons.Length];
 		_buttonsChangeLanguage = new Button[buttonsChangeLanguage.Length];
 		_KeyRebinds = new TMP_InputField[KeyRebinds.Length];
@@ -164,10 +191,52 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
 
+		_buttonSubSettingsSectionGeneral.GetComponent<Button>().onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionGeneral));
+		_buttonSubSettingsSectionControls.GetComponent<Button>().onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionControls));
+		_buttonSubSettingsSectionGraphics.GetComponent<Button>().onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionGraphics));
+		_buttonSubSettingsSectionAudio.GetComponent<Button>().onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionAudio));
+
+		_pauseMenuController.OnOpenSettingsSubMenu += () => OpenSubSettingsSection(_subSettingsSectionGeneral);
+
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
 		Debug.Log("SettingsSubMenu Initialized");
+	}
+
+	private void OpenSubSettingsSection(GameObject subSettingsSection)
+	{
+		subSettingsSection.SetActive(true);
+
+		if (subSettingsSection == _subSettingsSectionGeneral)
+		{
+			CloseSubSettingsSection(_subSettingsSectionControls);
+			CloseSubSettingsSection(_subSettingsSectionGraphics);
+			CloseSubSettingsSection(_subSettingsSectionAudio);
+		}
+		if (subSettingsSection == _subSettingsSectionControls)
+		{
+			CloseSubSettingsSection(_subSettingsSectionGeneral);
+			CloseSubSettingsSection(_subSettingsSectionGraphics);
+			CloseSubSettingsSection(_subSettingsSectionAudio);
+		}
+		if (subSettingsSection == _subSettingsSectionGraphics)
+		{
+			CloseSubSettingsSection(_subSettingsSectionGeneral);
+			CloseSubSettingsSection(_subSettingsSectionControls);
+			CloseSubSettingsSection(_subSettingsSectionAudio);
+		}
+		if (subSettingsSection == _subSettingsSectionAudio)
+		{
+			CloseSubSettingsSection(_subSettingsSectionGeneral);
+			CloseSubSettingsSection(_subSettingsSectionControls);
+			CloseSubSettingsSection(_subSettingsSectionGraphics);
+		}
+	}
+
+	private void CloseSubSettingsSection(GameObject subSettingsSection)
+	{
+		subSettingsSection.SetActive(false);
 	}
 
 	private void DisableButtons()
