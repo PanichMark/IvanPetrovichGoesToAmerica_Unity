@@ -7,16 +7,19 @@ public class InteractionController : MonoBehaviour
 {
 	private IInputDevice _inputDevice;
 	private GameObject _canvasHUDinteraction;
+
 	private float _interactionRange = 50f;
+
 	private bool _isInitialized = false;
+
 	private LocalizationManager _localizationManager;
-	public delegate void NonThrowableHandler();
-	public event NonThrowableHandler OnPickUpThrowable;
-	public event NonThrowableHandler OnPickUpNonThrowable;
-	public event NonThrowableHandler OnGetRidOfPickable;
+	public delegate void PickableObjectsHandler();
+	public event PickableObjectsHandler OnPickUpThrowable;
+	public event PickableObjectsHandler OnPickUpNonThrowable;
+	public event PickableObjectsHandler OnGetRidOfPickable;
 
 	private string _HUDInteractionMainTextInteract;
-
+	private bool _changedPickedUpState;
 	private TextMeshProUGUI _mainInteractionText;
 	private TextMeshProUGUI _additionalInteractionText;
 
@@ -25,7 +28,7 @@ public class InteractionController : MonoBehaviour
 
 	private MenuManager _menuManager;
 
-	private Sprite _noItemImageExeption;
+	private Sprite _ImageMissing;
 
 	private PlayerCameraController _playerCameraController;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
@@ -34,14 +37,21 @@ public class InteractionController : MonoBehaviour
 
 	private PlayerBehaviourController _playerBehaviour;
 
-	private RaycastHit _hitInfo;
-	private bool _isHit;
+	private IInteractable _lookedAtIInteractable;
+	private IPickable _lookedAtIPickable;
+	private IThrowable _lookedAtIThrowableObject;
+
+	private IGainedItem _lookedAtIGainedItem;
+
+	private IPickable _currentIPickable;
+	private IThrowable _currentIThrowable;
+
+	private RaycastHit _hitObject;
+	private bool _isInteractionObjectLookedAt;
 
 	private GameObject _previousInteractableObject;
 	private GameObject _currentInteractableObject;
-
 	public GameObject CurrentPickableObject { get; private set; }
-
 	private GameSceneManager _gameSceneManager;
 	private GameController _gameController;
 
@@ -82,7 +92,13 @@ public class InteractionController : MonoBehaviour
 		_menuManager.OnOpenInteractionHUD += ShowCanvasHUDInteraction;
 		_menuManager.OnCloseInteractionHUD += HideCanvasHUDInteraction;
 
-		_gameController.OnPlayerEarlyDeath += HideCanvasHUDInteraction;
+		_gameController.OnPlayerEarlyDeath += ChangeInteractionRange;
+		_gameController.OnPlayerRevive += ChangeInteractionRange;
+		_menuManager.OnOpenAnyMenu += ChangeInteractionRange;
+		_menuManager.OnCloseAnyMenu += ChangeInteractionRange;
+		_menuManager.OnOpenCutsceneMenu += ChangeInteractionRange;
+		_menuManager.OnCloseCutsceneMenu += ChangeInteractionRange;
+		_playerCameraStateMachineController.OnCameraStateChanged += ChangeInteractionRange;
 
 		Debug.Log("InteractionController Initialized");
 	}
@@ -90,277 +106,333 @@ public class InteractionController : MonoBehaviour
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		_HUDInteractionMainTextInteract = localizationManager.GetLocalizedString("HUDInteraction_MainTextInteract");
+		_HUDInteractionMainTextInteract = _localizationManager.GetLocalizedString("HUDInteraction_MainTextInteract");
 	}
 
 	private void ShowCanvasHUDInteraction()
 	{
 		if (!_gameController.IsMainMenuOpen)
-		{
-			_canvasHUDinteraction.SetActive(true);
-		}
+			_canvasHUDinteraction.gameObject.SetActive(true);
 
-		ResetItemsUI();
+		_itemsTexts[2].text = null;
+		_itemsTexts[2].gameObject.SetActive(false);
+		_itemsImages[2].sprite = null;
+		_itemsImages[2].gameObject.SetActive(false);
+
+		_itemsTexts[1].text = null;
+		_itemsTexts[1].gameObject.SetActive(false);
+		_itemsImages[1].sprite = null;
+		_itemsImages[1].gameObject.SetActive(false);
+
+		_itemsTexts[0].text = null;
+		_itemsTexts[0].gameObject.SetActive(false);
+		_itemsImages[0].sprite = null;
+		_itemsImages[0].gameObject.SetActive(false);
 	}
 
 	private void HideCanvasHUDInteraction()
 	{
-		_canvasHUDinteraction.SetActive(false);
+		_canvasHUDinteraction.gameObject.SetActive(false);
+	}
+
+	private void ChangeInteractionRange()
+	{
+		Debug.Log("BRUH!!!");
+		//Debug.Log("RANGE");
+		//ADD ON THAT FROM INPUT DEVICE!!!
+		//	_interactionRange = 2f + _playerCameraController.PlayerCameraDistanceZ;
+		if (_menuManager.IsAnyMenuOpened || _gameController.IsPlayerDead || _menuManager.IsCutsceneMenuOpened || _currentIPickable != null)
+		{
+			_interactionRange = 0;
+		}
+		else
+		{
+			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
+			{
+				_interactionRange = 2.5f;
+			}
+			else if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "ThirdPerson")
+			{
+				_interactionRange = 2f + _playerCameraController.PlayerCameraDistanceZ;
+			}
+		}
+	}
+
+	private void PickUpInteractableObject()
+	{
+		if (CurrentPickableObject != null)
+		{
+			_currentIPickable = CurrentPickableObject.GetComponent<IPickable>();
+			_currentIThrowable = CurrentPickableObject.GetComponent<IThrowable>();
+
+			if (!_changedPickedUpState)
+			{
+				ChangeInteractionRange();
+				_changedPickedUpState = true;
+			}
+
+			if (_currentIThrowable != null)
+			{
+				OnPickUpThrowable?.Invoke();
+				_mainInteractionText.text = $"Отпустить {_inputDevice.GetNameOfKeyInteract()}\nБросить {_inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
+				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
+			}
+			else
+			{
+				OnPickUpNonThrowable?.Invoke();
+				_mainInteractionText.text = $"Отпустить на {_inputDevice.GetNameOfKeyInteract()}";
+				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
+			}
+
+			if (_inputDevice.GetKeyInteract() || _gameController.IsPlayerDead)
+			{
+				OnGetRidOfPickable?.Invoke();
+				_currentIPickable.DropOffObject();
+				_currentIPickable = null;
+				_changedPickedUpState = false;
+				CurrentPickableObject = null;
+				ChangeInteractionRange();
+				if (_playerBehaviour.WasPlayerArmed == true)
+				{
+					_playerBehaviour.ArmPlayer();
+				}
+			}
+
+			if (_currentIThrowable != null && _inputDevice.GetKeyRightHandWeaponAttack())
+			{
+				OnGetRidOfPickable?.Invoke();
+				_currentIThrowable.ThrowObject();
+				_currentIPickable = null;
+				_currentIThrowable = null;
+				_changedPickedUpState = false;
+				CurrentPickableObject = null;
+				ChangeInteractionRange();
+				if (_playerBehaviour.WasPlayerArmed == true)
+				{
+					_playerBehaviour.ArmPlayer();
+				}
+			}
+		}
 	}
 
 	void Update()
 	{
-		if (!_isInitialized) return;
+		if (!_isInitialized)
+			return;
 
-		UpdateInteractionRange();
+		if (_isInteractionObjectLookedAt = Physics.Raycast(_playerCameraController.transform.position, _playerCameraController.transform.forward, out _hitObject, _interactionRange))
+		{
 
-		if (_playerCameraController != null)
-			_isHit = Physics.Raycast(_playerCameraController.transform.position, _playerCameraController.transform.forward, out _hitInfo, _interactionRange);
-
-		if (_isHit && _hitInfo.collider != null && _hitInfo.collider.CompareTag("Interactable"))
-			ProcessInteractableObject(_hitInfo.collider.gameObject);
+		}
 		else
-			ClearCurrentInteractable();
+		{
+			_mainInteractionText.text = null;
+			_additionalInteractionText.text = null;
+		}
 
-		HandleInput();
+		PickUpInteractableObject();
 
+		if (_isInteractionObjectLookedAt && _hitObject.collider.tag == "Interactable")
+		{
+			_lookedAtIInteractable = _hitObject.collider.GetComponent<IInteractable>();
+			_lookedAtIThrowableObject = _hitObject.collider.GetComponent<IThrowable>();
+			_lookedAtIPickable = _hitObject.collider.GetComponent<IPickable>();
+			_lookedAtIGainedItem = _hitObject.collider.GetComponent<IGainedItem>();
+
+			if (_lookedAtIInteractable != null)
+			{
+				GameObject renderer = _hitObject.collider.gameObject;
+
+				if (renderer != null)
+				{
+					_currentInteractableObject = renderer;
+
+					if (_previousInteractableObject != null && _previousInteractableObject != _currentInteractableObject)
+					{
+						ChangeLayerRecursively(_previousInteractableObject, LayerMask.NameToLayer("Default"));
+					}
+
+					ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Outline"));
+				}
+
+				if (_currentInteractableObject != null)
+				{
+					_mainInteractionText.text = $"{_lookedAtIInteractable.InteractionHintMessageMain}\n{_HUDInteractionMainTextInteract} {_inputDevice.GetNameOfKeyInteract()}";
+
+				}
+
+				if (_inputDevice.GetKeyInteract())
+				{
+					_lookedAtIInteractable.Interact();
+
+					if (_lookedAtIInteractable.IsInteractionHintMessageFailActive == true)
+					{
+						_additionalInteractionText.text = _lookedAtIInteractable.InteractionHintMessageFail;
+						if (_showAdditionalHintCoroutine != null)
+							StopCoroutine(_showAdditionalHintCoroutine); 
+
+						_showAdditionalHintCoroutine = StartCoroutine(ShowHintForSeconds());
+					}
+					else
+					{
+						if (_showAdditionalHintCoroutine != null)
+						{
+							StopCoroutine(_showAdditionalHintCoroutine); 
+						}
+
+						if (_lookedAtIGainedItem != null)
+						{
+							if (!_itemsTexts[0].gameObject.activeInHierarchy)
+							{
+								_itemsTexts[0].gameObject.SetActive(true);
+								_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+
+								_itemsImages[0].gameObject.SetActive(true);
+								if (_lookedAtIGainedItem.IconGainedItem != null)
+								{
+									_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
+								}
+								else
+								{
+									_itemsImages[0].sprite = _ImageMissing;
+								}
+							}
+							else if (_itemsTexts[0].gameObject.activeInHierarchy && !_itemsTexts[1].gameObject.activeInHierarchy)
+							{
+								_itemsTexts[1].gameObject.SetActive(true);
+								_itemsTexts[1].text = _itemsTexts[0].text;
+								_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+
+								_itemsImages[1].gameObject.SetActive(true);
+								_itemsImages[1].sprite = _itemsImages[0].sprite;
+								if (_lookedAtIGainedItem.IconGainedItem != null)
+								{
+									_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
+								}
+								else
+								{
+									_itemsImages[0].sprite = _ImageMissing;
+								}
+							}
+							else if (_itemsTexts[1].gameObject.activeInHierarchy && _itemsTexts[0].gameObject.activeInHierarchy)
+							{
+								_itemsTexts[2].gameObject.SetActive(true);
+								_itemsTexts[2].text = _itemsTexts[1].text;
+								_itemsTexts[1].text = _itemsTexts[0].text;
+								_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+
+								_itemsImages[2].gameObject.SetActive(true);
+								_itemsImages[2].sprite = _itemsImages[1].sprite;
+								_itemsImages[1].sprite = _itemsImages[0].sprite;
+								if (_lookedAtIGainedItem.IconGainedItem != null)
+								{
+									_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
+								}
+								else
+								{
+									_itemsImages[0].sprite = _ImageMissing;
+								}
+							}
+							else if (_itemsTexts[2].gameObject.activeInHierarchy &&
+									 _itemsTexts[0].gameObject.activeInHierarchy &&
+									 _itemsTexts[1].gameObject.activeInHierarchy)
+							{
+								_itemsTexts[2].text = _itemsTexts[1].text;
+								_itemsTexts[1].text = _itemsTexts[0].text;
+								_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+
+								_itemsImages[2].sprite = _itemsImages[1].sprite;
+								_itemsImages[1].sprite = _itemsImages[0].sprite;
+								if (_lookedAtIGainedItem.IconGainedItem != null)
+								{
+									_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
+								}
+								else
+								{
+									_itemsImages[0].sprite = _ImageMissing;
+								}
+							}
+
+							StartCoroutine(ShowItemsGained());
+						}
+					}
+
+					if (_lookedAtIPickable != null && _lookedAtIThrowableObject == null)
+					{
+						_playerBehaviour.DisarmPlayer();
+					}
+
+					if (_lookedAtIPickable != null && _lookedAtIPickable.IsObjectPickedUp)
+					{
+						CurrentPickableObject = renderer;
+					}
+				}
+			}
+			else
+			{
+				Debug.LogWarning("Объект с тегом 'Interactable' не содержит интерфейс IInteractable.");
+			}
+		}
+		else
+		{
+			if (_currentInteractableObject != null)
+			{
+				ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Default"));
+
+				if (_showAdditionalHintCoroutine != null)
+				{
+					StopCoroutine(_showAdditionalHintCoroutine); 
+					_additionalInteractionText.text = null;
+				}
+			}
+
+			_currentInteractableObject = null;
+		}
 		_previousInteractableObject = _currentInteractableObject;
 	}
 
-	private void UpdateInteractionRange()
+	IEnumerator ShowHintForSeconds()
 	{
-		if (_menuManager.IsAnyMenuOpened || _gameController.IsPlayerDead || _menuManager.IsCutsceneMenuOpened)
-			_interactionRange = 0f;
-		else if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
-			_interactionRange = 2.5f;
-		else if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "ThirdPerson")
-			_interactionRange = 2f + _playerCameraController.PlayerCameraDistanceZ;
-	}
-
-	private void ProcessInteractableObject(GameObject interactableObject)
-	{
-		var interactable = interactableObject.GetComponent<IInteractable>();
-
-		if (interactable != null)
-			HighlightAndShowHint(interactableObject, interactable);
-
-		var pickable = interactableObject.GetComponent<IPickable>();
-
-		if (pickable != null && pickable.IsObjectPickedUp)
-			CurrentPickableObject = interactableObject;
-	}
-
-	private void HighlightAndShowHint(GameObject obj, IInteractable interactable)
-	{
-		if (CurrentPickableObject != null)
-		{
-			_currentInteractableObject = null;
-			_mainInteractionText.text = null;
-			return;
-		}
-
-		if (_currentInteractableObject != null && _currentInteractableObject != obj)
-			ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Default"));
-
-		ChangeLayerRecursively(obj, LayerMask.NameToLayer("Outline"));
-
-		_currentInteractableObject = obj;
-
-		_mainInteractionText.text = $"{interactable.InteractionHintMessageMain}\n{_HUDInteractionMainTextInteract} {_inputDevice.GetNameOfKeyInteract()}";
-	}
-
-	private void ClearCurrentInteractable()
-	{
-		if (_currentInteractableObject != null)
-			ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Default"));
-
-		_mainInteractionText.text = null;
-
-		if (_showAdditionalHintCoroutine != null)
-			StopCoroutine(_showAdditionalHintCoroutine);
-
-		_additionalInteractionText.text = null;
-
-		_currentInteractableObject = null;
-	}
-
-	private void HandleInput()
-	{
-		if (CurrentPickableObject != null)
-			HandleHeldObjectInput();
-		else if (_isHit && _hitInfo.collider != null && _hitInfo.collider.CompareTag("Interactable"))
-			HandleInteractInput(_hitInfo.collider.gameObject);
-	}
-
-	private void HandleHeldObjectInput()
-	{
-		var pickableObj = CurrentPickableObject.GetComponent<IPickable>();
-
-		if (pickableObj == null) return;
-
-		var throwableObj = CurrentPickableObject.GetComponent<IThrowable>();
-
-		if (throwableObj != null)
-			OnPickUpThrowable?.Invoke();
-		else
-			OnPickUpNonThrowable?.Invoke();
-
-		string actionKey = throwableObj != null ? $"Бросить {_inputDevice.GetNameOfKeyRightHandWeaponAttack()}" : $"Отпустить на {_inputDevice.GetNameOfKeyInteract()}";
-
-		_mainInteractionText.text = $"Отпустить {_inputDevice.GetNameOfKeyInteract()}\n{actionKey}";
-
-		if (_inputDevice.GetKeyInteract() || _gameController.IsPlayerDead)
-			ReleaseHeldObject(pickableObj, throwableObj);
-
-		if (throwableObj != null && _inputDevice.GetKeyRightHandWeaponAttack())
-			ThrowHeldObject(pickableObj, throwableObj);
-	}
-
-	private void ReleaseHeldObject(IPickable pickableObj, IThrowable throwableObj)
-	{
-		OnGetRidOfPickable?.Invoke();
-		pickableObj.DropOffObject();
-		CurrentPickableObject = null;
-		if (_playerBehaviour.WasPlayerArmed)
-			_playerBehaviour.ArmPlayer();
-	}
-
-	private void ThrowHeldObject(IPickable pickableObj, IThrowable throwableObj)
-	{
-		OnGetRidOfPickable?.Invoke();
-		throwableObj.ThrowObject();
-		CurrentPickableObject = null;
-		if (_playerBehaviour.WasPlayerArmed)
-			_playerBehaviour.ArmPlayer();
-	}
-
-	private void HandleInteractInput(GameObject interactableObject)
-	{
-		var interactable = interactableObject.GetComponent<IInteractable>();
-		var pickable = interactableObject.GetComponent<IPickable>();
-		var throwable = interactableObject.GetComponent<IThrowable>();
-		var gainedItem = interactableObject.GetComponent<IGainedItem>();
-
-		if (interactable == null || !_inputDevice.GetKeyInteract()) return;
-
-		interactable.Interact();
-
-		if (interactable.IsInteractionHintMessageFailActive)
-			StartFailMessageCoroutine(interactable.InteractionHintMessageFail);
-
-		if (gainedItem != null)
-			AddGainedItemToUI(gainedItem, interactable);
-
-		if (pickable != null && throwable == null)
-			_playerBehaviour.DisarmPlayer();
-
-		if (pickable != null && pickable.IsObjectPickedUp)
-			CurrentPickableObject = interactableObject;
-	}
-
-	private void StartFailMessageCoroutine(string message)
-	{
-		if (_showAdditionalHintCoroutine != null)
-			StopCoroutine(_showAdditionalHintCoroutine);
-
-		_showAdditionalHintCoroutine = StartCoroutine(ShowHintForSeconds(message));
-	}
-
-	private IEnumerator ShowHintForSeconds(string message)
-	{
-		if (_additionalInteractionText != null)
-			_additionalInteractionText.text = message;
-
 		yield return new WaitForSeconds(1f);
-
-		if (_additionalInteractionText != null && _showAdditionalHintCoroutine != null)
-			_additionalInteractionText.text = null;
+		_additionalInteractionText.text = null;
 	}
 
-	private void AddGainedItemToUI(IGainedItem gainedItem, IInteractable interactable)
-	{
-		for (int i = 2; i >= 0; i--)
-			if (_itemsTexts[i].gameObject.activeInHierarchy)
-				ShiftItemsUp(i);
-
-		SetNewItemSlot(0, gainedItem, interactable);
-
-		StartCoroutine(ShowItemsGained());
-	}
-
-	private void ShiftItemsUp(int startIndex)
-	{
-		for (int i = startIndex; i >= 0; i--)
-		{
-			if (i > 0 && !_itemsTexts[i - 1].gameObject.activeInHierarchy) continue;
-
-			if (i > 0)
-			{
-				_itemsTexts[i].text = _itemsTexts[i - 1].text;
-				_itemsImages[i].sprite = _itemsImages[i - 1].sprite;
-			}
-
-			if (i == 0)
-			{
-				_itemsTexts[i].text = string.Empty;
-				_itemsImages[i].sprite = null;
-			}
-
-			if (i < 2) continue;
-
-			_itemsTexts[i].gameObject.SetActive(false);
-			_itemsImages[i].gameObject.SetActive(false);
-		}
-	}
-
-	private void SetNewItemSlot(int index, IGainedItem gainedItem, IInteractable interactable)
-	{
-		if (!_itemsTexts[index].gameObject.activeInHierarchy)
-			_itemsTexts[index].gameObject.SetActive(true);
-
-		if (!_itemsImages[index].gameObject.activeInHierarchy)
-			_itemsImages[index].gameObject.SetActive(true);
-
-		string itemName = interactable.InteractionObjectNameUI ?? string.Empty;
-
-		Sprite itemIcon = gainedItem.IconGainedItem ?? _noItemImageExeption ?? null;
-
-		if (!string.IsNullOrEmpty(itemName))
-			_itemsTexts[index].text = itemName.Trim();
-
-		if (itemIcon != null)
-			_itemsImages[index].sprite = itemIcon;
-	}
-
-	private IEnumerator ShowItemsGained()
+	IEnumerator ShowItemsGained()
 	{
 		yield return new WaitForSeconds(2f);
-		for (int i = 2; i >= 0; i--)
+
+		if (_itemsTexts[2].gameObject.activeInHierarchy)
 		{
-			if (_itemsTexts[i].gameObject.activeInHierarchy)
-			{
-				_itemsTexts[i].text = string.Empty;
-				_itemsImages[i].sprite = null;
-				yield return new WaitForSeconds(0.5f);
-				_itemsTexts[i].gameObject.SetActive(false);
-				_itemsImages[i].gameObject.SetActive(false);
-			}
+			_itemsTexts[2].text = null;
+			_itemsTexts[2].gameObject.SetActive(false);
+
+			_itemsImages[2].sprite = null;
+			_itemsImages[2].gameObject.SetActive(false);
+		}
+		else if (_itemsTexts[1].gameObject.activeInHierarchy)
+		{
+			_itemsTexts[1].text = null;
+			_itemsTexts[1].gameObject.SetActive(false);
+
+			_itemsImages[1].sprite = null;
+			_itemsImages[1].gameObject.SetActive(false);
+		}
+		else if (_itemsTexts[0].gameObject.activeInHierarchy)
+		{
+			_itemsTexts[0].text = null;
+			_itemsTexts[0].gameObject.SetActive(false);
+
+			_itemsImages[0].sprite = null;
+			_itemsImages[0].gameObject.SetActive(false);
 		}
 	}
-	private void ResetItemsUI()
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			_itemsTexts[i].text = string.Empty;
-			_itemsImages[i].sprite = null;
-			_itemsTexts[i].gameObject.SetActive(false);
-			_itemsImages[i].gameObject.SetActive(false);
-		}
-	}
+
 	private void ChangeLayerRecursively(GameObject obj, int layerIndex)
 	{
 		obj.layer = layerIndex;
 		foreach (Transform child in obj.transform)
+		{
 			ChangeLayerRecursively(child.gameObject, layerIndex);
+		}
 	}
 }
