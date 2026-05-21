@@ -16,7 +16,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	public delegate void SavePlayerPrefsCameraSettingsEventHandler();
 	public event SavePlayerPrefsCameraSettingsEventHandler OnSaveCameraSettingsData;
-
+	private string _currentOpenedSubSettingsSection;
 	public delegate void ResetPlayerPrefsSettingsEventHandler();
 	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsData;
 	private float _FOV;
@@ -109,13 +109,13 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_subSettingsSectionGeneral = subSettingsSectionGeneral;
 		_buttonSubSettingsSectionGeneral = buttonSubSettingsSectionGeneral;
 
-		_subSettingsSectionControls = buttonSubSettingsSectionControls;
+		_subSettingsSectionControls = subSettingsSectionControls;
 		_buttonSubSettingsSectionControls = buttonSubSettingsSectionControls;
 
-		_subSettingsSectionGraphics = buttonSubSettingsSectionGraphics;
+		_subSettingsSectionGraphics = subSettingsSectionGraphics;
 		_buttonSubSettingsSectionGraphics = buttonSubSettingsSectionGraphics;
 
-		_subSettingsSectionAudio = buttonSubSettingsSectionAudio;
+		_subSettingsSectionAudio = subSettingsSectionAudio;
 		_buttonSubSettingsSectionAudio = buttonSubSettingsSectionAudio;
 
 		_FPSbuttons = new Button[FPSbuttons.Length];
@@ -213,30 +213,71 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			CloseSubSettingsSection(_subSettingsSectionControls);
 			CloseSubSettingsSection(_subSettingsSectionGraphics);
 			CloseSubSettingsSection(_subSettingsSectionAudio);
+
+			Button buttonSubSettingsSectionGeneral = _buttonSubSettingsSectionGeneral.GetComponent<Button>();
+			buttonSubSettingsSectionGeneral.interactable = false;
+
+			_currentOpenedSubSettingsSection = "General";
 		}
 		if (subSettingsSection == _subSettingsSectionControls)
 		{
 			CloseSubSettingsSection(_subSettingsSectionGeneral);
 			CloseSubSettingsSection(_subSettingsSectionGraphics);
 			CloseSubSettingsSection(_subSettingsSectionAudio);
+
+			Button buttonSubSettingsSectionControls = _buttonSubSettingsSectionControls.GetComponent<Button>();
+			buttonSubSettingsSectionControls.interactable = false;
+
+			_currentOpenedSubSettingsSection = "Controls";
 		}
 		if (subSettingsSection == _subSettingsSectionGraphics)
 		{
 			CloseSubSettingsSection(_subSettingsSectionGeneral);
 			CloseSubSettingsSection(_subSettingsSectionControls);
 			CloseSubSettingsSection(_subSettingsSectionAudio);
+
+			Button buttonSubSettingsSectionGraphics = _buttonSubSettingsSectionGraphics.GetComponent<Button>();
+			buttonSubSettingsSectionGraphics.interactable = false;
+
+			_currentOpenedSubSettingsSection = "Graphics";
 		}
 		if (subSettingsSection == _subSettingsSectionAudio)
 		{
 			CloseSubSettingsSection(_subSettingsSectionGeneral);
 			CloseSubSettingsSection(_subSettingsSectionControls);
 			CloseSubSettingsSection(_subSettingsSectionGraphics);
+
+			Button buttonSubSettingsSectionAudio = _buttonSubSettingsSectionAudio.GetComponent<Button>();
+			buttonSubSettingsSectionAudio.interactable = false;
+
+			_currentOpenedSubSettingsSection = "Audio";
 		}
 	}
 
 	private void CloseSubSettingsSection(GameObject subSettingsSection)
 	{
 		subSettingsSection.SetActive(false);
+
+		if (subSettingsSection == _subSettingsSectionGeneral)
+		{
+			Button buttonSubSettingsSectionGeneral = _buttonSubSettingsSectionGeneral.GetComponent<Button>();
+			buttonSubSettingsSectionGeneral.interactable = true;
+		}
+		if (subSettingsSection == _subSettingsSectionControls)
+		{
+			Button buttonSubSettingsSectionControls = _buttonSubSettingsSectionControls.GetComponent<Button>();
+			buttonSubSettingsSectionControls.interactable = true;
+		}
+		if (subSettingsSection == _subSettingsSectionGraphics)
+		{
+			Button buttonSubSettingsSectionGraphics = _buttonSubSettingsSectionGraphics.GetComponent<Button>();
+			buttonSubSettingsSectionGraphics.interactable = true;
+		}
+		if (subSettingsSection == _subSettingsSectionAudio)
+		{
+			Button buttonSubSettingsSectionAudio = _buttonSubSettingsSectionAudio.GetComponent<Button>();
+			buttonSubSettingsSectionAudio.interactable = true;
+		}
 	}
 
 	private void DisableButtons()
@@ -266,6 +307,27 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		{
 			if (field != null) field.interactable = false;
 		}
+
+		if(_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.General.ToString())
+		{
+			Button buttonSubSettingsSectionGeneral = _buttonSubSettingsSectionGeneral.GetComponent<Button>();
+			buttonSubSettingsSectionGeneral.interactable = false;
+		}
+		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Controls.ToString())
+		{
+			Button buttonSubSettingsSectionControls = _buttonSubSettingsSectionControls.GetComponent<Button>();
+			buttonSubSettingsSectionControls.interactable = false;
+		}
+		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Graphics.ToString())
+		{
+			Button buttonSubSettingsSectionGraphics = _buttonSubSettingsSectionGraphics.GetComponent<Button>();
+			buttonSubSettingsSectionGraphics.interactable = false;
+		}
+		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Audio.ToString())
+		{
+			Button buttonSubSettingsSectionAudio = _buttonSubSettingsSectionAudio.GetComponent<Button>();
+			buttonSubSettingsSectionAudio.interactable = false;
+		}
 	}
 
 	private void EnableButtons()
@@ -294,6 +356,27 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		foreach (var field in _KeyRebinds)
 		{
 			if (field != null) field.interactable = true;
+		}
+
+		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.General.ToString())
+		{
+			Button buttonSubSettingsSectionGeneral = _buttonSubSettingsSectionGeneral.GetComponent<Button>();
+			buttonSubSettingsSectionGeneral.interactable = true;
+		}
+		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Controls.ToString())
+		{
+			Button buttonSubSettingsSectionControls = _buttonSubSettingsSectionControls.GetComponent<Button>();
+			buttonSubSettingsSectionControls.interactable = true;
+		}
+		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Graphics.ToString())
+		{
+			Button buttonSubSettingsSectionGraphics = _buttonSubSettingsSectionGraphics.GetComponent<Button>();
+			buttonSubSettingsSectionGraphics.interactable = true;
+		}
+		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Audio.ToString())
+		{
+			Button buttonSubSettingsSectionAudio = _buttonSubSettingsSectionAudio.GetComponent<Button>();
+			buttonSubSettingsSectionAudio.interactable = true;
 		}
 	}
 
