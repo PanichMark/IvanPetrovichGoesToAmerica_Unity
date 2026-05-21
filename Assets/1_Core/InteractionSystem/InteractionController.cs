@@ -137,7 +137,6 @@ public class InteractionController : MonoBehaviour
 
 	private void ChangeInteractionRange()
 	{
-		Debug.Log("BRUH!!!");
 		//Debug.Log("RANGE");
 		//ADD ON THAT FROM INPUT DEVICE!!!
 		//	_interactionRange = 2f + _playerCameraController.PlayerCameraDistanceZ;
