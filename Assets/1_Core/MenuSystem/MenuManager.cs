@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -85,10 +86,15 @@ public class MenuManager : MonoBehaviour
 			}
 			else if (PauseMenuLevel.Count == 1)
 			{
-				if (!_gameController.IsPlayerDead)
+				if (_gameController.IsPlayerDead || _gameController.IsMainMenuOpen)
+				{
+					
+				}
+				else
 				{
 					ClosePauseMenu();
 				}
+
 				if (IsDialogueMenuOpened)
 				{
 					OnClosePauseMenuDuringOpenedDialogueMenu?.Invoke();
@@ -100,7 +106,6 @@ public class MenuManager : MonoBehaviour
 			}
 			else if (PauseMenuLevel.Count == 2 && IsConfirmationOnExitToMainMenuOpened == true)
 			{
-				
 				CloseConfirmationOnExitToMainMenu();
 			}
 		}

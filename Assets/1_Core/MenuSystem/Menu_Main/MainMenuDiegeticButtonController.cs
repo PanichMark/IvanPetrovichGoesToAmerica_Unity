@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class MainMenuDiegeticButtonController : MonoBehaviour
 {
@@ -9,7 +11,6 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private GameObject _CanvasDiegeticText;
 
 	private static List<MainMenuDiegeticButtonController> _instances = new List<MainMenuDiegeticButtonController>();
-
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
 	private MainMenuReadNewsController _mainMenuReadNews;
 	private PauseMenuController _pauseMenuController;
@@ -42,20 +43,23 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
 
 		_mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
-		_mainMenuReadNews.OnCloseMainMenuReadNews += () => _CanvasDiegeticText.SetActive(true);
-
+		_mainMenuReadNews.OnCloseMainMenuReadNews += EnableDiegeticText;
 		_mainMenuReadNews.OnCloseMainMenuReadNews += _playerCameraBlurFilter.DeactivateCameraBlur;
-
 		_pauseMenuController.OnCloseAnyPauseSubMenu += EnableAllColliders;
+		_menuManager.OnCloseAnyMenu += EnableDiegeticText;
+	}
 
-		_menuManager.OnCloseAnyMenu += () => _CanvasDiegeticText.SetActive(true);
+	private void EnableDiegeticText()
+	{
+		_CanvasDiegeticText.SetActive(true);
 	}
 
 	void OnDestroy()
 	{
 		_instances.Remove(this);
-		_menuManager.OnCloseAnyMenu -= () => _CanvasDiegeticText.SetActive(true);
-		_mainMenuReadNews.OnCloseMainMenuReadNews -= () => _CanvasDiegeticText.SetActive(true);
+
+		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
+		_menuManager.OnCloseAnyMenu -= EnableDiegeticText;
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
 		_pauseMenuController.OnCloseAnyPauseSubMenu -= EnableAllColliders;
@@ -63,17 +67,24 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 1)
+		if (name == "NewGame")
 		{
-			_menuManager.CloseAnyMenu();
-			_CanvasDiegeticText.SetActive(true);
-			_pauseMenuController.ClosePauseSubMenu();
-		}
+			if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 1)
+			{
+				_menuManager.CloseAnyMenu();
+				_CanvasDiegeticText.SetActive(true);
+				_pauseMenuController.ClosePauseSubMenu();
+			}
+			if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 2)
+			{
+				_pauseMenuController.ClosePauseConfirmMenu();
+			}
 
-		if (Input.GetKeyDown(_keyPauseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)
-		{
-			_mainMenuReadNews.HideCanvasMainMenuReadNews();
-			_playerCameraBlurFilter.DeactivateCameraBlur();
+			if (Input.GetKeyDown(_keyPauseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)
+			{
+				_mainMenuReadNews.HideCanvasMainMenuReadNews();
+				_playerCameraBlurFilter.DeactivateCameraBlur();
+			}
 		}
 	}
 
@@ -151,7 +162,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 		yield return StartCoroutine(_saveLoadController.NewGame());
 		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesEnum.Scene0_Test));
-
+	
 		Destroy(gameObject);
 	}
 }

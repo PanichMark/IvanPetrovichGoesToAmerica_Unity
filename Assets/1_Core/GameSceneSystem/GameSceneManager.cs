@@ -38,7 +38,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	}
 	public IEnumerator LoadGameplayScene(GameScenesEnum scene)
 	{
-		_gameController.SceneLoadBegan();
+		_gameController.GameplaySceneLoadBegan();
 		OnBeginLoadingGameplayScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
 		_textLoadingScreenStatus.text = "Подготовка к загрузке...";
@@ -93,7 +93,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		_canvasLoadingScreen.SetActive(false);
 		
 		Time.timeScale = 1f; 
-		_gameController.SceneLoadEnded();
+		_gameController.GameplaySceneLoadEnded();
 		Debug.Log($"SceneLoaded {scene}");
 
 		yield break;
@@ -101,7 +101,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 	public IEnumerator LoadMainMenuScene()
 	{
-		_gameController.OpenMainMenu();
+		_gameController.MainMenuSceneLoadBegan();
 		OnBeginLoadingMainMenuScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
 
@@ -141,7 +141,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 		OnEndLoadingMainMenuScene?.Invoke();
-		_gameController.OpenMainMenu();
+		_gameController.MainMenuSceneLoadEnded();
 		Debug.Log("Scene_MainMenu loading ended");
 	
 		_canvasLoadingScreen.SetActive(false);

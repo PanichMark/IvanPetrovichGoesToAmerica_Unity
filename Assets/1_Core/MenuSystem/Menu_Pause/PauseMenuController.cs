@@ -80,10 +80,6 @@ public class PauseMenuController : MonoBehaviour
 		{
 			ClosePauseConfirmMenu();
 		}
-		if (_inputDevice.GetKeyPauseMenu() && _gameController.IsMainMenuOpen && _menuManager.PauseMenuLevel.Count == 2)
-		{
-			ClosePauseConfirmMenu();
-		}
 	}
 
 	private void DisableButtons()

@@ -37,10 +37,13 @@ public class GameController
 	{
 		IsPlayerDead = true;
 		MakePlayerNonControllable();
-		OnPlayerEarlyDeath?.Invoke();
+		IsPauseMenuAvailable = false;
 
+		OnPlayerEarlyDeath?.Invoke();
+	
 		yield return new WaitForSecondsRealtime(1f);
 
+		IsPauseMenuAvailable = true;
 		OnPlayerLateDeath?.Invoke();
 	}
 
@@ -55,7 +58,7 @@ public class GameController
 		IsPlayerPlunging = false;
 	}
 
-	public void OpenMainMenu()
+	private void OpenMainMenu()
 	{
 		IsMainMenuOpen = true;
 		OnOpenMainMenu?.Invoke();
@@ -69,7 +72,7 @@ public class GameController
 		Debug.Log("MainMeni closed");
 	}
 
-	public void SceneLoadBegan()
+	public void GameplaySceneLoadBegan()
 	{
 		if (IsPlayerDead)
 		{
@@ -81,9 +84,27 @@ public class GameController
 		MakePlayerNonControllable();
 	}
 
-	public void SceneLoadEnded()
+	public void GameplaySceneLoadEnded()
 	{
 		IsPauseMenuAvailable = true;
 		MakePlayerControllable();
+	}
+
+	public void MainMenuSceneLoadBegan()
+	{
+		if (IsPlayerDead)
+		{
+			IsPlayerDead = false;
+			OnPlayerRevive?.Invoke();
+		}
+
+		IsPauseMenuAvailable = false;
+		MakePlayerNonControllable();
+	}
+
+	public void MainMenuSceneLoadEnded()
+	{
+		OpenMainMenu();
+		IsPauseMenuAvailable = true;
 	}
 }
