@@ -32,11 +32,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7221687059160050034}
-  - {fileID: 468740716885680440}
+  - {fileID: 3329419816813767998}
   - {fileID: 8366970887145481567}
+  - {fileID: 468740716885680440}
   - {fileID: 7134552013141190501}
   - {fileID: 1939458920815908175}
-  - {fileID: 3329419816813767998}
   - {fileID: 8087035661326971930}
   - {fileID: 5361921992629869484}
   m_Father: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 6020011167663867618}
   - component: {fileID: 6881605403152687081}
   m_Layer: 5
-  m_Name: TextLoadingScreenReady
+  m_Name: TextLoadingIsReady
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: vwrev
+  m_text: "\u043C\u0446\u0443\u043A\u043C\u0443\u043A\u043C\u0443\u043A\u043C\u0443\u043A\u043C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
   m_sharedMaterial: {fileID: 1682876201741934406, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 4865329910292552731}
   - component: {fileID: 5912362586426720977}
   m_Layer: 5
-  m_Name: TextLoadingScreenDescription
+  m_Name: TextSceneDescription
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -310,7 +310,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\u043C\u0443\u043A\u043C\u0443\u043A\u043C\u0443\u043C\u0443\u043C\u043A"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
   m_sharedMaterial: {fileID: 1682876201741934406, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
@@ -319,7 +319,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 5062244621252261425}
   - component: {fileID: 8339342861082657035}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BackgoundSceneName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -406,7 +406,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2429352549007203500}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -415,7 +415,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -336.03815, y: 468}
+  m_AnchoredPosition: {x: -336.0382, y: 468}
   m_SizeDelta: {x: 1199.9237, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5062244621252261425
@@ -468,7 +468,7 @@ GameObject:
   - component: {fileID: 973549101165569982}
   - component: {fileID: 6317156450854663876}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: BackgroundLoadingIsReady
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -671,7 +671,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\u043C\u043A\u0443\u0446\u043C\u043A\u0443\u043C\u0443\u043C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
   m_sharedMaterial: {fileID: 1682876201741934406, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
@@ -754,7 +754,7 @@ GameObject:
   - component: {fileID: 6412587540198936991}
   - component: {fileID: 7437736298865543652}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: BackgroundSceneDescription
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -767,7 +767,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5697105099329088833}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -828,7 +828,7 @@ GameObject:
   - component: {fileID: 5361921992629869484}
   - component: {fileID: 8226738738785476367}
   m_Layer: 5
-  m_Name: SliderLoadingScreenStatus
+  m_Name: SliderLoadingStatus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -918,7 +918,7 @@ GameObject:
   - component: {fileID: 626595576228253212}
   - component: {fileID: 8233259862287831994}
   m_Layer: 5
-  m_Name: ImageLoadingScreen
+  m_Name: ImageScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

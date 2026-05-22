@@ -74,6 +74,8 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		_sliderLoadingStatus.SetActive(true);
 		_sliderComponentLoadingStatus.value = 0f;
 		_textLoadingReady.SetActive(false);
+		_textSceneName.SetActive(true);
+		_textSceneDescription.SetActive(true);
 
 		string languageSuffix = "RU";
 		if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
@@ -168,9 +170,12 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		Time.timeScale = 0f;
 
 		_sliderLoadingStatus.SetActive(false);
+		_textSceneName.SetActive(false);
+		_textSceneDescription.SetActive(false);
 		_textLoadingReady.SetActive(false);
 
 		Sprite spriteToUse = Resources.Load<Sprite>("Sprites/Sprites_LoadingScreens/Scene0_MainMenu");
+		_imageLoadingScreen.sprite = spriteToUse;
 
 		if (SceneManager.sceneCount > 1)
 		{
@@ -178,8 +183,6 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
 			{
-
-				
 				Debug.Log("Начало выгрузки сцены: " + loadedScene.name);
 
 				SceneManager.UnloadSceneAsync(loadedScene);

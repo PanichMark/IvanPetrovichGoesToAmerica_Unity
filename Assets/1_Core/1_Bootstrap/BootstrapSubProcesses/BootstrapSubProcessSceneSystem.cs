@@ -31,11 +31,11 @@ public class BootstrapSubProcessSceneSystem
 		_gameObjectBootstrapGameSceneSystem = new GameObject("Bootstrap_GameSceneSystem");
 		GameSceneManager = _gameObjectBootstrapGameSceneSystem.AddComponent<GameSceneManager>();
 
-		_textLoadingReady = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "TextLoadingScreenReady");
+		_textLoadingReady = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "TextLoadingIsReady");
 		_textSceneName = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "TextSceneName");
-		_textSceneDescription = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "TextLoadingScreenDescription");
-		_sliderLoadingStatus = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "SliderLoadingScreenStatus");
-		_imageLoadingScreen = _canvasLoadingScreen.transform.Find("ImageLoadingScreen").GetComponent<Image>();
+		_textSceneDescription = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "TextSceneDescription");
+		_sliderLoadingStatus = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "SliderLoadingStatus");
+		_imageLoadingScreen = _canvasLoadingScreen.transform.Find("ImageScene").GetComponent<Image>();
 
 
 		GameSceneManager.Initialize(_gameController, _canvasLoadingScreen, _textLoadingReady, _textSceneName, _textSceneDescription, _sliderLoadingStatus, _imageLoadingScreen);
