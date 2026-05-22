@@ -5,10 +5,9 @@ public class InteractionObjectVendingMachineChooseAmmoType : MonoBehaviour, IInt
 {
 	public delegate void AmmoTypeChangedHandler();
 
-	[SerializeField] private InteractionObjectVendingMachineAmmo _vendingMachine;
+	private InteractionObjectVendingMachineAmmo _vendingMachine;
 	[SerializeField] private string _name = "Выбор патронов";
 	[SerializeField] private float _rotationDuration = 1f;
-	[SerializeField] private Vector3 _rotationAxis = Vector3.right;
 	[SerializeField] private float _rotationAngle = 90f;
 
 	public string InteractionObjectNameSystem => _name;
@@ -20,6 +19,11 @@ public class InteractionObjectVendingMachineChooseAmmoType : MonoBehaviour, IInt
 	private bool _isBusy = false;
 
 	public bool IsInteractionHintMessageFailActive => _isBusy;
+
+	private void Start()
+	{
+		_vendingMachine = GetComponentInParent<InteractionObjectVendingMachineAmmo>();
+	}
 
 	public void Interact()
 	{
@@ -34,7 +38,7 @@ public class InteractionObjectVendingMachineChooseAmmoType : MonoBehaviour, IInt
 	private IEnumerator RotateAndChangeAmmo()
 	{
 		Quaternion startRotation = transform.rotation;
-		Quaternion endRotation = startRotation * Quaternion.Euler(_rotationAxis * _rotationAngle);
+		Quaternion endRotation = startRotation * Quaternion.Euler(Vector3.right * _rotationAngle);
 
 		float elapsedTime = 0f;
 

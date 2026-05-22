@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7656657120540910833}
   - component: {fileID: 5915489389518927498}
   m_Layer: 0
-  m_Name: InteractionObject_Loot_ManaTonic
+  m_Name: InteractionObject_Loot_ManaSyrup
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +88,6 @@ GameObject:
   - component: {fileID: 6887938562457687289}
   - component: {fileID: 7510038482317630300}
   - component: {fileID: 5755023614329925526}
-  - component: {fileID: 4336846403725544755}
   m_Layer: 0
   m_Name: 3Dmodel_Prop_Drink_SyrupDoctorPoppels
   m_TagString: Untagged
@@ -164,24 +163,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4336846403725544755
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6115060415009459779}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.09027796, y: 0.15512417, z: 0.06406946}
-  m_Center: {x: 0, y: 0.077059485, z: 0}
