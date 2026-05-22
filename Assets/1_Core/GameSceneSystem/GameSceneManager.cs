@@ -10,8 +10,11 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	private LocalizationManager _localizationManager;
 
 	private GameObject _canvasLoadingScreen;
-	private TMP_Text _textLoadingScreenStatus;
+	private TMP_Text _textComponentLoadingReady;
+	private GameObject _textLoadingReady;
 	private TMP_Text _textSceneName;
+	private TMP_Text _textSceneDescription;
+	private Slider _sliderLoadingStatus;
 	private Image _imageLoadingScreen;
 	
 	public delegate void LoadSceneHandler();
@@ -20,13 +23,20 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
 
-	public void Initialize(GameController gameController, GameObject canvasLoadingScreen, TMP_Text textLoadingScreenStatus, TMP_Text textSceneName, Image imageLoadingScreen)
+	public void Initialize(GameController gameController,
+		GameObject canvasLoadingScreen,
+		GameObject textComponentLoadingReady,
+		TMP_Text textSceneName,
+		TMP_Text textSceneDescription,
+		Slider sliderLoadingStatus,
+		Image imageLoadingScreen)
 	{
 		_gameController = gameController;	
 
 		_canvasLoadingScreen = canvasLoadingScreen;	
-		_textLoadingScreenStatus = textLoadingScreenStatus;
 		_textSceneName = textSceneName;
+		_textSceneDescription = textSceneDescription;
+		_sliderLoadingStatus = sliderLoadingStatus;
 		_imageLoadingScreen = imageLoadingScreen;
 
 		Debug.Log("GameSceneManager Initialized");
@@ -41,7 +51,6 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		_gameController.GameplaySceneLoadBegan();
 		OnBeginLoadingGameplayScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
-		_textLoadingScreenStatus.text = "Подготовка к загрузке...";
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		
@@ -55,24 +64,48 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		
 		_textSceneName.text = _localizationManager.GetLocalizedString(sceneName);
 
+		string languageSuffix = "RU";
+		if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+		{
+			languageSuffix = "RU";
+		}
+		else if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
+		{
+			languageSuffix = "EN";
+		}
+
+		string descriptionFileName = $"Text_Description_{sceneName}_{languageSuffix}";
+
+		TextAsset descriptionTextAsset = Resources.Load<TextAsset>($"Texts/Texts_Descriptions/Texts_Descriptions_Scenes/{descriptionFileName}");
+
+		if (descriptionTextAsset != null)
+		{
+			_textSceneDescription.text = descriptionTextAsset.text;
+		}
+		else
+		{
+			_textSceneDescription.text = ($"SCENE DESCRIPTION FOR \"{languageSuffix}\" NOT FOUND");
+			Debug.LogWarning($"SCENE DESCRIPTION FOR \"{languageSuffix}\" NOT FOUND");
+		}
+
 		if (SceneManager.sceneCount > 1)
 		{
 			Scene loadedScene = SceneManager.GetSceneAt(1); 
 
 			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
 			{
-				_textLoadingScreenStatus.text = "Выгрузка предыдущей сцены...";
+				
 				Debug.Log($"Scene_{loadedScene.name} UNloading started");
 
 				SceneManager.UnloadSceneAsync(loadedScene);
 				yield return new WaitUntil(() => !loadedScene.isLoaded);
 
 				Debug.Log($"Scene_{loadedScene.name} UNloading ended");
-				_textLoadingScreenStatus.text = "Предыдущая сцена выгружена.";
+				
 			}
 		}
 
-		_textLoadingScreenStatus.text = "Начало загрузки сцены: " + sceneName;
+		
 		Debug.Log($"{sceneName} loading started");
 
 		AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive); 
@@ -80,12 +113,12 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		while (!operation.isDone)
 		{
 			float progress = Mathf.Clamp01(operation.progress / 0.9f);
-			_textLoadingScreenStatus.text = $"Загрузка... {progress * 100:F1}%";
+			
 			yield return null;
 		}
 	
 		Debug.Log($"{sceneName} loading ended");
-		_textLoadingScreenStatus.text = "Нажмите любую клавишу";
+		
 		OnEndLoadingGameplayScene?.Invoke();
 	
 		yield return new WaitWhile(() => !Input.anyKeyDown);
@@ -116,14 +149,13 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
 			{
 
-				_textLoadingScreenStatus.text = "Выгрузка предыдущей сцены...";
+				
 				Debug.Log("Начало выгрузки сцены: " + loadedScene.name);
 
 				SceneManager.UnloadSceneAsync(loadedScene);
 				yield return new WaitUntil(() => !loadedScene.isLoaded);
 
 				Debug.Log("Завершение выгрузки сцены: " + loadedScene.name);
-				_textLoadingScreenStatus.text = "Предыдущая сцена выгружена.";
 			}
 		}
 		Debug.Log("Scene_MainMenu loading started");

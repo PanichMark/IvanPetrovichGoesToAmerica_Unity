@@ -14,7 +14,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	private MenuManager _menuManager;
 	private bool _isReading;
-
+	private LocalizationManager _localizationManager;
 	public string InteractionHintMessageMain => $"Прочитать {InteractionObjectNameUI}";
 	public string InteractionHintMessageFail => null;
 
@@ -56,7 +56,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseAndDeactivate;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
 
-		var _localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
 
 		_imageRectTransform = _imageComponent.gameObject.GetComponent<RectTransform>();
@@ -102,12 +102,16 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 		if (_isThereText)
 		{
-			TextAsset localizedTextFile;
-			var _localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+			TextAsset localizedTextFile = noteData.NoteText_RU;
 
-			localizedTextFile = (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
-				? noteData.NoteText_RU
-				: noteData.NoteText_EN;
+			if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+			{
+				localizedTextFile = noteData.NoteText_RU;
+			}
+			if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
+			{
+				localizedTextFile = noteData.NoteText_EN;
+			}
 
 			_backgroundBack.gameObject.SetActive(true);
 			_descriptionText.text = localizedTextFile.text;

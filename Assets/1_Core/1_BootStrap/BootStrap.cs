@@ -234,7 +234,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeSceneSystem()
 	{
-		_bootstrapSubProcessSceneSystem = new BootstrapSubProcessSceneSystem(_gameController, _canvasLoadingScreen);
+		_bootstrapSubProcessSceneSystem = new BootstrapSubProcessSceneSystem(this, _gameController, _canvasLoadingScreen);
 		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.InitializeSceneSystem());
 	}
 
