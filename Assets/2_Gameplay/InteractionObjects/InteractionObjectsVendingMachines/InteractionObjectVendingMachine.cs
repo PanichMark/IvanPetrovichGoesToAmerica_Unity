@@ -32,10 +32,16 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 	{
 		if (_playerResourcesMoneyManager.PlayerMoney >= _goodsPrice)
 		{
-			Vector3 spawnPosition = transform.position + new Vector3(-1f, 0.5f, 0f);
+			Vector3 spawnPosition = transform.localPosition + transform.TransformDirection(new Vector3(0, 0.5f, 1));
+
+			// Получаем текущий поворот по Y
+			float yRotation = transform.eulerAngles.y;
+
+			// Создаём кватернион только с поворотом по Y
+			Quaternion spawnRotation = Quaternion.Euler(0, yRotation, 0);
 
 			Debug.Log($"You bought {_goodsName} from {InteractionObjectNameUI}");
-			Instantiate(_goodsForSaleModel, spawnPosition, Quaternion.identity);
+			Instantiate(_goodsForSaleModel, spawnPosition, spawnRotation);
 			_playerResourcesMoneyManager.DeductMoney(-_goodsPrice);
 
 			_isAdditionalInteractionHintActive = false;

@@ -47,7 +47,7 @@ public class InteractionObjectVendingMachineChooseAmmoType : MonoBehaviour, IInt
 
 		transform.rotation = endRotation;
 
-		Debug.Log($"Selected ammo type: {_vendingMachine.ammoTypes[_vendingMachine.currentAmmoIndex].ammoName}");
+		Debug.Log($"Selected ammo type: {_vendingMachine.ammoTypes[_vendingMachine.currentAmmoIndex].AmmoName}");
 
 		_isBusy = false;
 	}

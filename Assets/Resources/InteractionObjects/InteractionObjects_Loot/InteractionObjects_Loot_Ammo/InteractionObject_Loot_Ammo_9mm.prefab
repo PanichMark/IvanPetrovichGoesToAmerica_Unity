@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4808117187963908883}
   - component: {fileID: 3858801492138297722}
   - component: {fileID: 3025251065399748247}
-  - component: {fileID: 1867622254130988949}
+  - component: {fileID: 4263040186013002548}
   - component: {fileID: -2222373377127816768}
   m_Layer: 0
   m_Name: InteractionObject_Loot_Ammo_9mm
@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.2, z: 0.3}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919677925058796491}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 2716331701119814618, guid: 5184800be1f1d5c488c09385170c8768, type: 3}
 --- !u!23 &3025251065399748247
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: eadc465d2d861804f92cc209cd4e3c99, type: 2}
+  - {fileID: 2100000, guid: 5cb7b73806aa4a444aa9c81b3c6596bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -88,7 +88,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1867622254130988949
+--- !u!65 &4263040186013002548
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,8 +107,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.055999957, y: 0.049999963, z: 0.15814471}
+  m_Center: {x: -0.0000000121071935, y: 0.025000004, z: 0.014896188}
 --- !u!114 &-2222373377127816768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,4 +123,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: 
   _ammoTypes: 0
-  _ammoCapacity: 100
+  _ammoCapacity: 20

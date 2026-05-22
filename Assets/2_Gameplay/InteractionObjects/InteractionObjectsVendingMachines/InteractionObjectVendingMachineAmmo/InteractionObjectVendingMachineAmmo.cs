@@ -22,9 +22,9 @@ public class InteractionObjectVendingMachineAmmo : InteractionObjectVendingMachi
 	private void UpdateGoods()
 	{
 		var data = _ammoTypes[currentAmmoIndex];
-		_goodsForSaleModel = data.ammoPrefab;
-		_goodsPrice = data.price;
-		_goodsName = data.ammoName;
+		_goodsForSaleModel = data.AmmoPrefab;
+		_goodsPrice = data.Price;
+		_goodsName = data.AmmoName;
 	}
 
 	private void Start()
