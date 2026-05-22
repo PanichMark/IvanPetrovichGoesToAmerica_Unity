@@ -12,9 +12,12 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	private GameObject _canvasLoadingScreen;
 	private TMP_Text _textComponentLoadingReady;
 	private GameObject _textLoadingReady;
-	private TMP_Text _textSceneName;
-	private TMP_Text _textSceneDescription;
-	private Slider _sliderLoadingStatus;
+	private GameObject _textSceneName;
+	private TMP_Text _textComponentSceneName;
+	private GameObject _textSceneDescription;
+	private TMP_Text _textComponentSceneDescription;
+	private GameObject _sliderLoadingStatus;
+	private Slider _sliderComponentLoadingStatus;
 	private Image _imageLoadingScreen;
 	
 	public delegate void LoadSceneHandler();
@@ -25,18 +28,22 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 	public void Initialize(GameController gameController,
 		GameObject canvasLoadingScreen,
-		GameObject textComponentLoadingReady,
-		TMP_Text textSceneName,
-		TMP_Text textSceneDescription,
-		Slider sliderLoadingStatus,
+		GameObject textLoadingReady,
+		GameObject textSceneName,
+		GameObject textSceneDescription,
+		GameObject sliderLoadingStatus,
 		Image imageLoadingScreen)
 	{
-		_gameController = gameController;	
-
+		_gameController = gameController;
+		_textLoadingReady = textLoadingReady;
+		_textComponentLoadingReady = _textLoadingReady.GetComponent<TMP_Text>();
 		_canvasLoadingScreen = canvasLoadingScreen;	
 		_textSceneName = textSceneName;
+		_textComponentSceneName = _textSceneName.GetComponent<TMP_Text>();
 		_textSceneDescription = textSceneDescription;
+		_textComponentSceneDescription = _textSceneDescription.GetComponent<TMP_Text>();
 		_sliderLoadingStatus = sliderLoadingStatus;
+		_sliderComponentLoadingStatus = _sliderLoadingStatus.GetComponent<Slider>();
 		_imageLoadingScreen = imageLoadingScreen;
 
 		Debug.Log("GameSceneManager Initialized");
@@ -62,7 +69,11 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 		_imageLoadingScreen.sprite = spriteToUse;
 		
-		_textSceneName.text = _localizationManager.GetLocalizedString(sceneName);
+		_textComponentSceneName.text = _localizationManager.GetLocalizedString(sceneName);
+
+		_sliderLoadingStatus.SetActive(true);
+		_sliderComponentLoadingStatus.value = 0f;
+		_textLoadingReady.SetActive(false);
 
 		string languageSuffix = "RU";
 		if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
@@ -80,31 +91,38 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 		if (descriptionTextAsset != null)
 		{
-			_textSceneDescription.text = descriptionTextAsset.text;
+			_textComponentSceneDescription.text = descriptionTextAsset.text;
 		}
 		else
 		{
-			_textSceneDescription.text = ($"SCENE DESCRIPTION FOR \"{languageSuffix}\" NOT FOUND");
+			_textComponentSceneDescription.text = ($"SCENE DESCRIPTION FOR \"{languageSuffix}\" NOT FOUND");
 			Debug.LogWarning($"SCENE DESCRIPTION FOR \"{languageSuffix}\" NOT FOUND");
 		}
 
 		if (SceneManager.sceneCount > 1)
 		{
-			Scene loadedScene = SceneManager.GetSceneAt(1); 
+			Scene loadedScene = SceneManager.GetSceneAt(1);
 
 			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
 			{
-				
+				float unloadProgress = 0f;
+				float unloadTarget = 0.5f; 
+
 				Debug.Log($"Scene_{loadedScene.name} UNloading started");
 
-				SceneManager.UnloadSceneAsync(loadedScene);
-				yield return new WaitUntil(() => !loadedScene.isLoaded);
+				AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(loadedScene);
+
+				while (!unloadOperation.isDone)
+				{
+					unloadProgress = Mathf.Lerp(0, unloadTarget, unloadOperation.progress);
+					_sliderComponentLoadingStatus.value = unloadProgress;
+					yield return null;
+				}
+				_sliderComponentLoadingStatus.value = unloadTarget;
 
 				Debug.Log($"Scene_{loadedScene.name} UNloading ended");
-				
 			}
 		}
-
 		
 		Debug.Log($"{sceneName} loading started");
 
@@ -112,11 +130,18 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 		while (!operation.isDone)
 		{
-			float progress = Mathf.Clamp01(operation.progress / 0.9f);
-			
+			float loadProgressForSlider = Mathf.Lerp(0.5f, 1f, operation.progress / 0.9f);
+
+			_sliderComponentLoadingStatus.value = loadProgressForSlider;
+
 			yield return null;
 		}
-	
+
+		_sliderComponentLoadingStatus.value = 1f;
+		_sliderLoadingStatus.SetActive(false);
+		_textLoadingReady.SetActive(true);
+		_textComponentLoadingReady.text = _localizationManager.GetLocalizedString("UI_LoadingScreen_LoadingReady");
+
 		Debug.Log($"{sceneName} loading ended");
 		
 		OnEndLoadingGameplayScene?.Invoke();
@@ -140,7 +165,12 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-		Time.timeScale = 0f; 
+		Time.timeScale = 0f;
+
+		_sliderLoadingStatus.SetActive(false);
+		_textLoadingReady.SetActive(false);
+
+		Sprite spriteToUse = Resources.Load<Sprite>("Sprites/Sprites_LoadingScreens/Scene0_MainMenu");
 
 		if (SceneManager.sceneCount > 1)
 		{

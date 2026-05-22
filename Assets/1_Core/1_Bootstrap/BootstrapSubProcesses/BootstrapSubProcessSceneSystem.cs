@@ -14,9 +14,9 @@ public class BootstrapSubProcessSceneSystem
 	private GameObject _canvasLoadingScreen;
 
 	private GameObject _textLoadingReady;
-	private TMP_Text _textSceneName;
-	private TMP_Text _textSceneDescription;
-	private Slider _sliderLoadingStatus;
+	private GameObject _textSceneName;
+	private GameObject _textSceneDescription;
+	private GameObject _sliderLoadingStatus;
 	private Image _imageLoadingScreen;
 
 	public BootstrapSubProcessSceneSystem(Bootstrap bootstrap, GameController gameController, GameObject canvasLoadingScreen)
@@ -32,9 +32,9 @@ public class BootstrapSubProcessSceneSystem
 		GameSceneManager = _gameObjectBootstrapGameSceneSystem.AddComponent<GameSceneManager>();
 
 		_textLoadingReady = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "TextLoadingScreenReady");
-		_textSceneName = _canvasLoadingScreen.transform.Find("TextSceneName").GetComponent<TMP_Text>();
-		_textSceneDescription = _canvasLoadingScreen.transform.Find("TextLoadingScreenDescription").GetComponent<TMP_Text>();
-		_sliderLoadingStatus = _canvasLoadingScreen.transform.Find("TextLoadingScreenDescription").GetComponent<Slider>();
+		_textSceneName = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "TextSceneName");
+		_textSceneDescription = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "TextLoadingScreenDescription");
+		_sliderLoadingStatus = _bootstrap.FindDeepGameObject(_canvasLoadingScreen, "SliderLoadingScreenStatus");
 		_imageLoadingScreen = _canvasLoadingScreen.transform.Find("ImageLoadingScreen").GetComponent<Image>();
 
 
