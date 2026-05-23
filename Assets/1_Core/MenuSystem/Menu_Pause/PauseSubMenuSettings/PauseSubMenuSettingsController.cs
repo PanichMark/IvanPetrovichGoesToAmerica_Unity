@@ -154,19 +154,19 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 		_buttonSaveSettings.GetComponent<Button>().onClick.AddListener(() =>
 		{
-			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.General.ToString())
+			if (_currentOpenedSubSettingsSection == PauseSubMenuSettingsSectionTypes.General.ToString())
 			{
 				OnRequestSaveSettingsGeneralConfirmation();
 			}
-			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Controls.ToString())
+			if (_currentOpenedSubSettingsSection == PauseSubMenuSettingsSectionTypes.Controls.ToString())
 			{
 				OnRequestSaveSettingsControlsConfirmation();
 			}
-			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Graphics.ToString())
+			if (_currentOpenedSubSettingsSection == PauseSubMenuSettingsSectionTypes.Graphics.ToString())
 			{
 				OnRequestSaveSettingsGraphicsConfirmation();
 			}
-			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Audio.ToString())
+			if (_currentOpenedSubSettingsSection == PauseSubMenuSettingsSectionTypes.Audio.ToString())
 			{
 				OnRequestSaveSettingsAudioConfirmation();
 			}
@@ -174,19 +174,19 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 		_buttonResetSettings.GetComponent<Button>().onClick.AddListener(() =>
 		{
-			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.General.ToString())
+			if (_currentOpenedSubSettingsSection == PauseSubMenuSettingsSectionTypes.General.ToString())
 			{
 				OnRequestResetSettingsGeneralConfirmation();
 			}
-			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Controls.ToString())
+			if (_currentOpenedSubSettingsSection == PauseSubMenuSettingsSectionTypes.Controls.ToString())
 			{
 				OnRequestResetSettingsControlsConfirmation();
 			}
-			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Graphics.ToString())
+			if (_currentOpenedSubSettingsSection == PauseSubMenuSettingsSectionTypes.Graphics.ToString())
 			{
 				OnRequestResetSettingsGraphicsConfirmation();
 			}
-			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Audio.ToString())
+			if (_currentOpenedSubSettingsSection == PauseSubMenuSettingsSectionTypes.Audio.ToString())
 			{
 				OnRequestResetSettingsAudioConfirmation();
 			}

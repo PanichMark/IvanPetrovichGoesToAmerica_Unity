@@ -40,7 +40,9 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	{
 		PlayerPrefs.SetFloat(FOV, data.FOV);
 
-		PlayerPrefs.Save(); 
+		PlayerPrefs.Save();
+
+		Debug.Log("Saved SettingsGeneral");
 	}
 
 	public void SaveSettingsControls(PlayerPrefsData data)
@@ -51,11 +53,15 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 		}
 
 		PlayerPrefs.Save();
+
+		Debug.Log("Saved SettingsControls");
 	}
 
 	public void SaveSettingsGraphics(PlayerPrefsData data)
 	{
 		PlayerPrefs.Save();
+
+		Debug.Log("Saved SettingsGraphics");
 	}
 
 	public void SaveSettingsAudio(PlayerPrefsData data)
@@ -63,6 +69,8 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 		PlayerPrefs.SetString(Language, data.Language);
 
 		PlayerPrefs.Save();
+
+		Debug.Log("Saved SettingsAudio");
 	}
 
 	public void LoadSettings(List<string> actionNamesToLoad)
@@ -110,7 +118,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	{
 		PlayerPrefs.DeleteKey(FOV);
 
-		Debug.Log("RESET SETTINGS!!");
+		Debug.Log("Reset SettingsGeneral");
 	}
 
 	public void ResetSettingsControls()
@@ -128,14 +136,14 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 		PlayerPrefs.Save();
 
-		Debug.Log("RESET SETTINGS!!");
+		Debug.Log("Reset SettingsControls");
 	}
 
 	public void ResetSettingsGraphics()
 	{
 		PlayerPrefs.Save();
 
-		Debug.Log("RESET SETTINGS!!");
+		Debug.Log("Rset SettingsGraphics");
 	}
 
 	public void ResetSettingsAudio()
@@ -146,6 +154,6 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 		PlayerPrefs.Save();
 
-		Debug.Log("RESET SETTINGS!!");
+		Debug.Log("Reset SettingsAduio");
 	}
 }
