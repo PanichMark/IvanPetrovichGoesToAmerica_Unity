@@ -1,12 +1,39 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
-using System.Linq;
-using System;
 
 public class PauseSubMenuSettingsController : MonoBehaviour
 {
+	private PauseMenuController _pauseMenuController;
+
+	private GameObject _canvasPauseSubMenuSettings;
+
+	private GameObject _subSettingsSectionGeneral;
+	private GameObject _buttonSubSettingsSectionGeneral;
+	private Button _buttonComponentSubSettingsSectionGeneral;
+
+	private GameObject _subSettingsSectionControls;
+	private GameObject _buttonSubSettingsSectionControls;
+	private Button _buttonComponentSubSettingsSectionControls;
+
+	private GameObject _subSettingsSectionGraphics;
+	private GameObject _buttonSubSettingsSectionGraphics;
+	private Button _buttonComponentSubSettingsSectionGraphics;
+
+	private GameObject _subSettingsSectionAudio;
+	private GameObject _buttonSubSettingsSectionAudio;
+	private Button _buttonComponentSubSettingsSectionAudio;
+
+	private GameObject _buttonSaveSettings;
+	private Button _buttonComponentSaveSettings;
+	private GameObject _buttonResetSettings;
+	private Button _buttonComponentResetSettings;
+
+	private GameObject _buttonClosePauseSubMenuSettings;
+	private Button _buttonComponentClosePauseSubMenuSettings;
+
+	private string _currentOpenedSubSettingsSection;
+	private bool _isPauseSubMenuSettingsOpened;
+
 	public delegate void ConfirmChangeSettingsEventHandler();
 	public event ConfirmChangeSettingsEventHandler OnRequestSaveSettingsGeneralConfirmation;
 	public event ConfirmChangeSettingsEventHandler OnRequestResetSettingsGeneralConfirmation;
@@ -17,82 +44,23 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	public event ConfirmChangeSettingsEventHandler OnRequestSaveSettingsAudioConfirmation;
 	public event ConfirmChangeSettingsEventHandler OnRequestResetSettingsAudioConfirmation;
 
-	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
-	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsControlsData;
-	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGraphicsData;
-	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsAudioData;
-
-	public delegate void ResetPlayerPrefsSettingsEventHandler();
-	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsControlsData;
-	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGraphicsData;
-	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsAudioData;
-
-	private string _currentOpenedSubSettingsSection;
-	private IInputDevice _inputDevice;
-	private MenuManager _menuManager;
-	private bool _isPauseSubMenuSettingsOpened;
-	private GameObject _canvasPauseSubMenuSettings;
-	private PauseMenuController _pauseMenuController;
-	private GameObject _buttonClosePauseSubMenuSettings;
-	private Bootstrap _bootstrap;
-	private LocalizationManager _localizationManager;
-
-	private GameObject _subSettingsSectionGeneral;
-	private GameObject _buttonSubSettingsSectionGeneral;
-
-
-	private GameObject _subSettingsSectionControls;
-	private GameObject _buttonSubSettingsSectionControls;
-	private TMP_InputField[] _KeyRebinds;
-
-	private GameObject _subSettingsSectionGraphics;
-	private GameObject _buttonSubSettingsSectionGraphics;
-
-	private GameObject _subSettingsSectionAudio;
-	private GameObject _buttonSubSettingsSectionAudio;
-	private Button[] _buttonsChangeLanguage;
-	private char _lastValidChar;
-
-	private GameObject _buttonSaveSettings;
-	private GameObject _buttonResetSettings;
-
-	private readonly char[][] _layoutMap = new char[][]
-	{
-	new char[] {'Й', 'Q'}, new char[] {'Ц', 'W'}, new char[] {'У', 'E'}, new char[] {'К', 'R'},
-	new char[] {'Е', 'T'}, new char[] {'Н', 'Y'}, new char[] {'Г', 'U'}, new char[] {'Ш', 'I'},
-	new char[] {'Щ', 'O'}, new char[] {'З', 'P'}, new char[] {'Х', '['}, new char[] {'Ъ', ']'},
-	new char[] {'Ф', 'A'}, new char[] {'Ы', 'S'}, new char[] {'В', 'D'}, new char[] {'А', 'F'},
-	new char[] {'П', 'G'}, new char[] {'Р', 'H'}, new char[] {'О', 'J'}, new char[] {'Л', 'K'},
-	new char[] {'Д', 'L'}, new char[] {'Ж', ';'}, new char[] {'Э', '\''}, new char[] {'Я', 'Z'},
-	new char[] {'Ч', 'X'}, new char[] {'С', 'C'}, new char[] {'М', 'V'}, new char[] {'И', 'B'},
-	new char[] {'Т', 'N'}, new char[] {'Ь', 'M'}, new char[] {'Б', ','}, new char[] {'Ю', '.'},
-	new char[] {'.', '/'},
-	  };
-
 	public void Initialize(
-		Bootstrap bootstrap,
-		IInputDevice inputDevice,
-		LocalizationManager localizationManager,
-		MenuManager menuManager,
 		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuSettings,
 		GameObject subSettingsSectionGeneral,
 		GameObject buttonSubSettingsSectionGeneral,
 		GameObject subSettingsSectionControls,
 		GameObject buttonSubSettingsSectionControls,
-		GameObject[] KeyRebinds,
 		GameObject subSettingsSectionGraphics,
 		GameObject buttonSubSettingsSectionGraphics,
 		GameObject subSettingsSectionAudio,
 		GameObject buttonSubSettingsSectionAudio,
-		GameObject[] buttonsChangeLanguage,
 		GameObject buttonSaveSettings,
 		GameObject buttonResetSettings,
 		GameObject buttonClosePauseSubMenuSettings)
 	{
-		_bootstrap = bootstrap;
-		_localizationManager = localizationManager;
-
+		_pauseMenuController = pauseMenuController;
+		_canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
 
 		_subSettingsSectionGeneral = subSettingsSectionGeneral;
 		_buttonSubSettingsSectionGeneral = buttonSubSettingsSectionGeneral;
@@ -106,21 +74,25 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_subSettingsSectionAudio = subSettingsSectionAudio;
 		_buttonSubSettingsSectionAudio = buttonSubSettingsSectionAudio;
 
-		_buttonsChangeLanguage = new Button[buttonsChangeLanguage.Length];
-		_KeyRebinds = new TMP_InputField[KeyRebinds.Length];
-		_pauseMenuController = pauseMenuController;
-		_menuManager = menuManager;
-		_inputDevice = inputDevice;
-		_canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
-		_buttonClosePauseSubMenuSettings = buttonClosePauseSubMenuSettings;
-		_pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
-		_pauseMenuController.OnCloseAnyPauseSubMenu += HideSettingsSubMenuCanvas;
 		_buttonSaveSettings = buttonSaveSettings;
 		_buttonResetSettings = buttonResetSettings;
+		_buttonClosePauseSubMenuSettings = buttonClosePauseSubMenuSettings;
 
-		_buttonClosePauseSubMenuSettings.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
+		_buttonComponentSubSettingsSectionGeneral = _buttonSubSettingsSectionGeneral.GetComponent<Button>();
+		_buttonComponentSubSettingsSectionControls = _buttonSubSettingsSectionControls.GetComponent<Button>();
+		_buttonComponentSubSettingsSectionGraphics = _buttonSubSettingsSectionGraphics.GetComponent<Button>();
+		_buttonComponentSubSettingsSectionAudio = _buttonSubSettingsSectionAudio.GetComponent<Button>();
 
-		_buttonSaveSettings.GetComponent<Button>().onClick.AddListener(() =>
+		_buttonComponentSaveSettings = _buttonSaveSettings.GetComponent<Button>();
+		_buttonComponentResetSettings = _buttonResetSettings.GetComponent<Button>();
+		_buttonComponentClosePauseSubMenuSettings = _buttonClosePauseSubMenuSettings.GetComponent<Button>();
+
+		_buttonComponentSubSettingsSectionGeneral.onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionGeneral));
+		_buttonComponentSubSettingsSectionControls.onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionControls));
+		_buttonComponentSubSettingsSectionGraphics.onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionGraphics));
+		_buttonComponentSubSettingsSectionAudio.onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionAudio));
+
+		_buttonComponentSaveSettings.onClick.AddListener(() =>
 		{
 			if (_currentOpenedSubSettingsSection == PauseSubMenuSettingsSectionTypes.General.ToString())
 			{
@@ -140,7 +112,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			}
 		});
 
-		_buttonResetSettings.GetComponent<Button>().onClick.AddListener(() =>
+		_buttonComponentResetSettings.GetComponent<Button>().onClick.AddListener(() =>
 		{
 			if (_currentOpenedSubSettingsSection == PauseSubMenuSettingsSectionTypes.General.ToString())
 			{
@@ -160,52 +132,33 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			}
 		});
 
-		for (int i = 0; i < _buttonsChangeLanguage.Length; i++)
-		{
-			_buttonsChangeLanguage[i] = buttonsChangeLanguage[i].GetComponent<Button>();
-		}
-
-		for (int i = 0; i < _KeyRebinds.Length; i++)
-		{
-			_KeyRebinds[i] = KeyRebinds[i].GetComponent<TMP_InputField>();
-		}
-
-		_buttonsChangeLanguage[0].onClick.AddListener(() => ChangeLanguage(LanguagesEnum.Russian));
-		_buttonsChangeLanguage[1].onClick.AddListener(() => ChangeLanguage(LanguagesEnum.English));
-
-		var bindings = _inputDevice.GetCurrentKeyBindings().ToList();
-
-		foreach (var field in _KeyRebinds)
-		{
-			var matchingBinding = bindings.FirstOrDefault(b => b.action == field.name.Replace("InputField", ""));
-			if (matchingBinding != default)
-			{
-				field.text = matchingBinding.key.ToString();
-			}
-		}
-
-		foreach (var field in _KeyRebinds)
-		{
-			field.onValidateInput += ValidateAndConvertInput;
-			field.onEndEdit.AddListener((string text) =>
-			{
-				string actionName = field.name.Replace("InputField", "");
-				HandleRebinding(actionName, text);
-			});
-			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
-		}
-
-		_buttonSubSettingsSectionGeneral.GetComponent<Button>().onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionGeneral));
-		_buttonSubSettingsSectionControls.GetComponent<Button>().onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionControls));
-		_buttonSubSettingsSectionGraphics.GetComponent<Button>().onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionGraphics));
-		_buttonSubSettingsSectionAudio.GetComponent<Button>().onClick.AddListener(() => OpenSubSettingsSection(_subSettingsSectionAudio));
+		_buttonComponentClosePauseSubMenuSettings.onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
 
 		_pauseMenuController.OnOpenSettingsSubMenu += () => OpenSubSettingsSection(_subSettingsSectionGeneral);
-
+		_pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
+		_pauseMenuController.OnCloseAnyPauseSubMenu += HideSettingsSubMenuCanvas;
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
 		Debug.Log("SettingsSubMenu Initialized");
+	}
+	public void ShowSettingsSubMenuCanvas()
+	{
+		_isPauseSubMenuSettingsOpened = true;
+		_canvasPauseSubMenuSettings.gameObject.SetActive(true);
+
+		Debug.Log("Opened SettingsSubMenu");
+	}
+
+	public void HideSettingsSubMenuCanvas()
+	{
+		if (_isPauseSubMenuSettingsOpened)
+		{
+			_isPauseSubMenuSettingsOpened = false;
+			_canvasPauseSubMenuSettings.gameObject.SetActive(false);
+
+			Debug.Log("Closed SettingsSubMenu");
+		}
 	}
 
 	private void OpenSubSettingsSection(GameObject subSettingsSection)
@@ -218,10 +171,9 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			CloseSubSettingsSection(_subSettingsSectionGraphics);
 			CloseSubSettingsSection(_subSettingsSectionAudio);
 
-			Button buttonSubSettingsSectionGeneral = _buttonSubSettingsSectionGeneral.GetComponent<Button>();
-			buttonSubSettingsSectionGeneral.interactable = false;
+			_buttonComponentSubSettingsSectionGeneral.interactable = false;
 
-			_currentOpenedSubSettingsSection = "General";
+			_currentOpenedSubSettingsSection = PauseSubMenuSettingsSectionTypes.General.ToString();
 		}
 		if (subSettingsSection == _subSettingsSectionControls)
 		{
@@ -229,10 +181,9 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			CloseSubSettingsSection(_subSettingsSectionGraphics);
 			CloseSubSettingsSection(_subSettingsSectionAudio);
 
-			Button buttonSubSettingsSectionControls = _buttonSubSettingsSectionControls.GetComponent<Button>();
-			buttonSubSettingsSectionControls.interactable = false;
+			_buttonComponentSubSettingsSectionControls.interactable = false;
 
-			_currentOpenedSubSettingsSection = "Controls";
+			_currentOpenedSubSettingsSection = PauseSubMenuSettingsSectionTypes.Controls.ToString();
 		}
 		if (subSettingsSection == _subSettingsSectionGraphics)
 		{
@@ -240,10 +191,9 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			CloseSubSettingsSection(_subSettingsSectionControls);
 			CloseSubSettingsSection(_subSettingsSectionAudio);
 
-			Button buttonSubSettingsSectionGraphics = _buttonSubSettingsSectionGraphics.GetComponent<Button>();
-			buttonSubSettingsSectionGraphics.interactable = false;
+			_buttonComponentSubSettingsSectionGraphics.interactable = false;
 
-			_currentOpenedSubSettingsSection = "Graphics";
+			_currentOpenedSubSettingsSection = PauseSubMenuSettingsSectionTypes.Graphics.ToString();
 		}
 		if (subSettingsSection == _subSettingsSectionAudio)
 		{
@@ -251,10 +201,9 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			CloseSubSettingsSection(_subSettingsSectionControls);
 			CloseSubSettingsSection(_subSettingsSectionGraphics);
 
-			Button buttonSubSettingsSectionAudio = _buttonSubSettingsSectionAudio.GetComponent<Button>();
-			buttonSubSettingsSectionAudio.interactable = false;
+			_buttonComponentSubSettingsSectionAudio.interactable = false;
 
-			_currentOpenedSubSettingsSection = "Audio";
+			_currentOpenedSubSettingsSection = PauseSubMenuSettingsSectionTypes.Audio.ToString();
 		}
 	}
 
@@ -264,304 +213,67 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 		if (subSettingsSection == _subSettingsSectionGeneral)
 		{
-			Button buttonSubSettingsSectionGeneral = _buttonSubSettingsSectionGeneral.GetComponent<Button>();
-			buttonSubSettingsSectionGeneral.interactable = true;
+			_buttonComponentSubSettingsSectionGeneral.interactable = true;
 		}
 		if (subSettingsSection == _subSettingsSectionControls)
 		{
-			Button buttonSubSettingsSectionControls = _buttonSubSettingsSectionControls.GetComponent<Button>();
-			buttonSubSettingsSectionControls.interactable = true;
+			_buttonComponentSubSettingsSectionControls.interactable = true;
 		}
 		if (subSettingsSection == _subSettingsSectionGraphics)
 		{
-			Button buttonSubSettingsSectionGraphics = _buttonSubSettingsSectionGraphics.GetComponent<Button>();
-			buttonSubSettingsSectionGraphics.interactable = true;
+			_buttonComponentSubSettingsSectionGraphics.interactable = true;
 		}
 		if (subSettingsSection == _subSettingsSectionAudio)
 		{
-			Button buttonSubSettingsSectionAudio = _buttonSubSettingsSectionAudio.GetComponent<Button>();
-			buttonSubSettingsSectionAudio.interactable = true;
+			_buttonComponentSubSettingsSectionAudio.interactable = true;
 		}
 	}
 
 	private void DisableButtons()
 	{
-		Button saveButton = _buttonSaveSettings.GetComponent<Button>();
-		if (saveButton != null) saveButton.interactable = false;
-
-		Button resetButton = _buttonResetSettings.GetComponent<Button>();
-		if (resetButton != null) resetButton.interactable = false;
-
-		Button closeButton = _buttonClosePauseSubMenuSettings.GetComponent<Button>();
-		if (closeButton != null) closeButton.interactable = false;
-
-		foreach (var button in _buttonsChangeLanguage)
-		{
-			if (button != null) button.interactable = false;
-		}
-
-		foreach (var field in _KeyRebinds)
-		{
-			if (field != null) field.interactable = false;
-		}
-
 		if(_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.General.ToString())
 		{
-			Button buttonSubSettingsSectionGeneral = _buttonSubSettingsSectionGeneral.GetComponent<Button>();
-			buttonSubSettingsSectionGeneral.interactable = false;
+			_buttonComponentSubSettingsSectionGeneral.interactable = false;
 		}
 		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Controls.ToString())
 		{
-			Button buttonSubSettingsSectionControls = _buttonSubSettingsSectionControls.GetComponent<Button>();
-			buttonSubSettingsSectionControls.interactable = false;
+			_buttonComponentSubSettingsSectionControls.interactable = false;
 		}
 		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Graphics.ToString())
 		{
-			Button buttonSubSettingsSectionGraphics = _buttonSubSettingsSectionGraphics.GetComponent<Button>();
-			buttonSubSettingsSectionGraphics.interactable = false;
+			_buttonComponentSubSettingsSectionGraphics.interactable = false;
 		}
 		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Audio.ToString())
 		{
-			Button buttonSubSettingsSectionAudio = _buttonSubSettingsSectionAudio.GetComponent<Button>();
-			buttonSubSettingsSectionAudio.interactable = false;
+			_buttonComponentSubSettingsSectionAudio.interactable = false;
 		}
+
+		_buttonComponentSaveSettings.interactable = false;
+		_buttonComponentResetSettings.interactable = false;
+		_buttonComponentClosePauseSubMenuSettings.interactable = false;
 	}
 
 	private void EnableButtons()
 	{
-		Button saveButton = _buttonSaveSettings.GetComponent<Button>();
-		if (saveButton != null) saveButton.interactable = true;
-
-		Button resetButton = _buttonResetSettings.GetComponent<Button>();
-		if (resetButton != null) resetButton.interactable = true;
-
-		Button closeButton = _buttonClosePauseSubMenuSettings.GetComponent<Button>();
-		if (closeButton != null) closeButton.interactable = true;
-
-		foreach (var button in _buttonsChangeLanguage)
-		{
-			if (button != null) button.interactable = true;
-		}
-
-	
-		foreach (var field in _KeyRebinds)
-		{
-			if (field != null) field.interactable = true;
-		}
-
 		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.General.ToString())
 		{
-			Button buttonSubSettingsSectionGeneral = _buttonSubSettingsSectionGeneral.GetComponent<Button>();
-			buttonSubSettingsSectionGeneral.interactable = true;
+			_buttonComponentSubSettingsSectionGeneral.interactable = true;
 		}
 		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Controls.ToString())
 		{
-			Button buttonSubSettingsSectionControls = _buttonSubSettingsSectionControls.GetComponent<Button>();
-			buttonSubSettingsSectionControls.interactable = true;
+			_buttonComponentSubSettingsSectionControls.interactable = true;
 		}
 		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Graphics.ToString())
 		{
-			Button buttonSubSettingsSectionGraphics = _buttonSubSettingsSectionGraphics.GetComponent<Button>();
-			buttonSubSettingsSectionGraphics.interactable = true;
+			_buttonComponentSubSettingsSectionGraphics.interactable = true;
 		}
 		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Audio.ToString())
 		{
-			Button buttonSubSettingsSectionAudio = _buttonSubSettingsSectionAudio.GetComponent<Button>();
-			buttonSubSettingsSectionAudio.interactable = true;
-		}
-	}
-
-	private void ChangeLanguage(LanguagesEnum language)
-	{
-		_bootstrap.ChangeLanguage(language);
-		Debug.Log("Changed Language to: " + language);
-	}
-	
-	private void KeepLastCharacter(TMP_InputField field)
-	{
-		if (!string.IsNullOrEmpty(field.text))
-		{
-			field.text = field.text[field.text.Length - 1].ToString(); 
-		}
-	}
-	char ValidateAndConvertInput(string text, int charIndex, char addedChar)
-	{
-		if (char.IsControl(addedChar)) return addedChar; 
-
-		char upperCaseChar = char.ToUpperInvariant(addedChar); 
-
-		if (char.IsLetter(upperCaseChar) && upperCaseChar <= 'Z')
-		{
-			_lastValidChar = upperCaseChar; 
-			return upperCaseChar;
+			_buttonComponentSubSettingsSectionAudio.interactable = true;
 		}
 
-		foreach (var entry in _layoutMap)
-		{
-			if (entry[0] == upperCaseChar)
-			{
-				_lastValidChar = entry[1]; 
-				return entry[1];        
-			}
-		}
-
-		Debug.LogWarning($"Символ {upperCaseChar} не обнаружен в раскладке!");
-		return _lastValidChar; 
-	}
-	
-	public void HideSettingsSubMenuCanvas()
-	{
-		if (_isPauseSubMenuSettingsOpened)
-		{
-			_isPauseSubMenuSettingsOpened = false;
-			_canvasPauseSubMenuSettings.gameObject.SetActive(false);
-
-			Debug.Log("SettingsSubMenu closed");
-		}
-	}
-
-	public void ShowSettingsSubMenuCanvas()
-	{
-		_isPauseSubMenuSettingsOpened = true;
-		_canvasPauseSubMenuSettings.gameObject.SetActive(true);
-	}
-
-	void HandleRebinding(string actionName, string newKeyStr)
-	{
-		if (!Enum.TryParse<KeyCode>(newKeyStr, out KeyCode newKey))
-		{
-			return;
-		}
-
-		var currentBindings = _inputDevice.GetCurrentKeyBindings().ToDictionary(kvp => kvp.action, kvp => kvp.key);
-
-		var conflictingAction = currentBindings.FirstOrDefault(kvp => kvp.Value == newKey && kvp.Key != actionName).Key;
-
-		if (conflictingAction != null)
-		{
-			KeyCode oldKeyOfThisAction = currentBindings[actionName];
-
-			_inputDevice.RebindKey(actionName, newKey);
-			_inputDevice.RebindKey(conflictingAction, oldKeyOfThisAction);
-
-			UpdateInputFieldText(actionName, newKey);
-			UpdateInputFieldText(conflictingAction, oldKeyOfThisAction);
-		}
-		else
-		{
-			_inputDevice.RebindKey(actionName, newKey);
-			UpdateInputFieldText(actionName, newKey);
-		}
-	}
-
-	private void UpdateInputFieldText(string actionName, KeyCode key)
-	{
-		foreach (var field in _KeyRebinds)
-		{
-			if (field.name.StartsWith(actionName))
-			{
-				field.text = key.ToString();
-				break;
-			}
-		}
-	}
-
-	public void SaveSettingsControls()
-	{
-		var currentData = new PlayerPrefsData();
-
-		currentData.KeyBindings = new Dictionary<string, KeyCode>(_inputDevice.CurrentKeyboardKeyBindings);
-
-		OnSaveSettingsControlsData?.Invoke(currentData);
-	}
-
-	public void SaveSettingsGraphics()
-	{
-		var currentData = new PlayerPrefsData();
-
-		OnSaveSettingsGraphicsData?.Invoke(currentData);
-	}
-	public void SaveSettingsAudio()
-	{
-		var currentData = new PlayerPrefsData();
-
-		currentData.Language = _localizationManager.CurrentLanguage.ToString();
-
-		OnSaveSettingsAudioData?.Invoke(currentData);
-	}
-
-	public void ResetSettingsControls()
-	{
-		OnResetSettingsControlsData?.Invoke();
-
-		var defaultBindingsSnapshot = _inputDevice.GetDefaultKeyBindings();
-
-		PlayerPrefsData defaultData = new PlayerPrefsData
-		{
-			KeyBindings = defaultBindingsSnapshot.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
-		};
-
-		OnSaveSettingsControlsData?.Invoke(defaultData);
-
-		foreach (var field in _KeyRebinds)
-		{
-			string actionName = field.name.Replace("InputField", "");
-
-			if (defaultData.KeyBindings.TryGetValue(actionName, out var key))
-			{
-				field.text = key.ToString();
-				_inputDevice.RebindKey(actionName, key);
-			}
-		}
-	}
-
-	public void ResetSettingsGraphics()
-	{
-		OnResetSettingsGraphicsData?.Invoke();
-
-		PlayerPrefsData defaultData = new PlayerPrefsData
-		{
-
-		};
-
-		OnSaveSettingsGraphicsData?.Invoke(defaultData);
-	}
-
-	public void ResetSettingsAudio()
-	{
-		OnResetSettingsAudioData?.Invoke();
-
-		PlayerPrefsData defaultData = new PlayerPrefsData
-		{
-			Language = _localizationManager.CurrentLanguage.ToString(),
-		};
-
-		OnSaveSettingsAudioData?.Invoke(defaultData);
-	}
-
-	public void ApplySystemLoadedSettings(PlayerPrefsData data)
-	{
-		if (data.KeyBindings != null && data.KeyBindings.Count > 0)
-		{
-			foreach (var kvp in data.KeyBindings)
-			{
-				string actionName = kvp.Key; 
-				KeyCode savedKey = kvp.Value; 
-
-				bool foundField = false;
-				foreach (var field in _KeyRebinds)
-				{
-					string fieldActionName = field.name.Replace(" (InputField)", "");
-
-					if (fieldActionName == actionName)
-					{
-						field.text = savedKey.ToString();
-						_inputDevice.RebindKey(actionName, savedKey);
-						foundField = true;
-						break; 
-					}
-				}
-			}
-		}
+		_buttonComponentSaveSettings.interactable = true;
+		_buttonComponentResetSettings.interactable = true;
+		_buttonComponentClosePauseSubMenuSettings.interactable = true;
 	}
 }

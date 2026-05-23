@@ -11,6 +11,9 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	private MenuManager _menuManager;
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
+	private PauseSubMenuSettingsSectionControlsController _pauseSubMenuSettingsSectionControlsController;
+	private PauseSubMenuSettingsSectionGraphicsController _pauseSubMenuSettingsSectionGraphicsController;
+	private PauseSubMenuSettingsSectionAudioController _pauseSubMenuSettingsSectionAudioController;
 	private GameSceneManager _gameSceneManager;
 	private Action _onAcceptAction;
 	private int _targetSlot; 
@@ -30,6 +33,9 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		PauseSubMenuLoadController loadController,
 		PauseSubMenuSettingsController pauseSubMenuSettingsController,
 		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
+		PauseSubMenuSettingsSectionControlsController pauseSubMenuSettingsSectionControlsController,
+		PauseSubMenuSettingsSectionGraphicsController pauseSubMenuSettingsSectionGraphicsController,
+		PauseSubMenuSettingsSectionAudioController pauseSubMenuSettingsSectionAudioController,
 		GameObject canvasPauseSubMenuConfirm,
 		GameObject buttonAccept,
 		GameObject buttonCancel,
@@ -48,6 +54,9 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_confirmationTextComponent = textShowConfirmationMessage.GetComponent<Text>();
 		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
 		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
+		_pauseSubMenuSettingsSectionControlsController = pauseSubMenuSettingsSectionControlsController;
+		_pauseSubMenuSettingsSectionGraphicsController = pauseSubMenuSettingsSectionGraphicsController;
+		_pauseSubMenuSettingsSectionAudioController = pauseSubMenuSettingsSectionAudioController;
 		_buttonConfirm.GetComponent<Button>().onClick.AddListener(() => ExecuteAccept());
 		_buttonCancel.GetComponent<Button>().onClick.AddListener(() => ExecuteCancel());
 
@@ -156,28 +165,28 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	private void HandleShowForSaveSettingsControls()
 	{
 		_confirmationTextComponent.text = "Сохранить настройки управления?";
-		_onAcceptAction = () => _pauseSubMenuSettingsController.SaveSettingsControls();
+		_onAcceptAction = () => _pauseSubMenuSettingsSectionControlsController.SaveSettingsControls();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
 	private void HandleShowForResetSettingsControls()
 	{
 		_confirmationTextComponent.text = "Сбросить настройки управления?";
-		_onAcceptAction = () => _pauseSubMenuSettingsController.ResetSettingsControls();
+		_onAcceptAction = () => _pauseSubMenuSettingsSectionControlsController.ResetSettingsControls();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
 	private void HandleShowForSaveSettingsGraphics()
 	{
 		_confirmationTextComponent.text = "Сохранить настройки графики?";
-		_onAcceptAction = () => _pauseSubMenuSettingsController.SaveSettingsGraphics();
+		_onAcceptAction = () => _pauseSubMenuSettingsSectionGraphicsController.SaveSettingsGraphics();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
 	private void HandleShowForResetSettingsGraphics()
 	{
 		_confirmationTextComponent.text = "Сбросить настройки графики?";
-		_onAcceptAction = () => _pauseSubMenuSettingsController.ResetSettingsGraphics();
+		_onAcceptAction = () => _pauseSubMenuSettingsSectionGraphicsController.ResetSettingsGraphics();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
@@ -185,14 +194,14 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	private void HandleShowForSaveSettingsAudio()
 	{
 		_confirmationTextComponent.text = "Сохранить аудио настройки?";
-		_onAcceptAction = () => _pauseSubMenuSettingsController.SaveSettingsAudio();
+		_onAcceptAction = () => _pauseSubMenuSettingsSectionAudioController.SaveSettingsAudio();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
 	private void HandleShowForResetSettingsAudio()
 	{
 		_confirmationTextComponent.text = "Сбросить аудионастройки?";
-		_onAcceptAction = () => _pauseSubMenuSettingsController.ResetSettingsAudio();
+		_onAcceptAction = () => _pauseSubMenuSettingsSectionAudioController.ResetSettingsAudio();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 	

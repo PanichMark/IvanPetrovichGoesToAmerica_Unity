@@ -13,13 +13,26 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
+	private PauseSubMenuSettingsSectionControlsController _pauseSubMenuSettingsSectionControlsController;
+	private PauseSubMenuSettingsSectionGraphicsController _pauseSubMenuSettingsSectionGraphicsController;
+	private PauseSubMenuSettingsSectionAudioController _pauseSubMenuSettingsSectionAudioController;
 
-	public void Initialize(Bootstrap bootstrap, IInputDevice inputDevice, PauseSubMenuSettingsController pauseSubMenuSettingsController, PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController)
+	public void Initialize(
+		Bootstrap bootstrap,
+		IInputDevice inputDevice,
+		PauseSubMenuSettingsController pauseSubMenuSettingsController,
+		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
+		PauseSubMenuSettingsSectionControlsController pauseSubMenuSettingsSectionControlsController,
+		PauseSubMenuSettingsSectionGraphicsController pauseSubMenuSettingsSectionGraphicsController,
+		PauseSubMenuSettingsSectionAudioController pauseSubMenuSettingsSectionAudioController)
 	{
 		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
 		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
 		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
+		_pauseSubMenuSettingsSectionControlsController = pauseSubMenuSettingsSectionControlsController;
+		_pauseSubMenuSettingsSectionGraphicsController = pauseSubMenuSettingsSectionGraphicsController;
+		_pauseSubMenuSettingsSectionAudioController = pauseSubMenuSettingsSectionAudioController;
 
 		var defaultBindings = _inputDevice.GetDefaultKeyBindings();
 		List<string> actionNames = new List<string>(defaultBindings.Keys);
@@ -28,12 +41,12 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 		_pauseSubMenuSettingsSectionGeneralController.OnSaveSettingsGeneralData += SaveSettingsGeneral;
 		_pauseSubMenuSettingsSectionGeneralController.OnResetSettingsGeneralData += ResetSettingsGeneral;
-		_pauseSubMenuSettingsController.OnSaveSettingsControlsData += SaveSettingsControls;
-		_pauseSubMenuSettingsController.OnResetSettingsControlsData += ResetSettingsControls;
-		_pauseSubMenuSettingsController.OnSaveSettingsGraphicsData += SaveSettingsGraphics;
-		_pauseSubMenuSettingsController.OnResetSettingsGraphicsData += ResetSettingsGraphics;
-		_pauseSubMenuSettingsController.OnSaveSettingsAudioData += SaveSettingsAudio;
-		_pauseSubMenuSettingsController.OnResetSettingsAudioData += ResetSettingsAudio;
+		_pauseSubMenuSettingsSectionControlsController.OnSaveSettingsControlsData += SaveSettingsControls;
+		_pauseSubMenuSettingsSectionControlsController.OnResetSettingsControlsData += ResetSettingsControls;
+		_pauseSubMenuSettingsSectionGraphicsController.OnSaveSettingsGraphicsData += SaveSettingsGraphics;
+		_pauseSubMenuSettingsSectionGraphicsController.OnResetSettingsGraphicsData += ResetSettingsGraphics;
+		_pauseSubMenuSettingsSectionAudioController.OnSaveSettingsAudioData += SaveSettingsAudio;
+		_pauseSubMenuSettingsSectionAudioController.OnResetSettingsAudioData += ResetSettingsAudio;
 
 		Debug.Log("SettingsPlayerPrefs Initialized");
 	}
@@ -113,8 +126,9 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 			}
 		}
 
-		_pauseSubMenuSettingsController.ApplySystemLoadedSettings(data);
 		_pauseSubMenuSettingsSectionGeneralController.ApplySystemLoadedSettings(data);
+		_pauseSubMenuSettingsSectionControlsController.ApplySystemLoadedSettings(data);
+		_pauseSubMenuSettingsSectionGraphicsController.ApplySystemLoadedSettings(data);
 	}
 
 	public void ResetSettingsGeneral()

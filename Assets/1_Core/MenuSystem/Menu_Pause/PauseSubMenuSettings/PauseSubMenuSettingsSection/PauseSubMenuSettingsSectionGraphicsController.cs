@@ -1,16 +1,39 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
+	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGraphicsData;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public delegate void ResetPlayerPrefsSettingsEventHandler();
+	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGraphicsData;
+
+	public void Initialize()
+	{
+		Debug.Log("SettingsSectionGraphicsInitialized");
+	}
+
+	public void SaveSettingsGraphics()
+	{
+		var currentData = new PlayerPrefsData();
+
+		OnSaveSettingsGraphicsData?.Invoke(currentData);
+	}
+
+	public void ResetSettingsGraphics()
+	{
+		OnResetSettingsGraphicsData?.Invoke();
+
+		PlayerPrefsData defaultData = new PlayerPrefsData
+		{
+
+		};
+
+		OnSaveSettingsGraphicsData?.Invoke(defaultData);
+	}
+
+	public void ApplySystemLoadedSettings(PlayerPrefsData data)
+	{
+
+	}
 }

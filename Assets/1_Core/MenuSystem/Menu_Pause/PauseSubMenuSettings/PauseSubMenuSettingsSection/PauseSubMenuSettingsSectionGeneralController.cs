@@ -73,6 +73,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
+
+		Debug.Log("SettingsSectionGeneral Initialized");
 	}
 
 	private void HighlightFPSbutton(Button button)
