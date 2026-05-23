@@ -16,6 +16,7 @@ public class GameController
 
 	public delegate void MainMenuEventHandler();
 	public event MainMenuEventHandler OnOpenMainMenu;
+	public event MainMenuEventHandler OnCloseMainMenu;
 
 	public GameController()
 	{
@@ -69,6 +70,7 @@ public class GameController
 	public void CloseMainMenu()
 	{
 		IsMainMenuOpen = false;
+		OnCloseMainMenu?.Invoke();
 		Debug.Log("MainMeni closed");
 	}
 

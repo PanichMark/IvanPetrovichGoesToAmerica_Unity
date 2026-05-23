@@ -18,28 +18,14 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	public event ConfirmChangeSettingsEventHandler OnRequestResetSettingsAudioConfirmation;
 
 	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
-	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGeneralData;
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsControlsData;
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGraphicsData;
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsAudioData;
 
-
-
-	public delegate void SavePlayerPrefsCameraSettingsEventHandler();
-	public event SavePlayerPrefsCameraSettingsEventHandler OnSaveCameraSettingsData;
-
-
-
 	public delegate void ResetPlayerPrefsSettingsEventHandler();
-	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGeneralData;
 	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsControlsData;
 	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGraphicsData;
 	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsAudioData;
-
-
-	public delegate void MainCameraFOVeventHandle(float newFov, float MIN_FOV_VALUE, float MAX_FOV_VALUE);
-	public event MainCameraFOVeventHandle OnMainCameraFOVchanged;
-
 
 	private string _currentOpenedSubSettingsSection;
 	private IInputDevice _inputDevice;
@@ -49,18 +35,11 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private PauseMenuController _pauseMenuController;
 	private GameObject _buttonClosePauseSubMenuSettings;
 	private Bootstrap _bootstrap;
-	private GameController _gameController;
 	private LocalizationManager _localizationManager;
-	private float _FOV;
+
 	private GameObject _subSettingsSectionGeneral;
 	private GameObject _buttonSubSettingsSectionGeneral;
-	private GameObject _sliderFOVgameObject;
-	private Slider _sliderFOV;
-	private TextMeshProUGUI _fovDisplayText;
-	private const float _MIN_FOV_VALUE = 60f;
-	private const float _MAX_FOV_VALUE = 120f;
-	private Button[] _FPSbuttons;
-	private int _currentFrameRateLimit = 60;
+
 
 	private GameObject _subSettingsSectionControls;
 	private GameObject _buttonSubSettingsSectionControls;
@@ -73,9 +52,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private GameObject _buttonSubSettingsSectionAudio;
 	private Button[] _buttonsChangeLanguage;
 	private char _lastValidChar;
-
-	private Color _activeColor = Color.green;
-	private Color _normalColor = Color.white;
 
 	private GameObject _buttonSaveSettings;
 	private GameObject _buttonResetSettings;
@@ -95,7 +71,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	public void Initialize(
 		Bootstrap bootstrap,
-		GameController gameController,
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
 		MenuManager menuManager,
@@ -103,9 +78,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		GameObject canvasPauseSubMenuSettings,
 		GameObject subSettingsSectionGeneral,
 		GameObject buttonSubSettingsSectionGeneral,
-		GameObject FOVSlider,
-		GameObject fovDisplayText,
-		GameObject[] FPSbuttons,
 		GameObject subSettingsSectionControls,
 		GameObject buttonSubSettingsSectionControls,
 		GameObject[] KeyRebinds,
@@ -118,12 +90,9 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		GameObject buttonResetSettings,
 		GameObject buttonClosePauseSubMenuSettings)
 	{
-		_gameController = gameController;
 		_bootstrap = bootstrap;
 		_localizationManager = localizationManager;
-		_fovDisplayText = fovDisplayText.GetComponent<TextMeshProUGUI>();
 
-		_sliderFOVgameObject = FOVSlider;
 
 		_subSettingsSectionGeneral = subSettingsSectionGeneral;
 		_buttonSubSettingsSectionGeneral = buttonSubSettingsSectionGeneral;
@@ -137,7 +106,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_subSettingsSectionAudio = subSettingsSectionAudio;
 		_buttonSubSettingsSectionAudio = buttonSubSettingsSectionAudio;
 
-		_FPSbuttons = new Button[FPSbuttons.Length];
 		_buttonsChangeLanguage = new Button[buttonsChangeLanguage.Length];
 		_KeyRebinds = new TMP_InputField[KeyRebinds.Length];
 		_pauseMenuController = pauseMenuController;
@@ -192,17 +160,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			}
 		});
 
-		_sliderFOV = _sliderFOVgameObject.GetComponent<Slider>();
-
-		_sliderFOV.minValue = _MIN_FOV_VALUE;
-		_sliderFOV.maxValue = _MAX_FOV_VALUE;
-		_sliderFOV.onValueChanged.AddListener(OnFovChanged);
-
-		for (int i = 0; i < _FPSbuttons.Length; i++)
-		{
-			_FPSbuttons[i] = FPSbuttons[i].GetComponent<Button>();
-		}
-
 		for (int i = 0; i < _buttonsChangeLanguage.Length; i++)
 		{
 			_buttonsChangeLanguage[i] = buttonsChangeLanguage[i].GetComponent<Button>();
@@ -213,17 +170,8 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			_KeyRebinds[i] = KeyRebinds[i].GetComponent<TMP_InputField>();
 		}
 
-		_FPSbuttons[0].onClick.AddListener(() => ChangeFrameRateLimit(30));
-		_FPSbuttons[1].onClick.AddListener(() => ChangeFrameRateLimit(60));
-		_FPSbuttons[2].onClick.AddListener(() => ChangeFrameRateLimit(90));
-		_FPSbuttons[3].onClick.AddListener(() => ChangeFrameRateLimit(144));
-
 		_buttonsChangeLanguage[0].onClick.AddListener(() => ChangeLanguage(LanguagesEnum.Russian));
 		_buttonsChangeLanguage[1].onClick.AddListener(() => ChangeLanguage(LanguagesEnum.English));
-
-		ChangeFrameRateLimit(60);
-		ApplyButtonColors(_currentFrameRateLimit);
-		_gameController.OnOpenMainMenu += () => SetFOV(60);
 
 		var bindings = _inputDevice.GetCurrentKeyBindings().ToList();
 
@@ -352,13 +300,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			if (button != null) button.interactable = false;
 		}
 
-		foreach (var button in _FPSbuttons)
-		{
-			if (button != null) button.interactable = false;
-		}
-
-		if (_sliderFOV != null) _sliderFOV.interactable = false;
-
 		foreach (var field in _KeyRebinds)
 		{
 			if (field != null) field.interactable = false;
@@ -402,13 +343,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			if (button != null) button.interactable = true;
 		}
 
-		foreach (var button in _FPSbuttons)
-		{
-			if (button != null) button.interactable = true;
-		}
-
-		if (_sliderFOV != null) _sliderFOV.interactable = true;
-
+	
 		foreach (var field in _KeyRebinds)
 		{
 			if (field != null) field.interactable = true;
@@ -491,60 +426,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_canvasPauseSubMenuSettings.gameObject.SetActive(true);
 	}
 
-	public void OnFovChanged(float value)
-	{
-		SetFOV(value);
-	}
-
-	private void SetFOV(float newFov)
-	{
-		OnMainCameraFOVchanged?.Invoke(newFov, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
-
-		_fovDisplayText.text = ((int)newFov).ToString();
-	}
-
-	private void ChangeFrameRateLimit(int frameRate)
-	{
-		Application.targetFrameRate = frameRate;
-		_currentFrameRateLimit = frameRate;
-		ApplyButtonColors(frameRate);
-		Debug.Log($"Frame rate limit set to {frameRate}");
-	}
-
-	private void ApplyButtonColors(int activeFrameRate)
-	{
-		ResetAllButtons();
-
-		switch (activeFrameRate)
-		{
-			case 30:
-				HighlightButton(_FPSbuttons[0]);
-				break;
-			case 60:
-				HighlightButton(_FPSbuttons[1]);
-				break;
-			case 90:
-				HighlightButton(_FPSbuttons[2]);
-				break;
-			case 144:
-				HighlightButton(_FPSbuttons[3]);
-				break;
-		}
-	}
-
-	private void ResetAllButtons()
-	{
-		_FPSbuttons[0].image.color = _normalColor;
-		_FPSbuttons[1].image.color = _normalColor;
-		_FPSbuttons[2].image.color = _normalColor;
-		_FPSbuttons[3].image.color = _normalColor;
-	}
-
-	private void HighlightButton(Button button)
-	{
-		button.image.color = _activeColor;
-	}
-
 	void HandleRebinding(string actionName, string newKeyStr)
 	{
 		if (!Enum.TryParse<KeyCode>(newKeyStr, out KeyCode newKey))
@@ -585,22 +466,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		}
 	}
 
-	public void GetCameraCurrentFOV(float FOV)
-	{
-		_FOV = FOV;
-	}
-
-	public void SaveSettingsGeneral()
-	{
-		var currentData = new PlayerPrefsData();
-
-		OnSaveCameraSettingsData?.Invoke();
-
-		currentData.FOV = _FOV;
-
-		OnSaveSettingsGeneralData?.Invoke(currentData);
-	}
-
 	public void SaveSettingsControls()
 	{
 		var currentData = new PlayerPrefsData();
@@ -623,21 +488,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		currentData.Language = _localizationManager.CurrentLanguage.ToString();
 
 		OnSaveSettingsAudioData?.Invoke(currentData);
-	}
-
-	public void ResetSettingsGeneral()
-	{
-		OnResetSettingsGeneralData?.Invoke();
-
-		PlayerPrefsData defaultData = new PlayerPrefsData
-		{
-			FOV = _MIN_FOV_VALUE,
-		};
-
-		OnSaveSettingsGeneralData?.Invoke(defaultData);
-
-		SetFOV(_MIN_FOV_VALUE);
-		_sliderFOV.value = _MIN_FOV_VALUE;
 	}
 
 	public void ResetSettingsControls()
@@ -691,9 +541,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
-		SetFOV(data.FOV);
-		_sliderFOV.value = data.FOV;
-
 		if (data.KeyBindings != null && data.KeyBindings.Count > 0)
 		{
 			foreach (var kvp in data.KeyBindings)

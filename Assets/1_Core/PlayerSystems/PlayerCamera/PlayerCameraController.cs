@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 public class PlayerCameraController : MonoBehaviour, ISaveLoad
 {
+	private GameController _gameController;
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
 	private PlayerMovementController _movementController;
@@ -17,8 +18,8 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private Vector2 _mouseScrollWheel;
 	private GameSceneManager _gameSceneManager;
 	private RaycastHit _hit;
-
-	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
+	private float _currentFOV;
+	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 
 	public bool IsAbleToZoomCameraOut { get; private set; } = true;
 
@@ -214,21 +215,31 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 	private void SetCameraFOV(float newFov, float MIN_FOV_VALUE, float MAX_FOV_VALUE)
 	{
-		_mainCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
+		if (!_gameController.IsMainMenuOpen)
+		{
+			_mainCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
+		}
+		else
+		{
+			_mainCamera.fieldOfView = Mathf.Clamp(60, MIN_FOV_VALUE, MAX_FOV_VALUE);
+		}
+
+		_currentFOV = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
+		Debug.Log(_currentFOV);
 	}
 
 	private void SendCameraFOV()
 	{
-		_pauseSubMenuSettingsController.GetCameraCurrentFOV(_mainCamera.fieldOfView);
+		_pauseSubMenuSettingsSectionGeneralController.GetCameraCurrentFOV(_currentFOV);
 	}
 
-
-	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, MenuManager menuManager, PauseSubMenuSettingsController pauseSubMenuSettingsController, PlayerMovementController movementController, PlayerMovementStateMachineController playerMovementStateMachineController, PlayerColliderController playerCollider, GameObject playerModel, GameObject playerCamera)
+	public void Initialize(GameController gameController, IInputDevice inputDevice, GameSceneManager gameSceneManager, MenuManager menuManager, PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController, PlayerMovementController movementController, PlayerMovementStateMachineController playerMovementStateMachineController, PlayerColliderController playerCollider, GameObject playerModel, GameObject playerCamera)
 	{
+		_gameController = gameController;
 		_gameSceneManager = gameSceneManager;
 		_inputDevice = inputDevice;
 		_menuManager = menuManager;
-		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
+		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
 		_movementController = movementController; 
 		_playerCollider = playerCollider;
 		_player = playerModel;
@@ -239,8 +250,9 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		PlayerCameraDistanceZ = 3.25f;
 		_mainCamera = _playerCamera.GetComponent<Camera>();
 
-		_pauseSubMenuSettingsController.OnMainCameraFOVchanged += SetCameraFOV;
-		_pauseSubMenuSettingsController.OnSaveCameraSettingsData += SendCameraFOV;
+		_pauseSubMenuSettingsSectionGeneralController.OnMainCameraFOVchanged += SetCameraFOV;
+		_pauseSubMenuSettingsSectionGeneralController.OnSaveCameraSettingsData += SendCameraFOV;
+		_gameController.OnCloseMainMenu += SendCameraFOV;
 
 		_isInitialized = true;
 

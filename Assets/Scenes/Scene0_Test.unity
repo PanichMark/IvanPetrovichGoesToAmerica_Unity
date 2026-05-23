@@ -403,6 +403,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractionObject_VendingMachine_Health
       objectReference: {fileID: 0}
+    - target: {fileID: 3698752554140006100, guid: 00b61f49ae10d8c40bdfdeee2651b760, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1877,6 +1881,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractionObject_VendingMachine_Mana
       objectReference: {fileID: 0}
+    - target: {fileID: 3919983025175668082, guid: d930bcfa894f5e248bc2869e3127c0a8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2697,6 +2705,10 @@ PrefabInstance:
     - target: {fileID: 8764897025864242599, guid: bca339bae190afd4a8063ed965f14845, type: 3}
       propertyPath: m_Name
       value: InteractionObject_VendingMachine_Ammo
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764897025864242599, guid: bca339bae190afd4a8063ed965f14845, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

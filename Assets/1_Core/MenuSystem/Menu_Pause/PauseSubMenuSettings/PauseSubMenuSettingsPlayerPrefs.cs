@@ -12,20 +12,22 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	public string KeybindingsPrefix  { get; private set; } = "KeyBinding_";
 	
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
+	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 
-	public void Initialize(Bootstrap bootstrap, IInputDevice inputDevice, PauseSubMenuSettingsController pauseSubMenuSettingsController)
+	public void Initialize(Bootstrap bootstrap, IInputDevice inputDevice, PauseSubMenuSettingsController pauseSubMenuSettingsController, PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController)
 	{
 		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
 		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
+		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
 
 		var defaultBindings = _inputDevice.GetDefaultKeyBindings();
 		List<string> actionNames = new List<string>(defaultBindings.Keys);
 
 		_bootstrap.OnLoadSettingsData += () => LoadSettings(actionNames);
 
-		_pauseSubMenuSettingsController.OnSaveSettingsGeneralData += SaveSettingsGeneral;
-		_pauseSubMenuSettingsController.OnResetSettingsGeneralData += ResetSettingsGeneral;
+		_pauseSubMenuSettingsSectionGeneralController.OnSaveSettingsGeneralData += SaveSettingsGeneral;
+		_pauseSubMenuSettingsSectionGeneralController.OnResetSettingsGeneralData += ResetSettingsGeneral;
 		_pauseSubMenuSettingsController.OnSaveSettingsControlsData += SaveSettingsControls;
 		_pauseSubMenuSettingsController.OnResetSettingsControlsData += ResetSettingsControls;
 		_pauseSubMenuSettingsController.OnSaveSettingsGraphicsData += SaveSettingsGraphics;
@@ -112,6 +114,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 		}
 
 		_pauseSubMenuSettingsController.ApplySystemLoadedSettings(data);
+		_pauseSubMenuSettingsSectionGeneralController.ApplySystemLoadedSettings(data);
 	}
 
 	public void ResetSettingsGeneral()

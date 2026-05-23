@@ -10,6 +10,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	private GameObject _buttonCancel;
 	private MenuManager _menuManager;
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
+	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	private GameSceneManager _gameSceneManager;
 	private Action _onAcceptAction;
 	private int _targetSlot; 
@@ -28,6 +29,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		PauseSubMenuSaveController saveController,
 		PauseSubMenuLoadController loadController,
 		PauseSubMenuSettingsController pauseSubMenuSettingsController,
+		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
 		GameObject canvasPauseSubMenuConfirm,
 		GameObject buttonAccept,
 		GameObject buttonCancel,
@@ -45,6 +47,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_textShowConfirmationMessage = textShowConfirmationMessage;
 		_confirmationTextComponent = textShowConfirmationMessage.GetComponent<Text>();
 		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
+		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
 		_buttonConfirm.GetComponent<Button>().onClick.AddListener(() => ExecuteAccept());
 		_buttonCancel.GetComponent<Button>().onClick.AddListener(() => ExecuteCancel());
 
@@ -139,14 +142,14 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	private void HandleShowForSaveSettingsGeneral()
 	{
 		_confirmationTextComponent.text = "Сохранить общие настройки?";
-		_onAcceptAction = () => _pauseSubMenuSettingsController.SaveSettingsGeneral();
+		_onAcceptAction = () => _pauseSubMenuSettingsSectionGeneralController.SaveSettingsGeneral();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
 	private void HandleShowForResetSettingsGeneral()
 	{
 		_confirmationTextComponent.text = "Сбросить общие настройки?";
-		_onAcceptAction = () => _pauseSubMenuSettingsController.ResetSettingsGeneral();
+		_onAcceptAction = () => _pauseSubMenuSettingsSectionGeneralController.ResetSettingsGeneral();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
