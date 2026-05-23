@@ -136,8 +136,6 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	public void GetCameraCurrentFOV(float FOV)
 	{
 		CurrentFOV = FOV;
-
-		//Debug.Log(_currentFOV);
 	}
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
@@ -172,6 +170,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 	public void SetFOV(float newFov)
 	{
+		CurrentFOV = newFov;
+
 		_fovDisplayText.text = ((int)newFov).ToString();
 
 		if (!_gameController.IsMainMenuOpen)
@@ -180,7 +180,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		}
 		else
 		{
-			CurrentFOV = newFov;
+			
 			OnMainCameraFOVchanged?.Invoke(60, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
 		}
 	}
