@@ -2,6 +2,9 @@
 
 public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 {
+	[SerializeField] Sprite _lootObjectIcon;
+	public override Sprite LootObjectIcon => _lootObjectIcon;
+
 	[SerializeField] private GameObject _weapon;
 
 	private PlayerWeaponController _playerWeaponController;
@@ -23,6 +26,6 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 
 	protected override void ThisMethodSetsActionName()
 	{
-		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }

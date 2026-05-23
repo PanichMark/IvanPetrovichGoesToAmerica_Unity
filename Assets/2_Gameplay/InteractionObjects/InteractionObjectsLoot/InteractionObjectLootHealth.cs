@@ -9,6 +9,9 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 
 	public override string InteractionHintMessageFail => $"Максимум {InteractionObjectNameUI}";
 
+	[SerializeField] Sprite _lootObjectIcon;
+	public override Sprite LootObjectIcon => _lootObjectIcon;
+
 	public override void Interact()
 	{
 		if (_playerResourcesHealthManager.CurrentHealingItemsNumber < 9)
@@ -30,6 +33,6 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 	{
 		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
 
-		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }

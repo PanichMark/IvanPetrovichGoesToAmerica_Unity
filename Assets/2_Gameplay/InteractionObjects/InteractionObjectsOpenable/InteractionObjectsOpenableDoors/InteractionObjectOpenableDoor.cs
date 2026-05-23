@@ -32,7 +32,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 		Vector3 closedEulerAngles = new Vector3(0, 0, 0);
 		_closedRotation = Quaternion.Euler(closedEulerAngles);
 
-		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
 		{

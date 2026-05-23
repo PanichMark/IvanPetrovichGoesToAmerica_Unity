@@ -57,7 +57,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_imageRectTransform = _imageComponent.gameObject.GetComponent<RectTransform>();
 
@@ -160,7 +160,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 				_gameSceneManager.OnBeginLoadingGameplayScene -= CloseAndDeactivate;
 				var _localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 				if (_localizationManager != null)
-					_localizationManager.OnLanguageChangeEvent -= ChangeLanguage;
+					_localizationManager.OnLanguageChanged -= ChangeLanguage;
 
 				if (_menuManager != null)
 				{

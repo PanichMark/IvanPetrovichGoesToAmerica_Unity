@@ -5,7 +5,8 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 	[SerializeField] private int _moneyValue;
 
 	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
-
+	[SerializeField] Sprite _lootObjectIcon;
+	public override Sprite LootObjectIcon => _lootObjectIcon;
 	public override void Interact()
 	{
 		base.Interact();
@@ -18,6 +19,6 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 	protected override void ThisMethodSetsActionName()
 	{
 		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
-		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }

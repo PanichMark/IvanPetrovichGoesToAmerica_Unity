@@ -9,18 +9,18 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 	[SerializeField] protected GameObject _goodsForSale;
 	[SerializeField] protected int _goodsPrice;
 	protected string _goodsName;
+	private InteractionObjectLootAbstract _goodsComponent;
 	[SerializeField] private string _moneyType;
-	private string _interactionHintMessageAction;
+	private string _moneyForUI;
 	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
 	private bool _isAdditionalInteractionHintActive;
 	private LocalizationManager _localizationManager;
 	
 
 
-	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {_goodsName} {InteractionObjectNameUI} {_goodsPrice} {_moneyType}?";
-	public virtual string InteractionHintMessageFail => "Недостаточно денег!";
+	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {_goodsName} {InteractionObjectNameUI} {_goodsPrice} {_moneyForUI}?";
+	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Money")}!";
 	public string InteractionHintMessageAction => _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Purchase");
-
 	public string InteractionObjectNameSystem => _vendingMachineName;
 	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
@@ -28,15 +28,21 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 
 	protected void Start()
 	{
-		var goodsComponent = _goodsForSale.GetComponent<InteractionObjectLootAbstract>();
+		_goodsComponent = _goodsForSale.GetComponent<InteractionObjectLootAbstract>();
 
 		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_goodsName = _localizationManager.GetLocalizedString(goodsComponent.InteractionObjectNameSystem);
-		_moneyType = _localizationManager.GetLocalizedString(_moneyType);
+		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
+		_moneyForUI = _localizationManager.GetLocalizedString(_moneyType);
+
+		_localizationManager.OnLanguageChanged += ChangeLangauge;
 	}
 
-
+	public void ChangeLangauge()
+	{
+		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
+		_moneyForUI = _localizationManager.GetLocalizedString(_moneyType);
+	}
 
 	public void Interact()
 	{

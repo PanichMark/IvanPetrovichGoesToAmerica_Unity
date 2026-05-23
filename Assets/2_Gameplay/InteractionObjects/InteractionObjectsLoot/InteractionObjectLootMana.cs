@@ -7,7 +7,8 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 	private PlayerResourcesManaManager _playerResourcesManaManager;
 
 	public override string InteractionHintMessageFail => $"Maximum {InteractionObjectNameUI}";
-
+	[SerializeField] Sprite _lootObjectIcon;
+	public override Sprite LootObjectIcon => _lootObjectIcon;
 	public override void Interact()
 	{
 		if (_playerResourcesManaManager.CurrentManaReplenishItemsNumber < 9)
@@ -28,6 +29,6 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 	protected override void ThisMethodSetsActionName()
 	{
 		_playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
-		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }

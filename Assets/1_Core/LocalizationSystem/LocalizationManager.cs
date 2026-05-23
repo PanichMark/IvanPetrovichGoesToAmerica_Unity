@@ -9,7 +9,7 @@ public class LocalizationManager
 
 	public LanguagesEnum CurrentLanguage { get; private set; }
 	public delegate void ChangeLanguageEvent();
-	public event ChangeLanguageEvent OnLanguageChangeEvent;
+	public event ChangeLanguageEvent OnLanguageChanged;
 
 	public LocalizationManager()
 	{
@@ -21,7 +21,7 @@ public class LocalizationManager
 	public void ChangeLanguage(LanguagesEnum language)
 	{
 		CurrentLanguage = language;
-		OnLanguageChangeEvent?.Invoke();
+		OnLanguageChanged?.Invoke();
 	}
 
 	public string GetLocalizedString(string key)

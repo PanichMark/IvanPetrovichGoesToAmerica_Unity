@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System;
 using TMPro;
-using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
@@ -22,9 +20,9 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	public TextMeshProUGUI NameGainedItem => null;
 
 	public virtual Sprite IconGainedItem => LootObjectIcon;
-	public virtual string InteractionObjectNameUI { get; protected set; }
+	public virtual string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameSystem)}";
 
-	public Sprite LootObjectIcon { get; protected set; }
+	public virtual Sprite LootObjectIcon { get; protected set; }
 
 	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 	public virtual string InteractionHintMessageFail => null;
@@ -38,13 +36,13 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot");
 		ThisMethodSetsActionName();
-		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
 	public void ChangeLanguage()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Loot");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot");
 		ThisMethodSetsActionName();
 	}
 

@@ -76,7 +76,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 
-		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
 		_menuManager.OnClosePauseMenu += ShowPuzzleCanvas;

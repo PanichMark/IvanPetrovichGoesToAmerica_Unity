@@ -24,7 +24,7 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		_closedPosition = transform.localPosition;
 		_openedPosition = transform.localPosition + new Vector3(0, 0, _openLengthForward);
 
-		localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		localizationManager.OnLanguageChanged += ChangeLanguage;
 		IsDoorOpened = false;
 	}
 

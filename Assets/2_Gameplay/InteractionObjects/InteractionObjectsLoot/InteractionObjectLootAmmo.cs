@@ -3,7 +3,8 @@
 public class InteractionObjectLootAmmo : InteractionObjectLootAbstract
 {
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
-
+	[SerializeField] Sprite _lootObjectIcon;
+	public override Sprite LootObjectIcon => _lootObjectIcon;
 	[SerializeField] private AmmoTypes _ammoTypes;
 	[SerializeField] private int _ammoCapacity;
 

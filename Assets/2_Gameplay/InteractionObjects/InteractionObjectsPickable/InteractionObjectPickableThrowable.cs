@@ -71,7 +71,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintAction_Pickable");
-		_localizationManager.OnLanguageChangeEvent += ChangeLanguage;
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
 	private void ThrowableObjectToFirstPerson()
