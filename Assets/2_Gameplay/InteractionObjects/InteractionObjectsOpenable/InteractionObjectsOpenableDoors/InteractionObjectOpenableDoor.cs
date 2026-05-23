@@ -43,7 +43,15 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			_mechanicalLockController.OnUnlockLock += UnlockDoor;
 		}
 
-		if (_mechanicalLockController == null || _mechanicalLockController.WasUnlocked)
+		if (_electronicLockController != null && !_electronicLockController.WasUnlocked)
+		{
+			_interactionHintMessageMain = _electronicLockController.InteractionHintMessageMain;
+			_electronicLockController.OnUnlockLock += UnlockDoor;
+		}
+
+		if ((_mechanicalLockController == null && _electronicLockController == null)
+			|| (_mechanicalLockController != null &&_mechanicalLockController.WasUnlocked)
+			|| (_electronicLockController != null && _electronicLockController.WasUnlocked))
 		{
 			SetUnlockedDoorHintMessageMain();
 
@@ -64,7 +72,15 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			_mechanicalLockController.OnUnlockLock += UnlockDoor;
 		}
 
-		if (_mechanicalLockController == null || _mechanicalLockController.WasUnlocked)
+		if (_electronicLockController != null && !_electronicLockController.WasUnlocked)
+		{
+			_interactionHintMessageMain = _electronicLockController.InteractionHintMessageMain;
+			_electronicLockController.OnUnlockLock += UnlockDoor;
+		}
+
+		if ((_mechanicalLockController == null && _electronicLockController == null)
+			|| (_mechanicalLockController != null && _mechanicalLockController.WasUnlocked)
+			|| (_electronicLockController != null && _electronicLockController.WasUnlocked))
 		{
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 		}

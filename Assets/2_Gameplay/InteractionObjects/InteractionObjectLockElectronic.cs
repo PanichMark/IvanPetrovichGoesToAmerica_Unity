@@ -7,14 +7,21 @@ using UnityEngine.UI;
 
 public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 {
+	public delegate void UnlockLockEventHandler();
+	public event UnlockLockEventHandler OnUnlockLock;
+
+	private LocalizationManager _localizationManager;
+	[SerializeField] private string _interactionObjectNameSystem;
+	private string _interactionHintMessageAction;
+	private string _interactionHintMessageMain;
 	public bool WasUnlocked { get; private set; }
-	public string InteractionObjectNameSystem => throw new NotImplementedException();
-	public string InteractionObjectNameUI => "Электронный замок";
-	public string InteractionHintMessageMain => "Взломать?";
-	public string InteractionHintMessageAction => throw new NotImplementedException();
-	public string InteractionHintMessageFail => throw new NotImplementedException();
+	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
+	public string InteractionObjectNameUI { get; protected set; }
+	public string InteractionHintMessageMain => _interactionHintMessageMain;
+	public string InteractionHintMessageAction => _interactionHintMessageAction;
+	public string InteractionHintMessageFail => null;
 	private bool _isPuzzleActive;
-	public bool IsInteractionHintMessageFailActive => throw new NotImplementedException();
+	public bool IsInteractionHintMessageFailActive => false;
 
 	private Button _buttonExitLockpickElectronicMenu;
 	private GameObject[] _buttonsLockElectrical;
@@ -26,22 +33,37 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private List<int> _alarmIndices;
 	private int _movesLeft = 5;
 
-	void Start()
+	void Awake()
 	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_canvasLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickElectronic");
-		_buttonExitLockpickElectronicMenu = ServiceLocator.Resolve<Button>("ButtonExitLockpickElectronicMenu");
+		_buttonExitLockpickElectronicMenu = ServiceLocator.Resolve<Button>("ButtonCloseLockpickElectronicMenu");
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>("ButtonsLockElectronic");
+
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Hack");
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+
 
 		_buttonExitLockpickElectronicMenu.onClick.AddListener(CloseElectronicLockPuzzle);
 
 		_menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
 		_menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
-
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseElectronicLockPuzzle;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseElectronicLockPuzzle;
+	}
+
+	public void ChangeLanguage()
+	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Hack");
+
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 	}
 
 	private void CloseElectronicLockPuzzle()
@@ -162,6 +184,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		}
 
 		EndPuzzle();
+		OnUnlockLock?.Invoke();
 	}
 
 	private IEnumerator FlashAndResetButtons()
