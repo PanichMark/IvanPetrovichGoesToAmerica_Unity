@@ -169,7 +169,6 @@ public class MenuManager : MonoBehaviour
 		Debug.Log("PauseMenu closed");
 	}
 
-	
 	public void OpenCutsceneMenu()
 	{
 		IsCutsceneMenuOpened = true;
@@ -193,6 +192,8 @@ public class MenuManager : MonoBehaviour
 		IsWeaponWheelMenuOpened = true;
 		OnOpenWeaponWheelMenu?.Invoke();
 
+		Time.timeScale = 0.2f;
+
 		Debug.Log("WeaponWheelMenu opened");
 	}
 
@@ -201,6 +202,9 @@ public class MenuManager : MonoBehaviour
 		CloseAnyMenu();
 		IsWeaponWheelMenuOpened = false;
 		OnCloseWeaponWheelMenu?.Invoke();
+
+		Time.timeScale = 1;
+
 		Debug.Log("WeaponWheelMenu closed");
 	}
 

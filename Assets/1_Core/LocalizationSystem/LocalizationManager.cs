@@ -13,7 +13,7 @@ public class LocalizationManager
 
 	public LocalizationManager()
 	{
-		LoadFromCsv();
+		LoadFromLocalizationCSV();
 	
 		Debug.Log("Localization Manager Initialized");
 	}
@@ -38,7 +38,7 @@ public class LocalizationManager
 		}
 	}
 
-	private void LoadFromCsv()
+	private void LoadFromLocalizationCSV()
 	{
 		TextAsset csvFile = Resources.Load("Lozalization/IvanPetrovichGoesToAmerica_Localization") as TextAsset;
 		if (csvFile == null)
@@ -69,9 +69,26 @@ public class LocalizationManager
 		}
 	}
 
+	public string GetLanguageSuffix()
+	{
+		if (CurrentLanguage == LanguagesEnum.Russian)
+		{
+			return "RU";
+		}
+		if (CurrentLanguage == LanguagesEnum.English)
+		{
+			return "EN";
+		}
+		else
+		{
+			throw new NotImplementedException("This language NOT supported");
+		}
+
+	}
+
+	/*
 	public string GetLocalizedText(TextAsset textFilePath)
 	{
-
 		switch (CurrentLanguage)
 		{
 			case LanguagesEnum.Russian:
@@ -88,4 +105,5 @@ public class LocalizationManager
 				throw new NotImplementedException("Данный язык пока не поддерживается");
 		}
 	}
+	*/
 }

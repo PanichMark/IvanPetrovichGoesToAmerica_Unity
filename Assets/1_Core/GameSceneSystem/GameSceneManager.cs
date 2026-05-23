@@ -77,15 +77,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		_textSceneName.SetActive(true);
 		_textSceneDescription.SetActive(true);
 
-		string languageSuffix = "RU";
-		if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
-		{
-			languageSuffix = "RU";
-		}
-		else if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
-		{
-			languageSuffix = "EN";
-		}
+		string languageSuffix = _localizationManager.GetLanguageSuffix();
 
 		string descriptionFileName = $"Text_Description_{sceneName}_{languageSuffix}";
 
@@ -142,7 +134,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		_sliderComponentLoadingStatus.value = 1f;
 		_sliderLoadingStatus.SetActive(false);
 		_textLoadingReady.SetActive(true);
-		_textComponentLoadingReady.text = _localizationManager.GetLocalizedString("UI_LoadingScreen_LoadingReady");
+		_textComponentLoadingReady.text = _localizationManager.GetLocalizedString("UI_LoadingScreen_LoadingIsReady");
 
 		Debug.Log($"{sceneName} loading ended");
 		

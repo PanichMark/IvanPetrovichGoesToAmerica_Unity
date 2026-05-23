@@ -11,7 +11,7 @@
 	Scared,
 	Hysteric,
 	Fleeing,
-	BeingChoked,
+	BeingStrangled,
 	BeingHooked,
 	KnockedOff,
 	BlownAway,

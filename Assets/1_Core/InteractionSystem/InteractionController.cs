@@ -106,7 +106,7 @@ public class InteractionController : MonoBehaviour
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		_HUDInteractionMainTextInteract = _localizationManager.GetLocalizedString("HUDInteraction_MainTextInteract");
+		_HUDInteractionMainTextInteract = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessageMain");
 	}
 
 	private void ShowCanvasHUDInteraction()

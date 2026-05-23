@@ -7,6 +7,11 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 	private GameObject _canvasPauseSubMenuSettings;
 
+	private GameObject _imageBackgroundSectionGeneral;
+	private GameObject _imageBackgroundSectionControls;
+	private GameObject _imageBackgroundSectionGraphics;
+	private GameObject _imageBackgroundSectionAudio;
+
 	private GameObject _subSettingsSectionGeneral;
 	private GameObject _buttonSubSettingsSectionGeneral;
 	private Button _buttonComponentSubSettingsSectionGeneral;
@@ -48,12 +53,16 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuSettings,
 		GameObject subSettingsSectionGeneral,
+		GameObject imageBackgroundSectionGeneral,
 		GameObject buttonSubSettingsSectionGeneral,
 		GameObject subSettingsSectionControls,
+		GameObject imageBackgroundSectionControls,
 		GameObject buttonSubSettingsSectionControls,
 		GameObject subSettingsSectionGraphics,
+		GameObject imageBackgroundSectionGraphics,
 		GameObject buttonSubSettingsSectionGraphics,
 		GameObject subSettingsSectionAudio,
+		GameObject imageBackgroundSectionAudio,
 		GameObject buttonSubSettingsSectionAudio,
 		GameObject buttonSaveSettings,
 		GameObject buttonResetSettings,
@@ -63,15 +72,19 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
 
 		_subSettingsSectionGeneral = subSettingsSectionGeneral;
+		_imageBackgroundSectionGeneral = imageBackgroundSectionGeneral;
 		_buttonSubSettingsSectionGeneral = buttonSubSettingsSectionGeneral;
 
 		_subSettingsSectionControls = subSettingsSectionControls;
+		_imageBackgroundSectionControls = imageBackgroundSectionControls;
 		_buttonSubSettingsSectionControls = buttonSubSettingsSectionControls;
 
 		_subSettingsSectionGraphics = subSettingsSectionGraphics;
+		_imageBackgroundSectionGraphics = imageBackgroundSectionGraphics;
 		_buttonSubSettingsSectionGraphics = buttonSubSettingsSectionGraphics;
 
 		_subSettingsSectionAudio = subSettingsSectionAudio;
+		_imageBackgroundSectionAudio = imageBackgroundSectionAudio;
 		_buttonSubSettingsSectionAudio = buttonSubSettingsSectionAudio;
 
 		_buttonSaveSettings = buttonSaveSettings;
@@ -172,6 +185,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			CloseSubSettingsSection(_subSettingsSectionAudio);
 
 			_buttonComponentSubSettingsSectionGeneral.interactable = false;
+			_imageBackgroundSectionGeneral.SetActive(true);
 
 			_currentOpenedSubSettingsSection = PauseSubMenuSettingsSectionTypes.General.ToString();
 		}
@@ -182,6 +196,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			CloseSubSettingsSection(_subSettingsSectionAudio);
 
 			_buttonComponentSubSettingsSectionControls.interactable = false;
+			_imageBackgroundSectionControls.SetActive(true);
 
 			_currentOpenedSubSettingsSection = PauseSubMenuSettingsSectionTypes.Controls.ToString();
 		}
@@ -192,6 +207,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			CloseSubSettingsSection(_subSettingsSectionAudio);
 
 			_buttonComponentSubSettingsSectionGraphics.interactable = false;
+			_imageBackgroundSectionGraphics.SetActive(true);
 
 			_currentOpenedSubSettingsSection = PauseSubMenuSettingsSectionTypes.Graphics.ToString();
 		}
@@ -202,6 +218,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			CloseSubSettingsSection(_subSettingsSectionGraphics);
 
 			_buttonComponentSubSettingsSectionAudio.interactable = false;
+			_imageBackgroundSectionAudio.SetActive(true);
 
 			_currentOpenedSubSettingsSection = PauseSubMenuSettingsSectionTypes.Audio.ToString();
 		}
@@ -214,18 +231,22 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		if (subSettingsSection == _subSettingsSectionGeneral)
 		{
 			_buttonComponentSubSettingsSectionGeneral.interactable = true;
+			_imageBackgroundSectionGeneral.SetActive(false);
 		}
 		if (subSettingsSection == _subSettingsSectionControls)
 		{
 			_buttonComponentSubSettingsSectionControls.interactable = true;
+			_imageBackgroundSectionControls.SetActive(false);
 		}
 		if (subSettingsSection == _subSettingsSectionGraphics)
 		{
 			_buttonComponentSubSettingsSectionGraphics.interactable = true;
+			_imageBackgroundSectionGraphics.SetActive(false);
 		}
 		if (subSettingsSection == _subSettingsSectionAudio)
 		{
 			_buttonComponentSubSettingsSectionAudio.interactable = true;
+			_imageBackgroundSectionAudio.SetActive(false);
 		}
 	}
 

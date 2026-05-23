@@ -273,9 +273,9 @@ public class NPCStateMachineController : MonoBehaviour
 		{
 			newState = new NPCStateFleeing();
 		}
-		else if (playerMovementStateType == NPCStateTypes.BeingChoked)
+		else if (playerMovementStateType == NPCStateTypes.BeingStrangled)
 		{
-			newState = new NPCStateBeingChoked(this);
+			newState = new NPCStateBeingStrangled(this);
 		}
 		else if (playerMovementStateType == NPCStateTypes.BeingHooked)
 		{

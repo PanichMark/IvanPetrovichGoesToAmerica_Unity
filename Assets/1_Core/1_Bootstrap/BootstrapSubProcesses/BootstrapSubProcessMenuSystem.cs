@@ -48,32 +48,39 @@ public class BootstrapSubProcessMenuSystem
 	private GameObject _tutorialNoteImage;
 
 	public PauseSubMenuSettingsController PauseSubMenuSettingsController { get; private set; }
-	public PauseSubMenuSettingsSectionGeneralController PauseSubMenuSettingsSectionGeneralController { get; private set; }
-	private PauseSubMenuSettingsPlayerPrefs _pauseSubMenuSettingsPlayerPrefs;
 	private GameObject _canvasPauseSubMenuSettings;
 	private GameObject _subSettingsSectionGeneral;
+	private GameObject _subSettingsSectionControls;
+	private GameObject _subSettingsSectionGraphics;
+	private GameObject _subSettingsSectionAudio;
+
+	private GameObject _imageBackgroundSectionGeneral;
+	private GameObject _imageBackgroundSectionControls;
+	private GameObject _imageBackgroundSectionGraphics;
+	private GameObject _imageBackgroundSectionAudio;
+
+	private GameObject _buttonSaveGameSettings;
+	private GameObject _buttonResetGameSettings;
+	private GameObject _buttonClosePauseSubMenuSettings;
+
+	public PauseSubMenuSettingsSectionGeneralController PauseSubMenuSettingsSectionGeneralController { get; private set; }
 	private GameObject _buttonSubSettingsSectionGeneral;
 	private GameObject _sliderChangeFOV;
 	private GameObject _numberFOV;
 	private GameObject[] _buttonsChangeFPS;
 
 	public PauseSubMenuSettingsSectionControlsController PauseSubMenuSettingsSectionControlsController {  get; private set; }
-	private GameObject _subSettingsSectionControls;
 	private GameObject _buttonSubSettingsSectionControls;
 	private GameObject[] _inputFieldsKeyRebinds;
 
 	public PauseSubMenuSettingsSectionGraphicsController PauseSubMenuSettingsSectionGraphicsController { get; private set; }
-	private GameObject _subSettingsSectionGraphics;
 	private GameObject _buttonSubSettingsSectionGraphics;
 
 	public PauseSubMenuSettingsSectionAudioController PauseSubMenuSettingsSectionAudioController { get; private set; }
-	private GameObject _subSettingsSectionAudio;
 	private GameObject _buttonSubSettingsSectionAudio;
 	private GameObject[] _buttonsChangeLanguage;
 
-	private GameObject _buttonSaveGameSettings;
-	private GameObject _buttonResetGameSettings;
-	private GameObject _buttonClosePauseSubMenuSettings;
+	private PauseSubMenuSettingsPlayerPrefs _pauseSubMenuSettingsPlayerPrefs;
 
 	private PauseMenuConfirmActionController _pauseMenuConfirmActionController;
 	private GameObject _canvasMenuConfirmAction;
@@ -297,6 +304,12 @@ public class BootstrapSubProcessMenuSystem
 			_bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonChangeLanguage_English"),
 		};
 
+		_imageBackgroundSectionGeneral = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "BackgroundGeneral");
+		_imageBackgroundSectionControls = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "BackgroundControls");
+		_imageBackgroundSectionGraphics = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "BackgroundGraphics");
+		_imageBackgroundSectionAudio = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "BackgroundAudio");
+
+
 		_buttonSaveGameSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonSaveSettings");
 		_buttonResetGameSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonResetSettings");
 		_buttonClosePauseSubMenuSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonClosePauseSubMenuSettings");
@@ -310,7 +323,7 @@ public class BootstrapSubProcessMenuSystem
 		_pauseSubMenuLoadController.Initialize(_inputDevice, _saveLoadController, MenuManager, _pauseMenuController, _canvasPauseSubMenuLoad, _buttonsLoadGameFile, _buttonClosePauseSubMenuLoad);
 		_pauseSubMenuAppearanceController.Initialize(_inputDevice, MenuManager, _pauseMenuController, _canvasPauseSubMenuAppearance, _buttonClosePauseSubMenuAppearance);
 		_pauseSubMenuTutorialController.Initialize(MenuManager, _pauseMenuController, _canvasPauseSubMenuTutorial, _buttonClosePauseSubMenuTutorial, _buttonNextTutorial, _buttonPreviousTutorial, _tutorialNoteText, _tutorialNoteImage, _bootstrap.ConfigPauseSubMenuTutorial.Notes);
-		PauseSubMenuSettingsController.Initialize(_pauseMenuController, _canvasPauseSubMenuSettings, _subSettingsSectionGeneral, _buttonSubSettingsSectionGeneral, _subSettingsSectionControls, _buttonSubSettingsSectionControls, _subSettingsSectionGraphics, _buttonSubSettingsSectionGraphics, _subSettingsSectionAudio, _buttonSubSettingsSectionAudio, _buttonSaveGameSettings, _buttonResetGameSettings, _buttonClosePauseSubMenuSettings);
+		PauseSubMenuSettingsController.Initialize(_pauseMenuController, _canvasPauseSubMenuSettings, _subSettingsSectionGeneral, _imageBackgroundSectionGeneral, _buttonSubSettingsSectionGeneral, _subSettingsSectionControls, _imageBackgroundSectionControls, _buttonSubSettingsSectionControls, _subSettingsSectionGraphics, _imageBackgroundSectionGraphics, _buttonSubSettingsSectionGraphics, _subSettingsSectionAudio, _imageBackgroundSectionAudio, _buttonSubSettingsSectionAudio, _buttonSaveGameSettings, _buttonResetGameSettings, _buttonClosePauseSubMenuSettings);
 		PauseSubMenuSettingsSectionGeneralController.Initialize(_gameController, _pauseMenuController, _numberFOV, _sliderChangeFOV, _buttonsChangeFPS);
 		PauseSubMenuSettingsSectionControlsController.Initialize(_inputDevice, _pauseMenuController, _inputFieldsKeyRebinds);
 		PauseSubMenuSettingsSectionGraphicsController.Initialize();
