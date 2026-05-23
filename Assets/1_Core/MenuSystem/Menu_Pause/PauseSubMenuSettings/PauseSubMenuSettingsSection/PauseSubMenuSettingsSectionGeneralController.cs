@@ -16,9 +16,11 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	public delegate void SavePlayerPrefsCameraSettingsEventHandler();
 	public event SavePlayerPrefsCameraSettingsEventHandler OnSaveCameraSettingsData;
 	private PauseMenuController _pauseMenuController;
-	private float _currentFOV;
+	public float CurrentFOV {  get; private set; }
 	private const float _MIN_FOV_VALUE = 60f;
+	public float MIN_FOV_VALUE => _MIN_FOV_VALUE;
 	private const float _MAX_FOV_VALUE = 120f;
+	public float MAX_FOV_VALUE => _MAX_FOV_VALUE;
 	private Button[] _FPSbuttons;
 	private int _currentFrameRateLimit = 60;
 	private GameObject _sliderFOVgameObject;
@@ -47,12 +49,14 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		_sliderFOV.minValue = _MIN_FOV_VALUE;
 		_sliderFOV.maxValue = _MAX_FOV_VALUE;
-		_sliderFOV.onValueChanged.AddListener(OnFovChanged);
+		_sliderFOV.onValueChanged.AddListener(SetFOV);
 
 		_FPSbuttons = new Button[FPSbuttons.Length];
 
-		_gameController.OnCloseMainMenu += () => SetFOV(_currentFOV);
-		_gameController.OnOpenMainMenu += () => SetFOV(60);
+		_gameController.OnOpenMainMenu += () =>
+		{
+			OnMainCameraFOVchanged?.Invoke(60, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
+		};
 
 		for (int i = 0; i < _FPSbuttons.Length; i++)
 		{
@@ -102,7 +106,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		OnSaveCameraSettingsData?.Invoke();
 
-		currentData.FOV = _currentFOV;
+		currentData.FOV = CurrentFOV;
 
 		OnSaveSettingsGeneralData?.Invoke(currentData);
 	}
@@ -131,14 +135,16 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 	public void GetCameraCurrentFOV(float FOV)
 	{
-		_currentFOV = FOV;
+		CurrentFOV = FOV;
+
+		//Debug.Log(_currentFOV);
 	}
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
 		SetFOV(data.FOV);
 		_sliderFOV.value = data.FOV;
-		_currentFOV = data.FOV;
+		CurrentFOV = data.FOV;
 	}
 
 	private void ResetFPSbuttons()
@@ -164,22 +170,18 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_sliderFOV.value = _MIN_FOV_VALUE;
 	}
 
-	public void OnFovChanged(float value)
+	public void SetFOV(float newFov)
 	{
-		SetFOV(value);
-	}
-
-	private void SetFOV(float newFov)
-	{
-		OnMainCameraFOVchanged?.Invoke(newFov, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
+		_fovDisplayText.text = ((int)newFov).ToString();
 
 		if (!_gameController.IsMainMenuOpen)
 		{
-			_fovDisplayText.text = ((int)newFov).ToString();
+			OnMainCameraFOVchanged?.Invoke(newFov, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
 		}
 		else
 		{
-			_fovDisplayText.text = _currentFOV.ToString();
+			CurrentFOV = newFov;
+			OnMainCameraFOVchanged?.Invoke(60, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
 		}
 	}
 

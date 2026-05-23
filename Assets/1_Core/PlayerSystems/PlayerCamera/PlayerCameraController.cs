@@ -215,17 +215,13 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 	private void SetCameraFOV(float newFov, float MIN_FOV_VALUE, float MAX_FOV_VALUE)
 	{
-		if (!_gameController.IsMainMenuOpen)
-		{
-			_mainCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
-		}
-		else
-		{
-			_mainCamera.fieldOfView = Mathf.Clamp(60, MIN_FOV_VALUE, MAX_FOV_VALUE);
-		}
+		
+		_mainCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
 
-		_currentFOV = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
-		Debug.Log(_currentFOV);
+
+
+		_currentFOV = _pauseSubMenuSettingsSectionGeneralController.CurrentFOV;
+		//Debug.Log(_currentFOV);
 	}
 
 	private void SendCameraFOV()
@@ -252,7 +248,14 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 		_pauseSubMenuSettingsSectionGeneralController.OnMainCameraFOVchanged += SetCameraFOV;
 		_pauseSubMenuSettingsSectionGeneralController.OnSaveCameraSettingsData += SendCameraFOV;
-		_gameController.OnCloseMainMenu += SendCameraFOV;
+
+		_gameController.OnCloseMainMenu += () =>
+		{
+			SendCameraFOV();
+			Debug.Log(_currentFOV);
+			_pauseSubMenuSettingsSectionGeneralController.SetFOV(_currentFOV);
+		};
+		_gameController.OnOpenMainMenu += SendCameraFOV;
 
 		_isInitialized = true;
 
