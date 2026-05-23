@@ -84,6 +84,8 @@ public class BootstrapSubProcessMenuSystem
 	private MainMenuReadNewsController _mainMenuReadNewsController;
 	private GameObject _canvasMainMenuReadNews;
 	private Button _buttonCloseMainMenuReadNews;
+	private Button _buttonYouTube;
+	private Button _buttonGitHub;
 
 	private CutsceneMenuController _cutsceneMenuController;
 	private GameObject _canvasMenuCutscene;
@@ -228,6 +230,8 @@ public class BootstrapSubProcessMenuSystem
 		_textConfirmActionMessage = _bootstrap.FindDeepGameObject(_canvasMenuConfirmAction, "TextConfirmationMessage");
 
 		_buttonCloseMainMenuReadNews = _canvasMainMenuReadNews.transform.Find("ButtonCloseMainMenuReadNews").GetComponent<Button>();
+		_buttonYouTube = _canvasMainMenuReadNews.transform.Find("YouTube").GetComponent<Button>();
+		_buttonGitHub = _canvasMainMenuReadNews.transform.Find("GitHub").GetComponent<Button>();
 
 		_buttonsLoadGameFile = new[]
 		{
@@ -285,7 +289,6 @@ public class BootstrapSubProcessMenuSystem
 		_subSettingsSectionGraphics = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "SubSettingsSectionGraphics");
 		_buttonSubSettingsSectionGraphics = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonSubSettingsGraphics");
 
-
 		_subSettingsSectionAudio = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "SubSettingsSectionAudio");
 		_buttonSubSettingsSectionAudio = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonSubSettingsAudio");
 		_buttonsChangeLanguage = new GameObject[]
@@ -314,7 +317,7 @@ public class BootstrapSubProcessMenuSystem
 		PauseSubMenuSettingsSectionAudioController.Initialize(_bootstrap, _localizationManager, _pauseMenuController, _buttonsChangeLanguage);
 		_pauseSubMenuSettingsPlayerPrefs.Initialize(_bootstrap, _inputDevice, PauseSubMenuSettingsController, PauseSubMenuSettingsSectionGeneralController, PauseSubMenuSettingsSectionControlsController, PauseSubMenuSettingsSectionGraphicsController, PauseSubMenuSettingsSectionAudioController);
 		_pauseMenuConfirmActionController.Initialize(_gameSceneManager, _saveLoadController, MenuManager, _pauseMenuController, _pauseSubMenuSaveController, _pauseSubMenuLoadController, PauseSubMenuSettingsController, PauseSubMenuSettingsSectionGeneralController, PauseSubMenuSettingsSectionControlsController, PauseSubMenuSettingsSectionGraphicsController, PauseSubMenuSettingsSectionAudioController,_canvasMenuConfirmAction, _buttonConfirmAction, _buttonCancelAction, _textConfirmActionMessage);
-		_mainMenuReadNewsController.Initialize(_inputDevice, _canvasMainMenuReadNews, _buttonCloseMainMenuReadNews);
+		_mainMenuReadNewsController.Initialize(_inputDevice, _canvasMainMenuReadNews, _buttonCloseMainMenuReadNews, _buttonYouTube , _buttonGitHub);
 		_cutsceneMenuController.Initialize(_gameSceneManager, MenuManager, _canvasMenuCutscene);
 		_HUDhealthAndManaController.Initialize(_gameController, _bootstrapSubProcessSceneSystem.GameSceneManager, MenuManager, _canvasHUDhealthAndMana);
 
