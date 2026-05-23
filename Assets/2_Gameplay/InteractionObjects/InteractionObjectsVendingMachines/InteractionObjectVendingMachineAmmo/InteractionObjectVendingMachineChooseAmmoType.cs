@@ -6,33 +6,41 @@ public class InteractionObjectVendingMachineChooseAmmoType : MonoBehaviour, IInt
 	public delegate void AmmoTypeChangedHandler();
 
 	private InteractionObjectVendingMachineAmmo _vendingMachine;
-	[SerializeField] private string _name = "Выбор патронов";
 	[SerializeField] private float _rotationDuration = 1f;
 	[SerializeField] private float _rotationAngle = 90f;
 
-	public string InteractionObjectNameSystem => _name;
-	public string InteractionObjectNameUI => _name;
-	public string InteractionHintMessageMain => "Сменить тип патронов";
-	public string InteractionHintMessageAction => "Сменить";
-	public string InteractionHintMessageFail => "Подождите!";
+	public string InteractionObjectNameSystem => null;
+	public string InteractionObjectNameUI => null;
+	public string InteractionHintMessageMain => $"{_localizationManager.GetLocalizedString("InteractionObject_VendingMachine_Ammo_Reel")}?";
+	public string InteractionHintMessageAction => null;
+	public string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait")}!";
 
 	private bool _isBusy = false;
+	private LocalizationManager _localizationManager;
+	public bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
 
-	public bool IsInteractionHintMessageFailActive => _isBusy;
+	private bool _isInteractionHintMessageFailActive;
 
 	private void Start()
 	{
 		_vendingMachine = GetComponentInParent<InteractionObjectVendingMachineAmmo>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 	}
+
 
 	public void Interact()
 	{
-		if (_isBusy)
-			return;
-
-		_vendingMachine.SetCurrentAmmoType(_vendingMachine.currentAmmoIndex + 1);
-		StartCoroutine(RotateAndChangeAmmo());
-		_isBusy = true;
+		if (!_isBusy)
+		{
+			_vendingMachine.SetCurrentAmmoType(_vendingMachine.currentAmmoIndex + 1);
+			StartCoroutine(RotateAndChangeAmmo());
+			_isInteractionHintMessageFailActive = false;
+			_isBusy = true;
+		}
+		else
+		{
+			_isInteractionHintMessageFailActive = true;
+		}
 	}
 
 	private IEnumerator RotateAndChangeAmmo()
@@ -53,6 +61,7 @@ public class InteractionObjectVendingMachineChooseAmmoType : MonoBehaviour, IInt
 
 		Debug.Log($"Selected ammo type: {_vendingMachine.ammoTypes[_vendingMachine.currentAmmoIndex].AmmoName}");
 
+		_isInteractionHintMessageFailActive = false;
 		_isBusy = false;
 	}
 }

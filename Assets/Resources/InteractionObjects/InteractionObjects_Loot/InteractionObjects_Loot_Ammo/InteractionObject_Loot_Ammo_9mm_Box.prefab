@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4808117187963908883}
   - component: {fileID: 3858801492138297722}
   - component: {fileID: 3025251065399748247}
-  - component: {fileID: 4263040186013002548}
+  - component: {fileID: 6570342000409474123}
   - component: {fileID: -2222373377127816768}
   m_Layer: 0
   m_Name: InteractionObject_Loot_Ammo_9mm_Box
@@ -88,7 +88,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4263040186013002548
+--- !u!65 &6570342000409474123
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,8 +107,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.055999957, y: 0.049999963, z: 0.15814471}
-  m_Center: {x: -0.0000000121071935, y: 0.025000004, z: 0.014896188}
+  m_Size: {x: 0.15814471, y: 0.049999975, z: 0.055999957}
+  m_Center: {x: 0.00004098937, y: 0.025000006, z: -0.0000000121071935}
 --- !u!114 &-2222373377127816768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10b407759f8804f4f8f0131f321272b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: 
+  _interactionObjectNameSystem: InteractionObject_Loot_Ammo_9mm_Box
   _ammoTypes: 0
-  _ammoCapacity: 20
+  _ammoCapacity: 25

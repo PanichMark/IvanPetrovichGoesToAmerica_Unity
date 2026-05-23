@@ -67,9 +67,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4189a1dd9bd55c94d9b6c06e7f04aa41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goodsForSaleModel: {fileID: 2549510235587133749, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
-  _goodsPrice: 0
-  _vendingMachineName: 
+  _goodsForSale: {fileID: 2549510235587133749, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+  _goodsPrice: 25
+  _vendingMachineName: InteractionObject_VendingMachine_Health
+  _moneyType: Money_Rubles
 --- !u!1 &7021709224061148599
 GameObject:
   m_ObjectHideFlags: 0

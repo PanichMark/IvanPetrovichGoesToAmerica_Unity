@@ -5,28 +5,38 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 {
 	public delegate void InteractionDelegate();
 
-	[SerializeField] protected GameObject _goodsForSaleModel;
+	[SerializeField] private string _vendingMachineName;
+	[SerializeField] protected GameObject _goodsForSale;
 	[SerializeField] protected int _goodsPrice;
 	protected string _goodsName;
-	[SerializeField] private string _vendingMachineName;
+	[SerializeField] private string _moneyType;
+	private string _interactionHintMessageAction;
 	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
 	private bool _isAdditionalInteractionHintActive;
+	private LocalizationManager _localizationManager;
+	
 
-	public virtual string InteractionHintMessageMain => $"Купить {_goodsName} в {InteractionObjectNameUI} за {_goodsPrice} рублей?";
+
+	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {_goodsName} {InteractionObjectNameUI} {_goodsPrice} {_moneyType}?";
 	public virtual string InteractionHintMessageFail => "Недостаточно денег!";
-	public string InteractionHintMessageAction { get; protected set; }
+	public string InteractionHintMessageAction => _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Purchase");
+
 	public string InteractionObjectNameSystem => _vendingMachineName;
 	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
-	public virtual string InteractionObjectNameUI => _vendingMachineName;
+	public virtual string InteractionObjectNameUI => _localizationManager.GetLocalizedString(InteractionObjectNameSystem);
 
 	protected void Start()
 	{
-		var Good = _goodsForSaleModel.GetComponent<InteractionObjectLootAbstract>();
-		_goodsName = Good.InteractionObjectNameSystem;
+		var goodsComponent = _goodsForSale.GetComponent<InteractionObjectLootAbstract>();
 
 		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_goodsName = _localizationManager.GetLocalizedString(goodsComponent.InteractionObjectNameSystem);
+		_moneyType = _localizationManager.GetLocalizedString(_moneyType);
 	}
+
+
 
 	public void Interact()
 	{
@@ -41,7 +51,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 			Quaternion spawnRotation = Quaternion.Euler(0, yRotation, 0);
 
 			Debug.Log($"You bought {_goodsName} from {InteractionObjectNameUI}");
-			Instantiate(_goodsForSaleModel, spawnPosition, spawnRotation);
+			Instantiate(_goodsForSale, spawnPosition, spawnRotation);
 			_playerResourcesMoneyManager.DeductMoney(-_goodsPrice);
 
 			_isAdditionalInteractionHintActive = false;
