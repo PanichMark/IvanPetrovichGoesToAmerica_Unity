@@ -2,21 +2,26 @@
 
 public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 {
-	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
+	public delegate void TVpowerEventHandler();
+	public event TVpowerEventHandler OnTurnTVon;
+	public event TVpowerEventHandler OnTurnTVoff;
 
-	private string _powerButtonName = "Кнопка питания телевизора";
+	private string _interactionHintMessageAction;
 
-	public string InteractionObjectNameUI => _powerButtonName;
+	public string InteractionObjectNameSystem => null;
 
-	public string InteractionHintMessageMain => $"Нажать {_powerButtonName}?";
+	public string InteractionObjectNameUI => null;
+
+	public string InteractionHintMessageMain => $"{_interactionHintMessageAction}?";
 
 	private GameObject _tvScreen;
 
-	public string InteractionHintMessageAction => throw new System.NotImplementedException();
+	public string InteractionHintMessageAction => _interactionHintMessageAction;
 
 	private bool _isTVturnedOn;
 
-	public string InteractionHintMessageFail => throw new System.NotImplementedException();
+	private LocalizationManager _localizationManager;
+	public string InteractionHintMessageFail => null;
 
 	public bool IsInteractionHintMessageFailActive => false;
 
@@ -26,18 +31,41 @@ public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 		{
 			_tvScreen.SetActive(false);
 			_isTVturnedOn = false;
+
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON");
+			OnTurnTVoff?.Invoke();
 		}
 		else
 		{
 			_tvScreen.SetActive(true);
 			_isTVturnedOn = true;
+
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerOFF");
+			OnTurnTVon?.Invoke();
 		}
 	}
 
 	void Start()
 	{
-		_tvScreen = transform.parent.Find("CanvasTV").gameObject;
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON");
+
+		_tvScreen = transform.parent.Find("TVcanvas").gameObject;
 		_tvScreen.SetActive(false);
 		_isTVturnedOn = false;
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
+	}
+
+	private void ChangeLanguage()
+	{
+		if (_isTVturnedOn)
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerOFF");
+		}
+		else
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON");
+		}
 	}
 }

@@ -19,6 +19,8 @@ public class InteractionController : MonoBehaviour
 	public event PickableObjectsHandler OnGetRidOfPickable;
 
 	private string _HUDInteractionMainTextInteract;
+	private string _HUDInteractionDropText;
+	private string _HUDInteractionThrowText;
 	private bool _changedPickedUpState;
 	private TextMeshProUGUI _mainInteractionText;
 	private TextMeshProUGUI _additionalInteractionText;
@@ -58,6 +60,7 @@ public class InteractionController : MonoBehaviour
 	public void Initialize(
 		GameController gameController,
 		IInputDevice inputDevice,
+		LocalizationManager localizationManager,
 		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
@@ -72,6 +75,7 @@ public class InteractionController : MonoBehaviour
 		_gameController = gameController;
 		_gameSceneManager = gameSceneManager;
 		_inputDevice = inputDevice;
+		_localizationManager = localizationManager;
 		_playerCameraController = playerCameraController;
 		_playerCameraStateMachineController = playerCameraStateMachineController;
 		_playerBehaviour = playerBehaviour;
@@ -85,6 +89,9 @@ public class InteractionController : MonoBehaviour
 		_additionalInteractionText = additionalInteractionText;
 
 		_isInitialized = true;
+
+		_HUDInteractionDropText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Drop");
+		_HUDInteractionThrowText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Throw");
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDInteraction;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDInteraction;
@@ -107,6 +114,8 @@ public class InteractionController : MonoBehaviour
 	{
 		_localizationManager = localizationManager;
 		_HUDInteractionMainTextInteract = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Main");
+		_HUDInteractionDropText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Drop");
+		_HUDInteractionThrowText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Throw");
 	}
 
 	private void ShowCanvasHUDInteraction()
@@ -173,13 +182,13 @@ public class InteractionController : MonoBehaviour
 			if (_currentIThrowable != null)
 			{
 				OnPickUpThrowable?.Invoke();
-				_mainInteractionText.text = $"Отпустить {_inputDevice.GetNameOfKeyInteract()}\nБросить {_inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
+				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKeyInteract()}\n{_HUDInteractionThrowText} {_inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
 				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
 			}
 			else
 			{
 				OnPickUpNonThrowable?.Invoke();
-				_mainInteractionText.text = $"Отпустить на {_inputDevice.GetNameOfKeyInteract()}";
+				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKeyInteract()}";
 				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
 			}
 

@@ -3,32 +3,43 @@
 public class InteractionObjectTVButtonChannel : MonoBehaviour, IInteractable
 {
 	public delegate void InteractionDelegate();
-
-	[SerializeField] private string _buttonChannelUI;
+	private InteractionObjectTVPowerButton _interactionObjectTVPowerbutton;
+	[SerializeField] private string _interactionObjectNameSystem;
 	private InteractionObjectTVController _tvController;
 	[SerializeField] private bool _isNextChannel;
+	private LocalizationManager _localizationManager;
 
-	public string InteractionObjectNameSystem => "buttonChannel";
-	public string InteractionObjectNameUI => _buttonChannelUI;
-	public string InteractionHintMessageMain => $"Press {_buttonChannelUI}?";
-	public string InteractionHintMessageAction => "Switch";
-	public string InteractionHintMessageFail => "";
+	private Collider _collider;
+	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
+	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+	public string InteractionHintMessageMain => $"{InteractionObjectNameUI}?";
+	public string InteractionHintMessageAction => null;
+	public string InteractionHintMessageFail => null;
 	public bool IsInteractionHintMessageFailActive => false;
 
 	public void Interact()
 	{
-		if (_tvController != null)
-		{
-			_tvController.SwitchChannel(_isNextChannel);
-		}
-		else
-		{
-			Debug.LogError("Error: TVController reference is not set on button " + gameObject.name);
-		}
+		_tvController.SwitchChannel(_isNextChannel);
+	}
+
+	private void EnableButtonChannel()
+	{
+		_collider.enabled = true;
+	}
+
+	private void DisableButtonChannel()
+	{
+		_collider.enabled = false;
 	}
 
 	private void Start()
 	{
-		_tvController = transform.parent.Find("TVController").gameObject.GetComponent<InteractionObjectTVController>();
+		_collider = GetComponent<Collider>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_interactionObjectTVPowerbutton = transform.parent.Find("ButtonPower").GetComponent<InteractionObjectTVPowerButton>();
+		_tvController = transform.parent.GetComponent<InteractionObjectTVController>();
+		DisableButtonChannel();
+		_interactionObjectTVPowerbutton.OnTurnTVon += EnableButtonChannel;
+		_interactionObjectTVPowerbutton.OnTurnTVoff += DisableButtonChannel;
 	}
 }

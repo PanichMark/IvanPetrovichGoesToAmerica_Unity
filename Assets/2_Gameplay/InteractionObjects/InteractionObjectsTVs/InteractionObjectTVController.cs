@@ -16,7 +16,10 @@ public class InteractionObjectTVController : MonoBehaviour
 	void Start()
 	{
 		_videoPlayer = GetComponent<VideoPlayer>();
-		_tvScreen = transform.parent.Find("CanvasTV").Find("ImageTV").GetComponent<RawImage>();
+		_tvScreen = transform.Find("TVcanvas").Find("TVscreen").GetComponent<RawImage>();
+
+		_videoPlayer.targetTexture = _tvScreen.texture as RenderTexture;
+
 		PlayChannel(0);
 	}
 
@@ -51,6 +54,6 @@ public class InteractionObjectTVController : MonoBehaviour
 		_videoPlayer.clip = _videoClips[index];
 		_videoPlayer.Play();
 
-		_tvScreen.texture = _videoPlayer.texture;
+	
 	}
 }

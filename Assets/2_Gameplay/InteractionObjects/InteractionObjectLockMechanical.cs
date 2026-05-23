@@ -9,6 +9,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	public event UnlockLockEventHandler OnUnlockLock;
 
 	[SerializeField] private GameObject _gearPrefab;
+	[SerializeField] private string _interactionObjectNameSystem;
 	[SerializeField] private int _segmentsCount;
 	[SerializeField] private float _rotationSpeed;
 	[SerializeField] private float _moveSpeed;
@@ -42,7 +43,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	private List<MeshCollider> _cachedWallColliders;
 
-	[SerializeField] private string _interactionObjectNameSystem;
+	
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
 	private string _interactionHintMessageMain;
@@ -72,7 +73,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
-		_cubeFollow = Resources.Load<GameObject>("InteractionObjects/InteractionObjects_Locks/InteractionObjects_Locks_Mechanical/Lock_Mechanical_PuzzleCube");
+		_cubeFollow = Resources.Load<GameObject>("InteractionObjects/InteractionObjects_Locks/Lock_Mechanical_PuzzleCube");
 		//	_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
 		_buttonText.text = "exit";
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";

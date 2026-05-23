@@ -10,6 +10,7 @@ public class BootstrapSubProcessInteractionSystem
 
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
+	private LocalizationManager _localizationManager;
 
 	private GameSceneManager _gameSceneManager;
 
@@ -52,6 +53,7 @@ public class BootstrapSubProcessInteractionSystem
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		GameController gameController,
 		IInputDevice inputDevice,
+		LocalizationManager localizationManager,
 		GameSceneManager gameSceneManager,
 		PlayerBehaviourController playerBehaviour,
 		PlayerCameraController playerCameraController,
@@ -66,6 +68,7 @@ public class BootstrapSubProcessInteractionSystem
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_gameController = gameController;
 		_inputDevice = inputDevice;
+		_localizationManager = localizationManager;
 		_gameSceneManager = gameSceneManager;
 		_playerBehaviour = playerBehaviour;
 		_playerCameraController = playerCameraController;
@@ -131,6 +134,7 @@ public class BootstrapSubProcessInteractionSystem
 		InteractionController.Initialize(
 			_gameController,
 			_inputDevice,
+			_localizationManager,
 			_gameSceneManager,
 			_bootstrapSubProcessMenuSystem.MenuManager,
 			_playerBehaviour,
