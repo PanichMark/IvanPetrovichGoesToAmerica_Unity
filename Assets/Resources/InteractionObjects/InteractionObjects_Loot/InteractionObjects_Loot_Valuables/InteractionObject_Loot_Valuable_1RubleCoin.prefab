@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6117180647676812743}
-  - component: {fileID: 5950407321392209400}
-  - component: {fileID: 6113805383062156131}
-  - component: {fileID: 8183937189413201108}
+  - component: {fileID: 4320384429348862998}
+  - component: {fileID: 7486550161233069819}
+  - component: {fileID: 6555220024100888166}
   - component: {fileID: 9192256842134245663}
   m_Layer: 0
   m_Name: InteractionObject_Loot_Valuable_1RubleCoin
@@ -29,21 +29,21 @@ Transform:
   m_GameObject: {fileID: 2472323505463352593}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.3888717, y: 0.543, z: 2.231}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5950407321392209400
+--- !u!33 &4320384429348862998
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2472323505463352593}
-  m_Mesh: {fileID: -1906952781731007653, guid: 36233518f03799046867534c1bf1e71e, type: 3}
---- !u!23 &6113805383062156131
+  m_Mesh: {fileID: 3462478883805843829, guid: 2882a740d06bb6348a51b828d1670e84, type: 3}
+--- !u!23 &7486550161233069819
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c9a84d50357ac7c478e9be8fca9cc841, type: 2}
+  - {fileID: 2100000, guid: a4de82209ae037f4f92f51785c99265a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -88,7 +88,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8183937189413201108
+--- !u!65 &6555220024100888166
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,8 +107,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.055000007, y: 0.006875001, z: 0.055000007}
-  m_Center: {x: 0, y: 0.0034375004, z: 0}
+  m_Size: {x: 0.055000007, y: 0.0068750135, z: 0.05500001}
+  m_Center: {x: 0, y: 0.0034375002, z: 0.0000000018626451}
 --- !u!114 &9192256842134245663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aac234cc20c13049ad71a24f7780e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionObjectNameSystem: InteractionLootValuable_Money1
-  LootObjectImage: {fileID: 21300000, guid: f951cf43bb4be374f8ff89050f2c4001, type: 3}
-  moneyValue: 1
+  _interactionObjectNameSystem: InteractionObject_Loot_Valuable_Money_Ruble1
+  _moneyValue: 1
+  _lootObjectIcon: {fileID: 21300000, guid: f951cf43bb4be374f8ff89050f2c4001, type: 3}

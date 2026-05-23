@@ -3,24 +3,29 @@ using System.Collections;
 
 public class InteractionObjectSafeSection : MonoBehaviour, IInteractable
 {
-	public delegate void InteractionDelegate();
-
+	[SerializeField] private string _interactionObjectNameUI;
 	[SerializeField] private int _safeSectionSlotNumber;
 	[SerializeField][Range(0, 9)] private int _correctSectionPosition;
 
+	
 	public int CorrectSectionPosition => _correctSectionPosition;
 	public bool IsSectionPositionCorrect { get; private set; }
 	public int currentSectionPosition { get; private set; }
-
+	private LocalizationManager _localizationManager;
 	private float _sectionRotationSpeed = 0.15f;
 	private Coroutine _sectionCoroutine;
 
-	public string InteractionHintMessageAction { get; protected set; }
-	public string InteractionObjectNameUI => _safeSectionSlotNumber.ToString();
-	public virtual string InteractionHintMessageMain => $"Rotate section #{InteractionObjectNameUI}";
+	public string InteractionHintMessageAction => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Rotate")}";
+	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameUI)} #{_safeSectionSlotNumber.ToString()}";
+	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI} ?";
 	public virtual string InteractionHintMessageFail => null;
 	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionObjectNameSystem => null;
+
+	private void Start()
+	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+	}
 
 	public void Interact()
 	{

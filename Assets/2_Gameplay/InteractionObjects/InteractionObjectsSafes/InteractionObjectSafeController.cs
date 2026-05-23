@@ -1,14 +1,19 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 {
+	[SerializeField] private string _interactionObjectNameUI;
+
 	public virtual string InteractionObjectNameSystem => null;
-	public string InteractionHintMessageAction { get; protected set; }
-	public string InteractionObjectNameUI => null;
-	public string InteractionHintMessageMain => "Open safe";
-	public virtual string InteractionHintMessageFail => "Wrong combination!";
+	public string InteractionHintMessageAction => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open")}";
+	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameUI)}";
+
+	private LocalizationManager _localizationManager;
+	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+
+
+	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_WrongCombination")}!";
 	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
 	private bool _isAdditionalInteractionHintActive;
@@ -32,6 +37,7 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 	{
 		_isInStartMethod = true;
 
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		_safeDoor = transform.parent.gameObject;
 		_safeDoorTransform = _safeDoor.GetComponent<Transform>();

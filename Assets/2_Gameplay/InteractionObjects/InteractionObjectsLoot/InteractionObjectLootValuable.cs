@@ -2,10 +2,11 @@
 
 public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 {
+	[SerializeField] Sprite _lootObjectIcon;
 	[SerializeField] private int _moneyValue;
 
 	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
-	[SerializeField] Sprite _lootObjectIcon;
+
 	public override Sprite LootObjectIcon => _lootObjectIcon;
 	public override void Interact()
 	{
