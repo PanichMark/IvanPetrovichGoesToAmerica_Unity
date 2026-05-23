@@ -53,8 +53,14 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_loadController.OnRequestLoadSaveFileConfirmation += HandleShowForLoadSaveFile;
 		_saveController.OnRequestNewSaveFileConfirmation += HandleShowForNewSaveFile;
 		
-		_pauseSubMenuSettingsController.OnRequestSaveSettingsConfirmation += HandleShowForSaveSettings;
-		_pauseSubMenuSettingsController.OnRequestResetSettingsConfirmation += HandleShowForResetSettings;
+		_pauseSubMenuSettingsController.OnRequestSaveSettingsGeneralConfirmation += HandleShowForSaveSettingsGeneral;
+		_pauseSubMenuSettingsController.OnRequestResetSettingsGeneralConfirmation += HandleShowForResetSettingsGeneral;
+		_pauseSubMenuSettingsController.OnRequestSaveSettingsControlsConfirmation += HandleShowForSaveSettingsControls;
+		_pauseSubMenuSettingsController.OnRequestResetSettingsControlsConfirmation += HandleShowForResetSettingsControls;
+		_pauseSubMenuSettingsController.OnRequestSaveSettingsGraphicsConfirmation += HandleShowForSaveSettingsGraphics;
+		_pauseSubMenuSettingsController.OnRequestResetSettingsGraphicsConfirmation += HandleShowForResetSettingsGraphics;
+		_pauseSubMenuSettingsController.OnRequestSaveSettingsAudioConfirmation += HandleShowForSaveSettingsAudio;
+		_pauseSubMenuSettingsController.OnRequestResetSettingsAudioConfirmation += HandleShowForResetSettingsAudio;
 
 		_saveController.OnRequestDeleteSaveFileConfirmation += HandleShowForDeleteSaveFile;
 
@@ -75,12 +81,32 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_onAcceptAction = null;
 	}
 
+	private void HandleShowForNewSaveFile(int slot)
+	{
+		_targetSlot = slot;
+		_confirmationTextComponent.text = "Создать новое сохранение?";
+
+		_onAcceptAction = () => StartCoroutine(_saveLoadController.SaveGame(slot));
+
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+
 	private void HandleShowForRewriteSaveFile(int slot)
 	{
 		_targetSlot = slot;
 		_confirmationTextComponent.text = "Перезаписать игру в слоте " + slot + " ?";
 
 		_onAcceptAction = () => StartCoroutine(_saveLoadController.SaveGame(slot));
+
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+
+	private void HandleShowForDeleteSaveFile(int slot)
+	{
+		_targetSlot = slot;
+		_confirmationTextComponent.text = "Удалить игру в слоте " + slot + " ?";
+
+		_onAcceptAction = () => _saveLoadController.DeleteGame(slot);
 
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
@@ -95,40 +121,6 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
-	private void HandleShowForSaveSettings()
-	{
-		_confirmationTextComponent.text = "Сохранить настройки?";
-		_onAcceptAction = () => _pauseSubMenuSettingsController.SaveSettings();
-		_pauseMenuController.OpenPauseConfirmMenu();
-	}
-
-	private void HandleShowForResetSettings()
-	{
-		_confirmationTextComponent.text = "Сбросить настройки?";
-		_onAcceptAction = () => _pauseSubMenuSettingsController.ResetSettings();
-		_pauseMenuController.OpenPauseConfirmMenu();
-	}
-
-	private void HandleShowForDeleteSaveFile(int slot)
-	{
-		_targetSlot = slot;
-		_confirmationTextComponent.text = "Удалить игру в слоте " + slot + " ?";
-
-		_onAcceptAction = () => _saveLoadController.DeleteGame(slot);
-
-		_pauseMenuController.OpenPauseConfirmMenu();
-	}
-
-	private void HandleShowForNewSaveFile(int slot)
-	{
-		_targetSlot = slot;
-		_confirmationTextComponent.text = "Создать новое сохранение?"; 
-	
-		_onAcceptAction = () => StartCoroutine(_saveLoadController.SaveGame(slot));
-
-		_pauseMenuController.OpenPauseConfirmMenu();
-	}
-	
 	private void HandleShowForExitToMainMenu()
 	{
 		_menuManager.OpenConfirmationOnExitToMainMenu();
@@ -144,6 +136,63 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
+	private void HandleShowForSaveSettingsGeneral()
+	{
+		_confirmationTextComponent.text = "Сохранить общие настройки?";
+		_onAcceptAction = () => _pauseSubMenuSettingsController.SaveSettingsGeneral();
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+
+	private void HandleShowForResetSettingsGeneral()
+	{
+		_confirmationTextComponent.text = "Сбросить общие настройки?";
+		_onAcceptAction = () => _pauseSubMenuSettingsController.ResetSettingsGeneral();
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+
+	private void HandleShowForSaveSettingsControls()
+	{
+		_confirmationTextComponent.text = "Сохранить настройки управления?";
+		_onAcceptAction = () => _pauseSubMenuSettingsController.SaveSettingsControls();
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+
+	private void HandleShowForResetSettingsControls()
+	{
+		_confirmationTextComponent.text = "Сбросить настройки управления?";
+		_onAcceptAction = () => _pauseSubMenuSettingsController.ResetSettingsControls();
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+
+	private void HandleShowForSaveSettingsGraphics()
+	{
+		_confirmationTextComponent.text = "Сохранить настройки графики?";
+		_onAcceptAction = () => _pauseSubMenuSettingsController.SaveSettingsGraphics();
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+
+	private void HandleShowForResetSettingsGraphics()
+	{
+		_confirmationTextComponent.text = "Сбросить настройки графики?";
+		_onAcceptAction = () => _pauseSubMenuSettingsController.ResetSettingsGraphics();
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+
+
+	private void HandleShowForSaveSettingsAudio()
+	{
+		_confirmationTextComponent.text = "Сохранить аудио настройки?";
+		_onAcceptAction = () => _pauseSubMenuSettingsController.SaveSettingsAudio();
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+
+	private void HandleShowForResetSettingsAudio()
+	{
+		_confirmationTextComponent.text = "Сбросить аудионастройки?";
+		_onAcceptAction = () => _pauseSubMenuSettingsController.ResetSettingsAudio();
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+	
 	private void ExecuteAccept()
 	{
 		_onAcceptAction?.Invoke();

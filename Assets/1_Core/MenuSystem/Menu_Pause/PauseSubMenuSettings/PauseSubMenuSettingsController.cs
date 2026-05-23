@@ -8,21 +8,40 @@ using System;
 public class PauseSubMenuSettingsController : MonoBehaviour
 {
 	public delegate void ConfirmChangeSettingsEventHandler();
-	public event ConfirmChangeSettingsEventHandler OnRequestSaveSettingsConfirmation;
-	public event ConfirmChangeSettingsEventHandler OnRequestResetSettingsConfirmation;
+	public event ConfirmChangeSettingsEventHandler OnRequestSaveSettingsGeneralConfirmation;
+	public event ConfirmChangeSettingsEventHandler OnRequestResetSettingsGeneralConfirmation;
+	public event ConfirmChangeSettingsEventHandler OnRequestSaveSettingsControlsConfirmation;
+	public event ConfirmChangeSettingsEventHandler OnRequestResetSettingsControlsConfirmation;
+	public event ConfirmChangeSettingsEventHandler OnRequestSaveSettingsGraphicsConfirmation;
+	public event ConfirmChangeSettingsEventHandler OnRequestResetSettingsGraphicsConfirmation;
+	public event ConfirmChangeSettingsEventHandler OnRequestSaveSettingsAudioConfirmation;
+	public event ConfirmChangeSettingsEventHandler OnRequestResetSettingsAudioConfirmation;
 
 	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
-	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsData;
+	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGeneralData;
+	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsControlsData;
+	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGraphicsData;
+	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsAudioData;
+
+
 
 	public delegate void SavePlayerPrefsCameraSettingsEventHandler();
 	public event SavePlayerPrefsCameraSettingsEventHandler OnSaveCameraSettingsData;
-	private string _currentOpenedSubSettingsSection;
+
+
+
 	public delegate void ResetPlayerPrefsSettingsEventHandler();
-	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsData;
-	private float _FOV;
+	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGeneralData;
+	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsControlsData;
+	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGraphicsData;
+	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsAudioData;
+
+
 	public delegate void MainCameraFOVeventHandle(float newFov, float MIN_FOV_VALUE, float MAX_FOV_VALUE);
 	public event MainCameraFOVeventHandle OnMainCameraFOVchanged;
 
+
+	private string _currentOpenedSubSettingsSection;
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
 	private bool _isPauseSubMenuSettingsOpened;
@@ -32,7 +51,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	private Bootstrap _bootstrap;
 	private GameController _gameController;
 	private LocalizationManager _localizationManager;
-	
+	private float _FOV;
 	private GameObject _subSettingsSectionGeneral;
 	private GameObject _buttonSubSettingsSectionGeneral;
 	private GameObject _sliderFOVgameObject;
@@ -84,7 +103,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		GameObject canvasPauseSubMenuSettings,
 		GameObject subSettingsSectionGeneral,
 		GameObject buttonSubSettingsSectionGeneral,
-		GameObject FOVSlider, 
+		GameObject FOVSlider,
 		GameObject fovDisplayText,
 		GameObject[] FPSbuttons,
 		GameObject subSettingsSectionControls,
@@ -105,7 +124,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_fovDisplayText = fovDisplayText.GetComponent<TextMeshProUGUI>();
 
 		_sliderFOVgameObject = FOVSlider;
-	
+
 		_subSettingsSectionGeneral = subSettingsSectionGeneral;
 		_buttonSubSettingsSectionGeneral = buttonSubSettingsSectionGeneral;
 
@@ -130,11 +149,48 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_pauseMenuController.OnCloseAnyPauseSubMenu += HideSettingsSubMenuCanvas;
 		_buttonSaveSettings = buttonSaveSettings;
 		_buttonResetSettings = buttonResetSettings;
-		
+
 		_buttonClosePauseSubMenuSettings.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
-		
-		_buttonSaveSettings.GetComponent<Button>().onClick.AddListener(() => OnRequestSaveSettingsConfirmation());
-		_buttonResetSettings.GetComponent<Button>().onClick.AddListener(() => OnRequestResetSettingsConfirmation());
+
+		_buttonSaveSettings.GetComponent<Button>().onClick.AddListener(() =>
+		{
+			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.General.ToString())
+			{
+				OnRequestSaveSettingsGeneralConfirmation();
+			}
+			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Controls.ToString())
+			{
+				OnRequestSaveSettingsControlsConfirmation();
+			}
+			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Graphics.ToString())
+			{
+				OnRequestSaveSettingsGraphicsConfirmation();
+			}
+			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Audio.ToString())
+			{
+				OnRequestSaveSettingsAudioConfirmation();
+			}
+		});
+
+		_buttonResetSettings.GetComponent<Button>().onClick.AddListener(() =>
+		{
+			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.General.ToString())
+			{
+				OnRequestResetSettingsGeneralConfirmation();
+			}
+			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Controls.ToString())
+			{
+				OnRequestResetSettingsControlsConfirmation();
+			}
+			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Graphics.ToString())
+			{
+				OnRequestResetSettingsGraphicsConfirmation();
+			}
+			if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Audio.ToString())
+			{
+				OnRequestResetSettingsAudioConfirmation();
+			}
+		});
 
 		_sliderFOV = _sliderFOVgameObject.GetComponent<Slider>();
 
@@ -534,7 +590,7 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_FOV = FOV;
 	}
 
-	public void SaveSettings()
+	public void SaveSettingsGeneral()
 	{
 		var currentData = new PlayerPrefsData();
 
@@ -542,30 +598,60 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 
 		currentData.FOV = _FOV;
 
-		currentData.Language = _localizationManager.CurrentLanguage.ToString();
+		OnSaveSettingsGeneralData?.Invoke(currentData);
+	}
+
+	public void SaveSettingsControls()
+	{
+		var currentData = new PlayerPrefsData();
 
 		currentData.KeyBindings = new Dictionary<string, KeyCode>(_inputDevice.CurrentKeyboardKeyBindings);
 
-		OnSaveSettingsData?.Invoke(currentData);
+		OnSaveSettingsControlsData?.Invoke(currentData);
 	}
 
-	public void ResetSettings()
+	public void SaveSettingsGraphics()
 	{
-		OnResetSettingsData?.Invoke();
+		var currentData = new PlayerPrefsData();
+
+		OnSaveSettingsGraphicsData?.Invoke(currentData);
+	}
+	public void SaveSettingsAudio()
+	{
+		var currentData = new PlayerPrefsData();
+
+		currentData.Language = _localizationManager.CurrentLanguage.ToString();
+
+		OnSaveSettingsAudioData?.Invoke(currentData);
+	}
+
+	public void ResetSettingsGeneral()
+	{
+		OnResetSettingsGeneralData?.Invoke();
+
+		PlayerPrefsData defaultData = new PlayerPrefsData
+		{
+			FOV = _MIN_FOV_VALUE,
+		};
+
+		OnSaveSettingsGeneralData?.Invoke(defaultData);
+
+		SetFOV(_MIN_FOV_VALUE);
+		_sliderFOV.value = _MIN_FOV_VALUE;
+	}
+
+	public void ResetSettingsControls()
+	{
+		OnResetSettingsControlsData?.Invoke();
 
 		var defaultBindingsSnapshot = _inputDevice.GetDefaultKeyBindings();
 
 		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
-			FOV = _MIN_FOV_VALUE,
-			Language = _localizationManager.CurrentLanguage.ToString(),
 			KeyBindings = defaultBindingsSnapshot.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
 		};
 
-		OnSaveSettingsData?.Invoke(defaultData);
-
-		SetFOV(_MIN_FOV_VALUE);
-		_sliderFOV.value = _MIN_FOV_VALUE;
+		OnSaveSettingsControlsData?.Invoke(defaultData);
 
 		foreach (var field in _KeyRebinds)
 		{
@@ -577,6 +663,30 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 				_inputDevice.RebindKey(actionName, key);
 			}
 		}
+	}
+
+	public void ResetSettingsGraphics()
+	{
+		OnResetSettingsGraphicsData?.Invoke();
+
+		PlayerPrefsData defaultData = new PlayerPrefsData
+		{
+
+		};
+
+		OnSaveSettingsGraphicsData?.Invoke(defaultData);
+	}
+
+	public void ResetSettingsAudio()
+	{
+		OnResetSettingsAudioData?.Invoke();
+
+		PlayerPrefsData defaultData = new PlayerPrefsData
+		{
+			Language = _localizationManager.CurrentLanguage.ToString(),
+		};
+
+		OnSaveSettingsAudioData?.Invoke(defaultData);
 	}
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)

@@ -211,14 +211,14 @@ public class Bootstrap : MonoBehaviour
 		_buttonRussianLangage.onClick.AddListener(() =>
 		{
 			ChangeLanguage(LanguagesEnum.Russian);
-			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsController.SaveSettings();
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsController.SaveSettingsAudio();
 			languageSelected = true;
 		});
 
 		_buttonEnglishLanguage.onClick.AddListener(() =>
 		{
 			ChangeLanguage(LanguagesEnum.English);
-			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsController.SaveSettings();
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsController.SaveSettingsAudio();
 			languageSelected = true;
 		});
 

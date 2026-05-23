@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 {
@@ -25,24 +24,45 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 		_bootstrap.OnLoadSettingsData += () => LoadSettings(actionNames);
 
-		_pauseSubMenuSettingsController.OnSaveSettingsData += SaveSettings;
-		_pauseSubMenuSettingsController.OnResetSettingsData += ResetSettings;
-		
+		_pauseSubMenuSettingsController.OnSaveSettingsGeneralData += SaveSettingsGeneral;
+		_pauseSubMenuSettingsController.OnResetSettingsGeneralData += ResetSettingsGeneral;
+		_pauseSubMenuSettingsController.OnSaveSettingsControlsData += SaveSettingsControls;
+		_pauseSubMenuSettingsController.OnResetSettingsControlsData += ResetSettingsControls;
+		_pauseSubMenuSettingsController.OnSaveSettingsGraphicsData += SaveSettingsGraphics;
+		_pauseSubMenuSettingsController.OnResetSettingsGraphicsData += ResetSettingsGraphics;
+		_pauseSubMenuSettingsController.OnSaveSettingsAudioData += SaveSettingsAudio;
+		_pauseSubMenuSettingsController.OnResetSettingsAudioData += ResetSettingsAudio;
+
 		Debug.Log("SettingsPlayerPrefs Initialized");
 	}
 
-	public void SaveSettings(PlayerPrefsData data)
+	public void SaveSettingsGeneral(PlayerPrefsData data)
 	{
 		PlayerPrefs.SetFloat(FOV, data.FOV);
 
-		PlayerPrefs.SetString(Language, data.Language);
+		PlayerPrefs.Save(); 
+	}
 
+	public void SaveSettingsControls(PlayerPrefsData data)
+	{
 		foreach (var binding in data.KeyBindings)
 		{
 			PlayerPrefs.SetString(KeybindingsPrefix + binding.Key, binding.Value.ToString());
 		}
 
-		PlayerPrefs.Save(); 
+		PlayerPrefs.Save();
+	}
+
+	public void SaveSettingsGraphics(PlayerPrefsData data)
+	{
+		PlayerPrefs.Save();
+	}
+
+	public void SaveSettingsAudio(PlayerPrefsData data)
+	{
+		PlayerPrefs.SetString(Language, data.Language);
+
+		PlayerPrefs.Save();
 	}
 
 	public void LoadSettings(List<string> actionNamesToLoad)
@@ -86,12 +106,15 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 		_pauseSubMenuSettingsController.ApplySystemLoadedSettings(data);
 	}
 
-	public void ResetSettings()
+	public void ResetSettingsGeneral()
 	{
-		string currentLanguage = PlayerPrefs.GetString(Language);
-
 		PlayerPrefs.DeleteKey(FOV);
 
+		Debug.Log("RESET SETTINGS!!");
+	}
+
+	public void ResetSettingsControls()
+	{
 		string allKeysString = PlayerPrefs.GetString("");
 		string[] allKeysArray = allKeysString.Split('\0');
 
@@ -102,6 +125,22 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 				PlayerPrefs.DeleteKey(key);
 			}
 		}
+
+		PlayerPrefs.Save();
+
+		Debug.Log("RESET SETTINGS!!");
+	}
+
+	public void ResetSettingsGraphics()
+	{
+		PlayerPrefs.Save();
+
+		Debug.Log("RESET SETTINGS!!");
+	}
+
+	public void ResetSettingsAudio()
+	{
+		string currentLanguage = PlayerPrefs.GetString(Language);
 
 		PlayerPrefs.SetString(Language, currentLanguage);
 
