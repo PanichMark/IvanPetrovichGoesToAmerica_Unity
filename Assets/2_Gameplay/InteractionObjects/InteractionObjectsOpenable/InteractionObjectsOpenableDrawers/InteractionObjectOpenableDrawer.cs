@@ -12,11 +12,11 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 	protected Vector3 _openedPosition;
 	protected Vector3 _closedPosition;
 	[SerializeField] protected float _openLengthForward;
+	private string _interactionHintMessageMain;
 
 	public void Start()
 	{
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 
 		InteractionHintMessageAction = localizationManager.GetLocalizedString("OpenDoor");
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
@@ -31,7 +31,6 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 	public void ChangeLanguage()
 	{
 		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionObjectNameUI = localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 
 		InteractionHintMessageAction = localizationManager.GetLocalizedString("OpenDoor");
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";

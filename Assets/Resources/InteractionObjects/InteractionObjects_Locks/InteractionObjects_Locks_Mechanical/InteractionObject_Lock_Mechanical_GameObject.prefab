@@ -121,9 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f499c8d011549449a0f035cd7a206b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gearPrefab: {fileID: 8156295745365785935, guid: 755a54250ecfa8c47a4531ab4b5e5dc7, type: 3}
-  segmentsCount: 16
-  rotationSpeed: 10
-  moveSpeed: 10
-  CubeFollow: {fileID: 8618090350843763874, guid: ebcff111c530fe04d8ecdb2e059b4a70, type: 3}
-  interactionObjectNameSystem: InteractionLock_Easy
+  _gearPrefab: {fileID: 8156295745365785935, guid: 755a54250ecfa8c47a4531ab4b5e5dc7, type: 3}
+  _segmentsCount: 16
+  _rotationSpeed: 90
+  _moveSpeed: 90
+  _cubeFollow: {fileID: 8618090350843763874, guid: ebcff111c530fe04d8ecdb2e059b4a70, type: 3}
+  _interactionObjectNameSystem: Lock_Mechanical_Easy

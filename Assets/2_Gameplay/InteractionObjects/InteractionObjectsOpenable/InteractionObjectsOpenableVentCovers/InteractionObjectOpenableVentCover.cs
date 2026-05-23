@@ -5,7 +5,7 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 {
 	[SerializeField] private float _openLengthUp;
 	private Vector3 _intermediatePos;
-
+	private string _interactionHintMessageMain;
 	public void Start()
 	{
 		base.Start();

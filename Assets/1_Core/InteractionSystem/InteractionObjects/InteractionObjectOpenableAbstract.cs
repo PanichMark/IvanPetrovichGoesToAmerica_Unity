@@ -10,11 +10,9 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 
 	protected LocalizationManager _localizationManager;
 
-	protected string _interactionHintMessageMain;
-
 	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
-	public virtual string InteractionObjectNameUI { get; protected set; }
-	public virtual string InteractionHintMessageMain => _interactionHintMessageMain;
+	public virtual string InteractionObjectNameUI => null;
+	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 	public virtual string InteractionHintMessageFail => null;
 	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction { get; protected set; }

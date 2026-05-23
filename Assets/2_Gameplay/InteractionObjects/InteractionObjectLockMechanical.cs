@@ -12,7 +12,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	[SerializeField] private int _segmentsCount;
 	[SerializeField] private float _rotationSpeed;
 	[SerializeField] private float _moveSpeed;
-	[SerializeField] private GameObject _cubeFollow;
+	private GameObject _cubeFollow;
 
 	private SaveLoadController _saveLoadController;
 	private LocalizationManager _localizationManager;
@@ -62,7 +62,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	{
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_canvasLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickMechanical");
-		_buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<Button>("ButtonExitLockpickMechanicalMenu");
+		_buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<Button>("ButtonCloseLockpickMechanicalMenu");
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
@@ -71,9 +71,10 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
-
-		_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
+		_cubeFollow = Resources.Load<GameObject>("InteractionObjects/InteractionObjects_Locks/InteractionObjects_Locks_Mechanical/Lock_Mechanical_PuzzleCube");
+		//	_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
+		_buttonText.text = "exit";
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -86,9 +87,10 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUDInteraction_HintActione_Lockpick");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
 
-		_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
+		//	_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
+		_buttonText.text = "exit";
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 	}
 

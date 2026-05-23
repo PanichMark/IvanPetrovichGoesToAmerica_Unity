@@ -13,6 +13,7 @@ HUD_Interaction_HintMessage_Main,Нажмите,Press
 HUD_Interaction_HintMessage_Fail_Wait,Подождите,Please wait
 HUD_Interaction_HintMessage_Fail_Money,Недостаточно денег,Not enough money
 HUD_Interaction_HintMessage_Fail_WrongCombination,Неправильная комбинация,Wrong combination
+HUD_Interaction_HintMessage_Fail_Locked,Заперто,Is locked
 InteractionObject_Loot_Ammo_12gauge_Box,Коробка с зарядами дроби,Box with 12gauge shots
 InteractionObject_Loot_Ammo_9mm_Box,Коробка с патронами 9мм,Box with 9mm bullets
 InteractionObject_Loot_HealthShawarma,Шаурма,Shawarma
@@ -45,9 +46,9 @@ InteractionObject_VendingMachine_Ammo,в торговом автомате По�
 InteractionObject_VendingMachine_Ammo_Reel,Сменить тип патронов для покупки,Change ammo type for purchase
 InteractionObject_VendingMachine_Health,в торговом автомате Шаурмазин за,from Shaurmazin vending machine for
 InteractionObject_VendingMachine_Mana,в торговом автомате Доктор Поппелс за,from Doctor Poppels vending machine for
-Lock_Mechanical_Easy,Легкий замок,Easy lock
-Lock_Mechanical_Hard,Сложный замок,Hard lock
-Lock_Mechanical_Medium,Средний замок,Medium lock
+Lock_Mechanical_Easy,Легкий механический замок,Easy mechanical lock
+Lock_Mechanical_Hard,Сложный механический замок,Hard mechanical lock
+Lock_Mechanical_Medium,Средний механический замок,Medium mechanical lock
 Menu_Interaction_Lock_Electronic,Перестать взламывать замок,Stop picking the lock
 Menu_Interaction_Lock_Mechanical,Перестать взламывать замок,Stop picking the lock
 NPC_Aggressive_Policeman,Милиционер,Policeman
