@@ -32,6 +32,8 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasLoadingScreen;
 
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
+	[Header("Menu")]
+	[SerializeField] private GameObject _canvasMenuBackground;
 	[Header("Pause Menu")]
 	[SerializeField] private GameObject _canvasPauseMenu;
 	[SerializeField] private GameObject _canvasPauseSubMenuSave;
@@ -168,7 +170,9 @@ public class Bootstrap : MonoBehaviour
 		_canvasLoadingScreen = Instantiate(_canvasLoadingScreen);
 		_canvasChooseLanguage = Instantiate(_canvasChooseLanguage);
 
-		_canvasPauseMenu = Instantiate(_canvasPauseMenu);
+		_canvasMenuBackground = Instantiate(_canvasMenuBackground);
+
+	    _canvasPauseMenu = Instantiate(_canvasPauseMenu);
 		_canvasPauseSubMenuSave = Instantiate(_canvasPauseSubMenuSave);
 		_canvasPauseSubMenuLoad = Instantiate(_canvasPauseSubMenuLoad);
 		_canvasPauseSubMenuAppearance = Instantiate(_canvasPauseSubMenuAppearance);
@@ -254,6 +258,7 @@ public class Bootstrap : MonoBehaviour
 			_localizationManager,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessSaveLoadSystem.SaveLoadController,
+			_canvasMenuBackground,
 			_canvasPauseMenu,
 			_canvasPauseSubMenuSave,
 			_canvasPauseSubMenuLoad,

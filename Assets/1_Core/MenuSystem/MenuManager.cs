@@ -39,14 +39,20 @@ public class MenuManager : MonoBehaviour
 	private IInputDevice _inputDevice;
 	private GameController _gameController;
 	private GameSceneManager _gameSceneManager;
+	private GameObject _canvasMenuBackground;
 
 	public Stack<int> PauseMenuLevel = new Stack<int>();
 
-	public void Initialize(GameController gameController, IInputDevice inputDevice, GameSceneManager gameSceneManager)
+	public void Initialize(
+		GameController gameController,
+		IInputDevice inputDevice,
+		GameSceneManager gameSceneManager,
+		GameObject canvasMenuBackground)
 	{
 		_inputDevice = inputDevice;
 		_gameController = gameController;
 		_gameSceneManager = gameSceneManager;
+		_canvasMenuBackground = canvasMenuBackground;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
@@ -71,6 +77,16 @@ public class MenuManager : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseCutsceneMenu;
 
 		Debug.Log("MenuManager Initialized");
+	}
+
+	public void ShowCanvasMenuBackground()
+	{
+		_canvasMenuBackground.SetActive(true);
+	}
+
+	public void HideCanvasMenuBackground()
+	{
+		_canvasMenuBackground.SetActive(false);
 	}
 
 	void Update()
@@ -129,7 +145,7 @@ public class MenuManager : MonoBehaviour
 		{
 			CloseWeaponWheelMenu();
 		}
-
+		ShowCanvasMenuBackground();
 		PauseMenuLevel.Push(1);
 		OnOpenPauseMenu?.Invoke();
 		IsPauseMenuOpened = true;
@@ -155,6 +171,7 @@ public class MenuManager : MonoBehaviour
 		}
 		else
 		{
+			HideCanvasMenuBackground();
 			CloseAnyMenu();
 			_gameController.MakePlayerControllable();
 			Time.timeScale = 1f;
@@ -289,6 +306,7 @@ public class MenuManager : MonoBehaviour
 		IsInteractionMenuOpened = true;
 		Time.timeScale = 0;
 		_gameController.MakePlayerNonControllable();
+		ShowCanvasMenuBackground();
 		OpenAnyMenu();
 		OnOpenInteractionMenu?.Invoke();
 		
@@ -300,6 +318,7 @@ public class MenuManager : MonoBehaviour
 		Time.timeScale = 1;
 		OnCloseInteractionMenu?.Invoke();
 		_gameController.MakePlayerControllable();
+		HideCanvasMenuBackground();
 		CloseAnyMenu();
 		Debug.Log("InteractionMenu closed");
 	}

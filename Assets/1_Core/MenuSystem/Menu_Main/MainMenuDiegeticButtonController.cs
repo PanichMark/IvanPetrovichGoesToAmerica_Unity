@@ -83,6 +83,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			if (Input.GetKeyDown(_keyPauseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)
 			{
 				_mainMenuReadNews.HideCanvasMainMenuReadNews();
+				_menuManager.HideCanvasMenuBackground();
 				_playerCameraBlurFilter.DeactivateCameraBlur();
 			}
 		}
@@ -110,6 +111,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (name == "LoadGame")
 		{
 			Debug.Log("OPEN LOAD GAME");
+			_menuManager.ShowCanvasMenuBackground();
 			_CanvasDiegeticText.SetActive(false);
 			DisableAllColliders();
 			_menuManager.OpenAnyMenu();
@@ -123,6 +125,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (name == "Settings")
 		{
 			Debug.Log("OPEN SETTINGS");
+			_menuManager.ShowCanvasMenuBackground();
 			_CanvasDiegeticText.SetActive(false);
 			DisableAllColliders();
 			_menuManager.OpenAnyMenu();
@@ -131,6 +134,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (name == "ReadNews")
 		{
 			Debug.Log("OPEN NEWS");
+			_menuManager.ShowCanvasMenuBackground();
 			_CanvasDiegeticText.SetActive(false);
 			_mainMenuReadNews.ShowCanvasMainMenuReadNews();
 			DisableAllColliders();

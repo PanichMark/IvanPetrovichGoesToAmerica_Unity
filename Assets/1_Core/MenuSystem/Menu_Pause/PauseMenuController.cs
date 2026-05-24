@@ -148,6 +148,7 @@ public class PauseMenuController : MonoBehaviour
 		if (_gameController.IsMainMenuOpen)
 		{
 			_menuManager.CloseAnyMenu();
+			_menuManager.HideCanvasMenuBackground();
 		}
 
 		if (!_gameController.IsMainMenuOpen)

@@ -1,6 +1,5 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
+
 public class PlayerCameraController : MonoBehaviour, ISaveLoad
 {
 	private GameController _gameController;
@@ -27,7 +26,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	public float PlayerCameraDistanceY { get; private set; }
 	public float PlayerCameraDistanceZ { get; private set; }
 
-	private float _MouseRotationLimit = 65f;
+	private float _MouseRotationLimit = 80f;
 
 	private string _currentPlayerCameraType;
 	private string _previousPlayerCameraType;

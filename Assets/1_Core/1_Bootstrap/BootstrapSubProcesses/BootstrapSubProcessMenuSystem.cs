@@ -20,6 +20,7 @@ public class BootstrapSubProcessMenuSystem
 	public MenuManager MenuManager { get; private set; }
 
 	private PauseMenuController _pauseMenuController;
+	private GameObject _canvasMenuBackground;
 	private GameObject _canvasPauseMenu;
 	private GameObject[] _buttonsPauseMenu;
 
@@ -130,6 +131,7 @@ public class BootstrapSubProcessMenuSystem
 		LocalizationManager localizationManager,
 		GameSceneManager gameSceneManager,
 		SaveLoadController saveLoadController,
+		GameObject canvasMenuBackground,
 		GameObject canvasPauseMenu,
 		GameObject canvasPauseSubMenuSave,
 		GameObject canvasPauseSubMenuLoad,
@@ -150,6 +152,7 @@ public class BootstrapSubProcessMenuSystem
 		_localizationManager = localizationManager;
 		_gameSceneManager = gameSceneManager;
 		_saveLoadController = saveLoadController;
+		_canvasMenuBackground = canvasMenuBackground;
 		_canvasPauseMenu = canvasPauseMenu;
 		_canvasPauseSubMenuSave = canvasPauseSubMenuSave;
 		_canvasPauseSubMenuLoad = canvasPauseSubMenuLoad;
@@ -317,7 +320,7 @@ public class BootstrapSubProcessMenuSystem
 		SliderHealthBar = _canvasHUDhealthAndMana.transform.Find("SliderHealthBar").GetComponent<Slider>();
 		SliderManaBar = _canvasHUDhealthAndMana.transform.Find("SliderManaBar").GetComponent<Slider>();
 
-		MenuManager.Initialize(_gameController, _inputDevice, _gameSceneManager);
+		MenuManager.Initialize(_gameController, _inputDevice, _gameSceneManager, _canvasMenuBackground);
 		_pauseMenuController.Initialize(_gameController, _inputDevice, _gameSceneManager, MenuManager, _canvasPauseMenu, _buttonsPauseMenu, _saveLoadController);
 		_pauseSubMenuSaveController.Initialize(_inputDevice, _saveLoadController, MenuManager, _pauseMenuController, _canvasPauseSubMenuSave, _buttonCreateNewGameFile, _buttonsRewriteGameFile, _buttonsDeleteGameFile, _buttonClosePauseSubMenuSave);
 		_pauseSubMenuLoadController.Initialize(_inputDevice, _saveLoadController, MenuManager, _pauseMenuController, _canvasPauseSubMenuLoad, _buttonsLoadGameFile, _buttonClosePauseSubMenuLoad);
