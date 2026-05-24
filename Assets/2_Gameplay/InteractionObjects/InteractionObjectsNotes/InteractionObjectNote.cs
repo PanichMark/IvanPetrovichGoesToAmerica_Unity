@@ -10,8 +10,8 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	public string InteractionObjectNameUI => _interactionObjectNameUI;
 
 	// Заменяем поля на ссылку на ScriptableObject
-	[SerializeField] private InteractionObjectNoteData noteData;
-
+	[SerializeField] private InteractionObjectNoteData _noteData;
+	[SerializeField] private InteractionObjectNotePosition _notePosition;
 	private MenuManager _menuManager;
 	private bool _isReading;
 	private LocalizationManager _localizationManager;
@@ -22,11 +22,11 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	private Button _buttonExitNoteMenu;
 
 	public string InteractionHintMessageAction { get; protected set; }
-	private bool _isThereText;
 
 	private RectTransform _imageRectTransform;
-	private Image _backgroundBack;
-	private TextMeshProUGUI _descriptionText;
+	private RectTransform _textRectTransform;
+	private Image _textBackground;
+	private TextMeshProUGUI _textComponent;
 	private Image _imageComponent;
 
 	public bool IsInteractionHintMessageFailActive => false;
@@ -34,22 +34,18 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	private void Start()
 	{
-		// Проверка наличия данных через ScriptableObject
-		if (noteData == null)
+		if(_notePosition.IsThereText)
 		{
-			Debug.LogError("TutorialNoteData не назначен в инспекторе для объекта " + gameObject.name);
-			_isThereText = false;
-			return; // Останавливаем инициализацию, если данных нет
+			_textComponent = ServiceLocator.Resolve<TextMeshProUGUI>("TextNote");
+			_textRectTransform = _textComponent.gameObject.GetComponent<RectTransform>();
 		}
-
-		_isThereText = (noteData.NoteText_RU != null && noteData.NoteText_EN != null);
 
 		// Остальная инициализация остается прежней
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_buttonExitNoteMenu = ServiceLocator.Resolve<Button>("ButtonExitReadNoteMenu");
+		_buttonExitNoteMenu = ServiceLocator.Resolve<Button>("ButtonCloseReadNoteMenu");
 		_imageComponent = ServiceLocator.Resolve<Image>("ImageNote");
-		_descriptionText = ServiceLocator.Resolve<TextMeshProUGUI>("TextNote");
-		_backgroundBack = ServiceLocator.Resolve<Image>("ImageNoteBlackBackground");
+
+		_textBackground = ServiceLocator.Resolve<Image>("ImageNoteBlackBackground");
 		_canvasNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuNote");
 
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
@@ -60,7 +56,8 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_imageRectTransform = _imageComponent.gameObject.GetComponent<RectTransform>();
-
+		
+		_buttonExitNoteMenu.onClick.AddListener(CloseAndDeactivate);
 		_menuManager.OnOpenPauseMenu += HideNoteCanvas;
 		_menuManager.OnClosePauseMenu += ShowNoteCanvas;
 	}
@@ -89,7 +86,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
-		if (noteData == null) return; // Защита от NullReference
+		if (_noteData == null) return; // Защита от NullReference
 
 		_menuManager.OpenInteractionMenu();
 		_isReading = true;
@@ -98,38 +95,33 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 		// Используем данные из ScriptableObject напрямую
 		_imageComponent.gameObject.SetActive(true);
-		_imageComponent.sprite = noteData.NoteImage;
+		_imageComponent.sprite = _noteData.NoteImage;
 
-		if (_isThereText)
+		if (_notePosition.IsThereText)
 		{
-			TextAsset localizedTextFile = noteData.NoteText_RU;
+			TextAsset localizedTextFile = _noteData.NoteText_RU;
 
 			if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
 			{
-				localizedTextFile = noteData.NoteText_RU;
+				localizedTextFile = _noteData.NoteText_RU;
 			}
 			if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
 			{
-				localizedTextFile = noteData.NoteText_EN;
+				localizedTextFile = _noteData.NoteText_EN;
 			}
 
-			_backgroundBack.gameObject.SetActive(true);
-			_descriptionText.text = localizedTextFile.text;
-
-			// Позиция и поворот для случая с текстом (как в оригинале)
-			_imageRectTransform.anchoredPosition = new Vector2(-184, -48);
-			_imageRectTransform.localEulerAngles = new Vector3(0, 0, 11.5f);
-
+			_textBackground.gameObject.SetActive(true);
+			_textComponent.text = localizedTextFile.text;
 		}
-		else
-		{
-			// Позиция и поворот для случая без текста (как в оригинале)
-			_imageRectTransform.anchoredPosition = new Vector2(0, 0);
-			_imageRectTransform.localEulerAngles = new Vector3(0, 0, 0);
-		}
+
+
+
+		// Позиция и поворот для случая с текстом (как в оригинале)
+		_imageRectTransform.anchoredPosition = _notePosition.TextPosition;
+		_imageRectTransform.localEulerAngles = _notePosition.TextRotation;
 
 		// Убедимся, что обработчик добавлен только один раз (опционально)
-		//_buttonExitNoteMenu.onClick.AddListener(CloseAndDeactivate); 
+
 
 		gameObject.tag = "Untagged";
 	}
@@ -140,34 +132,23 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		{
 			_isReading = false;
 
-			// Деактивируем объекты
-			_backgroundBack.gameObject.SetActive(false);
+			if (_notePosition.IsThereText)
+			{
 
-			// Очищаем текст и изображение (не обязательно, но полезно для чистоты)
-			_descriptionText.text = string.Empty;
+				// Деактивируем объекты
+				_textBackground.gameObject.SetActive(false);
+
+				// Очищаем текст и изображение (не обязательно, но полезно для чистоты)
+				_textComponent.text = string.Empty;
+				
+			}
+
 			_imageComponent.sprite = null;
-
 			// Закрываем меню и сбрасываем состояние кнопки (если нужно)
 			_canvasNoteMenu.SetActive(false);
 			_menuManager.CloseInteractionMenu();
 
 			gameObject.tag = "Interactable";
-
-			// Отписываемся от событий при выходе (опционально, для чистоты)
-			if (_gameSceneManager != null)
-			{
-				_gameSceneManager.OnBeginLoadingMainMenuScene -= CloseAndDeactivate;
-				_gameSceneManager.OnBeginLoadingGameplayScene -= CloseAndDeactivate;
-				var _localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-				if (_localizationManager != null)
-					_localizationManager.OnLanguageChanged -= ChangeLanguage;
-
-				if (_menuManager != null)
-				{
-					_menuManager.OnOpenPauseMenu -= HideNoteCanvas;
-					_menuManager.OnClosePauseMenu -= ShowNoteCanvas;
-				}
-			}
 		}
 	}
 }
