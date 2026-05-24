@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2472323505463352593}
-  m_Mesh: {fileID: 3462478883805843829, guid: 2882a740d06bb6348a51b828d1670e84, type: 3}
+  m_Mesh: {fileID: 602608328393202031, guid: 2882a740d06bb6348a51b828d1670e84, type: 3}
 --- !u!23 &7486550161233069819
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -122,5 +122,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Loot_Valuable_Money_Ruble1
-  _moneyValue: 1
   _lootObjectIcon: {fileID: 21300000, guid: f951cf43bb4be374f8ff89050f2c4001, type: 3}
+  _moneyValue: 1

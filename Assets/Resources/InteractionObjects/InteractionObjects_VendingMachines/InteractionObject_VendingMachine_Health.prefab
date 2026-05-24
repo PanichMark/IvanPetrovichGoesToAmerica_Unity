@@ -67,9 +67,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4189a1dd9bd55c94d9b6c06e7f04aa41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _vendingMachineName: InteractionObject_VendingMachine_Health
   _goodsForSale: {fileID: 2549510235587133749, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
   _goodsPrice: 25
-  _vendingMachineName: InteractionObject_VendingMachine_Health
   _moneyType: Money_Rubles
 --- !u!1 &7021709224061148599
 GameObject:
@@ -111,7 +111,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7021709224061148599}
-  m_Mesh: {fileID: -1499745742001556010, guid: 020d9e9ee249fee40b2cdd90bbcb90d3, type: 3}
+  m_Mesh: {fileID: 8327695355692585283, guid: 020d9e9ee249fee40b2cdd90bbcb90d3, type: 3}
 --- !u!23 &8823364372430601314
 MeshRenderer:
   m_ObjectHideFlags: 0

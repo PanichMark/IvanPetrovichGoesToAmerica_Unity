@@ -7,7 +7,6 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 
 	public override bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
 
-	public override string InteractionHintMessageFail => $"Максимум {InteractionObjectNameUI}";
 
 	[SerializeField] Sprite _lootObjectIcon;
 	public override Sprite LootObjectIcon => _lootObjectIcon;

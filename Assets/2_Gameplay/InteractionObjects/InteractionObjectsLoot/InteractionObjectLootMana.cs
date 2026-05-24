@@ -6,7 +6,6 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 	public override bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
 	private PlayerResourcesManaManager _playerResourcesManaManager;
 
-	public override string InteractionHintMessageFail => $"Maximum {InteractionObjectNameUI}";
 	[SerializeField] Sprite _lootObjectIcon;
 	public override Sprite LootObjectIcon => _lootObjectIcon;
 	public override void Interact()

@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6496568871341317151}
-  m_Mesh: {fileID: 2150881359818446877, guid: af9f6a279cc841a41987a6e0cf6cae27, type: 3}
+  m_Mesh: {fileID: -8211815759632007285, guid: af9f6a279cc841a41987a6e0cf6cae27, type: 3}
 --- !u!23 &4878507893573934450
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Loot_Valuable_GoldBar
-  _moneyValue: 500
   _lootObjectIcon: {fileID: 21300000, guid: 72effbafbed7c8f4cbdd72594dca891b, type: 3}
+  _moneyValue: 500
 --- !u!65 &5535731797512342511
 BoxCollider:
   m_ObjectHideFlags: 0

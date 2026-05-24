@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1775556681946765084}
-  m_Mesh: {fileID: -3209118968724895018, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
+  m_Mesh: {fileID: -1890968584614368226, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
 --- !u!23 &262606348610287305
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -127,7 +127,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2945238990188413373}
-  m_Mesh: {fileID: 3580030149579874889, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
+  m_Mesh: {fileID: 8346332964632285935, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
 --- !u!23 &4607809141320618361
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -215,7 +215,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5842179549794067399}
-  m_Mesh: {fileID: -948240178119257716, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
+  m_Mesh: {fileID: -3530076216078333910, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
 --- !u!23 &8481519907602152401
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -295,7 +295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ca6c7543b9fa1f4c9e3f18793ea5e3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: "\u0412\u044B\u0431\u043E\u0440 \u043F\u0430\u0442\u0440\u043E\u043D\u043E\u0432"
   _rotationDuration: 1
   _rotationAngle: 90
 --- !u!1 &8764897025864242599
@@ -489,9 +488,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ef2f7aebc63114b928c05fac3865c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goodsForSaleModel: {fileID: 0}
-  _goodsPrice: 0
   _vendingMachineName: InteractionObject_VendingMachine_Ammo
+  _goodsForSale: {fileID: 0}
+  _goodsPrice: 0
   _moneyType: Money_Rubles
   _ammoTypes:
   - AmmoName: 9mm
