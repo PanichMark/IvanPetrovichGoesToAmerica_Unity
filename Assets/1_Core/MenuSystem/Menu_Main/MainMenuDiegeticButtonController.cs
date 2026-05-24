@@ -31,7 +31,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_defaultMaterial = _renderer.material;
 		_hoverMaterial = Resources.Load<Material>("Materials/Material_MainMenuDiegeticButton");
 
-		_CanvasDiegeticText = GameObject.Find("CanvasDiegeticText");
+		_CanvasDiegeticText = GameObject.Find("CANVASES");
 
 		_keyPauseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");

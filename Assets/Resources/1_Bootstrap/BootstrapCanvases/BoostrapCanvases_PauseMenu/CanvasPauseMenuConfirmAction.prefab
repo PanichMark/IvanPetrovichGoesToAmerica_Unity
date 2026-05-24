@@ -464,8 +464,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.3555, y: 21.7694}
-  m_SizeDelta: {x: 754.0909, y: 96.0101}
+  m_AnchoredPosition: {x: -4.3555, y: 17.5687}
+  m_SizeDelta: {x: 754.0909, y: 107.2118}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1429552518956423114
 CanvasRenderer:
@@ -507,7 +507,7 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
-    m_LineSpacing: 1
+    m_LineSpacing: 0.85
   m_Text: New Text
 --- !u!1 &5369948046966156126
 GameObject:
@@ -583,7 +583,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4289980401
   m_fontColor: {r: 0.94509804, g: 0.90588236, b: 0.7019608, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -719,7 +719,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4289980401
   m_fontColor: {r: 0.94509804, g: 0.90588236, b: 0.7019608, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
