@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 
 public class LocalizationManager
@@ -83,27 +84,35 @@ public class LocalizationManager
 		{
 			throw new NotImplementedException("This language NOT supported");
 		}
-
 	}
 
-	/*
-	public string GetLocalizedText(TextAsset textFilePath)
+	public string GetLanguageSuffix(InteractionObjectNoteData noteData)
 	{
-		switch (CurrentLanguage)
+		if (noteData == null)
+			return string.Empty;
+
+		// Получаем суффикс языка
+		string suffix = GetLanguageSuffix();
+
+		// Формируем имя поля, которое хотим найти
+		string fieldName = "NoteText_" + suffix;
+
+		// Используем отражение, чтобы получить значение поля по имени
+		FieldInfo fieldInfo = noteData.GetType().GetField(fieldName,
+			BindingFlags.Public | BindingFlags.Instance);
+
+		if (fieldInfo != null)
 		{
-			case LanguagesEnum.Russian:
-				return textFilePath.name.EndsWith("_RU.txt")
-					? textFilePath.text
-					: throw new Exception("Русский файл не найден");
-
-			case LanguagesEnum.English:
-				return textFilePath.name.EndsWith("_EN.txt")
-					? textFilePath.text
-					: throw new Exception("Английский файл не найден");
-
-			default:
-				throw new NotImplementedException("Данный язык пока не поддерживается");
+			TextAsset textAsset = fieldInfo.GetValue(noteData) as TextAsset;
+			if (textAsset != null)
+			{
+				return textAsset.text;
+			}
 		}
+
+		// Если поле не найдено или данные некорректны
+		Debug.LogError($"{suffix} text not found in {noteData.name}");
+		return string.Empty;
 	}
-	*/
+
 }

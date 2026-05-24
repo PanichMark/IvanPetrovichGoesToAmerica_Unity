@@ -7,21 +7,20 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	public string InteractionObjectNameSystem => null;
 
 	[SerializeField] private string _interactionObjectNameUI;
-	public string InteractionObjectNameUI => _interactionObjectNameUI;
+	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameUI)}";
 
-	// Заменяем поля на ссылку на ScriptableObject
 	[SerializeField] private InteractionObjectNoteData _noteData;
 	[SerializeField] private InteractionObjectNotePosition _notePosition;
 	private MenuManager _menuManager;
 	private bool _isReading;
 	private LocalizationManager _localizationManager;
-	public string InteractionHintMessageMain => $"Прочитать {InteractionObjectNameUI}";
+	public string InteractionHintMessageMain => $"{_interactionHintMessageAction} {InteractionObjectNameUI}?";
 	public string InteractionHintMessageFail => null;
 
 	private GameObject _canvasNoteMenu;
 	private Button _buttonExitNoteMenu;
-
-	public string InteractionHintMessageAction { get; protected set; }
+	private string _interactionHintMessageAction;
+	public string InteractionHintMessageAction => _interactionHintMessageAction;
 
 	private RectTransform _imageRectTransform;
 	private RectTransform _textRectTransform;
@@ -34,10 +33,21 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	private void Start()
 	{
-		if(_notePosition.IsThereText)
+
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+
+		//_interactionObjectNameUI = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Money")}!";
+
+		if (_notePosition.IsThereText)
 		{
 			_textComponent = ServiceLocator.Resolve<TextMeshProUGUI>("TextNote");
 			_textRectTransform = _textComponent.gameObject.GetComponent<RectTransform>();
+
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Read")}";
+		}
+		else
+		{
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GlanceAt")}";
 		}
 
 		// Остальная инициализация остается прежней
@@ -52,7 +62,6 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseAndDeactivate;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
 
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_imageRectTransform = _imageComponent.gameObject.GetComponent<RectTransform>();
@@ -64,8 +73,14 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	public void ChangeLanguage()
 	{
-		// Метод можно оставить пустым или обновить данные, если LocalizationManager создается заново.
-		// В текущей реализации данные берутся из noteData, который не зависит от локализации напрямую.
+		if (_notePosition.IsThereText)
+		{
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Read")}";
+		}
+		else
+		{
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GlanceAt")}";
+		}
 	}
 
 	private void HideNoteCanvas()
@@ -99,25 +114,18 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 		if (_notePosition.IsThereText)
 		{
-			TextAsset localizedTextFile = _noteData.NoteText_RU;
-
-			if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
-			{
-				localizedTextFile = _noteData.NoteText_RU;
-			}
-			if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
-			{
-				localizedTextFile = _noteData.NoteText_EN;
-			}
-
 			_textBackground.gameObject.SetActive(true);
-			_textComponent.text = localizedTextFile.text;
+			_textComponent.text = _localizationManager.GetLanguageSuffix(_noteData);
+		}
+		else
+		{
+			_textBackground.gameObject.SetActive(false);
 		}
 
 
 
-		// Позиция и поворот для случая с текстом (как в оригинале)
-		_imageRectTransform.anchoredPosition = _notePosition.TextPosition;
+			// Позиция и поворот для случая с текстом (как в оригинале)
+			_imageRectTransform.anchoredPosition = _notePosition.TextPosition;
 		_imageRectTransform.localEulerAngles = _notePosition.TextRotation;
 
 		// Убедимся, что обработчик добавлен только один раз (опционально)
