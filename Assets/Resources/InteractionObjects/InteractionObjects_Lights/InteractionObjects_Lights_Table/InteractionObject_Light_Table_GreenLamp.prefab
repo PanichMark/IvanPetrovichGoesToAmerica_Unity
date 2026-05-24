@@ -122,8 +122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa029cbfd713c0c44bceccb7c35f1c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightObject: {fileID: 7348757310344606709}
-  emissionColorOn: {r: 1, g: 0.8659488, b: 0.42075467, a: 1}
+  _interactionObjectNameSystem: InteractionObject_Light_Table
+  _lightObject: {fileID: 7348757310344606709}
+  _lightEmissionColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &6013647879854677384
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,15 +151,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6013647879854677384}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.98405826, z: -0, w: -0.17784655}
-  m_LocalPosition: {x: 2.573, y: 0.954, z: 5.84}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3643283644583523184}
   - {fileID: 1357629707108958421}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 200.489, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1685939350480146193
 MeshFilter:
   m_ObjectHideFlags: 0

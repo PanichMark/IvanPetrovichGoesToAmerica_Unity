@@ -6,11 +6,11 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	protected bool _isAdditionalInteractionHintActive;
 	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 	[SerializeField] private int _doorOpenAngle = 90;
-	private string _interactionHintMessageMain;
+	protected string _interactionHintMessageMain;
 
 	[SerializeField] private float _doorOpeningSpeed = 200f;
-	[SerializeField] private InteractionObjectLockMechanical _mechanicalLockController;
-	[SerializeField] private InteractionObjectLockElectronic _electronicLockController;
+	[SerializeField] protected InteractionObjectLockMechanical _mechanicalLockController;
+	[SerializeField] protected InteractionObjectLockElectronic _electronicLockController;
 	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 
@@ -55,13 +55,13 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 		{
 			SetUnlockedDoorHintMessageMain();
 
-			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 		}
 
 		
 	}
 
-	public void ChangeLanguage()
+	public virtual void ChangeLanguage()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
@@ -82,14 +82,14 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			|| (_mechanicalLockController != null && _mechanicalLockController.WasUnlocked)
 			|| (_electronicLockController != null && _electronicLockController.WasUnlocked))
 		{
-			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 		}
 	}
 
-	private void UnlockDoor()
+	protected virtual void UnlockDoor()
 	{
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
-		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	}
 
 	public override void Interact()
@@ -141,7 +141,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 		SetUnlockedDoorHintMessageMain();
 	}
 
-	private void SetUnlockedDoorHintMessageMain()
+	protected virtual void SetUnlockedDoorHintMessageMain()
 	{
 		if (IsDoorOpened)
 		{

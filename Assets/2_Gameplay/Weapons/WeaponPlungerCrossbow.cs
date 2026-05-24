@@ -57,7 +57,7 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 		Ray ray = new Ray(_playerCamera.transform.position, _playerCamera.transform.forward);
 		RaycastHit hit;
 
-		if (Physics.Raycast(ray, out hit, _maxHookDistance))
+		if (Physics.Raycast(ray, out hit, _maxHookDistance, ~LayerMask.GetMask("InvisibleWall")))
 		{
 			_hookPoint = hit.point;
 

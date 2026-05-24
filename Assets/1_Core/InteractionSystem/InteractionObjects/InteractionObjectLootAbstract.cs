@@ -72,10 +72,13 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	IEnumerator MoveTowardsPlayer()
 	{
+		float currentSpeed = 3.5f; 
+		float speedIncrease = 5;
+
 		while (true)
 		{
 			Vector3 targetPosition = GameObjectPlayer.transform.position + Vector3.up * 1f;
-			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
+			transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
 
 			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
 			{
@@ -83,6 +86,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 				break;
 			}
 
+			currentSpeed += speedIncrease * Time.deltaTime;
 			yield return null;
 		}
 	}

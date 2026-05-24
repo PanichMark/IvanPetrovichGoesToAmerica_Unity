@@ -86,9 +86,8 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 		if (_playerCollider != null)
 		{
-			if (Physics.Linecast(_playerCollider.transform.position, transform.position, out _hit))
+			if (Physics.Linecast(_playerCollider.transform.position, transform.position, out _hit, ~LayerMask.GetMask("InvisibleWall")))
 			{
-
 				if (!_canReturn)
 				{
 					_canReturn = true;

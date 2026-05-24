@@ -81,6 +81,11 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		{
 			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GlanceAt")}";
 		}
+
+		if (_notePosition.IsThereText)
+		{
+			_textComponent.text = _localizationManager.GetLanguageSuffix(_noteData);
+		}
 	}
 
 	private void HideNoteCanvas()

@@ -2,13 +2,14 @@
 
 public class InteractionObjectLight : MonoBehaviour, IInteractable
 {
-	public string InteractionObjectNameSystem => "LightSwitch";
-	public string InteractionObjectNameUI => "Свет";
-	public string InteractionHintMessageMain => $"Включить/выключить {InteractionObjectNameUI}";
-	public string HintAction => "Взаимодействие";
-	public string InteractionHintMessageFail => "";
+	[SerializeField] private string _interactionObjectNameSystem;
+	protected LocalizationManager _localizationManager;
+	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
+	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
+	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+	public string InteractionHintMessageFail => null;
 	public bool IsInteractionHintMessageFailActive => false;
-	public string InteractionHintMessageAction => "";
+	public string InteractionHintMessageAction {  get; private set; }
 
 	[SerializeField] private GameObject _lightObject;
 	private bool _isLightTurnedOn = false;
@@ -17,9 +18,35 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable
 
 	void Start()
 	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+
 		_lightMaterial = _lightObject.GetComponent<Renderer>().material;
 		_lightMaterial.SetColor("_EmissionColor", Color.black);
+		if (_isLightTurnedOn)
+		{
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Turnoff");
+		}
+		else
+		{
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn");
+		}
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
+
 	}
+
+	public void ChangeLanguage()
+	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		if (_isLightTurnedOn)
+		{
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff");
+		}
+		else
+		{
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn");
+		}
+	}
+
 
 	public void Interact()
 	{
@@ -27,12 +54,14 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable
 		{
 			_isLightTurnedOn = false;
 			_lightMaterial.SetColor("_EmissionColor", Color.black);
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn");
 			Debug.Log("Light turned off.");
 		}
 		else
 		{
 			_isLightTurnedOn = true;
 			_lightMaterial.SetColor("_EmissionColor", _lightEmissionColor);
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff");
 			Debug.Log("Light turned on.");
 		}
 	}
