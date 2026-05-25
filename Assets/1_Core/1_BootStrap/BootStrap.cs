@@ -286,7 +286,8 @@ public class Bootstrap : MonoBehaviour
 			_inputDevice,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_playerGameObject,
-			_playerCameraGameObject);
+			_playerCameraGameObject,
+			_canvasMenuBackground);
 		yield return StartCoroutine(_bootstrapSubProcessPlayerSystems.InitializePlayerSystems());
 	}
 

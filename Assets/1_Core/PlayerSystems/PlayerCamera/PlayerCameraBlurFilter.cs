@@ -6,14 +6,15 @@ public class PlayerCameraBlurFilter : MonoBehaviour
 	private MenuManager _menuManager;
 	private Volume _thirdPersonCameraVolume;
 	private Volume _firstPersonCameraVolume;
+	private GameObject _playerCameraFirstPerson;
 
-	public void Initialize(MenuManager manager)
+	public void Initialize(MenuManager manager, GameObject playerCameraFirstPerson)
 	{
 		_menuManager = manager;
+		_playerCameraFirstPerson = playerCameraFirstPerson;
 
 		_thirdPersonCameraVolume = GetComponent<Volume>();
-		Transform firstPersonCameraTransform = transform.Find("FirstPerson Camera");
-		_firstPersonCameraVolume = firstPersonCameraTransform.GetComponent<Volume>();
+		_firstPersonCameraVolume = _playerCameraFirstPerson.GetComponent<Volume>();
 		Debug.Log("CameraBlurFilter initialized.");
 
 		_menuManager.OnOpenAnyMenu += ActivateCameraBlur;

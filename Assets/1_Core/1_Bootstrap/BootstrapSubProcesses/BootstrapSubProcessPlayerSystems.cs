@@ -21,6 +21,10 @@ public class BootstrapSubProcessPlayerSystems
 	public GameObject GameObjectPlayerFirstPersonHandLeft { get; private set; }
 
 	private GameObject _gameObjectPlayerCamera;
+	public GameObject PlayerCameraFirstPerson { get; private set; }
+	public GameObject PlayerCameraBackgroundMenu {  get; private set; }
+
+	private GameObject _canvasMenuBackground;
 
 	public PlayerBehaviourController PlayerBehaviour { get; private set; }
 	public PlayerMovementController PlayerMovementController { get; private set; }
@@ -49,7 +53,8 @@ public class BootstrapSubProcessPlayerSystems
 		IInputDevice inputDevice,
 		GameSceneManager gameSceneManager,
 		GameObject playerGameObject,
-		GameObject playerMainCameraGameObject)
+		GameObject playerMainCameraGameObject,
+		GameObject canvasMenuBackground)
 	{
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
@@ -58,12 +63,15 @@ public class BootstrapSubProcessPlayerSystems
 		_gameSceneManager = gameSceneManager;
 		_gameObjectPlayer = playerGameObject;
 		_gameObjectPlayerCamera = playerMainCameraGameObject;
+		_canvasMenuBackground = canvasMenuBackground;
 	}
 
 	public IEnumerator InitializePlayerSystems()
 	{
 		_gameObjectPlayerCollider = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Collider");
-
+		PlayerCameraFirstPerson = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraFirstPerson");
+		PlayerCameraBackgroundMenu = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraBackgroundMenu");
+		
 		PlayerBehaviour = _gameObjectPlayer.GetComponent<PlayerBehaviourController>();
 		PlayerMovementController = _gameObjectPlayer.GetComponent<PlayerMovementController>();
 		PlayerMovementStateMachineController = _gameObjectPlayer.GetComponent<PlayerMovementStateMachineController>();
@@ -74,6 +82,11 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerCameraStateMachineController = _gameObjectPlayerCamera.GetComponent<PlayerCameraStateMachineController>();
 		_playerCameraBlurFilter = _gameObjectPlayerCamera.GetComponent<PlayerCameraBlurFilter>();
 		_playerCameraFirstPersonRender = _gameObjectPlayerCamera.GetComponent<PlayerCameraFirstPersonRender>();
+
+		var canvasComponentBackgroundMenu = _canvasMenuBackground.GetComponent<Canvas>();
+		var PlayerCameraComponentBackgroundMenu = PlayerCameraBackgroundMenu.GetComponent<Camera>();
+		canvasComponentBackgroundMenu.worldCamera = PlayerCameraComponentBackgroundMenu;
+		canvasComponentBackgroundMenu.planeDistance = 2;
 
 		_playerResourcesHealthManager = _gameObjectPlayer.GetComponent<PlayerResourcesHealthManager>();
 		_playerResourcesManaManager = _gameObjectPlayer.GetComponent<PlayerResourcesManaManager>();
@@ -94,7 +107,7 @@ public class BootstrapSubProcessPlayerSystems
 
 		PlayerCameraController.Initialize(_gameController, _inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController, PlayerMovementController, PlayerMovementStateMachineController, _playerColliderController, _gameObjectPlayer, _gameObjectPlayerCamera);
 		PlayerCameraStateMachineController.Initialize(_inputDevice, _gameSceneManager, PlayerMovementController, PlayerMovementStateMachineController, PlayerCameraController);
-		_playerCameraBlurFilter.Initialize(_bootstrapSubProcessMenuSystem.MenuManager);
+		_playerCameraBlurFilter.Initialize(_bootstrapSubProcessMenuSystem.MenuManager, PlayerCameraFirstPerson);
 		_playerCameraFirstPersonRender.Initialize(PlayerCameraStateMachineController, _gameObjectPlayerHead);
 
 		_playerMovementAnimationController.Initialize(_inputDevice, PlayerBehaviour, PlayerMovementStateMachineController, PlayerCameraStateMachineController, _gameObjectPlayer);
