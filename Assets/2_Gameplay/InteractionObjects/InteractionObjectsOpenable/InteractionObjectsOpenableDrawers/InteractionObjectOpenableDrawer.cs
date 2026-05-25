@@ -3,37 +3,47 @@ using System.Collections;
 
 public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 {
-	protected LocalizationManager localizationManager;
-
 	[SerializeField] protected float _openingSpeed = 3f;
 
 	protected Coroutine _currentAnimation;
-
+	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(base.InteractionObjectNameSystem)}";
 	protected Vector3 _openedPosition;
 	protected Vector3 _closedPosition;
 	[SerializeField] protected float _openLengthForward;
 	private string _interactionHintMessageMain;
+	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 
 	public void Start()
 	{
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		IsObjectOpened = false;
 
-		InteractionHintMessageAction = localizationManager.GetLocalizedString("OpenDoor");
-		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 
 		_closedPosition = transform.localPosition;
 		_openedPosition = transform.localPosition + new Vector3(0, 0, _openLengthForward);
 
-		localizationManager.OnLanguageChanged += ChangeLanguage;
-		IsDoorOpened = false;
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		IsObjectOpened = false;
+
 	}
 
 	public void ChangeLanguage()
 	{
-		localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
-		InteractionHintMessageAction = localizationManager.GetLocalizedString("OpenDoor");
-		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+		if (!IsObjectOpened)
+		{
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+		}
+		else
+		{
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+		}
+
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	}
 
 	public override void Interact()
@@ -43,16 +53,16 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 			StopCoroutine(_currentAnimation);
 		}
 
-		if (!IsDoorOpened)
+		if (!IsObjectOpened)
 		{
-			InteractionHintMessageAction = localizationManager.GetLocalizedString("CloseDoor");
-			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			_currentAnimation = StartCoroutine(OpenDrawer());
 		}
 		else
 		{
-			InteractionHintMessageAction = localizationManager.GetLocalizedString("OpenDoor");
-			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			_currentAnimation = StartCoroutine(CloseDrawer());
 		}
 	}
@@ -60,7 +70,7 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 	IEnumerator OpenDrawer()
 	{
 		Debug.Log($"Was opened {InteractionObjectNameUI}");
-		IsDoorOpened = true;
+		IsObjectOpened = true;
 
 		while (Mathf.Abs(transform.localPosition.z - _openedPosition.z) > 0.001f)
 		{
@@ -74,7 +84,7 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 	IEnumerator CloseDrawer()
 	{
 		Debug.Log($"Was closed {InteractionObjectNameUI}");
-		IsDoorOpened = false;
+		IsObjectOpened = false;
 
 		while (Mathf.Abs(transform.localPosition.z - _closedPosition.z) > 0.001f)
 		{

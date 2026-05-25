@@ -22,7 +22,7 @@ public class BootstrapSubProcessPlayerSystems
 
 	private GameObject _gameObjectPlayerCamera;
 	public GameObject PlayerCameraFirstPerson { get; private set; }
-	public GameObject PlayerCameraBackgroundMenu {  get; private set; }
+	public GameObject PlayerCameraPostProcessing {  get; private set; }
 
 	private GameObject _canvasMenuBackground;
 
@@ -70,7 +70,7 @@ public class BootstrapSubProcessPlayerSystems
 	{
 		_gameObjectPlayerCollider = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Collider");
 		PlayerCameraFirstPerson = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraFirstPerson");
-		PlayerCameraBackgroundMenu = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraBackgroundMenu");
+		PlayerCameraPostProcessing = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraIgnorePostProcessing");
 		
 		PlayerBehaviour = _gameObjectPlayer.GetComponent<PlayerBehaviourController>();
 		PlayerMovementController = _gameObjectPlayer.GetComponent<PlayerMovementController>();
@@ -84,8 +84,8 @@ public class BootstrapSubProcessPlayerSystems
 		_playerCameraFirstPersonRender = _gameObjectPlayerCamera.GetComponent<PlayerCameraFirstPersonRender>();
 
 		var canvasComponentBackgroundMenu = _canvasMenuBackground.GetComponent<Canvas>();
-		var PlayerCameraComponentBackgroundMenu = PlayerCameraBackgroundMenu.GetComponent<Camera>();
-		canvasComponentBackgroundMenu.worldCamera = PlayerCameraComponentBackgroundMenu;
+		var PlayerCameraComponentPostProcessing = PlayerCameraPostProcessing.GetComponent<Camera>();
+		canvasComponentBackgroundMenu.worldCamera = PlayerCameraComponentPostProcessing;
 		canvasComponentBackgroundMenu.planeDistance = 2;
 
 		_playerResourcesHealthManager = _gameObjectPlayer.GetComponent<PlayerResourcesHealthManager>();

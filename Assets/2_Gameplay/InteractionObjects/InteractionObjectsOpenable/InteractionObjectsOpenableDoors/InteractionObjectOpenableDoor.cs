@@ -24,7 +24,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	void Start()
 	{
-		IsDoorOpened = false;
+		IsObjectOpened = false;
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		Vector3 openedEulerAngles = new Vector3(0, _doorOpenAngle, 0);
@@ -123,18 +123,16 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			StopCoroutine(_currentAnimation);
 		}
 
-	
-
-		if (!IsDoorOpened)
+		if (!IsObjectOpened)
 		{
 			Debug.Log($"Opened {InteractionObjectNameUI}");
-			IsDoorOpened = true;
+			IsObjectOpened = true;
 			_currentAnimation = StartCoroutine(OpenDoor());
 		}
 		else
 		{
 			Debug.Log($"Closed {InteractionObjectNameUI}");
-			IsDoorOpened = false;
+			IsObjectOpened = false;
 			_currentAnimation = StartCoroutine(CloseDoor());
 		}
 
@@ -143,7 +141,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	protected virtual void SetUnlockedDoorHintMessageMain()
 	{
-		if (IsDoorOpened)
+		if (IsObjectOpened)
 		{
 			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
 		}
@@ -152,7 +150,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
 		}
 
-		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	}
 
 	IEnumerator OpenDoor()

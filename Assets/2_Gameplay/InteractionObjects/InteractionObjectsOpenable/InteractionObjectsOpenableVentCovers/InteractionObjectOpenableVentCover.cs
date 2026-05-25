@@ -23,15 +23,15 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 			StopCoroutine(_currentAnimation);
 		}
 
-		if (!IsDoorOpened)
+		if (!IsObjectOpened)
 		{
-			InteractionHintMessageAction = localizationManager.GetLocalizedString("CloseDoor");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("CloseDoor");
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 			_currentAnimation = StartCoroutine(OpenVentCover());
 		}
 		else
 		{
-			InteractionHintMessageAction = localizationManager.GetLocalizedString("OpenDoor");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("OpenDoor");
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 			_currentAnimation = StartCoroutine(CloseVentCover());
 		}
@@ -40,7 +40,7 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 	IEnumerator OpenVentCover()
 	{
 		Debug.Log($"Was opened {InteractionObjectNameUI}");
-		IsDoorOpened = true;
+		IsObjectOpened = true;
 
 		while (Mathf.Abs(transform.localPosition.z - _intermediatePos.z) > 0.001f)
 		{
@@ -60,7 +60,7 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 	IEnumerator CloseVentCover()
 	{
 		Debug.Log($"Was closed {InteractionObjectNameUI}");
-		IsDoorOpened = false;
+		IsObjectOpened = false;
 
 		while (Mathf.Abs(transform.localPosition.y - _intermediatePos.y) > 0.001f)
 		{
