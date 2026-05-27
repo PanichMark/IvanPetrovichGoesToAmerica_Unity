@@ -17,9 +17,25 @@ public class InteractionObjectTVButtonChannel : MonoBehaviour, IInteractable
 	public string InteractionHintMessageFail => null;
 	public bool IsInteractionHintMessageFailActive => false;
 
+	private void Start()
+	{
+		_collider = GetComponent<Collider>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_interactionObjectTVPowerbutton = transform.parent.Find("ButtonPower").GetComponent<InteractionObjectTVPowerButton>();
+		_tvController = transform.parent.GetComponent<InteractionObjectTVController>();
+		DisableButtonChannel();
+		_interactionObjectTVPowerbutton.OnTurnTVon += EnableButtonChannel;
+		_interactionObjectTVPowerbutton.OnTurnTVoff += DisableButtonChannel;
+	}
+
 	public void Interact()
 	{
 		_tvController.SwitchChannel(_isNextChannel);
+	}
+
+	public void InteractCutscene()
+	{
+		Interact();
 	}
 
 	private void EnableButtonChannel()
@@ -30,16 +46,5 @@ public class InteractionObjectTVButtonChannel : MonoBehaviour, IInteractable
 	private void DisableButtonChannel()
 	{
 		_collider.enabled = false;
-	}
-
-	private void Start()
-	{
-		_collider = GetComponent<Collider>();
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_interactionObjectTVPowerbutton = transform.parent.Find("ButtonPower").GetComponent<InteractionObjectTVPowerButton>();
-		_tvController = transform.parent.GetComponent<InteractionObjectTVController>();
-		DisableButtonChannel();
-		_interactionObjectTVPowerbutton.OnTurnTVon += EnableButtonChannel;
-		_interactionObjectTVPowerbutton.OnTurnTVoff += DisableButtonChannel;
 	}
 }

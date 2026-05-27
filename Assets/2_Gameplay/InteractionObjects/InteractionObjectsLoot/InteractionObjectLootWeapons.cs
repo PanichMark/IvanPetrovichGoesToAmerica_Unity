@@ -9,13 +9,6 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 
 	private PlayerWeaponController _playerWeaponController;
 
-	private void Awake()
-	{
-		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
-
-		var weaponComponent = _weapon.GetComponent<WeaponAbstract>();
-		LootObjectIcon = weaponComponent.WeaponIcon;
-	}
 
 	public override void Interact()
 	{
@@ -24,8 +17,18 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 		_playerWeaponController.UnlockWeapon(_weapon);
 	}
 
-	protected override void ThisMethodSetsActionName()
+	public override void InteractCutscene()
 	{
-		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		base.InteractCutscene();
+		Debug.Log($"You picked up {InteractionObjectNameUI}");
+		_playerWeaponController.UnlockWeapon(_weapon);
+	}
+
+	protected override void SetUpLootObjectReferences()
+	{
+		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
+
+		var weaponComponent = _weapon.GetComponent<WeaponAbstract>();
+		LootObjectIcon = weaponComponent.WeaponIcon;
 	}
 }

@@ -34,20 +34,6 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable
 
 	}
 
-	public void ChangeLanguage()
-	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		if (_isLightTurnedOn)
-		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff");
-		}
-		else
-		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn");
-		}
-	}
-
-
 	public void Interact()
 	{
 		if (_isLightTurnedOn)
@@ -65,4 +51,24 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable
 			Debug.Log("Light turned on.");
 		}
 	}
+
+	public void InteractCutscene()
+	{
+		Interact();
+	}
+
+	public void ChangeLanguage()
+	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		if (_isLightTurnedOn)
+		{
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff");
+		}
+		else
+		{
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn");
+		}
+	}
+
+	
 }

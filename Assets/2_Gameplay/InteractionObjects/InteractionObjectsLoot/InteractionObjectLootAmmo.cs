@@ -15,7 +15,14 @@ public class InteractionObjectLootAmmo : InteractionObjectLootAbstract
 		_playerResourcesAmmoManager.AddAmmoToReserve(_ammoTypes, _ammoCapacity);
 	}
 
-	protected override void ThisMethodSetsActionName()
+	public override void InteractCutscene()
+	{
+		base.InteractCutscene();
+		Debug.Log($"Picked up {InteractionObjectNameUI}");
+		_playerResourcesAmmoManager.AddAmmoToReserve(_ammoTypes, _ammoCapacity);
+	}
+
+	protected override void SetUpLootObjectReferences()
 	{
 		_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 	}

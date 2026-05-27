@@ -25,6 +25,18 @@ public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 
 	public bool IsInteractionHintMessageFailActive => false;
 
+	void Start()
+	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON");
+
+		_tvScreen = transform.parent.Find("TVcanvas").gameObject;
+		_tvScreen.SetActive(false);
+		_isTVturnedOn = false;
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
+	}
+
 	public void Interact()
 	{
 		if (_isTVturnedOn)
@@ -45,16 +57,9 @@ public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 		}
 	}
 
-	void Start()
+	public void InteractCutscene()
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON");
-
-		_tvScreen = transform.parent.Find("TVcanvas").gameObject;
-		_tvScreen.SetActive(false);
-		_isTVturnedOn = false;
-
-		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		Interact();
 	}
 
 	private void ChangeLanguage()

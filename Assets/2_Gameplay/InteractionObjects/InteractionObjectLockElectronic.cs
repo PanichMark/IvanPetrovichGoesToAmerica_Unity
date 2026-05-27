@@ -101,6 +101,11 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		}
 	}
 
+	public void InteractCutscene()
+	{
+		Interact();
+	}
+
 	private void InitializeButtons()
 	{
 		_movesLeft = 5;

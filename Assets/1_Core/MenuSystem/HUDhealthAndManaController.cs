@@ -30,7 +30,7 @@ public class HUDhealthAndManaController : MonoBehaviour
 
     private void ShowCanvasHUDhealthAndMana()
     {
-       if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_menuManager.IsCutsceneMenuOpened && !_gameController.IsMainMenuOpen)
+       if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_menuManager.IsCutsceneMenuOpened && !_gameController.IsMainMenuOpen && !_menuManager.IsMainMenuBeingLoaded)
        {
 
            _canvasHUDhealthAndMana.SetActive(true);

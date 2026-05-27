@@ -36,6 +36,9 @@ public class MenuManager : MonoBehaviour
 	public bool IsInteractionMenuOpened { get; private set; }
 
 	public bool IsCutsceneMenuOpened {  get; private set; }
+
+	public bool IsMainMenuBeingLoaded { get; private set; }
+
 	private IInputDevice _inputDevice;
 	private GameController _gameController;
 	private GameSceneManager _gameSceneManager;
@@ -76,17 +79,24 @@ public class MenuManager : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseDialogueMenu;
 		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseCutsceneMenu;
 
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => IsMainMenuBeingLoaded = true;
+		_gameSceneManager.OnEndLoadingMainMenuScene += () => IsMainMenuBeingLoaded = false;
+
 		Debug.Log("MenuManager Initialized");
 	}
 
 	public void ShowCanvasMenuBackground()
 	{
 		_canvasMenuBackground.SetActive(true);
+
+		Debug.Log("Show MenuBackground");
 	}
 
 	public void HideCanvasMenuBackground()
 	{
 		_canvasMenuBackground.SetActive(false);
+
+		Debug.Log("Hide MenuBackground");
 	}
 
 	void Update()
@@ -113,10 +123,12 @@ public class MenuManager : MonoBehaviour
 
 				if (IsDialogueMenuOpened)
 				{
+					HideCanvasMenuBackground();
 					OnClosePauseMenuDuringOpenedDialogueMenu?.Invoke();
 				}
 				if (IsCutsceneMenuOpened)
 				{
+					HideCanvasMenuBackground();
 					OnClosePauseMenuDuringOpenedCutsceneMenu?.Invoke();
 				}
 			}
@@ -264,7 +276,10 @@ public class MenuManager : MonoBehaviour
 		OnCloseAnyMenu?.Invoke();
 		if (!_gameController.IsMainMenuOpen)
 		{
-			OpenInteractionHUD();
+			if (!IsMainMenuBeingLoaded)
+			{
+				OpenInteractionHUD();
+			}
 
 			if (IsCutsceneMenuOpened && !IsPauseMenuOpened)
 			{

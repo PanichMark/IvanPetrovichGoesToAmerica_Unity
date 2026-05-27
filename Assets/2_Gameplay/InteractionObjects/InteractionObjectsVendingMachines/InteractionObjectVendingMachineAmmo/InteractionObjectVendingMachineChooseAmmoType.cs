@@ -43,6 +43,11 @@ public class InteractionObjectVendingMachineChooseAmmoType : MonoBehaviour, IInt
 		}
 	}
 
+	public void InteractCutscene()
+	{
+		Interact();
+	}
+
 	private IEnumerator RotateAndChangeAmmo()
 	{
 		Quaternion startRotation = transform.rotation;

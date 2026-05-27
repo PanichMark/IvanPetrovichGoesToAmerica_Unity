@@ -19,4 +19,6 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 	public int OpenableObjectIndex { get; protected set; }
 
 	public abstract void Interact();
+
+	public abstract void InteractCutscene();
 }

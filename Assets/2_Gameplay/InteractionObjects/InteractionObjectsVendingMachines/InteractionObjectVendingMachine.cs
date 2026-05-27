@@ -16,8 +16,6 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 	private bool _isAdditionalInteractionHintActive;
 	private LocalizationManager _localizationManager;
 	
-
-
 	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {_goodsName} {InteractionObjectNameUI} {_goodsPrice} {_moneyForUI}?";
 	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Money")}!";
 	public string InteractionHintMessageAction => _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Purchase");
@@ -67,5 +65,10 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 			Debug.Log("Not enough money");
 			_isAdditionalInteractionHintActive = true;
 		}
+	}
+
+	public void InteractCutscene()
+	{
+		Interact();
 	}
 }

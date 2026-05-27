@@ -17,7 +17,16 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 		WasLootItemCollected = true;
 	}
 
-	protected override void ThisMethodSetsActionName()
+	public override void InteractCutscene()
+	{
+		base.InteractCutscene();
+		Debug.Log($"Picked up {InteractionObjectNameUI}, received {_moneyValue} rubles");
+
+		_playerResourcesMoneyManager.AddMoney(_moneyValue);
+		WasLootItemCollected = true;
+	}
+
+	protected override void SetUpLootObjectReferences()
 	{
 		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
 		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);

@@ -61,6 +61,33 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 		
 	}
 
+	public override void Interact()
+	{
+		if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
+		{
+			Debug.Log("Attempting to unlock the lock...");
+			_mechanicalLockController.Interact();
+		}
+
+		if (_electronicLockController != null && !_electronicLockController.WasUnlocked)
+		{
+			Debug.Log("Attempting to unlock the lock...");
+			_electronicLockController.Interact();
+		}
+
+		if ((_mechanicalLockController == null && _electronicLockController == null) ||
+			_mechanicalLockController?.WasUnlocked == true ||
+			_electronicLockController?.WasUnlocked == true)
+		{
+			PerformDoorInteraction();
+		}
+	}
+
+	public override void InteractCutscene()
+	{
+		Interact();
+	}
+
 	public virtual void ChangeLanguage()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
@@ -90,28 +117,6 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	{
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-	}
-
-	public override void Interact()
-	{
-		if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
-		{
-			Debug.Log("Attempting to unlock the lock...");
-			_mechanicalLockController.Interact();
-		}
-
-		if (_electronicLockController != null && !_electronicLockController.WasUnlocked)
-		{
-			Debug.Log("Attempting to unlock the lock...");
-			_electronicLockController.Interact();
-		}
-
-		if ((_mechanicalLockController == null && _electronicLockController == null) ||
-			_mechanicalLockController?.WasUnlocked == true ||
-			_electronicLockController?.WasUnlocked == true)
-		{
-			PerformDoorInteraction();
-		}
 	}
 
 	protected virtual void PerformDoorInteraction()

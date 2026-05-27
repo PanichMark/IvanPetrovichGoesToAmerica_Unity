@@ -22,4 +22,9 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable
 
 		_targetElevator.MoveElevator(_isThisGoUpButton);
 	}
+
+	public void InteractCutscene()
+	{
+		Interact();
+	}
 }

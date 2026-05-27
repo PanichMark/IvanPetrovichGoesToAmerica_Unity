@@ -139,6 +139,11 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		gameObject.tag = "Untagged";
 	}
 
+	public void InteractCutscene()
+	{
+		Interact();
+	}
+
 	private void CloseAndDeactivate()
 	{
 		if (_isReading)

@@ -88,15 +88,19 @@ public class HUDammoController : MonoBehaviour
 
 	private void ShowCanvasHUDammo()
 	{
-		if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_gameController.IsMainMenuOpen && !_menuManager.IsWeaponWheelMenuOpened)
+		if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_gameController.IsMainMenuOpen && !_menuManager.IsWeaponWheelMenuOpened && !_menuManager.IsMainMenuBeingLoaded)
 		{
 			_canvasHUDammo.SetActive(true);
+
+			Debug.Log("Show canvasAmmo");
 		}
 	}
 
 	public void HideCanvasHUDammo()
 	{
 		_canvasHUDammo.SetActive(false);
+
+		Debug.Log("Hide canvasAmmo");
 	}
 
 	private void UpdateAmmoDisplayForActiveWeapon(string activeHand)

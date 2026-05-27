@@ -43,7 +43,6 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	private List<MeshCollider> _cachedWallColliders;
 
-	
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
 	private string _interactionHintMessageMain;
@@ -84,17 +83,6 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		_menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
 	}
 
-	public void ChangeLanguage()
-	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
-
-		//	_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
-		_buttonText.text = "exit";
-		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
-	}
-
 	private void Update()
 	{
 		if (!_isMovingOrRotating && _currentGearInstance != null && !_menuManager.IsPauseMenuOpened)
@@ -115,26 +103,6 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 			{
 				StartCoroutine(MoveLeft());
 			}
-		}
-	}
-
-	private void HidePuzzleCanvas()
-	{
-		if (_iIsPuzzleActive)
-		{
-			_canvasLockpickMechanicalMenu.SetActive(false);
-			_currentGearInstance.SetActive(false);
-			_currentCubeFollow.SetActive(false);
-		}
-	}
-
-	private void ShowPuzzleCanvas()
-	{
-		if (_iIsPuzzleActive)
-		{
-			_canvasLockpickMechanicalMenu.SetActive(true);
-			_currentGearInstance.SetActive(true);
-			_currentCubeFollow.SetActive(true);
 		}
 	}
 
@@ -193,6 +161,42 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 		_rotationStep = 360f / _segmentsCount;
 		_movementStep = 0.1f;
+	}
+
+	public void InteractCutscene()
+	{
+		Interact();
+	}
+
+	public void ChangeLanguage()
+	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
+
+		//	_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
+		_buttonText.text = "exit";
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+	}
+
+	private void HidePuzzleCanvas()
+	{
+		if (_iIsPuzzleActive)
+		{
+			_canvasLockpickMechanicalMenu.SetActive(false);
+			_currentGearInstance.SetActive(false);
+			_currentCubeFollow.SetActive(false);
+		}
+	}
+
+	private void ShowPuzzleCanvas()
+	{
+		if (_iIsPuzzleActive)
+		{
+			_canvasLockpickMechanicalMenu.SetActive(true);
+			_currentGearInstance.SetActive(true);
+			_currentCubeFollow.SetActive(true);
+		}
 	}
 
 	private void OnClosePuzzle()

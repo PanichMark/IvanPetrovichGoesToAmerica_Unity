@@ -81,27 +81,30 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		PickUpObject();
 	}
 
+	public void InteractCutscene()
+	{
+		gameObject.tag = "Untagged";
+		Collider.enabled = false;
+		RigidBody.isKinematic = true;
+		transform.parent = CachedPlayer.transform;
+		transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
+		IsObjectPickedUp = true;
+	}
+
 	public virtual void PickUpObject()
 	{
 		if (!IsObjectPickedUp)
 		{
-			if (CachedPlayer != null)
-			{
-				Debug.Log($"Picked up {InteractionObjectNameSystem}");
-				gameObject.tag = "Untagged";
-				Collider.enabled = false;
-				RigidBody.isKinematic = true;
+			Debug.Log($"Picked up {InteractionObjectNameSystem}");
+			gameObject.tag = "Untagged";
+			Collider.enabled = false;
+			RigidBody.isKinematic = true;
 
-				StartCoroutine(MoveTowardsInFrontOfPlayer());
+			StartCoroutine(MoveTowardsInFrontOfPlayer());
 
-				transform.parent = CachedPlayer.transform;
-				transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
-				IsObjectPickedUp = true;
-			}
-			else
-			{
-				Debug.Log("Player not found!");
-			}
+			transform.parent = CachedPlayer.transform;
+			transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
+			IsObjectPickedUp = true;
 		}
 	}
 

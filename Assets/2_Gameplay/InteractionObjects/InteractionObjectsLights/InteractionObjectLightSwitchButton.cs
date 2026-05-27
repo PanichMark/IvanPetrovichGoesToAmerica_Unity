@@ -19,8 +19,6 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable
 
 	private string _interactionHintMessageAction;
 
-
-
 	void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
@@ -50,21 +48,6 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable
 		}
 	}
 
-	private void ChangeLanguage()
-	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-
-		if (_isThisTurnOnButton)
-		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn")}";
-		}
-		else
-		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff")}";
-		}
-	}
-
-
 	public void Interact()
 	{
 		Color emissionColor = _lightSwitchController.LightEmissionColor;
@@ -85,6 +68,25 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable
 			_lightMaterialsList[i].DisableKeyword("_EMISSION");
 			_lightMaterialsList[i].EnableKeyword("_EMISSION");
 			_lightMaterialsList[i].globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+		}
+	}
+
+	public void InteractCutscene()
+	{
+		Interact();
+	}
+
+	private void ChangeLanguage()
+	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+
+		if (_isThisTurnOnButton)
+		{
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn")}";
+		}
+		else
+		{
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff")}";
 		}
 	}
 }

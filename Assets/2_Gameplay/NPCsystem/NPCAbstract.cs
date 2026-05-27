@@ -56,6 +56,11 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	}
 
+	public void InteractCutscene()
+	{
+		Interact();
+	}
+
 	public void ConvertToPickableObject()
 	{
 		gameObject.tag = "Interactable";

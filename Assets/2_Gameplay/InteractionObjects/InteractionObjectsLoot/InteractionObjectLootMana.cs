@@ -25,7 +25,24 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 		}
 	}
 
-	protected override void ThisMethodSetsActionName()
+	public override void InteractCutscene()
+	{
+		if (_playerResourcesManaManager.CurrentManaReplenishItemsNumber < 9)
+		{
+			base.InteractCutscene();
+			Debug.Log($"You picked up {InteractionObjectNameUI}");
+
+			_playerResourcesManaManager.AddManaReplenishItem();
+			_isInteractionHintMessageFailActive = false;
+			WasLootItemCollected = true;
+		}
+		else
+		{
+			//_isInteractionHintMessageFailActive = true;
+		}
+	}
+
+	protected override void SetUpLootObjectReferences()
 	{
 		_playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
 		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);

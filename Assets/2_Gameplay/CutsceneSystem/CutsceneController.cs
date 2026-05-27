@@ -26,25 +26,24 @@ public class CutsceneController : MonoBehaviour
 	private bool _wasCutsceneSkipped;
 	private bool _wasCutsceneCanceled;
 
-	private bool _shouldChangeNPCState = false;
-	private bool _shouldUnlockWeapon = false;
-
+	private bool _shouldChangeNPCState;
+	private bool _shouldInteractWithObjects;
 	private bool _isInitialized;
 
-	[Header("Cutscene")] [SerializeField] bool ShouldMovePlayer;
-	[SerializeField] Vector3 newPlayerPosition;
+	[Header("Move player")] [SerializeField] private bool _shouldMovePlayer;
+	[SerializeField] private Vector3 _newPlayerPosition;
 
-	[Header("Cutscene")] [SerializeField] bool shouldLoadScene;
-	[SerializeField] private GameScenesEnum sceneToLoadAfterCutscene;
+	[Header("Load scene")] [SerializeField] bool _shouldLoadScene;
+	[SerializeField] private GameScenesEnum _sceneToLoadAfterCutscene;
 
-	[Header("NPC Settings")] [SerializeField] private List<CutsceneDataNPC> npcStateChanges = new List<CutsceneDataNPC>();
+	[Header("NPC state")] [SerializeField] private List<CutsceneDataNPC> _NPCstateChanges = new List<CutsceneDataNPC>();
 
-	[Header("Weapon")] [SerializeField] private GameObject weaponPrefabToUnlock;
-	
+	[Header("Interaction objects")] [SerializeField] private List<GameObject> _interactionObjects = new List<GameObject>();
+
 	private void Start()
 	{
-		_playerProxy = ServiceLocator.Resolve<GameObject>("PlayerGameObject");
-		_playerCameraProxy = ServiceLocator.Resolve<GameObject>("PlayerCameraGameObject");
+		_playerProxy = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
+		_playerCameraProxy = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
@@ -56,21 +55,28 @@ public class CutsceneController : MonoBehaviour
 		
 		_director = GetComponent<PlayableDirector>();
 
-		if (npcStateChanges != null && npcStateChanges.Count > 0)
+		if (_NPCstateChanges != null && _NPCstateChanges.Count > 0)
 		{
-			foreach (var data in npcStateChanges)
+			foreach (var data in _NPCstateChanges)
 			{
 				if (data.npcObject != null && data.npcObject.GetComponent<NPCStateMachineController>() != null)
 				{
-					_shouldChangeNPCState = true;
+					_shouldInteractWithObjects = true;
 					break; 
 				}
 			}
 		}
 
-		if (weaponPrefabToUnlock != null)
+		if (_interactionObjects != null && _interactionObjects.Count > 0)
 		{
-			_shouldUnlockWeapon = true;
+			foreach (var data in _interactionObjects)
+			{
+				if (data != null && data.GetComponent<IInteractable>() != null)
+				{
+					_shouldChangeNPCState = true;
+					break;
+				}
+			}
 		}
 
 		_gameSceneManager.OnBeginLoadingGameplayScene += CancelCutsceneOnLoad;
@@ -173,7 +179,7 @@ public class CutsceneController : MonoBehaviour
 		
 		if (_shouldChangeNPCState)
 		{
-			foreach (var data in npcStateChanges)
+			foreach (var data in _NPCstateChanges)
 			{
 				if (data.npcObject != null)
 				{
@@ -186,23 +192,28 @@ public class CutsceneController : MonoBehaviour
 				}
 			}
 		}
-
-		if (_shouldUnlockWeapon)
-		{
-			_playerWeaponController.UnlockWeapon(weaponPrefabToUnlock);
-		}
 		
-		if (ShouldMovePlayer)
+		if (_shouldMovePlayer)
 		{
-			_playerMovementController.SetPlayerPosition(newPlayerPosition);
+			_playerMovementController.SetPlayerPosition(_newPlayerPosition);
 		}
 
-		if (shouldLoadScene)
+		if (_shouldLoadScene)
 		{
-
-			_gameSceneManager.StartCoroutine(_gameSceneManager.LoadGameplayScene(sceneToLoadAfterCutscene));
+			_gameSceneManager.StartCoroutine(_gameSceneManager.LoadGameplayScene(_sceneToLoadAfterCutscene));
 		}
-			
+
+		if (_shouldInteractWithObjects)
+		{
+			foreach (var data in _interactionObjects)
+			{
+				if (data != null && data.GetComponent<IInteractable>() != null)
+				{
+					data.GetComponent<IInteractable>().InteractCutscene();
+				}
+			}
+		}
+
 		Destroy(gameObject);
 		Debug.Log($"Post-cutscene {gameObject.name} actions executed.");
 	}

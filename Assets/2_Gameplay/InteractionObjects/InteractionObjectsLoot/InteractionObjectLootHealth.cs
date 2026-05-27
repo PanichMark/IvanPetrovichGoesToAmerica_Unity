@@ -28,7 +28,24 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 		}
 	}
 
-	protected override void ThisMethodSetsActionName()
+	public override void InteractCutscene()
+	{
+		if (_playerResourcesHealthManager.CurrentHealingItemsNumber < 9)
+		{
+			base.InteractCutscene();
+			Debug.Log($"You picked up {InteractionObjectNameUI}");
+
+			_playerResourcesHealthManager.AddHealingItem();
+			_isInteractionHintMessageFailActive = false;
+			WasLootItemCollected = true;
+		}
+		else
+		{
+			//_isInteractionHintMessageFailActive = true;
+		}
+	}
+
+	protected override void SetUpLootObjectReferences()
 	{
 		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
 

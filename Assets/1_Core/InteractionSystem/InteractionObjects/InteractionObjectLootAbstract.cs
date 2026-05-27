@@ -35,18 +35,29 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		GameObjectPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot");
-		ThisMethodSetsActionName();
+		SetUpLootObjectReferences();
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+	}
+
+	public virtual void Interact()
+	{
+		LootObjectCollider.enabled = false;
+		gameObject.tag = "Untagged";
+		StartCoroutine(MoveTowardsPlayer());
+	}
+
+	public virtual void InteractCutscene()
+	{
+		Destroy(gameObject);
 	}
 
 	public void ChangeLanguage()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot");
-		ThisMethodSetsActionName();
 	}
 
-	protected virtual void ThisMethodSetsActionName()
+	protected virtual void SetUpLootObjectReferences()
 	{
 
 	}
@@ -54,20 +65,6 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	internal void AssignLootObjectsIndex(int index)
 	{
 		LootObjectIndex = index;
-	}
-
-	public virtual void Interact()
-	{
-		if (GameObjectPlayer != null)
-		{
-			LootObjectCollider.enabled = false;
-			gameObject.tag = "Untagged";
-			StartCoroutine(MoveTowardsPlayer());
-		}
-		else
-		{
-			Debug.Log("Player not found!");
-		}
 	}
 
 	IEnumerator MoveTowardsPlayer()

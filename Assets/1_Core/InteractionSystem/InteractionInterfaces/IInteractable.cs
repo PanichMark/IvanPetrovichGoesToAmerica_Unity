@@ -8,4 +8,6 @@
 	bool IsInteractionHintMessageFailActive { get; }
 
 	void Interact();
+
+	void InteractCutscene();
 }

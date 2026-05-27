@@ -74,6 +74,12 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 		}
 	}
 
+	public void InteractCutscene()
+	{
+		Interact();
+	}
+
+
 	IEnumerator OpenSafeDoor()
 	{
 		gameObject.tag = "Untagged";

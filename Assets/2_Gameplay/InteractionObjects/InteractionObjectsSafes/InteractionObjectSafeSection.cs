@@ -35,6 +35,11 @@ public class InteractionObjectSafeSection : MonoBehaviour, IInteractable
 		}
 	}
 
+	public void InteractCutscene()
+	{
+		Interact();
+	}
+
 	IEnumerator RotateSmoothly(float duration)
 	{
 		currentSectionPosition = currentSectionPosition < 9 ? currentSectionPosition + 1 : 0;
