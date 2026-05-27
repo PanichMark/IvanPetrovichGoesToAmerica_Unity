@@ -1,10 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
-	private bool _isAnySubMenuOpened;
 	public bool IsPauseConfirmMenuOpened { get; private set; }
 	public event OpenPauseMenuEventHandler OnOpenConfirmMenu;
 	public event OpenPauseMenuEventHandler OnCloseConfirmMenu;
@@ -17,7 +15,6 @@ public class PauseMenuController : MonoBehaviour
 	private GameObject[] _buttonsPauseMenu;
 	private GameSceneManager _gameSceneManager;
 	public delegate void OpenPauseMenuEventHandler();
-	public event OpenPauseMenuEventHandler OnClosePauseMenu;
 	public event OpenPauseMenuEventHandler OnOpenSaveSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenLoadSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenAppearanceSubMenu;
@@ -138,7 +135,6 @@ public class PauseMenuController : MonoBehaviour
 
 	public void ClosePauseSubMenu()
 	{
-		_isAnySubMenuOpened = false;
 		OnCloseAnyPauseSubMenu?.Invoke();
 		if (_menuManager.PauseMenuLevel.Count > 0)
 		{
@@ -171,7 +167,6 @@ public class PauseMenuController : MonoBehaviour
 
 	public void OpenSaveSubMenu()
 	{
-		_isAnySubMenuOpened = true;
 		OnOpenSaveSubMenu?.Invoke();
 		_menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("SaveSubMenu opened");
@@ -180,7 +175,6 @@ public class PauseMenuController : MonoBehaviour
 
 	public void OpenLoadSubMenu()
 	{
-		_isAnySubMenuOpened = true;
 		OnOpenLoadSubMenu?.Invoke();
 		_menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("LoadSubMenu opened");
@@ -189,7 +183,6 @@ public class PauseMenuController : MonoBehaviour
 
 	public void OpenAppearanceSubMenu()
 	{
-		_isAnySubMenuOpened = true;
 		OnOpenAppearanceSubMenu?.Invoke();
 		_menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("AppearanceSubMenu opened");
@@ -198,7 +191,6 @@ public class PauseMenuController : MonoBehaviour
 
 	public void OpenTutorialSubMenu()
 	{
-		_isAnySubMenuOpened = true;
 		OnOpenTutorialSubMenu?.Invoke();
 		_menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("TutorialSubMenu opened");
@@ -207,7 +199,6 @@ public class PauseMenuController : MonoBehaviour
 
 	public void OpenSettingsSubMenu()
 	{
-		_isAnySubMenuOpened = true;
 		OnOpenSettingsSubMenu?.Invoke();
 		_menuManager.PauseMenuLevel.Push(2);
 		Debug.Log("SettingsSubMenu opened");

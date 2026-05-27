@@ -13,13 +13,13 @@ public class InputKeyboard : IInputDevice
 	private float _lastTimeSinceKeySkipCutsceneWasHeld;
 
 	private float _timeToHoldKeyHideWeapon = 0.5f;
-	private float _timeToHoldKeySkipCutscene = 0.5f;
+	private float _timeToHoldKeySkipCutscene = 1;
 
-	private bool _isKeyInteractBeingHeld = false;
-	private bool _isKeySkipCutsceneBeingHeld = false;
+	private bool _isKeyInteractBeingHeld;
+	private bool _isKeySkipCutsceneBeingHeld;
 
-	private bool _isRightHandWeaponWheelOpened = false;
-	private bool _isLeftHandWeaponWheelOpened = false;
+	private bool _isRightHandWeaponWheelOpened;
+	private bool _isLeftHandWeaponWheelOpened;
 
 	private KeyCode _keyPauseMenu;
 

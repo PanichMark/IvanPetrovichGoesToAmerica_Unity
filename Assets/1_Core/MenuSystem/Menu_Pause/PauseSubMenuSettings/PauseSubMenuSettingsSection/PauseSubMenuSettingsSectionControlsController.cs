@@ -205,7 +205,6 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 				string actionName = kvp.Key;
 				KeyCode savedKey = kvp.Value;
 
-				bool foundField = false;
 				foreach (var field in _KeyRebinds)
 				{
 					string fieldActionName = field.name.Replace(" (InputField)", "");
@@ -214,7 +213,6 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 					{
 						field.text = savedKey.ToString();
 						_inputDevice.RebindKey(actionName, savedKey);
-						foundField = true;
 						break;
 					}
 				}

@@ -11,7 +11,6 @@ public class WeaponWheelMenuController : MonoBehaviour
 	public TextMeshProUGUI WeaponWheelName { get; private set; }       
 
 	private List<GameObject> _wheelSegments = new List<GameObject>();
-	private bool _isWeaponWheelActive = false;
 	private bool _isWeaponLeftHand = false;
 
 	public delegate void WeaponWheelMenuHandler(string activeHand);
@@ -88,7 +87,6 @@ public class WeaponWheelMenuController : MonoBehaviour
 		{
 			OnOpenWeaponWheelMenu?.Invoke("right");
 			EnableWeaponWheelMenuCanvas();
-			_isWeaponWheelActive = true;
 			_isWeaponLeftHand = false;
 			ShowWeaponName();
 			ShowWeaponIcon();
@@ -98,7 +96,6 @@ public class WeaponWheelMenuController : MonoBehaviour
 		{
 			OnOpenWeaponWheelMenu?.Invoke("left");
 			EnableWeaponWheelMenuCanvas();
-			_isWeaponWheelActive = true;
 			_isWeaponLeftHand = true;
 			ShowWeaponName();
 			ShowWeaponIcon();
@@ -107,7 +104,6 @@ public class WeaponWheelMenuController : MonoBehaviour
 		else
 		{
 			DisableWeaponWheelMenuCanvas();
-			_isWeaponWheelActive = false;
 		}
 	}
 

@@ -72,6 +72,8 @@ public class Bootstrap : MonoBehaviour
 	private IInputDevice _inputDevice;
 	private LocalizationManager _localizationManager;
 	private KeyCode _keyPauseMenu; // Кнопка открывания/закрывания меню паузы
+	private bool _isInitialized;
+	private bool _isGamepadConnected;
 
 	// Система Сцен
 	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
@@ -117,7 +119,7 @@ public class Bootstrap : MonoBehaviour
 
 		Destroy(_canvasBootstrap);
 
-		//PlayerPrefs.DeleteAll();
+		//PlayerPrefs.DeleteAll(); // ПРОВЕРЯТЬ!!! НЕ УДАЛЯТЬ!!!
 
 		if (_playerPrefsData.IsFirstLaunch || _firstGameLaunch.IsFirstGameLaunch)
 		{
@@ -133,7 +135,57 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(LoadFirstGameplayScene());
 
 		ApplyBootstrapPlayerConfigs();
-		OnLoadSettingsData?.Invoke();	
+		OnLoadSettingsData?.Invoke();
+
+		_isInitialized = true;
+	}
+
+	private void Update()
+	{
+		if (!_isInitialized)
+			return;
+
+		string[] joysticks = Input.GetJoystickNames();
+		bool isGamepadConnected = joysticks.Length > 0 && !string.IsNullOrEmpty(joysticks[0]);
+
+		if (isGamepadConnected)
+		{
+			if (!_isGamepadConnected)
+			{
+				_isGamepadConnected = true;
+				Debug.Log("Геймпад подключен: " + joysticks[0]);
+			}
+
+			//////////////////////////////////////////////////////////////
+			// Проверяем, была ли нажата любая клавиша в этом кадре
+			if (Input.anyKeyDown)
+			{
+				// Обычно у геймпада 20 кнопок (0-19). Цикл проверяет их все.
+				// Если у вашего геймпада больше кнопок, увеличьте число 20.
+				for (int i = 0; i < 20; i++)
+				{
+					// Проверяем конкретную кнопку по её индексу
+					if (Input.GetKeyDown($"joystick button {i}"))
+					{
+						// Если кнопка нажата, выводим её индекс в консоль
+						Debug.Log($"Нажата кнопка геймпада с индексом: {i}");
+
+						// Раскомментируйте следующую строку, если хотите,
+						// чтобы лог выводился только для первой найденной кнопки.
+						// return; 
+					}
+				}
+			}
+			//////////////////////////////////////////////////////////////////
+		}
+		else
+		{
+			if (_isGamepadConnected)
+			{
+				_isGamepadConnected = false;
+				Debug.Log("Геймпад отключен");
+			}
+		}
 	}
 
 	private IEnumerator BootstrapSystemsInitialization()
@@ -155,7 +207,9 @@ public class Bootstrap : MonoBehaviour
 		_gameController = new GameController();
 
 		_keyPauseMenu = _pauseMenuKey.KeyPauseMenu;
+
 		_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
+		//_inputDevice = new InputGamepad(_gameController);
 
 		_localizationManager = new LocalizationManager();
 
@@ -357,6 +411,13 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessInteractionSystem.InteractionController.ChangeLanguage(_localizationManager);
 		ServiceLocator.RemoveService("LocalizationManager");
 		ServiceLocator.Register("LocalizationManager", _localizationManager);
+	}
+
+	public void ChangeInputDevice(IInputDevice inputDevice)
+	{
+		//_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
+
+		//_inputDevice = new InputGamepad(_gameController, _keyPauseMenu);
 	}
 
 	private IEnumerator LoadFirstGameplayScene()
