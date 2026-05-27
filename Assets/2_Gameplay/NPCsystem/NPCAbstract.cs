@@ -8,10 +8,10 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 {
 	[SerializeField] protected string _NPCname;
 
-	[SerializeField] NPCconfigBodyType _NPCconfigBodyType;
+	[SerializeField] ConfigNPCBodyType _NPCconfigBodyType;
 
-	[SerializeField] NPCconfigHealth _NPCconfigHealth;
-	public bool IsNPCdead => _NPCconfigHealth.NPCCurrentHealth <= 0;
+	[SerializeField] ConfigNPCHealth _NPCconfigHealth;
+	public bool IsNPCdead => _currentHealth <= 0;
 
 
 	private Dictionary<LanguagesEnum, List<string>> _localizedNPSphrases = new Dictionary<LanguagesEnum, List<string>>
@@ -30,16 +30,19 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	public string InteractionObjectNameSystem => _NPCname;
 	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_NPCname);
 	public string InteractionHintMessageMain => $"Talk to {InteractionObjectNameUI}";
-	public string InteractionHintMessageFail => throw new System.NotImplementedException();
+	public string InteractionHintMessageFail => null;
 	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction { get; protected set; }
 
-	public bool WasObjectDestroyed => throw new System.NotImplementedException();
+	public bool WasObjectDestroyed => false;
 
-	public float CurrentHealth => _NPCconfigHealth.NPCCurrentHealth;
+	private float _currentHealth;
+	public float CurrentHealth => _currentHealth;
 
 	private void Start()
 	{
+		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
+
 		_NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("TextPhraseLine");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_NPCdialogueController = GetComponent<NPCDialogueController>();
@@ -134,7 +137,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	public void TakeDamage(float amount)
 	{
 		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
-		_NPCconfigHealth.NPCCurrentHealth -= amount;
+		_currentHealth -= amount;
 
 		if (IsNPCdead)
 		{
@@ -144,7 +147,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public void SetHealthToZero()
 	{
-		_NPCconfigHealth.NPCCurrentHealth = 0;
+		_currentHealth = 0;
 	}
 
 	public void ObjectIsFullyDamaged()

@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 5991783505232293363}
   - component: {fileID: 7588113395044433672}
   - component: {fileID: 646259906299107565}
-  - component: {fileID: 7636525506815162549}
   - component: {fileID: 3522397566200654189}
-  - component: {fileID: 3588334236224502949}
   - component: {fileID: 8489933771308122900}
+  - component: {fileID: 7636525506815162549}
+  - component: {fileID: 3588334236224502949}
   - component: {fileID: 577386688338599005}
   m_Layer: 0
   m_Name: NPC_Citizen
@@ -91,22 +91,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7636525506815162549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3796175470993337311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _NPCcurrentHealth: 100
-  _NPCname: 
-  _russianPhraseFile: {fileID: 0}
-  _englishPhraseFile: {fileID: 0}
 --- !u!136 &3522397566200654189
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -130,21 +114,6 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
---- !u!114 &3588334236224502949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3796175470993337311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _initialState: 0
-  _anchorPoints: []
-  _stopConfigs: []
 --- !u!195 &8489933771308122900
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -167,6 +136,40 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7636525506815162549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796175470993337311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _NPCname: NPC_Peaceful_Civilian
+  _NPCconfigBodyType: {fileID: 11400000, guid: 53bbf6df5170355449c676fdcacce758, type: 2}
+  _NPCconfigHealth: {fileID: 11400000, guid: 11ddc4e5100a4da478119aacac26b945, type: 2}
+  _russianPhraseFile: {fileID: 0}
+  _englishPhraseFile: {fileID: 0}
+--- !u!114 &3588334236224502949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796175470993337311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialState: 0
+  _anchorData:
+  - AnchorPoint: {fileID: 0}
+    NPCwaitDuration: 0
+    NPCrotation: {x: 0, y: 0, z: 0}
 --- !u!114 &577386688338599005
 MonoBehaviour:
   m_ObjectHideFlags: 0

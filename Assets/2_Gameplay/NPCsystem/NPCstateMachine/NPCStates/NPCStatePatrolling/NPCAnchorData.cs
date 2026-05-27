@@ -3,6 +3,7 @@
 [System.Serializable]
 public struct NPCAnchorData
 {
-	public GameObject anchorPoint;
-	public float waitDuration;    
+	public GameObject AnchorPoint;
+	public float NPCwaitDuration;
+	public Vector3 NPCrotation;
 }

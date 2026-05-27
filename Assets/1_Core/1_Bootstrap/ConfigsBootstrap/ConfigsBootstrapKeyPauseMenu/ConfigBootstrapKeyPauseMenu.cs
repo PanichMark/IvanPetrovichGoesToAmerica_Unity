@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "ConfigBootstrapKeyOpenPauseMenu", menuName = "Configs/ConfigsBootstrap/ConfigBootstrapKeyOpenPauseMenu")]
+[CreateAssetMenu(fileName = "ConfigBootstrapKeyOpenPauseMenu", menuName = "ConfigsBootstrap/ConfigBootstrapKeyOpenPauseMenu")]
 public class ConfigBootstrapKeyPauseMenu : ScriptableObject
 {
 	public KeyCode KeyPauseMenu;

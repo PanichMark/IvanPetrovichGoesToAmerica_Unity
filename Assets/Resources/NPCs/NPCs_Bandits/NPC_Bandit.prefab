@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4028010469276655798}
-  - component: {fileID: 7276830659445946651}
   - component: {fileID: 7740607382350069053}
   - component: {fileID: 2247234001364683689}
+  - component: {fileID: 7276830659445946651}
+  - component: {fileID: 3324684043196184942}
   - component: {fileID: 8117917063483882930}
   - component: {fileID: 575080937374974000}
-  - component: {fileID: 3324684043196184942}
   - component: {fileID: 6397610362618816134}
   m_Layer: 0
   m_Name: NPC_Bandit
@@ -38,29 +38,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!136 &7276830659445946651
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4597056733320972622}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.25
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!33 &7740607382350069053
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -114,37 +91,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8117917063483882930
-MonoBehaviour:
+--- !u!136 &7276830659445946651
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4597056733320972622}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0f68370d733ada4587d0bf029dc595d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _NPCcurrentHealth: 100
-  _NPCname: 
-  _russianPhraseFile: {fileID: 0}
-  _englishPhraseFile: {fileID: 0}
---- !u!114 &575080937374974000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4597056733320972622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _initialState: 0
-  _anchorPoints: []
-  _stopConfigs: []
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!195 &3324684043196184942
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -167,6 +136,38 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &8117917063483882930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4597056733320972622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0f68370d733ada4587d0bf029dc595d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _NPCname: NPC_Neutral_Bandit
+  _NPCconfigBodyType: {fileID: 0}
+  _NPCconfigHealth: {fileID: 0}
+  _russianPhraseFile: {fileID: 0}
+  _englishPhraseFile: {fileID: 0}
+--- !u!114 &575080937374974000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4597056733320972622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialState: 0
+  _anchorPoints: []
+  _stopConfigs: []
 --- !u!114 &6397610362618816134
 MonoBehaviour:
   m_ObjectHideFlags: 0

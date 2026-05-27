@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NPCconfigHealth", menuName = "Scriptable Objects/NPCconfigHealth")]
-public class NPCconfigHealth : ScriptableObject
+[CreateAssetMenu(fileName = "ConfigNPCHealth", menuName = "ConfigsNPC/ConfigNPCHealth")]
+public class ConfigNPCHealth : ScriptableObject
 {
-    public float NPCMaxHealth;
-    public float NPCCurrentHealth;
+    public float NPCmaxHealth;
+    public float NPCcurrentHealth;
 }

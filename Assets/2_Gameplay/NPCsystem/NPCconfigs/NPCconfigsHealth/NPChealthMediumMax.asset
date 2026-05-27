@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca34a552d11d5b44b8592e4b2d35f4aa, type: 3}
-  m_Name: NPCfemaleFat
+  m_Script: {fileID: 11500000, guid: 6495d2bb4065bf045bbdbfbfcaab5ef6, type: 3}
+  m_Name: NPChealthMediumMax
   m_EditorClassIdentifier: 
-  NPCsexType: 1
-  NPCphysique: 2
-  NPCspeedMultiplier: 0.7
+  NPCmaxHealth: 100
+  NPCcurrentHealth: 100

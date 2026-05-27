@@ -1,9 +1,5 @@
-﻿using UnityEngine;
-
-public class NPCStatePatrolling : NPCStateAbstract
+﻿public class NPCStatePatrolling : NPCStateAbstract
 {
-	private readonly NPCStateMachineController _NPCStateMachineController;
-
 	public NPCStatePatrolling(NPCStateMachineController npcStateMachineController)
 	{
 		_NPCStateMachineController = npcStateMachineController;
@@ -13,9 +9,9 @@ public class NPCStatePatrolling : NPCStateAbstract
 
 	public override void Update()
 	{
-		foreach (var config in _NPCStateMachineController.StopConfigs)
+		foreach (var config in _NPCStateMachineController.AnchorData)
 		{
-			var triggerPoint = config.anchorPoint;
+			var triggerPoint = config.AnchorPoint;
 
 			if (_NPCStateMachineController.GetLastVisitedStopPoint() == triggerPoint)
 				continue;
@@ -25,7 +21,7 @@ public class NPCStatePatrolling : NPCStateAbstract
 				_NPCStateMachineController.SetLastVisitedStopPoint(triggerPoint);
 				_NPCStateMachineController.SetNPCState(
 					NPCStateTypes.StationaryAction,
-					config.waitDuration
+					config.NPCwaitDuration
 				);
 			}
 		}

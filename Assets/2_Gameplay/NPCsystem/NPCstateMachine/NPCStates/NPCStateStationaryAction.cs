@@ -16,7 +16,7 @@ public class NPCStateStationaryAction : NPCStateAbstract
 
 	public override void Update()
 	{
-		if (_NPCStateMachineController.AnchorPoints.Count != 0)
+		if (_NPCStateMachineController.AnchorData.Count != 0)
 		{
 			timer += Time.deltaTime;
 
