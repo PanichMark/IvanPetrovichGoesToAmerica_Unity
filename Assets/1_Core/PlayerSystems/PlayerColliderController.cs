@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+
 public class PlayerColliderController : MonoBehaviour
 {
 	private CapsuleCollider _playerCollider;
@@ -13,7 +14,8 @@ public class PlayerColliderController : MonoBehaviour
 			return;
 		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
 			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"
-			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerSliding")
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerSliding"
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerJumping")
 		{
             transform.position = transform.parent.position+new Vector3(0f, 0.5f, 0f);
             transform.localScale = new Vector3(1f,  0.5f, 1f);

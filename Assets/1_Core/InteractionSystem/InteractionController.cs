@@ -279,7 +279,7 @@ public class InteractionController : MonoBehaviour
 						if (_showAdditionalHintCoroutine != null)
 							StopCoroutine(_showAdditionalHintCoroutine); 
 
-						_showAdditionalHintCoroutine = StartCoroutine(ShowHintForSeconds());
+						_showAdditionalHintCoroutine = StartCoroutine(ShowInteractionObjectHintMessage());
 					}
 					else
 					{
@@ -330,7 +330,7 @@ public class InteractionController : MonoBehaviour
 		_previousInteractableObject = _currentInteractableObject;
 	}
 
-	IEnumerator ShowHintForSeconds()
+	IEnumerator ShowInteractionObjectHintMessage()
 	{
 		yield return new WaitForSeconds(1f);
 		_additionalInteractionText.text = null;
