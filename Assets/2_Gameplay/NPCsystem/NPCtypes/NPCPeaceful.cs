@@ -6,7 +6,7 @@
 			_NPCstateMachineController?.CurrentNPCState != "Patrolling")
 			return;
 
-		if (_NPCdialogueController.NPCdialogueData != null)
+		if (_NPCdialogueController != null)
 		{
 			_NPCstateMachineController.RotateTowardsPlayer();
 			_NPCdialogueController.Interact();

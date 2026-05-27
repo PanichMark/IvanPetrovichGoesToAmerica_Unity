@@ -14,8 +14,7 @@ public class NPCPhrasesController : MonoBehaviour
 		{LanguagesEnum.English, new List<string>() }
 	};
 
-	[SerializeField] private TextAsset _russianPhraseFile;
-	[SerializeField] private TextAsset _englishPhraseFile;
+	[SerializeField] private NPCPhrasesData _NPCphrasesData;
 	private TextMeshProUGUI _NPCphrasesText;
 
 	public void Initialize()
@@ -29,9 +28,9 @@ public class NPCPhrasesController : MonoBehaviour
 
 	private void LoadPhrasesTextFiles()
 	{
-		if (_russianPhraseFile != null)
+		if (_NPCphrasesData.PhrasesFileRussian != null)
 		{
-			using (var reader = new StringReader(_russianPhraseFile.text))
+			using (var reader = new StringReader(_NPCphrasesData.PhrasesFileRussian.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
@@ -48,9 +47,9 @@ public class NPCPhrasesController : MonoBehaviour
 			Debug.LogWarning("Russian phrase file is not assigned!");
 		}
 
-		if (_englishPhraseFile != null)
+		if (_NPCphrasesData.PhrasesFileEnglish != null)
 		{
-			using (var reader = new StringReader(_englishPhraseFile.text))
+			using (var reader = new StringReader(_NPCphrasesData.PhrasesFileEnglish.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)

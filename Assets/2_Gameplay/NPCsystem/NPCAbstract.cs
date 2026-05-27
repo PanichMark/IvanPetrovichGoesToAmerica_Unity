@@ -15,7 +15,6 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	protected NPCPhrasesController _NPCphrasesController;
 
-
 	protected NPCDialogueController _NPCdialogueController;
 
 
@@ -36,6 +35,10 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	private void Start()
 	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+
+		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
+
 		_NPCphrasesController = GetComponent<NPCPhrasesController>();
 		_NPCstateMachineController = GetComponent<NPCStateMachineController>();
 		_NPCdialogueController = GetComponent<NPCDialogueController>();
@@ -46,10 +49,6 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		{
 			_NPCdialogueController.Initialize();
 		}
-
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-
-		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
 	}
 
 	public virtual void Interact()

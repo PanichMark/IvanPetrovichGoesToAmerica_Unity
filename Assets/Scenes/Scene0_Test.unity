@@ -3927,8 +3927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _russianPhraseFile: {fileID: 0}
-  _englishPhraseFile: {fileID: 0}
+  _NPCphrasesData: {fileID: 11400000, guid: e401fa1796a731b45895d4ccdc63a211, type: 2}
 --- !u!4 &1186558630 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
@@ -7832,8 +7831,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30c01eafdaa357a439d6f5079893587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCdialogueData: {fileID: 0}
-  _dialogueBranchStructsList: []
+  _NPCdialogueData: {fileID: 11400000, guid: 0f736738babd7064cbb94ca2fd81f4ed, type: 2}
+  _dialogueBranchStructsList:
+  - DialogueBranchLine: 3
+    GoToNoOptionLine: 6
+    FinalYesLine: 5
+    GoToYesFinalLine: 7
+    ActionOnYesAnswer: {fileID: 0}
+    ActionOnNoAnswer: {fileID: 0}
+  - DialogueBranchLine: 9
+    GoToNoOptionLine: 12
+    FinalYesLine: 11
+    GoToYesFinalLine: 13
+    ActionOnYesAnswer: {fileID: 0}
+    ActionOnNoAnswer: {fileID: 0}
 --- !u!23 &646259906199207410
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8920,8 +8931,8 @@ GameObject:
   - component: {fileID: 8489933771409483275}
   - component: {fileID: 7636525507117374890}
   - component: {fileID: 3588334235789105594}
-  - component: {fileID: 577386688572799298}
   - component: {fileID: 8489933771409483276}
+  - component: {fileID: 577386688572799298}
   m_Layer: 0
   m_Name: NPC_Citizen
   m_TagString: Interactable
@@ -9666,8 +9677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _russianPhraseFile: {fileID: 0}
-  _englishPhraseFile: {fileID: 0}
+  _NPCphrasesData: {fileID: 11400000, guid: e401fa1796a731b45895d4ccdc63a211, type: 2}
 --- !u!1 &7511606193892290042
 GameObject:
   m_ObjectHideFlags: 0
@@ -9871,8 +9881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _russianPhraseFile: {fileID: 0}
-  _englishPhraseFile: {fileID: 0}
+  _NPCphrasesData: {fileID: 11400000, guid: e401fa1796a731b45895d4ccdc63a211, type: 2}
 --- !u!224 &8520157127022309038
 RectTransform:
   m_ObjectHideFlags: 0
