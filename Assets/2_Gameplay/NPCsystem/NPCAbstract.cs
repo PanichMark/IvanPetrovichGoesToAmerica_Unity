@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(NPCStateMachineController))]
+[RequireComponent(typeof(NPCPhrasesController))]
 public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 {
 	[SerializeField] protected string _NPCname;
@@ -13,19 +13,14 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	[SerializeField] ConfigNPCHealth _NPCconfigHealth;
 	public bool IsNPCdead => _currentHealth <= 0;
 
+	protected NPCPhrasesController _NPCphrasesController;
 
-	private Dictionary<LanguagesEnum, List<string>> _localizedNPSphrases = new Dictionary<LanguagesEnum, List<string>>
-	{
-		{LanguagesEnum.Russian, new List<string>() },
-		{LanguagesEnum.English, new List<string>() }
-	};
 
 	protected NPCDialogueController _NPCdialogueController;
-	private TextMeshProUGUI _NPCphrasesText;
-	[SerializeField] private TextAsset _russianPhraseFile;
-	[SerializeField] private TextAsset _englishPhraseFile;
+
+
 	private LocalizationManager _localizationManager;
-	protected NPCStateMachineController _npcStateMachineController;
+	protected NPCStateMachineController _NPCstateMachineController;
 
 	public string InteractionObjectNameSystem => _NPCname;
 	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_NPCname);
@@ -41,78 +36,20 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	private void Start()
 	{
-		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
-
-		_NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("TextPhraseLine");
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_NPCphrasesController = GetComponent<NPCPhrasesController>();
+		_NPCstateMachineController = GetComponent<NPCStateMachineController>();
 		_NPCdialogueController = GetComponent<NPCDialogueController>();
 
-		LoadPhrasesFromFiles();
-		_npcStateMachineController = GetComponent<NPCStateMachineController>();
-	}
-
-	private void LoadPhrasesFromFiles()
-	{
-		if (_russianPhraseFile != null)
+		_NPCphrasesController.Initialize();
+		_NPCstateMachineController.Initialize();
+		if (_NPCdialogueController != null)
 		{
-			using (var reader = new StringReader(_russianPhraseFile.text))
-			{
-				string line;
-				while ((line = reader.ReadLine()) != null)
-				{
-					if (!string.IsNullOrWhiteSpace(line))
-					{
-						_localizedNPSphrases[LanguagesEnum.Russian].Add(line.Trim());
-					}
-				}
-			}
-		}
-		else
-		{
-			Debug.LogWarning("Russian phrase file is not assigned!");
+			_NPCdialogueController.Initialize();
 		}
 
-		if (_englishPhraseFile != null)
-		{
-			using (var reader = new StringReader(_englishPhraseFile.text))
-			{
-				string line;
-				while ((line = reader.ReadLine()) != null)
-				{
-					if (!string.IsNullOrWhiteSpace(line))
-					{
-						_localizedNPSphrases[LanguagesEnum.English].Add(line.Trim());
-					}
-				}
-			}
-		}
-		else
-		{
-			Debug.LogWarning("English phrase file is not assigned!");
-		}
-	}
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
-	protected IEnumerator ShowAndHidePhrase()
-	{
-		_NPCphrasesText.gameObject.SetActive(true);
-
-		var currentLanguage = _localizationManager.CurrentLanguage;
-		if (_localizedNPSphrases[currentLanguage].Count > 0)
-		{
-			int randomIndex = Random.Range(0, _localizedNPSphrases[currentLanguage].Count);
-			string selectedPhrase = _localizedNPSphrases[currentLanguage][randomIndex];
-			string fullPhrase = $"{InteractionObjectNameUI}: {selectedPhrase}";
-			_NPCphrasesText.text = fullPhrase;
-		}
-		else
-		{
-			Debug.LogWarning("No phrases available for the selected language!");
-		}
-
-		yield return new WaitForSeconds(3.5f);
-
-		_NPCphrasesText.text = string.Empty;
-		_NPCphrasesText.gameObject.SetActive(false);
+		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
 	}
 
 	public virtual void Interact()
@@ -137,21 +74,17 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		if (IsNPCdead)
 		{
 			ObjectIsFullyDamaged();
-			_npcStateMachineController.SetNPCState(NPCStateTypes.Dead);
+			_NPCstateMachineController.SetNPCState(NPCStateTypes.Dead);
 		}
 	}
 
 	public void ObjectIsFullyDamaged()
 	{
 		Debug.Log($"{_NPCname} is Dead");
-		Debug.Log(2222);
+	
 		_currentHealth = 0;
 		StopAllCoroutines();
 		ConvertToPickableObject();
-		Debug.Log(3333);
-		Debug.Log(_NPCphrasesText);
-	//	_NPCphrasesText.text = string.Empty;
-		//_NPCphrasesText.gameObject.SetActive(false);
-		Debug.Log(4444);
+		_NPCphrasesController.ClearPhrases();
 	}
 }

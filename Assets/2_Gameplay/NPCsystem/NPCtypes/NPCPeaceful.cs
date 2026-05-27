@@ -2,19 +2,19 @@
 {
 	public override void Interact()
 	{
-		if (_npcStateMachineController?.CurrentNPCState != "StationaryAction" &&
-			_npcStateMachineController?.CurrentNPCState != "Patrolling")
+		if (_NPCstateMachineController?.CurrentNPCState != "StationaryAction" &&
+			_NPCstateMachineController?.CurrentNPCState != "Patrolling")
 			return;
 
 		if (_NPCdialogueController.NPCdialogueData != null)
 		{
-			_npcStateMachineController.RotateTowardsPlayer();
+			_NPCstateMachineController.RotateTowardsPlayer();
 			_NPCdialogueController.Interact();
 		}
 		else
 		{
 			StopAllCoroutines();
-			StartCoroutine(ShowAndHidePhrase());
+			StartCoroutine(_NPCphrasesController.TemporaryShowPhrases());
 		}
 	}
 }

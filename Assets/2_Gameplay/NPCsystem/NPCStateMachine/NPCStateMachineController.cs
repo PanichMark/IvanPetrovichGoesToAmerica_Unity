@@ -29,7 +29,7 @@ public class NPCStateMachineController : MonoBehaviour
 	public float AnimationDuration => _animationDuration;
 	public Coroutine currentRotationCoroutine { get; private set; }
 
-	void Start()
+	public void Initialize()
 	{
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 		_initialRotationY = transform.eulerAngles.y;
@@ -260,93 +260,93 @@ public class NPCStateMachineController : MonoBehaviour
 		SetNPCState(stateType);
 	}
 
-	public void SetNPCState(NPCStateTypes playerMovementStateType)
+	public void SetNPCState(NPCStateTypes NPCstateType)
 	{
 		NPCStateAbstract newState;
 
-		if (playerMovementStateType == NPCStateTypes.StationaryAction)
+		if (NPCstateType == NPCStateTypes.StationaryAction)
 		{
 			newState = new NPCStateStationaryAction(this, _animationDuration);
 			CurrentNPCState = "StationaryAction";
 			_NPCabstract.gameObject.tag = "Interactable";
 		}
-		else if (playerMovementStateType == NPCStateTypes.Patrolling)
+		else if (NPCstateType == NPCStateTypes.Patrolling)
 		{
 			newState = new NPCStatePatrolling(this);
 			CurrentNPCState = "Patrolling";
 			_NPCabstract.gameObject.tag = "Interactable";
 		}
-		else if (playerMovementStateType == NPCStateTypes.Interested)
+		else if (NPCstateType == NPCStateTypes.Interested)
 		{
 			newState = new NPCStateInterested();
 		}
-		else if (playerMovementStateType == NPCStateTypes.Searching)
+		else if (NPCstateType == NPCStateTypes.Searching)
 		{
 			newState = new NPCStateSearching();
 		}
-		else if (playerMovementStateType == NPCStateTypes.Alarmed)
+		else if (NPCstateType == NPCStateTypes.Alarmed)
 		{
 			newState = new NPCStateAlarmed();
 		}
-		else if (playerMovementStateType == NPCStateTypes.Chasing)
+		else if (NPCstateType == NPCStateTypes.Chasing)
 		{
 			newState = new NPCStateChasing();
 		}
-		else if (playerMovementStateType == NPCStateTypes.Attacking)
+		else if (NPCstateType == NPCStateTypes.Attacking)
 		{
 			newState = new NPCStateAttacking();
 		}
-		else if (playerMovementStateType == NPCStateTypes.Reloading)
+		else if (NPCstateType == NPCStateTypes.Reloading)
 		{
 			newState = new NPCStateReloading();
 		}
-		else if (playerMovementStateType == NPCStateTypes.Scared)
+		else if (NPCstateType == NPCStateTypes.Scared)
 		{
 			newState = new NPCStateScared();
 			CurrentNPCState = "Scared";
 			_NPCabstract.gameObject.tag = "Untagged";
 		}
-		else if (playerMovementStateType == NPCStateTypes.Hysteric)
+		else if (NPCstateType == NPCStateTypes.Hysteric)
 		{
 			newState = new NPCStateHysteric();
 		}
-		else if (playerMovementStateType == NPCStateTypes.Fleeing)
+		else if (NPCstateType == NPCStateTypes.Fleeing)
 		{
 			newState = new NPCStateFleeing();
 		}
-		else if (playerMovementStateType == NPCStateTypes.BeingStrangled)
+		else if (NPCstateType == NPCStateTypes.BeingStrangled)
 		{
 			newState = new NPCStateBeingStrangled(this);
 		}
-		else if (playerMovementStateType == NPCStateTypes.BeingHooked)
+		else if (NPCstateType == NPCStateTypes.BeingHooked)
 		{
 			newState = new NPCStateBeingHooked(this);
 			CurrentNPCState = "BeingHooked";
 		}
-		else if (playerMovementStateType == NPCStateTypes.KnockedOff)
+		else if (NPCstateType == NPCStateTypes.KnockedOff)
 		{
 			newState = new NPCStateKnockedOff();
 		}
-		else if (playerMovementStateType == NPCStateTypes.BlownAway)
+		else if (NPCstateType == NPCStateTypes.BlownAway)
 		{
 			newState = new NPCStateBlownAway();
 		}
-		else if (playerMovementStateType == NPCStateTypes.Falling)
+		else if (NPCstateType == NPCStateTypes.Falling)
 		{
 			newState = new NPCStateFalling();
 		}
-		else if (playerMovementStateType == NPCStateTypes.StandingUp)
+		else if (NPCstateType == NPCStateTypes.StandingUp)
 		{
 			newState = new NPCStateStandingUp();
 		}
-		else if (playerMovementStateType == NPCStateTypes.Unconscious)
+		else if (NPCstateType == NPCStateTypes.Unconscious)
 		{
 			newState = new NPCStateUnconscious();
 		}
-		else if (playerMovementStateType == NPCStateTypes.Dead)
+		else if (NPCstateType == NPCStateTypes.Dead)
 		{
 			newState = new NPCStateDead(this);
-			Debug.Log(1111);
+			
 			_NPCabstract.ObjectIsFullyDamaged();
 			//_NPCabstract.ConvertToPickableObject();
 			//Debug.Log("BRUH!");

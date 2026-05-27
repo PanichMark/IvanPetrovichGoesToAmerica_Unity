@@ -3762,6 +3762,7 @@ GameObject:
   - component: {fileID: 1172950684}
   - component: {fileID: 1172950683}
   - component: {fileID: 1172950682}
+  - component: {fileID: 1172950689}
   m_Layer: 0
   m_Name: NPC_Citizen (2)
   m_TagString: Interactable
@@ -3801,8 +3802,6 @@ MonoBehaviour:
   _NPCname: NPC_Peaceful_Civilian
   _NPCconfigBodyType: {fileID: 11400000, guid: 53bbf6df5170355449c676fdcacce758, type: 2}
   _NPCconfigHealth: {fileID: 11400000, guid: 11ddc4e5100a4da478119aacac26b945, type: 2}
-  _russianPhraseFile: {fileID: 0}
-  _englishPhraseFile: {fileID: 0}
 --- !u!195 &1172950684
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3916,6 +3915,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1172950689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172950681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _russianPhraseFile: {fileID: 0}
+  _englishPhraseFile: {fileID: 0}
 --- !u!4 &1186558630 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
@@ -7630,6 +7643,7 @@ GameObject:
   - component: {fileID: 4646888147393409017}
   - component: {fileID: 6653292829128774744}
   - component: {fileID: 316112990451142728}
+  - component: {fileID: 7388237329906319647}
   m_Layer: 0
   m_Name: NPC_Citizen (1)
   m_TagString: Interactable
@@ -8907,6 +8921,7 @@ GameObject:
   - component: {fileID: 7636525507117374890}
   - component: {fileID: 3588334235789105594}
   - component: {fileID: 577386688572799298}
+  - component: {fileID: 8489933771409483276}
   m_Layer: 0
   m_Name: NPC_Citizen
   m_TagString: Interactable
@@ -9524,8 +9539,6 @@ MonoBehaviour:
   _NPCname: NPC_Peaceful_Civilian
   _NPCconfigBodyType: {fileID: 11400000, guid: 53bbf6df5170355449c676fdcacce758, type: 2}
   _NPCconfigHealth: {fileID: 11400000, guid: 11ddc4e5100a4da478119aacac26b945, type: 2}
-  _russianPhraseFile: {fileID: 0}
-  _englishPhraseFile: {fileID: 0}
 --- !u!224 &6662938386560641174
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9641,6 +9654,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &7388237329906319647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 72590395479508786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _russianPhraseFile: {fileID: 0}
+  _englishPhraseFile: {fileID: 0}
 --- !u!1 &7511606193892290042
 GameObject:
   m_ObjectHideFlags: 0
@@ -9700,8 +9727,6 @@ MonoBehaviour:
   _NPCname: NPC_Peaceful_Civilian
   _NPCconfigBodyType: {fileID: 11400000, guid: 53bbf6df5170355449c676fdcacce758, type: 2}
   _NPCconfigHealth: {fileID: 11400000, guid: 11ddc4e5100a4da478119aacac26b945, type: 2}
-  _russianPhraseFile: {fileID: 0}
-  _englishPhraseFile: {fileID: 0}
 --- !u!114 &7915311951647947556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9834,6 +9859,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &8489933771409483276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796175470824148672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _russianPhraseFile: {fileID: 0}
+  _englishPhraseFile: {fileID: 0}
 --- !u!224 &8520157127022309038
 RectTransform:
   m_ObjectHideFlags: 0

@@ -35,7 +35,7 @@ public class NPCDialogueController : MonoBehaviour
 	private NPCStateMachineController _NPCstateMachineController;
 	public bool IsDialogueActive { get; private set; }
 
-	private void Start()
+	public void Initialize()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
