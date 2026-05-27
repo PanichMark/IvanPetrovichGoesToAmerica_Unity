@@ -23,11 +23,13 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public string InteractionObjectNameSystem => _NPCname;
 	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_NPCname);
-	public string InteractionHintMessageMain => $"Talk to {InteractionObjectNameUI}";
-	public string InteractionHintMessageFail => null;
-	public virtual bool IsInteractionHintMessageFailActive => false;
-	public string InteractionHintMessageAction { get; protected set; }
+	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+	public string InteractionHintMessageFail => _interactionHintMessageFail;
+	private string _interactionHintMessageFail;
 
+	public virtual bool IsInteractionHintMessageFailActive => false;
+	public string InteractionHintMessageAction => _interactionHintMessageAction;
+	private string _interactionHintMessageAction;
 	public bool WasObjectDestroyed => false;
 
 	private float _currentHealth;
@@ -36,6 +38,8 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	private void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TalkTo");
+		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
 
 		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
 
@@ -49,6 +53,8 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		{
 			_NPCdialogueController.Initialize();
 		}
+
+		_localizationManager.OnLanguageChanged += ChangeLangauge;
 	}
 
 	public virtual void Interact()
@@ -59,6 +65,13 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	public void InteractCutscene()
 	{
 		Interact();
+	}
+
+	private void ChangeLangauge()
+	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TalkTo");
+		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
 	}
 
 	public void ConvertToPickableObject()

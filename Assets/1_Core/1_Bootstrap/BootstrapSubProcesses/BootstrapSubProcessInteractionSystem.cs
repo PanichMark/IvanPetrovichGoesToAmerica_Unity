@@ -47,6 +47,8 @@ public class BootstrapSubProcessInteractionSystem
 	private TextMeshProUGUI _textDialogueLine;
 	private Button _buttonDialogueYes;
 	private Button _buttonDialogueNo;
+	private GameObject _textDialogueYes;
+	private GameObject _textDialogueNo;
 
 	public BootstrapSubProcessInteractionSystem(
 		Bootstrap bootstrap,
@@ -130,6 +132,8 @@ public class BootstrapSubProcessInteractionSystem
 
 		_buttonDialogueYes = _canvasMenuDialogue.transform.Find("ButtonDialogueYes").GetComponent<Button>();
 		_buttonDialogueNo = _canvasMenuDialogue.transform.Find("ButtonDialogueNo").GetComponent<Button>();
+		_textDialogueYes = _bootstrap.FindDeepGameObject(_canvasMenuDialogue, "TextDialogueYes");
+		_textDialogueNo = _bootstrap.FindDeepGameObject(_canvasMenuDialogue, "TextDialogueNo");
 
 		InteractionController.Initialize(
 			_gameController,
@@ -164,6 +168,8 @@ public class BootstrapSubProcessInteractionSystem
 		ServiceLocator.Register("TextDialogueLine", _textDialogueLine);
 		ServiceLocator.Register("ButtonDialogueYes", _buttonDialogueYes);
 		ServiceLocator.Register("ButtonDialogueNo", _buttonDialogueNo);
+		ServiceLocator.Register("TextDialogueYes", _textDialogueYes);
+		ServiceLocator.Register("TextDialogueNo", _textDialogueNo);
 
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 

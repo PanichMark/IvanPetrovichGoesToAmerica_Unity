@@ -290,78 +290,9 @@ public class InteractionController : MonoBehaviour
 
 						if (_lookedAtIGainedItem != null)
 						{
-							if (!_itemsTexts[0].gameObject.activeInHierarchy)
-							{
-								_itemsTexts[0].gameObject.SetActive(true);
-								_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+							ShowGainedItems();
 
-								_itemsImages[0].gameObject.SetActive(true);
-								if (_lookedAtIGainedItem.IconGainedItem != null)
-								{
-									_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
-								}
-								else
-								{
-									_itemsImages[0].sprite = _ImageMissing;
-								}
-							}
-							else if (_itemsTexts[0].gameObject.activeInHierarchy && !_itemsTexts[1].gameObject.activeInHierarchy)
-							{
-								_itemsTexts[1].gameObject.SetActive(true);
-								_itemsTexts[1].text = _itemsTexts[0].text;
-								_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
-
-								_itemsImages[1].gameObject.SetActive(true);
-								_itemsImages[1].sprite = _itemsImages[0].sprite;
-								if (_lookedAtIGainedItem.IconGainedItem != null)
-								{
-									_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
-								}
-								else
-								{
-									_itemsImages[0].sprite = _ImageMissing;
-								}
-							}
-							else if (_itemsTexts[1].gameObject.activeInHierarchy && _itemsTexts[0].gameObject.activeInHierarchy)
-							{
-								_itemsTexts[2].gameObject.SetActive(true);
-								_itemsTexts[2].text = _itemsTexts[1].text;
-								_itemsTexts[1].text = _itemsTexts[0].text;
-								_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
-
-								_itemsImages[2].gameObject.SetActive(true);
-								_itemsImages[2].sprite = _itemsImages[1].sprite;
-								_itemsImages[1].sprite = _itemsImages[0].sprite;
-								if (_lookedAtIGainedItem.IconGainedItem != null)
-								{
-									_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
-								}
-								else
-								{
-									_itemsImages[0].sprite = _ImageMissing;
-								}
-							}
-							else if (_itemsTexts[2].gameObject.activeInHierarchy &&
-									 _itemsTexts[0].gameObject.activeInHierarchy &&
-									 _itemsTexts[1].gameObject.activeInHierarchy)
-							{
-								_itemsTexts[2].text = _itemsTexts[1].text;
-								_itemsTexts[1].text = _itemsTexts[0].text;
-								_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
-
-								_itemsImages[2].sprite = _itemsImages[1].sprite;
-								_itemsImages[1].sprite = _itemsImages[0].sprite;
-								if (_lookedAtIGainedItem.IconGainedItem != null)
-								{
-									_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
-								}
-								else
-								{
-									_itemsImages[0].sprite = _ImageMissing;
-								}
-							}
-
-							StartCoroutine(ShowItemsGained());
+							StartCoroutine(HideGainedItems());
 						}
 					}
 
@@ -405,7 +336,81 @@ public class InteractionController : MonoBehaviour
 		_additionalInteractionText.text = null;
 	}
 
-	IEnumerator ShowItemsGained()
+	private void ShowGainedItems()
+	{
+		if (!_itemsTexts[0].gameObject.activeInHierarchy)
+		{
+			_itemsTexts[0].gameObject.SetActive(true);
+			_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+
+			_itemsImages[0].gameObject.SetActive(true);
+			if (_lookedAtIGainedItem.IconGainedItem != null)
+			{
+				_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
+			}
+			else
+			{
+				_itemsImages[0].sprite = _ImageMissing;
+			}
+		}
+		else if (_itemsTexts[0].gameObject.activeInHierarchy && !_itemsTexts[1].gameObject.activeInHierarchy)
+		{
+			_itemsTexts[1].gameObject.SetActive(true);
+			_itemsTexts[1].text = _itemsTexts[0].text;
+			_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+
+			_itemsImages[1].gameObject.SetActive(true);
+			_itemsImages[1].sprite = _itemsImages[0].sprite;
+			if (_lookedAtIGainedItem.IconGainedItem != null)
+			{
+				_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
+			}
+			else
+			{
+				_itemsImages[0].sprite = _ImageMissing;
+			}
+		}
+		else if (_itemsTexts[1].gameObject.activeInHierarchy && _itemsTexts[0].gameObject.activeInHierarchy)
+		{
+			_itemsTexts[2].gameObject.SetActive(true);
+			_itemsTexts[2].text = _itemsTexts[1].text;
+			_itemsTexts[1].text = _itemsTexts[0].text;
+			_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+
+			_itemsImages[2].gameObject.SetActive(true);
+			_itemsImages[2].sprite = _itemsImages[1].sprite;
+			_itemsImages[1].sprite = _itemsImages[0].sprite;
+			if (_lookedAtIGainedItem.IconGainedItem != null)
+			{
+				_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
+			}
+			else
+			{
+				_itemsImages[0].sprite = _ImageMissing;
+			}
+		}
+		else if (_itemsTexts[2].gameObject.activeInHierarchy &&
+				 _itemsTexts[0].gameObject.activeInHierarchy &&
+				 _itemsTexts[1].gameObject.activeInHierarchy)
+		{
+			_itemsTexts[2].text = _itemsTexts[1].text;
+			_itemsTexts[1].text = _itemsTexts[0].text;
+			_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+
+			_itemsImages[2].sprite = _itemsImages[1].sprite;
+			_itemsImages[1].sprite = _itemsImages[0].sprite;
+			if (_lookedAtIGainedItem.IconGainedItem != null)
+			{
+				_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
+			}
+			else
+			{
+				_itemsImages[0].sprite = _ImageMissing;
+			}
+		}
+	}
+
+	IEnumerator HideGainedItems()
 	{
 		yield return new WaitForSeconds(2f);
 

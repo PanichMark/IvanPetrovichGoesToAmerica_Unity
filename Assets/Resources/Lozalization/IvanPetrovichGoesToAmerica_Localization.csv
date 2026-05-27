@@ -9,17 +9,18 @@ HUD_Interaction_HintMessage_Action_Pickup,Поднять,Pick up
 HUD_Interaction_HintMessage_Action_Drop,Отпустить,Drop
 HUD_Interaction_HintMessage_Action_GlanceAt,Взглянуть на,Glance at
 HUD_Interaction_HintMessage_Action_Throw,Кинуть,Throw
-HUD_Interaction_HintMessage_Action_DoesNotWantToTalk,С вами сейчас не может разговаривать,Right now you can't talk to
 HUD_Interaction_HintMessage_Action_GoToScene,Перейти на сцену,Go to scene
 HUD_Interaction_HintMessage_Action_Rotate,Повернуть,Rotate
 HUD_Interaction_HintMessage_Action_Press,Нажать,Press
 HUD_Interaction_HintMessage_Action_Read,Читать,Read
 HUD_Interaction_HintMessage_Action_Strangle,Задушить,Strangle
 HUD_Interaction_HintMessage_Action_TurnOn,Включить,Turn on
+HUD_Interaction_HintMessage_Action_TalkTo,Поговорить с,Talk to
 HUD_Interaction_HintMessage_Action_TurnOff,Выключить,Turn off
 HUD_Interaction_HintMessage_Action_Talk,Поговорить с,Talk to
 HUD_Interaction_HintMessage_Main,Нажмите,Press
 HUD_Interaction_HintMessage_Fail_Wait,Подождите,Please wait
+HUD_Interaction_HintMessage_Fail_CantTalk,С вами сейчас не может разговаривать,Right now you can't talk to
 HUD_Interaction_HintMessage_Fail_Money,Недостаточно денег,Not enough money
 HUD_Interaction_HintMessage_Fail_WrongCombination,Неправильная комбинация,Wrong combination
 HUD_Interaction_HintMessage_Fail_Locked,Заперто,Is locked
@@ -83,3 +84,7 @@ Scene1_Street,Станция «Ресентиментарная»,Resentymentarn
 UI_LoadingScreen_LoadingIsReady,Нажмите любую клавишу,Press any key
 Money_Rubles,Рублей,Rubles
 Money_Dollars,Фиатных долларов,Fiat dollars
+UI_Menu_DialogueMenu_Sweeper_Branch1_Yes,Хорошо сейчас все уберу...,Ok I'll help you with that...
+UI_Menu_DialogueMenu_Sweeper_Branch1_No,Сам убирай свои листья!,You know what? Do it youtself
+UI_Menu_DialogueMenu_Sweeper_Branch2_Yes,Ладно так уж и ыть помогу тебе,On the other hand ok I'll help you
+UI_Menu_DialogueMenu_Sweeper_Branch2_No,Ну уж нет! к черту тебя и твои листься,No way! Go to hell with you leaves!

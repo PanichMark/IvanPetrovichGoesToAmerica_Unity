@@ -8112,12 +8112,16 @@ MonoBehaviour:
     GoToNoOptionLine: 6
     FinalYesLine: 5
     GoToYesFinalLine: 7
+    YesOptionAnswer: UI_Menu_DialogueMenu_Sweeper_Branch1_Yes
+    NoOptionAnswer: UI_Menu_DialogueMenu_Sweeper_Branch1_No
     ActionOnYesAnswer: {fileID: 2133441474}
     ActionOnNoAnswer: {fileID: 0}
   - DialogueBranchLine: 9
     GoToNoOptionLine: 12
     FinalYesLine: 11
     GoToYesFinalLine: 13
+    YesOptionAnswer: UI_Menu_DialogueMenu_Sweeper_Branch2_Yes
+    NoOptionAnswer: UI_Menu_DialogueMenu_Sweeper_Branch2_No
     ActionOnYesAnswer: {fileID: 0}
     ActionOnNoAnswer: {fileID: 0}
 --- !u!23 &646259906199207410

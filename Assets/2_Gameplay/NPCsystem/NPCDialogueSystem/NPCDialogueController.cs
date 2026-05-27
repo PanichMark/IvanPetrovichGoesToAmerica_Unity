@@ -10,8 +10,8 @@ public class NPCDialogueController : MonoBehaviour
 
 	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
 
-
 	[SerializeField] private List<NPCDialogueBranch> _dialogueBranchStructsList;
+
 	private int _dialogueBranchStructIndex;
 	private MenuManager _menuManager;
 	private Button _buttonDialogueYes;
@@ -19,13 +19,18 @@ public class NPCDialogueController : MonoBehaviour
 
 	private LocalizationManager _localizationManager;
 	private bool _PerformActionOnYesFinal;
+	private GameObject _textDialogueYes;
+	private GameObject _textDialogueNo;
 
+	private TextMeshProUGUI _textComponentDialogueYes;
+	private TextMeshProUGUI _textComponentDialogueNo;
 
 	private Dictionary<LanguagesEnum, List<string>> _localizedDialogue = new Dictionary<LanguagesEnum, List<string>>
 	{
 		{ LanguagesEnum.Russian, new List<string>() },
 		{ LanguagesEnum.English, new List<string>() }
 	};
+
 	public Dictionary<LanguagesEnum, List<string>> LocalizedDialogue => _localizedDialogue;
 	private TextMeshProUGUI _NPCdialogueText;
 	private GameObject _canvasDialogueMenu;
@@ -38,11 +43,17 @@ public class NPCDialogueController : MonoBehaviour
 	public void Initialize()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		LoadDialogueFromFiles();
 
 		_buttonDialogueYes = ServiceLocator.Resolve<Button>("ButtonDialogueYes");
 		_buttonDialogueNo = ServiceLocator.Resolve<Button>("ButtonDialogueNo");
+
+		_textDialogueYes = ServiceLocator.Resolve<GameObject>("TextDialogueYes");
+		_textDialogueNo = ServiceLocator.Resolve<GameObject>("TextDialogueNo");
+
+		_textComponentDialogueYes = _textDialogueYes.GetComponent<TextMeshProUGUI>();
+		_textComponentDialogueNo = _textDialogueNo.GetComponent<TextMeshProUGUI>();
 
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_canvasDialogueMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuDialogue");
@@ -66,6 +77,12 @@ public class NPCDialogueController : MonoBehaviour
 		{
 			DisplayNextDialogueLine();
 		}
+	}
+
+	private void ChangeLanguage()
+	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		LoadDialogueFromFiles();
 	}
 
 	private void ExitNPCDialogue()
@@ -186,6 +203,7 @@ public class NPCDialogueController : MonoBehaviour
 					ActivateButtons();
 					_buttonDialogueYes.onClick.AddListener(() => SelectOption(true));
 					_buttonDialogueNo.onClick.AddListener(() => SelectOption(false));
+					ShowDialogueAnswerOptions(i);
 					break;
 				}
 			}
@@ -202,6 +220,12 @@ public class NPCDialogueController : MonoBehaviour
 				_PerformActionOnYesFinal = true;
 			}
 		}
+	}
+
+	private void ShowDialogueAnswerOptions(int index)
+	{
+		_textComponentDialogueYes.text = _localizationManager.GetLocalizedString(_dialogueBranchStructsList[index].YesOptionAnswer);
+		_textComponentDialogueNo.text = _localizationManager.GetLocalizedString(_dialogueBranchStructsList[index].NoOptionAnswer);
 	}
 
 	private void ActivateButtons()
@@ -227,7 +251,6 @@ public class NPCDialogueController : MonoBehaviour
 		_buttonDialogueNo.onClick.RemoveAllListeners();
 
 		DisplayNextDialogueLine();
-
 		DeactivateButtons();
 
 		_canSkip = true;
