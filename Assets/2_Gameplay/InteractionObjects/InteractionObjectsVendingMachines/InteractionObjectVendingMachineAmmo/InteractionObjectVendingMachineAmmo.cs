@@ -28,9 +28,8 @@ public class InteractionObjectVendingMachineAmmo : InteractionObjectVendingMachi
 		_goodsName = data.AmmoName;
 	}
 
-	private void Start()
+	public override void SetpUpVendingMachine()
 	{
 		UpdateGoods();
-		base.Start();
 	}
 }

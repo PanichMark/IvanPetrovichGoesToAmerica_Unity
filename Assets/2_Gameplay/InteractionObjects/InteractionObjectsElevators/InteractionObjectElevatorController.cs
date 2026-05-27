@@ -3,8 +3,9 @@ using System.Collections;
 
 public class InteractionObjectElevatorController : MonoBehaviour
 {
-	[SerializeField] private float _elevatorSpeed;
-	[SerializeField] private float _elevatorUpPosition;
+	[SerializeField] private float _elevatorSpeed = 2.0f;
+	[SerializeField] private float _elevatorUpPosition = 5.0f;
+	[SerializeField] private float _elevatorPositionTolerance = 0.1f;
 
 	private float _elevatorDownPosition;
 	private bool _isElevatorMoving = false;
@@ -14,32 +15,26 @@ public class InteractionObjectElevatorController : MonoBehaviour
 		_elevatorDownPosition = transform.position.y;
 	}
 
-	public void MoveElevator(bool moveUp)
+	public bool MoveElevator(bool moveUp)
 	{
 		if (_isElevatorMoving)
-			return;
+			return false;
 
-		StartCoroutine(ElevatorAnimation(moveUp));
+		float targetY = moveUp ? _elevatorUpPosition : _elevatorDownPosition;
+
+		if (Mathf.Abs(transform.position.y - targetY) < _elevatorPositionTolerance)
+			return false;
+
+		StartCoroutine(ElevatorAnimation(targetY));
+		return true;
 	}
 
-	private IEnumerator ElevatorAnimation(bool moveElevatorUp)
+	private IEnumerator ElevatorAnimation(float targetY)
 	{
 		_isElevatorMoving = true;
+		Vector3 targetPosition = new Vector3(transform.position.x, targetY, transform.position.z);
 
-		float targetY;
-		if (moveElevatorUp)
-		{
-			targetY = _elevatorUpPosition;
-		}
-		else
-		{
-			targetY = _elevatorDownPosition;
-		}
-
-		Vector3 targetPosition = transform.position;
-		targetPosition.y = targetY;
-
-		while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
+		while (Vector3.Distance(transform.position, targetPosition) > _elevatorPositionTolerance)
 		{
 			transform.position = Vector3.MoveTowards(transform.position, targetPosition, _elevatorSpeed * Time.deltaTime);
 			yield return null;

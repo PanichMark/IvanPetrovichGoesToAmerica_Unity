@@ -1,5 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 {
@@ -12,6 +11,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 	private InteractionObjectLootAbstract _goodsComponent;
 	[SerializeField] private string _moneyType;
 	private string _moneyForUI;
+
 	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
 	private bool _isAdditionalInteractionHintActive;
 	private LocalizationManager _localizationManager;
@@ -26,6 +26,8 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 
 	protected void Start()
 	{
+		SetpUpVendingMachine();
+
 		_goodsComponent = _goodsForSale.GetComponent<InteractionObjectLootAbstract>();
 
 		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
@@ -34,6 +36,11 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 		_moneyForUI = _localizationManager.GetLocalizedString(_moneyType);
 
 		_localizationManager.OnLanguageChanged += ChangeLangauge;
+	}
+
+	public virtual void SetpUpVendingMachine()
+	{
+
 	}
 
 	public void ChangeLangauge()
@@ -48,10 +55,8 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 		{
 			Vector3 spawnPosition = transform.localPosition + transform.TransformDirection(new Vector3(0, 0.5f, 1));
 
-			// Получаем текущий поворот по Y
 			float yRotation = transform.eulerAngles.y;
 
-			// Создаём кватернион только с поворотом по Y
 			Quaternion spawnRotation = Quaternion.Euler(0, yRotation, 0);
 
 			Debug.Log($"You bought {_goodsName} from {InteractionObjectNameUI}");

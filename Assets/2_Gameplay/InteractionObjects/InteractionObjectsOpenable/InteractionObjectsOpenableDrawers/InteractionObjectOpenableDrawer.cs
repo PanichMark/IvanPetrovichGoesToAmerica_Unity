@@ -29,6 +29,13 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		IsObjectOpened = false;
 
+		SetUpOpenableSliding();
+
+	}
+
+	public virtual void SetUpOpenableSliding()
+	{
+
 	}
 
 	public void ChangeLanguage()

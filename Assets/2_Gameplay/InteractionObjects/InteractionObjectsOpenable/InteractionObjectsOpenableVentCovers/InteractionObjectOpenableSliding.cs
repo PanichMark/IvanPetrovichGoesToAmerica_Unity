@@ -1,24 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawer
+public class InteractionObjectOpenableSliding : InteractionObjectOpenableDrawer
 {
 	[SerializeField] private float _openLengthUp;
 	private Vector3 _intermediatePos;
 
-
-	public void Start()
+	public override void SetUpOpenableSliding()
 	{
-		IsObjectOpened = false;
-
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
-		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-
-
-		_localizationManager.OnLanguageChanged += ChangeLanguage;
-
 		_closedPosition = transform.localPosition;
 		_openedPosition = transform.localPosition + new Vector3(0, 0, _openLengthForward);
 		_openedPosition += new Vector3(0, _openLengthUp, 0);
