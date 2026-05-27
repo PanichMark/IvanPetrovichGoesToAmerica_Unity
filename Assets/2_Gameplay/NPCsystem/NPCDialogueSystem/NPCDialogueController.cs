@@ -6,17 +6,21 @@ using UnityEngine.UI;
 
 public class NPCDialogueController : MonoBehaviour
 {
-	[SerializeField] private TextAsset _russianDialogueFile;
-	[SerializeField] private TextAsset _englishDialogueFile;
+	[SerializeField] private NPCDialogueData _NPCdialogueData;
+
+	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
+
+
 	[SerializeField] private List<NPCDialogueBranch> _dialogueBranchStructsList;
 	private int _dialogueBranchStructIndex;
 	private MenuManager _menuManager;
 	private Button _buttonDialogueYes;
 	private Button _buttonDialogueNo;
-	public TextAsset RussianDialogueFile => _russianDialogueFile;
+
 	private LocalizationManager _localizationManager;
 	private bool _PerformActionOnYesFinal;
-	public TextAsset EnglishDialogueFile => _englishDialogueFile;
+
+
 	private Dictionary<LanguagesEnum, List<string>> _localizedDialogue = new Dictionary<LanguagesEnum, List<string>>
 	{
 		{ LanguagesEnum.Russian, new List<string>() },
@@ -34,6 +38,7 @@ public class NPCDialogueController : MonoBehaviour
 	private void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+
 		LoadDialogueFromFiles();
 
 		_buttonDialogueYes = ServiceLocator.Resolve<Button>("ButtonDialogueYes");
@@ -94,9 +99,9 @@ public class NPCDialogueController : MonoBehaviour
 
 	private void LoadDialogueFromFiles()
 	{
-		if (_russianDialogueFile != null)
+		if (_NPCdialogueData.DialogueFileRussian != null)
 		{
-			using (var reader = new StringReader(_russianDialogueFile.text))
+			using (var reader = new StringReader(_NPCdialogueData.DialogueFileRussian.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
@@ -108,14 +113,14 @@ public class NPCDialogueController : MonoBehaviour
 				}
 			}
 		}
-		else if (_englishDialogueFile != null)
+		else if (_NPCdialogueData.DialogueFileEnglish != null)
 		{
 			Debug.LogWarning("Russian dialogue file is not set!");
 		}
 
-		if (_englishDialogueFile != null)
+		if (_NPCdialogueData.DialogueFileEnglish != null)
 		{
-			using (var reader = new StringReader(_englishDialogueFile.text))
+			using (var reader = new StringReader(_NPCdialogueData.DialogueFileEnglish.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
@@ -127,7 +132,7 @@ public class NPCDialogueController : MonoBehaviour
 				}
 			}
 		}
-		else if (_russianDialogueFile != null)
+		else if (_NPCdialogueData.DialogueFileRussian != null)
 		{
 			Debug.LogWarning("English dialogue file is not set!");
 		}

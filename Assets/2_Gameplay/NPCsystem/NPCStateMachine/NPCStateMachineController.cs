@@ -29,6 +29,23 @@ public class NPCStateMachineController : MonoBehaviour
 	public float AnimationDuration => _animationDuration;
 	public Coroutine currentRotationCoroutine { get; private set; }
 
+	void Start()
+	{
+		_navMeshAgent = GetComponent<NavMeshAgent>();
+		_initialRotationY = transform.eulerAngles.y;
+		_cachedPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
+		_NPCabstract = GetComponent<NPCAbstract>();
+		//Debug.Log(_initialState);
+		SetNPCState(_initialState);
+
+		/*
+		if (_initialState == NPCStateTypes.Dead)
+			TurnNavmeshOff();
+		else
+			TurnNavmeshOn();
+		*/
+	}
+
 	public bool IsAtPosition(Vector3 position, float tolerance = 1f)
 	{
 		return Vector3.Distance(transform.position, position) <= tolerance;
@@ -60,20 +77,7 @@ public class NPCStateMachineController : MonoBehaviour
 		return _lastVisitedStopPoint;
 	}
 
-	void Start()
-	{
-		_navMeshAgent = GetComponent<NavMeshAgent>();
-		_initialRotationY = transform.eulerAngles.y;
-		_cachedPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
-		_NPCabstract = GetComponent<NPCAbstract>();
 
-		SetNPCState(_initialState);
-
-		if (_initialState == NPCStateTypes.Dead)
-			TurnNavmeshOff();
-		else
-			TurnNavmeshOn();
-	}
 
 	private IEnumerator RotateTowardsPlayerCoroutine()
 	{
@@ -341,10 +345,11 @@ public class NPCStateMachineController : MonoBehaviour
 		}
 		else if (playerMovementStateType == NPCStateTypes.Dead)
 		{
-			if (!_NPCabstract.IsNPCdead)
-				_NPCabstract.SetHealthToZero();
-			_NPCabstract.ConvertToPickableObject();
 			newState = new NPCStateDead(this);
+			Debug.Log(1111);
+			_NPCabstract.ObjectIsFullyDamaged();
+			//_NPCabstract.ConvertToPickableObject();
+			//Debug.Log("BRUH!");
 			CurrentNPCState = "Dead";
 		}
 		else

@@ -49,11 +49,6 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 		LoadPhrasesFromFiles();
 		_npcStateMachineController = GetComponent<NPCStateMachineController>();
-
-		if (IsNPCdead)
-		{
-			ObjectIsFullyDamaged();
-		}
 	}
 
 	private void LoadPhrasesFromFiles()
@@ -142,24 +137,21 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		if (IsNPCdead)
 		{
 			ObjectIsFullyDamaged();
+			_npcStateMachineController.SetNPCState(NPCStateTypes.Dead);
 		}
-	}
-
-	public void SetHealthToZero()
-	{
-		_currentHealth = 0;
 	}
 
 	public void ObjectIsFullyDamaged()
 	{
 		Debug.Log($"{_NPCname} is Dead");
-
+		Debug.Log(2222);
+		_currentHealth = 0;
 		StopAllCoroutines();
 		ConvertToPickableObject();
-
-		_NPCphrasesText.text = string.Empty;
-		_NPCphrasesText.gameObject.SetActive(false);
-
-		_npcStateMachineController.SetNPCState(NPCStateTypes.Dead);
+		Debug.Log(3333);
+		Debug.Log(_NPCphrasesText);
+	//	_NPCphrasesText.text = string.Empty;
+		//_NPCphrasesText.gameObject.SetActive(false);
+		Debug.Log(4444);
 	}
 }

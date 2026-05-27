@@ -5,7 +5,7 @@
 		if (_npcStateMachineController?.CurrentNPCState != "StationaryAction" && _npcStateMachineController?.CurrentNPCState != "Patrolling")
 			return;
 
-		if (_NPCdialogueController.RussianDialogueFile != null && _NPCdialogueController.EnglishDialogueFile != null)
+		if (_NPCdialogueController.NPCdialogueData != null)
 		{
 			_npcStateMachineController.RotateTowardsPlayer();
 			_NPCdialogueController.Interact();
