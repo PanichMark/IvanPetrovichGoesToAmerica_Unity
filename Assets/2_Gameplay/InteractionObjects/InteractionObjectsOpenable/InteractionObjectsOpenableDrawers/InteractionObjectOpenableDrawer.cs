@@ -10,12 +10,13 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 	protected Vector3 _openedPosition;
 	protected Vector3 _closedPosition;
 	[SerializeField] protected float _openLengthForward;
-	private string _interactionHintMessageMain;
+	protected string _interactionHintMessageMain;
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 
 	public void Start()
 	{
 		IsObjectOpened = false;
+
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 

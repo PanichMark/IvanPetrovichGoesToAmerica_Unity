@@ -5,10 +5,19 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 {
 	[SerializeField] private float _openLengthUp;
 	private Vector3 _intermediatePos;
-	private string _interactionHintMessageMain;
+
+
 	public void Start()
 	{
-		base.Start();
+		IsObjectOpened = false;
+
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_closedPosition = transform.localPosition;
 		_openedPosition = transform.localPosition + new Vector3(0, 0, _openLengthForward);
@@ -25,14 +34,14 @@ public class InteractionObjectOpenableVentCover : InteractionObjectOpenableDrawe
 
 		if (!IsObjectOpened)
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("CloseDoor");
-			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			_currentAnimation = StartCoroutine(OpenVentCover());
 		}
 		else
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("OpenDoor");
-			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			_currentAnimation = StartCoroutine(CloseVentCover());
 		}
 	}
