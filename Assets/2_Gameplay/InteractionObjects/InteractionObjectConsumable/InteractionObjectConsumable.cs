@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using TMPro;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
 public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLoad
 {
@@ -13,17 +11,16 @@ public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLo
 	public GameObject GameObjectPlayer { get; protected set; }
 	private LocalizationManager _localizationManager;
 	public Collider ConsumableObjectCollider { get; protected set; }
-	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
+	public string InteractionObjectNameSystem => _ConsumableName;
 
-	public string InteractionObjectNameUI => throw new System.NotImplementedException();
+	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(InteractionObjectNameSystem);
 	private PlayerResourcesHealthManager _playerResourcesHealthManager;
-	public string InteractionHintMessageMain => throw new System.NotImplementedException();
-	private string _interactionObjectConsumableType;
-	public string InteractionHintMessageAction {  get; protected set; }
+	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+	public string InteractionHintMessageAction => _interactionHintMessageAction;
+	private string _interactionHintMessageAction;
+	public string InteractionHintMessageFail => null;
 
-	public string InteractionHintMessageFail => throw new System.NotImplementedException();
-
-	public bool IsInteractionHintMessageFailActive => throw new System.NotImplementedException();
+	public bool IsInteractionHintMessageFailActive => false;
 
 	private void Start()
 	{
@@ -31,14 +28,30 @@ public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLo
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		ConsumableObjectCollider = GetComponent<Collider>();
 		GameObjectPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
-		_interactionObjectConsumableType = _interactionObjectConsumableTypes.ToString();
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot");
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+
+		if (_interactionObjectConsumableTypes == InteractionObjectConsumableTypes.Food)
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Eat");
+		}
+		else if (_interactionObjectConsumableTypes == InteractionObjectConsumableTypes.Drink)
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Drink");
+		}
 	}
 
 	private void ChangeLanguage()
 	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
+		if (_interactionObjectConsumableTypes == InteractionObjectConsumableTypes.Food)
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Eat");
+		}
+		else if (_interactionObjectConsumableTypes == InteractionObjectConsumableTypes.Drink)
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Drink");
+		}
 	}
 
 	public void Interact()
@@ -60,7 +73,15 @@ public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLo
 
 			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
 			{
-				//_playerResourcesHealthManager.
+				if (!_isRotten)
+				{
+					_playerResourcesHealthManager.ReceiveHealth(_healthToRestore);
+				}
+				else
+				{
+					_playerResourcesHealthManager.TakeDamage(_healthToRestore);
+				}
+
 				Destroy(gameObject);
 				break;
 			}
@@ -70,12 +91,18 @@ public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLo
 		}
 	}
 
-
-
-
 	public void InteractCutscene()
 	{
-		throw new System.NotImplementedException();
+		if (!_isRotten)
+		{
+			_playerResourcesHealthManager.ReceiveHealth(_healthToRestore);
+		}
+		else
+		{
+			_playerResourcesHealthManager.TakeDamage(_healthToRestore);
+		}
+
+		Destroy(gameObject);
 	}
 
 	public void LoadData(GameData data)

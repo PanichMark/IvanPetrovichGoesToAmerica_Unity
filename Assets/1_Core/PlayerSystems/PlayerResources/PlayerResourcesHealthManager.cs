@@ -4,18 +4,22 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
-public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
+public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoad
 {
 	private GameController _gameController;
 	private Slider _sliderHealthBar;
 	private Button _buttonHealingItem;
 	private TextMeshProUGUI _healingItemNumber;
-	public int MaxPlayerHealth { get; private set; } = 100;
-	public int CurrentPlayerHealth { get; private set; }
+	public float MaxPlayerHealth { get; private set; } = 100;
+	public float CurrentPlayerHealth { get; private set; }
 	private int _healingItemEffect = 34;
 	public int MaxHealingItemsNumber { get; private set; } = 9;
 
 	public int CurrentHealingItemsNumber { get; private set; }
+
+	public bool WasObjectDestroyed => false;
+
+	public float CurrentHealth => CurrentPlayerHealth;
 
 	private bool _isInitialized;
 
@@ -41,7 +45,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 
 		if (Input.GetKeyDown(KeyCode.T) && SceneManager.GetSceneAt(1).name != "Scene_0_MainMenu")
 		{
-			ReceiveDamage(900);
+			TakeDamage(900);
 		}
 	}
 
@@ -85,17 +89,34 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
         else Debug.Log("Max Healing Items");
 	}
 
-	public void ReceiveDamage(int Damage)
+	public void ReceiveHealth(float health)
 	{
-		CurrentPlayerHealth -= Damage;
+		CurrentPlayerHealth += health;
+
+		if (CurrentPlayerHealth > MaxPlayerHealth)
+		{
+			CurrentPlayerHealth = MaxPlayerHealth;
+		}
+
+		_sliderHealthBar.value = CurrentPlayerHealth;
+	}
+
+	public void TakeDamage(float amount)
+	{
+		CurrentPlayerHealth -= amount;
 
 		_sliderHealthBar.value = CurrentPlayerHealth;
 
 		if (CurrentPlayerHealth <= 0)
 		{
-			CurrentPlayerHealth = 0;
-			StartCoroutine(_gameController.PlayerHasDied());
+			ObjectIsFullyDamaged();
 		}
+	}
+
+	public void ObjectIsFullyDamaged()
+	{
+		CurrentPlayerHealth = 0;
+		StartCoroutine(_gameController.PlayerHasDied());
 	}
 
 	public void SaveData(ref GameData data)
@@ -113,4 +134,6 @@ public class PlayerResourcesHealthManager : MonoBehaviour, ISaveLoad
 
 		_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
 	}
+
+
 }

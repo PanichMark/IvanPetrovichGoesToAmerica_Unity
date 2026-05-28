@@ -27,7 +27,7 @@ public class GameData
 	public int PlayerMoney;
 
 	//PlayerHealth
-	public int PlayerHealth;
+	public float PlayerHealth;
 	public int HealingItems;
 
 	//PlayerMana

@@ -140,6 +140,7 @@ public class Bootstrap : MonoBehaviour
 		_isInitialized = true;
 	}
 
+	/*
 	private void Update()
 	{
 		if (!_isInitialized)
@@ -187,6 +188,7 @@ public class Bootstrap : MonoBehaviour
 			}
 		}
 	}
+	*/
 
 	private IEnumerator BootstrapSystemsInitialization()
 	{
