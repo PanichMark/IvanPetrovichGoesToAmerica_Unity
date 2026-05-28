@@ -11,7 +11,7 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 
 	private LocalizationManager _localizationManager;
 	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-
+	public event IInteractable.InteractableObjectHandler OnInteract;
 
 	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_WrongCombination")}!";
 	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;

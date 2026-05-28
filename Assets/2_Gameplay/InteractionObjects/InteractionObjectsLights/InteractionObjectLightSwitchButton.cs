@@ -9,7 +9,7 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable
 	[SerializeField] private bool _isThisTurnOnButton = true;
 	private LocalizationManager _localizationManager;
 	private List<Material> _lightMaterialsList = new List<Material>();
-
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
 	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";

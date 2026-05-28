@@ -16,6 +16,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	protected int _pickableLayer;
 	protected int _playerLayer;
 
+	public event IInteractable.InteractableObjectHandler OnInteract;
+
 	public GameObject CachedPlayer { get; protected set; }
 	public Collider Collider { get; protected set; }
 	public Rigidbody RigidBody { get; protected set; }

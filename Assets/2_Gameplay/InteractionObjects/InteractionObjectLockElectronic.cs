@@ -15,6 +15,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private string _interactionHintMessageAction;
 	private string _interactionHintMessageMain;
 	public bool WasUnlocked { get; private set; }
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 	public string InteractionObjectNameUI { get; protected set; }
 	public string InteractionHintMessageMain => _interactionHintMessageMain;

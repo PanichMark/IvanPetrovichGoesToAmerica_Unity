@@ -14,6 +14,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	[SerializeField] ConfigNPCHealth _NPCconfigHealth;
 	public bool IsNPCdead => _currentHealth <= 0;
+	public event IInteractable.InteractableObjectHandler OnInteract;
 
 	protected NPCPhrasesController _NPCphrasesController;
 

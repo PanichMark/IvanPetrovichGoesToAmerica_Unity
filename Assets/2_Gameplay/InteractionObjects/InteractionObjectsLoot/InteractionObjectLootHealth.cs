@@ -21,6 +21,7 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 			_playerResourcesHealthManager.AddHealingItem();
 			_isInteractionHintMessageFailActive = false;
 			WasLootItemCollected = true;
+			
 		}
 		else
 		{

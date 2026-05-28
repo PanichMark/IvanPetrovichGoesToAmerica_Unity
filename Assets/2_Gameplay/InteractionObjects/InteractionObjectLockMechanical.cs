@@ -18,6 +18,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	private SaveLoadController _saveLoadController;
 	private LocalizationManager _localizationManager;
 	private GameObject _canvasLockpickMechanicalMenu;
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	private Button _buttonExitLockpickMechanicalMenu;
 	private MenuManager _menuManager;
 	private GameSceneManager _gameSceneManager;

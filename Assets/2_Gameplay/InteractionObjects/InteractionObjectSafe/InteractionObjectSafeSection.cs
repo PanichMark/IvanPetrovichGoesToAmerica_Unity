@@ -14,7 +14,7 @@ public class InteractionObjectSafeSection : MonoBehaviour, IInteractable
 	private LocalizationManager _localizationManager;
 	private float _sectionRotationSpeed = 0.15f;
 	private Coroutine _sectionCoroutine;
-
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	public string InteractionHintMessageAction => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Rotate")}";
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameUI)} #{_safeSectionSlotNumber.ToString()}";
 	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI} ?";

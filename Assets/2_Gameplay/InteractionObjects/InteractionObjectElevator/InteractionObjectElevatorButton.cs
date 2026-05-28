@@ -7,7 +7,7 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable
 	[SerializeField] private InteractionObjectElevatorController _targetElevator;
 	[SerializeField] private bool _secondFloorButton;
 	[SerializeField] private bool _buttonUp;
-
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	public event InteractionFailedDelegate OnInteractionFailed;
 
 	private LocalizationManager _localizationManager;

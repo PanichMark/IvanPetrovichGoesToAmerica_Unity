@@ -8,6 +8,7 @@ public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLo
 
 	[SerializeField] private InteractionObjectConsumableTypes _interactionObjectConsumableTypes;
 	[SerializeField] private bool _isRotten;
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	public GameObject GameObjectPlayer { get; protected set; }
 	private LocalizationManager _localizationManager;
 	public Collider ConsumableObjectCollider { get; protected set; }

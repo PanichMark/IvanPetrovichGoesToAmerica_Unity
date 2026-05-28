@@ -10,6 +10,7 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable
 	public string InteractionHintMessageFail => null;
 	public bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction {  get; private set; }
+	public event IInteractable.InteractableObjectHandler OnInteract;
 
 	[SerializeField] private GameObject _lightObject;
 	private bool _isLightTurnedOn = false;

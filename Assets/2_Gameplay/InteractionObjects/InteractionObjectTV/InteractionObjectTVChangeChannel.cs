@@ -9,6 +9,7 @@ public class InteractionObjectTVButtonChannel : MonoBehaviour, IInteractable
 	[SerializeField] private bool _isNextChannel;
 	private LocalizationManager _localizationManager;
 
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	private Collider _collider;
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_interactionObjectNameSystem);

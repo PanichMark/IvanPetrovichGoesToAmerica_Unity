@@ -13,6 +13,7 @@ public class InteractionObjectVendingMachineChooseAmmoType : MonoBehaviour, IInt
 	public string InteractionObjectNameUI => null;
 	public string InteractionHintMessageMain => $"{_localizationManager.GetLocalizedString("InteractionObject_VendingMachine_Ammo_Reel")}?";
 	public string InteractionHintMessageAction => null;
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	public string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait")}!";
 
 	private bool _isBusy = false;

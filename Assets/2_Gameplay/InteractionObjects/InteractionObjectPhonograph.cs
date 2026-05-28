@@ -7,6 +7,7 @@ public class InteractionObjectPhonograph : MonoBehaviour, IInteractable
 	private LocalizationManager _localizationManager;
 	[SerializeField] private AudioClip _audioClip;
 	private AudioSource _audioSource;
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";

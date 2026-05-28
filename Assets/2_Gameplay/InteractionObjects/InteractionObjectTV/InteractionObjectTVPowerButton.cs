@@ -13,6 +13,7 @@ public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 	public string InteractionObjectNameUI => null;
 
 	public string InteractionHintMessageMain => $"{_interactionHintMessageAction}?";
+	public event IInteractable.InteractableObjectHandler OnInteract;
 
 	private GameObject _tvScreen;
 

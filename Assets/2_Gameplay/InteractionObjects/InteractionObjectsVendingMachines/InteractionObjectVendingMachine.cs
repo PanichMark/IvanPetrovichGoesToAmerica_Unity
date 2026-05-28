@@ -11,7 +11,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 	private InteractionObjectLootAbstract _goodsComponent;
 	[SerializeField] private string _moneyType;
 	private string _moneyForUI;
-
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
 	private bool _isAdditionalInteractionHintActive;
 	private LocalizationManager _localizationManager;

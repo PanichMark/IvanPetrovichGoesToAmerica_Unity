@@ -14,6 +14,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	private MenuManager _menuManager;
 	private bool _isReading;
 	private LocalizationManager _localizationManager;
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	public string InteractionHintMessageMain => $"{_interactionHintMessageAction} {InteractionObjectNameUI}?";
 	public string InteractionHintMessageFail => null;
 

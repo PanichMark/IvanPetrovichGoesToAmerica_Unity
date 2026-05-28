@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractable, IGainedItem, ISaveLoad
 {
+	public event IInteractable.InteractableObjectHandler OnInteract;
 	[SerializeField] protected string _interactionObjectNameSystem;
 	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
@@ -44,6 +45,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		LootObjectCollider.enabled = false;
 		gameObject.tag = "Untagged";
 		StartCoroutine(MoveTowardsPlayer());
+		OnInteract?.Invoke();
 	}
 
 	public virtual void InteractCutscene()
