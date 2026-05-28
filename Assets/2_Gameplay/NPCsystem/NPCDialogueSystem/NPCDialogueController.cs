@@ -202,7 +202,7 @@ public class NPCDialogueController : MonoBehaviour
 		{
 			for (int i = 0; i < _dialogueBranchStructsList.Count; i++)
 			{
-				if (_dialogueBranchStructsList[i].DialogueBranchLine == (_currentDialogueStepIndex + 1))
+				if ((_currentDialogueStepIndex + 1) == _dialogueBranchStructsList[i].DialogueBranchLine)
 				{
 					_dialogueBranchStructIndex = i;
 					_canSkip = false;
@@ -212,7 +212,7 @@ public class NPCDialogueController : MonoBehaviour
 					ShowDialogueAnswerOptions(i);
 					break;
 				}
-				if (_dialogueBranchStructsList[i].DialogueBranchLine == (_currentDialogueStepIndex))
+				if ((_currentDialogueStepIndex == _dialogueBranchStructsList[i].DialogueBranchLine) || ((_currentDialogueStepIndex + 1) == _dialogueBranchStructsList[i].GoToNoOptionLine))
 				{
 					_NPCdialogueText.text = $"{_localizationManager.GetLocalizedString("IvanPetrovich")}: {_localizedDialogue[currentLanguage][_currentDialogueStepIndex]}";
 				}
