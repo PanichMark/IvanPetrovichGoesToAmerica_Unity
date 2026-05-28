@@ -284,6 +284,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fca05fd0dad45448b5107f7da5af047, type: 3}
+--- !u!4 &33256865 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+  m_PrefabInstance: {fileID: 5349806480858881741}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &36382688
 GameObject:
   m_ObjectHideFlags: 0
@@ -4060,6 +4065,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1102230735}
   - {fileID: 699614805}
   - {fileID: 930798155}
   - {fileID: 1038715069}
@@ -4710,7 +4716,7 @@ Transform:
   - {fileID: 935223551}
   - {fileID: 1245805107}
   - {fileID: 1509517296}
-  m_Father: {fileID: 1441387690}
+  m_Father: {fileID: 968480584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1108518000
 GameObject:
@@ -6377,9 +6383,9 @@ Transform:
   m_Children:
   - {fileID: 1764312468}
   - {fileID: 1806723868}
-  - {fileID: 1102230735}
   - {fileID: 824761956}
   - {fileID: 113588964}
+  - {fileID: 2091141514}
   m_Father: {fileID: 304420878}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1450272500
@@ -9564,6 +9570,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1207744409}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &2091141513
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2091141514}
+  m_Layer: 0
+  m_Name: --- PHONOGRAPHS ---
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2091141514
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091141513}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 33256865}
+  m_Father: {fileID: 1441387690}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2101264670
 GameObject:
   m_ObjectHideFlags: 0
@@ -11634,6 +11672,63 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1001 &5349806480858881741
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2091141514}
+    m_Modifications:
+    - target: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513737743449902958, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4706250775165278723, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
+      propertyPath: m_Name
+      value: InteractionObject_Phonograph_HymnRussianRepublic
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f554a51f7f6f87642a5b2721174cce70, type: 3}
 --- !u!1 &5559970989955699855
 GameObject:
   m_ObjectHideFlags: 0
