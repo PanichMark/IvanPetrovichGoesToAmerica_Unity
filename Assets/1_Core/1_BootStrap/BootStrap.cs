@@ -20,6 +20,9 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private ConfigBootstrapPlayerWeapons _playerWeapons;
 	[SerializeField] private ConfigBootstrapPlayerResourcesAmmo _playerAmmo;
 
+	[Header("--- GAME MISSIONS ---")]
+	[SerializeField] private GameMissions _allMissions;
+
 	[Header("--- TUTORIAL CONFIG ---")]
 	[SerializeField] private TutorialNotesList _tutorialNotes;
 	public TutorialNotesList ConfigPauseSubMenuTutorial => _tutorialNotes;
@@ -86,11 +89,13 @@ public class Bootstrap : MonoBehaviour
 	private GameObject _playerGameObject;
 	private GameObject _playerCameraGameObject;
 
-	// Система оружия
-	private BootstrapSubProcessWeaponSystem _bootstrapSubProcessWeaponSystem;
-	
 	// Система взаимодействия
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
+
+	// Система оружия
+	private BootstrapSubProcessWeaponSystem _bootstrapSubProcessWeaponSystem;
+
+	private BootstrapSubProcessMissionsSystem _bootstrapSubProcessMissionsSystem;
 
 	private void Awake()
 	{
@@ -200,6 +205,7 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(InitializePlayerSystems());
 		yield return StartCoroutine(InitializeInteractionSystem());
 		yield return StartCoroutine(InitializeWeaponSystem());
+		yield return StartCoroutine(InitializeMissionsSystem());
 
 		yield return StartCoroutine(RegisterBootstrapDependencies());
 	}
@@ -387,6 +393,12 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessMenuSystem.TextLeftWeaponAmmoReserveNumber,
 			_bootstrapSubProcessMenuSystem.LeftWeaponAmmoSeparator);
 		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
+	}
+
+	private IEnumerator InitializeMissionsSystem()
+	{
+		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(_allMissions);
+		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
 	}
 
 	private IEnumerator RegisterBootstrapDependencies()
