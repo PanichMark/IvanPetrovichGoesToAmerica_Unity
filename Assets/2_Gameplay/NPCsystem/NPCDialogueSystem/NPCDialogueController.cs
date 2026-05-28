@@ -21,7 +21,7 @@ public class NPCDialogueController : MonoBehaviour
 	private bool _PerformActionOnYesFinal;
 	private GameObject _textDialogueYes;
 	private GameObject _textDialogueNo;
-
+	private NPCAbstract _NPCabstract;
 	private TextMeshProUGUI _textComponentDialogueYes;
 	private TextMeshProUGUI _textComponentDialogueNo;
 
@@ -43,7 +43,7 @@ public class NPCDialogueController : MonoBehaviour
 	public void Initialize()
 	{
 		_audioSource = GetComponent<AudioSource>();
-
+		_NPCabstract = GetComponent<NPCAbstract>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		LoadDialogueFromFiles();
@@ -196,7 +196,7 @@ public class NPCDialogueController : MonoBehaviour
 
 		PlayVoiceLineForCurrentStep(currentLanguage);
 
-		_NPCdialogueText.text = _localizedDialogue[currentLanguage][_currentDialogueStepIndex];
+		_NPCdialogueText.text = $"{_NPCabstract.InteractionObjectNameUI}: {_localizedDialogue[currentLanguage][_currentDialogueStepIndex]}";
 
 		if (_dialogueBranchStructsList.Count > 0)
 		{
@@ -211,6 +211,10 @@ public class NPCDialogueController : MonoBehaviour
 					_buttonDialogueNo.onClick.AddListener(() => SelectOption(false));
 					ShowDialogueAnswerOptions(i);
 					break;
+				}
+				if (_dialogueBranchStructsList[i].DialogueBranchLine == (_currentDialogueStepIndex))
+				{
+					_NPCdialogueText.text = $"{_localizationManager.GetLocalizedString("IvanPetrovich")}: {_localizedDialogue[currentLanguage][_currentDialogueStepIndex]}";
 				}
 			}
 		}

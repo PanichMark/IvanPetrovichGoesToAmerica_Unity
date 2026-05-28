@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class BootstrapSubProcessMissionsSystem : MonoBehaviour
+public class BootstrapSubProcessMissionsSystem
 {
 	private GameObject _GameObjectBootstrapMissionsSystem;
 
