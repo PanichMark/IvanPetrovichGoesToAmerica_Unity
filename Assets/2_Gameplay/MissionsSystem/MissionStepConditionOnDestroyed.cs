@@ -3,7 +3,7 @@
 [CreateAssetMenu(fileName = "MissionStepConditionOnDestroyed", menuName = "Missions/MissionConditions/MissionStepConditionOnDestroyed")]
 public class MissionStepConditionOnDestroyed : MissionStepConditionAbstract
 {
-	public GameObject targetDamageableObject;
+	public GameObject TargetDamageableObject;
 	private bool _isCompleted = false;
 
 	public override bool IsConditionMet()
@@ -23,7 +23,7 @@ public class MissionStepConditionOnDestroyed : MissionStepConditionAbstract
 
 	private void HandleObjectDestroyed(GameObject destroyedObject, bool wasLethal)
 	{
-		if (destroyedObject == targetDamageableObject && !_isCompleted)
+		if (destroyedObject == TargetDamageableObject && !_isCompleted)
 		{
 			_isCompleted = true;
 			FindObjectOfType<MissionsManager>().CheckAndCompleteCurrentStep();

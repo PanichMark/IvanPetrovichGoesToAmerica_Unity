@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewMission", menuName = "Missions/NewMission")]
+[CreateAssetMenu(fileName = "Mission", menuName = "Missions/Mission")]
 public class Mission : MissionAbstract
 {
-	public string missionName;
+	public string MissionDiscription;
 
-	public MissionStep[] missionStepsArray;
+	public MissionStep[] MissionStepsArray;
 
-	public override MissionStepAbstract[] steps => missionStepsArray;
+	public override MissionStepAbstract[] Steps => MissionStepsArray;
 }

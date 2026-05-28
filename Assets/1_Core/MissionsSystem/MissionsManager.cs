@@ -2,8 +2,8 @@
 
 public class MissionsManager : MonoBehaviour
 {
-	public MissionAbstract activeMission;
-	private int currentStepIndex = 0;
+	public MissionAbstract ActiveMission;
+	private int _currentStepIndex = 0;
 
 	public delegate void InteractionEventHandler(GameObject interactedObject);
 	public static event InteractionEventHandler OnAnyObjectInteracted;
@@ -13,16 +13,16 @@ public class MissionsManager : MonoBehaviour
 
 	public void CheckAndCompleteCurrentStep()
 	{
-		if (activeMission == null) return;
-		if (currentStepIndex >= activeMission.steps.Length) return;
+		if (ActiveMission == null) return;
+		if (_currentStepIndex >= ActiveMission.Steps.Length) return;
 
-		activeMission.steps[currentStepIndex].OnStepCompleted();
+		ActiveMission.Steps[_currentStepIndex].OnStepCompleted();
 	}
 
 	public void CompleteCurrentStep()
 	{
-		currentStepIndex++;
-		if (currentStepIndex < activeMission.steps.Length)
+		_currentStepIndex++;
+		if (_currentStepIndex < ActiveMission.Steps.Length)
 		{
 			// Здесь можно добавить логику для показа уведомления о новом шаге
 		}

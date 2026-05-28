@@ -2,11 +2,12 @@
 using System.Linq;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "MissionStep", menuName = "Missions/MissionStep")]
 public class MissionStep : MissionStepAbstract
 {
 	[TextArea(3, 10)]
-	public string stepDescription = "Описание шага для игрока";
-	public List<MissionStepConditionAbstract> conditions = new List<MissionStepConditionAbstract>();
+	public string StepDescription;
+	public List<MissionStepConditionAbstract> Sonditions = new List<MissionStepConditionAbstract>();
 
 	public override void OnStepCompleted()
 	{
@@ -19,6 +20,6 @@ public class MissionStep : MissionStepAbstract
 
 	private bool AreAllConditionsMet()
 	{
-		return conditions.All(cond => cond.IsConditionMet());
+		return Sonditions.All(cond => cond.IsConditionMet());
 	}
 }

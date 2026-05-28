@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿// Файл: MissionStepConditionOnInteraction.cs (в сборке Gameplay)
+using UnityEngine;
 
-[CreateAssetMenu(fileName = "MissionStepConditionOnInteraction", menuName = "Missions/MissionConditions/MissionStepConditionOnInteraction")]
+[CreateAssetMenu(fileName = "Cond_Interaction", menuName = "Scriptable Objects/Conditions/On Interaction")]
 public class MissionStepConditionOnInteraction : MissionStepConditionAbstract
 {
-	public GameObject targetInteractableObject;
 	private bool _isCompleted = false;
 
 	public override bool IsConditionMet()
@@ -11,22 +11,15 @@ public class MissionStepConditionOnInteraction : MissionStepConditionAbstract
 		return _isCompleted;
 	}
 
-	private void OnEnable()
+	// Этот метод будет вызываться из скрипта на объекте (например, DoorScript)
+	public void OnPlayerInteracted(GameObject interactedObject)
 	{
-		MissionsManager.OnAnyObjectInteracted += HandleObjectInteracted;
-	}
-
-	private void OnDisable()
-	{
-		MissionsManager.OnAnyObjectInteracted -= HandleObjectInteracted;
-	}
-
-	private void HandleObjectInteracted(GameObject interactedObject)
-	{
-		if (interactedObject == targetInteractableObject && !_isCompleted)
+		// Проверяем, что у нас есть владелец и что взаимодействовали именно с ним
+		if (OwnerObject != null && interactedObject == OwnerObject && !_isCompleted)
 		{
 			_isCompleted = true;
-			FindObjectOfType<MissionsManager>().CheckAndCompleteCurrentStep();
+			Debug.Log($"[Условие] Взаимодействие с {OwnerObject.name} засчитано.");
+			NotifyMissionManager(); // Сообщаем менеджеру о завершении шага
 		}
 	}
 }
