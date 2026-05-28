@@ -2,8 +2,10 @@
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(NPCStateMachineController))]
 [RequireComponent(typeof(NPCPhrasesController))]
+
 public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 {
 	[SerializeField] protected string _NPCname;
@@ -59,11 +61,12 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public virtual void Interact()
 	{
-
+		Debug.Log("bruh");
 	}
 
 	public void InteractCutscene()
 	{
+		Debug.Log("LMAO!");
 		Interact();
 	}
 

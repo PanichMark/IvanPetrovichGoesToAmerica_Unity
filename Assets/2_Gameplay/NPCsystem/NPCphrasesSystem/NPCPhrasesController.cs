@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class NPCPhrasesController : MonoBehaviour
 {
+	private AudioSource _audioSource;
 	private NPCAbstract _NPCabstract;
 	private LocalizationManager _localizationManager;
 	private Dictionary<LanguagesEnum, List<string>> _localizedNPSphrases = new Dictionary<LanguagesEnum, List<string>>
@@ -23,6 +24,7 @@ public class NPCPhrasesController : MonoBehaviour
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("TextPhraseLine");
 		//Debug.Log(_NPCphrasesText);
+		_audioSource = GetComponent<AudioSource>();
 		LoadPhrasesTextFiles();
 	}
 

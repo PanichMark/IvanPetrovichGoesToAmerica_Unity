@@ -11,7 +11,7 @@ public class NPCDialogueController : MonoBehaviour
 	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
 
 	[SerializeField] private List<NPCDialogueBranch> _dialogueBranchStructsList;
-
+	private AudioSource _audioSource;
 	private int _dialogueBranchStructIndex;
 	private MenuManager _menuManager;
 	private Button _buttonDialogueYes;
@@ -42,6 +42,8 @@ public class NPCDialogueController : MonoBehaviour
 
 	public void Initialize()
 	{
+		_audioSource = GetComponent<AudioSource>();
+
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		LoadDialogueFromFiles();
@@ -116,9 +118,9 @@ public class NPCDialogueController : MonoBehaviour
 
 	private void LoadDialogueFromFiles()
 	{
-		if (_NPCdialogueData.DialogueFileRussian != null)
+		if (_NPCdialogueData.DialogueTextfileRussian != null)
 		{
-			using (var reader = new StringReader(_NPCdialogueData.DialogueFileRussian.text))
+			using (var reader = new StringReader(_NPCdialogueData.DialogueTextfileRussian.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
@@ -130,14 +132,14 @@ public class NPCDialogueController : MonoBehaviour
 				}
 			}
 		}
-		else if (_NPCdialogueData.DialogueFileEnglish != null)
+		else if (_NPCdialogueData.DialogueTextfileEnglish != null)
 		{
 			Debug.LogWarning("Russian dialogue file is not set!");
 		}
 
-		if (_NPCdialogueData.DialogueFileEnglish != null)
+		if (_NPCdialogueData.DialogueTextfileEnglish != null)
 		{
-			using (var reader = new StringReader(_NPCdialogueData.DialogueFileEnglish.text))
+			using (var reader = new StringReader(_NPCdialogueData.DialogueTextfileEnglish.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
@@ -149,7 +151,7 @@ public class NPCDialogueController : MonoBehaviour
 				}
 			}
 		}
-		else if (_NPCdialogueData.DialogueFileRussian != null)
+		else if (_NPCdialogueData.DialogueTextfileRussian != null)
 		{
 			Debug.LogWarning("English dialogue file is not set!");
 		}
@@ -190,6 +192,10 @@ public class NPCDialogueController : MonoBehaviour
 			return;
 		}
 
+		StopPreviousVoiceLine();
+
+		PlayVoiceLineForCurrentStep(currentLanguage);
+
 		_NPCdialogueText.text = _localizedDialogue[currentLanguage][_currentDialogueStepIndex];
 
 		if (_dialogueBranchStructsList.Count > 0)
@@ -219,6 +225,30 @@ public class NPCDialogueController : MonoBehaviour
 			{
 				_PerformActionOnYesFinal = true;
 			}
+		}
+	}
+
+	private void PlayVoiceLineForCurrentStep(LanguagesEnum currentLanguage)
+	{
+		AudioClip[] currentLanguageVoicelines = (currentLanguage == LanguagesEnum.Russian)
+			? _NPCdialogueData.DialogueVoicelinesRussian
+			: _NPCdialogueData.DialogueVoicelinesEnglish;
+
+		if (currentLanguageVoicelines != null && _currentDialogueStepIndex < currentLanguageVoicelines.Length)
+		{
+			AudioClip clipToPlay = currentLanguageVoicelines[_currentDialogueStepIndex];
+		
+			_audioSource.clip = clipToPlay;
+		
+			_audioSource.Play();
+		}
+	}
+
+	private void StopPreviousVoiceLine()
+	{
+		if (_audioSource.isPlaying)
+		{
+			_audioSource.Stop(); 
 		}
 	}
 

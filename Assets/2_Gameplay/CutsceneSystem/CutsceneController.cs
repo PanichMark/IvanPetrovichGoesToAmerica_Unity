@@ -61,7 +61,7 @@ public class CutsceneController : MonoBehaviour
 			{
 				if (data.npcObject != null && data.npcObject.GetComponent<NPCStateMachineController>() != null)
 				{
-					_shouldInteractWithObjects = true;
+					_shouldChangeNPCState = true;
 					break; 
 				}
 			}
@@ -73,7 +73,7 @@ public class CutsceneController : MonoBehaviour
 			{
 				if (data != null && data.GetComponent<IInteractable>() != null)
 				{
-					_shouldChangeNPCState = true;
+					_shouldInteractWithObjects = true;
 					break;
 				}
 			}
