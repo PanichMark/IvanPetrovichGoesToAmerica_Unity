@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void OnWeaponUnlocked(GameObject weaponPrefab);
+public delegate void OnAnyWeaponUnlocked(GameObject weaponPrefab);
+
 public delegate void OnWeaponChanged(string activeHand);
 
 public class PlayerWeaponController : MonoBehaviour
@@ -13,12 +14,14 @@ public class PlayerWeaponController : MonoBehaviour
 	private PlayerBehaviourController _playerBehaviour;
 	private InteractionController _interactionController;
 	private PlayerResourcesAmmoManager _ammoManager;
+	private HUDhealthAndManaController _HUDhealthAndManaController;
 
 	public Dictionary<string, GameObject> UnlockedWeapons = new Dictionary<string, GameObject>();
 
-	public event OnWeaponUnlocked OnWeaponUnlocked; 
+	public event OnAnyWeaponUnlocked OnAnyWeaponUnlocked; 
 
 	public event OnWeaponChanged OnWeaponChanged;
+
 	public bool IsLeftHand {  get; private set; }
 	public bool IsAbleToUseRightWeapon { get; private set; }
 	public bool IsAbleToUseLeftWeapon { get; private set; }
@@ -31,13 +34,14 @@ public class PlayerWeaponController : MonoBehaviour
 	public WeaponAbstract LeftHandWeaponComponent { get; private set; }
 	public WeaponAbstract RightHandWeaponComponent { get; private set; }
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviourController playerBehaviour, PlayerResourcesAmmoManager ammoManager, InteractionController interactionController)
+	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviourController playerBehaviour, HUDhealthAndManaController HUDhealthAndManaController, PlayerResourcesAmmoManager ammoManager, InteractionController interactionController)
 	{
 		_inputDevice = inputDevice;
 		_menuManager = menuManager;
 		_playerBehaviour = playerBehaviour;
 		_ammoManager = ammoManager;
 		_interactionController = interactionController;
+		_HUDhealthAndManaController = HUDhealthAndManaController;
 
 		IsAbleToUseRightWeapon = true;
 		IsAbleToUseLeftWeapon = true;
@@ -162,7 +166,13 @@ public class PlayerWeaponController : MonoBehaviour
 		UnlockedWeapons[key] = weaponPrefab;
 		SetHasAnyWeapon();
 
-		OnWeaponUnlocked?.Invoke(weaponPrefab);
+		var rangedComponent = weaponPrefab.GetComponent<WeaponEugenicAbstract>();
+		if (rangedComponent != null)
+		{
+			SetHasEugenicWeapon();
+		}
+
+			OnAnyWeaponUnlocked?.Invoke(weaponPrefab);
 
 		Debug.Log($"Unlocked {key}");
 	}
@@ -188,12 +198,20 @@ public class PlayerWeaponController : MonoBehaviour
 	private void SetHasAnyWeapon()
 	{
 		HasAnyWeapon = true;
+		_HUDhealthAndManaController.ShowHealthBar();
+	}
+
+	private void SetHasEugenicWeapon()
+	{
+		_HUDhealthAndManaController.ShowManaBar();
 	}
 
 	public void ResetAllWeapons()
 	{
 		UnlockedWeapons.Clear();
 		HasAnyWeapon = false;
+		_HUDhealthAndManaController.HideHealthBar();
+		_HUDhealthAndManaController.HideManaBar();
 	}
 
 	public void SelectWeapon(GameObject weaponPrefab)

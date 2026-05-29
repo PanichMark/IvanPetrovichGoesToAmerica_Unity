@@ -6,11 +6,19 @@ public class HUDhealthAndManaController : MonoBehaviour
     private GameSceneManager _gameSceneManager;
     private GameController _gameController;
 
-    public void Initialize (GameController gameController, GameSceneManager gameSceneManager, MenuManager menuManager, GameObject canvasHUDPlayerResources)
+    private GameObject _healthBar;
+	private GameObject _manaBar;
+
+	public void Initialize (GameController gameController, GameSceneManager gameSceneManager, MenuManager menuManager, GameObject canvasHUDPlayerResources, GameObject healthBar, GameObject manaBar)
     {
         _gameSceneManager = gameSceneManager;
         _menuManager = menuManager;
         _canvasHUDhealthAndMana = canvasHUDPlayerResources;
+        _healthBar = healthBar;
+        _manaBar = manaBar;
+
+		HideHealthBar();
+		HideManaBar();
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDhealthAndMana;
 		_menuManager.OnClosePauseMenu += ShowCanvasHUDhealthAndMana;
@@ -42,5 +50,25 @@ public class HUDhealthAndManaController : MonoBehaviour
 	{
 		_canvasHUDhealthAndMana.SetActive(false);
 		Debug.Log("Hide canvasHUDhealthAndMana");
+	}
+
+    public void ShowHealthBar()
+    {
+		_healthBar.SetActive(true);
+    }
+
+	public void HideHealthBar()
+	{
+		_healthBar.SetActive(false);
+	}
+
+	public void ShowManaBar()
+	{
+		_manaBar.SetActive(true);
+	}
+
+	public void HideManaBar()
+	{
+		_manaBar.SetActive(false);
 	}
 }

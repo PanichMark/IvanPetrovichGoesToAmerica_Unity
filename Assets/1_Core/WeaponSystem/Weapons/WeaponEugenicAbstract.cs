@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class EugenicWeaponAbstract : WeaponAbstract
+public abstract class WeaponEugenicAbstract : WeaponAbstract
 {
 	public int ManaCost { get; protected set; }
 	protected GameObject _player;

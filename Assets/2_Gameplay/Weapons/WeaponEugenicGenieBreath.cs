@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WeaponEugenicGenieBreath : EugenicWeaponAbstract
+public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 {
 	private float _attackRange = 5f;
 	private float _knockbackForce = 10f;

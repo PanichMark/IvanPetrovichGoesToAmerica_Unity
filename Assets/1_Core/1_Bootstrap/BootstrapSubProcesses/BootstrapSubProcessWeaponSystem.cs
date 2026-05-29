@@ -110,15 +110,17 @@ public class BootstrapSubProcessWeaponSystem
 			_inputDevice,
 			_bootstrapSubProcessMenuSystem.MenuManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+			_bootstrapSubProcessMenuSystem.HUDhealthAndManaController,
 			_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager,
 			_bootstrapSubProcessInteractionSystem.InteractionController);
 
 		_legKickAttackController.Initialize(
-			_inputDevice,
-			_bootstrapSubProcessPlayerSystems.PlayerMovementController,
-			_bootstrapSubProcessPlayerSystems.PlayerMovementStateMachineController,
-			_gameObjectPlayer);
-	
+		_inputDevice,
+		_bootstrapSubProcessPlayerSystems.PlayerMovementController,
+		_bootstrapSubProcessPlayerSystems.PlayerMovementStateMachineController,
+		_gameObjectPlayer,
+		WeaponController);
+
 		_weaponWheelController.Initialize(
 			_inputDevice,
 			_bootstrapSubProcessMenuSystem.MenuManager,

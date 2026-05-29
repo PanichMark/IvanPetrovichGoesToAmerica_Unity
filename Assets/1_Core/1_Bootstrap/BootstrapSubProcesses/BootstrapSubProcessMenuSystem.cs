@@ -98,12 +98,14 @@ public class BootstrapSubProcessMenuSystem
 	private CutsceneMenuController _cutsceneMenuController;
 	private GameObject _canvasMenuCutscene;
 
-	private HUDhealthAndManaController _HUDhealthAndManaController;
+	public HUDhealthAndManaController HUDhealthAndManaController { get; private set; }
 	private GameObject _canvasHUDhealthAndMana;
+	private GameObject _healthBar;
 	public Slider SliderHealthBar { get; private set; }
 	public Button ButtonUseHealingItem {  get; private set; }
 	public TextMeshProUGUI TextHealingItemNumber { get; private set; }
 	public Slider SliderManaBar {  get; private set; }
+	private GameObject _manaBar;
 	public Button ButtonUseManaReplenishItem {  get; private set; }
 	public TextMeshProUGUI TextManaReplenishItemNumber { get; private set; }
 
@@ -187,13 +189,13 @@ public class BootstrapSubProcessMenuSystem
 		_pauseMenuConfirmActionController = _gameObjectBootstrapMenuSystem.AddComponent<PauseMenuConfirmActionController>();
 		_mainMenuReadNewsController = _gameObjectBootstrapMenuSystem.AddComponent<MainMenuReadNewsController>();
 		_cutsceneMenuController = _gameObjectBootstrapMenuSystem.AddComponent<CutsceneMenuController>();
-		_HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
+		HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
 
-		SliderHealthBar = _canvasHUDhealthAndMana.transform.Find("SliderHealthBar").GetComponent<Slider>();
+		SliderHealthBar = _bootstrap.FindDeepGameObject(_canvasHUDhealthAndMana, "SliderHealthBar").GetComponent<Slider>();
 		ButtonUseHealingItem = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "ButtonUseHealingItem").GetComponent<Button>();
 		TextHealingItemNumber = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "TextHealingItemNumber").GetComponent<TextMeshProUGUI>();
-		SliderManaBar = _canvasHUDhealthAndMana.transform.Find("SliderManaBar").GetComponent<Slider>();
+		SliderManaBar = _bootstrap.FindDeepGameObject(_canvasHUDhealthAndMana, "SliderManaBar").GetComponent<Slider>();
 		ButtonUseManaReplenishItem = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "ButtonUseManaReplenishItem").GetComponent<Button>();
 		TextManaReplenishItemNumber = _bootstrap.FindDeepGameObject(_canvasMenuWeaponWheel, "TextManaReplenishItemNumber").GetComponent<TextMeshProUGUI>();
 		TextPlayerMoneyNumber = _canvasPauseMenu.transform.Find("TextPlayerMoneyNumber").GetComponent<TMP_Text>();
@@ -317,8 +319,11 @@ public class BootstrapSubProcessMenuSystem
 		_buttonResetGameSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonResetSettings");
 		_buttonClosePauseSubMenuSettings = _bootstrap.FindDeepGameObject(_canvasPauseSubMenuSettings, "ButtonClosePauseSubMenuSettings");
 
-		SliderHealthBar = _canvasHUDhealthAndMana.transform.Find("SliderHealthBar").GetComponent<Slider>();
-		SliderManaBar = _canvasHUDhealthAndMana.transform.Find("SliderManaBar").GetComponent<Slider>();
+		_healthBar = _bootstrap.FindDeepGameObject(_canvasHUDhealthAndMana, "HealthBar");
+		SliderHealthBar = _bootstrap.FindDeepGameObject(_canvasHUDhealthAndMana, "SliderHealthBar").GetComponent<Slider>();
+
+		_manaBar = _bootstrap.FindDeepGameObject(_canvasHUDhealthAndMana, "ManaBar");
+		SliderManaBar = _bootstrap.FindDeepGameObject(_canvasHUDhealthAndMana, "SliderManaBar").GetComponent<Slider>();
 
 		MenuManager.Initialize(_gameController, _inputDevice, _gameSceneManager, _canvasMenuBackground);
 		_pauseMenuController.Initialize(_gameController, _inputDevice, _gameSceneManager, MenuManager, _canvasPauseMenu, _buttonsPauseMenu, _saveLoadController);
@@ -335,7 +340,7 @@ public class BootstrapSubProcessMenuSystem
 		_pauseMenuConfirmActionController.Initialize(_gameSceneManager, _saveLoadController, MenuManager, _pauseMenuController, _pauseSubMenuSaveController, _pauseSubMenuLoadController, PauseSubMenuSettingsController, PauseSubMenuSettingsSectionGeneralController, PauseSubMenuSettingsSectionControlsController, PauseSubMenuSettingsSectionGraphicsController, PauseSubMenuSettingsSectionAudioController,_canvasMenuConfirmAction, _buttonConfirmAction, _buttonCancelAction, _textConfirmActionMessage);
 		_mainMenuReadNewsController.Initialize(_inputDevice, _canvasMainMenuReadNews, _buttonCloseMainMenuReadNews, _buttonYouTube , _buttonGitHub);
 		_cutsceneMenuController.Initialize(_gameSceneManager, MenuManager, _canvasMenuCutscene);
-		_HUDhealthAndManaController.Initialize(_gameController, _bootstrapSubProcessSceneSystem.GameSceneManager, MenuManager, _canvasHUDhealthAndMana);
+		HUDhealthAndManaController.Initialize(_gameController, _bootstrapSubProcessSceneSystem.GameSceneManager, MenuManager, _canvasHUDhealthAndMana, _healthBar, _manaBar);
 
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", _pauseMenuController);

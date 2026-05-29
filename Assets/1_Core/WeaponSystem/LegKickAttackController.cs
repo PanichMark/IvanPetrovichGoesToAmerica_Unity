@@ -7,6 +7,7 @@ public class LegKickAttackController : MonoBehaviour
 	private PlayerMovementController _playerMovementController;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private GameObject _cachedPlayer;
+	private PlayerWeaponController _playerWeaponController;
 	public bool IsPlayerLegKicking { get; private set; }
 
 	private float _capsuleHeight;    
@@ -15,12 +16,13 @@ public class LegKickAttackController : MonoBehaviour
 
 	public float WeaponDamage { get; private set; } = 50;
 
-	public void Initialize(IInputDevice inputDevice, PlayerMovementController playerMovementController, PlayerMovementStateMachineController playerMovementStateMachineController, GameObject cachedPlayer)
+	public void Initialize(IInputDevice inputDevice, PlayerMovementController playerMovementController, PlayerMovementStateMachineController playerMovementStateMachineController, GameObject cachedPlayer, PlayerWeaponController playerWeaponController)
 	{
 		_inputDevice = inputDevice;
 		_cachedPlayer = cachedPlayer;
 		_playerMovementController = playerMovementController;
 		_playerMovementStateMachineController = playerMovementStateMachineController;
+		_playerWeaponController = playerWeaponController;
 
 		_capsuleHeight = 1.8f;   
 		_capsuleRadius = 0.3f;     
@@ -32,7 +34,7 @@ public class LegKickAttackController : MonoBehaviour
 	
 	void Update()
 	{
-		if (_inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerIdle" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerWalking"
+		if (_inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && _playerWeaponController.HasAnyWeapon && (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerIdle" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerWalking"
 			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerRunning" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
 			_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"))
 		{ 
