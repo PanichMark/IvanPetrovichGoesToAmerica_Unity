@@ -25,7 +25,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public virtual Sprite LootObjectIcon { get; protected set; }
 
-	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Max")} {InteractionObjectNameUI}!";
 	public virtual bool IsInteractionHintMessageFailActive => false;
 

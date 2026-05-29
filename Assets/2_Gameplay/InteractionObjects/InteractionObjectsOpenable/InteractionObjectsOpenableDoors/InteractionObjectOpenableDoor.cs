@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Linq;
+using UnityEngine;
 
 public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 {
@@ -7,9 +8,9 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 	[SerializeField] private int _doorOpenAngle = 90;
 	protected string _interactionHintMessageMain;
-
+	private KeysManager _keysManager;
 	[SerializeField] private float _doorOpeningSpeed = 200f;
-	[SerializeField] protected InteractionObjectLootKey _interactionObjectLootKey;
+	[SerializeField] protected InteractionObjectKeyData _interactionObjectKeyData;
 	[SerializeField] protected InteractionObjectLockMechanical _mechanicalLockController;
 	[SerializeField] protected InteractionObjectLockElectronic _electronicLockController;
 	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
@@ -26,6 +27,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	void Start()
 	{
 		IsObjectOpened = false;
+		_keysManager = ServiceLocator.Resolve<KeysManager>("KeysManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		Vector3 openedEulerAngles = new Vector3(0, _doorOpenAngle, 0);
@@ -36,7 +38,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
-		if (_interactionObjectLootKey != null)
+		if (_interactionObjectKeyData != null)
 		{
 			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_KeyLocked")}!";
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
@@ -54,9 +56,10 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			_electronicLockController.OnUnlockLock += UnlockDoor;
 		}
 
-		if ((_interactionObjectLootKey == null && _mechanicalLockController == null && _electronicLockController == null)
+		if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null)
 			|| (_mechanicalLockController != null &&_mechanicalLockController.WasUnlocked)
-			|| (_electronicLockController != null && _electronicLockController.WasUnlocked))
+			|| (_electronicLockController != null && _electronicLockController.WasUnlocked)
+			|| (_interactionObjectKeyData != null && _keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString())))
 		{
 			SetUnlockedDoorHintMessageMain();
 
@@ -66,7 +69,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	public override void Interact()
 	{
-		if (_interactionObjectLootKey != null)
+		if (_interactionObjectKeyData != null)
 		{
 			_isAdditionalInteractionHintActive = true;
 		}
@@ -83,9 +86,10 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			_electronicLockController.Interact();
 		}
 
-		if ((_interactionObjectLootKey == null && _mechanicalLockController == null && _electronicLockController == null) ||
-			_mechanicalLockController?.WasUnlocked == true ||
-			_electronicLockController?.WasUnlocked == true)
+		if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null)
+			|| (_mechanicalLockController?.WasUnlocked == true)
+			|| (_electronicLockController?.WasUnlocked == true)
+			|| (_interactionObjectKeyData != null && _keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString())))
 		{
 			PerformDoorInteraction();
 		}
@@ -101,7 +105,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
 
-		if (_interactionObjectLootKey != null)
+		if (_interactionObjectKeyData != null)
 		{
 			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_KeyLocked")}!";
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
@@ -119,9 +123,10 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			_electronicLockController.OnUnlockLock += UnlockDoor;
 		}
 
-		if ((_interactionObjectLootKey == null && _mechanicalLockController == null && _electronicLockController == null)
+		if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null)
 			|| (_mechanicalLockController != null && _mechanicalLockController.WasUnlocked)
-			|| (_electronicLockController != null && _electronicLockController.WasUnlocked))
+			|| (_electronicLockController != null && _electronicLockController.WasUnlocked)
+			|| (_interactionObjectKeyData != null && _keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString())))
 		{
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 		}

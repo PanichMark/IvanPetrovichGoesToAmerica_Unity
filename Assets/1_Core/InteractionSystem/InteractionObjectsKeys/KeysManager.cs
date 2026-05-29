@@ -4,7 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "KeyInventory", menuName = "Managers/Key Inventory Manager")]
 public class KeysManager
 { 
-	[SerializeField] private List<string> _collectedKeys = new List<string>();
+	private List<string> _collectedKeys = new List<string>();
+
+	public List<string> CollectedKeys => _collectedKeys;
 
 	public bool HasKey(string keyId) => _collectedKeys.Contains(keyId);
 
@@ -19,6 +21,8 @@ public class KeysManager
 		{
 			_collectedKeys.Add(keyId);
 		}
+
+		Debug.Log(_collectedKeys.Count);
 	}
 
 	public void RemoveKey(string keyId)
