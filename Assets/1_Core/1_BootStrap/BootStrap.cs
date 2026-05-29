@@ -397,7 +397,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeMissionsSystem()
 	{
-		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(_allMissions);
+		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(_bootstrapSubProcessMenuSystem, _allMissions);
 		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
 	}
 

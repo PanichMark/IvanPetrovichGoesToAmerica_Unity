@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
@@ -23,6 +24,10 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnCloseAnyPauseSubMenu;
 
+	private GameObject _textCurrentMissionGoal;
+	private TextMeshProUGUI _textComponentCurrentMissionGoal;
+
+
 	public void Initialize(
 		GameController gameController,
 		IInputDevice inputDevice,
@@ -30,6 +35,7 @@ public class PauseMenuController : MonoBehaviour
 		MenuManager menuManager,
 		GameObject PauseMenuCanvas,
 		GameObject[] buttonsPauseMenu,
+		GameObject textCurrentMissionGoal,
 		SaveLoadController saveLoadController)
 	{
 		_gameSceneManager = gameSceneManager;
@@ -38,6 +44,8 @@ public class PauseMenuController : MonoBehaviour
 		_menuManager = menuManager;
 		_pauseMenuCanvas = PauseMenuCanvas;
 		_buttonsPauseMenu = buttonsPauseMenu;
+		_textCurrentMissionGoal = textCurrentMissionGoal;
+		_textComponentCurrentMissionGoal = _textCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
 		_saveLoadController = saveLoadController;
 		_buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(_menuManager.ClosePauseMenu);     
 		_buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
@@ -77,6 +85,11 @@ public class PauseMenuController : MonoBehaviour
 		{
 			ClosePauseConfirmMenu();
 		}
+	}
+
+	public void SetCurrentMissionGoalText(string textGoal)
+	{
+		_textComponentCurrentMissionGoal.text = textGoal;
 	}
 
 	private void DisableButtons()

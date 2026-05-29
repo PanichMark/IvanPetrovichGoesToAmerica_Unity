@@ -4,13 +4,15 @@ using UnityEngine;
 public class BootstrapSubProcessMissionsSystem
 {
 	private GameObject _GameObjectBootstrapMissionsSystem;
+	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 
 	private GameMissions _allMissions;
 
 	private MissionsManager _missionsManager;
 
-	public BootstrapSubProcessMissionsSystem(GameMissions allMissions)
+	public BootstrapSubProcessMissionsSystem(BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem, GameMissions allMissions)
 	{
+		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_allMissions = allMissions;
 	}
 
@@ -20,7 +22,7 @@ public class BootstrapSubProcessMissionsSystem
 
 		_missionsManager = _GameObjectBootstrapMissionsSystem.AddComponent<MissionsManager>();
 
-		_missionsManager.Initialize(_allMissions);
+		_missionsManager.Initialize(_bootstrapSubProcessMenuSystem.PauseMenuController, _allMissions);
 
 		yield break;
 	}

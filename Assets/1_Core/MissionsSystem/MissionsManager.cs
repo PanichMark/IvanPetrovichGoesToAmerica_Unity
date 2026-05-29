@@ -6,14 +6,17 @@ public class MissionsManager : MonoBehaviour
 	public MissionAbstract ActiveMission { get; private set; }
 	private int _currentStepIndex = 0;
 
+	private PauseMenuController _pauseMenuController;
+
 	public delegate void InteractionEventHandler(GameObject interactedObject);
 	public static event InteractionEventHandler OnAnyObjectInteracted;
 
 	public delegate void DestructionEventHandler(GameObject destroyedObject, bool wasLethal);
 	public static event DestructionEventHandler OnAnyObjectDestroyed;
 
-	public void Initialize(GameMissions gameMissions)
+	public void Initialize(PauseMenuController pauseMenuController, GameMissions gameMissions)
 	{
+		_pauseMenuController = pauseMenuController;
 		_allMissions = gameMissions;
 
 		if (_allMissions == null || _allMissions.MissionsInOrder.Length == 0)
@@ -30,6 +33,12 @@ public class MissionsManager : MonoBehaviour
 
 		if (ActiveMission.Steps.Length > 0)
 		{
+			// Получаем текущий шаг (на старте это всегда первый шаг, индекс 0)
+			MissionStepAbstract currentStep = ActiveMission.Steps[_currentStepIndex];
+
+			// Передаем текст цели в UI-меню
+			_pauseMenuController.SetCurrentMissionGoalText(currentStep.MissionStepGoal);
+
 			Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
 		}
 	}
@@ -45,6 +54,20 @@ public class MissionsManager : MonoBehaviour
 	public void CompleteCurrentStep()
 	{
 		_currentStepIndex++;
+
+		// --- ДОБАВЬТЕ ЭТОТ БЛОК ---
+		// Проверяем, есть ли следующий шаг, прежде чем пытаться получить его текст
+		if (_currentStepIndex < ActiveMission.Steps.Length)
+		{
+			MissionStepAbstract nextStep = ActiveMission.Steps[_currentStepIndex];
+			_pauseMenuController.SetCurrentMissionGoalText(nextStep.MissionStepGoal);
+		}
+		else
+		{
+			// Если шагов больше нет, можно очистить текст или вывести "Миссия завершена"
+			_pauseMenuController.SetCurrentMissionGoalText("");
+		}
+		// ---------------------------
 
 		Debug.Log($"ШАГ МИССИИ ВЫПОЛНЕН! Переход к шагу {_currentStepIndex + 1}.");
 
