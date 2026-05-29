@@ -107,6 +107,7 @@ public class BootstrapSubProcessWeaponSystem
 		_textChokeNPC = _canvasHUDammo.transform.Find("TextChokeNPC").gameObject;
 
 		WeaponController.Initialize(
+			_gameController,
 			_inputDevice,
 			_bootstrapSubProcessMenuSystem.MenuManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,

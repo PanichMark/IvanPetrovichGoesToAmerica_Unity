@@ -15,7 +15,7 @@ public class PlayerWeaponController : MonoBehaviour
 	private InteractionController _interactionController;
 	private PlayerResourcesAmmoManager _ammoManager;
 	private HUDhealthAndManaController _HUDhealthAndManaController;
-
+	private GameController _gameController;
 	public Dictionary<string, GameObject> UnlockedWeapons = new Dictionary<string, GameObject>();
 
 	public event OnAnyWeaponUnlocked OnAnyWeaponUnlocked; 
@@ -34,8 +34,16 @@ public class PlayerWeaponController : MonoBehaviour
 	public WeaponAbstract LeftHandWeaponComponent { get; private set; }
 	public WeaponAbstract RightHandWeaponComponent { get; private set; }
 
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PlayerBehaviourController playerBehaviour, HUDhealthAndManaController HUDhealthAndManaController, PlayerResourcesAmmoManager ammoManager, InteractionController interactionController)
+	public void Initialize(
+		 GameController gameController,
+		IInputDevice inputDevice,
+		MenuManager menuManager,
+		PlayerBehaviourController playerBehaviour,
+		HUDhealthAndManaController HUDhealthAndManaController,
+		PlayerResourcesAmmoManager ammoManager,
+		InteractionController interactionController)
 	{
+		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_menuManager = menuManager;
 		_playerBehaviour = playerBehaviour;
@@ -65,6 +73,7 @@ public class PlayerWeaponController : MonoBehaviour
 			}
 		};
 		_interactionController.OnGetRidOfPickable += OnGetRidOfPickableHandler;
+		_gameController.OnPlayerEarlyDeath += DisarmPlayerOnDeath;
 
 		ResetAllWeapons(); 
 		
@@ -72,6 +81,14 @@ public class PlayerWeaponController : MonoBehaviour
 		Debug.Log("WeaponController Initialized");
 	}
 	
+	private void DisarmPlayerOnDeath()
+	{
+		if(_playerBehaviour.IsPlayerArmed)
+		{
+			_playerBehaviour.DisarmPlayer();
+		}	
+	}
+
 	private void OnGetRidOfPickableHandler()
 	{
 		StartCoroutine(OnGetRidOfPickableCourutine()); 
