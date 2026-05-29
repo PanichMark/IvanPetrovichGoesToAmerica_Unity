@@ -23,6 +23,8 @@ public class BootstrapSubProcessInteractionSystem
 	private InteractionAnimationController _interactionAnimationController;
 	private InteractionFirstPersonRender _interactionFirstPersonRender;
 
+	private KeysManager _keysManager;
+
 	private GameObject _canvasHUDInteraction;
 	private TextMeshProUGUI _textInteractionMessageMain;
 	private TextMeshProUGUI _textInteractionMessageFail;
@@ -149,6 +151,7 @@ public class BootstrapSubProcessInteractionSystem
 			_textInteractionMessageFail,
 			_textsGainedItems,
 			_imagesGainedItems);
+		_keysManager = new KeysManager();
 
 		ServiceLocator.Register("CanvasMenuNote", _canvasMenuNote);
 		ServiceLocator.Register("TextNote", _textNote);
@@ -170,6 +173,8 @@ public class BootstrapSubProcessInteractionSystem
 		ServiceLocator.Register("ButtonDialogueNo", _buttonDialogueNo);
 		ServiceLocator.Register("TextDialogueYes", _textDialogueYes);
 		ServiceLocator.Register("TextDialogueNo", _textDialogueNo);
+
+		ServiceLocator.Register("KeysManager", _keysManager);
 
 		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 
