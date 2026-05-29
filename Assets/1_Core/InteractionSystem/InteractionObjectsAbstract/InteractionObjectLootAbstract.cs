@@ -92,14 +92,14 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public void SaveData(ref GameData data)
 	{
-		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene0_Test))
+		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
 		{
 			data.LootObjects_Scene_0_Test[LootObjectIndex].LootItemIndex = LootObjectIndex;
 			data.LootObjects_Scene_0_Test[LootObjectIndex].LootItemName = InteractionObjectNameSystem;
 			data.LootObjects_Scene_0_Test[LootObjectIndex].WasLootItemCollected = WasLootItemCollected;
 		}
 
-		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene1_Street))
+		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
 		{
 			data.LootObjects_Scene_1_StreetMain[LootObjectIndex].LootItemIndex = LootObjectIndex;
 			data.LootObjects_Scene_1_StreetMain[LootObjectIndex].LootItemName = InteractionObjectNameSystem;
@@ -109,7 +109,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public void LoadData(GameData data)
 	{
-		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene0_Test))
+		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
 		{
 			if (data.LootObjects_Scene_0_Test[LootObjectIndex].WasLootItemCollected)
 			{
@@ -118,7 +118,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 			}
 		}
 
-		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene1_Street))
+		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
 		{
 			if (data.LootObjects_Scene_1_StreetMain[LootObjectIndex].WasLootItemCollected)
 			{

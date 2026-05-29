@@ -1,16 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "KeysList", menuName = "InteractionObjects/Keys/KeysList")]
-public class InteractionObjectsKeysList : ScriptableObject
+﻿public enum InteractionObjectsKeysList
 {
-	public List<InteractionObjectKeyData> allKeysInGame = new List<InteractionObjectKeyData>();
-
-	/// <summary>
-	/// Метод для поиска ключа по ID в этом списке.
-	/// </summary>
-	public InteractionObjectKeyData GetKeyByID(string idToFind)
-	{
-		return allKeysInGame.Find(key => key.keyID == idToFind);
-	}
+	Key_1_Scene_1_Church_ChurchQuartersDoor,
+	Key_2_Scene_1_Street_ChurchYardGate,
+	Key_3_Scene_1_RevenueHouse_RevenueHouseAttic
 }

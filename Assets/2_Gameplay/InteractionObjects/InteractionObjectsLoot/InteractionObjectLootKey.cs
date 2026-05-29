@@ -2,26 +2,24 @@
 
 public class InteractionObjectLootKey : InteractionObjectLootAbstract
 {
-	// [SerializeField] позволяет перетащить ассет KeyData прямо в инспектор для этого объекта.
 	[SerializeField] private InteractionObjectKeyData _keyData;
 	private KeysManager _keysManager;
-	// Свойства теперь берутся из _keyData
-	//public override Sprite LootObjectIcon => _keyData.icon;
-	public override string InteractionObjectNameSystem => _keyData.keyID; // Используем ID как системное имя
+	private string _keyID;
 
-	private void Start()
+
+	protected override void SetUpLootObjectReferences()
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_keysManager = ServiceLocator.Resolve<KeysManager>("KeysManager");
+		_keyID = _keyData.keyID.ToString();
 	}
 
 	public override void Interact()
 	{
-		_keysManager.AddKey(_keyData.keyID);
-
+		_keysManager.AddKey(_keyID);
+		Debug.Log($"Added key: {_keyID}");
 
 		WasLootItemCollected = true;
 		
-		base.Interact(); // Запускает анимацию движения к игроку и уничтожение объекта
+		base.Interact(); 
 	}
 }
