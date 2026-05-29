@@ -7,15 +7,16 @@ public class MissionsManager : MonoBehaviour
 	private int _currentStepIndex = 0;
 
 	private PauseMenuController _pauseMenuController;
-
+	private LocalizationManager _localizationManager;
 	public delegate void InteractionEventHandler(GameObject interactedObject);
 	public static event InteractionEventHandler OnAnyObjectInteracted;
 
 	public delegate void DestructionEventHandler(GameObject destroyedObject, bool wasLethal);
 	public static event DestructionEventHandler OnAnyObjectDestroyed;
 
-	public void Initialize(PauseMenuController pauseMenuController, GameMissions gameMissions)
+	public void Initialize(LocalizationManager localizationManager, PauseMenuController pauseMenuController, GameMissions gameMissions)
 	{
+		_localizationManager = localizationManager;
 		_pauseMenuController = pauseMenuController;
 		_allMissions = gameMissions;
 
@@ -36,8 +37,11 @@ public class MissionsManager : MonoBehaviour
 			// Получаем текущий шаг (на старте это всегда первый шаг, индекс 0)
 			MissionStepAbstract currentStep = ActiveMission.Steps[_currentStepIndex];
 
-			// Передаем текст цели в UI-меню
-			_pauseMenuController.SetCurrentMissionGoalText(currentStep.MissionStepGoal);
+			// --- ИЗМЕНЕНИЕ ---
+			// Вызываем наш новый метод для получения локализованного текста
+			string localizedGoalText = GetLocalizedGoalText(currentStep);
+			_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
+			// ----------------
 
 			Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
 		}
@@ -55,16 +59,17 @@ public class MissionsManager : MonoBehaviour
 	{
 		_currentStepIndex++;
 
-		// --- ДОБАВЬТЕ ЭТОТ БЛОК ---
+		// --- ИЗМЕНЕНИЕ ---
 		// Проверяем, есть ли следующий шаг, прежде чем пытаться получить его текст
 		if (_currentStepIndex < ActiveMission.Steps.Length)
 		{
 			MissionStepAbstract nextStep = ActiveMission.Steps[_currentStepIndex];
-			_pauseMenuController.SetCurrentMissionGoalText(nextStep.MissionStepGoal);
+			string localizedGoalText = GetLocalizedGoalText(nextStep);
+			_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
 		}
 		else
 		{
-			// Если шагов больше нет, можно очистить текст или вывести "Миссия завершена"
+			// Если шагов больше нет, очищаем текст
 			_pauseMenuController.SetCurrentMissionGoalText("");
 		}
 		// ---------------------------
@@ -103,5 +108,33 @@ public class MissionsManager : MonoBehaviour
 	{
 		Debug.Log("Текущая миссия завершена!");
 		StartNextMission();
+	}
+
+	private string GetLocalizedGoalText(MissionStepAbstract step)
+	{
+		// Проверяем, не null ли нам передали шаг и менеджер
+		if (step == null || _localizationManager == null)
+		{
+			return string.Empty;
+		}
+
+		// Выбираем нужное поле в зависимости от текущего языка
+		if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+		{
+			return step.MissionStepGoal_RU;
+		}
+		else // Предполагаем, что если не русский, то английский
+		{
+			return step.MissionStepGoal_EN;
+		}
+	}
+
+	public void ChangeLanguage(LocalizationManager localizationManager)
+	{
+		_localizationManager = localizationManager;
+
+		MissionStepAbstract currentStep = ActiveMission.Steps[_currentStepIndex];
+		string localizedGoalText = GetLocalizedGoalText(currentStep);
+		_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
 	}
 }

@@ -62,12 +62,12 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 	public virtual void Interact()
 	{
-		Debug.Log("bruh");
+		//Debug.Log("bruh");
 	}
 
 	public void InteractCutscene()
 	{
-		Debug.Log("LMAO!");
+		//Debug.Log("LMAO!");
 		Interact();
 	}
 

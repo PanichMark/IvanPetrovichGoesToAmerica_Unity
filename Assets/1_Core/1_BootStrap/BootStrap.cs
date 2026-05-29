@@ -73,7 +73,7 @@ public class Bootstrap : MonoBehaviour
 	// Интерфейсы
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
-	private LocalizationManager _localizationManager;
+	public LocalizationManager LocalizationManager;
 	private KeyCode _keyPauseMenu; // Кнопка открывания/закрывания меню паузы
 	private bool _isInitialized;
 	private bool _isGamepadConnected;
@@ -219,7 +219,7 @@ public class Bootstrap : MonoBehaviour
 		_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
 		//_inputDevice = new InputGamepad(_gameController);
 
-		_localizationManager = new LocalizationManager();
+		LocalizationManager = new LocalizationManager();
 
 		_playerPrefsData = new PlayerPrefsData();
 
@@ -317,7 +317,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessSceneSystem,
 			_gameController,
 			_inputDevice,
-			_localizationManager,
+			LocalizationManager,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessSaveLoadSystem.SaveLoadController,
 			_canvasMenuBackground,
@@ -360,7 +360,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessMenuSystem,
 			_gameController,
 			_inputDevice,
-			_localizationManager,
+			LocalizationManager,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			_bootstrapSubProcessPlayerSystems.PlayerCameraController,
@@ -397,13 +397,13 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeMissionsSystem()
 	{
-		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(_bootstrapSubProcessMenuSystem, _allMissions);
+		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(this,_bootstrapSubProcessMenuSystem, _allMissions);
 		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
 	}
 
 	private IEnumerator RegisterBootstrapDependencies()
 	{
-		ServiceLocator.Register("LocalizationManager", _localizationManager);
+		ServiceLocator.Register("LocalizationManager", LocalizationManager);
 		ServiceLocator.Register("GameController", _gameController);
 		ServiceLocator.Register("InputDevice", _inputDevice);
 		ServiceLocator.Register("KeyPauseMenu", _keyPauseMenu);
@@ -420,11 +420,12 @@ public class Bootstrap : MonoBehaviour
 
 	public void ChangeLanguage(LanguagesEnum newLanguage)
 	{
-		_localizationManager.ChangeLanguage(newLanguage);
-		_bootstrapSubProcessSceneSystem.GameSceneManager.ChangeLanguage(_localizationManager);
-		_bootstrapSubProcessInteractionSystem.InteractionController.ChangeLanguage(_localizationManager);
+		LocalizationManager.ChangeLanguage(newLanguage);
+		_bootstrapSubProcessSceneSystem.GameSceneManager.ChangeLanguage(LocalizationManager);
+		_bootstrapSubProcessInteractionSystem.InteractionController.ChangeLanguage(LocalizationManager);
+		_bootstrapSubProcessMissionsSystem.ChangeLanguage();
 		ServiceLocator.RemoveService("LocalizationManager");
-		ServiceLocator.Register("LocalizationManager", _localizationManager);
+		ServiceLocator.Register("LocalizationManager", LocalizationManager);
 	}
 
 	public void ChangeInputDevice(IInputDevice inputDevice)

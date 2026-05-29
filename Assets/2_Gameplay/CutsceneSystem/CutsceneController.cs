@@ -23,6 +23,7 @@ public class CutsceneController : MonoBehaviour
 	private GameObject _playerCameraProxy;
 
 	public bool IsCutscenePlaying { get; private set; }
+	public bool WasCutscenePlaying { get; private set; }
 	private bool _wasCutsceneSkipped;
 	private bool _wasCutsceneCanceled;
 
@@ -113,6 +114,9 @@ public class CutsceneController : MonoBehaviour
 		{
 			SkipCutscene();
 		}
+
+		//Debug.Log($"Was: {WasCutscenePlaying}");
+		//Debug.Log($"Is:     {IsCutscenePlaying}");
 	}
 
 	public void RebindProxyObjects()
@@ -170,6 +174,7 @@ public class CutsceneController : MonoBehaviour
 
 	private void ExecutePostCutsceneActions()
 	{
+		WasCutscenePlaying = false;	
 		IsCutscenePlaying = false;
 		CutsceneResumeTime();
 		_menuManager.CloseCutsceneMenu();
@@ -241,7 +246,7 @@ public class CutsceneController : MonoBehaviour
 		_menuManager.OpenCutsceneMenu();
 
 		IsCutscenePlaying = true;
-
+		WasCutscenePlaying = true;
 		_gameController.MakePlayerNonControllable();
 
 		Debug.Log($"Cutscene {gameObject.name} was triggered");
@@ -249,14 +254,16 @@ public class CutsceneController : MonoBehaviour
 
 	private void ResumeCutscene()
 	{
-		if (!_wasCutsceneSkipped)
+		if (WasCutscenePlaying)
 		{
-			_director.Resume();
-			IsCutscenePlaying = true;
-			_gameController.MakePlayerNonControllable();
-		
-			Debug.Log($"Cutscene {gameObject.name} resumed");
+			if (!_wasCutsceneSkipped)
+			{
+				_director.Resume();
+				IsCutscenePlaying = true;
+				_gameController.MakePlayerNonControllable();
 
+				Debug.Log($"Cutscene {gameObject.name} resumed");
+			}
 		}
 	}
 }

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63e07aaa1abd1f4db5a0b24a3adc23f, type: 3}
   m_Name: Mission_1.1_Step_2
   m_EditorClassIdentifier: 
-  MissionStepGoal: "\u0412\u0437\u044F\u0442\u044C \u0441\u043B\u0438\u0442\u043E\u043A"
+  MissionStepGoal_RU: "\u0432\u0437\u044F\u0442\u044C \u0437\u043E\u043B\u043E\u0442\u043E\u0439
+    \u0441\u043B\u0438\u0442\u043E\u043A"
+  MissionStepGoal_EN: take golden bar
   StepDescription: 
   Sonditions:
   - {fileID: 11400000, guid: d9ada3130dc747d4396422619caf4850, type: 2}
