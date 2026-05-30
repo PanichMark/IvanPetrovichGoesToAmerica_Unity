@@ -25,15 +25,30 @@ public class MissionsManager : MonoBehaviour
 		_pauseMenuController = pauseMenuController;
 		_allMissions = gameMissions;
 
-		if (_allMissions == null || _allMissions.MissionsInOrder.Length == 0) return;
+		if (_allMissions == null || _allMissions.MissionsInOrder.Length == 0)
+		{
+			Debug.LogError("Ошибка: Список миссий не задан или пуст!");
+			return;
+		}
 
 		ActiveMission = _allMissions.MissionsInOrder[0];
 		CurrentStepIndex = 0;
 
+		Debug.Log("Система миссий инициализирована.");
+		Debug.Log($"Активирована первая миссия: {ActiveMission.name}");
+
 		if (ActiveMission.Steps.Length > 0)
 		{
-			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
+			// Получаем текущий шаг (на старте это всегда первый шаг, индекс 0)
+			MissionStepAbstract currentStep = ActiveMission.Steps[CurrentStepIndex];
+
+			// --- ИЗМЕНЕНИЕ ---
+			// Вызываем наш новый метод для получения локализованного текста
+			string localizedGoalText = GetLocalizedGoalText(currentStep);
 			_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
+			// ----------------
+
+			Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
 		}
 	}
 

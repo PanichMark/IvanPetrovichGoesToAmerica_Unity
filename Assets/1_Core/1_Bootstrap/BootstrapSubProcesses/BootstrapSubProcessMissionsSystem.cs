@@ -45,7 +45,7 @@ public class BootstrapSubProcessMissionsSystem
 		//_playerCamera = _bootstrap.FindDeepGameObject(_playerCameraGameObject, "ButtonPauseMenuExitToMainMenu")
 		_UImarker = _bootstrap.FindDeepGameObject(_canvasHUDmission, "MissionMarker");
 		_UImarkerRectTransform = _UImarker.GetComponent<RectTransform>();
-		Debug.Log(_playerCameraGameObject);
+		//Debug.Log(_playerCameraGameObject);
 		_playerCamera = _playerCameraGameObject.GetComponent<Camera>();
 		
 

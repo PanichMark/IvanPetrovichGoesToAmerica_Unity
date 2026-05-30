@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
+using System.Collections.Generic; // Для List<>
 
 public class MissionObjectiveMarker : MonoBehaviour
 {
 	// --- Приватные зависимости ---
 	private MissionsManager _missionsManager;
-	private Transform _playerCameraTransform; // Для позиции объекта в мире
+	private Transform _playerCameraTransform;
 	private RectTransform _canvasRectTransform;
-	private Camera _worldCamera;            // Камера для проекции на экран
+	private Camera _worldCamera;
 	private WorldToUISpace _uiImageLogicComponent;
-	private Vector3 _worldOffset = new Vector3(0, 2f, 0); // Смещение маркера над объектом
+	private Vector3 _worldOffset = new Vector3(0, 2f, 0);
+
+	// Кэшируем текущий шаг для оптимизации
+	private ICurrentMissionStep _currentMissionStepCache;
 
 	public void Initialize(
 		MissionsManager missionsManager,
@@ -22,73 +26,92 @@ public class MissionObjectiveMarker : MonoBehaviour
 		_worldCamera = playerCamera.GetComponent<Camera>();
 		_uiImageLogicComponent = uiImageLogicComponent;
 
-		// Подписываемся на глобальное событие смены шага миссии
-		MissionsManager.OnCurrentStepChanged += HandleStepChanged;
+		if (_missionsManager != null)
+		{
+			MissionsManager.OnCurrentStepChanged += HandleStepChanged;
 
-		// Проверяем состояние сразу после инициализации
-		HandleStepChanged();
+			Debug.Log("[MissionMarker] Первая проверка цели (может быть неудачной).");
+			HandleStepChanged();
+			Invoke(nameof(RequestRecheck), 0.1f);
+		}
 	}
 
 	private void OnDestroy()
 	{
-		// Обязательно отписываемся, чтобы избежать ошибок памяти
-		if (_missionsManager != null) // Проверка на случай, если менеджер уничтожится раньше
+		if (_missionsManager != null)
 		{
 			MissionsManager.OnCurrentStepChanged -= HandleStepChanged;
 		}
 	}
 
+	/// <summary>
+	/// Реакция на смену шага миссии или внешний запрос.
+	/// </summary>
 	private void HandleStepChanged()
 	{
-		bool isTarget = IsThisObjectTheTarget();
-		UpdateMarkerState(isTarget);
+		UpdateCurrentStepCache();
+
+		// Ищем ЛЮБОЙ объект в мире, который является владельцем невыполненного условия
+		GameObject targetObject = FindActiveTargetObject();
+
+		bool shouldBeVisible = targetObject != null;
+		UpdateMarkerState(shouldBeVisible, targetObject?.transform.position ?? Vector3.zero);
 	}
 
-	private bool IsThisObjectTheTarget()
+	/// <summary>
+	/// Ищет первый попавшийся объект в мире, который является целью текущей миссии.
+	/// </summary>
+	/// <returns>GameObject-цель или null, если целей нет.</returns>
+	private GameObject FindActiveTargetObject()
 	{
-		// Если активной миссии нет или индекс шага вышел за пределы массива
-		if (_missionsManager.ActiveMission == null || _missionsManager.CurrentStepIndex >= _missionsManager.ActiveMission.Steps.Length)
-		{
-			return false;
-		}
+		if (_currentMissionStepCache == null) return null;
 
-		var currentStepBase = _missionsManager.ActiveMission.Steps[_missionsManager.CurrentStepIndex];
-
-		// Безопасное приведение к интерфейсу
-		if (currentStepBase is ICurrentMissionStep currentStep)
+		foreach (var condition in _currentMissionStepCache.Conditions)
 		{
-			foreach (var condition in currentStep.Conditions)
+			string ownerName = condition.Owner ? condition.Owner.name : "NULL";
+			bool conditionMet = condition.IsMet();
+
+			Debug.Log($"[MissionMarker] Условие: '{condition.GetType().Name}'. Владелец: {ownerName}. Выполнено: {conditionMet}");
+
+			// Если у условия есть владелец И оно НЕ выполнено - этот объект наша цель!
+			if (condition.Owner != null && !conditionMet)
 			{
-				// Проверяем, является ли этот объект владельцем условия И условие еще не выполнено
-				if (condition.Owner == this.gameObject && !condition.IsMet())
-				{
-					return true;
-				}
+				Debug.Log($"[MissionMarker] Найдена активная цель: {condition.Owner.name}");
+				return condition.Owner;
 			}
 		}
-		return false;
+		Debug.Log("[MissionMarker] Активных целей для отслеживания не найдено.");
+		return null;
 	}
 
-	private void UpdateMarkerState(bool shouldBeVisible)
+	/// <summary>
+	/// Обновляет состояние видимости и позицию маркера.
+	/// </summary>
+	private void UpdateMarkerState(bool shouldBeVisible, Vector3 worldPositionOfTarget)
 	{
 		if (shouldBeVisible && _uiImageLogicComponent != null)
 		{
-			ShowAndUpdateMarker();
+			ShowAndUpdateMarker(worldPositionOfTarget);
 		}
 		else
 		{
-			//HideMarker();
+			HideMarker();
 		}
 	}
 
-	private void ShowAndUpdateMarker()
+	private void ShowAndUpdateMarker(Vector3 worldPositionOfTarget)
 	{
-		// Вычисляем позицию с учетом смещения
-		Vector3 targetPositionForMarker = transform.position + _worldOffset;
+		if (_uiImageLogicComponent == null || _worldCamera == null) return;
 
-		// Передаем данные в компонент логики UI
+		Vector3 targetPositionForMarker = worldPositionOfTarget + _worldOffset;
+
 		_uiImageLogicComponent.Initialize(_canvasRectTransform, _worldCamera);
 		_uiImageLogicComponent.UpdatePosition(targetPositionForMarker);
+
+		if (!_uiImageLogicComponent.gameObject.activeSelf)
+		{
+			_uiImageLogicComponent.gameObject.SetActive(true);
+		}
 	}
 
 	private void HideMarker()
@@ -96,6 +119,30 @@ public class MissionObjectiveMarker : MonoBehaviour
 		if (_uiImageLogicComponent != null && _uiImageLogicComponent.gameObject.activeSelf)
 		{
 			_uiImageLogicComponent.gameObject.SetActive(false);
+		}
+	}
+
+	public void RequestRecheck()
+	{
+		Debug.Log("[MissionMarker] Задержанная проверка цели...");
+		HandleStepChanged();
+	}
+
+	private void UpdateCurrentStepCache()
+	{
+		if (_missionsManager?.ActiveMission == null || _missionsManager.CurrentStepIndex < 0)
+		{
+			_currentMissionStepCache = null;
+			return;
+		}
+
+		try
+		{
+			_currentMissionStepCache = _missionsManager.ActiveMission.Steps[_missionsManager.CurrentStepIndex] as ICurrentMissionStep;
+		}
+		catch (System.IndexOutOfRangeException)
+		{
+			_currentMissionStepCache = null;
 		}
 	}
 }
