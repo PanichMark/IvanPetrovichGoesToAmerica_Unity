@@ -402,8 +402,10 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(
 			this,
 			_bootstrapSubProcessMenuSystem,
+			_bootstrapSubProcessPlayerSystems,
 			_allMissions,
-			_canvasHUDmission);
+			_canvasHUDmission,
+			_playerCameraGameObject);
 		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
 	}
 
