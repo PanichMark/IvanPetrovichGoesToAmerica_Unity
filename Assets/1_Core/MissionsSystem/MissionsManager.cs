@@ -4,10 +4,15 @@ public class MissionsManager : MonoBehaviour
 {
 	private GameMissions _allMissions;
 	public MissionAbstract ActiveMission { get; private set; }
-	private int _currentStepIndex = 0;
+	public int CurrentStepIndex { get; private set; } = 0;
 
 	private PauseMenuController _pauseMenuController;
 	private LocalizationManager _localizationManager;
+
+	// --- СОБЫТИЕ ДЛЯ УВЕДОМЛЕНИЯ ---
+	public delegate void OnStepChangedDelegate();
+	public static event OnStepChangedDelegate OnCurrentStepChanged;
+
 	public delegate void InteractionEventHandler(GameObject interactedObject);
 	public static event InteractionEventHandler OnAnyObjectInteracted;
 
@@ -20,67 +25,44 @@ public class MissionsManager : MonoBehaviour
 		_pauseMenuController = pauseMenuController;
 		_allMissions = gameMissions;
 
-		if (_allMissions == null || _allMissions.MissionsInOrder.Length == 0)
-		{
-			Debug.LogError("Ошибка: Список миссий не задан или пуст!");
-			return;
-		}
+		if (_allMissions == null || _allMissions.MissionsInOrder.Length == 0) return;
 
 		ActiveMission = _allMissions.MissionsInOrder[0];
-		_currentStepIndex = 0;
-
-		Debug.Log("Система миссий инициализирована.");
-		Debug.Log($"Активирована первая миссия: {ActiveMission.name}");
+		CurrentStepIndex = 0;
 
 		if (ActiveMission.Steps.Length > 0)
 		{
-			// Получаем текущий шаг (на старте это всегда первый шаг, индекс 0)
-			MissionStepAbstract currentStep = ActiveMission.Steps[_currentStepIndex];
-
-			// --- ИЗМЕНЕНИЕ ---
-			// Вызываем наш новый метод для получения локализованного текста
-			string localizedGoalText = GetLocalizedGoalText(currentStep);
+			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
 			_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
-			// ----------------
-
-			Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
 		}
 	}
 
 	public void CheckAndCompleteCurrentStep()
 	{
 		if (ActiveMission == null) return;
-		if (_currentStepIndex >= ActiveMission.Steps.Length) return;
+		if (CurrentStepIndex >= ActiveMission.Steps.Length) return;
 
-		ActiveMission.Steps[_currentStepIndex].OnStepCompleted();
+		ActiveMission.Steps[CurrentStepIndex].OnStepCompleted();
 	}
 
 	public void CompleteCurrentStep()
 	{
-		_currentStepIndex++;
+		CurrentStepIndex++;
 
-		// --- ИЗМЕНЕНИЕ ---
-		// Проверяем, есть ли следующий шаг, прежде чем пытаться получить его текст
-		if (_currentStepIndex < ActiveMission.Steps.Length)
+		if (CurrentStepIndex < ActiveMission.Steps.Length)
 		{
-			MissionStepAbstract nextStep = ActiveMission.Steps[_currentStepIndex];
-			string localizedGoalText = GetLocalizedGoalText(nextStep);
+			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
 			_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
 		}
 		else
 		{
-			// Если шагов больше нет, очищаем текст
 			_pauseMenuController.SetCurrentMissionGoalText("");
 		}
-		// ---------------------------
 
-		Debug.Log($"ШАГ МИССИИ ВЫПОЛНЕН! Переход к шагу {_currentStepIndex + 1}.");
+		// --- УВЕДОМЛЕНИЕ ЧЕРЕЗ DELEGATE ---
+		OnCurrentStepChanged?.Invoke();
 
-		if (_currentStepIndex < ActiveMission.Steps.Length)
-		{
-			Debug.Log($"Миссия: {ActiveMission.name} - Шаг {_currentStepIndex + 1}");
-		}
-		else
+		if (CurrentStepIndex >= ActiveMission.Steps.Length)
 		{
 			EndMission();
 		}
@@ -93,37 +75,24 @@ public class MissionsManager : MonoBehaviour
 		if (currentMissionIndex + 1 < _allMissions.MissionsInOrder.Length)
 		{
 			ActiveMission = _allMissions.MissionsInOrder[currentMissionIndex + 1];
-			_currentStepIndex = 0;
-
-			Debug.Log($"Начато прохождение следующей миссии: {ActiveMission.name}");
-			Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
-		}
-		else
-		{
-			Debug.Log("ВСЕ МИССИИ ЗАВЕРШЕНЫ! Игра пройдена.");
+			CurrentStepIndex = 0;
 		}
 	}
 
 	private void EndMission()
 	{
-		Debug.Log("Текущая миссия завершена!");
 		StartNextMission();
 	}
 
 	private string GetLocalizedGoalText(MissionStepAbstract step)
 	{
-		// Проверяем, не null ли нам передали шаг и менеджер
-		if (step == null || _localizationManager == null)
-		{
-			return string.Empty;
-		}
+		if (step == null || _localizationManager == null) return string.Empty;
 
-		// Выбираем нужное поле в зависимости от текущего языка
 		if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
 		{
 			return step.MissionStepGoal_RU;
 		}
-		else // Предполагаем, что если не русский, то английский
+		else
 		{
 			return step.MissionStepGoal_EN;
 		}
@@ -133,8 +102,10 @@ public class MissionsManager : MonoBehaviour
 	{
 		_localizationManager = localizationManager;
 
-		MissionStepAbstract currentStep = ActiveMission.Steps[_currentStepIndex];
-		string localizedGoalText = GetLocalizedGoalText(currentStep);
-		_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
+		if (ActiveMission != null && ActiveMission.Steps.Length > 0)
+		{
+			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
+			_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
+		}
 	}
 }

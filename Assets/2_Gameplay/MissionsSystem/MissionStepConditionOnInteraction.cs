@@ -2,10 +2,15 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MissionStepConditionOnInteraction", menuName = "Missions/MissionConditions/MissionStepConditionOnInteraction")]
-public class MissionStepConditionOnInteraction : MissionStepConditionAbstract
+public class MissionStepConditionOnInteraction : MissionStepConditionAbstract, ICurrentMissionCondition
 {
 	private bool _isCompleted = false;
+	// --- РЕАЛИЗАЦИЯ ИНТЕРФЕЙСА ---
+	public bool IsMet() => _isCompleted;
+	public GameObject Owner => base.OwnerObject;
+	// ---------------------------
 
+	// ... остальной код класса остается БЕЗ ИЗМЕНЕНИЙ ...
 	public override bool IsConditionMet()
 	{
 		return _isCompleted;

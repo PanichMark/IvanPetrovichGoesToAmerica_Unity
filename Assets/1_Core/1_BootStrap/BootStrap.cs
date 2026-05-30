@@ -51,6 +51,7 @@ public class Bootstrap : MonoBehaviour
 
 	[Header("HUD")]
 	[SerializeField] private GameObject _canvasHUDinteraction;
+	[SerializeField] private GameObject _canvasHUDmission;
 	[SerializeField] private GameObject _canvasHUDhealthAndMana;
 	[SerializeField] private GameObject _canvasHUDammo;
 
@@ -257,6 +258,7 @@ public class Bootstrap : MonoBehaviour
 
 		_canvasMenuWeaponWheel = Instantiate(_canvasMenuWeaponWheel);
 		_canvasHUDammo = Instantiate(_canvasHUDammo);
+		_canvasHUDmission = Instantiate(_canvasHUDmission);
 
 		Debug.Log("CANVASES INITIALIZED");
 		yield break;
@@ -397,7 +399,11 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeMissionsSystem()
 	{
-		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(this,_bootstrapSubProcessMenuSystem, _allMissions);
+		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(
+			this,
+			_bootstrapSubProcessMenuSystem,
+			_allMissions,
+			_canvasHUDmission);
 		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
 	}
 
