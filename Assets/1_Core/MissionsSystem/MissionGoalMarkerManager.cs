@@ -8,6 +8,9 @@ public class MissionGoalMarkerManager : MonoBehaviour
 	private Camera _playerCameraComponent;
 	private GameObject _gameObjectMissionGoal;
 
+	private float markerOffset = 20f;
+	private float markerHeight;
+
 	private ICurrentMissionStep _currentMissionStepCache;
 
 	public void Initialize(
@@ -23,6 +26,8 @@ public class MissionGoalMarkerManager : MonoBehaviour
 		MissionsManager.OnCurrentStepChanged += HandleStepChanged;
 		HandleStepChanged();
 		Invoke(nameof(RequestRecheck), 0.1f);
+
+		markerHeight = _imageMissionGoalMarkerRectTransform.rect.height;
 	}
 
 	private void HandleStepChanged()
@@ -59,21 +64,66 @@ public class MissionGoalMarkerManager : MonoBehaviour
 
 	private void Update()
 	{
-		if (_gameObjectMissionGoal != null)
+		if (_gameObjectMissionGoal == null)
 		{
-			Vector3 screenPoint = _playerCameraComponent.WorldToViewportPoint(_gameObjectMissionGoal.transform.position);
-
-			float xPos = screenPoint.x * Screen.width;
-			float yPos = screenPoint.y * Screen.height;
-
-			_imageMissionGoalMarkerRectTransform.anchoredPosition = new Vector2(xPos, yPos);
-
-			//Debug.Log($"[UI Marker] World Pos: {_TARGETGAMEOBJECT.transform.position}");
-
-			//Debug.Log($"[UI Marker] UI Position (px): ({xPos}, {yPos})");
-
-			//Debug.Log($"[UI Marker] Anchored Position set to: {_MISSION_MARKER_RectTransform.anchoredPosition}");
+			return; 
 		}
+
+		Vector3 screenPoint = _playerCameraComponent.WorldToViewportPoint(_gameObjectMissionGoal.transform.position);
+
+		if (screenPoint.z <= 0)
+		{
+			return;
+		}
+
+		bool isOnScreenX = screenPoint.x >= 0 && screenPoint.x <= 1;
+		bool isOnScreenY = screenPoint.y >= 0 && screenPoint.y <= 1;
+
+		float xPos;
+		if (!isOnScreenX)
+		{
+			xPos = Mathf.Clamp01(screenPoint.x) * Screen.width + 50;
+		}
+		else
+		{
+			xPos = screenPoint.x * Screen.width;
+		}
+
+		float yPos;
+		if (!isOnScreenY)
+		{
+			yPos = Mathf.Clamp01(screenPoint.y) * Screen.height + 50;
+		}
+		else
+		{
+			yPos = screenPoint.y * Screen.height;
+		}
+
+		if (isOnScreenX)
+		{
+			if (screenPoint.x < 0)
+			{
+				xPos -= markerOffset;
+			}
+			else if (screenPoint.x > 1)
+			{
+				xPos += markerOffset;
+			}
+		}
+
+		if (isOnScreenY)
+		{
+			if (screenPoint.y < 0)
+			{
+				yPos -= markerOffset;
+			}
+			else if (screenPoint.y > 1)
+			{
+				yPos += markerHeight + markerOffset;
+			}
+		}
+
+		_imageMissionGoalMarkerRectTransform.anchoredPosition = new Vector2(xPos, yPos);
 	}
 
 	public void RequestRecheck()
