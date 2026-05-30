@@ -6,15 +6,11 @@ public class BootstrapSubProcessMissionsSystem
 	private Bootstrap _bootstrap;
 	private GameObject _gameObjectBootstrapMissionsSystem;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
-	private WorldToUISpace _worldToUISpace;
 	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
 	private GameObject _playerCameraGameObject;
 	private GameObject _canvasHUDmission;
-	private RectTransform _canvasRectTransform;
-	private Camera _playerCamera;
-	private MissionObjectiveMarker _missionObjectiveMarker;
-	private GameObject _UImarker;
-	private RectTransform _UImarkerRectTransform;
+	private MissionGoalMarkerManager _missionGoalMarkerManager;
+	private GameObject _imageMissionGoalMarker;
 	private GameMissions _allMissions;
 	private LocalizationManager _localizationManager;
 	private MissionsManager _missionsManager;
@@ -40,27 +36,14 @@ public class BootstrapSubProcessMissionsSystem
 	{
 		_gameObjectBootstrapMissionsSystem = new GameObject("Bootstrap_MissionsSystem");
 
-
-		_canvasRectTransform = _canvasHUDmission.GetComponent<RectTransform>();
-		//_playerCamera = _bootstrap.FindDeepGameObject(_playerCameraGameObject, "ButtonPauseMenuExitToMainMenu")
-		_UImarker = _bootstrap.FindDeepGameObject(_canvasHUDmission, "MissionMarker");
-		_UImarkerRectTransform = _UImarker.GetComponent<RectTransform>();
-		//Debug.Log(_playerCameraGameObject);
-		_playerCamera = _playerCameraGameObject.GetComponent<Camera>();
+		_imageMissionGoalMarker = _bootstrap.FindDeepGameObject(_canvasHUDmission, "MissionGoalMarker");
 		
-
 		_missionsManager = _gameObjectBootstrapMissionsSystem.AddComponent<MissionsManager>();
-		_worldToUISpace = _UImarker.AddComponent<WorldToUISpace>();
-		_missionObjectiveMarker = _gameObjectBootstrapMissionsSystem.AddComponent<MissionObjectiveMarker>();
 
-		Canvas canvasComponent = _canvasHUDmission.GetComponent<Canvas>();
-	
-		canvasComponent.worldCamera = _playerCamera;
-		canvasComponent.planeDistance = 0.01f;
+		_missionGoalMarkerManager = _gameObjectBootstrapMissionsSystem.AddComponent<MissionGoalMarkerManager>();
 
 		_missionsManager.Initialize(_localizationManager, _bootstrapSubProcessMenuSystem.PauseMenuController, _allMissions);
-		_worldToUISpace.Initialize(_canvasRectTransform, _playerCamera);
-		_missionObjectiveMarker.Initialize(_missionsManager, _playerCameraGameObject, _UImarkerRectTransform, _worldToUISpace);
+		_missionGoalMarkerManager.Initialize(_missionsManager, _playerCameraGameObject, _imageMissionGoalMarker);
 
 		yield break;
 	}
