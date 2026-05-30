@@ -6,11 +6,12 @@ public class MissionObjectiveMarker : MonoBehaviour
 	// --- Приватные зависимости ---
 	private MissionsManager _missionsManager;
 	private Transform _playerCameraTransform;
-	private RectTransform _UIimageRectTransform;
+	private RectTransform _MISSION_MARKER_RectTransform;
 	private Camera _worldCamera;
 	private WorldToUISpace _uiImageLogicComponent;
 	private Vector3 _worldOffset = new Vector3(0, 2f, 0);
-	private GameObject _targetGameObject;
+	private GameObject _TARGETGAMEOBJECT;
+
 	// Кэшируем текущий шаг для оптимизации
 	private ICurrentMissionStep _currentMissionStepCache;
 
@@ -22,7 +23,7 @@ public class MissionObjectiveMarker : MonoBehaviour
 	{
 		_missionsManager = missionsManager;
 		_playerCameraTransform = playerCamera.transform;
-		_UIimageRectTransform = canvas;
+		_MISSION_MARKER_RectTransform = canvas;
 		_worldCamera = playerCamera.GetComponent<Camera>();
 		_uiImageLogicComponent = uiImageLogicComponent;
 
@@ -31,40 +32,22 @@ public class MissionObjectiveMarker : MonoBehaviour
 			MissionsManager.OnCurrentStepChanged += HandleStepChanged;
 
 			Debug.Log("[MissionMarker] Первая проверка цели (может быть неудачной).");
-			//HandleStepChanged();
-			//Invoke(nameof(RequestRecheck), 0.1f);
+			HandleStepChanged();
+			Invoke(nameof(RequestRecheck), 0.1f);
 		}
 	}
-	/*
-	private void Update()
+
+	private void OnDestroy()
 	{
-		Vector3 screenPoint = _worldCamera.WorldToViewportPoint(_targetGameObject.transform.position);
-	//	bool isVisible = screenPoint.z > 0f && IsOnScreen(screenPoint);
-	//	_uiElement.gameObject.SetActive(isVisible);
-
-	//	if (!isVisible) return;
-
-		float xPos = screenPoint.x * Screen.width;
-		float yPos = screenPoint.y * Screen.height;
-
-		_UIimageRectTransform.anchoredPosition = new Vector2(xPos, yPos);
-
-		// --- ОТЛАДОЧНЫЕ ЛОГИ ---
-		// Выводим позицию целевого объекта в мировом пространстве
-		Debug.Log($"[UI Marker] World Pos: {_targetGameObject.transform.position}");
-
-		// Выводим рассчитанную позицию UI элемента (в пикселях относительно экрана)
-		Debug.Log($"[UI Marker] UI Position (px): ({xPos}, {yPos})");
-
-		// Выводим итоговую позицию, которая присваивается RectTransform
-		Debug.Log($"[UI Marker] Anchored Position set to: {_UIimageRectTransform.anchoredPosition}");
+		if (_missionsManager != null)
+		{
+			MissionsManager.OnCurrentStepChanged -= HandleStepChanged;
+		}
 	}
-	*/
+
 	/// <summary>
 	/// Реакция на смену шага миссии или внешний запрос.
 	/// </summary>
-	/// 
-	
 	private void HandleStepChanged()
 	{
 		UpdateCurrentStepCache();
@@ -75,7 +58,6 @@ public class MissionObjectiveMarker : MonoBehaviour
 		bool shouldBeVisible = targetObject != null;
 		UpdateMarkerState(shouldBeVisible, targetObject?.transform.position ?? Vector3.zero);
 	}
-	
 
 	/// <summary>
 	/// Ищет первый попавшийся объект в мире, который является целью текущей миссии.
@@ -96,7 +78,7 @@ public class MissionObjectiveMarker : MonoBehaviour
 			if (condition.Owner != null && !conditionMet)
 			{
 				Debug.Log($"[MissionMarker] Найдена активная цель: {condition.Owner.name}");
-				_targetGameObject = condition.Owner;
+				_TARGETGAMEOBJECT = condition.Owner;
 				return condition.Owner;
 			}
 		}
@@ -107,8 +89,6 @@ public class MissionObjectiveMarker : MonoBehaviour
 	/// <summary>
 	/// Обновляет состояние видимости и позицию маркера.
 	/// </summary>
-	/// 
-	
 	private void UpdateMarkerState(bool shouldBeVisible, Vector3 worldPositionOfTarget)
 	{
 		if (shouldBeVisible && _uiImageLogicComponent != null)
@@ -120,15 +100,14 @@ public class MissionObjectiveMarker : MonoBehaviour
 			HideMarker();
 		}
 	}
-	
-	
+
 	private void ShowAndUpdateMarker(Vector3 worldPositionOfTarget)
 	{
 		if (_uiImageLogicComponent == null || _worldCamera == null) return;
 
 		Vector3 targetPositionForMarker = worldPositionOfTarget + _worldOffset;
 
-		//_uiImageLogicComponent.Initialize(_UIimageRectTransform, _worldCamera);
+		_uiImageLogicComponent.Initialize(_MISSION_MARKER_RectTransform, _worldCamera);
 		_uiImageLogicComponent.UpdatePosition(targetPositionForMarker);
 
 		if (!_uiImageLogicComponent.gameObject.activeSelf)
@@ -136,6 +115,33 @@ public class MissionObjectiveMarker : MonoBehaviour
 			_uiImageLogicComponent.gameObject.SetActive(true);
 		}
 	}
+
+	private void Update()
+	{
+		// Проверка на наличие всех необходимых компонентов перед выполнением логики
+
+		Vector3 screenPoint = _worldCamera.WorldToViewportPoint(_TARGETGAMEOBJECT.transform.position);
+		//bool isVisible = screenPoint.z > 0f && IsOnScreen(screenPoint);
+	//	_uiElement.gameObject.SetActive(isVisible);
+
+	//	if (!isVisible) return;
+
+		float xPos = screenPoint.x * Screen.width;
+		float yPos = screenPoint.y * Screen.height;
+
+		_MISSION_MARKER_RectTransform.anchoredPosition = new Vector2(xPos, yPos);
+
+		// --- ОТЛАДОЧНЫЕ ЛОГИ ---
+		// Выводим позицию целевого объекта в мировом пространстве
+		Debug.Log($"[UI Marker] World Pos: {_TARGETGAMEOBJECT.transform.position}");
+
+		// Выводим рассчитанную позицию UI элемента (в пикселях относительно экрана)
+		Debug.Log($"[UI Marker] UI Position (px): ({xPos}, {yPos})");
+
+		// Выводим итоговую позицию, которая присваивается RectTransform
+		Debug.Log($"[UI Marker] Anchored Position set to: {_MISSION_MARKER_RectTransform.anchoredPosition}");
+	}
+
 
 	private void HideMarker()
 	{
@@ -168,5 +174,4 @@ public class MissionObjectiveMarker : MonoBehaviour
 			_currentMissionStepCache = null;
 		}
 	}
-	
 }
