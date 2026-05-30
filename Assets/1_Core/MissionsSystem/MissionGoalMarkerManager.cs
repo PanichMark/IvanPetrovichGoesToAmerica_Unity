@@ -82,7 +82,14 @@ public class MissionGoalMarkerManager : MonoBehaviour
 		float xPos;
 		if (!isOnScreenX)
 		{
-			xPos = Mathf.Clamp01(screenPoint.x) * Screen.width + 50;
+			if (screenPoint.x < 0)
+			{
+				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width + 50;
+			}
+			else
+			{
+				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width - 50;
+			}
 		}
 		else
 		{
@@ -92,7 +99,14 @@ public class MissionGoalMarkerManager : MonoBehaviour
 		float yPos;
 		if (!isOnScreenY)
 		{
-			yPos = Mathf.Clamp01(screenPoint.y) * Screen.height + 50;
+			if (screenPoint.y < 0)
+			{
+				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height + 50;
+			}
+			else
+			{
+				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height - 50;
+			}
 		}
 		else
 		{
