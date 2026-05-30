@@ -56,10 +56,11 @@ public class BootstrapSubProcessMissionsSystem
 		Canvas canvasComponent = _canvasHUDmission.GetComponent<Canvas>();
 	
 		canvasComponent.worldCamera = _playerCamera;
+		canvasComponent.planeDistance = 0.01f;
 
 		_missionsManager.Initialize(_localizationManager, _bootstrapSubProcessMenuSystem.PauseMenuController, _allMissions);
 		_worldToUISpace.Initialize(_canvasRectTransform, _playerCamera);
-		_missionObjectiveMarker.Initialize(_missionsManager, _playerCameraGameObject, _canvasRectTransform, _worldToUISpace);
+		_missionObjectiveMarker.Initialize(_missionsManager, _worldToUISpace);
 
 		yield break;
 	}
