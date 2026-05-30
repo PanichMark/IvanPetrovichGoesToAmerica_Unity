@@ -1,111 +1,172 @@
 ﻿using UnityEngine;
+using System.Collections.Generic; // Для List<>
 
 public class MissionObjectiveMarker : MonoBehaviour
 {
-	// --- Зависимости ---
+	// --- Приватные зависимости ---
 	private MissionsManager _missionsManager;
-	private WorldToUISpace _worldToUISpace;
+	private Transform _playerCameraTransform;
+	private RectTransform _UIimageRectTransform;
+	private Camera _worldCamera;
+	private WorldToUISpace _uiImageLogicComponent;
+	private Vector3 _worldOffset = new Vector3(0, 2f, 0);
+	private GameObject _targetGameObject;
+	// Кэшируем текущий шаг для оптимизации
+	private ICurrentMissionStep _currentMissionStepCache;
 
-	// Смещение маркера над объектом в мировом пространстве
-	private readonly Vector3 _worldOffset = new Vector3(0, 2f, 0);
-
-	// Кэшированная цель для отслеживания
-	private Transform _currentTarget;
-
-	public void Initialize(MissionsManager missionsManager, WorldToUISpace worldToUISpace)
+	public void Initialize(
+		MissionsManager missionsManager,
+		GameObject playerCamera,
+		RectTransform canvas,
+		WorldToUISpace uiImageLogicComponent)
 	{
 		_missionsManager = missionsManager;
-		_worldToUISpace = worldToUISpace;
+		_playerCameraTransform = playerCamera.transform;
+		_UIimageRectTransform = canvas;
+		_worldCamera = playerCamera.GetComponent<Camera>();
+		_uiImageLogicComponent = uiImageLogicComponent;
 
 		if (_missionsManager != null)
 		{
-			// Подписываемся на событие смены шага миссии,
-			// чтобы сбросить кэш цели при необходимости
 			MissionsManager.OnCurrentStepChanged += HandleStepChanged;
 
-			// Ищем цель сразу после инициализации
-			FindAndSetNewTarget();
+			Debug.Log("[MissionMarker] Первая проверка цели (может быть неудачной).");
+			//HandleStepChanged();
+			//Invoke(nameof(RequestRecheck), 0.1f);
 		}
 	}
-
-	/// <summary>
-	/// Вызывается при смене шага миссии. Сбрасывает текущую цель.
-	/// </summary>
-	private void HandleStepChanged()
-	{
-		// При смене шага старую цель нужно забыть,
-		// чтобы найти новую на следующем Update
-		_currentTarget = null;
-	}
-
-	/// <summary>
-	/// Основной метод, вызываемый каждый кадр.
-	/// Ищет цель, если ее нет, и обновляет позицию.
-	/// </summary>
+	/*
 	private void Update()
 	{
-		// Если компонент UI не готов - выходим
-		if (_worldToUISpace == null) return;
+		Vector3 screenPoint = _worldCamera.WorldToViewportPoint(_targetGameObject.transform.position);
+	//	bool isVisible = screenPoint.z > 0f && IsOnScreen(screenPoint);
+	//	_uiElement.gameObject.SetActive(isVisible);
 
-		// Если цели нет, пытаемся ее найти
-		if (_currentTarget == null)
-		{
-			FindAndSetNewTarget();
+	//	if (!isVisible) return;
 
-			// Если цель так и не нашлась, выходим
-			if (_currentTarget == null)
-			{
-				return;
-			}
-		}
+		float xPos = screenPoint.x * Screen.width;
+		float yPos = screenPoint.y * Screen.height;
 
-		// Если цель есть - обновляем позицию маркера
-		UpdateMarkerPosition(_currentTarget.position);
+		_UIimageRectTransform.anchoredPosition = new Vector2(xPos, yPos);
+
+		// --- ОТЛАДОЧНЫЕ ЛОГИ ---
+		// Выводим позицию целевого объекта в мировом пространстве
+		Debug.Log($"[UI Marker] World Pos: {_targetGameObject.transform.position}");
+
+		// Выводим рассчитанную позицию UI элемента (в пикселях относительно экрана)
+		Debug.Log($"[UI Marker] UI Position (px): ({xPos}, {yPos})");
+
+		// Выводим итоговую позицию, которая присваивается RectTransform
+		Debug.Log($"[UI Marker] Anchored Position set to: {_UIimageRectTransform.anchoredPosition}");
 	}
+	*/
+	/// <summary>
+	/// Реакция на смену шага миссии или внешний запрос.
+	/// </summary>
+	/// 
+	
+	private void HandleStepChanged()
+	{
+		UpdateCurrentStepCache();
+
+		// Ищем ЛЮБОЙ объект в мире, который является владельцем невыполненного условия
+		GameObject targetObject = FindActiveTargetObject();
+
+		bool shouldBeVisible = targetObject != null;
+		UpdateMarkerState(shouldBeVisible, targetObject?.transform.position ?? Vector3.zero);
+	}
+	
 
 	/// <summary>
-	/// Находит новую цель и сохраняет ее в переменную _currentTarget.
+	/// Ищет первый попавшийся объект в мире, который является целью текущей миссии.
 	/// </summary>
-	private void FindAndSetNewTarget()
+	/// <returns>GameObject-цель или null, если целей нет.</returns>
+	private GameObject FindActiveTargetObject()
 	{
-		_currentTarget = FindActiveTarget();
-	}
+		if (_currentMissionStepCache == null) return null;
 
-	/// <summary>
-	/// Находит первый активный объект-цель из условий текущего шага.
-	/// </summary>
-	private Transform FindActiveTarget()
-	{
-		if (_missionsManager?.ActiveMission == null) return null;
-
-		var currentStep = _missionsManager.ActiveMission.Steps[_missionsManager.CurrentStepIndex] as ICurrentMissionStep;
-		if (currentStep == null || currentStep.Conditions.Count == 0) return null;
-
-		foreach (var condition in currentStep.Conditions)
+		foreach (var condition in _currentMissionStepCache.Conditions)
 		{
-			if (condition.Owner != null && !condition.IsMet())
+			string ownerName = condition.Owner ? condition.Owner.name : "NULL";
+			bool conditionMet = condition.IsMet();
+
+			Debug.Log($"[MissionMarker] Условие: '{condition.GetType().Name}'. Владелец: {ownerName}. Выполнено: {conditionMet}");
+
+			// Если у условия есть владелец И оно НЕ выполнено - этот объект наша цель!
+			if (condition.Owner != null && !conditionMet)
 			{
-				return condition.Owner.transform;
+				Debug.Log($"[MissionMarker] Найдена активная цель: {condition.Owner.name}");
+				_targetGameObject = condition.Owner;
+				return condition.Owner;
 			}
 		}
+		Debug.Log("[MissionMarker] Активных целей для отслеживания не найдено.");
 		return null;
 	}
 
 	/// <summary>
-	/// Вычисляет финальную позицию и обновляет UI-маркер.
-	/// Содержит отладочный вывод.
+	/// Обновляет состояние видимости и позицию маркера.
 	/// </summary>
-	private void UpdateMarkerPosition(Vector3 targetWorldPos)
+	/// 
+	
+	private void UpdateMarkerState(bool shouldBeVisible, Vector3 worldPositionOfTarget)
 	{
-		// Применяем мировое смещение к позиции цели
-		Vector3 finalWorldPos = targetWorldPos + _worldOffset;
-
-		// Передаем вычисленную позицию в компонент UI для проецирования на экран
-		_worldToUISpace.UpdatePosition(finalWorldPos);
-
-		// DEBUG LOG: Получаем позицию маркера из его компонента RectTransform
-		Vector2 uiAnchoredPos = _worldToUISpace.GetComponent<RectTransform>().anchoredPosition;
-		//Debug.Log($"[DEBUG][UPDATE] Цель (World): {targetWorldPos} | Маркер (Canvas AnchoredPos): {uiAnchoredPos}");
-		Debug.Log($"Маркер: {uiAnchoredPos}");
+		if (shouldBeVisible && _uiImageLogicComponent != null)
+		{
+			ShowAndUpdateMarker(worldPositionOfTarget);
+		}
+		else
+		{
+			HideMarker();
+		}
 	}
+	
+	
+	private void ShowAndUpdateMarker(Vector3 worldPositionOfTarget)
+	{
+		if (_uiImageLogicComponent == null || _worldCamera == null) return;
+
+		Vector3 targetPositionForMarker = worldPositionOfTarget + _worldOffset;
+
+		//_uiImageLogicComponent.Initialize(_UIimageRectTransform, _worldCamera);
+		_uiImageLogicComponent.UpdatePosition(targetPositionForMarker);
+
+		if (!_uiImageLogicComponent.gameObject.activeSelf)
+		{
+			_uiImageLogicComponent.gameObject.SetActive(true);
+		}
+	}
+
+	private void HideMarker()
+	{
+		if (_uiImageLogicComponent != null && _uiImageLogicComponent.gameObject.activeSelf)
+		{
+			_uiImageLogicComponent.gameObject.SetActive(false);
+		}
+	}
+
+	public void RequestRecheck()
+	{
+		Debug.Log("[MissionMarker] Задержанная проверка цели...");
+		HandleStepChanged();
+	}
+
+	private void UpdateCurrentStepCache()
+	{
+		if (_missionsManager?.ActiveMission == null || _missionsManager.CurrentStepIndex < 0)
+		{
+			_currentMissionStepCache = null;
+			return;
+		}
+
+		try
+		{
+			_currentMissionStepCache = _missionsManager.ActiveMission.Steps[_missionsManager.CurrentStepIndex] as ICurrentMissionStep;
+		}
+		catch (System.IndexOutOfRangeException)
+		{
+			_currentMissionStepCache = null;
+		}
+	}
+	
 }

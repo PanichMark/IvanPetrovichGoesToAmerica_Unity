@@ -60,7 +60,7 @@ public class BootstrapSubProcessMissionsSystem
 
 		_missionsManager.Initialize(_localizationManager, _bootstrapSubProcessMenuSystem.PauseMenuController, _allMissions);
 		_worldToUISpace.Initialize(_canvasRectTransform, _playerCamera);
-		_missionObjectiveMarker.Initialize(_missionsManager, _worldToUISpace);
+		_missionObjectiveMarker.Initialize(_missionsManager, _playerCameraGameObject, _UImarkerRectTransform, _worldToUISpace);
 
 		yield break;
 	}
