@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 public class ViewModelPauseSubMenuAppearance : IViewModel
 {
-	public Button ButtonClosePauseSubMenuAppearance;
+	public GameObject ButtonClosePauseSubMenuAppearance;
 
 	public void Initialize(Bootstrap bootstrap, GameObject canvas)
 	{
-		ButtonClosePauseSubMenuAppearance = bootstrap.FindDeepGameObject(canvas, "ButtonClosePauseSubMenuAppearance").GetComponent<Button>();
+		ButtonClosePauseSubMenuAppearance = bootstrap.FindDeepGameObject(canvas, "ButtonClosePauseSubMenuAppearance");
 	}
 }

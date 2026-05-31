@@ -388,12 +388,12 @@ public class Bootstrap : MonoBehaviour
 			_playerGameObject,
 			_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager,
 			_canvasHUDammo,
-			_bootstrapSubProcessMenuSystem.TextRightWeaponAmmoMagazineNumber,
-			_bootstrapSubProcessMenuSystem.TextRightWeaponAmmoReserveNumber,
-			_bootstrapSubProcessMenuSystem.RightWeaponAmmoSeparator,
-			_bootstrapSubProcessMenuSystem.TextLeftWeaponAmmoMagazineNumber,
-			_bootstrapSubProcessMenuSystem.TextLeftWeaponAmmoReserveNumber,
-			_bootstrapSubProcessMenuSystem.LeftWeaponAmmoSeparator);
+			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextRightWeaponAmmoMagazineNumber,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextRightWeaponAmmoReserveNumber,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.RightWeaponAmmoSeparator,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextLeftWeaponAmmoMagazineNumber,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextLeftWeaponAmmoReserveNumber,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.LeftWeaponAmmoSeparator);
 		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
 	}
 

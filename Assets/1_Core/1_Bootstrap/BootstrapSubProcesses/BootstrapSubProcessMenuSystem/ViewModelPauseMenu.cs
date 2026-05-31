@@ -2,28 +2,25 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PauseMenuViewModel : IViewModel
+public class ViewModelPauseMenu : IViewModel
 {
-	public Button ButtonResume;
-	public Button ButtonSave;
-	public Button ButtonLoad;
-	public Button ButtonAppearance;
-	public Button ButtonTutorial;
-	public Button ButtonSettings;
-	public Button ButtonExitToMainMenu;
-	public TextMeshProUGUI TextCurrentMissionGoal;
+	public GameObject[] ButtonsPauseMenu;
+	public GameObject TextCurrentMissionGoal;
 	public TMP_Text TextPlayerMoneyNumber;
 
 	public void Initialize(Bootstrap bootstrap, GameObject canvas)
 	{
-		ButtonResume = bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuResume").GetComponent<Button>();
-		ButtonSave = bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuSave").GetComponent<Button>();
-		ButtonLoad = bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuLoad").GetComponent<Button>();
-		ButtonAppearance = bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuAppearance").GetComponent<Button>();
-		ButtonTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuTutorial").GetComponent<Button>();
-		ButtonSettings = bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuSettings").GetComponent<Button>();
-		ButtonExitToMainMenu = bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuExitToMainMenu").GetComponent<Button>();
-		TextCurrentMissionGoal = bootstrap.FindDeepGameObject(canvas, "TextCurrentMissionGoal").GetComponent<TextMeshProUGUI>();
+		ButtonsPauseMenu = new[]
+	{
+			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuResume"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuSave"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuLoad"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuAppearance"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuTutorial"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuSettings"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuExitToMainMenu")
+		};
+		TextCurrentMissionGoal = bootstrap.FindDeepGameObject(canvas, "TextCurrentMissionGoal");
 		TextPlayerMoneyNumber = canvas.transform.Find("TextPlayerMoneyNumber").GetComponent<TMP_Text>();
 	}
 }

@@ -4,18 +4,18 @@ using UnityEngine.UI;
 
 public class ViewModelPauseSubMenuTutorial : IViewModel
 {
-	public Button ButtonClosePauseSubMenuTutorial;
-	public Button ButtonNextTutorial;
-	public Button ButtonPreviousTutorial;
-	public TextMeshProUGUI TutorialNoteText;
-	public Image TutorialNoteImage;
+	public GameObject ButtonClosePauseSubMenuTutorial;
+	public GameObject ButtonNextTutorial;
+	public GameObject ButtonPreviousTutorial;
+	public GameObject TutorialNoteText;
+	public GameObject TutorialNoteImage;
 
 	public void Initialize(Bootstrap bootstrap, GameObject canvas)
 	{
-		ButtonClosePauseSubMenuTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonClosePauseSubMenuTutorial").GetComponent<Button>();
-		ButtonNextTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonNextTutorial").GetComponent<Button>();
-		ButtonPreviousTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonPreviousTutorial").GetComponent<Button>();
-		TutorialNoteText = bootstrap.FindDeepGameObject(canvas, "TutorialNoteText").GetComponent<TextMeshProUGUI>();
-		TutorialNoteImage = bootstrap.FindDeepGameObject(canvas, "TutorialNoteImage").GetComponent<Image>();
+		ButtonClosePauseSubMenuTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonClosePauseSubMenuTutorial");
+		ButtonNextTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonNextTutorial");
+		ButtonPreviousTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonPreviousTutorial");
+		TutorialNoteText = bootstrap.FindDeepGameObject(canvas, "TutorialNoteText");
+		TutorialNoteImage = bootstrap.FindDeepGameObject(canvas, "TutorialNoteImage");
 	}
 }

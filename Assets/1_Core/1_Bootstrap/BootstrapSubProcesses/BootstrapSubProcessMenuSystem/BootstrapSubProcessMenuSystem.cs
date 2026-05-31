@@ -1,13 +1,23 @@
 ﻿using System.Collections;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BootstrapSubProcessMenuSystem
 {
 	private Bootstrap _bootstrap;
 
 	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
+
+	public ViewModelPauseMenu ViewModelPauseMenu {  get; private set; }
+	private ViewModelPauseSubMenuSave _viewModelSave;
+	private ViewModelPauseSubMenuLoad _viewModelLoad;
+	private ViewModelPauseSubMenuAppearance _viewModelAppearance;
+	private ViewModelPauseSubMenuTutorial _viewModelTutorial;
+	private ViewModelPauseSubMenuSettings _viewModelSettings;
+	private ViewModelPauseMenuConfirmAction _viewModelConfirmAction;
+	private ViewModelMainMenuReadNews _viewModelReadNews;
+	public ViewModelMenuWeaponWheel ViewModelWeaponWheel { get; private set; }
+	public ViewModelHUDHealthAndMana ViewModelHUDHealthAndMana {  get; private set; }
+	public ViewModelHUDAmmo ViewModelHUDAmmo {  get; private set; }
 
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
@@ -22,107 +32,60 @@ public class BootstrapSubProcessMenuSystem
 	public PauseMenuController PauseMenuController { get; private set; }
 	private GameObject _canvasMenuBackground;
 	private GameObject _canvasPauseMenu;
-	private GameObject[] _buttonsPauseMenu;
-	private GameObject _textCurrentMissionGoal;
 
 	private PauseSubMenuSaveController _pauseSubMenuSaveController;
 	private GameObject _canvasPauseSubMenuSave;
-	private GameObject _buttonCreateNewGameFile;
-	private GameObject[] _buttonsRewriteGameFile;
-	private GameObject[] _buttonsDeleteGameFile;
-	private GameObject _buttonClosePauseSubMenuSave;
+
 
 	private PauseSubMenuLoadController _pauseSubMenuLoadController;
 	private GameObject _canvasPauseSubMenuLoad;
-	private GameObject[] _buttonsLoadGameFile;
-	private GameObject _buttonClosePauseSubMenuLoad;
+
 
 	private PauseSubMenuAppearanceController _pauseSubMenuAppearanceController;
 	private GameObject _canvasPauseSubMenuAppearance;
-	private GameObject _buttonClosePauseSubMenuAppearance;
+
 
 	private PauseSubMenuTutorialController _pauseSubMenuTutorialController;
 	private GameObject _canvasPauseSubMenuTutorial;
-	private GameObject _buttonClosePauseSubMenuTutorial;
-	private GameObject _buttonNextTutorial;
-	private GameObject _buttonPreviousTutorial;
-	private GameObject _tutorialNoteText;
-	private GameObject _tutorialNoteImage;
+
 
 	public PauseSubMenuSettingsController PauseSubMenuSettingsController { get; private set; }
 	private GameObject _canvasPauseSubMenuSettings;
-	private GameObject _subSettingsSectionGeneral;
-	private GameObject _subSettingsSectionControls;
-	private GameObject _subSettingsSectionGraphics;
-	private GameObject _subSettingsSectionAudio;
-
-	private GameObject _imageBackgroundSectionGeneral;
-	private GameObject _imageBackgroundSectionControls;
-	private GameObject _imageBackgroundSectionGraphics;
-	private GameObject _imageBackgroundSectionAudio;
-
-	private GameObject _buttonSaveGameSettings;
-	private GameObject _buttonResetGameSettings;
-	private GameObject _buttonClosePauseSubMenuSettings;
 
 	public PauseSubMenuSettingsSectionGeneralController PauseSubMenuSettingsSectionGeneralController { get; private set; }
-	private GameObject _buttonSubSettingsSectionGeneral;
-	private GameObject _sliderChangeFOV;
-	private GameObject _numberFOV;
-	private GameObject[] _buttonsChangeFPS;
+
 
 	public PauseSubMenuSettingsSectionControlsController PauseSubMenuSettingsSectionControlsController {  get; private set; }
-	private GameObject _buttonSubSettingsSectionControls;
-	private GameObject[] _inputFieldsKeyRebinds;
+
 
 	public PauseSubMenuSettingsSectionGraphicsController PauseSubMenuSettingsSectionGraphicsController { get; private set; }
-	private GameObject _buttonSubSettingsSectionGraphics;
+
 
 	public PauseSubMenuSettingsSectionAudioController PauseSubMenuSettingsSectionAudioController { get; private set; }
-	private GameObject _buttonSubSettingsSectionAudio;
-	private GameObject[] _buttonsChangeLanguage;
+
 
 	private PauseSubMenuSettingsPlayerPrefs _pauseSubMenuSettingsPlayerPrefs;
 
 	private PauseMenuConfirmActionController _pauseMenuConfirmActionController;
 	private GameObject _canvasMenuConfirmAction;
-	private GameObject _buttonConfirmAction;
-	private GameObject _buttonCancelAction;
-	private GameObject _textConfirmActionMessage;
+	
 
 	private MainMenuReadNewsController _mainMenuReadNewsController;
 	private GameObject _canvasMainMenuReadNews;
-	private Button _buttonCloseMainMenuReadNews;
-	private Button _buttonYouTube;
-	private Button _buttonGitHub;
+
 
 	private CutsceneMenuController _cutsceneMenuController;
 	private GameObject _canvasMenuCutscene;
 
 	public HUDhealthAndManaController HUDhealthAndManaController { get; private set; }
 	private GameObject _canvasHUDhealthAndMana;
-	private GameObject _healthBar;
-	public Slider SliderHealthBar { get; private set; }
-	public Button ButtonUseHealingItem {  get; private set; }
-	public TextMeshProUGUI TextHealingItemNumber { get; private set; }
-	public Slider SliderManaBar {  get; private set; }
-	private GameObject _manaBar;
-	public Button ButtonUseManaReplenishItem {  get; private set; }
-	public TextMeshProUGUI TextManaReplenishItemNumber { get; private set; }
 
 	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
-	public TMP_Text TextPlayerMoneyNumber { get; private set; }
 
 	public PlayerResourcesAmmoManager PlayerResourcesAmmoManager { get; private set; }
 	public HUDammoController HUDammoController { get; private set; }
 
 	private GameObject _canvasHUDammo;
-	public GameObject TextRightWeaponAmmoMagazineNumber { get; private set; }
-	public GameObject TextRightWeaponAmmoReserveNumber { get; private set; }
-	public GameObject RightWeaponAmmoSeparator { get; private set; }
-	public GameObject TextLeftWeaponAmmoMagazineNumber { get; private set; }
-	public GameObject TextLeftWeaponAmmoReserveNumber { get; private set; }
-	public GameObject LeftWeaponAmmoSeparator { get; private set; }
 
 	private GameObject _canvasMenuWeaponWheel;
 
@@ -193,22 +156,55 @@ public class BootstrapSubProcessMenuSystem
 		HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
 
+		ViewModelPauseMenu = new ViewModelPauseMenu();
+		ViewModelPauseMenu.Initialize(_bootstrap, _canvasPauseMenu);
+
+		_viewModelSave = new ViewModelPauseSubMenuSave();
+		_viewModelSave.Initialize(_bootstrap, _canvasPauseSubMenuSave);
+
+		_viewModelLoad = new ViewModelPauseSubMenuLoad();
+		_viewModelLoad.Initialize(_bootstrap, _canvasPauseSubMenuLoad);
+
+		_viewModelAppearance = new ViewModelPauseSubMenuAppearance();
+		_viewModelAppearance.Initialize(_bootstrap, _canvasPauseSubMenuAppearance);
+
+		_viewModelTutorial = new ViewModelPauseSubMenuTutorial();
+		_viewModelTutorial.Initialize(_bootstrap, _canvasPauseSubMenuTutorial);
+
+		_viewModelSettings = new ViewModelPauseSubMenuSettings();
+		_viewModelSettings.Initialize(_bootstrap, _canvasPauseSubMenuSettings);
+
+		_viewModelConfirmAction = new ViewModelPauseMenuConfirmAction();
+		_viewModelConfirmAction.Initialize(_bootstrap, _canvasMenuConfirmAction);
+
+		_viewModelReadNews = new ViewModelMainMenuReadNews();
+		_viewModelReadNews.Initialize(_bootstrap, _canvasMainMenuReadNews);
+
+		ViewModelHUDHealthAndMana = new ViewModelHUDHealthAndMana();
+		ViewModelHUDHealthAndMana.Initialize(_bootstrap, _canvasHUDhealthAndMana);
+
+		ViewModelHUDAmmo = new ViewModelHUDAmmo();
+		ViewModelHUDAmmo.Initialize(_bootstrap, _canvasHUDammo);
+
+		ViewModelWeaponWheel = new ViewModelMenuWeaponWheel();
+		ViewModelWeaponWheel.Initialize(_bootstrap, _canvasMenuWeaponWheel);
+
 		MenuManager.Initialize(_gameController, _inputDevice, _gameSceneManager, _canvasMenuBackground);
-		PauseMenuController.Initialize(_gameController, _inputDevice, _gameSceneManager, MenuManager, _canvasPauseMenu, _buttonsPauseMenu, _textCurrentMissionGoal, _saveLoadController);
-		_pauseSubMenuSaveController.Initialize(_inputDevice, _saveLoadController, MenuManager, PauseMenuController, _canvasPauseSubMenuSave, _buttonCreateNewGameFile, _buttonsRewriteGameFile, _buttonsDeleteGameFile, _buttonClosePauseSubMenuSave);
-		_pauseSubMenuLoadController.Initialize(_inputDevice, _saveLoadController, MenuManager, PauseMenuController, _canvasPauseSubMenuLoad, _buttonsLoadGameFile, _buttonClosePauseSubMenuLoad);
-		_pauseSubMenuAppearanceController.Initialize(_inputDevice, MenuManager, PauseMenuController, _canvasPauseSubMenuAppearance, _buttonClosePauseSubMenuAppearance);
-		_pauseSubMenuTutorialController.Initialize(MenuManager, PauseMenuController, _canvasPauseSubMenuTutorial, _buttonClosePauseSubMenuTutorial, _buttonNextTutorial, _buttonPreviousTutorial, _tutorialNoteText, _tutorialNoteImage, _bootstrap.ConfigPauseSubMenuTutorial.Notes);
-		PauseSubMenuSettingsController.Initialize(PauseMenuController, _canvasPauseSubMenuSettings, _subSettingsSectionGeneral, _imageBackgroundSectionGeneral, _buttonSubSettingsSectionGeneral, _subSettingsSectionControls, _imageBackgroundSectionControls, _buttonSubSettingsSectionControls, _subSettingsSectionGraphics, _imageBackgroundSectionGraphics, _buttonSubSettingsSectionGraphics, _subSettingsSectionAudio, _imageBackgroundSectionAudio, _buttonSubSettingsSectionAudio, _buttonSaveGameSettings, _buttonResetGameSettings, _buttonClosePauseSubMenuSettings);
-		PauseSubMenuSettingsSectionGeneralController.Initialize(_gameController, PauseMenuController, _numberFOV, _sliderChangeFOV, _buttonsChangeFPS);
-		PauseSubMenuSettingsSectionControlsController.Initialize(_inputDevice, PauseMenuController, _inputFieldsKeyRebinds);
+		PauseMenuController.Initialize(_gameController, _inputDevice, _gameSceneManager, MenuManager, _canvasPauseMenu, ViewModelPauseMenu.ButtonsPauseMenu, ViewModelPauseMenu.TextCurrentMissionGoal, _saveLoadController);
+		_pauseSubMenuSaveController.Initialize(_inputDevice, _saveLoadController, MenuManager, PauseMenuController, _canvasPauseSubMenuSave, _viewModelSave.ButtonCreateNewGameFile, _viewModelSave.ButtonsRewriteGameFile, _viewModelSave.ButtonsDeleteGameFile, _viewModelSave.ButtonClosePauseSubMenuSave);
+		_pauseSubMenuLoadController.Initialize(_inputDevice, _saveLoadController, MenuManager, PauseMenuController, _canvasPauseSubMenuLoad, _viewModelLoad.ButtonsLoadGameFile, _viewModelLoad.ButtonClosePauseSubMenuLoad);
+		_pauseSubMenuAppearanceController.Initialize(_inputDevice, MenuManager, PauseMenuController, _canvasPauseSubMenuAppearance, _viewModelAppearance.ButtonClosePauseSubMenuAppearance);
+		_pauseSubMenuTutorialController.Initialize(MenuManager, PauseMenuController, _canvasPauseSubMenuTutorial, _viewModelTutorial.ButtonClosePauseSubMenuTutorial, _viewModelTutorial.ButtonNextTutorial, _viewModelTutorial.ButtonPreviousTutorial, _viewModelTutorial.TutorialNoteText, _viewModelTutorial.TutorialNoteImage, _bootstrap.ConfigPauseSubMenuTutorial.Notes);
+		PauseSubMenuSettingsController.Initialize(PauseMenuController, _canvasPauseSubMenuSettings, _viewModelSettings.SubSettingsSectionGeneral, _viewModelSettings.ImageBackgroundSectionGeneral, _viewModelSettings.ButtonSubSettingsSectionGeneral, _viewModelSettings.SubSettingsSectionControls, _viewModelSettings.ImageBackgroundSectionControls, _viewModelSettings.ButtonSubSettingsSectionControls, _viewModelSettings.SubSettingsSectionGraphics, _viewModelSettings.ImageBackgroundSectionGraphics, _viewModelSettings.ButtonSubSettingsSectionGraphics, _viewModelSettings.SubSettingsSectionAudio, _viewModelSettings.ImageBackgroundSectionAudio, _viewModelSettings.ButtonSubSettingsSectionAudio, _viewModelSettings.ButtonSaveGameSettings, _viewModelSettings.ButtonResetGameSettings, _viewModelSettings.ButtonClosePauseSubMenuSettings);
+		PauseSubMenuSettingsSectionGeneralController.Initialize(_gameController, PauseMenuController, _viewModelSettings.NumberFOV, _viewModelSettings.SliderChangeFOV, _viewModelSettings.ButtonsChangeFPS);
+		PauseSubMenuSettingsSectionControlsController.Initialize(_inputDevice, PauseMenuController, _viewModelSettings.InputFieldsKeyRebinds);
 		PauseSubMenuSettingsSectionGraphicsController.Initialize();
-		PauseSubMenuSettingsSectionAudioController.Initialize(_bootstrap, _localizationManager, PauseMenuController, _buttonsChangeLanguage);
+		PauseSubMenuSettingsSectionAudioController.Initialize(_bootstrap, _localizationManager, PauseMenuController, _viewModelSettings.ButtonsChangeLanguage);
 		_pauseSubMenuSettingsPlayerPrefs.Initialize(_bootstrap, _inputDevice, PauseSubMenuSettingsController, PauseSubMenuSettingsSectionGeneralController, PauseSubMenuSettingsSectionControlsController, PauseSubMenuSettingsSectionGraphicsController, PauseSubMenuSettingsSectionAudioController);
-		_pauseMenuConfirmActionController.Initialize(_gameSceneManager, _saveLoadController, MenuManager, PauseMenuController, _pauseSubMenuSaveController, _pauseSubMenuLoadController, PauseSubMenuSettingsController, PauseSubMenuSettingsSectionGeneralController, PauseSubMenuSettingsSectionControlsController, PauseSubMenuSettingsSectionGraphicsController, PauseSubMenuSettingsSectionAudioController,_canvasMenuConfirmAction, _buttonConfirmAction, _buttonCancelAction, _textConfirmActionMessage);
-		_mainMenuReadNewsController.Initialize(_inputDevice, _canvasMainMenuReadNews, _buttonCloseMainMenuReadNews, _buttonYouTube , _buttonGitHub);
+		_pauseMenuConfirmActionController.Initialize(_gameSceneManager, _saveLoadController, MenuManager, PauseMenuController, _pauseSubMenuSaveController, _pauseSubMenuLoadController, PauseSubMenuSettingsController, PauseSubMenuSettingsSectionGeneralController, PauseSubMenuSettingsSectionControlsController, PauseSubMenuSettingsSectionGraphicsController, PauseSubMenuSettingsSectionAudioController,_canvasMenuConfirmAction, _viewModelConfirmAction.ButtonConfirmAction, _viewModelConfirmAction.ButtonCancelAction, _viewModelConfirmAction.TextConfirmActionMessage);
+		_mainMenuReadNewsController.Initialize(_inputDevice, _canvasMainMenuReadNews, _viewModelReadNews.ButtonCloseMainMenuReadNews, _viewModelReadNews.ButtonYouTube, _viewModelReadNews.ButtonGitHub);
 		_cutsceneMenuController.Initialize(_gameSceneManager, MenuManager, _canvasMenuCutscene);
-		HUDhealthAndManaController.Initialize(_gameController, _bootstrapSubProcessSceneSystem.GameSceneManager, MenuManager, _canvasHUDhealthAndMana, _healthBar, _manaBar);
+		HUDhealthAndManaController.Initialize(_gameController, _bootstrapSubProcessSceneSystem.GameSceneManager, MenuManager, _canvasHUDhealthAndMana, ViewModelHUDHealthAndMana.HealthBar, ViewModelHUDHealthAndMana.ManaBar);
 
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", PauseMenuController);
