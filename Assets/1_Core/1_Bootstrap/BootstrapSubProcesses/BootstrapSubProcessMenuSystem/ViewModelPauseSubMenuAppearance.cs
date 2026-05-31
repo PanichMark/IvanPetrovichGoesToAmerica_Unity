@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewModelPauseSubMenuAppearance : IViewModel
+public class ViewModelPauseSubMenuAppearance
 {
 	public GameObject ButtonClosePauseSubMenuAppearance;
 
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelPauseSubMenuAppearance(Bootstrap bootstrap, GameObject canvas)
 	{
 		ButtonClosePauseSubMenuAppearance = bootstrap.FindDeepGameObject(canvas, "ButtonClosePauseSubMenuAppearance");
 	}

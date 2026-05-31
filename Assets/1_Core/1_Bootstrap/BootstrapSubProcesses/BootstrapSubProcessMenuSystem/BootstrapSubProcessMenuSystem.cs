@@ -37,11 +37,13 @@ public class BootstrapSubProcessMenuSystem
 	public MenuManager MenuManager { get; private set; }
 
 	public PauseMenuController PauseMenuController { get; private set; }
-	private GameObject _canvasHUDinteraction;
+	public GameObject CanvasHUDinteraction {  get; private set; }
 	private GameObject _canvasMenuNote;
 	private GameObject _canvasMenuLockpickMechanical;
 	private GameObject _canvasMenuLockpickElectronic;
 	private GameObject _canvasMenuDialogue;
+
+
 	private GameObject _canvasMenuBackground;
 	private GameObject _canvasPauseMenu;
 
@@ -121,7 +123,12 @@ public class BootstrapSubProcessMenuSystem
 		GameObject canvasMenuCutscene,
 		GameObject canvasHUDhealthAndMana,
 		GameObject canvasHUDammo,
-		GameObject canvasHUDmission)
+		GameObject canvasHUDinteraction,
+		GameObject canvasHUDmission,
+		GameObject canvasMenuNote,
+		GameObject canvasMenuLockpickMechanical,
+		GameObject canvasMenuLockpickElectronic,
+		GameObject canvasMenuDialogue)
 	{
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
@@ -144,6 +151,11 @@ public class BootstrapSubProcessMenuSystem
 		_canvasHUDhealthAndMana = canvasHUDhealthAndMana;
 		CanvasHUDammo = canvasHUDammo;
 		_canvasHUDmission = canvasHUDmission;
+		CanvasHUDinteraction = canvasHUDinteraction;
+		_canvasMenuLockpickMechanical = canvasMenuLockpickMechanical;
+		_canvasMenuLockpickElectronic = canvasMenuLockpickElectronic;
+		_canvasMenuDialogue = canvasMenuDialogue;
+		_canvasMenuNote = canvasMenuNote;
 	}
 
 	public IEnumerator InitializeMenuSystem()
@@ -168,44 +180,25 @@ public class BootstrapSubProcessMenuSystem
 		HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
 
-		ViewModelPauseMenu = new ViewModelPauseMenu();
-		ViewModelPauseMenu.Initialize(_bootstrap, _canvasPauseMenu);
+		ViewModelPauseMenu = new ViewModelPauseMenu(_bootstrap, _canvasPauseMenu);
+		_viewModelPauseSubMenuSave = new ViewModelPauseSubMenuSave(_bootstrap, _canvasPauseSubMenuSave);
+		_viewModelPauseSubMenuLoad = new ViewModelPauseSubMenuLoad(_bootstrap, _canvasPauseSubMenuLoad);
+		_viewModelPauseSubMenuAppearance = new ViewModelPauseSubMenuAppearance(_bootstrap, _canvasPauseSubMenuAppearance);
+		_viewModelPauseSubMenuTutorial = new ViewModelPauseSubMenuTutorial(_bootstrap, _canvasPauseSubMenuTutorial);
+		_viewModelPauseSubMenuSettings = new ViewModelPauseSubMenuSettings(_bootstrap, _canvasPauseSubMenuSettings);
+		_viewModelPauseMenuConfirmAction = new ViewModelPauseMenuConfirmAction(_bootstrap, _canvasMenuConfirmAction);
+		_viewModelMainMenuReadNews = new ViewModelMainMenuReadNews(_bootstrap, _canvasMainMenuReadNews);
+		ViewModelHUDhealthAndMana = new ViewModelHUDHealthAndMana(_bootstrap, _canvasHUDhealthAndMana);
+		ViewModelHUDAmmo = new ViewModelHUDAmmo(_bootstrap, CanvasHUDammo);
+		ViewModelWeaponWheel = new ViewModelMenuWeaponWheel(_bootstrap, CanvasMenuWeaponWheel);
+		ViewModelHUDMission = new ViewModelHUDMission(_bootstrap, _canvasHUDmission);
 
-		_viewModelPauseSubMenuSave = new ViewModelPauseSubMenuSave();
-		_viewModelPauseSubMenuSave.Initialize(_bootstrap, _canvasPauseSubMenuSave);
-
-		_viewModelPauseSubMenuLoad = new ViewModelPauseSubMenuLoad();
-		_viewModelPauseSubMenuLoad.Initialize(_bootstrap, _canvasPauseSubMenuLoad);
-
-		_viewModelPauseSubMenuAppearance = new ViewModelPauseSubMenuAppearance();
-		_viewModelPauseSubMenuAppearance.Initialize(_bootstrap, _canvasPauseSubMenuAppearance);
-
-		_viewModelPauseSubMenuTutorial = new ViewModelPauseSubMenuTutorial();
-		_viewModelPauseSubMenuTutorial.Initialize(_bootstrap, _canvasPauseSubMenuTutorial);
-
-		_viewModelPauseSubMenuSettings = new ViewModelPauseSubMenuSettings();
-		_viewModelPauseSubMenuSettings.Initialize(_bootstrap, _canvasPauseSubMenuSettings);
-
-		_viewModelPauseMenuConfirmAction = new ViewModelPauseMenuConfirmAction();
-		_viewModelPauseMenuConfirmAction.Initialize(_bootstrap, _canvasMenuConfirmAction);
-
-		_viewModelMainMenuReadNews = new ViewModelMainMenuReadNews();
-		_viewModelMainMenuReadNews.Initialize(_bootstrap, _canvasMainMenuReadNews);
-
-		ViewModelHUDhealthAndMana = new ViewModelHUDHealthAndMana();
-		ViewModelHUDhealthAndMana.Initialize(_bootstrap, _canvasHUDhealthAndMana);
-
-		ViewModelHUDAmmo = new ViewModelHUDAmmo();
-		ViewModelHUDAmmo.Initialize(_bootstrap, CanvasHUDammo);
-
-		ViewModelWeaponWheel = new ViewModelMenuWeaponWheel();
-		ViewModelWeaponWheel.Initialize(_bootstrap, CanvasMenuWeaponWheel);
-
-		ViewModelHUDMission = new ViewModelHUDMission();
-		ViewModelHUDMission.Initialize(_bootstrap, _canvasHUDmission);
-
-		ViewModelHUDInteraction = new ViewModelHUDInteraction();
-		ViewModelHUDInteraction.Initialize
+		ViewModelHUDInteraction = new ViewModelHUDInteraction(_bootstrap, CanvasHUDinteraction);
+		ViewModelMenuNote = new ViewModelMenuNote(_bootstrap, _canvasMenuNote);
+		ViewModelMenuLockpickMechanical = new ViewModelMenuLockpickMechanical(_bootstrap, _canvasMenuLockpickMechanical);
+		ViewModelMenuLockpickElectronic = new ViewModelMenuLockpickElectronic(_bootstrap, _canvasMenuLockpickElectronic);
+		ViewModelMenuDialogue = new ViewModelMenuDialogue(_bootstrap, _canvasMenuDialogue);
+	
 
 		MenuManager.Initialize(_gameController, _inputDevice, _gameSceneManager, _canvasMenuBackground);
 		PauseMenuController.Initialize(_gameController, _inputDevice, _gameSceneManager, MenuManager, _canvasPauseMenu, ViewModelPauseMenu.ButtonsPauseMenu, ViewModelPauseMenu.TextCurrentMissionGoal, _saveLoadController);
@@ -228,6 +221,27 @@ public class BootstrapSubProcessMenuSystem
 		ServiceLocator.Register("PauseMenuController", PauseMenuController);
 		ServiceLocator.Register("MainMenuReadNews", _mainMenuReadNewsController);
 		ServiceLocator.Register("TextChokeNPC", ViewModelHUDAmmo.TextChokeNPC);
+
+		ServiceLocator.Register("CanvasMenuNote", _canvasMenuNote);
+		ServiceLocator.Register("TextNote", ViewModelMenuNote.TextNote);
+		ServiceLocator.Register("ImageNote", ViewModelMenuNote.ImageNote);
+		ServiceLocator.Register("ImageNoteBlackBackground", ViewModelMenuNote.ImageNoteBlackBackground);
+		ServiceLocator.Register("ButtonCloseReadNoteMenu", ViewModelMenuNote.ButtonCloseMenuNote);
+
+		ServiceLocator.Register("CanvasMenuLockpickMechanical", _canvasMenuLockpickMechanical);
+		ServiceLocator.Register("ButtonCloseLockpickMechanicalMenu", ViewModelMenuLockpickMechanical.ButtonCloseMenuLockpickMechanical);
+
+		ServiceLocator.Register("CanvasMenuLockpickElectronic", _canvasMenuLockpickElectronic);
+		ServiceLocator.Register("ButtonsLockElectronic", ViewModelMenuLockpickElectronic.ButtonsLockElectronic);
+		ServiceLocator.Register("ButtonCloseLockpickElectronicMenu", ViewModelMenuLockpickElectronic.ButtonCloseMenuLockpickElectronic);
+
+		ServiceLocator.Register("CanvasMenuDialogue", _canvasMenuDialogue);
+		ServiceLocator.Register("TextPhraseLine", ViewModelHUDInteraction.TextPhraseLine);
+		ServiceLocator.Register("TextDialogueLine", ViewModelMenuDialogue.TextDialogueLine);
+		ServiceLocator.Register("ButtonDialogueYes", ViewModelMenuDialogue.ButtonDialogueYes);
+		ServiceLocator.Register("ButtonDialogueNo", ViewModelMenuDialogue.ButtonDialogueNo);
+		ServiceLocator.Register("TextDialogueYes", ViewModelMenuDialogue.TextDialogueYes);
+		ServiceLocator.Register("TextDialogueNo", ViewModelMenuDialogue.TextDialogueNo);
 
 		Debug.Log("MENU INITIALIZED");
 		yield break;

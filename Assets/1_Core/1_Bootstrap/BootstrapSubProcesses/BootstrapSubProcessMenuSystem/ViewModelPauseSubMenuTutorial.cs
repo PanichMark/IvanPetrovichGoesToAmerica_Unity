@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewModelPauseSubMenuTutorial : IViewModel
+public class ViewModelPauseSubMenuTutorial
 {
 	public GameObject ButtonClosePauseSubMenuTutorial;
 	public GameObject ButtonNextTutorial;
@@ -10,7 +10,7 @@ public class ViewModelPauseSubMenuTutorial : IViewModel
 	public GameObject TutorialNoteText;
 	public GameObject TutorialNoteImage;
 
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelPauseSubMenuTutorial(Bootstrap bootstrap, GameObject canvas)
 	{
 		ButtonClosePauseSubMenuTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonClosePauseSubMenuTutorial");
 		ButtonNextTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonNextTutorial");

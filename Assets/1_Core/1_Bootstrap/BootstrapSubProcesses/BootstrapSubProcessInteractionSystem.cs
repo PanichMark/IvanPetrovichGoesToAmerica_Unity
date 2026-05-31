@@ -25,15 +25,6 @@ public class BootstrapSubProcessInteractionSystem
 
 	private KeysManager _keysManager;
 
-
-
-
-
-
-
-
-
-
 	public BootstrapSubProcessInteractionSystem(
 		Bootstrap bootstrap,
 		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
@@ -62,15 +53,6 @@ public class BootstrapSubProcessInteractionSystem
 		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
 		_interactionFirstPersonRender = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionFirstPersonRender>();
 
-	
-		
-
-	
-
-		
-
-
-
 		InteractionController.Initialize(
 			_gameController,
 			_inputDevice,
@@ -80,33 +62,13 @@ public class BootstrapSubProcessInteractionSystem
 			_playerBehaviour,
 			_playerCameraController,
 			_playerCameraStateMachineController,
-			_canvasHUDInteraction,
-			_textInteractionMessageMain,
-			_textInteractionMessageFail,
-			_textsGainedItems,
-			_imagesGainedItems);
+			_bootstrapSubProcessMenuSystem.CanvasHUDinteraction,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDInteraction.TextInteractionMessageMain,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDInteraction.TextInteractionMessageFail,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDInteraction.TextsGainedItems,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDInteraction.ImagesGainedItems);
+
 		_keysManager = new KeysManager();
-
-		ServiceLocator.Register("CanvasMenuNote", _canvasMenuNote);
-		ServiceLocator.Register("TextNote", _textNote);
-		ServiceLocator.Register("ImageNote", _imageNote);
-		ServiceLocator.Register("ImageNoteBlackBackground", _imageNoteBlackBackground);
-		ServiceLocator.Register("ButtonCloseReadNoteMenu", _buttonCloseMenuNote);
-
-		ServiceLocator.Register("CanvasMenuLockpickMechanical", _canvasMenuLockpickMechanical);
-		ServiceLocator.Register("ButtonCloseLockpickMechanicalMenu", _buttonCloseMenuLockpickMechanical);
-
-		ServiceLocator.Register("CanvasMenuLockpickElectronic", _canvasMenuLockpickElectronic);
-		ServiceLocator.Register("ButtonsLockElectronic", _buttonsLockElectronic);
-		ServiceLocator.Register("ButtonCloseLockpickElectronicMenu", _buttonCloseMenuLockpickElectronic);
-
-		ServiceLocator.Register("CanvasMenuDialogue", _canvasMenuDialogue);
-		ServiceLocator.Register("TextPhraseLine", _textPhraseLine);
-		ServiceLocator.Register("TextDialogueLine", _textDialogueLine);
-		ServiceLocator.Register("ButtonDialogueYes", _buttonDialogueYes);
-		ServiceLocator.Register("ButtonDialogueNo", _buttonDialogueNo);
-		ServiceLocator.Register("TextDialogueYes", _textDialogueYes);
-		ServiceLocator.Register("TextDialogueNo", _textDialogueNo);
 
 		ServiceLocator.Register("KeysManager", _keysManager);
 

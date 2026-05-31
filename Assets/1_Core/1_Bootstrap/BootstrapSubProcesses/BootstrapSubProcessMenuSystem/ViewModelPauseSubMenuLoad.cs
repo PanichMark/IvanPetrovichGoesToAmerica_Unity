@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewModelPauseSubMenuLoad : IViewModel
+public class ViewModelPauseSubMenuLoad
 {
 	public GameObject[] ButtonsLoadGameFile = new GameObject[5];
 	public GameObject ButtonClosePauseSubMenuLoad;
 
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelPauseSubMenuLoad(Bootstrap bootstrap, GameObject canvas)
 	{
 		for (int i = 0; i < 5; i++)
 		{

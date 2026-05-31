@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewModelPauseSubMenuSettings : IViewModel
+public class ViewModelPauseSubMenuSettings
 {
 	public GameObject ButtonSubSettingsSectionGeneral;
 	public GameObject ButtonSubSettingsSectionControls;
@@ -36,7 +36,7 @@ public class ViewModelPauseSubMenuSettings : IViewModel
 	public GameObject SubSettingsSectionAudio;
 	public GameObject[] ButtonsChangeLanguage = new GameObject[2]; 
 
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelPauseSubMenuSettings(Bootstrap bootstrap, GameObject canvas)
 	{
 		// --- Общие кнопки ---
 		ButtonSaveGameSettings = bootstrap.FindDeepGameObject(canvas, "ButtonSaveSettings");

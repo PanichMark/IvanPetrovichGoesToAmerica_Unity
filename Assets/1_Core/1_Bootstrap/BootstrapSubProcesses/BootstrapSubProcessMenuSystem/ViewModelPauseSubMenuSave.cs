@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewModelPauseSubMenuSave : IViewModel
+public class ViewModelPauseSubMenuSave
 {
 	public GameObject ButtonCreateNewGameFile;
 	public GameObject[] ButtonsRewriteGameFile = new GameObject[5];
 	public GameObject[] ButtonsDeleteGameFile = new GameObject[5];
 	public GameObject ButtonClosePauseSubMenuSave;
 
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelPauseSubMenuSave(Bootstrap bootstrap, GameObject canvas)
 	{
 		ButtonCreateNewGameFile = bootstrap.FindDeepGameObject(canvas, "ButtonSaveNewGameFile");
 

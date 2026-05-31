@@ -306,7 +306,12 @@ public class Bootstrap : MonoBehaviour
 			_canvasMenuCutscene,
 			_canvasHUDhealthAndMana,
 			_canvasHUDammo,
-			_canvasHUDmission);
+			_canvasHUDinteraction,
+			_canvasHUDmission,
+			_canvasMenuNote,
+			_canvasMenuLockpickMechanical,
+			_canvasMenuLockpickElectronic,
+			_canvasMenuDialogue);
 
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.InitializeMenuSystem());
 	}
@@ -338,12 +343,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessPlayerSystems,
 			_gameController,
 			_inputDevice,
-			LocalizationManager,
-			_canvasHUDinteraction,
-			_canvasMenuNote,
-			_canvasMenuLockpickMechanical,
-			_canvasMenuLockpickElectronic,
-			_canvasMenuDialogue);
+			LocalizationManager);
 
 		yield return StartCoroutine(_bootstrapSubProcessInteractionSystem.InitializeInteractionSystem());
 	}

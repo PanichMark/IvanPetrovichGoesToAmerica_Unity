@@ -50,6 +50,7 @@ public class BootstrapSubProcessWeaponSystem
 		_bootstrapSubProcessPlayerSystems = bootstrapSubProcessPlayerSystems;
 		_bootstrapSubProcessInteractionSystem = bootstrapSubSystemInteraction;
 		_gameObjectPlayer = playerGameObject;
+		_playerResourcesAmmoManager = bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager;
 	}
 
 	public IEnumerator InitializeWeaponSystem()
