@@ -20,6 +20,12 @@ public class BootstrapSubProcessMenuSystem
 	public ViewModelHUDHealthAndMana ViewModelHUDhealthAndMana {  get; private set; }
 	public ViewModelHUDAmmo ViewModelHUDAmmo {  get; private set; }
 
+	public ViewModelHUDInteraction ViewModelHUDInteraction { get; private set; }
+	public ViewModelMenuNote ViewModelMenuNote { get; private set; }
+	public ViewModelMenuLockpickMechanical ViewModelMenuLockpickMechanical { get; private set; }
+	public ViewModelMenuLockpickElectronic ViewModelMenuLockpickElectronic { get; private set; }
+	public ViewModelMenuDialogue ViewModelMenuDialogue { get; private set; }
+
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
 	private LocalizationManager _localizationManager;
@@ -31,6 +37,11 @@ public class BootstrapSubProcessMenuSystem
 	public MenuManager MenuManager { get; private set; }
 
 	public PauseMenuController PauseMenuController { get; private set; }
+	private GameObject _canvasHUDinteraction;
+	private GameObject _canvasMenuNote;
+	private GameObject _canvasMenuLockpickMechanical;
+	private GameObject _canvasMenuLockpickElectronic;
+	private GameObject _canvasMenuDialogue;
 	private GameObject _canvasMenuBackground;
 	private GameObject _canvasPauseMenu;
 
@@ -93,22 +104,21 @@ public class BootstrapSubProcessMenuSystem
 	public BootstrapSubProcessMenuSystem(
 		Bootstrap bootstrap,
 		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
+		BootstrapSubProcessSaveLoadSystem bootstrapSubProcessSaveLoadSystem,
 		GameController gameController,
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
-		GameSceneManager gameSceneManager,
-		SaveLoadController saveLoadController,
 		GameObject canvasMenuBackground,
 		GameObject canvasPauseMenu,
 		GameObject canvasPauseSubMenuSave,
 		GameObject canvasPauseSubMenuLoad,
-		GameObject canvasPauseSubMenuTutorial,
 		GameObject canvasPauseSubMenuAppearance,
+		GameObject canvasPauseSubMenuTutorial,
 		GameObject canvasPauseSubMenuSettings,
 		GameObject canvasMenuConfirmAction,
 		GameObject canvasMainMenuReadNews,
-		GameObject canvasMenuCutscene,
 		GameObject canvasMenuWeaponWheel,
+		GameObject canvasMenuCutscene,
 		GameObject canvasHUDhealthAndMana,
 		GameObject canvasHUDammo,
 		GameObject canvasHUDmission)
@@ -118,8 +128,8 @@ public class BootstrapSubProcessMenuSystem
 		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
-		_gameSceneManager = gameSceneManager;
-		_saveLoadController = saveLoadController;
+		_gameSceneManager = bootstrapSubProcessSceneSystem.GameSceneManager;
+		_saveLoadController = bootstrapSubProcessSaveLoadSystem.SaveLoadController;
 		_canvasMenuBackground = canvasMenuBackground;
 		_canvasPauseMenu = canvasPauseMenu;
 		_canvasPauseSubMenuSave = canvasPauseSubMenuSave;
@@ -193,6 +203,9 @@ public class BootstrapSubProcessMenuSystem
 
 		ViewModelHUDMission = new ViewModelHUDMission();
 		ViewModelHUDMission.Initialize(_bootstrap, _canvasHUDmission);
+
+		ViewModelHUDInteraction = new ViewModelHUDInteraction();
+		ViewModelHUDInteraction.Initialize
 
 		MenuManager.Initialize(_gameController, _inputDevice, _gameSceneManager, _canvasMenuBackground);
 		PauseMenuController.Initialize(_gameController, _inputDevice, _gameSceneManager, MenuManager, _canvasPauseMenu, ViewModelPauseMenu.ButtonsPauseMenu, ViewModelPauseMenu.TextCurrentMissionGoal, _saveLoadController);

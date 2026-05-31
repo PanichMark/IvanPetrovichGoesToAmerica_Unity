@@ -25,63 +25,33 @@ public class BootstrapSubProcessInteractionSystem
 
 	private KeysManager _keysManager;
 
-	private GameObject _canvasHUDInteraction;
-	private TextMeshProUGUI _textInteractionMessageMain;
-	private TextMeshProUGUI _textInteractionMessageFail;
-	private TextMeshProUGUI[] _textsGainedItems;
-	private Image[] _imagesGainedItems;
 
-	private GameObject _canvasMenuNote;
-	private TextMeshProUGUI _textNote;
-	private Image _imageNote;
-	private Image _imageNoteBlackBackground;
-	private Button _buttonCloseMenuNote;
 
-	private GameObject _canvasMenuLockpickMechanical;
-	private Button _buttonCloseMenuLockpickMechanical;
 
-	private GameObject _canvasMenuLockpickElectronic;
-	private GameObject[] _buttonsLockElectronic;
-	private Button _buttonCloseMenuLockpickElectronic;
 
-	private GameObject _canvasMenuDialogue;
-	private TextMeshProUGUI _textPhraseLine;
-	private TextMeshProUGUI _textDialogueLine;
-	private Button _buttonDialogueYes;
-	private Button _buttonDialogueNo;
-	private GameObject _textDialogueYes;
-	private GameObject _textDialogueNo;
+
+
+
+
 
 	public BootstrapSubProcessInteractionSystem(
 		Bootstrap bootstrap,
+		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
+		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
 		GameController gameController,
 		IInputDevice inputDevice,
-		LocalizationManager localizationManager,
-		GameSceneManager gameSceneManager,
-		PlayerBehaviourController playerBehaviour,
-		PlayerCameraController playerCameraController,
-		PlayerCameraStateMachineController playerCameraStateMachineController,
-		GameObject canvasHUDInteraction,
-		GameObject canvasMenuNote,
-		GameObject canvasMenuLockpickMechanical,
-		GameObject canvasMenuLockpickElectronic,
-		GameObject canvasMenuDialogue)
+		LocalizationManager localizationManager)
 	{
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
-		_gameSceneManager = gameSceneManager;
-		_playerBehaviour = playerBehaviour;
-		_playerCameraController = playerCameraController;
-		_playerCameraStateMachineController = playerCameraStateMachineController;
-		_canvasHUDInteraction = canvasHUDInteraction;
-		_canvasMenuNote = canvasMenuNote;
-		_canvasMenuLockpickMechanical = canvasMenuLockpickMechanical;
-		_canvasMenuLockpickElectronic = canvasMenuLockpickElectronic;
-		_canvasMenuDialogue = canvasMenuDialogue;
+		_gameSceneManager = bootstrapSubProcessSceneSystem.GameSceneManager;
+		_playerBehaviour = bootstrapSubProcessPlayerSystems.PlayerBehaviour;
+		_playerCameraController = bootstrapSubProcessPlayerSystems.PlayerCameraController;
+		_playerCameraStateMachineController = bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController;
 	}
 
 	public IEnumerator InitializeInteractionSystem()
@@ -92,50 +62,14 @@ public class BootstrapSubProcessInteractionSystem
 		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
 		_interactionFirstPersonRender = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionFirstPersonRender>();
 
-		_textInteractionMessageMain = _canvasHUDInteraction.transform.Find("TextMainInteraction").GetComponent<TextMeshProUGUI>();
-		_textInteractionMessageFail = _canvasHUDInteraction.transform.Find("TextAdditionalInteraction").GetComponent<TextMeshProUGUI>();
-		_textPhraseLine = _canvasHUDInteraction.transform.Find("TextPhrase").GetComponent<TextMeshProUGUI>();
-		_textDialogueLine = _canvasMenuDialogue.transform.Find("TextDialogue").GetComponent<TextMeshProUGUI>();
+	
+		
 
-		_textsGainedItems = new TextMeshProUGUI[]
-		{
-			_canvasHUDInteraction.transform.Find("TextGainedItem1").GetComponent<TextMeshProUGUI>(),
-			_canvasHUDInteraction.transform.Find("TextGainedItem2").GetComponent<TextMeshProUGUI>(),
-			_canvasHUDInteraction.transform.Find("TextGainedItem3").GetComponent<TextMeshProUGUI>()
-		};
+	
 
-		_imagesGainedItems = new Image[]
-		{
-			_canvasHUDInteraction.transform.Find("ImageGainedItem1").GetComponent<Image>(),
-			_canvasHUDInteraction.transform.Find("ImageGainedItem2").GetComponent<Image>(),
-			_canvasHUDInteraction.transform.Find("ImageGainedItem3").GetComponent<Image>()
-		};
+		
 
-		_buttonCloseMenuNote = _canvasMenuNote.transform.Find("ButtonExitReadNoteMenu").GetComponent<Button>();
-		_imageNote = _canvasMenuNote.transform.Find("ImageNote").GetComponent<Image>();
-		_textNote = _canvasMenuNote.transform.Find("TextNote").GetComponent<TextMeshProUGUI>();
-		_imageNoteBlackBackground = _canvasMenuNote.transform.Find("ImageNoteBlackBackground").GetComponent<Image>();
 
-		_buttonCloseMenuLockpickMechanical = _canvasMenuLockpickMechanical.transform.Find("ButtonExitLockpickMechanicalMenu").GetComponent<Button>();
-
-		_buttonsLockElectronic = new GameObject[]
-		{
-			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic1"),
-			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic2"),
-			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic3"),
-			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic4"),
-			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic5"),
-			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic6"),
-			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic7"),
-			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic8"),
-			_bootstrap.FindDeepGameObject(_canvasMenuLockpickElectronic, "ButtonLockElectronic9")
-		};
-		_buttonCloseMenuLockpickElectronic = _canvasMenuLockpickElectronic.transform.Find("ButtonExitLockpickElectronicMenu").GetComponent<Button>();
-
-		_buttonDialogueYes = _canvasMenuDialogue.transform.Find("ButtonDialogueYes").GetComponent<Button>();
-		_buttonDialogueNo = _canvasMenuDialogue.transform.Find("ButtonDialogueNo").GetComponent<Button>();
-		_textDialogueYes = _bootstrap.FindDeepGameObject(_canvasMenuDialogue, "TextDialogueYes");
-		_textDialogueNo = _bootstrap.FindDeepGameObject(_canvasMenuDialogue, "TextDialogueNo");
 
 		InteractionController.Initialize(
 			_gameController,

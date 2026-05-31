@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewModelMenuWeaponWheel : IViewModel
+public class ViewModelMenuWeaponWheel
 {
 	public GameObject GameObjectWeaponWheelSegment;
 	public TextMeshProUGUI TextWeaponWheelWeaponName;
@@ -13,7 +13,7 @@ public class ViewModelMenuWeaponWheel : IViewModel
 	public Button ButtonUseManaReplenishItem;
 	public TextMeshProUGUI TextManaReplenishItemNumber;
 
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelMenuWeaponWheel(Bootstrap bootstrap, GameObject canvas)
 	{
 		ButtonUseHealingItem = bootstrap.FindDeepGameObject(canvas, "ButtonUseHealingItem").GetComponent<Button>();
 		TextHealingItemNumber = bootstrap.FindDeepGameObject(canvas, "TextHealingItemNumber").GetComponent<TextMeshProUGUI>();

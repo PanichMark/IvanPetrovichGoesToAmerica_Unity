@@ -48,19 +48,19 @@ public class BootstrapSubProcessPlayerSystems
 
 	public BootstrapSubProcessPlayerSystems(
 		Bootstrap bootstrap,
+		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		GameController gameController,
 		IInputDevice inputDevice,
-		GameSceneManager gameSceneManager,
+		GameObject canvasMenuBackground,
 		GameObject playerGameObject,
-		GameObject playerMainCameraGameObject,
-		GameObject canvasMenuBackground)
+		GameObject playerMainCameraGameObject)
 	{
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_gameController = gameController;
 		_inputDevice = inputDevice;
-		_gameSceneManager = gameSceneManager;
+		_gameSceneManager = bootstrapSubProcessSceneSystem.GameSceneManager;
 		_gameObjectPlayer = playerGameObject;
 		_gameObjectPlayerCamera = playerMainCameraGameObject;
 		_canvasMenuBackground = canvasMenuBackground;

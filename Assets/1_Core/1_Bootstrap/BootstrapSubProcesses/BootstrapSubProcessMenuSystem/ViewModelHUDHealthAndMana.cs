@@ -2,14 +2,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewModelHUDHealthAndMana : IViewModel
+public class ViewModelHUDHealthAndMana
 {
 	public GameObject HealthBar;
 	public Slider SliderHealthBar;
 	public Slider SliderManaBar;
 	public GameObject ManaBar;
 
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelHUDHealthAndMana(Bootstrap bootstrap, GameObject canvas)
 	{
 		HealthBar = bootstrap.FindDeepGameObject(canvas, "HealthBar");
 		SliderHealthBar = bootstrap.FindDeepGameObject(canvas, "SliderHealthBar").GetComponent<Slider>();

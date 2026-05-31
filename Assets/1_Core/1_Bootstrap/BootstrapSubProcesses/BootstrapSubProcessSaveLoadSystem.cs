@@ -9,10 +9,10 @@ public class BootstrapSubProcessSaveLoadSystem
 	private GameSceneManager _gameSceneManager;
 	public SaveLoadController SaveLoadController { get; private set; }
 
-	public BootstrapSubProcessSaveLoadSystem(GameController gameController, GameSceneManager gameSceneManager)
+	public BootstrapSubProcessSaveLoadSystem(GameController gameController, BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem)
 	{
 		_gameController = gameController;
-		_gameSceneManager = gameSceneManager;
+		_gameSceneManager = bootstrapSubProcessSceneSystem.GameSceneManager;
 	}
 
 	public IEnumerator InitializeSaveLoadSystem()

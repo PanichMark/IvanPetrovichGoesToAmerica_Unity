@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class ViewModelHUDMission : IViewModel
+public class ViewModelHUDMission
 {
 	public GameObject ImageMissionGoalMarker;
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelHUDMission(Bootstrap bootstrap, GameObject canvas)
 	{
 		ImageMissionGoalMarker = bootstrap.FindDeepGameObject(canvas, "MissionGoalMarker");
 	}

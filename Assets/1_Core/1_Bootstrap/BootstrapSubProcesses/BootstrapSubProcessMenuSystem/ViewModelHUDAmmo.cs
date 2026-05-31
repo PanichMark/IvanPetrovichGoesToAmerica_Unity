@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ViewModelHUDAmmo : IViewModel
+public class ViewModelHUDAmmo
 {
 	public GameObject TextRightWeaponAmmoMagazineNumber;
 	public GameObject TextRightWeaponAmmoReserveNumber;
@@ -10,7 +10,7 @@ public class ViewModelHUDAmmo : IViewModel
 	public GameObject LeftWeaponAmmoSeparator;
 	public GameObject TextChokeNPC;
 
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelHUDAmmo(Bootstrap bootstrap, GameObject canvas)
 	{
 		TextRightWeaponAmmoMagazineNumber = canvas.transform.Find("TextRightWeaponAmmoMagazineNumber").gameObject;
 		TextRightWeaponAmmoReserveNumber = canvas.transform.Find("TextRightWeaponAmmoReserveNumber").gameObject;

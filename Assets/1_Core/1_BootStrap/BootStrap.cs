@@ -87,8 +87,8 @@ public class Bootstrap : MonoBehaviour
 
 	// Игрок
 	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
-	private GameObject _playerGameObject;
-	private GameObject _playerCameraGameObject;
+	private GameObject _gameObjectPlayer;
+	private GameObject _gameObjectPlayerCamera;
 
 	// Система взаимодействия
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
@@ -141,6 +141,7 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(LoadFirstGameplayScene());
 
 		ApplyBootstrapPlayerConfigs();
+
 		OnLoadSettingsData?.Invoke();
 
 		_isInitialized = true;
@@ -230,9 +231,10 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeCanvases()
 	{
-		_canvasLoadingScreen = Instantiate(_canvasLoadingScreen);
 		_canvasChooseLanguage = Instantiate(_canvasChooseLanguage);
 
+		_canvasLoadingScreen = Instantiate(_canvasLoadingScreen);
+	
 		_canvasMenuBackground = Instantiate(_canvasMenuBackground);
 
 	    _canvasPauseMenu = Instantiate(_canvasPauseMenu);
@@ -247,6 +249,8 @@ public class Bootstrap : MonoBehaviour
 
 		_canvasMenuWeaponWheel = Instantiate(_canvasMenuWeaponWheel);
 
+		_canvasMenuCutscene = Instantiate(_canvasMenuCutscene);
+
 		_canvasHUDhealthAndMana = Instantiate(_canvasHUDhealthAndMana);
 		_canvasHUDammo = Instantiate(_canvasHUDammo);
 		_canvasHUDinteraction = Instantiate(_canvasHUDinteraction);
@@ -256,8 +260,6 @@ public class Bootstrap : MonoBehaviour
 		_canvasMenuLockpickElectronic = Instantiate(_canvasMenuLockpickElectronic);
 		_canvasMenuLockpickMechanical = Instantiate(_canvasMenuLockpickMechanical);
 		_canvasMenuDialogue = Instantiate(_canvasMenuDialogue);
-
-		_canvasMenuCutscene = Instantiate(_canvasMenuCutscene);
 
 		Debug.Log("CANVASES INITIALIZED");
 		yield break;
@@ -269,6 +271,7 @@ public class Bootstrap : MonoBehaviour
 			this, 
 			_gameController,
 			_canvasLoadingScreen);
+
 		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.InitializeSceneSystem());
 	}
 
@@ -276,7 +279,8 @@ public class Bootstrap : MonoBehaviour
 	{
 		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(
 			_gameController,
-			_bootstrapSubProcessSceneSystem.GameSceneManager);
+			_bootstrapSubProcessSceneSystem);
+
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.InitializeSaveLoadSystem());
 	}
 
@@ -285,42 +289,43 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessMenuSystem = new BootstrapSubProcessMenuSystem(
 			this,
 			_bootstrapSubProcessSceneSystem,
+			_bootstrapSubProcessSaveLoadSystem,
 			_gameController,
 			_inputDevice,
 			LocalizationManager,
-			_bootstrapSubProcessSceneSystem.GameSceneManager,
-			_bootstrapSubProcessSaveLoadSystem.SaveLoadController,
 			_canvasMenuBackground,
 			_canvasPauseMenu,
 			_canvasPauseSubMenuSave,
 			_canvasPauseSubMenuLoad,
-			_canvasPauseSubMenuTutorial,
 			_canvasPauseSubMenuAppearance,
+			_canvasPauseSubMenuTutorial,
 			_canvasPauseSubMenuSettings,
 			_canvasPauseMenuConfirmAction,
 			_canvasMainMenuReadNews,
-			_canvasMenuCutscene,
 			_canvasMenuWeaponWheel,
+			_canvasMenuCutscene,
 			_canvasHUDhealthAndMana,
 			_canvasHUDammo,
 			_canvasHUDmission);
+
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.InitializeMenuSystem());
 	}
 
 	private IEnumerator InitializePlayerSystems()
 	{
-		_playerGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerGameObject"));
-		_playerCameraGameObject = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerCameraGameObject"));
+		_gameObjectPlayer = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerGameObject"));
+		_gameObjectPlayerCamera = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerCameraGameObject"));
 
 		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(
 			this,
+			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
 			_gameController,
 			_inputDevice,
-			_bootstrapSubProcessSceneSystem.GameSceneManager,
-			_playerGameObject,
-			_playerCameraGameObject,
-			_canvasMenuBackground);
+			_canvasMenuBackground,
+			_gameObjectPlayer,
+			_gameObjectPlayerCamera);
+
 		yield return StartCoroutine(_bootstrapSubProcessPlayerSystems.InitializePlayerSystems());
 	}
 
@@ -328,19 +333,18 @@ public class Bootstrap : MonoBehaviour
 	{
 		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessInteractionSystem(
 			this,
+			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
+			_bootstrapSubProcessPlayerSystems,
 			_gameController,
 			_inputDevice,
 			LocalizationManager,
-			_bootstrapSubProcessSceneSystem.GameSceneManager,
-			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
-			_bootstrapSubProcessPlayerSystems.PlayerCameraController,
-			_bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController,
 			_canvasHUDinteraction,
 			_canvasMenuNote,
 			_canvasMenuLockpickMechanical,
 			_canvasMenuLockpickElectronic,
 			_canvasMenuDialogue);
+
 		yield return StartCoroutine(_bootstrapSubProcessInteractionSystem.InitializeInteractionSystem());
 	}
 
@@ -353,7 +357,8 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessMenuSystem,
 			_bootstrapSubProcessPlayerSystems,
 			_bootstrapSubProcessInteractionSystem,
-			_playerGameObject);
+			_gameObjectPlayer);
+
 		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
 	}
 
@@ -363,7 +368,8 @@ public class Bootstrap : MonoBehaviour
 			this,
 			_bootstrapSubProcessMenuSystem,
 			_allMissions,
-			_playerCameraGameObject);
+			_gameObjectPlayerCamera);
+
 		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
 	}
 
@@ -375,6 +381,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("KeyPauseMenu", _keyPauseMenu);
 
 		Debug.Log("BOOTSTRAP SERVICES REGISTERED");
+
 		yield break;
 	}
 

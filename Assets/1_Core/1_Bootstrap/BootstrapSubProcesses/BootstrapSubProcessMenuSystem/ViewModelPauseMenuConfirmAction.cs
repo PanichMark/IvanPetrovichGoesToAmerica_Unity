@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public class ViewModelPauseMenuConfirmAction : IViewModel
+public class ViewModelPauseMenuConfirmAction
 {
 	public GameObject ButtonConfirmAction;
 	public GameObject ButtonCancelAction;
 	public GameObject TextConfirmActionMessage;
 
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelPauseMenuConfirmAction(Bootstrap bootstrap, GameObject canvas)
 	{
 		ButtonConfirmAction = bootstrap.FindDeepGameObject(canvas, "ButtonConfirmAction");
 		ButtonCancelAction = bootstrap.FindDeepGameObject(canvas, "ButtonCancelAction");

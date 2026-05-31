@@ -2,13 +2,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewModelPauseMenu : IViewModel
+public class ViewModelPauseMenu
 {
 	public GameObject[] ButtonsPauseMenu;
 	public GameObject TextCurrentMissionGoal;
 	public TMP_Text TextPlayerMoneyNumber;
 
-	public void Initialize(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelPauseMenu(Bootstrap bootstrap, GameObject canvas)
 	{
 		ButtonsPauseMenu = new[]
 	{
