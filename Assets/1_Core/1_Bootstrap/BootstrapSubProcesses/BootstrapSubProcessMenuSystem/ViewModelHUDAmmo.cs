@@ -8,6 +8,7 @@ public class ViewModelHUDAmmo : IViewModel
 	public GameObject TextLeftWeaponAmmoMagazineNumber;
 	public GameObject TextLeftWeaponAmmoReserveNumber;
 	public GameObject LeftWeaponAmmoSeparator;
+	public GameObject TextChokeNPC;
 
 	public void Initialize(Bootstrap bootstrap, GameObject canvas)
 	{
@@ -17,5 +18,6 @@ public class ViewModelHUDAmmo : IViewModel
 		TextLeftWeaponAmmoMagazineNumber = canvas.transform.Find("TextLeftWeaponAmmoMagazineNumber").gameObject;
 		TextLeftWeaponAmmoReserveNumber = canvas.transform.Find("TextLeftWeaponAmmoReserveNumber").gameObject;
 		LeftWeaponAmmoSeparator = canvas.transform.Find("LeftWeaponAmmoSeparator").gameObject;
+		TextChokeNPC = canvas.transform.Find("TextChokeNPC").gameObject;
 	}
 }

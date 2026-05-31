@@ -74,7 +74,7 @@ public class Bootstrap : MonoBehaviour
 	// Интерфейсы
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
-	public LocalizationManager LocalizationManager;
+	public LocalizationManager LocalizationManager { get; private set; }
 	private KeyCode _keyPauseMenu; // Кнопка открывания/закрывания меню паузы
 	private bool _isInitialized;
 	private bool _isGamepadConnected;
@@ -241,74 +241,42 @@ public class Bootstrap : MonoBehaviour
 		_canvasPauseSubMenuAppearance = Instantiate(_canvasPauseSubMenuAppearance);
 		_canvasPauseSubMenuTutorial = Instantiate(_canvasPauseSubMenuTutorial);
 		_canvasPauseSubMenuSettings = Instantiate(_canvasPauseSubMenuSettings);
-
 		_canvasPauseMenuConfirmAction = Instantiate(_canvasPauseMenuConfirmAction);
-
-		_canvasMenuCutscene = Instantiate(_canvasMenuCutscene);
 
 		_canvasMainMenuReadNews = Instantiate(_canvasMainMenuReadNews);
 
-		_canvasHUDhealthAndMana = Instantiate(_canvasHUDhealthAndMana);
+		_canvasMenuWeaponWheel = Instantiate(_canvasMenuWeaponWheel);
 
+		_canvasHUDhealthAndMana = Instantiate(_canvasHUDhealthAndMana);
+		_canvasHUDammo = Instantiate(_canvasHUDammo);
 		_canvasHUDinteraction = Instantiate(_canvasHUDinteraction);
+		_canvasHUDmission = Instantiate(_canvasHUDmission);
+
 		_canvasMenuNote = Instantiate(_canvasMenuNote);
 		_canvasMenuLockpickElectronic = Instantiate(_canvasMenuLockpickElectronic);
 		_canvasMenuLockpickMechanical = Instantiate(_canvasMenuLockpickMechanical);
 		_canvasMenuDialogue = Instantiate(_canvasMenuDialogue);
 
-		_canvasMenuWeaponWheel = Instantiate(_canvasMenuWeaponWheel);
-		_canvasHUDammo = Instantiate(_canvasHUDammo);
-		_canvasHUDmission = Instantiate(_canvasHUDmission);
+		_canvasMenuCutscene = Instantiate(_canvasMenuCutscene);
 
 		Debug.Log("CANVASES INITIALIZED");
 		yield break;
 	}
 
-	private IEnumerator ChooseFirstLanguage()
-	{
-		Cursor.lockState = CursorLockMode.None; 
-		Cursor.visible = true;
-
-		_canvasChooseLanguage.SetActive(true);
-
-		_buttonRussianLangage = FindDeepGameObject(_canvasChooseLanguage, "Russian").GetComponent<Button>();
-		_buttonEnglishLanguage = FindDeepGameObject(_canvasChooseLanguage, "English").GetComponent<Button>();
-
-		bool languageSelected = false;
-
-		_buttonRussianLangage.onClick.AddListener(() =>
-		{
-			ChangeLanguage(LanguagesEnum.Russian);
-			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionAudioController.SaveSettingsAudio();
-			languageSelected = true;
-		});
-
-		_buttonEnglishLanguage.onClick.AddListener(() =>
-		{
-			ChangeLanguage(LanguagesEnum.English);
-			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionAudioController.SaveSettingsAudio();
-			languageSelected = true;
-		});
-
-		yield return new WaitUntil(() => languageSelected);
-
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
-
-		Destroy(_canvasChooseLanguage);
-
-		_playerPrefsData.SetNotFirstLaunch();
-	}
-
 	private IEnumerator InitializeSceneSystem()
 	{
-		_bootstrapSubProcessSceneSystem = new BootstrapSubProcessSceneSystem(this, _gameController, _canvasLoadingScreen);
+		_bootstrapSubProcessSceneSystem = new BootstrapSubProcessSceneSystem(
+			this, 
+			_gameController,
+			_canvasLoadingScreen);
 		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.InitializeSceneSystem());
 	}
 
 	private IEnumerator InitializeSaveLoadSystem()
 	{
-		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(_gameController, _bootstrapSubProcessSceneSystem.GameSceneManager);
+		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(
+			_gameController,
+			_bootstrapSubProcessSceneSystem.GameSceneManager);
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.InitializeSaveLoadSystem());
 	}
 
@@ -334,7 +302,8 @@ public class Bootstrap : MonoBehaviour
 			_canvasMenuCutscene,
 			_canvasMenuWeaponWheel,
 			_canvasHUDhealthAndMana,
-			_canvasHUDammo);
+			_canvasHUDammo,
+			_canvasHUDmission);
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.InitializeMenuSystem());
 	}
 
@@ -384,16 +353,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessMenuSystem,
 			_bootstrapSubProcessPlayerSystems,
 			_bootstrapSubProcessInteractionSystem,
-			_canvasMenuWeaponWheel,
-			_playerGameObject,
-			_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager,
-			_canvasHUDammo,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextRightWeaponAmmoMagazineNumber,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextRightWeaponAmmoReserveNumber,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.RightWeaponAmmoSeparator,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextLeftWeaponAmmoMagazineNumber,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextLeftWeaponAmmoReserveNumber,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.LeftWeaponAmmoSeparator);
+			_playerGameObject);
 		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
 	}
 
@@ -402,9 +362,7 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(
 			this,
 			_bootstrapSubProcessMenuSystem,
-			_bootstrapSubProcessPlayerSystems,
 			_allMissions,
-			_canvasHUDmission,
 			_playerCameraGameObject);
 		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
 	}
@@ -453,6 +411,42 @@ public class Bootstrap : MonoBehaviour
 		{
 			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene(_sceneToLoad.SelectedScene));
 		}
+	}
+
+	private IEnumerator ChooseFirstLanguage()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+
+		_canvasChooseLanguage.SetActive(true);
+
+		_buttonRussianLangage = FindDeepGameObject(_canvasChooseLanguage, "Russian").GetComponent<Button>();
+		_buttonEnglishLanguage = FindDeepGameObject(_canvasChooseLanguage, "English").GetComponent<Button>();
+
+		bool languageSelected = false;
+
+		_buttonRussianLangage.onClick.AddListener(() =>
+		{
+			ChangeLanguage(LanguagesEnum.Russian);
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionAudioController.SaveSettingsAudio();
+			languageSelected = true;
+		});
+
+		_buttonEnglishLanguage.onClick.AddListener(() =>
+		{
+			ChangeLanguage(LanguagesEnum.English);
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionAudioController.SaveSettingsAudio();
+			languageSelected = true;
+		});
+
+		yield return new WaitUntil(() => languageSelected);
+
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
+		Destroy(_canvasChooseLanguage);
+
+		_playerPrefsData.SetNotFirstLaunch();
 	}
 
 	private void ApplyBootstrapPlayerConfigs()

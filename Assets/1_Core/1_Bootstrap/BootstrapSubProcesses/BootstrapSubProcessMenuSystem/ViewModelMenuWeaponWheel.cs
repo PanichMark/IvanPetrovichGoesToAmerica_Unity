@@ -4,7 +4,11 @@ using UnityEngine.UI;
 
 public class ViewModelMenuWeaponWheel : IViewModel
 {
+	public GameObject GameObjectWeaponWheelSegment;
+	public TextMeshProUGUI TextWeaponWheelWeaponName;
+	public Image ImageWeaponWheelWeaponIcon;
 	public Button ButtonUseHealingItem;
+	public TextMeshProUGUI TextWeaponWheelHandType;
 	public TextMeshProUGUI TextHealingItemNumber;
 	public Button ButtonUseManaReplenishItem;
 	public TextMeshProUGUI TextManaReplenishItemNumber;
@@ -15,5 +19,11 @@ public class ViewModelMenuWeaponWheel : IViewModel
 		TextHealingItemNumber = bootstrap.FindDeepGameObject(canvas, "TextHealingItemNumber").GetComponent<TextMeshProUGUI>();
 		ButtonUseManaReplenishItem = bootstrap.FindDeepGameObject(canvas, "ButtonUseManaReplenishItem").GetComponent<Button>();
 		TextManaReplenishItemNumber = bootstrap.FindDeepGameObject(canvas, "TextManaReplenishItemNumber").GetComponent<TextMeshProUGUI>();
+
+		GameObjectWeaponWheelSegment = Resources.Load<GameObject>("WeaponWheel/WeaponWheelSegment");
+
+		TextWeaponWheelWeaponName = canvas.transform.Find("TextWeaponWheelWeapon").GetComponent<TextMeshProUGUI>();
+		ImageWeaponWheelWeaponIcon = canvas.transform.Find("ImageWeaponWheelWeapon").GetComponent<Image>();
+		TextWeaponWheelHandType = canvas.transform.Find("TextWeaponWheelHandType").GetComponent<TextMeshProUGUI>();
 	}
 }
