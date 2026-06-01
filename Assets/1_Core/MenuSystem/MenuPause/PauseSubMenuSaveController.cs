@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using System;
 using TMPro;
-using log4net.Filter;
 
 public class PauseSubMenuSaveController : MonoBehaviour
 {
@@ -13,7 +12,9 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	private LocalizationManager _localizationManager;
 	private SaveLoadController _saveLoadController;
 	private PauseMenuController _pauseMenuController;
-	
+
+	private ViewModelPauseSubMenuSave _viewModelPauseSubMenuSave;
+
 	private GameObject _canvasPauseSubMenuSave;
 
 	private TextMeshProUGUI _textComponentPauseSubMenuSave;
@@ -26,9 +27,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	private Button[] _buttonsComponentsRewriteGameFile;
 	private GameObject[] _buttonsDeleteGameFile;
 	private Button[] _buttonsComponentsDeleteGameFile;
-	private TextMeshProUGUI[] _TextButtonsComponentsDeleteGameFile;
+	private TextMeshProUGUI[] _textButtonsComponentsDeleteGameFile;
 
-	private ViewModelPauseSubMenuSave _viewModelPauseSubMenuSave;
 	private TextMeshProUGUI[] _textComponentsGameFileDateAndTime;
 	private TextMeshProUGUI[] _textComponentsGameFileSceneName;
 	private Image[] _imagesComponentsSceneGameFile;
@@ -77,9 +77,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		_buttonsDeleteGameFile = new GameObject[_viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length];
 		_buttonsDeleteGameFile = _viewModelPauseSubMenuSave.ButtonsDeleteGameFile;
 		_buttonsComponentsDeleteGameFile = new Button[_viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length];
-		_TextButtonsComponentsDeleteGameFile = new TextMeshProUGUI[_viewModelPauseSubMenuSave.ButtonsDeleteGameFile.Length];
-
-		_buttonClosePauseSubMenuSave = _viewModelPauseSubMenuSave.ButtonClosePauseSubMenuSave;
+		_textButtonsComponentsDeleteGameFile = new TextMeshProUGUI[_viewModelPauseSubMenuSave.ButtonsDeleteGameFile.Length];
 
 		for (int i = 0; i < _viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length; i++)
 		{
@@ -94,7 +92,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 			_buttonsComponentsDeleteGameFile[i] = _buttonsDeleteGameFile[i].GetComponent<Button>();
 			_buttonsComponentsDeleteGameFile[i].onClick.AddListener(() => OnRequestDeleteSaveFileConfirmation?.Invoke(slot));
-			_TextButtonsComponentsDeleteGameFile[i] = _viewModelPauseSubMenuSave.TextButtonsDeleteGameFile[i].GetComponent<TextMeshProUGUI>();
+			_textButtonsComponentsDeleteGameFile[i] = _viewModelPauseSubMenuSave.TextButtonsDeleteGameFile[i].GetComponent<TextMeshProUGUI>();
 		}
 
 		_buttonClosePauseSubMenuSave = _viewModelPauseSubMenuSave.ButtonClosePauseSubMenuSave;
@@ -117,68 +115,30 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 	private void DisableButtons()
 	{
-		foreach (var buttonObj in _buttonsRewriteGameFile)
+		foreach (var button in _buttonsComponentsRewriteGameFile)
 		{
-			Button button = buttonObj.GetComponent<Button>();
-			if (button != null)
-			{
-				button.interactable = false;
-			}
+			button.interactable = false;
 		}
-
-		foreach (var buttonObj in _buttonsDeleteGameFile)
+		foreach (var button in _buttonsComponentsDeleteGameFile)
 		{
-			Button button = buttonObj.GetComponent<Button>();
-			if (button != null)
-			{
-				button.interactable = false;
-			}
+			button.interactable = false;
 		}
-
-		Button newSaveButton = _buttonCreateNewGameFile.GetComponent<Button>();
-		if (newSaveButton != null)
-		{
-			newSaveButton.interactable = false;
-		}
-
-		Button closeButton = _buttonClosePauseSubMenuSave.GetComponent<Button>();
-		if (closeButton != null)
-		{
-			closeButton.interactable = false;
-		}
+		_buttonComponentCreateNewGameFile.interactable = false;
+		_buttonComponentClosePauseSubMenuSave.interactable = false;
 	}
 
 	private void EnableButtons()
 	{
-		foreach (var buttonObj in _buttonsRewriteGameFile)
+		foreach (var button in _buttonsComponentsRewriteGameFile)
 		{
-			Button button = buttonObj.GetComponent<Button>();
-			if (button != null)
-			{
-				button.interactable = true;
-			}
+			button.interactable = true;
 		}
-
-		foreach (var buttonObj in _buttonsDeleteGameFile)
+		foreach (var button in _buttonsComponentsDeleteGameFile)
 		{
-			Button button = buttonObj.GetComponent<Button>();
-			if (button != null)
-			{
-				button.interactable = true;
-			}
+			button.interactable = true;
 		}
-
-		Button newSaveButton = _buttonCreateNewGameFile.GetComponent<Button>();
-		if (newSaveButton != null)
-		{
-			newSaveButton.interactable = true;
-		}
-
-		Button closeButton = _buttonClosePauseSubMenuSave.GetComponent<Button>();
-		if (closeButton != null)
-		{
-			closeButton.interactable = true;
-		}
+		_buttonComponentCreateNewGameFile.interactable = true;
+		_buttonComponentClosePauseSubMenuSave.interactable = true;
 	}
 
 	private int FindFirstEmptySlot()
@@ -218,29 +178,17 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			if (!string.IsNullOrEmpty(currentSceneNameSystem))
 			{
 				_buttonsRewriteGameFile[i].SetActive(true);
-				_buttonsDeleteGameFile[i].SetActive(true);
 
 				_textComponentsGameFileDateAndTime[i].text = currentDataAndTime;
-				_textComponentsGameFileSceneName[i].text = currentSceneNameUI;
+				_textComponentsGameFileSceneName[i].text = _localizationManager.GetLocalizedString(currentSceneNameUI);
 
-				_textComponentsGameFileDateAndTime[i].gameObject.SetActive(true);
-				_textComponentsGameFileSceneName[i].gameObject.SetActive(true);
+				Sprite sprite = Resources.Load<Sprite>($"Sprites/Sprites_LoadingScreens/{currentSceneNameSystem}");
 
-				string imagePath = $"Sprites/Sprites_LoadingScreens/{currentSceneNameSystem}";
-				Sprite sprite = Resources.Load<Sprite>(imagePath);
-			
 				_imagesComponentsSceneGameFile[i].sprite = sprite;
-				_imagesComponentsSceneGameFile[i].gameObject.SetActive(true);
 			}
 			else
 			{
 				_buttonsRewriteGameFile[i].SetActive(false);
-				_buttonsDeleteGameFile[i].SetActive(false);
-
-				_textComponentsGameFileDateAndTime[i].gameObject.SetActive(false);
-				_textComponentsGameFileSceneName[i].gameObject.SetActive(false);
-
-				_imagesComponentsSceneGameFile[i].gameObject.SetActive(false);
 			}
 		}
 	}
@@ -276,7 +224,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		for (int i = 0; i < _viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length; i++)
 		{
-			_TextButtonsComponentsDeleteGameFile[i].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSUbMenuSave_ButtonDeleteGameFile");
+			_textButtonsComponentsDeleteGameFile[i].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSUbMenuSave_ButtonDeleteGameFile");
 		}
 
 		_textButtonComponentClosePauseSubMenuSave.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSUbMenuSave_ButtonClosePauseSubMenuSave");

@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,105 +7,106 @@ public class PauseSubMenuLoadController : MonoBehaviour
 {
 	public event Action<int> OnRequestLoadSaveFileConfirmation;
 
-	private IInputDevice _inputDevice;
-	private MenuManager _menuManager;
-	private PauseMenuController _pauseMenuController;
+	private LocalizationManager _localizationManager;
 	private SaveLoadController _saveLoadController;
+	private PauseMenuController _pauseMenuController;
+
+	private ViewModelPauseSubMenuLoad _viewModelPauseSubMenuLoad;
+
 	private GameObject _canvasPauseSubMenuLoad;
-	private bool _isPauseSubMenuLoadOpened;
+
+	private TextMeshProUGUI _textComponentPauseSubMenuLoad;
+
+	private GameObject[] _buttonsLoadGameFile;
+	private Button[] _buttonsComponentsLoadGameFile;
+	private TextMeshProUGUI[] _textComponentsGameFileDateAndTime;
+	private TextMeshProUGUI[] _textComponentsGameFileSceneName;
+	private Image[] _imagesComponentsSceneGameFile;
+
 	private GameObject _buttonClosePauseSubMenuLoad;
+	private Button _buttonComponentClosePauseSubMenuLoad;
+	private TextMeshProUGUI _textButtonComponentClosePauseSubMenuLoad;
 
-	private GameObject[] _buttonsLoadGame;
-
-	private Text[] _currentDateAndTimeTexts;
-	private Text[] _currentSceneNameUITexts;
+	private bool _isPauseSubMenuLoadOpened;
 
 	public void Initialize(
-		IInputDevice inputDevice,
+		LocalizationManager localizationManager,
 		SaveLoadController saveLoadController,
-		MenuManager menuManager,
 		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuLoad,
-		GameObject[] buttonsLoadGame,
-		GameObject buttonClosePauseSubMenuLoad)
+		ViewModelPauseSubMenuLoad viewModelPauseSubMenuLoad)
 	{
-		_buttonClosePauseSubMenuLoad = buttonClosePauseSubMenuLoad;
-		_pauseMenuController = pauseMenuController;
-		_menuManager = menuManager;
-		_inputDevice = inputDevice;
-		_canvasPauseSubMenuLoad = canvasPauseSubMenuLoad;
+		_localizationManager = localizationManager;
 		_saveLoadController = saveLoadController;
-		_buttonsLoadGame = buttonsLoadGame;
+		_pauseMenuController = pauseMenuController;
+		_canvasPauseSubMenuLoad = canvasPauseSubMenuLoad;
+		_viewModelPauseSubMenuLoad = viewModelPauseSubMenuLoad;
 
-		for (int i = 0; i < buttonsLoadGame.Length; i++)
+		_textComponentPauseSubMenuLoad = _viewModelPauseSubMenuLoad.TextPauseSubMenuLoad.GetComponent<TextMeshProUGUI>();
+
+		_buttonsLoadGameFile = _viewModelPauseSubMenuLoad.ButtonsLoadGameFile;
+		_buttonsComponentsLoadGameFile = new Button[_viewModelPauseSubMenuLoad.ButtonsLoadGameFile.Length];
+
+		_textComponentsGameFileDateAndTime = new TextMeshProUGUI[_viewModelPauseSubMenuLoad.ButtonsLoadGameFile.Length];
+		_textComponentsGameFileSceneName = new TextMeshProUGUI[_viewModelPauseSubMenuLoad.ButtonsLoadGameFile.Length];
+		_imagesComponentsSceneGameFile = new Image[_viewModelPauseSubMenuLoad.ButtonsLoadGameFile.Length];
+
+		for (int i = 0; i < _viewModelPauseSubMenuLoad.ButtonsLoadGameFile.Length; i++)
 		{
-			int slot = i + 1;
-			_buttonsLoadGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestLoadSaveFileConfirmation?.Invoke(slot));
+			int slot = i + 1; 
+
+			_buttonsComponentsLoadGameFile[i] = _buttonsLoadGameFile[i].GetComponent<Button>();
+			_buttonsComponentsLoadGameFile[i].onClick.AddListener(() => OnRequestLoadSaveFileConfirmation?.Invoke(slot));
+
+			_textComponentsGameFileDateAndTime[i] = _viewModelPauseSubMenuLoad.TextGameFileDateAndTime[i].GetComponent<TextMeshProUGUI>();
+			_textComponentsGameFileSceneName[i] = _viewModelPauseSubMenuLoad.TextGameFileSceneName[i].GetComponent<TextMeshProUGUI>();
+			_imagesComponentsSceneGameFile[i] = _viewModelPauseSubMenuLoad.ImageSceneGameFile[i].GetComponent<Image>();
 		}
 
-		_buttonClosePauseSubMenuLoad.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
+		_buttonClosePauseSubMenuLoad = _viewModelPauseSubMenuLoad.ButtonClosePauseSubMenuLoad;
+		_buttonComponentClosePauseSubMenuLoad = _buttonClosePauseSubMenuLoad.GetComponent<Button>();
+		_buttonComponentClosePauseSubMenuLoad.onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
+		_textButtonComponentClosePauseSubMenuLoad = _viewModelPauseSubMenuLoad.TextButtonClosePauseSubMenuLoad.GetComponent<TextMeshProUGUI>();
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
+
+		_saveLoadController.OnSafeFileSaved += RefreshButtonLabelsAndVisibility; 
+		_saveLoadController.OnSafeFileDelete += RefreshButtonLabelsAndVisibility;
 
 		_pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;
 		_pauseMenuController.OnCloseAnyPauseSubMenu += HideLoadSubMenuCanvas;
-		_saveLoadController.OnSafeFileDelete += RefreshLoadButtonLabels;
-
-		_currentDateAndTimeTexts = new Text[_buttonsLoadGame.Length]; 
-		_currentSceneNameUITexts = new Text[_buttonsLoadGame.Length];
-
-		for (int i = 0; i < this._buttonsLoadGame.Length; i++)
-		{
-			Transform buttonTransform = _buttonsLoadGame[i].transform;
-			_currentDateAndTimeTexts[i] = buttonTransform.Find("Text_CurrentDateAndTime")?.GetComponent<Text>();
-			_currentSceneNameUITexts[i] = buttonTransform.Find("Text_CurrentSceneNameUI")?.GetComponent<Text>();
-		}
-
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
-		Debug.Log("LoadSubMenu Initialized");
+		Debug.Log("New Load SubMenu Initialized");
 	}
 
 	private void DisableButtons()
 	{
-		foreach (var buttonObj in _buttonsLoadGame)
+		foreach (var button in _buttonsComponentsLoadGameFile)
 		{
-			Button button = buttonObj.GetComponent<Button>();
-			if (button != null)
-			{
-				button.interactable = false;
-			}
+			button.interactable = false;
 		}
 
-		Button closeButton = _buttonClosePauseSubMenuLoad.GetComponent<Button>();
-		if (closeButton != null)
-		{
-			closeButton.interactable = false;
-		}
+		_buttonComponentClosePauseSubMenuLoad.interactable = false;
 	}
 
 	private void EnableButtons()
 	{
-		foreach (var buttonObj in _buttonsLoadGame)
+		foreach (var button in _buttonsComponentsLoadGameFile)
 		{
-			Button button = buttonObj.GetComponent<Button>();
-			if (button != null)
-			{
-				button.interactable = true;
-			}
+			button.interactable = true;
 		}
 
-		Button closeButton = _buttonClosePauseSubMenuLoad.GetComponent<Button>();
-		if (closeButton != null)
-		{
-			closeButton.interactable = true;
-		}
+		_buttonComponentClosePauseSubMenuLoad.interactable = true;
 	}
 
 	public void ShowLoadSubMenuCanvas()
 	{
 		_isPauseSubMenuLoadOpened = true;
-		_canvasPauseSubMenuLoad.gameObject.SetActive(true);
-		RefreshLoadButtonLabels();
+		_canvasPauseSubMenuLoad.SetActive(true);
+
+		RefreshButtonLabelsAndVisibility();
 	}
 
 	public void HideLoadSubMenuCanvas()
@@ -112,47 +114,45 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		if (_isPauseSubMenuLoadOpened)
 		{
 			_isPauseSubMenuLoadOpened = false;
-			_canvasPauseSubMenuLoad.gameObject.SetActive(false);
-			Debug.Log("LoadSubMenu closed");
+			_canvasPauseSubMenuLoad.SetActive(false);
+			Debug.Log("New Load SubMenu closed");
 		}
 	}
 
-	public void RefreshLoadButtonLabels()
+	public void RefreshButtonLabelsAndVisibility()
 	{
 		var extendedSaveInfos = _saveLoadController.GetExtendedSaveInfo();
 
 		for (int i = 0; i < extendedSaveInfos.Length; i++)
 		{
-			var (currentDataAndTime, currentSceneNameUI, currentSceneNameSystem) = extendedSaveInfos[i];
+			string currentDataAndTime = extendedSaveInfos[i].SavefileDateTimeForUI;
+			string currentSceneNameUI = extendedSaveInfos[i].SafefileSceneUINameForUI;
+			string currentSceneNameSystem = extendedSaveInfos[i].SafefileSceneSystemNameForIcon;
 
-			if (!string.IsNullOrEmpty(currentSceneNameSystem)) 
+			if (!string.IsNullOrEmpty(currentSceneNameSystem))
 			{
-				_buttonsLoadGame[i].gameObject.SetActive(true);
+				_buttonsLoadGameFile[i].SetActive(true);
 
-				_currentSceneNameUITexts[i].text = currentDataAndTime;
-				_currentDateAndTimeTexts[i].text = currentSceneNameUI;
+				_textComponentsGameFileDateAndTime[i].text = currentDataAndTime;
+				_textComponentsGameFileSceneName[i].text = _localizationManager.GetLocalizedString(currentSceneNameUI);
 
-				_currentSceneNameUITexts[i].gameObject.SetActive(true);
-				_currentDateAndTimeTexts[i].gameObject.SetActive(true);
+				Sprite sprite = Resources.Load<Sprite>($"Sprites/Sprites_LoadingScreens/{currentSceneNameSystem}");
 
-				string currentSceneBackgroundImage = $"{currentSceneNameSystem}";
-				Sprite sprite = Resources.Load<Sprite>($"Sprites/Sprites_LoadingScreens/{currentSceneBackgroundImage}");
-
-				if (sprite != null)
-				{
-					_buttonsLoadGame[i].transform.Find("Level_Image").gameObject.SetActive(true);
-					_buttonsLoadGame[i].transform.Find("Level_Image").GetComponent<Image>().sprite = sprite;
-				}
-				else
-				{
-					Debug.LogError("Failed to load Scene Background Image");
-				}
+				_imagesComponentsSceneGameFile[i].sprite = sprite;
 			}
 			else
 			{
-				_buttonsLoadGame[i].gameObject.SetActive(false);
+				_buttonsLoadGameFile[i].SetActive(false);
 			}
 		}
 	}
-}
 
+	private void ChangeLanguage(LocalizationManager localizationManager)
+	{
+		_localizationManager = localizationManager;
+
+		_textComponentPauseSubMenuLoad.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSUbMenuSave_TextPauseSubMenuLoad");
+
+		_textButtonComponentClosePauseSubMenuLoad.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSUbMenuSave_ButtonClosePauseSubMenuLoad");
+	}
+}
