@@ -53,6 +53,8 @@ public class MissionsManager : MonoBehaviour
 
 			Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
 		}
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
 	public void CheckAndCompleteCurrentStep()
@@ -116,7 +118,7 @@ public class MissionsManager : MonoBehaviour
 		}
 	}
 
-	public void ChangeLanguage(LocalizationManager localizationManager)
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
 
