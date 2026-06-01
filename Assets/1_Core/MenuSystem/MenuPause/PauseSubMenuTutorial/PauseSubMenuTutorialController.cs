@@ -5,57 +5,63 @@ using UnityEngine.UI;
 
 public class PauseSubMenuTutorialController : MonoBehaviour
 {
+	private LocalizationManager _localizationManager;
+	private PauseMenuController _pauseMenuController;
+
 	private GameObject _canvasPauseSubMenuTutorial;
-	private GameObject _buttonClosePauseSubMenuTutorial;
+
+	private ViewModelPauseSubMenuTutorial _viewModelPauseSubMenuTutorial;
+
+	private List<InteractionObjectNoteData> _tutorialsList = new List<InteractionObjectNoteData>();
+
+	private GameObject _imageTutorial;
+	private Image _imageComponentTutorial;
+	private GameObject _textTutorial;
+	private TextMeshProUGUI _textComponentTutorial;
+
 	private GameObject _buttonNextTutorial;
 	private GameObject _buttonPreviousTutorial;
 
-	private GameObject _tutorialNoteText;
-	private GameObject _tutorialNoteImage;
+	private GameObject _buttonClosePauseSubMenuTutorial;
+	private TextMeshProUGUI _textButtonComponentClosePauseSubMenuTutorial;
 
-	private MenuManager _menuManager;
-	private PauseMenuController _pauseMenuController;
 	private bool _isPauseSubMenuTutorialOpened;
 
-	private List<InteractionObjectNoteData> _tutorialNotes = new List<InteractionObjectNoteData>();
 	private int _currentNoteIndex = 0;
+
 	private bool _isInitialized;
-	private TextMeshProUGUI _textComponent;
-	private Image _imageComponent;
 
 	public void Initialize(
-		MenuManager menuManager,
+		LocalizationManager localizationManager,
 		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuTutorial,
-		GameObject buttonClosePauseSubMenuTutorial,
-		GameObject buttonNextTutorial,
-		GameObject buttonPreviousTutorial,
-		GameObject tutorialNoteText,
-		GameObject tutorialNoteImage,
-		List<InteractionObjectNoteData> tutorialNotes)
+		ViewModelPauseSubMenuTutorial viewModelPauseSubMenuTutorial,
+		List<InteractionObjectNoteData> tutorialList)
 	{
-		_menuManager = menuManager;
+		_localizationManager = localizationManager;
 		_pauseMenuController = pauseMenuController;
 		_canvasPauseSubMenuTutorial = canvasPauseSubMenuTutorial;
-		_buttonClosePauseSubMenuTutorial = buttonClosePauseSubMenuTutorial;
-		_buttonNextTutorial = buttonNextTutorial;
-		_buttonPreviousTutorial = buttonPreviousTutorial;
+		_viewModelPauseSubMenuTutorial = viewModelPauseSubMenuTutorial;
+		_tutorialsList = tutorialList;
 
-		_tutorialNoteText = tutorialNoteText;
-		_tutorialNoteImage = tutorialNoteImage;
+		_textTutorial = _viewModelPauseSubMenuTutorial.TextTutorial;
+		_textComponentTutorial = _textTutorial.GetComponent<TextMeshProUGUI>();
+		_imageTutorial = _viewModelPauseSubMenuTutorial.ImageTutorial;
+		_imageComponentTutorial = _imageTutorial.GetComponent<Image>();
 
-		_textComponent = _tutorialNoteText.GetComponent<TextMeshProUGUI>();
-		_imageComponent = _tutorialNoteImage.GetComponent<Image>();
+		_buttonNextTutorial = _viewModelPauseSubMenuTutorial.ButtonNextTutorial;
+		_buttonNextTutorial.GetComponent<Button>().onClick.AddListener(() => NextTutorial());
+		_buttonPreviousTutorial = _viewModelPauseSubMenuTutorial.ButtonPreviousTutorial;
+		_buttonPreviousTutorial.GetComponent<Button>().onClick.AddListener(() => PreviousTutorial());
 
-		_tutorialNotes = tutorialNotes;
-
-		_pauseMenuController.OnOpenTutorialSubMenu += ShowAppearanceSubMenuCanvas;
-		_pauseMenuController.OnCloseAnyPauseSubMenu += HideAppearanceSubMenuCanvas;
-
+		_buttonClosePauseSubMenuTutorial = _viewModelPauseSubMenuTutorial.ButtonClosePauseSubMenuTutorial;
 		_buttonClosePauseSubMenuTutorial.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
+		_textButtonComponentClosePauseSubMenuTutorial = _viewModelPauseSubMenuTutorial.TextButtonClosePauseSubMenuTutorial.GetComponent<TextMeshProUGUI>();
 
-		_buttonNextTutorial.GetComponent<Button>().onClick.AddListener(() => OnNextTutorial());
-		_buttonPreviousTutorial.GetComponent<Button>().onClick.AddListener(() => OnPreviousTutorial());
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
+
+		_pauseMenuController.OnOpenTutorialSubMenu += ShowTutorialSubMenuCanvas;
+		_pauseMenuController.OnCloseAnyPauseSubMenu += HideTutorialSubMenuCanvas;
 
 		_isInitialized = true;
 
@@ -71,30 +77,29 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		{
 			if (Input.GetKeyDown(KeyCode.RightArrow))
 			{
-				OnNextTutorial();
+				NextTutorial();
 			}
 
 			if (Input.GetKeyDown(KeyCode.LeftArrow))
 			{
-				OnPreviousTutorial();
+				PreviousTutorial();
 			}
 		}
 	}
 
-
-	private void ShowAppearanceSubMenuCanvas()
+	private void ShowTutorialSubMenuCanvas()
 	{
 		_isPauseSubMenuTutorialOpened = true;
 		_canvasPauseSubMenuTutorial.SetActive(true);
 
-		if (_tutorialNotes.Count > 0)
+		if (_tutorialsList.Count > 0)
 		{
 			_currentNoteIndex = 0;
 			UpdateUIWithCurrentNote();
 		}
 	}
 
-	private void HideAppearanceSubMenuCanvas()
+	private void HideTutorialSubMenuCanvas()
 	{
 		if (_isPauseSubMenuTutorialOpened)
 		{
@@ -104,59 +109,48 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		}
 	}
 
-	private void OnNextTutorial()
+	private void NextTutorial()
 	{
-		CloseCurrentDisplay();
-
-		_currentNoteIndex = (_currentNoteIndex + 1) % _tutorialNotes.Count;
+		_currentNoteIndex = (_currentNoteIndex + 1) % _tutorialsList.Count;
 
 		UpdateUIWithCurrentNote();
 	}
 
-	private void OnPreviousTutorial()
+	private void PreviousTutorial()
 	{
-		CloseCurrentDisplay();
-
-		_currentNoteIndex = (_currentNoteIndex - 1 + _tutorialNotes.Count) % _tutorialNotes.Count;
+		_currentNoteIndex = (_currentNoteIndex - 1 + _tutorialsList.Count) % _tutorialsList.Count;
 
 		UpdateUIWithCurrentNote();
 	}
 
 	private void UpdateUIWithCurrentNote()
 	{
-		InteractionObjectNoteData data = _tutorialNotes[_currentNoteIndex];
+		InteractionObjectNoteData data = _tutorialsList[_currentNoteIndex];
 
 		Debug.Log($"Showing TutorialNote #{_currentNoteIndex + 1}");
 
-		string textToShow = data.NoteText_RU.text;
-		
-		_textComponent.text = textToShow;
+		string textToShow = _localizationManager.GetLanguageSuffix(data);
 
-		if (_imageComponent != null)
+		_textComponentTutorial.text = textToShow;
+
+		Sprite spriteToShow = data.NoteImage;
+		_imageComponentTutorial.sprite = spriteToShow;
+
+		if (spriteToShow != null)
 		{
-			Sprite spriteToShow = data.NoteImage;
-			_imageComponent.sprite = spriteToShow;
-			if (spriteToShow != null)
-			{
-				_imageComponent.sprite = spriteToShow;
-				_tutorialNoteImage.SetActive(true);
-			}
-			else
-			{
-				_tutorialNoteImage.SetActive(false);
-			}
+			_imageComponentTutorial.sprite = spriteToShow;
+			_imageTutorial.SetActive(true);
 		}
-
-		if (_textComponent != null)
-			_textComponent.gameObject.SetActive(true);
+		else
+		{
+			_imageTutorial.SetActive(false);
+		}
 	}
 
-	private void CloseCurrentDisplay()
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		if (_textComponent != null)
-			_textComponent.gameObject.SetActive(false);
+		_localizationManager = localizationManager;
 
-		if (_imageComponent != null)
-			_tutorialNoteImage.SetActive(false);
+		_textButtonComponentClosePauseSubMenuTutorial.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSUbMenuSave_ButtonClosePauseSubMenuTutorial");
 	}
 }

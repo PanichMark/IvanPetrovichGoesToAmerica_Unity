@@ -1,21 +1,25 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class ViewModelPauseSubMenuTutorial
 {
-	public GameObject ButtonClosePauseSubMenuTutorial;
+	public GameObject ImageTutorial;
+	public GameObject TextTutorial;
+
 	public GameObject ButtonNextTutorial;
 	public GameObject ButtonPreviousTutorial;
-	public GameObject TutorialNoteText;
-	public GameObject TutorialNoteImage;
+
+	public GameObject ButtonClosePauseSubMenuTutorial;
+	public GameObject TextButtonClosePauseSubMenuTutorial;
 
 	public ViewModelPauseSubMenuTutorial(Bootstrap bootstrap, GameObject canvas)
 	{
-		ButtonClosePauseSubMenuTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonClosePauseSubMenuTutorial");
+		ImageTutorial = bootstrap.FindDeepGameObject(canvas, "ImageTutorial");
+		TextTutorial = bootstrap.FindDeepGameObject(canvas, "TextTutorial");
+
 		ButtonNextTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonNextTutorial");
 		ButtonPreviousTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonPreviousTutorial");
-		TutorialNoteText = bootstrap.FindDeepGameObject(canvas, "TutorialNoteText");
-		TutorialNoteImage = bootstrap.FindDeepGameObject(canvas, "TutorialNoteImage");
+
+		ButtonClosePauseSubMenuTutorial = bootstrap.FindDeepGameObject(canvas, "ButtonClosePauseSubMenuTutorial");
+		TextButtonClosePauseSubMenuTutorial = bootstrap.FindDeepGameObject(canvas, "TextButtonClosePauseSubMenuTutorial");
 	}
 }
