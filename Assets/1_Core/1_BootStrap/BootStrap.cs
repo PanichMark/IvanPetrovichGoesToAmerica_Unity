@@ -15,18 +15,12 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private ConfigBootstrapKeyPauseMenu _pauseMenuKey;
 	[SerializeField] private ConfigBootstrapScene _sceneToLoad;
 
-	[Header("--- PLAYER CONFIGs ---")]
+	[Header("--- PLAYER CONFIGS ---")]
 	[SerializeField] private ConfigBootstrapPlayerTransform _playerPosition;
 	[SerializeField] private ConfigBootstrapPlayerWeapons _playerWeapons;
 	[SerializeField] private ConfigBootstrapPlayerResourcesAmmo _playerAmmo;
 
-	[Header("--- GAME MISSIONS ---")]
-	[SerializeField] private GameMissions _allMissions;
-
-	[Header("--- TUTORIAL CONFIG ---")]
-	[SerializeField] private TutorialNotesList _tutorialNotes;
-	public TutorialNotesList ConfigPauseSubMenuTutorial => _tutorialNotes;
-
+	[Header("--- CANVASES ---")]
 	[Header("Bootstrap")]
 	[SerializeField] private GameObject _canvasBootstrap;
 	[SerializeField] private GameObject _canvasChooseLanguage;
@@ -66,8 +60,6 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasMenuCutscene;
 
 	private PlayerPrefsData _playerPrefsData;
-	private Button _buttonRussianLangage;
-	private Button _buttonEnglishLanguage;
 
 	private GameObject _gameObjectBootstrapTemporaryCamera;
 
@@ -76,8 +68,8 @@ public class Bootstrap : MonoBehaviour
 	private IInputDevice _inputDevice;
 	public LocalizationManager LocalizationManager { get; private set; }
 	private KeyCode _keyPauseMenu; // Кнопка открывания/закрывания меню паузы
-	private bool _isInitialized;
-	private bool _isGamepadConnected;
+	private bool _isInitialized; // DO NOT DELETE
+	private bool _isGamepadConnected; //DO NOT DELETE
 
 	// Система Сцен
 	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
@@ -293,6 +285,7 @@ public class Bootstrap : MonoBehaviour
 			_gameController,
 			_inputDevice,
 			LocalizationManager,
+			_canvasChooseLanguage,
 			_canvasMenuBackground,
 			_canvasPauseMenu,
 			_canvasPauseSubMenuSave,
@@ -366,7 +359,6 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(
 			this,
 			_bootstrapSubProcessMenuSystem,
-			_allMissions,
 			_gameObjectPlayerCamera);
 
 		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
@@ -426,19 +418,16 @@ public class Bootstrap : MonoBehaviour
 
 		_canvasChooseLanguage.SetActive(true);
 
-		_buttonRussianLangage = FindDeepGameObject(_canvasChooseLanguage, "Russian").GetComponent<Button>();
-		_buttonEnglishLanguage = FindDeepGameObject(_canvasChooseLanguage, "English").GetComponent<Button>();
-
 		bool languageSelected = false;
 
-		_buttonRussianLangage.onClick.AddListener(() =>
+		_bootstrapSubProcessMenuSystem.ViewModelMenuChooseFirstLanguage.ButtonRussianLangauge.GetComponent<Button>().onClick.AddListener(() =>
 		{
 			ChangeLanguage(LanguagesEnum.Russian);
 			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionAudioController.SaveSettingsAudio();
 			languageSelected = true;
 		});
 
-		_buttonEnglishLanguage.onClick.AddListener(() =>
+		_bootstrapSubProcessMenuSystem.ViewModelMenuChooseFirstLanguage.ButtonEnglishLanguage.GetComponent<Button>().onClick.AddListener(() =>
 		{
 			ChangeLanguage(LanguagesEnum.English);
 			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionAudioController.SaveSettingsAudio();

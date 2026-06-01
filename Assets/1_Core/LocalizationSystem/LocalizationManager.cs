@@ -41,7 +41,7 @@ public class LocalizationManager
 
 	private void LoadFromLocalizationCSV()
 	{
-		TextAsset csvFile = Resources.Load("Lozalization/IvanPetrovichGoesToAmerica_Localization") as TextAsset;
+		TextAsset csvFile = Resources.Load("IvanPetrovichGoesToAmerica_Localization") as TextAsset;
 		if (csvFile == null)
 		{
 			Debug.LogError("Could not load CSV file");

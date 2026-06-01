@@ -15,20 +15,19 @@ public class BootstrapSubProcessMissionsSystem
 	public BootstrapSubProcessMissionsSystem(
 		Bootstrap bootstrap,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
-		GameMissions allMissions,
 		GameObject playerCameraGameObject)
 	{
 		_bootstrap = bootstrap;
 		_localizationManager = _bootstrap.LocalizationManager;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
-		_allMissions = allMissions;
 		_playerCameraGameObject = playerCameraGameObject;
 	}
 
 	public IEnumerator InitializeMissionsSystem()
 	{
 		_gameObjectBootstrapMissionsSystem = new GameObject("Bootstrap_MissionsSystem");
-		
+		_allMissions = (GameMissions)Resources.Load("GameMissions");
+
 		_missionsManager = _gameObjectBootstrapMissionsSystem.AddComponent<MissionsManager>();
 
 		_missionGoalMarkerManager = _gameObjectBootstrapMissionsSystem.AddComponent<MissionGoalMarkerManager>();
