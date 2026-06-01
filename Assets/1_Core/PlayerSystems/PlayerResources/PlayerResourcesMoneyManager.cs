@@ -3,12 +3,14 @@ using TMPro;
 
 public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
 {
-	private TMP_Text _playerMoneyText;
+	private GameObject _playerMoneyText;
+	private TMP_Text _playerComponentMoneyText;
+
     public int PlayerMoney { get; private set; }
 	
-	public void Initialize(TMP_Text playerMoneyText)
+	public void Initialize(GameObject playerMoneyText)
 	{
-		_playerMoneyText = playerMoneyText;
+		_playerComponentMoneyText = playerMoneyText.GetComponent<TMP_Text>();
 		
 		UpdateMoneyDisplay();
 		Debug.Log("PlayerResourcesMoney Initialized");
@@ -45,7 +47,7 @@ public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
 	}
 	private void UpdateMoneyDisplay()
 	{
-		_playerMoneyText.text = PlayerMoney.ToString();
+		_playerComponentMoneyText.text = PlayerMoney.ToString();
 	}
 
 	public void SaveData(ref GameData data)

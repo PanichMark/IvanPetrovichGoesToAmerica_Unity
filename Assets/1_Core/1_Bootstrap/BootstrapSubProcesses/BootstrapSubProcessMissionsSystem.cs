@@ -32,7 +32,7 @@ public class BootstrapSubProcessMissionsSystem
 
 		_missionGoalMarkerManager = _gameObjectBootstrapMissionsSystem.AddComponent<MissionGoalMarkerManager>();
 
-		_missionsManager.Initialize(_localizationManager, _bootstrapSubProcessMenuSystem.PauseMenuController, _allMissions);
+		_missionsManager.Initialize(_localizationManager, _bootstrapSubProcessMenuSystem.PauseMenuController, _allMissions, _bootstrapSubProcessMenuSystem.ViewModelPauseMenu);
 		_missionGoalMarkerManager.Initialize(_missionsManager, _playerCameraGameObject, _bootstrapSubProcessMenuSystem.ViewModelHUDMission.ImageMissionGoalMarker);
 
 		yield break;

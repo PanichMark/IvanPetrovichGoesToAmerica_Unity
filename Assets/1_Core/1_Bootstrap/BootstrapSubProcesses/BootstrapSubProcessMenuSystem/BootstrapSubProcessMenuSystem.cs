@@ -218,11 +218,21 @@ public class BootstrapSubProcessMenuSystem
 		_viewModelPauseSubMenuSettingsSectionGraphics = new ViewModelPauseSubMenuSettingsSectionGraphics(_bootstrap, _canvasPauseSubMenuSettings);
 		ViewModelPauseSubMenuSettingsSectionAudio = new ViewModelPauseSubMenuSettingsSectionAudio(_bootstrap, _canvasPauseSubMenuSettings);
 
+		MenuManager.Initialize(
+			_gameController,
+			_inputDevice,
+			_gameSceneManager,
+			_canvasMenuBackground);
 
+		PauseMenuController.Initialize(
+			_gameController,
+			_inputDevice,
+			_localizationManager,
+			_gameSceneManager,
+			MenuManager,
+			_canvasPauseMenu,
+			ViewModelPauseMenu);
 
-
-		MenuManager.Initialize(_gameController, _inputDevice, _gameSceneManager, _canvasMenuBackground);
-		PauseMenuController.Initialize(_gameController, _inputDevice, _gameSceneManager, MenuManager, _canvasPauseMenu, ViewModelPauseMenu.ButtonsPauseMenu, ViewModelPauseMenu.TextCurrentMissionGoal, _saveLoadController);
 		_pauseSubMenuSaveController.Initialize(_inputDevice, _saveLoadController, MenuManager, PauseMenuController, _canvasPauseSubMenuSave, _viewModelPauseSubMenuSave.ButtonCreateNewGameFile, _viewModelPauseSubMenuSave.ButtonsRewriteGameFile, _viewModelPauseSubMenuSave.ButtonsDeleteGameFile, _viewModelPauseSubMenuSave.ButtonClosePauseSubMenuSave);
 		_pauseSubMenuLoadController.Initialize(_inputDevice, _saveLoadController, MenuManager, PauseMenuController, _canvasPauseSubMenuLoad, _viewModelPauseSubMenuLoad.ButtonsLoadGameFile, _viewModelPauseSubMenuLoad.ButtonClosePauseSubMenuLoad);
 		_pauseSubMenuAppearanceController.Initialize(_inputDevice, MenuManager, PauseMenuController, _canvasPauseSubMenuAppearance, _viewModelPauseSubMenuAppearance.ButtonClosePauseSubMenuAppearance);

@@ -4,64 +4,82 @@ using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
-	public bool IsPauseConfirmMenuOpened { get; private set; }
-	public event OpenPauseMenuEventHandler OnOpenConfirmMenu;
-	public event OpenPauseMenuEventHandler OnCloseConfirmMenu;
-	private IInputDevice _inputDevice;
-    private MenuManager _menuManager;
-	private GameObject _pauseMenuCanvas;
-	private SaveLoadController _saveLoadController;
-	private bool _isInitialized = false;
 	private GameController _gameController;
-	private GameObject[] _buttonsPauseMenu;
+	private IInputDevice _inputDevice;
+	private LocalizationManager _localizationManager;
 	private GameSceneManager _gameSceneManager;
+	private MenuManager _menuManager;
+
+	private GameObject _canvasPauseMenu;
+	private GameObject[] _buttonsPauseMenu;
+	private Button[] _buttonsComponentsPauseMenu;
+	private TextMeshProUGUI[] _textButtonsPauseMenu;
+	private TextMeshProUGUI _textCurrentMissionGoal;
+	private TextMeshProUGUI _textCurrentPlayerMoney;
+
+	public bool IsPauseConfirmMenuOpened { get; private set; }
+	private bool _isInitialized = false;
+
 	public delegate void OpenPauseMenuEventHandler();
 	public event OpenPauseMenuEventHandler OnOpenSaveSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenLoadSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenAppearanceSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenTutorialSubMenu;
 	public event OpenPauseMenuEventHandler OnOpenSettingsSubMenu;
-	public event OpenPauseMenuEventHandler OnExitToMainMenu;
 	public event OpenPauseMenuEventHandler OnCloseAnyPauseSubMenu;
-
-	private GameObject _textCurrentMissionGoal;
-	private TextMeshProUGUI _textComponentCurrentMissionGoal;
-
+	public event OpenPauseMenuEventHandler OnExitToMainMenu;
+	public event OpenPauseMenuEventHandler OnOpenConfirmMenu;
+	public event OpenPauseMenuEventHandler OnCloseConfirmMenu;
 
 	public void Initialize(
 		GameController gameController,
 		IInputDevice inputDevice,
+		LocalizationManager localizationManager,
 		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
-		GameObject PauseMenuCanvas,
-		GameObject[] buttonsPauseMenu,
-		GameObject textCurrentMissionGoal,
-		SaveLoadController saveLoadController)
+		GameObject canvasPauseMenu,
+		ViewModelPauseMenu viewModelPauseMenu)
 	{
-		_gameSceneManager = gameSceneManager;
 		_gameController = gameController;
 		_inputDevice = inputDevice;
+		_localizationManager = localizationManager;
+		_gameSceneManager = gameSceneManager;
 		_menuManager = menuManager;
-		_pauseMenuCanvas = PauseMenuCanvas;
-		_buttonsPauseMenu = buttonsPauseMenu;
-		_textCurrentMissionGoal = textCurrentMissionGoal;
-		_textComponentCurrentMissionGoal = _textCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
-		_saveLoadController = saveLoadController;
-		_buttonsPauseMenu[0].GetComponent<Button>().onClick.AddListener(_menuManager.ClosePauseMenu);     
-		_buttonsPauseMenu[1].GetComponent<Button>().onClick.AddListener(OpenSaveSubMenu);               
-		_buttonsPauseMenu[2].GetComponent<Button>().onClick.AddListener(OpenLoadSubMenu);               
-		_buttonsPauseMenu[3].GetComponent<Button>().onClick.AddListener(OpenAppearanceSubMenu);
-		_buttonsPauseMenu[4].GetComponent<Button>().onClick.AddListener(OpenTutorialSubMenu);
-		_buttonsPauseMenu[5].GetComponent<Button>().onClick.AddListener(OpenSettingsSubMenu);
-		_buttonsPauseMenu[6].GetComponent<Button>().onClick.AddListener(ExitToMainMenu);
 
-		_menuManager.OnOpenPauseMenu += ShowPauseMenu;
-		_menuManager.OnClosePauseMenu += HidePauseMenu;
+		_canvasPauseMenu = canvasPauseMenu;
+
+		_buttonsPauseMenu = viewModelPauseMenu.ButtonsPauseMenu;
+		_buttonsComponentsPauseMenu = new Button[viewModelPauseMenu.ButtonsPauseMenu.Length];
+		for (int i = 0; i < viewModelPauseMenu.ButtonsPauseMenu.Length; i++)
+		{
+			_buttonsComponentsPauseMenu[i] = viewModelPauseMenu.ButtonsPauseMenu[i].GetComponent<Button>();
+		}
+		_buttonsComponentsPauseMenu[0].onClick.AddListener(_menuManager.ClosePauseMenu);
+		_buttonsComponentsPauseMenu[1].onClick.AddListener(OpenSaveSubMenu);               
+		_buttonsComponentsPauseMenu[2].onClick.AddListener(OpenLoadSubMenu);               
+		_buttonsComponentsPauseMenu[3].onClick.AddListener(OpenAppearanceSubMenu);
+		_buttonsComponentsPauseMenu[4].onClick.AddListener(OpenTutorialSubMenu);
+		_buttonsComponentsPauseMenu[5].onClick.AddListener(OpenSettingsSubMenu);
+		_buttonsComponentsPauseMenu[6].onClick.AddListener(ExitToMainMenu);
+		_textButtonsPauseMenu = new TextMeshProUGUI[viewModelPauseMenu.TextButtonsPauseMenu.Length];
+		for (int i = 0; i < viewModelPauseMenu.TextButtonsPauseMenu.Length; i++)
+		{
+			_textButtonsPauseMenu[i] = viewModelPauseMenu.TextButtonsPauseMenu[i].GetComponent<TextMeshProUGUI>();
+		}
+
+		_textCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
+		_textCurrentPlayerMoney = viewModelPauseMenu.TextCurrentPlayerMoney.GetComponent<TextMeshProUGUI>();
+
+		_gameController.OnPlayerLateDeath += HideDeathPauseMenuButtons;
+		_gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += ClosePauseSubMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseSubMenu;
-		_gameController.OnPlayerLateDeath += HideDeathPauseMenuButtons;
-		_gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
+
+		_menuManager.OnOpenPauseMenu += ShowPauseMenu;
+		_menuManager.OnClosePauseMenu += HidePauseMenu;
 
 		_menuManager.OnOpenConfirmationOnExitToMainMenu += DisableButtons;
 		_menuManager.OnCloseConfirmationOnExitToMainMenu += ClosePauseConfirmMenu;
@@ -87,27 +105,22 @@ public class PauseMenuController : MonoBehaviour
 		}
 	}
 
-	public void SetCurrentMissionGoalText(string textGoal)
-	{
-		_textComponentCurrentMissionGoal.text = textGoal;
-	}
-
 	private void DisableButtons()
 	{
-		for (int i = 0; i < _buttonsPauseMenu.Length; i++)
+		for (int i = 0; i < _buttonsComponentsPauseMenu.Length; i++)
 		{
-			_buttonsPauseMenu[i].GetComponent<Button>().interactable = false;
+			_buttonsComponentsPauseMenu[i].interactable = false;
 		}
 	}
 
 	private void EnableButtons()
 	{
-		for (int i = 0; i < _buttonsPauseMenu.Length; i++)
+		for (int i = 0; i < _buttonsComponentsPauseMenu.Length; i++)
 		{
 			if (i == 3)
 				continue; // SKIP! - Appearance SubMenu
 
-			_buttonsPauseMenu[i].GetComponent<Button>().interactable = true;
+			_buttonsComponentsPauseMenu[i].interactable = true;
 		}
 	}
 
@@ -171,11 +184,11 @@ public class PauseMenuController : MonoBehaviour
 
 	public void ShowPauseMenu()
 	{
-		_pauseMenuCanvas.gameObject.SetActive(true);
+		_canvasPauseMenu.gameObject.SetActive(true);
 	}
 	public void HidePauseMenu()
 	{
-		_pauseMenuCanvas.gameObject.SetActive(false);
+		_canvasPauseMenu.gameObject.SetActive(false);
 	}
 
 	public void OpenSaveSubMenu()
@@ -221,5 +234,10 @@ public class PauseMenuController : MonoBehaviour
 	public void ExitToMainMenu()
 	{
 		OnExitToMainMenu?.Invoke();
+	}
+
+	private void ChangeLanguage()
+	{
+
 	}
 }

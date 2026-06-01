@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class MissionsManager : MonoBehaviour
 {
@@ -18,13 +19,15 @@ public class MissionsManager : MonoBehaviour
 
 	public delegate void DestructionEventHandler(GameObject destroyedObject, bool wasLethal);
 	public static event DestructionEventHandler OnAnyObjectDestroyed;
-
-	public void Initialize(LocalizationManager localizationManager, PauseMenuController pauseMenuController, GameMissions gameMissions)
+	private GameObject _textCurrentMissionGoal;
+	private TextMeshProUGUI _textComponentCurrentMissionGoal;
+	public void Initialize(LocalizationManager localizationManager, PauseMenuController pauseMenuController, GameMissions gameMissions, ViewModelPauseMenu viewModelPauseMenu)
 	{
 		_localizationManager = localizationManager;
 		_pauseMenuController = pauseMenuController;
 		_allMissions = gameMissions;
-
+		_textCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoalDisplay;
+		_textComponentCurrentMissionGoal = _textCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
 		if (_allMissions == null || _allMissions.MissionsInOrder.Length == 0)
 		{
 			Debug.LogError("Ошибка: Список миссий не задан или пуст!");
@@ -45,7 +48,7 @@ public class MissionsManager : MonoBehaviour
 			// --- ИЗМЕНЕНИЕ ---
 			// Вызываем наш новый метод для получения локализованного текста
 			string localizedGoalText = GetLocalizedGoalText(currentStep);
-			_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
+			SetCurrentMissionGoalText(localizedGoalText);
 			// ----------------
 
 			Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
@@ -67,11 +70,11 @@ public class MissionsManager : MonoBehaviour
 		if (CurrentStepIndex < ActiveMission.Steps.Length)
 		{
 			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
-			_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
+			SetCurrentMissionGoalText(localizedGoalText);
 		}
 		else
 		{
-			_pauseMenuController.SetCurrentMissionGoalText("");
+			SetCurrentMissionGoalText("");
 		}
 
 		// --- УВЕДОМЛЕНИЕ ЧЕРЕЗ DELEGATE ---
@@ -120,7 +123,12 @@ public class MissionsManager : MonoBehaviour
 		if (ActiveMission != null && ActiveMission.Steps.Length > 0)
 		{
 			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
-			_pauseMenuController.SetCurrentMissionGoalText(localizedGoalText);
+			SetCurrentMissionGoalText(localizedGoalText);
 		}
+	}
+
+	public void SetCurrentMissionGoalText(string textGoal)
+	{
+		_textComponentCurrentMissionGoal.text = textGoal;
 	}
 }

@@ -1,17 +1,20 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class ViewModelPauseMenu
 {
 	public GameObject[] ButtonsPauseMenu;
+	public GameObject[] TextButtonsPauseMenu;
+
 	public GameObject TextCurrentMissionGoal;
-	public TMP_Text TextPlayerMoneyNumber;
+	public GameObject TextCurrentMissionGoalDisplay;
+
+	public GameObject TextCurrentPlayerMoney;
+	public GameObject TextCurrentPlayerMoneyDisplay;
 
 	public ViewModelPauseMenu(Bootstrap bootstrap, GameObject canvas)
 	{
 		ButtonsPauseMenu = new[]
-	{
+		{
 			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuResume"),
 			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuSave"),
 			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuLoad"),
@@ -20,7 +23,21 @@ public class ViewModelPauseMenu
 			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuSettings"),
 			bootstrap.FindDeepGameObject(canvas, "ButtonPauseMenuExitToMainMenu")
 		};
+		TextButtonsPauseMenu = new[]
+		{
+			bootstrap.FindDeepGameObject(canvas, "TextButtonPauseMenuResume"),
+			bootstrap.FindDeepGameObject(canvas, "TextButtonPauseMenuSave"),
+			bootstrap.FindDeepGameObject(canvas, "TextButtonPauseMenuLoad"),
+			bootstrap.FindDeepGameObject(canvas, "TextButtonPauseMenuAppearance"),
+			bootstrap.FindDeepGameObject(canvas, "TextButtonPauseMenuTutorial"),
+			bootstrap.FindDeepGameObject(canvas, "TextButtonPauseMenuSettings"),
+			bootstrap.FindDeepGameObject(canvas, "TextButtonPauseMenuExitToMainMenu")
+		};
+
 		TextCurrentMissionGoal = bootstrap.FindDeepGameObject(canvas, "TextCurrentMissionGoal");
-		TextPlayerMoneyNumber = canvas.transform.Find("TextPlayerMoneyNumber").GetComponent<TMP_Text>();
+		TextCurrentMissionGoalDisplay = bootstrap.FindDeepGameObject(canvas, "TextCurrentMissionGoalDisplay");
+
+		TextCurrentPlayerMoney = bootstrap.FindDeepGameObject(canvas, "TextCurrentPlayerMoney");
+		TextCurrentPlayerMoneyDisplay = bootstrap.FindDeepGameObject(canvas, "TextCurrentPlayerMoneyDisplay");
 	}
 }
