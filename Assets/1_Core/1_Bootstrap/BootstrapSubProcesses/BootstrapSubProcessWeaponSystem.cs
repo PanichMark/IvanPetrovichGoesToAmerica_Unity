@@ -35,12 +35,12 @@ public class BootstrapSubProcessWeaponSystem
 
 
 	public BootstrapSubProcessWeaponSystem(
-		GameController gameController,
-		IInputDevice inputDevice,
 		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
 		BootstrapSubProcessInteractionSystem bootstrapSubSystemInteraction,
+		GameController gameController,
+		IInputDevice inputDevice,
 		GameObject playerGameObject)
 	{
 		_gameController = gameController;

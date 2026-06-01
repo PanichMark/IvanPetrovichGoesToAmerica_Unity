@@ -24,8 +24,6 @@ public class BootstrapSubProcessPlayerSystems
 	public GameObject PlayerCameraFirstPerson { get; private set; }
 	public GameObject PlayerCameraPostProcessing {  get; private set; }
 
-	private GameObject _canvasMenuBackground;
-
 	public PlayerBehaviourController PlayerBehaviour { get; private set; }
 	public PlayerMovementController PlayerMovementController { get; private set; }
 	public PlayerMovementStateMachineController PlayerMovementStateMachineController { get; private set; }
@@ -52,7 +50,6 @@ public class BootstrapSubProcessPlayerSystems
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		GameController gameController,
 		IInputDevice inputDevice,
-		GameObject canvasMenuBackground,
 		GameObject playerGameObject,
 		GameObject playerMainCameraGameObject)
 	{
@@ -63,7 +60,6 @@ public class BootstrapSubProcessPlayerSystems
 		_gameSceneManager = bootstrapSubProcessSceneSystem.GameSceneManager;
 		_gameObjectPlayer = playerGameObject;
 		_gameObjectPlayerCamera = playerMainCameraGameObject;
-		_canvasMenuBackground = canvasMenuBackground;
 	}
 
 	public IEnumerator InitializePlayerSystems()
@@ -82,11 +78,6 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerCameraStateMachineController = _gameObjectPlayerCamera.GetComponent<PlayerCameraStateMachineController>();
 		_playerCameraBlurFilter = _gameObjectPlayerCamera.GetComponent<PlayerCameraBlurFilter>();
 		_playerCameraFirstPersonRender = _gameObjectPlayerCamera.GetComponent<PlayerCameraFirstPersonRender>();
-
-		var canvasComponentBackgroundMenu = _canvasMenuBackground.GetComponent<Canvas>();
-		var PlayerCameraComponentPostProcessing = PlayerCameraPostProcessing.GetComponent<Camera>();
-		canvasComponentBackgroundMenu.worldCamera = PlayerCameraComponentPostProcessing;
-		canvasComponentBackgroundMenu.planeDistance = 2;
 
 		_playerResourcesHealthManager = _gameObjectPlayer.GetComponent<PlayerResourcesHealthManager>();
 		_playerResourcesManaManager = _gameObjectPlayer.GetComponent<PlayerResourcesManaManager>();

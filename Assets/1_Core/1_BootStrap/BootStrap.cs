@@ -327,7 +327,6 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessMenuSystem,
 			_gameController,
 			_inputDevice,
-			_canvasMenuBackground,
 			_gameObjectPlayer,
 			_gameObjectPlayerCamera);
 
@@ -351,12 +350,12 @@ public class Bootstrap : MonoBehaviour
 	private IEnumerator InitializeWeaponSystem()
 	{
 		_bootstrapSubProcessWeaponSystem = new BootstrapSubProcessWeaponSystem(
-			_gameController,
-			_inputDevice,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
 			_bootstrapSubProcessPlayerSystems,
 			_bootstrapSubProcessInteractionSystem,
+			_gameController,
+			_inputDevice,
 			_gameObjectPlayer);
 
 		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
