@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ViewModelPauseSubMenuSettingsSectionGeneral : MonoBehaviour
+public class ViewModelPauseSubMenuSettingsSectionGeneral
 {
 	public GameObject SliderChangeFOV;
 	public GameObject NumberFOV;

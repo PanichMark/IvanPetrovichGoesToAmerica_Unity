@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ViewModelPauseSubMenuSettingsSectionControls : MonoBehaviour
+public class ViewModelPauseSubMenuSettingsSectionControls
 {
 	public GameObject[] InputFieldsKeyRebinds = new GameObject[16];
 

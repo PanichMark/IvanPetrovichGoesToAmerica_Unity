@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ViewModelPauseSubMenuSettingsSectionAudio : MonoBehaviour
+public class ViewModelPauseSubMenuSettingsSectionAudio
 {
 	public GameObject[] ButtonsChangeLanguage = new GameObject[2];
 

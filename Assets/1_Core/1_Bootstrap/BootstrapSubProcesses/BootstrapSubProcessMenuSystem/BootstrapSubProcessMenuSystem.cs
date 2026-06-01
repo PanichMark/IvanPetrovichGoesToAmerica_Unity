@@ -15,6 +15,7 @@ public class BootstrapSubProcessMenuSystem
 	private ViewModelPauseSubMenuSettings _viewModelPauseSubMenuSettings;
 	private ViewModelPauseMenuConfirmAction _viewModelPauseMenuConfirmAction;
 	private ViewModelMainMenuReadNews _viewModelMainMenuReadNews;
+	private HUDmissionsController _HUDmissionsController;
 	public ViewModelHUDMission ViewModelHUDMission { get; private set; }
 	public ViewModelMenuWeaponWheel ViewModelWeaponWheel { get; private set; }
 	public ViewModelHUDHealthAndMana ViewModelHUDhealthAndMana {  get; private set; }
@@ -184,6 +185,7 @@ public class BootstrapSubProcessMenuSystem
 		_cutsceneMenuController = _gameObjectBootstrapMenuSystem.AddComponent<CutsceneMenuController>();
 		HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
+		_HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
 
 		ViewModelPauseMenu = new ViewModelPauseMenu(_bootstrap, _canvasPauseMenu);
 		_viewModelPauseSubMenuSave = new ViewModelPauseSubMenuSave(_bootstrap, _canvasPauseSubMenuSave);
@@ -228,6 +230,7 @@ public class BootstrapSubProcessMenuSystem
 		_mainMenuReadNewsController.Initialize(_inputDevice, _canvasMainMenuReadNews, _viewModelMainMenuReadNews.ButtonCloseMainMenuReadNews, _viewModelMainMenuReadNews.ButtonYouTube, _viewModelMainMenuReadNews.ButtonGitHub);
 		_cutsceneMenuController.Initialize(_gameSceneManager, MenuManager, _canvasMenuCutscene);
 		HUDhealthAndManaController.Initialize(_gameController, _bootstrapSubProcessSceneSystem.GameSceneManager, MenuManager, _canvasHUDhealthAndMana, ViewModelHUDhealthAndMana.HealthBar, ViewModelHUDhealthAndMana.ManaBar);
+		_HUDmissionsController.Initialize(_gameController, _gameSceneManager, MenuManager, _canvasHUDmission);
 
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", PauseMenuController);

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "KeyInventory", menuName = "Managers/Key Inventory Manager")]
 public class KeysManager
 { 
 	private List<string> _collectedKeys = new List<string>();
