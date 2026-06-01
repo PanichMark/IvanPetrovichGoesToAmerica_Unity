@@ -233,7 +233,12 @@ public class BootstrapSubProcessMenuSystem
 			_canvasPauseMenu,
 			ViewModelPauseMenu);
 
-		_pauseSubMenuSaveController.Initialize(_inputDevice, _saveLoadController, MenuManager, PauseMenuController, _canvasPauseSubMenuSave, _viewModelPauseSubMenuSave.ButtonCreateNewGameFile, _viewModelPauseSubMenuSave.ButtonsRewriteGameFile, _viewModelPauseSubMenuSave.ButtonsDeleteGameFile, _viewModelPauseSubMenuSave.ButtonClosePauseSubMenuSave);
+		_pauseSubMenuSaveController.Initialize(
+			_saveLoadController,
+			PauseMenuController,
+			_canvasPauseSubMenuSave,
+			_viewModelPauseSubMenuSave);
+
 		_pauseSubMenuLoadController.Initialize(_inputDevice, _saveLoadController, MenuManager, PauseMenuController, _canvasPauseSubMenuLoad, _viewModelPauseSubMenuLoad.ButtonsLoadGameFile, _viewModelPauseSubMenuLoad.ButtonClosePauseSubMenuLoad);
 		_pauseSubMenuAppearanceController.Initialize(_inputDevice, MenuManager, PauseMenuController, _canvasPauseSubMenuAppearance, _viewModelPauseSubMenuAppearance.ButtonClosePauseSubMenuAppearance);
 		_pauseSubMenuTutorialController.Initialize(MenuManager, PauseMenuController, _canvasPauseSubMenuTutorial, _viewModelPauseSubMenuTutorial.ButtonClosePauseSubMenuTutorial, _viewModelPauseSubMenuTutorial.ButtonNextTutorial, _viewModelPauseSubMenuTutorial.ButtonPreviousTutorial, _viewModelPauseSubMenuTutorial.TutorialNoteText, _viewModelPauseSubMenuTutorial.TutorialNoteImage, _tutorialNotesList.Notes);

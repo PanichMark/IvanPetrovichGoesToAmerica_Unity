@@ -1,76 +1,70 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class PauseSubMenuSaveController : MonoBehaviour
 {
 	public event Action<int> OnRequestRewriteSaveFileConfirmation;
 	public event Action<int> OnRequestNewSaveFileConfirmation;
 	public event Action<int> OnRequestDeleteSaveFileConfirmation;
-	
-	private IInputDevice _inputDevice;
-	private MenuManager _menuManager;
-	private PauseMenuController _pauseMenuController;
-	private bool _isPauseSubMenuSaveOpened;
-	private GameObject _canvasPauseSubMenuSave;
+
 	private SaveLoadController _saveLoadController;
+	private PauseMenuController _pauseMenuController;
+	
+	private GameObject _canvasPauseSubMenuSave;
 
 	private GameObject _buttonClosePauseSubMenuSave;
-	private GameObject[] _buttonsRewriteGame;
-	private GameObject[] _buttonsDeleteGame;
-	private GameObject _buttonSaveNewGame;
 
-	private Text[] _currentDateAndTimeTexts;
-	private Text[] _currentSceneNameUITexts;
+	private GameObject _buttonCreateNewGameFile;
+	private GameObject[] _buttonsRewriteGameFile;
+	private GameObject[] _buttonsDeleteGameFile;
+	private ViewModelPauseSubMenuSave _viewModelPauseSubMenuSave;
+	private TextMeshProUGUI[] _textComponentsGameFileDateAndTime;
+	private TextMeshProUGUI[] _textComponentsGameFileSceneName;
+	private Image[] _imagesComponentsSceneGameFile;
+
+	private bool _isPauseSubMenuSaveOpened;
 
 	public void Initialize(
-		IInputDevice inputDevice,
 		SaveLoadController saveLoadController,
-		MenuManager menuManager,
 		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuSave,
-		GameObject buttonSaveNewGame,
-		GameObject[] buttonsRewriteGame,
-		GameObject[] buttonsDeleteGame,
-		GameObject buttonClosePauseSubMenuSave)
+		ViewModelPauseSubMenuSave viewModelPauseSubMenuSave)
 	{
-		_buttonClosePauseSubMenuSave = buttonClosePauseSubMenuSave;
-		_buttonSaveNewGame = buttonSaveNewGame;
+		_viewModelPauseSubMenuSave = viewModelPauseSubMenuSave;
+
+		_buttonClosePauseSubMenuSave = _viewModelPauseSubMenuSave.ButtonClosePauseSubMenuSave;
+		_buttonCreateNewGameFile = _viewModelPauseSubMenuSave.ButtonCreateNewGameFile;
 		_pauseMenuController = pauseMenuController;
-		_menuManager = menuManager;
-		_inputDevice = inputDevice;
 		_canvasPauseSubMenuSave = canvasPauseSubMenuSave;
-		_buttonsRewriteGame = buttonsRewriteGame;
-		_buttonsDeleteGame = buttonsDeleteGame;
+		_buttonsRewriteGameFile = _viewModelPauseSubMenuSave.ButtonsRewriteGameFile;
+		_buttonsDeleteGameFile = _viewModelPauseSubMenuSave.ButtonsDeleteGameFile;
 		_saveLoadController = saveLoadController;
 
-		for (int i = 0; i < buttonsRewriteGame.Length; i++)
+		for (int i = 0; i < _buttonsRewriteGameFile.Length; i++)
 		{
-			int slot = i + 1;
-			int capturedSlot = slot; 
-			_buttonsRewriteGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestRewriteSaveFileConfirmation?.Invoke(capturedSlot));
-			_buttonsDeleteGame[i].GetComponent<Button>().onClick.AddListener(() => OnRequestDeleteSaveFileConfirmation?.Invoke(capturedSlot));
+			_buttonsRewriteGameFile[i].GetComponent<Button>().onClick.AddListener(() => OnRequestRewriteSaveFileConfirmation?.Invoke(i + 1));
+			_buttonsDeleteGameFile[i].GetComponent<Button>().onClick.AddListener(() => OnRequestDeleteSaveFileConfirmation?.Invoke(i + 1));
 		}
 
 		_buttonClosePauseSubMenuSave.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
 
-		_currentDateAndTimeTexts = new Text[buttonsRewriteGame.Length];
-		_currentSceneNameUITexts = new Text[buttonsRewriteGame.Length];
+		_textComponentsGameFileDateAndTime = new TextMeshProUGUI[_buttonsRewriteGameFile.Length];
+		_textComponentsGameFileSceneName = new TextMeshProUGUI[_buttonsRewriteGameFile.Length];
 
-		for (int i = 0; i < buttonsRewriteGame.Length; i++)
+		for (int i = 0; i < _buttonsRewriteGameFile.Length; i++)
 		{
-			Transform buttonTransform = buttonsRewriteGame[i].transform;
-			_currentDateAndTimeTexts[i] = buttonTransform.Find("Text_CurrentDateAndTime")?.GetComponent<Text>();
-			_currentSceneNameUITexts[i] = buttonTransform.Find("Text_CurrentSceneNameUI")?.GetComponent<Text>();
+			_textComponentsGameFileDateAndTime[i] = _viewModelPauseSubMenuSave.TextGameFileDateAndTime[i].GetComponent<TextMeshProUGUI>();
+			_textComponentsGameFileSceneName[i] = _viewModelPauseSubMenuSave.TextGameFileSceneName[i].GetComponent<TextMeshProUGUI>();
 
-			if (_currentDateAndTimeTexts[i] != null) _currentDateAndTimeTexts[i].gameObject.SetActive(false);
-			if (_currentSceneNameUITexts[i] != null) _currentSceneNameUITexts[i].gameObject.SetActive(false);
+			//_imagesComponentsSceneGameFile[i] = viewModelPauseSubMenuSave.ImageSceneGameFile[i].GetComponent<Image>();
 
-			Transform iconTransform = buttonTransform.Find("Level_Image");
-			if (iconTransform != null) iconTransform.gameObject.SetActive(false);
+			//Transform imageTransform = _buttonsRewriteGameFile[i].transform.Find("Level_Image");
+			//if (imageTransform != null) imageTransform.gameObject.SetActive(false);
 		}
 
-		_buttonSaveNewGame.GetComponent<Button>().onClick.AddListener(() =>
+		_buttonCreateNewGameFile.GetComponent<Button>().onClick.AddListener(() =>
 		{
 			int slotToUse = FindFirstEmptySlot();
 			if (slotToUse != -1)
@@ -93,7 +87,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 	private void DisableButtons()
 	{
-		foreach (var buttonObj in _buttonsRewriteGame)
+		foreach (var buttonObj in _buttonsRewriteGameFile)
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			if (button != null)
@@ -102,7 +96,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			}
 		}
 
-		foreach (var buttonObj in _buttonsDeleteGame)
+		foreach (var buttonObj in _buttonsDeleteGameFile)
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			if (button != null)
@@ -111,7 +105,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			}
 		}
 
-		Button newSaveButton = _buttonSaveNewGame.GetComponent<Button>();
+		Button newSaveButton = _buttonCreateNewGameFile.GetComponent<Button>();
 		if (newSaveButton != null)
 		{
 			newSaveButton.interactable = false;
@@ -126,7 +120,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 	private void EnableButtons()
 	{
-		foreach (var buttonObj in _buttonsRewriteGame)
+		foreach (var buttonObj in _buttonsRewriteGameFile)
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			if (button != null)
@@ -135,7 +129,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			}
 		}
 
-		foreach (var buttonObj in _buttonsDeleteGame)
+		foreach (var buttonObj in _buttonsDeleteGameFile)
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			if (button != null)
@@ -144,7 +138,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			}
 		}
 
-		Button newSaveButton = _buttonSaveNewGame.GetComponent<Button>();
+		Button newSaveButton = _buttonCreateNewGameFile.GetComponent<Button>();
 		if (newSaveButton != null)
 		{
 			newSaveButton.interactable = true;
@@ -175,9 +169,9 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		bool hasEmptySlot = FindFirstEmptySlot() != -1;
 
-		if (_buttonSaveNewGame.activeSelf != hasEmptySlot)
+		if (_buttonCreateNewGameFile.activeSelf != hasEmptySlot)
 		{
-			_buttonSaveNewGame.SetActive(hasEmptySlot);
+			_buttonCreateNewGameFile.SetActive(hasEmptySlot);
 		}
 	}
 
@@ -193,18 +187,18 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 			if (!string.IsNullOrEmpty(currentSceneNameSystem)) 
 			{
-				_buttonsRewriteGame[i].SetActive(true);
-				_buttonsDeleteGame[i].SetActive(true);
+				_buttonsRewriteGameFile[i].SetActive(true);
+				_buttonsDeleteGameFile[i].SetActive(true);
+				//Debug.Log(_textComponentsGameFileDateAndTime[i]);
+				_textComponentsGameFileDateAndTime[i].text = currentDataAndTime;
+				_textComponentsGameFileSceneName[i].text = currentSceneNameUI;
 
-				_currentDateAndTimeTexts[i].text = currentDataAndTime;
-				_currentSceneNameUITexts[i].text = currentSceneNameUI;
-
-				_currentDateAndTimeTexts[i].gameObject.SetActive(true);
-				_currentSceneNameUITexts[i].gameObject.SetActive(true);
+				_textComponentsGameFileDateAndTime[i].gameObject.SetActive(true);
+				_textComponentsGameFileSceneName[i].gameObject.SetActive(true);
 
 				string imagePath = $"Sprites/Sprites_LoadingScreens/{currentSceneNameSystem}";
 				Sprite sprite = Resources.Load<Sprite>(imagePath);
-				Transform imageTransform = _buttonsRewriteGame[i].transform.Find("Level_Image");
+				Transform imageTransform = _viewModelPauseSubMenuSave.ImageSceneGameFile[i].GetComponent<Transform>();
 
 				if (imageTransform != null)
 				{
@@ -217,14 +211,16 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			}
 			else 
 			{
-				_buttonsRewriteGame[i].SetActive(false);
-				_buttonsDeleteGame[i].SetActive(false);
+				//_buttonsRewriteGameFile[i].SetActive(false);
+				//_buttonsDeleteGameFile[i].SetActive(false);
 
-				if (_currentDateAndTimeTexts[i] != null) _currentDateAndTimeTexts[i].gameObject.SetActive(false);
-				if (_currentSceneNameUITexts[i] != null) _currentSceneNameUITexts[i].gameObject.SetActive(false);
+				//_textComponentsGameFileDateAndTime[i].gameObject.SetActive(false);
+				//_textComponentsGameFileSceneName[i].gameObject.SetActive(false);
 
-				Transform imageTransform = _buttonsRewriteGame[i].transform.Find("Level_Image");
-				if (imageTransform != null) imageTransform.gameObject.SetActive(false);
+
+
+				//Transform imageTransform = _buttonsRewriteGameFile[i].transform.Find("Level_Image");
+				//if (imageTransform != null) imageTransform.gameObject.SetActive(false);
 			}
 		}
 	}
@@ -237,7 +233,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		RefreshButtonLabelsAndVisibility();
 
 		bool hasEmptySlot = FindFirstEmptySlot() != -1;
-		_buttonSaveNewGame.SetActive(hasEmptySlot);
+		_buttonCreateNewGameFile.SetActive(hasEmptySlot);
 	}
 
 	private void HideSaveSubMenuCanvas()
