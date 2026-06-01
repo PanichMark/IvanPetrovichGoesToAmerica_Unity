@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class LocalizationManager
@@ -9,7 +10,7 @@ public class LocalizationManager
 	private Dictionary<string, Dictionary<string, string>> _localizations = new Dictionary<string, Dictionary<string, string>>();
 
 	public LanguagesEnum CurrentLanguage { get; private set; }
-	public delegate void ChangeLanguageEvent();
+	public delegate void ChangeLanguageEvent(LocalizationManager localizationManager);
 	public event ChangeLanguageEvent OnLanguageChanged;
 
 	public LocalizationManager()
@@ -22,7 +23,7 @@ public class LocalizationManager
 	public void ChangeLanguage(LanguagesEnum language)
 	{
 		CurrentLanguage = language;
-		OnLanguageChanged?.Invoke();
+		OnLanguageChanged?.Invoke(this);
 	}
 
 	public string GetLocalizedString(string key)

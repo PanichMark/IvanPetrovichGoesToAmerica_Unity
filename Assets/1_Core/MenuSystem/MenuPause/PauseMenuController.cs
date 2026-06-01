@@ -13,9 +13,9 @@ public class PauseMenuController : MonoBehaviour
 	private GameObject _canvasPauseMenu;
 	private GameObject[] _buttonsPauseMenu;
 	private Button[] _buttonsComponentsPauseMenu;
-	private TextMeshProUGUI[] _textButtonsPauseMenu;
-	private TextMeshProUGUI _textCurrentMissionGoal;
-	private TextMeshProUGUI _textCurrentPlayerMoney;
+	private TextMeshProUGUI[] _textComponentsButtonsPauseMenu;
+	private TextMeshProUGUI _textComponentsCurrentMissionGoal;
+	private TextMeshProUGUI _textComponentsCurrentPlayerMoney;
 
 	public bool IsPauseConfirmMenuOpened { get; private set; }
 	private bool _isInitialized = false;
@@ -61,14 +61,14 @@ public class PauseMenuController : MonoBehaviour
 		_buttonsComponentsPauseMenu[4].onClick.AddListener(OpenTutorialSubMenu);
 		_buttonsComponentsPauseMenu[5].onClick.AddListener(OpenSettingsSubMenu);
 		_buttonsComponentsPauseMenu[6].onClick.AddListener(ExitToMainMenu);
-		_textButtonsPauseMenu = new TextMeshProUGUI[viewModelPauseMenu.TextButtonsPauseMenu.Length];
+		_textComponentsButtonsPauseMenu = new TextMeshProUGUI[viewModelPauseMenu.TextButtonsPauseMenu.Length];
 		for (int i = 0; i < viewModelPauseMenu.TextButtonsPauseMenu.Length; i++)
 		{
-			_textButtonsPauseMenu[i] = viewModelPauseMenu.TextButtonsPauseMenu[i].GetComponent<TextMeshProUGUI>();
+			_textComponentsButtonsPauseMenu[i] = viewModelPauseMenu.TextButtonsPauseMenu[i].GetComponent<TextMeshProUGUI>();
 		}
 
-		_textCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
-		_textCurrentPlayerMoney = viewModelPauseMenu.TextCurrentPlayerMoney.GetComponent<TextMeshProUGUI>();
+		_textComponentsCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
+		_textComponentsCurrentPlayerMoney = viewModelPauseMenu.TextCurrentPlayerMoney.GetComponent<TextMeshProUGUI>();
 
 		_gameController.OnPlayerLateDeath += HideDeathPauseMenuButtons;
 		_gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
@@ -236,8 +236,13 @@ public class PauseMenuController : MonoBehaviour
 		OnExitToMainMenu?.Invoke();
 	}
 
-	private void ChangeLanguage()
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
+		_localizationManager = localizationManager;
 
+		_textComponentsButtonsPauseMenu[0].text = _localizationManager.GetLocalizedString("");
+
+		_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("");
+		_textComponentsCurrentPlayerMoney.text = _localizationManager.GetLocalizedString("");
 	}
 }

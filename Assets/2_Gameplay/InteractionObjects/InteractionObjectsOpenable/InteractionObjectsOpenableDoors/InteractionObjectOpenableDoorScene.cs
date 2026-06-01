@@ -59,9 +59,9 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {_interactionHintMessageScene}?";
 	}
 
-	public override void ChangeLanguage()
+	public override void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = localizationManager;
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GoToScene");
 		_interactionHintMessageScene = _localizationManager.GetLocalizedString(_targetScene.ToString());
 		if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)

@@ -38,7 +38,7 @@ public class InteractionObjectPhonograph : MonoBehaviour, IInteractable
 		}
 	}
 
-	private void ChangeLanguage()
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		if (_isTurnedOn)
 		{

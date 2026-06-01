@@ -28,13 +28,12 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable
 	private void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		ChangeLanguage();
+		ChangeLanguage(_localizationManager);
 
-		if (_localizationManager != null)
-			_localizationManager.OnLanguageChanged += ChangeLanguage;
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
-	private void ChangeLanguage()
+	private void ChangeLanguage(LocalizationManager	localizationManager)
 	{
 		if (_secondFloorButton)
 		{

@@ -58,7 +58,7 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable
 		Interact();
 	}
 
-	public void ChangeLanguage()
+	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		if (_isLightTurnedOn)

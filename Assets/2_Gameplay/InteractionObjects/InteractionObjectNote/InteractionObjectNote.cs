@@ -72,7 +72,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_menuManager.OnClosePauseMenu += ShowNoteCanvas;
 	}
 
-	public void ChangeLanguage()
+	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		if (_notePosition.IsThereText)
 		{

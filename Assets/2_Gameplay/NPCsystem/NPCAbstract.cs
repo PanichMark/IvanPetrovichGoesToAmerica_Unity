@@ -71,9 +71,9 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		Interact();
 	}
 
-	private void ChangeLangauge()
+	private void ChangeLangauge(LocalizationManager localizationManager)
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = localizationManager;
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Talk");
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
 	}

@@ -38,9 +38,10 @@ public class BootstrapSubProcessMissionsSystem
 		yield break;
 	}
 
-	public void ChangeLanguage()
+	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		_localizationManager = _bootstrap.LocalizationManager;
+		_localizationManager = localizationManager;
+	
 		_missionsManager.ChangeLanguage(_localizationManager);
 	}
 }

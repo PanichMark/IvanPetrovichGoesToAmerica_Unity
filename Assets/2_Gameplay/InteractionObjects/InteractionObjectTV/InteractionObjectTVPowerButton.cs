@@ -63,7 +63,7 @@ public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 		Interact();
 	}
 
-	private void ChangeLanguage()
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		if (_isTVturnedOn)
 		{

@@ -262,6 +262,7 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessSceneSystem = new BootstrapSubProcessSceneSystem(
 			this, 
 			_gameController,
+			LocalizationManager,
 			_canvasLoadingScreen);
 
 		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.InitializeSceneSystem());
@@ -385,9 +386,7 @@ public class Bootstrap : MonoBehaviour
 	public void ChangeLanguage(LanguagesEnum newLanguage)
 	{
 		LocalizationManager.ChangeLanguage(newLanguage);
-		_bootstrapSubProcessSceneSystem.GameSceneManager.ChangeLanguage(LocalizationManager);
-		_bootstrapSubProcessInteractionSystem.InteractionController.ChangeLanguage(LocalizationManager);
-		_bootstrapSubProcessMissionsSystem.ChangeLanguage();
+
 		ServiceLocator.RemoveService("LocalizationManager");
 		ServiceLocator.Register("LocalizationManager", LocalizationManager);
 	}

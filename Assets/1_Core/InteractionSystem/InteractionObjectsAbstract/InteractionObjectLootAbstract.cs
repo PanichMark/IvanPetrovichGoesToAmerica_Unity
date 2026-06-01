@@ -53,9 +53,9 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		Destroy(gameObject);
 	}
 
-	public void ChangeLanguage()
+	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = localizationManager;
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot");
 	}
 

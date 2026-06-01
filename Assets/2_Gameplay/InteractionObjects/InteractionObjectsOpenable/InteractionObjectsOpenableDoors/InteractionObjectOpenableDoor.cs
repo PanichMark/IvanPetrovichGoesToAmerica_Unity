@@ -100,9 +100,9 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 		Interact();
 	}
 
-	public virtual void ChangeLanguage()
+	public virtual void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = localizationManager;
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
 
 		if (_interactionObjectKeyData != null)

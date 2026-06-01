@@ -76,9 +76,9 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable
 		Interact();
 	}
 
-	private void ChangeLanguage()
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = localizationManager;
 
 		if (_isThisTurnOnButton)
 		{

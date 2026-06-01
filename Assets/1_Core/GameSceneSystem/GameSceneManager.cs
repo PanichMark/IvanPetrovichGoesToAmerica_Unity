@@ -26,7 +26,9 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
 
-	public void Initialize(GameController gameController,
+	public void Initialize(
+		GameController gameController,
+		LocalizationManager localizationManager,
 		GameObject canvasLoadingScreen,
 		GameObject textLoadingReady,
 		GameObject textSceneName,
@@ -35,6 +37,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		Image imageLoadingScreen)
 	{
 		_gameController = gameController;
+		_localizationManager = localizationManager;
 		_textLoadingReady = textLoadingReady;
 		_textComponentLoadingReady = _textLoadingReady.GetComponent<TMP_Text>();
 		_canvasLoadingScreen = canvasLoadingScreen;	
@@ -45,14 +48,15 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		_sliderLoadingStatus = sliderLoadingStatus;
 		_sliderComponentLoadingStatus = _sliderLoadingStatus.GetComponent<Slider>();
 		_imageLoadingScreen = imageLoadingScreen;
-
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		Debug.Log("GameSceneManager Initialized");
 	}
 
-	public void ChangeLanguage(LocalizationManager localizationManager)
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
 	}
+
 	public IEnumerator LoadGameplayScene(GameScenesEnum scene)
 	{
 		_gameController.GameplaySceneLoadBegan();

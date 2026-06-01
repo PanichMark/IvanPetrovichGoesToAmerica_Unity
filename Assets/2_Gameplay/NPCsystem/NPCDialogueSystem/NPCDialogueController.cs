@@ -81,9 +81,9 @@ public class NPCDialogueController : MonoBehaviour
 		}
 	}
 
-	private void ChangeLanguage()
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = localizationManager;
 		LoadDialogueFromFiles();
 	}
 

@@ -98,7 +98,7 @@ public class InteractionController : MonoBehaviour
 
 		_menuManager.OnOpenInteractionHUD += ShowCanvasHUDInteraction;
 		_menuManager.OnCloseInteractionHUD += HideCanvasHUDInteraction;
-
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_gameController.OnPlayerEarlyDeath += ChangeInteractionRange;
 		_gameController.OnPlayerRevive += ChangeInteractionRange;
 		_menuManager.OnOpenAnyMenu += ChangeInteractionRange;

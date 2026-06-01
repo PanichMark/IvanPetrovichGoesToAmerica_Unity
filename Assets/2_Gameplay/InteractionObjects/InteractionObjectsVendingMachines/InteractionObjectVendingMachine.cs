@@ -43,7 +43,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 
 	}
 
-	public void ChangeLangauge()
+	public void ChangeLangauge(LocalizationManager localizationManager)
 	{
 		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
 		_moneyForUI = _localizationManager.GetLocalizedString(_moneyType);

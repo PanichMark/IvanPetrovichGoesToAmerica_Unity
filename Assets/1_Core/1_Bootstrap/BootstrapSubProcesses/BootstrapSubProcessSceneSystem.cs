@@ -9,6 +9,7 @@ public class BootstrapSubProcessSceneSystem
 	private GameObject _gameObjectBootstrapGameSceneSystem;
 	private Bootstrap _bootstrap;
 	private GameController _gameController;
+	private LocalizationManager _localizationManager;
 	public GameSceneManager GameSceneManager { get; private set; }
 
 	private GameObject _canvasLoadingScreen;
@@ -19,11 +20,12 @@ public class BootstrapSubProcessSceneSystem
 	private GameObject _sliderLoadingStatus;
 	private Image _imageLoadingScreen;
 
-	public BootstrapSubProcessSceneSystem(Bootstrap bootstrap, GameController gameController, GameObject canvasLoadingScreen)
+	public BootstrapSubProcessSceneSystem(Bootstrap bootstrap, GameController gameController, LocalizationManager localizationManager, GameObject canvasLoadingScreen)
 	{
 		_bootstrap = bootstrap;
 		_gameController = gameController;
-		_canvasLoadingScreen = canvasLoadingScreen;
+		_canvasLoadingScreen = canvasLoadingScreen;	
+		_localizationManager = localizationManager;
 	}
 
 	public IEnumerator InitializeSceneSystem()
@@ -38,7 +40,7 @@ public class BootstrapSubProcessSceneSystem
 		_imageLoadingScreen = _canvasLoadingScreen.transform.Find("ImageScene").GetComponent<Image>();
 
 
-		GameSceneManager.Initialize(_gameController, _canvasLoadingScreen, _textLoadingReady, _textSceneName, _textSceneDescription, _sliderLoadingStatus, _imageLoadingScreen);
+		GameSceneManager.Initialize(_gameController, _localizationManager, _canvasLoadingScreen, _textLoadingReady, _textSceneName, _textSceneDescription, _sliderLoadingStatus, _imageLoadingScreen);
 
 		ServiceLocator.Register("GameSceneManager", GameSceneManager);
 

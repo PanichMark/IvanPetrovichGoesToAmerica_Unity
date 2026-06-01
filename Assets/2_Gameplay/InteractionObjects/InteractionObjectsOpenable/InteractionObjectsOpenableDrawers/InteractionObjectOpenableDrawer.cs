@@ -38,9 +38,9 @@ public class InteractionObjectOpenableDrawer : InteractionObjectOpenableAbstract
 
 	}
 
-	public void ChangeLanguage()
+	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = localizationManager;
 
 		if (!IsObjectOpened)
 		{

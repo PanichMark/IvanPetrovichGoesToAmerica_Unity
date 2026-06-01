@@ -41,9 +41,9 @@ public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLo
 		}
 	}
 
-	private void ChangeLanguage()
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = localizationManager;
 
 		if (_interactionObjectConsumableTypes == InteractionObjectConsumableTypes.Food)
 		{

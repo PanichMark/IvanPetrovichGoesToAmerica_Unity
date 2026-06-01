@@ -58,9 +58,9 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseElectronicLockPuzzle;
 	}
 
-	public void ChangeLanguage()
+	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = localizationManager;
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Hack");
 
