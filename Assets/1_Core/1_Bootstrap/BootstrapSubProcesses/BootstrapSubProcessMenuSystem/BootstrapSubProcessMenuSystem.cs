@@ -234,6 +234,7 @@ public class BootstrapSubProcessMenuSystem
 			ViewModelPauseMenu);
 
 		_pauseSubMenuSaveController.Initialize(
+			_localizationManager,
 			_saveLoadController,
 			PauseMenuController,
 			_canvasPauseSubMenuSave,
