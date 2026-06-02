@@ -19,6 +19,9 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	private GameObject _sliderMouseSensitivityX;
 	private Slider _sliderComponentMouseSensitivityX;
+	private float _currentValueMaouseSensitivityX;
+	private const float _MIN_VALUE_MOUSE_SENSITIVITY_X = 0.5f;
+	private const float _MAX_VALUE_MOUSE_SENSITIVITY_X = 2.5f;
 	private GameObject _textNumberSliderMouseSensitivityX;
 	private TextMeshProUGUI _textComponentNumberSliderMouseSensitivityX;
 	private GameObject _textSliderMouseSensitivityX;
@@ -26,10 +29,17 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	private GameObject _sliderMouseSensitivityY;
 	private Slider _sliderComponentMouseSensitivityY;
+	private float _currentValueMaouseSensitivityY;
+	private const float _MIN_VALUE_MOUSE_SENSITIVITY_Y = 0.5f;
+	private const float _MAX_VALUE_MOUSE_SENSITIVITY_Y = 2.5f;
 	private GameObject _textNumberSliderMouseSensitivityY;
 	private TextMeshProUGUI _textComponentNumberSliderMouseSensitivityY;
 	private GameObject _textSliderMouseSensitivityY;
 	private TextMeshProUGUI _textComponentSliderMouseSensitivityY;
+
+	public delegate void MouseSensitivityHandle(float newMouseSensitivity, float MINmouseSensitivity, float MAXmouseSensitivity);
+	public event MouseSensitivityHandle OnMouseSensitivityXchanged;
+	public event MouseSensitivityHandle OnMouseSensitivityYchanged;
 
 	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsControlsData;
@@ -37,6 +47,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	public delegate void ResetPlayerPrefsSettingsEventHandler();
 	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsControlsData;
 
+	private const float _STEP_VALUE_MOUSE_SENSITIVITY = 0.1f;
 	private char _lastValidChar;
 
 	private readonly char[][] _layoutMap = new char[][]
@@ -62,9 +73,23 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		_inputDevice = inputDevice;
 		_pauseMenuController = pauseMenuController;
 
+		_sliderMouseSensitivityX = viewModelPauseSubMenuSettings.SliderMouseSensitivityX;
+		_sliderComponentMouseSensitivityX = viewModelPauseSubMenuSettings.SliderMouseSensitivityX.GetComponent<Slider>();
+		_sliderComponentMouseSensitivityX.minValue = _MIN_VALUE_MOUSE_SENSITIVITY_X;
+		_sliderComponentMouseSensitivityX.maxValue = _MAX_VALUE_MOUSE_SENSITIVITY_X;
+		_sliderComponentMouseSensitivityX.onValueChanged.AddListener(SetMouseSensitivityX);
+		_textNumberSliderMouseSensitivityX = viewModelPauseSubMenuSettings.NumberSliderMouseSensitivityX;
+		_textComponentNumberSliderMouseSensitivityX = viewModelPauseSubMenuSettings.NumberSliderMouseSensitivityX.GetComponent<TextMeshProUGUI>();
 		_textSliderMouseSensitivityX = viewModelPauseSubMenuSettings.TextSliderMouseSensitivityX;
 		_textComponentSliderMouseSensitivityX = viewModelPauseSubMenuSettings.TextSliderMouseSensitivityX.GetComponent<TextMeshProUGUI>();
 
+		_sliderMouseSensitivityY = viewModelPauseSubMenuSettings.SliderMouseSensitivityY;
+		_sliderComponentMouseSensitivityY = viewModelPauseSubMenuSettings.SliderMouseSensitivityY.GetComponent<Slider>();
+		_sliderComponentMouseSensitivityY.minValue = _MIN_VALUE_MOUSE_SENSITIVITY_Y;
+		_sliderComponentMouseSensitivityY.maxValue = _MAX_VALUE_MOUSE_SENSITIVITY_Y;
+		_sliderComponentMouseSensitivityY.onValueChanged.AddListener(SetMouseSensitivityY);
+		_textNumberSliderMouseSensitivityY = viewModelPauseSubMenuSettings.NumberSliderMouseSensitivityY;
+		_textComponentNumberSliderMouseSensitivityY = viewModelPauseSubMenuSettings.NumberSliderMouseSensitivityY.GetComponent<TextMeshProUGUI>();
 		_textSliderMouseSensitivityY = viewModelPauseSubMenuSettings.TextSliderMouseSensitivityY;
 		_textComponentSliderMouseSensitivityY = viewModelPauseSubMenuSettings.TextSliderMouseSensitivityY.GetComponent<TextMeshProUGUI>();
 
@@ -195,6 +220,26 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		{
 			field.text = field.text[field.text.Length - 1].ToString();
 		}
+	}
+
+	public void SetMouseSensitivityX(float newMouseSensitivityX)
+	{
+		float roundedValue = Mathf.Round(newMouseSensitivityX / _STEP_VALUE_MOUSE_SENSITIVITY) * _STEP_VALUE_MOUSE_SENSITIVITY;
+		_currentValueMaouseSensitivityX = roundedValue;
+
+		_textComponentNumberSliderMouseSensitivityX.text = _currentValueMaouseSensitivityX.ToString("F1");
+
+		OnMouseSensitivityXchanged?.Invoke(_currentValueMaouseSensitivityX, _MIN_VALUE_MOUSE_SENSITIVITY_X, _MAX_VALUE_MOUSE_SENSITIVITY_X);
+	}
+
+	public void SetMouseSensitivityY(float newMouseSensitivityY)
+	{
+		float roundedValue = Mathf.Round(newMouseSensitivityY / _STEP_VALUE_MOUSE_SENSITIVITY) * _STEP_VALUE_MOUSE_SENSITIVITY;
+		_currentValueMaouseSensitivityY = roundedValue;
+
+		_textComponentNumberSliderMouseSensitivityY.text = _currentValueMaouseSensitivityY.ToString("F1");
+
+		OnMouseSensitivityYchanged?.Invoke(_currentValueMaouseSensitivityY, _MIN_VALUE_MOUSE_SENSITIVITY_Y, _MAX_VALUE_MOUSE_SENSITIVITY_Y);
 	}
 
 	public void SaveSettingsControls()
