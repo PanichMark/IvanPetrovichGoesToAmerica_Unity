@@ -96,10 +96,10 @@ Scene_1_Street,Станция «Ресентиментарная»,Resentymentar
 UI_LoadingScreen_LoadingIsReady,Нажмите любую клавишу,Press any key
 Money_Rubles,Рублей,Rubles
 Money_Dollars,Фиатных долларов,Fiat dollars
-UI_Menu_DialogueMenu_Sweeper_Branch1_Yes,Хорошо сейчас все уберу...,Ok I'll help you with that...
-UI_Menu_DialogueMenu_Sweeper_Branch1_No,Сам убирай свои листья!,You know what? Do it youtself
-UI_Menu_DialogueMenu_Sweeper_Branch2_Yes,Ладно так уж и ыть помогу тебе,On the other hand ok I'll help you
-UI_Menu_DialogueMenu_Sweeper_Branch2_No,Ну уж нет! к черту тебя и твои листься,No way! Go to hell with you leaves!
+UI_DialogueAnswer_Sweeper_Branch1_Yes,Хорошо сейчас все уберу...,Ok I'll help you with that...
+UI_DialogueAnswer_Sweeper_Branch1_No,Сам убирай свои листья!,You know what? Do it youtself
+UI_DialogueAnswer_Sweeper_Branch2_Yes,Ладно так уж и ыть помогу тебе,On the other hand ok I'll help you
+UI_DialogueAnswer_Sweeper_Branch2_No,Ну уж нет! к черту тебя и твои листься,No way! Go to hell with you leaves!
 IvanPetrovich,Иван Петрович,Ivan Petrovich
 UI_Menu_PauseMenu_ButtonResume,Продолжить,Resume
 UI_Menu_PauseMenu_ButtonSave,Сохранить игру,Save game
@@ -117,3 +117,16 @@ UI_Menu_PauseSUbMenuSave_ButtonDeleteGameFile,Удалить игру,Delete gam
 UI_Menu_PauseSUbMenuSave_TextPauseSubMenuLoad,Меню загрузки,Load menu
 UI_Menu_PauseSUbMenuSave_ButtonClosePauseSubMenuLoad,Закрыть меню загрузки,Close load menu
 UI_Menu_PauseSUbMenuSave_ButtonClosePauseSubMenuTutorial,Закрыть меню туториала,Close tutorial menu
+UI_Menu_PauseConfirmActionMenu_ButtonConfirmAction,Подтвердить,Confirm
+UI_Menu_PauseConfirmActionMenu_ButtonCancelAction,Отменить,Cancel
+UI_Menu_PauseConfirmActionMenu_TextConfirmCreateNewGameFile,Сохранить новую игру,Save new game
+UI_Menu_PauseConfirmActionMenu_TextConfirmRewriteGameFile,Перезаписать игру в слоте,Rewrite game in slot
+UI_Menu_PauseConfirmActionMenu_TextConfirmDeleteGameFile,Удалить игру в слоте,Delete game in slot
+UI_Menu_PauseConfirmActionMenu_TextConfirmLoadGameFile,Зарузить игру в слоте,Load game in slot
+UI_Menu_PauseConfirmActionMenu_TextConfirmExitToMainMenu,Выйти в главное меню? (Данные не сохранятся),Exit to main menu? (Unsaved progress will be lost)
+UI_Menu_PauseConfirmActionMenu_TextSettingsGeneral,Общие настройки,General settings
+UI_Menu_PauseConfirmActionMenu_TextSettingsControls,Настройки управления,Controls settings
+UI_Menu_PauseConfirmActionMenu_TextSettingsGraphics,Настройки графики,Graphics settings
+UI_Menu_PauseConfirmActionMenu_TextSettingsAudio,Аудионастройки,Audio settings
+UI_Menu_PauseConfirmActionMenu_TextSaveSettings,Сохранить,Save
+UI_Menu_PauseConfirmActionMenu_TextResetSettings,Сбросить,Reset
