@@ -3,19 +3,14 @@ using UnityEngine.UI;
 
 public class PauseSubMenuAppearanceController : MonoBehaviour
 {
-	private IInputDevice _inputDevice;
-	private MenuManager _menuManager;
-
 	private bool _isPauseSubMenuAppearanceOpened;
 	private GameObject _canvasPauseSubMenuAppearance;
 	private PauseMenuController _pauseMenuController;
 	private GameObject _buttonClosePauseSubMenuAppearance;
-	public void Initialize(IInputDevice inputDevice, MenuManager menuManager, PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuAppearance, GameObject buttonClosePauseSubMenuAppearance)
+	public void Initialize(PauseMenuController pauseMenuController, GameObject canvasPauseSubMenuAppearance, ViewModelPauseSubMenuAppearance viewModelPauseSubMenuAppearance)
 	{
-		_buttonClosePauseSubMenuAppearance = buttonClosePauseSubMenuAppearance;
+		_buttonClosePauseSubMenuAppearance = viewModelPauseSubMenuAppearance.ButtonClosePauseSubMenuAppearance;
 		_pauseMenuController = pauseMenuController;
-		_menuManager = menuManager;
-		_inputDevice = inputDevice;
 		_canvasPauseSubMenuAppearance = canvasPauseSubMenuAppearance;
 		_pauseMenuController.OnOpenAppearanceSubMenu += ShowAppearanceSubMenuCanvas;
 		_pauseMenuController.OnCloseAnyPauseSubMenu += HideAppearanceSubMenuCanvas;

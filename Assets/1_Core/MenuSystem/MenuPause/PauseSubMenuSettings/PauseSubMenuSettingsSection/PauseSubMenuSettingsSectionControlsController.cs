@@ -33,16 +33,16 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	public void Initialize(
 		IInputDevice inputDevice,
 		PauseMenuController pauseMenuController,
-		GameObject[] KeyRebinds)
+		ViewModelPauseSubMenuSettingsSectionControls viewModelPauseSubMenuSettings)
 	{
 		_inputDevice = inputDevice;
 		_pauseMenuController = pauseMenuController;
 
-		_KeyRebinds = new TMP_InputField[KeyRebinds.Length];
+		_KeyRebinds = new TMP_InputField[viewModelPauseSubMenuSettings.InputFieldsKeyRebinds.Length];
 
 		for (int i = 0; i < _KeyRebinds.Length; i++)
 		{
-			_KeyRebinds[i] = KeyRebinds[i].GetComponent<TMP_InputField>();
+			_KeyRebinds[i] = viewModelPauseSubMenuSettings.InputFieldsKeyRebinds[i].GetComponent<TMP_InputField>();
 		}
 
 		var bindings = _inputDevice.GetCurrentKeyBindings().ToList();

@@ -170,7 +170,7 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		_textSceneDescription.SetActive(false);
 		_textLoadingReady.SetActive(false);
 
-		Sprite spriteToUse = Resources.Load<Sprite>("Sprites/Sprites_LoadingScreens/Scene0_MainMenu");
+		Sprite spriteToUse = Resources.Load<Sprite>("Sprites/Sprites_LoadingScreens/Scene_0_MainMenu");
 		_imageLoadingScreen.sprite = spriteToUse;
 
 		if (SceneManager.sceneCount > 1)

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+
 public class HUDhealthAndManaController : MonoBehaviour
 {
     private MenuManager _menuManager;
@@ -9,13 +10,18 @@ public class HUDhealthAndManaController : MonoBehaviour
     private GameObject _healthBar;
 	private GameObject _manaBar;
 
-	public void Initialize (GameController gameController, GameSceneManager gameSceneManager, MenuManager menuManager, GameObject canvasHUDPlayerResources, GameObject healthBar, GameObject manaBar)
+	public void Initialize (
+		GameController gameController,
+		GameSceneManager gameSceneManager,
+		MenuManager menuManager,
+		GameObject canvasHUDPlayerResources,
+		ViewModelHUDHealthAndMana viewModelHUDHealthAndMana)
     {
         _gameSceneManager = gameSceneManager;
         _menuManager = menuManager;
         _canvasHUDhealthAndMana = canvasHUDPlayerResources;
-        _healthBar = healthBar;
-        _manaBar = manaBar;
+        _healthBar = viewModelHUDHealthAndMana.HealthBar;
+        _manaBar = viewModelHUDHealthAndMana.ManaBar;
 
 		HideHealthBar();
 		HideManaBar();

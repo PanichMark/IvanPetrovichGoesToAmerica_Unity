@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class MainMenuReadNewsController : MonoBehaviour
 {
-	private IInputDevice _inputDevice;
 	private Button _buttonCloseMainMenuReadNews;
 	private GameObject _canvasMainMenuReadNews;
 	private Button _buttonYouTube;
@@ -18,17 +17,13 @@ public class MainMenuReadNewsController : MonoBehaviour
 	public bool IsMainMenuReadNewsOpened {  get; private set; }
 
 	public void Initialize(
-		IInputDevice inputDevice,
 		GameObject canvasMainMenuReadNews,
-		Button buttonCloseMainMenuReadNews,
-		Button buttonYouTube,
-		Button buttonGitHub)
+		ViewModelMainMenuReadNews viewModelMainMenuReadNews)
 	{
-		_inputDevice = inputDevice;
 		_canvasMainMenuReadNews = canvasMainMenuReadNews;
-		_buttonCloseMainMenuReadNews = buttonCloseMainMenuReadNews;
-		_buttonYouTube = buttonYouTube;
-		_buttonGitHub = buttonGitHub;
+		_buttonCloseMainMenuReadNews = viewModelMainMenuReadNews.ButtonCloseMainMenuReadNews;
+		_buttonYouTube = viewModelMainMenuReadNews.ButtonYouTube;
+		_buttonGitHub = viewModelMainMenuReadNews.ButtonGitHub;
 		
 		_buttonCloseMainMenuReadNews.onClick.AddListener(() => HideCanvasMainMenuReadNews());
 

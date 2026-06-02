@@ -52,44 +52,30 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	public void Initialize(
 		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuSettings,
-		GameObject subSettingsSectionGeneral,
-		GameObject imageBackgroundSectionGeneral,
-		GameObject buttonSubSettingsSectionGeneral,
-		GameObject subSettingsSectionControls,
-		GameObject imageBackgroundSectionControls,
-		GameObject buttonSubSettingsSectionControls,
-		GameObject subSettingsSectionGraphics,
-		GameObject imageBackgroundSectionGraphics,
-		GameObject buttonSubSettingsSectionGraphics,
-		GameObject subSettingsSectionAudio,
-		GameObject imageBackgroundSectionAudio,
-		GameObject buttonSubSettingsSectionAudio,
-		GameObject buttonSaveSettings,
-		GameObject buttonResetSettings,
-		GameObject buttonClosePauseSubMenuSettings)
+		ViewModelPauseSubMenuSettings viewModelPauseSubMenuSettings)
 	{
 		_pauseMenuController = pauseMenuController;
 		_canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
 
-		_subSettingsSectionGeneral = subSettingsSectionGeneral;
-		_imageBackgroundSectionGeneral = imageBackgroundSectionGeneral;
-		_buttonSubSettingsSectionGeneral = buttonSubSettingsSectionGeneral;
+		_subSettingsSectionGeneral = viewModelPauseSubMenuSettings.SubSettingsSectionGeneral;
+		_imageBackgroundSectionGeneral = viewModelPauseSubMenuSettings.ImageBackgroundSectionGeneral;
+		_buttonSubSettingsSectionGeneral = viewModelPauseSubMenuSettings.ButtonSubSettingsSectionGeneral;
 
-		_subSettingsSectionControls = subSettingsSectionControls;
-		_imageBackgroundSectionControls = imageBackgroundSectionControls;
-		_buttonSubSettingsSectionControls = buttonSubSettingsSectionControls;
+		_subSettingsSectionControls = viewModelPauseSubMenuSettings.SubSettingsSectionControls;
+		_imageBackgroundSectionControls = viewModelPauseSubMenuSettings.ImageBackgroundSectionControls;
+		_buttonSubSettingsSectionControls = viewModelPauseSubMenuSettings.ButtonSubSettingsSectionControls;
 
-		_subSettingsSectionGraphics = subSettingsSectionGraphics;
-		_imageBackgroundSectionGraphics = imageBackgroundSectionGraphics;
-		_buttonSubSettingsSectionGraphics = buttonSubSettingsSectionGraphics;
+		_subSettingsSectionGraphics = viewModelPauseSubMenuSettings.SubSettingsSectionGraphics;
+		_imageBackgroundSectionGraphics = viewModelPauseSubMenuSettings.ImageBackgroundSectionGraphics;
+		_buttonSubSettingsSectionGraphics = viewModelPauseSubMenuSettings.ButtonSubSettingsSectionGraphics;
 
-		_subSettingsSectionAudio = subSettingsSectionAudio;
-		_imageBackgroundSectionAudio = imageBackgroundSectionAudio;
-		_buttonSubSettingsSectionAudio = buttonSubSettingsSectionAudio;
+		_subSettingsSectionAudio = viewModelPauseSubMenuSettings.SubSettingsSectionAudio;
+		_imageBackgroundSectionAudio = viewModelPauseSubMenuSettings.ImageBackgroundSectionAudio;
+		_buttonSubSettingsSectionAudio = viewModelPauseSubMenuSettings.ButtonSubSettingsSectionAudio;
 
-		_buttonSaveSettings = buttonSaveSettings;
-		_buttonResetSettings = buttonResetSettings;
-		_buttonClosePauseSubMenuSettings = buttonClosePauseSubMenuSettings;
+		_buttonSaveSettings = viewModelPauseSubMenuSettings.ButtonSaveGameSettings;
+		_buttonResetSettings = viewModelPauseSubMenuSettings.ButtonResetGameSettings;
+		_buttonClosePauseSubMenuSettings = viewModelPauseSubMenuSettings.ButtonClosePauseSubMenuSettings;
 
 		_buttonComponentSubSettingsSectionGeneral = _buttonSubSettingsSectionGeneral.GetComponent<Button>();
 		_buttonComponentSubSettingsSectionControls = _buttonSubSettingsSectionControls.GetComponent<Button>();

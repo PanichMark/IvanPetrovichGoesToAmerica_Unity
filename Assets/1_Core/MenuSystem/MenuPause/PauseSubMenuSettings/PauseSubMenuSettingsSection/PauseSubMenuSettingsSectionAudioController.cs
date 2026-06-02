@@ -20,17 +20,17 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 		Bootstrap bootstrap,
 		LocalizationManager localizationManager,
 		PauseMenuController pauseMenuController,
-		GameObject[] buttonsChangeLanguage)
+		ViewModelPauseSubMenuSettingsSectionAudio viewModelPauseSubMenuSettings)
 	{
 		_bootstrap = bootstrap;
 		_localizationManager = localizationManager;
 		_pauseMenuController = pauseMenuController;
 
-		_buttonsChangeLanguage = new Button[buttonsChangeLanguage.Length];
+		_buttonsChangeLanguage = new Button[viewModelPauseSubMenuSettings.ButtonsChangeLanguage.Length];
 
 		for (int i = 0; i < _buttonsChangeLanguage.Length; i++)
 		{
-			_buttonsChangeLanguage[i] = buttonsChangeLanguage[i].GetComponent<Button>();
+			_buttonsChangeLanguage[i] = viewModelPauseSubMenuSettings.ButtonsChangeLanguage[i].GetComponent<Button>();
 		}
 
 		_buttonsChangeLanguage[0].onClick.AddListener(() => ChangeLanguage(LanguagesEnum.Russian));

@@ -11,7 +11,6 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	private IInputDevice _inputDevice;
 	public string KeybindingsPrefix  { get; private set; } = "KeyBinding_";
 	
-	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	private PauseSubMenuSettingsSectionControlsController _pauseSubMenuSettingsSectionControlsController;
 	private PauseSubMenuSettingsSectionGraphicsController _pauseSubMenuSettingsSectionGraphicsController;
@@ -20,7 +19,6 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	public void Initialize(
 		Bootstrap bootstrap,
 		IInputDevice inputDevice,
-		PauseSubMenuSettingsController pauseSubMenuSettingsController,
 		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
 		PauseSubMenuSettingsSectionControlsController pauseSubMenuSettingsSectionControlsController,
 		PauseSubMenuSettingsSectionGraphicsController pauseSubMenuSettingsSectionGraphicsController,
@@ -28,7 +26,6 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	{
 		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
-		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
 		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
 		_pauseSubMenuSettingsSectionControlsController = pauseSubMenuSettingsSectionControlsController;
 		_pauseSubMenuSettingsSectionGraphicsController = pauseSubMenuSettingsSectionGraphicsController;

@@ -37,21 +37,19 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		PauseSubMenuSettingsSectionGraphicsController pauseSubMenuSettingsSectionGraphicsController,
 		PauseSubMenuSettingsSectionAudioController pauseSubMenuSettingsSectionAudioController,
 		GameObject canvasPauseSubMenuConfirm,
-		GameObject buttonAccept,
-		GameObject buttonCancel,
-		GameObject textShowConfirmationMessage)
+		ViewModelPauseMenuConfirmAction viewModelPauseMenuConfirmAction)
 	{
 		_gameSceneManager = gameSceneManager;
 		_pauseMenuController = pauseMenuController;
 		_menuManager = menuManager;
 		_canvasPauseSubMenuConfirm = canvasPauseSubMenuConfirm;
-		_buttonConfirm = buttonAccept;
-		_buttonCancel = buttonCancel;
+		_buttonConfirm = viewModelPauseMenuConfirmAction.ButtonConfirmAction;
+		_buttonCancel = viewModelPauseMenuConfirmAction.ButtonCancelAction;
 		_saveLoadController = saveLoadController;
 		_saveController = saveController;
 		_loadController = loadController;
-		_textShowConfirmationMessage = textShowConfirmationMessage;
-		_confirmationTextComponent = textShowConfirmationMessage.GetComponent<Text>();
+		_textShowConfirmationMessage = viewModelPauseMenuConfirmAction.TextConfirmActionMessage;
+		_confirmationTextComponent = viewModelPauseMenuConfirmAction.TextConfirmActionMessage.GetComponent<Text>();
 		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
 		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
 		_pauseSubMenuSettingsSectionControlsController = pauseSubMenuSettingsSectionControlsController;

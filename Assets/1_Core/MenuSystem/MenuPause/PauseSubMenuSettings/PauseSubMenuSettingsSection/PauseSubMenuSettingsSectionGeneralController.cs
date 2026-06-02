@@ -35,15 +35,13 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	public void Initialize(
 		GameController  gameController,
 		PauseMenuController pauseMenuController,
-		GameObject fovDisplayText,
-		GameObject FOVSlider,
-		GameObject[] FPSbuttons)
+		ViewModelPauseSubMenuSettingsSectionGeneral viewModelPauseSubMenuSettings)
 	{
 		_gameController = gameController;
 		_pauseMenuController = pauseMenuController;
-		_fovDisplayText = fovDisplayText.GetComponent<TextMeshProUGUI>();
+		_fovDisplayText = viewModelPauseSubMenuSettings.NumberFOV.GetComponent<TextMeshProUGUI>();
 
-		_sliderFOVgameObject = FOVSlider;
+		_sliderFOVgameObject = viewModelPauseSubMenuSettings.SliderChangeFOV;
 
 		_sliderFOV = _sliderFOVgameObject.GetComponent<Slider>();
 
@@ -51,7 +49,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_sliderFOV.maxValue = _MAX_FOV_VALUE;
 		_sliderFOV.onValueChanged.AddListener(SetFOV);
 
-		_FPSbuttons = new Button[FPSbuttons.Length];
+		_FPSbuttons = new Button[viewModelPauseSubMenuSettings.ButtonsChangeFPS.Length];
 
 		_gameController.OnOpenMainMenu += () =>
 		{
@@ -60,7 +58,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		for (int i = 0; i < _FPSbuttons.Length; i++)
 		{
-			_FPSbuttons[i] = FPSbuttons[i].GetComponent<Button>();
+			_FPSbuttons[i] = viewModelPauseSubMenuSettings.ButtonsChangeFPS[i].GetComponent<Button>();
 		}
 
 		ApplyFPSbuttonColors(_currentFrameRateLimit);
