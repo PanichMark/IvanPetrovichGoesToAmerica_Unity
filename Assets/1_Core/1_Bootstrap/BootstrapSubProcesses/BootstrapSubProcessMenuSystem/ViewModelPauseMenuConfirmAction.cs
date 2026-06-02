@@ -2,14 +2,23 @@
 
 public class ViewModelPauseMenuConfirmAction
 {
+	public GameObject TextActionMessage;
+
 	public GameObject ButtonConfirmAction;
+	public GameObject TextButtonConfirmAction;
+
 	public GameObject ButtonCancelAction;
-	public GameObject TextConfirmActionMessage;
+	public GameObject TextButtonCancelAction;
+
 
 	public ViewModelPauseMenuConfirmAction(Bootstrap bootstrap, GameObject canvas)
 	{
+		TextActionMessage = bootstrap.FindDeepGameObject(canvas, "TextActionMessage");
+
 		ButtonConfirmAction = bootstrap.FindDeepGameObject(canvas, "ButtonConfirmAction");
+		TextButtonConfirmAction = bootstrap.FindDeepGameObject(canvas, "TextButtonConfirmAction");
+
 		ButtonCancelAction = bootstrap.FindDeepGameObject(canvas, "ButtonCancelAction");
-		TextConfirmActionMessage = bootstrap.FindDeepGameObject(canvas, "TextConfirmationMessage");
+		TextButtonCancelAction = bootstrap.FindDeepGameObject(canvas, "TextButtonCancelAction");
 	}
 }
