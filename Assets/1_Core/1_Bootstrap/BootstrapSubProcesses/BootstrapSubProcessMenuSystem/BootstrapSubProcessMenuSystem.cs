@@ -281,7 +281,9 @@ public class BootstrapSubProcessMenuSystem
 			PauseMenuController,
 			_viewModelPauseSubMenuSettingsSectionControls);
 
-		PauseSubMenuSettingsSectionGraphicsController.Initialize();
+		PauseSubMenuSettingsSectionGraphicsController.Initialize(
+			_localizationManager,
+			_viewModelPauseSubMenuSettingsSectionGraphics);
 
 		PauseSubMenuSettingsSectionAudioController.Initialize(
 			_bootstrap,

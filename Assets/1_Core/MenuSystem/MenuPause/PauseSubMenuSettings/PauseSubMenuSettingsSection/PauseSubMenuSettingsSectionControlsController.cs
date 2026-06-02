@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 {
@@ -15,6 +16,20 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	private GameObject[] _textFieldsControls;
 	private TextMeshProUGUI[] _textsComponentsControls;
+
+	private GameObject _sliderMouseSensitivityX;
+	private Slider _sliderComponentMouseSensitivityX;
+	private GameObject _textNumberSliderMouseSensitivityX;
+	private TextMeshProUGUI _textComponentNumberSliderMouseSensitivityX;
+	private GameObject _textSliderMouseSensitivityX;
+	private TextMeshProUGUI _textComponentSliderMouseSensitivityX;
+
+	private GameObject _sliderMouseSensitivityY;
+	private Slider _sliderComponentMouseSensitivityY;
+	private GameObject _textNumberSliderMouseSensitivityY;
+	private TextMeshProUGUI _textComponentNumberSliderMouseSensitivityY;
+	private GameObject _textSliderMouseSensitivityY;
+	private TextMeshProUGUI _textComponentSliderMouseSensitivityY;
 
 	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsControlsData;
@@ -46,6 +61,12 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		_localizationManager = localizationManager;
 		_inputDevice = inputDevice;
 		_pauseMenuController = pauseMenuController;
+
+		_textSliderMouseSensitivityX = viewModelPauseSubMenuSettings.TextSliderMouseSensitivityX;
+		_textComponentSliderMouseSensitivityX = viewModelPauseSubMenuSettings.TextSliderMouseSensitivityX.GetComponent<TextMeshProUGUI>();
+
+		_textSliderMouseSensitivityY = viewModelPauseSubMenuSettings.TextSliderMouseSensitivityY;
+		_textComponentSliderMouseSensitivityY = viewModelPauseSubMenuSettings.TextSliderMouseSensitivityY.GetComponent<TextMeshProUGUI>();
 
 		var bindings = _inputDevice.GetCurrentKeyBindings().ToList();
 		_inputFieldsControls = viewModelPauseSubMenuSettings.InputFieldsControls;
@@ -237,6 +258,9 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	private void ChangeLanguage(LocalizationManager	localizationManager)
 	{
 		_localizationManager = localizationManager;
+
+		_textComponentSliderMouseSensitivityX.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextSliderMouseSensitivityX");
+		_textComponentSliderMouseSensitivityY.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextSliderMouseSensitivityY");
 
 		_textsComponentsControls[0].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsMoveForward");
 		_textsComponentsControls[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsMoveBackward");
