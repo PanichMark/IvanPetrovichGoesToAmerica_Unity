@@ -277,6 +277,7 @@ public class BootstrapSubProcessMenuSystem
 
 		PauseSubMenuSettingsSectionControlsController.Initialize(
 			_inputDevice,
+			_localizationManager,
 			PauseMenuController,
 			_viewModelPauseSubMenuSettingsSectionControls);
 

@@ -6,16 +6,23 @@ using UnityEngine;
 
 public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 {
+	private IInputDevice _inputDevice;
+	private LocalizationManager _localizationManager;
+	private PauseMenuController _pauseMenuController;
+
+	private GameObject[] _inputFieldsControls;
+	private TMP_InputField[] _inputFieldsComponentsControls;
+
+	private GameObject[] _textFieldsControls;
+	private TextMeshProUGUI[] _textsComponentsControls;
+
 	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsControlsData;
 
 	public delegate void ResetPlayerPrefsSettingsEventHandler();
 	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsControlsData;
 
-	private IInputDevice _inputDevice;
-	private TMP_InputField[] _KeyRebinds;
 	private char _lastValidChar;
-	private PauseMenuController _pauseMenuController;
 
 	private readonly char[][] _layoutMap = new char[][]
 	{
@@ -32,22 +39,22 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	public void Initialize(
 		IInputDevice inputDevice,
+		LocalizationManager localizationManager,
 		PauseMenuController pauseMenuController,
 		ViewModelPauseSubMenuSettingsSectionControls viewModelPauseSubMenuSettings)
 	{
+		_localizationManager = localizationManager;
 		_inputDevice = inputDevice;
 		_pauseMenuController = pauseMenuController;
 
-		_KeyRebinds = new TMP_InputField[viewModelPauseSubMenuSettings.InputFieldsControls.Length];
-
-		for (int i = 0; i < _KeyRebinds.Length; i++)
-		{
-			_KeyRebinds[i] = viewModelPauseSubMenuSettings.InputFieldsControls[i].GetComponent<TMP_InputField>();
-		}
-
 		var bindings = _inputDevice.GetCurrentKeyBindings().ToList();
-
-		foreach (var field in _KeyRebinds)
+		_inputFieldsControls = viewModelPauseSubMenuSettings.InputFieldsControls;
+		_inputFieldsComponentsControls = new TMP_InputField[viewModelPauseSubMenuSettings.InputFieldsControls.Length];
+		for (int i = 0; i < viewModelPauseSubMenuSettings.InputFieldsControls.Length; i++)
+		{
+			_inputFieldsComponentsControls[i] = viewModelPauseSubMenuSettings.InputFieldsControls[i].GetComponent<TMP_InputField>();
+		}
+		foreach (var field in _inputFieldsComponentsControls)
 		{
 			var matchingBinding = bindings.FirstOrDefault(b => b.action == field.name.Replace("InputFieldControl", ""));
 			if (matchingBinding != default)
@@ -55,8 +62,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 				field.text = matchingBinding.key.ToString();
 			}
 		}
-
-		foreach (var field in _KeyRebinds)
+		foreach (var field in _inputFieldsComponentsControls)
 		{
 			field.onValidateInput += ValidateAndConvertInput;
 			field.onEndEdit.AddListener((string text) =>
@@ -66,6 +72,14 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 			});
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
+		_textFieldsControls = viewModelPauseSubMenuSettings.InputFieldsControls;
+		_textsComponentsControls = new TextMeshProUGUI[viewModelPauseSubMenuSettings.InputFieldsControls.Length];
+		for (int i = 0; i < viewModelPauseSubMenuSettings.InputFieldsControls.Length; i++)
+		{
+			_textsComponentsControls[i] = viewModelPauseSubMenuSettings.TextControls[i].GetComponent<TextMeshProUGUI>();
+		}
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
@@ -75,7 +89,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	private void DisableButtons()
 	{
-		foreach (var field in _KeyRebinds)
+		foreach (var field in _inputFieldsComponentsControls)
 		{
 			if (field != null) field.interactable = false;
 		}
@@ -83,7 +97,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	private void EnableButtons()
 	{
-		foreach (var field in _KeyRebinds)
+		foreach (var field in _inputFieldsComponentsControls)
 		{
 			if (field != null) field.interactable = true;
 		}
@@ -144,7 +158,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	private void UpdateInputFieldText(string actionName, KeyCode key)
 	{
-		foreach (var field in _KeyRebinds)
+		foreach (var field in _inputFieldsComponentsControls)
 		{
 			if (field.name.StartsWith(actionName))
 			{
@@ -184,7 +198,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 		OnSaveSettingsControlsData?.Invoke(defaultData);
 
-		foreach (var field in _KeyRebinds)
+		foreach (var field in _inputFieldsComponentsControls)
 		{
 			string actionName = field.name.Replace("InputFieldControl", "");
 
@@ -205,7 +219,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 				string actionName = kvp.Key;
 				KeyCode savedKey = kvp.Value;
 
-				foreach (var field in _KeyRebinds)
+				foreach (var field in _inputFieldsComponentsControls)
 				{
 					string fieldActionName = field.name.Replace("InputFieldControl", "");
 
@@ -218,5 +232,27 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	private void ChangeLanguage(LocalizationManager	localizationManager)
+	{
+		_localizationManager = localizationManager;
+
+		_textsComponentsControls[0].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsMoveForward");
+		_textsComponentsControls[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsMoveBackward");
+		_textsComponentsControls[2].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsMoveRight");
+		_textsComponentsControls[3].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsMoveLeft");
+		_textsComponentsControls[4].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsRun");
+		_textsComponentsControls[5].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsJump");
+		_textsComponentsControls[6].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsCrouch");
+		_textsComponentsControls[7].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsInteract");
+		_textsComponentsControls[8].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsChangeCameraView");
+		_textsComponentsControls[9].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsChangeCameraShoulder");
+		_textsComponentsControls[10].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsWeaponWheelRightHand");
+		_textsComponentsControls[11].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsWeaponWheelLeftHand");
+		_textsComponentsControls[12].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsWeaponAttackRightHand");
+		_textsComponentsControls[13].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsWeaponAttackLeftHand");
+		_textsComponentsControls[14].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsWeaponReload");
+		_textsComponentsControls[15].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsLegKick");
 	}
 }
