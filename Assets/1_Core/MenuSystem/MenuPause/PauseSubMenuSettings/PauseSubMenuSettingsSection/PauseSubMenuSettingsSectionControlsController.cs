@@ -38,18 +38,18 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		_inputDevice = inputDevice;
 		_pauseMenuController = pauseMenuController;
 
-		_KeyRebinds = new TMP_InputField[viewModelPauseSubMenuSettings.InputFieldsKeyRebinds.Length];
+		_KeyRebinds = new TMP_InputField[viewModelPauseSubMenuSettings.InputFieldsControls.Length];
 
 		for (int i = 0; i < _KeyRebinds.Length; i++)
 		{
-			_KeyRebinds[i] = viewModelPauseSubMenuSettings.InputFieldsKeyRebinds[i].GetComponent<TMP_InputField>();
+			_KeyRebinds[i] = viewModelPauseSubMenuSettings.InputFieldsControls[i].GetComponent<TMP_InputField>();
 		}
 
 		var bindings = _inputDevice.GetCurrentKeyBindings().ToList();
 
 		foreach (var field in _KeyRebinds)
 		{
-			var matchingBinding = bindings.FirstOrDefault(b => b.action == field.name.Replace("InputField", ""));
+			var matchingBinding = bindings.FirstOrDefault(b => b.action == field.name.Replace("InputFieldControl", ""));
 			if (matchingBinding != default)
 			{
 				field.text = matchingBinding.key.ToString();
@@ -61,7 +61,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 			field.onValidateInput += ValidateAndConvertInput;
 			field.onEndEdit.AddListener((string text) =>
 			{
-				string actionName = field.name.Replace("InputField", "");
+				string actionName = field.name.Replace("InputFieldControl", "");
 				HandleRebinding(actionName, text);
 			});
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
@@ -186,7 +186,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 		foreach (var field in _KeyRebinds)
 		{
-			string actionName = field.name.Replace("InputField", "");
+			string actionName = field.name.Replace("InputFieldControl", "");
 
 			if (defaultData.KeyBindings.TryGetValue(actionName, out var key))
 			{
@@ -207,7 +207,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 				foreach (var field in _KeyRebinds)
 				{
-					string fieldActionName = field.name.Replace(" (InputField)", "");
+					string fieldActionName = field.name.Replace("InputFieldControl", "");
 
 					if (fieldActionName == actionName)
 					{

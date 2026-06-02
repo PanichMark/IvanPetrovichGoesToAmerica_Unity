@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 4883642564264429171}
   - component: {fileID: 2416428102890020367}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlWeaponReload
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -707,7 +707,7 @@ GameObject:
   - component: {fileID: 222321440686169468}
   - component: {fileID: 1222055645062034593}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlChangeCameraShoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -844,7 +844,7 @@ GameObject:
   - component: {fileID: 7694336874171009199}
   - component: {fileID: 2925309863644475953}
   m_Layer: 5
-  m_Name: MoveBackward
+  m_Name: InputFieldControlMoveBackward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1708,7 +1708,7 @@ GameObject:
   - component: {fileID: 206553351169340019}
   - component: {fileID: 1162705342846660537}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlMoveRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1845,7 +1845,7 @@ GameObject:
   - component: {fileID: 4921166159836548703}
   - component: {fileID: 5108594385884057322}
   m_Layer: 5
-  m_Name: LeftHandWeaponAttack
+  m_Name: InputFieldControlWeaponAttackLeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2463,7 +2463,7 @@ GameObject:
   - component: {fileID: 7842380439177085393}
   - component: {fileID: 6655826250845211288}
   m_Layer: 5
-  m_Name: Crouch
+  m_Name: InputFieldControlCrouch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3036,7 +3036,7 @@ GameObject:
   - component: {fileID: 6502144748736943492}
   - component: {fileID: 2715629611860153101}
   m_Layer: 5
-  m_Name: RightHandWeaponAttack
+  m_Name: InputFieldControlWeaponAttackRightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4764,7 +4764,7 @@ GameObject:
   - component: {fileID: 9055314654567161063}
   - component: {fileID: 1845356862876451989}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlWeaponWheelLeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6005,7 +6005,7 @@ GameObject:
   - component: {fileID: 37468985155079044}
   - component: {fileID: 8017723320571753157}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlWeaponWheelRightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7015,7 +7015,7 @@ GameObject:
   - component: {fileID: 4282306747185334808}
   - component: {fileID: 1410680772669191309}
   m_Layer: 5
-  m_Name: Interact
+  m_Name: InputFieldControlInteract
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9012,7 +9012,7 @@ GameObject:
   - component: {fileID: 8041235170063411352}
   - component: {fileID: 2850515147578934300}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextMouseSensitivityX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9779,7 +9779,7 @@ GameObject:
   - component: {fileID: 8359456601291384270}
   - component: {fileID: 3037950228090114034}
   m_Layer: 5
-  m_Name: MoveLeft
+  m_Name: InputFieldControlMoveLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10078,7 +10078,7 @@ GameObject:
   - component: {fileID: 2439971039262641639}
   - component: {fileID: 4978971098232543934}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlMoveBackward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10361,7 +10361,7 @@ GameObject:
   - component: {fileID: 3134312898430144271}
   - component: {fileID: 4604614868235186762}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlWeaponAttackLeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10875,7 +10875,7 @@ GameObject:
   - component: {fileID: 5385402381780018281}
   - component: {fileID: 6133111067709586674}
   m_Layer: 5
-  m_Name: ChangeCameraView
+  m_Name: InputFieldControlChangeCameraView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11053,7 +11053,7 @@ GameObject:
   - component: {fileID: 3621969748385983151}
   - component: {fileID: 288629417881207980}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlWeaponAttackRightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12473,7 +12473,7 @@ GameObject:
   - component: {fileID: 8327630937340174109}
   - component: {fileID: 7476954474408153160}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlCrouch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13059,7 +13059,7 @@ GameObject:
   - component: {fileID: 7841577635858535480}
   - component: {fileID: 3313673735425595803}
   m_Layer: 5
-  m_Name: RightHandWeaponWheel
+  m_Name: InputFieldControlWeaponWheelRightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13612,7 +13612,7 @@ GameObject:
   - component: {fileID: 1073542005048622787}
   - component: {fileID: 6960386234859959902}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlMoveForward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14113,7 +14113,7 @@ GameObject:
   - component: {fileID: 8616106648307879514}
   - component: {fileID: 7539151568976141033}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlJump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14451,7 +14451,7 @@ GameObject:
   - component: {fileID: 2210211519769821532}
   - component: {fileID: 6266424523774376056}
   m_Layer: 5
-  m_Name: Jump
+  m_Name: InputFieldControlJump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14858,7 +14858,7 @@ GameObject:
   - component: {fileID: 4345388367125105521}
   - component: {fileID: 3490356868219809853}
   m_Layer: 5
-  m_Name: MoveRight
+  m_Name: InputFieldControlMoveRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15440,7 +15440,7 @@ GameObject:
   - component: {fileID: 4943317949575199571}
   - component: {fileID: 8952033117718151679}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlMoveLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15788,7 +15788,7 @@ GameObject:
   - component: {fileID: 7997174821915205700}
   - component: {fileID: 5292517960290398668}
   m_Layer: 5
-  m_Name: MoveForward
+  m_Name: InputFieldControlMoveForward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19276,7 +19276,7 @@ GameObject:
   - component: {fileID: 6265444550522902472}
   - component: {fileID: 2848190459768723903}
   m_Layer: 5
-  m_Name: Run
+  m_Name: InputFieldControlRun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19703,7 +19703,7 @@ GameObject:
   - component: {fileID: 6503233441885567659}
   - component: {fileID: 2619309583322327574}
   m_Layer: 5
-  m_Name: Reload
+  m_Name: InputFieldControlWeaponReload
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20474,7 +20474,7 @@ GameObject:
   - component: {fileID: 2060234885374617198}
   - component: {fileID: 6179114986752404028}
   m_Layer: 5
-  m_Name: ChangeCameraShoulder
+  m_Name: InputFieldControlChangeCameraShoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21042,7 +21042,7 @@ GameObject:
   - component: {fileID: 1738400493397595390}
   - component: {fileID: 9674850965511402}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlChangeCameraView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21178,7 +21178,7 @@ GameObject:
   - component: {fileID: 5274492517906428078}
   - component: {fileID: 7446993002600419706}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlRun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23453,7 +23453,7 @@ GameObject:
   - component: {fileID: 520149894735698821}
   - component: {fileID: 5627863181128652329}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextMouseSensitivityY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24297,7 +24297,7 @@ GameObject:
   - component: {fileID: 8702559804132451179}
   - component: {fileID: 5249970398657974881}
   m_Layer: 5
-  m_Name: LeftHandWeaponWheel
+  m_Name: InputFieldControlWeaponWheelLeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24850,7 +24850,7 @@ GameObject:
   - component: {fileID: 917322912670781588}
   - component: {fileID: 9162579916999565991}
   m_Layer: 5
-  m_Name: LegKick
+  m_Name: InputFieldControlLegKick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25485,7 +25485,7 @@ GameObject:
   - component: {fileID: 8861430212182282991}
   - component: {fileID: 5321130891211221221}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlLegKick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26282,7 +26282,7 @@ GameObject:
   - component: {fileID: 1607042815313199710}
   - component: {fileID: 5252427850832370983}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextControlInteract
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

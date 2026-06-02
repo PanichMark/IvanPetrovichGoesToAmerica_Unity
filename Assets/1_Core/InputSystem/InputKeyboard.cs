@@ -45,11 +45,11 @@ public class InputKeyboard : IInputDevice
 
 		{"ChangeCameraView", KeyCode.V},
 		{"ChangeCameraShoulder", KeyCode.C},
-		{"RightHandWeaponWheel", KeyCode.E},
-		{"LeftHandWeaponWheel", KeyCode.Q},
-		{"RightHandWeaponAttack", KeyCode.Mouse1},
-		{"LeftHandWeaponAttack", KeyCode.Mouse0},
-		{"Reload", KeyCode.R},
+		{"WeaponWheelRightHand", KeyCode.E},
+		{"WeaponWheelLeftHand", KeyCode.Q},
+		{"WeaponAttackRightHand", KeyCode.Mouse1},
+		{"WeaponAttackLeftHand", KeyCode.Mouse0},
+		{"WeaponReload", KeyCode.R},
 		{"LegKick", KeyCode.Mouse2},
 	};
 
@@ -189,7 +189,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyReload()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["Reload"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings["WeaponReload"]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -263,7 +263,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyRightHandWeaponWheel()
 	{
-		if (Input.GetKey(_keyboardKeyBindings["RightHandWeaponWheel"]) && !_isLeftHandWeaponWheelOpened && _gameController.IsPlayerControllable)
+		if (Input.GetKey(_keyboardKeyBindings["WeaponWheelRightHand"]) && !_isLeftHandWeaponWheelOpened && _gameController.IsPlayerControllable)
 		{
 			_isRightHandWeaponWheelOpened = true;
 			
@@ -279,7 +279,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyLeftHandWeaponWheel()
 	{
-		if (Input.GetKey(_keyboardKeyBindings["LeftHandWeaponWheel"]) && !_isRightHandWeaponWheelOpened && _gameController.IsPlayerControllable)
+		if (Input.GetKey(_keyboardKeyBindings["WeaponWheelLeftHand"]) && !_isRightHandWeaponWheelOpened && _gameController.IsPlayerControllable)
 		{
 			_isLeftHandWeaponWheelOpened = true;
 			
@@ -294,7 +294,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyRightHandWeaponAttack()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["RightHandWeaponAttack"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings["WeaponAttackRightHand"]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -303,7 +303,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyLeftHandWeaponAttack()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["LeftHandWeaponAttack"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings["WeaponAttackLeftHand"]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -312,17 +312,17 @@ public class InputKeyboard : IInputDevice
 
 	public string GetNameOfKeyRightHandWeaponAttack()
 	{
-		return _keyboardKeyBindings["RightHandWeaponAttack"].ToString();
+		return _keyboardKeyBindings["WeaponAttackRightHand"].ToString();
 	}
 
 	public string GetNameOfKeyLeftHandWeaponAttack()
 	{
-		return _keyboardKeyBindings["LeftHandWeaponAttack"].ToString();
+		return _keyboardKeyBindings["WeaponAttackLeftHand"].ToString();
 	}
 
 	public bool GetKeyRightHandWeaponAttackReleased()
 	{
-		if (Input.GetKeyUp(_keyboardKeyBindings["RightHandWeaponAttack"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyUp(_keyboardKeyBindings["WeaponAttackRightHand"]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -331,7 +331,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyLeftHandWeaponAttackReleased()
 	{
-		if (Input.GetKeyUp(_keyboardKeyBindings["LeftHandWeaponAttack"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyUp(_keyboardKeyBindings["WeaponAttackLeftHand"]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}

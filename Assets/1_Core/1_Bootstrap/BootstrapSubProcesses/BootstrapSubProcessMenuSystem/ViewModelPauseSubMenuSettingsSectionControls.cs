@@ -2,16 +2,53 @@
 
 public class ViewModelPauseSubMenuSettingsSectionControls
 {
-	public GameObject[] InputFieldsKeyRebinds = new GameObject[16];
+	public GameObject SliderMouseSensitivityX;
+	public GameObject NumberSliderMouseSensitivityX;
+	public GameObject TextSliderMouseSensitivityX;
+
+	public GameObject SliderMouseSensitivityY;
+	public GameObject NumberSliderMouseSensitivityY;
+	public GameObject TextSliderMouseSensitivityY;
+
+	public GameObject[] InputFieldsControls = new GameObject[16];
+	public GameObject[] TextControls = new GameObject[16];
 
 	public ViewModelPauseSubMenuSettingsSectionControls(Bootstrap bootstrap, GameObject canvas)
 	{
-		string[] keyNames = { "MoveForward", "MoveBackward", "MoveRight", "MoveLeft", "Run", "Jump", "Crouch", "Interact",
-							"ChangeCameraView", "ChangeCameraShoulder", "RightHandWeaponWheel", "LeftHandWeaponWheel",
-							"RightHandWeaponAttack", "LeftHandWeaponAttack", "Reload", "LegKick"};
-		for (int i = 0; i < keyNames.Length; i++)
+		SliderMouseSensitivityX = bootstrap.FindDeepGameObject(canvas, "SliderMouseSensitivityX");
+		NumberSliderMouseSensitivityX = bootstrap.FindDeepGameObject(canvas, "NumberMouseSensitivityX");
+		TextSliderMouseSensitivityX = bootstrap.FindDeepGameObject(canvas, "TextMouseSensitivityX");
+
+		SliderMouseSensitivityY = bootstrap.FindDeepGameObject(canvas, "SliderMouseSensitivityY");
+		NumberSliderMouseSensitivityY = bootstrap.FindDeepGameObject(canvas, "NumberMouseSensitivityY");
+		TextSliderMouseSensitivityY = bootstrap.FindDeepGameObject(canvas, "TextMouseSensitivityY");
+
+		string[] nputFieldControlsNames = {
+			"MoveForward",
+			"MoveBackward",
+			"MoveRight",
+			"MoveLeft",
+			"Run",
+			"Jump",
+			"Crouch",
+			"Interact",
+			"ChangeCameraView",
+			"ChangeCameraShoulder",
+			"WeaponWheelRightHand",
+			"WeaponWheelLeftHand",
+			"WeaponAttackRightHand",
+			"WeaponAttackLeftHand",
+			"WeaponReload",
+			"LegKick"};
+
+		for (int i = 0; i < nputFieldControlsNames.Length; i++)
 		{
-			InputFieldsKeyRebinds[i] = bootstrap.FindDeepGameObject(canvas, keyNames[i]);
+			InputFieldsControls[i] = bootstrap.FindDeepGameObject(canvas, $"InputFieldControl{nputFieldControlsNames[i]}");
+		}
+
+		for (int i = 0; i < nputFieldControlsNames.Length; i++)
+		{
+			TextControls[i] = bootstrap.FindDeepGameObject(canvas, $"TextControl{nputFieldControlsNames[i]}");
 		}
 	}
 }
