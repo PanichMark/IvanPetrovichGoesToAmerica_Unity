@@ -90,6 +90,11 @@ public class BootstrapSubProcessPlayerSystems
 		GameObjectPlayerThirdPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonHandRightGameObject");
 		GameObjectPlayerThirdPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonHandLeftGameObject");
 
+		var canvasComponentBackgroundMenu = _bootstrap.CanvasMenuBackground.GetComponent<Canvas>();
+		var PlayerCameraComponentPostProcessing = PlayerCameraPostProcessing.GetComponent<Camera>();
+		canvasComponentBackgroundMenu.worldCamera = PlayerCameraComponentPostProcessing;
+		canvasComponentBackgroundMenu.planeDistance = 2;
+
 		PlayerBehaviour.Initialize(_inputDevice);
 		PlayerMovementController.Initialize(_inputDevice, _gameSceneManager, PlayerBehaviour);
 		PlayerMovementStateMachineController.Initialize(_inputDevice, _gameSceneManager, PlayerMovementController);

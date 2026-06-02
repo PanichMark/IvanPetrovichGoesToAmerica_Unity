@@ -7,6 +7,8 @@ public class BootstrapSubProcessMenuSystem
 
 	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
 	private GameObject _canvasHUDmission;
+
+	private MenuBackgroundController _menuBackgroundController;
 	public ViewModelPauseMenu ViewModelPauseMenu {  get; private set; }
 	private ViewModelPauseSubMenuSave _viewModelPauseSubMenuSave;
 	private ViewModelPauseSubMenuLoad _viewModelPauseSubMenuLoad;
@@ -172,6 +174,7 @@ public class BootstrapSubProcessMenuSystem
 		_tutorialNotesList = (TutorialNotesList)Resources.Load("TutorialNotesList");
 
 		MenuManager = _gameObjectBootstrapMenuSystem.AddComponent<MenuManager>();
+		_menuBackgroundController = _gameObjectBootstrapMenuSystem.AddComponent<MenuBackgroundController>();
 		PauseMenuController = _gameObjectBootstrapMenuSystem.AddComponent<PauseMenuController>();
 		_pauseSubMenuSaveController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSaveController>();
 		_pauseSubMenuLoadController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuLoadController>();
@@ -219,7 +222,10 @@ public class BootstrapSubProcessMenuSystem
 		MenuManager.Initialize(
 			_gameController,
 			_inputDevice,
-			_gameSceneManager,
+			_gameSceneManager);
+
+		_menuBackgroundController.Initialize(
+			MenuManager,
 			_canvasMenuBackground);
 
 		PauseMenuController.Initialize(
@@ -228,6 +234,7 @@ public class BootstrapSubProcessMenuSystem
 			_localizationManager,
 			_gameSceneManager,
 			MenuManager,
+			_menuBackgroundController,
 			_canvasPauseMenu,
 			ViewModelPauseMenu);
 
@@ -342,6 +349,8 @@ public class BootstrapSubProcessMenuSystem
 		ServiceLocator.Register("CanvasMenuLockpickElectronic", _canvasMenuLockpickElectronic);
 		ServiceLocator.Register("ButtonsLockElectronic", ViewModelMenuLockpickElectronic.ButtonsLockElectronic);
 		ServiceLocator.Register("ButtonCloseLockpickElectronicMenu", ViewModelMenuLockpickElectronic.ButtonCloseMenuLockpickElectronic);
+
+		ServiceLocator.Register("MenuBackgroundController", _menuBackgroundController);
 
 		ServiceLocator.Register("CanvasMenuDialogue", _canvasMenuDialogue);
 		ServiceLocator.Register("TextPhraseLine", ViewModelHUDInteraction.TextPhraseLine);

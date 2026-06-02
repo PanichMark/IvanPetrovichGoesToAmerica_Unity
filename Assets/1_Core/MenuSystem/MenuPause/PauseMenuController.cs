@@ -9,6 +9,7 @@ public class PauseMenuController : MonoBehaviour
 	private LocalizationManager _localizationManager;
 	private GameSceneManager _gameSceneManager;
 	private MenuManager _menuManager;
+	private MenuBackgroundController _menuBackgroundController;
 
 	private GameObject _canvasPauseMenu;
 	private GameObject[] _buttonsPauseMenu;
@@ -37,12 +38,14 @@ public class PauseMenuController : MonoBehaviour
 		LocalizationManager localizationManager,
 		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
+		MenuBackgroundController menuBackgroundController,
 		GameObject canvasPauseMenu,
 		ViewModelPauseMenu viewModelPauseMenu)
 	{
 		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
+		_menuBackgroundController = menuBackgroundController;
 		_gameSceneManager = gameSceneManager;
 		_menuManager = menuManager;
 
@@ -170,7 +173,7 @@ public class PauseMenuController : MonoBehaviour
 		if (_gameController.IsMainMenuOpen)
 		{
 			_menuManager.CloseAnyMenu();
-			_menuManager.HideCanvasMenuBackground();
+			_menuBackgroundController.HideCanvasMenuBackground();
 		}
 
 		if (!_gameController.IsMainMenuOpen)

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -21,6 +20,8 @@ public class MenuManager : MonoBehaviour
 	public event MenuEventHandler OnClosePauseMenuDuringOpenedCutsceneMenu;
 	public event MenuEventHandler OnOpenAnyMenu;
 	public event MenuEventHandler OnCloseAnyMenu;
+	public event MenuEventHandler OnOpenMenuBackground;
+	public event MenuEventHandler OnCloseMenuBackground;
 	public event MenuEventHandler OnOpenConfirmationOnExitToMainMenu;
 	public event MenuEventHandler OnCloseConfirmationOnExitToMainMenu;
 
@@ -42,20 +43,17 @@ public class MenuManager : MonoBehaviour
 	private IInputDevice _inputDevice;
 	private GameController _gameController;
 	private GameSceneManager _gameSceneManager;
-	private GameObject _canvasMenuBackground;
 
 	public Stack<int> PauseMenuLevel = new Stack<int>();
 
 	public void Initialize(
 		GameController gameController,
 		IInputDevice inputDevice,
-		GameSceneManager gameSceneManager,
-		GameObject canvasMenuBackground)
+		GameSceneManager gameSceneManager)
 	{
 		_inputDevice = inputDevice;
 		_gameController = gameController;
 		_gameSceneManager = gameSceneManager;
-		_canvasMenuBackground = canvasMenuBackground;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
@@ -85,20 +83,6 @@ public class MenuManager : MonoBehaviour
 		Debug.Log("MenuManager Initialized");
 	}
 
-	public void ShowCanvasMenuBackground()
-	{
-		_canvasMenuBackground.SetActive(true);
-
-		Debug.Log("Show MenuBackground");
-	}
-
-	public void HideCanvasMenuBackground()
-	{
-		_canvasMenuBackground.SetActive(false);
-
-		Debug.Log("Hide MenuBackground");
-	}
-
 	void Update()
 	{
 		if (!_isInitialized)
@@ -123,12 +107,12 @@ public class MenuManager : MonoBehaviour
 
 				if (IsDialogueMenuOpened)
 				{
-					HideCanvasMenuBackground();
+					OnCloseMenuBackground?.Invoke();
 					OnClosePauseMenuDuringOpenedDialogueMenu?.Invoke();
 				}
 				if (IsCutsceneMenuOpened)
 				{
-					HideCanvasMenuBackground();
+					OnCloseMenuBackground?.Invoke();
 					OnClosePauseMenuDuringOpenedCutsceneMenu?.Invoke();
 				}
 			}
@@ -157,7 +141,7 @@ public class MenuManager : MonoBehaviour
 		{
 			CloseWeaponWheelMenu();
 		}
-		ShowCanvasMenuBackground();
+		OnOpenMenuBackground?.Invoke();
 		PauseMenuLevel.Push(1);
 		OnOpenPauseMenu?.Invoke();
 		IsPauseMenuOpened = true;
@@ -183,7 +167,7 @@ public class MenuManager : MonoBehaviour
 		}
 		else
 		{
-			HideCanvasMenuBackground();
+			OnCloseMenuBackground?.Invoke();
 			CloseAnyMenu();
 			_gameController.MakePlayerControllable();
 			Time.timeScale = 1f;
@@ -321,7 +305,7 @@ public class MenuManager : MonoBehaviour
 		IsInteractionMenuOpened = true;
 		Time.timeScale = 0;
 		_gameController.MakePlayerNonControllable();
-		ShowCanvasMenuBackground();
+		OnOpenMenuBackground?.Invoke();
 		OpenAnyMenu();
 		OnOpenInteractionMenu?.Invoke();
 		
@@ -333,7 +317,7 @@ public class MenuManager : MonoBehaviour
 		Time.timeScale = 1;
 		OnCloseInteractionMenu?.Invoke();
 		_gameController.MakePlayerControllable();
-		HideCanvasMenuBackground();
+		OnCloseMenuBackground?.Invoke();
 		CloseAnyMenu();
 		Debug.Log("InteractionMenu closed");
 	}

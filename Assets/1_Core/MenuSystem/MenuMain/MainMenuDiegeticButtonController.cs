@@ -9,6 +9,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private Material _defaultMaterial;     
 	private Material _hoverMaterial;
 	private GameObject _CanvasDiegeticText;
+	private MenuBackgroundController _menuBackgroundController;
 
 	private static List<MainMenuDiegeticButtonController> _instances = new List<MainMenuDiegeticButtonController>();
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
@@ -32,7 +33,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_hoverMaterial = Resources.Load<Material>("Materials/Material_MainMenuDiegeticButton");
 
 		_CanvasDiegeticText = GameObject.Find("CANVASES");
-
+		_menuBackgroundController = ServiceLocator.Resolve<MenuBackgroundController>("MenuBackgroundController");
 		_keyPauseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_pauseMenuController = ServiceLocator.Resolve<PauseMenuController>("PauseMenuController");
@@ -83,7 +84,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			if (Input.GetKeyDown(_keyPauseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)
 			{
 				_mainMenuReadNews.HideCanvasMainMenuReadNews();
-				_menuManager.HideCanvasMenuBackground();
+				_menuBackgroundController.HideCanvasMenuBackground();
 				_playerCameraBlurFilter.DeactivateCameraBlur();
 			}
 		}
@@ -111,7 +112,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (name == "LoadGame")
 		{
 			Debug.Log("OPEN LOAD GAME");
-			_menuManager.ShowCanvasMenuBackground();
+			_menuBackgroundController.ShowCanvasMenuBackground();
 			_CanvasDiegeticText.SetActive(false);
 			DisableAllColliders();
 			_menuManager.OpenAnyMenu();
@@ -125,7 +126,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (name == "Settings")
 		{
 			Debug.Log("OPEN SETTINGS");
-			_menuManager.ShowCanvasMenuBackground();
+			_menuBackgroundController.ShowCanvasMenuBackground();
 			_CanvasDiegeticText.SetActive(false);
 			DisableAllColliders();
 			_menuManager.OpenAnyMenu();
@@ -134,7 +135,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		else if (name == "ReadNews")
 		{
 			Debug.Log("OPEN NEWS");
-			_menuManager.ShowCanvasMenuBackground();
+			_menuBackgroundController.ShowCanvasMenuBackground();
 			_CanvasDiegeticText.SetActive(false);
 			_mainMenuReadNews.ShowCanvasMainMenuReadNews();
 			DisableAllColliders();

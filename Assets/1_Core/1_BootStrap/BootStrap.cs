@@ -31,6 +31,8 @@ public class Bootstrap : MonoBehaviour
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 	[Header("Menu")]
 	[SerializeField] private GameObject _canvasMenuBackground;
+	public GameObject CanvasMenuBackground => _canvasMenuBackground;
+
 	[Header("Pause Menu")]
 	[SerializeField] private GameObject _canvasPauseMenu;
 	[SerializeField] private GameObject _canvasPauseSubMenuSave;
