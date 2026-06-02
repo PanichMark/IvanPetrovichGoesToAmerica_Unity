@@ -265,6 +265,7 @@ public class BootstrapSubProcessMenuSystem
 			_tutorialNotesList.Notes);
 
 		PauseSubMenuSettingsController.Initialize(
+			_localizationManager,
 			PauseMenuController,
 			_canvasPauseSubMenuSettings,
 			_viewModelPauseSubMenuSettings);

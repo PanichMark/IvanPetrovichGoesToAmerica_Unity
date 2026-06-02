@@ -110,13 +110,13 @@ UI_Menu_PauseMenu_ButtonSettings,Настройки игры,Game settings
 UI_Menu_PauseMenu_ButtonExitToMainMenu,Выйти в главное меню,Exit to Main Menu
 UI_Menu_PauseMenu_TextCurrentMissionGoal,Текущая цель миссии:,Current mission goal:
 UI_Menu_PauseMenu_TextCurrentPlayerMoney,Денег у игрока:,Player's money:
-UI_Menu_PauseSUbMenuSave_TextPauseSubMenuSave,Меню сохранения,Save menu
-UI_Menu_PauseSUbMenuSave_ButtonClosePauseSubMenuSave,Закрыть меню сохранения,Close save menu
-UI_Menu_PauseSUbMenuSave_ButtonCreateNewGameFile,Сохранить новую игру,Save game
-UI_Menu_PauseSUbMenuSave_ButtonDeleteGameFile,Удалить игру,Delete game
-UI_Menu_PauseSUbMenuSave_TextPauseSubMenuLoad,Меню загрузки,Load menu
-UI_Menu_PauseSUbMenuSave_ButtonClosePauseSubMenuLoad,Закрыть меню загрузки,Close load menu
-UI_Menu_PauseSUbMenuSave_ButtonClosePauseSubMenuTutorial,Закрыть меню туториала,Close tutorial menu
+UI_Menu_PauseSubMenuSave_TextPauseSubMenuSave,Меню сохранения,Save menu
+UI_Menu_PauseSubMenuSave_ButtonClosePauseSubMenuSave,Закрыть меню сохранения,Close save menu
+UI_Menu_PauseSubMenuSave_ButtonCreateNewGameFile,Сохранить новую игру,Save game
+UI_Menu_PauseSubMenuSave_ButtonDeleteGameFile,Удалить игру,Delete game
+UI_Menu_PauseSubMenuLoad_TextPauseSubMenuLoad,Меню загрузки,Load menu
+UI_Menu_PauseSubMenuLoad_ButtonClosePauseSubMenuLoad,Закрыть меню загрузки,Close load menu
+UI_Menu_PauseSubMenuTutorial_ButtonClosePauseSubMenuTutorial,Закрыть меню туториала,Close tutorial menu
 UI_Menu_PauseConfirmActionMenu_ButtonConfirmAction,Подтвердить,Confirm
 UI_Menu_PauseConfirmActionMenu_ButtonCancelAction,Отменить,Cancel
 UI_Menu_PauseConfirmActionMenu_TextConfirmCreateNewGameFile,Сохранить новую игру,Save new game
@@ -130,3 +130,10 @@ UI_Menu_PauseConfirmActionMenu_TextSettingsGraphics,Настройки граф�
 UI_Menu_PauseConfirmActionMenu_TextSettingsAudio,Аудионастройки,Audio settings
 UI_Menu_PauseConfirmActionMenu_TextSaveSettings,Сохранить,Save
 UI_Menu_PauseConfirmActionMenu_TextResetSettings,Сбросить,Reset
+UI_Menu_PauseSubMenuSettings_ButtonClosePauseSubMenuSettings,Закрыть меню настроек,Close settings menu
+UI_Menu_PauseSubMenuSettings_ButtonSaveSettings,Сохранить настройки,Save settings
+UI_Menu_PauseSubMenuSettings_ButtonResetSettings,Сбросить настройки,Reset settings
+UI_Menu_PauseSubMenuSettings_ButtonSubSettingsSectionGeneral,Общие настройки,General settings
+UI_Menu_PauseSubMenuSettings_ButtonSubSettingsSectionControls,Настройки управления,Controls settings
+UI_Menu_PauseSubMenuSettings_ButtonSubSettingsSectionGraphics,Настройки графики,Graphics settings
+UI_Menu_PauseSubMenuSettings_ButtonSubSettingsSectionAudio,Аудионастройки,Audio settings

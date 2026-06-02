@@ -1,54 +1,65 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class ViewModelPauseSubMenuSettings
 {
 	public GameObject ButtonSaveGameSettings;
+	public GameObject TextButtonSaveGameSettings;
+
 	public GameObject ButtonResetGameSettings;
+	public GameObject TextButtonResetGameSettings;
+
 	public GameObject ButtonClosePauseSubMenuSettings;
-
-	public GameObject ButtonSubSettingsSectionGeneral;
-	public GameObject ButtonSubSettingsSectionControls;
-	public GameObject ButtonSubSettingsSectionGraphics;
-	public GameObject ButtonSubSettingsSectionAudio;
-
-	public GameObject ImageBackgroundSectionGeneral;
-	public GameObject ImageBackgroundSectionControls;
-	public GameObject ImageBackgroundSectionGraphics;
-	public GameObject ImageBackgroundSectionAudio;
+	public GameObject TextButtonClosePauseSubMenuSettings;
 
 	public GameObject SubSettingsSectionGeneral;
+	public GameObject ImageBackgroundSectionGeneral;
+	public GameObject ButtonSubSettingsSectionGeneral;
+	public GameObject TextButtonSubSettingsSectionGeneral;
+
 	public GameObject SubSettingsSectionControls;
+	public GameObject ImageBackgroundSectionControls;
+	public GameObject ButtonSubSettingsSectionControls;
+	public GameObject TextButtonSubSettingsSectionControls;
+
 	public GameObject SubSettingsSectionGraphics;
+	public GameObject ImageBackgroundSectionGraphics;
+	public GameObject ButtonSubSettingsSectionGraphics;
+	public GameObject TextButtonSubSettingsSectionGraphics;
+
 	public GameObject SubSettingsSectionAudio;
-	
+	public GameObject ImageBackgroundSectionAudio;
+	public GameObject ButtonSubSettingsSectionAudio;
+	public GameObject TextButtonSubSettingsSectionAudio;
 
 	public ViewModelPauseSubMenuSettings(Bootstrap bootstrap, GameObject canvas)
 	{
-		// --- Общие кнопки ---
-		ButtonSaveGameSettings = bootstrap.FindDeepGameObject(canvas, "ButtonSaveSettings");
-		ButtonResetGameSettings = bootstrap.FindDeepGameObject(canvas, "ButtonResetSettings");
+		ButtonSaveGameSettings = bootstrap.FindDeepGameObject(canvas, "ButtonSaveGameSettings");
+		TextButtonSaveGameSettings = bootstrap.FindDeepGameObject(canvas, "TextButtonSaveGameSettings");
+
+		ButtonResetGameSettings = bootstrap.FindDeepGameObject(canvas, "ButtonResetGameSettings");
+		TextButtonResetGameSettings = bootstrap.FindDeepGameObject(canvas, "TextButtonResetGameSettings");
+
 		ButtonClosePauseSubMenuSettings = bootstrap.FindDeepGameObject(canvas, "ButtonClosePauseSubMenuSettings");
+		TextButtonClosePauseSubMenuSettings = bootstrap.FindDeepGameObject(canvas, "TextButtonClosePauseSubMenuSettings");
 
-		// --- Секция General ---
 		SubSettingsSectionGeneral = bootstrap.FindDeepGameObject(canvas, "SubSettingsSectionGeneral");
-		ImageBackgroundSectionGeneral = bootstrap.FindDeepGameObject(canvas, "BackgroundGeneral");
-		ButtonSubSettingsSectionGeneral = bootstrap.FindDeepGameObject(canvas, "ButtonSubSettingsGeneral");
+		ImageBackgroundSectionGeneral = bootstrap.FindDeepGameObject(canvas, "ImageBackgroundSectionGeneral");
+		ButtonSubSettingsSectionGeneral = bootstrap.FindDeepGameObject(canvas, "ButtonSubSettingsSectionGeneral");
+		TextButtonSubSettingsSectionGeneral = bootstrap.FindDeepGameObject(canvas, "TextButtonSubSettingsSectionGeneral");
 
-		// --- Секция Controls ---
 		SubSettingsSectionControls = bootstrap.FindDeepGameObject(canvas, "SubSettingsSectionControls");
-		ImageBackgroundSectionControls = bootstrap.FindDeepGameObject(canvas, "BackgroundControls");
-		ButtonSubSettingsSectionControls = bootstrap.FindDeepGameObject(canvas, "ButtonSubSettingsControls");
+		ImageBackgroundSectionControls = bootstrap.FindDeepGameObject(canvas, "ImageBackgroundSectionControls");
+		ButtonSubSettingsSectionControls = bootstrap.FindDeepGameObject(canvas, "ButtonSubSettingsSectionControls");
+		TextButtonSubSettingsSectionControls = bootstrap.FindDeepGameObject(canvas, "TextButtonSubSettingsSectionControls");
 
-		// --- Секция Graphics ---
 		SubSettingsSectionGraphics = bootstrap.FindDeepGameObject(canvas, "SubSettingsSectionGraphics");
-		ImageBackgroundSectionGraphics = bootstrap.FindDeepGameObject(canvas, "BackgroundGraphics");
-		ButtonSubSettingsSectionGraphics = bootstrap.FindDeepGameObject(canvas, "ButtonSubSettingsGraphics");
+		ImageBackgroundSectionGraphics = bootstrap.FindDeepGameObject(canvas, "ImageBackgroundSectionGraphics");
+		ButtonSubSettingsSectionGraphics = bootstrap.FindDeepGameObject(canvas, "ButtonSubSettingsSectionGraphics");
+		TextButtonSubSettingsSectionGraphics = bootstrap.FindDeepGameObject(canvas, "TextButtonSubSettingsSectionGraphics");
 
-		// --- Секция Audio ---
 		SubSettingsSectionAudio = bootstrap.FindDeepGameObject(canvas, "SubSettingsSectionAudio");
-		ImageBackgroundSectionAudio = bootstrap.FindDeepGameObject(canvas, "BackgroundAudio");
-		ButtonSubSettingsSectionAudio = bootstrap.FindDeepGameObject(canvas, "ButtonSubSettingsAudio");
+		ImageBackgroundSectionAudio = bootstrap.FindDeepGameObject(canvas, "ImageBackgroundSectionAudio");
+		ButtonSubSettingsSectionAudio = bootstrap.FindDeepGameObject(canvas, "ButtonSubSettingsSectionAudio");
+		TextButtonSubSettingsSectionAudio = bootstrap.FindDeepGameObject(canvas, "TextButtonSubSettingsSectionAudio");
 	}
 }

@@ -632,7 +632,7 @@ GameObject:
   - component: {fileID: 5436763901405242551}
   - component: {fileID: 3119009916274883901}
   m_Layer: 5
-  m_Name: BackgroundControls
+  m_Name: ImageBackgroundSectionControls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1180,7 +1180,7 @@ GameObject:
   - component: {fileID: 2838442858878998235}
   - component: {fileID: 1557822545441319159}
   m_Layer: 5
-  m_Name: ButtonResetSettings
+  m_Name: ButtonResetGameSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3427,7 +3427,7 @@ GameObject:
   - component: {fileID: 1986639051562892789}
   - component: {fileID: 1488340901502652872}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextButtonSaveGameSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4953,7 +4953,7 @@ GameObject:
   - component: {fileID: 5656914370128438179}
   - component: {fileID: 8353824476690051360}
   m_Layer: 5
-  m_Name: BackgroundAudio
+  m_Name: ImageBackgroundSectionAudio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5432,7 +5432,7 @@ GameObject:
   - component: {fileID: 7974345594177092561}
   - component: {fileID: 2834686410459110944}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextButtonSubSettingsSectionGraphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6614,7 +6614,7 @@ GameObject:
   - component: {fileID: 8309798580782276306}
   - component: {fileID: 5823763068076587954}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextButtonSubSettingsSectionAudio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7194,7 +7194,7 @@ GameObject:
   - component: {fileID: 3799554500748016663}
   - component: {fileID: 1703391174030467273}
   m_Layer: 5
-  m_Name: ButtonSaveSettings
+  m_Name: ButtonSaveGameSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8559,7 +8559,7 @@ GameObject:
   - component: {fileID: 4002309180164190973}
   - component: {fileID: 2799350036749287654}
   m_Layer: 5
-  m_Name: BackgroundGraphics
+  m_Name: ImageBackgroundSectionGraphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9958,7 +9958,7 @@ GameObject:
   - component: {fileID: 6133772893749182460}
   - component: {fileID: 3412685576410215574}
   m_Layer: 5
-  m_Name: ButtonSubSettingsGeneral
+  m_Name: ButtonSubSettingsSectionGeneral
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12922,7 +12922,7 @@ GameObject:
   - component: {fileID: 868318724654527132}
   - component: {fileID: 6263426105391041702}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextButtonSubSettingsSectionControls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15986,9 +15986,9 @@ RectTransform:
   - {fileID: 2819307256611605039}
   - {fileID: 2993996330427226145}
   - {fileID: 971881220797334314}
-  - {fileID: 5935628273440645488}
   - {fileID: 5833310870875207085}
   - {fileID: 2587047944984924547}
+  - {fileID: 5935628273440645488}
   m_Father: {fileID: 808225310474275871}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -16445,7 +16445,7 @@ GameObject:
   - component: {fileID: 2744713367158300536}
   - component: {fileID: 5613531566101996671}
   m_Layer: 5
-  m_Name: ButtonSubSettingsAudio
+  m_Name: ButtonSubSettingsSectionAudio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17664,7 +17664,7 @@ GameObject:
   - component: {fileID: 362970536620433192}
   - component: {fileID: 7914182864553012776}
   m_Layer: 5
-  m_Name: BackgroundGeneral
+  m_Name: ImageBackgroundSectionGeneral
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18706,7 +18706,7 @@ GameObject:
   - component: {fileID: 4900740452023587492}
   - component: {fileID: 913774942655585295}
   m_Layer: 5
-  m_Name: ButtonSubSettingsControls
+  m_Name: ButtonSubSettingsSectionControls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18901,7 +18901,7 @@ GameObject:
   - component: {fileID: 8444602204300602058}
   - component: {fileID: 590068085889239102}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextButtonClosePauseSubMenuSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22391,7 +22391,7 @@ GameObject:
   - component: {fileID: 7664922876412918468}
   - component: {fileID: 1283263401042316700}
   m_Layer: 5
-  m_Name: ButtonSubSettingsGraphics
+  m_Name: ButtonSubSettingsSectionGraphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23281,7 +23281,7 @@ GameObject:
   - component: {fileID: 3668449829591425694}
   - component: {fileID: 4821423425994886696}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextButtonResetGameSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23627,7 +23627,7 @@ GameObject:
   - component: {fileID: 7226438030515717097}
   - component: {fileID: 7520309268470268052}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextButtonSubSettingsSectionGeneral
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
