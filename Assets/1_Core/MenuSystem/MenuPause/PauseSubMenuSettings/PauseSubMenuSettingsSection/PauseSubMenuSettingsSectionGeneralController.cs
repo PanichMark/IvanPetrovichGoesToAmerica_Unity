@@ -9,14 +9,15 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private LocalizationManager _localizationManager;
 	private PauseMenuController _pauseMenuController;
 
+	private GameObject _dropdownScreenResolution;
+	private TMP_Dropdown _dropdownComponentScreenResolution;
+	private GameObject _textDropdownScreenResolution;
+	private TextMeshProUGUI _textComponentDropdownScreenResolution;
 
-
-
-
-
-
-
-
+	private GameObject _dropdownWindowType;
+	private TMP_Dropdown _dropdownComponentWindowType;
+	private GameObject _textDropdownWindowType;
+	private TextMeshProUGUI _textComponentDropdownWindowType;
 
 	private GameObject _dropdownLimitFPS;
 	private TMP_Dropdown _dropdownComponentLimitFPS;
@@ -45,12 +46,10 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private GameObject _textSliderScreenBrightness;
 	private TextMeshProUGUI _textComponentSliderScreenBrightness;
 
-
-
-
-
-
-
+	private GameObject _dropdownHUDType;
+	private TMP_Dropdown _dropdownComponentHUDType;
+	private GameObject _textDropdownHUDType;
+	private TextMeshProUGUI _textComponentDropdownHUDType;
 
 	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGeneralData;
@@ -75,6 +74,17 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_pauseMenuController = pauseMenuController;
 		_textComponentNumberSliderCameraFOV = viewModelPauseSubMenuSettings.NumberSliderCameraFOV.GetComponent<TextMeshProUGUI>();
 
+		_dropdownScreenResolution = viewModelPauseSubMenuSettings.DropdownScreenResolution;
+		_dropdownComponentScreenResolution = viewModelPauseSubMenuSettings.DropdownScreenResolution.GetComponent<TMP_Dropdown>();
+		_dropdownComponentScreenResolution.onValueChanged.AddListener(SetScreenResolution);
+		_textDropdownScreenResolution = viewModelPauseSubMenuSettings.TextDropdownScreenResolution;
+		_textComponentDropdownScreenResolution = viewModelPauseSubMenuSettings.TextDropdownScreenResolution.GetComponent<TextMeshProUGUI>();
+
+		_dropdownWindowType = viewModelPauseSubMenuSettings.DropdownWindowType;
+		_dropdownComponentWindowType = viewModelPauseSubMenuSettings.DropdownWindowType.GetComponent<TMP_Dropdown>();
+		_dropdownComponentWindowType.onValueChanged.AddListener(SetWindowType);
+		_textDropdownWindowType = viewModelPauseSubMenuSettings.TextDropdownWindowType;
+		_textComponentDropdownWindowType = viewModelPauseSubMenuSettings.TextDropdownWindowType.GetComponent<TextMeshProUGUI>();
 
 		_dropdownLimitFPS = viewModelPauseSubMenuSettings.DropdownLimitFPS;
 		_dropdownComponentLimitFPS = viewModelPauseSubMenuSettings.DropdownLimitFPS.GetComponent<TMP_Dropdown>();
@@ -102,7 +112,11 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textSliderScreenBrightness = viewModelPauseSubMenuSettings.TextSliderScreenBrightness;
 		_textComponentSliderScreenBrightness = viewModelPauseSubMenuSettings.TextSliderScreenBrightness.GetComponent<TextMeshProUGUI>();
 
-
+		_dropdownHUDType = viewModelPauseSubMenuSettings.DropdownHUDType;
+		_dropdownComponentHUDType = viewModelPauseSubMenuSettings.DropdownHUDType.GetComponent<TMP_Dropdown>();
+		_dropdownComponentHUDType.onValueChanged.AddListener(SetHUDType);
+		_textDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType;
+		_textComponentDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType.GetComponent<TextMeshProUGUI>();
 
 
 
@@ -175,6 +189,16 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_sliderComponentCameraFOV.value = _MIN_VALUE_CAMERA_FOV;
 	}
 
+	public void SetScreenResolution(int dropdownScreenResolutionSlot)
+	{
+
+	}
+
+	public void SetWindowType(int dropdownWindowTypeSlot)
+	{
+
+	}
+
 	public void SetFPSLimit(int dropdownFPSlimitSlot)
 	{
 		int newFPSlimit;
@@ -226,23 +250,50 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textComponentNumberSliderScreenBrightness.text = ((int)newScreenBrightness).ToString();
 	}
 
+	public void SetHUDType(int dropdownHUDTypeSlot)
+	{
+
+	}
+
 	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
 
+		_textComponentDropdownScreenResolution.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownScreenResolution");
+
+		List<string> dropdownWindowTypelocalizedOptions = new List<string>
+		{
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeFullscreen"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeBorderlessWindowed"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeWindowed"),
+		};
+		_dropdownComponentWindowType.ClearOptions();
+		_dropdownComponentWindowType.AddOptions(dropdownWindowTypelocalizedOptions);
+		_textComponentDropdownWindowType.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownWindowType");
+
+		List<string> dropdownLimitFPSlocalizedOptions = new List<string>
+		{
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS30"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS60"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS90"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS144"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPSunlimited")
+		};
+		_dropdownComponentLimitFPS.ClearOptions();
+		_dropdownComponentLimitFPS.AddOptions(dropdownLimitFPSlocalizedOptions);
+		_textComponentDropdownLimitFPS.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownFPSlimit");
+
 		_textComponentSliderCameraFOV.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderCameraFOV");
 		_textComponentSliderScreenBrightness.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderScreenBrightness");
 
-		List<string> DropdownLimitFPSlocalizedOptions = new List<string>
+		List<string> dropdownHUDTypelocalizedOptions = new List<string>
 		{
-		_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS30"),
-		_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS60"),
-		_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS90"),
-		_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS144"),
-		_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPSunlimited")
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeFull"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeDialoguesOnly"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeTurnedOff"),
 		};
-		_dropdownComponentLimitFPS.ClearOptions();
-		_dropdownComponentLimitFPS.AddOptions(DropdownLimitFPSlocalizedOptions);
-		_textComponentDropdownLimitFPS.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownFPSlimit");
+		_dropdownComponentHUDType.ClearOptions();
+		_dropdownComponentHUDType.AddOptions(dropdownHUDTypelocalizedOptions);
+		_textComponentDropdownHUDType.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownHUDType");
 	}
 }
