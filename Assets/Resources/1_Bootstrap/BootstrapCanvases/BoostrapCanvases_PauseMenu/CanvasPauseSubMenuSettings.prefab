@@ -1436,7 +1436,7 @@ GameObject:
   - component: {fileID: 626782889839022525}
   - component: {fileID: 418604642399878850}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextVolumeEffects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2323,7 +2323,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 50.96942, y: 1.7854614, z: 73.09143, w: -28.566864}
+  m_margin: {x: 50.96942, y: 1.7854614, z: 21.95691, w: -28.566864}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2342,7 +2342,7 @@ GameObject:
   - component: {fileID: 6570313963548673600}
   - component: {fileID: 5764029554693315797}
   m_Layer: 5
-  m_Name: ButtonChangeLanguage_Russian
+  m_Name: ButtonChangeLanguageRussian
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3756,7 +3756,7 @@ GameObject:
   - component: {fileID: 3210742812477822884}
   - component: {fileID: 7013079327043462876}
   m_Layer: 5
-  m_Name: NumberVolumeCutscenes
+  m_Name: NumberVolumeMusicAmbience
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3876,7 +3876,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 50.96942, y: 1.7854614, z: 73.09143, w: -28.566864}
+  m_margin: {x: 50.96942, y: 1.7854614, z: 26.60559, w: -28.566864}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4626,7 +4626,7 @@ GameObject:
   - component: {fileID: 5153444280531086322}
   - component: {fileID: 4448110817708079701}
   m_Layer: 5
-  m_Name: NumberVolumeMusic
+  m_Name: NumberVolumeMusicIngame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4746,7 +4746,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 50.96942, y: 1.7854614, z: 73.09143, w: -28.566864}
+  m_margin: {x: 50.96942, y: 1.7854614, z: 21.957031, w: -28.566864}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -6251,7 +6251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1141806213000350682}
   m_Layer: 5
-  m_Name: VolumeMusic
+  m_Name: VolumeMusicIngame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10738,7 +10738,7 @@ GameObject:
   - component: {fileID: 8591766465565488714}
   - component: {fileID: 7924605703351864777}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextVolumeVoices
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12337,7 +12337,7 @@ GameObject:
   - component: {fileID: 4274986185034402245}
   - component: {fileID: 8162804550179069697}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextVolumeEnvironment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15231,7 +15231,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 50.96942, y: 1.7854614, z: 73.09143, w: -28.566864}
+  m_margin: {x: 50.96942, y: 1.7854614, z: 1.0384521, w: -28.566864}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -17230,7 +17230,7 @@ GameObject:
   - component: {fileID: 605843590007688050}
   - component: {fileID: 1266776190247315748}
   m_Layer: 5
-  m_Name: ButtonChangeLanguage_English
+  m_Name: ButtonChangeLanguageEnglish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18016,7 +18016,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 50.96942, y: 1.7854614, z: 73.09143, w: -28.566864}
+  m_margin: {x: 50.96942, y: 1.7854614, z: 19.632751, w: -28.566864}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -18297,7 +18297,7 @@ GameObject:
   - component: {fileID: 1142636544654865616}
   - component: {fileID: 8251271925003172731}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextVolumeMusicIngame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18350,7 +18350,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0413\u0440\u043E\u043C\u043A\u043E\u0441\u0442\u044C \u043C\u0443\u0437\u044B\u043A\u0438"
+  m_text: "\u0413\u0440\u043E\u043C\u043A\u043E\u0441\u0442\u044C \u0432\u043D\u0443\u0442\u0440\u0438\u0438\u0433\u0440\u043E\u0432\u043E\u0439
+    \u043C\u0443\u0437\u044B\u043A\u0438"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
   m_sharedMaterial: {fileID: 1682876201741934406, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
@@ -19172,7 +19173,7 @@ GameObject:
   - component: {fileID: 8910367955401731073}
   - component: {fileID: 4362196304495458488}
   m_Layer: 5
-  m_Name: SliderVolumeMusic
+  m_Name: SliderVolumeMusicIngame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20199,7 +20200,7 @@ GameObject:
   - component: {fileID: 7368004113657859015}
   - component: {fileID: 6208138515546130232}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextVolumeMusicAmbience
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20252,7 +20253,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0413\u0440\u043E\u043C\u043A\u043E\u0441\u0442\u044C \u043A\u0430\u0442\u0441\u0446\u0435\u043D"
+  m_text: "\u0413\u0440\u043E\u043C\u043A\u043E\u0441\u0442\u044C \u0444\u043E\u043D\u043E\u0432\u043E\u0439
+    \u043C\u0443\u0437\u044B\u043A\u0438"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
   m_sharedMaterial: {fileID: 1682876201741934406, guid: bd8ff1005daebe244bd04de3c72f7322, type: 2}
@@ -20455,7 +20457,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 50.96942, y: 1.7854614, z: 73.09143, w: -28.566864}
+  m_margin: {x: 50.96942, y: 1.7854614, z: 17.30841, w: -28.566864}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -21807,7 +21809,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8440452901407233365}
   m_Layer: 5
-  m_Name: VolumeCutscenes
+  m_Name: VolumeMusicAmbience
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22585,7 +22587,7 @@ GameObject:
   - component: {fileID: 4358274847513103348}
   - component: {fileID: 2761154081112619296}
   m_Layer: 5
-  m_Name: SliderVolumeCutscenes
+  m_Name: SliderVolumeMusicAmbience
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24577,7 +24579,7 @@ GameObject:
   - component: {fileID: 6709765524203681778}
   - component: {fileID: 4644621745049008691}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextVolumeGeneral
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

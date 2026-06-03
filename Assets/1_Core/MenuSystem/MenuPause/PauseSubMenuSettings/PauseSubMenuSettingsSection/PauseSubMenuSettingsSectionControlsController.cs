@@ -125,6 +125,12 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 			_textsComponentsControls[i] = viewModelPauseSubMenuSettings.TextControls[i].GetComponent<TextMeshProUGUI>();
 		}
 
+		SetMouseSensitivityX(1);
+		SetMouseSensitivityY(1);
+
+		_sliderComponentMouseSensitivityX.value = 1;
+		_sliderComponentMouseSensitivityY.value = 1;
+
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
