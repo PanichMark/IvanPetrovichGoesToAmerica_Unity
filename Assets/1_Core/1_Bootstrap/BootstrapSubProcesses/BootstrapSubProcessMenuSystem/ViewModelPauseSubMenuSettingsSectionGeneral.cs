@@ -2,17 +2,46 @@
 
 public class ViewModelPauseSubMenuSettingsSectionGeneral
 {
-	public GameObject SliderChangeFOV;
-	public GameObject NumberFOV;
-	public GameObject[] ButtonsChangeFPS = new GameObject[4];
+	public GameObject DropdownScreenResolution;
+	public GameObject TextDropdownScreenResolution;
+
+	public GameObject DropdownWindowType;
+	public GameObject TextDropdownWindowType;
+
+	public GameObject DropdownLimitFPS;
+	public GameObject TextDropdownLimitFPS;
+
+	public GameObject SliderCameraFOV;
+	public GameObject NumberSliderCameraFOV;
+	public GameObject TextSliderCameraFOV;
+
+	public GameObject SliderScreenBrightness;
+	public GameObject NumberSliderScreenBrightness;
+	public GameObject TextSliderScreenBrightness;
+
+	public GameObject DropdownHUDType;
+	public GameObject TextDropdownHUDType;
 
 	public ViewModelPauseSubMenuSettingsSectionGeneral(Bootstrap bootstrap, GameObject canvas)
 	{
-		SliderChangeFOV = bootstrap.FindDeepGameObject(canvas, "SliderChangeFOV");
-		NumberFOV = bootstrap.FindDeepGameObject(canvas, "NumberFOV");
-		ButtonsChangeFPS[0] = bootstrap.FindDeepGameObject(canvas, "ButtonChangeFPS_30");
-		ButtonsChangeFPS[1] = bootstrap.FindDeepGameObject(canvas, "ButtonChangeFPS_60");
-		ButtonsChangeFPS[2] = bootstrap.FindDeepGameObject(canvas, "ButtonChangeFPS_90");
-		ButtonsChangeFPS[3] = bootstrap.FindDeepGameObject(canvas, "ButtonChangeFPS_144");
+		DropdownScreenResolution = bootstrap.FindDeepGameObject(canvas, "DropdownScreenResolution");
+		TextDropdownScreenResolution = bootstrap.FindDeepGameObject(canvas, "TextScreenResolution");
+
+		DropdownWindowType = bootstrap.FindDeepGameObject(canvas, "DropdownWindowType");
+		TextDropdownWindowType = bootstrap.FindDeepGameObject(canvas, "TextWindowType");
+
+		DropdownLimitFPS = bootstrap.FindDeepGameObject(canvas, "DropdownLimitFPS");
+		TextDropdownLimitFPS = bootstrap.FindDeepGameObject(canvas, "TextLimitFPS");
+
+		SliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "SliderCameraFOV");
+		NumberSliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "NumberCameraFOV");
+		TextSliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "TextCameraFOV");
+
+		SliderScreenBrightness = bootstrap.FindDeepGameObject(canvas, "SliderScreenBrightness");
+		NumberSliderScreenBrightness = bootstrap.FindDeepGameObject(canvas, "NumberScreenBrightness");
+		TextSliderScreenBrightness = bootstrap.FindDeepGameObject(canvas, "TextScreenBrightness");
+
+		DropdownHUDType = bootstrap.FindDeepGameObject(canvas, "DropdownHUDtype");
+		TextDropdownHUDType = bootstrap.FindDeepGameObject(canvas, "TextHUDtype");
 	}
 }

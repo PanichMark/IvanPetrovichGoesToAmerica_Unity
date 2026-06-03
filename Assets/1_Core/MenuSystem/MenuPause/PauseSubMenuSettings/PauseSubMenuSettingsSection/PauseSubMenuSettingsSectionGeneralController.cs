@@ -4,10 +4,38 @@ using UnityEngine.UI;
 
 public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 {
+	private GameController _gameController;
+	private LocalizationManager _localizationManager;
+	private PauseMenuController _pauseMenuController;
+
+	private GameObject _sliderCameraFOV;
+	private Slider _sliderComponentCameraFOV;
+	public float CurrentValueCameraFOV { get; private set; }
+	private const float _MIN_VALUE_CAMERA_FOV = 60f;
+	public float MIN_VALUE_CAMERA_FOV => _MIN_VALUE_CAMERA_FOV;
+	private const float _MAX_VALUE_CAMERA_FOV = 120f;
+	public float MAX_VALUE_CAMERA_FOV => _MAX_VALUE_CAMERA_FOV;
+	private GameObject _textNumberSliderCameraFOV;
+	private TextMeshProUGUI _textComponentNumberSliderCameraFOV;
+	private GameObject _textSliderCameraFOV;
+	private TextMeshProUGUI _textComponentSliderCameraFOV;
+
+
+
+
+	private Button[] _FPSbuttons;
+	private int _currentFrameRateLimit = 60;
+
+
+	private Color _activeColor = Color.green;
+	private Color _normalColor = Color.white;
+
+
+
 	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGeneralData;
 
-	public delegate void MainCameraFOVeventHandle(float newFov, float MIN_FOV_VALUE, float MAX_FOV_VALUE);
+	public delegate void MainCameraFOVeventHandle(float newCameraFOV, float MIN_VALUE_CAMERA_FOV, float MAX_VALUE_CAMERA_FOV);
 	public event MainCameraFOVeventHandle OnMainCameraFOVchanged;
 
 	public delegate void ResetPlayerPrefsSettingsEventHandler();
@@ -15,59 +43,55 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 	public delegate void SavePlayerPrefsCameraSettingsEventHandler();
 	public event SavePlayerPrefsCameraSettingsEventHandler OnSaveCameraSettingsData;
-	private PauseMenuController _pauseMenuController;
-	public float CurrentFOV {  get; private set; }
-	private const float _MIN_FOV_VALUE = 60f;
-	public float MIN_FOV_VALUE => _MIN_FOV_VALUE;
-	private const float _MAX_FOV_VALUE = 120f;
-	public float MAX_FOV_VALUE => _MAX_FOV_VALUE;
-	private Button[] _FPSbuttons;
-	private int _currentFrameRateLimit = 60;
-	private GameObject _sliderFOVgameObject;
-	private Slider _sliderFOV;
-	private TextMeshProUGUI _fovDisplayText;
-
-	private Color _activeColor = Color.green;
-	private Color _normalColor = Color.white;
-
-	private GameController _gameController;
 
 	public void Initialize(
-		GameController  gameController,
+		GameController gameController,
+		LocalizationManager localizationManager,
 		PauseMenuController pauseMenuController,
 		ViewModelPauseSubMenuSettingsSectionGeneral viewModelPauseSubMenuSettings)
 	{
 		_gameController = gameController;
+		_localizationManager = localizationManager;
 		_pauseMenuController = pauseMenuController;
-		_fovDisplayText = viewModelPauseSubMenuSettings.NumberFOV.GetComponent<TextMeshProUGUI>();
+		_textComponentNumberSliderCameraFOV = viewModelPauseSubMenuSettings.NumberSliderCameraFOV.GetComponent<TextMeshProUGUI>();
 
-		_sliderFOVgameObject = viewModelPauseSubMenuSettings.SliderChangeFOV;
+		_sliderCameraFOV = viewModelPauseSubMenuSettings.SliderCameraFOV;
+		_sliderComponentCameraFOV = viewModelPauseSubMenuSettings.SliderCameraFOV.GetComponent<Slider>();
+		_sliderComponentCameraFOV.minValue = _MIN_VALUE_CAMERA_FOV;
+		_sliderComponentCameraFOV.maxValue = _MAX_VALUE_CAMERA_FOV;
+		_sliderComponentCameraFOV.onValueChanged.AddListener(SetFOV);
+		_textNumberSliderCameraFOV = viewModelPauseSubMenuSettings.NumberSliderCameraFOV;
+		_textComponentNumberSliderCameraFOV = viewModelPauseSubMenuSettings.NumberSliderCameraFOV.GetComponent<TextMeshProUGUI>();
+		_textSliderCameraFOV = viewModelPauseSubMenuSettings.TextSliderCameraFOV;
+		_textComponentSliderCameraFOV = viewModelPauseSubMenuSettings.TextSliderCameraFOV.GetComponent<TextMeshProUGUI>();
 
-		_sliderFOV = _sliderFOVgameObject.GetComponent<Slider>();
-
-		_sliderFOV.minValue = _MIN_FOV_VALUE;
-		_sliderFOV.maxValue = _MAX_FOV_VALUE;
-		_sliderFOV.onValueChanged.AddListener(SetFOV);
-
+		/*
 		_FPSbuttons = new Button[viewModelPauseSubMenuSettings.ButtonsChangeFPS.Length];
 
-		_gameController.OnOpenMainMenu += () =>
-		{
-			OnMainCameraFOVchanged?.Invoke(60, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
-		};
+	
 
 		for (int i = 0; i < _FPSbuttons.Length; i++)
 		{
 			_FPSbuttons[i] = viewModelPauseSubMenuSettings.ButtonsChangeFPS[i].GetComponent<Button>();
 		}
+		
 
 		ApplyFPSbuttonColors(_currentFrameRateLimit);
 		ChangeFrameRateLimit(60);
+
 
 		_FPSbuttons[0].onClick.AddListener(() => ChangeFrameRateLimit(30));
 		_FPSbuttons[1].onClick.AddListener(() => ChangeFrameRateLimit(60));
 		_FPSbuttons[2].onClick.AddListener(() => ChangeFrameRateLimit(90));
 		_FPSbuttons[3].onClick.AddListener(() => ChangeFrameRateLimit(144));
+		*/
+
+		_gameController.OnOpenMainMenu += () =>
+		{
+			OnMainCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
+		};
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
@@ -75,29 +99,14 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		Debug.Log("SettingsSectionGeneral Initialized");
 	}
 
-	private void HighlightFPSbutton(Button button)
-	{
-		button.image.color = _activeColor;
-	}
-
 	private void DisableButtons()
 	{
-		foreach (var button in _FPSbuttons)
-		{
-			if (button != null) button.interactable = false;
-		}
-
-		if (_sliderFOV != null) _sliderFOV.interactable = false;
+		_sliderComponentCameraFOV.interactable = false;
 	}
 
 	private void EnableButtons()
 	{
-		foreach (var button in _FPSbuttons)
-		{
-			if (button != null) button.interactable = true;
-		}
-
-		if (_sliderFOV != null) _sliderFOV.interactable = true;
+		 _sliderComponentCameraFOV.interactable = true;
 	}
 
 	public void SaveSettingsGeneral()
@@ -106,51 +115,21 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		OnSaveCameraSettingsData?.Invoke();
 
-		currentData.FOV = CurrentFOV;
+		currentData.FOV = CurrentValueCameraFOV;
 
 		OnSaveSettingsGeneralData?.Invoke(currentData);
 	}
 
-	private void ApplyFPSbuttonColors(int activeFrameRate)
-	{
-		ResetFPSbuttons();
-
-		if (activeFrameRate == 30)
-		{
-			HighlightFPSbutton(_FPSbuttons[0]);
-		}
-		if (activeFrameRate == 60)
-		{
-			HighlightFPSbutton(_FPSbuttons[1]);
-		}
-		if (activeFrameRate == 90)
-		{
-			HighlightFPSbutton(_FPSbuttons[2]);
-		}
-		if (activeFrameRate == 144)
-		{
-			HighlightFPSbutton(_FPSbuttons[3]);
-		}
-	}
-
 	public void GetCameraCurrentFOV(float FOV)
 	{
-		CurrentFOV = FOV;
+		CurrentValueCameraFOV = FOV;
 	}
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
 		SetFOV(data.FOV);
-		_sliderFOV.value = data.FOV;
-		CurrentFOV = data.FOV;
-	}
-
-	private void ResetFPSbuttons()
-	{
-		_FPSbuttons[0].image.color = _normalColor;
-		_FPSbuttons[1].image.color = _normalColor;
-		_FPSbuttons[2].image.color = _normalColor;
-		_FPSbuttons[3].image.color = _normalColor;
+		_sliderComponentCameraFOV.value = data.FOV;
+		CurrentValueCameraFOV = data.FOV;
 	}
 
 	public void ResetSettingsGeneral()
@@ -159,37 +138,34 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
-			FOV = _MIN_FOV_VALUE,
+			FOV = _MIN_VALUE_CAMERA_FOV,
 		};
 
 		OnSaveSettingsGeneralData?.Invoke(defaultData);
 
-		SetFOV(_MIN_FOV_VALUE);
-		_sliderFOV.value = _MIN_FOV_VALUE;
+		SetFOV(_MIN_VALUE_CAMERA_FOV);
+		_sliderComponentCameraFOV.value = _MIN_VALUE_CAMERA_FOV;
 	}
 
 	public void SetFOV(float newFov)
 	{
-		CurrentFOV = newFov;
+		CurrentValueCameraFOV = newFov;
 
-		_fovDisplayText.text = ((int)newFov).ToString();
+		_textComponentNumberSliderCameraFOV.text = ((int)newFov).ToString();
 
 		if (!_gameController.IsMainMenuOpen)
 		{
-			OnMainCameraFOVchanged?.Invoke(newFov, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
+			OnMainCameraFOVchanged?.Invoke(newFov, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
 		}
 		else
 		{
 			
-			OnMainCameraFOVchanged?.Invoke(60, _MIN_FOV_VALUE, _MAX_FOV_VALUE);
+			OnMainCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
 		}
 	}
 
-	private void ChangeFrameRateLimit(int frameRate)
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		Application.targetFrameRate = frameRate;
-		_currentFrameRateLimit = frameRate;
-		ApplyFPSbuttonColors(frameRate);
-		Debug.Log($"Frame rate limit set to {frameRate}");
+		_localizationManager = localizationManager;
 	}
 }

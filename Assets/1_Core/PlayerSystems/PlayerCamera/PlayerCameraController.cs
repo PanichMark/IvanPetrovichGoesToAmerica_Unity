@@ -215,7 +215,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	{
 		_mainCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
 
-		_currentFOV = _pauseSubMenuSettingsSectionGeneralController.CurrentFOV;
+		_currentFOV = _pauseSubMenuSettingsSectionGeneralController.CurrentValueCameraFOV;
 	}
 
 	private void SendCameraFOV()
