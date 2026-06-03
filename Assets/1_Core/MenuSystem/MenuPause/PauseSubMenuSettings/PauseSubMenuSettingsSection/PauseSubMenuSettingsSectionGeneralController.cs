@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,20 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private GameController _gameController;
 	private LocalizationManager _localizationManager;
 	private PauseMenuController _pauseMenuController;
+
+
+
+
+
+
+
+
+
+
+	private GameObject _dropdownLimitFPS;
+	private TMP_Dropdown _dropdownComponentLimitFPS;
+	private GameObject _textDropdownLimitFPS;
+	private TextMeshProUGUI _textComponentDropdownLimitFPS;
 
 	private GameObject _sliderCameraFOV;
 	private Slider _sliderComponentCameraFOV;
@@ -20,23 +35,28 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private GameObject _textSliderCameraFOV;
 	private TextMeshProUGUI _textComponentSliderCameraFOV;
 
+	private GameObject _sliderScreenBrightness;
+	private Slider _sliderComponentScreenBrightness;
+	private float _currentValueScreenBrightness;
+	private const float _MIN_VALUE_SCREEN_BRIGHTNESS = 0f;
+	private const float _MAX_VALUE_SCREEN_BRIGHTNESS = 100f;
+	private GameObject _textNumberSliderScreenBrightness;
+	private TextMeshProUGUI _textComponentNumberSliderScreenBrightness;
+	private GameObject _textSliderScreenBrightness;
+	private TextMeshProUGUI _textComponentSliderScreenBrightness;
 
 
 
-	private Button[] _FPSbuttons;
-	private int _currentFrameRateLimit = 60;
 
 
-	private Color _activeColor = Color.green;
-	private Color _normalColor = Color.white;
 
 
 
 	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGeneralData;
 
-	public delegate void MainCameraFOVeventHandle(float newCameraFOV, float MIN_VALUE_CAMERA_FOV, float MAX_VALUE_CAMERA_FOV);
-	public event MainCameraFOVeventHandle OnMainCameraFOVchanged;
+	public delegate void CameraFOVeventHandler(float newCameraFOV, float MIN_VALUE_CAMERA_FOV, float MAX_VALUE_CAMERA_FOV);
+	public event CameraFOVeventHandler OnCameraFOVchanged;
 
 	public delegate void ResetPlayerPrefsSettingsEventHandler();
 	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGeneralData;
@@ -55,42 +75,50 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_pauseMenuController = pauseMenuController;
 		_textComponentNumberSliderCameraFOV = viewModelPauseSubMenuSettings.NumberSliderCameraFOV.GetComponent<TextMeshProUGUI>();
 
+
+		_dropdownLimitFPS = viewModelPauseSubMenuSettings.DropdownLimitFPS;
+		_dropdownComponentLimitFPS = viewModelPauseSubMenuSettings.DropdownLimitFPS.GetComponent<TMP_Dropdown>();
+		_dropdownComponentLimitFPS.onValueChanged.AddListener(SetFPSLimit);
+		_textDropdownLimitFPS = viewModelPauseSubMenuSettings.TextDropdownLimitFPS;
+		_textComponentDropdownLimitFPS = viewModelPauseSubMenuSettings.TextDropdownLimitFPS.GetComponent<TextMeshProUGUI>();
+
 		_sliderCameraFOV = viewModelPauseSubMenuSettings.SliderCameraFOV;
 		_sliderComponentCameraFOV = viewModelPauseSubMenuSettings.SliderCameraFOV.GetComponent<Slider>();
 		_sliderComponentCameraFOV.minValue = _MIN_VALUE_CAMERA_FOV;
 		_sliderComponentCameraFOV.maxValue = _MAX_VALUE_CAMERA_FOV;
-		_sliderComponentCameraFOV.onValueChanged.AddListener(SetFOV);
+		_sliderComponentCameraFOV.onValueChanged.AddListener(SetCameraFOV);
 		_textNumberSliderCameraFOV = viewModelPauseSubMenuSettings.NumberSliderCameraFOV;
 		_textComponentNumberSliderCameraFOV = viewModelPauseSubMenuSettings.NumberSliderCameraFOV.GetComponent<TextMeshProUGUI>();
 		_textSliderCameraFOV = viewModelPauseSubMenuSettings.TextSliderCameraFOV;
 		_textComponentSliderCameraFOV = viewModelPauseSubMenuSettings.TextSliderCameraFOV.GetComponent<TextMeshProUGUI>();
 
-		/*
-		_FPSbuttons = new Button[viewModelPauseSubMenuSettings.ButtonsChangeFPS.Length];
+		_sliderScreenBrightness = viewModelPauseSubMenuSettings.SliderScreenBrightness;
+		_sliderComponentScreenBrightness = viewModelPauseSubMenuSettings.SliderScreenBrightness.GetComponent<Slider>();
+		_sliderComponentScreenBrightness.minValue = _MIN_VALUE_SCREEN_BRIGHTNESS;
+		_sliderComponentScreenBrightness.maxValue = _MAX_VALUE_SCREEN_BRIGHTNESS;
+		_sliderComponentScreenBrightness.onValueChanged.AddListener(SetScreenBrightness);
+		_textNumberSliderScreenBrightness = viewModelPauseSubMenuSettings.NumberSliderScreenBrightness;
+		_textComponentNumberSliderScreenBrightness = viewModelPauseSubMenuSettings.NumberSliderScreenBrightness.GetComponent<TextMeshProUGUI>();
+		_textSliderScreenBrightness = viewModelPauseSubMenuSettings.TextSliderScreenBrightness;
+		_textComponentSliderScreenBrightness = viewModelPauseSubMenuSettings.TextSliderScreenBrightness.GetComponent<TextMeshProUGUI>();
 
+
+
+
+
+
+
+
+
+
+
+		SetFPSLimit(1);
+
+		SetScreenBrightness(100);
+		_sliderComponentScreenBrightness.value = 100;
+
+		_gameController.OnOpenMainMenu += () => OnCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
 	
-
-		for (int i = 0; i < _FPSbuttons.Length; i++)
-		{
-			_FPSbuttons[i] = viewModelPauseSubMenuSettings.ButtonsChangeFPS[i].GetComponent<Button>();
-		}
-		
-
-		ApplyFPSbuttonColors(_currentFrameRateLimit);
-		ChangeFrameRateLimit(60);
-
-
-		_FPSbuttons[0].onClick.AddListener(() => ChangeFrameRateLimit(30));
-		_FPSbuttons[1].onClick.AddListener(() => ChangeFrameRateLimit(60));
-		_FPSbuttons[2].onClick.AddListener(() => ChangeFrameRateLimit(90));
-		_FPSbuttons[3].onClick.AddListener(() => ChangeFrameRateLimit(144));
-		*/
-
-		_gameController.OnOpenMainMenu += () =>
-		{
-			OnMainCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
-		};
-
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
@@ -127,7 +155,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
-		SetFOV(data.FOV);
+		SetCameraFOV(data.FOV);
 		_sliderComponentCameraFOV.value = data.FOV;
 		CurrentValueCameraFOV = data.FOV;
 	}
@@ -143,29 +171,78 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		OnSaveSettingsGeneralData?.Invoke(defaultData);
 
-		SetFOV(_MIN_VALUE_CAMERA_FOV);
+		SetCameraFOV(_MIN_VALUE_CAMERA_FOV);
 		_sliderComponentCameraFOV.value = _MIN_VALUE_CAMERA_FOV;
 	}
 
-	public void SetFOV(float newFov)
+	public void SetFPSLimit(int dropdownFPSlimitSlot)
 	{
-		CurrentValueCameraFOV = newFov;
+		int newFPSlimit;
 
-		_textComponentNumberSliderCameraFOV.text = ((int)newFov).ToString();
-
-		if (!_gameController.IsMainMenuOpen)
+		if (dropdownFPSlimitSlot == 0)
 		{
-			OnMainCameraFOVchanged?.Invoke(newFov, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
+			newFPSlimit = 30;
+		}
+		else if (dropdownFPSlimitSlot == 1)
+		{
+			newFPSlimit = 60;
+		}
+		else if (dropdownFPSlimitSlot == 2)
+		{
+			newFPSlimit = 90;
+		}
+		else if (dropdownFPSlimitSlot == 3)
+		{
+			newFPSlimit = 144;
 		}
 		else
 		{
-			
-			OnMainCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
+			newFPSlimit = 999;
 		}
+
+		Application.targetFrameRate = newFPSlimit;
+	}
+
+	public void SetCameraFOV(float newCameraFOV)
+	{
+		CurrentValueCameraFOV = newCameraFOV;
+
+		_textComponentNumberSliderCameraFOV.text = ((int)newCameraFOV).ToString();
+
+		if (!_gameController.IsMainMenuOpen)
+		{
+			OnCameraFOVchanged?.Invoke(newCameraFOV, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
+		}
+		else
+		{
+			OnCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
+		}
+	}
+
+	public void SetScreenBrightness(float newScreenBrightness)
+	{
+		_currentValueScreenBrightness = newScreenBrightness;
+
+		_textComponentNumberSliderScreenBrightness.text = ((int)newScreenBrightness).ToString();
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
+
+		_textComponentSliderCameraFOV.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderCameraFOV");
+		_textComponentSliderScreenBrightness.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderScreenBrightness");
+
+		List<string> DropdownLimitFPSlocalizedOptions = new List<string>
+		{
+		_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS30"),
+		_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS60"),
+		_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS90"),
+		_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS144"),
+		_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPSunlimited")
+		};
+		_dropdownComponentLimitFPS.ClearOptions();
+		_dropdownComponentLimitFPS.AddOptions(DropdownLimitFPSlocalizedOptions);
+		_textComponentDropdownLimitFPS.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownFPSlimit");
 	}
 }

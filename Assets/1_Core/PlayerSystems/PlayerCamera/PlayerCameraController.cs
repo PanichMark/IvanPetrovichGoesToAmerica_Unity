@@ -240,14 +240,14 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		PlayerCameraDistanceZ = 3.25f;
 		_mainCamera = _playerCamera.GetComponent<Camera>();
 
-		_pauseSubMenuSettingsSectionGeneralController.OnMainCameraFOVchanged += SetCameraFOV;
+		_pauseSubMenuSettingsSectionGeneralController.OnCameraFOVchanged += SetCameraFOV;
 		_pauseSubMenuSettingsSectionGeneralController.OnSaveCameraSettingsData += SendCameraFOV;
 
 		_gameController.OnCloseMainMenu += () =>
 		{
 			SendCameraFOV();
 			Debug.Log(_currentFOV);
-			_pauseSubMenuSettingsSectionGeneralController.SetFOV(_currentFOV);
+			_pauseSubMenuSettingsSectionGeneralController.SetCameraFOV(_currentFOV);
 		};
 		_gameController.OnOpenMainMenu += SendCameraFOV;
 
