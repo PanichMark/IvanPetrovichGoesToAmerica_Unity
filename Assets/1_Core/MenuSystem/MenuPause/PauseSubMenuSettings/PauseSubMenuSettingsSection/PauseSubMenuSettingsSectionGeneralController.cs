@@ -118,14 +118,6 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType;
 		_textComponentDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType.GetComponent<TextMeshProUGUI>();
 
-
-
-
-
-
-
-
-
 		SetFPSLimit(1);
 
 		SetScreenBrightness(100);
@@ -191,12 +183,42 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 	public void SetScreenResolution(int dropdownScreenResolutionSlot)
 	{
-
+		if (dropdownScreenResolutionSlot == 0)
+		{
+			Screen.SetResolution(3840, 2160, Screen.fullScreen);
+		}
+		else if (dropdownScreenResolutionSlot == 1)
+		{
+			Screen.SetResolution(2560, 1440, Screen.fullScreen);
+		}
+		else if (dropdownScreenResolutionSlot == 2)
+		{
+			Screen.SetResolution(1920, 1080, Screen.fullScreen);
+		}
+		else if (dropdownScreenResolutionSlot == 3)
+		{
+			Screen.SetResolution(1920, 1200, Screen.fullScreen);
+		}
+		else if (dropdownScreenResolutionSlot == 4)
+		{
+			Screen.SetResolution(1080, 1440, Screen.fullScreen);
+		}
 	}
 
 	public void SetWindowType(int dropdownWindowTypeSlot)
 	{
-
+		if (dropdownWindowTypeSlot == 0)
+		{
+			Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+		}
+		else if (dropdownWindowTypeSlot == 1)
+		{
+			Screen.fullScreenMode = FullScreenMode.Windowed;
+		}
+		else if (dropdownWindowTypeSlot == 2)
+		{
+			Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
+		}
 	}
 
 	public void SetFPSLimit(int dropdownFPSlimitSlot)
