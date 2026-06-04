@@ -178,7 +178,7 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
-		Debug.Log("SettingsSectionAudio Initialized");
+		Debug.Log("SettingsSectionAudioController Initialized");
 	}
 
 	private void DisableButtons()

@@ -83,7 +83,7 @@ public class HUDammoController : MonoBehaviour
 		HideRightWeaponAmmo();
 		HideLeftWeaponAmmo();
 
-		Debug.Log("CanvasHUDammoController Initialized");
+		Debug.Log("HUDammoController Initialized");
 	}
 
 	private void ShowCanvasHUDammo()

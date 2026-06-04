@@ -9,6 +9,7 @@ public delegate void OnWeaponChanged(string activeHand);
 
 public class PlayerWeaponController : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
 	private PlayerBehaviourController _playerBehaviour;
@@ -27,7 +28,6 @@ public class PlayerWeaponController : MonoBehaviour
 	public bool IsAbleToUseLeftWeapon { get; private set; }
 
 	public bool HasAnyWeapon { get; private set; } = false;
-	private bool _isInitialized = false;
 	public GameObject LeftHandWeapon { get; private set; }
 	public GameObject RightHandWeapon { get; private set; }
 
@@ -35,7 +35,8 @@ public class PlayerWeaponController : MonoBehaviour
 	public WeaponAbstract RightHandWeaponComponent { get; private set; }
 
 	public void Initialize(
-		 GameController gameController,
+		Bootstrap bootstrap,
+		GameController gameController,
 		IInputDevice inputDevice,
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
@@ -43,6 +44,7 @@ public class PlayerWeaponController : MonoBehaviour
 		PlayerResourcesAmmoManager ammoManager,
 		InteractionController interactionController)
 	{
+		_bootstrap = bootstrap;
 		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_menuManager = menuManager;
@@ -76,11 +78,43 @@ public class PlayerWeaponController : MonoBehaviour
 		_gameController.OnPlayerEarlyDeath += DisarmPlayerOnDeath;
 
 		ResetAllWeapons(); 
-		
-		_isInitialized = true;
-		Debug.Log("WeaponController Initialized");
+
+		Debug.Log("PlayerWeaponController");
 	}
-	
+
+	private void Update()
+	{
+		if (!_bootstrap.IsBootstrapInitialized)
+			return;
+
+		if (_inputDevice.GetKeyRightHandWeaponAttack() && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
+		{
+			RightWeaponAttack();
+		}
+
+		if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
+		{
+			LeftWeaponAttack();
+		}
+
+		IsLeftHand = _inputDevice.GetKeyLeftHandWeaponWheel();
+
+		if (_inputDevice.GetKeyReload())
+		{
+			WeaponAbstract leftWeapon = LeftHandWeapon?.GetComponent<WeaponAbstract>();
+			WeaponAbstract rightWeapon = RightHandWeapon?.GetComponent<WeaponAbstract>();
+
+			if (LeftHandWeaponComponent != null && leftWeapon is WeaponRangedAbstract)
+			{
+				(leftWeapon as WeaponRangedAbstract).Reload();
+			}
+			if (RightHandWeaponComponent != null && rightWeapon is WeaponRangedAbstract)
+			{
+				(rightWeapon as WeaponRangedAbstract).Reload();
+			}
+		}
+	}
+
 	private void DisarmPlayerOnDeath()
 	{
 		if(_playerBehaviour.IsPlayerArmed)
@@ -130,38 +164,6 @@ public class PlayerWeaponController : MonoBehaviour
 		if (LeftHandWeaponComponent != null)
 		{
 			HideWeapon(WeaponHandsEnum.LeftHand); 
-		}
-	}
-
-	private void Update()
-	{
-		if (!_isInitialized)
-			return;
-		if (_inputDevice.GetKeyRightHandWeaponAttack() && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
-		{
-			RightWeaponAttack();
-		}
-
-		if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
-		{
-			LeftWeaponAttack();
-		}
-
-		IsLeftHand = _inputDevice.GetKeyLeftHandWeaponWheel();
-
-		if (_inputDevice.GetKeyReload())
-		{
-			WeaponAbstract leftWeapon = LeftHandWeapon?.GetComponent<WeaponAbstract>();
-			WeaponAbstract rightWeapon = RightHandWeapon?.GetComponent<WeaponAbstract>();
-
-			if (LeftHandWeaponComponent != null && leftWeapon is WeaponRangedAbstract)
-			{
-				(leftWeapon as WeaponRangedAbstract).Reload();
-			}
-			if (RightHandWeaponComponent != null && rightWeapon is WeaponRangedAbstract)
-			{
-				(rightWeapon as WeaponRangedAbstract).Reload();
-			}
 		}
 	}
 

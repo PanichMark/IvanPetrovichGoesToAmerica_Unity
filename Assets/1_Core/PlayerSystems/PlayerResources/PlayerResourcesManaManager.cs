@@ -27,7 +27,7 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 
 		_isInitialized = true;
 
-		Debug.Log("PlayerResourcesMana Initialized");
+		Debug.Log("PlayerResourcesManaManager Initialized");
 	}
 
 	void Update()

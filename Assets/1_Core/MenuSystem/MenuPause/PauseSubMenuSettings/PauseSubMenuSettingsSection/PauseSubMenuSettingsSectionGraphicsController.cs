@@ -25,7 +25,7 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
-		Debug.Log("SettingsSectionGraphicsInitialized");
+		Debug.Log("SettingsSectionGraphicsController Initialized");
 	}
 
 	public void SaveSettingsGraphics()

@@ -45,7 +45,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 		_pauseSubMenuSettingsSectionAudioController.OnSaveSettingsAudioData += SaveSettingsAudio;
 		_pauseSubMenuSettingsSectionAudioController.OnResetSettingsAudioData += ResetSettingsAudio;
 
-		Debug.Log("SettingsPlayerPrefs Initialized");
+		Debug.Log("PauseSubMenuSettingsPlayerPrefs Initialized");
 	}
 
 	public void SaveSettingsGeneral(PlayerPrefsData data)

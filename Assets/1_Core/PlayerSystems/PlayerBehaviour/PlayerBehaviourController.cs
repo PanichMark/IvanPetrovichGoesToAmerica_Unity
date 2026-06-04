@@ -2,6 +2,7 @@
 
 public class PlayerBehaviourController : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
 
 	public bool WasPlayerArmed { get; private set; }
@@ -10,11 +11,22 @@ public class PlayerBehaviourController : MonoBehaviour
 	public delegate void OnPlayerEventHandler();
 	public event OnPlayerEventHandler OnPlayerArmed;
 	public event OnPlayerEventHandler OnPlayerDisarmed;
-	private bool _isInitialized = false;
+
+	public void Initialize(
+		Bootstrap bootstrap,
+		IInputDevice inputDevice)
+	{
+		_bootstrap = bootstrap;
+		_inputDevice = inputDevice;
+
+		Debug.Log("PlayerBehaviourController Initialized");
+	}
+
 	void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
+
 		if (_inputDevice.GetKeyHideWeapons())
 		{
 			DisarmPlayer();
@@ -49,12 +61,5 @@ public class PlayerBehaviourController : MonoBehaviour
 		{
 			WasPlayerArmed = false;
 		}
-	}
-
-	public void Initialize(IInputDevice inputDevice)
-	{
-		this._inputDevice = inputDevice;
-		_isInitialized = true;
-		Debug.Log("PlayerBehaviour Initialized");
 	}
 }

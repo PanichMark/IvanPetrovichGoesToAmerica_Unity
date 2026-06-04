@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
+
 	public delegate void MenuEventHandler();
 	public event MenuEventHandler OnOpenPauseMenu;
 	public event MenuEventHandler OnClosePauseMenu;
@@ -25,7 +27,6 @@ public class MenuManager : MonoBehaviour
 	public event MenuEventHandler OnOpenConfirmationOnExitToMainMenu;
 	public event MenuEventHandler OnCloseConfirmationOnExitToMainMenu;
 
-	private bool _isInitialized = false;
 	public bool IsConfirmationOnExitToMainMenuOpened { get; private set; }
 	public bool IsPauseMenuOpened { get; private set; }
 	public bool IsWeaponWheelMenuOpened { get; private set; }
@@ -47,10 +48,12 @@ public class MenuManager : MonoBehaviour
 	public Stack<int> PauseMenuLevel = new Stack<int>();
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		GameController gameController,
 		IInputDevice inputDevice,
 		GameSceneManager gameSceneManager)
 	{
+		_bootstrap = bootstrap;	
 		_inputDevice = inputDevice;
 		_gameController = gameController;
 		_gameSceneManager = gameSceneManager;
@@ -60,7 +63,6 @@ public class MenuManager : MonoBehaviour
 		IsPauseMenuOpened = false;
 		IsWeaponWheelMenuOpened = false;
 		IsAnyMenuOpened = false;
-		_isInitialized = true;
 		_gameController.OnPlayerLateDeath += OpenPauseMenu;
 
 		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseMenu;
@@ -85,7 +87,7 @@ public class MenuManager : MonoBehaviour
 
 	void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		if (_inputDevice.GetKeyPauseMenu() && !_gameController.IsMainMenuOpen)

@@ -17,7 +17,7 @@ public class PauseSubMenuAppearanceController : MonoBehaviour
 
 		_buttonClosePauseSubMenuAppearance.GetComponent<Button>().onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
 
-		Debug.Log("ImagesSubMenu Initialized");
+		Debug.Log("PauseSubMenuAppearanceController");
 	}
 
 	private void ShowAppearanceSubMenuCanvas()

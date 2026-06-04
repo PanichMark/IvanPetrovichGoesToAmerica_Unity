@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerMovementController : MonoBehaviour, ISaveLoad
 {
 	public event System.Action<PlayerMovementStateTypes> OnPlayerMovementStateChanged;
-
+	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
 	private PlayerBehaviourController _playerBehaviour;
 
@@ -52,13 +52,6 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	public float PlayerUpRayYPosition { get; private set; }
 	public float PlayerDownRayYPosition { get; private set; } = 0.1f;
 	private float _playerFloorDetectionRayCastLength;
-
-	private bool _isInitialized = false;
-
-	public void ChangePlayerRotationSpeed(float speed)
-	{
-		PlayerRotationSpeed = speed;
-	}
 	
 	/*
 	void OnDrawGizmos()
@@ -80,15 +73,42 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	}
 	*/
 
-	public void ChangePlayerRayPosition(float up)
+	public void Initialize(
+		Bootstrap bootstrap,
+		IInputDevice inputDevice,
+		GameSceneManager gameSceneManager,
+		PlayerBehaviourController playerBehaviour)
 	{
-		
-		PlayerUpRayYPosition = up;
+		_bootstrap = bootstrap;
+		_gameSceneManager = gameSceneManager;
+		_inputDevice = inputDevice;
+		_playerBehaviour = playerBehaviour;
+		_playerCamera = Camera.main;
+
+		PlayerRotationSpeed = 300f;
+
+		PlayerTransform = GetComponent<Transform>();
+		PlayerRigidBody = GetComponent<Rigidbody>();
+
+		_playerPreviousFramePosition = transform.position;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerPosition(new Vector3(0, 0, -5));
+
+		IsAbleToChangeMovementType = true;
+
+		PlayerMovementSpeed = 3f;
+
+		PlayerSlidingSpeed = 7.5f;
+
+		PlayerCurrentHeight = 1.75f;
+
+		_playerFloorDetectionRayCastLength = 0.3f;
+
+		Debug.Log("PlayerMovementController Initialized");
 	}
-	
+
 	void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		IsPlayerGrounded = Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out _hitInfo, _playerFloorDetectionRayCastLength);
@@ -194,6 +214,11 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		}
 	}
 
+	public void ChangePlayerRayPosition(float up)
+	{
+		PlayerUpRayYPosition = up;
+	}
+
 	public void SetPlayerWorldMovement(Vector3 newMovement)
 	{
 		_playerWorldMovement = newMovement;
@@ -210,6 +235,11 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	{
 		PlayerMovementSpeed = SetSpeed;
 		return PlayerMovementSpeed;
+	}
+
+	public void ChangePlayerRotationSpeed(float speed)
+	{
+		PlayerRotationSpeed = speed;
 	}
 
 	public void StopPlayerRigidBpdyVelocity()
@@ -362,33 +392,5 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	{
 		PlayerTransform.position = data.PlayerPosition;
 		PlayerTransform.rotation = data.PlayerRotation;
-	}
-
-	public void Initialize(IInputDevice inputDevice, GameSceneManager gameSceneManager, PlayerBehaviourController playerBehaviour)
-	{
-		_gameSceneManager = gameSceneManager;
-		_inputDevice = inputDevice;
-		_playerBehaviour = playerBehaviour; 
-		_playerCamera = Camera.main;
-
-		PlayerRotationSpeed = 300f;
-
-		PlayerTransform = GetComponent<Transform>();
-		PlayerRigidBody = GetComponent<Rigidbody>();
-
-		_playerPreviousFramePosition = transform.position;
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerPosition(new Vector3(0, 0, -5));
-
-		IsAbleToChangeMovementType = true;
-
-		PlayerMovementSpeed = 3f;
-
-		PlayerSlidingSpeed = 7.5f;
-
-		PlayerCurrentHeight = 1.75f;
-		_isInitialized = true;
-		_playerFloorDetectionRayCastLength = 0.3f;
-
-		Debug.Log("PlayerMovement Initialized");
 	}
 }

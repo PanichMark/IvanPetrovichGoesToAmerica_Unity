@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MissionGoalMarkerManager : MonoBehaviour
+public class MissionGoalMarkerController : MonoBehaviour
 {
 	private MissionsManager _missionsManager;
 	private GameObject _imageMissionGoalMarker;
@@ -24,10 +24,12 @@ public class MissionGoalMarkerManager : MonoBehaviour
 		_playerCameraComponent = playerCamera.GetComponent<Camera>();
 
 		MissionsManager.OnCurrentStepChanged += HandleStepChanged;
-		HandleStepChanged();
+		//HandleStepChanged();
 		Invoke(nameof(RequestRecheck), 0.1f);
 
 		markerHeight = _imageMissionGoalMarkerRectTransform.rect.height;
+
+		Debug.Log("MissionGoalMarkerController Initialized");
 	}
 
 	private void HandleStepChanged()

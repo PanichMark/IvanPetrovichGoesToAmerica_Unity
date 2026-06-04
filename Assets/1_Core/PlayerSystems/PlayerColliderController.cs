@@ -2,16 +2,28 @@
 
 public class PlayerColliderController : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private CapsuleCollider _playerCollider;
 	
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 
-	private bool _isInitialized = false;
+
+	public void Initialize(
+		Bootstrap bootstrap,
+		PlayerMovementStateMachineController movementController)
+	{
+		_bootstrap = bootstrap;
+		_playerMovementStateMachineController = movementController; // Новый аргумент
+		_playerCollider = GetComponent<CapsuleCollider>();
+	
+		Debug.Log("PlayerColliderController Initialized");
+	}
 
 	void Update()
     {
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
+
 		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
 			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"
 			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerSliding"
@@ -34,13 +46,5 @@ public class PlayerColliderController : MonoBehaviour
 		{
 			_playerCollider.enabled = true;
 		}
-	}
-
-	public void Initialize(PlayerMovementStateMachineController movementController)
-	{
-		_playerMovementStateMachineController = movementController; // Новый аргумент
-		_playerCollider = GetComponent<CapsuleCollider>();
-		_isInitialized = true;
-		Debug.Log("PlayerCollider Initialized");
 	}
 }

@@ -3,12 +3,9 @@ using UnityEngine;
 
 public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 {
+	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
 	private GameSceneManager _gameSceneManager;
-
-
-	
-
 
 	private PlayerCameraStateAbstract _playerCameraState;
 
@@ -25,25 +22,15 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 	public event CameraStateHandler OnFirstPersonCameraState;
 	public event CameraStateHandler OnThirdPersonCameraState;
 
-	private bool _isInitialized;
-
-	private void Update()
-	{
-		if (!_isInitialized)
-		{
-			return;
-		}
-
-		_playerCameraState.Update();
-	}
-
 	public void Initialize(
+		Bootstrap bootstrap,
 		IInputDevice inputDevice,
 		GameSceneManager gameSceneManager,
 		PlayerMovementController playerMovementController,
 		PlayerMovementStateMachineController playerMovementStateMachineController,
 		PlayerCameraController playerCameraController)
 	{
+		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
 		_gameSceneManager = gameSceneManager;
 		_movementController = playerMovementController;
@@ -51,13 +38,19 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 		_cameraController = playerCameraController;
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
-		SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 
-		_isInitialized = true;
-
-		Debug.Log("PlayerCameraStateMachine Initialized");
+		Debug.Log("PlayerCameraStateMachineController Initialized");
 	}
 
+	private void Update()
+	{
+		if (!_bootstrap.IsBootstrapInitialized)
+		{
+			return;
+		}
+
+		_playerCameraState.Update();
+	}
 
 	public void SetPlayerCameraState(PlayerCameraStateTypes playerCameraStateType)
 	{

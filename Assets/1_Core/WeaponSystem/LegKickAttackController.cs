@@ -3,6 +3,7 @@ using System.Collections;
 
 public class LegKickAttackController : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
 	private PlayerMovementController _playerMovementController;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
@@ -16,8 +17,15 @@ public class LegKickAttackController : MonoBehaviour
 
 	public float WeaponDamage { get; private set; } = 50;
 
-	public void Initialize(IInputDevice inputDevice, PlayerMovementController playerMovementController, PlayerMovementStateMachineController playerMovementStateMachineController, GameObject cachedPlayer, PlayerWeaponController playerWeaponController)
+	public void Initialize(
+		Bootstrap bootstrap,
+		IInputDevice inputDevice,
+		PlayerMovementController playerMovementController,
+		PlayerMovementStateMachineController playerMovementStateMachineController,
+		GameObject cachedPlayer,
+		PlayerWeaponController playerWeaponController)
 	{
+		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
 		_cachedPlayer = cachedPlayer;
 		_playerMovementController = playerMovementController;
@@ -29,11 +37,14 @@ public class LegKickAttackController : MonoBehaviour
 		_forwardOffset = 0.5f;      
 		IsPlayerLegKicking = false;
 
-		Debug.Log("LegKickAttack Initialized");
+		Debug.Log("LegKickAttackController");
 	}
 	
 	void Update()
 	{
+		if (!_bootstrap.IsBootstrapInitialized)
+			return;
+
 		if (_inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && _playerWeaponController.HasAnyWeapon && (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerIdle" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerWalking"
 			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerRunning" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
 			_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"))

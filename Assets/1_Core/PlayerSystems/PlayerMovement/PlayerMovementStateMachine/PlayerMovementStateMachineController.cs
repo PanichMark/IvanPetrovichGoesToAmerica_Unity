@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 {
+	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
 	private GameSceneManager _gameSceneManager;
 
@@ -12,31 +13,27 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 
 	public string CurrentPlayerMovementStateType { get; private set; }
 
-	private bool _isInitialized;
-
 	public void Initialize(
+		Bootstrap bootstrap,
 		IInputDevice inputDevice,
 		GameSceneManager gameSceneManager,
 		PlayerMovementController playerMovementController)
 	{
+		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
 		_gameSceneManager = gameSceneManager;
 		_playerMovementController = playerMovementController;
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
 
-		SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
-
 		_playerMovementController.OnPlayerMovementStateChanged += SetPlayerMovementState;
-
-		_isInitialized = true;
 
 		Debug.Log("PlayerMovementStateMachineController Initialized");
 	}
 
 	public void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		_playerMovementState.Update();

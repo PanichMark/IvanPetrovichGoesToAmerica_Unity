@@ -15,13 +15,14 @@ public class PlayerCameraBlurFilter : MonoBehaviour
 
 		_thirdPersonCameraVolume = GetComponent<Volume>();
 		_firstPersonCameraVolume = _playerCameraFirstPerson.GetComponent<Volume>();
-		Debug.Log("CameraBlurFilter initialized.");
 
 		_menuManager.OnOpenAnyMenu += ActivateCameraBlur;
 		_menuManager.OnCloseAnyMenu += DeactivateCameraBlur;
 		_menuManager.OnOpenPauseMenu += ActivateCameraBlur;
 		_menuManager.OnClosePauseMenuDuringOpenedDialogueMenu += DeactivateCameraBlur;
 		_menuManager.OnClosePauseMenuDuringOpenedCutsceneMenu += DeactivateCameraBlur;
+
+		Debug.Log("PlayerCameraBlurFilter");
 	}
 
 	public void ActivateCameraBlur()

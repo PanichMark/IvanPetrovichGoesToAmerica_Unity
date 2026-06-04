@@ -2,6 +2,7 @@
 
 public class PlayerCameraController : MonoBehaviour, ISaveLoad
 {
+	private Bootstrap _bootstrap;
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
@@ -37,11 +38,52 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private float _startTransitionTime; 
 	public float TransitionDelay { get; private set; } = 0.5f;
 
-	private bool _isInitialized = false;
+	public void Initialize(
+		Bootstrap bootstrap,
+		GameController gameController,
+		IInputDevice inputDevice,
+		GameSceneManager gameSceneManager,
+		MenuManager menuManager,
+		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
+		PlayerMovementController movementController,
+		PlayerMovementStateMachineController playerMovementStateMachineController,
+		PlayerColliderController playerCollider,
+		GameObject playerModel,
+		GameObject playerCamera)
+	{
+		_bootstrap = bootstrap;
+		_gameController = gameController;
+		_gameSceneManager = gameSceneManager;
+		_inputDevice = inputDevice;
+		_menuManager = menuManager;
+		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
+		_movementController = movementController;
+		_playerCollider = playerCollider;
+		_player = playerModel;
+		_playerCamera = playerCamera;
+		_playerMovementStateMachineController = playerMovementStateMachineController;
+		PlayerCameraDistanceX = -0.85f;
+		PlayerCameraDistanceY = -1.75f;
+		PlayerCameraDistanceZ = 3.25f;
+		_mainCamera = _playerCamera.GetComponent<Camera>();
+
+		_pauseSubMenuSettingsSectionGeneralController.OnCameraFOVchanged += SetCameraFOV;
+		_pauseSubMenuSettingsSectionGeneralController.OnSaveCameraSettingsData += SendCameraFOV;
+
+		_gameController.OnCloseMainMenu += () =>
+		{
+			SendCameraFOV();
+			Debug.Log(_currentFOV);
+			_pauseSubMenuSettingsSectionGeneralController.SetCameraFOV(_currentFOV);
+		};
+		_gameController.OnOpenMainMenu += SendCameraFOV;
+
+		Debug.Log("PlayerCameraController Initialized");
+	}
 
 	void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 		{
 			return;
 		}
@@ -221,38 +263,5 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private void SendCameraFOV()
 	{
 		_pauseSubMenuSettingsSectionGeneralController.GetCameraCurrentFOV(_currentFOV);
-	}
-
-	public void Initialize(GameController gameController, IInputDevice inputDevice, GameSceneManager gameSceneManager, MenuManager menuManager, PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController, PlayerMovementController movementController, PlayerMovementStateMachineController playerMovementStateMachineController, PlayerColliderController playerCollider, GameObject playerModel, GameObject playerCamera)
-	{
-		_gameController = gameController;
-		_gameSceneManager = gameSceneManager;
-		_inputDevice = inputDevice;
-		_menuManager = menuManager;
-		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
-		_movementController = movementController; 
-		_playerCollider = playerCollider;
-		_player = playerModel;
-		_playerCamera = playerCamera;
-		_playerMovementStateMachineController = playerMovementStateMachineController;
-		PlayerCameraDistanceX = -0.85f;
-		PlayerCameraDistanceY = -1.75f;
-		PlayerCameraDistanceZ = 3.25f;
-		_mainCamera = _playerCamera.GetComponent<Camera>();
-
-		_pauseSubMenuSettingsSectionGeneralController.OnCameraFOVchanged += SetCameraFOV;
-		_pauseSubMenuSettingsSectionGeneralController.OnSaveCameraSettingsData += SendCameraFOV;
-
-		_gameController.OnCloseMainMenu += () =>
-		{
-			SendCameraFOV();
-			Debug.Log(_currentFOV);
-			_pauseSubMenuSettingsSectionGeneralController.SetCameraFOV(_currentFOV);
-		};
-		_gameController.OnOpenMainMenu += SendCameraFOV;
-
-		_isInitialized = true;
-
-		Debug.Log("CameraController Initialized");
 	}
 }

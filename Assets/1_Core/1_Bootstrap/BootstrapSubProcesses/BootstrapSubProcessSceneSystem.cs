@@ -44,7 +44,6 @@ public class BootstrapSubProcessSceneSystem
 
 		ServiceLocator.Register("GameSceneManager", GameSceneManager);
 
-		Debug.Log("SCENE SYSTEM INITIALIZED");
 		yield break;
 	}
 }

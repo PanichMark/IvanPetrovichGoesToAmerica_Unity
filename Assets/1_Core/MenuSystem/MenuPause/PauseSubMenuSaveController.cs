@@ -110,7 +110,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
-		Debug.Log("SaveSubMenu Initialized");
+		Debug.Log("PauseSubMenuSaveController Initialized");
 	}
 
 	private void DisableButtons()

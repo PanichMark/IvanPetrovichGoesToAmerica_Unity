@@ -39,7 +39,7 @@ public class HUDhealthAndManaController : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDhealthAndMana;
         _gameController.OnPlayerEarlyDeath += HideCanvasHUDhealthAndMana;
 
-		Debug.Log("CanvasHUDhealthAndManaController Initialized");
+		Debug.Log("HUDhealthAndManaController Initialized");
 	}
 
     private void ShowCanvasHUDhealthAndMana()

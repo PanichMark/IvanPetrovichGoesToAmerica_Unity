@@ -37,8 +37,8 @@ public class MissionsManager : MonoBehaviour
 		ActiveMission = _allMissions.MissionsInOrder[0];
 		CurrentStepIndex = 0;
 
-		Debug.Log("Система миссий инициализирована.");
-		Debug.Log($"Активирована первая миссия: {ActiveMission.name}");
+		//Debug.Log("Система миссий инициализирована.");
+		//Debug.Log($"Активирована первая миссия: {ActiveMission.name}");
 
 		if (ActiveMission.Steps.Length > 0)
 		{
@@ -51,10 +51,12 @@ public class MissionsManager : MonoBehaviour
 			SetCurrentMissionGoalText(localizedGoalText);
 			// ----------------
 
-			Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
+			//Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
 		}
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+
+		Debug.Log("MissionsManager Initialized");
 	}
 
 	public void CheckAndCompleteCurrentStep()

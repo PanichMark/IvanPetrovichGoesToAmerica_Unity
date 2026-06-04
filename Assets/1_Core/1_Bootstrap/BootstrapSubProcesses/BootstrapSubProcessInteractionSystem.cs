@@ -50,10 +50,11 @@ public class BootstrapSubProcessInteractionSystem
 		_gameObjectBootstrapInteractionSystem = new GameObject("Bootstrap_InteractionSystem");
 
 		InteractionController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionController>();
-		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
-		_interactionFirstPersonRender = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionFirstPersonRender>();
+		//_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
+		//_interactionFirstPersonRender = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionFirstPersonRender>();
 
 		InteractionController.Initialize(
+			_bootstrap,
 			_gameController,
 			_inputDevice,
 			_localizationManager,
@@ -71,8 +72,6 @@ public class BootstrapSubProcessInteractionSystem
 		_keysManager = new KeysManager();
 
 		ServiceLocator.Register("KeysManager", _keysManager);
-
-		Debug.Log("INTERACTION SYSTEM INITIALIZED");
 
 		yield break;
 	}

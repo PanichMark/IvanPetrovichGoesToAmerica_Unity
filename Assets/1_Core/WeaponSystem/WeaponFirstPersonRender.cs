@@ -2,19 +2,21 @@
 public class WeaponFirstPersonRender : MonoBehaviour
 {
 	private WeaponAbstract _leftHandWeaponComponent;
-
+	private Bootstrap _bootstrap;
 	private WeaponAbstract _rightHandWeaponComponent;
 	private PlayerCameraStateTypes _playerCameraStateType;
 	private PlayerCameraStateMachineController _playerCameraStateMachine;
 	private PlayerWeaponController _weaponController;
 	private GameSceneManager _gameSceneManager;
-	private bool _isInitialized = false;
+
 
 	private GameObject _playerFirstPersonHandRight;
 	private GameObject _playerFirstPersonHandLeft;
 	private GameObject _playerHandRightParent;
 	private GameObject _playerHandLeftParent;
+
 	public void Initialize(
+		Bootstrap bootstrap,
 		GameSceneManager gameSceneManager,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerWeaponController weaponController,
@@ -23,6 +25,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		GameObject playerHandRightParent,
 		GameObject playerHandLeftParent)
 	{
+		_bootstrap = bootstrap;
 		_gameSceneManager = gameSceneManager;
 		_playerCameraStateMachine = playerCameraStateMachineController;
 		_weaponController = weaponController;
@@ -36,34 +39,13 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(_playerFirstPersonHandRight);
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(_playerFirstPersonHandLeft);
 		_weaponController.OnWeaponChanged += RegisterWeapons;
-		_isInitialized = true;
 
 		Debug.Log("WeaponFirstPersonRender Initialized!");
 	}
 
-	private void RegisterWeapons(string handType)
-	{
-		if (handType == "left")
-		{
-			if (_weaponController.LeftHandWeapon != null)
-			{
-				_leftHandWeaponComponent = _weaponController.LeftHandWeapon.GetComponent<WeaponAbstract>();
-			}
-			else _leftHandWeaponComponent = null;
-		}
-		else
-		{
-			if (_weaponController.RightHandWeapon != null)
-			{
-				_rightHandWeaponComponent = _weaponController.RightHandWeapon.GetComponent<WeaponAbstract>();
-			}
-			else _rightHandWeaponComponent = null;
-		}
-	}
-
 	private void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")
@@ -102,7 +84,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")
@@ -152,6 +134,26 @@ public class WeaponFirstPersonRender : MonoBehaviour
 
 			HideFirstPersonHand(_playerFirstPersonHandRight);
 			HideFirstPersonHand(_playerFirstPersonHandLeft);
+		}
+	}
+
+	private void RegisterWeapons(string handType)
+	{
+		if (handType == "left")
+		{
+			if (_weaponController.LeftHandWeapon != null)
+			{
+				_leftHandWeaponComponent = _weaponController.LeftHandWeapon.GetComponent<WeaponAbstract>();
+			}
+			else _leftHandWeaponComponent = null;
+		}
+		else
+		{
+			if (_weaponController.RightHandWeapon != null)
+			{
+				_rightHandWeaponComponent = _weaponController.RightHandWeapon.GetComponent<WeaponAbstract>();
+			}
+			else _rightHandWeaponComponent = null;
 		}
 	}
 

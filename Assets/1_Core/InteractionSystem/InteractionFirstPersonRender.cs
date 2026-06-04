@@ -2,13 +2,13 @@
 
 public class InteractionFirstPersonRender : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private PlayerCameraStateMachineController _playerCameraStateMachine;
 	private InteractionController _interactionController;
 	private GameSceneManager _gameSceneManager;
 
 	private bool _areBothArmsBusy;
 	private bool _isRightArmBusy;
-	private bool _isInitialized = false;
 
 	private GameObject _PlayerFirstPersonHandRight;
 	private GameObject _PlayerFirstPersonHandLeft;
@@ -16,6 +16,7 @@ public class InteractionFirstPersonRender : MonoBehaviour
 	private GameObject _PlayerThirdPersonLeftHand;
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		GameSceneManager gameSceneManager,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		GameObject playerFirstPersonHandRight,
@@ -24,6 +25,7 @@ public class InteractionFirstPersonRender : MonoBehaviour
 		GameObject playerHandLeftParent,
 		InteractionController interactionController)
 	{
+		_bootstrap = bootstrap;
 		_gameSceneManager = gameSceneManager;
 		_playerCameraStateMachine = playerCameraStateMachineController;
 
@@ -44,13 +46,12 @@ public class InteractionFirstPersonRender : MonoBehaviour
 			_isRightArmBusy = false;
 		};
 
-		_isInitialized = true;
 		Debug.Log("InteractionFirstPersonRender initialized!");
 	}
 
 	void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")

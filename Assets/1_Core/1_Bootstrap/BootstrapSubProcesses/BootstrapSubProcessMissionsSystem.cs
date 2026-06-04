@@ -7,7 +7,7 @@ public class BootstrapSubProcessMissionsSystem
 	private GameObject _gameObjectBootstrapMissionsSystem;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 	private GameObject _playerCameraGameObject;
-	private MissionGoalMarkerManager _missionGoalMarkerManager;
+	private MissionGoalMarkerController _missionGoalMarkerManager;
 	private GameMissions _allMissions;
 	private LocalizationManager _localizationManager;
 	private MissionsManager _missionsManager;
@@ -30,7 +30,7 @@ public class BootstrapSubProcessMissionsSystem
 
 		_missionsManager = _gameObjectBootstrapMissionsSystem.AddComponent<MissionsManager>();
 
-		_missionGoalMarkerManager = _gameObjectBootstrapMissionsSystem.AddComponent<MissionGoalMarkerManager>();
+		_missionGoalMarkerManager = _gameObjectBootstrapMissionsSystem.AddComponent<MissionGoalMarkerController>();
 
 		_missionsManager.Initialize(_localizationManager, _bootstrapSubProcessMenuSystem.PauseMenuController, _allMissions, _bootstrapSubProcessMenuSystem.ViewModelPauseMenu);
 		_missionGoalMarkerManager.Initialize(_missionsManager, _playerCameraGameObject, _bootstrapSubProcessMenuSystem.ViewModelHUDMission.ImageMissionGoalMarker);

@@ -70,7 +70,7 @@ public class Bootstrap : MonoBehaviour
 	private IInputDevice _inputDevice;
 	public LocalizationManager LocalizationManager { get; private set; }
 	private KeyCode _keyPauseMenu; // Кнопка открывания/закрывания меню паузы
-	private bool _isInitialized; // DO NOT DELETE
+	public bool IsBootstrapInitialized;
 	private bool _isGamepadConnected; //DO NOT DELETE
 
 	// Система Сцен
@@ -99,6 +99,8 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator StartGame()
 	{
+		Debug.Log("!!! STARTED GAME INITIALIZATION !!!");
+
 		ServiceLocator.ClearAllServices();
 
 		_canvasBootstrap = Instantiate(_canvasBootstrap);
@@ -112,8 +114,6 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(BootstrapSystemsInitialization());
 
 		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration);
-
-		Debug.Log("!!! GAME INITIALIZED !!!");
 
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.SaveLoadController.NewGame());
 
@@ -138,7 +138,9 @@ public class Bootstrap : MonoBehaviour
 
 		OnLoadSettingsData?.Invoke();
 
-		_isInitialized = true;
+		IsBootstrapInitialized = true;
+
+		Debug.Log("!!! GAME INITIALIZED !!!");
 	}
 
 	/*
@@ -219,7 +221,7 @@ public class Bootstrap : MonoBehaviour
 
 		_playerPrefsData = new PlayerPrefsData();
 
-		Debug.Log("INTERFACES INITIALIZED");
+		Debug.Log("=== INTERFACES INITIALIZED ===");
 		yield break;
 	}
 
@@ -255,7 +257,7 @@ public class Bootstrap : MonoBehaviour
 		_canvasMenuLockpickMechanical = Instantiate(_canvasMenuLockpickMechanical);
 		_canvasMenuDialogue = Instantiate(_canvasMenuDialogue);
 
-		Debug.Log("CANVASES INITIALIZED");
+		Debug.Log("=== CANVASES INITIALIZED ===");
 		yield break;
 	}
 
@@ -268,6 +270,8 @@ public class Bootstrap : MonoBehaviour
 			_canvasLoadingScreen);
 
 		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.InitializeSceneSystem());
+
+		Debug.Log("=== SCENE SYSTEM INITIALIZED ===");
 	}
 
 	private IEnumerator InitializeSaveLoadSystem()
@@ -277,6 +281,8 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessSceneSystem);
 
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.InitializeSaveLoadSystem());
+
+		Debug.Log("=== SAVELOAD SYSTEM INITIALIZED ===");
 	}
 
 	private IEnumerator InitializeMenuSystem()
@@ -310,6 +316,8 @@ public class Bootstrap : MonoBehaviour
 			_canvasMenuDialogue);
 
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.InitializeMenuSystem());
+
+		Debug.Log("=== SCENE SYSTEM INITIALIZED ===");
 	}
 
 	private IEnumerator InitializePlayerSystems()
@@ -327,6 +335,8 @@ public class Bootstrap : MonoBehaviour
 			_gameObjectPlayerCamera);
 
 		yield return StartCoroutine(_bootstrapSubProcessPlayerSystems.InitializePlayerSystems());
+
+		Debug.Log("=== PLAYER SYSTEMS INITIALIZED ===");
 	}
 
 	private IEnumerator InitializeInteractionSystem()
@@ -341,20 +351,25 @@ public class Bootstrap : MonoBehaviour
 			LocalizationManager);
 
 		yield return StartCoroutine(_bootstrapSubProcessInteractionSystem.InitializeInteractionSystem());
+
+		Debug.Log("=== INTERACTION SYSTEM INITIALIZED ===");
 	}
 
 	private IEnumerator InitializeWeaponSystem()
 	{
 		_bootstrapSubProcessWeaponSystem = new BootstrapSubProcessWeaponSystem(
+			this,
+			_gameController,
+			_inputDevice,
+			_gameObjectPlayer,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
 			_bootstrapSubProcessPlayerSystems,
-			_bootstrapSubProcessInteractionSystem,
-			_gameController,
-			_inputDevice,
-			_gameObjectPlayer);
+			_bootstrapSubProcessInteractionSystem);
 
 		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
+
+		Debug.Log("=== WEAPON SYSTEM INITIALIZED ===");
 	}
 
 	private IEnumerator InitializeMissionsSystem()
@@ -365,6 +380,8 @@ public class Bootstrap : MonoBehaviour
 			_gameObjectPlayerCamera);
 
 		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
+
+		Debug.Log("=== MISSIONS SYSTEM INITIALIZED ===");
 	}
 
 	private IEnumerator RegisterBootstrapDependencies()
@@ -374,7 +391,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("InputDevice", _inputDevice);
 		ServiceLocator.Register("KeyPauseMenu", _keyPauseMenu);
 
-		Debug.Log("BOOTSTRAP SERVICES REGISTERED");
+		Debug.Log("=== BOOTSTRAP SERVICES REGISTERED ===");
 
 		yield break;
 	}

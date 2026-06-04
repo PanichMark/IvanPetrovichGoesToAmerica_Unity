@@ -5,12 +5,11 @@ using UnityEngine.UI;
 
 public class InteractionController : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
 	private GameObject _canvasHUDinteraction;
 
 	private float _interactionRange = 50f;
-
-	private bool _isInitialized = false;
 
 	private LocalizationManager _localizationManager;
 	public delegate void PickableObjectsHandler();
@@ -58,6 +57,7 @@ public class InteractionController : MonoBehaviour
 	private GameController _gameController;
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		GameController gameController,
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
@@ -72,6 +72,7 @@ public class InteractionController : MonoBehaviour
 		TextMeshProUGUI[] itemsTexts,
 		Image[] itemsImages)
 	{
+		_bootstrap = bootstrap;
 		_gameController = gameController;
 		_gameSceneManager = gameSceneManager;
 		_inputDevice = inputDevice;
@@ -87,8 +88,6 @@ public class InteractionController : MonoBehaviour
 
 		_mainInteractionText = mainInteractionText;
 		_additionalInteractionText = additionalInteractionText;
-
-		_isInitialized = true;
 
 		_HUDInteractionDropText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Drop");
 		_HUDInteractionThrowText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Throw");
@@ -225,7 +224,7 @@ public class InteractionController : MonoBehaviour
 
 	void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		if (_isInteractionObjectLookedAt = Physics.Raycast(_playerCameraController.transform.position, _playerCameraController.transform.forward, out _hitObject, _interactionRange))

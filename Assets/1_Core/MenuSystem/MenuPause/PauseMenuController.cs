@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
 	private LocalizationManager _localizationManager;
@@ -19,7 +20,6 @@ public class PauseMenuController : MonoBehaviour
 	private TextMeshProUGUI _textComponentsCurrentPlayerMoney;
 
 	public bool IsPauseConfirmMenuOpened { get; private set; }
-	private bool _isInitialized = false;
 
 	public delegate void OpenPauseMenuEventHandler();
 	public event OpenPauseMenuEventHandler OnOpenSaveSubMenu;
@@ -33,6 +33,7 @@ public class PauseMenuController : MonoBehaviour
 	public event OpenPauseMenuEventHandler OnCloseConfirmMenu;
 
 	public void Initialize(
+		Bootstrap bootstrap,	
 		GameController gameController,
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
@@ -42,6 +43,7 @@ public class PauseMenuController : MonoBehaviour
 		GameObject canvasPauseMenu,
 		ViewModelPauseMenu viewModelPauseMenu)
 	{
+		_bootstrap = bootstrap;
 		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
@@ -88,14 +90,12 @@ public class PauseMenuController : MonoBehaviour
 		_menuManager.OnCloseConfirmationOnExitToMainMenu += ClosePauseConfirmMenu;
 		_menuManager.OnCloseConfirmationOnExitToMainMenu += EnableButtons;
 
-		_isInitialized = true;
-
-		Debug.Log("PauseMenu Initialized");
+		Debug.Log("PauseMenuController Initialized");
 	}
 
 	private void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		if (_inputDevice.GetKeyPauseMenu() && _menuManager.PauseMenuLevel.Count == 2 && !_gameController.IsMainMenuOpen && !IsPauseConfirmMenuOpened)

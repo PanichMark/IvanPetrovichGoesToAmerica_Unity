@@ -95,18 +95,18 @@ public class BootstrapSubProcessPlayerSystems
 		canvasComponentBackgroundMenu.worldCamera = PlayerCameraComponentPostProcessing;
 		canvasComponentBackgroundMenu.planeDistance = 2;
 
-		PlayerBehaviour.Initialize(_inputDevice);
-		PlayerMovementController.Initialize(_inputDevice, _gameSceneManager, PlayerBehaviour);
-		PlayerMovementStateMachineController.Initialize(_inputDevice, _gameSceneManager, PlayerMovementController);
+		PlayerBehaviour.Initialize(_bootstrap, _inputDevice);
+		PlayerMovementController.Initialize(_bootstrap, _inputDevice, _gameSceneManager, PlayerBehaviour);
+		PlayerMovementStateMachineController.Initialize(_bootstrap, _inputDevice, _gameSceneManager, PlayerMovementController);
 
-		_playerColliderController.Initialize(PlayerMovementStateMachineController);
+		_playerColliderController.Initialize(_bootstrap, PlayerMovementStateMachineController);
 
-		PlayerCameraController.Initialize(_gameController, _inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController, PlayerMovementController, PlayerMovementStateMachineController, _playerColliderController, _gameObjectPlayer, _gameObjectPlayerCamera);
-		PlayerCameraStateMachineController.Initialize(_inputDevice, _gameSceneManager, PlayerMovementController, PlayerMovementStateMachineController, PlayerCameraController);
+		PlayerCameraController.Initialize(_bootstrap, _gameController, _inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController, PlayerMovementController, PlayerMovementStateMachineController, _playerColliderController, _gameObjectPlayer, _gameObjectPlayerCamera);
+		PlayerCameraStateMachineController.Initialize(_bootstrap, _inputDevice, _gameSceneManager, PlayerMovementController, PlayerMovementStateMachineController, PlayerCameraController);
 		_playerCameraBlurFilter.Initialize(_bootstrapSubProcessMenuSystem.MenuManager, PlayerCameraFirstPerson);
-		_playerCameraFirstPersonRender.Initialize(PlayerCameraStateMachineController, _gameObjectPlayerHead);
+		_playerCameraFirstPersonRender.Initialize(_bootstrap, PlayerCameraStateMachineController, _gameObjectPlayerHead);
 
-		_playerMovementAnimationController.Initialize(_inputDevice, PlayerBehaviour, PlayerMovementStateMachineController, PlayerCameraStateMachineController, _gameObjectPlayer);
+		_playerMovementAnimationController.Initialize(_bootstrap, _inputDevice, PlayerBehaviour, PlayerMovementStateMachineController, PlayerCameraStateMachineController, _gameObjectPlayer);
 
 		_playerResourcesHealthManager.Initialize(_gameController, _bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana.SliderHealthBar, _bootstrapSubProcessMenuSystem.ViewModelWeaponWheel.ButtonUseHealingItem, _bootstrapSubProcessMenuSystem.ViewModelWeaponWheel.TextHealingItemNumber);
 		_playerResourcesManaManager.Initialize(_bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana.SliderManaBar, _bootstrapSubProcessMenuSystem.ViewModelWeaponWheel.ButtonUseManaReplenishItem, _bootstrapSubProcessMenuSystem.ViewModelWeaponWheel.TextManaReplenishItemNumber);
@@ -128,8 +128,6 @@ public class BootstrapSubProcessPlayerSystems
 		ServiceLocator.Register("PlayerResourcesManaManager", _playerResourcesManaManager);
 		ServiceLocator.Register("PlayerResourcesMoneyManager", _playerResourcesMoneyManager);
 		ServiceLocator.Register("PlayerResourcesAmmoManager", PlayerResourcesAmmoManager);
-
-		Debug.Log("PLAYER SYSTEMS INITIALIZED");
 
 		yield break;
 	}

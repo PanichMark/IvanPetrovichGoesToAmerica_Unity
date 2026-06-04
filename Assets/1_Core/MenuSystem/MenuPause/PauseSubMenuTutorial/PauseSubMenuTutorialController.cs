@@ -65,7 +65,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 
 		_isInitialized = true;
 
-		Debug.Log("TutorialSubMenu Initialized");
+		Debug.Log("PauseSubMenuTutorialController Initialized");
 	}
 
 	private void Update()

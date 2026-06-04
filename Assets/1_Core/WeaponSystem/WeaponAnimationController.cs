@@ -2,13 +2,14 @@
 
 public class WeaponAnimationController : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private PlayerBehaviourController _playerBehaviour;
 
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private PlayerWeaponController _weaponController;
 
 	private Animator _playerAnimator;
-	private bool _isInitialized = false;
+
 	private LegKickAttackController _legKickAttack;
 	private string _currentPlayerWeaponRightAnimation = "";
 	private string _currentPlayerWeaponLeftAnimation = "";
@@ -18,12 +19,14 @@ public class WeaponAnimationController : MonoBehaviour
 
 	private float _adjustedCameraAngle;
 	public void Initialize(
+		Bootstrap bootstrap,
 		PlayerBehaviourController playerBehaviour,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerWeaponController weaponController,
 		LegKickAttackController legKickAttack,
 		GameObject player)
 	{
+		_bootstrap = bootstrap;
 		_playerAnimator = player.GetComponent<Animator>();
 		_playerBehaviour = playerBehaviour;
 	
@@ -31,14 +34,12 @@ public class WeaponAnimationController : MonoBehaviour
 		_weaponController = weaponController;
 		_legKickAttack = legKickAttack;
 
-		_isInitialized = true;
-
 		Debug.Log("WeaponAnimationController Initialized");
 	}
 
 	private void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		float cameraRotationX = _playerCameraStateMachineController.transform.rotation.eulerAngles.x;

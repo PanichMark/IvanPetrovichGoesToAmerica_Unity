@@ -179,7 +179,7 @@ public class BootstrapSubProcessMenuSystem
 		_pauseSubMenuSaveController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSaveController>();
 		_pauseSubMenuLoadController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuLoadController>();
 		_pauseSubMenuTutorialController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuTutorialController>();
-		_pauseSubMenuAppearanceController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuAppearanceController>();
+		//_pauseSubMenuAppearanceController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuAppearanceController>();
 		_pauseSubMenuSettingsPlayerPrefs = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsPlayerPrefs>();
 		PauseSubMenuSettingsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsController>();
 		PauseSubMenuSettingsSectionGeneralController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionGeneralController>();
@@ -198,7 +198,7 @@ public class BootstrapSubProcessMenuSystem
 		ViewModelPauseMenu = new ViewModelPauseMenu(_bootstrap, _canvasPauseMenu);
 		_viewModelPauseSubMenuSave = new ViewModelPauseSubMenuSave(_bootstrap, _canvasPauseSubMenuSave);
 		_viewModelPauseSubMenuLoad = new ViewModelPauseSubMenuLoad(_bootstrap, _canvasPauseSubMenuLoad);
-		_viewModelPauseSubMenuAppearance = new ViewModelPauseSubMenuAppearance(_bootstrap, _canvasPauseSubMenuAppearance);
+		//_viewModelPauseSubMenuAppearance = new ViewModelPauseSubMenuAppearance(_bootstrap, _canvasPauseSubMenuAppearance);
 		_viewModelPauseSubMenuTutorial = new ViewModelPauseSubMenuTutorial(_bootstrap, _canvasPauseSubMenuTutorial);
 		_viewModelPauseSubMenuSettings = new ViewModelPauseSubMenuSettings(_bootstrap, _canvasPauseSubMenuSettings);
 		_viewModelPauseMenuConfirmAction = new ViewModelPauseMenuConfirmAction(_bootstrap, _canvasMenuConfirmAction);
@@ -220,6 +220,7 @@ public class BootstrapSubProcessMenuSystem
 		ViewModelPauseSubMenuSettingsSectionAudio = new ViewModelPauseSubMenuSettingsSectionAudio(_bootstrap, _canvasPauseSubMenuSettings);
 
 		MenuManager.Initialize(
+			_bootstrap,
 			_gameController,
 			_inputDevice,
 			_gameSceneManager);
@@ -229,6 +230,7 @@ public class BootstrapSubProcessMenuSystem
 			_canvasMenuBackground);
 
 		PauseMenuController.Initialize(
+			_bootstrap,
 			_gameController,
 			_inputDevice,
 			_localizationManager,
@@ -252,10 +254,12 @@ public class BootstrapSubProcessMenuSystem
 			_canvasPauseSubMenuLoad,
 			_viewModelPauseSubMenuLoad);
 
+		/*
 		_pauseSubMenuAppearanceController.Initialize(
 			PauseMenuController,
 			_canvasPauseSubMenuAppearance,
 			_viewModelPauseSubMenuAppearance);
+		*/
 
 		_pauseSubMenuTutorialController.Initialize(
 			_localizationManager,
@@ -366,7 +370,6 @@ public class BootstrapSubProcessMenuSystem
 		ServiceLocator.Register("TextDialogueYes", ViewModelMenuDialogue.TextDialogueYes);
 		ServiceLocator.Register("TextDialogueNo", ViewModelMenuDialogue.TextDialogueNo);
 
-		Debug.Log("MENU INITIALIZED");
 		yield break;
 	}
 }

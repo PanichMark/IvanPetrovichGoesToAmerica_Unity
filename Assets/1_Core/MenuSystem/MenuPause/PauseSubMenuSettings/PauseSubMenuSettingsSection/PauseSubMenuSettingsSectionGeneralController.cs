@@ -130,7 +130,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
-		Debug.Log("SettingsSectionGeneral Initialized");
+		Debug.Log("SettingsSectionGeneralController Initialized");
 	}
 
 	private void DisableButtons()

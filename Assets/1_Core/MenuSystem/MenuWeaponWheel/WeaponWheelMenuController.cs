@@ -57,7 +57,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 		_weaponController.OnAnyWeaponUnlocked += OnWeaponUnlocked;
 
-		Debug.Log("WeaponWheel Initialized");
+		Debug.Log("WeaponWheelMenuController");
 	}
 
 	private void OnWeaponUnlocked(GameObject weaponPrefab)

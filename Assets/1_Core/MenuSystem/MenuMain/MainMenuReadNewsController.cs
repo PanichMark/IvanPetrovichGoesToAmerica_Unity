@@ -30,7 +30,7 @@ public class MainMenuReadNewsController : MonoBehaviour
 		_buttonYouTube.onClick.AddListener(() => OpenUrl(YOUTUBE_URL));
 		_buttonGitHub.onClick.AddListener(() => OpenUrl(GITHUB_URL));
 
-		Debug.Log("MainMenuReadNews Initialized");
+		Debug.Log("MainMenuReadNewsController Initialized");
 	}
 
 	public void ShowCanvasMainMenuReadNews()

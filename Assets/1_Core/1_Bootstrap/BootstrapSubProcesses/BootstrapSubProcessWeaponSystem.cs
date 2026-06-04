@@ -10,6 +10,7 @@ public class BootstrapSubProcessWeaponSystem
 	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
 
+	private Bootstrap _bootstrap;
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
 
@@ -35,14 +36,16 @@ public class BootstrapSubProcessWeaponSystem
 
 
 	public BootstrapSubProcessWeaponSystem(
+		Bootstrap bootstrap,
+		GameController gameController,
+		IInputDevice inputDevice,
+		GameObject playerGameObject,
 		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
-		BootstrapSubProcessInteractionSystem bootstrapSubSystemInteraction,
-		GameController gameController,
-		IInputDevice inputDevice,
-		GameObject playerGameObject)
+		BootstrapSubProcessInteractionSystem bootstrapSubSystemInteraction)
 	{
+		_bootstrap = bootstrap;
 		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
@@ -64,14 +67,13 @@ public class BootstrapSubProcessWeaponSystem
 		_legKickAttackController = _GameObjectBootstrapWeaponSystem.AddComponent<LegKickAttackController>();
 		_HUDammoController = _GameObjectBootstrapWeaponSystem.AddComponent<HUDammoController>();
 
-
-
 		_gameObjectFirstPersonRightHandWeaponSlot = GameObject.Find("FirstPersonWeaponSlot.R");
 		_gameObjectFirstPersonLeftHandWeaponSlot = GameObject.Find("FirstPersonWeaponSlot.L");
 		_gameObjectThirdPersonRightHandWeaponSlot = GameObject.Find("ThirdPersonWeaponSlot.R");
 		_gameObjectThirdPersonLeftHandWeaponSlot = GameObject.Find("ThirdPersonWeaponSlot.L");
 
 		WeaponController.Initialize(
+			_bootstrap,
 			_gameController,
 			_inputDevice,
 			_bootstrapSubProcessMenuSystem.MenuManager,
@@ -81,6 +83,7 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessInteractionSystem.InteractionController);
 
 		_legKickAttackController.Initialize(
+		_bootstrap,
 		_inputDevice,
 		_bootstrapSubProcessPlayerSystems.PlayerMovementController,
 		_bootstrapSubProcessPlayerSystems.PlayerMovementStateMachineController,
@@ -99,6 +102,7 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel.TextWeaponWheelHandType);
 
 		_weaponAnimationController.Initialize(
+			_bootstrap,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			_bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController,
 			WeaponController,
@@ -106,6 +110,7 @@ public class BootstrapSubProcessWeaponSystem
 			_gameObjectPlayer);
 
 		_weaponFirstPersonRender.Initialize(
+			_bootstrap,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController,
 			WeaponController,
@@ -136,7 +141,6 @@ public class BootstrapSubProcessWeaponSystem
 		ServiceLocator.Register("ThirdPersonLeftHandWeaponSlotGameObject", _gameObjectThirdPersonLeftHandWeaponSlot);
 		ServiceLocator.Register("ThirdPersonRightHandWeaponSlotGameObject", _gameObjectThirdPersonRightHandWeaponSlot);
 
-		Debug.Log("WEAPON SYSTEM INITIALIZED");
 		yield break;
 	}
 }

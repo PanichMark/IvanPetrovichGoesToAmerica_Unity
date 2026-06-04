@@ -2,21 +2,23 @@
 
 public class PlayerMovementAnimationController: MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private string _currentPlayerMovementAnimation = "";
 	private Animator _playerAnimator;
-	private bool _isInitialized = false;
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		IInputDevice inputDevice,
 		PlayerBehaviourController playerBehaviour,
 		PlayerMovementStateMachineController playerMovementStateMachineController,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		GameObject player)
 	{
+		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
 		_playerAnimator = player.GetComponent<Animator>();
 		_playerBehaviour = playerBehaviour;
@@ -25,13 +27,12 @@ public class PlayerMovementAnimationController: MonoBehaviour
 		
 		ChangePlayerMovementAnimation("Idle");
 
-		_isInitialized = true;
-		Debug.Log("PlayerAnimationController Initialized");
+		Debug.Log("PlayerMovementAnimationController Initialized");
 	}
 
 	private void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerIdle")

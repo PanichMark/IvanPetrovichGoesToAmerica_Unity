@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections;
 
 public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoad
 {
@@ -35,7 +34,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 
 		_isInitialized = true;
 
-		Debug.Log("PlayerResourcesHealth Initialized");
+		Debug.Log("PlayerResourcesHealthManager Initialized");
 	}
 
 	void Update()

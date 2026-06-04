@@ -25,7 +25,6 @@ public class BootstrapSubProcessSaveLoadSystem
 
 		ServiceLocator.Register("SaveLoadController", SaveLoadController);
 
-		Debug.Log("SAVELOAD SYSTEM INITIALIZED");
 		yield break;
 	}
 }

@@ -13,7 +13,7 @@ public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
 		_playerComponentMoneyText = playerMoneyText.GetComponent<TMP_Text>();
 		
 		UpdateMoneyDisplay();
-		Debug.Log("PlayerResourcesMoney Initialized");
+		Debug.Log("PlayerResourcesMoneyManager Initialized");
 	}
 
 	public void AddMoney(int moneyAmmount)

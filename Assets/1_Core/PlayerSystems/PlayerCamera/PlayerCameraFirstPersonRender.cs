@@ -1,26 +1,27 @@
 ﻿using UnityEngine;
 public class PlayerCameraFirstPersonRender : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private PlayerCameraStateMachineController _playerStateMachineCamera;
-
-	private bool _isInitialized = false;
 
 	private GameObject _playerHeadParent;
 
-	public void Initialize(PlayerCameraStateMachineController playerCameraStateMachineController, GameObject playerHeadParent)
+	public void Initialize(
+		Bootstrap bootstrap,
+		PlayerCameraStateMachineController playerCameraStateMachineController,
+		GameObject playerHeadParent)
 	{
+		_bootstrap = bootstrap;
 		_playerStateMachineCamera = playerCameraStateMachineController;
 
 		_playerHeadParent = playerHeadParent;
 
-		_isInitialized = true;
-
-		Debug.Log("FirstPersonRender Initialized!");
+		Debug.Log("PlayerCameraFirstPersonRender Initialized");
 	}
 
 	void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		if (_playerStateMachineCamera.CurrentPlayerCameraStateType == "FirstPerson") 

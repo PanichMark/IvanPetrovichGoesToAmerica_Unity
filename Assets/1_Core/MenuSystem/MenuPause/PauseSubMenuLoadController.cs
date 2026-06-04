@@ -78,7 +78,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
 		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
-		Debug.Log("New Load SubMenu Initialized");
+		Debug.Log("PauseSubMenuLoadController");
 	}
 
 	private void DisableButtons()

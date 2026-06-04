@@ -47,7 +47,7 @@ public class PlayerResourcesAmmoManager : MonoBehaviour
 			MagazineAmmoCurrent = 2
 		};
 
-		Debug.Log("PlayerResourcesAmmo Initialized");
+		Debug.Log("PlayerResourcesAmmoManager Initialized");
 	}
 
 	public void AddAmmoToMagazine(AmmoTypes type, int amount)
