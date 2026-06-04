@@ -8,53 +8,38 @@ using UnityEngine.SceneManagement;
 
 public class SaveLoadController : MonoBehaviour
 {
-	public string SceneNameToLoad {  get; private set; }
+	private GameSceneManager _gameSceneManager;
+	private GameController _gameController;
+
+	private FileDataHandler _fileDataHandler;
+	private GameData _gameData;
+
+	private List<ISaveLoad> _persistentSaveLoadObjects;
+	private List<ISaveLoad> _gameplaySaveLoadObjects;
+
+	private const string _SAFE_FILE_DATA_TEMP = "SafeFile_TEMP.json";
+	private const string _SAFE_FILE_DATA_SLOT_1 = "SafeFileSlot_1.json";
+	private const string _SAFE_FILE_DATA_SLOT_2 = "SafeFileSlot_2.json";
+	private const string _SAFE_FILE_DATA_SLOT_3 = "SafeFileSlot_3.json";
+	private const string _SAFE_FILE_DATA_SLOT_4 = "SafeFileSlot_4.json";
+	private const string _SAFE_FILE_DATA_SLOT_5 = "SafeFileSlot_5.json";
+
+	public string SceneNameToLoad { get; private set; }
+	public bool IsSavingFinished { get; private set; }
 
 	public delegate void GameSafeFileHandler();
 	public event GameSafeFileHandler OnSafeFileDelete;
 	public event GameSafeFileHandler OnSafeFileLoad;
 	public event GameSafeFileHandler OnSafeFileSaved;
 
-	private GameSceneManager _gameSceneManager;
-	private string _fileSaveDataTEMP = "";
-	private string _fileSaveDataName1 = "";
-	private string _fileSaveDataName2 = "";
-	private string _fileSaveDataName3 = "";
-	private string _fileSaveDataName4 = "";
-	private string _fileSaveDataName5 = "";
-
-	private GameData _gameData;
-	public bool IsSavingFinished { get; private set; }
-
-	private List<ISaveLoad> _persistentSaveLoadObjects;
-	private List<ISaveLoad> _gameplaySaveLoadObjects;
-	private FileDataHandler _fileDataHandler;
-	private GameController _gameController;
 	public void Initialize(GameSceneManager gameSceneManager, GameController gameController)
 	{
 		_gameSceneManager = gameSceneManager;
 		_gameController = gameController;
-		_fileSaveDataTEMP = "SaveGameTEMP.json";
-		_fileSaveDataName1 = "SaveGame1.json";
-		_fileSaveDataName2 = "SaveGame2.json";
-		_fileSaveDataName3 = "SaveGame3.json";
-		_fileSaveDataName4 = "SaveGame4.json";
-		_fileSaveDataName5 = "SaveGame5.json";
 
 		_gameSceneManager.OnEndLoadingGameplayScene += () => StartCoroutine(OnSceneLoadUpdateGameplayObjects());
 		
 		Debug.Log("SaveLoadController Initialized");
-	}
-	private void AssignGameplayObjectIndex()
-	{
-		InteractionObjectLootAbstract[] lootItems = FindObjectsOfType<InteractionObjectLootAbstract>();
-
-		Array.Sort(lootItems, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
-
-		for (int index = 0; index < lootItems.Length; index++)
-		{
-			lootItems[index].AssignLootObjectsIndex(index);
-		}
 	}
 
 	public IEnumerator NewGame()
@@ -62,7 +47,7 @@ public class SaveLoadController : MonoBehaviour
 		_persistentSaveLoadObjects = FindAllPersistentSaveLoadObjects();
 		_gameData = new GameData();
 
-		_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataTEMP);
+		_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_TEMP);
 
 		_fileDataHandler.Save(_gameData);
 
@@ -81,7 +66,7 @@ public class SaveLoadController : MonoBehaviour
 
 		if (saveSlotNumber == -1)
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataTEMP);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_TEMP);
 
 			if (_gameData == null)
 			{
@@ -92,23 +77,23 @@ public class SaveLoadController : MonoBehaviour
 		
 		if (saveSlotNumber == 1)
         {
-             _fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataName1);
+             _fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_1);
         }
 		else if (saveSlotNumber == 2)
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataName2);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_2);
 		}
 		else if (saveSlotNumber == 3)
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataName3);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_3);
 		}
 		else if (saveSlotNumber == 4)
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataName4);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_4);
 		}
 		else if (saveSlotNumber == 5)
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataName5);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_5);
 		}
 
 		foreach (ISaveLoad saveLoadObj in _persistentSaveLoadObjects)
@@ -147,33 +132,33 @@ public class SaveLoadController : MonoBehaviour
 		
 		if (loadSlotNumber == 1)
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataName1);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_1);
 		
 		}
 		else if (loadSlotNumber == 2)
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataName2);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_2);
 		
 		}
 		else if (loadSlotNumber == 3)
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataName3);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_3);
 			
 		}
 		else if (loadSlotNumber == 4)
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataName4);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_4);
 			
 		}
 		else if (loadSlotNumber == 5)
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _fileSaveDataName5);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_5);
 			
 		}
 
 		_gameData = _fileDataHandler.Load();
 
-		SceneNameToLoad = _gameData.CurrentSceneNameSystem;
+		SceneNameToLoad = _gameData.SceneNameSystem;
 
 		foreach (ISaveLoad persistentLoadObj in _persistentSaveLoadObjects)
 		{
@@ -181,19 +166,6 @@ public class SaveLoadController : MonoBehaviour
 		}
 		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesEnum)Enum.Parse(typeof(GameScenesEnum), SceneNameToLoad)));
 
-		yield break;
-	}
-
-	IEnumerator OnSceneLoadUpdateGameplayObjects()
-	{
-		yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
-
-		foreach (ISaveLoad gameplayLoadObj in _gameplaySaveLoadObjects)
-		{
-			gameplayLoadObj.LoadData(_gameData);
-		}
-
-		yield return StartCoroutine(SaveGame(-1));
 		yield break;
 	}
 
@@ -209,23 +181,23 @@ public class SaveLoadController : MonoBehaviour
 
 		if (deleteSlotNumber == 1)
 		{
-			fullPath = Path.Combine(Application.persistentDataPath, _fileSaveDataName1);
+			fullPath = Path.Combine(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_1);
 		}
 		else if (deleteSlotNumber == 2)
 		{
-			fullPath = Path.Combine(Application.persistentDataPath, _fileSaveDataName2);
+			fullPath = Path.Combine(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_2);
 		}
 		else if (deleteSlotNumber == 3)
 		{
-			fullPath = Path.Combine(Application.persistentDataPath, _fileSaveDataName3);
+			fullPath = Path.Combine(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_3);
 		}
 		else if (deleteSlotNumber == 4)
 		{
-			fullPath = Path.Combine(Application.persistentDataPath, _fileSaveDataName4);
+			fullPath = Path.Combine(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_4);
 		}
 		else if (deleteSlotNumber == 5)
 		{
-			fullPath = Path.Combine(Application.persistentDataPath, _fileSaveDataName5);
+			fullPath = Path.Combine(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_5);
 		}
 
 		try
@@ -247,42 +219,49 @@ public class SaveLoadController : MonoBehaviour
 		}
 	}
 
-	public (string SavefileDateAndTime, string SafefileSceneNameSystem)[] GetExtendedSaveInfo()
+	IEnumerator OnSceneLoadUpdateGameplayObjects()
 	{
-		var extendedInfo = new List<(string DateAndTime, string SceneNameSystem)>();
+		yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
 
-		extendedInfo.Add(GetExtendedSaveDataForFile(_fileSaveDataName1));
-		extendedInfo.Add(GetExtendedSaveDataForFile(_fileSaveDataName2));
-		extendedInfo.Add(GetExtendedSaveDataForFile(_fileSaveDataName3));
-		extendedInfo.Add(GetExtendedSaveDataForFile(_fileSaveDataName4));
-		extendedInfo.Add(GetExtendedSaveDataForFile(_fileSaveDataName5));
+		foreach (ISaveLoad gameplayLoadObj in _gameplaySaveLoadObjects)
+		{
+			gameplayLoadObj.LoadData(_gameData);
+		}
 
-		return extendedInfo.ToArray();
+		yield return StartCoroutine(SaveGame(-1));
+		yield break;
 	}
 
-	private (string SavefileDateAndTime, string SafefileSceneNameSystem) GetExtendedSaveDataForFile(string fileName)
+	private void AssignGameplayObjectIndexes()
 	{
-		try
+		AssignLootObjectsIndexes();
+		AssignPickableObjectsIndexes();
+	}
+
+	private void AssignLootObjectsIndexes()
+	{
+		InteractionObjectLootAbstract[] lootObjects = FindObjectsOfType<InteractionObjectLootAbstract>();
+
+		Array.Sort(lootObjects, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
+
+		for (int index = 0; index < lootObjects.Length; index++)
 		{
-			GameData gameData = _fileDataHandler.LoadFromFile(fileName);
-			if (gameData != null)
-			{
-				return (
-					gameData.CurrentDateAndTime,
-					gameData.CurrentSceneNameSystem
-				);
-			}
-			else
-			{
-				return (null, null);
-			}
-		}
-		catch (Exception e)
-		{
-			Debug.LogWarning($"Ошибка при чтении файла '{fileName}'\n{e.Message}");
-			return (null, null);
+			lootObjects[index].AssignLootObjectsIndexes(index);
 		}
 	}
+
+	private void AssignPickableObjectsIndexes()
+	{
+		InteractionObjectPickableAbstract[] pickableObjects = FindObjectsOfType<InteractionObjectPickableAbstract>();
+
+		Array.Sort(pickableObjects, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
+
+		for (int index = 0; index < pickableObjects.Length; index++)
+		{
+			pickableObjects[index].AssignPickableObjectsIndexes(index);
+		}
+	}
+
 
 	private List<ISaveLoad> FindAllPersistentSaveLoadObjects()
 	{
@@ -303,12 +282,49 @@ public class SaveLoadController : MonoBehaviour
 	public IEnumerator UpdateGameplaySaveLoadObjects()
 	{
 		if (_gameplaySaveLoadObjects != null)
-		_gameplaySaveLoadObjects.Clear();
+			_gameplaySaveLoadObjects.Clear();
 
-		AssignGameplayObjectIndex();
+		AssignGameplayObjectIndexes();
 
 		_gameplaySaveLoadObjects = FindAllGameplaySaveLoadObjects();
 
 		yield break;
+	}
+
+	public (string SavefileDateAndTime, string SafefileSceneNameSystem)[] GetExtendedSaveInfo()
+	{
+		var extendedInfo = new List<(string DateAndTime, string SceneNameSystem)>();
+
+		extendedInfo.Add(GetExtendedSaveDataForFile(_SAFE_FILE_DATA_SLOT_1));
+		extendedInfo.Add(GetExtendedSaveDataForFile(_SAFE_FILE_DATA_SLOT_2));
+		extendedInfo.Add(GetExtendedSaveDataForFile(_SAFE_FILE_DATA_SLOT_3));
+		extendedInfo.Add(GetExtendedSaveDataForFile(_SAFE_FILE_DATA_SLOT_4));
+		extendedInfo.Add(GetExtendedSaveDataForFile(_SAFE_FILE_DATA_SLOT_5));
+
+		return extendedInfo.ToArray();
+	}
+
+	private (string SavefileDateAndTime, string SafefileSceneNameSystem) GetExtendedSaveDataForFile(string fileName)
+	{
+		try
+		{
+			GameData gameData = _fileDataHandler.LoadFromFile(fileName);
+			if (gameData != null)
+			{
+				return (
+					gameData.SafeFileDateAndTime,
+					gameData.SceneNameSystem
+				);
+			}
+			else
+			{
+				return (null, null);
+			}
+		}
+		catch (Exception e)
+		{
+			Debug.LogWarning($"Ошибка при чтении файла '{fileName}'\n{e.Message}");
+			return (null, null);
+		}
 	}
 }

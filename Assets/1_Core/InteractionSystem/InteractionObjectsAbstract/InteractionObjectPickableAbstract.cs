@@ -15,7 +15,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	protected GameObject _playerColliderGameObject;
 	protected int _pickableLayer;
 	protected int _playerLayer;
-
+	public int PickableObjectIndex { get; protected set; }
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
 	public GameObject CachedPlayer { get; protected set; }
@@ -49,6 +49,11 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Pickup");
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+	}
+
+	public void AssignPickableObjectsIndexes(int index)
+	{
+		PickableObjectIndex = index;
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -155,12 +160,12 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		transform.position = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.5f + Vector3.up * 1f;
 	}
 
-	public void SaveData(ref GameData data)
+	public virtual void SaveData(ref GameData data)
 	{
 
 	}
 
-	public void LoadData(GameData data)
+	public virtual void LoadData(GameData data)
 	{
 
 	}

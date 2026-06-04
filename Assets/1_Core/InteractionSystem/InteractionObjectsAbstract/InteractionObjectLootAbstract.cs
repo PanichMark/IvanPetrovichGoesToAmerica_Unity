@@ -66,7 +66,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	}
 
-	internal void AssignLootObjectsIndex(int index)
+	public void AssignLootObjectsIndexes(int index)
 	{
 		LootObjectIndex = index;
 	}
