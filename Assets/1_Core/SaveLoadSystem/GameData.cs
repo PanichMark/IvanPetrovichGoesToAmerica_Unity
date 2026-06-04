@@ -30,7 +30,10 @@ public class GameData
 
 
 	public List<LootObjectData> LootObjects_Scene_0_Test;
-	public List<LootObjectData> LootObjects_Scene_1_StreetMain;
+	public List<LootObjectData> LootObjects_Scene_1_Church;
+	public List<LootObjectData> LootObjects_Scene_1_Street;
+	public List<LootObjectData> LootObjects_Scene_1_RevenueHouse;
+	public List<LootObjectData> LootObjects_Scene_1_InnerYard;
 
 	public GameData()
 	{
@@ -59,8 +62,10 @@ public class GameData
 
 
 		LootObjects_Scene_0_Test = new List<LootObjectData>();
-		LootObjects_Scene_1_StreetMain = new List<LootObjectData>();
-
+		LootObjects_Scene_1_Church = new List<LootObjectData>();
+		LootObjects_Scene_1_Street = new List<LootObjectData>();
+		LootObjects_Scene_1_RevenueHouse = new List<LootObjectData>();
+		LootObjects_Scene_1_InnerYard = new List<LootObjectData>();
 	}
 }
 

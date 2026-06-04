@@ -49,25 +49,37 @@ public class FileDataHandler
 		{
 			Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
-			// --- НОВЫЙ КОД ДЛЯ СОРТИРОВКИ ---
-			// Создаем копии списков и сортируем их по LootObjectIndex
-			// Это нужно, чтобы не менять исходные данные в GameData во время игры
 			if (data.LootObjects_Scene_0_Test != null)
 			{
 				var sortedScene0 = new List<LootObjectData>(data.LootObjects_Scene_0_Test);
 				sortedScene0.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
 				data.LootObjects_Scene_0_Test = sortedScene0;
 			}
-
-			if (data.LootObjects_Scene_1_StreetMain != null)
+			if (data.LootObjects_Scene_1_Church != null)
 			{
-				var sortedScene1 = new List<LootObjectData>(data.LootObjects_Scene_1_StreetMain);
+				var sortedScene1 = new List<LootObjectData>(data.LootObjects_Scene_1_Church);
 				sortedScene1.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
-				data.LootObjects_Scene_1_StreetMain = sortedScene1;
+				data.LootObjects_Scene_1_Church = sortedScene1;
 			}
-			// --- КОНЕЦ НОВОГО КОДА ---
+			if (data.LootObjects_Scene_1_Street != null)
+			{
+				var sortedScene1 = new List<LootObjectData>(data.LootObjects_Scene_1_Street);
+				sortedScene1.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
+				data.LootObjects_Scene_1_Street = sortedScene1;
+			}
+			if (data.LootObjects_Scene_1_RevenueHouse != null)
+			{
+				var sortedScene1 = new List<LootObjectData>(data.LootObjects_Scene_1_RevenueHouse);
+				sortedScene1.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
+				data.LootObjects_Scene_1_RevenueHouse = sortedScene1;
+			}
+			if (data.LootObjects_Scene_1_InnerYard != null)
+			{
+				var sortedScene1 = new List<LootObjectData>(data.LootObjects_Scene_1_InnerYard);
+				sortedScene1.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
+				data.LootObjects_Scene_1_InnerYard = sortedScene1;
+			}
 
-			// Теперь сериализуем уже отсортированные данные
 			string dataToStore = JsonUtility.ToJson(data, true);
 
 			using (FileStream stream = new FileStream(fullPath, FileMode.Create))
