@@ -30,6 +30,15 @@ public class GameData
 	public int ManaReplenishItems;
 	public int PlayerMoney;
 
+	//Weapons
+	public List<string> UnlockedWeapons;
+	public string WeaponRightHand;
+	public string WeaponLefrHand;
+	public List<AmmoTypeData> AmmoDictionary;
+	public List<WeaponRangedTypeData> RangedWeapons;
+	public int WeaponInRightHandMagazineAmmoCurrent;
+	public int WeaponInLeftHandMagazineAmmoCurrent;
+
 	//LootObjects
 	public List<LootObjectData> LootObjects_Scene_0_Test;
 	public List<LootObjectData> LootObjects_Scene_1_Church;
@@ -70,6 +79,15 @@ public class GameData
 		PlayerMana = 15;
 		ManaReplenishItems = 6;
 		PlayerMoney = 200;
+
+		//Weapons
+		UnlockedWeapons = new List<string>();
+		AmmoDictionary = new List<AmmoTypeData>();
+		RangedWeapons = new List<WeaponRangedTypeData>();
+		WeaponRightHand = null;
+		WeaponInRightHandMagazineAmmoCurrent = 0;
+		WeaponLefrHand = null;
+		WeaponInLeftHandMagazineAmmoCurrent = 0;
 
 		//LootObjects
 		LootObjects_Scene_0_Test = new List<LootObjectData>();

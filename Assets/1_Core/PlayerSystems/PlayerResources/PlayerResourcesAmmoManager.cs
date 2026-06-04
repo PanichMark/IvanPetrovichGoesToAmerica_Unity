@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public delegate void OnAmmoChangedHandler(AmmoTypes type, int newAmount);
 
-public class PlayerResourcesAmmoManager : MonoBehaviour
+public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 {
 	public System.Action<AmmoTypes, int> OnReserveAmmoChanged;
 	public System.Action<AmmoTypes, int> OnMagazineAmmoChanged;
@@ -97,6 +97,55 @@ public class PlayerResourcesAmmoManager : MonoBehaviour
 			data.TotalAmmoCurrent = Mathf.Max(data.TotalAmmoCurrent - amount, 0);
 			AmmoDictionary[type] = data;
 			OnReserveAmmoChanged?.Invoke(type, data.TotalAmmoCurrent);
+		}
+	}
+
+	public void SaveData(ref GameData data)
+	{
+		data.AmmoDictionary = new List<AmmoTypeData>(AmmoDictionary.Values);
+		data.RangedWeapons = new List<WeaponRangedTypeData>(WeaponDictionary.Values);
+	}
+
+	public void LoadData(GameData data)
+	{
+		if (data.AmmoDictionary != null)
+		{
+			foreach (var ammoData in data.AmmoDictionary)
+			{
+				if (AmmoDictionary.ContainsKey(ammoData.AmmoType))
+				{
+					AmmoDictionary[ammoData.AmmoType] = ammoData;
+				}
+				else
+				{
+					AmmoDictionary.Add(ammoData.AmmoType, ammoData);
+				}
+			}
+		}
+
+		if (data.RangedWeapons != null)
+		{
+			foreach (var weaponData in data.RangedWeapons)
+			{
+				if (WeaponDictionary.ContainsKey(weaponData.RagnedWeaponType))
+				{
+					WeaponDictionary[weaponData.RagnedWeaponType] = weaponData;
+				}
+				else
+				{
+					WeaponDictionary.Add(weaponData.RagnedWeaponType, weaponData);
+				}
+			}
+		}
+
+		foreach (var ammoData in AmmoDictionary.Values)
+		{
+			OnReserveAmmoChanged?.Invoke(ammoData.AmmoType, ammoData.TotalAmmoCurrent);
+		}
+
+		foreach (var weaponData in WeaponDictionary.Values)
+		{
+			OnMagazineAmmoChanged?.Invoke(weaponData.AmmoType, weaponData.MagazineAmmoCurrent);
 		}
 	}
 }

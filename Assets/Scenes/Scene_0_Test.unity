@@ -2485,7 +2485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57da4d8cbea72043bfcf0a4089cf6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linkedMissionCondition: {fileID: 11400000, guid: 37d41c826890b7741b0c220fda3d6dc9, type: 2}
+  _linkedMissionCondition: {fileID: 11400000, guid: 37d41c826890b7741b0c220fda3d6dc9, type: 2}
 --- !u!1 &677116099
 GameObject:
   m_ObjectHideFlags: 0
@@ -5890,7 +5890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57da4d8cbea72043bfcf0a4089cf6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linkedMissionCondition: {fileID: 11400000, guid: d9ada3130dc747d4396422619caf4850, type: 2}
+  _linkedMissionCondition: {fileID: 11400000, guid: d9ada3130dc747d4396422619caf4850, type: 2}
 --- !u!4 &1248752933 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6398821597771778382, guid: c1f8b797644eab645ba73231df0de32d, type: 3}
@@ -7872,7 +7872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57da4d8cbea72043bfcf0a4089cf6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linkedMissionCondition: {fileID: 11400000, guid: b93a992c3bb62e8479c35eb96ccc5110, type: 2}
+  _linkedMissionCondition: {fileID: 11400000, guid: b93a992c3bb62e8479c35eb96ccc5110, type: 2}
 --- !u!1 &1700953129
 GameObject:
   m_ObjectHideFlags: 0
@@ -9004,7 +9004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57da4d8cbea72043bfcf0a4089cf6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linkedMissionCondition: {fileID: 11400000, guid: 58213d56c2b9c694ba549207f534ae4b, type: 2}
+  _linkedMissionCondition: {fileID: 11400000, guid: 58213d56c2b9c694ba549207f534ae4b, type: 2}
 --- !u!1 &1878516996
 GameObject:
   m_ObjectHideFlags: 0

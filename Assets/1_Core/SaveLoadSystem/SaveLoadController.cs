@@ -56,7 +56,7 @@ public class SaveLoadController : MonoBehaviour
 			saveLoadObj.LoadData(_gameData);
 		}
 
-		Debug.Log("--- New Game Started ---");
+		Debug.Log("### New Game Started ###");
 		yield break;
 	}
 

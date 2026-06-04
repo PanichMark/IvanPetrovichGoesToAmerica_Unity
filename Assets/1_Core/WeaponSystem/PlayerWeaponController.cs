@@ -7,7 +7,7 @@ public delegate void OnAnyWeaponUnlocked(GameObject weaponPrefab);
 
 public delegate void OnWeaponChanged(string activeHand);
 
-public class PlayerWeaponController : MonoBehaviour
+public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 {
 	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
@@ -455,5 +455,85 @@ public class PlayerWeaponController : MonoBehaviour
 	public List<GameObject> CollectActiveWeapons()
 	{
 		return new List<GameObject>(UnlockedWeapons.Values);
+	}
+
+	public void SaveData(ref GameData data)
+	{
+		data.UnlockedWeapons = new List<string>(UnlockedWeapons.Keys);
+
+		if (RightHandWeapon != null)
+		{
+			data.WeaponRightHand = RightHandWeaponComponent.WeaponNameSystem;
+
+			if (RightHandWeaponComponent is WeaponRangedAbstract rangedRight)
+			{
+				data.WeaponInRightHandMagazineAmmoCurrent = rangedRight.PlayerMagazineAmmoCurrent;
+			}
+			else
+			{
+				data.WeaponInRightHandMagazineAmmoCurrent = 0;
+			}
+		}
+		else
+		{
+			data.WeaponRightHand = null;
+			data.WeaponInRightHandMagazineAmmoCurrent = 0;
+		}
+
+		if (LeftHandWeapon != null)
+		{
+			data.WeaponLefrHand = LeftHandWeaponComponent.WeaponNameSystem;
+		
+			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedLeft)
+			{
+				data.WeaponInLeftHandMagazineAmmoCurrent = rangedLeft.PlayerMagazineAmmoCurrent;
+			}
+			else
+			{
+				data.WeaponInLeftHandMagazineAmmoCurrent = 0;
+			}
+		}
+		else
+		{
+			data.WeaponLefrHand = null;
+			data.WeaponInLeftHandMagazineAmmoCurrent = 0;
+		}
+	}
+
+	public void LoadData(GameData data)
+	{
+		if (data.UnlockedWeapons != null)
+		{
+			ResetAllWeapons();
+			foreach (string weaponKey in data.UnlockedWeapons)
+			{
+				GameObject weaponPrefab = Resources.Load<GameObject>("Weapons/" + weaponKey);
+				if (weaponPrefab != null)
+				{
+					UnlockWeapon(weaponPrefab);
+				}
+			}
+		}
+
+		if (!string.IsNullOrEmpty(data.WeaponRightHand) && UnlockedWeapons.ContainsKey(data.WeaponRightHand))
+		{
+			SelectWeapon(UnlockedWeapons[data.WeaponRightHand]);
+
+			if (RightHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
+			{
+				rangedWeapon.PlayerMagazineAmmoCurrent = data.WeaponInRightHandMagazineAmmoCurrent;
+			}
+		}
+
+		if (!string.IsNullOrEmpty(data.WeaponLefrHand) && UnlockedWeapons.ContainsKey(data.WeaponLefrHand))
+		{
+			IsLeftHand = true;
+			SelectWeapon(UnlockedWeapons[data.WeaponLefrHand]);
+
+			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
+			{
+				rangedWeapon.PlayerMagazineAmmoCurrent = data.WeaponInLeftHandMagazineAmmoCurrent;
+			}
+		}
 	}
 }
