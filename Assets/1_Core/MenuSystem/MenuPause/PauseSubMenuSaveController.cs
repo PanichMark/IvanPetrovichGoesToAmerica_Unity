@@ -147,7 +147,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		for (int i = 0; i < extendedSaveInfos.Length; i++)
 		{
-			if (string.IsNullOrEmpty(extendedSaveInfos[i].SafefileSceneSystemNameForIcon)) 
+			if (string.IsNullOrEmpty(extendedSaveInfos[i].SafefileSceneNameSystem)) 
 				return i + 1;
 		}
 		return -1;
@@ -171,20 +171,19 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		for (int i = 0; i < extendedSaveInfos.Length; i++)
 		{
-			string currentDataAndTime = extendedSaveInfos[i].SavefileDateTimeForUI;
-			string currentSceneNameUI = extendedSaveInfos[i].SafefileSceneUINameForUI;
-			string currentSceneNameSystem = extendedSaveInfos[i].SafefileSceneSystemNameForIcon;
+			string currentDateAndTime = extendedSaveInfos[i].SavefileDateAndTime;
+			string currentSceneNameSystem = extendedSaveInfos[i].SafefileSceneNameSystem;
 
 			if (!string.IsNullOrEmpty(currentSceneNameSystem))
 			{
 				_buttonsRewriteGameFile[i].SetActive(true);
 
-				_textComponentsGameFileDateAndTime[i].text = currentDataAndTime;
-				_textComponentsGameFileSceneName[i].text = _localizationManager.GetLocalizedString(currentSceneNameUI);
+				_textComponentsGameFileDateAndTime[i].text = currentDateAndTime;
+				_textComponentsGameFileSceneName[i].text = _localizationManager.GetLocalizedString(currentSceneNameSystem);
 
-				Sprite sprite = Resources.Load<Sprite>($"Sprites/Sprites_LoadingScreens/{currentSceneNameSystem}");
+				Sprite spriteScene = Resources.Load<Sprite>($"Sprites/Sprites_LoadingScreens/{currentSceneNameSystem}");
 
-				_imagesComponentsSceneGameFile[i].sprite = sprite;
+				_imagesComponentsSceneGameFile[i].sprite = spriteScene;
 			}
 			else
 			{

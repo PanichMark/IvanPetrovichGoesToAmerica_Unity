@@ -13,19 +13,15 @@ public class PlayerResourcesAmmoManager : MonoBehaviour
 
 	public void SetNewInitialAmmo(AmmoTypes type, int newAmount)
 	{
-		// Проверяем, есть ли такой тип патронов в словаре
 		if (AmmoDictionary.TryGetValue(type, out var data))
 		{
-			// Ограничиваем новое значение, чтобы оно не выходило за рамки максимума и не было меньше нуля
 			int clampedAmount = Mathf.Clamp(newAmount, 0, data.TotalAmmoMax);
 
-			// Если количество действительно изменилось, обновляем данные
 			if (data.TotalAmmoCurrent != clampedAmount)
 			{
 				data.TotalAmmoCurrent = clampedAmount;
-				AmmoDictionary[type] = data; // Обновляем запись в словаре
+				AmmoDictionary[type] = data; 
 
-				// Вызываем событие, чтобы HUD обновил отображение
 				OnReserveAmmoChanged?.Invoke(type, data.TotalAmmoCurrent);
 			}
 		}

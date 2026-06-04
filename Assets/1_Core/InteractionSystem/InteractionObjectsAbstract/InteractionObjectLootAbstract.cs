@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
-using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractable, IGainedItem, ISaveLoad
@@ -92,35 +94,72 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public void SaveData(ref GameData data)
 	{
+		List<LootObjectData> targetList = null;
+
 		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
 		{
-			data.LootObjects_Scene_0_Test[LootObjectIndex].LootItemIndex = LootObjectIndex;
-			data.LootObjects_Scene_0_Test[LootObjectIndex].LootItemName = InteractionObjectNameSystem;
-			data.LootObjects_Scene_0_Test[LootObjectIndex].WasLootItemCollected = WasLootItemCollected;
+			targetList = data.LootObjects_Scene_0_Test;
+		}
+		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
+		{
+			targetList = data.LootObjects_Scene_1_StreetMain;
 		}
 
-		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
+		if (targetList != null)
 		{
-			data.LootObjects_Scene_1_StreetMain[LootObjectIndex].LootItemIndex = LootObjectIndex;
-			data.LootObjects_Scene_1_StreetMain[LootObjectIndex].LootItemName = InteractionObjectNameSystem;
-			data.LootObjects_Scene_1_StreetMain[LootObjectIndex].WasLootItemCollected = WasLootItemCollected;
+			// 1. Ищем индекс нашего объекта в списке
+			int indexInList = targetList.FindIndex(item => item.LootObjectIndex == this.LootObjectIndex);
+
+			if (indexInList != -1)
+			{
+				// 2. Если нашли, создаем НОВУЮ структуру с обновленными данными
+				LootObjectData updatedItem = new LootObjectData
+				{
+					LootObjectIndex = this.LootObjectIndex,
+					LootObjectNameSystem = this.InteractionObjectNameSystem,
+					WasLootObjectCollected = this.WasLootItemCollected // Здесь должно быть true
+				};
+
+				// 3. Заменяем СТАРЫЙ элемент в списке на НОВЫЙ
+				targetList[indexInList] = updatedItem;
+			}
+			else
+			{
+				// Если не нашли - просто добавляем новый (логика не меняется)
+				targetList.Add(new LootObjectData
+				{
+					LootObjectIndex = this.LootObjectIndex,
+					LootObjectNameSystem = this.InteractionObjectNameSystem,
+					WasLootObjectCollected = this.WasLootItemCollected
+				});
+			}
 		}
 	}
 
 	public void LoadData(GameData data)
 	{
+		// Определяем, из какого списка мы будем загружать
+		List<LootObjectData> sourceList = null;
+
 		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
 		{
-			if (data.LootObjects_Scene_0_Test[LootObjectIndex].WasLootItemCollected)
-			{
-				WasLootItemCollected = true;
-				Destroy(gameObject);
-			}
+			sourceList = data.LootObjects_Scene_0_Test;
+		}
+		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
+		{
+			sourceList = data.LootObjects_Scene_1_StreetMain;
 		}
 
-		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
+		// Если сцена определена и список существует и не пуст
+		if (sourceList != null && sourceList.Count > 0)
 		{
-			if (data.LootObjects_Scene_1_StreetMain[LootObjectIndex].WasLootItemCollected)
+			// Ищем данные для нашего объекта
+			LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == this.LootObjectIndex);
+
+			// --- ИСПРАВЛЕННАЯ ПРОВЕРКА ---
+			// Проверяем, является ли индекс найденного элемента ненулевым.
+			// Если он 0, значит, ничего не нашлось.
+			if (savedState.LootObjectIndex != 0 && savedState.WasLootObjectCollected)
 			{
 				WasLootItemCollected = true;
 				Destroy(gameObject);

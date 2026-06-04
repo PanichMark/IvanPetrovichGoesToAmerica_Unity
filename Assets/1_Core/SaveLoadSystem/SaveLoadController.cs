@@ -247,9 +247,9 @@ public class SaveLoadController : MonoBehaviour
 		}
 	}
 
-	public (string SavefileDateTimeForUI, string SafefileSceneUINameForUI, string SafefileSceneSystemNameForIcon)[] GetExtendedSaveInfo()
+	public (string SavefileDateAndTime, string SafefileSceneNameSystem)[] GetExtendedSaveInfo()
 	{
-		var extendedInfo = new List<(string DateTime, string SceneNameUI, string SceneNameSystem)>();
+		var extendedInfo = new List<(string DateAndTime, string SceneNameSystem)>();
 
 		extendedInfo.Add(GetExtendedSaveDataForFile(_fileSaveDataName1));
 		extendedInfo.Add(GetExtendedSaveDataForFile(_fileSaveDataName2));
@@ -260,7 +260,7 @@ public class SaveLoadController : MonoBehaviour
 		return extendedInfo.ToArray();
 	}
 
-	private (string SafefileDateTimeForUI, string SafefileSceneNameUIForUI, string SafefileSceneSystemNameForIcon) GetExtendedSaveDataForFile(string fileName)
+	private (string SavefileDateAndTime, string SafefileSceneNameSystem) GetExtendedSaveDataForFile(string fileName)
 	{
 		try
 		{
@@ -269,19 +269,18 @@ public class SaveLoadController : MonoBehaviour
 			{
 				return (
 					gameData.CurrentDateAndTime,
-					gameData.CurrentSceneNameUI,
 					gameData.CurrentSceneNameSystem
 				);
 			}
 			else
 			{
-				return (null, null, null);
+				return (null, null);
 			}
 		}
 		catch (Exception e)
 		{
 			Debug.LogWarning($"Ошибка при чтении файла '{fileName}'\n{e.Message}");
-			return (null, null, null);
+			return (null, null);
 		}
 	}
 

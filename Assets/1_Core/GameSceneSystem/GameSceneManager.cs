@@ -212,7 +212,6 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 	public void SaveData(ref GameData data)
 	{
 		data.CurrentSceneNameSystem = SceneManager.GetSceneAt(1).name;
-		data.CurrentSceneNameUI = SceneManager.GetSceneAt(1).name;
 	}
 
 	public void LoadData(GameData data)

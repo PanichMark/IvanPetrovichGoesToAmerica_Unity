@@ -1,17 +1,15 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class GameData
 {
-	//CurrentScene
+	//Important
 	public string CurrentSceneNameSystem;
-	public string CurrentSceneNameUI;
-
-	//Date&Time
 	public string CurrentDateAndTime;
 
-	//Player Movement
+	//Player 
 	public string CurrentPlayerMovementStateType;
 	public Vector3 PlayerPosition;
 	public Quaternion PlayerRotation;
@@ -23,56 +21,53 @@ public class GameData
 	public Quaternion CameraRotation;
 	public bool IsCameraShoulderRight;
 
-	//PlayerMoney
-	public int PlayerMoney;
-
-	//PlayerHealth
+	//Resources
 	public float PlayerHealth;
 	public int HealingItems;
-
-	//PlayerMana
 	public int PlayerMana;
 	public int ManaReplenishItems;
+	public int PlayerMoney;
 
-	//Collectables
-	public LootObjectsData[] LootObjects_Scene_0_Test;
-	public LootObjectsData[] LootObjects_Scene_1_StreetMain;
+
+	public List<LootObjectData> LootObjects_Scene_0_Test;
+	public List<LootObjectData> LootObjects_Scene_1_StreetMain;
 
 	public GameData()
 	{
+		//Important
 		CurrentSceneNameSystem = "NEW_SceneTest";
-		CurrentSceneNameUI = "Тестовая сцена";
-
 		CurrentDateAndTime = DateTime.Now.ToString();
 
+		//Player 
 		CurrentPlayerMovementStateType = "PlayerIdle";
 		PlayerPosition = new Vector3(2, 0, 4);
 		PlayerRotation = new Quaternion(0, 0, 0, 0);
 
+		//Camera
 		CurrentPlayerCameraStateType = "ThirdPerson";
 		PlayerCameraDistanceY = -1.75f;
 		PlayerCameraDistanceZ = 3.25f;
 		CameraRotation = new Quaternion(0, 0, 0, 0);
 		IsCameraShoulderRight = true;
 
-		PlayerMoney = 200;
-
+		//Resources
 		PlayerHealth = 40;
 		HealingItems = 3;
-
 		PlayerMana = 15;
 		ManaReplenishItems = 6;
+		PlayerMoney = 200;
 
-		LootObjects_Scene_0_Test = new LootObjectsData[30];
-		LootObjects_Scene_1_StreetMain = new LootObjectsData[30];
+
+		LootObjects_Scene_0_Test = new List<LootObjectData>();
+		LootObjects_Scene_1_StreetMain = new List<LootObjectData>();
 
 	}
 }
 
 [System.Serializable]
-public struct LootObjectsData
+public struct LootObjectData
 {
-	public int LootItemIndex;
-	public string LootItemName;
-	public bool WasLootItemCollected;     
+	public int LootObjectIndex;
+	public string LootObjectNameSystem;
+	public bool WasLootObjectCollected;     
 }

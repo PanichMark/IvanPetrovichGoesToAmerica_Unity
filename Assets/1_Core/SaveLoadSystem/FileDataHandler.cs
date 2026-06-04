@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public class FileDataHandler
 {
@@ -48,6 +49,25 @@ public class FileDataHandler
 		{
 			Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
+			// --- НОВЫЙ КОД ДЛЯ СОРТИРОВКИ ---
+			// Создаем копии списков и сортируем их по LootObjectIndex
+			// Это нужно, чтобы не менять исходные данные в GameData во время игры
+			if (data.LootObjects_Scene_0_Test != null)
+			{
+				var sortedScene0 = new List<LootObjectData>(data.LootObjects_Scene_0_Test);
+				sortedScene0.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
+				data.LootObjects_Scene_0_Test = sortedScene0;
+			}
+
+			if (data.LootObjects_Scene_1_StreetMain != null)
+			{
+				var sortedScene1 = new List<LootObjectData>(data.LootObjects_Scene_1_StreetMain);
+				sortedScene1.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
+				data.LootObjects_Scene_1_StreetMain = sortedScene1;
+			}
+			// --- КОНЕЦ НОВОГО КОДА ---
+
+			// Теперь сериализуем уже отсортированные данные
 			string dataToStore = JsonUtility.ToJson(data, true);
 
 			using (FileStream stream = new FileStream(fullPath, FileMode.Create))
@@ -60,7 +80,7 @@ public class FileDataHandler
 		}
 		catch (Exception e)
 		{
-			Debug.LogError("Saving error: " + fullPath + "/n" + e);
+			Debug.LogError("Saving error: " + fullPath + "\n" + e);
 		}
 	}
 
