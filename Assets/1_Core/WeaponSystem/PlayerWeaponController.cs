@@ -482,7 +482,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (LeftHandWeapon != null)
 		{
-			data.WeaponLefrHand = LeftHandWeaponComponent.WeaponNameSystem;
+			data.WeaponLeftHand = LeftHandWeaponComponent.WeaponNameSystem;
 		
 			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedLeft)
 			{
@@ -495,7 +495,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 		else
 		{
-			data.WeaponLefrHand = null;
+			data.WeaponLeftHand = null;
 			data.WeaponInLeftHandMagazineAmmoCurrent = 0;
 		}
 	}
@@ -515,24 +515,38 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			}
 		}
 
-		if (!string.IsNullOrEmpty(data.WeaponRightHand) && UnlockedWeapons.ContainsKey(data.WeaponRightHand))
+		if (!string.IsNullOrEmpty(data.WeaponRightHand))
 		{
-			SelectWeapon(UnlockedWeapons[data.WeaponRightHand]);
-
-			if (RightHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
+			foreach (var unlockedWeapon in UnlockedWeapons)
 			{
-				rangedWeapon.PlayerMagazineAmmoCurrent = data.WeaponInRightHandMagazineAmmoCurrent;
+				WeaponAbstract weaponComponent = unlockedWeapon.Value.GetComponent<WeaponAbstract>();
+				if (weaponComponent != null && weaponComponent.WeaponNameSystem == data.WeaponRightHand)
+				{
+					SelectWeapon(unlockedWeapon.Value);
+					if (RightHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
+					{
+						rangedWeapon.PlayerMagazineAmmoCurrent = data.WeaponInRightHandMagazineAmmoCurrent;
+					}
+					break;
+				}
 			}
 		}
 
-		if (!string.IsNullOrEmpty(data.WeaponLefrHand) && UnlockedWeapons.ContainsKey(data.WeaponLefrHand))
+		if (!string.IsNullOrEmpty(data.WeaponLeftHand))
 		{
 			IsLeftHand = true;
-			SelectWeapon(UnlockedWeapons[data.WeaponLefrHand]);
-
-			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
+			foreach (var unlockedWeapon in UnlockedWeapons)
 			{
-				rangedWeapon.PlayerMagazineAmmoCurrent = data.WeaponInLeftHandMagazineAmmoCurrent;
+				WeaponAbstract weaponComponent = unlockedWeapon.Value.GetComponent<WeaponAbstract>();
+				if (weaponComponent != null && weaponComponent.WeaponNameSystem == data.WeaponLeftHand)
+				{
+					SelectWeapon(unlockedWeapon.Value);
+					if (LeftHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
+					{
+						rangedWeapon.PlayerMagazineAmmoCurrent = data.WeaponInLeftHandMagazineAmmoCurrent;
+					}
+					break;
+				}
 			}
 		}
 	}

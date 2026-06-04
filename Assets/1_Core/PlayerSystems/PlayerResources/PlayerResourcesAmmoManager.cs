@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public delegate void OnAmmoChangedHandler(AmmoTypes type, int newAmount);
 
@@ -102,50 +103,48 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.AmmoDictionary = new List<AmmoTypeData>(AmmoDictionary.Values);
-		data.RangedWeapons = new List<WeaponRangedTypeData>(WeaponDictionary.Values);
+		List<AmmoTypeData> ammoListForSaving = new List<AmmoTypeData>();
+
+		foreach (var kvp in AmmoDictionary)
+		{
+			// Создаем копию данных из словаря
+			AmmoTypeData saveStruct = kvp.Value;
+			// И записываем имя enum в строковое поле
+			saveStruct.AmmoTypeString = kvp.Key.ToString();
+			ammoListForSaving.Add(saveStruct);
+		}
+
+		data.AmmoDictionary = ammoListForSaving;
 	}
 
 	public void LoadData(GameData data)
 	{
 		if (data.AmmoDictionary != null)
 		{
-			foreach (var ammoData in data.AmmoDictionary)
+			// Используем цикл for, чтобы иметь возможность изменять элементы списка по индексу
+			for (int i = 0; i < data.AmmoDictionary.Count; i++)
 			{
-				if (AmmoDictionary.ContainsKey(ammoData.AmmoType))
+				var currentData = data.AmmoDictionary[i];
+				if (Enum.TryParse(currentData.AmmoTypeString, out AmmoTypes parsedType))
 				{
-					AmmoDictionary[ammoData.AmmoType] = ammoData;
-				}
-				else
-				{
-					AmmoDictionary.Add(ammoData.AmmoType, ammoData);
+					// Создаем новую структуру с обновленным значением
+					AmmoTypeData updatedData = currentData;
+					updatedData.AmmoType = parsedType;
+
+					// Заменяем старый элемент в списке на новый
+					data.AmmoDictionary[i] = updatedData;
+
+					// Обновляем наш рабочий словарь
+					if (AmmoDictionary.ContainsKey(parsedType))
+					{
+						AmmoDictionary[parsedType] = updatedData;
+					}
+					else
+					{
+						AmmoDictionary.Add(parsedType, updatedData);
+					}
 				}
 			}
-		}
-
-		if (data.RangedWeapons != null)
-		{
-			foreach (var weaponData in data.RangedWeapons)
-			{
-				if (WeaponDictionary.ContainsKey(weaponData.RagnedWeaponType))
-				{
-					WeaponDictionary[weaponData.RagnedWeaponType] = weaponData;
-				}
-				else
-				{
-					WeaponDictionary.Add(weaponData.RagnedWeaponType, weaponData);
-				}
-			}
-		}
-
-		foreach (var ammoData in AmmoDictionary.Values)
-		{
-			OnReserveAmmoChanged?.Invoke(ammoData.AmmoType, ammoData.TotalAmmoCurrent);
-		}
-
-		foreach (var weaponData in WeaponDictionary.Values)
-		{
-			OnMagazineAmmoChanged?.Invoke(weaponData.AmmoType, weaponData.MagazineAmmoCurrent);
 		}
 	}
 }
