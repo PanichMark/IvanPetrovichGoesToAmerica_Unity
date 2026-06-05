@@ -174,23 +174,25 @@ public class HUDammoController : MonoBehaviour
 		}
 	}
 
-	private void UpdateMagazineDisplay(AmmoTypes type, int newMagazineAmount)
+	private void UpdateMagazineDisplay(WeaponRangedEnum weaponType, AmmoTypes ammoType, int newAmount)
 	{
 		if (_playerWeaponController.RightHandWeapon != null)
 		{
-			var rightRanged = _playerWeaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
-			if (rightRanged != null && rightRanged.PlayerWeaponAmmoType == type)
+			var rightComp = _playerWeaponController.RightHandWeapon.GetComponent<WeaponAbstract>();
+			if (rightComp != null && rightComp.WeaponName == weaponType.ToString())
 			{
-				_rightWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
+				_rightWeaponAmmoMagazineText.text = newAmount.ToString();
+				return;
 			}
 		}
 
 		if (_playerWeaponController.LeftHandWeapon != null)
 		{
-			var leftRanged = _playerWeaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
-			if (leftRanged != null && leftRanged.PlayerWeaponAmmoType == type)
+			var leftComp = _playerWeaponController.LeftHandWeapon.GetComponent<WeaponAbstract>();
+			if (leftComp != null && leftComp.WeaponName == weaponType.ToString())
 			{
-				_leftWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
+				_leftWeaponAmmoMagazineText.text = newAmount.ToString();
+				return;
 			}
 		}
 	}

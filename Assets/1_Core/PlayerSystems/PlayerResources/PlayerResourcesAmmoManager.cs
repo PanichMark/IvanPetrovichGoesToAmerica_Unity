@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void OnAmmoChangedHandler(AmmoTypes type, int newAmount);
 
 public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 {
-	public System.Action<AmmoTypes, int> OnReserveAmmoChanged;
-	public System.Action<AmmoTypes, int> OnMagazineAmmoChanged;
+	// Стало:
+	// Стало:
+	public event System.Action<AmmoTypes, int> OnReserveAmmoChanged;
+	public event System.Action<WeaponRangedEnum, AmmoTypes, int> OnMagazineAmmoChanged;
 
 	public Dictionary<AmmoTypes, AmmoTypeData> AmmoDictionary = new Dictionary<AmmoTypes, AmmoTypeData>();
 	public Dictionary<WeaponRangedEnum, WeaponRangedData> WeaponsRangedDictionary = new Dictionary<WeaponRangedEnum, WeaponRangedData>();
@@ -25,6 +28,18 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 				OnReserveAmmoChanged?.Invoke(type, data.TotalAmmoCurrent);
 			}
 		}
+	}
+
+	public void NotifyReserveAmmoChanged(AmmoTypes type, int newAmount)
+	{
+		// Этот метод теперь служит "шлюзом" для вызова события извне
+		OnReserveAmmoChanged?.Invoke(type, newAmount);
+	}
+
+	public void NotifyMagazineAmmoChanged(WeaponRangedEnum weaponType, AmmoTypes ammoType, int newAmount)
+	{
+		// А этот метод - для нового события магазина
+		OnMagazineAmmoChanged?.Invoke(weaponType, ammoType, newAmount);
 	}
 
 	public void Initialize()
@@ -57,6 +72,8 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 		Debug.Log("PlayerResourcesAmmoManager Initialized");
 	}
 
+	// В файле PlayerResourcesAmmoManager.cs
+
 	public void AddAmmoToMagazine(AmmoTypes type, int amount)
 	{
 		if (amount <= 0)
@@ -64,7 +81,24 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 			Debug.LogError($"[PlayerResourcesAmmoManager] Попытка добавить в магазин неположительное количество патронов: {amount}.");
 			return;
 		}
-		OnMagazineAmmoChanged?.Invoke(type, amount);
+
+		// Находим все виды оружия, которые используют данный тип патронов,
+		// и увеличиваем у них значение MagazineAmmoCurrent.
+		foreach (var weaponEntry in WeaponsRangedDictionary)
+		{
+			if (weaponEntry.Value.AmmoTypeSystem == type)
+			{
+				var data = weaponEntry.Value;
+				data.MagazineAmmoCurrent = Mathf.Min(data.MagazineAmmoMax, data.MagazineAmmoCurrent + amount);
+
+				// Сохраняем обновленное состояние обратно в словарь
+				WeaponsRangedDictionary[weaponEntry.Key] = data;
+
+				// Оповещаем HUD об изменении.
+				// Обратите внимание: мы передаем конкретный тип оружия!
+				OnMagazineAmmoChanged?.Invoke(weaponEntry.Key, type, data.MagazineAmmoCurrent);
+			}
+		}
 	}
 
 	public void RemoveAmmoFromMagazine(AmmoTypes type, int amount)
@@ -74,7 +108,20 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 			Debug.LogError($"[PlayerResourcesAmmoManager] Попытка отнять из магазина неположительное количество патронов: {amount}.");
 			return;
 		}
-		OnMagazineAmmoChanged?.Invoke(type, -amount);
+
+		// Аналогично, находим оружие и уменьшаем его боезапас
+		foreach (var weaponEntry in WeaponsRangedDictionary)
+		{
+			if (weaponEntry.Value.AmmoTypeSystem == type)
+			{
+				var data = weaponEntry.Value;
+				data.MagazineAmmoCurrent = Mathf.Max(0, data.MagazineAmmoCurrent - amount);
+
+				WeaponsRangedDictionary[weaponEntry.Key] = data;
+
+				OnMagazineAmmoChanged?.Invoke(weaponEntry.Key, type, data.MagazineAmmoCurrent);
+			}
+		}
 	}
 
 	public void AddAmmoToReserve(AmmoTypes type, int amount)

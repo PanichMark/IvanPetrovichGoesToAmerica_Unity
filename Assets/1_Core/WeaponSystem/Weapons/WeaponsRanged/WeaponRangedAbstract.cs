@@ -55,7 +55,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		PlayerMagazineAmmoCurrent--;
 
-		_playerResourcesAmmoManager.OnMagazineAmmoChanged?.Invoke(PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
+		if (System.Enum.TryParse(this.WeaponName, out WeaponRangedEnum parsedWeaponType))
+		{
+			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
+		}
 	}
 
 	public void ShootNPCweapon()
@@ -95,8 +98,15 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
-		_playerResourcesAmmoManager.OnReserveAmmoChanged?.Invoke(PlayerWeaponAmmoType, data.TotalAmmoCurrent);
-		_playerResourcesAmmoManager.OnMagazineAmmoChanged?.Invoke(PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
+		// НОВЫЕ ВЫЗОВЫ:
+		if (System.Enum.TryParse(this.WeaponName, out WeaponRangedEnum parsedWeaponType))
+		{
+			// Вызываем метод для обновления данных о резерве
+			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.TotalAmmoCurrent);
+
+			// Вызываем метод для обновления данных о магазине
+			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
+		}
 
 		Debug.Log("Reloaded");
 	}
