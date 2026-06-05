@@ -35,6 +35,7 @@ public class PlayerBehaviourController : MonoBehaviour
 
 	public void ArmPlayer()
 	{
+	//	Debug.Log("ARM!!!!");
 		if (!IsPlayerArmed)
 		{
 			IsPlayerArmed = true;
@@ -48,6 +49,8 @@ public class PlayerBehaviourController : MonoBehaviour
 
 	public void DisarmPlayer()
 	{
+		//Debug.Log("DISARM!!!!");
+
 		if (IsPlayerArmed)
 		{
 			IsPlayerArmed = false;

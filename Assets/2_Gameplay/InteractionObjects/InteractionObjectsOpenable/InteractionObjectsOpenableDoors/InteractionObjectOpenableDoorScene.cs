@@ -5,8 +5,7 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 {
 	private GameSceneManager _gameSceneManager;
 	[SerializeField] private GameScenesEnum _targetScene;
-	[SerializeField] private Vector3 _newPlayerPosition;
-	[SerializeField] private int _newPlayerRotation;
+	[SerializeField] private InteractionObjectOpenableDoorScenePlayerTransform _interactionObjectOpenableDoorScenePlayerTransform;
 	private PlayerMovementController _playerMovementController;
 	private string _interactionHintMessageScene;
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
@@ -101,8 +100,8 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 
 		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(_targetScene));
 
-		_playerMovementController.SetPlayerPosition(_newPlayerPosition);
-		_playerMovementController.SetPlayerRotation(_newPlayerRotation);
+		_playerMovementController.SetPlayerPosition(_interactionObjectOpenableDoorScenePlayerTransform.PlayerPosition);
+		_playerMovementController.SetPlayerRotation(_interactionObjectOpenableDoorScenePlayerTransform.PlayerRotation);
 
 		Destroy(parentTransform.gameObject);
 	}

@@ -15,7 +15,8 @@ public class InteractionController : MonoBehaviour
 	public delegate void PickableObjectsHandler();
 	public event PickableObjectsHandler OnPickUpThrowable;
 	public event PickableObjectsHandler OnPickUpNonThrowable;
-	public event PickableObjectsHandler OnGetRidOfPickable;
+	public event PickableObjectsHandler OnGetRidOfNonThrowable;
+	public event PickableObjectsHandler OnGetRidOfThrowable;
 
 	private string _HUDInteractionMainTextInteract;
 	private string _HUDInteractionDropText;
@@ -193,27 +194,43 @@ public class InteractionController : MonoBehaviour
 
 			if (_inputDevice.GetKeyInteract() || _gameController.IsPlayerDead)
 			{
-				OnGetRidOfPickable?.Invoke();
+				
 				_currentIPickable.DropOffObject();
 				_currentIPickable = null;
 				_changedPickedUpState = false;
 				CurrentPickableObject = null;
 				ChangeInteractionRange();
-				if (_playerBehaviour.WasPlayerArmed == true)
+				//Debug.Log(_playerBehaviour.WasPlayerArmed);
+				if (_currentIThrowable == null)
 				{
-					_playerBehaviour.ArmPlayer();
+					OnGetRidOfNonThrowable?.Invoke();
+
+					if (_playerBehaviour.WasPlayerArmed == true)
+					{
+						_playerBehaviour.ArmPlayer();
+					}
+				}
+				else
+				{
+					OnGetRidOfThrowable?.Invoke();
+
+					if (_playerBehaviour.IsPlayerArmed == true)
+					{
+						_playerBehaviour.ArmPlayer();
+					}
 				}
 			}
 
 			if (_currentIThrowable != null && _inputDevice.GetKeyRightHandWeaponAttack())
 			{
-				OnGetRidOfPickable?.Invoke();
+				OnGetRidOfThrowable?.Invoke();
 				_currentIThrowable.ThrowObject();
 				_currentIPickable = null;
 				_currentIThrowable = null;
 				_changedPickedUpState = false;
 				CurrentPickableObject = null;
 				ChangeInteractionRange();
+				//Debug.Log(_playerBehaviour.WasPlayerArmed);
 				if (_playerBehaviour.WasPlayerArmed == true)
 				{
 					_playerBehaviour.ArmPlayer();

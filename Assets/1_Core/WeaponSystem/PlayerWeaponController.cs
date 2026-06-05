@@ -74,7 +74,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				HideWeapon(WeaponHandsEnum.HandRight);
 			}
 		};
-		_interactionController.OnGetRidOfPickable += OnGetRidOfPickableHandler;
+		_interactionController.OnGetRidOfThrowable += OnGetRidOfPickableThrowableHandler;
+		_interactionController.OnGetRidOfNonThrowable += OnGetRidOfPickableNonThrowableHandler;
 		_gameController.OnPlayerEarlyDeath += DisarmPlayerOnDeath;
 
 		ResetAllWeapons(); 
@@ -123,18 +124,32 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}	
 	}
 
-	private void OnGetRidOfPickableHandler()
+	private void OnGetRidOfPickableNonThrowableHandler()
 	{
-		StartCoroutine(OnGetRidOfPickableCourutine()); 
+		StartCoroutine(OnGetRidOfPickableNonThrowableCourutine());
 	}
 
-	private IEnumerator OnGetRidOfPickableCourutine()
+	private IEnumerator OnGetRidOfPickableNonThrowableCourutine()
 	{
 		yield return new WaitForSecondsRealtime(0.05f);
 		IsAbleToUseRightWeapon = true;
 		IsAbleToUseLeftWeapon = true;
 
-		if (RightHandWeapon != null)
+		yield return null;
+	}
+
+	private void OnGetRidOfPickableThrowableHandler()
+	{
+		StartCoroutine(OnGetRidOfPickableThrowableCourutine()); 
+	}
+
+	private IEnumerator OnGetRidOfPickableThrowableCourutine()
+	{
+		yield return new WaitForSecondsRealtime(0.05f);
+		IsAbleToUseRightWeapon = true;
+		IsAbleToUseLeftWeapon = true;
+
+		if (RightHandWeapon != null && _playerBehaviour.IsPlayerArmed)
 		{
 			ShowWeapon(WeaponHandsEnum.HandRight);
 		}
@@ -143,6 +158,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	private void OnPlayerArmed()
 	{
+		//Debug.Log(RightHandWeaponComponent);
 		if (RightHandWeaponComponent != null)
 		{
 			ShowWeapon(WeaponHandsEnum.HandRight); 
@@ -332,7 +348,6 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		if (RightHandWeapon != null)
 		{
-			//Debug.Log("Attack Right");
 			RightHandWeaponComponent.WeaponAttack();
 			_playerBehaviour.ArmPlayer();
 		}
@@ -342,7 +357,6 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		if (LeftHandWeapon != null)
 		{
-			//Debug.Log("Attack Left");
 			LeftHandWeaponComponent.WeaponAttack();
 			_playerBehaviour.ArmPlayer();
 		}

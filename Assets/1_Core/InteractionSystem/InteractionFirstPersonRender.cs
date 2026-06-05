@@ -40,7 +40,7 @@ public class InteractionFirstPersonRender : MonoBehaviour
 
 		_interactionController.OnPickUpNonThrowable += () => _areBothArmsBusy = true;
 		_interactionController.OnPickUpThrowable += () => _isRightArmBusy = true;
-		_interactionController.OnGetRidOfPickable += () =>
+		_interactionController.OnGetRidOfNonThrowable += () =>
 		{
 			_areBothArmsBusy = false;
 			_isRightArmBusy = false;

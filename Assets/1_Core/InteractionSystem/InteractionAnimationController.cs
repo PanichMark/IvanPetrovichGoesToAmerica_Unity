@@ -17,7 +17,7 @@ public class InteractionAnimationController : MonoBehaviour
 
 		_interactionController.OnPickUpNonThrowable += PickUpWithBothHands;
 		_interactionController.OnPickUpThrowable += PickUpWithRightHand;
-		_interactionController.OnGetRidOfPickable += () =>
+		_interactionController.OnGetRidOfNonThrowable += () =>
 		{
 			DropBothWithHands();
 			DropWithRightHand();
