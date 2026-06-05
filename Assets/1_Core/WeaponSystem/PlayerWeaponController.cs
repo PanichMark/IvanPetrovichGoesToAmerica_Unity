@@ -461,42 +461,49 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		data.UnlockedWeapons = new List<string>(UnlockedWeapons.Keys);
 
+		List<WeaponRangedTypeData> rangedWeaponIds = new List<WeaponRangedTypeData>();
+
+		foreach (var weaponEntry in UnlockedWeapons)
+		{
+			var weaponComp = weaponEntry.Value.GetComponent<WeaponRangedAbstract>();
+			if (weaponComp != null)
+			{
+				WeaponRangedTypes weaponEnumType;
+				System.Enum.TryParse(weaponComp.WeaponNameSystem, out weaponEnumType);
+
+				WeaponRangedTypeData dataToAdd = new WeaponRangedTypeData();
+				dataToAdd.RagnedWeaponType = weaponEnumType;
+
+				// Получаем данные об оружии из менеджера ресурсов по его типу
+				if (_ammoManager.WeaponDictionary.TryGetValue(weaponEnumType, out WeaponRangedTypeData weaponState))
+				{
+					dataToAdd.MagazineAmmoCurrent = weaponState.MagazineAmmoCurrent;
+					dataToAdd.AmmoType = weaponState.AmmoType;
+				}
+
+				rangedWeaponIds.Add(dataToAdd);
+			}
+		}
+
+		data.UnlockedRangedWeapons = rangedWeaponIds;
+
+
 		if (RightHandWeapon != null)
 		{
 			data.WeaponRightHand = RightHandWeaponComponent.WeaponNameSystem;
-
-			if (RightHandWeaponComponent is WeaponRangedAbstract rangedRight)
-			{
-				data.WeaponInRightHandMagazineAmmoCurrent = rangedRight.PlayerMagazineAmmoCurrent;
-			}
-			else
-			{
-				data.WeaponInRightHandMagazineAmmoCurrent = 0;
-			}
 		}
 		else
 		{
 			data.WeaponRightHand = null;
-			data.WeaponInRightHandMagazineAmmoCurrent = 0;
 		}
 
 		if (LeftHandWeapon != null)
 		{
 			data.WeaponLeftHand = LeftHandWeaponComponent.WeaponNameSystem;
-		
-			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedLeft)
-			{
-				data.WeaponInLeftHandMagazineAmmoCurrent = rangedLeft.PlayerMagazineAmmoCurrent;
-			}
-			else
-			{
-				data.WeaponInLeftHandMagazineAmmoCurrent = 0;
-			}
 		}
 		else
 		{
 			data.WeaponLeftHand = null;
-			data.WeaponInLeftHandMagazineAmmoCurrent = 0;
 		}
 	}
 
@@ -523,10 +530,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				if (weaponComponent != null && weaponComponent.WeaponNameSystem == data.WeaponRightHand)
 				{
 					SelectWeapon(unlockedWeapon.Value);
-					if (RightHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
-					{
-						rangedWeapon.PlayerMagazineAmmoCurrent = data.WeaponInRightHandMagazineAmmoCurrent;
-					}
+
 					break;
 				}
 			}
@@ -541,10 +545,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				if (weaponComponent != null && weaponComponent.WeaponNameSystem == data.WeaponLeftHand)
 				{
 					SelectWeapon(unlockedWeapon.Value);
-					if (LeftHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
-					{
-						rangedWeapon.PlayerMagazineAmmoCurrent = data.WeaponInLeftHandMagazineAmmoCurrent;
-					}
+
 					break;
 				}
 			}

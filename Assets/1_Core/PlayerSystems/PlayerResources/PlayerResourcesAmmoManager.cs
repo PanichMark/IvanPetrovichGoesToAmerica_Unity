@@ -107,9 +107,8 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 
 		foreach (var kvp in AmmoDictionary)
 		{
-			// Создаем копию данных из словаря
 			AmmoTypeData saveStruct = kvp.Value;
-			// И записываем имя enum в строковое поле
+	
 			saveStruct.AmmoTypeString = kvp.Key.ToString();
 			ammoListForSaving.Add(saveStruct);
 		}
@@ -121,20 +120,16 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 	{
 		if (data.AmmoDictionary != null)
 		{
-			// Используем цикл for, чтобы иметь возможность изменять элементы списка по индексу
 			for (int i = 0; i < data.AmmoDictionary.Count; i++)
 			{
 				var currentData = data.AmmoDictionary[i];
 				if (Enum.TryParse(currentData.AmmoTypeString, out AmmoTypes parsedType))
 				{
-					// Создаем новую структуру с обновленным значением
 					AmmoTypeData updatedData = currentData;
 					updatedData.AmmoType = parsedType;
 
-					// Заменяем старый элемент в списке на новый
 					data.AmmoDictionary[i] = updatedData;
 
-					// Обновляем наш рабочий словарь
 					if (AmmoDictionary.ContainsKey(parsedType))
 					{
 						AmmoDictionary[parsedType] = updatedData;

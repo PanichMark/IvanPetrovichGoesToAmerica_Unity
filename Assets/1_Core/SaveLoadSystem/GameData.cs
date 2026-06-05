@@ -35,9 +35,7 @@ public class GameData
 	public string WeaponRightHand;
 	public string WeaponLeftHand;
 	public List<AmmoTypeData> AmmoDictionary;
-	public List<WeaponRangedTypeData> RangedWeapons;
-	public int WeaponInRightHandMagazineAmmoCurrent;
-	public int WeaponInLeftHandMagazineAmmoCurrent;
+	public List<WeaponRangedTypeData> UnlockedRangedWeapons;
 
 	//LootObjects
 	public List<LootObjectData> LootObjects_Scene_0_Test;
@@ -83,11 +81,9 @@ public class GameData
 		//Weapons
 		UnlockedWeapons = new List<string>();
 		AmmoDictionary = new List<AmmoTypeData>();
-		RangedWeapons = new List<WeaponRangedTypeData>();
+		UnlockedRangedWeapons = new List<WeaponRangedTypeData>();
 		WeaponRightHand = null;
-		WeaponInRightHandMagazineAmmoCurrent = 0;
 		WeaponLeftHand = null;
-		WeaponInLeftHandMagazineAmmoCurrent = 0;
 
 		//LootObjects
 		LootObjects_Scene_0_Test = new List<LootObjectData>();

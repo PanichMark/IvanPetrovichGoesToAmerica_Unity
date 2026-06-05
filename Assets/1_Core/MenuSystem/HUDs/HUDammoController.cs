@@ -65,7 +65,6 @@ public class HUDammoController : MonoBehaviour
 		_menuManager.OnOpenDialogueMenu += HideCanvasHUDammo;
 		_menuManager.OnCloseDialogueMenu += ShowCanvasHUDammo;
 
-
 		_playerBehaviour.OnPlayerArmed += ShowCanvasHUDammo;
 		_playerBehaviour.OnPlayerDisarmed += HideCanvasHUDammo;
 
@@ -74,7 +73,7 @@ public class HUDammoController : MonoBehaviour
 
 		_menuManager.OnOpenWeaponWheelMenu += HideCanvasHUDammo;
 		_menuManager.OnCloseWeaponWheelMenu += ShowCanvasHUDammo;
-		//Debug.Log(_playerResourcesAmmoManager);
+	
 		_playerResourcesAmmoManager.OnReserveAmmoChanged += UpdateReserveDisplay;
 		_playerResourcesAmmoManager.OnMagazineAmmoChanged += UpdateMagazineDisplay;
 
