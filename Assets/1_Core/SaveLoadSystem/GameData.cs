@@ -29,13 +29,13 @@ public class GameData
 	public int PlayerMana;
 	public int ManaReplenishItems;
 	public int PlayerMoney;
+	public List<AmmoTypeData> AmmoDictionary;
 
 	//Weapons
 	public List<string> UnlockedWeapons;
+	public List<WeaponRangedTypeData> UnlockedRangedWeapons;
 	public string WeaponRightHand;
 	public string WeaponLeftHand;
-	public List<AmmoTypeData> AmmoDictionary;
-	public List<WeaponRangedTypeData> UnlockedRangedWeapons;
 
 	//LootObjects
 	public List<LootObjectData> LootObjects_Scene_0_Test;
@@ -57,30 +57,30 @@ public class GameData
 		SafeFileDateAndTime = DateTime.Now.ToString();
 
 		//Scene
-		SceneNameSystem = "NEW_SceneTest";
+		SceneNameSystem = GameScenesEnum.Scene_0_Test.ToString();
 
 		//Player 
-		PlayerPosition = new Vector3(2, 0, 4);
+		PlayerPosition = new Vector3(0, 0, 0);
 		PlayerRotation = new Quaternion(0, 0, 0, 0);
-		PlayerMovementStateType = "PlayerIdle";
+		PlayerMovementStateType = PlayerMovementStateTypes.PlayerIdle.ToString();
 
 		//Camera
 		PlayerCameraDistanceY = -1.75f;
 		PlayerCameraDistanceZ = 3.25f;
 		CameraRotation = new Quaternion(0, 0, 0, 0);
-		CurrentPlayerCameraStateType = "ThirdPerson";
+		CurrentPlayerCameraStateType = PlayerCameraStateTypes.ThirdPerson.ToString();
 		IsCameraShoulderRight = true;
 
 		//Resources
-		PlayerHealth = 40;
-		HealingItems = 3;
-		PlayerMana = 15;
-		ManaReplenishItems = 6;
-		PlayerMoney = 200;
+		PlayerHealth = 50;
+		HealingItems = 9;
+		PlayerMana = 50;
+		ManaReplenishItems = 9;
+		PlayerMoney = 100;
+		AmmoDictionary = new List<AmmoTypeData>();
 
 		//Weapons
 		UnlockedWeapons = new List<string>();
-		AmmoDictionary = new List<AmmoTypeData>();
 		UnlockedRangedWeapons = new List<WeaponRangedTypeData>();
 		WeaponRightHand = null;
 		WeaponLeftHand = null;

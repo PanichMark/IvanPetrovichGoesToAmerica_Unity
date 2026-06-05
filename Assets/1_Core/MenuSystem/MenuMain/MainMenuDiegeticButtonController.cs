@@ -8,7 +8,6 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private Material _hoverMaterial;
 	private GameObject _CanvasDiegeticText;
 	private MenuBackgroundController _menuBackgroundController;
-
 	private static List<MainMenuDiegeticButtonController> _instances = new List<MainMenuDiegeticButtonController>();
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
 	private MainMenuReadNewsController _mainMenuReadNews;
@@ -44,6 +43,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
 		_mainMenuReadNews.OnCloseMainMenuReadNews += EnableDiegeticText;
 		_mainMenuReadNews.OnCloseMainMenuReadNews += _playerCameraBlurFilter.DeactivateCameraBlur;
+		_mainMenuReadNews.OnCloseMainMenuReadNews += _menuBackgroundController.HideCanvasMenuBackground;
 		_pauseMenuController.OnCloseAnyPauseSubMenu += EnableAllColliders;
 		_menuManager.OnCloseAnyMenu += EnableDiegeticText;
 	}

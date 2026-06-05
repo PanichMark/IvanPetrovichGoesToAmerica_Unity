@@ -118,26 +118,27 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 
 	public void LoadData(GameData data)
 	{
+		// Сначала очищаем текущие данные, чтобы избежать конфликтов
+		AmmoDictionary.Clear();
+
 		if (data.AmmoDictionary != null)
 		{
-			for (int i = 0; i < data.AmmoDictionary.Count; i++)
+			foreach (var loadedData in data.AmmoDictionary)
 			{
-				var currentData = data.AmmoDictionary[i];
-				if (Enum.TryParse(currentData.AmmoTypeJson, out AmmoTypes parsedType))
+				// Парсим строковое представление типа обратно в Enum
+				if (Enum.TryParse(loadedData.AmmoTypeJson, out AmmoTypes parsedType))
 				{
-					AmmoTypeData updatedData = currentData;
-					updatedData.AmmoTypeSystem = parsedType;
-
-					data.AmmoDictionary[i] = updatedData;
-
-					if (AmmoDictionary.ContainsKey(parsedType))
+					// Создаем новую структуру, используя данные напрямую из файла сохранения
+					AmmoTypeData newData = new AmmoTypeData
 					{
-						AmmoDictionary[parsedType] = updatedData;
-					}
-					else
-					{
-						AmmoDictionary.Add(parsedType, updatedData);
-					}
+						AmmoTypeSystem = parsedType,
+						TotalAmmoCurrent = loadedData.TotalAmmoCurrent, // <-- Данные берутся из сохранения!
+					};
+
+					// Добавляем новые данные в словарь
+					AmmoDictionary.Add(parsedType, newData);
+
+					OnReserveAmmoChanged?.Invoke(parsedType, newData.TotalAmmoCurrent);
 				}
 			}
 		}

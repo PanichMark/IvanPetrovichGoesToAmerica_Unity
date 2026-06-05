@@ -553,6 +553,13 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				}
 			}
 		}
+		else
+		{
+			if (RightHandWeapon != null)
+			{
+				DestroyWeapon(WeaponHandsEnum.RightHand);
+			}
+		}
 
 		// Загрузка активного оружия в левую руку
 		if (!string.IsNullOrEmpty(data.WeaponLeftHand))
@@ -566,6 +573,13 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 					SelectWeapon(unlockedWeapon.Value);
 					break;
 				}
+			}
+		}
+		else
+		{
+			if (LeftHandWeapon != null)
+			{
+				DestroyWeapon(WeaponHandsEnum.LeftHand);
 			}
 		}
 	}

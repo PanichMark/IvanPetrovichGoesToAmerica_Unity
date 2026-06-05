@@ -38,6 +38,7 @@ public class SaveLoadController : MonoBehaviour
 		_gameController = gameController;
 
 		_gameSceneManager.OnEndLoadingGameplayScene += () => StartCoroutine(OnSceneLoadUpdateGameplayObjects());
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => StartCoroutine(NewGame());
 		
 		Debug.Log("SaveLoadController Initialized");
 	}
@@ -45,10 +46,10 @@ public class SaveLoadController : MonoBehaviour
 	public IEnumerator NewGame()
 	{
 		_persistentSaveLoadObjects = FindAllPersistentSaveLoadObjects();
+
 		_gameData = new GameData();
 
 		_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_TEMP);
-
 		_fileDataHandler.Save(_gameData);
 
 		foreach (ISaveLoad saveLoadObj in _persistentSaveLoadObjects)
