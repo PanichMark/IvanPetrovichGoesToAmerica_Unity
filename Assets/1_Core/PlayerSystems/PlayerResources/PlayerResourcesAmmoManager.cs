@@ -10,7 +10,7 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 	public System.Action<AmmoTypes, int> OnMagazineAmmoChanged;
 
 	public Dictionary<AmmoTypes, AmmoTypeData> AmmoDictionary = new Dictionary<AmmoTypes, AmmoTypeData>();
-	public Dictionary<WeaponRangedEnum, WeaponRangedData> WeaponDictionary = new Dictionary<WeaponRangedEnum, WeaponRangedData>();
+	public Dictionary<WeaponRangedEnum, WeaponRangedData> WeaponsRangedDictionary = new Dictionary<WeaponRangedEnum, WeaponRangedData>();
 
 	public void SetNewInitialAmmo(AmmoTypes type, int newAmount)
 	{
@@ -29,25 +29,32 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 	}
 
 	public void Initialize()
-	{
-		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo9mm, TotalAmmoMax = 999, TotalAmmoCurrent = 25 };
-		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo12gauge, TotalAmmoMax = 999, TotalAmmoCurrent = 10 };
-
-		WeaponDictionary[WeaponRangedEnum.HarmonicaRevolver] = new WeaponRangedData
+	{	
+		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo9mm, TotalAmmoMax = 999, TotalAmmoCurrent = 100 };
+		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo12gauge, TotalAmmoMax = 999, TotalAmmoCurrent = 30 };
+	
+		WeaponsRangedDictionary[WeaponRangedEnum.HarmonicaRevolver] = new WeaponRangedData
 		{
-			RagnedWeaponTypeSystem = WeaponRangedEnum.HarmonicaRevolver,
+			RagnedWeaponSystem = WeaponRangedEnum.HarmonicaRevolver,
 			AmmoTypeSystem = AmmoTypes.Ammo9mm,
 			MagazineAmmoMax = 5,
 			MagazineAmmoCurrent = 5
 		};
-		WeaponDictionary[WeaponRangedEnum.SawedOffShotgun] = new WeaponRangedData
+		WeaponsRangedDictionary[WeaponRangedEnum.BergmannBayard] = new WeaponRangedData
 		{
-			RagnedWeaponTypeSystem = WeaponRangedEnum.SawedOffShotgun,
+			RagnedWeaponSystem = WeaponRangedEnum.BergmannBayard,
+			AmmoTypeSystem = AmmoTypes.Ammo9mm,
+			MagazineAmmoMax = 30,
+			MagazineAmmoCurrent = 30
+		};
+		WeaponsRangedDictionary[WeaponRangedEnum.SawedOffShotgun] = new WeaponRangedData
+		{
+			RagnedWeaponSystem = WeaponRangedEnum.SawedOffShotgun,
 			AmmoTypeSystem = AmmoTypes.Ammo12gauge,
 			MagazineAmmoMax = 2,
 			MagazineAmmoCurrent = 2
 		};
-
+			
 		Debug.Log("PlayerResourcesAmmoManager Initialized");
 	}
 
@@ -103,44 +110,53 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		List<AmmoTypeData> ammoListForSaving = new List<AmmoTypeData>();
-
+		List<AmmoTypeData> ammoList = new List<AmmoTypeData>();
 		foreach (var kvp in AmmoDictionary)
 		{
 			AmmoTypeData saveStruct = kvp.Value;
-	
 			saveStruct.AmmoTypeJson = kvp.Key.ToString();
-			ammoListForSaving.Add(saveStruct);
+			ammoList.Add(saveStruct);
 		}
+		data.AmmoDictionary = ammoList;
 
-		data.AmmoDictionary = ammoListForSaving;
+		List<WeaponRangedData> weaponList = new List<WeaponRangedData>();
+		foreach (var kvp in WeaponsRangedDictionary)
+		{
+			WeaponRangedData saveStruct = kvp.Value;
+			saveStruct.RagnedWeaponJson = kvp.Key.ToString();
+			weaponList.Add(saveStruct);
+		}
+		data.UnlockedRangedWeapons = weaponList;
 	}
 
 	public void LoadData(GameData data)
 	{
-		// Сначала очищаем текущие данные, чтобы избежать конфликтов
+		/*
 		AmmoDictionary.Clear();
 
 		if (data.AmmoDictionary != null)
 		{
-			foreach (var loadedData in data.AmmoDictionary)
+			foreach (var loadedAmmo in data.AmmoDictionary)
 			{
-				// Парсим строковое представление типа обратно в Enum
-				if (Enum.TryParse(loadedData.AmmoTypeJson, out AmmoTypes parsedType))
+				if (Enum.TryParse(loadedAmmo.AmmoTypeJson, out AmmoTypes parsedType))
 				{
-					// Создаем новую структуру, используя данные напрямую из файла сохранения
-					AmmoTypeData newData = new AmmoTypeData
-					{
-						AmmoTypeSystem = parsedType,
-						TotalAmmoCurrent = loadedData.TotalAmmoCurrent, // <-- Данные берутся из сохранения!
-					};
-
-					// Добавляем новые данные в словарь
-					AmmoDictionary.Add(parsedType, newData);
-
-					OnReserveAmmoChanged?.Invoke(parsedType, newData.TotalAmmoCurrent);
+					AmmoDictionary[parsedType] = loadedAmmo;
+					OnReserveAmmoChanged?.Invoke(parsedType, loadedAmmo.TotalAmmoCurrent);
 				}
 			}
 		}
+
+		WeaponsRangedDictionary.Clear();
+		if (data.UnlockedRangedWeapons != null)
+		{
+			foreach (var loadedWeapon in data.UnlockedRangedWeapons)
+			{
+				if (Enum.TryParse(loadedWeapon.RagnedWeaponJson, out WeaponRangedEnum parsedWeaponType))
+				{
+					WeaponsRangedDictionary[parsedWeaponType] = loadedWeapon;
+				}
+			}
+		}
+		*/
 	}
 }

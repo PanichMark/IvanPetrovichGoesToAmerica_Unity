@@ -77,7 +77,23 @@ public class GameData
 		PlayerMana = 50;
 		ManaReplenishItems = 9;
 		PlayerMoney = 100;
-		AmmoDictionary = new List<AmmoTypeData>();
+		AmmoDictionary = new List<AmmoTypeData>
+		{
+			new AmmoTypeData
+			{
+				AmmoTypeSystem = AmmoTypes.Ammo9mm,
+				AmmoTypeJson = AmmoTypes.Ammo9mm.ToString(),
+				TotalAmmoMax = 999,
+				TotalAmmoCurrent = 25
+			},
+			new AmmoTypeData
+			{
+				AmmoTypeSystem = AmmoTypes.Ammo12gauge,
+				AmmoTypeJson = AmmoTypes.Ammo12gauge.ToString(),
+				TotalAmmoMax = 999,
+				TotalAmmoCurrent = 10
+			}
+		};
 
 		//Weapons
 		UnlockedWeapons = new List<string>();

@@ -1,8 +1,6 @@
 ﻿public enum WeaponRangedEnum
 {
     HarmonicaRevolver,
-	BergmannBayardAutomatische,
-	SawedOffShotgun,
-	GrenadeLauncher,
-	SniperRifle
+	BergmannBayard,
+	SawedOffShotgun
 }
