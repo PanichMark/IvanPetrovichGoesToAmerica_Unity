@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class KeysManager
+public class KeysManager: ISaveLoad
 { 
 	private List<string> _collectedKeys = new List<string>();
 
@@ -27,5 +27,20 @@ public class KeysManager
 	public void RemoveKey(string keyId)
 	{
 		_collectedKeys.Remove(keyId);
+	}
+
+	public void SaveData(ref GameData data)
+	{
+		//data.CollectedKeys.Clear();
+
+		foreach (string keyId in _collectedKeys)
+		{
+			data.CollectedKeys.Add(new KeyData { KeyName = keyId, WasKeyCollected = true });
+		}
+	}
+
+	public void LoadData(GameData data)
+	{
+		//throw new System.NotImplementedException();
 	}
 }

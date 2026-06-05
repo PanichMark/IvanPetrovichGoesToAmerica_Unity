@@ -29,6 +29,5 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 	protected override void SetUpLootObjectReferences()
 	{
 		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
-		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }
