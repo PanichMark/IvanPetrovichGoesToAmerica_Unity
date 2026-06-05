@@ -51,6 +51,13 @@ public class GameData
 	public List<PickableObjectData> PickableObjects_Scene_1_RevenueHouse;
 	public List<PickableObjectData> PickableObjects_Scene_1_InnerYard;
 
+	//Openable Objects
+	public List<OpenableObjectData> OpenableObjects_Scene_0_Test;
+	public List<OpenableObjectData> OpenableObjects_Scene_1_Church;
+	public List<OpenableObjectData> OpenableObjects_Scene_1_Street;
+	public List<OpenableObjectData> OpenableObjects_Scene_1_RevenueHouse;
+	public List<OpenableObjectData> OpenableObjects_Scene_1_InnerYard;
+
 	public GameData()
 	{
 		//Important
@@ -114,6 +121,13 @@ public class GameData
 		PickableObjects_Scene_1_Street = new List<PickableObjectData>();
 		PickableObjects_Scene_1_RevenueHouse = new List<PickableObjectData>();
 		PickableObjects_Scene_1_InnerYard = new List<PickableObjectData>();
+
+		//Openable Objects
+		OpenableObjects_Scene_0_Test = new List<OpenableObjectData>();
+		OpenableObjects_Scene_1_Church = new List<OpenableObjectData>();
+		OpenableObjects_Scene_1_Street = new List<OpenableObjectData>();
+		OpenableObjects_Scene_1_RevenueHouse = new List<OpenableObjectData>();
+		OpenableObjects_Scene_1_InnerYard = new List<OpenableObjectData>();
 	}
 }
 
@@ -122,7 +136,7 @@ public struct LootObjectData
 {
 	public int LootObjectIndex;
 	public string LootObjectNameSystem;
-	public bool WasLootObjectCollected;     
+	public bool WasLootObjectCollected;
 }
 
 [System.Serializable]
@@ -130,6 +144,17 @@ public struct PickableObjectData
 {
 	public int PickableObjectIndex;
 	public string PickableObjectNameSystem;
+	public Vector3 PickableObjecPosition;
+	public Quaternion PickableObjecRotation;
 	public bool WasPickableObjectPickedUp;
 	public bool WasPickableObjectDestroyed;
+}
+
+[System.Serializable]
+public struct OpenableObjectData
+{
+	public int OpenableObjectIndex;
+	public string OpenableObjectNameSystem;
+	public bool WasOpenableObjectUnlocked;
+	public bool WasOpenableObjectOpened;
 }

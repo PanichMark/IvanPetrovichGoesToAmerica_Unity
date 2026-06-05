@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, ISaveLoad, IPickable
@@ -11,7 +12,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	protected Collider _playerCollider;
 	protected bool _isCollisionIgnored = false;
 	protected bool _isPlayerInsideTrigger = false;
-
+	private Transform _pickableObjectTransform;
 	protected GameObject _playerColliderGameObject;
 	protected int _pickableLayer;
 	protected int _playerLayer;
@@ -35,6 +36,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	void Start()
 	{
+		_pickableObjectTransform = GetComponent<Transform>();
 		_pickableLayer = LayerMask.NameToLayer("Pickable");
 		_playerLayer = LayerMask.NameToLayer("Player");
 		_playerColliderGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
@@ -162,7 +164,58 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	public virtual void SaveData(ref GameData data)
 	{
+		List<PickableObjectData> targetList = null;
 
+		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
+		{
+			targetList = data.PickableObjects_Scene_0_Test;
+		}
+		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Church))
+		{
+			targetList = data.PickableObjects_Scene_1_Church;
+		}
+		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
+		{
+			targetList = data.PickableObjects_Scene_1_Street;
+		}
+		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_RevenueHouse))
+		{
+			targetList = data.PickableObjects_Scene_1_RevenueHouse;
+		}
+		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_InnerYard))
+		{
+			targetList = data.PickableObjects_Scene_1_InnerYard;
+		}
+
+		if (targetList != null)
+		{
+			int indexInList = targetList.FindIndex(item => item.PickableObjectIndex == PickableObjectIndex);
+
+			if (indexInList != -1)
+			{
+				PickableObjectData updatedItem = new PickableObjectData
+				{
+					PickableObjectIndex = PickableObjectIndex,
+					PickableObjectNameSystem = InteractionObjectNameSystem,
+					PickableObjecPosition = _pickableObjectTransform.position,
+					PickableObjecRotation = _pickableObjectTransform.rotation,
+					WasPickableObjectPickedUp = IsObjectPickedUp
+				};
+
+				targetList[indexInList] = updatedItem;
+			}
+			else
+			{
+				targetList.Add(new PickableObjectData
+				{
+					PickableObjectIndex = PickableObjectIndex,
+					PickableObjectNameSystem = InteractionObjectNameSystem,
+					PickableObjecPosition = _pickableObjectTransform.position,
+					PickableObjecRotation = _pickableObjectTransform.rotation,
+					WasPickableObjectPickedUp = IsObjectPickedUp
+				});
+			}
+		}
 	}
 
 	public virtual void LoadData(GameData data)

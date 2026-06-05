@@ -35,7 +35,8 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 			_electronicLockController.OnUnlockLock += UnlockDoor;
 		}
 
-		if ((_mechanicalLockController == null && _electronicLockController == null)
+		if (WasOpenableUnlocked ||
+			(_mechanicalLockController == null && _electronicLockController == null)
 			|| (_mechanicalLockController != null && _mechanicalLockController.WasUnlocked)
 			|| (_electronicLockController != null && _electronicLockController.WasUnlocked))
 		{
@@ -55,6 +56,7 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 
 	protected override void UnlockDoor()
 	{
+		WasOpenableUnlocked = true;
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GoToScene");
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {_interactionHintMessageScene}?";
 	}

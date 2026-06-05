@@ -13,6 +13,8 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 	[SerializeField] protected InteractionObjectKeyData _interactionObjectKeyData;
 	[SerializeField] protected InteractionObjectLockMechanical _mechanicalLockController;
 	[SerializeField] protected InteractionObjectLockElectronic _electronicLockController;
+
+
 	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 
@@ -26,7 +28,6 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	void Start()
 	{
-		IsObjectOpened = false;
 		_keysManager = ServiceLocator.Resolve<KeysManager>("KeysManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
@@ -123,7 +124,8 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 			_electronicLockController.OnUnlockLock += UnlockDoor;
 		}
 
-		if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null)
+		if (WasOpenableUnlocked ||
+			(_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null)
 			|| (_mechanicalLockController != null && _mechanicalLockController.WasUnlocked)
 			|| (_electronicLockController != null && _electronicLockController.WasUnlocked)
 			|| (_interactionObjectKeyData != null && _keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString())))
@@ -134,6 +136,8 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract
 
 	protected virtual void UnlockDoor()
 	{
+		WasOpenableUnlocked = true;
+
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	}

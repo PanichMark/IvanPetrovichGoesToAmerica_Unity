@@ -237,6 +237,7 @@ public class SaveLoadController : MonoBehaviour
 	{
 		AssignLootObjectsIndexes();
 		AssignPickableObjectsIndexes();
+		AssignOpenableObjectsIndexes();
 	}
 
 	private void AssignLootObjectsIndexes()
@@ -260,6 +261,18 @@ public class SaveLoadController : MonoBehaviour
 		for (int index = 0; index < pickableObjects.Length; index++)
 		{
 			pickableObjects[index].AssignPickableObjectsIndexes(index);
+		}
+	}
+
+	private void AssignOpenableObjectsIndexes()
+	{
+		InteractionObjectOpenableAbstract[] openableObjects = FindObjectsOfType<InteractionObjectOpenableAbstract>();
+
+		Array.Sort(openableObjects, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
+
+		for (int index = 0; index < openableObjects.Length; index++)
+		{
+			openableObjects[index].AssignOpenableObjectsIndexes(index);
 		}
 	}
 
