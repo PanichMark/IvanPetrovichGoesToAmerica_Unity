@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class WeaponWheelMenuButton : MonoBehaviour
@@ -12,18 +11,20 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	private Button _button;
 
 	private Color _originalNormalColor;
-
+	LocalizationManager _localizationManager;
 	private GameObject _currentWeapon;
-
+	private WeaponAbstract _weaponComponent;
 	private GameObject _previousWeapon;
 
-	public void Initialize(PlayerWeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
+	public void Initialize(LocalizationManager localizationManager, PlayerWeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
 	{
+		_localizationManager = localizationManager;
 		_weaponController = weaponController;
 		_weaponWheelController = weaponWheelController;
 		_WeaponPrefab = weaponPrefab;
-		_WeaponName = weaponComponent.WeaponNameUI;
-		_WeaponIcon = weaponComponent.WeaponIcon;
+		_weaponComponent = weaponComponent;
+		_WeaponName = _localizationManager.GetLocalizedString(_weaponComponent.WeaponNameSystem);
+		_WeaponIcon = _weaponComponent.WeaponIcon;
 
 		var button = GetComponent<Button>();
 		button.onClick.AddListener(() => SelectWeapon());
@@ -34,7 +35,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 		_originalNormalColor = _button.colors.normalColor;
 
 		_weaponWheelController.OnOpenWeaponWheelMenu += OnOpenWeaponWheel;
-
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_weaponController.OnWeaponChanged += OnWeaponChange;
 	}
 
@@ -127,6 +128,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	{
 		_weaponController.OnWeaponChanged -= OnWeaponChange;
 		_weaponWheelController.OnOpenWeaponWheelMenu -= OnOpenWeaponWheel;
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
 	}
 
 	private void ChangeButtonColor(Color newColor)
@@ -134,5 +136,12 @@ public class WeaponWheelMenuButton : MonoBehaviour
 		ColorBlock colors = _button.colors;
 		colors.normalColor = newColor;
 		_button.colors = colors;
+	}
+
+	private void ChangeLanguage(LocalizationManager localizationManager)
+	{
+		_localizationManager = localizationManager;
+
+		_WeaponName = _localizationManager.GetLocalizedString(_weaponComponent.WeaponNameSystem);
 	}
 }

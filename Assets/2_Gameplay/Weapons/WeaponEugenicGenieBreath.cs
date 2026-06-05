@@ -5,8 +5,9 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	private float _attackRange = 5f;
 	private float _knockbackForce = 10f;
 	private int _damageAmount = 100;
-	public override string WeaponNameSystem => "EugenicGenie";
-	public override string WeaponNameUI => "Дыхание Джинна";
+	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
+	public override string WeaponName => "GenieBreath";
+	public override string WeaponType => WeaponTypes.Eugenic.ToString();
 
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponEugenicGenieBreathIcon");
 

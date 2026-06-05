@@ -1,9 +1,9 @@
 ﻿using System;
 
 [Serializable]
-public struct WeaponRangedTypeData
+public struct WeaponRangedData
 {
-	public WeaponRangedTypes RagnedWeaponTypeSystem;
+	public WeaponRangedEnum RagnedWeaponTypeSystem;
 	public string RagnedWeaponTypeJson;
 	public AmmoTypes AmmoTypeSystem;
 	public string AmmoTypeJson;

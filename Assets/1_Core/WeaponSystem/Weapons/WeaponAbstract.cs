@@ -3,14 +3,14 @@ using UnityEngine;
 
 public abstract class WeaponAbstract : MonoBehaviour
 {
-	public virtual string WeaponNameUI { get; protected set; }
+	public virtual string WeaponType { get; protected set; }
+	public virtual string WeaponName { get; protected set; }
 	public virtual string WeaponNameSystem { get; protected set; }
 
 	private GameObject _firstPersonLeftHandWeaponSlotGameObject;
 	private GameObject _firstPersonRightHandWeaponSlotGameObject;
 	private GameObject _thirdPersonLeftHandWeaponSlotGameObject;
 	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
-
 	public virtual Sprite WeaponIcon { get; protected set; }           
 	protected bool _isThisPlayerWeapon;
 	public virtual float WeaponDamage { get; protected set; }
@@ -63,11 +63,11 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		string handString = "";
 
-		if (handType == WeaponHandsEnum.RightHand)
+		if (handType == WeaponHandsEnum.HandRight)
 		{
 			handString = "RightHand";
 		}
-		else if (handType == WeaponHandsEnum.LeftHand)
+		else if (handType == WeaponHandsEnum.HandLeft)
 		{
 			handString = "LeftHand";
 		}
@@ -113,6 +113,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 	public void DestroyWeaponModel()
 	{
+
 		if (ThirdPersonWeaponModelInstance != null)
 		{
 			Destroy(ThirdPersonWeaponModelInstance);

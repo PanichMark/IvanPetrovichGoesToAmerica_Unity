@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WeaponPoliceBaton : WeaponMeleeAbstract
+public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 {
 	private IInputDevice _inputDevice;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
@@ -12,13 +12,15 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 	private bool _isAbleToChoke = false;
 	private bool _npcDetected = false;
 	private bool _isItRightHand;
-
 	public override float WeaponDamage => 45f;
-	public override string WeaponNameSystem => "PoliceBaton";
-	public override string WeaponNameUI => "Милицейская Дубинка";
+	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
+	public override string WeaponName => "PoliceBaton";
+
+	public override string WeaponType => WeaponTypes.Melee.ToString();
+
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponMeleePoliceBatonIcon");
 
-	protected override void SetUpMeleeWeapon()
+	protected override void InitializeWeaponMelee()
 	{
 		_capsuleHeight = 1.8f;
 		_capsuleRadius = 0.3f;
@@ -29,11 +31,11 @@ public class WeaponPoliceBaton : WeaponMeleeAbstract
 		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>("PlayerMovementStateMachineController");
 		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
-		if (_weaponController.RightHandWeaponComponent is WeaponPoliceBaton)
+		if (_weaponController.RightHandWeaponComponent is WeaponMeleePoliceBaton)
 		{
 			_isItRightHand = true;
 		}
-		if (_weaponController.LeftHandWeaponComponent is WeaponPoliceBaton)
+		if (_weaponController.LeftHandWeaponComponent is WeaponMeleePoliceBaton)
 		{
 			_isItRightHand = false;	
 		}

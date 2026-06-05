@@ -19,8 +19,12 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		{
 			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
+
+			InitializeWeaponRanged();
 		}
 	}
+
+	protected abstract void InitializeWeaponRanged();
 
 	public override void WeaponAttack()
 	{

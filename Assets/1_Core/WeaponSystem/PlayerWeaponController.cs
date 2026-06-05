@@ -71,7 +71,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 			if (RightHandWeapon != null)
 			{
-				HideWeapon(WeaponHandsEnum.RightHand);
+				HideWeapon(WeaponHandsEnum.HandRight);
 			}
 		};
 		_interactionController.OnGetRidOfPickable += OnGetRidOfPickableHandler;
@@ -136,7 +136,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (RightHandWeapon != null)
 		{
-			ShowWeapon(WeaponHandsEnum.RightHand);
+			ShowWeapon(WeaponHandsEnum.HandRight);
 		}
 		yield return null;
 	}
@@ -145,12 +145,12 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		if (RightHandWeaponComponent != null)
 		{
-			ShowWeapon(WeaponHandsEnum.RightHand); 
+			ShowWeapon(WeaponHandsEnum.HandRight); 
 		}
 
 		if (LeftHandWeaponComponent != null)
 		{
-			ShowWeapon(WeaponHandsEnum.LeftHand);
+			ShowWeapon(WeaponHandsEnum.HandLeft);
 		}
 	}
 
@@ -158,12 +158,12 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		if (RightHandWeaponComponent != null)
 		{
-			HideWeapon(WeaponHandsEnum.RightHand); 
+			HideWeapon(WeaponHandsEnum.HandRight); 
 		}
 
 		if (LeftHandWeaponComponent != null)
 		{
-			HideWeapon(WeaponHandsEnum.LeftHand); 
+			HideWeapon(WeaponHandsEnum.HandLeft); 
 		}
 	}
 
@@ -256,7 +256,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (rangedToSave != null)
 		{
-			WeaponRangedTypes key = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedToSave.WeaponNameSystem);
+			WeaponRangedEnum key = (WeaponRangedEnum)System.Enum.Parse(typeof(WeaponRangedEnum), rangedToSave.WeaponName);
 			if (_ammoManager.WeaponDictionary.TryGetValue(key, out var data))
 			{
 				data.MagazineAmmoCurrent = rangedToSave.PlayerMagazineAmmoCurrent;
@@ -274,16 +274,16 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (IsLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
-			DestroyWeapon(WeaponHandsEnum.RightHand);
+			DestroyWeapon(WeaponHandsEnum.HandRight);
 		}
 		else if (!IsLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
-			DestroyWeapon(WeaponHandsEnum.LeftHand);
+			DestroyWeapon(WeaponHandsEnum.HandLeft);
 		}
 
 		if (weaponComponent is WeaponRangedAbstract rangedNew)
 		{
-			WeaponRangedTypes newKey = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedNew.WeaponNameSystem);
+			WeaponRangedEnum newKey = (WeaponRangedEnum)System.Enum.Parse(typeof(WeaponRangedEnum), rangedNew.WeaponName);
 			if (_ammoManager.WeaponDictionary.TryGetValue(newKey, out var newData))
 			{
 				rangedNew.SetPlayerWeaponAmmoType(newData.AmmoTypeSystem);
@@ -302,7 +302,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			LeftHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke("left");
 
-			weaponComponent.InstantiateWeapon(WeaponHandsEnum.LeftHand);
+			weaponComponent.InstantiateWeapon(WeaponHandsEnum.HandLeft);
 			weaponComponent.FlipWeaponModel();
 
 			LeftHandWeaponComponent = weaponComponent;
@@ -320,7 +320,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			RightHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke("right");
 
-			weaponComponent.InstantiateWeapon(WeaponHandsEnum.RightHand);
+			weaponComponent.InstantiateWeapon(WeaponHandsEnum.HandRight);
 
 			RightHandWeaponComponent = weaponComponent;
 
@@ -348,11 +348,11 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void DestroyWeapon(WeaponHandsEnum handType)
 	{
-		if (handType == WeaponHandsEnum.RightHand)
+		if (handType == WeaponHandsEnum.HandRight)
 		{
 			if (RightHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
 			{
-				WeaponRangedTypes key = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedWeapon.WeaponNameSystem);
+				WeaponRangedEnum key = (WeaponRangedEnum)System.Enum.Parse(typeof(WeaponRangedEnum), rangedWeapon.WeaponName);
 				if (_ammoManager.WeaponDictionary.TryGetValue(key, out var data))
 				{
 					data.MagazineAmmoCurrent = rangedWeapon.PlayerMagazineAmmoCurrent;
@@ -369,11 +369,11 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				RightHandWeaponComponent = null;
 			}
 		}
-		else if (handType == WeaponHandsEnum.LeftHand)
+		else if (handType == WeaponHandsEnum.HandLeft)
 		{
 			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
 			{
-				WeaponRangedTypes key = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedWeapon.WeaponNameSystem);
+				WeaponRangedEnum key = (WeaponRangedEnum)System.Enum.Parse(typeof(WeaponRangedEnum), rangedWeapon.WeaponName);
 				if (_ammoManager.WeaponDictionary.TryGetValue(key, out var data))
 				{
 					data.MagazineAmmoCurrent = rangedWeapon.PlayerMagazineAmmoCurrent;
@@ -394,7 +394,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void ShowWeapon(WeaponHandsEnum handType)
 	{
-		if (handType == WeaponHandsEnum.RightHand)
+		if (handType == WeaponHandsEnum.HandRight)
 		{
 			if (RightHandWeaponComponent != null)
 			{
@@ -405,7 +405,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 					RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
 			}
 		}
-		else if (handType == WeaponHandsEnum.LeftHand)
+		else if (handType == WeaponHandsEnum.HandLeft)
 		{
 			if (LeftHandWeaponComponent != null)
 			{
@@ -424,7 +424,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void HideWeapon(WeaponHandsEnum handType)
 	{
-		if (handType == WeaponHandsEnum.RightHand)
+		if (handType == WeaponHandsEnum.HandRight)
 		{
 			if (RightHandWeaponComponent != null)
 			{
@@ -435,7 +435,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 					RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
 			}
 		}
-		else if (handType == WeaponHandsEnum.LeftHand)
+		else if (handType == WeaponHandsEnum.HandLeft)
 		{
 			if (LeftHandWeaponComponent != null)
 			{
@@ -461,22 +461,22 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		data.UnlockedWeapons = new List<string>(UnlockedWeapons.Keys);
 
-		List<WeaponRangedTypeData> rangedWeaponIds = new List<WeaponRangedTypeData>();
+		List<WeaponRangedData> rangedWeaponIds = new List<WeaponRangedData>();
 
 		foreach (var weaponEntry in UnlockedWeapons)
 		{
 			var weaponComp = weaponEntry.Value.GetComponent<WeaponRangedAbstract>();
 			if (weaponComp != null)
 			{
-				WeaponRangedTypes weaponEnumType;
+				WeaponRangedEnum weaponEnumType;
 				System.Enum.TryParse(weaponComp.WeaponNameSystem, out weaponEnumType);
 
-				WeaponRangedTypeData dataToAdd = new WeaponRangedTypeData();
+				WeaponRangedData dataToAdd = new WeaponRangedData();
 				dataToAdd.RagnedWeaponTypeSystem = weaponEnumType;
 				dataToAdd.RagnedWeaponTypeJson = weaponEnumType.ToString(); // Добавляем строковое представление
             
 				// Получаем данные об оружии из менеджера ресурсов по его типу
-				if (_ammoManager.WeaponDictionary.TryGetValue(weaponEnumType, out WeaponRangedTypeData weaponState))
+				if (_ammoManager.WeaponDictionary.TryGetValue(weaponEnumType, out WeaponRangedData weaponState))
 				{
 					dataToAdd.MagazineAmmoCurrent = weaponState.MagazineAmmoCurrent;
 					dataToAdd.AmmoTypeSystem = weaponState.AmmoTypeSystem;
@@ -515,7 +515,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			foreach (var loadedWeaponData in data.UnlockedRangedWeapons)
 			{
 				// 1. Пробуем распарсить строковое представление типа оружия обратно в Enum
-				if (Enum.TryParse(loadedWeaponData.RagnedWeaponTypeJson, out WeaponRangedTypes parsedWeaponType))
+				if (Enum.TryParse(loadedWeaponData.RagnedWeaponTypeJson, out WeaponRangedEnum parsedWeaponType))
 				{
 					// 2. Ищем шаблон этого оружия в словаре менеджера ресурсов
 					if (_ammoManager.WeaponDictionary.ContainsKey(parsedWeaponType))
@@ -557,7 +557,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			if (RightHandWeapon != null)
 			{
-				DestroyWeapon(WeaponHandsEnum.RightHand);
+				DestroyWeapon(WeaponHandsEnum.HandRight);
 			}
 		}
 
@@ -579,7 +579,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			if (LeftHandWeapon != null)
 			{
-				DestroyWeapon(WeaponHandsEnum.LeftHand);
+				DestroyWeapon(WeaponHandsEnum.HandLeft);
 			}
 		}
 	}

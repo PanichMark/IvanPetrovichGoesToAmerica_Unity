@@ -1,9 +1,0 @@
-﻿using UnityEngine;
-
-public class WeaponSawedOffShotgun : WeaponRangedAbstract
-{
-	public override string WeaponNameSystem => "SawedOffShotgun";
-	public override string WeaponNameUI => "Дробовик Обрез";
-	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponRangedSawedOffShotgunIcon");
-	public override float WeaponDamage => 100f;
-}

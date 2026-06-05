@@ -13,6 +13,7 @@ public class BootstrapSubProcessWeaponSystem
 	private Bootstrap _bootstrap;
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
+	private LocalizationManager _localizationManager;
 
 	private GameObject _GameObjectBootstrapWeaponSystem;
 
@@ -39,6 +40,7 @@ public class BootstrapSubProcessWeaponSystem
 		Bootstrap bootstrap,
 		GameController gameController,
 		IInputDevice inputDevice,
+		LocalizationManager localizationManager,
 		GameObject playerGameObject,
 		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
@@ -48,6 +50,7 @@ public class BootstrapSubProcessWeaponSystem
 		_bootstrap = bootstrap;
 		_gameController = gameController;
 		_inputDevice = inputDevice;
+		_localizationManager = localizationManager;
 		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_bootstrapSubProcessPlayerSystems = bootstrapSubProcessPlayerSystems;
@@ -92,6 +95,7 @@ public class BootstrapSubProcessWeaponSystem
 
 		_weaponWheelController.Initialize(
 			_inputDevice,
+			_localizationManager,
 			_bootstrapSubProcessMenuSystem.MenuManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			WeaponController,

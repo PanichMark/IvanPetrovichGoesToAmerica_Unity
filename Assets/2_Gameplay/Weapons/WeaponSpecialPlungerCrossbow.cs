@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class WeaponPlungerCrossbow : WeaponAbstract
+public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 {
 	private GameController _gameController;
 	private GameSceneManager _gameSceneManager;
@@ -26,10 +26,11 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 	private float _maxHookDistance = 17f;
 	private float _pullSpeed = 12f;
 
-	public override string WeaponNameSystem => "PlungerCrossbow";
+	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
+	public override string WeaponName => "PlungerCrossbow";
+	public override string WeaponType => WeaponTypes.Special.ToString();
 
-	public override string WeaponNameUI => "Абордажный Арбалет";
-	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponPlungerCrossbowIcon");
+	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponSpecialPlungerCrossbowIcon");
 	public override float WeaponDamage => 0; 
 
 	private void Start()
@@ -39,7 +40,6 @@ public class WeaponPlungerCrossbow : WeaponAbstract
 		_playerRigidbody = _player.GetComponent<Rigidbody>();
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 		_playerCollider = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
-		
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>("PlayerBehaviour");
 

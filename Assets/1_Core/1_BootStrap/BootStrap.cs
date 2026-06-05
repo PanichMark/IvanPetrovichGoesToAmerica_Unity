@@ -361,6 +361,7 @@ public class Bootstrap : MonoBehaviour
 			this,
 			_gameController,
 			_inputDevice,
+			LocalizationManager,
 			_gameObjectPlayer,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,

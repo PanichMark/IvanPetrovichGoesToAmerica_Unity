@@ -10,7 +10,7 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 	public System.Action<AmmoTypes, int> OnMagazineAmmoChanged;
 
 	public Dictionary<AmmoTypes, AmmoTypeData> AmmoDictionary = new Dictionary<AmmoTypes, AmmoTypeData>();
-	public Dictionary<WeaponRangedTypes, WeaponRangedTypeData> WeaponDictionary = new Dictionary<WeaponRangedTypes, WeaponRangedTypeData>();
+	public Dictionary<WeaponRangedEnum, WeaponRangedData> WeaponDictionary = new Dictionary<WeaponRangedEnum, WeaponRangedData>();
 
 	public void SetNewInitialAmmo(AmmoTypes type, int newAmount)
 	{
@@ -33,16 +33,16 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo9mm, TotalAmmoMax = 999, TotalAmmoCurrent = 25 };
 		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo12gauge, TotalAmmoMax = 999, TotalAmmoCurrent = 10 };
 
-		WeaponDictionary[WeaponRangedTypes.HarmonicaRevolver] = new WeaponRangedTypeData
+		WeaponDictionary[WeaponRangedEnum.HarmonicaRevolver] = new WeaponRangedData
 		{
-			RagnedWeaponTypeSystem = WeaponRangedTypes.HarmonicaRevolver,
+			RagnedWeaponTypeSystem = WeaponRangedEnum.HarmonicaRevolver,
 			AmmoTypeSystem = AmmoTypes.Ammo9mm,
 			MagazineAmmoMax = 5,
 			MagazineAmmoCurrent = 5
 		};
-		WeaponDictionary[WeaponRangedTypes.SawedOffShotgun] = new WeaponRangedTypeData
+		WeaponDictionary[WeaponRangedEnum.SawedOffShotgun] = new WeaponRangedData
 		{
-			RagnedWeaponTypeSystem = WeaponRangedTypes.SawedOffShotgun,
+			RagnedWeaponTypeSystem = WeaponRangedEnum.SawedOffShotgun,
 			AmmoTypeSystem = AmmoTypes.Ammo12gauge,
 			MagazineAmmoMax = 2,
 			MagazineAmmoCurrent = 2

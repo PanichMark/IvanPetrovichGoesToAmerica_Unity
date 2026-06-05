@@ -1,4 +1,4 @@
-﻿public enum WeaponRangedTypes
+﻿public enum WeaponRangedEnum
 {
     HarmonicaRevolver,
 	BergmannBayardAutomatische,

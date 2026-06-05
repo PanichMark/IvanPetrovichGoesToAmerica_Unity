@@ -17,9 +17,13 @@ public class WeaponWheelMenuController : MonoBehaviour
 	public event WeaponWheelMenuHandler OnOpenWeaponWheelMenu;
 
 	private IInputDevice _inputDevice;
+	private LocalizationManager _localizationManager;
 	private PlayerWeaponController _weaponController;
 	private PlayerBehaviourController _playerBehaviour;
 	private MenuManager _menuManager;
+
+	private string _weaponWheelHandRight;
+	private string _weaponWheelHandLeft;
 
 	private bool _isHoveringOverButton;
 	private bool _previousRightHandPressed = false;
@@ -33,6 +37,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 	public void Initialize(
 		IInputDevice inputDevice,
+		LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
 		PlayerWeaponController weaponController,
@@ -43,6 +48,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		TextMeshProUGUI weaponWheelName)
 	{
 		_inputDevice = inputDevice;
+		_localizationManager = localizationManager;
 		_playerBehaviour = playerBehaviour;
 		_weaponController = weaponController;
 		_menuManager = menuManager;
@@ -54,6 +60,8 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
 		_isInitialized = true;
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_weaponController.OnAnyWeaponUnlocked += OnWeaponUnlocked;
 
@@ -90,7 +98,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 			_isWeaponLeftHand = false;
 			ShowWeaponName();
 			ShowWeaponIcon();
-			WeaponWheelName.text = "ПРАВАЯ РУКА";
+			WeaponWheelName.text = _weaponWheelHandRight;
 		}
 		else if (leftHandPressed)
 		{
@@ -99,7 +107,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 			_isWeaponLeftHand = true;
 			ShowWeaponName();
 			ShowWeaponIcon();
-			WeaponWheelName.text = "ЛЕВАЯ РУКА";
+			WeaponWheelName.text = _weaponWheelHandLeft;
 		}
 		else
 		{
@@ -169,7 +177,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 			WeaponWheelMenuButton buttonScript = segmentInstance.GetComponent<WeaponWheelMenuButton>();
 			if (buttonScript != null)
 			{
-				buttonScript.Initialize(_weaponController, this, activeWeapons[i], weaponComponent);
+				buttonScript.Initialize(_localizationManager, _weaponController, this, activeWeapons[i], weaponComponent);
 			}
 
 			_wheelSegments.Add(segmentInstance);
@@ -249,7 +257,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		{
 			if (_weaponController.LeftHandWeapon != null)
 			{
-				WeaponText.text = _weaponController.LeftHandWeaponComponent.WeaponNameUI;
+				WeaponText.text = _localizationManager.GetLocalizedString(_weaponController.LeftHandWeaponComponent.WeaponNameSystem);
 			}
 			else
 			{
@@ -260,12 +268,22 @@ public class WeaponWheelMenuController : MonoBehaviour
 		{
 			if (_weaponController.RightHandWeapon != null)
 			{
-				WeaponText.text = _weaponController.RightHandWeaponComponent.WeaponNameUI;
+				WeaponText.text = _localizationManager.GetLocalizedString(_weaponController.RightHandWeaponComponent.WeaponNameSystem);
 			}
 			else
 			{
 				WeaponText.text = "";
 			}
 		}
+	}
+
+	private void ChangeLanguage(LocalizationManager localizationManager)
+	{
+		_localizationManager = localizationManager;
+
+		_weaponWheelHandRight = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandRight")}";
+		_weaponWheelHandLeft = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandLeft")}";
+
+		ShowWeaponName();
 	}
 }

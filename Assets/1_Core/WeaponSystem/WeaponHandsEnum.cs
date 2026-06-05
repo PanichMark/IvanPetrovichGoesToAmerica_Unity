@@ -1,5 +1,5 @@
 ﻿public enum WeaponHandsEnum
 {
-	RightHand,
-	LeftHand
+	HandRight,
+	HandLeft
 }

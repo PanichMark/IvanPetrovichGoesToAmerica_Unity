@@ -19,10 +19,10 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 			_attackPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
 		}
 		
-		SetUpMeleeWeapon();
+		InitializeWeaponMelee();
 	}
 
-	protected abstract void SetUpMeleeWeapon();
+	protected abstract void InitializeWeaponMelee();
 
 	public override void WeaponAttack()
 	{

@@ -33,7 +33,7 @@ public class GameData
 
 	//Weapons
 	public List<string> UnlockedWeapons;
-	public List<WeaponRangedTypeData> UnlockedRangedWeapons;
+	public List<WeaponRangedData> UnlockedRangedWeapons;
 	public string WeaponRightHand;
 	public string WeaponLeftHand;
 
@@ -81,7 +81,7 @@ public class GameData
 
 		//Weapons
 		UnlockedWeapons = new List<string>();
-		UnlockedRangedWeapons = new List<WeaponRangedTypeData>();
+		UnlockedRangedWeapons = new List<WeaponRangedData>();
 		WeaponRightHand = null;
 		WeaponLeftHand = null;
 
