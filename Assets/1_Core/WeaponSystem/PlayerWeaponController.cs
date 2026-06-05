@@ -286,7 +286,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			WeaponRangedTypes newKey = (WeaponRangedTypes)System.Enum.Parse(typeof(WeaponRangedTypes), rangedNew.WeaponNameSystem);
 			if (_ammoManager.WeaponDictionary.TryGetValue(newKey, out var newData))
 			{
-				rangedNew.SetPlayerWeaponAmmoType(newData.AmmoType);
+				rangedNew.SetPlayerWeaponAmmoType(newData.AmmoTypeSystem);
 				rangedNew.SetPlayerMagazineProperties(newData.MagazineAmmoMax, newData.MagazineAmmoCurrent);
 			}
 		}
@@ -472,15 +472,15 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				System.Enum.TryParse(weaponComp.WeaponNameSystem, out weaponEnumType);
 
 				WeaponRangedTypeData dataToAdd = new WeaponRangedTypeData();
-				dataToAdd.RagnedWeaponType = weaponEnumType;
-				dataToAdd.RagnedWeaponJson = weaponEnumType.ToString(); // Добавляем строковое представление
+				dataToAdd.RagnedWeaponTypeSystem = weaponEnumType;
+				dataToAdd.RagnedWeaponTypeJson = weaponEnumType.ToString(); // Добавляем строковое представление
             
 				// Получаем данные об оружии из менеджера ресурсов по его типу
 				if (_ammoManager.WeaponDictionary.TryGetValue(weaponEnumType, out WeaponRangedTypeData weaponState))
 				{
 					dataToAdd.MagazineAmmoCurrent = weaponState.MagazineAmmoCurrent;
-					dataToAdd.AmmoType = weaponState.AmmoType;
-					dataToAdd.AmmoJson = weaponState.AmmoType.ToString(); // Добавляем строковое представление
+					dataToAdd.AmmoTypeSystem = weaponState.AmmoTypeSystem;
+					dataToAdd.AmmoTypeJson = weaponState.AmmoTypeSystem.ToString(); // Добавляем строковое представление
 				}
 
 				rangedWeaponIds.Add(dataToAdd);
@@ -505,6 +505,37 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				if (weaponPrefab != null)
 				{
 					UnlockWeapon(weaponPrefab);
+				}
+			}
+		}
+
+		// Загрузка состояния дальнобойного оружия (патроны и т.д.)
+		if (data.UnlockedRangedWeapons != null)
+		{
+			foreach (var loadedWeaponData in data.UnlockedRangedWeapons)
+			{
+				// 1. Пробуем распарсить строковое представление типа оружия обратно в Enum
+				if (Enum.TryParse(loadedWeaponData.RagnedWeaponTypeJson, out WeaponRangedTypes parsedWeaponType))
+				{
+					// 2. Ищем шаблон этого оружия в словаре менеджера ресурсов
+					if (_ammoManager.WeaponDictionary.ContainsKey(parsedWeaponType))
+					{
+						// 3. Получаем ссылку на данные шаблона
+						var weaponState = _ammoManager.WeaponDictionary[parsedWeaponType];
+
+						// 4. Применяем загруженные данные о состоянии магазина
+						weaponState.MagazineAmmoCurrent = loadedWeaponData.MagazineAmmoCurrent;
+
+						// Если нужно, можно восстановить и тип патронов из JSON
+						if (Enum.TryParse(loadedWeaponData.AmmoTypeJson, out AmmoTypes parsedAmmoType))
+						{
+							weaponState.AmmoTypeSystem = parsedAmmoType;
+						}
+
+						// 5. ОБЯЗАТЕЛЬНО сохраняем обновленные данные обратно в словарь,
+						// так как структуры (struct) передаются по значению, а не по ссылке.
+						_ammoManager.WeaponDictionary[parsedWeaponType] = weaponState;
+					}
 				}
 			}
 		}

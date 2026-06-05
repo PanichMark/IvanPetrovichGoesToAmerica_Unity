@@ -109,4 +109,14 @@ public class GameController
 		OpenMainMenu();
 		IsPauseMenuAvailable = true;
 	}
+
+	public void BlockInput()
+	{
+		IsPlayerControllable = false;
+	}
+
+	public void UnblockInput()
+	{
+		IsPlayerControllable = true;
+	}
 }

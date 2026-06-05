@@ -30,20 +30,20 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 
 	public void Initialize()
 	{
-		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoType = AmmoTypes.Ammo9mm, TotalAmmoMax = 999, TotalAmmoCurrent = 25 };
-		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoType = AmmoTypes.Ammo12gauge, TotalAmmoMax = 999, TotalAmmoCurrent = 10 };
+		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo9mm, TotalAmmoMax = 999, TotalAmmoCurrent = 25 };
+		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo12gauge, TotalAmmoMax = 999, TotalAmmoCurrent = 10 };
 
 		WeaponDictionary[WeaponRangedTypes.HarmonicaRevolver] = new WeaponRangedTypeData
 		{
-			RagnedWeaponType = WeaponRangedTypes.HarmonicaRevolver,
-			AmmoType = AmmoTypes.Ammo9mm,
+			RagnedWeaponTypeSystem = WeaponRangedTypes.HarmonicaRevolver,
+			AmmoTypeSystem = AmmoTypes.Ammo9mm,
 			MagazineAmmoMax = 5,
 			MagazineAmmoCurrent = 5
 		};
 		WeaponDictionary[WeaponRangedTypes.SawedOffShotgun] = new WeaponRangedTypeData
 		{
-			RagnedWeaponType = WeaponRangedTypes.SawedOffShotgun,
-			AmmoType = AmmoTypes.Ammo12gauge,
+			RagnedWeaponTypeSystem = WeaponRangedTypes.SawedOffShotgun,
+			AmmoTypeSystem = AmmoTypes.Ammo12gauge,
 			MagazineAmmoMax = 2,
 			MagazineAmmoCurrent = 2
 		};
@@ -109,7 +109,7 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 		{
 			AmmoTypeData saveStruct = kvp.Value;
 	
-			saveStruct.AmmoJson = kvp.Key.ToString();
+			saveStruct.AmmoTypeJson = kvp.Key.ToString();
 			ammoListForSaving.Add(saveStruct);
 		}
 
@@ -123,10 +123,10 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 			for (int i = 0; i < data.AmmoDictionary.Count; i++)
 			{
 				var currentData = data.AmmoDictionary[i];
-				if (Enum.TryParse(currentData.AmmoJson, out AmmoTypes parsedType))
+				if (Enum.TryParse(currentData.AmmoTypeJson, out AmmoTypes parsedType))
 				{
 					AmmoTypeData updatedData = currentData;
-					updatedData.AmmoType = parsedType;
+					updatedData.AmmoTypeSystem = parsedType;
 
 					data.AmmoDictionary[i] = updatedData;
 

@@ -3,10 +3,10 @@
 [Serializable]
 public struct AmmoTypeData
 {
-	[NonSerialized]
-	public AmmoTypes AmmoType;
-	public string AmmoJson;
+	public AmmoTypes AmmoTypeSystem;
+	public string AmmoTypeJson;
+	public int TotalAmmoCurrent;
+
 	[NonSerialized]
 	public int TotalAmmoMax;
-	public int TotalAmmoCurrent;
 }

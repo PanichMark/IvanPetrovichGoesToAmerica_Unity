@@ -3,13 +3,12 @@
 [Serializable]
 public struct WeaponRangedTypeData
 {
-	[NonSerialized]
-	public WeaponRangedTypes RagnedWeaponType;
-	public string RagnedWeaponJson;
-	[NonSerialized]
-	public AmmoTypes AmmoType;
-	public string AmmoJson;
+	public WeaponRangedTypes RagnedWeaponTypeSystem;
+	public string RagnedWeaponTypeJson;
+	public AmmoTypes AmmoTypeSystem;
+	public string AmmoTypeJson;
+	public int MagazineAmmoCurrent;
+
 	[NonSerialized]
 	public int MagazineAmmoMax;
-	public int MagazineAmmoCurrent;
 }

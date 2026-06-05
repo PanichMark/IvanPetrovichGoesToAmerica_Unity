@@ -143,13 +143,19 @@ public class GameSceneManager : MonoBehaviour, ISaveLoad
 		Debug.Log($"{sceneName} loading ended");
 		
 		OnEndLoadingGameplayScene?.Invoke();
-	
+
+		_gameController.GameplaySceneLoadEnded();
+
+		_gameController.BlockInput();
+
 		yield return new WaitWhile(() => !Input.anyKeyDown);
 
 		_canvasLoadingScreen.SetActive(false);
-		
-		Time.timeScale = 1f; 
-		_gameController.GameplaySceneLoadEnded();
+
+		_gameController.UnblockInput();
+
+		Time.timeScale = 1f;
+
 		Debug.Log($"SceneLoaded {scene}");
 
 		yield break;
