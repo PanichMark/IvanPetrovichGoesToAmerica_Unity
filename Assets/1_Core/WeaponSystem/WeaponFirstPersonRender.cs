@@ -137,9 +137,9 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		}
 	}
 
-	private void RegisterWeapons(string handType)
+	private void RegisterWeapons(WeaponHandsEnum handType)
 	{
-		if (handType == "left")
+		if (handType == WeaponHandsEnum.HandLeft)
 		{
 			if (_weaponController.LeftHandWeapon != null)
 			{

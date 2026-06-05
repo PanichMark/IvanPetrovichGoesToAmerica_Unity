@@ -36,7 +36,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			}
 			else
 			{
-				Debug.Log("Not enough Ammo");
+				Debug.Log($"Not enough Ammo {WeaponName}");
 			}
 		}
 	}

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public delegate void OnAnyWeaponUnlocked(GameObject weaponPrefab);
 
-public delegate void OnWeaponChanged(string activeHand);
+public delegate void OnWeaponChanged(WeaponHandsEnum activeHand);
 
 public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 {
@@ -300,7 +300,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			}
 
 			LeftHandWeapon = weaponInstance;
-			OnWeaponChanged?.Invoke("left");
+			OnWeaponChanged?.Invoke(WeaponHandsEnum.HandLeft);
 
 			weaponComponent.InstantiateWeapon(WeaponHandsEnum.HandLeft);
 			weaponComponent.FlipWeaponModel();
@@ -318,7 +318,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			}
 
 			RightHandWeapon = weaponInstance;
-			OnWeaponChanged?.Invoke("right");
+			OnWeaponChanged?.Invoke(WeaponHandsEnum.HandRight);
 
 			weaponComponent.InstantiateWeapon(WeaponHandsEnum.HandRight);
 
@@ -332,6 +332,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		if (RightHandWeapon != null)
 		{
+			//Debug.Log("Attack Right");
 			RightHandWeaponComponent.WeaponAttack();
 			_playerBehaviour.ArmPlayer();
 		}
@@ -341,6 +342,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		if (LeftHandWeapon != null)
 		{
+			//Debug.Log("Attack Left");
 			LeftHandWeaponComponent.WeaponAttack();
 			_playerBehaviour.ArmPlayer();
 		}

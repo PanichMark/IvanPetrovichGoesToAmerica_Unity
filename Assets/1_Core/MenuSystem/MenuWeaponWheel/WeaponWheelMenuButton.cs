@@ -28,7 +28,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 
 		var button = GetComponent<Button>();
 		button.onClick.AddListener(() => SelectWeapon());
-		button.onClick.AddListener(() => this._weaponWheelController.ShowWeaponIcon());
+		button.onClick.AddListener(() => _weaponWheelController.ShowWeaponIcon());
 
 		_button = button; 
 
@@ -39,9 +39,9 @@ public class WeaponWheelMenuButton : MonoBehaviour
 		_weaponController.OnWeaponChanged += OnWeaponChange;
 	}
 
-	private void OnOpenWeaponWheel(string activeHand)
+	private void OnOpenWeaponWheel(WeaponHandsEnum activeHand)
 	{
-		if (activeHand == "left")
+		if (activeHand == WeaponHandsEnum.HandLeft)
 		{
 			_previousWeapon = _weaponController.LeftHandWeapon;
 		}
@@ -52,15 +52,15 @@ public class WeaponWheelMenuButton : MonoBehaviour
 		HandleOnWeaponChanged(activeHand);
 	}
 
-	private void OnWeaponChange(string activeHand)
+	private void OnWeaponChange(WeaponHandsEnum activeHand)
 	{
 		HandleOnWeaponChanged(activeHand);
 		_previousWeapon = _currentWeapon;
 	}
 
-	private void HandleOnWeaponChanged(string activeHand)
+	private void HandleOnWeaponChanged(WeaponHandsEnum activeHand)
 	{
-		if (activeHand == "left")
+		if (activeHand == WeaponHandsEnum.HandLeft)
 		{
 			_currentWeapon = _weaponController.LeftHandWeapon;
 		}

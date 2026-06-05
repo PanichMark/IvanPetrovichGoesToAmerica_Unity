@@ -102,9 +102,9 @@ public class HUDammoController : MonoBehaviour
 		Debug.Log("Hide canvasAmmo");
 	}
 
-	private void UpdateAmmoDisplayForActiveWeapon(string activeHand)
+	private void UpdateAmmoDisplayForActiveWeapon(WeaponHandsEnum activeHand)
 	{
-		if (activeHand == "left")
+		if (activeHand == WeaponHandsEnum.HandLeft)
 		{
 			var ranged = _playerWeaponController.LeftHandWeapon?.GetComponent<WeaponRangedAbstract>();
 			if (_playerWeaponController.LeftHandWeapon != null && ranged != null)
@@ -123,7 +123,7 @@ public class HUDammoController : MonoBehaviour
 				HideLeftWeaponAmmo();
 			}
 		}
-		else 
+		if (activeHand == WeaponHandsEnum.HandRight)
 		{
 			var ranged = _playerWeaponController.RightHandWeapon?.GetComponent<WeaponRangedAbstract>();
 			if (_playerWeaponController.RightHandWeapon != null && ranged != null)
@@ -161,7 +161,6 @@ public class HUDammoController : MonoBehaviour
 			if (rightRanged != null && rightRanged.PlayerWeaponAmmoType == type)
 			{
 				_rightWeaponAmmoReserveText.text = newTotalAmount.ToString();
-				return;
 			}
 		}
 
@@ -171,7 +170,6 @@ public class HUDammoController : MonoBehaviour
 			if (leftRanged != null && leftRanged.PlayerWeaponAmmoType == type)
 			{
 				_leftWeaponAmmoReserveText.text = newTotalAmount.ToString();
-				return;
 			}
 		}
 	}
@@ -184,7 +182,6 @@ public class HUDammoController : MonoBehaviour
 			if (rightRanged != null && rightRanged.PlayerWeaponAmmoType == type)
 			{
 				_rightWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
-				return;
 			}
 		}
 
@@ -194,7 +191,6 @@ public class HUDammoController : MonoBehaviour
 			if (leftRanged != null && leftRanged.PlayerWeaponAmmoType == type)
 			{
 				_leftWeaponAmmoMagazineText.text = newMagazineAmount.ToString();
-				return;
 			}
 		}
 	}
