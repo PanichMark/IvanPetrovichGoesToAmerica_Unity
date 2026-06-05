@@ -109,7 +109,7 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 		{
 			AmmoTypeData saveStruct = kvp.Value;
 	
-			saveStruct.AmmoTypeString = kvp.Key.ToString();
+			saveStruct.AmmoJson = kvp.Key.ToString();
 			ammoListForSaving.Add(saveStruct);
 		}
 
@@ -123,7 +123,7 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 			for (int i = 0; i < data.AmmoDictionary.Count; i++)
 			{
 				var currentData = data.AmmoDictionary[i];
-				if (Enum.TryParse(currentData.AmmoTypeString, out AmmoTypes parsedType))
+				if (Enum.TryParse(currentData.AmmoJson, out AmmoTypes parsedType))
 				{
 					AmmoTypeData updatedData = currentData;
 					updatedData.AmmoType = parsedType;

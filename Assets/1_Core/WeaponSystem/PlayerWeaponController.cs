@@ -473,12 +473,14 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 				WeaponRangedTypeData dataToAdd = new WeaponRangedTypeData();
 				dataToAdd.RagnedWeaponType = weaponEnumType;
-
+				dataToAdd.RagnedWeaponJson = weaponEnumType.ToString(); // Добавляем строковое представление
+            
 				// Получаем данные об оружии из менеджера ресурсов по его типу
 				if (_ammoManager.WeaponDictionary.TryGetValue(weaponEnumType, out WeaponRangedTypeData weaponState))
 				{
 					dataToAdd.MagazineAmmoCurrent = weaponState.MagazineAmmoCurrent;
 					dataToAdd.AmmoType = weaponState.AmmoType;
+					dataToAdd.AmmoJson = weaponState.AmmoType.ToString(); // Добавляем строковое представление
 				}
 
 				rangedWeaponIds.Add(dataToAdd);
@@ -487,24 +489,9 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		data.UnlockedRangedWeapons = rangedWeaponIds;
 
-
-		if (RightHandWeapon != null)
-		{
-			data.WeaponRightHand = RightHandWeaponComponent.WeaponNameSystem;
-		}
-		else
-		{
-			data.WeaponRightHand = null;
-		}
-
-		if (LeftHandWeapon != null)
-		{
-			data.WeaponLeftHand = LeftHandWeaponComponent.WeaponNameSystem;
-		}
-		else
-		{
-			data.WeaponLeftHand = null;
-		}
+		// Сохранение активного оружия в руках
+		data.WeaponRightHand = RightHandWeapon?.GetComponent<WeaponAbstract>()?.WeaponNameSystem;
+		data.WeaponLeftHand = LeftHandWeapon?.GetComponent<WeaponAbstract>()?.WeaponNameSystem;
 	}
 
 	public void LoadData(GameData data)
@@ -522,30 +509,30 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			}
 		}
 
+		// Загрузка активного оружия в правую руку
 		if (!string.IsNullOrEmpty(data.WeaponRightHand))
 		{
 			foreach (var unlockedWeapon in UnlockedWeapons)
 			{
-				WeaponAbstract weaponComponent = unlockedWeapon.Value.GetComponent<WeaponAbstract>();
-				if (weaponComponent != null && weaponComponent.WeaponNameSystem == data.WeaponRightHand)
+				WeaponAbstract comp = unlockedWeapon.Value.GetComponent<WeaponAbstract>();
+				if (comp != null && comp.WeaponNameSystem == data.WeaponRightHand)
 				{
 					SelectWeapon(unlockedWeapon.Value);
-
 					break;
 				}
 			}
 		}
 
+		// Загрузка активного оружия в левую руку
 		if (!string.IsNullOrEmpty(data.WeaponLeftHand))
 		{
-			IsLeftHand = true;
+			IsLeftHand = true; // Устанавливаем флаг, что выбираем для левой руки
 			foreach (var unlockedWeapon in UnlockedWeapons)
 			{
-				WeaponAbstract weaponComponent = unlockedWeapon.Value.GetComponent<WeaponAbstract>();
-				if (weaponComponent != null && weaponComponent.WeaponNameSystem == data.WeaponLeftHand)
+				WeaponAbstract comp = unlockedWeapon.Value.GetComponent<WeaponAbstract>();
+				if (comp != null && comp.WeaponNameSystem == data.WeaponLeftHand)
 				{
 					SelectWeapon(unlockedWeapon.Value);
-
 					break;
 				}
 			}
