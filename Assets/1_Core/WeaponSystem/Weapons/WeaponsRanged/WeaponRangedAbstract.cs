@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
+using UnityEngine;
 
 public abstract class WeaponRangedAbstract : WeaponAbstract
 {
@@ -10,7 +11,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoCurrent;
 
 
-	public void StartAutoAttacking()
+	public override void StartAutoAttacking()
 	{
 		if (_isWeaponAutoAttacking || PlayerMagazineAmmoCurrent <= 0) return;
 		_isWeaponAutoAttacking = true;
@@ -30,7 +31,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 	}
 
-	private IEnumerator AutoAttackCourutine()
+	public override IEnumerator AutoAttackCourutine()
 	{
 		while (true)
 		{

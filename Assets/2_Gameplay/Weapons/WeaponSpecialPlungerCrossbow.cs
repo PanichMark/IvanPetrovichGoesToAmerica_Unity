@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class WeaponSpecialPlungerCrossbow : WeaponAbstract
@@ -197,5 +198,21 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	{
 		_playerRigidbody.linearVelocity = Vector3.zero;
 		StopPlunging();
+	}
+
+	public override void StopAutoAttacking()
+	{
+		//throw new System.NotImplementedException();
+	}
+
+	public override void StartAutoAttacking()
+	{
+		//throw new System.NotImplementedException();
+	}
+
+	public override IEnumerator AutoAttackCourutine()
+	{
+		//throw new System.NotImplementedException();
+		yield return null;
 	}
 }

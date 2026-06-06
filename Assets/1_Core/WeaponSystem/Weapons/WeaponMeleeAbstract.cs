@@ -23,7 +23,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	}
 
 	// --- ДОБАВИТЬ ЭТОТ МЕТОД ---
-	public void StartAutoAttacking()
+	public override void StartAutoAttacking()
 	{
 		if (_isWeaponAutoAttacking) return;
 		_isWeaponAutoAttacking = true;
@@ -50,7 +50,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	// ... (поля и метод StartAutoAttacking остаются без изменений)
 
 	// --- ИЗМЕНЕННАЯ КОРУТИНА ---
-	private IEnumerator AutoAttackCourutine()
+	public override IEnumerator AutoAttackCourutine()
 	{
 		// Бесконечный цикл для автоатаки
 		while (_isWeaponAutoAttacking)

@@ -1,34 +1,40 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections;
 
 public abstract class WeaponAbstract : MonoBehaviour
 {
-	public abstract string WeaponType { get; }
-	public abstract bool IsWeaponAuto { get; }
-
 	public abstract string WeaponName { get; }
 	public abstract string WeaponNameSystem { get; }
-
+	public abstract string WeaponType { get; }
+	public abstract Sprite WeaponIcon { get; }
+	public abstract float WeaponDamage { get; }
+	public abstract bool IsWeaponAuto { get; }
+	protected float _weaponAutoAttackSpeedRate;
 	protected bool _isWeaponAutoAttacking;
 	protected Coroutine _weaponAutoAttackCourutine;
-	protected float _weaponAutoAttackSpeedRate;
 
-
-	private GameObject _firstPersonLeftHandWeaponSlotGameObject;
-	private GameObject _firstPersonRightHandWeaponSlotGameObject;
-	private GameObject _thirdPersonLeftHandWeaponSlotGameObject;
-	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
-	public abstract Sprite WeaponIcon { get; }         
 	protected bool _isThisPlayerWeapon;
-	public abstract float WeaponDamage { get; }
 
 	public GameObject FirstPersonWeaponModelInstance { get; protected set; }
-	public GameObject ThirdPersonWeaponModelInstance { get; protected set; } 
+	public GameObject ThirdPersonWeaponModelInstance { get; protected set; }
 
+	private GameObject _firstPersonLeftHandWeaponSlotGameObject;
 	private Transform _firstPersonLeftHandWeaponSlotTransform;
+
+	private GameObject _firstPersonRightHandWeaponSlotGameObject;
 	private Transform _firstPersonRightHandWeaponSlotTransform;
+
+	private GameObject _thirdPersonLeftHandWeaponSlotGameObject;
 	private Transform _thirdPersonLeftHandWeaponSlotTransform;
+
+	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
 	private Transform _thirdPersonRightHandWeaponSlotTransform;
+
+	public abstract void WeaponAttack();
+	public abstract void StartAutoAttacking();
+	public abstract void StopAutoAttacking();
+	public abstract IEnumerator AutoAttackCourutine();
 
 	public void MakeOwnerPlayer()
 	{
@@ -38,36 +44,6 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public void MakeOwnerNPC()
 	{
 		_isThisPlayerWeapon = false;
-	}
-
-	public virtual void StopAutoAttacking()
-	{
-
-	}
-
-	public virtual void WeaponAttack()
-	{
-
-	}
-
-	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
-	{
-		MakeOwnerNPC();
-
-		ThirdPersonWeaponModelInstance = gameObject;
-
-		_thirdPersonRightHandWeaponSlotTransform = NPCweaponSlotTransform;
-		ThirdPersonWeaponModelInstance.transform.SetParent(_thirdPersonRightHandWeaponSlotTransform, true);
-
-		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
-		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
-	}
-
-	public void InstantiateFirstPersonWeaponInstance()
-	{
-		FirstPersonWeaponModelInstance = Instantiate(gameObject);
-		WeaponAbstract FirstPersonWeaponModelInstanceComponent = FirstPersonWeaponModelInstance.GetComponent<WeaponAbstract>();
-		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer();
 	}
 
 	public void InstantiateWeapon(WeaponHandsEnum handType)
@@ -119,6 +95,26 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		FirstPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
 		FirstPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
+
+		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
+		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
+	}
+
+	public void InstantiateFirstPersonWeaponInstance()
+	{
+		FirstPersonWeaponModelInstance = Instantiate(gameObject);
+		WeaponAbstract FirstPersonWeaponModelInstanceComponent = FirstPersonWeaponModelInstance.GetComponent<WeaponAbstract>();
+		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer();
+	}
+
+	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
+	{
+		MakeOwnerNPC();
+
+		ThirdPersonWeaponModelInstance = gameObject;
+
+		_thirdPersonRightHandWeaponSlotTransform = NPCweaponSlotTransform;
+		ThirdPersonWeaponModelInstance.transform.SetParent(_thirdPersonRightHandWeaponSlotTransform, true);
 
 		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;

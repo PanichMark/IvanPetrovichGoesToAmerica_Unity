@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 {
@@ -7,8 +8,9 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 	public override string WeaponType => WeaponTypes.Ranged.ToString();
 	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponWheel/WeaponWheel_WeaponIcons/Weapon{WeaponType}{WeaponName}Icon");
 
-	public override float WeaponDamage => 15f;
+	public override float WeaponDamage => 20f;
 	public override bool IsWeaponAuto => true;
+
 	protected override void InitializeWeaponRanged()
 	{
 		_weaponAutoAttackSpeedRate = 0.15f;
