@@ -174,7 +174,7 @@ public class HUDammoController : MonoBehaviour
 		}
 	}
 
-	private void UpdateMagazineDisplay(WeaponRangedEnum weaponType, AmmoTypes ammoType, int newAmount)
+	private void UpdateMagazineDisplay(WeaponsRangedEnum weaponType, AmmoTypes ammoType, int newAmount)
 	{
 		if (_playerWeaponController.RightHandWeapon != null)
 		{

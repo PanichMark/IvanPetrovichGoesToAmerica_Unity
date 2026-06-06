@@ -19,8 +19,6 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	private GameController _gameController;
 	public Dictionary<string, GameObject> UnlockedWeapons = new Dictionary<string, GameObject>();
 
-
-	// В начале класса
 	private bool _wasRightButtonPressedLastFrame;
 	private bool _wasLeftButtonPressedLastFrame;
 
@@ -98,10 +96,20 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			StopRihtWeaponAutoAttack();
 			_wasRightButtonPressedLastFrame = false;
 		}
-		if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
+		if (RightHandWeapon != null && RightHandWeapon.activeInHierarchy)
 		{
-			RightWeaponAttack();
-			_wasRightButtonPressedLastFrame = true;
+			if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
+			{
+				RightWeaponAttack();
+				_wasRightButtonPressedLastFrame = true;
+			}
+		}
+		if (RightHandWeapon != null && !RightHandWeapon.activeInHierarchy)
+		{
+			if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
+			{
+				_playerBehaviour.ArmPlayer();
+			}
 		}
 
 		if (_inputDevice.GetKeyLeftHandWeaponAttackReleased())
@@ -109,10 +117,20 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			StopLeftWeaponAutoAttack();
 			_wasLeftButtonPressedLastFrame = false;
 		}
-		if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
+		if (LeftHandWeapon != null && LeftHandWeapon.activeInHierarchy)
 		{
-			LeftWeaponAttack();
-			_wasLeftButtonPressedLastFrame = true;
+			if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
+			{
+				LeftWeaponAttack();
+				_wasLeftButtonPressedLastFrame = true;
+			}
+		}
+		if (LeftHandWeapon != null && !LeftHandWeapon.activeInHierarchy)
+		{
+			if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
+			{
+				_playerBehaviour.ArmPlayer();
+			}
 		}
 
 		IsLeftHand = _inputDevice.GetKeyLeftHandWeaponWheel();
@@ -289,7 +307,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (rangedToSave != null)
 		{
-			WeaponRangedEnum key = (WeaponRangedEnum)System.Enum.Parse(typeof(WeaponRangedEnum), rangedToSave.WeaponName);
+			WeaponsRangedEnum key = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), rangedToSave.WeaponName);
 			if (_ammoManager.WeaponsRangedDictionary.TryGetValue(key, out var data))
 			{
 				data.MagazineAmmoCurrent = rangedToSave.PlayerMagazineAmmoCurrent;
@@ -316,7 +334,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (weaponComponent is WeaponRangedAbstract rangedNew)
 		{
-			WeaponRangedEnum newKey = (WeaponRangedEnum)System.Enum.Parse(typeof(WeaponRangedEnum), rangedNew.WeaponName);
+			WeaponsRangedEnum newKey = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), rangedNew.WeaponName);
 			if (_ammoManager.WeaponsRangedDictionary.TryGetValue(newKey, out var newData))
 			{
 				rangedNew.SetPlayerWeaponAmmoType(newData.AmmoTypeSystem);
@@ -363,10 +381,9 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void RightWeaponAttack()
 	{
-		if (RightHandWeapon != null)
+		if (RightHandWeapon != null && _playerBehaviour.IsPlayerArmed)
 		{
 			RightHandWeaponComponent.WeaponAttack();
-			_playerBehaviour.ArmPlayer();
 		}
 	}
 
@@ -380,10 +397,9 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void LeftWeaponAttack()
 	{
-		if (LeftHandWeapon != null)
+		if (LeftHandWeapon != null && _playerBehaviour.IsPlayerArmed)
 		{
 			LeftHandWeaponComponent.WeaponAttack();
-			_playerBehaviour.ArmPlayer();
 		}
 	}
 
@@ -401,7 +417,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			if (RightHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
 			{
-				WeaponRangedEnum key = (WeaponRangedEnum)System.Enum.Parse(typeof(WeaponRangedEnum), rangedWeapon.WeaponName);
+				WeaponsRangedEnum key = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), rangedWeapon.WeaponName);
 				if (_ammoManager.WeaponsRangedDictionary.TryGetValue(key, out var data))
 				{
 					data.MagazineAmmoCurrent = rangedWeapon.PlayerMagazineAmmoCurrent;
@@ -422,7 +438,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
 			{
-				WeaponRangedEnum key = (WeaponRangedEnum)System.Enum.Parse(typeof(WeaponRangedEnum), rangedWeapon.WeaponName);
+				WeaponsRangedEnum key = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), rangedWeapon.WeaponName);
 				if (_ammoManager.WeaponsRangedDictionary.TryGetValue(key, out var data))
 				{
 					data.MagazineAmmoCurrent = rangedWeapon.PlayerMagazineAmmoCurrent;
@@ -517,7 +533,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			var weaponComp = weaponEntry.Value.GetComponent<WeaponRangedAbstract>();
 			if (weaponComp != null)
 			{
-				WeaponRangedEnum weaponEnumType;
+				WeaponsRangedEnum weaponEnumType;
 				System.Enum.TryParse(weaponComp.WeaponNameSystem, out weaponEnumType);
 
 				WeaponRangedData dataToAdd = new WeaponRangedData();
@@ -564,7 +580,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			foreach (var loadedWeaponData in data.UnlockedRangedWeapons)
 			{
 				// 1. Пробуем распарсить строковое представление типа оружия обратно в Enum
-				if (Enum.TryParse(loadedWeaponData.RagnedWeaponJson, out WeaponRangedEnum parsedWeaponType))
+				if (Enum.TryParse(loadedWeaponData.RagnedWeaponJson, out WeaponsRangedEnum parsedWeaponType))
 				{
 					// 2. Ищем шаблон этого оружия в словаре менеджера ресурсов
 					if (_ammoManager.WeaponsRangedDictionary.ContainsKey(parsedWeaponType))

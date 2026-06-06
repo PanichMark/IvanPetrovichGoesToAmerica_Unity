@@ -9,10 +9,10 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 	// Стало:
 	// Стало:
 	public event System.Action<AmmoTypes, int> OnReserveAmmoChanged;
-	public event System.Action<WeaponRangedEnum, AmmoTypes, int> OnMagazineAmmoChanged;
+	public event System.Action<WeaponsRangedEnum, AmmoTypes, int> OnMagazineAmmoChanged;
 
 	public Dictionary<AmmoTypes, AmmoTypeData> AmmoDictionary = new Dictionary<AmmoTypes, AmmoTypeData>();
-	public Dictionary<WeaponRangedEnum, WeaponRangedData> WeaponsRangedDictionary = new Dictionary<WeaponRangedEnum, WeaponRangedData>();
+	public Dictionary<WeaponsRangedEnum, WeaponRangedData> WeaponsRangedDictionary = new Dictionary<WeaponsRangedEnum, WeaponRangedData>();
 
 	public void SetNewInitialAmmo(AmmoTypes type, int newAmount)
 	{
@@ -36,7 +36,7 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 		OnReserveAmmoChanged?.Invoke(type, newAmount);
 	}
 
-	public void NotifyMagazineAmmoChanged(WeaponRangedEnum weaponType, AmmoTypes ammoType, int newAmount)
+	public void NotifyMagazineAmmoChanged(WeaponsRangedEnum weaponType, AmmoTypes ammoType, int newAmount)
 	{
 		// А этот метод - для нового события магазина
 		OnMagazineAmmoChanged?.Invoke(weaponType, ammoType, newAmount);
@@ -47,23 +47,23 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo9mm, TotalAmmoMax = 999, TotalAmmoCurrent = 100 };
 		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo12gauge, TotalAmmoMax = 999, TotalAmmoCurrent = 30 };
 	
-		WeaponsRangedDictionary[WeaponRangedEnum.HarmonicaRevolver] = new WeaponRangedData
+		WeaponsRangedDictionary[WeaponsRangedEnum.HarmonicaRevolver] = new WeaponRangedData
 		{
-			RagnedWeaponSystem = WeaponRangedEnum.HarmonicaRevolver,
+			RagnedWeaponSystem = WeaponsRangedEnum.HarmonicaRevolver,
 			AmmoTypeSystem = AmmoTypes.Ammo9mm,
 			MagazineAmmoMax = 5,
 			MagazineAmmoCurrent = 5
 		};
-		WeaponsRangedDictionary[WeaponRangedEnum.BergmannBayard] = new WeaponRangedData
+		WeaponsRangedDictionary[WeaponsRangedEnum.BergmannBayard] = new WeaponRangedData
 		{
-			RagnedWeaponSystem = WeaponRangedEnum.BergmannBayard,
+			RagnedWeaponSystem = WeaponsRangedEnum.BergmannBayard,
 			AmmoTypeSystem = AmmoTypes.Ammo9mm,
 			MagazineAmmoMax = 30,
 			MagazineAmmoCurrent = 30
 		};
-		WeaponsRangedDictionary[WeaponRangedEnum.SawedOffShotgun] = new WeaponRangedData
+		WeaponsRangedDictionary[WeaponsRangedEnum.SawedOffShotgun] = new WeaponRangedData
 		{
-			RagnedWeaponSystem = WeaponRangedEnum.SawedOffShotgun,
+			RagnedWeaponSystem = WeaponsRangedEnum.SawedOffShotgun,
 			AmmoTypeSystem = AmmoTypes.Ammo12gauge,
 			MagazineAmmoMax = 2,
 			MagazineAmmoCurrent = 2

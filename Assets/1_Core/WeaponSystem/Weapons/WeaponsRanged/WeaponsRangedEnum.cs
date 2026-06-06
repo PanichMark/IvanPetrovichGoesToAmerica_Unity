@@ -1,4 +1,4 @@
-﻿public enum WeaponRangedEnum
+﻿public enum WeaponsRangedEnum
 {
     HarmonicaRevolver,
 	BergmannBayard,

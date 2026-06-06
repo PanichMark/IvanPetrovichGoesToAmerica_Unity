@@ -104,7 +104,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		PlayerMagazineAmmoCurrent--;
 		Debug.Log($"Shoot {WeaponName}");
 
-		if (System.Enum.TryParse(WeaponName, out WeaponRangedEnum parsedWeaponType))
+		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
 		{
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
@@ -148,7 +148,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
 
-		if (System.Enum.TryParse(this.WeaponName, out WeaponRangedEnum parsedWeaponType))
+		if (System.Enum.TryParse(this.WeaponName, out WeaponsRangedEnum parsedWeaponType))
 		{
 			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.TotalAmmoCurrent);
 
