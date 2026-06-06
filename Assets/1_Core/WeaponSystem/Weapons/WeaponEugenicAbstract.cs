@@ -4,8 +4,10 @@ using System.Collections;
 public abstract class WeaponEugenicAbstract : WeaponAbstract
 {
 	public abstract int ManaCost {  get; }
-	protected GameObject _eugenicAttackDirection;
+
 	protected GameObject _eugenicSourcePoint;
+	protected GameObject _eugenicAttackDirection;
+
 	protected PlayerResourcesManaManager _playerResourcesManaManager;
 
 	private void Start()
@@ -19,6 +21,21 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		}
 
 		InitializeWeaponEugenic();
+	}
+
+	public override void WeaponAttack()
+	{
+		if (_playerResourcesManaManager.CurrentPlayerMana >= ManaCost)
+		{
+			if (IsWeaponAuto)
+			{
+				StartAutoAttacking(); 
+			}
+			else 
+			{
+				SingleEugenicAttack();
+			}
+		}
 	}
 
 	public override void StartAutoAttacking()
@@ -41,30 +58,6 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		}
 	}
 
-	protected virtual void PerformSingleEugenicAttack()
-	{
-
-	}
-
-	public override void WeaponAttack()
-	{
-		// Проверяем, достаточно ли маны для атаки
-		if (_playerResourcesManaManager.CurrentPlayerMana >= ManaCost)
-		{
-			// --- НОВАЯ ЛОГИКА ---
-			// Если это автоматическое евгеническое оружие
-			if (IsWeaponAuto)
-			{
-				StartAutoAttacking(); // Запускаем бесконечную очередь атак
-			}
-			else // Если это одиночное евгеническое заклинание
-			{
-				// Просто выполняем атаку один раз
-				PerformSingleEugenicAttack();
-			}
-		}
-	}
-
 	public override IEnumerator AutoAttackCourutine()
 	{
 		while (true)
@@ -74,7 +67,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 				break;
 			}
 
-			WeaponAttack();
+			AutoEugenicAttack();
 
 			yield return new WaitForSeconds(_weaponAutoAttackSpeedRate);
 
@@ -85,6 +78,16 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 			}
 		}
 		_weaponAutoAttackCourutine = null;
+	}
+
+	protected virtual void SingleEugenicAttack()
+	{
+
+	}
+
+	protected virtual void AutoEugenicAttack()
+	{
+
 	}
 
 	protected abstract void InitializeWeaponEugenic();

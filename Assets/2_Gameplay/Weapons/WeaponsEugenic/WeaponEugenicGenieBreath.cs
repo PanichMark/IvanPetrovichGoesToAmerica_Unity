@@ -2,62 +2,52 @@
 
 public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 {
-	private float _attackRange = 5f;
-	private float _knockbackForce = 10f;
-	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
 	public override string WeaponName => "GenieBreath";
+	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
 	public override string WeaponType => WeaponTypes.Eugenic.ToString();
-
 	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponWheel/WeaponWheel_WeaponIcons/Weapon{WeaponType}{WeaponName}Icon");
+	public override float WeaponDamage => 100;
+	public override int ManaCost =>	20;
 	public override bool IsWeaponAuto => false;
 
-	public override float WeaponDamage => 100;
-
-	public override int ManaCost =>	20;
+	private float _eugenicAttackRange = 5f;
+	private float _eugenicGenieBreathKnockbackForce = 10f;
 
 	protected override void InitializeWeaponEugenic()
 	{
 
 	}
 
-	protected override void PerformSingleEugenicAttack()
+	protected override void SingleEugenicAttack()
 	{
 		if (_isThisPlayerWeapon == true)
 		{
+			_playerResourcesManaManager.UseMana(ManaCost);
 
-			if (_playerResourcesManaManager.CurrentPlayerMana >= ManaCost)
+			Vector3 attackOrigin = _eugenicAttackDirection.transform.position + _eugenicAttackDirection.transform.forward * 1.5f;
+
+			Collider[] hitColliders = Physics.OverlapSphere(attackOrigin, _eugenicAttackRange);
+
+			foreach (Collider hit in hitColliders)
 			{
-				_playerResourcesManaManager.UseMana(ManaCost);
-
-				Vector3 attackOrigin = _eugenicAttackDirection.transform.position + _eugenicAttackDirection.transform.forward * 1.5f;
-
-				Collider[] hitColliders = Physics.OverlapSphere(attackOrigin, _attackRange);
-
-				foreach (Collider hit in hitColliders)
+				IDamageable damageable = hit.GetComponent<IDamageable>();
+				if (damageable != null)
 				{
-					IDamageable damageable = hit.GetComponent<IDamageable>();
-					if (damageable != null)
-					{
-						damageable.TakeDamage(WeaponDamage);
-						Debug.Log($"Нанесено {WeaponDamage} урона объекту: {hit.name}");
-					}
-				}
-
-				foreach (Collider hit in hitColliders)
-				{
-					Rigidbody rb = hit.GetComponent<Rigidbody>();
-					if (rb != null && !rb.isKinematic)
-					{
-						Vector3 knockbackDirection = _eugenicSourcePoint.transform.forward.normalized;
-
-						rb.AddForce(knockbackDirection * _knockbackForce, ForceMode.Impulse);
-						Debug.Log($"Отброшен Rigidbody: {hit.name}");
-					}
+					damageable.TakeDamage(WeaponDamage);
+					Debug.Log($"Нанесено {WeaponDamage} урона объекту: {hit.name}");
 				}
 			}
-			else
+
+			foreach (Collider hit in hitColliders)
 			{
-				Debug.Log($"Not enough mana for {WeaponNameSystem} attack");
+				Rigidbody rb = hit.GetComponent<Rigidbody>();
+				if (rb != null && !rb.isKinematic)
+				{
+					Vector3 knockbackDirection = _eugenicSourcePoint.transform.forward.normalized;
+
+					rb.AddForce(knockbackDirection * _eugenicGenieBreathKnockbackForce, ForceMode.Impulse);
+					Debug.Log($"Отброшен Rigidbody: {hit.name}");
+				}
 			}
 		}
 	}

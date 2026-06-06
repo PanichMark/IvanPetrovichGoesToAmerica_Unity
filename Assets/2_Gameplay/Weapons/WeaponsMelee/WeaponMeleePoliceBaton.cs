@@ -3,35 +3,32 @@ using System.Collections;
 
 public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 {
+	public override string WeaponName => "PoliceBaton";
+	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
+	public override string WeaponType => WeaponTypes.Melee.ToString();
+	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponWheel/WeaponWheel_WeaponIcons/Weapon{WeaponType}{WeaponName}Icon");
+	public override float WeaponDamage => 45f;
+	public override bool IsWeaponAuto => false;
+
 	private IInputDevice _inputDevice;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerWeaponController _weaponController;
+
+	private Coroutine currentChokeCoroutine = null;
 
 	private GameObject _chokeNPCtext;
 
 	private bool _isAbleToChoke = false;
 	private bool _npcDetected = false;
 	private bool _isItRightHand;
-	public override bool IsWeaponAuto => false;
-
-	public override float WeaponDamage => 45f;
-	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
-	public override string WeaponName => "PoliceBaton";
-
-	public override string WeaponType => WeaponTypes.Melee.ToString();
-
-	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponWheel/WeaponWheel_WeaponIcons/Weapon{WeaponType}{WeaponName}Icon");
 
 	protected override void InitializeWeaponMelee()
 	{
-		_capsuleHeight = 1.8f;
-		_capsuleRadius = 0.3f;
-		_forwardOffset = 0.5f;
-		_attackDelay = 0.5f;
-
-		_chokeNPCtext = ServiceLocator.Resolve<GameObject>("TextChokeNPC");
+		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
 		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>("PlayerMovementStateMachineController");
 		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
+
+		_chokeNPCtext = ServiceLocator.Resolve<GameObject>("TextChokeNPC");
 
 		if (_weaponController.RightHandWeaponComponent is WeaponMeleePoliceBaton)
 		{
@@ -42,8 +39,23 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 			_isItRightHand = false;	
 		}
 
-		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
+		_capsuleHeight = 1.8f;
+		_capsuleRadius = 0.3f;
+		_forwardOffset = 0.5f;
+		_attackDelay = 0.5f;
 	}
+
+	public override void WeaponAttack()
+	{
+		if (_isAbleToChoke)
+		{
+			PerformChokeAttack();
+			return;
+		}
+
+		base.WeaponAttack();
+	}
+
 	private void Update()
 	{
 		Vector3 playerPosition = _attackPoint.transform.position;
@@ -74,17 +86,15 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 		_chokeNPCtext.SetActive(_isAbleToChoke);
 	}
 
-	private Coroutine currentChokeCoroutine = null;
-
 	private void PerformChokeAttack()
 	{
 		if (currentChokeCoroutine != null)
 			StopCoroutine(currentChokeCoroutine);
 
-		currentChokeCoroutine = StartCoroutine(ChokeRoutine());
+		currentChokeCoroutine = StartCoroutine(ChokeCoroutine());
 	}
 
-	private IEnumerator ChokeRoutine()
+	private IEnumerator ChokeCoroutine()
 	{
 		Debug.Log("START choke!");
 		float chokeDuration = 2f;
@@ -106,16 +116,5 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 
 		Debug.Log("Choke SUCCESS!!!");
 		currentChokeCoroutine = null;
-	}
-
-	public override void WeaponAttack()
-	{
-		if (_isAbleToChoke)
-		{
-			PerformChokeAttack();
-			return; 
-		}
-
-		base.WeaponAttack();
 	}
 }

@@ -1,15 +1,50 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public abstract class WeaponRangedAbstract : WeaponAbstract
 {
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
+
 	private GameObject _shootPoint;
 
-	public int PlayerAmmoTotalMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoMax;
-	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoCurrent;
+	public AmmoTypes PlayerWeaponAmmoType { get; protected set; }
 
+	public int PlayerMagazineAmmoCurrent { get; set; }
+
+	public int PlayerMagazineAmmoMax { get; protected set; }
+	
+	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoCurrent;
+	public int PlayerAmmoTotalMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoMax;
+
+	private void Start()
+	{
+		if (_isThisPlayerWeapon)
+		{
+			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
+			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
+
+			InitializeWeaponRanged();
+		}
+	}
+
+	public override void WeaponAttack()
+	{
+		if (PlayerMagazineAmmoCurrent > 0)
+		{
+			if (IsWeaponAuto)
+			{
+				StartAutoAttacking();
+			}
+			else
+			{
+				ShootPlayerWeapon(WeaponDamage);
+			}
+		}
+		else if (_isThisPlayerWeapon)
+		{
+			Debug.Log($"Not enough Ammo {WeaponName}");
+		}
+	}
 
 	public override void StartAutoAttacking()
 	{
@@ -53,43 +88,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_weaponAutoAttackCourutine = null;
 	}
 
-	public AmmoTypes PlayerWeaponAmmoType { get; protected set; }
-
-	public int PlayerMagazineAmmoMax { get; protected set; }
-	public int PlayerMagazineAmmoCurrent { get; set; }
-
-	private void Start()
-	{
-		if (_isThisPlayerWeapon)
-		{
-			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
-			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
-
-			InitializeWeaponRanged();
-		}
-	}
-
-	protected abstract void InitializeWeaponRanged();
-
-	public override void WeaponAttack()
-	{
-		if (PlayerMagazineAmmoCurrent > 0)
-		{
-			if (IsWeaponAuto)
-			{
-				StartAutoAttacking();
-			}
-			else
-			{
-				ShootPlayerWeapon(WeaponDamage);
-			}
-		}
-		else if (_isThisPlayerWeapon)
-		{
-			Debug.Log($"Not enough Ammo {WeaponName}");
-		}
-	}
-
 	private void ShootPlayerWeapon(float weaponDamage)
 	{
 		RaycastHit hitInfo;
@@ -108,19 +106,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
 		{
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
-		}
-	}
-
-	public void ShootNPCweapon()
-	{
-		// TODO
-	}
-
-	public void Reload()
-	{
-		if (_isThisPlayerWeapon)
-		{
-			ReloadPlayerWeapon();
 		}
 	}
 
@@ -159,11 +144,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		Debug.Log("Reloaded");
 	}
 
-	public void ReloadNPCweapon()
-	{
-		// TODO
-	}
-
 	public void SetPlayerWeaponAmmoType(AmmoTypes type)
 	{
 		PlayerWeaponAmmoType = type;
@@ -174,4 +154,24 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		PlayerMagazineAmmoMax = maxAmmo;
 		PlayerMagazineAmmoCurrent = currentAmmo;
 	}
+
+	public void Reload()
+	{
+		if (_isThisPlayerWeapon)
+		{
+			ReloadPlayerWeapon();
+		}
+	}
+
+	public void ShootNPCweapon()
+	{
+		// TODO
+	}
+
+	public void ReloadNPCweapon()
+	{
+		// TODO
+	}
+
+	protected abstract void InitializeWeaponRanged();
 }

@@ -1,6 +1,6 @@
 ﻿using System;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 public abstract class WeaponAbstract : MonoBehaviour
 {
@@ -35,16 +35,6 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract void StartAutoAttacking();
 	public abstract void StopAutoAttacking();
 	public abstract IEnumerator AutoAttackCourutine();
-
-	public void MakeOwnerPlayer()
-	{
-		_isThisPlayerWeapon = true;
-	}
-
-	public void MakeOwnerNPC()
-	{
-		_isThisPlayerWeapon = false;
-	}
 
 	public void InstantiateWeapon(WeaponHandsEnum handType)
 	{
@@ -107,6 +97,11 @@ public abstract class WeaponAbstract : MonoBehaviour
 		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer();
 	}
 
+	public void MakeOwnerPlayer()
+	{
+		_isThisPlayerWeapon = true;
+	}
+
 	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
 	{
 		MakeOwnerNPC();
@@ -118,6 +113,11 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
+	}
+
+	public void MakeOwnerNPC()
+	{
+		_isThisPlayerWeapon = false;
 	}
 
 	public void DestroyWeaponModel()
