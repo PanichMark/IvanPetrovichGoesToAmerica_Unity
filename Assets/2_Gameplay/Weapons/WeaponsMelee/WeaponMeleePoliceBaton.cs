@@ -20,7 +20,7 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 
 	public override string WeaponType => WeaponTypes.Melee.ToString();
 
-	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponMeleePoliceBatonIcon");
+	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponWheel/WeaponWheel_WeaponIcons/Weapon{WeaponType}{WeaponName}Icon");
 
 	protected override void InitializeWeaponMelee()
 	{

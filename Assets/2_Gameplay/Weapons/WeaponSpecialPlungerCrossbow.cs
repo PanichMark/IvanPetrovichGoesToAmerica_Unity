@@ -30,7 +30,7 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	public override string WeaponName => "PlungerCrossbow";
 	public override string WeaponType => WeaponTypes.Special.ToString();
 
-	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponSpecialPlungerCrossbowIcon");
+	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponWheel/WeaponWheel_WeaponIcons/Weapon{WeaponType}{WeaponName}Icon");
 	public override float WeaponDamage => 0; 
 
 	private void Start()
