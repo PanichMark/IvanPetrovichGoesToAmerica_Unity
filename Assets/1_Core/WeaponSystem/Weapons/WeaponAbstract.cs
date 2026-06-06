@@ -4,16 +4,21 @@ using UnityEngine;
 public abstract class WeaponAbstract : MonoBehaviour
 {
 	public abstract string WeaponType { get; }
-	public abstract bool IsSingleAttack { get; }
+	public abstract bool IsWeaponAuto { get; }
 
 	public abstract string WeaponName { get; }
 	public abstract string WeaponNameSystem { get; }
+
+	protected bool _isWeaponAutoAttacking;
+	protected Coroutine _weaponAutoAttackCourutine;
+	protected float _weaponAutoAttackSpeedRate;
+
 
 	private GameObject _firstPersonLeftHandWeaponSlotGameObject;
 	private GameObject _firstPersonRightHandWeaponSlotGameObject;
 	private GameObject _thirdPersonLeftHandWeaponSlotGameObject;
 	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
-	public virtual Sprite WeaponIcon { get; protected set; }           
+	public abstract Sprite WeaponIcon { get; }         
 	protected bool _isThisPlayerWeapon;
 	public abstract float WeaponDamage { get; }
 
@@ -35,7 +40,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 		_isThisPlayerWeapon = false;
 	}
 
-	public virtual void StopWeaponAutoAttack()
+	public virtual void StopAutoAttacking()
 	{
 
 	}

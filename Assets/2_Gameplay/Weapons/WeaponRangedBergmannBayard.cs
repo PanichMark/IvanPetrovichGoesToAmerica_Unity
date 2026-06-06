@@ -8,9 +8,9 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponRangedBergmannBayardIcon");
 
 	public override float WeaponDamage => 15f;
-	public override bool IsSingleAttack => false;
+	public override bool IsWeaponAuto => true;
 	protected override void InitializeWeaponRanged()
 	{
-		//_fireRate = 0.1f;
+		_weaponAutoAttackSpeedRate = 0.15f;
 	}
 }

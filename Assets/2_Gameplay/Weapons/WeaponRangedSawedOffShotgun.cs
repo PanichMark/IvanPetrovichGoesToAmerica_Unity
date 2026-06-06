@@ -7,7 +7,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 	public override string WeaponType => WeaponTypes.Ranged.ToString();
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponRangedSawedOffShotgunIcon");
 	public override float WeaponDamage => 100f;
-	public override bool IsSingleAttack => true;
+	public override bool IsWeaponAuto => false;
 	protected override void InitializeWeaponRanged()
 	{
 		

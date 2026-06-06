@@ -9,63 +9,47 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public int PlayerAmmoTotalMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoMax;
 	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoCurrent;
 
-	// --- ДОБАВИТЬ ЭТИ ПОЛЯ ---
-	// В классе WeaponRangedAbstract
 
-	// Поля (оставляем как есть)
-	private bool _isFiring;
-	private Coroutine _fireCoroutine;
-	protected float _fireRate = 0.1f;
-
-	// ... (другие методы)
-
-	// Метод StartFiring (оставляем как есть)
-	public void StartFiring()
+	public void StartAutoAttacking()
 	{
-		if (_isFiring || PlayerMagazineAmmoCurrent <= 0) return;
-		_isFiring = true;
-		if (_fireCoroutine == null)
+		if (_isWeaponAutoAttacking || PlayerMagazineAmmoCurrent <= 0) return;
+		_isWeaponAutoAttacking = true;
+		if (_weaponAutoAttackCourutine == null)
 		{
-			_fireCoroutine = StartCoroutine(FireAuto());
+			_weaponAutoAttackCourutine = StartCoroutine(AutoAttackCourutine());
 		}
 	}
 
-	public override void StopWeaponAutoAttack()
+	public override void StopAutoAttacking()
 	{
-		_isFiring = false;
-		if (_fireCoroutine != null)
+		_isWeaponAutoAttacking = false;
+		if (_weaponAutoAttackCourutine != null)
 		{
-			StopCoroutine(_fireCoroutine);
-			_fireCoroutine = null;
+			StopCoroutine(_weaponAutoAttackCourutine);
+			_weaponAutoAttackCourutine = null;
 		}
 	}
 
-	// --- ИЗМЕНЕННЫЙ МЕТОД FireAuto ---
-	private IEnumerator FireAuto()
+	private IEnumerator AutoAttackCourutine()
 	{
-		// Цикл работает бесконечно, но мы проверяем флаг _isFiring ДО выстрела.
-		// Это гарантирует, что как только StopFiring() будет вызван, текущая итерация
-		// завершится, и новая не начнется.
 		while (true)
 		{
-			// Проверяем флаг ДО выстрела
-			if (!_isFiring)
+			if (!_isWeaponAutoAttacking)
 			{
-				break; // Выходим из цикла
+				break; 
 			}
 
 			ShootPlayerWeapon(WeaponDamage);
 
-			yield return new WaitForSeconds(_fireRate);
+			yield return new WaitForSeconds(_weaponAutoAttackSpeedRate);
 
-			// Дополнительная проверка на случай, если патроны кончились во время ожидания
 			if (PlayerMagazineAmmoCurrent <= 0)
 			{
-				_isFiring = false;
+				_isWeaponAutoAttacking = false;
 				break;
 			}
 		}
-		_fireCoroutine = null;
+		_weaponAutoAttackCourutine = null;
 	}
 
 	public AmmoTypes PlayerWeaponAmmoType { get; protected set; }
@@ -86,24 +70,16 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected abstract void InitializeWeaponRanged();
 
-	// --- ЗАМЕНИТЬ МЕТОД WeaponAttack ---
-	// Заменить весь ваш текущий метод WeaponAttack на этот:
 	public override void WeaponAttack()
 	{
-		// Проверка, что это оружие игрока и есть патроны
-		if (_isThisPlayerWeapon && PlayerMagazineAmmoCurrent > 0)
+		if (PlayerMagazineAmmoCurrent > 0)
 		{
-			// --- НОВАЯ ЛОГИКА ---
-			// Если это НЕ одиночная атака (т.е. автоматическое оружие)
-			if (!IsSingleAttack)
+			if (IsWeaponAuto)
 			{
-				// Запускаем или продолжаем автоматический огонь
-				StartFiring();
+				StartAutoAttacking();
 			}
-			// Если это одиночная атака (револьвер, дробовик)
 			else
 			{
-				// Просто делаем один выстрел
 				ShootPlayerWeapon(WeaponDamage);
 			}
 		}
@@ -112,8 +88,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			Debug.Log($"Not enough Ammo {WeaponName}");
 		}
 	}
-
-
 
 	private void ShootPlayerWeapon(float weaponDamage)
 	{
@@ -173,13 +147,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
-		// НОВЫЕ ВЫЗОВЫ:
+
 		if (System.Enum.TryParse(this.WeaponName, out WeaponRangedEnum parsedWeaponType))
 		{
-			// Вызываем метод для обновления данных о резерве
 			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.TotalAmmoCurrent);
 
-			// Вызываем метод для обновления данных о магазине
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 

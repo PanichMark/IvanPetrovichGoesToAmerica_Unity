@@ -93,36 +93,25 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		// --- ПРАВАЯ РУКА ---
-		// 1. Проверяем, была ли кнопка отпущена, и сбрасываем флаг
 		if (_inputDevice.GetKeyRightHandWeaponAttackReleased())
 		{
-			_wasRightButtonPressedLastFrame = false;
 			StopRihtWeaponAutoAttack();
+			_wasRightButtonPressedLastFrame = false;
 		}
-
-		// 2. Проверяем, нажата ли кнопка сейчас И она НЕ была нажата в прошлый кадр
 		if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
 		{
 			RightWeaponAttack();
-			// Ставим флаг, что кнопка теперь считается нажатой
 			_wasRightButtonPressedLastFrame = true;
 		}
 
-
-		// --- ЛЕВАЯ РУКА ---
-		// 1. Проверяем, была ли кнопка отпущена, и сбрасываем флаг
 		if (_inputDevice.GetKeyLeftHandWeaponAttackReleased())
 		{
-			_wasLeftButtonPressedLastFrame = false;
 			StopLeftWeaponAutoAttack();
+			_wasLeftButtonPressedLastFrame = false;
 		}
-
-		// 2. Проверяем, нажата ли кнопка сейчас И она НЕ была нажата в прошлый кадр
 		if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
 		{
 			LeftWeaponAttack();
-			// Ставим флаг, что кнопка теперь считается нажатой
 			_wasLeftButtonPressedLastFrame = true;
 		}
 
@@ -385,7 +374,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		if (RightHandWeapon != null)
 		{
-			RightHandWeaponComponent.StopWeaponAutoAttack();
+			RightHandWeaponComponent.StopAutoAttacking();
 		}
 	}
 
@@ -402,7 +391,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		if (LeftHandWeapon != null)
 		{
-			LeftHandWeaponComponent.StopWeaponAutoAttack();
+			LeftHandWeaponComponent.StopAutoAttacking();
 		}
 	}
 

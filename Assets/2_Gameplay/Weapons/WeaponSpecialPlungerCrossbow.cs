@@ -12,7 +12,7 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	private GameObject _playerCamera;
 	private Rigidbody _playerRigidbody;
 	private bool _isPlayerPlungering = false;
-	public override bool IsSingleAttack => true;
+	public override bool IsWeaponAuto => false;
 	private GameObject _hookedObject = null;
 	private Rigidbody _hookedObjectRigidbody = null;
 	private bool _isObjectBeingHooked = false;

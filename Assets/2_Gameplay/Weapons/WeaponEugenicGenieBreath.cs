@@ -10,7 +10,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	public override string WeaponType => WeaponTypes.Eugenic.ToString();
 
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponEugenicGenieBreathIcon");
-	public override bool IsSingleAttack => true;
+	public override bool IsWeaponAuto => false;
 
 	public override float WeaponDamage => 50;
 

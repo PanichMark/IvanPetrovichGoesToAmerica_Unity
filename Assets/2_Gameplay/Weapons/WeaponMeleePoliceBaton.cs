@@ -12,7 +12,7 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 	private bool _isAbleToChoke = false;
 	private bool _npcDetected = false;
 	private bool _isItRightHand;
-	public override bool IsSingleAttack => true;
+	public override bool IsWeaponAuto => false;
 
 	public override float WeaponDamage => 45f;
 	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";

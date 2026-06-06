@@ -22,12 +22,62 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		InitializeWeaponMelee();
 	}
 
+	// --- ДОБАВИТЬ ЭТОТ МЕТОД ---
+	public void StartAutoAttacking()
+	{
+		if (_isWeaponAutoAttacking) return;
+		_isWeaponAutoAttacking = true;
+		if (_weaponAutoAttackCourutine == null)
+		{
+			_weaponAutoAttackCourutine = StartCoroutine(AutoAttackCourutine());
+		}
+	}
+
+
+	// --- ДОБАВИТЬ ЭТОТ МЕТОД (если его нет) ---
+	public override void StopAutoAttacking()
+	{
+		_isWeaponAutoAttacking = false;
+		if (_weaponAutoAttackCourutine != null)
+		{
+			StopCoroutine(_weaponAutoAttackCourutine);
+			_weaponAutoAttackCourutine = null;
+		}
+	}
+
+	// В классе WeaponMeleeAbstract
+
+	// ... (поля и метод StartAutoAttacking остаются без изменений)
+
+	// --- ИЗМЕНЕННАЯ КОРУТИНА ---
+	private IEnumerator AutoAttackCourutine()
+	{
+		// Бесконечный цикл для автоатаки
+		while (_isWeaponAutoAttacking)
+		{
+			// Вызываем уже существующую логику одиночного удара
+			// Она сама установит _isAttacking = true и вернет его в false после анимации/задержки
+			StartCoroutine(MeleeWeaponAttack());
+
+			// Ждем перед следующим ударом
+			yield return new WaitForSeconds(_weaponAutoAttackSpeedRate);
+		}
+		_weaponAutoAttackCourutine = null;
+	}
+
 	protected abstract void InitializeWeaponMelee();
 
 	public override void WeaponAttack()
 	{
-		_isAttacking = true;
-		StartCoroutine(MeleeWeaponAttack());
+		if (IsWeaponAuto) // Если оружие имеет автоатаку (например, когти с ядом)
+		{
+			StartAutoAttacking(); // Запускаем корутину, которая будет бить с интервалом
+		}
+		else // Обычное оружие ближнего боя (меч, топор)
+		{
+			_isAttacking = true;
+			StartCoroutine(MeleeWeaponAttack()); // Запускаем стандартную анимацию/логику удара
+		}
 	}
 
 	private IEnumerator MeleeWeaponAttack()
@@ -48,7 +98,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 			}
 		}
 
-		yield return new WaitForSeconds(_attackDelay + 0.1f);
+		yield return new WaitForSeconds(_attackDelay + 0.15f);
 		_isAttacking = false;
 	}
 
