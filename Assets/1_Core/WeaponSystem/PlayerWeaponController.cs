@@ -98,6 +98,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		if (_inputDevice.GetKeyRightHandWeaponAttackReleased())
 		{
 			_wasRightButtonPressedLastFrame = false;
+			StopRihtWeaponAutoAttack();
 		}
 
 		// 2. Проверяем, нажата ли кнопка сейчас И она НЕ была нажата в прошлый кадр
@@ -114,6 +115,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		if (_inputDevice.GetKeyLeftHandWeaponAttackReleased())
 		{
 			_wasLeftButtonPressedLastFrame = false;
+			StopLeftWeaponAutoAttack();
 		}
 
 		// 2. Проверяем, нажата ли кнопка сейчас И она НЕ была нажата в прошлый кадр
@@ -379,12 +381,28 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 	}
 
+	public void StopRihtWeaponAutoAttack()
+	{
+		if (RightHandWeapon != null)
+		{
+			RightHandWeaponComponent.StopWeaponAutoAttack();
+		}
+	}
+
 	public void LeftWeaponAttack()
 	{
 		if (LeftHandWeapon != null)
 		{
 			LeftHandWeaponComponent.WeaponAttack();
 			_playerBehaviour.ArmPlayer();
+		}
+	}
+
+	public void StopLeftWeaponAutoAttack()
+	{
+		if (LeftHandWeapon != null)
+		{
+			LeftHandWeaponComponent.StopWeaponAutoAttack();
 		}
 	}
 

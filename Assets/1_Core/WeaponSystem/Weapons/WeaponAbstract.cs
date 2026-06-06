@@ -34,6 +34,12 @@ public abstract class WeaponAbstract : MonoBehaviour
 	{
 		_isThisPlayerWeapon = false;
 	}
+
+	public virtual void StopWeaponAutoAttack()
+	{
+
+	}
+
 	public virtual void WeaponAttack()
 	{
 

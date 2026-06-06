@@ -30,8 +30,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 	}
 
-	// Метод StopFiring (оставляем как есть)
-	public void StopFiring()
+	public override void StopWeaponAutoAttack()
 	{
 		_isFiring = false;
 		if (_fireCoroutine != null)
