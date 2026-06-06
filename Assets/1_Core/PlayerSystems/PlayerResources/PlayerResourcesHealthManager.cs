@@ -22,11 +22,11 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 
 	private bool _isInitialized;
 
-	public void Initialize(GameController gameController, Slider HealthBarSlider, Button HealingItemButton, TextMeshProUGUI HealingItemNumber)
+	public void Initialize(GameController gameController, ViewModelHUDHealthAndMana viewModelHUDHealthAndMana, ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
 	{
-		_sliderHealthBar = HealthBarSlider;
-		_buttonHealingItem = HealingItemButton;
-		_healingItemNumber = HealingItemNumber;
+		_sliderHealthBar = viewModelHUDHealthAndMana.SliderHealthBar.GetComponent<Slider>();
+		_buttonHealingItem = viewModelMenuWeaponWheel.ButtonUseHealingItem.GetComponent<Button>();
+		_healingItemNumber = viewModelMenuWeaponWheel.TextHealingItemNumber.GetComponent<TextMeshProUGUI>();
 		_gameController = gameController;
 		_buttonHealingItem.onClick.AddListener(() => UseHealingItem());
 

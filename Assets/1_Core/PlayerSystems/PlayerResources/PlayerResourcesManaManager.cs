@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 {
-	private Slider _sliderManaBar;
+	private Slider _sliderComponentManaBar;
+	private GameObject _sliderManaBarFillArea;
 	private Button _buttonManaReplenishtem;
 	private TextMeshProUGUI _manaReplenishItemNumber;
 	public int MaxPlayerMana { get; private set; } = 100;
@@ -16,14 +17,15 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 	public int CurrentManaReplenishItemsNumber { get; private set; }
 
 	private bool _isInitialized;
-	public void Initialize(Slider ManaBarSlider, Button ManaReplenishtemButton, TextMeshProUGUI ManaReplenishItemNumber)
+	public void Initialize(ViewModelHUDHealthAndMana viewModelHUDHealthAndMana, ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
 	{
-		_sliderManaBar = ManaBarSlider;
-		_buttonManaReplenishtem = ManaReplenishtemButton;	
-		_manaReplenishItemNumber = ManaReplenishItemNumber;
+		_sliderComponentManaBar = viewModelHUDHealthAndMana.SliderManaBar.GetComponent<Slider>();
+		_buttonManaReplenishtem = viewModelMenuWeaponWheel.ButtonUseManaReplenishItem.GetComponent<Button>();
+		_manaReplenishItemNumber = viewModelMenuWeaponWheel.TextManaReplenishItemNumber.GetComponent<TextMeshProUGUI>();
+		_sliderManaBarFillArea = viewModelHUDHealthAndMana.SliderManaBarFillArea;
 		_buttonManaReplenishtem.onClick.AddListener(() => UseManaReplenishItem());
 
-		_sliderManaBar.maxValue = MaxPlayerMana;
+		_sliderComponentManaBar.maxValue = MaxPlayerMana;
 
 		_isInitialized = true;
 
@@ -44,14 +46,12 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 			{
 				CurrentManaReplenishItemsNumber--;
 
-				CurrentPlayerMana += _manaItemEffect;
+				ReplenishMana(_manaItemEffect);
 
 				if (CurrentPlayerMana >= MaxPlayerMana)
 				{
 					CurrentPlayerMana = MaxPlayerMana;
 				}
-
-				_sliderManaBar.value = CurrentPlayerMana;
 
 				_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
 
@@ -75,11 +75,27 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		else Debug.Log("Max ManaReplenish Items");
 	}
 
+	public void ReplenishMana(int Mana)
+	{
+		CurrentPlayerMana += Mana;
+
+		_sliderComponentManaBar.value = CurrentPlayerMana;
+
+		ShowSliderManaBarFillArea();
+
+		Debug.Log($"replenished: {Mana} mana");
+	}
+
 	public void UseMana(int ManaCost)
 	{
 		CurrentPlayerMana -= ManaCost;
 
-		_sliderManaBar.value = CurrentPlayerMana;
+		_sliderComponentManaBar.value = CurrentPlayerMana;
+
+		if (CurrentPlayerMana <= 0)
+		{
+			HideSliderManaBarFillArea();
+		}
 
 		Debug.Log($"used: {ManaCost} mana");
 	}
@@ -95,8 +111,18 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		CurrentPlayerMana = data.PlayerMana;
 		CurrentManaReplenishItemsNumber = data.ManaReplenishItems;
 
-		_sliderManaBar.value = CurrentPlayerMana;
+		_sliderComponentManaBar.value = CurrentPlayerMana;
 
 		_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+	}
+
+	private void ShowSliderManaBarFillArea()
+	{
+		_sliderManaBarFillArea.SetActive(true);
+	}
+
+	private void HideSliderManaBarFillArea()
+	{
+		_sliderManaBarFillArea.SetActive(false);
 	}
 }
