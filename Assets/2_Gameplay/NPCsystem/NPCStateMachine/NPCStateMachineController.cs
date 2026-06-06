@@ -359,5 +359,6 @@ public class NPCStateMachineController : MonoBehaviour
 		}
 
 		_NPCstate = newState;
+		_NPCabstract.ShowNPCcurrentState(CurrentNPCState);
 	}
 }

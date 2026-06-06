@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(AudioSource))]
@@ -8,6 +9,12 @@ using UnityEngine.AI;
 
 public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 {
+	private GameObject _canvasNPCstatus;
+	private GameObject _textNPCcurrentState;
+	private TextMeshProUGUI _textComponentNPCcurrentState;
+	private GameObject _textNPCcurrentHealth;
+	private TextMeshProUGUI _textComponentNPCcurrentHealth;
+
 	[SerializeField] protected string _NPCname;
 
 	[SerializeField] ConfigNPCBodyType _NPCconfigBodyType;
@@ -44,7 +51,14 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Talk");
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
 
+		_canvasNPCstatus = transform.Find("CanvasNPCstatus").gameObject;
+		_textNPCcurrentState = _canvasNPCstatus.transform.Find("TextNPCcurrentState").gameObject;
+		_textComponentNPCcurrentState = _textNPCcurrentState.GetComponent<TextMeshProUGUI>();
+		_textNPCcurrentHealth = _canvasNPCstatus.transform.Find("TextNPCcurrentHealth").gameObject;
+		_textComponentNPCcurrentHealth = _textNPCcurrentHealth.GetComponent<TextMeshProUGUI>();
+
 		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
+		_textComponentNPCcurrentHealth.text = _NPCconfigHealth.NPCcurrentHealth.ToString();
 
 		_NPCphrasesController = GetComponent<NPCPhrasesController>();
 		_NPCstateMachineController = GetComponent<NPCStateMachineController>();
@@ -92,11 +106,19 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
 		_currentHealth -= amount;
 
+		_textComponentNPCcurrentHealth.text = _currentHealth.ToString();
+
 		if (IsNPCdead)
 		{
 			ObjectIsFullyDamaged();
+			_textNPCcurrentHealth.SetActive(false);
 			_NPCstateMachineController.SetNPCState(NPCStateTypes.Dead);
 		}
+	}
+
+	public void ShowNPCcurrentState(string newState)
+	{
+		_textComponentNPCcurrentState.text = newState;
 	}
 
 	public void ObjectIsFullyDamaged()
