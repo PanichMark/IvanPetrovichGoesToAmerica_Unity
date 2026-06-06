@@ -294,7 +294,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyRightHandWeaponAttack()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["WeaponAttackRightHand"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKey(_keyboardKeyBindings["WeaponAttackRightHand"]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -303,7 +303,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyLeftHandWeaponAttack()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["WeaponAttackLeftHand"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKey(_keyboardKeyBindings["WeaponAttackLeftHand"]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}

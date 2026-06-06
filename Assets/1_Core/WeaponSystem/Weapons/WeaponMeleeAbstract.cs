@@ -27,10 +27,10 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	public override void WeaponAttack()
 	{
 		_isAttacking = true;
-		StartCoroutine(PerformAttack());
+		StartCoroutine(MeleeWeaponAttack());
 	}
 
-	private IEnumerator PerformAttack()
+	private IEnumerator MeleeWeaponAttack()
 	{
 		Vector3 startPoint = _attackPoint.transform.position + _attackPoint.transform.forward * _forwardOffset;
 		Vector3 endPoint = startPoint + _attackPoint.transform.up * _capsuleHeight;
@@ -44,7 +44,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 			if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
 			{
-				StartCoroutine(DelayDamage(damageable, _attackDelay));
+				StartCoroutine(DelayMeleeDamage(damageable, _attackDelay));
 			}
 		}
 
@@ -52,7 +52,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		_isAttacking = false;
 	}
 
-	private IEnumerator DelayDamage(IDamageable target, float delayTime)
+	private IEnumerator DelayMeleeDamage(IDamageable target, float delayTime)
 	{
 		yield return new WaitForSeconds(delayTime);
 		target.TakeDamage(WeaponDamage);

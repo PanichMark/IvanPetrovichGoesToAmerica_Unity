@@ -19,6 +19,11 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	private GameController _gameController;
 	public Dictionary<string, GameObject> UnlockedWeapons = new Dictionary<string, GameObject>();
 
+
+	// В начале класса
+	private bool _wasRightButtonPressedLastFrame;
+	private bool _wasLeftButtonPressedLastFrame;
+
 	public event OnAnyWeaponUnlocked OnAnyWeaponUnlocked; 
 
 	public event OnWeaponChanged OnWeaponChanged;
@@ -88,14 +93,35 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (_inputDevice.GetKeyRightHandWeaponAttack() && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
+		// --- ПРАВАЯ РУКА ---
+		// 1. Проверяем, была ли кнопка отпущена, и сбрасываем флаг
+		if (_inputDevice.GetKeyRightHandWeaponAttackReleased())
 		{
-			RightWeaponAttack();
+			_wasRightButtonPressedLastFrame = false;
 		}
 
-		if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
+		// 2. Проверяем, нажата ли кнопка сейчас И она НЕ была нажата в прошлый кадр
+		if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
+		{
+			RightWeaponAttack();
+			// Ставим флаг, что кнопка теперь считается нажатой
+			_wasRightButtonPressedLastFrame = true;
+		}
+
+
+		// --- ЛЕВАЯ РУКА ---
+		// 1. Проверяем, была ли кнопка отпущена, и сбрасываем флаг
+		if (_inputDevice.GetKeyLeftHandWeaponAttackReleased())
+		{
+			_wasLeftButtonPressedLastFrame = false;
+		}
+
+		// 2. Проверяем, нажата ли кнопка сейчас И она НЕ была нажата в прошлый кадр
+		if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
 		{
 			LeftWeaponAttack();
+			// Ставим флаг, что кнопка теперь считается нажатой
+			_wasLeftButtonPressedLastFrame = true;
 		}
 
 		IsLeftHand = _inputDevice.GetKeyLeftHandWeaponWheel();

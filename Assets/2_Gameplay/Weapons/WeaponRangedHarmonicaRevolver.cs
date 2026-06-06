@@ -8,7 +8,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 	public override Sprite WeaponIcon => Resources.Load<Sprite>("WeaponWheel/WeaponWheel_WeaponIcons/WeaponRangedHarmoniceRevolverIcon");
 
 	public override float WeaponDamage => 30f;
-
+	public override bool IsSingleAttack => true;
 	protected override void InitializeWeaponRanged()
 	{
 

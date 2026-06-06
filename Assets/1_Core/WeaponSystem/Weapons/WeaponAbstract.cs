@@ -3,9 +3,11 @@ using UnityEngine;
 
 public abstract class WeaponAbstract : MonoBehaviour
 {
-	public virtual string WeaponType { get; protected set; }
-	public virtual string WeaponName { get; protected set; }
-	public virtual string WeaponNameSystem { get; protected set; }
+	public abstract string WeaponType { get; }
+	public abstract bool IsSingleAttack { get; }
+
+	public abstract string WeaponName { get; }
+	public abstract string WeaponNameSystem { get; }
 
 	private GameObject _firstPersonLeftHandWeaponSlotGameObject;
 	private GameObject _firstPersonRightHandWeaponSlotGameObject;
@@ -13,7 +15,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
 	public virtual Sprite WeaponIcon { get; protected set; }           
 	protected bool _isThisPlayerWeapon;
-	public virtual float WeaponDamage { get; protected set; }
+	public abstract float WeaponDamage { get; }
 
 	public GameObject FirstPersonWeaponModelInstance { get; protected set; }
 	public GameObject ThirdPersonWeaponModelInstance { get; protected set; } 
