@@ -19,6 +19,9 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private SaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
 	private KeyCode _keyPauseMenu;
+	private ICutscene _cutsceneNewGame;
+	private bool _isCutsceneNewGamePlaying;
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
 	void Start()
 	{
@@ -27,8 +30,9 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_collider = GetComponent<Collider>();
 		_renderer = GetComponent<Renderer>();
 		_defaultMaterial = _renderer.material;
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 		_hoverMaterial = Resources.Load<Material>("Materials/Material_MainMenuDiegeticButton");
-
+		_cutsceneNewGame = GameObject.Find("CutsceneNewGame").GetComponent<ICutscene>();
 		_CanvasDiegeticText = GameObject.Find("CANVASES");
 		_menuBackgroundController = ServiceLocator.Resolve<MenuBackgroundController>("MenuBackgroundController");
 		_keyPauseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
@@ -68,22 +72,25 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	{
 		if (name == "NewGame")
 		{
-			if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 1)
+			if (!_isCutsceneNewGamePlaying)
 			{
-				_menuManager.CloseAnyMenu();
-				_CanvasDiegeticText.SetActive(true);
-				_pauseMenuController.ClosePauseSubMenu();
-			}
-			if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 2)
-			{
-				_pauseMenuController.ClosePauseConfirmMenu();
-			}
+				if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 1)
+				{
+					_menuManager.CloseAnyMenu();
+					_CanvasDiegeticText.SetActive(true);
+					_pauseMenuController.ClosePauseSubMenu();
+				}
+				if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 2)
+				{
+					_pauseMenuController.ClosePauseConfirmMenu();
+				}
 
-			if (Input.GetKeyDown(_keyPauseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)
-			{
-				_mainMenuReadNews.HideCanvasMainMenuReadNews();
-				_menuBackgroundController.HideCanvasMenuBackground();
-				_playerCameraBlurFilter.DeactivateCameraBlur();
+				if (Input.GetKeyDown(_keyPauseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)
+				{
+					_mainMenuReadNews.HideCanvasMainMenuReadNews();
+					_menuBackgroundController.HideCanvasMenuBackground();
+					_playerCameraBlurFilter.DeactivateCameraBlur();
+				}
 			}
 		}
 	}
@@ -105,7 +112,17 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			Debug.Log("START NEW GAME");
 			DisableAllColliders();
 			_gameController.CloseMainMenu();
+			_CanvasDiegeticText.SetActive(false);
 			StartCoroutine(StartNewGame());
+			_cutsceneNewGame.TriggerCutscene();
+			_isCutsceneNewGamePlaying = true;
+		}
+		else if (name == "TestScene")
+		{
+			Debug.Log("TEST SCENE");
+			DisableAllColliders();
+			_gameController.CloseMainMenu();
+			StartCoroutine(LoadTestScene());
 		}
 		else if (name == "LoadGame")
 		{
@@ -159,13 +176,19 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		}
 	}
 
-	IEnumerator StartNewGame()
+	IEnumerator LoadTestScene()
 	{
 		DontDestroyOnLoad(gameObject);
 
-		yield return StartCoroutine(_saveLoadController.NewGame());
+		//yield return StartCoroutine(_saveLoadController.NewGame());
+		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesEnum.Scene_0_Test));
 	
 		Destroy(gameObject);
+	}
+
+	IEnumerator StartNewGame()
+	{
+		yield return StartCoroutine(_saveLoadController.NewGame());
 	}
 }

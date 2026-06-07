@@ -90,6 +90,11 @@ public class MenuManager : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
+		Debug.Log(_gameController.IsMainMenuOpen);
+		Debug.Log(_gameController.IsPauseMenuAvailable);
+		Debug.Log(_gameController.IsPlayerAbleToMove);
+		Debug.Log(_gameController.IsPlayerControllable);
+
 		if (_inputDevice.GetKeyPauseMenu() && !_gameController.IsMainMenuOpen)
 		{
 			if (PauseMenuLevel.Count == 0)

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 
 [ExecuteAlways]
-public class CutsceneController : MonoBehaviour
+public class CutsceneController : MonoBehaviour, ICutscene
 {
 	private IInputDevice _inputDevice;
 	private GameController _gameController;
