@@ -156,7 +156,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private void CancelCutsceneOnLoad()
 	{
 		Debug.Log($"Cutscene {gameObject.name} Cancelled");
-
+		_gameController.MakeGameSavable();
 		_wasCutsceneCanceled = true;
 		IsCutscenePlaying = false;
 		_director.Stop();
@@ -179,6 +179,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		CutsceneResumeTime();
 		_menuManager.CloseCutsceneMenu();
 		_gameController.MakePlayerControllable();
+		_gameController.MakeGameSavable();
 
 		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
 		
@@ -237,6 +238,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	{
 		Debug.Log("CUTSCENE!!!");
 		_director.Play();
+		_gameController.MakeGameUnsavable();
 
 		CutsceneStopTime();
 

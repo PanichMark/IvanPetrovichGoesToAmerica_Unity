@@ -93,7 +93,7 @@ public class MenuManager : MonoBehaviour
 		//Debug.Log(_gameController.IsMainMenuOpen);
 		//Debug.Log(_gameController.IsPauseMenuAvailable);
 		//Debug.Log(_gameController.IsPlayerAbleToMove);
-		//Debug.Log(_gameController.IsPlayerControllable);
+		//Debug.Log(_gameController.IsGameAbleToSave);
 
 		if (_inputDevice.GetKeyPauseMenu() && !_gameController.IsMainMenuOpen)
 		{

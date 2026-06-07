@@ -8,7 +8,13 @@ public class GameController
 	public bool IsPlayerPlunging { get; private set; }
 	public bool IsMainMenuOpen {  get; private set; }
 	public bool IsPauseMenuAvailable { get; private set; }
-	
+
+	public bool IsGameAbleToSave { get; private set; }
+
+	public delegate void SaveGameAvailabilityHandler();
+	public event PlayerDeathHandler OnSaveGameAvailable;
+	public event PlayerDeathHandler OnSaveGameUnavailable;
+
 	public delegate void PlayerDeathHandler();
 	public event PlayerDeathHandler OnPlayerEarlyDeath;
 	public event PlayerDeathHandler OnPlayerLateDeath;
@@ -21,6 +27,7 @@ public class GameController
 	public GameController()
 	{
 		IsPlayerAbleToMove = true;
+		IsGameAbleToSave = true;
 		Debug.Log("GameController Initialized");
 	}
 
@@ -118,5 +125,17 @@ public class GameController
 	public void UnblockInput()
 	{
 		IsPlayerControllable = true;
+	}
+
+	public void MakeGameSavable()
+	{
+		IsGameAbleToSave = true;
+		OnSaveGameAvailable?.Invoke();
+	}
+
+	public void MakeGameUnsavable()
+	{
+		IsGameAbleToSave = false;
+		OnSaveGameUnavailable?.Invoke();
 	}
 }

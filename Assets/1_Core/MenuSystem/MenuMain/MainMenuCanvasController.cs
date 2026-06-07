@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using Codice.Client.BaseCommands.CheckIn.Progress;
 
 public class MainMenuCanvasController : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class MainMenuCanvasController : MonoBehaviour
 	private GameObject _CanvasDiegeticText;
 	private MainMenuReadNewsController _mainMenuReadNews;
 	private MenuManager _menuManager;
+	private GameObject _canvasGameVersion;
 
 	private TextMeshProUGUI[] _diegeticTextsList;
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,7 +19,7 @@ public class MainMenuCanvasController : MonoBehaviour
 		_CanvasDiegeticText = GameObject.Find("CanvasMainMenu");
 		_mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNewsController>("MainMenuReadNews");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-	
+		_canvasGameVersion = GameObject.Find("CanvasMainMenu").transform.Find("CanvasGameVersion").gameObject;
 
 		_diegeticTextsList = new[]
 		{
@@ -41,6 +43,11 @@ public class MainMenuCanvasController : MonoBehaviour
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_mainMenuReadNews.OnCloseMainMenuReadNews += ShowMainMenuCanvas;
 		_menuManager.OnCloseAnyMenu += ShowMainMenuCanvas;
+	}
+
+	public void HideGameVersionCanvas()
+	{
+		_canvasGameVersion.SetActive(false);
 	}
 
     public void ShowMainMenuCanvas()

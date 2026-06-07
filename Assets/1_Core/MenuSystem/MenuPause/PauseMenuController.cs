@@ -75,6 +75,8 @@ public class PauseMenuController : MonoBehaviour
 		_textComponentsCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
 		_textComponentsCurrentPlayerMoney = viewModelPauseMenu.TextCurrentPlayerMoney.GetComponent<TextMeshProUGUI>();
 
+		_gameController.OnSaveGameAvailable += EnableSaveButton;
+		_gameController.OnSaveGameUnavailable += DisableSaveButton;
 		_gameController.OnPlayerLateDeath += HideDeathPauseMenuButtons;
 		_gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
 
@@ -86,9 +88,7 @@ public class PauseMenuController : MonoBehaviour
 		_menuManager.OnOpenPauseMenu += ShowPauseMenu;
 		_menuManager.OnClosePauseMenu += HidePauseMenu;
 
-		_menuManager.OnOpenConfirmationOnExitToMainMenu += DisableButtons;
 		_menuManager.OnCloseConfirmationOnExitToMainMenu += ClosePauseConfirmMenu;
-		_menuManager.OnCloseConfirmationOnExitToMainMenu += EnableButtons;
 
 		Debug.Log("PauseMenuController Initialized");
 	}
@@ -108,23 +108,16 @@ public class PauseMenuController : MonoBehaviour
 		}
 	}
 
-	private void DisableButtons()
+	private void EnableSaveButton()
 	{
-		for (int i = 0; i < _buttonsComponentsPauseMenu.Length; i++)
-		{
-			_buttonsComponentsPauseMenu[i].interactable = false;
-		}
+		_buttonsComponentsPauseMenu[1].interactable = true;
+		_textComponentsButtonsPauseMenu[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSave");
 	}
 
-	private void EnableButtons()
+	private void DisableSaveButton()
 	{
-		for (int i = 0; i < _buttonsComponentsPauseMenu.Length; i++)
-		{
-			if (i == 3)
-				continue; // SKIP! - Appearance SubMenu
-
-			_buttonsComponentsPauseMenu[i].interactable = true;
-		}
+		_buttonsComponentsPauseMenu[1].interactable = false;
+		_textComponentsButtonsPauseMenu[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSave_UNAVAILABLE");
 	}
 
 	public void OpenPauseConfirmMenu()
@@ -244,7 +237,16 @@ public class PauseMenuController : MonoBehaviour
 		_localizationManager = localizationManager;
 
 		_textComponentsButtonsPauseMenu[0].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonResume");
-		_textComponentsButtonsPauseMenu[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSave");
+
+		if (_gameController.IsGameAbleToSave)
+		{
+			_textComponentsButtonsPauseMenu[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSave");
+		}
+		else
+		{
+			_textComponentsButtonsPauseMenu[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSave_UNAVAILABLE");
+		}
+
 		_textComponentsButtonsPauseMenu[2].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonLoad");
 		_textComponentsButtonsPauseMenu[3].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonAppearance");
 		_textComponentsButtonsPauseMenu[4].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonTutorial");

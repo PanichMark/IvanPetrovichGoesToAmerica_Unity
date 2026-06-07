@@ -113,7 +113,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			DisableAllColliders();
 			Time.timeScale = 0f;
 			Cursor.lockState = CursorLockMode.Locked;
-			//_mainMenuCanvasController.HideMainMenuCanvas();
+			_mainMenuCanvasController.HideGameVersionCanvas();
 			StartCoroutine(StartNewGame());
 			_cutsceneNewGame.TriggerCutscene();
 			IsCutsceneNewGamePlaying = true;

@@ -9,7 +9,7 @@ public class NPCDialogueController : MonoBehaviour
 	[SerializeField] private NPCDialogueData _NPCdialogueData;
 
 	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
-
+	private GameController _gameController;
 	[SerializeField] private List<NPCDialogueBranch> _dialogueBranchStructsList;
 	private AudioSource _audioSource;
 	private int _dialogueBranchStructIndex;
@@ -50,7 +50,7 @@ public class NPCDialogueController : MonoBehaviour
 
 		_buttonDialogueYes = ServiceLocator.Resolve<Button>("ButtonDialogueYes");
 		_buttonDialogueNo = ServiceLocator.Resolve<Button>("ButtonDialogueNo");
-
+		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 		_textDialogueYes = ServiceLocator.Resolve<GameObject>("TextDialogueYes");
 		_textDialogueNo = ServiceLocator.Resolve<GameObject>("TextDialogueNo");
 
@@ -93,7 +93,7 @@ public class NPCDialogueController : MonoBehaviour
 		{
 			_buttonDialogueYes.onClick.RemoveAllListeners();
 			_buttonDialogueNo.onClick.RemoveAllListeners();
-
+			_gameController.MakeGameSavable();
 			_currentDialogueStepIndex = 0;
 			_dialogueBranchStructIndex = 0;
 			_menuManager.CloseDialogueMenu();
@@ -176,7 +176,7 @@ public class NPCDialogueController : MonoBehaviour
 
 		_menuManager.OpenDialogueMenu();
 		IsDialogueActive = true;
-
+		_gameController.MakeGameUnsavable();
 		ShowNPCDialogueCanvas();
 		DisplayNextDialogueLine();
 	}
