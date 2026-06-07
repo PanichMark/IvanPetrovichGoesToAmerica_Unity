@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ConfigBootstrapPlayerWeapons", menuName = "ConfigsBootstrap/ConfigBootstrapPlayerWeapons")]
-public class ConfigBootstrapPlayerWeapons : ScriptableObject
+[CreateAssetMenu(fileName = "PlayerWeapons", menuName = "BootstrapConfigs/Player/PlayerWeapons")]
+public class BootstrapConfigPlayerWeapons : ScriptableObject
 {
 	[Header("Доступные виды оружия")]
 	[Tooltip("Список доступных оружий (указываются Prefab'ы оружия).")]

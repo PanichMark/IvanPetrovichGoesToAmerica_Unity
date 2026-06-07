@@ -10,15 +10,15 @@ public class Bootstrap : MonoBehaviour
 	public event SettingsDataEventHandler OnLoadSettingsData;
 
 	[Header("--- BOOTSTRAP CONFIGS ---")]
-	[SerializeField] private ConfigBootstrapFirstGameLaunch _firstGameLaunch;
-	[SerializeField] private ConfigBootstrapInitializationScreenDuration _initializationScreenDuration;
-	[SerializeField] private ConfigBootstrapKeyPauseMenu _pauseMenuKey;
-	[SerializeField] private ConfigBootstrapScene _sceneToLoad;
+	[SerializeField] private BootstrapConfigIsFirstGameLaunch _firstGameLaunch;
+	[SerializeField] private BootstrapConfigInitializationScreenDuration _initializationScreenDuration;
+	[SerializeField] private BootstrapConfigKeyPauseMenu _pauseMenuKey;
+	[SerializeField] private BootstrapConfigSceneToLoad _sceneToLoad;
 
 	[Header("--- PLAYER CONFIGS ---")]
-	[SerializeField] private ConfigBootstrapPlayerTransform _playerPosition;
-	[SerializeField] private ConfigBootstrapPlayerWeapons _playerWeapons;
-	[SerializeField] private ConfigBootstrapPlayerResourcesAmmo _playerAmmo;
+	[SerializeField] private BootstrapConfigPlayerTransform _playerPosition;
+	[SerializeField] private BootstrapConfigPlayerWeapons _playerWeapons;
+	[SerializeField] private BootstrapConfigPlayerResourcesAmmo _playerAmmo;
 
 	[Header("--- CANVASES ---")]
 	[Header("Bootstrap")]

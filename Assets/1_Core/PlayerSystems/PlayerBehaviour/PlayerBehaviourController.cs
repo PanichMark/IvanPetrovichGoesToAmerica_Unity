@@ -31,6 +31,8 @@ public class PlayerBehaviourController : MonoBehaviour
 		{
 			DisarmPlayer();
 		}
+
+		//Debug.Log(IsPlayerArmed);
 	}
 
 	public void ArmPlayer()

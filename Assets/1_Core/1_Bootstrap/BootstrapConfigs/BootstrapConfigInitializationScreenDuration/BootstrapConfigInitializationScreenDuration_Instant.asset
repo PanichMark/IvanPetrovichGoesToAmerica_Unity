@@ -9,15 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb82a6825a979e44ac72f0087abd0b8, type: 3}
-  m_Name: DEFAULT_ConfigBootstrapPlayerResourcesAmmo
+  m_Script: {fileID: 11500000, guid: ce30f4912a47c3749875707fa413bfb3, type: 3}
+  m_Name: BootstrapConfigInitializationScreenDuration_Instant
   m_EditorClassIdentifier: 
-  AmmoEntries:
-  - AmmoType: 0
-    StartAmount: 25
-  - AmmoType: 1
-    StartAmount: 10
-  - AmmoType: 2
-    StartAmount: 0
-  - AmmoType: 3
-    StartAmount: 0
+  InitializationScreenDuration: 0

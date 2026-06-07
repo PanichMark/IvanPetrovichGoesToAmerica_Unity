@@ -19,7 +19,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private MenuManager _menuManager;
 	private KeyCode _keyPauseMenu;
 	private ICutscene _cutsceneNewGame;
-	private bool _isCutsceneNewGamePlaying;
+	public bool IsCutsceneNewGamePlaying { get; private set; }
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private MainMenuCanvasController _mainMenuCanvasController;
 
@@ -58,13 +58,19 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
 		_pauseMenuController.OnCloseAnyPauseSubMenu -= EnableAllColliders;
+
+		if (IsCutsceneNewGamePlaying)
+		{
+			_gameController.CloseMainMenu();
+			_menuManager.OpenInteractionHUD();
+		}
 	}
 
 	private void Update()
 	{
 		if (name == "NewGame")
 		{
-			if (!_isCutsceneNewGamePlaying)
+			if (!IsCutsceneNewGamePlaying)
 			{
 				if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 1)
 				{
@@ -84,7 +90,9 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 					_playerCameraBlurFilter.DeactivateCameraBlur();
 				}
 			}
+			//Debug.Log(IsCutsceneNewGamePlaying);
 		}
+		
 	}
 
 	void OnMouseEnter()
@@ -103,11 +111,12 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		{
 			Debug.Log("START NEW GAME");
 			DisableAllColliders();
-			_gameController.CloseMainMenu();
+			Time.timeScale = 0f;
+			Cursor.lockState = CursorLockMode.Locked;
 			//_mainMenuCanvasController.HideMainMenuCanvas();
 			StartCoroutine(StartNewGame());
 			_cutsceneNewGame.TriggerCutscene();
-			_isCutsceneNewGamePlaying = true;
+			IsCutsceneNewGamePlaying = true;
 		}
 		else if (name == "TestScene")
 		{

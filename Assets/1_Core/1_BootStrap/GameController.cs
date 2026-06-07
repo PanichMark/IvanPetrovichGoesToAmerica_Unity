@@ -71,7 +71,7 @@ public class GameController
 	{
 		IsMainMenuOpen = false;
 		OnCloseMainMenu?.Invoke();
-		Debug.Log("MainMeni closed");
+		Debug.Log("MainMenu closed");
 	}
 
 	public void GameplaySceneLoadBegan()

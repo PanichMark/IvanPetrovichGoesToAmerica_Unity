@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "ConfigBootstrapPlayerResourcesAmmo", menuName = "ConfigsBootstrap/ConfigsBootstrapPlayerResources/Ammo")]
-public class ConfigBootstrapPlayerResourcesAmmo : ScriptableObject
+[CreateAssetMenu(fileName = "PlayerResourcesAmmo", menuName = "BootstrapConfigs/Player/PlayerResources/Ammo")]
+public class BootstrapConfigPlayerResourcesAmmo : ScriptableObject
 {
 	[Serializable]
 	public struct AmmoEntry
