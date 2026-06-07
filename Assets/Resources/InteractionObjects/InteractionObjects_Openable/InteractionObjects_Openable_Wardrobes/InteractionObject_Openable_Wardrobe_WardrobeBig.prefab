@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 4295541995578317463}
   - component: {fileID: 7913813755594190511}
   - component: {fileID: 5042258657684356689}
-  - component: {fileID: 6503748238043972323}
+  - component: {fileID: 1677861204753882486}
   m_Layer: 0
   m_Name: Interior_Furniture_Wardrobe_WardrobeBig_Door
   m_TagString: Interactable
@@ -501,7 +501,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.57, y: 2.06, z: 0.050299875}
   m_Center: {x: 0.285, y: 1.01, z: 0.025149785}
---- !u!114 &6503748238043972323
+--- !u!114 &1677861204753882486
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -510,12 +510,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3575713696746558958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 515f74e1d455a20489d9890cc85903ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 0da23f0dac497b84c84a3a23da8f4b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Openable_Door_DoorWardrobe
   _doorOpenAngle: -90
   _doorOpeningSpeed: 200
+  _interactionObjectKeyData: {fileID: 0}
   _mechanicalLockController: {fileID: 0}
   _electronicLockController: {fileID: 0}
 --- !u!1 &3791344715742830502
@@ -795,7 +796,7 @@ GameObject:
   - component: {fileID: 2518386402185590891}
   - component: {fileID: 6799671925251215072}
   - component: {fileID: 5632337592355938637}
-  - component: {fileID: 2960570297908937692}
+  - component: {fileID: 1290566492094162482}
   m_Layer: 0
   m_Name: Interior_Furniture_Wardrobe_WardrobeBig_Door (1)
   m_TagString: Interactable
@@ -892,7 +893,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.57, y: 2.06, z: 0.050299875}
   m_Center: {x: 0.285, y: 1.01, z: 0.025149785}
---- !u!114 &2960570297908937692
+--- !u!114 &1290566492094162482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -901,11 +902,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 9134463772039358810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 515f74e1d455a20489d9890cc85903ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 0da23f0dac497b84c84a3a23da8f4b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Openable_Door_DoorWardrobe
   _doorOpenAngle: 90
   _doorOpeningSpeed: 200
+  _interactionObjectKeyData: {fileID: 0}
   _mechanicalLockController: {fileID: 0}
   _electronicLockController: {fileID: 0}

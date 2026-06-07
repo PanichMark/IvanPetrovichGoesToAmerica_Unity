@@ -36,6 +36,13 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 					damageable.TakeDamage(WeaponDamage);
 					Debug.Log($"Нанесено {WeaponDamage} урона объекту: {hit.name}");
 				}
+
+				IBreakable breakable = hit.GetComponent<IBreakable>();
+				if (breakable != null)
+				{
+					breakable.TakeDamage(WeaponDamage);
+					Debug.Log($"Нанесено {WeaponDamage} урона объекту: {hit.name}");
+				}
 			}
 
 			foreach (Collider hit in hitColliders)

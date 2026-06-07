@@ -7,7 +7,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 {
 	private bool _wasObjectDestroyed;
 	private bool _canObjectBeDestroyedOnImpact;
-	public bool WasObjectDestroyed => _wasObjectDestroyed;
+	public bool IsObjectDestroyed => _wasObjectDestroyed;
 	public float ObjectThrowPower => 10f;
 
 	private bool _isItFirstPerson;

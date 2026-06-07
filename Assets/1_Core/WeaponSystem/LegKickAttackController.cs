@@ -89,6 +89,11 @@ public class LegKickAttackController : MonoBehaviour
 			{
 				StartCoroutine(DelayLegKickAttackDamage(damageable, 0.5f, WeaponDamage));
 			}
+
+			if (hit.collider.TryGetComponent<IBreakable>(out var breakable))
+			{
+				StartCoroutine(DelayLegKickAttackDamage(breakable, 0.5f, WeaponDamage));
+			}
 		}
 	}
 	
@@ -100,6 +105,13 @@ public class LegKickAttackController : MonoBehaviour
 	}
 
 	IEnumerator DelayLegKickAttackDamage(IDamageable target, float delayTime, float damageAmount)
+	{
+		yield return new WaitForSeconds(delayTime);
+
+		target.TakeDamage(damageAmount);
+	}
+
+	IEnumerator DelayLegKickAttackDamage(IBreakable target, float delayTime, float damageAmount)
 	{
 		yield return new WaitForSeconds(delayTime);
 

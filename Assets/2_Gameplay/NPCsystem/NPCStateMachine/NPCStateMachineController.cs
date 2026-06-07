@@ -323,6 +323,10 @@ public class NPCStateMachineController : MonoBehaviour
 			newState = new NPCStateBeingHooked(this);
 			CurrentNPCState = "BeingHooked";
 		}
+		else if (NPCstateType == NPCStateTypes.BeingElectroShocked)
+		{
+			newState = new NPCStateBeingElectroShocked();
+		}
 		else if (NPCstateType == NPCStateTypes.KnockedOff)
 		{
 			newState = new NPCStateKnockedOff();

@@ -13,6 +13,7 @@
 	Fleeing,
 	BeingStrangled,
 	BeingHooked,
+	BeingElectroShocked,
 	KnockedOff,
 	BlownAway,
 	Falling,

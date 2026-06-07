@@ -3,9 +3,9 @@ using UnityEngine;
 
 public abstract class WeaponRangedAbstract : WeaponAbstract
 {
-	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
+	protected PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 
-	private GameObject _shootPoint;
+	protected GameObject _shootPoint;
 
 	public AmmoTypes PlayerWeaponAmmoType { get; protected set; }
 
@@ -88,7 +88,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_weaponAutoAttackCourutine = null;
 	}
 
-	private void ShootPlayerWeapon(float weaponDamage)
+	protected virtual void ShootPlayerWeapon(float weaponDamage)
 	{
 		RaycastHit hitInfo;
 		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))

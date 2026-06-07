@@ -40,7 +40,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction => _interactionHintMessageAction;
 	private string _interactionHintMessageAction;
-	public bool WasObjectDestroyed => false;
+	public bool IsObjectDestroyed => false;
 
 	private float _currentHealth;
 	public float CurrentHealth => _currentHealth;

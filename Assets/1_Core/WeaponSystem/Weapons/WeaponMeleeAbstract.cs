@@ -67,7 +67,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		_weaponAutoAttackCourutine = null;
 	}
 
-	private IEnumerator MeleeWeaponAttack()
+	protected virtual IEnumerator MeleeWeaponAttack()
 	{
 		Vector3 startPoint = _attackPoint.transform.position + _attackPoint.transform.forward * _forwardOffset;
 		Vector3 endPoint = startPoint + _attackPoint.transform.up * _capsuleHeight;
@@ -89,7 +89,13 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		_isAttacking = false;
 	}
 
-	private IEnumerator DelayMeleeAttackDamage(IDamageable target, float delayTime)
+	protected IEnumerator DelayMeleeAttackDamage(IDamageable target, float delayTime)
+	{
+		yield return new WaitForSeconds(delayTime);
+		target.TakeDamage(WeaponDamage);
+	}
+
+	protected IEnumerator DelayMeleeAttackDamage(IBreakable target, float delayTime)
 	{
 		yield return new WaitForSeconds(delayTime);
 		target.TakeDamage(WeaponDamage);

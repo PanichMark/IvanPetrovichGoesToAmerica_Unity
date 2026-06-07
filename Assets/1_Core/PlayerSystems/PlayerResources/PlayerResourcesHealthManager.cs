@@ -16,7 +16,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 
 	public int CurrentHealingItemsNumber { get; private set; }
 
-	public bool WasObjectDestroyed => false;
+	public bool IsObjectDestroyed => false;
 
 	public float CurrentHealth => CurrentPlayerHealth;
 

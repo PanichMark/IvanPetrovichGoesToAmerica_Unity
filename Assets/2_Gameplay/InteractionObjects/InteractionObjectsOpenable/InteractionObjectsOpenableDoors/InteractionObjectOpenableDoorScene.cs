@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
+public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoorUnbreakable
 {
 	private GameSceneManager _gameSceneManager;
 	[SerializeField] private GameScenesEnum _targetScene;
