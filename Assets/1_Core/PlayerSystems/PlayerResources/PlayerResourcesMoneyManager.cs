@@ -52,7 +52,7 @@ public class PlayerResourcesMoneyManager : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerMoney = this.PlayerMoney;
+		data.PlayerMoney = PlayerMoney;
 	}
 
 	public void LoadData(GameData data)

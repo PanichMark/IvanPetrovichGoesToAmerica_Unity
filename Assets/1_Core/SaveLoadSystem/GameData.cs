@@ -23,6 +23,10 @@ public class GameData
 	public string CurrentPlayerCameraStateType;
 	public bool IsCameraShoulderRight;
 
+	//Behaviour
+	public bool IsPlayerArmed;
+	public bool WasPlayerArmed;
+
 	//Resources
 	public float PlayerHealth;
 	public int HealingItems;
@@ -136,6 +140,10 @@ public class GameData
 		CameraRotation = new Quaternion(0, 0, 0, 0);
 		CurrentPlayerCameraStateType = PlayerCameraStateTypes.FirstPerson.ToString();
 		IsCameraShoulderRight = true;
+
+		//Behaviour
+		IsPlayerArmed = false;
+		WasPlayerArmed = false;
 
 		//Resources
 		PlayerHealth = 50;

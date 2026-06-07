@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerBehaviourController : MonoBehaviour
+public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 {
 	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
@@ -66,5 +66,28 @@ public class PlayerBehaviourController : MonoBehaviour
 		{
 			WasPlayerArmed = false;
 		}
+	}
+
+	public void SaveData(ref GameData data)
+	{
+		IsPlayerArmed = data.IsPlayerArmed;
+		WasPlayerArmed = data.WasPlayerArmed;
+	}
+
+	public void LoadData(GameData data)
+	{
+		data.IsPlayerArmed = IsPlayerArmed;
+		data.WasPlayerArmed = WasPlayerArmed;
+
+		/*
+		if (IsPlayerArmed)
+		{
+			ArmPlayer();
+		}
+		else
+		{
+			DisarmPlayer();
+		}
+		*/
 	}
 }
