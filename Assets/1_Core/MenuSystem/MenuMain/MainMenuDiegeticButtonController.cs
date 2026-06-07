@@ -6,7 +6,6 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 {
 	private Material _defaultMaterial;     
 	private Material _hoverMaterial;
-	private GameObject _CanvasDiegeticText;
 	private MenuBackgroundController _menuBackgroundController;
 	private static List<MainMenuDiegeticButtonController> _instances = new List<MainMenuDiegeticButtonController>();
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
@@ -22,6 +21,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private ICutscene _cutsceneNewGame;
 	private bool _isCutsceneNewGamePlaying;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
+	private MainMenuCanvasController _mainMenuCanvasController;
 
 	void Start()
 	{
@@ -30,10 +30,10 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_collider = GetComponent<Collider>();
 		_renderer = GetComponent<Renderer>();
 		_defaultMaterial = _renderer.material;
+		_mainMenuCanvasController = GameObject.Find("MainMenuCanvasController").GetComponent<MainMenuCanvasController>();
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 		_hoverMaterial = Resources.Load<Material>("Materials/Material_MainMenuDiegeticButton");
 		_cutsceneNewGame = GameObject.Find("CutsceneNewGame").GetComponent<ICutscene>();
-		_CanvasDiegeticText = GameObject.Find("CANVASES");
 		_menuBackgroundController = ServiceLocator.Resolve<MenuBackgroundController>("MenuBackgroundController");
 		_keyPauseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
@@ -45,16 +45,9 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
 
 		_mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
-		_mainMenuReadNews.OnCloseMainMenuReadNews += EnableDiegeticText;
 		_mainMenuReadNews.OnCloseMainMenuReadNews += _playerCameraBlurFilter.DeactivateCameraBlur;
 		_mainMenuReadNews.OnCloseMainMenuReadNews += _menuBackgroundController.HideCanvasMenuBackground;
 		_pauseMenuController.OnCloseAnyPauseSubMenu += EnableAllColliders;
-		_menuManager.OnCloseAnyMenu += EnableDiegeticText;
-	}
-
-	private void EnableDiegeticText()
-	{
-		_CanvasDiegeticText.SetActive(true);
 	}
 
 	void OnDestroy()
@@ -62,7 +55,6 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_instances.Remove(this);
 
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
-		_menuManager.OnCloseAnyMenu -= EnableDiegeticText;
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
 		_pauseMenuController.OnCloseAnyPauseSubMenu -= EnableAllColliders;
@@ -77,7 +69,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 				if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 1)
 				{
 					_menuManager.CloseAnyMenu();
-					_CanvasDiegeticText.SetActive(true);
+					_mainMenuCanvasController.ShowMainMenuCanvas();
 					_pauseMenuController.ClosePauseSubMenu();
 				}
 				if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 2)
@@ -112,7 +104,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			Debug.Log("START NEW GAME");
 			DisableAllColliders();
 			_gameController.CloseMainMenu();
-			_CanvasDiegeticText.SetActive(false);
+			//_mainMenuCanvasController.HideMainMenuCanvas();
 			StartCoroutine(StartNewGame());
 			_cutsceneNewGame.TriggerCutscene();
 			_isCutsceneNewGamePlaying = true;
@@ -128,21 +120,16 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		{
 			Debug.Log("OPEN LOAD GAME");
 			_menuBackgroundController.ShowCanvasMenuBackground();
-			_CanvasDiegeticText.SetActive(false);
+			_mainMenuCanvasController.HideMainMenuCanvas();
 			DisableAllColliders();
 			_menuManager.OpenAnyMenu();
 			_pauseMenuController.OpenLoadSubMenu();
-		}
-		else if (name == "ExitGame")
-		{
-			Debug.Log("EXIT GAME");
-			Application.Quit();
 		}
 		else if (name == "Settings")
 		{
 			Debug.Log("OPEN SETTINGS");
 			_menuBackgroundController.ShowCanvasMenuBackground();
-			_CanvasDiegeticText.SetActive(false);
+			_mainMenuCanvasController.HideMainMenuCanvas();
 			DisableAllColliders();
 			_menuManager.OpenAnyMenu();
 			_pauseMenuController.OpenSettingsSubMenu();
@@ -151,10 +138,15 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		{
 			Debug.Log("OPEN NEWS");
 			_menuBackgroundController.ShowCanvasMenuBackground();
-			_CanvasDiegeticText.SetActive(false);
+			_mainMenuCanvasController.HideMainMenuCanvas();
 			_mainMenuReadNews.ShowCanvasMainMenuReadNews();
 			DisableAllColliders();
 			_playerCameraBlurFilter.ActivateCameraBlur();
+		}
+		else if (name == "ExitGame")
+		{
+			Debug.Log("EXIT GAME");
+			Application.Quit();
 		}
 	}
 

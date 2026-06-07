@@ -77,6 +77,12 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				HideWeapon(WeaponHandsEnum.HandRight);
 			}
 		};
+		_menuManager.OnClosePauseMenu += () =>
+		{
+			StopRihtWeaponAutoAttack();
+			StopLeftWeaponAutoAttack();
+		};
+
 		_interactionController.OnGetRidOfThrowable += OnGetRidOfPickableThrowableHandler;
 		_interactionController.OnGetRidOfNonThrowable += OnGetRidOfPickableNonThrowableHandler;
 		_gameController.OnPlayerEarlyDeath += DisarmPlayerOnDeath;

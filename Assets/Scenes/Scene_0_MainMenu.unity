@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 311566776}
   - component: {fileID: 311566775}
   m_Layer: 5
-  m_Name: CanvasDiegeticText
+  m_Name: CanvasDiegeticTexts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -269,10 +269,10 @@ RectTransform:
   m_Children:
   - {fileID: 1380987885}
   - {fileID: 1007912454}
-  - {fileID: 962432208}
-  - {fileID: 867772910}
   - {fileID: 1964817285}
   - {fileID: 547130032}
+  - {fileID: 962432208}
+  - {fileID: 867772910}
   - {fileID: 502258306}
   m_Father: {fileID: 1097696813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 479678887}
   - component: {fileID: 479678886}
   m_Layer: 5
-  m_Name: Canvas Version
+  m_Name: CanvasGameVersion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 502258308}
   - component: {fileID: 502258307}
   m_Layer: 5
-  m_Name: ExitGame
+  m_Name: TextExitGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 547130034}
   - component: {fileID: 547130033}
   m_Layer: 5
-  m_Name: LoadGame
+  m_Name: TextLoadGame2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1091,7 +1091,7 @@ GameObject:
   - component: {fileID: 867772912}
   - component: {fileID: 867772911}
   m_Layer: 5
-  m_Name: ReadNews
+  m_Name: TextReadNews
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1105,7 +1105,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 867772909}
   m_LocalRotation: {x: 0.70467746, y: 0.058563873, z: -0.05856387, w: 0.70467746}
-  m_LocalPosition: {x: 0, y: 0, z: -10.79}
+  m_LocalPosition: {x: 0, y: 0, z: -9.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1113,7 +1113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -9.502}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.07, y: 3.97}
+  m_AnchoredPosition: {x: 2.03, y: 3.97}
   m_SizeDelta: {x: 5, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &867772911
@@ -1202,7 +1202,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -2.717101, w: 0}
+  m_margin: {x: 0, y: 2.8847997, z: 3.0471623, w: -0.21898437}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1400,7 +1400,7 @@ GameObject:
   - component: {fileID: 962432211}
   - component: {fileID: 962432210}
   m_Layer: 5
-  m_Name: Settings
+  m_Name: TextSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1536,7 +1536,7 @@ GameObject:
   - component: {fileID: 1007912456}
   - component: {fileID: 1007912455}
   m_Layer: 5
-  m_Name: NewGame (1)
+  m_Name: TextTestScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1740,7 +1740,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1097696813}
   m_Layer: 0
-  m_Name: CANVASES
+  m_Name: CanvasMainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1900,7 +1900,7 @@ GameObject:
   - component: {fileID: 1380987887}
   - component: {fileID: 1380987886}
   m_Layer: 5
-  m_Name: NewGame
+  m_Name: TextNewGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2024,6 +2024,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380987884}
   m_CullTransparentMesh: 1
+--- !u!1 &1389035592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1389035593}
+  - component: {fileID: 1389035594}
+  m_Layer: 0
+  m_Name: MainMenuCanvasController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1389035593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389035592}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1389035594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389035592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4969052db0aef68478aab908eae9422c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!64 &1532645311
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2327,7 +2371,7 @@ GameObject:
   - component: {fileID: 1964817287}
   - component: {fileID: 1964817286}
   m_Layer: 5
-  m_Name: Text (3)
+  m_Name: TextLoadGame1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3292,10 +3336,11 @@ SceneRoots:
   - {fileID: 1193472271}
   - {fileID: 7893935688373385305}
   - {fileID: 627007118}
-  - {fileID: 4136227658761765100}
   - {fileID: 543450652209522775}
+  - {fileID: 4136227658761765100}
   - {fileID: 3140028038922175985}
   - {fileID: 3745622628038038274}
   - {fileID: 1097696813}
   - {fileID: 1023867283}
   - {fileID: 82486438}
+  - {fileID: 1389035593}

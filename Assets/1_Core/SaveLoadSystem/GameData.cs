@@ -126,7 +126,7 @@ public class GameData
 		SceneNameSystem = GameScenesEnum.Scene_0_Test.ToString();
 
 		//Player 
-		PlayerPosition = new Vector3(0, 0, 0);
+		PlayerPosition = new Vector3(0, 0, -5);
 		PlayerRotation = new Quaternion(0, 0, 0, 0);
 		PlayerMovementStateType = PlayerMovementStateTypes.PlayerIdle.ToString();
 
@@ -134,7 +134,7 @@ public class GameData
 		PlayerCameraDistanceY = -1.75f;
 		PlayerCameraDistanceZ = 3.25f;
 		CameraRotation = new Quaternion(0, 0, 0, 0);
-		CurrentPlayerCameraStateType = PlayerCameraStateTypes.ThirdPerson.ToString();
+		CurrentPlayerCameraStateType = PlayerCameraStateTypes.FirstPerson.ToString();
 		IsCameraShoulderRight = true;
 
 		//Resources
