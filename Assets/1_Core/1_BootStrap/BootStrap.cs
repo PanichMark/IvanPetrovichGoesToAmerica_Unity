@@ -70,7 +70,7 @@ public class Bootstrap : MonoBehaviour
 	private IInputDevice _inputDevice;
 	public LocalizationManager LocalizationManager { get; private set; }
 	private KeyCode _keyPauseMenu; // Кнопка открывания/закрывания меню паузы
-	public bool IsBootstrapInitialized;
+	public bool IsBootstrapInitialized { get; private set; }
 	private bool _isGamepadConnected; //DO NOT DELETE
 
 	// Система Сцен
@@ -92,12 +92,7 @@ public class Bootstrap : MonoBehaviour
 
 	private BootstrapSubProcessMissionsSystem _bootstrapSubProcessMissionsSystem;
 
-	private void Awake()
-	{
-		StartCoroutine(StartGame());
-	}
-
-	private IEnumerator StartGame()
+	private IEnumerator Start()
 	{
 		Debug.Log("!!! STARTED GAME INITIALIZATION !!!");
 

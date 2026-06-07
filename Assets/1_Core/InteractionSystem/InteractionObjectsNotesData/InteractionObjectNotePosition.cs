@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "InteractionObjectNotePosition", menuName = "InteractionObjects/Notes/InteractionObjectNotePosition")]
+[CreateAssetMenu(fileName = "NotePosition", menuName = "InteractionObjects/Notes/NotePosition")]
 public class InteractionObjectNotePosition : ScriptableObject
 {
 	public Vector3 ImagePosition;

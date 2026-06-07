@@ -20,7 +20,7 @@ public class ViewModelMenuWeaponWheel
 		ButtonUseManaReplenishItem = bootstrap.FindDeepGameObject(canvas, "ButtonUseManaReplenishItem").GetComponent<Button>();
 		TextManaReplenishItemNumber = bootstrap.FindDeepGameObject(canvas, "TextManaReplenishItemNumber").GetComponent<TextMeshProUGUI>();
 
-		GameObjectWeaponWheelSegment = Resources.Load<GameObject>("WeaponWheel/WeaponWheelSegment");
+		GameObjectWeaponWheelSegment = Resources.Load<GameObject>("WeaponSystem/WeaponWheel/WeaponWheelSegment");
 
 		TextWeaponWheelWeaponName = canvas.transform.Find("TextWeaponWheelWeapon").GetComponent<TextMeshProUGUI>();
 		ImageWeaponWheelWeaponIcon = canvas.transform.Find("ImageWeaponWheelWeapon").GetComponent<Image>();

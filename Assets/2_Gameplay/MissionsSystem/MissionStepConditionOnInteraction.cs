@@ -1,7 +1,7 @@
 ﻿// Файл: MissionStepConditionOnInteraction.cs (в сборке Gameplay)
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "MissionStepConditionOnInteraction", menuName = "Missions/MissionConditions/MissionStepConditionOnInteraction")]
+[CreateAssetMenu(fileName = "ConditionOnInteraction", menuName = "Missions/MissionConditions/ConditionOnInteraction")]
 public class MissionStepConditionOnInteraction : MissionStepConditionAbstract, ICurrentMissionCondition
 {
 	private bool _isCompleted = false;

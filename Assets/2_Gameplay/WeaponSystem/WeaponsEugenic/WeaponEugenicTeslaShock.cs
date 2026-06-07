@@ -5,7 +5,7 @@ public class WWeaponEugenicTeslaShock : WeaponEugenicAbstract
 	public override string WeaponName => "TeslaShock";
 	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
 	public override string WeaponType => WeaponTypes.Eugenic.ToString();
-	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponWheel/WeaponWheel_WeaponIcons/Weapon{WeaponType}{WeaponName}Icon");
+	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
 	public override float WeaponDamage => 5;
 	public override int ManaCost => 2;
 	public override bool IsWeaponAuto => true;

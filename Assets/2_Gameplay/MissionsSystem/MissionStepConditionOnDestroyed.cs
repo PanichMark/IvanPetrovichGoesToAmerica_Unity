@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "MissionStepConditionOnDestroyed", menuName = "Missions/MissionConditions/MissionStepConditionOnDestroyed")]
+[CreateAssetMenu(fileName = "ConditionOnDestroyed", menuName = "Missions/MissionConditions/ConditionOnDestroyed")]
 public class MissionStepConditionOnDestroyed : MissionStepConditionAbstract
 {
 	public GameObject TargetDamageableObject;

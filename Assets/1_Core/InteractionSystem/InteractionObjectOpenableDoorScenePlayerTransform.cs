@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "InteractionObjectOpenableDoorScenePlayerTransform", menuName = "InteractionObjects/Openable/InteractionObjectOpenableDoorScenePlayerTransform")]
+[CreateAssetMenu(fileName = "DoorScenePlayerTransform", menuName = "InteractionObjects/Openable/DoorScenePlayerTransform")]
 public class InteractionObjectOpenableDoorScenePlayerTransform : ScriptableObject
 {
 	public Vector3 PlayerPosition;

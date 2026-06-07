@@ -5,7 +5,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	public override string WeaponName => "GenieBreath";
 	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
 	public override string WeaponType => WeaponTypes.Eugenic.ToString();
-	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponWheel/WeaponWheel_WeaponIcons/Weapon{WeaponType}{WeaponName}Icon");
+	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
 	public override float WeaponDamage => 100;
 	public override int ManaCost =>	20;
 	public override bool IsWeaponAuto => false;

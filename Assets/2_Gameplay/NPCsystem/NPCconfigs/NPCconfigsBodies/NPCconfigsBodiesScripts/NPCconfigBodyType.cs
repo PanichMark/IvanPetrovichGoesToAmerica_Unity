@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "ConfigNPCbodyType", menuName = "NPC/ConfigsNPC/ConfigNPCbodyType")]
+[CreateAssetMenu(fileName = "NPCbodyType", menuName = "NPC/ConfigsNPC/NPCbodyType")]
 public class ConfigNPCBodyType : ScriptableObject
 {
     public NPCSexTypes NPCsexType;
