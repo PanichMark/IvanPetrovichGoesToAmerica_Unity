@@ -175,26 +175,7 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
-		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
-		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
-
 		Debug.Log("SettingsSectionAudioController Initialized");
-	}
-
-	private void DisableButtons()
-	{
-		foreach (var button in _buttonsComponentsChangeLanguage)
-		{
-			button.interactable = false;
-		}
-	}
-
-	private void EnableButtons()
-	{
-		foreach (var button in _buttonsComponentsChangeLanguage)
-		{
-			button.interactable = true;
-		}
 	}
 
 	private void ChangeLanguage(LanguagesEnum language)

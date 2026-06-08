@@ -167,8 +167,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_pauseMenuController.OnOpenSettingsSubMenu += () => OpenSubSettingsSection(_subSettingsSectionGeneral);
 		_pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
 		_pauseMenuController.OnCloseAnyPauseSubMenu += HideSettingsSubMenuCanvas;
-		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
-		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
 		Debug.Log("PauseSubMenuSettingsController Initialized");
 	}
@@ -265,54 +263,6 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 			_buttonComponentSubSettingsSectionAudio.interactable = true;
 			_imageBackgroundSectionAudio.SetActive(false);
 		}
-	}
-
-	private void DisableButtons()
-	{
-		if(_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.General.ToString())
-		{
-			_buttonComponentSubSettingsSectionGeneral.interactable = false;
-		}
-		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Controls.ToString())
-		{
-			_buttonComponentSubSettingsSectionControls.interactable = false;
-		}
-		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Graphics.ToString())
-		{
-			_buttonComponentSubSettingsSectionGraphics.interactable = false;
-		}
-		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Audio.ToString())
-		{
-			_buttonComponentSubSettingsSectionAudio.interactable = false;
-		}
-
-		_buttonComponentSaveSettings.interactable = false;
-		_buttonComponentResetSettings.interactable = false;
-		_buttonComponentClosePauseSubMenuSettings.interactable = false;
-	}
-
-	private void EnableButtons()
-	{
-		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.General.ToString())
-		{
-			_buttonComponentSubSettingsSectionGeneral.interactable = true;
-		}
-		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Controls.ToString())
-		{
-			_buttonComponentSubSettingsSectionControls.interactable = true;
-		}
-		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Graphics.ToString())
-		{
-			_buttonComponentSubSettingsSectionGraphics.interactable = true;
-		}
-		if (_currentOpenedSubSettingsSection != PauseSubMenuSettingsSectionTypes.Audio.ToString())
-		{
-			_buttonComponentSubSettingsSectionAudio.interactable = true;
-		}
-
-		_buttonComponentSaveSettings.interactable = true;
-		_buttonComponentResetSettings.interactable = true;
-		_buttonComponentClosePauseSubMenuSettings.interactable = true;
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)

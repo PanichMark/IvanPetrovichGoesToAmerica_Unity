@@ -21,7 +21,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	private Slider _sliderComponentMouseSensitivityX;
 	private float _currentValueMouseSensitivityX;
 	private const float _MIN_VALUE_MOUSE_SENSITIVITY_X = 0.1f;
-	private const float _MAX_VALUE_MOUSE_SENSITIVITY_X = 2.5f;
+	private const float _MAX_VALUE_MOUSE_SENSITIVITY_X = 3f;
 	private GameObject _textNumberSliderMouseSensitivityX;
 	private TextMeshProUGUI _textComponentNumberSliderMouseSensitivityX;
 	private GameObject _textSliderMouseSensitivityX;
@@ -31,7 +31,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	private Slider _sliderComponentMouseSensitivityY;
 	private float _currentValueMouseSensitivityY;
 	private const float _MIN_VALUE_MOUSE_SENSITIVITY_Y = 0.1f;
-	private const float _MAX_VALUE_MOUSE_SENSITIVITY_Y = 2.5f;
+	private const float _MAX_VALUE_MOUSE_SENSITIVITY_Y = 3f;
 	private GameObject _textNumberSliderMouseSensitivityY;
 	private TextMeshProUGUI _textComponentNumberSliderMouseSensitivityY;
 	private GameObject _textSliderMouseSensitivityY;
@@ -133,26 +133,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
-		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
-		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
-
 		Debug.Log("SettingsSectionControlsController Initialized");
-	}
-
-	private void DisableButtons()
-	{
-		foreach (var field in _inputFieldsComponentsControls)
-		{
-			if (field != null) field.interactable = false;
-		}
-	}
-
-	private void EnableButtons()
-	{
-		foreach (var field in _inputFieldsComponentsControls)
-		{
-			if (field != null) field.interactable = true;
-		}
 	}
 
 	char ValidateAndConvertInput(string text, int charIndex, char addedChar)
@@ -306,7 +287,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		SetMouseSensitivityY(data.MouseSensitivityY);
 		_sliderComponentMouseSensitivityY.value = data.MouseSensitivityY;
 		_textComponentNumberSliderMouseSensitivityY.text = data.MouseSensitivityY.ToString();
-		OnMouseSensitivityXchanged(data.MouseSensitivityY);
+		OnMouseSensitivityYchanged(data.MouseSensitivityY);
 
 		if (data.KeyBindings != null && data.KeyBindings.Count > 0)
 		{

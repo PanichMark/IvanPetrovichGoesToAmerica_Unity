@@ -107,38 +107,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		_pauseMenuController.OnOpenSaveSubMenu += ShowSaveSubMenuCanvas;
 		_pauseMenuController.OnCloseAnyPauseSubMenu += HideSaveSubMenuCanvas;
-		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
-		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
 		Debug.Log("PauseSubMenuSaveController Initialized");
-	}
-
-	private void DisableButtons()
-	{
-		foreach (var button in _buttonsComponentsRewriteGameFile)
-		{
-			button.interactable = false;
-		}
-		foreach (var button in _buttonsComponentsDeleteGameFile)
-		{
-			button.interactable = false;
-		}
-		_buttonComponentCreateNewGameFile.interactable = false;
-		_buttonComponentClosePauseSubMenuSave.interactable = false;
-	}
-
-	private void EnableButtons()
-	{
-		foreach (var button in _buttonsComponentsRewriteGameFile)
-		{
-			button.interactable = true;
-		}
-		foreach (var button in _buttonsComponentsDeleteGameFile)
-		{
-			button.interactable = true;
-		}
-		_buttonComponentCreateNewGameFile.interactable = true;
-		_buttonComponentClosePauseSubMenuSave.interactable = true;
 	}
 
 	private int FindFirstEmptySlot()

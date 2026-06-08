@@ -127,20 +127,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
-		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
-		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
-
 		Debug.Log("SettingsSectionGeneralController Initialized");
-	}
-
-	private void DisableButtons()
-	{
-		_sliderComponentCameraFOV.interactable = false;
-	}
-
-	private void EnableButtons()
-	{
-		 _sliderComponentCameraFOV.interactable = true;
 	}
 
 	public void SaveSettingsGeneral()

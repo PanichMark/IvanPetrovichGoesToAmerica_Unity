@@ -75,30 +75,8 @@ public class PauseSubMenuLoadController : MonoBehaviour
 
 		_pauseMenuController.OnOpenLoadSubMenu += ShowLoadSubMenuCanvas;
 		_pauseMenuController.OnCloseAnyPauseSubMenu += HideLoadSubMenuCanvas;
-		_pauseMenuController.OnOpenConfirmMenu += DisableButtons;
-		_pauseMenuController.OnCloseConfirmMenu += EnableButtons;
 
 		Debug.Log("PauseSubMenuLoadController");
-	}
-
-	private void DisableButtons()
-	{
-		foreach (var button in _buttonsComponentsLoadGameFile)
-		{
-			button.interactable = false;
-		}
-
-		_buttonComponentClosePauseSubMenuLoad.interactable = false;
-	}
-
-	private void EnableButtons()
-	{
-		foreach (var button in _buttonsComponentsLoadGameFile)
-		{
-			button.interactable = true;
-		}
-
-		_buttonComponentClosePauseSubMenuLoad.interactable = true;
 	}
 
 	public void ShowLoadSubMenuCanvas()

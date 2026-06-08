@@ -88,8 +88,8 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			return;
 		}
 
-		Debug.Log(_mouseSensitivityMultiplierX);
-		Debug.Log(_mouseSensitivityMultiplierY);
+		//Debug.Log(_mouseSensitivityMultiplierX);
+		//Debug.Log(_mouseSensitivityMultiplierY);
 
 		if (_mouseScrollWheel < 0 && IsAbleToZoomCameraOut == true && !_isCameraFirstPerson)
 		{
