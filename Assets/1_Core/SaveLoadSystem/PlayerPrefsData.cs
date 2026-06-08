@@ -22,15 +22,15 @@ public class PlayerPrefsData
 
 	//ScreenResolution
 	//WindowType
-	//FPSlimit
-	public float CameraFOV { get; set; } = 60;
+	public int FPSlimit { get; set; }
+	public float CameraFOV { get; set; }
 	public int ScreenBrightness { get; set; }
 	//HUDtype
 
 
 	//SettingsSectionControls
-	public float MouseSensitivityX { get; set; } = 1;
-	public float MouseSensitivityY { get; set; } = 1;
+	public float MouseSensitivityX { get; set; }
+	public float MouseSensitivityY { get; set; }
 	public Dictionary<string, KeyCode> KeyBindings { get; set; } = new Dictionary<string, KeyCode>();
 
 
@@ -38,7 +38,7 @@ public class PlayerPrefsData
 	//NONE for Demo version!!!!
 
 	//Audio
-	public int VolumeGeneral {  get; set; }
+	public int VolumeGeneral { get; set; }
 	public int VolumeEnvironment { get; set; }
 	public int VolumeEffects { get; set; }
 	public int VolumeVoices { get; set; }

@@ -23,6 +23,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private TMP_Dropdown _dropdownComponentLimitFPS;
 	private GameObject _textDropdownLimitFPS;
 	private TextMeshProUGUI _textComponentDropdownLimitFPS;
+	private int _currentFPSlimit;
 
 	private GameObject _sliderCameraFOV;
 	private Slider _sliderComponentCameraFOV;
@@ -88,7 +89,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		_dropdownLimitFPS = viewModelPauseSubMenuSettings.DropdownLimitFPS;
 		_dropdownComponentLimitFPS = viewModelPauseSubMenuSettings.DropdownLimitFPS.GetComponent<TMP_Dropdown>();
-		_dropdownComponentLimitFPS.onValueChanged.AddListener(SetFPSLimit);
+		_dropdownComponentLimitFPS.onValueChanged.AddListener(SetFPSlimit);
 		_textDropdownLimitFPS = viewModelPauseSubMenuSettings.TextDropdownLimitFPS;
 		_textComponentDropdownLimitFPS = viewModelPauseSubMenuSettings.TextDropdownLimitFPS.GetComponent<TextMeshProUGUI>();
 
@@ -118,8 +119,6 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType;
 		_textComponentDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType.GetComponent<TextMeshProUGUI>();
 
-		SetFPSLimit(1);
-
 		SetScreenBrightness(100);
 		_sliderComponentScreenBrightness.value = 100;
 
@@ -137,17 +136,15 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		OnSaveCameraSettingsData?.Invoke();
 
 		currentData.CameraFOV = CurrentValueCameraFOV;
+		currentData.FPSlimit = _currentFPSlimit;
 
 		OnSaveSettingsGeneralData?.Invoke(currentData);
 	}
 
-	public void GetCameraCurrentFOV(float FOV)
-	{
-		CurrentValueCameraFOV = FOV;
-	}
-
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
+		SetFPSlimit(data, data.FPSlimit);
+
 		SetCameraFOV(data.CameraFOV);
 		_sliderComponentCameraFOV.value = data.CameraFOV;
 		CurrentValueCameraFOV = data.CameraFOV;
@@ -159,10 +156,13 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
+			FPSlimit = 60,
 			CameraFOV = _MIN_VALUE_CAMERA_FOV,
 		};
 
 		OnSaveSettingsGeneralData?.Invoke(defaultData);
+
+		SetFPSlimit(defaultData, 60);
 
 		SetCameraFOV(_MIN_VALUE_CAMERA_FOV);
 		_sliderComponentCameraFOV.value = _MIN_VALUE_CAMERA_FOV;
@@ -208,7 +208,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		}
 	}
 
-	public void SetFPSLimit(int dropdownFPSlimitSlot)
+	public void SetFPSlimit(int dropdownFPSlimitSlot)
 	{
 		int newFPSlimit;
 
@@ -233,6 +233,36 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 			newFPSlimit = 999;
 		}
 
+		_currentFPSlimit = newFPSlimit;
+		Application.targetFrameRate = newFPSlimit;
+	}
+
+	public void SetFPSlimit(PlayerPrefsData data, int newFPSlimit)
+	{
+		Debug.Log(newFPSlimit);
+
+		if (newFPSlimit == 30)
+		{
+			_dropdownComponentLimitFPS.value = 0;
+		}
+		if (newFPSlimit == 60)
+		{
+			_dropdownComponentLimitFPS.value = 1;
+		}
+		if (newFPSlimit == 90)
+		{
+			_dropdownComponentLimitFPS.value = 2;
+		}
+		if (newFPSlimit == 144)
+		{
+			_dropdownComponentLimitFPS.value = 3;
+		}
+		if (newFPSlimit == 999)
+		{
+			_dropdownComponentLimitFPS.value = 4;
+		}
+
+		_currentFPSlimit = newFPSlimit;
 		Application.targetFrameRate = newFPSlimit;
 	}
 
@@ -250,6 +280,11 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		{
 			OnCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
 		}
+	}
+
+	public void GetCameraCurrentFOV(float FOV)
+	{
+		CurrentValueCameraFOV = FOV;
 	}
 
 	public void SetScreenBrightness(float newScreenBrightness)

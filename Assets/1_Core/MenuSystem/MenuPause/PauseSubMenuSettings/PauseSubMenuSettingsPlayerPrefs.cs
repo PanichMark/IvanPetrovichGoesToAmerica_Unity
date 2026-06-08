@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 {
+	public string FPSlimit { get; private set; } = "FPSlimit";
 	public string CameraFOV { get; private set; } = "CameraFOV";
 
 	private Bootstrap _bootstrap;
-	public string Language { get; private set; } = "CurrentLanguage";
+	public string Language { get; private set; } = "Language";
 	private IInputDevice _inputDevice;
 
 	public string MouseSensitivityX { get; private set; } = "MouseSensitivityX";
@@ -53,6 +54,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 	public void SaveSettingsGeneral(PlayerPrefsData data)
 	{
+		PlayerPrefs.SetInt(FPSlimit, data.FPSlimit);
 		PlayerPrefs.SetFloat(CameraFOV, data.CameraFOV);
 
 		PlayerPrefs.Save();
@@ -95,10 +97,11 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	{
 		var data = new PlayerPrefsData();
 
-		data.CameraFOV = PlayerPrefs.GetFloat(CameraFOV);
+		data.FPSlimit = PlayerPrefs.GetInt(FPSlimit, 60);
+		data.CameraFOV = PlayerPrefs.GetFloat(CameraFOV, 60);
 
-		data.MouseSensitivityX = PlayerPrefs.GetFloat(MouseSensitivityX);
-		data.MouseSensitivityY = PlayerPrefs.GetFloat(MouseSensitivityY);
+		data.MouseSensitivityX = PlayerPrefs.GetFloat(MouseSensitivityX, 1);
+		data.MouseSensitivityY = PlayerPrefs.GetFloat(MouseSensitivityY, 1);
 
 		if (actionNamesToLoad != null && actionNamesToLoad.Count > 0)
 		{
