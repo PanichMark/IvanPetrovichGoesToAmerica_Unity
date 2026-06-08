@@ -97,6 +97,7 @@ public class BootstrapSubProcessWeaponSystem
 			_localizationManager,
 			_bootstrapSubProcessMenuSystem.MenuManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+			_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager,
 			WeaponController,
 			_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
 			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);

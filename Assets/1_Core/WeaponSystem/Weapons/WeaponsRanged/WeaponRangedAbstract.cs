@@ -7,8 +7,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected GameObject _shootPoint;
 
-	public AmmoTypes PlayerWeaponAmmoType { get; protected set; }
-
+	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
+	
 	public int PlayerMagazineAmmoCurrent { get; set; }
 
 	public int PlayerMagazineAmmoMax { get; protected set; }
@@ -144,10 +144,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		Debug.Log("Reloaded");
 	}
 
-	public void SetPlayerWeaponAmmoType(AmmoTypes type)
-	{
-		PlayerWeaponAmmoType = type;
-	}
+//	public void SetPlayerWeaponAmmoType(AmmoTypes type)
+	//{
+	//	PlayerWeaponAmmoType = type;
+	//}
 
 	public void SetPlayerMagazineProperties(int maxAmmo, int currentAmmo)
 	{

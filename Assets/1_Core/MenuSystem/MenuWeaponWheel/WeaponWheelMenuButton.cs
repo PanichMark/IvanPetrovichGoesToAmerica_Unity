@@ -14,6 +14,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	LocalizationManager _localizationManager;
 	private GameObject _currentWeapon;
 	private WeaponAbstract _weaponComponent;
+	private WeaponRangedAbstract _weaponRangedAbstract;
 	private GameObject _previousWeapon;
 
 	public void Initialize(LocalizationManager localizationManager, PlayerWeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
@@ -111,7 +112,8 @@ public class WeaponWheelMenuButton : MonoBehaviour
 
 		if (_weaponComponent is WeaponRangedAbstract)
 		{
-			_weaponWheelController.ShowWeaponAmmo(_weaponComponent);
+			_weaponRangedAbstract = _WeaponPrefab.GetComponent<WeaponRangedAbstract>();
+			_weaponWheelController.ShowWeaponAmmo(_weaponRangedAbstract);
 		}
 		else
 		{

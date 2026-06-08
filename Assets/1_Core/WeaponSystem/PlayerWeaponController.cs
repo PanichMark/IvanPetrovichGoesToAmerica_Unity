@@ -343,7 +343,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			WeaponsRangedEnum newKey = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), rangedNew.WeaponName);
 			if (_ammoManager.WeaponsRangedDictionary.TryGetValue(newKey, out var newData))
 			{
-				rangedNew.SetPlayerWeaponAmmoType(newData.AmmoTypeSystem);
+				//rangedNew.SetPlayerWeaponAmmoType(newData.AmmoTypeSystem);
 				rangedNew.SetPlayerMagazineProperties(newData.MagazineAmmoMax, newData.MagazineAmmoCurrent);
 			}
 		}

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class WeaponWheelMenuController : MonoBehaviour
 {
+	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private GameObject _weaponWheelSegment;                    
 	private GameObject _weaponWheelMenuCanvas;
 	private Bootstrap _bootstrap;
@@ -21,7 +22,8 @@ public class WeaponWheelMenuController : MonoBehaviour
 
 	private List<GameObject> _wheelSegments = new List<GameObject>();
 	private bool _isWeaponLeftHand = false;
-
+	private WeaponRangedAbstract _weaponRangedAbstractRight;
+	private WeaponRangedAbstract _weaponRangedAbstractLeft;
 	public delegate void WeaponWheelMenuHandler(WeaponHandsEnum activeHand);
 	public event WeaponWheelMenuHandler OnOpenWeaponWheelMenu;
 
@@ -49,6 +51,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
+		PlayerResourcesAmmoManager playerResourcesAmmoManager,
 		PlayerWeaponController weaponController,
 		GameObject weaponWheelMenuCanvas,
 		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
@@ -57,6 +60,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
 		_playerBehaviour = playerBehaviour;
+		_playerResourcesAmmoManager = playerResourcesAmmoManager;
 		_weaponController = weaponController;
 		_menuManager = menuManager;
 		_weaponWheelSegment = viewModelMenuWeaponWheel.GameObjectWeaponWheelSegment;
@@ -91,11 +95,23 @@ public class WeaponWheelMenuController : MonoBehaviour
 		_textWeaponAmmoSeparator.SetActive(false);
 	}
 
-	public void ShowWeaponAmmo(WeaponAbstract weaponComponent)
+	public void ShowWeaponAmmo(WeaponRangedAbstract weaponComponent)
 	{
 		_textWeaponAmmoMagazineNumber.SetActive(true);
 		_textWeaponAmmoReserveNumber.SetActive(true);
 		_textWeaponAmmoSeparator.SetActive(true);
+		
+		WeaponsRangedEnum newKey = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), weaponComponent.WeaponName);
+
+		if (_playerResourcesAmmoManager.WeaponsRangedDictionary.TryGetValue(newKey, out var newData))
+		{
+			_textComponentWeaponAmmoMagazineNumber.text = newData.MagazineAmmoCurrent.ToString();
+		}
+
+		if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(weaponComponent.PlayerWeaponAmmoType, out var ammoData))
+		{
+			_textComponentWeaponAmmoReserveNumber.text = ammoData.TotalAmmoCurrent.ToString();
+		}
 	}
 
 	public void ShowWeaponAmmo()
@@ -109,6 +125,10 @@ public class WeaponWheelMenuController : MonoBehaviour
 					_textWeaponAmmoMagazineNumber.SetActive(true);
 					_textWeaponAmmoReserveNumber.SetActive(true);
 					_textWeaponAmmoSeparator.SetActive(true);
+
+					_weaponRangedAbstractLeft = _weaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
+					_textComponentWeaponAmmoMagazineNumber.text = _weaponRangedAbstractLeft.PlayerMagazineAmmoCurrent.ToString();
+					_textComponentWeaponAmmoReserveNumber.text = _weaponRangedAbstractLeft.PlayerAmmoTotalCurrent.ToString();
 				}
 				else
 				{
@@ -133,6 +153,10 @@ public class WeaponWheelMenuController : MonoBehaviour
 					_textWeaponAmmoMagazineNumber.SetActive(true);
 					_textWeaponAmmoReserveNumber.SetActive(true);
 					_textWeaponAmmoSeparator.SetActive(true);
+
+					_weaponRangedAbstractRight = _weaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
+					_textComponentWeaponAmmoMagazineNumber.text = _weaponRangedAbstractRight.PlayerMagazineAmmoCurrent.ToString();
+					_textComponentWeaponAmmoReserveNumber.text = _weaponRangedAbstractRight.PlayerAmmoTotalCurrent.ToString();
 				}
 				else
 				{
