@@ -12,27 +12,24 @@ public class MissionsManager : MonoBehaviour
 
 	// --- СОБЫТИЕ ДЛЯ УВЕДОМЛЕНИЯ ---
 	public delegate void OnStepChangedDelegate();
-	public static event OnStepChangedDelegate OnCurrentStepChanged;
-
+	public event OnStepChangedDelegate OnCurrentStepChanged;
+	private GameSceneManager _gameSceneManager;
 	public delegate void InteractionEventHandler(GameObject interactedObject);
-	public static event InteractionEventHandler OnAnyObjectInteracted;
+	public event InteractionEventHandler OnAnyObjectInteracted;
 
 	public delegate void DestructionEventHandler(GameObject destroyedObject, bool wasLethal);
-	public static event DestructionEventHandler OnAnyObjectDestroyed;
+	public event DestructionEventHandler OnAnyObjectDestroyed;
 	private GameObject _textCurrentMissionGoal;
 	private TextMeshProUGUI _textComponentCurrentMissionGoal;
-	public void Initialize(LocalizationManager localizationManager, PauseMenuController pauseMenuController, GameMissions gameMissions, ViewModelPauseMenu viewModelPauseMenu)
+
+	public void Initialize(LocalizationManager localizationManager, GameSceneManager gameSceneManager, PauseMenuController pauseMenuController, GameMissions gameMissions, ViewModelPauseMenu viewModelPauseMenu)
 	{
 		_localizationManager = localizationManager;
 		_pauseMenuController = pauseMenuController;
 		_allMissions = gameMissions;
+		_gameSceneManager = gameSceneManager;
 		_textCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoalDisplay;
 		_textComponentCurrentMissionGoal = _textCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
-		if (_allMissions == null || _allMissions.MissionsInOrder.Length == 0)
-		{
-			Debug.LogError("Ошибка: Список миссий не задан или пуст!");
-			return;
-		}
 
 		ActiveMission = _allMissions.MissionsInOrder[0];
 		CurrentStepIndex = 0;
@@ -53,7 +50,7 @@ public class MissionsManager : MonoBehaviour
 
 			//Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
 		}
-
+		//_gameSceneManager.OnEndLoadingGameplayScene += Req
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		Debug.Log("MissionsManager Initialized");

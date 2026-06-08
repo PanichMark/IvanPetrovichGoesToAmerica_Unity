@@ -6,7 +6,7 @@ public class MissionStepInteractionObject : MonoBehaviour
 
 	[SerializeField] private MissionStepConditionAbstract _linkedMissionCondition;
 
-	private void Awake()
+	private void Start()
 	{
 		_linkedMissionCondition.RegisterOwner(gameObject);
 		Debug.Log($"{gameObject.name} зарегистрировал себя в условии {_linkedMissionCondition.name}");

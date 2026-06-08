@@ -13,12 +13,12 @@ public class MissionStepConditionOnDestroyed : MissionStepConditionAbstract
 
 	private void OnEnable()
 	{
-		MissionsManager.OnAnyObjectDestroyed += HandleObjectDestroyed;
+		_missionsManager.OnAnyObjectDestroyed += HandleObjectDestroyed;
 	}
 
 	private void OnDisable()
 	{
-		MissionsManager.OnAnyObjectDestroyed -= HandleObjectDestroyed;
+		_missionsManager.OnAnyObjectDestroyed -= HandleObjectDestroyed;
 	}
 
 	private void HandleObjectDestroyed(GameObject destroyedObject, bool wasLethal)

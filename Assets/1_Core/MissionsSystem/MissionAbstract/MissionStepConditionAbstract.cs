@@ -6,11 +6,13 @@ public abstract class MissionStepConditionAbstract : ScriptableObject
 	// Ссылка на объект, которому принадлежит это условие (например, на Дверь)
 	// Мы не будем перетаскивать её вручную.
 	public GameObject OwnerObject { get; private set; }
+	protected MissionsManager _missionsManager;
 
 	// Метод для регистрации владельца. Его будет вызывать скрипт на объекте.
 	public void RegisterOwner(GameObject owner)
 	{
 		OwnerObject = owner;
+		_missionsManager = ServiceLocator.Resolve<MissionsManager>("MissionsManager");
 	}
 
 	// Метод, который вызывается, когда условие выполнено.

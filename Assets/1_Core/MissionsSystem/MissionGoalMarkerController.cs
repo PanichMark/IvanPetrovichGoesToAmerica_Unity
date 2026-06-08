@@ -7,13 +7,14 @@ public class MissionGoalMarkerController : MonoBehaviour
 	private RectTransform _imageMissionGoalMarkerRectTransform;
 	private Camera _playerCameraComponent;
 	private GameObject _gameObjectMissionGoal;
-
+	private GameSceneManager _gameSceneManager;
 	private float markerOffset = 20f;
 	private float markerHeight;
 
 	private ICurrentMissionStep _currentMissionStepCache;
 
 	public void Initialize(
+		GameSceneManager gameSceneManager,
 		MissionsManager missionsManager,
 		GameObject playerCamera,
 		GameObject imageMissionGoalMarker)
@@ -22,10 +23,11 @@ public class MissionGoalMarkerController : MonoBehaviour
 		_imageMissionGoalMarker = imageMissionGoalMarker;
 		_imageMissionGoalMarkerRectTransform = _imageMissionGoalMarker.GetComponent<RectTransform>();
 		_playerCameraComponent = playerCamera.GetComponent<Camera>();
-
-		MissionsManager.OnCurrentStepChanged += HandleStepChanged;
+		_gameSceneManager = gameSceneManager;
+		_missionsManager.OnCurrentStepChanged += HandleStepChanged;
 		//HandleStepChanged();
-		Invoke(nameof(RequestRecheck), 0.1f);
+		_gameSceneManager.OnEndLoadingGameplayScene += CheckMissionStep;
+		//Invoke(nameof(RequestRecheck), 0.1f);
 
 		markerHeight = _imageMissionGoalMarkerRectTransform.rect.height;
 
@@ -142,9 +144,9 @@ public class MissionGoalMarkerController : MonoBehaviour
 		_imageMissionGoalMarkerRectTransform.anchoredPosition = new Vector2(xPos, yPos);
 	}
 
-	public void RequestRecheck()
+	public void CheckMissionStep()
 	{
-		Debug.Log("[MissionMarker] Задержанная проверка цели...");
+		Debug.Log("[MissionMarker] Checking for MissionStep Objective");
 		HandleStepChanged();
 	}
 

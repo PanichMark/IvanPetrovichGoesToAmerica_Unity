@@ -110,6 +110,8 @@ public class Bootstrap : MonoBehaviour
 
 		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration);
 
+		Debug.Log("!!! GAME INITIALIZED !!!");
+
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.SaveLoadController.NewGame());
 
 		Destroy(_canvasBootstrap);
@@ -125,6 +127,8 @@ public class Bootstrap : MonoBehaviour
 			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString("Language")));
 		}
 
+		Destroy(_canvasChooseLanguage);
+
 		Destroy(_gameObjectBootstrapTemporaryCamera);
 
 		yield return StartCoroutine(LoadFirstGameplayScene());
@@ -134,8 +138,6 @@ public class Bootstrap : MonoBehaviour
 		OnLoadSettingsData?.Invoke();
 
 		IsBootstrapInitialized = true;
-
-		Debug.Log("!!! GAME INITIALIZED !!!");
 	}
 
 	/*
@@ -312,7 +314,7 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.InitializeMenuSystem());
 
-		Debug.Log("=== SCENE SYSTEM INITIALIZED ===");
+		Debug.Log("=== MENU SYSTEM INITIALIZED ===");
 	}
 
 	private IEnumerator InitializePlayerSystems()
@@ -372,6 +374,7 @@ public class Bootstrap : MonoBehaviour
 	{
 		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(
 			this,
+			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
 			_gameObjectPlayerCamera);
 
@@ -481,7 +484,7 @@ public class Bootstrap : MonoBehaviour
 			}
 		}
 
-		if (_sceneToLoad.SelectedScene.ToString() != "Scene0_MainMenu")
+		if (_sceneToLoad.SelectedScene.ToString() != "Scene_0_MainMenu")
 		{
 			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerPosition.PlayerPosition);
 		}
