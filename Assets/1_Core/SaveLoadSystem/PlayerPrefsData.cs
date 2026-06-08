@@ -3,12 +3,7 @@ using UnityEngine;
 
 public class PlayerPrefsData
 {
-	public float FOV { get; set; }
-
-	public string Language { get; set; }
-
-	public Dictionary<string, KeyCode> KeyBindings { get; set; } = new Dictionary<string, KeyCode>();
-
+	//Is game launched for the first time
 	private const string KEY_IS_FIRST_LAUNCH = "IsGameLaunchedForTheFirstTime";
 
 	public bool IsFirstLaunch
@@ -22,4 +17,32 @@ public class PlayerPrefsData
 		PlayerPrefs.SetInt(KEY_IS_FIRST_LAUNCH, 0);
 		PlayerPrefs.Save();
 	}
+
+	//SettingsSectionGeneral
+
+	//ScreenResolution
+	//WindowType
+	//FPSlimit
+	public float CameraFOV { get; set; } = 60;
+	public int ScreenBrightness { get; set; }
+	//HUDtype
+
+
+	//SettingsSectionControls
+	public float MouseSensitivityX { get; set; } = 1;
+	public float MouseSensitivityY { get; set; } = 1;
+	public Dictionary<string, KeyCode> KeyBindings { get; set; } = new Dictionary<string, KeyCode>();
+
+
+	//SettingsSectionGraphics
+	//NONE for Demo version!!!!
+
+	//Audio
+	public int VolumeGeneral {  get; set; }
+	public int VolumeEnvironment { get; set; }
+	public int VolumeEffects { get; set; }
+	public int VolumeVoices { get; set; }
+	public int VolumeMusicAmbience { get; set; }
+	public int VolumeMusicIngame { get; set; }
+	public string CurrentLanguage { get; set; }
 }

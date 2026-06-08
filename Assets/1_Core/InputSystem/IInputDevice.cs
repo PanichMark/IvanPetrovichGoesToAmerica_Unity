@@ -3,6 +3,9 @@ using UnityEngine;
 
 public interface IInputDevice
 {
+	float CameraAxisX();
+	float CameraAxisY();
+	float CameraScroll();
 	bool GetKeyPauseMenu();
 	bool GetKeyUp();
 	bool GetKeyDown();

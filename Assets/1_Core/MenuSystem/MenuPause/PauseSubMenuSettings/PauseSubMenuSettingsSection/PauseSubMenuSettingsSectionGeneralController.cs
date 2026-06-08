@@ -149,7 +149,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		OnSaveCameraSettingsData?.Invoke();
 
-		currentData.FOV = CurrentValueCameraFOV;
+		currentData.CameraFOV = CurrentValueCameraFOV;
 
 		OnSaveSettingsGeneralData?.Invoke(currentData);
 	}
@@ -161,9 +161,9 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
-		SetCameraFOV(data.FOV);
-		_sliderComponentCameraFOV.value = data.FOV;
-		CurrentValueCameraFOV = data.FOV;
+		SetCameraFOV(data.CameraFOV);
+		_sliderComponentCameraFOV.value = data.CameraFOV;
+		CurrentValueCameraFOV = data.CameraFOV;
 	}
 
 	public void ResetSettingsGeneral()
@@ -172,7 +172,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
-			FOV = _MIN_VALUE_CAMERA_FOV,
+			CameraFOV = _MIN_VALUE_CAMERA_FOV,
 		};
 
 		OnSaveSettingsGeneralData?.Invoke(defaultData);

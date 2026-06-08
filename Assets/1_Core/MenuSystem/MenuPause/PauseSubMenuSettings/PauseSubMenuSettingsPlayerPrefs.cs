@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 {
-	public string FOV { get; private set; } = "FOV";
+	public string CameraFOV { get; private set; } = "CameraFOV";
 
 	private Bootstrap _bootstrap;
-	public string Language { get; private set; } = "Language";
+	public string Language { get; private set; } = "CurrentLanguage";
 	private IInputDevice _inputDevice;
+
+	public string MouseSensitivityX { get; private set; } = "MouseSensitivityX";
+	public string MouseSensitivityY { get; private set; } = "MouseSensitivityY";
 	public string KeybindingsPrefix  { get; private set; } = "KeyBinding_";
 	
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
@@ -50,7 +53,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 	public void SaveSettingsGeneral(PlayerPrefsData data)
 	{
-		PlayerPrefs.SetFloat(FOV, data.FOV);
+		PlayerPrefs.SetFloat(CameraFOV, data.CameraFOV);
 
 		PlayerPrefs.Save();
 
@@ -59,6 +62,9 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 	public void SaveSettingsControls(PlayerPrefsData data)
 	{
+		PlayerPrefs.SetFloat(MouseSensitivityX, data.MouseSensitivityX);
+		PlayerPrefs.SetFloat(MouseSensitivityY, data.MouseSensitivityY);
+
 		foreach (var binding in data.KeyBindings)
 		{
 			PlayerPrefs.SetString(KeybindingsPrefix + binding.Key, binding.Value.ToString());
@@ -78,7 +84,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 	public void SaveSettingsAudio(PlayerPrefsData data)
 	{
-		PlayerPrefs.SetString(Language, data.Language);
+		PlayerPrefs.SetString(Language, data.CurrentLanguage);
 
 		PlayerPrefs.Save();
 
@@ -89,9 +95,10 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	{
 		var data = new PlayerPrefsData();
 
-		data.FOV = PlayerPrefs.GetFloat(FOV);
+		data.CameraFOV = PlayerPrefs.GetFloat(CameraFOV);
 
-		data.Language = PlayerPrefs.GetString(Language);
+		data.MouseSensitivityX = PlayerPrefs.GetFloat(MouseSensitivityX);
+		data.MouseSensitivityY = PlayerPrefs.GetFloat(MouseSensitivityY);
 
 		if (actionNamesToLoad != null && actionNamesToLoad.Count > 0)
 		{
@@ -123,6 +130,8 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 			}
 		}
 
+		data.CurrentLanguage = PlayerPrefs.GetString(Language);
+
 		_pauseSubMenuSettingsSectionGeneralController.ApplySystemLoadedSettings(data);
 		_pauseSubMenuSettingsSectionControlsController.ApplySystemLoadedSettings(data);
 		_pauseSubMenuSettingsSectionGraphicsController.ApplySystemLoadedSettings(data);
@@ -130,13 +139,16 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 	public void ResetSettingsGeneral()
 	{
-		PlayerPrefs.DeleteKey(FOV);
+		PlayerPrefs.DeleteKey(CameraFOV);
 
 		Debug.Log("Reset SettingsGeneral");
 	}
 
 	public void ResetSettingsControls()
 	{
+		PlayerPrefs.DeleteKey(MouseSensitivityX);
+		PlayerPrefs.DeleteKey(MouseSensitivityY);
+
 		string allKeysString = PlayerPrefs.GetString("");
 		string[] allKeysArray = allKeysString.Split('\0');
 

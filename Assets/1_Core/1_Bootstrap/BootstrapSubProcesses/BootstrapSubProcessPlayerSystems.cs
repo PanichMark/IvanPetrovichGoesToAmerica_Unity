@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BootstrapSubProcessPlayerSystems
 {
@@ -101,7 +99,7 @@ public class BootstrapSubProcessPlayerSystems
 
 		_playerColliderController.Initialize(_bootstrap, PlayerMovementStateMachineController);
 
-		PlayerCameraController.Initialize(_bootstrap, _gameController, _inputDevice, _gameSceneManager, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController, PlayerMovementController, PlayerMovementStateMachineController, _playerColliderController, _gameObjectPlayer, _gameObjectPlayerCamera);
+		PlayerCameraController.Initialize(_bootstrap, _gameController, _inputDevice, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionControlsController, PlayerMovementController, _playerColliderController, _gameObjectPlayer, _gameObjectPlayerCamera);
 		PlayerCameraStateMachineController.Initialize(_bootstrap, _inputDevice, _gameSceneManager, PlayerMovementController, PlayerMovementStateMachineController, PlayerCameraController);
 		_playerCameraBlurFilter.Initialize(_bootstrapSubProcessMenuSystem.MenuManager, PlayerCameraFirstPerson);
 		_playerCameraFirstPersonRender.Initialize(_bootstrap, PlayerCameraStateMachineController, _gameObjectPlayerHead);

@@ -261,7 +261,7 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 	{
 		var currentData = new PlayerPrefsData();
 
-		currentData.Language = _localizationManager.CurrentLanguage.ToString();
+		currentData.CurrentLanguage = _localizationManager.CurrentLanguage.ToString();
 
 		OnSaveSettingsAudioData?.Invoke(currentData);
 	}
@@ -272,7 +272,7 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 
 		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
-			Language = _localizationManager.CurrentLanguage.ToString(),
+			CurrentLanguage = _localizationManager.CurrentLanguage.ToString(),
 		};
 
 		OnSaveSettingsAudioData?.Invoke(defaultData);

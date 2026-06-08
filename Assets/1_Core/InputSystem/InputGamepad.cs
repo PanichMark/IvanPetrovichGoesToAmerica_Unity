@@ -417,4 +417,19 @@ public class InputGamepad : IInputDevice
 		}
 		return false;
 	}
+
+	public float CameraAxisX()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public float CameraAxisY()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public float CameraScroll()
+	{
+		throw new System.NotImplementedException();
+	}
 }

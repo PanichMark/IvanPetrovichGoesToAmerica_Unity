@@ -19,8 +19,8 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	private GameObject _sliderMouseSensitivityX;
 	private Slider _sliderComponentMouseSensitivityX;
-	private float _currentValueMaouseSensitivityX;
-	private const float _MIN_VALUE_MOUSE_SENSITIVITY_X = 0.5f;
+	private float _currentValueMouseSensitivityX;
+	private const float _MIN_VALUE_MOUSE_SENSITIVITY_X = 0.1f;
 	private const float _MAX_VALUE_MOUSE_SENSITIVITY_X = 2.5f;
 	private GameObject _textNumberSliderMouseSensitivityX;
 	private TextMeshProUGUI _textComponentNumberSliderMouseSensitivityX;
@@ -29,15 +29,15 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	private GameObject _sliderMouseSensitivityY;
 	private Slider _sliderComponentMouseSensitivityY;
-	private float _currentValueMaouseSensitivityY;
-	private const float _MIN_VALUE_MOUSE_SENSITIVITY_Y = 0.5f;
+	private float _currentValueMouseSensitivityY;
+	private const float _MIN_VALUE_MOUSE_SENSITIVITY_Y = 0.1f;
 	private const float _MAX_VALUE_MOUSE_SENSITIVITY_Y = 2.5f;
 	private GameObject _textNumberSliderMouseSensitivityY;
 	private TextMeshProUGUI _textComponentNumberSliderMouseSensitivityY;
 	private GameObject _textSliderMouseSensitivityY;
 	private TextMeshProUGUI _textComponentSliderMouseSensitivityY;
 
-	public delegate void MouseSensitivityHandle(float newMouseSensitivity, float MINmouseSensitivity, float MAXmouseSensitivity);
+	public delegate void MouseSensitivityHandle(float newMouseSensitivity);
 	public event MouseSensitivityHandle OnMouseSensitivityXchanged;
 	public event MouseSensitivityHandle OnMouseSensitivityYchanged;
 
@@ -231,27 +231,29 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	public void SetMouseSensitivityX(float newMouseSensitivityX)
 	{
 		float roundedValue = Mathf.Round(newMouseSensitivityX / _STEP_VALUE_MOUSE_SENSITIVITY) * _STEP_VALUE_MOUSE_SENSITIVITY;
-		_currentValueMaouseSensitivityX = roundedValue;
+		_currentValueMouseSensitivityX = roundedValue;
 
-		_textComponentNumberSliderMouseSensitivityX.text = _currentValueMaouseSensitivityX.ToString("F1");
+		_textComponentNumberSliderMouseSensitivityX.text = _currentValueMouseSensitivityX.ToString("G0");
 
-		OnMouseSensitivityXchanged?.Invoke(_currentValueMaouseSensitivityX, _MIN_VALUE_MOUSE_SENSITIVITY_X, _MAX_VALUE_MOUSE_SENSITIVITY_X);
+		OnMouseSensitivityXchanged?.Invoke(_currentValueMouseSensitivityX);
 	}
 
 	public void SetMouseSensitivityY(float newMouseSensitivityY)
 	{
 		float roundedValue = Mathf.Round(newMouseSensitivityY / _STEP_VALUE_MOUSE_SENSITIVITY) * _STEP_VALUE_MOUSE_SENSITIVITY;
-		_currentValueMaouseSensitivityY = roundedValue;
+		_currentValueMouseSensitivityY = roundedValue;
 
-		_textComponentNumberSliderMouseSensitivityY.text = _currentValueMaouseSensitivityY.ToString("F1");
+		_textComponentNumberSliderMouseSensitivityY.text = _currentValueMouseSensitivityY.ToString("G0");
 
-		OnMouseSensitivityYchanged?.Invoke(_currentValueMaouseSensitivityY, _MIN_VALUE_MOUSE_SENSITIVITY_Y, _MAX_VALUE_MOUSE_SENSITIVITY_Y);
+		OnMouseSensitivityYchanged?.Invoke(_currentValueMouseSensitivityY);
 	}
 
 	public void SaveSettingsControls()
 	{
 		var currentData = new PlayerPrefsData();
 
+		currentData.MouseSensitivityX = _currentValueMouseSensitivityX;
+		currentData.MouseSensitivityY = _currentValueMouseSensitivityY;
 		currentData.KeyBindings = new Dictionary<string, KeyCode>(_inputDevice.CurrentKeyboardKeyBindings);
 
 		OnSaveSettingsControlsData?.Invoke(currentData);
@@ -265,10 +267,22 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
+			MouseSensitivityX = 1,
+			MouseSensitivityY = 1,
 			KeyBindings = defaultBindingsSnapshot.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
 		};
 
 		OnSaveSettingsControlsData?.Invoke(defaultData);
+
+		SetMouseSensitivityX(1);
+		_sliderComponentMouseSensitivityX.value = 1;
+		_textComponentNumberSliderMouseSensitivityX.text = 1.ToString();
+		OnMouseSensitivityXchanged(1);
+
+		SetMouseSensitivityY(1);
+		_sliderComponentMouseSensitivityY.value = 1;
+		_textComponentNumberSliderMouseSensitivityY.text = 1.ToString();
+		OnMouseSensitivityYchanged(1);
 
 		foreach (var field in _inputFieldsComponentsControls)
 		{
@@ -284,6 +298,16 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
+		SetMouseSensitivityX(data.MouseSensitivityX);
+		_sliderComponentMouseSensitivityX.value = data.MouseSensitivityX;
+		_textComponentNumberSliderMouseSensitivityX.text = data.MouseSensitivityX.ToString();
+		OnMouseSensitivityXchanged(data.MouseSensitivityX);
+
+		SetMouseSensitivityY(data.MouseSensitivityY);
+		_sliderComponentMouseSensitivityY.value = data.MouseSensitivityY;
+		_textComponentNumberSliderMouseSensitivityY.text = data.MouseSensitivityY.ToString();
+		OnMouseSensitivityXchanged(data.MouseSensitivityY);
+
 		if (data.KeyBindings != null && data.KeyBindings.Count > 0)
 		{
 			foreach (var kvp in data.KeyBindings)

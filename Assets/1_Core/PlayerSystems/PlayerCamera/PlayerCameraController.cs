@@ -10,17 +10,16 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private PlayerColliderController _playerCollider;
 	private GameObject _player;
 	private GameObject _playerCamera;
-
-	private PlayerMovementStateMachineController _playerMovementStateMachineController;
+	private float _mouseSensitivityMultiplierX;
+	private float _mouseSensitivityMultiplierY;
 	private bool _isCameraFirstPerson;
 	private Camera _mainCamera;
 	private Vector2 _mouseRotation;
-	private Vector2 _mouseScrollWheel;
-	private GameSceneManager _gameSceneManager;
+	private float _mouseScrollWheel;
 	private RaycastHit _hit;
 	private float _currentFOV;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
-
+	PauseSubMenuSettingsSectionControlsController _pauseSubMenuSettingsSectionControlsController;
 	public bool IsAbleToZoomCameraOut { get; private set; } = true;
 
 	public float PlayerCameraDistanceX { get; private set; }
@@ -42,26 +41,24 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		Bootstrap bootstrap,
 		GameController gameController,
 		IInputDevice inputDevice,
-		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
 		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
+		PauseSubMenuSettingsSectionControlsController pauseSubMenuSettingsSectionControlsController,
 		PlayerMovementController movementController,
-		PlayerMovementStateMachineController playerMovementStateMachineController,
 		PlayerColliderController playerCollider,
 		GameObject playerModel,
 		GameObject playerCamera)
 	{
 		_bootstrap = bootstrap;
 		_gameController = gameController;
-		_gameSceneManager = gameSceneManager;
 		_inputDevice = inputDevice;
 		_menuManager = menuManager;
 		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
+		_pauseSubMenuSettingsSectionControlsController = pauseSubMenuSettingsSectionControlsController;
 		_movementController = movementController;
 		_playerCollider = playerCollider;
 		_player = playerModel;
 		_playerCamera = playerCamera;
-		_playerMovementStateMachineController = playerMovementStateMachineController;
 		PlayerCameraDistanceX = -0.85f;
 		PlayerCameraDistanceY = -1.75f;
 		PlayerCameraDistanceZ = 3.25f;
@@ -70,10 +67,13 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		_pauseSubMenuSettingsSectionGeneralController.OnCameraFOVchanged += SetCameraFOV;
 		_pauseSubMenuSettingsSectionGeneralController.OnSaveCameraSettingsData += SendCameraFOV;
 
+		_pauseSubMenuSettingsSectionControlsController.OnMouseSensitivityXchanged += ChangeMouseSensitivityMultiplierX;
+		_pauseSubMenuSettingsSectionControlsController.OnMouseSensitivityYchanged += ChangeMouseSensitivityMultiplierY;
+
 		_gameController.OnCloseMainMenu += () =>
 		{
 			SendCameraFOV();
-			Debug.Log(_currentFOV);
+			//Debug.Log(_currentFOV);
 			_pauseSubMenuSettingsSectionGeneralController.SetCameraFOV(_currentFOV);
 		};
 		_gameController.OnOpenMainMenu += SendCameraFOV;
@@ -88,7 +88,10 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			return;
 		}
 
-		if (_mouseScrollWheel.y < 0 && IsAbleToZoomCameraOut == true && !_isCameraFirstPerson)
+		Debug.Log(_mouseSensitivityMultiplierX);
+		Debug.Log(_mouseSensitivityMultiplierY);
+
+		if (_mouseScrollWheel < 0 && IsAbleToZoomCameraOut == true && !_isCameraFirstPerson)
 		{
 			if (PlayerCameraDistanceY > -1.99f)
 			{
@@ -99,7 +102,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 				PlayerCameraDistanceZ += 0.35f;
 			}
 		}
-		if (_mouseScrollWheel.y > 0 && !_isCameraFirstPerson)
+		if (_mouseScrollWheel > 0 && !_isCameraFirstPerson)
 		{
 			if (PlayerCameraDistanceY < -1.51f)
 			{
@@ -192,13 +195,13 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 	public void FirstPersonCameraTransform()
 	{
-		transform.position = _player.transform.position + Quaternion.Euler(0, _mouseRotation.y, 0) *
+		transform.position = _player.transform.position + Quaternion.Euler(0, _mouseRotation.x, 0) *
 		new Vector3(0, _movementController.PlayerCurrentHeight - 0.13f, 0.1f);
 	}
 
 	public void ThirdPersonCameraTransform()
 	{
-		transform.position = _player.transform.position - Quaternion.Euler(-_mouseRotation.x, _mouseRotation.y, 0) *
+		transform.position = _player.transform.position - Quaternion.Euler(-_mouseRotation.y, _mouseRotation.x, 0) *
 		new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
 	}
 
@@ -237,19 +240,28 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		_mouseRotation.x = -data.CameraRotation.x;
 		_mouseRotation.y = data.CameraRotation.y;
 		_isCameraShoulderRight = data.IsCameraShoulderRight;
+	}
 
+	private void ChangeMouseSensitivityMultiplierX(float newMouseSensitivityX)
+	{
+		_mouseSensitivityMultiplierX = newMouseSensitivityX;	
+	}
+
+	private void ChangeMouseSensitivityMultiplierY(float newMouseSensitivityY)
+	{
+		_mouseSensitivityMultiplierY = newMouseSensitivityY;
 	}
 
 	public void RotateCamera()
 	{
 		if (!_menuManager.IsAnyMenuOpened)
 		{
-			_mouseRotation.y += Input.GetAxis("Mouse X");
-			_mouseRotation.x += Input.GetAxis("Mouse Y");
-			_mouseRotation.x = Mathf.Clamp(_mouseRotation.x, _MouseRotationLimit * -1, _MouseRotationLimit);
-			_mouseScrollWheel = Input.mouseScrollDelta;
+			_mouseRotation.y += _inputDevice.CameraAxisY() * _mouseSensitivityMultiplierY;
+			_mouseRotation.x += _inputDevice.CameraAxisX() * _mouseSensitivityMultiplierX;
+			_mouseRotation.y = Mathf.Clamp(_mouseRotation.y, _MouseRotationLimit * -1, _MouseRotationLimit);
+			_mouseScrollWheel = _inputDevice.CameraScroll();
 
-			transform.rotation = Quaternion.Euler(-_mouseRotation.x, _mouseRotation.y, 0);
+			transform.rotation = Quaternion.Euler(-_mouseRotation.y, _mouseRotation.x, 0);
 		}
 	}
 

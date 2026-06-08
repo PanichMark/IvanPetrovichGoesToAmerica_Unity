@@ -362,4 +362,40 @@ public class InputKeyboard : IInputDevice
 		}
 		return false;
 	}
+
+	public float CameraAxisX()
+	{
+		if (_gameController.IsPlayerControllable)
+		{
+			return Input.GetAxis("Mouse X");
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	public float CameraAxisY()
+	{
+		if (_gameController.IsPlayerControllable)
+		{
+			return Input.GetAxis("Mouse Y");
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	public float CameraScroll()
+	{
+		if (_gameController.IsPlayerControllable)
+		{
+			return Input.mouseScrollDelta.y;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 }

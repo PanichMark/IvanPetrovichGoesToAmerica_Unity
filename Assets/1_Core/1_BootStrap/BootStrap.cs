@@ -122,7 +122,7 @@ public class Bootstrap : MonoBehaviour
 		}
 		else
 		{
-			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString("Language")));
+			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString("CurrentLanguage")));
 		}
 
 		Destroy(_gameObjectBootstrapTemporaryCamera);
