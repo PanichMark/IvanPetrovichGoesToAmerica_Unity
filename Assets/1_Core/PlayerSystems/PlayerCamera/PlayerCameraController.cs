@@ -265,6 +265,24 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		}
 	}
 
+	public void ApplyRecoil()
+	{
+		float verticalRecoil = Random.Range(0.5f, 3f);
+
+		float horizontalRecoil;
+		if (Random.value < 0.5f)
+		{
+			horizontalRecoil = -Random.Range(0.5f, 2.5f);
+		}
+		else
+		{
+			horizontalRecoil = Random.Range(0.5f, 2.5f);
+		}
+
+		_mouseRotation.x += horizontalRecoil;
+		_mouseRotation.y += verticalRecoil;
+	}
+
 	private void SetCameraFOV(float newFov, float MIN_FOV_VALUE, float MAX_FOV_VALUE)
 	{
 		_mainCamera.fieldOfView = Mathf.Clamp(newFov, MIN_FOV_VALUE, MAX_FOV_VALUE);
