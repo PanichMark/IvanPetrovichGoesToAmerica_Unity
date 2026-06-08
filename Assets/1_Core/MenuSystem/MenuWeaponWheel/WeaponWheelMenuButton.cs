@@ -108,12 +108,23 @@ public class WeaponWheelMenuButton : MonoBehaviour
 		_weaponWheelController.WeaponIcon.gameObject.SetActive(true);
 		_weaponWheelController.WeaponText.text = _WeaponName;
 		_weaponWheelController.WeaponIcon.sprite = _WeaponIcon;
+
+		if (_weaponComponent is WeaponRangedAbstract)
+		{
+			_weaponWheelController.ShowWeaponAmmo(_weaponComponent);
+		}
+		else
+		{
+			_weaponWheelController.HideWeaponAmmo();
+		}
 	}
 
 	public void HoverExit()
 	{
 		_weaponWheelController.ShowWeaponName();
 		_weaponWheelController.ShowWeaponIcon();
+
+		_weaponWheelController.ShowWeaponAmmo();
 	}
 
 	private void SelectWeapon()

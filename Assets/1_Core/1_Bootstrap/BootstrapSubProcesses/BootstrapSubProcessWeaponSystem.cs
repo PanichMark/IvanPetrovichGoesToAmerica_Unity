@@ -92,16 +92,14 @@ public class BootstrapSubProcessWeaponSystem
 		WeaponController);
 
 		_weaponWheelController.Initialize(
+			_bootstrap,
 			_inputDevice,
 			_localizationManager,
 			_bootstrapSubProcessMenuSystem.MenuManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			WeaponController,
 			_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
-			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel.GameObjectWeaponWheelSegment,
-			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel.TextWeaponWheelWeaponName,
-			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel.ImageWeaponWheelWeaponIcon,
-			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel.TextWeaponWheelHandType);
+			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
 
 		_weaponAnimationController.Initialize(
 			_bootstrap,

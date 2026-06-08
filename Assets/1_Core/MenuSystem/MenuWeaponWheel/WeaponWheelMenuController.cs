@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Codice.Client.BaseCommands.CheckIn.Progress;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,15 @@ using UnityEngine.UI;
 public class WeaponWheelMenuController : MonoBehaviour
 {
 	private GameObject _weaponWheelSegment;                    
-	private GameObject _weaponWheelMenuCanvas;            
+	private GameObject _weaponWheelMenuCanvas;
+	private Bootstrap _bootstrap;
+	private GameObject _textWeaponAmmoMagazineNumber;
+	private TextMeshProUGUI _textComponentWeaponAmmoMagazineNumber;
+	private GameObject _textWeaponAmmoReserveNumber;
+	private TextMeshProUGUI _textComponentWeaponAmmoReserveNumber;
+	private GameObject _textWeaponAmmoSeparator;
+	private TextMeshProUGUI _textComponentWeaponAmmoSeparator;
+
 	public TextMeshProUGUI WeaponText { get; private set; }            
 	public TextMeshProUGUI WeaponWheelName { get; private set; }       
 
@@ -28,7 +37,6 @@ public class WeaponWheelMenuController : MonoBehaviour
 	private bool _isHoveringOverButton;
 	private bool _previousRightHandPressed = false;
 	private bool _previousLeftHandPressed = false;
-	private bool _isInitialized = false;
 	private float _radius = 130;
 
 	public event System.Action<int> OnSegmentSelected;
@@ -36,36 +44,110 @@ public class WeaponWheelMenuController : MonoBehaviour
 	public Image WeaponIcon {  get; private set; }
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
 		PlayerWeaponController weaponController,
 		GameObject weaponWheelMenuCanvas,
-		GameObject wheelSegmentPrefab,
-		TextMeshProUGUI weaponText,
-		Image weaponIconBig,
-		TextMeshProUGUI weaponWheelName)
+		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
 	{
+		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
 		_playerBehaviour = playerBehaviour;
 		_weaponController = weaponController;
 		_menuManager = menuManager;
-		_weaponWheelSegment = wheelSegmentPrefab;
+		_weaponWheelSegment = viewModelMenuWeaponWheel.GameObjectWeaponWheelSegment;
 		_weaponWheelMenuCanvas = weaponWheelMenuCanvas;
-		WeaponText = weaponText;
-		WeaponWheelName = weaponWheelName;
-		WeaponIcon = weaponIconBig;
+		WeaponText = viewModelMenuWeaponWheel.TextWeaponWheelWeaponName;
+		WeaponWheelName = viewModelMenuWeaponWheel.TextWeaponWheelHandType;
+		WeaponIcon = viewModelMenuWeaponWheel.ImageWeaponWheelWeaponIcon;
+
+		_textWeaponAmmoMagazineNumber = viewModelMenuWeaponWheel.TextWeaponAmmoMagazineNumber;
+		_textComponentWeaponAmmoMagazineNumber = viewModelMenuWeaponWheel.TextWeaponAmmoMagazineNumber.GetComponent<TextMeshProUGUI>();
+		_textWeaponAmmoReserveNumber = viewModelMenuWeaponWheel.TextWeaponAmmoReserveNumber;
+		_textComponentWeaponAmmoReserveNumber = viewModelMenuWeaponWheel.TextWeaponAmmoReserveNumber.GetComponent<TextMeshProUGUI>();
+		_textWeaponAmmoSeparator = viewModelMenuWeaponWheel.TextWeaponAmmoSeparator;
+		_textComponentWeaponAmmoSeparator = viewModelMenuWeaponWheel.TextWeaponAmmoSeparator.GetComponent<TextMeshProUGUI>();
 
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
-		_isInitialized = true;
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_weaponController.OnAnyWeaponUnlocked += OnWeaponUnlocked;
 
 		Debug.Log("WeaponWheelMenuController");
+	}
+
+	public void HideWeaponAmmo()
+	{
+		//Debug.Log("SHOW WEAPON AMMO");
+
+
+		_textWeaponAmmoMagazineNumber.SetActive(false);
+		_textWeaponAmmoReserveNumber.SetActive(false);
+		_textWeaponAmmoSeparator.SetActive(false);
+	}
+
+	public void ShowWeaponAmmo(WeaponAbstract weaponComponent)
+	{
+		_textWeaponAmmoMagazineNumber.SetActive(true);
+		_textWeaponAmmoReserveNumber.SetActive(true);
+		_textWeaponAmmoSeparator.SetActive(true);
+	}
+
+	public void ShowWeaponAmmo()
+	{
+		if (_isWeaponLeftHand)
+		{
+			if (_weaponController.LeftHandWeapon != null)
+			{
+				if (_weaponController.LeftHandWeaponComponent is WeaponRangedAbstract)
+				{
+					_textWeaponAmmoMagazineNumber.SetActive(true);
+					_textWeaponAmmoReserveNumber.SetActive(true);
+					_textWeaponAmmoSeparator.SetActive(true);
+				}
+				else
+				{
+					_textWeaponAmmoMagazineNumber.SetActive(false);
+					_textWeaponAmmoReserveNumber.SetActive(false);
+					_textWeaponAmmoSeparator.SetActive(false);
+				}
+			}
+			else
+			{
+				_textWeaponAmmoMagazineNumber.SetActive(false);
+				_textWeaponAmmoReserveNumber.SetActive(false);
+				_textWeaponAmmoSeparator.SetActive(false);
+			}
+		}
+		else if (_isWeaponLeftHand == false)
+		{
+			if (_weaponController.RightHandWeapon != null)
+			{
+				if (_weaponController.RightHandWeaponComponent is WeaponRangedAbstract)
+				{
+					_textWeaponAmmoMagazineNumber.SetActive(true);
+					_textWeaponAmmoReserveNumber.SetActive(true);
+					_textWeaponAmmoSeparator.SetActive(true);
+				}
+				else
+				{
+					_textWeaponAmmoMagazineNumber.SetActive(false);
+					_textWeaponAmmoReserveNumber.SetActive(false);
+					_textWeaponAmmoSeparator.SetActive(false);
+				}
+			}
+			else
+			{
+				_textWeaponAmmoMagazineNumber.SetActive(false);
+				_textWeaponAmmoReserveNumber.SetActive(false);
+				_textWeaponAmmoSeparator.SetActive(false);
+			}
+		}
 	}
 
 	private void OnWeaponUnlocked(GameObject weaponPrefab)
@@ -75,7 +157,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 	
 	void Update()
 	{
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 		bool currentRightHandPressed = _inputDevice.GetKeyRightHandWeaponWheel();
 		bool currentLeftHandPressed = _inputDevice.GetKeyLeftHandWeaponWheel();
@@ -94,24 +176,26 @@ public class WeaponWheelMenuController : MonoBehaviour
 		if (rightHandPressed)
 		{
 			OnOpenWeaponWheelMenu?.Invoke(WeaponHandsEnum.HandRight);
-			EnableWeaponWheelMenuCanvas();
+			ShowWeaponWheelMenuCanvas();
 			_isWeaponLeftHand = false;
 			ShowWeaponName();
 			ShowWeaponIcon();
+			ShowWeaponAmmo();
 			WeaponWheelName.text = _weaponWheelHandRight;
 		}
 		else if (leftHandPressed)
 		{
 			OnOpenWeaponWheelMenu?.Invoke(WeaponHandsEnum.HandLeft);
-			EnableWeaponWheelMenuCanvas();
+			ShowWeaponWheelMenuCanvas();
 			_isWeaponLeftHand = true;
 			ShowWeaponName();
 			ShowWeaponIcon();
+			ShowWeaponAmmo();
 			WeaponWheelName.text = _weaponWheelHandLeft;
 		}
 		else
 		{
-			DisableWeaponWheelMenuCanvas();
+			HideWeaponWheelMenuCanvas();
 		}
 	}
 
@@ -200,13 +284,13 @@ public class WeaponWheelMenuController : MonoBehaviour
 		CreateWheel();
 	}
 
-	private void EnableWeaponWheelMenuCanvas()
+	private void ShowWeaponWheelMenuCanvas()
 	{
 		_weaponWheelMenuCanvas.gameObject.SetActive(true);
 		_menuManager.OpenWeaponWheelMenu();
 	}
 
-	private void DisableWeaponWheelMenuCanvas()
+	private void HideWeaponWheelMenuCanvas()
 	{
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
 		if (!_menuManager.IsPauseMenuOpened)
