@@ -14,4 +14,9 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 	{
 
 	}
+
+	protected override void WeaponRangedRecoil()
+	{
+		_playerCameraController.ApplyWeaponRecoilSingle(2, 0.02f, 0.08f);
+	}
 }

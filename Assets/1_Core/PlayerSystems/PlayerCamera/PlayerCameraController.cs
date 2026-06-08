@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class PlayerCameraController : MonoBehaviour, ISaveLoad
 {
@@ -20,6 +21,9 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private float _currentFOV;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	PauseSubMenuSettingsSectionControlsController _pauseSubMenuSettingsSectionControlsController;
+	private Coroutine _activeRecoilCoroutineSingle;
+	private Vector2 _recoilStartRotationSingle;
+	private Coroutine _activeAutoRecoilCoroutine;
 	public bool IsAbleToZoomCameraOut { get; private set; } = true;
 
 	public float PlayerCameraDistanceX { get; private set; }
@@ -181,6 +185,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		{
 			_mouseRotation.y = 0;
 		}
+		//Debug.Log(_mouseRotation.x);
 	}
 
 	public void CameraStanding()
@@ -265,22 +270,99 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void ApplyRecoil()
+	public void ApplyWeaponRecoilSingle(int UpForce, float UpForceDuration, float DownForceDuration)
 	{
-		float verticalRecoil = Random.Range(0.5f, 3f);
-
-		float horizontalRecoil;
-		if (Random.value < 0.5f)
+		if (_activeRecoilCoroutineSingle != null)
 		{
-			horizontalRecoil = -Random.Range(0.5f, 2.5f);
+			StopCoroutine(_activeRecoilCoroutineSingle);
 		}
-		else
+		_recoilStartRotationSingle = _mouseRotation;
+		_activeRecoilCoroutineSingle = StartCoroutine(WeaponRecoilSingle(UpForce, UpForceDuration, DownForceDuration));
+	}
+
+	private IEnumerator WeaponRecoilSingle(int UpForce, float UpForceDuration, float DownForceDuration)
+	{
+		float startY = _recoilStartRotationSingle.y;
+		float targetUp = startY + UpForce;
+
+		float timeElapsed = 0f;
+		while (timeElapsed < UpForceDuration)
 		{
-			horizontalRecoil = Random.Range(0.5f, 2.5f);
+			if (Vector2.Distance(_mouseRotation, _recoilStartRotationSingle) > 25f)
+			{
+				_activeRecoilCoroutineSingle = null;
+				//StopCoroutine(SawedOffShotgunRecoil());
+				yield break;
+			}
+
+			_mouseRotation.y = Mathf.Lerp(startY, targetUp, timeElapsed / UpForceDuration);
+			timeElapsed += Time.deltaTime;
+			yield return null;
+		}
+		_mouseRotation.y = targetUp;
+
+		timeElapsed = 0f;
+		while (timeElapsed < DownForceDuration)
+		{
+			if (Vector2.Distance(_mouseRotation, _recoilStartRotationSingle) > 25f)
+			{
+				_activeRecoilCoroutineSingle = null;
+				//StopCoroutine(SawedOffShotgunRecoil());
+				yield break;
+			}
+
+			_mouseRotation.y = Mathf.Lerp(targetUp, startY, timeElapsed / DownForceDuration);
+			timeElapsed += Time.deltaTime;
+			yield return null;
 		}
 
-		_mouseRotation.x += horizontalRecoil;
-		_mouseRotation.y += verticalRecoil;
+		_mouseRotation.y = startY;
+		_activeRecoilCoroutineSingle = null;
+	}
+
+	public void ApplyWeaponRecoilAuto()
+	{
+		if (_activeAutoRecoilCoroutine != null)
+		{
+			StopCoroutine(_activeAutoRecoilCoroutine);
+		}
+		_activeAutoRecoilCoroutine = StartCoroutine(WeaponRecoilAutoRoutine());
+	}
+
+	private IEnumerator WeaponRecoilAutoRoutine()
+	{
+		while (true)
+		{
+			float verticalRecoil = Random.Range(0.5f, 3f);
+
+			float horizontalRecoil;
+			if (Random.value < 0.5f)
+			{
+				horizontalRecoil = -Random.Range(0.5f, 2.5f);
+			}
+			else
+			{
+				horizontalRecoil = Random.Range(0.5f, 2.5f);
+			}
+
+			float timeElapsed = 0f;
+			float duration = 0.05f;
+			Vector2 startRotation = _mouseRotation;
+			Vector2 targetRotation = _mouseRotation + new Vector2(horizontalRecoil, verticalRecoil);
+
+			while (timeElapsed < duration)
+			{
+				_mouseRotation = Vector2.Lerp(startRotation, targetRotation, timeElapsed / duration);
+				timeElapsed += Time.deltaTime;
+				yield return null;
+			}
+
+			_mouseRotation = targetRotation;
+
+			yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
+
+			yield break;
+		}
 	}
 
 	private void SetCameraFOV(float newFov, float MIN_FOV_VALUE, float MAX_FOV_VALUE)

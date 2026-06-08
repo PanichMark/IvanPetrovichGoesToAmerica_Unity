@@ -16,12 +16,15 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoCurrent;
 	public int PlayerAmmoTotalMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoMax;
 
+	protected PlayerCameraController _playerCameraController;
+
 	private void Start()
 	{
 		if (_isThisPlayerWeapon)
 		{
 			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
+			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 
 			InitializeWeaponRanged();
 		}
@@ -77,6 +80,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 			ShootPlayerWeapon(WeaponDamage);
 
+			WeaponRangedRecoil();
+
 			yield return new WaitForSeconds(_weaponAutoAttackSpeedRate);
 
 			if (PlayerMagazineAmmoCurrent <= 0)
@@ -107,6 +112,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		{
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
+
+		WeaponRangedRecoil();
 	}
 
 	public void ReloadPlayerWeapon()
@@ -144,11 +151,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		Debug.Log("Reloaded");
 	}
 
-//	public void SetPlayerWeaponAmmoType(AmmoTypes type)
-	//{
-	//	PlayerWeaponAmmoType = type;
-	//}
-
 	public void SetPlayerMagazineProperties(int maxAmmo, int currentAmmo)
 	{
 		PlayerMagazineAmmoMax = maxAmmo;
@@ -174,4 +176,5 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	}
 
 	protected abstract void InitializeWeaponRanged();
+	protected abstract void WeaponRangedRecoil();
 }

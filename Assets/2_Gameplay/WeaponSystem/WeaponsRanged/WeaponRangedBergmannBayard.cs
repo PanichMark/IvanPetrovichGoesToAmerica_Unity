@@ -11,73 +11,13 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 	public override float WeaponDamage => 20f;
 	public override bool IsWeaponAuto => true;
 
-	private PlayerCameraController _playerCameraController;
-
 	protected override void InitializeWeaponRanged()
 	{
 		_weaponAutoAttackSpeedRate = 0.1f;
-		_playerCameraController =  ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 	}
 
-	public override void WeaponAttack()
+	protected override void WeaponRangedRecoil()
 	{
-		if (PlayerMagazineAmmoCurrent > 0)
-		{
-			if (IsWeaponAuto)
-			{
-				StartAutoAttacking();
-			}
-			else
-			{
-				ShootPlayerWeapon(WeaponDamage);
-			}
-		}
-		else if (_isThisPlayerWeapon)
-		{
-			Debug.Log($"Not enough Ammo {WeaponName}");
-		}
-	}
-
-	public override void StartAutoAttacking()
-	{
-		if (_isWeaponAutoAttacking || PlayerMagazineAmmoCurrent <= 0) return;
-		_isWeaponAutoAttacking = true;
-		if (_weaponAutoAttackCourutine == null)
-		{
-			_weaponAutoAttackCourutine = StartCoroutine(AutoAttackCourutine());
-		}
-	}
-
-	public override void StopAutoAttacking()
-	{
-		_isWeaponAutoAttacking = false;
-		if (_weaponAutoAttackCourutine != null)
-		{
-			StopCoroutine(_weaponAutoAttackCourutine);
-			_weaponAutoAttackCourutine = null;
-		}
-	}
-
-	public override IEnumerator AutoAttackCourutine()
-	{
-		while (true)
-		{
-			if (!_isWeaponAutoAttacking)
-			{
-				break;
-			}
-
-			_playerCameraController.ApplyRecoil();
-			ShootPlayerWeapon(WeaponDamage);
-
-			yield return new WaitForSeconds(_weaponAutoAttackSpeedRate);
-
-			if (PlayerMagazineAmmoCurrent <= 0)
-			{
-				_isWeaponAutoAttacking = false;
-				break;
-			}
-		}
-		_weaponAutoAttackCourutine = null;
+		_playerCameraController.ApplyWeaponRecoilAuto();
 	}
 }

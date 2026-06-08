@@ -239,7 +239,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 	public void SetFPSlimit(PlayerPrefsData data, int newFPSlimit)
 	{
-		Debug.Log(newFPSlimit);
+		//Debug.Log(newFPSlimit);
 
 		if (newFPSlimit == 30)
 		{
