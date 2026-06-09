@@ -147,10 +147,10 @@ public class GameData
 
 		//Resources
 		PlayerHealth = 50;
-		HealingItems = 9;
+		HealingItems = 1;
 		PlayerMana = 50;
-		ManaReplenishItems = 9;
-		PlayerMoney = 100;
+		ManaReplenishItems = 1;
+		PlayerMoney = 99999;
 		AmmoDictionary = new List<AmmoTypeData>
 		{
 			new AmmoTypeData

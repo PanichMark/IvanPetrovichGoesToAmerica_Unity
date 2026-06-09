@@ -44,6 +44,12 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public virtual void Interact()
 	{
+		Rigidbody rb = GetComponent<Rigidbody>();
+		if (rb != null)
+		{
+			Destroy(rb);
+		}
+
 		LootObjectCollider.enabled = false;
 		gameObject.tag = "Untagged";
 		StartCoroutine(MoveTowardsPlayer());

@@ -63,7 +63,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 					CurrentPlayerHealth = MaxPlayerHealth;
 				}
 
-				Debug.Log(CurrentPlayerHealth);
+				//Debug.Log(CurrentPlayerHealth);
 				_sliderHealthBar.value = CurrentPlayerHealth;
 
 				_healingItemNumber.text = CurrentHealingItemsNumber.ToString();

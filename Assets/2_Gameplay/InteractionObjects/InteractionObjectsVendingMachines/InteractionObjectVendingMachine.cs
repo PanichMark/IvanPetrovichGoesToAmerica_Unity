@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IElectroShockable
 {
 	public delegate void InteractionDelegate();
-
+	private List<GameObject> _spawnedGoods = new List<GameObject>();
 	[SerializeField] private string _vendingMachineName;
 	[SerializeField] protected GameObject _goodsForSale;
 	[SerializeField] protected int _goodsPrice;
@@ -53,21 +55,38 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 	{
 		if (_playerResourcesMoneyManager.PlayerMoney >= _goodsPrice)
 		{
+			_spawnedGoods.RemoveAll(item => item == null || !item.activeInHierarchy);
+
+			if (_spawnedGoods.Count >= 10)
+			{
+				//Debug.Log(_spawnedGoods.Count);
+				Debug.Log("Нельзя купить больше");
+				return;
+			}
+
 			Vector3 spawnPosition = transform.localPosition + transform.TransformDirection(new Vector3(0, 0.5f, 1));
-
 			float yRotation = transform.eulerAngles.y;
-
 			Quaternion spawnRotation = Quaternion.Euler(0, yRotation, 0);
 
-			Debug.Log($"You bought {_goodsName} from {InteractionObjectNameUI}");
-			Instantiate(_goodsForSale, spawnPosition, spawnRotation);
-			_playerResourcesMoneyManager.DeductMoney(-_goodsPrice);
+			Debug.Log($"Вы купили {_goodsName} из {InteractionObjectNameUI}");
 
+			GameObject instantiatedObject = Instantiate(_goodsForSale, spawnPosition, spawnRotation);
+			SceneManager.MoveGameObjectToScene(instantiatedObject, SceneManager.GetSceneAt(1));
+			
+			Rigidbody rb = instantiatedObject.AddComponent<Rigidbody>();
+			rb.isKinematic = false;
+			rb.useGravity = true;
+
+			_spawnedGoods.Add(instantiatedObject);
+
+			_playerResourcesMoneyManager.DeductMoney(-_goodsPrice);
 			_isAdditionalInteractionHintActive = false;
+
+			//Debug.Log(_spawnedGoods.Count);
 		}
 		else
 		{
-			Debug.Log("Not enough money");
+			Debug.Log("Недостаточно денег");
 			_isAdditionalInteractionHintActive = true;
 		}
 	}
