@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable
+public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IElectroShockable
 {
 	public delegate void InteractionFailedDelegate();
 
@@ -82,5 +82,10 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable
 	public void InteractCutscene()
 	{
 		Interact();
+	}
+
+	public void Electrify()
+	{
+		//throw new System.NotImplementedException();
 	}
 }

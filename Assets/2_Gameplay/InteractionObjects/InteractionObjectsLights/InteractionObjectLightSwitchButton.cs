@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable
+public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, IElectroShockable
 {
 	private InteractionObjectLightSwitchController _lightSwitchController;
 
@@ -88,5 +88,10 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable
 		{
 			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff")}";
 		}
+	}
+
+	public void Electrify()
+	{
+		//throw new System.NotImplementedException();
 	}
 }

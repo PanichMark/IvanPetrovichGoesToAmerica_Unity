@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectLight : MonoBehaviour, IInteractable
+public class InteractionObjectLight : MonoBehaviour, IInteractable, IElectroShockable
 {
 	[SerializeField] private string _interactionObjectNameSystem;
 	protected LocalizationManager _localizationManager;
@@ -71,5 +71,8 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable
 		}
 	}
 
-	
+	public void Electrify()
+	{
+		//throw new System.NotImplementedException();
+	}
 }

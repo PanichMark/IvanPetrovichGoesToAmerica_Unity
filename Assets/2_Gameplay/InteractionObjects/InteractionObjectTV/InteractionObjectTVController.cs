@@ -3,7 +3,7 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class InteractionObjectTVController : MonoBehaviour
+public class InteractionObjectTVController : MonoBehaviour, IElectroShockable
 {
 	public delegate void ChannelChangedHandler(int channelIndex);
 
@@ -55,5 +55,10 @@ public class InteractionObjectTVController : MonoBehaviour
 		_videoPlayer.Play();
 
 	
+	}
+
+	public void Electrify()
+	{
+		//throw new System.NotImplementedException();
 	}
 }

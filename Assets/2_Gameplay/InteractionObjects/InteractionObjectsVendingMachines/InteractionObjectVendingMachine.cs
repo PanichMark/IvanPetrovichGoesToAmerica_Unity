@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
+public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IElectroShockable
 {
 	public delegate void InteractionDelegate();
 
@@ -75,5 +75,10 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable
 	public void InteractCutscene()
 	{
 		Interact();
+	}
+
+	public void Electrify()
+	{
+		//throw new System.NotImplementedException();
 	}
 }
