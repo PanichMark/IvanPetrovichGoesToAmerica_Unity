@@ -5,8 +5,10 @@ using System.Collections.Generic;
 
 public class InteractionObjectTVController : MonoBehaviour, IElectroShockable
 {
-	public delegate void ChannelChangedHandler(int channelIndex);
+	public delegate void TVStateChangedHandler(bool isOn);
+	public event TVStateChangedHandler OnTVStateChanged;
 
+	public bool IsTVturnedOn;
 	private VideoPlayer _videoPlayer;
 	[SerializeField] private List<VideoClip> _videoClips = new List<VideoClip>();
 	private RawImage _tvScreen;
@@ -17,14 +19,49 @@ public class InteractionObjectTVController : MonoBehaviour, IElectroShockable
 	{
 		_videoPlayer = GetComponent<VideoPlayer>();
 		_tvScreen = transform.Find("TVcanvas").Find("TVscreen").GetComponent<RawImage>();
-
 		_videoPlayer.targetTexture = _tvScreen.texture as RenderTexture;
 
-		PlayChannel(0);
+		// Изначально телевизор выключен
+		TurnOff();
+	}
+
+	// Этот метод вызывается кнопкой питания
+	public void TogglePower()
+	{
+		if (IsTVturnedOn)
+		{
+			TurnOff();
+		}
+		else
+		{
+			TurnOn();
+		}
+	}
+
+	private void TurnOn()
+	{
+		IsTVturnedOn = true;
+		_tvScreen.gameObject.SetActive(true);
+		PlayChannel(_currentChannelIndex);
+
+		// Оповещаем подписчиков, что ТВ включен
+		OnTVStateChanged?.Invoke(IsTVturnedOn);
+	}
+
+	private void TurnOff()
+	{
+		IsTVturnedOn = false;
+		_videoPlayer.Stop();
+		_tvScreen.gameObject.SetActive(false);
+
+		// Оповещаем подписчиков, что ТВ выключен
+		OnTVStateChanged?.Invoke(IsTVturnedOn);
 	}
 
 	public void SwitchChannel(bool isNext)
 	{
+		if (!IsTVturnedOn) return; // Не переключаем, если ТВ выключен
+
 		_videoPlayer.Stop();
 
 		if (isNext)
@@ -53,12 +90,17 @@ public class InteractionObjectTVController : MonoBehaviour, IElectroShockable
 
 		_videoPlayer.clip = _videoClips[index];
 		_videoPlayer.Play();
-
-	
 	}
 
 	public void Electrify()
 	{
-		//throw new System.NotImplementedException();
+		if (!IsTVturnedOn)
+		{
+			TurnOn();
+		}
+		else
+		{
+			SwitchChannel(true);
+		}
 	}
 }

@@ -2,60 +2,39 @@
 
 public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 {
-	public delegate void TVpowerEventHandler();
-	public event TVpowerEventHandler OnTurnTVon;
-	public event TVpowerEventHandler OnTurnTVoff;
-
 	private string _interactionHintMessageAction;
+	private LocalizationManager _localizationManager;
+	private InteractionObjectTVController _tvController;
 
-	public string InteractionObjectNameSystem => null;
-
-	public string InteractionObjectNameUI => null;
-
-	public string InteractionHintMessageMain => $"{_interactionHintMessageAction}?";
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
-	private GameObject _tvScreen;
-
+	public string InteractionObjectNameSystem => null;
+	public string InteractionObjectNameUI => null;
+	public string InteractionHintMessageMain => $"{_interactionHintMessageAction}?";
 	public string InteractionHintMessageAction => _interactionHintMessageAction;
-
-	private bool _isTVturnedOn;
-
-	private LocalizationManager _localizationManager;
 	public string InteractionHintMessageFail => null;
-
 	public bool IsInteractionHintMessageFailActive => false;
 
 	void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON");
 
-		_tvScreen = transform.parent.Find("TVcanvas").gameObject;
-		_tvScreen.SetActive(false);
-		_isTVturnedOn = false;
+		// Находим контроллер (предполагается, что он на том же родителе)
+		_tvController = transform.parent.GetComponent<InteractionObjectTVController>();
+
+		// Подписываемся на событие изменения состояния ТВ в контроллере
+		_tvController.OnTVStateChanged += UpdateHintAndState;
+
+		// Устанавливаем начальную подсказку (ТВ по умолчанию выключен)
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON");
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
 	public void Interact()
 	{
-		if (_isTVturnedOn)
-		{
-			_tvScreen.SetActive(false);
-			_isTVturnedOn = false;
-
-			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON");
-			OnTurnTVoff?.Invoke();
-		}
-		else
-		{
-			_tvScreen.SetActive(true);
-			_isTVturnedOn = true;
-
-			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerOFF");
-			OnTurnTVon?.Invoke();
-		}
+		// При нажатии просто просим контроллер переключить состояние
+		_tvController.TogglePower();
 	}
 
 	public void InteractCutscene()
@@ -63,9 +42,22 @@ public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 		Interact();
 	}
 
+	// Этот метод вызывается контроллером при изменении состояния ТВ
+	private void UpdateHintAndState(bool isOn)
+	{
+		if (isOn)
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerOFF");
+		}
+		else
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON");
+		}
+	}
+
 	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		if (_isTVturnedOn)
+		if (_tvController.IsTVturnedOn) // Предполагается, что вы добавите публичное свойство в контроллер
 		{
 			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerOFF");
 		}

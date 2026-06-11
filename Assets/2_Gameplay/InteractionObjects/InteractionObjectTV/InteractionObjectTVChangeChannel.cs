@@ -2,35 +2,52 @@
 
 public class InteractionObjectTVButtonChannel : MonoBehaviour, IInteractable
 {
-	public delegate void InteractionDelegate();
-	private InteractionObjectTVPowerButton _interactionObjectTVPowerbutton;
 	[SerializeField] private string _interactionObjectNameSystem;
-	private InteractionObjectTVController _tvController;
 	[SerializeField] private bool _isNextChannel;
-	private LocalizationManager _localizationManager;
+
+	// Ссылка на контроллер, который управляет всем ТВ
+	private InteractionObjectTVController _tvController;
+
+	private Collider _collider;
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
-	private Collider _collider;
+
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
-	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-	public string InteractionHintMessageMain => $"{InteractionObjectNameUI}?";
+	public string InteractionObjectNameUI => null;
+	public string InteractionHintMessageMain => null;
 	public string InteractionHintMessageAction => null;
 	public string InteractionHintMessageFail => null;
 	public bool IsInteractionHintMessageFailActive => false;
 
-	private void Start()
+	void Start()
 	{
 		_collider = GetComponent<Collider>();
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_interactionObjectTVPowerbutton = transform.parent.Find("ButtonPower").GetComponent<InteractionObjectTVPowerButton>();
+
+		// Находим контроллер на родительском объекте
 		_tvController = transform.parent.GetComponent<InteractionObjectTVController>();
+
+		// Изначально кнопка неактивна, так как ТВ выключен
 		DisableButtonChannel();
-		_interactionObjectTVPowerbutton.OnTurnTVon += EnableButtonChannel;
-		_interactionObjectTVPowerbutton.OnTurnTVoff += DisableButtonChannel;
+
+		// --- ИСПРАВЛЕННАЯ ЛОГИКА ---
+		// Подписываемся на событие изменения состояния ТВ из КОНТРОЛЛЕРА.
+		// Это делает кнопку канала независимой от кнопки питания.
+		_tvController.OnTVStateChanged += isOn =>
+		{
+			if (isOn)
+			{
+				EnableButtonChannel();
+			}
+			else
+			{
+				DisableButtonChannel();
+			}
+		};
 	}
 
 	public void Interact()
 	{
+		// При нажатии просим контроллер переключить канал
 		_tvController.SwitchChannel(_isNextChannel);
 	}
 
