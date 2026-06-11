@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6151724322478098294}
   - component: {fileID: 5705165517047931445}
   - component: {fileID: 5982696954811394447}
-  - component: {fileID: 7072490407692624963}
   m_Layer: 0
   m_Name: 3Dmodel_VFX_TeslaShock
   m_TagString: Untagged
@@ -87,15 +86,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7072490407692624963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6435761332009356825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c308fdd65469df847a3c269d4958dba6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
