@@ -39,11 +39,6 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 		_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXSpawnPoint;
 	}
 
-	private void OnDestroy()
-	{
-		_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXSpawnPoint;
-	}
-
 	protected override void SingleEugenicAttack()
 	{
 		if (_vfxInstance == null)
@@ -54,42 +49,61 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 				_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
 				_VFXspawnPoint.transform);
 
-			_vfxInstance.transform.localScale = Vector3.one;
-
-			CancelInvoke(nameof(TurnEugenicVFXOff));
-			Invoke(nameof(TurnEugenicVFXOff), 0.4f);
+			// Запускаем корутину, которая и анимирует, и удалит объект
+			StartCoroutine(AnimateAndDestroyVFX());
 		}
 
-		if (_isThisPlayerWeapon)
+		_playerResourcesManaManager.UseMana(ManaCost);
+
+		Vector3 attackOrigin = _eugenicAttackDirection.transform.position + _eugenicAttackDirection.transform.forward * 1.5f;
+		Collider[] hitColliders = Physics.OverlapSphere(attackOrigin, _eugenicAttackRange);
+
+		foreach (Collider hit in hitColliders)
 		{
-			_playerResourcesManaManager.UseMana(ManaCost);
-
-			Vector3 attackOrigin = _eugenicAttackDirection.transform.position + _eugenicAttackDirection.transform.forward * 1.5f;
-
-			Collider[] hitColliders = Physics.OverlapSphere(attackOrigin, _eugenicAttackRange);
-
-			foreach (Collider hit in hitColliders)
+			IDamageable damageable = hit.GetComponent<IDamageable>();
+			if (damageable != null)
 			{
-				IDamageable damageable = hit.GetComponent<IDamageable>();
-				if (damageable != null)
-				{
-					damageable.TakeDamage(WeaponDamage);
-				}
+				damageable.TakeDamage(WeaponDamage);
+			}
 
-				IBreakable breakable = hit.GetComponent<IBreakable>();
-				if (breakable != null)
-				{
-					breakable.TakeDamage(WeaponDamage);
-				}
+			IBreakable breakable = hit.GetComponent<IBreakable>();
+			if (breakable != null)
+			{
+				breakable.TakeDamage(WeaponDamage);
+			}
 
-				Rigidbody rb = hit.GetComponent<Rigidbody>();
-				if (rb != null && !rb.isKinematic)
-				{
-					Vector3 knockbackDirection = _eugenicSourcePoint.transform.forward.normalized;
-					rb.AddForce(knockbackDirection * _eugenicGenieBreathKnockbackForce, ForceMode.Impulse);
-				}
+			Rigidbody rb = hit.GetComponent<Rigidbody>();
+			if (rb != null && !rb.isKinematic)
+			{
+				Vector3 knockbackDirection = _eugenicSourcePoint.transform.forward.normalized;
+				rb.AddForce(knockbackDirection * _eugenicGenieBreathKnockbackForce, ForceMode.Impulse);
 			}
 		}
+	}
+
+	private IEnumerator AnimateAndDestroyVFX()
+	{
+		float duration = 0.4f;
+		float elapsedTime = 0f;
+		Vector3 startScale = _vfxInstance.transform.localScale;
+		Vector3 targetScale = _vfxInstance.transform.localScale * 4f;
+
+		while (elapsedTime < duration)
+		{
+			elapsedTime += Time.deltaTime;
+			// Плавно интерполируем (сглаживаем) изменение масштаба
+			_vfxInstance.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsedTime / duration);
+			yield return null; // Ждем следующего кадра
+		}
+
+		// Убеждаемся, что в конце масштаб был точно равен целевому (на случай погрешностей)
+		_vfxInstance.transform.localScale = targetScale;
+
+		// Уничтожаем объект после завершения анимации
+		Destroy(_vfxInstance);
+		_vfxInstance = null; // Обнуляем ссылку
+
+		yield break; // Выходим из корутины
 	}
 
 	private void ChangeVFXSpawnPoint()
@@ -110,8 +124,18 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 		}
 	}
 
+	private void OnDestroy()
+	{
+		_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXSpawnPoint;
+		_playerWeaponController.OnWeaponHidden -= TurnEugenicVFXOff;
+	}
+
 	public override void TurnEugenicVFXOff()
 	{
-		Destroy(_vfxInstance);
+		if (_vfxInstance != null)
+		{
+			Destroy(_vfxInstance);
+			_vfxInstance = null;
+		}
 	}
 }
