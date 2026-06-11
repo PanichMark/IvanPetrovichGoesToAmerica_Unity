@@ -9,6 +9,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract string WeaponType { get; }
 	public abstract Sprite WeaponIcon { get; }
 	public abstract float WeaponDamage { get; }
+
+	protected bool _isThisWeaponRight;
 	public abstract bool IsWeaponAuto { get; }
 	protected float _weaponAutoAttackSpeedRate;
 	protected bool _isWeaponAutoAttacking;
@@ -19,11 +21,11 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public GameObject FirstPersonWeaponModelInstance { get; protected set; }
 	public GameObject ThirdPersonWeaponModelInstance { get; protected set; }
 
-	private GameObject _firstPersonLeftHandWeaponSlotGameObject;
-	private Transform _firstPersonLeftHandWeaponSlotTransform;
+	protected GameObject _firstPersonLeftHandWeaponSlotGameObject;
+	protected Transform _firstPersonLeftHandWeaponSlotTransform;
 
-	private GameObject _firstPersonRightHandWeaponSlotGameObject;
-	private Transform _firstPersonRightHandWeaponSlotTransform;
+	protected GameObject _firstPersonRightHandWeaponSlotGameObject;
+	protected Transform _firstPersonRightHandWeaponSlotTransform;
 
 	private GameObject _thirdPersonLeftHandWeaponSlotGameObject;
 	private Transform _thirdPersonLeftHandWeaponSlotTransform;
@@ -39,47 +41,45 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public void InstantiateWeapon(WeaponHandsEnum handType)
 	{
 		_isThisPlayerWeapon = true;
-
-		string handString = "";
-
+		//Debug.Log(_firstPersonRightHandWeaponSlotTransform);
 		if (handType == WeaponHandsEnum.HandRight)
 		{
-			handString = "RightHand";
-		}
-		else if (handType == WeaponHandsEnum.HandLeft)
-		{
-			handString = "LeftHand";
-		}
-		else
-		{
-			throw new ArgumentException("Неверный тип руки.");
-		}
+			_isThisWeaponRight = true;
 
-		ThirdPersonWeaponModelInstance = gameObject;
-		InstantiateFirstPersonWeaponInstance();
-
-		FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
-		foreach (Transform child in FirstPersonWeaponModelInstance.transform)
-			child.gameObject.layer = LayerMask.NameToLayer("FirstPerson");
-
-		if (handString == "LeftHand")
-		{
-			_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonLeftHandWeaponSlotGameObject");
-			_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
-			FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonLeftHandWeaponSlotTransform, true);
-
-			_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonLeftHandWeaponSlotGameObject");
-			_thirdPersonLeftHandWeaponSlotTransform = _thirdPersonLeftHandWeaponSlotGameObject.transform;
-			ThirdPersonWeaponModelInstance.transform.SetParent(_thirdPersonLeftHandWeaponSlotTransform, true);
-		}
-		else if (handString == "RightHand")
-		{
 			_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
 			_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
-			FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, true);
 
 			_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonRightHandWeaponSlotGameObject");
 			_thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
+		}
+		else if (handType == WeaponHandsEnum.HandLeft)
+		{
+			_isThisWeaponRight = false;
+
+			_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonLeftHandWeaponSlotGameObject");
+			_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
+
+			_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonLeftHandWeaponSlotGameObject");
+			_thirdPersonLeftHandWeaponSlotTransform = _thirdPersonLeftHandWeaponSlotGameObject.transform;
+		}
+		//Debug.Log(_firstPersonRightHandWeaponSlotTransform);
+		ThirdPersonWeaponModelInstance = gameObject;
+		InstantiateFirstPersonWeaponInstance();
+		//Debug.Log(_firstPersonRightHandWeaponSlotTransform);
+		FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
+		foreach (Transform child in FirstPersonWeaponModelInstance.transform)
+		{
+			child.gameObject.layer = LayerMask.NameToLayer("FirstPerson");
+		}
+
+		if (handType == WeaponHandsEnum.HandLeft)
+		{
+			FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonLeftHandWeaponSlotTransform, true);
+			ThirdPersonWeaponModelInstance.transform.SetParent(_thirdPersonLeftHandWeaponSlotTransform, true);
+		}
+		else if (handType == WeaponHandsEnum.HandRight)
+		{
+			FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, true);
 			ThirdPersonWeaponModelInstance.transform.SetParent(_thirdPersonRightHandWeaponSlotTransform, true);
 		}
 
@@ -94,12 +94,16 @@ public abstract class WeaponAbstract : MonoBehaviour
 	{
 		FirstPersonWeaponModelInstance = Instantiate(gameObject);
 		WeaponAbstract FirstPersonWeaponModelInstanceComponent = FirstPersonWeaponModelInstance.GetComponent<WeaponAbstract>();
-		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer();
+		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer(_isThisWeaponRight, _firstPersonRightHandWeaponSlotTransform, _firstPersonLeftHandWeaponSlotTransform);
 	}
 
-	public void MakeOwnerPlayer()
+	public void MakeOwnerPlayer(bool IsRight, Transform right, Transform left)
 	{
 		_isThisPlayerWeapon = true;
+		_isThisWeaponRight = IsRight;
+		//Debug.Log(right);
+		_firstPersonRightHandWeaponSlotTransform = right;
+		_firstPersonLeftHandWeaponSlotTransform = left;
 	}
 
 	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
