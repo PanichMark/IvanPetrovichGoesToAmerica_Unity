@@ -62,7 +62,7 @@ public class BootstrapSubProcessPlayerSystems
 
 	public IEnumerator InitializePlayerSystems()
 	{
-		_gameObjectPlayerCollider = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Collider");
+		_gameObjectPlayerCollider = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerCollider");
 		PlayerCameraFirstPerson = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraFirstPerson");
 		PlayerCameraPostProcessing = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraIgnorePostProcessing");
 		
@@ -82,11 +82,11 @@ public class BootstrapSubProcessPlayerSystems
 		_playerResourcesMoneyManager = _gameObjectPlayer.GetComponent<PlayerResourcesMoneyManager>();
 		PlayerResourcesAmmoManager = _gameObjectPlayer.GetComponent<PlayerResourcesAmmoManager>();
 
-		_gameObjectPlayerHead = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHeadGameObject");
-		GameObjectPlayerFirstPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonHandRightGameObject");
-		GameObjectPlayerFirstPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonHandLeftGameObject");
-		GameObjectPlayerThirdPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonHandRightGameObject");
-		GameObjectPlayerThirdPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonHandLeftGameObject");
+		_gameObjectPlayerHead = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHead");
+		GameObjectPlayerFirstPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonHandRight");
+		GameObjectPlayerFirstPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonHandLeft");
+		GameObjectPlayerThirdPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonHandRight");
+		GameObjectPlayerThirdPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonHandLeft");
 
 		var canvasComponentBackgroundMenu = _bootstrap.CanvasMenuBackground.GetComponent<Canvas>();
 		var PlayerCameraComponentPostProcessing = PlayerCameraPostProcessing.GetComponent<Camera>();

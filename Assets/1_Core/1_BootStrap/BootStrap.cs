@@ -360,6 +360,7 @@ public class Bootstrap : MonoBehaviour
 			_inputDevice,
 			LocalizationManager,
 			_gameObjectPlayer,
+			_gameObjectPlayerCamera,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
 			_bootstrapSubProcessPlayerSystems,

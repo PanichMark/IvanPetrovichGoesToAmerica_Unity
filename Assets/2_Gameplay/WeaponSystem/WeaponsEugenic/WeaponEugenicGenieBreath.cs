@@ -58,4 +58,9 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 			}
 		}
 	}
+
+	public override void TurnEugenicVFXOff()
+	{
+		throw new System.NotImplementedException();
+	}
 }

@@ -10,7 +10,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract Sprite WeaponIcon { get; }
 	public abstract float WeaponDamage { get; }
 
-	protected bool _isThisWeaponRight;
+	protected string _weaponHandType;
 	public abstract bool IsWeaponAuto { get; }
 	protected float _weaponAutoAttackSpeedRate;
 	protected bool _isWeaponAutoAttacking;
@@ -41,11 +41,10 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public void InstantiateWeapon(WeaponHandsEnum handType)
 	{
 		_isThisPlayerWeapon = true;
-		//Debug.Log(_firstPersonRightHandWeaponSlotTransform);
+		_weaponHandType = handType.ToString();
+
 		if (handType == WeaponHandsEnum.HandRight)
 		{
-			_isThisWeaponRight = true;
-
 			_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
 			_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
 
@@ -54,18 +53,16 @@ public abstract class WeaponAbstract : MonoBehaviour
 		}
 		else if (handType == WeaponHandsEnum.HandLeft)
 		{
-			_isThisWeaponRight = false;
-
 			_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonLeftHandWeaponSlotGameObject");
 			_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
 
 			_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonLeftHandWeaponSlotGameObject");
 			_thirdPersonLeftHandWeaponSlotTransform = _thirdPersonLeftHandWeaponSlotGameObject.transform;
 		}
-		//Debug.Log(_firstPersonRightHandWeaponSlotTransform);
+
 		ThirdPersonWeaponModelInstance = gameObject;
 		InstantiateFirstPersonWeaponInstance();
-		//Debug.Log(_firstPersonRightHandWeaponSlotTransform);
+	
 		FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
 		foreach (Transform child in FirstPersonWeaponModelInstance.transform)
 		{
@@ -94,13 +91,13 @@ public abstract class WeaponAbstract : MonoBehaviour
 	{
 		FirstPersonWeaponModelInstance = Instantiate(gameObject);
 		WeaponAbstract FirstPersonWeaponModelInstanceComponent = FirstPersonWeaponModelInstance.GetComponent<WeaponAbstract>();
-		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer(_isThisWeaponRight, _firstPersonRightHandWeaponSlotTransform, _firstPersonLeftHandWeaponSlotTransform);
+		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer(_weaponHandType, _firstPersonRightHandWeaponSlotTransform, _firstPersonLeftHandWeaponSlotTransform);
 	}
 
-	public void MakeOwnerPlayer(bool IsRight, Transform right, Transform left)
+	public void MakeOwnerPlayer(string IsRight, Transform right, Transform left)
 	{
 		_isThisPlayerWeapon = true;
-		_isThisWeaponRight = IsRight;
+		_weaponHandType = IsRight;
 		//Debug.Log(right);
 		_firstPersonRightHandWeaponSlotTransform = right;
 		_firstPersonLeftHandWeaponSlotTransform = left;

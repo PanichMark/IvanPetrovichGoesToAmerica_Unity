@@ -14,7 +14,7 @@ public class BootstrapSubProcessWeaponSystem
 	private LocalizationManager _localizationManager;
 
 	private GameObject _GameObjectBootstrapWeaponSystem;
-
+	private GameObject _gameObjectPlayerCamera;
 	public PlayerWeaponController WeaponController { get; private set; }
 	private GameObject _gameObjectFirstPersonRightHandWeaponSlot;
 	private GameObject _gameObjectFirstPersonLeftHandWeaponSlot;
@@ -40,6 +40,7 @@ public class BootstrapSubProcessWeaponSystem
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
 		GameObject playerGameObject,
+		GameObject playerCamera,
 		BootstrapSubProcessSceneSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
@@ -49,6 +50,7 @@ public class BootstrapSubProcessWeaponSystem
 		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
+		_gameObjectPlayerCamera = playerCamera;
 		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_bootstrapSubProcessPlayerSystems = bootstrapSubProcessPlayerSystems;
@@ -68,10 +70,10 @@ public class BootstrapSubProcessWeaponSystem
 		_legKickAttackController = _GameObjectBootstrapWeaponSystem.AddComponent<LegKickAttackController>();
 		_HUDammoController = _GameObjectBootstrapWeaponSystem.AddComponent<HUDammoController>();
 
-		_gameObjectFirstPersonRightHandWeaponSlot = GameObject.Find("FirstPersonWeaponSlot.R");
-		_gameObjectFirstPersonLeftHandWeaponSlot = GameObject.Find("FirstPersonWeaponSlot.L");
-		_gameObjectThirdPersonRightHandWeaponSlot = GameObject.Find("ThirdPersonWeaponSlot.R");
-		_gameObjectThirdPersonLeftHandWeaponSlot = GameObject.Find("ThirdPersonWeaponSlot.L");
+		_gameObjectFirstPersonRightHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlotHand.R");
+		_gameObjectFirstPersonLeftHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlotHand.L");
+		_gameObjectThirdPersonRightHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "WeaponSlotHand.R");
+		_gameObjectThirdPersonLeftHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "WeaponSlotHand.L");
 
 		WeaponController.Initialize(
 			_bootstrap,

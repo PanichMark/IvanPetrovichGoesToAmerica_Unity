@@ -5,6 +5,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 {
 	public abstract int ManaCost {  get; }
 
+
 	protected GameObject _eugenicSourcePoint;
 	protected GameObject _eugenicAttackDirection;
 
@@ -53,10 +54,14 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		_isWeaponAutoAttacking = false;
 		if (_weaponAutoAttackCourutine != null)
 		{
+			//TurnEugenicVFXOff();
+
 			StopCoroutine(_weaponAutoAttackCourutine);
 			_weaponAutoAttackCourutine = null;
 		}
 	}
+
+	public abstract void TurnEugenicVFXOff();
 
 	public override IEnumerator AutoAttackCourutine()
 	{
@@ -91,4 +96,9 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	}
 
 	protected abstract void InitializeWeaponEugenic();
+
+	private void OnDestroy()
+	{
+		//TurnEugenicVFXOff();
+	}
 }
