@@ -18,7 +18,9 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	private HUDhealthAndManaController _HUDhealthAndManaController;
 	private GameController _gameController;
 	public Dictionary<string, GameObject> UnlockedWeapons = new Dictionary<string, GameObject>();
+	public delegate void OnWeaponEqiupment();
 
+	public event OnWeaponEqiupment OnWeaponHidden;
 	private bool _wasRightButtonPressedLastFrame;
 	private bool _wasLeftButtonPressedLastFrame;
 
@@ -222,6 +224,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			HideWeapon(WeaponHandsEnum.HandLeft); 
 		}
+
+		OnWeaponHidden?.Invoke();
 	}
 
 	public void UnlockWeapon(GameObject weaponPrefab)

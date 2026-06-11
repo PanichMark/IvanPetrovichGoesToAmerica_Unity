@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 {
@@ -7,20 +8,59 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	public override string WeaponType => WeaponTypes.Eugenic.ToString();
 	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
 	public override float WeaponDamage => 100;
-	public override int ManaCost =>	20;
+	public override int ManaCost => 0;
 	public override bool IsWeaponAuto => false;
 
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private float _eugenicAttackRange = 5f;
 	private float _eugenicGenieBreathKnockbackForce = 10f;
+	private GameObject _VFXgenieBreath;
+	private Transform _VFXspawnPoint;
+	private GameObject _vfxInstance;
+	private PlayerWeaponController _playerWeaponController;
 
 	protected override void InitializeWeaponEugenic()
 	{
+		_VFXgenieBreath = Resources.Load<GameObject>($"VFXs/VFX_EugenicGenieBreath");
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
+		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
+		_playerWeaponController.OnWeaponHidden += TurnEugenicVFXOff;
+
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		{
+			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform;
+		}
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+		{
+			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform;
+		}
+
+		_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXSpawnPoint;
+	}
+
+	private void OnDestroy()
+	{
+		_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXSpawnPoint;
 	}
 
 	protected override void SingleEugenicAttack()
 	{
-		if (_isThisPlayerWeapon == true)
+		if (_vfxInstance == null)
+		{
+			_vfxInstance = Instantiate(
+				_VFXgenieBreath,
+				_VFXspawnPoint.position,
+				_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
+				_VFXspawnPoint.transform);
+
+			_vfxInstance.transform.localScale = Vector3.one;
+
+			CancelInvoke(nameof(TurnEugenicVFXOff));
+			Invoke(nameof(TurnEugenicVFXOff), 0.4f);
+		}
+
+		if (_isThisPlayerWeapon)
 		{
 			_playerResourcesManaManager.UseMana(ManaCost);
 
@@ -34,33 +74,44 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 				if (damageable != null)
 				{
 					damageable.TakeDamage(WeaponDamage);
-					Debug.Log($"Нанесено {WeaponDamage} урона объекту: {hit.name}");
 				}
 
 				IBreakable breakable = hit.GetComponent<IBreakable>();
 				if (breakable != null)
 				{
 					breakable.TakeDamage(WeaponDamage);
-					Debug.Log($"Нанесено {WeaponDamage} урона объекту: {hit.name}");
 				}
-			}
 
-			foreach (Collider hit in hitColliders)
-			{
 				Rigidbody rb = hit.GetComponent<Rigidbody>();
 				if (rb != null && !rb.isKinematic)
 				{
 					Vector3 knockbackDirection = _eugenicSourcePoint.transform.forward.normalized;
-
 					rb.AddForce(knockbackDirection * _eugenicGenieBreathKnockbackForce, ForceMode.Impulse);
-					Debug.Log($"Отброшен Rigidbody: {hit.name}");
 				}
 			}
 		}
 	}
 
+	private void ChangeVFXSpawnPoint()
+	{
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		{
+			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform;
+		}
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+		{
+			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform;
+		}
+
+		if (_vfxInstance != null)
+		{
+			TurnEugenicVFXOff();
+			SingleEugenicAttack();
+		}
+	}
+
 	public override void TurnEugenicVFXOff()
 	{
-		throw new System.NotImplementedException();
+		Destroy(_vfxInstance);
 	}
 }

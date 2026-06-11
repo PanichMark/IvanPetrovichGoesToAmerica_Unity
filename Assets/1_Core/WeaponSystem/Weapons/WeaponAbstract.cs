@@ -9,8 +9,6 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract string WeaponType { get; }
 	public abstract Sprite WeaponIcon { get; }
 	public abstract float WeaponDamage { get; }
-
-	protected string _weaponHandType;
 	public abstract bool IsWeaponAuto { get; }
 	protected float _weaponAutoAttackSpeedRate;
 	protected bool _isWeaponAutoAttacking;
@@ -41,7 +39,6 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public void InstantiateWeapon(WeaponHandsEnum handType)
 	{
 		_isThisPlayerWeapon = true;
-		_weaponHandType = handType.ToString();
 
 		if (handType == WeaponHandsEnum.HandRight)
 		{
@@ -91,16 +88,12 @@ public abstract class WeaponAbstract : MonoBehaviour
 	{
 		FirstPersonWeaponModelInstance = Instantiate(gameObject);
 		WeaponAbstract FirstPersonWeaponModelInstanceComponent = FirstPersonWeaponModelInstance.GetComponent<WeaponAbstract>();
-		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer(_weaponHandType, _firstPersonRightHandWeaponSlotTransform, _firstPersonLeftHandWeaponSlotTransform);
+		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer();
 	}
 
-	public void MakeOwnerPlayer(string IsRight, Transform right, Transform left)
+	public void MakeOwnerPlayer()
 	{
 		_isThisPlayerWeapon = true;
-		_weaponHandType = IsRight;
-		//Debug.Log(right);
-		_firstPersonRightHandWeaponSlotTransform = right;
-		_firstPersonLeftHandWeaponSlotTransform = left;
 	}
 
 	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
