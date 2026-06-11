@@ -84,7 +84,7 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 		Interact();
 	}
 
-	public void Electrify()
+	public void Electrify(float damage)
 	{
 		//throw new System.NotImplementedException();
 	}

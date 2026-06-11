@@ -16,17 +16,17 @@ public class InteractionObjectElectricalPanel : MonoBehaviour, IInteractable, IE
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
-	public void Electrify()
-	{
-		//throw new System.NotImplementedException();
-	}
-
 	public void Interact()
 	{
 		//throw new System.NotImplementedException();
 	}
 
 	public void InteractCutscene()
+	{
+		//throw new System.NotImplementedException();
+	}
+
+	public void Electrify(float damage)
 	{
 		//throw new System.NotImplementedException();
 	}

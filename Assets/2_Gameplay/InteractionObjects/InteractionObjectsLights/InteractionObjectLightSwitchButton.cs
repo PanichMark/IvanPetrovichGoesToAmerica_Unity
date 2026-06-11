@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.XR;
 
 public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, IElectroShockable
 {
@@ -8,6 +9,7 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 	[SerializeField] private string _interactionObjectNameSystem;
 	[SerializeField] private bool _isThisTurnOnButton = true;
 	private LocalizationManager _localizationManager;
+	private bool _isLightTurnedOn;
 	private List<Material> _lightMaterialsList = new List<Material>();
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
@@ -48,28 +50,65 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 		}
 	}
 
+	// ... (другие части класса остаются без изменений)
+
+	// Этот метод теперь только решает, что вызвать: TurnOn или TurnOff
 	public void Interact()
 	{
-		Color emissionColor = _lightSwitchController.LightEmissionColor;
+		if (_isThisTurnOnButton)
+		{
+			TurnOn();
+		}
+		else
+		{
+			TurnOff();
+		}
+	}
+
+	// Метод для включения света
+	private void TurnOn()
+	{
+		_isLightTurnedOn = true;
 
 		for (int i = 0; i < _lightMaterialsList.Count; i++)
 		{
+			// Проверка на null, чтобы избежать ошибок, если материал не назначен
 			if (_lightMaterialsList[i] == null) continue;
 
-			if (_isThisTurnOnButton)
-			{
-				_lightMaterialsList[i].SetColor("_EmissionColor", emissionColor);
-			}
-			else
-			{
-				_lightMaterialsList[i].SetColor("_EmissionColor", Color.black);
-			}
+			// Устанавливаем цвет свечения из контроллера
+			_lightMaterialsList[i].SetColor("_EmissionColor", _lightSwitchController.LightEmissionColor);
 
+			// Принудительно обновляем состояние эмиссии (включаем её)
 			_lightMaterialsList[i].DisableKeyword("_EMISSION");
 			_lightMaterialsList[i].EnableKeyword("_EMISSION");
+
+			// Устанавливаем флаг для работы с глобальным освещением в реальном времени
 			_lightMaterialsList[i].globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
 		}
 	}
+
+	// Метод для выключения света
+	private void TurnOff()
+	{
+		_isLightTurnedOn = false;
+
+		for (int i = 0; i < _lightMaterialsList.Count; i++)
+		{
+			// Проверка на null
+			if (_lightMaterialsList[i] == null) continue;
+
+			// Выключаем свечение, устанавливая черный цвет
+			_lightMaterialsList[i].SetColor("_EmissionColor", Color.black);
+
+			// Принудительно обновляем состояние эмиссии (выключаем её)
+			_lightMaterialsList[i].DisableKeyword("_EMISSION");
+			_lightMaterialsList[i].EnableKeyword("_EMISSION");
+
+			// Флаг оставляем, чтобы при включении не было артефактов
+			_lightMaterialsList[i].globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+		}
+	}
+	// ...
 
 	public void InteractCutscene()
 	{
@@ -90,8 +129,11 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 		}
 	}
 
-	public void Electrify()
+	public void Electrify(float damage)
 	{
-		//throw new System.NotImplementedException();
+		if (!_isLightTurnedOn)
+		{
+			TurnOn();
+		}
 	}
 }

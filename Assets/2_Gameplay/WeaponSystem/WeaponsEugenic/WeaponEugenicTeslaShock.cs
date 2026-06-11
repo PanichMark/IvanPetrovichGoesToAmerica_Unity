@@ -37,7 +37,7 @@ public class WWeaponEugenicTeslaShock : WeaponEugenicAbstract
 			IElectroShockable electroShokable = hit.GetComponent<IElectroShockable>();
 			if (electroShokable != null)
 			{
-				electroShokable.Electrify();
+				electroShokable.Electrify(WeaponDamage);
 				Debug.Log($"[{WeaponName}] Электроударил {hit.name}");
 			}
 		}

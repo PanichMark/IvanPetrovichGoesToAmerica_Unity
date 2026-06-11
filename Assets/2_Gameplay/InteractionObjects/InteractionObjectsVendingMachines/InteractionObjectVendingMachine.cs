@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IElectroShockable
 {
@@ -10,6 +11,8 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 	[SerializeField] protected GameObject _goodsForSale;
 	[SerializeField] protected int _goodsPrice;
 	protected string _goodsName;
+	protected float _vendingMachineElectroHealth;
+	protected bool _isOutOfService;
 	private InteractionObjectLootAbstract _goodsComponent;
 	[SerializeField] private string _moneyType;
 	private string _moneyForUI;
@@ -53,41 +56,57 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 
 	public void Interact()
 	{
-		if (_playerResourcesMoneyManager.PlayerMoney >= _goodsPrice)
+		if (!_isOutOfService)
 		{
-			_spawnedGoods.RemoveAll(item => item == null || !item.activeInHierarchy);
-
-			if (_spawnedGoods.Count >= 10)
+			if (_playerResourcesMoneyManager.PlayerMoney >= _goodsPrice)
 			{
+				_spawnedGoods.RemoveAll(item => item == null || !item.activeInHierarchy);
+
+				if (_spawnedGoods.Count >= 10)
+				{
+					//Debug.Log(_spawnedGoods.Count);
+					Debug.Log("Нельзя купить больше");
+					return;
+				}
+
+				SpawnGoods();
+
+				Debug.Log($"Вы купили {_goodsName} из {InteractionObjectNameUI}");
+
+				_playerResourcesMoneyManager.DeductMoney(-_goodsPrice);
+				_isAdditionalInteractionHintActive = false;
+
 				//Debug.Log(_spawnedGoods.Count);
-				Debug.Log("Нельзя купить больше");
-				return;
 			}
-
-			Vector3 spawnPosition = transform.localPosition + transform.TransformDirection(new Vector3(0, 0.5f, 1));
-			float yRotation = transform.eulerAngles.y;
-			Quaternion spawnRotation = Quaternion.Euler(0, yRotation, 0);
-
-			Debug.Log($"Вы купили {_goodsName} из {InteractionObjectNameUI}");
-
-			GameObject instantiatedObject = Instantiate(_goodsForSale, spawnPosition, spawnRotation);
-			SceneManager.MoveGameObjectToScene(instantiatedObject, SceneManager.GetSceneAt(1));
-			
-			Rigidbody rb = instantiatedObject.AddComponent<Rigidbody>();
-			rb.isKinematic = false;
-			rb.useGravity = true;
-
-			_spawnedGoods.Add(instantiatedObject);
-
-			_playerResourcesMoneyManager.DeductMoney(-_goodsPrice);
-			_isAdditionalInteractionHintActive = false;
-
-			//Debug.Log(_spawnedGoods.Count);
+			else
+			{
+				Debug.Log("Недостаточно денег");
+				_isAdditionalInteractionHintActive = true;
+			}
 		}
 		else
 		{
-			Debug.Log("Недостаточно денег");
+			Debug.Log("Out of service");
 			_isAdditionalInteractionHintActive = true;
+		}
+	}
+
+	private void SpawnGoods()
+	{
+		Vector3 spawnPosition = transform.localPosition + transform.TransformDirection(new Vector3(0, 0.5f, 1));
+		float yRotation = transform.eulerAngles.y;
+		Quaternion spawnRotation = Quaternion.Euler(0, yRotation, 0);
+
+		GameObject instantiatedObject = Instantiate(_goodsForSale, spawnPosition, spawnRotation);
+		SceneManager.MoveGameObjectToScene(instantiatedObject, SceneManager.GetSceneAt(1));
+
+		Rigidbody rb = instantiatedObject.AddComponent<Rigidbody>();
+		rb.isKinematic = false;
+		rb.useGravity = true;
+
+		if (!_isOutOfService)
+		{
+			_spawnedGoods.Add(instantiatedObject);
 		}
 	}
 
@@ -96,8 +115,27 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 		Interact();
 	}
 
-	public void Electrify()
+	public void Electrify(float damage)
 	{
-		//throw new System.NotImplementedException();
+		if (!_isOutOfService)
+		{
+			_vendingMachineElectroHealth -= damage;
+
+			if (_vendingMachineElectroHealth <= 0)
+			{
+				_isOutOfService = true;
+
+				StartCoroutine(BreakDownAndSpawnGoods());
+			}
+		}
+	}
+
+	private IEnumerator BreakDownAndSpawnGoods()
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			SpawnGoods();
+			yield return new WaitForSeconds(0.15f);
+		}
 	}
 }

@@ -39,18 +39,28 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable, IElectroShoc
 	{
 		if (_isLightTurnedOn)
 		{
-			_isLightTurnedOn = false;
-			_lightMaterial.SetColor("_EmissionColor", Color.black);
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn");
-			Debug.Log("Light turned off.");
+			TurnOff();
 		}
 		else
 		{
-			_isLightTurnedOn = true;
-			_lightMaterial.SetColor("_EmissionColor", _lightEmissionColor);
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff");
-			Debug.Log("Light turned on.");
+			TurnOn();
 		}
+	}
+
+	private void TurnOn()
+	{
+		_isLightTurnedOn = true;
+		_lightMaterial.SetColor("_EmissionColor", _lightEmissionColor);
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff");
+		Debug.Log("Light turned on.");
+	}
+
+	private void TurnOff()
+	{
+		_isLightTurnedOn = false;
+		_lightMaterial.SetColor("_EmissionColor", Color.black);
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn");
+		Debug.Log("Light turned off.");
 	}
 
 	public void InteractCutscene()
@@ -71,8 +81,11 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable, IElectroShoc
 		}
 	}
 
-	public void Electrify()
+	public void Electrify(float damage)
 	{
-		//throw new System.NotImplementedException();
+		if (!_isLightTurnedOn)
+		{
+			TurnOn();
+		}
 	}
 }

@@ -1,4 +1,4 @@
 ﻿public interface IElectroShockable
 {
-	void Electrify();
+	void Electrify(float damage);
 }

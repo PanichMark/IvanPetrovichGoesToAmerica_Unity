@@ -92,7 +92,7 @@ public class InteractionObjectTVController : MonoBehaviour, IElectroShockable
 		_videoPlayer.Play();
 	}
 
-	public void Electrify()
+	public void Electrify(float damage)
 	{
 		if (!IsTVturnedOn)
 		{
