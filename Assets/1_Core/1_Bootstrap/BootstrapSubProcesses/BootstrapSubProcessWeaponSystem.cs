@@ -129,6 +129,7 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			WeaponController,
 			_playerResourcesAmmoManager,
+			_bootstrapSubProcessInteractionSystem.InteractionController,
 			_bootstrapSubProcessMenuSystem.CanvasHUDammo,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextRightWeaponAmmoMagazineNumber,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextRightWeaponAmmoReserveNumber,

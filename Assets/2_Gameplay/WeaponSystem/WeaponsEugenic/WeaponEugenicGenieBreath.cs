@@ -8,7 +8,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	public override string WeaponType => WeaponTypes.Eugenic.ToString();
 	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
 	public override float WeaponDamage => 100;
-	public override int ManaCost => 0;
+	public override int ManaCost => 20;
 	public override bool IsWeaponAuto => false;
 
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;

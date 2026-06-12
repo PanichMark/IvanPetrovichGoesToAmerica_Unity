@@ -6,7 +6,7 @@ public class InteractionObjectLight : MonoBehaviour, IInteractable, IElectroShoc
 	protected LocalizationManager _localizationManager;
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
-	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	public string InteractionHintMessageFail => null;
 	public bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction {  get; private set; }

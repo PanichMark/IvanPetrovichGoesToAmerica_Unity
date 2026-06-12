@@ -10,6 +10,7 @@ public class HUDammoController : MonoBehaviour
 	private PlayerWeaponController _playerWeaponController;
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private PlayerBehaviourController _playerBehaviour;
+	private InteractionController _interactionController;
 
 	private GameObject _rightWeaponAmmoMagazine;
 	private GameObject _rightWeaponAmmoReserve;
@@ -30,6 +31,7 @@ public class HUDammoController : MonoBehaviour
 		PlayerBehaviourController playerBehaviour,
 		PlayerWeaponController weaponController,
 		PlayerResourcesAmmoManager playerResourcesAmmoManager,
+		InteractionController interactionController,
 		GameObject canvasHUDammo,
 		GameObject RightWeaponAmmoMagazine,
 		GameObject RightWeaponAmmoReserve,
@@ -45,6 +47,7 @@ public class HUDammoController : MonoBehaviour
 		_playerResourcesAmmoManager = playerResourcesAmmoManager;
 		_gameController	= gameController;
 		_playerBehaviour = playerBehaviour;
+		_interactionController = interactionController;
 
 		_rightWeaponAmmoMagazine = RightWeaponAmmoMagazine;
 		_rightWeaponAmmoReserve = RightWeaponAmmoReserve;
@@ -78,6 +81,15 @@ public class HUDammoController : MonoBehaviour
 		_playerResourcesAmmoManager.OnMagazineAmmoChanged += UpdateMagazineDisplay;
 
 		_playerWeaponController.OnWeaponChanged += UpdateAmmoDisplayForActiveWeapon;
+
+		_interactionController.OnPickUpThrowable += HideRightWeaponAmmo;
+		_interactionController.OnGetRidOfThrowable += () => 
+		{
+			if (_playerWeaponController.RightHandWeapon != null)
+			{
+				ShowRightWeaponAmmo();
+			}
+		};
 
 		HideRightWeaponAmmo();
 		HideLeftWeaponAmmo();
