@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class ViewModelMenuLockpickMechanical
 {
-	public Button ButtonCloseMenuLockpickMechanical;
+	public GameObject ButtonCloseMenuLockpickMechanical;
+	public GameObject TextButtonCloseMenuLockpickMechanical;
 
 	public ViewModelMenuLockpickMechanical(Bootstrap bootstrap, GameObject canvas)
 	{
-		ButtonCloseMenuLockpickMechanical = canvas.transform.Find("ButtonExitLockpickMechanicalMenu").GetComponent<Button>();
+		ButtonCloseMenuLockpickMechanical = bootstrap.FindDeepGameObject(canvas, "ButtonExitLockpickMechanicalMenu");
+		TextButtonCloseMenuLockpickMechanical = bootstrap.FindDeepGameObject(canvas, "TextButtonExitLockpickMechanicalMenu");
 	}
 }

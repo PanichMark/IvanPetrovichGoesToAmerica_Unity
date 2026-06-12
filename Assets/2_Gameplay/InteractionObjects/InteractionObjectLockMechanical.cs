@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	private GameObject _canvasLockpickMechanicalMenu;
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	private Button _buttonExitLockpickMechanicalMenu;
+	private TextMeshProUGUI _textButtonExitLockpickMechanicalMenu;
 	private MenuManager _menuManager;
 	private GameSceneManager _gameSceneManager;
 
@@ -57,25 +59,25 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	public string InteractionObjectNameUI { get; protected set; }
 
-	private Text _buttonText;
 
 	private void Awake()
 	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_canvasLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickMechanical");
-		_buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<Button>("ButtonCloseLockpickMechanicalMenu");
+		_buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("ButtonCloseLockpickMechanicalMenu").GetComponent<Button>();
+		_textButtonExitLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("TextButtonCloseLockpickMechanicalMenu").GetComponent<TextMeshProUGUI>();
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
 		_gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;
-		_buttonText = _buttonExitLockpickMechanicalMenu.GetComponentInChildren<Text>();
-
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical");
+		
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
 		_cubeFollow = Resources.Load<GameObject>("InteractionObjects/InteractionObjects_Locks/Lock_Mechanical_PuzzleCube");
-		//	_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
-		_buttonText.text = "exit";
+
+
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -174,9 +176,9 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		_localizationManager = localizationManager;
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
-
+		_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical");
 		//	_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
-		_buttonText.text = "exit";
+	
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 	}
 
