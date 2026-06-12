@@ -5,13 +5,19 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableDrawer
 {
 	[SerializeField] private float _openLengthUp;
 	private Vector3 _intermediatePos;
-
+	[SerializeField] protected InteractionObjectElectricalPanel _electronicElectricalPanel;
+	private bool _isAdditionalInteractionHintActive;
+	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
+	public override string InteractionHintMessageFail => _interactionHintMessageFail;
+	private string _interactionHintMessageFail;
 	public override void SetUpOpenableSliding()
 	{
 		_closedPosition = transform.localPosition;
 		_openedPosition = transform.localPosition + new Vector3(0, 0, _openLengthForward);
 		_openedPosition += new Vector3(0, _openLengthUp, 0);
 		_intermediatePos = transform.localPosition + new Vector3(0, 0, _openLengthForward);
+
+		_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedElectricalPanel")}!";
 	}
 
 	public override void Interact()
@@ -21,17 +27,27 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableDrawer
 			StopCoroutine(_currentAnimation);
 		}
 
-		if (!IsObjectOpened)
+		if ((_electronicElectricalPanel != null && _electronicElectricalPanel.IsOutOfService == true)
+			|| (_electronicElectricalPanel == null))
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
-			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-			_currentAnimation = StartCoroutine(OpenVentCover());
+			if (!IsObjectOpened)
+			{
+				InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+				_currentAnimation = StartCoroutine(OpenVentCover());
+			}
+			else
+			{
+				InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+				_currentAnimation = StartCoroutine(CloseVentCover());
+			}
+
+			_isAdditionalInteractionHintActive = false;	
 		}
 		else
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
-			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-			_currentAnimation = StartCoroutine(CloseVentCover());
+			_isAdditionalInteractionHintActive = true;
 		}
 	}
 

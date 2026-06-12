@@ -10,7 +10,7 @@ public class InteractionObjectElectricalPanel : MonoBehaviour, IInteractable, IE
 	private LocalizationManager _localizationManager;
 	public string InteractionHintMessageAction => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Interact")}";
 
-	public bool IsOutOfService;
+	public bool IsOutOfService {  get; private set; }
 	private string _interactionHintMessageFail;
 	public string InteractionHintMessageFail => $"{_interactionHintMessageFail}!";
 	private float _health;
