@@ -15,7 +15,10 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	[SerializeField] private float _rotationSpeed;
 	[SerializeField] private float _moveSpeed;
 	private GameObject _cubeFollow;
-
+	private Button _buttonMoveLockMechanismUp;
+	private Button _buttonMoveLockMechanismDown;
+	private Button _buttonMoveLockMechanismRight;
+	private Button _buttonMoveLockMechanismLeft;
 	private SaveLoadController _saveLoadController;
 	private LocalizationManager _localizationManager;
 	private GameObject _canvasLockpickMechanicalMenu;
@@ -25,7 +28,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	private MenuManager _menuManager;
 	private GameSceneManager _gameSceneManager;
 
-	private bool _iIsPuzzleActive;
+	private bool _isPuzzleActive;
 	public bool WasUnlocked { get; private set; } = false;
 	private bool _isMovingOrRotating = false;
 	private GameObject _currentGearInstance;
@@ -59,7 +62,6 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	public string InteractionObjectNameUI { get; protected set; }
 
-
 	private void Awake()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
@@ -72,13 +74,23 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		_gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
 		_gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;
 		_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical");
-		
+
+		_buttonMoveLockMechanismUp = ServiceLocator.Resolve<GameObject>("MoveLockMechanicalUp").GetComponent<Button>();
+		_buttonMoveLockMechanismDown = ServiceLocator.Resolve<GameObject>("MoveLockMechanicalDown").GetComponent<Button>();
+		_buttonMoveLockMechanismRight = ServiceLocator.Resolve<GameObject>("MoveLockMechanicalRight").GetComponent<Button>();
+		_buttonMoveLockMechanismLeft = ServiceLocator.Resolve<GameObject>("MoveLockMechanicalLeft").GetComponent<Button>();
+
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
 		_cubeFollow = Resources.Load<GameObject>("InteractionObjects/InteractionObjects_Locks/Lock_Mechanical_PuzzleCube");
 
+		_buttonMoveLockMechanismUp.onClick.AddListener(RotateGearUp);
+		_buttonMoveLockMechanismDown.onClick.AddListener(RotateGearDown);
 
-		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+		_buttonMoveLockMechanismRight.onClick.AddListener(MoveRight);
+		_buttonMoveLockMechanismLeft.onClick.AddListener(MoveLeft);
+
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
@@ -88,23 +100,23 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	private void Update()
 	{
-		if (!_isMovingOrRotating && _currentGearInstance != null && !_menuManager.IsPauseMenuOpened)
+		if (!_isMovingOrRotating && !_menuManager.IsPauseMenuOpened)
 		{
-			if (_canMoveUp && Input.GetKeyDown(KeyCode.UpArrow))
+			if (Input.GetKeyDown(KeyCode.UpArrow))
 			{
-				StartCoroutine(RotateGear(_rotationStep));
+				RotateGearUp();
 			}
-			else if (_canMoveDown && Input.GetKeyDown(KeyCode.DownArrow))
+			if (Input.GetKeyDown(KeyCode.DownArrow))
 			{
-				StartCoroutine(RotateGear(-_rotationStep));
+				RotateGearDown();
 			}
-			else if (_canMoveRight && Input.GetKeyDown(KeyCode.RightArrow))
+			if (Input.GetKeyDown(KeyCode.RightArrow))
 			{
-				StartCoroutine(MoveRight());
+				MoveRight();
 			}
-			else if (_canMoveLeft && Input.GetKeyDown(KeyCode.LeftArrow))
+			if (Input.GetKeyDown(KeyCode.LeftArrow))
 			{
-				StartCoroutine(MoveLeft());
+				MoveLeft();
 			}
 		}
 	}
@@ -112,7 +124,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	public void Interact()
 	{
 		_menuManager.OpenInteractionMenu();
-		_iIsPuzzleActive = true;
+		_isPuzzleActive = true;
 
 		_currentGearInstance = Instantiate(_gearPrefab, GetPuzzleSpawnPosition(), Quaternion.identity);
 		_currentGearInstance.transform.LookAt(Camera.main.transform);
@@ -184,7 +196,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	private void HidePuzzleCanvas()
 	{
-		if (_iIsPuzzleActive)
+		if (_isPuzzleActive)
 		{
 			_canvasLockpickMechanicalMenu.SetActive(false);
 			_currentGearInstance.SetActive(false);
@@ -194,7 +206,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	private void ShowPuzzleCanvas()
 	{
-		if (_iIsPuzzleActive)
+		if (_isPuzzleActive)
 		{
 			_canvasLockpickMechanicalMenu.SetActive(true);
 			_currentGearInstance.SetActive(true);
@@ -204,9 +216,9 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	private void OnClosePuzzle()
 	{
-		if (_iIsPuzzleActive)
+		if (_isPuzzleActive)
 		{
-			_iIsPuzzleActive = false;
+			_isPuzzleActive = false;
 			_canvasLockpickMechanicalMenu.SetActive(false);
 			Destroy(_currentGearInstance);
 			Destroy(_currentCubeFollow);
@@ -262,7 +274,39 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 			out direction, out distance);
 	}
 
-	IEnumerator RotateGear(float targetAngle)
+	private void RotateGearUp()
+	{
+		if (_canMoveUp && !_isMovingOrRotating)
+		{
+			StartCoroutine(RotateGearCourutine(_rotationStep));
+		}
+	}
+
+	private void RotateGearDown()
+	{
+		if (_canMoveDown && !_isMovingOrRotating)
+		{
+			StartCoroutine(RotateGearCourutine(-_rotationStep));
+		}
+	}
+
+	private void MoveRight()
+	{
+		if (_canMoveRight && !_isMovingOrRotating)
+		{
+			StartCoroutine(MoveRightCourutine());
+		}
+	}
+
+	private void MoveLeft()
+	{
+		if (_canMoveLeft && !_isMovingOrRotating)
+		{
+			StartCoroutine(MoveLeftCourutine());
+		}
+	}
+
+	IEnumerator RotateGearCourutine(float targetAngle)
 	{
 		_isMovingOrRotating = true;
 		Quaternion startRotation = _currentGearInstance.transform.rotation;
@@ -281,7 +325,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		_isMovingOrRotating = false;
 	}
 
-	IEnumerator MoveRight()
+	IEnumerator MoveRightCourutine()
 	{
 		_isMovingOrRotating = true;
 		Vector3 startPosition = _currentGearInstance.transform.position;
@@ -300,7 +344,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		_isMovingOrRotating = false;
 	}
 
-	IEnumerator MoveLeft()
+	IEnumerator MoveLeftCourutine()
 	{
 		_isMovingOrRotating = true;
 		Vector3 startPosition = _currentGearInstance.transform.position;
