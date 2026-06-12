@@ -8,7 +8,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	[SerializeField] private string _interactionObjectNameUI;
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameUI)}";
-
+	private TextMeshProUGUI _textButtonExit;
 	[SerializeField] private InteractionObjectNoteData _noteData;
 	[SerializeField] private InteractionObjectNotePosition _notePosition;
 	private MenuManager _menuManager;
@@ -38,30 +38,24 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		//_interactionObjectNameUI = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Money")}!";
-
-		if (_notePosition.IsThereText)
-		{
-			_textComponent = ServiceLocator.Resolve<TextMeshProUGUI>("TextNote");
-			_textRectTransform = _textComponent.gameObject.GetComponent<RectTransform>();
-
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Read")}";
-		}
-		else
-		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GlanceAt")}";
-		}
+		_textButtonExit = ServiceLocator.Resolve<GameObject>("TextButtonCloseReadNoteMenu").GetComponent<TextMeshProUGUI>();
 
 		// Остальная инициализация остается прежней
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_buttonExitNoteMenu = ServiceLocator.Resolve<Button>("ButtonCloseReadNoteMenu");
-		_imageComponent = ServiceLocator.Resolve<Image>("ImageNote");
+		_buttonExitNoteMenu = ServiceLocator.Resolve<GameObject>("ButtonCloseReadNoteMenu").GetComponent<Button>();
+		_imageComponent = ServiceLocator.Resolve<GameObject>("ImageNote").GetComponent<Image>();
 
-		_textBackground = ServiceLocator.Resolve<Image>("ImageNoteBlackBackground");
+		_textBackground = ServiceLocator.Resolve<GameObject>("ImageNoteBlackBackground").GetComponent<Image>();
 		_canvasNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuNote");
 
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseAndDeactivate;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
+
+	
+		_textComponent = ServiceLocator.Resolve<GameObject>("TextNote").GetComponent<TextMeshProUGUI>();
+		_textRectTransform = _textComponent.gameObject.GetComponent<RectTransform>();
+		
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
@@ -74,13 +68,17 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
+		_localizationManager = localizationManager;
+
 		if (_notePosition.IsThereText)
 		{
 			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Read")}";
+			_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_Text")}";
 		}
 		else
 		{
 			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GlanceAt")}";
+			_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_NoText")}";
 		}
 
 		if (_notePosition.IsThereText)
@@ -107,7 +105,6 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
-		if (_noteData == null) return; // Защита от NullReference
 
 		_menuManager.OpenInteractionMenu();
 		_isReading = true;
@@ -120,22 +117,22 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 		if (_notePosition.IsThereText)
 		{
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Read")}";
+			_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_Text")}";
+
 			_textBackground.gameObject.SetActive(true);
 			_textComponent.text = _localizationManager.GetLanguageSuffix(_noteData);
 		}
 		else
 		{
 			_textBackground.gameObject.SetActive(false);
+
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GlanceAt")}";
+			_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_NoText")}";
 		}
 
-
-
-			// Позиция и поворот для случая с текстом (как в оригинале)
-			_imageRectTransform.anchoredPosition = _notePosition.TextPosition;
+		_imageRectTransform.anchoredPosition = _notePosition.TextPosition;
 		_imageRectTransform.localEulerAngles = _notePosition.TextRotation;
-
-		// Убедимся, что обработчик добавлен только один раз (опционально)
-
 
 		gameObject.tag = "Untagged";
 	}

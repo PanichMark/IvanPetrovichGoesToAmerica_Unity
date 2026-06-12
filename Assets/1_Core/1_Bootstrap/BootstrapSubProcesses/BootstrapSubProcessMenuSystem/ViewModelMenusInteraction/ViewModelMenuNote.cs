@@ -1,19 +1,19 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class ViewModelMenuNote
 {
-	public TextMeshProUGUI TextNote;
-	public Image ImageNote;
-	public Image ImageNoteBlackBackground;
-	public Button ButtonCloseMenuNote;
+	public GameObject TextNote;
+	public GameObject ImageNote;
+	public GameObject ImageNoteBlackBackground;
+	public GameObject ButtonCloseMenuNote;
+	public GameObject TextButtonCloseMenuNote;
 
 	public ViewModelMenuNote(Bootstrap bootstrap, GameObject canvas)
 	{
-		ButtonCloseMenuNote = canvas.transform.Find("ButtonExitReadNoteMenu").GetComponent<Button>();
-		ImageNote = canvas.transform.Find("ImageNote").GetComponent<Image>();
-		TextNote = canvas.transform.Find("TextNote").GetComponent<TextMeshProUGUI>();
-		ImageNoteBlackBackground = canvas.transform.Find("ImageNoteBlackBackground").GetComponent<Image>();
+		ButtonCloseMenuNote = bootstrap.FindDeepGameObject(canvas, "ButtonExitReadNoteMenu");
+		TextButtonCloseMenuNote = bootstrap.FindDeepGameObject(canvas, "TextButtonExitReadNoteMenu");
+		ImageNote = bootstrap.FindDeepGameObject(canvas, "ImageNote");
+		TextNote = bootstrap.FindDeepGameObject(canvas, "TextNote");
+		ImageNoteBlackBackground = bootstrap.FindDeepGameObject(canvas, "ImageNoteBlackBackground");
 	}
 }

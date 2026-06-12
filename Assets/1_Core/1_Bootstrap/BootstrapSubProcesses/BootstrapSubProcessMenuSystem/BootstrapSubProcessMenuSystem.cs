@@ -352,6 +352,7 @@ public class BootstrapSubProcessMenuSystem
 		ServiceLocator.Register("ImageNote", ViewModelMenuNote.ImageNote);
 		ServiceLocator.Register("ImageNoteBlackBackground", ViewModelMenuNote.ImageNoteBlackBackground);
 		ServiceLocator.Register("ButtonCloseReadNoteMenu", ViewModelMenuNote.ButtonCloseMenuNote);
+		ServiceLocator.Register("TextButtonCloseReadNoteMenu", ViewModelMenuNote.TextButtonCloseMenuNote);
 
 		ServiceLocator.Register("CanvasMenuLockpickMechanical", _canvasMenuLockpickMechanical);
 		ServiceLocator.Register("ButtonCloseLockpickMechanicalMenu", ViewModelMenuLockpickMechanical.ButtonCloseMenuLockpickMechanical);

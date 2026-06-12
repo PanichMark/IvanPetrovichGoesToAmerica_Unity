@@ -20,8 +20,8 @@ public class BootstrapSubProcessInteractionSystem
 
 	private GameObject _gameObjectBootstrapInteractionSystem;
 	public InteractionController InteractionController { get; private set; }
-	private InteractionAnimationController _interactionAnimationController;
-	private InteractionFirstPersonRender _interactionFirstPersonRender;
+	//private InteractionAnimationController _interactionAnimationController;
+	//private InteractionFirstPersonRender _interactionFirstPersonRender;
 
 	private KeysManager _keysManager;
 
