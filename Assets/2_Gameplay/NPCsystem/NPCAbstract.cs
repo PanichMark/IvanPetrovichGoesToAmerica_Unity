@@ -128,6 +128,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		_currentHealth = 0;
 		StopAllCoroutines();
 		ConvertToPickableObject();
+		gameObject.AddComponent<DamageableCorpse>();
 		_NPCphrasesController.ClearPhrases();
 	}
 }

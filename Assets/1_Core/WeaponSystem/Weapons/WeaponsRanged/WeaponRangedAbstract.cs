@@ -10,12 +10,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
 	
 	public int PlayerMagazineAmmoCurrent { get; set; }
-
 	public int PlayerMagazineAmmoMax { get; protected set; }
 	
 	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoCurrent;
 	public int PlayerAmmoTotalMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoMax;
-
+	protected BulletHoleManager _bulletHoleManager;
 	protected PlayerCameraController _playerCameraController;
 
 	private void Start()
@@ -25,7 +24,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
-
+			_bulletHoleManager = ServiceLocator.Resolve<BulletHoleManager>("BulletHoleManager");
 			InitializeWeaponRanged();
 		}
 	}
@@ -96,13 +95,25 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected virtual void ShootPlayerWeapon(float weaponDamage)
 	{
 		RaycastHit hitInfo;
+		IDamageable damageable = null;
+
 		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))
 		{
-			IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
+			damageable = hitInfo.transform.GetComponent<IDamageable>();
 			if (damageable != null)
 			{
 				damageable.TakeDamage(weaponDamage);
 			}
+		}
+
+		// Проверяем, есть ли вообще коллайдер и трансформ у объекта
+		if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 11)
+		{
+			Quaternion rot = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
+
+			// Добавляем четвертый параметр - Transform родителя
+			// Мы всегда хотим, чтобы след был дочерним объектом
+			_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
 		}
 
 		PlayerMagazineAmmoCurrent--;

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class BootstrapSubProcessWeaponSystem
@@ -33,6 +34,7 @@ public class BootstrapSubProcessWeaponSystem
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private HUDammoController _HUDammoController;
 
+	private BulletHoleManager _bulletHoleManager;
 
 	public BootstrapSubProcessWeaponSystem(
 		Bootstrap bootstrap,
@@ -69,6 +71,7 @@ public class BootstrapSubProcessWeaponSystem
 		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponFirstPersonRender>();
 		_legKickAttackController = _GameObjectBootstrapWeaponSystem.AddComponent<LegKickAttackController>();
 		_HUDammoController = _GameObjectBootstrapWeaponSystem.AddComponent<HUDammoController>();
+		_bulletHoleManager = _GameObjectBootstrapWeaponSystem.AddComponent<BulletHoleManager>();
 
 		_gameObjectFirstPersonRightHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlotHand.R");
 		_gameObjectFirstPersonLeftHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlotHand.L");
@@ -138,12 +141,16 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextLeftWeaponAmmoReserveNumber,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.LeftWeaponAmmoSeparator);
 
+		_bulletHoleManager.Initialize();
+
 		ServiceLocator.Register("WeaponController", WeaponController);
 
 		ServiceLocator.Register("FirstPersonLeftHandWeaponSlotGameObject", _gameObjectFirstPersonLeftHandWeaponSlot);
 		ServiceLocator.Register("FirstPersonRightHandWeaponSlotGameObject", _gameObjectFirstPersonRightHandWeaponSlot);
 		ServiceLocator.Register("ThirdPersonLeftHandWeaponSlotGameObject", _gameObjectThirdPersonLeftHandWeaponSlot);
 		ServiceLocator.Register("ThirdPersonRightHandWeaponSlotGameObject", _gameObjectThirdPersonRightHandWeaponSlot);
+
+		ServiceLocator.Register("BulletHoleManager", _bulletHoleManager);
 
 		yield break;
 	}
