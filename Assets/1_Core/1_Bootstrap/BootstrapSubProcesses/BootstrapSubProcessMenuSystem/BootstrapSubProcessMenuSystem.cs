@@ -365,6 +365,7 @@ public class BootstrapSubProcessMenuSystem
 		ServiceLocator.Register("CanvasMenuLockpickElectronic", _canvasMenuLockpickElectronic);
 		ServiceLocator.Register("ButtonsLockElectronic", ViewModelMenuLockpickElectronic.ButtonsLockElectronic);
 		ServiceLocator.Register("ButtonCloseLockpickElectronicMenu", ViewModelMenuLockpickElectronic.ButtonCloseMenuLockpickElectronic);
+		ServiceLocator.Register("TextButtonCloseLockpickElectronicMenu", ViewModelMenuLockpickElectronic.TextButtonCloseMenuLockpickElectronic);
 
 		ServiceLocator.Register("MenuBackgroundController", _menuBackgroundController);
 

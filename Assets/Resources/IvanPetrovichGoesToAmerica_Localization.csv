@@ -7,10 +7,10 @@ HUD_Interaction_HintMessage_Action_Eat,Съесть,Eat
 HUD_Interaction_HintMessage_Action_GlanceAt,Взглянуть на,Glance at
 HUD_Interaction_HintMessage_Action_GoToScene,Перейти на сцену,Go to scene
 HUD_Interaction_HintMessage_Action_Hack,Взломать,Hack
+HUD_Interaction_HintMessage_Action_Interact,Взаимодействовать с,Interact with
 HUD_Interaction_HintMessage_Action_Lockpick,Вскрыть,Lockpick
 HUD_Interaction_HintMessage_Action_Loot,Взять,Take
 HUD_Interaction_HintMessage_Action_Open,Открыть,Open
-HUD_Interaction_HintMessage_Action_Interact,Взаимодействовать с,Interact with
 HUD_Interaction_HintMessage_Action_Pickup,Поднять,Pick up
 HUD_Interaction_HintMessage_Action_Press,Нажать,Press
 HUD_Interaction_HintMessage_Action_Purchase,Купить,Purchase
@@ -25,20 +25,22 @@ HUD_Interaction_HintMessage_Action_TurnOff,Выключить,Turn off
 HUD_Interaction_HintMessage_Action_TurnOn,Включить,Turn on
 HUD_Interaction_HintMessage_Action_Unlock,Отпереть,Unlock
 HUD_Interaction_HintMessage_Fail_CantTalk,С вами сейчас не может разговаривать,Right now you can't talk to
-HUD_Interaction_HintMessage_Fail_LockedKey,Заперто на ключ,Key locked
-HUD_Interaction_HintMessage_Fail_Locked,Заперто,Is locked
-HUD_Interaction_HintMessage_Fail_Max,Нельзя взять больше,Max
-HUD_Interaction_HintMessage_Fail_Money,Недостаточно денег,Not enough money
 HUD_Interaction_HintMessage_Fail_ElectroShock,Вас ударило током,You have been Electro Shocked
-HUD_Interaction_HintMessage_Fail_OutOfService,Вышло из строя,Out of service
-HUD_Interaction_HintMessage_Fail_Wait,Подождите,Please wait
+HUD_Interaction_HintMessage_Fail_Locked,Заперто,Is locked
 HUD_Interaction_HintMessage_Fail_LockedElectricalPanel,Заблокировано электрической панелью,Blocked by electrical panel
 HUD_Interaction_HintMessage_Fail_LockedForever,Не поддается,Won't budge
+HUD_Interaction_HintMessage_Fail_LockedKey,Заперто на ключ,Key locked
+HUD_Interaction_HintMessage_Fail_Max,Нельзя взять больше,Max
+HUD_Interaction_HintMessage_Fail_Money,Недостаточно денег,Not enough money
+HUD_Interaction_HintMessage_Fail_OutOfService,Вышло из строя,Out of service
+HUD_Interaction_HintMessage_Fail_PickUpBoughtGoods,Подбирите уже купленные товары,Puck up already purchased goods
+HUD_Interaction_HintMessage_Fail_Wait,Подождите,Please wait
 HUD_Interaction_HintMessage_Fail_WrongCombination,Неправильная комбинация,Wrong combination
 HUD_Interaction_HintMessage_Main,Нажмите,Press
 InteractionObject_Consumable_Drink_SparklingWater,Газированная вода,Sarkling water
 InteractionObject_Consumable_Food_Cake,Торт,Cake
 InteractionObject_Consumable_Food_RottenMeat,Гнилое мясо,Rotten meat
+InteractionObject_ElectricalPanel,Электрическая панель,Electrical panel
 InteractionObject_Light_Switch,Переключатель света,Light switch
 InteractionObject_Light_Table,Настольная лампа,Table lamp
 InteractionObject_Loot_Ammo_12gauge_Box,Коробка с зарядами дроби,Box with 12gauge shots
@@ -56,16 +58,15 @@ InteractionObject_Loot_Valuable_Money_Rubles2,2 рубля,2 rubles
 InteractionObject_Loot_Valuable_Money_Rubles25,25 рублей,25 rubles
 InteractionObject_Loot_Valuable_Money_Rubles5,5 рублей,5 rubles
 InteractionObject_Loot_Valuable_Money_Rubles50,50 рублей,50 rubles
-InteractionObject_ElectricalPanel,Электрическая панель,Electrical panel
 InteractionObject_Loot_Valuable_Stocks_BranobelBank,Акция Бранобель Банка,Branobel Bank stocks
 InteractionObject_Loot_Weapon_Eugenic_GenieBreath,Евгеник Дыхание Джина,Eugenic Genie Breath
 InteractionObject_Loot_Weapon_Eugenic_TeslaShock,Евгеник Искра Теслы,Eugenic Tesla Shock
+InteractionObject_Loot_Weapon_Melee_FirefighterSaw,Пожарная циркулярная пила,Firfighter saw
 InteractionObject_Loot_Weapon_Melee_PoliceBaton,Милицейская дубинка,Police baton
 InteractionObject_Loot_Weapon_PlungerCrossbow,Абордажный арбалет,Plunger crossbow
-InteractionObject_Loot_Weapon_Ranged_HarmonicaRevolver,Револьвер Гармоника,Harmonica revolver
 InteractionObject_Loot_Weapon_Ranged_BergmannBayard,Автопистоль Бергманн-Байард,Bergmann-Bayard Autopistole
+InteractionObject_Loot_Weapon_Ranged_HarmonicaRevolver,Револьвер Гармоника,Harmonica revolver
 InteractionObject_Loot_Weapon_Ranged_SawedOffShotgun,Дробовик-обрез,Sawed off shotgun
-InteractionObject_Loot_Weapon_Melee_FirefighterSaw,Пожарная циркулярная пила,Firfighter saw
 InteractionObject_Note_Map,Карта,Map
 InteractionObject_Note_Newspaper_LiberalHerald,Газета Либеральный Глашатай,Liberal Herald Newspaper
 InteractionObject_Openable_Door_DoorWardrobe,Дверь шкафа,Wardrobe door
@@ -111,6 +112,17 @@ UI_DialogueAnswer_Sweeper_Branch1_Yes,Хорошо сейчас все убер�
 UI_DialogueAnswer_Sweeper_Branch2_No,Ну уж нет! к черту тебя и твои листься,No way! Go to hell with you leaves!
 UI_DialogueAnswer_Sweeper_Branch2_Yes,Ладно так уж и ыть помогу тебе,On the other hand ok I'll help you
 UI_LoadingScreen_LoadingIsReady,Нажмите любую клавишу,Press any key
+UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical,Перестать вскрывать,Stop lockpicking
+UI_Menu_InteractionMenu_LockElectronic_ButtonCloseMenuLockElectronic,Перестать взламывать,Stop hacking
+UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_NoText,Перестать глядеть,Stop glancing at
+UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_Text,Перестать читать,Stop reading
+UI_Menu_MainMenu_TextExitGame,Выйти из игры,Exit the game
+UI_Menu_MainMenu_TextLoadGame1,Загрузить,Load
+UI_Menu_MainMenu_TextLoadGame2,игру,game
+UI_Menu_MainMenu_TextNewGame,Новая игра,New game
+UI_Menu_MainMenu_TextReadNews,Читать новости об игре,Read news about game
+UI_Menu_MainMenu_TextSettings,Настройки,Settings
+UI_Menu_MainMenu_TextTestScene,Тестовый уровень,Test level
 UI_Menu_PauseConfirmActionMenu_ButtonCancelAction,Отменить,Cancel
 UI_Menu_PauseConfirmActionMenu_ButtonConfirmAction,Подтвердить,Confirm
 UI_Menu_PauseConfirmActionMenu_TextConfirmCreateNewGameFile,Сохранить новую игру,Save new game
@@ -140,16 +152,6 @@ UI_Menu_PauseSubMenuSave_ButtonClosePauseSubMenuSave,Закрыть меню с�
 UI_Menu_PauseSubMenuSave_ButtonCreateNewGameFile,Сохранить новую игру,Save game
 UI_Menu_PauseSubMenuSave_ButtonDeleteGameFile,Удалить игру,Delete game
 UI_Menu_PauseSubMenuSave_TextPauseSubMenuSave,Меню сохранения,Save menu
-UI_Menu_MainMenu_TextNewGame,Новая игра,New game
-UI_Menu_MainMenu_TextSettings,Настройки,Settings
-UI_Menu_MainMenu_TextTestScene,Тестовый уровень,Test level
-UI_Menu_MainMenu_TextReadNews,Читать новости об игре,Read news about game
-UI_Menu_MainMenu_TextExitGame,Выйти из игры,Exit the game
-UI_Menu_MainMenu_TextLoadGame1,Загрузить,Load
-UI_Menu_MainMenu_TextLoadGame2,игру,game
-UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_Text,Перестать читать,Stop reading
-UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical,Перестать вскрывать,Stop lockpicking
-UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_NoText,Перестать глядеть,Stop glancing at
 UI_Menu_PauseSubMenuSettings_ButtonClosePauseSubMenuSettings,Закрыть меню настроек,Close settings menu
 UI_Menu_PauseSubMenuSettings_ButtonResetSettings,Сбросить настройки,Reset settings
 UI_Menu_PauseSubMenuSettings_ButtonSaveSettings,Сохранить настройки,Save settings
@@ -182,17 +184,17 @@ UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsWeaponWheelLeftHand,Ко
 UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsWeaponWheelRightHand,Колесо Оружия для правой руки,Right hand Weapon Wheel
 UI_Menu_PauseSubMenuSettingsSectionControls_TextSliderMouseSensitivityX,Горизонтальная чувствительность мыши,Mouse sensitivity X
 UI_Menu_PauseSubMenuSettingsSectionControls_TextSliderMouseSensitivityY,Вертикальная чувствительность мыши,Mouse sensitivity Y
-UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeFullscreen,Полноэкранный,Fullscreen
-UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeBorderlessWindowed,Оконный без рамки,Borderless windowed
-UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeWindowed,Оконный,Windowed
-UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeFull,Полностью,Full
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeDialoguesOnly,Только диалоги,Dialogues only
+UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeFull,Полностью,Full
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeTurnedOff,Выключенный,Turn off
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS144,144 кадра/сек,144 frames/sec
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS30,30 кадров/сек,30 frames/sec
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS60,60 кадров/сек,60 frames/sec
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS90,90 кадров/сек,90 frames/sec
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPSunlimited,Без ограничений,Unlimited
+UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeBorderlessWindowed,Оконный без рамки,Borderless windowed
+UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeFullscreen,Полноэкранный,Fullscreen
+UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeWindowed,Оконный,Windowed
 UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownFPSlimit,Ограничение кадров в секунду,Frames per second limit
 UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownHUDType,Отображение игрового интерфейса (HUD),Heads up display (HUD) type
 UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownScreenResolution,Разрешение экрана,Screen resolution
@@ -201,13 +203,13 @@ UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderCameraFOV,Угол обзо
 UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderScreenBrightness,Яркость экрана,Screen brightness
 UI_Menu_PauseSubMenuSettingsSectionGraphics_NO_GRAPHICS_SETTINGS,В демо версии игры нет настроек графики,Game demo version does not feature graphics settings
 UI_Menu_PauseSubMenuTutorial_ButtonClosePauseSubMenuTutorial,Закрыть меню туториала,Close tutorial menu
-Weapon_Ranged_HarmonicaRevolver,Револьвер Гармоника,Harmonica Revolver
-Weapon_Ranged_SawedOffShotgun,Дробовик обрез,Sawed off shotgun
-Weapon_Ranged_BergmannBayard,Автопистоль Бергманн-Байард,Bergmann-Bayard autopistole
+UI_Menu_WeaponWheelMenu_HandLeft,Левая рука,Left hand
+UI_Menu_WeaponWheelMenu_HandRight,Правая рука,Right hand
 Weapon_Eugenic_GenieBreath,Евгеник Дыхание Джина,Eugenic Genie Breath
 Weapon_Eugenic_TeslaShock,Евгеник Искра Теслы,Eugenic Tesla Shock
-Weapon_Melee_PoliceBaton,Милицейская дубинка,Police baton
 Weapon_Melee_FirefighterSaw,Пожарная циркулярная пила,Firefighter saw
+Weapon_Melee_PoliceBaton,Милицейская дубинка,Police baton
+Weapon_Ranged_BergmannBayard,Автопистоль Бергманн-Байард,Bergmann-Bayard autopistole
+Weapon_Ranged_HarmonicaRevolver,Револьвер Гармоника,Harmonica Revolver
+Weapon_Ranged_SawedOffShotgun,Дробовик обрез,Sawed off shotgun
 Weapon_Special_PlungerCrossbow,Абордажный арбалет,Plunging crowwbow
-UI_Menu_WeaponWheelMenu_HandRight,Правая рука,Right hand
-UI_Menu_WeaponWheelMenu_HandLeft,Левая рука,Left hand

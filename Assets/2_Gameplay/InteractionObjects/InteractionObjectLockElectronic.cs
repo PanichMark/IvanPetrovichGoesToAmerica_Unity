@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 {
@@ -25,6 +26,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	public bool IsInteractionHintMessageFailActive => false;
 
 	private Button _buttonExitLockpickElectronicMenu;
+	private TextMeshProUGUI _textButtonExitLockpickElectronicMenu;
 	private GameObject[] _buttonsLockElectrical;
 	private MenuManager _menuManager;
 	private GameObject _canvasLockpickElectronicMenu;
@@ -39,11 +41,12 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_canvasLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickElectronic");
-		_buttonExitLockpickElectronicMenu = ServiceLocator.Resolve<Button>("ButtonCloseLockpickElectronicMenu");
+		_buttonExitLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("ButtonCloseLockpickElectronicMenu").GetComponent<Button>();
+		_textButtonExitLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("TextButtonCloseLockpickElectronicMenu").GetComponent<TextMeshProUGUI>();
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>("ButtonsLockElectronic");
-
+		_textButtonExitLockpickElectronicMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockElectronic_ButtonCloseMenuLockElectronic");
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Hack");
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
@@ -63,8 +66,8 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		_localizationManager = localizationManager;
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Hack");
-
-		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
+		_textButtonExitLockpickElectronicMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockElectronic_ButtonCloseMenuLockElectronic");
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	}
 
 	private void CloseElectronicLockPuzzle()

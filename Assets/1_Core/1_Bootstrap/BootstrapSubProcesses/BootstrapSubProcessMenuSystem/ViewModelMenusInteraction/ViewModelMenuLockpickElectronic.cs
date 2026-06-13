@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class ViewModelMenuLockpickElectronic
 {
 	public GameObject[] ButtonsLockElectronic;
-	public Button ButtonCloseMenuLockpickElectronic;
+	public GameObject ButtonCloseMenuLockpickElectronic;
+	public GameObject TextButtonCloseMenuLockpickElectronic;
 
 	public ViewModelMenuLockpickElectronic(Bootstrap bootstrap, GameObject canvas)
 	{
@@ -20,6 +20,7 @@ public class ViewModelMenuLockpickElectronic
 			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic8"),
 			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic9")
 		};
-		ButtonCloseMenuLockpickElectronic = canvas.transform.Find("ButtonExitLockpickElectronicMenu").GetComponent<Button>();
+		ButtonCloseMenuLockpickElectronic = bootstrap.FindDeepGameObject(canvas, "ButtonExitLockpickElectronicMenu");
+		TextButtonCloseMenuLockpickElectronic = bootstrap.FindDeepGameObject(canvas, "TextButtonExitLockpickElectronicMenu");
 	}
 }

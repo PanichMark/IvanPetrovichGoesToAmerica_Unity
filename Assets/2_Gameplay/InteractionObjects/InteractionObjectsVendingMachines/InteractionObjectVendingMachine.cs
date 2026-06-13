@@ -20,9 +20,11 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
 	private bool _isAdditionalInteractionHintActive;
 	private LocalizationManager _localizationManager;
-	
+
+
+	private string _interactionHintMessageFail;
 	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {_goodsName} {InteractionObjectNameUI} {_goodsPrice} {_moneyForUI}?";
-	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Money")}!";
+	public virtual string InteractionHintMessageFail => _interactionHintMessageFail;
 	public string InteractionHintMessageAction => _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Purchase");
 	public string InteractionObjectNameSystem => _vendingMachineName;
 	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
@@ -66,6 +68,8 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 				{
 					//Debug.Log(_spawnedGoods.Count);
 					Debug.Log("Нельзя купить больше");
+					_isAdditionalInteractionHintActive = true;
+					_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_PickUpBoughtGoods")}!";
 					return;
 				}
 
@@ -81,13 +85,16 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 			else
 			{
 				Debug.Log("Недостаточно денег");
+
 				_isAdditionalInteractionHintActive = true;
+				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Money")}!";
 			}
 		}
 		else
 		{
 			Debug.Log("Out of service");
 			_isAdditionalInteractionHintActive = true;
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService")}!";
 		}
 	}
 
