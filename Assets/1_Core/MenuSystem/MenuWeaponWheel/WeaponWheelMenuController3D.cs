@@ -216,6 +216,15 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 			// Это условие выполнится только в момент, когда мы начинаем крутить колесо.
 			if (scrollInput != 0)
 			{
+
+				Quaternion[] worldRotations = new Quaternion[_weaponModelsContainer.transform.childCount];
+				int i = 0;
+				foreach (Transform weaponModel in _weaponModelsContainer.transform)
+				{
+					// Запоминаем, КАК оружие было повернуто В МИРЕ до того, как мы повернули круг
+					worldRotations[i] = weaponModel.rotation;
+					i++;
+				}
 				// Вычисляем угол для одного шага на основе количества оружия
 				if (_weaponModels3D.Count > 0)
 				{
@@ -224,8 +233,16 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 					// Поворачиваем контейнер на один шаг
 					Quaternion targetRotation = Quaternion.Euler(0, angleForOneStep * direction, 0);
 					//_weaponModelsContainer.transform.Rotate(_playerCamera.transform.up, angleForOneStep * direction, Space.World);
+					// ... тут происходит вращение контейнера ...
 					_weaponModelsContainer.transform.rotation *= targetRotation;
 
+					// Теперь возвращаем каждой модели её исходный МИРОВОЙ поворот
+					i = 0;
+					foreach (Transform weaponModel in _weaponModelsContainer.transform)
+					{
+						weaponModel.rotation = worldRotations[i];
+						i++;
+					}
 					//Debug.Log($"[Scroll Clicked] Direction: {direction} | Rotated by: {angleForOneStep} degrees");
 				}
 			}
@@ -258,7 +275,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		else
 		{
 			HideWeaponWheelMenuCanvas();
-			//HideWeaponPrefabs();
+			HideWeaponPrefabs();
 		}
 	}
 	// Устанавливает слой "IgnorePostProcessing" на контейнер оружия и все его содержимое
@@ -292,6 +309,8 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 
 	void CreateWheel()
 	{
+		
+
 		List<GameObject> activeWeapons = _weaponController.CollectActiveWeapons();
 
 		if (activeWeapons.Count == 0)
@@ -310,6 +329,10 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		// Создаем или очищаем контейнер
 		if (_weaponModelsContainer != null)
 		{
+			_weaponModelsContainer.transform.rotation =
+				_playerCamera.transform.rotation *
+				Quaternion.Euler(-30, 0, 0);
+
 			foreach (Transform child in _weaponModelsContainer.transform)
 			{
 				Destroy(child.gameObject);
@@ -319,8 +342,10 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		{
 			_weaponModelsContainer = new GameObject("WeaponModels_Container");
 			_weaponModelsContainer.transform.SetParent(_playerCamera.transform, false);
-			_weaponModelsContainer.transform.position = _playerCamera.transform.TransformPoint(new Vector3(0, 0.3f, containerSpawnDistance));
-			_weaponModelsContainer.transform.rotation = Quaternion.Euler(-30, 0, 0);
+			_weaponModelsContainer.transform.position = _playerCamera.transform.TransformPoint(new Vector3(0, 0.25f, containerSpawnDistance));
+			_weaponModelsContainer.transform.rotation =
+				_playerCamera.transform.rotation *
+				Quaternion.Euler(-30, 0, 0);
 		}
 
 		_weaponModels3D.Clear();
@@ -357,7 +382,15 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 			modelInstance.transform.localRotation = Quaternion.identity; // Сбрасываем поворот модели, чтобы она смотрела "вверх" относительно контейнера
 
 			_weaponModels3D.Add(modelInstance);
+
+
+			foreach (Transform weaponModel in _weaponModelsContainer.transform)
+			{
+				weaponModel.rotation = Quaternion.Euler(-60, -60, 0);
+			}
 		}
+
+		HideWeaponPrefabs();
 	}
 
 	// Скрывает все 3D-модели оружия (созданные префабы)
