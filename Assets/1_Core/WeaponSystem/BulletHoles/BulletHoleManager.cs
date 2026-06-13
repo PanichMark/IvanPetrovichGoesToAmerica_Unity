@@ -1,21 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletHoleManager : MonoBehaviour
 {
-	// --- ДОБАВЛЕНЫ ДВА ПОЛЯ ДЛЯ СПРАЙТОВ ---
-	private Sprite _decalSpriteDefault; // Спрайт для обычных поверхностей
-	private Sprite _decalSpriteDamageable; // Спрайт для объектов с IDamageable
+	private Sprite _decalSpriteDefault;
+	private Sprite _decalSpriteDamageable;
 
 	private int _maxInstances = 50;
 	private List<SpriteRenderer> _decalList = new List<SpriteRenderer>();
 	private Transform _decalParent;
 	private int _currentIndex = 0;
 
-	public void Initialize()
+	private GameSceneManager _gameSceneManager;
+
+	public void Initialize(GameSceneManager gameSceneManager)
 	{
-		// Загружаем ОБА спрайта из папки Resources
+		_gameSceneManager = gameSceneManager;
+
 		_decalSpriteDefault = Resources.Load<Sprite>("Sprites/Sprites_BulletHoles/Sprite_BulletHole_Solid");
 		_decalSpriteDamageable = Resources.Load<Sprite>("Sprites/Sprites_BulletHoles/Sprite_BulletHole_Blood");
 
@@ -25,6 +26,21 @@ public class BulletHoleManager : MonoBehaviour
 			return;
 		}
 
+		RecreatePool();
+
+		_gameSceneManager.OnBeginLoadingGameplayScene += RecreatePool;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += RecreatePool;
+	}
+
+	private void RecreatePool()
+	{
+		if (_decalParent != null)
+		{
+			Destroy(_decalParent.gameObject);
+		}
+
+		_decalList = new List<SpriteRenderer>();
+
 		_decalParent = new GameObject("Decals").transform;
 
 		for (int i = 0; i < _maxInstances; i++)
@@ -33,37 +49,36 @@ public class BulletHoleManager : MonoBehaviour
 			go.transform.SetParent(_decalParent);
 
 			SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
-
-			// Устанавливаем спрайт по умолчанию при создании
 			sr.sprite = _decalSpriteDefault;
 			sr.sortingOrder = -1;
 			go.transform.localScale = Vector3.one * 0.05f;
 
+			go.SetActive(false);
+
 			_decalList.Add(sr);
 		}
+
+		_currentIndex = 0;
 	}
 
 	public void SpawnDecal(Vector3 position, Quaternion rotation, bool isDamageableTarget, Transform parentTransform)
 	{
-		SpriteRenderer sr = _decalList[_currentIndex];
-
-		sr.transform.position = position;
-		sr.transform.rotation = rotation * Quaternion.Euler(-90f, 0, 0);
-		sr.transform.Translate(0, 0, 0.01f, Space.Self);
-
-		// Выбираем нужный спрайт
-		sr.sprite = isDamageableTarget ? _decalSpriteDamageable : _decalSpriteDefault;
-
-		// --- НОВАЯ СТРОКА ---
-		// Делаем декаль дочерним объектом от цели попадания
-		sr.transform.SetParent(parentTransform);
-
-		sr.enabled = true;
-
-		_currentIndex++;
-		if (_currentIndex >= _maxInstances)
+		if (_currentIndex < _maxInstances && _decalList[_currentIndex] != null)
 		{
-			_currentIndex = 0;
+			SpriteRenderer sr = _decalList[_currentIndex];
+
+			sr.gameObject.SetActive(true);
+			sr.transform.position = position;
+			sr.transform.rotation = rotation * Quaternion.Euler(-90f, 0, 0);
+			sr.transform.Translate(0, 0, 0.01f, Space.Self);
+			sr.sprite = isDamageableTarget ? _decalSpriteDamageable : _decalSpriteDefault;
+			sr.transform.SetParent(parentTransform);
+
+			_currentIndex++;
+			if (_currentIndex >= _maxInstances)
+			{
+				_currentIndex = 0;
+			}
 		}
 	}
 }
