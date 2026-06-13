@@ -107,7 +107,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 
 		// Проверяем, есть ли вообще коллайдер и трансформ у объекта
-		if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 11)
+		if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 9 && hitInfo.transform.gameObject.layer != 11)
 		{
 			Quaternion rot = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
 

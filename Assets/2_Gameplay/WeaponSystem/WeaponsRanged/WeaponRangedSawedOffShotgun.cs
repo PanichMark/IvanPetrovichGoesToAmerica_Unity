@@ -15,53 +15,43 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 		
 	}
 
-	public override void WeaponAttack()
-	{
-		if (PlayerMagazineAmmoCurrent > 0)
-		{
-			if (IsWeaponAuto)
-			{
-				StartAutoAttacking();
-			}
-			else
-			{
-				ShootPlayerWeapon(WeaponDamage);
-			}
-		}
-		else if (_isThisPlayerWeapon)
-		{
-			Debug.Log($"Not enough Ammo {WeaponName}");
-		}
-	}
-
 	protected override void ShootPlayerWeapon(float weaponDamage)
 	{
-		RaycastHit hitInfo;
-		IDamageable damageable = null;
+		int pelletCount = 10;
+		float spreadAngle = 7f;
+		float range = 100f;
 
-		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))
+		for (int i = 0; i < pelletCount; i++)
 		{
-			damageable = hitInfo.transform.GetComponent<IDamageable>();
-			if (damageable != null)
+			RaycastHit hitInfo;
+
+			Quaternion randomRotation = Random.rotationUniform;
+			Quaternion spreadRotation = Quaternion.Slerp(Quaternion.identity, randomRotation, spreadAngle / 90f);
+			Vector3 finalDirection = spreadRotation * _shootPoint.transform.forward;
+
+			Color rayColor = Physics.Raycast(_shootPoint.transform.position, finalDirection, out hitInfo, range) ? Color.red : Color.yellow;
+			Debug.DrawRay(_shootPoint.transform.position, finalDirection * range, rayColor, 2f);
+
+			if (hitInfo.collider != null)
 			{
-				damageable.TakeDamage(weaponDamage);
+				IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
+				if (damageable != null)
+				{
+					damageable.TakeDamage(weaponDamage / pelletCount);
+				}
+
+				IBreakable breakable = hitInfo.transform.GetComponent<IBreakable>();
+				if (breakable != null)
+				{
+					breakable.TakeDamage(weaponDamage / pelletCount);
+				}
+
+				if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 9 && hitInfo.transform.gameObject.layer != 11)
+				{
+					Quaternion rot = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
+					_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
+				}
 			}
-
-			IBreakable breakable = hitInfo.transform.GetComponent<IBreakable>();
-			if (breakable != null)
-			{
-				breakable.TakeDamage(weaponDamage);
-			}
-		}
-
-		// Проверяем, есть ли вообще коллайдер и трансформ у объекта
-		if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 11)
-		{
-			Quaternion rot = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
-
-			// Добавляем четвертый параметр - Transform родителя
-			// Мы всегда хотим, чтобы след был дочерним объектом
-			_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
 		}
 
 		PlayerMagazineAmmoCurrent--;
