@@ -43,7 +43,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 
 	private bool _previousRightHandPressed = false;
 	private bool _previousLeftHandPressed = false;
-	private float _radius = 0.5f;
+	private float _radius = 1f;
 
 	public event System.Action<int> OnSegmentSelected;
 
@@ -220,9 +220,9 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 				{
 					float angleForOneStep = 360f / _weaponModels3D.Count;
 					float direction = Mathf.Sign(scrollInput); // Определяем направление (вперед или назад)
-
 					// Поворачиваем контейнер на один шаг
-					_weaponModelsContainer.transform.Rotate(Vector3.up, angleForOneStep * direction, Space.World);
+					Quaternion targetRotation = Quaternion.Euler(0, angleForOneStep, 0);
+					_weaponModelsContainer.transform.Rotate(_playerCamera.transform.up, angleForOneStep * direction, Space.World);
 
 					Debug.Log($"[Scroll Clicked] Direction: {direction} | Rotated by: {angleForOneStep} degrees");
 				}
@@ -256,7 +256,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		else
 		{
 			HideWeaponWheelMenuCanvas();
-			HideWeaponPrefabs();
+			//HideWeaponPrefabs();
 		}
 	}
 	// Устанавливает слой "IgnorePostProcessing" на контейнер оружия и все его содержимое
@@ -297,8 +297,8 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 
 		activeWeapons.Sort((a, b) => string.Compare(a.name, b.name));
 
-		float angleStep = 360f / activeWeapons.Count;
-		float spawnDistance = 1.0f;
+		float containerSpawnDistance = 2.0f;
+
 
 		// Создаем или очищаем контейнер
 		if (_weaponModelsContainer != null)
@@ -312,7 +312,8 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		{
 			_weaponModelsContainer = new GameObject("WeaponModels_Container");
 			_weaponModelsContainer.transform.SetParent(_playerCamera.transform, false);
-			_weaponModelsContainer.transform.rotation = Quaternion.Euler(15, 0, 0);
+			_weaponModelsContainer.transform.localPosition = _playerCamera.transform.forward * containerSpawnDistance;
+			//_weaponModelsContainer.transform.rotation = Quaternion.Euler(15, 0, 0);
 		}
 
 		_weaponModels3D.Clear();
@@ -325,25 +326,28 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 			SetWheelLayerToIgnorePostProcessing();
 
 
-			// --- РАСПОЛОЖЕНИЕ ОРУЖИЯ ---
-			Vector3 spawnPosition = _playerCamera.transform.position + _playerCamera.transform.forward * spawnDistance;
+			// Угол для равномерного распределения
+			float angleStep = 360f / activeWeapons.Count;
 			float angle = i * angleStep;
-			Vector3 circleOffset = new Vector3(
+
+			// Вычисляем позицию на окружности в локальных координатах контейнера
+			Vector3 localPosition = new Vector3(
 				Mathf.Sin(Mathf.Deg2Rad * angle) * _radius,
-				0,
+				0, // Высота (Y)
 				Mathf.Cos(Mathf.Deg2Rad * angle) * _radius
 			);
 
-			modelInstance.transform.position = spawnPosition + circleOffset;
-			modelInstance.transform.LookAt(_playerCamera.transform);
-
-
-			// --- УДАЛЕНИЕ ЛОГИКИ ---
 			WeaponAbstract weaponComp = modelInstance.GetComponent<WeaponAbstract>();
 			if (weaponComp != null)
 			{
 				Destroy(weaponComp);
 			}
+
+
+			// Устанавливаем позицию и поворот
+			modelInstance.transform.SetParent(_weaponModelsContainer.transform, true); // true - чтобы сохранить world-space позицию
+			modelInstance.transform.localPosition = localPosition;
+			modelInstance.transform.localRotation = Quaternion.identity; // Сбрасываем поворот модели, чтобы она смотрела "вверх" относительно контейнера
 
 			_weaponModels3D.Add(modelInstance);
 		}
