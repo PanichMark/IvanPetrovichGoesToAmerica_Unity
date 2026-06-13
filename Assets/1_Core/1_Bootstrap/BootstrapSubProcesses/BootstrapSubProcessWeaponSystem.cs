@@ -122,7 +122,8 @@ public class BootstrapSubProcessWeaponSystem
 		_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager,
 		WeaponController,
 		_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
-		_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
+		_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel,
+		_bootstrap.GameObjectPlayerCamera);
 
 		_weaponAnimationController.Initialize(
 			_bootstrap,

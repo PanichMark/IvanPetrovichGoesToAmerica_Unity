@@ -82,7 +82,7 @@ public class Bootstrap : MonoBehaviour
 	// Игрок
 	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
 	private GameObject _gameObjectPlayer;
-	private GameObject _gameObjectPlayerCamera;
+	public GameObject GameObjectPlayerCamera {  get; private set; }
 
 	// Система взаимодействия
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
@@ -320,7 +320,7 @@ public class Bootstrap : MonoBehaviour
 	private IEnumerator InitializePlayerSystems()
 	{
 		_gameObjectPlayer = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerGameObject"));
-		_gameObjectPlayerCamera = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerCameraGameObject"));
+		GameObjectPlayerCamera = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerCameraGameObject"));
 
 		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(
 			this,
@@ -329,7 +329,7 @@ public class Bootstrap : MonoBehaviour
 			_gameController,
 			_inputDevice,
 			_gameObjectPlayer,
-			_gameObjectPlayerCamera);
+			GameObjectPlayerCamera);
 
 		yield return StartCoroutine(_bootstrapSubProcessPlayerSystems.InitializePlayerSystems());
 
@@ -360,7 +360,7 @@ public class Bootstrap : MonoBehaviour
 			_inputDevice,
 			LocalizationManager,
 			_gameObjectPlayer,
-			_gameObjectPlayerCamera,
+			GameObjectPlayerCamera,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
 			_bootstrapSubProcessPlayerSystems,
@@ -377,7 +377,7 @@ public class Bootstrap : MonoBehaviour
 			this,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
-			_gameObjectPlayerCamera);
+			GameObjectPlayerCamera);
 
 		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
 

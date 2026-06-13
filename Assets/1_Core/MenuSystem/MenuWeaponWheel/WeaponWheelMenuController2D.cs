@@ -66,7 +66,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour
 		_weaponWheelMenuCanvas = weaponWheelMenuCanvas;
 		WeaponText = viewModelMenuWeaponWheel.TextWeaponWheelWeaponName;
 		WeaponWheelName = viewModelMenuWeaponWheel.TextWeaponWheelHandType;
-		WeaponIcon = viewModelMenuWeaponWheel.ImageWeaponWheelWeaponIcon;
+		WeaponIcon = viewModelMenuWeaponWheel.ImageWeaponWheelWeaponIcon.GetComponent<Image>();
 
 		_textWeaponAmmoMagazineNumber = viewModelMenuWeaponWheel.TextWeaponAmmoMagazineNumber;
 		_textComponentWeaponAmmoMagazineNumber = viewModelMenuWeaponWheel.TextWeaponAmmoMagazineNumber.GetComponent<TextMeshProUGUI>();

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class WeaponWheelMenuController3D : MonoBehaviour
 {
@@ -9,6 +9,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 	private GameObject _weaponWheelSegment;
 	private GameObject _weaponWheelMenuCanvas;
 	private Bootstrap _bootstrap;
+	private GameObject _playerCamera;
 	private GameObject _textWeaponAmmoMagazineNumber;
 	private TextMeshProUGUI _textComponentWeaponAmmoMagazineNumber;
 	private GameObject _textWeaponAmmoReserveNumber;
@@ -21,6 +22,8 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 	private int _selectedIndex3D = 0; // Индекс выбранного оружия в 3D-колесе
 	public TextMeshProUGUI WeaponText { get; private set; }
 	public TextMeshProUGUI WeaponWheelName { get; private set; }
+	private float _scrollAccumulator = 0f;
+	private GameObject _weaponWheelRadius;
 
 	private List<GameObject> _wheelSegments = new List<GameObject>();
 	private bool _isWeaponLeftHand = false;
@@ -28,7 +31,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 	private WeaponRangedAbstract _weaponRangedAbstractLeft;
 	public delegate void WeaponWheelMenuHandler(WeaponHandsEnum activeHand);
 	public event WeaponWheelMenuHandler OnOpenWeaponWheelMenu;
-
+	private GameObject _weaponIconImage;
 	private IInputDevice _inputDevice;
 	private LocalizationManager _localizationManager;
 	private PlayerWeaponController _weaponController;
@@ -38,10 +41,9 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 	private string _weaponWheelHandRight;
 	private string _weaponWheelHandLeft;
 
-	private bool _isHoveringOverButton;
 	private bool _previousRightHandPressed = false;
 	private bool _previousLeftHandPressed = false;
-	private float _radius = 130;
+	private float _radius = 0.5f;
 
 	public event System.Action<int> OnSegmentSelected;
 
@@ -54,7 +56,8 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		PlayerResourcesAmmoManager playerResourcesAmmoManager,
 		PlayerWeaponController weaponController,
 		GameObject weaponWheelMenuCanvas,
-		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
+		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel,
+		GameObject PlayerCamera)
 	{
 		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
@@ -63,10 +66,13 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		_playerResourcesAmmoManager = playerResourcesAmmoManager;
 		_weaponController = weaponController;
 		_menuManager = menuManager;
+		_playerCamera = PlayerCamera;
 		_weaponWheelSegment = viewModelMenuWeaponWheel.GameObjectWeaponWheelSegment;
 		_weaponWheelMenuCanvas = weaponWheelMenuCanvas;
 		WeaponText = viewModelMenuWeaponWheel.TextWeaponWheelWeaponName;
+		_weaponWheelRadius = viewModelMenuWeaponWheel.WeaponWheelRadius;
 		WeaponWheelName = viewModelMenuWeaponWheel.TextWeaponWheelHandType;
+		_weaponIconImage = viewModelMenuWeaponWheel.ImageWeaponWheelWeaponIcon;
 
 		_textWeaponAmmoMagazineNumber = viewModelMenuWeaponWheel.TextWeaponAmmoMagazineNumber;
 		_textComponentWeaponAmmoMagazineNumber = viewModelMenuWeaponWheel.TextWeaponAmmoMagazineNumber.GetComponent<TextMeshProUGUI>();
@@ -75,12 +81,15 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		_textWeaponAmmoSeparator = viewModelMenuWeaponWheel.TextWeaponAmmoSeparator;
 		_textComponentWeaponAmmoSeparator = viewModelMenuWeaponWheel.TextWeaponAmmoSeparator.GetComponent<TextMeshProUGUI>();
 
+		_weaponWheelRadius.SetActive(false);
+		_weaponIconImage.SetActive(false);
+
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
-
+		//_menuManager.OnOpenPauseMenu += SetWheelLayerToDefault;
+		//_menuManager.OnClosePauseMenu += SetWheelLayerToIgnorePostProcessing;
 		_weaponController.OnAnyWeaponUnlocked += OnWeaponUnlocked;
-
 		Debug.Log("WeaponWheelMenuController");
 	}
 
@@ -182,9 +191,11 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 	{
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
+
 		bool currentRightHandPressed = _inputDevice.GetKeyRightHandWeaponWheel();
 		bool currentLeftHandPressed = _inputDevice.GetKeyLeftHandWeaponWheel();
 
+		// Обработка открытия/закрытия колеса
 		if ((currentRightHandPressed != _previousRightHandPressed || currentLeftHandPressed != _previousLeftHandPressed) && _weaponController.HasAnyWeapon)
 		{
 			HandleWeaponWheel(currentRightHandPressed, currentLeftHandPressed);
@@ -192,6 +203,32 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 
 		_previousRightHandPressed = currentRightHandPressed;
 		_previousLeftHandPressed = currentLeftHandPressed;
+
+
+		// --- НОВАЯ ЛОГИКА ВРАЩЕНИЯ ---
+		if (_weaponModelsContainer != null && _weaponModelsContainer.activeSelf)
+		{
+			// Получаем текущее состояние прокрутки
+			float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+
+			// Проверяем, была ли прокрутка в этом кадре (событие клика)
+			// Это условие выполнится только в момент, когда мы начинаем крутить колесо.
+			if (scrollInput != 0)
+			{
+				// Вычисляем угол для одного шага на основе количества оружия
+				if (_weaponModels3D.Count > 0)
+				{
+					float angleForOneStep = 360f / _weaponModels3D.Count;
+					float direction = Mathf.Sign(scrollInput); // Определяем направление (вперед или назад)
+
+					// Поворачиваем контейнер на один шаг
+					_weaponModelsContainer.transform.Rotate(Vector3.up, angleForOneStep * direction, Space.World);
+
+					Debug.Log($"[Scroll Clicked] Direction: {direction} | Rotated by: {angleForOneStep} degrees");
+				}
+			}
+		}
+		// --- КОНЕЦ НОВОЙ ЛОГИКИ ---
 	}
 
 	void HandleWeaponWheel(bool rightHandPressed, bool leftHandPressed)
@@ -202,7 +239,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 			ShowWeaponWheelMenuCanvas();
 			_isWeaponLeftHand = false;
 			ShowWeaponName();
-
+			ShowWeaponPrefabs();
 			ShowWeaponAmmo();
 			WeaponWheelName.text = _weaponWheelHandRight;
 		}
@@ -212,15 +249,44 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 			ShowWeaponWheelMenuCanvas();
 			_isWeaponLeftHand = true;
 			ShowWeaponName();
-
+			ShowWeaponPrefabs();
 			ShowWeaponAmmo();
 			WeaponWheelName.text = _weaponWheelHandLeft;
 		}
 		else
 		{
 			HideWeaponWheelMenuCanvas();
+			HideWeaponPrefabs();
 		}
 	}
+	// Устанавливает слой "IgnorePostProcessing" на контейнер оружия и все его содержимое
+	private void SetWheelLayerToIgnorePostProcessing()
+	{
+		if (_weaponModelsContainer == null) return; // Защита от ошибки
+
+		int ignorePostLayer = LayerMask.NameToLayer("IgnorePostProcessing");
+		_weaponModelsContainer.layer = ignorePostLayer;
+
+		foreach (Transform child in _weaponModelsContainer.GetComponentsInChildren<Transform>(true))
+		{
+			child.gameObject.layer = ignorePostLayer;
+		}
+	}
+
+	// Устанавливает слой "Default" на контейнер оружия и все его содержимое
+	private void SetWheelLayerToDefault()
+	{
+		if (_weaponModelsContainer == null) return; // Защита от ошибки
+
+		int defaultLayer = LayerMask.NameToLayer("Default");
+		_weaponModelsContainer.layer = defaultLayer;
+
+		foreach (Transform child in _weaponModelsContainer.GetComponentsInChildren<Transform>(true))
+		{
+			child.gameObject.layer = defaultLayer;
+		}
+	}
+
 
 	void CreateWheel()
 	{
@@ -232,12 +298,11 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		activeWeapons.Sort((a, b) => string.Compare(a.name, b.name));
 
 		float angleStep = 360f / activeWeapons.Count;
-		float radius = 1.5f;
+		float spawnDistance = 1.0f;
 
 		// Создаем или очищаем контейнер
 		if (_weaponModelsContainer != null)
 		{
-			// Очистка старых моделей
 			foreach (Transform child in _weaponModelsContainer.transform)
 			{
 				Destroy(child.gameObject);
@@ -245,30 +310,38 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		}
 		else
 		{
-			// Создание контейнера, если его нет
 			_weaponModelsContainer = new GameObject("WeaponModels_Container");
-			_weaponModelsContainer.transform.position = Vector3.zero;
-			_weaponModelsContainer.transform.SetParent(this.transform);
+			_weaponModelsContainer.transform.SetParent(_playerCamera.transform, false);
+			_weaponModelsContainer.transform.rotation = Quaternion.Euler(15, 0, 0);
 		}
 
 		_weaponModels3D.Clear();
 
 		for (int i = 0; i < activeWeapons.Count; i++)
 		{
-			// Создаем экземпляр модели
 			GameObject modelInstance = Instantiate(activeWeapons[i], _weaponModelsContainer.transform);
 
-			// Настраиваем позицию, вращение и масштаб
-			modelInstance.transform.localRotation = Quaternion.Euler(90, i * angleStep - 90, 0);
-			modelInstance.transform.localPosition = new Vector3(0, 0, radius);
-			modelInstance.transform.localScale = Vector3.one * 0.5f;
+			// --- НОВОЕ: Устанавливаем слой для самого объекта и ВСЕХ его дочерних объектов ---
+			SetWheelLayerToIgnorePostProcessing();
 
-			// --- ИМЕННО ТО, ЧТО ТЫ ПРОСИЛ ---
-			// Находим и УДАЛЯЕМ компонент WeaponAbstract с клона
+
+			// --- РАСПОЛОЖЕНИЕ ОРУЖИЯ ---
+			Vector3 spawnPosition = _playerCamera.transform.position + _playerCamera.transform.forward * spawnDistance;
+			float angle = i * angleStep;
+			Vector3 circleOffset = new Vector3(
+				Mathf.Sin(Mathf.Deg2Rad * angle) * _radius,
+				0,
+				Mathf.Cos(Mathf.Deg2Rad * angle) * _radius
+			);
+
+			modelInstance.transform.position = spawnPosition + circleOffset;
+			modelInstance.transform.LookAt(_playerCamera.transform);
+
+
+			// --- УДАЛЕНИЕ ЛОГИКИ ---
 			WeaponAbstract weaponComp = modelInstance.GetComponent<WeaponAbstract>();
 			if (weaponComp != null)
 			{
-				// Эта строка безвозвратно удаляет компонент с объекта
 				Destroy(weaponComp);
 			}
 
@@ -276,11 +349,28 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		}
 	}
 
-	private Vector3 CalculatePositionOnCircle(float angleInDegrees, float radius)
+	// Скрывает все 3D-модели оружия (созданные префабы)
+	private void HideWeaponPrefabs()
 	{
-		float x = Mathf.Cos(Mathf.Deg2Rad * angleInDegrees) * radius;
-		float y = Mathf.Sin(Mathf.Deg2Rad * angleInDegrees) * radius;
-		return new Vector3(x, y, 0f);
+		foreach (GameObject weaponModel in _weaponModels3D)
+		{
+			if (weaponModel != null)
+			{
+				weaponModel.SetActive(false);
+			}
+		}
+	}
+
+	// Показывает все 3D-модели оружия (созданные префабы)
+	private void ShowWeaponPrefabs()
+	{
+		foreach (GameObject weaponModel in _weaponModels3D)
+		{
+			if (weaponModel != null)
+			{
+				weaponModel.SetActive(true);
+			}
+		}
 	}
 
 	public void RecreateWheel()
@@ -296,11 +386,13 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 	{
 		_weaponWheelMenuCanvas.gameObject.SetActive(true);
 		_menuManager.OpenWeaponWheelMenu();
+		//ShowWeaponPrefabs();
 	}
 
 	private void HideWeaponWheelMenuCanvas()
 	{
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
+		//HideWeaponPrefabs();
 		if (!_menuManager.IsPauseMenuOpened)
 		{
 			_menuManager.CloseWeaponWheelMenu();

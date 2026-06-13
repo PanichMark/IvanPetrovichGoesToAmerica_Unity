@@ -7,10 +7,12 @@ public class ViewModelMenuWeaponWheel
 	public GameObject GameObjectWeaponWheelSegment;
 
 	public TextMeshProUGUI TextWeaponWheelWeaponName;
-	public Image ImageWeaponWheelWeaponIcon;
+	public GameObject ImageWeaponWheelWeaponIcon;
 	public GameObject TextWeaponAmmoMagazineNumber;
 	public GameObject TextWeaponAmmoReserveNumber;
 	public GameObject TextWeaponAmmoSeparator;
+
+	public GameObject WeaponWheelRadius;
 
 	public TextMeshProUGUI TextWeaponWheelHandType;
 
@@ -25,10 +27,12 @@ public class ViewModelMenuWeaponWheel
 		GameObjectWeaponWheelSegment = Resources.Load<GameObject>("WeaponSystem/WeaponWheel/WeaponWheelSegment");
 
 		TextWeaponWheelWeaponName = canvas.transform.Find("TextWeaponWheelWeapon").GetComponent<TextMeshProUGUI>();
-		ImageWeaponWheelWeaponIcon = canvas.transform.Find("ImageWeaponWheelWeapon").GetComponent<Image>();
+		ImageWeaponWheelWeaponIcon = bootstrap.FindDeepGameObject(canvas, "ImageWeaponWheelWeapon");
 		TextWeaponAmmoMagazineNumber = bootstrap.FindDeepGameObject(canvas, "WeaponAmmoMagazineNumber");
 		TextWeaponAmmoReserveNumber = bootstrap.FindDeepGameObject(canvas, "WeaponAmmoReserveNumber");
 		TextWeaponAmmoSeparator = bootstrap.FindDeepGameObject(canvas, "WeaponAmmoSeparator");
+
+		WeaponWheelRadius = bootstrap.FindDeepGameObject(canvas, "Radius");
 
 		TextWeaponWheelHandType = canvas.transform.Find("TextWeaponWheelHandType").GetComponent<TextMeshProUGUI>();
 
