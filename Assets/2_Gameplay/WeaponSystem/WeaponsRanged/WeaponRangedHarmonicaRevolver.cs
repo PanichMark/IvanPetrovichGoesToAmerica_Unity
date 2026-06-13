@@ -15,7 +15,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
-	protected override void WeaponRangedRecoil()
+	protected override void ApplyWeaponRangedRecoil()
 	{
 		_playerCameraController.ApplyWeaponRecoilSingle(2, 0.02f, 0.08f);
 	}

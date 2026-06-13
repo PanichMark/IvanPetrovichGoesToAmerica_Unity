@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 {
@@ -17,7 +16,7 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
-	protected override void WeaponRangedRecoil()
+	protected override void ApplyWeaponRangedRecoil()
 	{
 		_playerCameraController.ApplyWeaponRecoilAuto();
 	}

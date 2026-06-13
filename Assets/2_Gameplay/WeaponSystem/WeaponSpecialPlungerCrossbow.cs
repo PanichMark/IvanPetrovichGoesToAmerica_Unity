@@ -32,9 +32,9 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	public override string WeaponType => WeaponTypes.Special.ToString();
 
 	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
-	public override float WeaponDamage => 0; 
+	public override float WeaponDamage => 0;
 
-	private void Start()
+	public override void InitializeWeapon()
 	{
 		_playerCamera = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 		_player = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");

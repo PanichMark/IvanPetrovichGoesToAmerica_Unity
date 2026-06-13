@@ -19,7 +19,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected BulletHoleManager _bulletHoleManager;
 	protected PlayerCameraController _playerCameraController;
 
-	private void Start()
+	public override void InitializeWeapon()
 	{
 		if (_isThisPlayerWeapon)
 		{
@@ -28,21 +28,21 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 			_bulletHoleManager = ServiceLocator.Resolve<BulletHoleManager>("BulletHoleManager");
-			
-			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
-			{
-				_VFXspawnPoint = FirstPersonWeaponModelInstance.transform.Find("VFX");
-			}
-			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
-			{
-				_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
-			}
+
 			_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXSpawnPoint;
 			InitializeWeaponRanged();
 		}
 
-	
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		{
+			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform.Find("VFX");
+		}
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+		{
+			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
+		}
 	}
+
 	private void OnDestroy()
 	{
 		if (_playerCameraStateMachineController != null)
@@ -113,7 +113,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 			ShootPlayerWeapon(WeaponDamage);
 
-			WeaponRangedRecoil();
+			ApplyWeaponRangedRecoil();
 
 			yield return new WaitForSeconds(_weaponAutoAttackSpeedRate);
 
@@ -137,7 +137,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
 			_VFXspawnPoint.transform);
 
-		Debug.Log(_vfxInstance.transform.position);
+		//Debug.Log(_vfxInstance.transform.position);
 
 		Destroy(_vfxInstance, 0.05f);
 
@@ -168,7 +168,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
-		WeaponRangedRecoil();
+		ApplyWeaponRangedRecoil();
 	}
 
 	public void ReloadPlayerWeapon()
@@ -231,5 +231,5 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	}
 
 	protected abstract void InitializeWeaponRanged();
-	protected abstract void WeaponRangedRecoil();
+	protected abstract void ApplyWeaponRangedRecoil();
 }

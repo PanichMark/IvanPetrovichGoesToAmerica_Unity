@@ -224,7 +224,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 					Quaternion targetRotation = Quaternion.Euler(0, angleForOneStep, 0);
 					_weaponModelsContainer.transform.Rotate(_playerCamera.transform.up, angleForOneStep * direction, Space.World);
 
-					Debug.Log($"[Scroll Clicked] Direction: {direction} | Rotated by: {angleForOneStep} degrees");
+					//Debug.Log($"[Scroll Clicked] Direction: {direction} | Rotated by: {angleForOneStep} degrees");
 				}
 			}
 		}
@@ -256,7 +256,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		else
 		{
 			HideWeaponWheelMenuCanvas();
-			//HideWeaponPrefabs();
+			HideWeaponPrefabs();
 		}
 	}
 	// Устанавливает слой "IgnorePostProcessing" на контейнер оружия и все его содержимое

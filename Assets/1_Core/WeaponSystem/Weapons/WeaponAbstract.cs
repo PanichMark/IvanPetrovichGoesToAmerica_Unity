@@ -59,7 +59,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		ThirdPersonWeaponModelInstance = gameObject;
 		InstantiateFirstPersonWeaponInstance();
-	
+
 		FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
 		foreach (Transform child in FirstPersonWeaponModelInstance.transform)
 		{
@@ -82,6 +82,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
+
+		InitializeWeapon();
 	}
 
 	public void InstantiateFirstPersonWeaponInstance()
@@ -95,6 +97,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 	{
 		_isThisPlayerWeapon = true;
 	}
+
+	public abstract void InitializeWeapon();
 
 	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
 	{

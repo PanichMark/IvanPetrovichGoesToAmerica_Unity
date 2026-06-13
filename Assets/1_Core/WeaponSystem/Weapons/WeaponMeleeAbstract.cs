@@ -12,13 +12,13 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	protected float _forwardOffset;
 	protected float _attackDelay;
 
-	private void Start()
+	public override void InitializeWeapon()
 	{
 		if (_isThisPlayerWeapon == true)
 		{
 			_attackPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
 		}
-		
+
 		InitializeWeaponMelee();
 	}
 

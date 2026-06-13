@@ -11,7 +11,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 
 	protected PlayerResourcesManaManager _playerResourcesManaManager;
 
-	private void Start()
+	public override void InitializeWeapon()
 	{
 		if (_isThisPlayerWeapon == true)
 		{

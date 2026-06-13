@@ -71,10 +71,10 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
-		WeaponRangedRecoil();
+		ApplyWeaponRangedRecoil();
 	}
 
-	protected override void WeaponRangedRecoil()
+	protected override void ApplyWeaponRangedRecoil()
 	{
 		_playerCameraController.ApplyWeaponRecoilSingle(15, 0.05f, 0.5f);
 	}
