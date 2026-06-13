@@ -58,6 +58,9 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 
 	private void Update()
 	{
+		if (!_isWeaponInitialized)
+			return;
+
 		Vector3 playerPosition = _attackPoint.transform.position;
 		Vector3 playerForward = _attackPoint.transform.forward;
 

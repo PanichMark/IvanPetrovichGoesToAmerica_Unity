@@ -21,8 +21,8 @@ public class BootstrapSubProcessWeaponSystem
 	private GameObject _gameObjectThirdPersonRightHandWeaponSlot;
 	private GameObject _gameObjectThirdPersonLeftHandWeaponSlot;
 
-	private WeaponWheelMenuController2D _weaponWheelController2D;
-	//private WeaponWheelMenuController3D _weaponWheelController3D;
+	//private WeaponWheelMenuController2D _weaponWheelController2D;
+	private WeaponWheelMenuController3D _weaponWheelController3D;
 
 	private WeaponAnimationController _weaponAnimationController;
 
@@ -68,8 +68,8 @@ public class BootstrapSubProcessWeaponSystem
 		WeaponController = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponController>();
 
 
-		_weaponWheelController2D = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
-		//_weaponWheelController3D = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController3D>();
+		//_weaponWheelController2D = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
+		_weaponWheelController3D = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController3D>();
 
 		_weaponAnimationController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponAnimationController>();
 		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponFirstPersonRender>();
@@ -100,7 +100,7 @@ public class BootstrapSubProcessWeaponSystem
 		_gameObjectPlayer,
 		WeaponController);
 
-		
+		/*
 		_weaponWheelController2D.Initialize(
 			_bootstrap,
 			_inputDevice,
@@ -111,8 +111,8 @@ public class BootstrapSubProcessWeaponSystem
 			WeaponController,
 			_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
 			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
+		*/
 		
-		/*
 		_weaponWheelController3D.Initialize(
 		_bootstrap,
 		_inputDevice,
@@ -124,7 +124,7 @@ public class BootstrapSubProcessWeaponSystem
 		_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
 		_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel,
 		_bootstrap.GameObjectPlayerCamera);
-		*/
+		
 
 		_weaponAnimationController.Initialize(
 			_bootstrap,

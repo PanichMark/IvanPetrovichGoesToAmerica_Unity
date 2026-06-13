@@ -13,7 +13,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	protected float _weaponAutoAttackSpeedRate;
 	protected bool _isWeaponAutoAttacking;
 	protected Coroutine _weaponAutoAttackCourutine;
-
+	protected bool _isWeaponInitialized;
 	protected bool _isThisPlayerWeapon;
 
 	public GameObject FirstPersonWeaponModelInstance { get; protected set; }
@@ -84,6 +84,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
 
 		InitializeWeapon();
+		_isWeaponInitialized = true;
 	}
 
 	public void InstantiateFirstPersonWeaponInstance()

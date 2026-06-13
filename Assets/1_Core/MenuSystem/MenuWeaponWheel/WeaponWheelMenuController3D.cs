@@ -8,6 +8,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private GameObject _weaponWheelSegment;
 	private GameObject _weaponWheelMenuCanvas;
+	private int _pendingSelectionIndex = -1;
 	private Bootstrap _bootstrap;
 	private GameObject _playerCamera;
 	private GameObject _textWeaponAmmoMagazineNumber;
@@ -221,8 +222,9 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 					float angleForOneStep = 360f / _weaponModels3D.Count;
 					float direction = Mathf.Sign(scrollInput); // Определяем направление (вперед или назад)
 					// Поворачиваем контейнер на один шаг
-					Quaternion targetRotation = Quaternion.Euler(0, angleForOneStep, 0);
-					_weaponModelsContainer.transform.Rotate(_playerCamera.transform.up, angleForOneStep * direction, Space.World);
+					Quaternion targetRotation = Quaternion.Euler(0, angleForOneStep * direction, 0);
+					//_weaponModelsContainer.transform.Rotate(_playerCamera.transform.up, angleForOneStep * direction, Space.World);
+					_weaponModelsContainer.transform.rotation *= targetRotation;
 
 					//Debug.Log($"[Scroll Clicked] Direction: {direction} | Rotated by: {angleForOneStep} degrees");
 				}
@@ -256,7 +258,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		else
 		{
 			HideWeaponWheelMenuCanvas();
-			HideWeaponPrefabs();
+			//HideWeaponPrefabs();
 		}
 	}
 	// Устанавливает слой "IgnorePostProcessing" на контейнер оружия и все его содержимое
@@ -295,7 +297,12 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		if (activeWeapons.Count == 0)
 			return;
 
-		activeWeapons.Sort((a, b) => string.Compare(a.name, b.name));
+		activeWeapons.Sort((a, b) =>
+		{
+			int indexA = _weaponController.ExtractWeaponIndex(a.name);
+			int indexB = _weaponController.ExtractWeaponIndex(b.name);
+			return indexA.CompareTo(indexB);
+		});
 
 		float containerSpawnDistance = 2.0f;
 
@@ -312,8 +319,8 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		{
 			_weaponModelsContainer = new GameObject("WeaponModels_Container");
 			_weaponModelsContainer.transform.SetParent(_playerCamera.transform, false);
-			_weaponModelsContainer.transform.localPosition = _playerCamera.transform.forward * containerSpawnDistance;
-			//_weaponModelsContainer.transform.rotation = Quaternion.Euler(15, 0, 0);
+			_weaponModelsContainer.transform.position = _playerCamera.transform.TransformPoint(new Vector3(0, 0.3f, containerSpawnDistance));
+			_weaponModelsContainer.transform.rotation = Quaternion.Euler(-30, 0, 0);
 		}
 
 		_weaponModels3D.Clear();
@@ -340,7 +347,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 			WeaponAbstract weaponComp = modelInstance.GetComponent<WeaponAbstract>();
 			if (weaponComp != null)
 			{
-				Destroy(weaponComp);
+				//Destroy(weaponComp);
 			}
 
 
@@ -393,16 +400,50 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		//ShowWeaponPrefabs();
 	}
 
+
+
 	private void HideWeaponWheelMenuCanvas()
 	{
+		// 1. Сначала получаем и сортируем список ОДИН РАЗ.
+		List<GameObject> weaponsList = _weaponController.CollectActiveWeapons();
+
+		if (weaponsList.Count > 0)
+		{
+			// Сортируем его так же, как это делается в CreateWheel
+			weaponsList.Sort((a, b) =>
+			{
+				int indexA = _weaponController.ExtractWeaponIndex(a.name);
+				int indexB = _weaponController.ExtractWeaponIndex(b.name);
+				return indexA.CompareTo(indexB);
+			});
+
+			// 2. Теперь вычисляем нужный индекс на основе угла поворота.
+			float anglePerSegment = 360f / weaponsList.Count;
+			float totalRotatedAngleY = _weaponModelsContainer.transform.localRotation.eulerAngles.y;
+			if (totalRotatedAngleY < 0) totalRotatedAngleY += 360;
+
+			int indexToSelect = Mathf.RoundToInt(totalRotatedAngleY / anglePerSegment);
+			indexToSelect %= weaponsList.Count; // Страховка от выхода за границы
+
+			Debug.Log($"[Weapon Wheel] Closing wheel. Total Angle: {totalRotatedAngleY}, Index: {indexToSelect}");
+
+			// 3. Выбираем оружие из УЖЕ ОТСОРТИРОВАННОГО списка.
+			GameObject weaponToSelect = weaponsList[indexToSelect];
+			string weaponNameForLog = weaponToSelect.name;
+
+			Debug.Log($"[Weapon Wheel] Selecting weapon at sorted index {indexToSelect}: {weaponNameForLog}");
+
+			_weaponController.SelectWeapon(weaponToSelect);
+			Debug.Log("[Weapon Wheel] Weapon selection command sent.");
+		}
+
+		// Остальной код закрытия меню остается без изменений
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
-		//HideWeaponPrefabs();
 		if (!_menuManager.IsPauseMenuOpened)
 		{
 			_menuManager.CloseWeaponWheelMenu();
 		}
 	}
-
 
 
 	public void ShowWeaponName()
