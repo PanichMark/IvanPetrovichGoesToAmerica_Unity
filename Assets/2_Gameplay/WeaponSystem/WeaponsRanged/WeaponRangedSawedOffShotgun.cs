@@ -12,7 +12,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 	public override bool IsWeaponAuto => false;
 	protected override void InitializeWeaponRanged()
 	{
-		
+		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
 	protected override void ShootPlayerWeapon(float weaponDamage)
@@ -20,6 +20,15 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 		int pelletCount = 10;
 		float spreadAngle = 7f;
 		float range = 100f;
+
+		_vfxInstance = Instantiate(
+			_VFXshottEffect,
+			_VFXspawnPoint.position,
+			_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
+			_VFXspawnPoint.transform);
+		_vfxInstance.transform.localScale = Vector3.one * 2.5f;
+
+		Destroy(_vfxInstance, 0.05f);
 
 		for (int i = 0; i < pelletCount; i++)
 		{

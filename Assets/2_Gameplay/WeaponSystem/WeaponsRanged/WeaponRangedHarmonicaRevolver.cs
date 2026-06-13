@@ -12,7 +12,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	protected override void InitializeWeaponRanged()
 	{
-
+		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
 	protected override void WeaponRangedRecoil()

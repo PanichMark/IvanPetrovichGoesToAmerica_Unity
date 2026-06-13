@@ -14,6 +14,7 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 	protected override void InitializeWeaponRanged()
 	{
 		_weaponAutoAttackSpeedRate = 0.1f;
+		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
 	protected override void WeaponRangedRecoil()

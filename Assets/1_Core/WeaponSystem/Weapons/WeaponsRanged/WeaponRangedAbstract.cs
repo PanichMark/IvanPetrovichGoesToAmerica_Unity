@@ -6,9 +6,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 
 	protected GameObject _shootPoint;
-
+	protected PlayerCameraStateMachineController _playerCameraStateMachineController;
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
-	
+	protected GameObject _VFXshottEffect;
+	protected Transform _VFXspawnPoint;
+	protected GameObject _vfxInstance;
 	public int PlayerMagazineAmmoCurrent { get; set; }
 	public int PlayerMagazineAmmoMax { get; protected set; }
 	
@@ -21,11 +23,39 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		if (_isThisPlayerWeapon)
 		{
+			_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 			_bulletHoleManager = ServiceLocator.Resolve<BulletHoleManager>("BulletHoleManager");
+			
+			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+			{
+				_VFXspawnPoint = FirstPersonWeaponModelInstance.transform.Find("VFX");
+			}
+			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+			{
+				_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
+			}
 			InitializeWeaponRanged();
+		}
+
+		_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXSpawnPoint;
+	}
+	private void OnDestroy()
+	{
+		_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXSpawnPoint;
+	}
+
+	private void ChangeVFXSpawnPoint()
+	{
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		{
+			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform.Find("VFX");
+		}
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+		{
+			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
 		}
 	}
 
@@ -96,6 +126,16 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
+
+		_vfxInstance = Instantiate(
+			_VFXshottEffect,
+			_VFXspawnPoint.position,
+			_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
+			_VFXspawnPoint.transform);
+
+		Debug.Log(_vfxInstance.transform.position);
+
+		Destroy(_vfxInstance, 0.05f);
 
 		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))
 		{
