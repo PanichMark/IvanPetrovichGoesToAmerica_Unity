@@ -141,8 +141,6 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			}
 		}
 
-		IsLeftHand = _inputDevice.GetKeyLeftHandWeaponWheel();
-
 		if (_inputDevice.GetKeyReload())
 		{
 			WeaponAbstract leftWeapon = LeftHandWeapon?.GetComponent<WeaponAbstract>();
@@ -157,6 +155,14 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				(rightWeapon as WeaponRangedAbstract).Reload();
 			}
 		}
+	}
+
+	private void LateUpdate()
+	{
+		if (!_bootstrap.IsBootstrapInitialized)
+			return;
+
+		IsLeftHand = _inputDevice.GetKeyLeftHandWeaponWheel();
 	}
 
 	private void DisarmPlayerOnDeath()

@@ -465,8 +465,10 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 			string weaponNameForLog = weaponToSelect.name;
 
 			Debug.Log($"[Weapon Wheel] Selecting weapon at sorted index {indexToSelect}: {weaponNameForLog}");
-
-			_weaponController.SelectWeapon(weaponToSelect);
+			if (_weaponController.IsAbleToUseRightWeapon || (_weaponController.IsLeftHand && _weaponController.IsAbleToUseLeftWeapon))
+			{
+				_weaponController.SelectWeapon(weaponToSelect);
+			}
 			Debug.Log("[Weapon Wheel] Weapon selection command sent.");
 		}
 
