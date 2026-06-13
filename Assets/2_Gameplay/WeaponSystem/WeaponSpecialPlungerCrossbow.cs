@@ -174,9 +174,17 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 
 	private void OnDestroy()
 	{
-		_gameSceneManager.OnBeginLoadingMainMenuScene -= StopPlungingCompletely;
-		_gameSceneManager.OnBeginLoadingGameplayScene -= StopPlungingCompletely;
-		_playerBehaviour.OnPlayerDisarmed -= StopPlunging;
+		// Проверка на null защищает от ошибки, если эти объекты были уничтожены
+		if (_gameSceneManager != null)
+		{
+			_gameSceneManager.OnBeginLoadingMainMenuScene -= StopPlungingCompletely;
+			_gameSceneManager.OnBeginLoadingGameplayScene -= StopPlungingCompletely;
+		}
+
+		if (_playerBehaviour != null)
+		{
+			_playerBehaviour.OnPlayerDisarmed -= StopPlunging;
+		}
 
 		StopPlunging();
 	}

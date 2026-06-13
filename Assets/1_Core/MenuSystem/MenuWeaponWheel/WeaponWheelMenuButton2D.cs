@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponWheelMenuButton : MonoBehaviour
+public class WeaponWheelMenuButton2D : MonoBehaviour
 {
 	private PlayerWeaponController _weaponController;
-	private WeaponWheelMenuController _weaponWheelController;
+	private WeaponWheelMenuController2D _weaponWheelController;
 	private GameObject _WeaponPrefab;
 	private string _WeaponName;
 	private Sprite _WeaponIcon;
@@ -17,7 +17,7 @@ public class WeaponWheelMenuButton : MonoBehaviour
 	private WeaponRangedAbstract _weaponRangedAbstract;
 	private GameObject _previousWeapon;
 
-	public void Initialize(LocalizationManager localizationManager, PlayerWeaponController weaponController, WeaponWheelMenuController weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
+	public void Initialize(LocalizationManager localizationManager, PlayerWeaponController weaponController, WeaponWheelMenuController2D weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
 	{
 		_localizationManager = localizationManager;
 		_weaponController = weaponController;

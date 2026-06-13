@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class BootstrapSubProcessWeaponSystem
@@ -22,7 +21,8 @@ public class BootstrapSubProcessWeaponSystem
 	private GameObject _gameObjectThirdPersonRightHandWeaponSlot;
 	private GameObject _gameObjectThirdPersonLeftHandWeaponSlot;
 
-	private WeaponWheelMenuController _weaponWheelController;
+	private WeaponWheelMenuController2D _weaponWheelController2D;
+	private WeaponWheelMenuController3D _weaponWheelController3D;
 
 	private WeaponAnimationController _weaponAnimationController;
 
@@ -66,7 +66,11 @@ public class BootstrapSubProcessWeaponSystem
 		_GameObjectBootstrapWeaponSystem = new GameObject("Bootstrap_WeaponSystem");
 
 		WeaponController = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponController>();
-		_weaponWheelController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController>();
+
+
+		//_weaponWheelController2D = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
+		_weaponWheelController3D = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController3D>();
+
 		_weaponAnimationController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponAnimationController>();
 		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponFirstPersonRender>();
 		_legKickAttackController = _GameObjectBootstrapWeaponSystem.AddComponent<LegKickAttackController>();
@@ -96,7 +100,8 @@ public class BootstrapSubProcessWeaponSystem
 		_gameObjectPlayer,
 		WeaponController);
 
-		_weaponWheelController.Initialize(
+		/*
+		_weaponWheelController2D.Initialize(
 			_bootstrap,
 			_inputDevice,
 			_localizationManager,
@@ -106,6 +111,18 @@ public class BootstrapSubProcessWeaponSystem
 			WeaponController,
 			_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
 			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
+		*/
+
+		_weaponWheelController3D.Initialize(
+		_bootstrap,
+		_inputDevice,
+		_localizationManager,
+		_bootstrapSubProcessMenuSystem.MenuManager,
+		_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager,
+		WeaponController,
+		_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
+		_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
 
 		_weaponAnimationController.Initialize(
 			_bootstrap,

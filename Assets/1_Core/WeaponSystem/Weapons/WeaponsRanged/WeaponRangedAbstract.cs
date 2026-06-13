@@ -37,14 +37,18 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			{
 				_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
 			}
+			_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXSpawnPoint;
 			InitializeWeaponRanged();
 		}
 
-		_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXSpawnPoint;
+	
 	}
 	private void OnDestroy()
 	{
-		_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXSpawnPoint;
+		if (_playerCameraStateMachineController != null)
+		{
+			_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXSpawnPoint;
+		}
 	}
 
 	private void ChangeVFXSpawnPoint()

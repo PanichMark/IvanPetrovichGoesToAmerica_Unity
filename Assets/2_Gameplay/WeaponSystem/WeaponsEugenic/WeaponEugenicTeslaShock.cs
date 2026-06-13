@@ -71,10 +71,17 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 	private void OnDestroy()
 	{
-		_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXSpawnPoint;
-		_playerWeaponController.OnWeaponHidden -= TurnEugenicVFXOff;
-	}
+		if (_playerCameraStateMachineController != null)
+		{
+			_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXSpawnPoint;
+		}
 
+		if (_playerWeaponController != null)
+		{
+			_playerWeaponController.OnWeaponHidden -= TurnEugenicVFXOff;
+		}
+	}
+	
 	private IEnumerator ShowVFX()
 	{
 		_vfxInstance = Instantiate(

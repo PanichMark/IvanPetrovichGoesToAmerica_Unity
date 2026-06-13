@@ -1,10 +1,9 @@
-﻿using Codice.Client.BaseCommands.CheckIn.Progress;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponWheelMenuController : MonoBehaviour
+public class WeaponWheelMenuController2D : MonoBehaviour
 {
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private GameObject _weaponWheelSegment;                    
@@ -282,7 +281,7 @@ public class WeaponWheelMenuController : MonoBehaviour
 			Vector3 positionOnCircle = CalculatePositionOnCircle(adjustedAngle, _radius);
 			segmentInstance.transform.localPosition = positionOnCircle;
 
-			WeaponWheelMenuButton buttonScript = segmentInstance.GetComponent<WeaponWheelMenuButton>();
+			WeaponWheelMenuButton2D buttonScript = segmentInstance.GetComponent<WeaponWheelMenuButton2D>();
 			if (buttonScript != null)
 			{
 				buttonScript.Initialize(_localizationManager, _weaponController, this, activeWeapons[i], weaponComponent);
