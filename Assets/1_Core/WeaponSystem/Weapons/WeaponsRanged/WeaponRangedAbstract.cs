@@ -141,11 +141,13 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		Destroy(_vfxInstance, 0.05f);
 
+
 		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))
 		{
 			damageable = hitInfo.transform.GetComponent<IDamageable>();
-			if (damageable != null)
+			if (damageable != null && hitInfo.transform.gameObject.layer != 9)
 			{
+				Debug.Log($"Попадание в объект: {hitInfo.transform.name}, Слой: {hitInfo.transform.gameObject.layer}");
 				damageable.TakeDamage(weaponDamage);
 			}
 		}

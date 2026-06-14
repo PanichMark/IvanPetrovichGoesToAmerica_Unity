@@ -93,9 +93,10 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 
 		_weaponWheelRadius.SetActive(false);
 		_weaponIconImage.SetActive(false);
-
+		RecreateWheel();
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
-
+		_weaponWheelHandRight = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandRight")}";
+		_weaponWheelHandLeft = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandLeft")}";
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		//_menuManager.OnOpenPauseMenu += SetWheelLayerToDefault;
 		//_menuManager.OnClosePauseMenu += SetWheelLayerToIgnorePostProcessing;
@@ -300,7 +301,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 
 		ShowWeaponName();
 
-			_isRotating = false;
+		_isRotating = false;
 	}
 	// --- КОНЕЦ НОВОЙ ЛОГИКИ ---
 

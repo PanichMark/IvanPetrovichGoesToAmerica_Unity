@@ -11,6 +11,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 	private Bootstrap _bootstrap;
 	private GameObject _textWeaponAmmoMagazineNumber;
 	private TextMeshProUGUI _textComponentWeaponAmmoMagazineNumber;
+
 	private GameObject _textWeaponAmmoReserveNumber;
 	private TextMeshProUGUI _textComponentWeaponAmmoReserveNumber;
 	private GameObject _textWeaponAmmoSeparator;
@@ -80,9 +81,10 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 		_weaponWheelRadius.SetActive(true);
 		_weaponIconImage.SetActive(true);
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
-
+		RecreateWheel();
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
-
+		_weaponWheelHandRight = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandRight")}";
+		_weaponWheelHandLeft = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandLeft")}";
 		_weaponController.OnAnyWeaponUnlocked += OnWeaponUnlocked;
 
 		Debug.Log("WeaponWheelMenuController");
@@ -400,16 +402,11 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 
 	private void OnDestroy()
 	{
-		if (_wheelSegments != null)
+		foreach (GameObject segment in _wheelSegments)
 		{
-			foreach (GameObject segment in _wheelSegments)
-			{
-				if (segment != null)
-				{
-					Destroy(segment);
-				}
-			}
-			_wheelSegments.Clear();
+			Destroy(segment);
 		}
+
+		_wheelSegments.Clear();
 	}
 }

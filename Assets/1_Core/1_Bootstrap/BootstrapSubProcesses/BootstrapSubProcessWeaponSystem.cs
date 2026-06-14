@@ -180,6 +180,8 @@ public class BootstrapSubProcessWeaponSystem
 		}
 		else if((weaponWheelMenuTypes == WeaponWheelMenuTypes._3D) && !(_weaponWheelMenuController is WeaponWheelMenuController3D))
 		{
+			Object.Destroy(_weaponWheelMenuController as Component);
+
 			_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController3D>();
 
 			_weaponWheelMenuController.Initialize(

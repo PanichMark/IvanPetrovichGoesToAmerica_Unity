@@ -44,7 +44,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 			if (hitInfo.collider != null)
 			{
 				IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
-				if (damageable != null)
+				if (damageable != null && hitInfo.transform.gameObject.layer != 9)
 				{
 					damageable.TakeDamage(weaponDamage / pelletCount);
 				}
