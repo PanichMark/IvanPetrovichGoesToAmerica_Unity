@@ -275,6 +275,7 @@ public class BootstrapSubProcessMenuSystem
 			_viewModelPauseSubMenuSettings);
 
 		PauseSubMenuSettingsSectionGeneralController.Initialize(
+			_bootstrap,
 			_gameController,
 			_localizationManager,
 			PauseMenuController,

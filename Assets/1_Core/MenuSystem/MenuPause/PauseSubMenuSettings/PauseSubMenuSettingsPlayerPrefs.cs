@@ -6,6 +6,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 {
 	public string FPSlimit { get; private set; } = "FPSlimit";
 	public string CameraFOV { get; private set; } = "CameraFOV";
+	public string WeaponWheelType { get; private set; } = "WeaponWheelType";
 
 	private Bootstrap _bootstrap;
 	public string Language { get; private set; } = "Language";
@@ -56,6 +57,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 	{
 		PlayerPrefs.SetInt(FPSlimit, data.FPSlimit);
 		PlayerPrefs.SetFloat(CameraFOV, data.CameraFOV);
+		PlayerPrefs.SetString(WeaponWheelType, data.WeaponWheelType);
 
 		PlayerPrefs.Save();
 
@@ -99,6 +101,7 @@ public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
 
 		data.FPSlimit = PlayerPrefs.GetInt(FPSlimit, 60);
 		data.CameraFOV = PlayerPrefs.GetFloat(CameraFOV, 60);
+		data.WeaponWheelType = PlayerPrefs.GetString(WeaponWheelType, "2D");
 
 		data.MouseSensitivityX = PlayerPrefs.GetFloat(MouseSensitivityX, 1);
 		data.MouseSensitivityY = PlayerPrefs.GetFloat(MouseSensitivityY, 1);

@@ -21,8 +21,7 @@ public class BootstrapSubProcessWeaponSystem
 	private GameObject _gameObjectThirdPersonRightHandWeaponSlot;
 	private GameObject _gameObjectThirdPersonLeftHandWeaponSlot;
 
-	//private WeaponWheelMenuController2D _weaponWheelController2D;
-	private WeaponWheelMenuController3D _weaponWheelController3D;
+	private IWeaponWheelMenuController _weaponWheelMenuController;
 
 	private WeaponAnimationController _weaponAnimationController;
 
@@ -67,9 +66,7 @@ public class BootstrapSubProcessWeaponSystem
 
 		WeaponController = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponController>();
 
-
-		//_weaponWheelController2D = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
-		_weaponWheelController3D = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController3D>();
+		_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
 
 		_weaponAnimationController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponAnimationController>();
 		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponFirstPersonRender>();
@@ -100,20 +97,7 @@ public class BootstrapSubProcessWeaponSystem
 		_gameObjectPlayer,
 		WeaponController);
 
-		/*
-		_weaponWheelController2D.Initialize(
-			_bootstrap,
-			_inputDevice,
-			_localizationManager,
-			_bootstrapSubProcessMenuSystem.MenuManager,
-			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
-			_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager,
-			WeaponController,
-			_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
-			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
-		*/
-		
-		_weaponWheelController3D.Initialize(
+		_weaponWheelMenuController.Initialize(
 		_bootstrap,
 		_inputDevice,
 		_localizationManager,
@@ -125,7 +109,6 @@ public class BootstrapSubProcessWeaponSystem
 		_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel,
 		_bootstrap.GameObjectPlayerCamera);
 		
-
 		_weaponAnimationController.Initialize(
 			_bootstrap,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
@@ -172,5 +155,45 @@ public class BootstrapSubProcessWeaponSystem
 		ServiceLocator.Register("BulletHoleManager", _bulletHoleManager);
 
 		yield break;
+	}
+
+	public void ChangeWeaponWheelType(WeaponWheelMenuTypes weaponWheelMenuTypes)
+	{
+		if ((weaponWheelMenuTypes == WeaponWheelMenuTypes._2D) && !(_weaponWheelMenuController is WeaponWheelMenuController2D))
+		{
+			Object.Destroy(_weaponWheelMenuController as Component);
+
+			_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
+
+			_weaponWheelMenuController.Initialize(
+				_bootstrap,
+				_inputDevice,
+				_localizationManager,
+				_bootstrapSubProcessMenuSystem.MenuManager,
+				_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+				_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager,
+				WeaponController,
+				_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
+				_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel,
+				_bootstrap.GameObjectPlayerCamera
+			);
+		}
+		else if((weaponWheelMenuTypes == WeaponWheelMenuTypes._3D) && !(_weaponWheelMenuController is WeaponWheelMenuController3D))
+		{
+			_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController3D>();
+
+			_weaponWheelMenuController.Initialize(
+				_bootstrap,
+				_inputDevice,
+				_localizationManager,
+				_bootstrapSubProcessMenuSystem.MenuManager,
+				_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+				_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager,
+				WeaponController,
+				_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
+				_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel,
+				_bootstrap.GameObjectPlayerCamera
+			);
+		}
 	}
 }

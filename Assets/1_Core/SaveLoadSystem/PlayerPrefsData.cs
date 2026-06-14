@@ -23,10 +23,11 @@ public class PlayerPrefsData
 	//ScreenResolution
 	//WindowType
 	public int FPSlimit { get; set; }
+	//HUDtype
 	public float CameraFOV { get; set; }
 	public int ScreenBrightness { get; set; }
-	//HUDtype
 
+	public string WeaponWheelType { get; set; }
 
 	//SettingsSectionControls
 	public float MouseSensitivityX { get; set; }

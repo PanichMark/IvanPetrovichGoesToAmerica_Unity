@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-
-public class WeaponWheelMenuController3D : MonoBehaviour
+public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuController
 {
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
-	private GameObject _weaponWheelSegment;
+	//private GameObject _weaponWheelSegment;
 	private GameObject _weaponWheelMenuCanvas;
 	private int _pendingSelectionIndex = -1;
 	private Bootstrap _bootstrap;
 	private GameObject _playerCamera;
+	private int _CurrentShowWeaponIndex;
+	private GameObject _weaponToSelect;
 	private GameObject _textWeaponAmmoMagazineNumber;
 	private TextMeshProUGUI _textComponentWeaponAmmoMagazineNumber;
 	private GameObject _textWeaponAmmoReserveNumber;
@@ -76,7 +77,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		_weaponController = weaponController;
 		_menuManager = menuManager;
 		_playerCamera = PlayerCamera;
-		_weaponWheelSegment = viewModelMenuWeaponWheel.GameObjectWeaponWheelSegment;
+		//_weaponWheelSegment = viewModelMenuWeaponWheel.GameObjectWeaponWheelSegment;
 		_weaponWheelMenuCanvas = weaponWheelMenuCanvas;
 		WeaponText = viewModelMenuWeaponWheel.TextWeaponWheelWeaponName;
 		_weaponWheelRadius = viewModelMenuWeaponWheel.WeaponWheelRadius;
@@ -191,7 +192,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		}
 	}
 
-	private void OnWeaponUnlocked(GameObject weaponPrefab)
+	public void OnWeaponUnlocked(GameObject weaponPrefab)
 	{
 		RecreateWheel();
 	}
@@ -270,11 +271,40 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		// Гарантируем точное попадание в конечную точку (защита от погрешностей)
 		_weaponModelsContainer.transform.rotation = _targetRotation;
 
-		_isRotating = false;
+		// 1. Сначала получаем и сортируем список ОДИН РАЗ.
+		List<GameObject> weaponsList = _weaponController.CollectActiveWeapons();
+
+		if (weaponsList.Count > 0)
+		{
+			// Сортируем его так же, как это делается в CreateWheel
+			weaponsList.Sort((a, b) =>
+			{
+				int indexA = _weaponController.ExtractWeaponIndex(a.name);
+				int indexB = _weaponController.ExtractWeaponIndex(b.name);
+				return indexA.CompareTo(indexB);
+			});
+
+			// 2. Теперь вычисляем нужный индекс на основе угла поворота.
+			float anglePerSegment = 360f / weaponsList.Count;
+			float totalRotatedAngleY = -_weaponModelsContainer.transform.localRotation.eulerAngles.y + 180;
+			if (totalRotatedAngleY < 0) totalRotatedAngleY += 360;
+
+			_CurrentShowWeaponIndex = Mathf.RoundToInt(totalRotatedAngleY / anglePerSegment);
+			_CurrentShowWeaponIndex %= weaponsList.Count; // Страховка от выхода за границы
+
+			//Debug.Log($"[Weapon Wheel] Closing wheel. Total Angle: {totalRotatedAngleY}, Index: {indexToSelect}");
+
+			// 3. Выбираем оружие из УЖЕ ОТСОРТИРОВАННОГО списка.
+			_weaponToSelect = weaponsList[_CurrentShowWeaponIndex];
+		}
+
+		ShowWeaponName();
+
+			_isRotating = false;
 	}
 	// --- КОНЕЦ НОВОЙ ЛОГИКИ ---
 
-	void HandleWeaponWheel(bool rightHandPressed, bool leftHandPressed)
+	public void HandleWeaponWheel(bool rightHandPressed, bool leftHandPressed)
 	{
 		if (rightHandPressed)
 		{
@@ -331,7 +361,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 	}
 
 
-	void CreateWheel()
+	public void CreateWheel()
 	{
 		
 
@@ -452,13 +482,6 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		_weaponWheelMenuCanvas.gameObject.SetActive(true);
 		_menuManager.OpenWeaponWheelMenu();
 		//ShowWeaponPrefabs();
-	}
-
-
-
-	private void HideWeaponWheelMenuCanvas()
-	{
-		// 1. Сначала получаем и сортируем список ОДИН РАЗ.
 		List<GameObject> weaponsList = _weaponController.CollectActiveWeapons();
 
 		if (weaponsList.Count > 0)
@@ -476,22 +499,30 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 			float totalRotatedAngleY = -_weaponModelsContainer.transform.localRotation.eulerAngles.y + 180;
 			if (totalRotatedAngleY < 0) totalRotatedAngleY += 360;
 
-			int indexToSelect = Mathf.RoundToInt(totalRotatedAngleY / anglePerSegment);
-			indexToSelect %= weaponsList.Count; // Страховка от выхода за границы
+			_CurrentShowWeaponIndex = Mathf.RoundToInt(totalRotatedAngleY / anglePerSegment);
+			_CurrentShowWeaponIndex %= weaponsList.Count; // Страховка от выхода за границы
 
 			//Debug.Log($"[Weapon Wheel] Closing wheel. Total Angle: {totalRotatedAngleY}, Index: {indexToSelect}");
 
 			// 3. Выбираем оружие из УЖЕ ОТСОРТИРОВАННОГО списка.
-			GameObject weaponToSelect = weaponsList[indexToSelect];
-			string weaponNameForLog = weaponToSelect.name;
+			_weaponToSelect = weaponsList[_CurrentShowWeaponIndex];
+		}
+	}
+
+
+
+	private void HideWeaponWheelMenuCanvas()
+	{
+
+			//string weaponNameForLog = _weaponToSelect.name;
 
 			//Debug.Log($"[Weapon Wheel] Selecting weapon at sorted index {indexToSelect}: {weaponNameForLog}");
 			if (_weaponController.IsAbleToUseRightWeapon || (_weaponController.IsLeftHand && _weaponController.IsAbleToUseLeftWeapon))
 			{
-				_weaponController.SelectWeapon(weaponToSelect);
+				_weaponController.SelectWeapon(_weaponToSelect);
 			}
 			//Debug.Log("[Weapon Wheel] Weapon selection command sent.");
-		}
+		
 
 		// Остальной код закрытия меню остается без изменений
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
@@ -536,5 +567,10 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		_weaponWheelHandLeft = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandLeft")}";
 
 		ShowWeaponName();
+	}
+
+	private void OnDestroy()
+	{
+		Destroy(_weaponModelsContainer);
 	}
 }

@@ -11,6 +11,9 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 	public GameObject DropdownLimitFPS;
 	public GameObject TextDropdownLimitFPS;
 
+	public GameObject DropdownHUDType;
+	public GameObject TextDropdownHUDType;
+
 	public GameObject SliderCameraFOV;
 	public GameObject NumberSliderCameraFOV;
 	public GameObject TextSliderCameraFOV;
@@ -19,8 +22,11 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 	public GameObject NumberSliderScreenBrightness;
 	public GameObject TextSliderScreenBrightness;
 
-	public GameObject DropdownHUDType;
-	public GameObject TextDropdownHUDType;
+	public GameObject DropdownWeaponWheelType;
+	public GameObject TextDropdownWeaponWheelType;
+
+	public GameObject DropdownShowBlood;
+	public GameObject TextDropdownShowBlood;
 
 	public ViewModelPauseSubMenuSettingsSectionGeneral(Bootstrap bootstrap, GameObject canvas)
 	{
@@ -33,6 +39,9 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 		DropdownLimitFPS = bootstrap.FindDeepGameObject(canvas, "DropdownLimitFPS");
 		TextDropdownLimitFPS = bootstrap.FindDeepGameObject(canvas, "TextLimitFPS");
 
+		DropdownHUDType = bootstrap.FindDeepGameObject(canvas, "DropdownHUDtype");
+		TextDropdownHUDType = bootstrap.FindDeepGameObject(canvas, "TextHUDtype");
+
 		SliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "SliderCameraFOV");
 		NumberSliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "NumberCameraFOV");
 		TextSliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "TextCameraFOV");
@@ -41,7 +50,10 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 		NumberSliderScreenBrightness = bootstrap.FindDeepGameObject(canvas, "NumberScreenBrightness");
 		TextSliderScreenBrightness = bootstrap.FindDeepGameObject(canvas, "TextScreenBrightness");
 
-		DropdownHUDType = bootstrap.FindDeepGameObject(canvas, "DropdownHUDtype");
-		TextDropdownHUDType = bootstrap.FindDeepGameObject(canvas, "TextHUDtype");
+		DropdownWeaponWheelType = bootstrap.FindDeepGameObject(canvas, "DropdownWeaponWheelType");
+		TextDropdownWeaponWheelType = bootstrap.FindDeepGameObject(canvas, "TextWeaponWheelType");
+
+		DropdownShowBlood = bootstrap.FindDeepGameObject(canvas, "DropdownShowBlood");
+		TextDropdownShowBlood = bootstrap.FindDeepGameObject(canvas, "TextShowBlood");
 	}
 }

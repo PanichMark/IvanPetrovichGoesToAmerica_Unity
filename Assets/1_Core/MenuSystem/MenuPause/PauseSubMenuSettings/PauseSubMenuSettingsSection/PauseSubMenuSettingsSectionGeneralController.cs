@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private GameController _gameController;
 	private LocalizationManager _localizationManager;
 	private PauseMenuController _pauseMenuController;
@@ -24,6 +25,11 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private GameObject _textDropdownLimitFPS;
 	private TextMeshProUGUI _textComponentDropdownLimitFPS;
 	private int _currentFPSlimit;
+
+	private GameObject _dropdownHUDType;
+	private TMP_Dropdown _dropdownComponentHUDType;
+	private GameObject _textDropdownHUDType;
+	private TextMeshProUGUI _textComponentDropdownHUDType;
 
 	private GameObject _sliderCameraFOV;
 	private Slider _sliderComponentCameraFOV;
@@ -47,10 +53,11 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private GameObject _textSliderScreenBrightness;
 	private TextMeshProUGUI _textComponentSliderScreenBrightness;
 
-	private GameObject _dropdownHUDType;
-	private TMP_Dropdown _dropdownComponentHUDType;
-	private GameObject _textDropdownHUDType;
-	private TextMeshProUGUI _textComponentDropdownHUDType;
+	private GameObject _dropdownWeaponWheelType;
+	private TMP_Dropdown _dropdownComponentWeaponWheelType;
+	private GameObject _textDropdownWeaponWheelType;
+	private TextMeshProUGUI _textComponentDropdownWeaponWheelType;
+
 
 	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
 	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGeneralData;
@@ -65,11 +72,13 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	public event SavePlayerPrefsCameraSettingsEventHandler OnSaveCameraSettingsData;
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		GameController gameController,
 		LocalizationManager localizationManager,
 		PauseMenuController pauseMenuController,
 		ViewModelPauseSubMenuSettingsSectionGeneral viewModelPauseSubMenuSettings)
 	{
+		_bootstrap = bootstrap;
 		_gameController = gameController;
 		_localizationManager = localizationManager;
 		_pauseMenuController = pauseMenuController;
@@ -93,6 +102,12 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textDropdownLimitFPS = viewModelPauseSubMenuSettings.TextDropdownLimitFPS;
 		_textComponentDropdownLimitFPS = viewModelPauseSubMenuSettings.TextDropdownLimitFPS.GetComponent<TextMeshProUGUI>();
 
+		_dropdownHUDType = viewModelPauseSubMenuSettings.DropdownHUDType;
+		_dropdownComponentHUDType = viewModelPauseSubMenuSettings.DropdownHUDType.GetComponent<TMP_Dropdown>();
+		_dropdownComponentHUDType.onValueChanged.AddListener(SetHUDType);
+		_textDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType;
+		_textComponentDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType.GetComponent<TextMeshProUGUI>();
+
 		_sliderCameraFOV = viewModelPauseSubMenuSettings.SliderCameraFOV;
 		_sliderComponentCameraFOV = viewModelPauseSubMenuSettings.SliderCameraFOV.GetComponent<Slider>();
 		_sliderComponentCameraFOV.minValue = _MIN_VALUE_CAMERA_FOV;
@@ -113,11 +128,11 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textSliderScreenBrightness = viewModelPauseSubMenuSettings.TextSliderScreenBrightness;
 		_textComponentSliderScreenBrightness = viewModelPauseSubMenuSettings.TextSliderScreenBrightness.GetComponent<TextMeshProUGUI>();
 
-		_dropdownHUDType = viewModelPauseSubMenuSettings.DropdownHUDType;
-		_dropdownComponentHUDType = viewModelPauseSubMenuSettings.DropdownHUDType.GetComponent<TMP_Dropdown>();
-		_dropdownComponentHUDType.onValueChanged.AddListener(SetHUDType);
-		_textDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType;
-		_textComponentDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType.GetComponent<TextMeshProUGUI>();
+		_dropdownWeaponWheelType = viewModelPauseSubMenuSettings.DropdownWeaponWheelType;
+		_dropdownComponentWeaponWheelType = viewModelPauseSubMenuSettings.DropdownWeaponWheelType.GetComponent<TMP_Dropdown>();
+		_dropdownComponentWeaponWheelType.onValueChanged.AddListener(SetWeaponWheelType);
+		_textDropdownWeaponWheelType = viewModelPauseSubMenuSettings.TextDropdownWeaponWheelType;
+		_textComponentDropdownWeaponWheelType = viewModelPauseSubMenuSettings.TextDropdownWeaponWheelType.GetComponent<TextMeshProUGUI>();
 
 		SetScreenBrightness(100);
 		_sliderComponentScreenBrightness.value = 100;
@@ -297,6 +312,18 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	public void SetHUDType(int dropdownHUDTypeSlot)
 	{
 
+	}
+
+	public void SetWeaponWheelType(int dropdownWeaponWheelTypeSlot)
+	{
+		if (dropdownWeaponWheelTypeSlot == 0)
+		{
+			_bootstrap.ChangeWeaponWheelType(WeaponWheelMenuTypes._2D);
+		}
+		else if (dropdownWeaponWheelTypeSlot == 1)
+		{
+			_bootstrap.ChangeWeaponWheelType(WeaponWheelMenuTypes._3D);
+		}
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)

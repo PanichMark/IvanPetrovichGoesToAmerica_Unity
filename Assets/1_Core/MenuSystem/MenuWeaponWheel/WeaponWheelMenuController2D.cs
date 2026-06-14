@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponWheelMenuController2D : MonoBehaviour
+public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuController
 {
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private GameObject _weaponWheelSegment;                    
@@ -15,7 +15,8 @@ public class WeaponWheelMenuController2D : MonoBehaviour
 	private TextMeshProUGUI _textComponentWeaponAmmoReserveNumber;
 	private GameObject _textWeaponAmmoSeparator;
 	private TextMeshProUGUI _textComponentWeaponAmmoSeparator;
-
+	private GameObject _weaponWheelRadius;
+	private GameObject _weaponIconImage;
 	public TextMeshProUGUI WeaponText { get; private set; }            
 	public TextMeshProUGUI WeaponWheelName { get; private set; }       
 
@@ -53,7 +54,8 @@ public class WeaponWheelMenuController2D : MonoBehaviour
 		PlayerResourcesAmmoManager playerResourcesAmmoManager,
 		PlayerWeaponController weaponController,
 		GameObject weaponWheelMenuCanvas,
-		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
+		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel,
+		GameObject PlayerCamera)
 	{
 		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
@@ -67,14 +69,16 @@ public class WeaponWheelMenuController2D : MonoBehaviour
 		WeaponText = viewModelMenuWeaponWheel.TextWeaponWheelWeaponName;
 		WeaponWheelName = viewModelMenuWeaponWheel.TextWeaponWheelHandType;
 		WeaponIcon = viewModelMenuWeaponWheel.ImageWeaponWheelWeaponIcon.GetComponent<Image>();
-
+		_weaponIconImage = viewModelMenuWeaponWheel.ImageWeaponWheelWeaponIcon;
+		_weaponWheelRadius = viewModelMenuWeaponWheel.WeaponWheelRadius;
 		_textWeaponAmmoMagazineNumber = viewModelMenuWeaponWheel.TextWeaponAmmoMagazineNumber;
 		_textComponentWeaponAmmoMagazineNumber = viewModelMenuWeaponWheel.TextWeaponAmmoMagazineNumber.GetComponent<TextMeshProUGUI>();
 		_textWeaponAmmoReserveNumber = viewModelMenuWeaponWheel.TextWeaponAmmoReserveNumber;
 		_textComponentWeaponAmmoReserveNumber = viewModelMenuWeaponWheel.TextWeaponAmmoReserveNumber.GetComponent<TextMeshProUGUI>();
 		_textWeaponAmmoSeparator = viewModelMenuWeaponWheel.TextWeaponAmmoSeparator;
 		_textComponentWeaponAmmoSeparator = viewModelMenuWeaponWheel.TextWeaponAmmoSeparator.GetComponent<TextMeshProUGUI>();
-
+		_weaponWheelRadius.SetActive(true);
+		_weaponIconImage.SetActive(true);
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -173,7 +177,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour
 		}
 	}
 
-	private void OnWeaponUnlocked(GameObject weaponPrefab)
+	public void OnWeaponUnlocked(GameObject weaponPrefab)
 	{
 		RecreateWheel();
 	}
@@ -194,7 +198,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour
 		_previousLeftHandPressed = currentLeftHandPressed;
 	}
 
-	void HandleWeaponWheel(bool rightHandPressed, bool leftHandPressed)
+	public void HandleWeaponWheel(bool rightHandPressed, bool leftHandPressed)
 	{
 		if (rightHandPressed)
 		{
@@ -222,7 +226,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour
 		}
 	}
 
-	void CreateWheel()
+	public void CreateWheel()
 	{
 		List<GameObject> activeWeapons = _weaponController.CollectActiveWeapons();
 
@@ -392,5 +396,20 @@ public class WeaponWheelMenuController2D : MonoBehaviour
 		_weaponWheelHandLeft = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandLeft")}";
 
 		ShowWeaponName();
+	}
+
+	private void OnDestroy()
+	{
+		if (_wheelSegments != null)
+		{
+			foreach (GameObject segment in _wheelSegments)
+			{
+				if (segment != null)
+				{
+					Destroy(segment);
+				}
+			}
+			_wheelSegments.Clear();
+		}
 	}
 }

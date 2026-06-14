@@ -402,6 +402,13 @@ public class Bootstrap : MonoBehaviour
 		_gameObjectBootstrapTemporaryCamera.AddComponent<Camera>();
 	}
 
+	public void ChangeInputDevice(IInputDevice inputDevice)
+	{
+		//_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
+
+		//_inputDevice = new InputGamepad(_gameController, _keyPauseMenu);
+	}
+
 	public void ChangeLanguage(LanguagesEnum newLanguage)
 	{
 		LocalizationManager.ChangeLanguage(newLanguage);
@@ -410,11 +417,9 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("LocalizationManager", LocalizationManager);
 	}
 
-	public void ChangeInputDevice(IInputDevice inputDevice)
+	public void ChangeWeaponWheelType(WeaponWheelMenuTypes weaponWheelMenuTypes)
 	{
-		//_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
-
-		//_inputDevice = new InputGamepad(_gameController, _keyPauseMenu);
+		_bootstrapSubProcessWeaponSystem.ChangeWeaponWheelType(weaponWheelMenuTypes);
 	}
 
 	private IEnumerator LoadFirstGameplayScene()
