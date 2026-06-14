@@ -66,7 +66,7 @@ public class BootstrapSubProcessWeaponSystem
 
 		WeaponController = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponController>();
 
-		_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
+		_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController3D>();
 
 		_weaponAnimationController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponAnimationController>();
 		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponFirstPersonRender>();

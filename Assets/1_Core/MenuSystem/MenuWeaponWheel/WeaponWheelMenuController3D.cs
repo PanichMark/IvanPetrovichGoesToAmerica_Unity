@@ -13,6 +13,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 	private GameObject _playerCamera;
 	private int _CurrentShowWeaponIndex;
 	private GameObject _weaponToSelect;
+	private WeaponAbstract _weaponToSelectComponent;
 	private GameObject _textWeaponAmmoMagazineNumber;
 	private TextMeshProUGUI _textComponentWeaponAmmoMagazineNumber;
 	private GameObject _textWeaponAmmoReserveNumber;
@@ -297,6 +298,15 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 
 			// 3. Выбираем оружие из УЖЕ ОТСОРТИРОВАННОГО списка.
 			_weaponToSelect = weaponsList[_CurrentShowWeaponIndex];
+			_weaponToSelectComponent = _weaponToSelect.GetComponent<WeaponAbstract>();
+			if (_weaponToSelectComponent is WeaponRangedAbstract)
+			{
+				ShowWeaponAmmo(_weaponToSelectComponent as WeaponRangedAbstract);
+			}
+			else
+			{
+				HideWeaponAmmo();
+			}
 		}
 
 		ShowWeaponName();
@@ -364,8 +374,6 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 
 	public void CreateWheel()
 	{
-		
-
 		List<GameObject> activeWeapons = _weaponController.CollectActiveWeapons();
 
 		if (activeWeapons.Count == 0)
@@ -507,6 +515,15 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 
 			// 3. Выбираем оружие из УЖЕ ОТСОРТИРОВАННОГО списка.
 			_weaponToSelect = weaponsList[_CurrentShowWeaponIndex];
+			_weaponToSelectComponent = _weaponToSelect.GetComponent<WeaponAbstract>();
+			if (_weaponToSelectComponent is WeaponRangedAbstract)
+			{
+				ShowWeaponAmmo(_weaponToSelectComponent as WeaponRangedAbstract);
+			}
+			else
+			{
+				HideWeaponAmmo();
+			}
 		}
 	}
 
@@ -538,24 +555,24 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 	{
 		if (_isWeaponLeftHand)
 		{
-			if (_weaponController.LeftHandWeapon != null)
+			if (_weaponController.LeftHandWeapon != null && _weaponController.LeftHandWeapon == _weaponToSelect)
 			{
 				WeaponText.text = _localizationManager.GetLocalizedString(_weaponController.LeftHandWeaponComponent.WeaponNameSystem);
 			}
-			else
+			else if (_weaponController.LeftHandWeapon != _weaponToSelect) 
 			{
-				WeaponText.text = "";
+				WeaponText.text = _localizationManager.GetLocalizedString(_weaponToSelectComponent.WeaponNameSystem);
 			}
 		}
 		else if (_isWeaponLeftHand == false)
 		{
-			if (_weaponController.RightHandWeapon != null)
+			if (_weaponController.RightHandWeapon != null && _weaponController.RightHandWeapon == _weaponToSelect)
 			{
 				WeaponText.text = _localizationManager.GetLocalizedString(_weaponController.RightHandWeaponComponent.WeaponNameSystem);
 			}
-			else
+			else if(_weaponController.RightHandWeapon != _weaponToSelect)
 			{
-				WeaponText.text = "";
+				WeaponText.text = _localizationManager.GetLocalizedString(_weaponToSelectComponent.WeaponNameSystem);
 			}
 		}
 	}
