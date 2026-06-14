@@ -319,9 +319,10 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 	{
 		if (rightHandPressed)
 		{
+			_isWeaponLeftHand = false;
 			OnOpenWeaponWheelMenu?.Invoke(WeaponHandsEnum.HandRight);
 			ShowWeaponWheelMenuCanvas();
-			_isWeaponLeftHand = false;
+		
 			ShowWeaponName();
 			ShowWeaponPrefabs();
 			ShowWeaponAmmo();
@@ -329,9 +330,10 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 		}
 		else if (leftHandPressed)
 		{
+			_isWeaponLeftHand = true;
 			OnOpenWeaponWheelMenu?.Invoke(WeaponHandsEnum.HandLeft);
 			ShowWeaponWheelMenuCanvas();
-			_isWeaponLeftHand = true;
+		
 			ShowWeaponName();
 			ShowWeaponPrefabs();
 			ShowWeaponAmmo();
@@ -510,7 +512,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 
 			_CurrentShowWeaponIndex = Mathf.RoundToInt(totalRotatedAngleY / anglePerSegment);
 			_CurrentShowWeaponIndex %= weaponsList.Count; // Страховка от выхода за границы
-
+			RotateToEquippedWeapon();
 			//Debug.Log($"[Weapon Wheel] Closing wheel. Total Angle: {totalRotatedAngleY}, Index: {indexToSelect}");
 
 			// 3. Выбираем оружие из УЖЕ ОТСОРТИРОВАННОГО списка.
@@ -527,7 +529,157 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 		}
 	}
 
+	private void RotateToEquippedWeapon()
+	{
+		//Debug.Log(_isWeaponLeftHand);
+		//Debug.Log(_weaponController.LeftHandWeapon);
 
+		if (_isWeaponLeftHand && _weaponController.LeftHandWeapon != null)
+		{
+			Debug.Log("BRUH!");
+			List<GameObject> weaponsList = _weaponController.CollectActiveWeapons();
+
+			weaponsList.Sort((a, b) =>
+			{
+				int indexA = _weaponController.ExtractWeaponIndex(a.name);
+				int indexB = _weaponController.ExtractWeaponIndex(b.name);
+				return indexA.CompareTo(indexB);
+			});
+
+			WeaponAbstract activeWeapon = _weaponController.LeftHandWeaponComponent;
+
+			// Ищем индекс нашего активного оружия в этом списке
+			//int targetIndex = -1;
+			int targetIndex = 0;
+			for (int i = 0; i < weaponsList.Count; i++)
+			{
+				//Debug.Log(weaponsList[i].GetComponent<WeaponAbstract>().WeaponNameSystem);
+				//Debug.Log(activeWeapon.WeaponNameSystem);
+				if (weaponsList[i].GetComponent<WeaponAbstract>().WeaponNameSystem == activeWeapon.WeaponNameSystem)
+				{
+					targetIndex = i;
+					Debug.Log(targetIndex);
+					break;
+				}
+			}
+			//    Здесь мы используем те самые 30 градусов по X, которые вы задавали при создании.
+			Quaternion baseRotation = Quaternion.Euler(-30f, 0f, 0f);
+
+			// 2. Вычисляем угол поворота для самого колеса (вокруг оси Y)
+			float totalSegments = weaponsList.Count;
+			if (totalSegments == 0) return; // Защита от деления на ноль
+
+			float anglePerSegment = 360f / totalSegments;
+
+			// Угол для нужного сегмента со смещением на 180 градусов
+			float wheelYRotation = -(targetIndex * anglePerSegment)+ 180;
+
+			// 3. Создаем кватернион вращения колеса
+			Quaternion wheelRotation = Quaternion.Euler(0f, wheelYRotation, 0f);
+
+			// 4. Комбинируем базовый наклон и вращение колеса
+			// Порядок важен: сначала применяем вращение колеса, затем наклон.
+			// Или можно просто перемножить их.
+			Quaternion finalRotation = baseRotation * wheelRotation;
+
+			// 5. Применяем итоговый результат к контейнеру
+			_weaponModelsContainer.transform.rotation = finalRotation;
+
+			foreach (Transform weaponModel in _weaponModelsContainer.transform)
+			{
+				weaponModel.rotation = Quaternion.Euler(-60, -60, 0);
+			}
+
+			// Обновляем внутренние переменные и UI, чтобы они соответствовали новому выделению
+			_CurrentShowWeaponIndex = targetIndex;
+			_weaponToSelect = weaponsList[_CurrentShowWeaponIndex];
+			_weaponToSelectComponent = _weaponToSelect.GetComponent<WeaponAbstract>();
+
+			ShowWeaponName(); // Обновляем текст названия оружия
+			if (_weaponToSelectComponent is WeaponRangedAbstract rangedWeapon)
+			{
+				ShowWeaponAmmo(rangedWeapon); // Показываем патроны, если оружие дальнобойное
+			}
+			else
+			{
+				HideWeaponAmmo(); // Скрываем панель патронов, если оружие ближнего боя
+			}
+
+		}
+
+		if (!_isWeaponLeftHand && _weaponController.RightHandWeapon != null)
+		{
+			Debug.Log("BRUH!");
+			List<GameObject> weaponsList = _weaponController.CollectActiveWeapons();
+
+			weaponsList.Sort((a, b) =>
+			{
+				int indexA = _weaponController.ExtractWeaponIndex(a.name);
+				int indexB = _weaponController.ExtractWeaponIndex(b.name);
+				return indexA.CompareTo(indexB);
+			});
+
+			WeaponAbstract activeWeapon = _weaponController.RightHandWeaponComponent;
+
+			// Ищем индекс нашего активного оружия в этом списке
+			//int targetIndex = -1;
+			int targetIndex = 0;
+			for (int i = 0; i < weaponsList.Count; i++)
+			{
+				//Debug.Log(weaponsList[i].GetComponent<WeaponAbstract>().WeaponNameSystem);
+				//Debug.Log(activeWeapon.WeaponNameSystem);
+				if (weaponsList[i].GetComponent<WeaponAbstract>().WeaponNameSystem == activeWeapon.WeaponNameSystem)
+				{
+					targetIndex = i;
+					Debug.Log(targetIndex);
+					break;
+				}
+			}
+			//    Здесь мы используем те самые 30 градусов по X, которые вы задавали при создании.
+			Quaternion baseRotation = Quaternion.Euler(-30f, 0f, 0f);
+
+			// 2. Вычисляем угол поворота для самого колеса (вокруг оси Y)
+			float totalSegments = weaponsList.Count;
+			if (totalSegments == 0) return; // Защита от деления на ноль
+
+			float anglePerSegment = 360f / totalSegments;
+
+			// Угол для нужного сегмента со смещением на 180 градусов
+			float wheelYRotation = -(targetIndex * anglePerSegment) + 180;
+
+			// 3. Создаем кватернион вращения колеса
+			Quaternion wheelRotation = Quaternion.Euler(0f, wheelYRotation, 0f);
+
+			// 4. Комбинируем базовый наклон и вращение колеса
+			// Порядок важен: сначала применяем вращение колеса, затем наклон.
+			// Или можно просто перемножить их.
+			Quaternion finalRotation = baseRotation * wheelRotation;
+
+			// 5. Применяем итоговый результат к контейнеру
+			_weaponModelsContainer.transform.rotation = finalRotation;
+
+			foreach (Transform weaponModel in _weaponModelsContainer.transform)
+			{
+				weaponModel.rotation = Quaternion.Euler(-60, -60, 0);
+			}
+
+			// Обновляем внутренние переменные и UI, чтобы они соответствовали новому выделению
+			_CurrentShowWeaponIndex = targetIndex;
+			_weaponToSelect = weaponsList[_CurrentShowWeaponIndex];
+			_weaponToSelectComponent = _weaponToSelect.GetComponent<WeaponAbstract>();
+
+			ShowWeaponName(); // Обновляем текст названия оружия
+			if (_weaponToSelectComponent is WeaponRangedAbstract rangedWeapon)
+			{
+				ShowWeaponAmmo(rangedWeapon); // Показываем патроны, если оружие дальнобойное
+			}
+			else
+			{
+				HideWeaponAmmo(); // Скрываем панель патронов, если оружие ближнего боя
+			}
+
+		}
+	}
 
 	private void HideWeaponWheelMenuCanvas()
 	{
