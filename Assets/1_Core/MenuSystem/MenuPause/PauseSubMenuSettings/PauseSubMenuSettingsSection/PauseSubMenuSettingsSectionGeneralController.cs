@@ -58,18 +58,27 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private GameObject _textDropdownWeaponWheelType;
 	private TextMeshProUGUI _textComponentDropdownWeaponWheelType;
 
-
-	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
-	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGeneralData;
+	private GameObject _dropdownShowBlood;
+	private TMP_Dropdown _dropdownComponentShowBlood;
+	private GameObject _textDropdownShowBlood;
+	private TextMeshProUGUI _textComponentDropdownShowBlood;
+	private bool _isBloodEnabled;
 
 	public delegate void CameraFOVeventHandler(float newCameraFOV, float MIN_VALUE_CAMERA_FOV, float MAX_VALUE_CAMERA_FOV);
 	public event CameraFOVeventHandler OnCameraFOVchanged;
 
-	public delegate void ResetPlayerPrefsSettingsEventHandler();
-	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGeneralData;
+	public delegate void BloodVisibilityHandler();
+	public event BloodVisibilityHandler OnShowBlood;
+	public event BloodVisibilityHandler OnHideBlood;
 
 	public delegate void SavePlayerPrefsCameraSettingsEventHandler();
 	public event SavePlayerPrefsCameraSettingsEventHandler OnSaveCameraSettingsData;
+
+	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
+	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGeneralData;
+
+	public delegate void ResetPlayerPrefsSettingsEventHandler();
+	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGeneralData;
 
 	public void Initialize(
 		Bootstrap bootstrap,
@@ -134,6 +143,12 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textDropdownWeaponWheelType = viewModelPauseSubMenuSettings.TextDropdownWeaponWheelType;
 		_textComponentDropdownWeaponWheelType = viewModelPauseSubMenuSettings.TextDropdownWeaponWheelType.GetComponent<TextMeshProUGUI>();
 
+		_dropdownShowBlood = viewModelPauseSubMenuSettings.DropdownShowBlood;
+		_dropdownComponentShowBlood = viewModelPauseSubMenuSettings.DropdownShowBlood.GetComponent<TMP_Dropdown>();
+		_dropdownComponentShowBlood.onValueChanged.AddListener(SetShowBlood);
+		_textDropdownShowBlood = viewModelPauseSubMenuSettings.TextDropdownShowBlood;
+		_textComponentDropdownShowBlood = viewModelPauseSubMenuSettings.TextDropdownShowBlood.GetComponent<TextMeshProUGUI>();
+
 		SetScreenBrightness(100);
 		_sliderComponentScreenBrightness.value = 100;
 
@@ -187,7 +202,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	{
 		if (dropdownScreenResolutionSlot == 0)
 		{
-			Screen.SetResolution(3840, 2160, Screen.fullScreen);
+			Screen.SetResolution(1920, 1080, Screen.fullScreen);
 		}
 		else if (dropdownScreenResolutionSlot == 1)
 		{
@@ -195,7 +210,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		}
 		else if (dropdownScreenResolutionSlot == 2)
 		{
-			Screen.SetResolution(1920, 1080, Screen.fullScreen);
+			Screen.SetResolution(3840, 2160, Screen.fullScreen);
 		}
 		else if (dropdownScreenResolutionSlot == 3)
 		{
@@ -254,8 +269,6 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 	public void SetFPSlimit(PlayerPrefsData data, int newFPSlimit)
 	{
-		//Debug.Log(newFPSlimit);
-
 		if (newFPSlimit == 30)
 		{
 			_dropdownComponentLimitFPS.value = 0;
@@ -279,6 +292,11 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		_currentFPSlimit = newFPSlimit;
 		Application.targetFrameRate = newFPSlimit;
+	}
+
+	public void SetHUDType(int dropdownHUDTypeSlot)
+	{
+
 	}
 
 	public void SetCameraFOV(float newCameraFOV)
@@ -309,9 +327,16 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textComponentNumberSliderScreenBrightness.text = ((int)newScreenBrightness).ToString();
 	}
 
-	public void SetHUDType(int dropdownHUDTypeSlot)
+	public void SetShowBlood(int dropdownShowBloodSlot)
 	{
-
+		if (dropdownShowBloodSlot == 0)
+		{
+			OnShowBlood?.Invoke();
+		}
+		else if (dropdownShowBloodSlot == 1)
+		{
+			OnHideBlood?.Invoke();
+		}
 	}
 
 	public void SetWeaponWheelType(int dropdownWeaponWheelTypeSlot)
@@ -354,17 +379,30 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_dropdownComponentLimitFPS.AddOptions(dropdownLimitFPSlocalizedOptions);
 		_textComponentDropdownLimitFPS.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownFPSlimit");
 
-		_textComponentSliderCameraFOV.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderCameraFOV");
-		_textComponentSliderScreenBrightness.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderScreenBrightness");
-
 		List<string> dropdownHUDTypelocalizedOptions = new List<string>
 		{
 			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeFull"),
 			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeDialoguesOnly"),
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeTurnedOff"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeDialoguesTurnOff"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeTurnedOff")
 		};
 		_dropdownComponentHUDType.ClearOptions();
 		_dropdownComponentHUDType.AddOptions(dropdownHUDTypelocalizedOptions);
 		_textComponentDropdownHUDType.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownHUDType");
+
+		_textComponentSliderCameraFOV.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderCameraFOV");
+
+		_textComponentSliderScreenBrightness.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderScreenBrightness");
+
+		_textComponentDropdownWeaponWheelType.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownWeaponWheelType");
+
+		List<string> dropdownShowBloodlocalizedOptions = new List<string>
+		{
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownShowBloodYes"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownShowBloodNo")
+		};
+		_dropdownComponentShowBlood.ClearOptions();
+		_dropdownComponentShowBlood.AddOptions(dropdownShowBloodlocalizedOptions);
+		_textComponentDropdownShowBlood.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownShowBlood");
 	}
 }

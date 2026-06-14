@@ -143,7 +143,9 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextLeftWeaponAmmoReserveNumber,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.LeftWeaponAmmoSeparator);
 
-		_bulletHoleManager.Initialize(_bootstrapSubProcessSceneSystem.GameSceneManager);
+		_bulletHoleManager.Initialize(
+			_bootstrapSubProcessSceneSystem.GameSceneManager,
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController);
 
 		ServiceLocator.Register("WeaponController", WeaponController);
 

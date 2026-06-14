@@ -185,8 +185,11 @@ UI_Menu_PauseSubMenuSettingsSectionControls_TextControlsWeaponWheelRightHand,К�
 UI_Menu_PauseSubMenuSettingsSectionControls_TextSliderMouseSensitivityX,Горизонтальная чувствительность мыши,Mouse sensitivity X
 UI_Menu_PauseSubMenuSettingsSectionControls_TextSliderMouseSensitivityY,Вертикальная чувствительность мыши,Mouse sensitivity Y
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeDialoguesOnly,Только диалоги,Dialogues only
-UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeFull,Полностью,Full
-UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeTurnedOff,Выключенный,Turn off
+UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeFull,Полностью,Everything
+UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownShowBloodYes,Показывать,Show
+UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownShowBloodNo,Скрыть,Don't show
+UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeTurnedOff,Скрыть всё,Hide everything
+UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeDialoguesTurnOff,Скрыть диалоги,Hide dialogues
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS144,144 кадра/сек,144 frames/sec
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS30,30 кадров/сек,30 frames/sec
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS60,60 кадров/сек,60 frames/sec
@@ -195,9 +198,11 @@ UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPSunlimited,Без ог
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeBorderlessWindowed,Оконный без рамки,Borderless windowed
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeFullscreen,Полноэкранный,Fullscreen
 UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeWindowed,Оконный,Windowed
+UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownWeaponWheelType,Тип отображения колеса выбора оружия,Weapon wheel display type
 UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownFPSlimit,Ограничение кадров в секунду,Frames per second limit
 UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownHUDType,Отображение игрового интерфейса (HUD),Heads up display (HUD) type
 UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownScreenResolution,Разрешение экрана,Screen resolution
+UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownShowBlood,Показывать кровь,Show blood
 UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownWindowType,Тип окна,Window type
 UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderCameraFOV,Угол обзора камеры,Camera field of view
 UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderScreenBrightness,Яркость экрана,Screen brightness
