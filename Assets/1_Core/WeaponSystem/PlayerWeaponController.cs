@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Hardware;
 using UnityEngine;
 
 public delegate void OnAnyWeaponUnlocked(GameObject weaponPrefab);
@@ -258,7 +259,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			SetHasEugenicWeapon();
 		}
 
-			OnAnyWeaponUnlocked?.Invoke(weaponPrefab);
+		OnAnyWeaponUnlocked?.Invoke(weaponPrefab);
 
 		Debug.Log($"Unlocked {key}");
 	}

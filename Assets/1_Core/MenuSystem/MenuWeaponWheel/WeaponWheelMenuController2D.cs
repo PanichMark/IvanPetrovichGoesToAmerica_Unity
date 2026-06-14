@@ -87,7 +87,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 		_weaponWheelHandLeft = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandLeft")}";
 		_weaponController.OnAnyWeaponUnlocked += OnWeaponUnlocked;
 
-		Debug.Log("WeaponWheelMenuController");
+		Debug.Log("WeaponWheelMenuController2D Initialized");
 	}
 
 	public void HideWeaponAmmo()
@@ -408,5 +408,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 		}
 
 		_wheelSegments.Clear();
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+		_weaponController.OnAnyWeaponUnlocked -= OnWeaponUnlocked;
 	}
 }

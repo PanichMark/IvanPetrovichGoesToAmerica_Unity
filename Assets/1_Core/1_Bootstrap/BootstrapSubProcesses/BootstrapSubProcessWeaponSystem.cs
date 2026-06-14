@@ -66,7 +66,7 @@ public class BootstrapSubProcessWeaponSystem
 
 		WeaponController = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponController>();
 
-		_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController3D>();
+		_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
 
 		_weaponAnimationController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponAnimationController>();
 		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponFirstPersonRender>();
@@ -178,7 +178,7 @@ public class BootstrapSubProcessWeaponSystem
 				_bootstrap.GameObjectPlayerCamera
 			);
 		}
-		else if((weaponWheelMenuTypes == WeaponWheelMenuTypes._3D) && !(_weaponWheelMenuController is WeaponWheelMenuController3D))
+		if ((weaponWheelMenuTypes == WeaponWheelMenuTypes._3D) && !(_weaponWheelMenuController is WeaponWheelMenuController3D))
 		{
 			Object.Destroy(_weaponWheelMenuController as Component);
 

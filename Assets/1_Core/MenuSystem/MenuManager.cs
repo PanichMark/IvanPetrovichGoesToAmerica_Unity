@@ -247,7 +247,6 @@ public class MenuManager : MonoBehaviour
 
 			if (IsCutsceneMenuOpened && IsPauseMenuOpened)
 			{
-				
 				Cursor.lockState = CursorLockMode.None;
 				Cursor.visible = true;
 			}

@@ -38,6 +38,8 @@ public class WeaponWheelMenuButton2D : MonoBehaviour
 		_weaponWheelController.OnOpenWeaponWheelMenu += OnOpenWeaponWheel;
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_weaponController.OnWeaponChanged += OnWeaponChange;
+
+		//Debug.Log("NEW BUTTON!!!!!");
 	}
 
 	private void OnOpenWeaponWheel(WeaponHandsEnum activeHand)
@@ -142,6 +144,8 @@ public class WeaponWheelMenuButton2D : MonoBehaviour
 		_weaponController.OnWeaponChanged -= OnWeaponChange;
 		_weaponWheelController.OnOpenWeaponWheelMenu -= OnOpenWeaponWheel;
 		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+
+		//Debug.Log("DESTROY BUTTON!!!!!");
 	}
 
 	private void ChangeButtonColor(Color newColor)
