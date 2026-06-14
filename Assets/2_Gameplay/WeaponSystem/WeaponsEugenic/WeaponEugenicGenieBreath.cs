@@ -108,8 +108,10 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 	private void ChangeVFXSpawnPoint()
 	{
+		//Debug.Log("11111111111111111111");
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
 		{
+			//Debug.Log(FirstPersonWeaponModelInstance);
 			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform;
 		}
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
@@ -126,6 +128,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 	private void OnDestroy()
 	{
+		//Debug.Log("2222222222222222");
 		if (_playerCameraStateMachineController != null)
 		{
 			_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXSpawnPoint;

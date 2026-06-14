@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -15,9 +16,16 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 	private TextMeshProUGUI _textComponentWeaponAmmoMagazineNumber;
 	private GameObject _textWeaponAmmoReserveNumber;
 	private TextMeshProUGUI _textComponentWeaponAmmoReserveNumber;
+	// Флаг: идет ли сейчас вращение?
+	private bool _isRotating = false;
+
+	// Ссылка на активную корутину, чтобы можно было её остановить
+	private Coroutine _activeRotationCoroutine;
 	private GameObject _textWeaponAmmoSeparator;
 	private TextMeshProUGUI _textComponentWeaponAmmoSeparator;
 	// --- Новые поля для 3D-колеса ---
+	private Quaternion _targetRotation; // Конечная цель вращения
+	private float _rotationSpeed = 40f;   // Скорость вращения (градусов в секунду)
 	private GameObject _weaponModelsContainer; // Родительский объект для всех 3D-моделей оружия
 	private List<GameObject> _weaponModels3D = new List<GameObject>(); // Список самих моделей
 	private int _selectedIndex3D = 0; // Индекс выбранного оружия в 3D-колесе
@@ -207,48 +215,64 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 
 
 		// --- НОВАЯ ЛОГИКА ВРАЩЕНИЯ ---
-		if (_weaponModelsContainer != null && _weaponModelsContainer.activeSelf)
+		if (_weaponModelsContainer != null && _weaponModelsContainer.activeSelf && !_isRotating)
 		{
-			// Получаем текущее состояние прокрутки
 			float scrollInput = Input.GetAxis("Mouse ScrollWheel");
 
-			// Проверяем, была ли прокрутка в этом кадре (событие клика)
-			// Это условие выполнится только в момент, когда мы начинаем крутить колесо.
-			if (scrollInput != 0)
+			// Проверяем наличие прокрутки и отсутствие текущей анимации
+			if (scrollInput != 0 && _weaponModels3D.Count > 0)
 			{
+				// Блокируем новые нажатия
+				_isRotating = true;
 
+				// Сохраняем текущие мировые повороты моделей
 				Quaternion[] worldRotations = new Quaternion[_weaponModelsContainer.transform.childCount];
 				int i = 0;
 				foreach (Transform weaponModel in _weaponModelsContainer.transform)
 				{
-					// Запоминаем, КАК оружие было повернуто В МИРЕ до того, как мы повернули круг
 					worldRotations[i] = weaponModel.rotation;
 					i++;
 				}
-				// Вычисляем угол для одного шага на основе количества оружия
-				if (_weaponModels3D.Count > 0)
-				{
-					float angleForOneStep = 360f / _weaponModels3D.Count;
-					float direction = Mathf.Sign(scrollInput); // Определяем направление (вперед или назад)
-					// Поворачиваем контейнер на один шаг
-					Quaternion targetRotation = Quaternion.Euler(0, angleForOneStep * direction, 0);
-					//_weaponModelsContainer.transform.Rotate(_playerCamera.transform.up, angleForOneStep * direction, Space.World);
-					// ... тут происходит вращение контейнера ...
-					_weaponModelsContainer.transform.rotation *= targetRotation;
 
-					// Теперь возвращаем каждой модели её исходный МИРОВОЙ поворот
-					i = 0;
-					foreach (Transform weaponModel in _weaponModelsContainer.transform)
-					{
-						weaponModel.rotation = worldRotations[i];
-						i++;
-					}
-					//Debug.Log($"[Scroll Clicked] Direction: {direction} | Rotated by: {angleForOneStep} degrees");
-				}
+				// Вычисляем шаг и направление
+				float angleForOneStep = 360f / _weaponModels3D.Count;
+				float direction = Mathf.Sign(scrollInput);
+
+				// Запоминаем текущий поворот контейнера и целевой поворот
+				Quaternion startRotation = _weaponModelsContainer.transform.rotation;
+				_targetRotation = startRotation * Quaternion.Euler(0, angleForOneStep * direction, 0);
+
+				// Запускаем корутину для плавной анимации
+				StartCoroutine(RotateWeaponModels(worldRotations));
 			}
 		}
-		// --- КОНЕЦ НОВОЙ ЛОГИКИ ---
 	}
+	// Корутина для плавного вращения
+	private IEnumerator RotateWeaponModels(Quaternion[] savedWorldRotations)
+	{
+		Quaternion startRotation = _weaponModelsContainer.transform.rotation;
+		float elapsedTime = 0f;
+
+		while (elapsedTime < 1f)
+		{
+			elapsedTime += Time.deltaTime * _rotationSpeed;
+			_weaponModelsContainer.transform.rotation = Quaternion.Slerp(startRotation, _targetRotation, elapsedTime);
+
+			int index = 0;
+			foreach (Transform weaponModel in _weaponModelsContainer.transform)
+			{
+				weaponModel.rotation = savedWorldRotations[index];
+				index++;
+			}
+			yield return null; // Ждем следующего кадра
+		}
+
+		// Гарантируем точное попадание в конечную точку (защита от погрешностей)
+		_weaponModelsContainer.transform.rotation = _targetRotation;
+
+		_isRotating = false;
+	}
+	// --- КОНЕЦ НОВОЙ ЛОГИКИ ---
 
 	void HandleWeaponWheel(bool rightHandPressed, bool leftHandPressed)
 	{
@@ -329,10 +353,6 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 		// Создаем или очищаем контейнер
 		if (_weaponModelsContainer != null)
 		{
-			_weaponModelsContainer.transform.rotation =
-				_playerCamera.transform.rotation *
-				Quaternion.Euler(-30, 0, 0);
-
 			foreach (Transform child in _weaponModelsContainer.transform)
 			{
 				Destroy(child.gameObject);
@@ -343,9 +363,6 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 			_weaponModelsContainer = new GameObject("WeaponModels_Container");
 			_weaponModelsContainer.transform.SetParent(_playerCamera.transform, false);
 			_weaponModelsContainer.transform.position = _playerCamera.transform.TransformPoint(new Vector3(0, 0.25f, containerSpawnDistance));
-			_weaponModelsContainer.transform.rotation =
-				_playerCamera.transform.rotation *
-				Quaternion.Euler(-30, 0, 0);
 		}
 
 		_weaponModels3D.Clear();
@@ -389,6 +406,10 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 				weaponModel.rotation = Quaternion.Euler(-60, -60, 0);
 			}
 		}
+
+		_weaponModelsContainer.transform.rotation =
+			_playerCamera.transform.rotation *
+			Quaternion.Euler(30, 180, 0);
 
 		HideWeaponPrefabs();
 	}
@@ -452,24 +473,24 @@ public class WeaponWheelMenuController3D : MonoBehaviour
 
 			// 2. Теперь вычисляем нужный индекс на основе угла поворота.
 			float anglePerSegment = 360f / weaponsList.Count;
-			float totalRotatedAngleY = _weaponModelsContainer.transform.localRotation.eulerAngles.y;
+			float totalRotatedAngleY = -_weaponModelsContainer.transform.localRotation.eulerAngles.y + 180;
 			if (totalRotatedAngleY < 0) totalRotatedAngleY += 360;
 
 			int indexToSelect = Mathf.RoundToInt(totalRotatedAngleY / anglePerSegment);
 			indexToSelect %= weaponsList.Count; // Страховка от выхода за границы
 
-			Debug.Log($"[Weapon Wheel] Closing wheel. Total Angle: {totalRotatedAngleY}, Index: {indexToSelect}");
+			//Debug.Log($"[Weapon Wheel] Closing wheel. Total Angle: {totalRotatedAngleY}, Index: {indexToSelect}");
 
 			// 3. Выбираем оружие из УЖЕ ОТСОРТИРОВАННОГО списка.
 			GameObject weaponToSelect = weaponsList[indexToSelect];
 			string weaponNameForLog = weaponToSelect.name;
 
-			Debug.Log($"[Weapon Wheel] Selecting weapon at sorted index {indexToSelect}: {weaponNameForLog}");
+			//Debug.Log($"[Weapon Wheel] Selecting weapon at sorted index {indexToSelect}: {weaponNameForLog}");
 			if (_weaponController.IsAbleToUseRightWeapon || (_weaponController.IsLeftHand && _weaponController.IsAbleToUseLeftWeapon))
 			{
 				_weaponController.SelectWeapon(weaponToSelect);
 			}
-			Debug.Log("[Weapon Wheel] Weapon selection command sent.");
+			//Debug.Log("[Weapon Wheel] Weapon selection command sent.");
 		}
 
 		// Остальной код закрытия меню остается без изменений
