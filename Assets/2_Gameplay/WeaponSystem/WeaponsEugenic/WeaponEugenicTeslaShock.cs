@@ -90,6 +90,11 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 			_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
 			_VFXspawnPoint.transform);
 
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		{
+			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
+		}
+
 		_vfxInstance.transform.localScale = Vector3.one;
 
 		while (true)

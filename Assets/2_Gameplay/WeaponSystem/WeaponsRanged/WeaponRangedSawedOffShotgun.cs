@@ -28,6 +28,11 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 			_VFXspawnPoint.transform);
 		_vfxInstance.transform.localScale = Vector3.one * 2.5f;
 
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		{
+			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
+		}
+
 		Destroy(_vfxInstance, 0.05f);
 
 		for (int i = 0; i < pelletCount; i++)

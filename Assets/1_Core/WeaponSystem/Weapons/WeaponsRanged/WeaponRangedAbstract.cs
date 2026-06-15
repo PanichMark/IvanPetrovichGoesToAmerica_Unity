@@ -137,6 +137,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
 			_VFXspawnPoint.transform);
 
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		{
+			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
+		}
+
 		//Debug.Log(_vfxInstance.transform.position);
 
 		Destroy(_vfxInstance, 0.05f);
