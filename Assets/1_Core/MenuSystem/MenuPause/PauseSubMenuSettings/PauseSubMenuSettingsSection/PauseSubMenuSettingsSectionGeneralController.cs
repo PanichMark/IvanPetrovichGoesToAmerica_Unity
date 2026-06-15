@@ -64,6 +64,12 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private TextMeshProUGUI _textComponentDropdownShowBlood;
 	private bool _isBloodEnabled;
 
+	public delegate void HUDtypeHandler();
+	public event HUDtypeHandler OnHUDfull;
+	public event HUDtypeHandler OnHUDdialoguesOnly;
+	public event HUDtypeHandler OnHUDdialoguesHide;
+	public event HUDtypeHandler OnHUDturnOff;
+
 	public delegate void CameraFOVeventHandler(float newCameraFOV, float MIN_VALUE_CAMERA_FOV, float MAX_VALUE_CAMERA_FOV);
 	public event CameraFOVeventHandler OnCameraFOVchanged;
 
@@ -296,7 +302,22 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 	public void SetHUDType(int dropdownHUDTypeSlot)
 	{
-
+		if (dropdownHUDTypeSlot == 0)
+		{
+			OnHUDfull?.Invoke();
+		}
+		else if (dropdownHUDTypeSlot == 1)
+		{
+			OnHUDdialoguesOnly?.Invoke();	
+		}
+		else if (dropdownHUDTypeSlot == 2)
+		{
+			OnHUDdialoguesHide?.Invoke();
+		}
+		else if (dropdownHUDTypeSlot == 3)
+		{
+			OnHUDturnOff?.Invoke();
+		}
 	}
 
 	public void SetCameraFOV(float newCameraFOV)

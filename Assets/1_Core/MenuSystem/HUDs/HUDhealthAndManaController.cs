@@ -7,21 +7,26 @@ public class HUDhealthAndManaController : MonoBehaviour
     private GameSceneManager _gameSceneManager;
     private GameController _gameController;
 
-    private GameObject _healthBar;
+	private GameObject _HUDhealthAndManaBars;
+	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
+	private GameObject _healthBar;
 	private GameObject _manaBar;
 
 	public void Initialize (
 		GameController gameController,
 		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
+		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
 		GameObject canvasHUDPlayerResources,
 		ViewModelHUDHealthAndMana viewModelHUDHealthAndMana)
     {
         _gameSceneManager = gameSceneManager;
         _menuManager = menuManager;
+		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
         _canvasHUDhealthAndMana = canvasHUDPlayerResources;
         _healthBar = viewModelHUDHealthAndMana.HealthBar;
         _manaBar = viewModelHUDHealthAndMana.ManaBar;
+		_HUDhealthAndManaBars = viewModelHUDHealthAndMana.HUDhealthAndManaBars;
 
 		HideHealthBar();
 		HideManaBar();
@@ -38,6 +43,11 @@ public class HUDhealthAndManaController : MonoBehaviour
         _gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDhealthAndMana;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDhealthAndMana;
         _gameController.OnPlayerEarlyDeath += HideCanvasHUDhealthAndMana;
+
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDfull += ShowHUDhealthAndManaBars;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesOnly += HideHUDhealthAndManaBars;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesHide += ShowHUDhealthAndManaBars;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDturnOff += HideHUDhealthAndManaBars;
 
 		Debug.Log("HUDhealthAndManaController Initialized");
 	}
@@ -58,7 +68,17 @@ public class HUDhealthAndManaController : MonoBehaviour
 		Debug.Log("Hide canvasHUDhealthAndMana");
 	}
 
-    public void ShowHealthBar()
+	private void ShowHUDhealthAndManaBars()
+	{
+		_HUDhealthAndManaBars.SetActive(true);
+	}
+
+	private void HideHUDhealthAndManaBars()
+	{
+		_HUDhealthAndManaBars.SetActive(false);
+	}
+
+	public void ShowHealthBar()
     {
 		_healthBar.SetActive(true);
     }

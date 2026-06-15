@@ -131,17 +131,13 @@ public class BootstrapSubProcessWeaponSystem
 			_gameController,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessMenuSystem.MenuManager,
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			WeaponController,
 			_playerResourcesAmmoManager,
 			_bootstrapSubProcessInteractionSystem.InteractionController,
 			_bootstrapSubProcessMenuSystem.CanvasHUDammo,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextRightWeaponAmmoMagazineNumber,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextRightWeaponAmmoReserveNumber,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.RightWeaponAmmoSeparator,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextLeftWeaponAmmoMagazineNumber,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.TextLeftWeaponAmmoReserveNumber,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo.LeftWeaponAmmoSeparator);
+			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo);
 
 		_bulletHoleManager.Initialize(
 			_bootstrapSubProcessSceneSystem.GameSceneManager,

@@ -4,6 +4,7 @@ using UnityEngine;
 public class HUDammoController : MonoBehaviour
 {
 	private MenuManager _menuManager;
+	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	private GameObject _canvasHUDammo;
 	private GameSceneManager _gameSceneManager;
 	private GameController _gameController;
@@ -24,24 +25,23 @@ public class HUDammoController : MonoBehaviour
 	private TMP_Text _leftWeaponAmmoMagazineText;
 	private TMP_Text _leftWeaponAmmoReserveText;
 
+	private GameObject _HUDammo;
+
 	public void Initialize(
 		GameController gameController,
 		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
+		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
 		PlayerBehaviourController playerBehaviour,
 		PlayerWeaponController weaponController,
 		PlayerResourcesAmmoManager playerResourcesAmmoManager,
 		InteractionController interactionController,
 		GameObject canvasHUDammo,
-		GameObject RightWeaponAmmoMagazine,
-		GameObject RightWeaponAmmoReserve,
-		GameObject RightWeaponAmmoSeparator,
-		GameObject LeftWeaponAmmoMagazine,
-		GameObject LeftWeaponAmmoReserve,
-		GameObject LeftWeaponAmmoSeparator)
+		ViewModelHUDAmmo viewModelHUDAmmo)
 	{
 		_gameSceneManager = gameSceneManager;
 		_menuManager = menuManager;
+		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
 		_canvasHUDammo = canvasHUDammo;
 		_playerWeaponController = weaponController;
 		_playerResourcesAmmoManager = playerResourcesAmmoManager;
@@ -49,17 +49,19 @@ public class HUDammoController : MonoBehaviour
 		_playerBehaviour = playerBehaviour;
 		_interactionController = interactionController;
 
-		_rightWeaponAmmoMagazine = RightWeaponAmmoMagazine;
-		_rightWeaponAmmoReserve = RightWeaponAmmoReserve;
-		_rightWeaponAmmoSeparator = RightWeaponAmmoSeparator;
-		_leftWeaponAmmoMagazine = LeftWeaponAmmoMagazine;
-		_leftWeaponAmmoReserve = LeftWeaponAmmoReserve;
-		_leftWeaponAmmoSeparator = LeftWeaponAmmoSeparator;
+		_rightWeaponAmmoMagazine = viewModelHUDAmmo.TextRightWeaponAmmoMagazineNumber;
+		_rightWeaponAmmoReserve = viewModelHUDAmmo.TextRightWeaponAmmoReserveNumber;
+		_rightWeaponAmmoSeparator = viewModelHUDAmmo.RightWeaponAmmoSeparator;
+		_leftWeaponAmmoMagazine = viewModelHUDAmmo.TextLeftWeaponAmmoMagazineNumber;
+		_leftWeaponAmmoReserve = viewModelHUDAmmo.TextLeftWeaponAmmoReserveNumber;
+		_leftWeaponAmmoSeparator = viewModelHUDAmmo.LeftWeaponAmmoSeparator;
 
-		_rightWeaponAmmoMagazineText = RightWeaponAmmoMagazine.GetComponent<TMP_Text>();
-		_rightWeaponAmmoReserveText = RightWeaponAmmoReserve.GetComponent<TMP_Text>();
-		_leftWeaponAmmoMagazineText = LeftWeaponAmmoMagazine.GetComponent<TMP_Text>();
-		_leftWeaponAmmoReserveText = LeftWeaponAmmoReserve.GetComponent<TMP_Text>();
+		_rightWeaponAmmoMagazineText = _rightWeaponAmmoMagazine.GetComponent<TMP_Text>();
+		_rightWeaponAmmoReserveText = _rightWeaponAmmoReserve.GetComponent<TMP_Text>();
+		_leftWeaponAmmoMagazineText = _leftWeaponAmmoMagazine.GetComponent<TMP_Text>();
+		_leftWeaponAmmoReserveText = _leftWeaponAmmoReserve.GetComponent<TMP_Text>();
+
+		_HUDammo = viewModelHUDAmmo.HUDammo;
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDammo;
 		_menuManager.OnClosePauseMenu += ShowCanvasHUDammo;
@@ -67,6 +69,11 @@ public class HUDammoController : MonoBehaviour
 		_menuManager.OnCloseInteractionMenu += ShowCanvasHUDammo;
 		_menuManager.OnOpenDialogueMenu += HideCanvasHUDammo;
 		_menuManager.OnCloseDialogueMenu += ShowCanvasHUDammo;
+
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDfull += ShowAmmoDisplay;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesOnly += HideAmmoDisplay;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesHide += ShowAmmoDisplay;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDturnOff += HideAmmoDisplay;
 
 		_playerBehaviour.OnPlayerArmed += ShowCanvasHUDammo;
 		_playerBehaviour.OnPlayerDisarmed += HideCanvasHUDammo;
@@ -112,6 +119,16 @@ public class HUDammoController : MonoBehaviour
 		_canvasHUDammo.SetActive(false);
 
 		Debug.Log("Hide canvasAmmo");
+	}
+
+	private void ShowAmmoDisplay()
+	{
+		_HUDammo.SetActive(true);
+	}
+
+	private void HideAmmoDisplay()
+	{
+		_HUDammo.SetActive(false);
 	}
 
 	private void UpdateAmmoDisplayForActiveWeapon(WeaponHandsEnum activeHand)

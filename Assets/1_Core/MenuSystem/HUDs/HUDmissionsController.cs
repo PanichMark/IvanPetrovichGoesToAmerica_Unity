@@ -6,17 +6,23 @@ public class HUDmissionsController : MonoBehaviour
 	private GameObject _canvasHUDmissions;
 	private GameSceneManager _gameSceneManager;
 	private GameController _gameController;
+	private GameObject _HUDmission;
+	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 
 	public void Initialize(
 		GameController gameController,
 		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
-		GameObject canvasHUDmissions)
+		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
+		GameObject canvasHUDmissions,
+		ViewModelHUDMission viewModelHUDMission)
 	{
 		_gameController = gameController;
 		_gameSceneManager = gameSceneManager;
 		_menuManager = menuManager;
+		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
 		_canvasHUDmissions = canvasHUDmissions;
+		_HUDmission = viewModelHUDMission.HUDmission;
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDmissions;
 		_menuManager.OnClosePauseMenu += ShowCanvasHUDmissions;
@@ -28,6 +34,11 @@ public class HUDmissionsController : MonoBehaviour
 		_menuManager.OnCloseDialogueMenu += ShowCanvasHUDmissions;
 		_menuManager.OnOpenCutsceneMenu += HideCanvasHUDmissions;
 		_menuManager.OnCloseCutsceneMenu += ShowCanvasHUDmissions;
+
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDfull += ShowHUDmission;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesOnly += HideHUDmission;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesHide += ShowHUDmission;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDturnOff += HideHUDmission;
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDmissions;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDmissions;
@@ -50,5 +61,15 @@ public class HUDmissionsController : MonoBehaviour
 		_canvasHUDmissions.SetActive(false);
 
 		Debug.Log("Hide canvasMissions");
+	}
+
+	private void ShowHUDmission()
+	{
+		_HUDmission.SetActive(true);
+	}
+
+	private void HideHUDmission()
+	{
+		_HUDmission.SetActive(false);
 	}
 }

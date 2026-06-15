@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Codice.Client.BaseCommands.CheckIn.Progress;
 
 public class InteractionController : MonoBehaviour
 {
@@ -29,9 +30,10 @@ public class InteractionController : MonoBehaviour
 	private Image[] _itemsImages;
 
 	private MenuManager _menuManager;
-
+	private GameObject _HUDinteraction;
+	private GameObject _HUDphraseLine;
 	private Sprite _ImageMissing;
-
+	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	private PlayerCameraController _playerCameraController;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
@@ -64,6 +66,7 @@ public class InteractionController : MonoBehaviour
 		LocalizationManager localizationManager,
 		GameSceneManager gameSceneManager,
 		MenuManager menuManager,
+		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
 		PlayerBehaviourController playerBehaviour,
 		PlayerCameraController playerCameraController,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
@@ -79,8 +82,11 @@ public class InteractionController : MonoBehaviour
 		_playerCameraStateMachineController = playerCameraStateMachineController;
 		_playerBehaviour = playerBehaviour;
 		_menuManager = menuManager;
+		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
 		_canvasHUDinteraction = canvasHUDInteraction;
 		_viewModelHUDInteraction = viewModelHUDInteraction;
+		_HUDinteraction = viewModelHUDInteraction.HUDinteraction;
+		_HUDphraseLine = viewModelHUDInteraction.HUDphraseLine;
 
 		_itemsTexts = new TextMeshProUGUI[viewModelHUDInteraction.TextsGainedItems.Length];
 		for (int i = 0; i < viewModelHUDInteraction.TextsGainedItems.Length; i++)
@@ -102,6 +108,16 @@ public class InteractionController : MonoBehaviour
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDInteraction;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDInteraction;
+
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDfull += ShowHUDinteraction;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesOnly += HideHUDinteraction;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesHide += ShowHUDinteraction;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDturnOff += HideHUDinteraction;
+
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDfull += ShowHUDphraseLine;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesOnly += ShowHUDphraseLine;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesHide += HideHUDphraseLine;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDturnOff += HideHUDphraseLine;
 
 		_menuManager.OnOpenInteractionHUD += ShowCanvasHUDInteraction;
 		_menuManager.OnCloseInteractionHUD += HideCanvasHUDInteraction;
@@ -144,6 +160,26 @@ public class InteractionController : MonoBehaviour
 		_itemsTexts[0].gameObject.SetActive(false);
 		_itemsImages[0].sprite = null;
 		_itemsImages[0].gameObject.SetActive(false);
+	}
+
+	private void ShowHUDinteraction()
+	{
+		_HUDinteraction.SetActive(true);
+	}
+
+	private void HideHUDinteraction()
+	{
+		_HUDinteraction.SetActive(false);
+	}
+
+	private void ShowHUDphraseLine()
+	{
+		_HUDphraseLine.SetActive(true);
+	}
+
+	private void HideHUDphraseLine()
+	{
+		_HUDphraseLine.SetActive(false);
 	}
 
 	private void HideCanvasHUDInteraction()

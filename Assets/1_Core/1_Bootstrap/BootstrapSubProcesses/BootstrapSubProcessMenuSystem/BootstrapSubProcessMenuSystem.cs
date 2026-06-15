@@ -334,6 +334,7 @@ public class BootstrapSubProcessMenuSystem
 			_gameController,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			MenuManager,
+			PauseSubMenuSettingsSectionGeneralController,
 			_canvasHUDhealthAndMana,
 			ViewModelHUDhealthAndMana);
 
@@ -341,7 +342,9 @@ public class BootstrapSubProcessMenuSystem
 			_gameController,
 			_gameSceneManager,
 			MenuManager,
-			_canvasHUDmission);
+			PauseSubMenuSettingsSectionGeneralController,
+			_canvasHUDmission,
+			ViewModelHUDMission);
 
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", PauseMenuController);

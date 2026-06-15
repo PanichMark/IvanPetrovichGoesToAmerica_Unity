@@ -7,7 +7,7 @@ public class ViewModelHUDInteraction
 	public GameObject[] TextsGainedItems;
 	public GameObject[] ImagesGainedItems;
 	public GameObject TextPhraseLine;
-	public GameObject HUDcrosshair;
+	public GameObject HUDinteraction;
 	public GameObject HUDphraseLine;
 
 	public ViewModelHUDInteraction(Bootstrap bootstrap, GameObject canvas)
@@ -27,10 +27,10 @@ public class ViewModelHUDInteraction
 			bootstrap.FindDeepGameObject(canvas,"ImageGainedItem1"),
 			bootstrap.FindDeepGameObject(canvas,"ImageGainedItem2"),
 			bootstrap.FindDeepGameObject(canvas,"ImageGainedItem3")
-	};
+		};
 		TextPhraseLine = bootstrap.FindDeepGameObject(canvas, "TextPhrase");
 
-		HUDcrosshair = bootstrap.FindDeepGameObject(canvas, "HUDcrosshair");
+		HUDinteraction= bootstrap.FindDeepGameObject(canvas, "HUDinteraction");
 		HUDphraseLine = bootstrap.FindDeepGameObject(canvas, "HUDphraseLine");
 	}
 }

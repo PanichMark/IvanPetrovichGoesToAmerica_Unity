@@ -60,6 +60,7 @@ public class BootstrapSubProcessInteractionSystem
 			_localizationManager,
 			_gameSceneManager,
 			_bootstrapSubProcessMenuSystem.MenuManager,
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController,
 			_playerBehaviour,
 			_playerCameraController,
 			_playerCameraStateMachineController,
