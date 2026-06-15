@@ -10,7 +10,7 @@ public class InteractionController : MonoBehaviour
 	private GameObject _canvasHUDinteraction;
 
 	private float _interactionRange = 50f;
-
+	private ViewModelHUDInteraction _viewModelHUDInteraction;
 	private LocalizationManager _localizationManager;
 	public delegate void PickableObjectsHandler();
 	public event PickableObjectsHandler OnPickUpThrowable;
@@ -23,7 +23,7 @@ public class InteractionController : MonoBehaviour
 	private string _HUDInteractionThrowText;
 	private bool _changedPickedUpState;
 	private TextMeshProUGUI _mainInteractionText;
-	private TextMeshProUGUI _additionalInteractionText;
+	private TextMeshProUGUI _failInteractionText;
 
 	private TextMeshProUGUI[] _itemsTexts;
 	private Image[] _itemsImages;
@@ -68,10 +68,7 @@ public class InteractionController : MonoBehaviour
 		PlayerCameraController playerCameraController,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		GameObject canvasHUDInteraction,
-		TextMeshProUGUI mainInteractionText,
-		TextMeshProUGUI additionalInteractionText,
-		TextMeshProUGUI[] itemsTexts,
-		Image[] itemsImages)
+		ViewModelHUDInteraction viewModelHUDInteraction)
 	{
 		_bootstrap = bootstrap;
 		_gameController = gameController;
@@ -83,12 +80,22 @@ public class InteractionController : MonoBehaviour
 		_playerBehaviour = playerBehaviour;
 		_menuManager = menuManager;
 		_canvasHUDinteraction = canvasHUDInteraction;
+		_viewModelHUDInteraction = viewModelHUDInteraction;
 
-		_itemsTexts = itemsTexts;
-		_itemsImages = itemsImages;
+		_itemsTexts = new TextMeshProUGUI[viewModelHUDInteraction.TextsGainedItems.Length];
+		for (int i = 0; i < viewModelHUDInteraction.TextsGainedItems.Length; i++)
+		{
+			_itemsTexts[i] = viewModelHUDInteraction.TextsGainedItems[i].GetComponent<TextMeshProUGUI>();
+		}
 
-		_mainInteractionText = mainInteractionText;
-		_additionalInteractionText = additionalInteractionText;
+		_itemsImages = new Image[viewModelHUDInteraction.ImagesGainedItems.Length];
+		for (int i = 0; i < viewModelHUDInteraction.ImagesGainedItems.Length; i++)
+		{
+			_itemsImages[i] = viewModelHUDInteraction.ImagesGainedItems[i].GetComponent<Image>();
+		}
+
+		_mainInteractionText = viewModelHUDInteraction.TextInteractionMessageMain.GetComponent<TextMeshProUGUI>();
+		_failInteractionText = viewModelHUDInteraction.TextInteractionMessageFail.GetComponent<TextMeshProUGUI>();
 
 		_HUDInteractionDropText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Drop");
 		_HUDInteractionThrowText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Throw");
@@ -251,7 +258,7 @@ public class InteractionController : MonoBehaviour
 		else
 		{
 			_mainInteractionText.text = null;
-			_additionalInteractionText.text = null;
+			_failInteractionText.text = null;
 		}
 
 		PickUpInteractableObject();
@@ -291,7 +298,7 @@ public class InteractionController : MonoBehaviour
 
 					if (_lookedAtIInteractable.IsInteractionHintMessageFailActive == true)
 					{
-						_additionalInteractionText.text = _lookedAtIInteractable.InteractionHintMessageFail;
+						_failInteractionText.text = _lookedAtIInteractable.InteractionHintMessageFail;
 						if (_showAdditionalHintCoroutine != null)
 							StopCoroutine(_showAdditionalHintCoroutine); 
 
@@ -337,7 +344,7 @@ public class InteractionController : MonoBehaviour
 				if (_showAdditionalHintCoroutine != null)
 				{
 					StopCoroutine(_showAdditionalHintCoroutine); 
-					_additionalInteractionText.text = null;
+					_failInteractionText.text = null;
 				}
 			}
 
@@ -349,7 +356,7 @@ public class InteractionController : MonoBehaviour
 	IEnumerator ShowInteractionObjectHintMessage()
 	{
 		yield return new WaitForSeconds(1f);
-		_additionalInteractionText.text = null;
+		_failInteractionText.text = null;
 	}
 
 	private void ShowGainedItems()

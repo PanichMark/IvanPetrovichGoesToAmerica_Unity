@@ -1,12 +1,10 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class ViewModelMenuWeaponWheel
 {
 	public GameObject GameObjectWeaponWheelSegment;
 
-	public TextMeshProUGUI TextWeaponWheelWeaponName;
+	public GameObject TextWeaponWheelWeaponName;
 	public GameObject ImageWeaponWheelWeaponIcon;
 	public GameObject TextWeaponAmmoMagazineNumber;
 	public GameObject TextWeaponAmmoReserveNumber;
@@ -14,32 +12,32 @@ public class ViewModelMenuWeaponWheel
 
 	public GameObject WeaponWheelRadius;
 
-	public TextMeshProUGUI TextWeaponWheelHandType;
+	public GameObject TextWeaponWheelHandType;
 
-	public Button ButtonUseHealingItem;
-	public TextMeshProUGUI TextHealingItemNumber;
+	public GameObject ButtonUseHealingItem;
+	public GameObject TextHealingItemNumber;
 
-	public Button ButtonUseManaReplenishItem;
-	public TextMeshProUGUI TextManaReplenishItemNumber;
+	public GameObject ButtonUseManaReplenishItem;
+	public GameObject TextManaReplenishItemNumber;
 
 	public ViewModelMenuWeaponWheel(Bootstrap bootstrap, GameObject canvas)
 	{
 		GameObjectWeaponWheelSegment = Resources.Load<GameObject>("WeaponSystem/WeaponWheel/WeaponWheelSegment");
-
-		TextWeaponWheelWeaponName = canvas.transform.Find("TextWeaponWheelWeapon").GetComponent<TextMeshProUGUI>();
+		
+		TextWeaponWheelWeaponName = bootstrap.FindDeepGameObject(canvas, "TextWeaponWheelWeapon");
 		ImageWeaponWheelWeaponIcon = bootstrap.FindDeepGameObject(canvas, "ImageWeaponWheelWeapon");
 		TextWeaponAmmoMagazineNumber = bootstrap.FindDeepGameObject(canvas, "WeaponAmmoMagazineNumber");
 		TextWeaponAmmoReserveNumber = bootstrap.FindDeepGameObject(canvas, "WeaponAmmoReserveNumber");
 		TextWeaponAmmoSeparator = bootstrap.FindDeepGameObject(canvas, "WeaponAmmoSeparator");
 
 		WeaponWheelRadius = bootstrap.FindDeepGameObject(canvas, "Radius");
+		
+		TextWeaponWheelHandType = bootstrap.FindDeepGameObject(canvas, "TextWeaponWheelHandType");
 
-		TextWeaponWheelHandType = canvas.transform.Find("TextWeaponWheelHandType").GetComponent<TextMeshProUGUI>();
+		ButtonUseHealingItem = bootstrap.FindDeepGameObject(canvas, "ButtonUseHealingItem");
+		TextHealingItemNumber = bootstrap.FindDeepGameObject(canvas, "TextHealingItemNumber");
 
-		ButtonUseHealingItem = bootstrap.FindDeepGameObject(canvas, "ButtonUseHealingItem").GetComponent<Button>();
-		TextHealingItemNumber = bootstrap.FindDeepGameObject(canvas, "TextHealingItemNumber").GetComponent<TextMeshProUGUI>();
-
-		ButtonUseManaReplenishItem = bootstrap.FindDeepGameObject(canvas, "ButtonUseManaReplenishItem").GetComponent<Button>();
-		TextManaReplenishItemNumber = bootstrap.FindDeepGameObject(canvas, "TextManaReplenishItemNumber").GetComponent<TextMeshProUGUI>();
+		ButtonUseManaReplenishItem = bootstrap.FindDeepGameObject(canvas, "ButtonUseManaReplenishItem");
+		TextManaReplenishItemNumber = bootstrap.FindDeepGameObject(canvas, "TextManaReplenishItemNumber");
 	}
 }

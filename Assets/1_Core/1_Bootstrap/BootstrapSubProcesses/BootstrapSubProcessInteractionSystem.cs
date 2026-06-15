@@ -64,10 +64,7 @@ public class BootstrapSubProcessInteractionSystem
 			_playerCameraController,
 			_playerCameraStateMachineController,
 			_bootstrapSubProcessMenuSystem.CanvasHUDinteraction,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDInteraction.TextInteractionMessageMain,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDInteraction.TextInteractionMessageFail,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDInteraction.TextsGainedItems,
-			_bootstrapSubProcessMenuSystem.ViewModelHUDInteraction.ImagesGainedItems);
+			_bootstrapSubProcessMenuSystem.ViewModelHUDInteraction);
 
 		_keysManager = new KeysManager();
 

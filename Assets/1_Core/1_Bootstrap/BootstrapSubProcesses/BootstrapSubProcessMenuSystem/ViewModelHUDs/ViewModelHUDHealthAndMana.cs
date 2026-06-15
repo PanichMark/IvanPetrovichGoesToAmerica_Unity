@@ -7,6 +7,7 @@ public class ViewModelHUDHealthAndMana
 	public GameObject ManaBar;
 	public GameObject SliderManaBar;
 	public GameObject SliderManaBarFillArea;
+	public GameObject HUDhealthAndManaBars;
 	
 
 	public ViewModelHUDHealthAndMana(Bootstrap bootstrap, GameObject canvas)
@@ -17,5 +18,7 @@ public class ViewModelHUDHealthAndMana
 		ManaBar = bootstrap.FindDeepGameObject(canvas, "ManaBar");
 		SliderManaBar = bootstrap.FindDeepGameObject(canvas, "SliderManaBar");
 		SliderManaBarFillArea = bootstrap.FindDeepGameObject(canvas, "SliderManaBarFillArea");
+
+		HUDhealthAndManaBars = bootstrap.FindDeepGameObject(canvas, "HUDhealthAndManaBars");
 	}
 }

@@ -48,8 +48,8 @@ public class NPCDialogueController : MonoBehaviour
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		LoadDialogueFromFiles();
 
-		_buttonDialogueYes = ServiceLocator.Resolve<Button>("ButtonDialogueYes");
-		_buttonDialogueNo = ServiceLocator.Resolve<Button>("ButtonDialogueNo");
+		_buttonDialogueYes = ServiceLocator.Resolve<GameObject>("ButtonDialogueYes").GetComponent<Button>();
+		_buttonDialogueNo = ServiceLocator.Resolve<GameObject>("ButtonDialogueNo").GetComponent<Button>();
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 		_textDialogueYes = ServiceLocator.Resolve<GameObject>("TextDialogueYes");
 		_textDialogueNo = ServiceLocator.Resolve<GameObject>("TextDialogueNo");
@@ -60,7 +60,7 @@ public class NPCDialogueController : MonoBehaviour
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_canvasDialogueMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuDialogue");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
-		_NPCdialogueText = ServiceLocator.Resolve<TextMeshProUGUI>("TextDialogueLine");
+		_NPCdialogueText = ServiceLocator.Resolve<GameObject>("TextDialogueLine").GetComponent<TextMeshProUGUI>();
 
 		_NPCstateMachineController = GetComponent<NPCStateMachineController>();
 

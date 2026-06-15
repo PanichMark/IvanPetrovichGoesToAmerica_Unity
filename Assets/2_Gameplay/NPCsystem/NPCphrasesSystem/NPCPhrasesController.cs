@@ -16,13 +16,15 @@ public class NPCPhrasesController : MonoBehaviour
 	};
 
 	[SerializeField] private NPCPhrasesData _NPCphrasesData;
-	private TextMeshProUGUI _NPCphrasesText;
+	private GameObject _NPCphrasesText;
+	private TextMeshProUGUI _NPCphrasesTextComponent;
 
 	public void Initialize()
 	{
 		_NPCabstract = GetComponent<NPCAbstract>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_NPCphrasesText = ServiceLocator.Resolve<TextMeshProUGUI>("TextPhraseLine");
+		_NPCphrasesText = ServiceLocator.Resolve<GameObject>("TextPhraseLine");
+		_NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();
 		//Debug.Log(_NPCphrasesText);
 		_audioSource = GetComponent<AudioSource>();
 		LoadPhrasesTextFiles();
@@ -79,7 +81,7 @@ public class NPCPhrasesController : MonoBehaviour
 			int randomIndex = Random.Range(0, _localizedNPSphrases[currentLanguage].Count);
 			string selectedPhrase = _localizedNPSphrases[currentLanguage][randomIndex];
 			string fullPhrase = $"{_NPCabstract.InteractionObjectNameUI}: {selectedPhrase}";
-			_NPCphrasesText.text = fullPhrase;
+			_NPCphrasesTextComponent.text = fullPhrase;
 		}
 		else
 		{
@@ -88,13 +90,13 @@ public class NPCPhrasesController : MonoBehaviour
 
 		yield return new WaitForSeconds(3.5f);
 
-		_NPCphrasesText.text = string.Empty;
+		_NPCphrasesTextComponent.text = string.Empty;
 		_NPCphrasesText.gameObject.SetActive(false);
 	}
 
 	public void ClearPhrases()
 	{
-		_NPCphrasesText.text = string.Empty;
+		_NPCphrasesTextComponent.text = string.Empty;
 		_NPCphrasesText.gameObject.SetActive(false);
 	}
 }

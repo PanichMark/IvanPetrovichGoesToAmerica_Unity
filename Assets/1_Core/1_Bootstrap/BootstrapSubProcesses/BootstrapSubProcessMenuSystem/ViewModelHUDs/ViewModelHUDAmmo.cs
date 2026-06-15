@@ -9,15 +9,18 @@ public class ViewModelHUDAmmo
 	public GameObject TextLeftWeaponAmmoReserveNumber;
 	public GameObject LeftWeaponAmmoSeparator;
 	public GameObject TextChokeNPC;
+	public GameObject HUDammo;
 
 	public ViewModelHUDAmmo(Bootstrap bootstrap, GameObject canvas)
 	{
-		TextRightWeaponAmmoMagazineNumber = canvas.transform.Find("TextRightWeaponAmmoMagazineNumber").gameObject;
-		TextRightWeaponAmmoReserveNumber = canvas.transform.Find("TextRightWeaponAmmoReserveNumber").gameObject;
-		RightWeaponAmmoSeparator = canvas.transform.Find("RightWeaponAmmoSeparator").gameObject;
-		TextLeftWeaponAmmoMagazineNumber = canvas.transform.Find("TextLeftWeaponAmmoMagazineNumber").gameObject;
-		TextLeftWeaponAmmoReserveNumber = canvas.transform.Find("TextLeftWeaponAmmoReserveNumber").gameObject;
-		LeftWeaponAmmoSeparator = canvas.transform.Find("LeftWeaponAmmoSeparator").gameObject;
-		TextChokeNPC = canvas.transform.Find("TextChokeNPC").gameObject;
+		TextRightWeaponAmmoMagazineNumber = bootstrap.FindDeepGameObject(canvas, "TextRightWeaponAmmoMagazineNumber");
+		TextRightWeaponAmmoReserveNumber = bootstrap.FindDeepGameObject(canvas, "TextRightWeaponAmmoReserveNumber");
+		RightWeaponAmmoSeparator = bootstrap.FindDeepGameObject(canvas, "RightWeaponAmmoSeparator");
+		TextLeftWeaponAmmoMagazineNumber = bootstrap.FindDeepGameObject(canvas, "TextLeftWeaponAmmoMagazineNumber");
+		TextLeftWeaponAmmoReserveNumber = bootstrap.FindDeepGameObject(canvas, "TextLeftWeaponAmmoReserveNumber");
+		LeftWeaponAmmoSeparator = bootstrap.FindDeepGameObject(canvas, "LeftWeaponAmmoSeparator");
+		TextChokeNPC = bootstrap.FindDeepGameObject(canvas, "TextChokeNPC");
+
+		HUDammo = bootstrap.FindDeepGameObject(canvas, "HUDammo");
 	}
 }

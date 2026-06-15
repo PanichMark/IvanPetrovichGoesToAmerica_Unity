@@ -21,10 +21,10 @@ public class MainMenuReadNewsController : MonoBehaviour
 		ViewModelMainMenuReadNews viewModelMainMenuReadNews)
 	{
 		_canvasMainMenuReadNews = canvasMainMenuReadNews;
-		_buttonCloseMainMenuReadNews = viewModelMainMenuReadNews.ButtonCloseMainMenuReadNews;
-		_buttonYouTube = viewModelMainMenuReadNews.ButtonYouTube;
-		_buttonGitHub = viewModelMainMenuReadNews.ButtonGitHub;
-		
+		_buttonCloseMainMenuReadNews = viewModelMainMenuReadNews.ButtonCloseMainMenuReadNews.GetComponent<Button>();
+		_buttonYouTube = viewModelMainMenuReadNews.ButtonYouTube.GetComponent<Button>();
+		_buttonGitHub = viewModelMainMenuReadNews.ButtonGitHub.GetComponent<Button>();
+
 		_buttonCloseMainMenuReadNews.onClick.AddListener(() => HideCanvasMainMenuReadNews());
 
 		_buttonYouTube.onClick.AddListener(() => OpenUrl(YOUTUBE_URL));
