@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c44f9c57d07d0274893fd04b169a72f6, type: 2}
+  - {fileID: 2100000, guid: 3a6e15e18ccd0874ca78a2aab90f8ab8, type: 2}
   - {fileID: 2100000, guid: 91cf119933e2a324a824ca4e2f3b5b86, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -119,10 +119,11 @@ Transform:
   - {fileID: 4236943005223349865}
   - {fileID: 7034781070204959426}
   - {fileID: 3074918852498889503}
-  - {fileID: 5213310033333844539}
+  - {fileID: 8857077396613379713}
+  - {fileID: 831915310051147246}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2822633289982817127
+--- !u!1 &2440423365342633515
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,23 +131,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5213310033333844539}
-  - component: {fileID: 7882635550493618990}
-  - component: {fileID: 1033434883013679595}
+  - component: {fileID: 8857077396613379713}
+  - component: {fileID: 278052729705661696}
+  - component: {fileID: 103407279721184274}
   m_Layer: 0
-  m_Name: Vehicle_Car_TruckSmall_Tanker
+  m_Name: Vehicle_Car_TruckSmall_TankerPoster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5213310033333844539
+--- !u!4 &8857077396613379713
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2822633289982817127}
+  m_GameObject: {fileID: 2440423365342633515}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -155,21 +156,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7540265853603114114}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7882635550493618990
+--- !u!33 &278052729705661696
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2822633289982817127}
-  m_Mesh: {fileID: -1531661444745715278, guid: 520ed383bbcac6843b64207fed3d222c, type: 3}
---- !u!23 &1033434883013679595
+  m_GameObject: {fileID: 2440423365342633515}
+  m_Mesh: {fileID: 4279285920325893220, guid: 520ed383bbcac6843b64207fed3d222c, type: 3}
+--- !u!23 &103407279721184274
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2822633289982817127}
+  m_GameObject: {fileID: 2440423365342633515}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -186,8 +187,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c44f9c57d07d0274893fd04b169a72f6, type: 2}
-  - {fileID: 2100000, guid: be1de46078d9de342af95b68fa7ef7ba, type: 2}
+  - {fileID: 2100000, guid: e4c5e872730c38a42bd43bbcff8c2d12, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -273,7 +273,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c44f9c57d07d0274893fd04b169a72f6, type: 2}
+  - {fileID: 2100000, guid: 3a6e15e18ccd0874ca78a2aab90f8ab8, type: 2}
   - {fileID: 2100000, guid: 91cf119933e2a324a824ca4e2f3b5b86, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -360,8 +360,94 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c44f9c57d07d0274893fd04b169a72f6, type: 2}
+  - {fileID: 2100000, guid: 3a6e15e18ccd0874ca78a2aab90f8ab8, type: 2}
   - {fileID: 2100000, guid: 91cf119933e2a324a824ca4e2f3b5b86, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7277510569337779378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 831915310051147246}
+  - component: {fileID: 3365970196300887291}
+  - component: {fileID: 5586034496427155006}
+  m_Layer: 0
+  m_Name: Vehicle_Car_TruckSmall_Tanker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &831915310051147246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7277510569337779378}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7540265853603114114}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &3365970196300887291
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7277510569337779378}
+  m_Mesh: {fileID: -1531661444745715278, guid: 520ed383bbcac6843b64207fed3d222c, type: 3}
+--- !u!23 &5586034496427155006
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7277510569337779378}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 3a6e15e18ccd0874ca78a2aab90f8ab8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
