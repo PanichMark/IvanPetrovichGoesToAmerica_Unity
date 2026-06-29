@@ -7,12 +7,12 @@ using uLipSync;
 
 public class NPCDialogueController : MonoBehaviour
 {
-	public delegate void BlendShapesHandler();
-	public event BlendShapesHandler OnResetBlenderShapes;
+	public delegate void PhonemesBlendShapesHandler();
+	public event PhonemesBlendShapesHandler OnResetPhonemesBlendShapes;
 
 	[SerializeField] private NPCDialogueData _NPCdialogueData;
-	public uLipSync.uLipSync _uLipSync;
-	public uLipSyncBlendShape _uLipSyncBlendShape;
+	private uLipSync.uLipSync _uLipSync;
+	private uLipSyncBlendShape _uLipSyncBlendShape;
 	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
 	private GameController _gameController;
 	[SerializeField] private List<NPCDialogueBranch> _dialogueBranchStructsList;
@@ -232,7 +232,7 @@ public class NPCDialogueController : MonoBehaviour
 
 					_isIvanPetrovichSpeaking = true;
 
-					OnResetBlenderShapes?.Invoke();
+					OnResetPhonemesBlendShapes?.Invoke();
 				}
 
 			}
