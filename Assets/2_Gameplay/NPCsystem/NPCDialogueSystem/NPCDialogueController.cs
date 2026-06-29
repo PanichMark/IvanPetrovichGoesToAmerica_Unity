@@ -5,9 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using uLipSync;
 
-
 public class NPCDialogueController : MonoBehaviour
 {
+	public delegate void BlendShapesHandler();
+	public event BlendShapesHandler OnResetBlenderShapes;
+
 	[SerializeField] private NPCDialogueData _NPCdialogueData;
 	public uLipSync.uLipSync _uLipSync;
 	public uLipSyncBlendShape _uLipSyncBlendShape;
@@ -88,11 +90,6 @@ public class NPCDialogueController : MonoBehaviour
 		if (!_isIvanPetrovichSpeaking)
 		{
 			_uLipSyncBlendShape.ApplyBlendShapes();
-
-		}
-		else
-		{
-			//_uLipSyncBlendShape.blendShapes = null;
 		}
 	}
 
@@ -198,6 +195,7 @@ public class NPCDialogueController : MonoBehaviour
 
 	private void DisplayNextDialogueLine()
 	{
+		_isIvanPetrovichSpeaking = false;
 		var currentLanguage = _localizationManager.CurrentLanguage;
 
 		if (_currentDialogueStepIndex >= _localizedDialogue[currentLanguage].Count)
@@ -231,12 +229,12 @@ public class NPCDialogueController : MonoBehaviour
 				if ((_currentDialogueStepIndex == _dialogueBranchStructsList[i].DialogueBranchLine) || ((_currentDialogueStepIndex + 1) == _dialogueBranchStructsList[i].GoToNoOptionLine))
 				{
 					_NPCdialogueText.text = $"{_localizationManager.GetLocalizedString("IvanPetrovich")}: {_localizedDialogue[currentLanguage][_currentDialogueStepIndex]}";
+
 					_isIvanPetrovichSpeaking = true;
+
+					OnResetBlenderShapes?.Invoke();
 				}
-				else
-				{
-					_isIvanPetrovichSpeaking = false;
-				}
+
 			}
 		}
 
