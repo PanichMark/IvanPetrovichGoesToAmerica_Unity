@@ -3,11 +3,14 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using uLipSync;
+
 
 public class NPCDialogueController : MonoBehaviour
 {
 	[SerializeField] private NPCDialogueData _NPCdialogueData;
-
+	public uLipSync.uLipSync _uLipSync;
+	public uLipSyncBlendShape _uLipSyncBlendShape;
 	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
 	private GameController _gameController;
 	[SerializeField] private List<NPCDialogueBranch> _dialogueBranchStructsList;
@@ -30,7 +33,7 @@ public class NPCDialogueController : MonoBehaviour
 		{ LanguagesEnum.Russian, new List<string>() },
 		{ LanguagesEnum.English, new List<string>() }
 	};
-
+	private bool _isIvanPetrovichSpeaking;
 	public Dictionary<LanguagesEnum, List<string>> LocalizedDialogue => _localizedDialogue;
 	private TextMeshProUGUI _NPCdialogueText;
 	private GameObject _canvasDialogueMenu;
@@ -42,7 +45,8 @@ public class NPCDialogueController : MonoBehaviour
 
 	public void Initialize()
 	{
-		//_audioSource = transform.Find("Head_LipSync").GetComponent<AudioSource>();
+		_uLipSyncBlendShape = GetComponent<uLipSyncBlendShape>();
+		_uLipSync = GetComponent<uLipSync.uLipSync>();
 		_audioSource = GetComponent<AudioSource>();
 		_NPCabstract = GetComponent<NPCAbstract>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
@@ -79,6 +83,16 @@ public class NPCDialogueController : MonoBehaviour
 		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && IsDialogueActive && _canSkip && !_menuManager.IsPauseMenuOpened)
 		{
 			DisplayNextDialogueLine();
+		}
+
+		if (!_isIvanPetrovichSpeaking)
+		{
+			_uLipSyncBlendShape.ApplyBlendShapes();
+
+		}
+		else
+		{
+			//_uLipSyncBlendShape.blendShapes = null;
 		}
 	}
 
@@ -213,9 +227,15 @@ public class NPCDialogueController : MonoBehaviour
 					ShowDialogueAnswerOptions(i);
 					break;
 				}
+
 				if ((_currentDialogueStepIndex == _dialogueBranchStructsList[i].DialogueBranchLine) || ((_currentDialogueStepIndex + 1) == _dialogueBranchStructsList[i].GoToNoOptionLine))
 				{
 					_NPCdialogueText.text = $"{_localizationManager.GetLocalizedString("IvanPetrovich")}: {_localizedDialogue[currentLanguage][_currentDialogueStepIndex]}";
+					_isIvanPetrovichSpeaking = true;
+				}
+				else
+				{
+					_isIvanPetrovichSpeaking = false;
 				}
 			}
 		}

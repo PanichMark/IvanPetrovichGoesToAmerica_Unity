@@ -330,7 +330,7 @@ public class MenuManager : MonoBehaviour
 	public void OpenDialogueMenu()
 	{
 		IsDialogueMenuOpened = true;
-		Time.timeScale = 0;
+		//Time.timeScale = 0;
 		_gameController.MakePlayerNonControllable();
 		OpenAnyMenu();
 		OnOpenDialogueMenu?.Invoke();

@@ -14892,7 +14892,7 @@ Transform:
   m_GameObject: {fileID: 1780422656902466120}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -1.398, y: 0.00000011920929, z: -1.524}
+  m_LocalPosition: {x: -0.02, y: 0.00000011920929, z: 1.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15398,6 +15398,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCdialogueData: {fileID: 11400000, guid: 0f736738babd7064cbb94ca2fd81f4ed, type: 2}
+  _uLipSync: {fileID: 0}
+  _uLipSyncBlendShape: {fileID: 0}
   _dialogueBranchStructsList:
   - DialogueBranchLine: 3
     GoToNoOptionLine: 7
@@ -15517,7 +15519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2163de355e8fd8e4b83b631e07455323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateMethod: 0
+  updateMethod: 4
   skinnedMeshRenderer: {fileID: 4212541051391330133}
   blendShapes:
   - phoneme: A
@@ -15586,8 +15588,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: a3e46389f6f7dd043bf5dc2e2c485b37, type: 3}
-  m_Resource: {fileID: 8300000, guid: a3e46389f6f7dd043bf5dc2e2c485b37, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
