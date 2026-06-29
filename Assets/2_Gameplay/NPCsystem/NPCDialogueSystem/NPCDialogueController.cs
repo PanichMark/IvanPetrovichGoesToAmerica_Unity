@@ -42,6 +42,7 @@ public class NPCDialogueController : MonoBehaviour
 
 	public void Initialize()
 	{
+		//_audioSource = transform.Find("Head_LipSync").GetComponent<AudioSource>();
 		_audioSource = GetComponent<AudioSource>();
 		_NPCabstract = GetComponent<NPCAbstract>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
