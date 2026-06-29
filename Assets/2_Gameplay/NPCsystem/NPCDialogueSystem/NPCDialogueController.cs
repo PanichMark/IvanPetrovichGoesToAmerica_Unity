@@ -11,7 +11,6 @@ public class NPCDialogueController : MonoBehaviour
 	public event PhonemesBlendShapesHandler OnResetPhonemesBlendShapes;
 
 	[SerializeField] private NPCDialogueData _NPCdialogueData;
-	private uLipSync.uLipSync _uLipSync;
 	private uLipSyncBlendShape _uLipSyncBlendShape;
 	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
 	private GameController _gameController;
@@ -48,7 +47,6 @@ public class NPCDialogueController : MonoBehaviour
 	public void Initialize()
 	{
 		_uLipSyncBlendShape = GetComponent<uLipSyncBlendShape>();
-		_uLipSync = GetComponent<uLipSync.uLipSync>();
 		_audioSource = GetComponent<AudioSource>();
 		_NPCabstract = GetComponent<NPCAbstract>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
@@ -88,7 +86,7 @@ public class NPCDialogueController : MonoBehaviour
 		}
 
 		if (!_isIvanPetrovichSpeaking)
-		{
+		{ 
 			_uLipSyncBlendShape.ApplyBlendShapes();
 		}
 	}

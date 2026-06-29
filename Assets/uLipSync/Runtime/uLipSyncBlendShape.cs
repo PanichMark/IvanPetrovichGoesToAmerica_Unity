@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 namespace uLipSync
@@ -94,6 +94,7 @@ public class uLipSyncBlendShape : AnimationBakableMonoBehaviour
         }
     }
 
+		/*
     float SmoothDamp(float value, float target, ref float velocity)
     {
 #if UNITY_EDITOR
@@ -104,8 +105,43 @@ public class uLipSyncBlendShape : AnimationBakableMonoBehaviour
 #endif
         return Mathf.SmoothDamp(value, target, ref velocity, smoothness);
     }
+        */
 
-    void UpdateVolume()
+		float SmoothDamp(float value, float target, ref float velocity)
+		{
+#if UNITY_EDITOR
+			if (_isAnimationBaking)
+			{
+				return Mathf.SmoothDamp(value, target, ref velocity, smoothness, Mathf.Infinity, _animBakeDeltaTime);
+			}
+#endif
+			// Защита от нулевой плавности, чтобы избежать деления на ноль
+			float smoothTime = Mathf.Max(0.0001f, smoothness);
+
+			float omega = 2f / smoothTime;
+			float x = omega * Time.unscaledDeltaTime;
+			float exp = 1f / (1f + x + 0.48f * x * x + 0.235f * x * x * x);
+
+			float temp = (value - target);
+			float to = target;
+			float maxChange = Mathf.Infinity;
+			to = (temp > 0) ? Mathf.Min(to, target + maxChange) : Mathf.Max(to, target - maxChange);
+
+			if (Mathf.Abs(to - value) > 0.0001f)
+			{
+				float result = value + (to - value) * exp;
+				velocity = (result - value) / Time.unscaledDeltaTime;
+				return result;
+			}
+			else
+			{
+				velocity = 0.0f;
+				return target;
+			}
+		}
+
+		/*
+		void UpdateVolume()
     {
         float normVol = 0f;
         if (_lipSyncUpdated && _info.rawVolume > 0f)
@@ -116,8 +152,20 @@ public class uLipSyncBlendShape : AnimationBakableMonoBehaviour
         }
         _volume = SmoothDamp(_volume, normVol, ref _openCloseVelocity);
     }
+        */
+		void UpdateVolume()
+		{
+			float normVol = 0f;
+			if (_lipSyncUpdated && _info.rawVolume > 0f)
+			{
+				normVol = Mathf.Log10(_info.rawVolume);
+				normVol = (normVol - minVolume) / Mathf.Max(maxVolume - minVolume, 1e-4f);
+				normVol = Mathf.Clamp01(normVol);
+			}
+			_volume = SmoothDamp(_volume, normVol, ref _openCloseVelocity);
+		}
 
-    void UpdateVowels()
+		void UpdateVowels()
     {
         float sum = 0f;
         var ratios = _info.phonemeRatios;
@@ -155,33 +203,53 @@ public class uLipSyncBlendShape : AnimationBakableMonoBehaviour
             OnApplyBlendShapes();
         }
     }
-    
-    protected virtual void OnApplyBlendShapes()
+
+		/*
+		protected virtual void OnApplyBlendShapes()
+		{
+			if (!skinnedMeshRenderer) return;
+
+			foreach (var bs in blendShapes)
+			{
+				if (bs.index < 0) continue;
+				skinnedMeshRenderer.SetBlendShapeWeight(bs.index, 0f);
+			}
+
+			foreach (var bs in blendShapes)
+			{
+				if (bs.index < 0) continue;
+				float weight = skinnedMeshRenderer.GetBlendShapeWeight(bs.index);
+				weight += bs.weight * bs.maxWeight * volume * maxBlendShapeValue;
+				skinnedMeshRenderer.SetBlendShapeWeight(bs.index, weight);
+			}
+		}
+		*/
+		protected virtual void OnApplyBlendShapes()
+		{
+			if (!skinnedMeshRenderer) return;
+
+			foreach (var bs in blendShapes)
+			{
+				if (bs.index < 0) continue;
+				skinnedMeshRenderer.SetBlendShapeWeight(bs.index, 0f);
+			}
+
+			foreach (var bs in blendShapes)
+			{
+				if (bs.index < 0) continue;
+				float weight = bs.weight * bs.maxWeight * volume * maxBlendShapeValue;
+				skinnedMeshRenderer.SetBlendShapeWeight(bs.index, weight);
+			}
+		}
+
+
+		public BlendShapeInfo GetBlendShapeInfo(string phoneme)
     {
-        if (!skinnedMeshRenderer) return;
-
-        foreach (var bs in blendShapes)
-        {
-            if (bs.index < 0) continue;
-            skinnedMeshRenderer.SetBlendShapeWeight(bs.index, 0f);
-        }
-
-        foreach (var bs in blendShapes)
-        {
-            if (bs.index < 0) continue;
-            float weight = skinnedMeshRenderer.GetBlendShapeWeight(bs.index);
-            weight += bs.weight * bs.maxWeight * volume * maxBlendShapeValue;
-            skinnedMeshRenderer.SetBlendShapeWeight(bs.index, weight);
-        }
+    foreach (var info in blendShapes)
+    {
+        if (info.phoneme == phoneme) return info;
     }
-
-    public BlendShapeInfo GetBlendShapeInfo(string phoneme)
-    {
-        foreach (var info in blendShapes)
-        {
-            if (info.phoneme == phoneme) return info;
-        }
-        return null;
+    return null;
     }
 
     public BlendShapeInfo AddBlendShape(string phoneme, string blendShape)

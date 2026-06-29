@@ -54,7 +54,9 @@ public class NPCStateMachineController : MonoBehaviour
 	public int FindLastVisitedStopIndex()
 	{
 		if (_lastVisitedStopPoint == null)
+		{
 			return -1;
+		}
 
 		for (int i = 0; i < _anchorData.Count; i++)
 		{
@@ -77,8 +79,6 @@ public class NPCStateMachineController : MonoBehaviour
 		return _lastVisitedStopPoint;
 	}
 
-
-
 	private IEnumerator RotateTowardsPlayerCoroutine()
 	{
 		float rotationSpeed = 160f;
@@ -91,7 +91,9 @@ public class NPCStateMachineController : MonoBehaviour
 		{
 			float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
 			if (angleDiff < 0.1f)
+			{
 				break;
+			}
 			float step = rotationSpeed * Time.unscaledDeltaTime;
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
 			yield return null;
@@ -103,7 +105,10 @@ public class NPCStateMachineController : MonoBehaviour
 	public void RotateTowardsPlayer()
 	{
 		if (currentRotationCoroutine != null)
+		{
 			StopCoroutine(currentRotationCoroutine);
+		}
+
 		currentRotationCoroutine = StartCoroutine(RotateTowardsPlayerCoroutine());
 	}
 
