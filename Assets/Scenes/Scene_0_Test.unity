@@ -9427,6 +9427,7 @@ GameObject:
   - component: {fileID: 1504831015}
   - component: {fileID: 1504831014}
   - component: {fileID: 1504831013}
+  - component: {fileID: 1504831016}
   m_Layer: 0
   m_Name: CutsceneTEST
   m_TagString: Untagged
@@ -9451,6 +9452,8 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: 277881401745760951, guid: e6fddedaa7c5db141ad37b13878f8663, type: 2}
     value: {fileID: 1114603234}
+  - key: {fileID: 8078128671937096669, guid: e6fddedaa7c5db141ad37b13878f8663, type: 2}
+    value: {fileID: 1504831016}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &1504831014
@@ -9465,6 +9468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7599f708eb5d337479fe1be1ea788468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cutsceneDialogueData: {fileID: 11400000, guid: df40b53820a8bd044ada718ecf37440c, type: 2}
   _shouldMovePlayer: 0
   _newPlayerPosition: {x: 0, y: 0, z: 0}
   _shouldLoadScene: 0
@@ -9488,6 +9492,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1504831016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504831012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 528e2271baf94b9468cc6661421c942d, type: 2}
+    - {fileID: 11400000, guid: f2d8138b7961f1c4bb410416f28bb236, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1504831014}
+          m_TargetAssemblyTypeName: CutsceneController, Gameplay
+          m_MethodName: ShowNextCutsceneDialogueLine
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1504831014}
+          m_TargetAssemblyTypeName: CutsceneController, Gameplay
+          m_MethodName: HideTextCutsceneDialogue
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1001 &1509517295
 PrefabInstance:
   m_ObjectHideFlags: 0

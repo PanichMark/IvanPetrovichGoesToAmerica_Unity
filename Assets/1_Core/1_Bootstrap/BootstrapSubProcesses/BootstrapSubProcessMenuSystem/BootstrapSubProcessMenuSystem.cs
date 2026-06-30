@@ -29,6 +29,8 @@ public class BootstrapSubProcessMenuSystem
 	public ViewModelMenuLockpickMechanical ViewModelMenuLockpickMechanical { get; private set; }
 	public ViewModelMenuLockpickElectronic ViewModelMenuLockpickElectronic { get; private set; }
 	public ViewModelMenuDialogue ViewModelMenuDialogue { get; private set; }
+
+	public ViewModelMenuCutscene ViewModelMenuCutscene { get; private set; }
 	public ViewModelMenuChooseFirstLanguage ViewModelMenuChooseFirstLanguage { get; private set; }
 
 	private ViewModelPauseSubMenuSettingsSectionGeneral _viewModelPauseSubMenuSettingsSectionGeneral;
@@ -213,6 +215,7 @@ public class BootstrapSubProcessMenuSystem
 		ViewModelMenuLockpickMechanical = new ViewModelMenuLockpickMechanical(_bootstrap, _canvasMenuLockpickMechanical);
 		ViewModelMenuLockpickElectronic = new ViewModelMenuLockpickElectronic(_bootstrap, _canvasMenuLockpickElectronic);
 		ViewModelMenuDialogue = new ViewModelMenuDialogue(_bootstrap, _canvasMenuDialogue);
+		ViewModelMenuCutscene = new ViewModelMenuCutscene(_bootstrap, _canvasMenuCutscene);
 
 		_viewModelPauseSubMenuSettingsSectionGeneral = new ViewModelPauseSubMenuSettingsSectionGeneral(_bootstrap, _canvasPauseSubMenuSettings);
 		_viewModelPauseSubMenuSettingsSectionControls = new ViewModelPauseSubMenuSettingsSectionControls(_bootstrap, _canvasPauseSubMenuSettings);
@@ -380,6 +383,7 @@ public class BootstrapSubProcessMenuSystem
 		ServiceLocator.Register("ButtonDialogueNo", ViewModelMenuDialogue.ButtonDialogueNo);
 		ServiceLocator.Register("TextDialogueYes", ViewModelMenuDialogue.TextDialogueYes);
 		ServiceLocator.Register("TextDialogueNo", ViewModelMenuDialogue.TextDialogueNo);
+		ServiceLocator.Register("TextCutsceneDialogue", ViewModelMenuCutscene.TextCutsceneDialogue);
 
 		yield break;
 	}

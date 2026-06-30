@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 
-[ExecuteAlways]
 public class CutsceneController : MonoBehaviour, ICutscene
 {
 	private IInputDevice _inputDevice;
@@ -10,11 +11,12 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private GameSceneManager _gameSceneManager;
 	private SaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
-
+	private GameObject _textCutsceneDialogue;
+	private TextMeshProUGUI _textComponentCutsceneDialogue;
 	private PlayerMovementController _playerMovementController;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private PlayerWeaponController _playerWeaponController;
-
+	private LocalizationManager _localizationManager;
 	private NPCStateMachineController _NPCcontroller;
 
 	private PlayableDirector _director;
@@ -30,6 +32,17 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private bool _shouldChangeNPCState;
 	private bool _shouldInteractWithObjects;
 	private bool _isInitialized;
+
+	[Header("Cutscene dialogue data")]
+	[SerializeField] private CutsceneDialogueData _cutsceneDialogueData;
+
+	private Dictionary<LanguagesEnum, List<string>> _localizedCutsceneDialogues = new Dictionary<LanguagesEnum, List<string>>
+	{
+		{ LanguagesEnum.Russian, new List<string>() },
+		{ LanguagesEnum.English, new List<string>() }
+	};
+
+	private int _currentCutsceneDialogueLineIndex;
 
 	[Header("Move player")] [SerializeField] private bool _shouldMovePlayer;
 	[SerializeField] private Vector3 _newPlayerPosition;
@@ -50,11 +63,17 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
 		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
-		
+
+		_textCutsceneDialogue = ServiceLocator.Resolve<GameObject>("TextCutsceneDialogue");
+		_textComponentCutsceneDialogue = _textCutsceneDialogue.GetComponent<TextMeshProUGUI>();
+
 		_director = GetComponent<PlayableDirector>();
+
+		LoadCutsceneDialoguesTextFiles();
 
 		if (_NPCstateChanges != null && _NPCstateChanges.Count > 0)
 		{
@@ -119,6 +138,65 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		//Debug.Log($"Is:     {IsCutscenePlaying}");
 	}
 
+	private void LoadCutsceneDialoguesTextFiles()
+	{
+		if (_cutsceneDialogueData.CutsceneDialogueFileRussian != null)
+		{
+			using (var reader = new StringReader(_cutsceneDialogueData.CutsceneDialogueFileRussian.text))
+			{
+				string line;
+				while ((line = reader.ReadLine()) != null)
+				{
+					if (!string.IsNullOrWhiteSpace(line))
+					{
+						_localizedCutsceneDialogues[LanguagesEnum.Russian].Add(line.Trim());
+					}
+				}
+			}
+		}
+		else
+		{
+			Debug.LogWarning("Russian phrase file is not assigned!");
+		}
+
+		if (_cutsceneDialogueData.CutsceneDialogueFileEnglish != null)
+		{
+			using (var reader = new StringReader(_cutsceneDialogueData.CutsceneDialogueFileEnglish.text))
+			{
+				string line;
+				while ((line = reader.ReadLine()) != null)
+				{
+					if (!string.IsNullOrWhiteSpace(line))
+					{
+						_localizedCutsceneDialogues[LanguagesEnum.English].Add(line.Trim());
+					}
+				}
+			}
+		}
+		else
+		{
+			Debug.LogWarning("English phrase file is not assigned!");
+		}
+	}
+
+	public void ShowNextCutsceneDialogueLine()
+	{
+		var currentLanguage = _localizationManager.CurrentLanguage;
+		//Debug.Log("SHHOWWW");
+		//Debug.Log(currentLanguage);
+		//Debug.Log(_currentCutsceneDialogueLineIndex);
+		_textCutsceneDialogue.SetActive(true);
+		_textComponentCutsceneDialogue.text = _localizedCutsceneDialogues[currentLanguage][_currentCutsceneDialogueLineIndex];
+
+		_currentCutsceneDialogueLineIndex++;
+	}
+
+	public void HideTextCutsceneDialogue()
+	{
+		_textCutsceneDialogue.SetActive(false);
+		_textComponentCutsceneDialogue.text = string.Empty;
+	}
+
 	public void RebindProxyObjects()
 	{
 		var playerProxy = transform.Find("Player_Proxy")?.gameObject;
@@ -168,7 +246,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private void SkipCutscene()
 	{
 		_wasCutsceneSkipped = true;
-	
+		Debug.Log("CUTSCENE SKIPPED");
 		ExecutePostCutsceneActions();
 	}
 
@@ -239,6 +317,8 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		Debug.Log("CUTSCENE!!!");
 		_director.Play();
 		_gameController.MakeGameUnsavable();
+
+		_currentCutsceneDialogueLineIndex = 0;
 
 		CutsceneStopTime();
 
