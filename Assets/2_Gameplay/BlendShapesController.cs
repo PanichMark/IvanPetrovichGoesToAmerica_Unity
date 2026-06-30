@@ -1,37 +1,92 @@
-﻿using UnityEngine;
+﻿using log4net.Filter;
+using UnityEngine;
 
 public class BlendShapesController : MonoBehaviour
 {
-	private SkinnedMeshRenderer _skinnedMeshRenderer;
+	private NPCStateMachineController _NPCStateMachineController;
 	private NPCDialogueController _NPCDialogueController;
-	private string[] phonemeShapeNames;
+
+	private SkinnedMeshRenderer _skinnedMeshRenderer;
+
+	private int _blendShapeEyesClosed;
+	private string[] _blendShapesFacialExpressions;
+	private string[] _blendShapesPhonemes;
 
 	private void Start()
 	{
 		_skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+		_NPCStateMachineController = transform.parent.GetComponent<NPCStateMachineController>();
 		_NPCDialogueController = transform.parent.GetComponent<NPCDialogueController>();
 
-		phonemeShapeNames = new string[] {
-			"BlenderShape_Phoneme_A",
-			"BlenderShape_Phoneme_I",
-			"BlenderShape_Phoneme_U",
-			"BlenderShape_Phoneme_E",
-			"BlenderShape_Phoneme_O",
-			"BlenderShape_Phoneme_-",
-			"BlenderShape_Phoneme_S"
+		_blendShapeEyesClosed = _skinnedMeshRenderer.sharedMesh.GetBlendShapeIndex("BlendShape_EyesClosed");
+
+		_blendShapesFacialExpressions = new string[] {
+			"BlendShape_FacialExpression_Happy",
+			"BlendShape_FacialExpression_Surprised",
+			"BlendShape_FacialExpression_Sad",
+			"BlendShape_FacialExpression_Suspicious",
+			"BlendShape_FacialExpression_Angry"
 		};
 
-		_NPCDialogueController.OnResetPhonemesBlendShapes += ResetPhonemesBlendShapes;
+		_blendShapesPhonemes = new string[] {
+			"BlendShape_Phoneme_A",
+			"BlendShape_Phoneme_I",
+			"BlendShape_Phoneme_U",
+			"BlendShape_Phoneme_E",
+			"BlendShape_Phoneme_O",
+			"BlendShape_Phoneme_-",
+			"BlendShape_Phoneme_S"
+		};
+
+		_NPCStateMachineController.OnNPCstateDead += CloseEyes;
+		_NPCStateMachineController.OnNPCstateDead += ResetAllBlendShapesFacialExpressions;
+
+		_NPCDialogueController.OnChangeBlendShapeFacialExpression += ChangeBlendShapeFacialExpression;
+		_NPCDialogueController.OnResetAllBlendShapesFacialExpressions += ResetAllBlendShapesFacialExpressions;
+		_NPCDialogueController.OnResetAllBlendShapesPhonemes += ResetAllBlendShapesPhonemes;
 	}
 
 	private void OnDestroy()
 	{
-		_NPCDialogueController.OnResetPhonemesBlendShapes -= ResetPhonemesBlendShapes;
+		_NPCStateMachineController.OnNPCstateDead -= CloseEyes;
+		_NPCStateMachineController.OnNPCstateDead -= ResetAllBlendShapesFacialExpressions;
+
+		_NPCDialogueController.OnChangeBlendShapeFacialExpression -= ChangeBlendShapeFacialExpression;
+		_NPCDialogueController.OnResetAllBlendShapesFacialExpressions -= ResetAllBlendShapesFacialExpressions;
+		_NPCDialogueController.OnResetAllBlendShapesPhonemes -= ResetAllBlendShapesPhonemes;
 	}
 
-	public void ResetPhonemesBlendShapes()
+	private void CloseEyes()
 	{
-		foreach (string shapeName in phonemeShapeNames)
+		_skinnedMeshRenderer.SetBlendShapeWeight(_blendShapeEyesClosed, 100f);
+	}
+
+	private void ChangeBlendShapeFacialExpression(string newFacialExpression)
+	{
+		ResetAllBlendShapesFacialExpressions();
+		int index = _skinnedMeshRenderer.sharedMesh.GetBlendShapeIndex(newFacialExpression);
+		if (index != -1)
+		{
+			_skinnedMeshRenderer.SetBlendShapeWeight(index, 100f);
+		}
+	}
+
+	private void ResetAllBlendShapesFacialExpressions()
+	{
+		foreach (string shapeName in _blendShapesFacialExpressions)
+		{
+			int index = _skinnedMeshRenderer.sharedMesh.GetBlendShapeIndex(shapeName);
+
+			if (index != -1)
+			{
+				_skinnedMeshRenderer.SetBlendShapeWeight(index, 0f);
+			}
+		}
+	}
+
+	private void ResetAllBlendShapesPhonemes()
+	{
+		foreach (string shapeName in _blendShapesPhonemes)
 		{
 			int index = _skinnedMeshRenderer.sharedMesh.GetBlendShapeIndex(shapeName);
 

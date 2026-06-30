@@ -5,7 +5,8 @@ using UnityEngine.AI;
 
 public class NPCStateMachineController : MonoBehaviour
 {
-	public delegate void StateChangeHandler();
+	public delegate void NPCstateHandler();
+	public event NPCstateHandler OnNPCstateDead;
 
 	[SerializeField] private NPCStateTypes _initialState = NPCStateTypes.StationaryAction;
 	private float _animationDuration = 99999f;
@@ -357,6 +358,7 @@ public class NPCStateMachineController : MonoBehaviour
 			newState = new NPCStateDead(this);
 			
 			_NPCabstract.ObjectIsFullyDamaged();
+			OnNPCstateDead?.Invoke();
 			//_NPCabstract.ConvertToPickableObject();
 			//Debug.Log("BRUH!");
 			CurrentNPCState = "Dead";

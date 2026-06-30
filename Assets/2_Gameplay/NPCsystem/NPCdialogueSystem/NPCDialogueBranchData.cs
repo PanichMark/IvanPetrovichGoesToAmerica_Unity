@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public struct NPCDialogueBranch
+public struct NPCDialogueBranchData
 {
 	public int DialogueBranchLine;      
 	public int GoToNoOptionLine;        

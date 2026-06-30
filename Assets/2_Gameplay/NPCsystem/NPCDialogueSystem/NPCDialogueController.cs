@@ -7,14 +7,19 @@ using uLipSync;
 
 public class NPCDialogueController : MonoBehaviour
 {
-	public delegate void PhonemesBlendShapesHandler();
-	public event PhonemesBlendShapesHandler OnResetPhonemesBlendShapes;
+	public delegate void BlendShapesResetterHandler();
+	public event BlendShapesResetterHandler OnResetAllBlendShapesFacialExpressions;
+	public event BlendShapesResetterHandler OnResetAllBlendShapesPhonemes;
+
+	public delegate void BlendShapesFacialExpressionsHandler(string newFacialExpression);
+	public event BlendShapesFacialExpressionsHandler OnChangeBlendShapeFacialExpression;
 
 	[SerializeField] private NPCDialogueData _NPCdialogueData;
 	private uLipSyncBlendShape _uLipSyncBlendShape;
 	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
 	private GameController _gameController;
-	[SerializeField] private List<NPCDialogueBranch> _dialogueBranchStructsList;
+	[SerializeField] private List<NPCDialogueBranchData> _dialogueBranchStructsList;
+	[SerializeField] private List<NPCDialogueFacialExpressionsData> _dialogueFacialExpressionsDataList;
 	private AudioSource _audioSource;
 	private int _dialogueBranchStructIndex;
 	private MenuManager _menuManager;
@@ -170,13 +175,17 @@ public class NPCDialogueController : MonoBehaviour
 	public void ShowNPCDialogueCanvas()
 	{
 		if (IsDialogueActive)
+		{ 
 			_canvasDialogueMenu.SetActive(true);
+		}
 	}
 
 	private void HideNPCDialogueCanvas()
 	{
 		if (IsDialogueActive)
+		{
 			_canvasDialogueMenu.SetActive(false);
+		}
 	}
 
 	public void Interact()
@@ -230,9 +239,26 @@ public class NPCDialogueController : MonoBehaviour
 
 					_isIvanPetrovichSpeaking = true;
 
-					OnResetPhonemesBlendShapes?.Invoke();
+					OnResetAllBlendShapesPhonemes?.Invoke();
 				}
+			}
+		}
+		
+		if (_dialogueFacialExpressionsDataList.Count > 0)
+		{
+			bool expressionFound = false;
 
+			for (int i = 0; i < _dialogueFacialExpressionsDataList.Count; i++)
+			{
+				if ((_currentDialogueStepIndex + 1) == _dialogueFacialExpressionsDataList[i].DialogueStep)
+				{
+					OnChangeBlendShapeFacialExpression?.Invoke(_dialogueFacialExpressionsDataList[i].FacialExpression.ToString());
+					expressionFound = true;
+				}
+			}
+			if (!expressionFound)
+			{
+				OnResetAllBlendShapesFacialExpressions?.Invoke();
 			}
 		}
 
