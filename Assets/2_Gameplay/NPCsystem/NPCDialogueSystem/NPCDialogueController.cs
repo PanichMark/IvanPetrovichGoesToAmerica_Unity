@@ -12,6 +12,7 @@ public class NPCDialogueController : MonoBehaviour
 	public event BlendShapesResetterHandler OnResetAllBlendShapesFacialExpressions;
 	public event BlendShapesResetterHandler OnResetAllBlendShapesPhonemes;
 	private string _originalAnimationStateName;
+	
 	public delegate void BlendShapesFacialExpressionsHandler(string newFacialExpression);
 	public event BlendShapesFacialExpressionsHandler OnChangeBlendShapeFacialExpression;
 	private string _currentGestureAnimation;
@@ -20,6 +21,8 @@ public class NPCDialogueController : MonoBehaviour
 	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
 	private GameController _gameController;
 	[SerializeField] private List<NPCDialogueBranchData> _dialogueBranchStructsList;
+
+	[SerializeField] private NPCDialogueGesturesEnum _dialogueDefaultAnimationStateName;
 	[SerializeField] private List<NPCDialogueGesturesData> _dialogueGesturesDataList;
 	private Animator _animator;
 
@@ -147,6 +150,7 @@ public class NPCDialogueController : MonoBehaviour
 			}
 
 			_animator.speed = 0.5f;
+			ChangeGestureAnimation(_originalAnimationStateName);
 		}
 	}
 
@@ -214,6 +218,7 @@ public class NPCDialogueController : MonoBehaviour
 		_originalAnimationStateName = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
 		_menuManager.OpenDialogueMenu();
 		IsDialogueActive = true;
+		ChangeGestureAnimation(_dialogueDefaultAnimationStateName.ToString());
 		_animator.speed = 1;
 		_gameController.MakeGameUnsavable();
 		ShowNPCDialogueCanvas();
@@ -264,12 +269,24 @@ public class NPCDialogueController : MonoBehaviour
 			}
 		}
 
+		_currentDialogueStepIndex++;
+
+		if (_currentDialogueStepIndex == _dialogueBranchStructsList[_dialogueBranchStructIndex].FinalYesLine)
+		{
+			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToYesFinalLine;
+
+			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer != null)
+			{
+				_PerformActionOnYesFinal = true;
+			}
+		}
+
 		if (_dialogueGesturesDataList.Count > 0)
 		{
 			bool gestureFound = false;
 			for (int i = 0; i < _dialogueGesturesDataList.Count; i++)
 			{
-				if ((_currentDialogueStepIndex + 1) == _dialogueGesturesDataList[i].DialogueStep)
+				if ((_currentDialogueStepIndex) == _dialogueGesturesDataList[i].DialogueStep)
 				{
 					string gestureName = _dialogueGesturesDataList[i].Gesture.ToString();
 					ChangeGestureAnimation(gestureName);
@@ -291,7 +308,7 @@ public class NPCDialogueController : MonoBehaviour
 
 			for (int i = 0; i < _dialogueFacialExpressionsDataList.Count; i++)
 			{
-				if ((_currentDialogueStepIndex + 1) == _dialogueFacialExpressionsDataList[i].DialogueStep)
+				if ((_currentDialogueStepIndex) == _dialogueFacialExpressionsDataList[i].DialogueStep)
 				{
 					OnChangeBlendShapeFacialExpression?.Invoke(_dialogueFacialExpressionsDataList[i].FacialExpression.ToString());
 					expressionFound = true;
@@ -300,18 +317,6 @@ public class NPCDialogueController : MonoBehaviour
 			if (!expressionFound)
 			{
 				OnResetAllBlendShapesFacialExpressions?.Invoke();
-			}
-		}
-
-		_currentDialogueStepIndex++;
-
-		if (_currentDialogueStepIndex == _dialogueBranchStructsList[_dialogueBranchStructIndex].FinalYesLine)
-		{
-			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToYesFinalLine;
-
-			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer != null)
-			{
-				_PerformActionOnYesFinal = true;
 			}
 		}
 	}
@@ -387,28 +392,12 @@ public class NPCDialogueController : MonoBehaviour
 
 			if (newAnimation == null)
 			{
-				Debug.Log("Сброс анимации: newAnimation is null. Возвращаемся к исходному состоянию.");
-
-				if (!string.IsNullOrEmpty(_originalAnimationStateName))
-				{
-					Debug.Log($"Восстановление анимации: Переход к состоянию '{_originalAnimationStateName}'.");
-					_animator.CrossFade(_originalAnimationStateName, crossfade);
-				}
-				else
-				{
-					Debug.LogWarning("Восстановление анимации: Исходное состояние не сохранено. Переход к 'Idle'.");
-					_animator.CrossFade("Idle", crossfade);
-				}
+				_animator.CrossFade(_dialogueDefaultAnimationStateName.ToString(), crossfade);
 			}
 			else
 			{
-				Debug.Log($"Смена анимации: Переход к новому жесту '{newAnimation}'.");
 				_animator.CrossFade(newAnimation, crossfade);
 			}
-		}
-		else
-		{
-			Debug.Log($"Смена анимации: Новый жест '{newAnimation}' совпадает с текущим. Переход не требуется.");
 		}
 	}
 }
