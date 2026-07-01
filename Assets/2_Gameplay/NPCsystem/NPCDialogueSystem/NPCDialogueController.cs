@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using TMPro;
+using uLipSync;
 using UnityEngine;
 using UnityEngine.UI;
-using uLipSync;
 
 public class NPCDialogueController : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class NPCDialogueController : MonoBehaviour
 	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
 	private GameController _gameController;
 	[SerializeField] private List<NPCDialogueBranchData> _dialogueBranchStructsList;
+	[SerializeField] private List<NPCDialogueGesturesData> _dialogueGesturesDataList;
+	private Animator _animator;
+
 	[SerializeField] private List<NPCDialogueFacialExpressionsData> _dialogueFacialExpressionsDataList;
 	private AudioSource _audioSource;
 	private int _dialogueBranchStructIndex;
@@ -55,9 +59,8 @@ public class NPCDialogueController : MonoBehaviour
 		_audioSource = GetComponent<AudioSource>();
 		_NPCabstract = GetComponent<NPCAbstract>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_localizationManager.OnLanguageChanged += ChangeLanguage;
-		LoadDialogueFromFiles();
-
+	
+		_animator = GetComponent<Animator>();
 		_buttonDialogueYes = ServiceLocator.Resolve<GameObject>("ButtonDialogueYes").GetComponent<Button>();
 		_buttonDialogueNo = ServiceLocator.Resolve<GameObject>("ButtonDialogueNo").GetComponent<Button>();
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
@@ -80,6 +83,9 @@ public class NPCDialogueController : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingMainMenuScene += ExitNPCDialogue;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ExitNPCDialogue;
 
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		LoadDialogueFromFiles();
+
 		_canSkip = true;
 	}
 
@@ -93,6 +99,15 @@ public class NPCDialogueController : MonoBehaviour
 		if (!_isIvanPetrovichSpeaking)
 		{ 
 			_uLipSyncBlendShape.ApplyBlendShapes();
+		}
+
+		if (_menuManager.IsPauseMenuOpened || _menuManager.IsInteractionMenuOpened)
+		{
+		
+		}
+		else
+		{
+			_animator.Update(Time.unscaledDeltaTime);
 		}
 	}
 
@@ -243,7 +258,29 @@ public class NPCDialogueController : MonoBehaviour
 				}
 			}
 		}
-		
+
+		if (_dialogueGesturesDataList.Count > 0)
+		{
+			bool gestureFound = false;
+			for (int i = 0; i < _dialogueGesturesDataList.Count; i++)
+			{
+				if ((_currentDialogueStepIndex + 1) == _dialogueGesturesDataList[i].DialogueStep)
+				{
+					_animator.SetTrigger(_dialogueGesturesDataList[i].Gesture.ToString());
+					gestureFound = true;
+					break;
+				}
+			}
+			if (!gestureFound)
+			{
+				// Сбросить все триггеры, если для текущего шага жест не задан
+				foreach (NPCDialogueGesturesEnum gesture in Enum.GetValues(typeof(NPCDialogueGesturesEnum)))
+				{
+					_animator.ResetTrigger(gesture.ToString());
+				}
+			}
+		}
+
 		if (_dialogueFacialExpressionsDataList.Count > 0)
 		{
 			bool expressionFound = false;
