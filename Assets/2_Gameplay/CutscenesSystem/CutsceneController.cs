@@ -18,7 +18,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private PlayerWeaponController _playerWeaponController;
 	private LocalizationManager _localizationManager;
 	private NPCStateMachineController _NPCcontroller;
-
+	private AudioSource _audioSource;
 	private PlayableDirector _director;
 
 	private GameObject _playerProxy;
@@ -67,6 +67,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
 		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
+		_audioSource = GetComponent<AudioSource>();
 
 		_textCutsceneDialogue = ServiceLocator.Resolve<GameObject>("TextCutsceneDialogue");
 		_textComponentCutsceneDialogue = _textCutsceneDialogue.GetComponent<TextMeshProUGUI>();
@@ -187,6 +188,19 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		//Debug.Log(_currentCutsceneDialogueLineIndex);
 		_textCutsceneDialogue.SetActive(true);
 		_textComponentCutsceneDialogue.text = _localizedCutsceneDialogues[currentLanguage][_currentCutsceneDialogueLineIndex];
+
+		AudioClip[] currentLanguageVoiceLines = null;
+
+		if (currentLanguage == LanguagesEnum.Russian)
+		{
+			currentLanguageVoiceLines = _cutsceneDialogueData.CutsceneVoicelinesRussian;
+		}
+		else
+		{
+			currentLanguageVoiceLines = _cutsceneDialogueData.CutsceneVoicelinesEnglish;
+		}
+
+		_audioSource.PlayOneShot(currentLanguageVoiceLines[_currentCutsceneDialogueLineIndex]);
 
 		_currentCutsceneDialogueLineIndex++;
 	}

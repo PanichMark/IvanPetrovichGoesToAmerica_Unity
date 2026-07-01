@@ -277,16 +277,21 @@ public class NPCDialogueController : MonoBehaviour
 
 	private void PlayVoiceLineForCurrentStep(LanguagesEnum currentLanguage)
 	{
-		AudioClip[] currentLanguageVoicelines = (currentLanguage == LanguagesEnum.Russian)
-			? _NPCdialogueData.DialogueVoicelinesRussian
-			: _NPCdialogueData.DialogueVoicelinesEnglish;
+		AudioClip[] currentLanguageVoicelines = null;
+
+		if (currentLanguage == LanguagesEnum.Russian)
+		{
+			currentLanguageVoicelines = _NPCdialogueData.DialogueVoicelinesRussian;
+		}
+		else
+		{
+			currentLanguageVoicelines = _NPCdialogueData.DialogueVoicelinesEnglish;
+		}
 
 		if (currentLanguageVoicelines != null && _currentDialogueStepIndex < currentLanguageVoicelines.Length)
 		{
 			AudioClip clipToPlay = currentLanguageVoicelines[_currentDialogueStepIndex];
-		
 			_audioSource.clip = clipToPlay;
-		
 			_audioSource.Play();
 		}
 	}

@@ -13,6 +13,12 @@ MonoBehaviour:
   m_Name: CutsceneDialogue_TEST
   m_EditorClassIdentifier: 
   CutsceneDialogueFileRussian: {fileID: 4900000, guid: 7e56ebe8c02eb7040bd523cf9efe04c1, type: 3}
-  CutsceneVoicelinesRussian: []
+  CutsceneVoicelinesRussian:
+  - {fileID: 8300000, guid: 56ac2b6af71e70f409433220119b1b61, type: 3}
+  - {fileID: 8300000, guid: 4c71ea3da6267b94e8cce13f8124ce44, type: 3}
+  - {fileID: 8300000, guid: 7b1771e103b66a644b961f70922c33ca, type: 3}
   CutsceneDialogueFileEnglish: {fileID: 4900000, guid: 4a450d470144b29498e11e6a90c59c4d, type: 3}
-  CutsceneVoicelinesEnglish: []
+  CutsceneVoicelinesEnglish:
+  - {fileID: 8300000, guid: b32694f7de254774389d03271f157269, type: 3}
+  - {fileID: 8300000, guid: 0a5c02dbb697c6746893d0c87aaf70f5, type: 3}
+  - {fileID: 8300000, guid: e79d5ccac0bb8b6449ea84b69b006c3c, type: 3}
