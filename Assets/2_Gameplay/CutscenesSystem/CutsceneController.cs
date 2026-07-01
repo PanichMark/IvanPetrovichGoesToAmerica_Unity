@@ -20,7 +20,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private NPCStateMachineController _NPCcontroller;
 	private AudioSource _audioSource;
 	private PlayableDirector _director;
-
+	private bool _isCutsceneDialogueActorPlayer;
 	private GameObject _playerProxy;
 	private GameObject _playerCameraProxy;
 
@@ -35,6 +35,9 @@ public class CutsceneController : MonoBehaviour, ICutscene
 
 	[Header("Cutscene dialogue data")]
 	[SerializeField] private CutsceneDialogueData _cutsceneDialogueData;
+
+	[Header("Dialogue actors mapping")]
+	[SerializeField] private List<CutsceneDialogueLinesRoles> _dialogueActorsMapping = new List<CutsceneDialogueLinesRoles>();
 
 	private Dictionary<LanguagesEnum, List<string>> _localizedCutsceneDialogues = new Dictionary<LanguagesEnum, List<string>>
 	{
@@ -67,7 +70,6 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
 		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
-		_audioSource = GetComponent<AudioSource>();
 
 		_textCutsceneDialogue = ServiceLocator.Resolve<GameObject>("TextCutsceneDialogue");
 		_textComponentCutsceneDialogue = _textCutsceneDialogue.GetComponent<TextMeshProUGUI>();
@@ -189,6 +191,28 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		_textCutsceneDialogue.SetActive(true);
 		_textComponentCutsceneDialogue.text = _localizedCutsceneDialogues[currentLanguage][_currentCutsceneDialogueLineIndex];
 
+		_isCutsceneDialogueActorPlayer = false;
+
+		foreach (var role in _dialogueActorsMapping)
+		{
+			//Debug.Log(role.DialogueStepIndex);
+			//Debug.Log(_currentCutsceneDialogueLineIndex + 1);
+
+			if (role.DialogueStepIndex == _currentCutsceneDialogueLineIndex + 1)
+			{
+				if (role.DialogueLineActor != null)
+				{
+					_audioSource = role.DialogueLineActor.GetComponent<AudioSource>();
+					break;
+				}
+				else
+				{
+					_isCutsceneDialogueActorPlayer = true;
+					break;
+				}
+			}
+		}
+
 		AudioClip[] currentLanguageVoiceLines = null;
 
 		if (currentLanguage == LanguagesEnum.Russian)
@@ -200,7 +224,10 @@ public class CutsceneController : MonoBehaviour, ICutscene
 			currentLanguageVoiceLines = _cutsceneDialogueData.CutsceneVoicelinesEnglish;
 		}
 
-		_audioSource.PlayOneShot(currentLanguageVoiceLines[_currentCutsceneDialogueLineIndex]);
+		if (_isCutsceneDialogueActorPlayer == false)
+		{
+			_audioSource.PlayOneShot(currentLanguageVoiceLines[_currentCutsceneDialogueLineIndex]);
+		}
 
 		_currentCutsceneDialogueLineIndex++;
 	}
