@@ -1,5 +1,5 @@
 ﻿public enum NPCDialogueGesturesEnum
 {
 	EqiupRightWeapon,
-	CrouchWalking
+	CrouchingWalking
 }

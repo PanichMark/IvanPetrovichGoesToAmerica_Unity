@@ -11,10 +11,10 @@ public class NPCDialogueController : MonoBehaviour
 	public delegate void BlendShapesResetterHandler();
 	public event BlendShapesResetterHandler OnResetAllBlendShapesFacialExpressions;
 	public event BlendShapesResetterHandler OnResetAllBlendShapesPhonemes;
-
+	private string _originalAnimationStateName;
 	public delegate void BlendShapesFacialExpressionsHandler(string newFacialExpression);
 	public event BlendShapesFacialExpressionsHandler OnChangeBlendShapeFacialExpression;
-
+	private string _currentGestureAnimation;
 	[SerializeField] private NPCDialogueData _NPCdialogueData;
 	private uLipSyncBlendShape _uLipSyncBlendShape;
 	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
@@ -61,6 +61,8 @@ public class NPCDialogueController : MonoBehaviour
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 	
 		_animator = GetComponent<Animator>();
+		_animator.speed = 0.5f;
+
 		_buttonDialogueYes = ServiceLocator.Resolve<GameObject>("ButtonDialogueYes").GetComponent<Button>();
 		_buttonDialogueNo = ServiceLocator.Resolve<GameObject>("ButtonDialogueNo").GetComponent<Button>();
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
@@ -143,6 +145,8 @@ public class NPCDialogueController : MonoBehaviour
 				}
 				_PerformActionOnYesFinal = false;
 			}
+
+			_animator.speed = 0.5f;
 		}
 	}
 
@@ -190,7 +194,7 @@ public class NPCDialogueController : MonoBehaviour
 	public void ShowNPCDialogueCanvas()
 	{
 		if (IsDialogueActive)
-		{ 
+		{
 			_canvasDialogueMenu.SetActive(true);
 		}
 	}
@@ -207,9 +211,10 @@ public class NPCDialogueController : MonoBehaviour
 	{
 		_currentDialogueStepIndex = 0;
 		_dialogueBranchStructIndex = 0;
-
+		_originalAnimationStateName = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
 		_menuManager.OpenDialogueMenu();
 		IsDialogueActive = true;
+		_animator.speed = 1;
 		_gameController.MakeGameUnsavable();
 		ShowNPCDialogueCanvas();
 		DisplayNextDialogueLine();
@@ -266,18 +271,17 @@ public class NPCDialogueController : MonoBehaviour
 			{
 				if ((_currentDialogueStepIndex + 1) == _dialogueGesturesDataList[i].DialogueStep)
 				{
-					_animator.SetTrigger(_dialogueGesturesDataList[i].Gesture.ToString());
+					string gestureName = _dialogueGesturesDataList[i].Gesture.ToString();
+					ChangeGestureAnimation(gestureName);
+					Debug.Log(gestureName);
 					gestureFound = true;
 					break;
 				}
 			}
-			if (!gestureFound)
+			if (!gestureFound && _currentGestureAnimation != null)
 			{
-				// Сбросить все триггеры, если для текущего шага жест не задан
-				foreach (NPCDialogueGesturesEnum gesture in Enum.GetValues(typeof(NPCDialogueGesturesEnum)))
-				{
-					_animator.ResetTrigger(gesture.ToString());
-				}
+				// Сбрасываем анимацию, если для шага ничего не задано
+				ChangeGestureAnimation(null);
 			}
 		}
 
@@ -373,5 +377,38 @@ public class NPCDialogueController : MonoBehaviour
 		DeactivateButtons();
 
 		_canSkip = true;
+	}
+
+	private void ChangeGestureAnimation(string newAnimation, float crossfade = 0.2f)
+	{
+		if (_currentGestureAnimation != newAnimation)
+		{
+			_currentGestureAnimation = newAnimation;
+
+			if (newAnimation == null)
+			{
+				Debug.Log("Сброс анимации: newAnimation is null. Возвращаемся к исходному состоянию.");
+
+				if (!string.IsNullOrEmpty(_originalAnimationStateName))
+				{
+					Debug.Log($"Восстановление анимации: Переход к состоянию '{_originalAnimationStateName}'.");
+					_animator.CrossFade(_originalAnimationStateName, crossfade);
+				}
+				else
+				{
+					Debug.LogWarning("Восстановление анимации: Исходное состояние не сохранено. Переход к 'Idle'.");
+					_animator.CrossFade("Idle", crossfade);
+				}
+			}
+			else
+			{
+				Debug.Log($"Смена анимации: Переход к новому жесту '{newAnimation}'.");
+				_animator.CrossFade(newAnimation, crossfade);
+			}
+		}
+		else
+		{
+			Debug.Log($"Смена анимации: Новый жест '{newAnimation}' совпадает с текущим. Переход не требуется.");
+		}
 	}
 }
