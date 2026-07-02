@@ -40,7 +40,7 @@ public class NPCDialogueController : MonoBehaviour
 	private NPCAbstract _NPCabstract;
 	private TextMeshProUGUI _textComponentDialogueYes;
 	private TextMeshProUGUI _textComponentDialogueNo;
-
+	private InteractionController _interactionController;
 	private Dictionary<LanguagesEnum, List<string>> _localizedDialogue = new Dictionary<LanguagesEnum, List<string>>
 	{
 		{ LanguagesEnum.Russian, new List<string>() },
@@ -65,7 +65,7 @@ public class NPCDialogueController : MonoBehaviour
 	
 		_animator = GetComponent<Animator>();
 		_animator.speed = 0.5f;
-
+		_interactionController = ServiceLocator.Resolve<InteractionController>("InteractionController");
 		_buttonDialogueYes = ServiceLocator.Resolve<GameObject>("ButtonDialogueYes").GetComponent<Button>();
 		_buttonDialogueNo = ServiceLocator.Resolve<GameObject>("ButtonDialogueNo").GetComponent<Button>();
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
@@ -215,6 +215,7 @@ public class NPCDialogueController : MonoBehaviour
 	{
 		_currentDialogueStepIndex = 0;
 		_dialogueBranchStructIndex = 0;
+		_interactionController.ChangeLayerRecursively(gameObject, LayerMask.NameToLayer("Default"));
 		_originalAnimationStateName = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
 		_menuManager.OpenDialogueMenu();
 		IsDialogueActive = true;
@@ -223,6 +224,8 @@ public class NPCDialogueController : MonoBehaviour
 		_gameController.MakeGameUnsavable();
 		ShowNPCDialogueCanvas();
 		DisplayNextDialogueLine();
+
+		//
 	}
 
 	private void DisplayNextDialogueLine()

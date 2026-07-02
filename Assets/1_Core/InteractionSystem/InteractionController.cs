@@ -319,7 +319,10 @@ public class InteractionController : MonoBehaviour
 						ChangeLayerRecursively(_previousInteractableObject, LayerMask.NameToLayer("Default"));
 					}
 
-					ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Outline"));
+					if (Time.timeScale == 1)
+					{
+						ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Outline"));
+					}
 				}
 
 				if (_currentInteractableObject != null)
@@ -499,12 +502,15 @@ public class InteractionController : MonoBehaviour
 		}
 	}
 
-	private void ChangeLayerRecursively(GameObject obj, int layerIndex)
+	public void ChangeLayerRecursively(GameObject obj, int layerIndex)
 	{
+		//Debug.Log("CALL!!!");
 		obj.layer = layerIndex;
 		foreach (Transform child in obj.transform)
 		{
 			ChangeLayerRecursively(child.gameObject, layerIndex);
+			//Debug.Log(obj);
 		}
+			//Debug.Log(layerIndex);
 	}
 }

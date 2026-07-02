@@ -69,6 +69,7 @@ public class BootstrapSubProcessInteractionSystem
 
 		_keysManager = new KeysManager();
 
+		ServiceLocator.Register("InteractionController", InteractionController);
 		ServiceLocator.Register("KeysManager", _keysManager);
 
 		yield break;
