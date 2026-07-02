@@ -15,8 +15,9 @@ public class BlendShapesController : MonoBehaviour
 	private void Start()
 	{
 		_skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
-		_NPCStateMachineController = transform.parent.GetComponent<NPCStateMachineController>();
-		_NPCDialogueController = transform.parent.GetComponent<NPCDialogueController>();
+		_NPCStateMachineController = transform.parent.parent.GetComponent<NPCStateMachineController>();
+		_NPCDialogueController = transform.parent.parent.GetComponent<NPCDialogueController>();
+		//Debug.Log(_NPCDialogueController);
 
 		_blendShapeEyesClosed = _skinnedMeshRenderer.sharedMesh.GetBlendShapeIndex("BlendShape_EyesClosed");
 

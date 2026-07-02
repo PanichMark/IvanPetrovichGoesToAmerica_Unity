@@ -1,4 +1,8 @@
-﻿public class NPCPeaceful : NPCAbstract
+﻿using UnityEngine;
+
+[RequireComponent(typeof(NPCPhrasesController))]
+
+public class NPCPeaceful : NPCAbstract
 {
 	public override void Interact()
 	{

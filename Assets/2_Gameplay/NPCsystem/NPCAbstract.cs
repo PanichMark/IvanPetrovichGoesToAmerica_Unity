@@ -5,7 +5,6 @@ using TMPro;
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(NPCStateMachineController))]
-[RequireComponent(typeof(NPCPhrasesController))]
 
 public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 {
@@ -14,11 +13,12 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	private TextMeshProUGUI _textComponentNPCcurrentState;
 	private GameObject _textNPCcurrentHealth;
 	private TextMeshProUGUI _textComponentNPCcurrentHealth;
-
+	[SerializeField] private bool _isHuman;
 	[SerializeField] protected string _NPCname;
 
 	[SerializeField] ConfigNPCBodyType _NPCconfigBodyType;
-
+	
+	public bool IsHuman => _isHuman;
 	[SerializeField] ConfigNPCHealth _NPCconfigHealth;
 	public bool IsNPCdead => _currentHealth <= 0;
 	public event IInteractable.InteractableObjectHandler OnInteract;

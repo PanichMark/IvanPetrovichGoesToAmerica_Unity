@@ -22,7 +22,7 @@ public class NPCDialogueController : MonoBehaviour
 	private GameController _gameController;
 	[SerializeField] private List<NPCDialogueBranchData> _dialogueBranchStructsList;
 
-	[SerializeField] private NPCDialogueGesturesEnum _dialogueDefaultAnimationStateName;
+	[SerializeField] private AnimationClip _dialogueDefaultAnimationStateName;
 	[SerializeField] private List<NPCDialogueGesturesData> _dialogueGesturesDataList;
 	private Animator _animator;
 
@@ -218,7 +218,7 @@ public class NPCDialogueController : MonoBehaviour
 		_originalAnimationStateName = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
 		_menuManager.OpenDialogueMenu();
 		IsDialogueActive = true;
-		ChangeGestureAnimation(_dialogueDefaultAnimationStateName.ToString());
+		ChangeGestureAnimation(_dialogueDefaultAnimationStateName.name);
 		_animator.speed = 1;
 		_gameController.MakeGameUnsavable();
 		ShowNPCDialogueCanvas();
@@ -288,17 +288,17 @@ public class NPCDialogueController : MonoBehaviour
 			{
 				if ((_currentDialogueStepIndex) == _dialogueGesturesDataList[i].DialogueStep)
 				{
-					string gestureName = _dialogueGesturesDataList[i].Gesture.ToString();
+					string gestureName = _dialogueGesturesDataList[i].Gesture.name;
 					ChangeGestureAnimation(gestureName);
-					Debug.Log(gestureName);
+					//Debug.Log(gestureName);
 					gestureFound = true;
-					break;
+					//break;
 				}
 			}
 			if (!gestureFound && _currentGestureAnimation != null)
 			{
 				// Сбрасываем анимацию, если для шага ничего не задано
-				ChangeGestureAnimation(null);
+				ChangeGestureAnimation(_dialogueDefaultAnimationStateName.name);
 			}
 		}
 
@@ -373,7 +373,9 @@ public class NPCDialogueController : MonoBehaviour
 		var currentLanguage = _localizationManager.CurrentLanguage;
 
 		if (!isYesSelected)
+		{
 			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1;
+		}
 
 		_buttonDialogueYes.onClick.RemoveAllListeners();
 		_buttonDialogueNo.onClick.RemoveAllListeners();
@@ -390,14 +392,10 @@ public class NPCDialogueController : MonoBehaviour
 		{
 			_currentGestureAnimation = newAnimation;
 
-			if (newAnimation == null)
-			{
-				_animator.CrossFade(_dialogueDefaultAnimationStateName.ToString(), crossfade);
-			}
-			else
-			{
-				_animator.CrossFade(newAnimation, crossfade);
-			}
+			//Debug.Log(newAnimation);
+		
+			_animator.CrossFade(newAnimation, crossfade);
+			
 		}
 	}
 }
