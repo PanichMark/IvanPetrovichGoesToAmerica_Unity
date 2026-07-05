@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 815c8e8370673f74da9cc759dacdf1ec
+guid: bd279abe37b7150438c7219e5efa4115
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -30,7 +30,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -76,7 +76,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human:
@@ -809,12 +809,12 @@ ModelImporter:
       position: {x: 0.0123701785, y: 0.23017074, z: -0.14551118}
       rotation: {x: 0.46678075, y: 0.57159823, z: 0.47093812, w: 0.4833307}
       scale: {x: 1, y: 1, z: 1}
-    armTwist: 0.5
-    foreArmTwist: 0.5
-    upperLegTwist: 0.5
-    legTwist: 0.5
-    armStretch: 0.05
-    legStretch: 0.05
+    armTwist: 1
+    foreArmTwist: 1
+    upperLegTwist: 1
+    legTwist: 1
+    armStretch: 1
+    legStretch: 1
     feetSpacing: 0
     globalScale: 1
     rootMotionBoneName: 
