@@ -3,64 +3,74 @@ using UnityEngine;
 
 public class AssignMeshes : MonoBehaviour
 {
-	// Базовая арматура (Root Bone)
 	[SerializeField] private Transform baseArmature;
-
-	// Список игровых объектов с мешами
 	[SerializeField] private List<GameObject> meshes;
 
 	private void Start()
 	{
-		if (baseArmature == null)
+		var baseArmatureBonesTransform = baseArmature.GetComponentsInChildren<Transform>();
+		var baseArmatureBoneNames = new Dictionary<string, Transform>();
+
+		foreach (var bone in baseArmatureBonesTransform)
 		{
-			Debug.LogError("Не указана базовая арматура!");
-			return;
+			baseArmatureBoneNames[bone.name] = bone;
 		}
 
-		if (meshes.Count == 0)
+		for (int index = 0; index < meshes.Count; index++)
 		{
-			Debug.LogError("Нет объектов с мешами!");
-			return;
-		}
+			var skinnedMeshRenderer = meshes[index].GetComponent<SkinnedMeshRenderer>();
 
-		// Собираем все кости в базе
-		var allBones = baseArmature.GetComponentsInChildren<Transform>();
-
-		// Строим словарь соответствий
-		var boneMap = new System.Collections.Generic.Dictionary<string, Transform>();
-		foreach (var bone in allBones)
-		{
-			boneMap[bone.name] = bone;
-		}
-
-		// Перепривязываем все меши
-		foreach (var go in meshes)
-		{
-			var smr = go.GetComponent<SkinnedMeshRenderer>();
-			if (smr == null)
+			// --- Блок для индекса 0: Запекание деформации ---
+			if (index != 2)
 			{
-				Debug.LogWarning($"{go.name} не имеет SMR. Пропускаю.");
-				continue;
-			}
+				BakeDeformationAndReplace(skinnedMeshRenderer);
 
-			// Создаем новый массив костей
-			var newBones = new Transform[smr.bones.Length];
-			for (int i = 0; i < smr.bones.Length; i++)
+				var modularMeshBones = new Transform[skinnedMeshRenderer.bones.Length];
+				for (int i = 0; i < skinnedMeshRenderer.bones.Length; i++)
+				{
+					modularMeshBones[i] = baseArmatureBoneNames[skinnedMeshRenderer.bones[i].name];
+				}
+
+				skinnedMeshRenderer.bones = modularMeshBones;
+				skinnedMeshRenderer.rootBone = baseArmature;
+			}
+			// --- Блок для остальных индексов: Переназначение костей из словаря ---
+			else
 			{
-				var oldBone = smr.bones[i];
-				if (boneMap.TryGetValue(oldBone.name, out var newBone))
+				var modularMeshBones = new Transform[skinnedMeshRenderer.bones.Length];
+				for (int i = 0; i < skinnedMeshRenderer.bones.Length; i++)
 				{
-					newBones[i] = newBone;
+					modularMeshBones[i] = baseArmatureBoneNames[skinnedMeshRenderer.bones[i].name];
 				}
-				else
-				{
-					Debug.LogWarning($"Кость '{oldBone.name}' не найдена в базе. Оставляю старую.");
-					newBones[i] = oldBone;
-				}
-			}
 
-			smr.bones = newBones;
-			smr.rootBone = baseArmature;
+				skinnedMeshRenderer.bones = modularMeshBones;
+				skinnedMeshRenderer.rootBone = baseArmature;
+			}
 		}
 	}
+
+	/// <summary>
+	/// Запекает текущую форму меша и заменяет SkinnedMeshRenderer на обычный MeshRenderer
+	/// </summary>
+	private void BakeDeformationAndReplace(SkinnedMeshRenderer smr)
+	{
+		// Создаем новый меш, вершины которого вычислены по текущим матрицам костей
+		Mesh bakedMesh = new Mesh();
+		smr.BakeMesh(bakedMesh);
+
+		// Копируем материалы, чтобы сохранить внешний вид
+		Material[] sharedMaterials = smr.sharedMaterials;
+
+		// Отключаем компонент скининга
+		smr.enabled = false;
+
+		// Добавляем обычные компоненты рендера
+		MeshFilter meshFilter = smr.gameObject.AddComponent<MeshFilter>();
+		MeshRenderer meshRenderer = smr.gameObject.AddComponent<MeshRenderer>();
+
+		// Назначаем запеченный меш и материалы
+		meshFilter.mesh = bakedMesh;
+		meshRenderer.sharedMaterials = sharedMaterials;
+	}
+
 }
