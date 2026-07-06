@@ -14290,7 +14290,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941108388}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: e774c30d083ea1247a3a0409a572c022, type: 3}
   m_Controller: {fileID: 9100000, guid: f78bb3cebc5a28647ad3dab0876f66f4, type: 2}
   m_CullingMode: 0
@@ -46574,7 +46574,7 @@ SkinnedMeshRenderer:
   - {fileID: 2345881899978698349}
   - {fileID: 5143879829727571471}
   m_BlendShapeWeights:
-  - 0
+  - 100
   m_RootBone: {fileID: 2638640911299272426}
   m_AABB:
     m_Center: {x: 0.01805453, y: -0.39796722, z: -0.33711922}
@@ -46938,7 +46938,7 @@ SkinnedMeshRenderer:
   - {fileID: 2712970758247151270}
   - {fileID: 4776890787845453508}
   m_BlendShapeWeights:
-  - 0
+  - 100
   m_RootBone: {fileID: 2429131535021377057}
   m_AABB:
     m_Center: {x: 0.01809831, y: 0.38812482, z: -0.33989856}
@@ -53104,7 +53104,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &8459289196381906563
 GameObject:
   m_ObjectHideFlags: 0
