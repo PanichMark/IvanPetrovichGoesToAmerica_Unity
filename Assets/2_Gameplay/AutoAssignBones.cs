@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AssignMeshes : MonoBehaviour
@@ -20,12 +21,18 @@ public class AssignMeshes : MonoBehaviour
 		{
 			var skinnedMeshRenderer = meshes[index].GetComponent<SkinnedMeshRenderer>();
 
+			var modularMeshBones = new Transform[skinnedMeshRenderer.bones.Length];
+
 			if (index == 0)
 			{
-				Debug.Log(meshes[index].name);
+				for (int i = 0; i < skinnedMeshRenderer.bones.Length; i++)
+				{
+					modularMeshBones[i].localPosition = skinnedMeshRenderer.bones[i].localPosition;
+					modularMeshBones[i].localRotation = skinnedMeshRenderer.bones[i].localRotation;
+					modularMeshBones[i].localScale = skinnedMeshRenderer.bones[i].localScale;
+				}
 			}
 
-			var modularMeshBones = new Transform[skinnedMeshRenderer.bones.Length];
 			for (int i = 0; i < skinnedMeshRenderer.bones.Length; i++)
 			{
 				modularMeshBones[i] = baseArmatureBoneNames[skinnedMeshRenderer.bones[i].name];

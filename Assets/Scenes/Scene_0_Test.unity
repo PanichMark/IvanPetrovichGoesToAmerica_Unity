@@ -35073,6 +35073,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3500350779873687324}
+  - component: {fileID: 4312318489501216167}
   m_Layer: 0
   m_Name: Armature_Humanoid_Male_Strong
   m_TagString: Untagged
@@ -35080,6 +35081,95 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4312318489501216167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4312318489501216166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneShape: 0
+  drawBones: 1
+  drawTripods: 0
+  boneSize: 1
+  tripodSize: 1
+  boneColor: {r: 1, g: 1, b: 1, a: 0.5}
+  m_Transforms:
+  - {fileID: 1464218865249320083}
+  - {fileID: 8362207030192417040}
+  - {fileID: 1171386195313003540}
+  - {fileID: 4465367721176604482}
+  - {fileID: 7468353550744486601}
+  - {fileID: 6793092277994828481}
+  - {fileID: 7961830294044105378}
+  - {fileID: 1756295758111552582}
+  - {fileID: 5376189510659721102}
+  - {fileID: 4009201233482826473}
+  - {fileID: 6898873027650011595}
+  - {fileID: 8587855788922863651}
+  - {fileID: 3264596440629611671}
+  - {fileID: 6996676473167948045}
+  - {fileID: 6335703084893053186}
+  - {fileID: 2484237427852017189}
+  - {fileID: 7901217763020166748}
+  - {fileID: 6681725607085824400}
+  - {fileID: 4076645220835517404}
+  - {fileID: 5556267227409887097}
+  - {fileID: 5919122273514354931}
+  - {fileID: 9014130630764011998}
+  - {fileID: 8225016920423115590}
+  - {fileID: 5931945210525828168}
+  - {fileID: 7570954641230625980}
+  - {fileID: 1875703806772497353}
+  - {fileID: 53563897031110500}
+  - {fileID: 7003671236287055274}
+  - {fileID: 143550728321646534}
+  - {fileID: 295179222808731205}
+  - {fileID: 2918521962637298388}
+  - {fileID: 8692139157210212216}
+  - {fileID: 5345299253815406570}
+  - {fileID: 2979430906556753723}
+  - {fileID: 7661644250416495695}
+  - {fileID: 4985348573161817747}
+  - {fileID: 3432071560734339399}
+  - {fileID: 2615773120355658005}
+  - {fileID: 5375442820080223442}
+  - {fileID: 7112279158722906509}
+  - {fileID: 4226889349340320012}
+  - {fileID: 5510042927460810983}
+  - {fileID: 7520940720933949477}
+  - {fileID: 3239761398129845769}
+  - {fileID: 2852220373521292607}
+  - {fileID: 8922906331923159300}
+  - {fileID: 8817646896669630932}
+  - {fileID: 6249792481553037312}
+  - {fileID: 4243992491172692006}
+  - {fileID: 7400435413618989565}
+  - {fileID: 1387185043660810963}
+  - {fileID: 7213942185100867548}
+  - {fileID: 3318994049547947832}
+  - {fileID: 3266838946726625410}
+  - {fileID: 8643641136842763548}
+  - {fileID: 5038112088717807739}
+  - {fileID: 7986435224351920443}
+  - {fileID: 8642344395220484442}
+  - {fileID: 2016183541045265208}
+  - {fileID: 2448607663397966744}
+  - {fileID: 945820172000331159}
+  - {fileID: 1332932944720269939}
+  - {fileID: 7187327959660048589}
+  - {fileID: 2911566285996210408}
+  - {fileID: 5701191897654128680}
+  - {fileID: 402047281639776994}
+  - {fileID: 587074944901042695}
+  - {fileID: 871404814686062911}
+  - {fileID: 4548092919106921247}
+  - {fileID: 8623581652576586870}
 --- !u!4 &4318389743436391575
 Transform:
   m_ObjectHideFlags: 0
@@ -36409,7 +36499,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &4676676737688578382
 GameObject:
   m_ObjectHideFlags: 0
