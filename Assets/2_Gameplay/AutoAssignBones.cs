@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AssignMeshes : MonoBehaviour
@@ -25,11 +26,58 @@ public class AssignMeshes : MonoBehaviour
 
 			if (index == 0)
 			{
-				for (int i = 0; i < skinnedMeshRenderer.bones.Length; i++)
+				if (skinnedMeshRenderer == null || skinnedMeshRenderer.sharedMesh == null) return;
+
+				var originalMesh = skinnedMeshRenderer.sharedMesh;
+				Debug.Log($"[AssignMeshes] Копируем меш '{meshes[index].name}'...");
+
+				var newMesh = Instantiate(originalMesh);
+				skinnedMeshRenderer.sharedMesh = newMesh;
+
+				Matrix4x4[] bindPoses = new Matrix4x4[modularMeshBones.Length];
+				bool hasErrors = false;
+
+				for (int i = 0; i < modularMeshBones.Length; i++)
 				{
-					modularMeshBones[i].localPosition = skinnedMeshRenderer.bones[i].localPosition;
-					modularMeshBones[i].localRotation = skinnedMeshRenderer.bones[i].localRotation;
-					modularMeshBones[i].localScale = skinnedMeshRenderer.bones[i].localScale;
+					// Защита от пустых ссылок внутри массива bones самого рендерера
+					if (skinnedMeshRenderer.bones[i] == null) continue;
+
+					string targetName = skinnedMeshRenderer.bones[i].name.Trim();
+
+					Transform foundBone = null;
+
+					// Пытаемся найти кость сначала точным совпадением, затем через Trim() и ToLower()
+					if (!baseArmatureBoneNames.TryGetValue(targetName, out foundBone))
+					{
+						foreach (var kvp in baseArmatureBoneNames)
+						{
+							if (kvp.Key.Trim().ToLower() == targetName.ToLower())
+							{
+								foundBone = kvp.Value;
+								break;
+							}
+						}
+					}
+
+					if (foundBone != null)
+					{
+						modularMeshBones[i] = foundBone;
+						bindPoses[i] = foundBone.worldToLocalMatrix * transform.localToWorldMatrix;
+					}
+					else
+					{
+						Debug.LogError($"[AssignMeshes] КОСТЬ НЕ НАЙДЕНА: '{targetName}'. Доступные примеры в базе: " +
+									   $"{string.Join(", ", baseArmatureBoneNames.Keys.Take(5))}...");
+						bindPoses[i] = transform.localToWorldMatrix;
+						hasErrors = true;
+					}
+				}
+
+				if (!hasErrors)
+				{
+					newMesh.bindposes = bindPoses;
+					Resources.UnloadAsset(originalMesh);
+					Debug.Log($"[AssignMeshes] Меш '{meshes[index].name}' успешно переназначен.");
 				}
 			}
 
