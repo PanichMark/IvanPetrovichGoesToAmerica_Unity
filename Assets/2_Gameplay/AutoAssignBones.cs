@@ -76,7 +76,7 @@ public class AssignMeshes : MonoBehaviour
 				if (!hasErrors)
 				{
 					newMesh.bindposes = bindPoses;
-					Resources.UnloadAsset(originalMesh);
+					//Resources.UnloadAsset(originalMesh);
 					Debug.Log($"[AssignMeshes] Меш '{meshes[index].name}' успешно переназначен.");
 				}
 			}
