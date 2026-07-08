@@ -499,6 +499,16 @@ ModelImporter:
       position: {x: 0.000000008381903, y: -8.7929664e-14, z: -0.14620124}
       rotation: {x: -0.00000040459133, y: -0.033950366, z: -0.00000066041173, w: 0.9994235}
       scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: UniversalJoint_Shoulder_Swivel.L
+      parentName: Spine
+      position: {x: 0.014276031, y: -0.12008501, z: -0.3072621}
+      rotation: {x: -0.7349678, y: 0.00019541285, z: 0.00018026572, w: 0.67810196}
+      scale: {x: 1, y: 1, z: 1}
+    - name: UniversalJoint_Shoulder_Ball.L
+      parentName: UniversalJoint_Shoulder_Swivel.L
+      position: {x: 3.7289283e-10, y: -0.000000043814907, z: -0.09172743}
+      rotation: {x: -0.4996331, y: 0.50097954, z: -0.4995547, w: -0.49983135}
+      scale: {x: 1.0000001, y: 1, z: 0.9999999}
     - name: Arm.L
       parentName: Spine
       position: {x: 0.014276026, y: -0.21151577, z: -0.29989105}
@@ -584,6 +594,11 @@ ModelImporter:
       position: {x: -0.000000029802322, y: -0.00000006984919, z: -0.045579813}
       rotation: {x: 0.10089197, y: -0.07551484, z: -0.04486211, w: 0.9910125}
       scale: {x: 1.0000001, y: 1, z: 1}
+    - name: WeaponSlot_Hand.L
+      parentName: Palm.L
+      position: {x: 0.030018762, y: 0.026209503, z: -0.11482701}
+      rotation: {x: 0.77849895, y: 0.6269879, z: 0.028276032, w: -0.005106467}
+      scale: {x: 1.0000012, y: 1.0000017, z: 1.0000001}
     - name: UniversalJoint_Palm_Swivel.L
       parentName: Forearm.L
       position: {x: -0.0000000055879354, y: -0.00000013504177, z: -0.1173609}
@@ -594,6 +609,36 @@ ModelImporter:
       position: {x: -9.313226e-10, y: 0.00000004458707, z: -0.08117939}
       rotation: {x: -0.47775534, y: 0.47664997, z: 0.5537329, w: -0.4877855}
       scale: {x: 1.0000002, y: 1.0000001, z: 1.0000002}
+    - name: ChestPheumaticPiston_Top.L
+      parentName: Spine
+      position: {x: -0.0000013889833, y: -0.08624886, z: -0.07511476}
+      rotation: {x: -0.040161002, y: 0.998817, z: 0.027394554, w: 0.0011014723}
+      scale: {x: 1, y: 1.0000021, z: 1.0000001}
+    - name: Neck_Segment1
+      parentName: Spine
+      position: {x: -0.0029075202, y: 0.000000040464055, z: -0.4062538}
+      rotation: {x: 0.00000061022075, y: 0.033950336, z: 0.00000039427744, w: 0.9994235}
+      scale: {x: 0.9999998, y: 1, z: 1}
+    - name: Neck_Segment2
+      parentName: Neck_Segment1
+      position: {x: 0.0000004824251, y: 0.000000010103055, z: -0.044516154}
+      rotation: {x: 0.00000002179792, y: 0.0000000037252776, z: 0.00000002314064, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: WeaponSlot_Chest
+      parentName: Spine
+      position: {x: -0.15740333, y: 0.11454399, z: -0.27871677}
+      rotation: {x: 0.04232157, y: -0.34907627, z: 0.92933285, w: 0.11267268}
+      scale: {x: 1, y: 1, z: 1.0000001}
+    - name: UniversalJoint_Shoulder_Swivel.R
+      parentName: Spine
+      position: {x: 0.014275942, y: 0.120085225, z: -0.30726203}
+      rotation: {x: -0.00019486132, y: 0.734968, z: -0.6781018, w: -0.0001792593}
+      scale: {x: 1, y: 1.0000001, z: 0.9999996}
+    - name: UniversalJoint_Shoulder_Ball.R
+      parentName: UniversalJoint_Shoulder_Swivel.R
+      position: {x: 0.0000000026966518, y: -0.00000027277702, z: -0.09172743}
+      rotation: {x: 0.4996337, y: 0.50097895, z: -0.4995541, w: 0.49983194}
+      scale: {x: 1.0000001, y: 0.99999994, z: 1}
     - name: Arm.R
       parentName: Spine
       position: {x: 0.014275869, y: 0.21151598, z: -0.29989117}
@@ -679,6 +724,11 @@ ModelImporter:
       position: {x: -0.000000007450581, y: -0.000000042375177, z: -0.045579903}
       rotation: {x: 0.10089195, y: 0.07551476, z: 0.04486213, w: 0.9910125}
       scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: WeaponSlot_Hand.R
+      parentName: Palm.R
+      position: {x: -0.030018754, y: 0.026209673, z: -0.11482721}
+      rotation: {x: 0.7784989, y: -0.62698793, z: -0.028276084, w: -0.0051065716}
+      scale: {x: 1.0000012, y: 1.0000015, z: 1.0000001}
     - name: UniversalJoint_Palm_Swivel.R
       parentName: Forearm.R
       position: {x: -0.000000009313226, y: 0.000000055413693, z: -0.117360964}
@@ -689,16 +739,41 @@ ModelImporter:
       position: {x: 0.000000016763806, y: -0.00000013172394, z: -0.08117957}
       rotation: {x: 0.47775495, y: 0.4766494, z: 0.5537334, w: 0.48778567}
       scale: {x: 1.0000002, y: 1.0000001, z: 1.0000004}
+    - name: ChestPheumaticPiston_Top.R
+      parentName: Spine
+      position: {x: -0.0000014530914, y: 0.086248904, z: -0.0751147}
+      rotation: {x: 0.9988171, y: -0.040160604, z: 0.001101477, w: 0.027394142}
+      scale: {x: 1, y: 1.0000021, z: 1.0000001}
+    - name: UniversalJoint_Hip_Swivel.L
+      parentName: Root
+      position: {x: 0.000000053895185, y: -0.06054847, z: -0.09217471}
+      rotation: {x: 0.00085090153, y: 0.9756535, z: 0.21931574, w: -0.00019087347}
+      scale: {x: 0.9999999, y: 1.0000005, z: 1.0000001}
+    - name: UniversalJoint_Hip_Ball.L
+      parentName: UniversalJoint_Hip_Swivel.L
+      position: {x: 1.949596e-10, y: -0.0000000074558955, z: -0.07795331}
+      rotation: {x: -0.00014043521, y: 0.7080238, z: 0.70618844, w: -0.00047203308}
+      scale: {x: 0.9999999, y: 1, z: 1.0000001}
+    - name: ChestPheumaticPiston_Bottom.L
+      parentName: Root
+      position: {x: -0.0000014151051, y: -0.09620074, z: -0.116617024}
+      rotation: {x: 0.020219695, y: -0.018515626, z: 0.6750921, w: 0.73722386}
+      scale: {x: 0.99999994, y: 0.9999999, z: 1}
     - name: Monowheel_Segment1
       parentName: Root
-      position: {x: -0.000000008277831, y: -3.6183548e-16, z: 0.0524469}
+      position: {x: -0.000000008277832, y: -3.6183553e-16, z: 0.0524469}
       rotation: {x: 1, y: -0.000000075497894, z: -0.0000000024251967, w: 0.00000004371139}
       scale: {x: 1, y: 1, z: 1}
     - name: Monowheel_Segment2
       parentName: Monowheel_Segment1
-      position: {x: -2.2204458e-16, y: 3.970467e-23, z: -0.3411069}
-      rotation: {x: 2.215114e-14, y: 0.000000093676576, z: 0.00000004371141, w: 1}
+      position: {x: -2.2204458e-16, y: 5.293956e-23, z: -0.3411069}
+      rotation: {x: 2.2151141e-14, y: 0.00000009367656, z: 0.00000004371141, w: 1}
       scale: {x: 1, y: 1, z: 1}
+    - name: WeaponSlot_Belt
+      parentName: Root
+      position: {x: -0.0000067951496, y: 0.19017076, z: -0.12437087}
+      rotation: {x: 0.48633382, y: 0.5915852, z: 0.450719, w: 0.4586488}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000002}
     - name: Thigh.R
       parentName: Root
       position: {x: -0.000000007023208, y: 0.09390875, z: -0.02172041}
@@ -719,6 +794,21 @@ ModelImporter:
       position: {x: -0.000000010273652, y: -0.0000000030340743, z: -0.16705148}
       rotation: {x: 0.27093413, y: 0.000000069497304, z: 0.9625979, w: -0.0000014602456}
       scale: {x: 1, y: 1, z: 0.9999997}
+    - name: UniversalJoint_Hip_Swivel.R
+      parentName: Root
+      position: {x: 0.00000004860519, y: 0.060548417, z: -0.09217477}
+      rotation: {x: 0.9756536, y: 0.0008514217, z: -0.00019102429, w: 0.21931568}
+      scale: {x: 0.9999999, y: 1.0000004, z: 1.0000001}
+    - name: UniversalJoint_Hip_Ball.R
+      parentName: UniversalJoint_Hip_Swivel.R
+      position: {x: 3.0169756e-10, y: -0.000000007455057, z: -0.077953465}
+      rotation: {x: 0.00013985398, y: 0.7080239, z: 0.7061883, w: 0.00047263183}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999976}
+    - name: ChestPheumaticPiston_Bottom.R
+      parentName: Root
+      position: {x: -0.0000014235152, y: 0.09620074, z: -0.116617024}
+      rotation: {x: -0.018515633, y: 0.020219702, z: 0.73722386, w: 0.67509204}
+      scale: {x: 0.99999994, y: 0.9999999, z: 1.0000001}
     armTwist: 1
     foreArmTwist: 1
     upperLegTwist: 1
