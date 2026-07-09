@@ -89,7 +89,11 @@ public class AssignMeshes : MonoBehaviour
 			skinnedMeshRenderer.bones = modularMeshBones;
 			skinnedMeshRenderer.rootBone = baseArmature;
 
-			Destroy(meshes[index].transform.parent.Find("Armature_Humanoid").gameObject);
+			var armature = meshes[index].transform.parent.Find("Armature_Humanoid");
+			if (armature != null)
+			{
+				Destroy(armature.gameObject);
+			}
 		}
 	}
 }

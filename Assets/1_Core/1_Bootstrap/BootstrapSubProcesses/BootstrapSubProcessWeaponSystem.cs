@@ -74,10 +74,10 @@ public class BootstrapSubProcessWeaponSystem
 		_HUDammoController = _GameObjectBootstrapWeaponSystem.AddComponent<HUDammoController>();
 		_bulletHoleManager = _GameObjectBootstrapWeaponSystem.AddComponent<BulletHoleManager>();
 
-		_gameObjectFirstPersonRightHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlotHand.R");
-		_gameObjectFirstPersonLeftHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlotHand.L");
-		_gameObjectThirdPersonRightHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "WeaponSlotHand.R");
-		_gameObjectThirdPersonLeftHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "WeaponSlotHand.L");
+		_gameObjectFirstPersonRightHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlot_Hand.R");
+		_gameObjectFirstPersonLeftHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlot_Hand.L");
+		_gameObjectThirdPersonRightHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "WeaponSlot_Hand.R");
+		_gameObjectThirdPersonLeftHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "WeaponSlot_Hand.L");
 
 		WeaponController.Initialize(
 			_bootstrap,
