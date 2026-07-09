@@ -4,17 +4,20 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 	private Bootstrap _bootstrap;
 	private PlayerCameraStateMachineController _playerStateMachineCamera;
 
-	private GameObject _playerHeadParent;
+	private GameObject _playerHead;
+	private GameObject _playerHatSlot;
 
 	public void Initialize(
 		Bootstrap bootstrap,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
-		GameObject playerHeadParent)
+		GameObject playerHead,
+		GameObject playerHatSlot)
 	{
 		_bootstrap = bootstrap;
 		_playerStateMachineCamera = playerCameraStateMachineController;
 
-		_playerHeadParent = playerHeadParent;
+		_playerHead = playerHead;
+		_playerHatSlot = playerHatSlot;
 
 		Debug.Log("PlayerCameraFirstPersonRender Initialized");
 	}
@@ -26,11 +29,13 @@ public class PlayerCameraFirstPersonRender : MonoBehaviour
 
 		if (_playerStateMachineCamera.CurrentPlayerCameraStateType == "FirstPerson") 
 		{
-			HideBodyPart(_playerHeadParent);
+			HideBodyPart(_playerHead);
+			HideBodyPart(_playerHatSlot);
 		}		
 		else 
 		{
-			ShowBodyPart(_playerHeadParent);
+			ShowBodyPart(_playerHead);
+			ShowBodyPart(_playerHatSlot);
 		}
 	}
 	

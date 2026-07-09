@@ -18,6 +18,8 @@ public class BootstrapSubProcessPlayerSystems
 	public GameObject GameObjectPlayerFirstPersonHandRight { get; private set; }
 	public GameObject GameObjectPlayerFirstPersonHandLeft { get; private set; }
 
+	public GameObject GameObkectPlayerHatSlot { get; private set; }
+
 	private GameObject _gameObjectPlayerCamera;
 	public GameObject PlayerCameraFirstPerson { get; private set; }
 	public GameObject PlayerCameraPostProcessing {  get; private set; }
@@ -83,6 +85,7 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerResourcesAmmoManager = _gameObjectPlayer.GetComponent<PlayerResourcesAmmoManager>();
 
 		_gameObjectPlayerHead = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHead");
+		GameObkectPlayerHatSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHatSlot");
 		GameObjectPlayerFirstPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonArmRight");
 		GameObjectPlayerFirstPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonArmLeft");
 		GameObjectPlayerThirdPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonArmRight");
@@ -102,7 +105,7 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerCameraController.Initialize(_bootstrap, _gameController, _inputDevice, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionControlsController, PlayerMovementController, _playerColliderController, _gameObjectPlayer, _gameObjectPlayerCamera);
 		PlayerCameraStateMachineController.Initialize(_bootstrap, _inputDevice, _gameSceneManager, PlayerMovementController, PlayerMovementStateMachineController, PlayerCameraController);
 		_playerCameraBlurFilter.Initialize(_bootstrapSubProcessMenuSystem.MenuManager, PlayerCameraFirstPerson);
-		_playerCameraFirstPersonRender.Initialize(_bootstrap, PlayerCameraStateMachineController, _gameObjectPlayerHead);
+		_playerCameraFirstPersonRender.Initialize(_bootstrap, PlayerCameraStateMachineController, _gameObjectPlayerHead, GameObkectPlayerHatSlot);
 
 		_playerMovementAnimationController.Initialize(_bootstrap, _inputDevice, PlayerBehaviour, PlayerMovementStateMachineController, PlayerCameraStateMachineController, _gameObjectPlayer);
 

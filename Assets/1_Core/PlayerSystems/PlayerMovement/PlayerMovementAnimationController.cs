@@ -24,8 +24,8 @@ public class PlayerMovementAnimationController: MonoBehaviour
 		_playerBehaviour = playerBehaviour;
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerCameraStateMachineController = playerCameraStateMachineController;
-		
-		ChangePlayerMovementAnimation("Idle");
+
+		ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Idle_Type1.ToString());
 
 		Debug.Log("PlayerMovementAnimationController Initialized");
 	}
@@ -37,8 +37,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 
 		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerIdle")
 		{
-			
-			ChangePlayerMovementAnimation("Idle");
+			ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Idle_Type1.ToString());
 		}
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerWalking")
 		{
