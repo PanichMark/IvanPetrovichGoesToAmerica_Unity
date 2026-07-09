@@ -85,7 +85,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking")
 		{
 
-			ChangePlayerMovementAnimation("CrouchingWalking");
+			ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Movement_Crouching.ToString());
 		}
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerSliding")
 		{

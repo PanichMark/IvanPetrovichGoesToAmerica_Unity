@@ -2067,7 +2067,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5540576557977750426}
   - component: {fileID: 4208764231083186937}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Attire_MainCharacter_IvanPetrovich_SleeveLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3352,7 +3352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2691219606550546289}
   - component: {fileID: 1944863428096881135}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerFirstPersonArmLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7461,7 +7461,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4083327210286046442}
   - component: {fileID: 6112372234245336685}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerFirstPersonArmRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7905,7 +7905,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3596142389172684933}
   - component: {fileID: 8062423550164759149}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Attire_MainCharacter_IvanPetrovich_SleeveRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8459,6 +8459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseArmature: {fileID: 1108788975380253757}
+  bakeTorsoMesh: 0
   meshes:
   - {fileID: 6780012779541865954}
   - {fileID: 6960034031799164454}
