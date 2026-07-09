@@ -7,7 +7,7 @@
 	Animation_Humanoid_Movement_WalkingRight,
 	Animation_Humanoid_Movement_WalkingLeft,
 	Animation_Humanoid_Movement_Crouching,
-	Animation_Humanoid_Movement_Running,
+	Animation_Humanoid_Movement_RunningForward,
 	Animation_Humanoid_Movement_Jumpping,
 	Animation_Humanoid_Movement_Falling,
 	Animation_Humanoid_Movement_Sliding,

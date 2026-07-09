@@ -65,7 +65,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerRunning")
 		{
 
-			ChangePlayerMovementAnimation("Running");
+			ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Movement_RunningForward.ToString());
 		}
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerJumping")
 		{
@@ -90,11 +90,11 @@ public class PlayerMovementAnimationController: MonoBehaviour
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerSliding")
 		{
 
-			ChangePlayerMovementAnimation("Sliding");
+			ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Movement_Sliding.ToString());
 		}
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerLedgeClimbing")
 		{
-			ChangePlayerMovementAnimation("Ledge Climbing");
+			ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Movement_LedgeClimbing.ToString());
 		}
 	}
 

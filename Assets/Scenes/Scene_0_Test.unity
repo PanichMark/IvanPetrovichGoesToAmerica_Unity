@@ -3893,7 +3893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &256694526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44644,7 +44644,8 @@ SkinnedMeshRenderer:
   - {fileID: 1476958221198379892}
   - {fileID: 2843739264806854996}
   - {fileID: 588131155453103711}
-  m_BlendShapeWeights: []
+  m_BlendShapeWeights:
+  - 100
   m_RootBone: {fileID: 880767012550131416}
   m_AABB:
     m_Center: {x: -0.022445127, y: 0.000000074505806, z: -0.71748435}
