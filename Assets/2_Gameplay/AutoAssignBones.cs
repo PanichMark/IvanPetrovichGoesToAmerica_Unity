@@ -6,7 +6,9 @@ using UnityEngine;
 public class AssignMeshes : MonoBehaviour
 {
 	[SerializeField] private Transform baseArmature;
+	[SerializeField] private bool bakeTorsoMesh = false;
 	[SerializeField] private List<GameObject> meshes;
+	
 
 	private void Start()
 	{
@@ -24,7 +26,7 @@ public class AssignMeshes : MonoBehaviour
 
 			var modularMeshBones = new Transform[skinnedMeshRenderer.bones.Length];
 
-			if (index == 0)
+			if (index == 0 && bakeTorsoMesh == true)
 			{
 				if (skinnedMeshRenderer == null || skinnedMeshRenderer.sharedMesh == null) return;
 

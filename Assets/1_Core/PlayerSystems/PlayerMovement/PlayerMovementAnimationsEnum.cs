@@ -1,4 +1,15 @@
 ﻿public enum PlayerMovementAnimationsEnum
 {
-	Animation_Humanoid_Idle_Type1
+	Animation_Humanoid_IdleStanding_Type1,
+	Animation_Humanoid_IdleCrouching_Type1,
+	Animation_Humanoid_Movement_WalkingForward,
+	Animation_Humanoid_Movement_WalkingBackward,
+	Animation_Humanoid_Movement_WalkingRight,
+	Animation_Humanoid_Movement_WalkingLeft,
+	Animation_Humanoid_Movement_Crouching,
+	Animation_Humanoid_Movement_Running,
+	Animation_Humanoid_Movement_Jumpping,
+	Animation_Humanoid_Movement_Falling,
+	Animation_Humanoid_Movement_Sliding,
+	Animation_Humanoid_Movement_LedgeClimbing,
 }

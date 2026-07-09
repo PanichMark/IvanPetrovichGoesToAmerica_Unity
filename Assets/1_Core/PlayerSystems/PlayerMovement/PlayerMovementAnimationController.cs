@@ -25,7 +25,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerCameraStateMachineController = playerCameraStateMachineController;
 
-		ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Idle_Type1.ToString());
+		ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_IdleStanding_Type1.ToString());
 
 		Debug.Log("PlayerMovementAnimationController Initialized");
 	}
@@ -37,7 +37,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 
 		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerIdle")
 		{
-			ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Idle_Type1.ToString());
+			ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_IdleStanding_Type1.ToString());
 		}
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerWalking")
 		{
@@ -45,22 +45,22 @@ public class PlayerMovementAnimationController: MonoBehaviour
 			{
 				if (_inputDevice.GetKeyUp())
 				{
-					ChangePlayerMovementAnimation("Walking Forward");
+					ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Movement_WalkingForward.ToString());
 				}
 				else if (_inputDevice.GetKeyDown())
 				{
-					ChangePlayerMovementAnimation("Walking Backwards");
+					ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Movement_WalkingBackward.ToString());
 				}
 				if (_inputDevice.GetKeyRight())
 				{
-					ChangePlayerMovementAnimation("Walking Right");
+					ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Movement_WalkingRight.ToString());
 				}
 				else if (_inputDevice.GetKeyLeft())
 				{
-					ChangePlayerMovementAnimation("Walking Left");
+					ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Movement_WalkingLeft.ToString());
 				}
 			}
-			else ChangePlayerMovementAnimation("Walking Forward");
+			else ChangePlayerMovementAnimation(PlayerMovementAnimationsEnum.Animation_Humanoid_Movement_WalkingForward.ToString());
 		}
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerRunning")
 		{
