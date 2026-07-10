@@ -9,7 +9,7 @@ public class NPCPhrasesController : MonoBehaviour
 	public delegate void HeadIKHandler(GameObject objectToLookAt);
 	public event HeadIKHandler OnStartLookingAtObject;
 	public event HeadIKHandler OnStopLookingAtObject;
-	private GameObject _playerHead;
+	private GameObject _playerEyesLookAt;
 	private AudioSource _audioSource;
 	private NPCAbstract _NPCabstract;
 	private LocalizationManager _localizationManager;
@@ -30,7 +30,7 @@ public class NPCPhrasesController : MonoBehaviour
 		_NPCphrasesText = ServiceLocator.Resolve<GameObject>("TextPhraseLine");
 		_NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();
 		//Debug.Log(_NPCphrasesText);
-		_playerHead = ServiceLocator.Resolve<GameObject>("GameObjectPlayerHead");
+		_playerEyesLookAt = ServiceLocator.Resolve<GameObject>("GameObjectPlayerEyesLookAt");
 		_audioSource = GetComponent<AudioSource>();
 		LoadPhrasesTextFiles();
 	}
@@ -79,7 +79,7 @@ public class NPCPhrasesController : MonoBehaviour
 	public IEnumerator TemporaryShowPhrases()
 	{
 		_NPCphrasesText.gameObject.SetActive(true);
-		OnStartLookingAtObject?.Invoke(_playerHead);
+		OnStartLookingAtObject?.Invoke(_playerEyesLookAt);
 		var currentLanguage = _localizationManager.CurrentLanguage;
 		if (_localizedNPSphrases[currentLanguage].Count > 0)
 		{
@@ -97,7 +97,7 @@ public class NPCPhrasesController : MonoBehaviour
 
 		_NPCphrasesTextComponent.text = string.Empty;
 		_NPCphrasesText.gameObject.SetActive(false);
-		OnStopLookingAtObject?.Invoke(_playerHead);
+		OnStopLookingAtObject?.Invoke(_playerEyesLookAt);
 	}
 
 	public void ClearPhrases()

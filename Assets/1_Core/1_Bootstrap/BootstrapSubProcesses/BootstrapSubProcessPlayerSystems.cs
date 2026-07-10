@@ -23,7 +23,7 @@ public class BootstrapSubProcessPlayerSystems
 	private GameObject _gameObjectPlayerCamera;
 	public GameObject PlayerCameraFirstPerson { get; private set; }
 	public GameObject PlayerCameraPostProcessing {  get; private set; }
-
+	private GameObject _gameobjectPlayerEyesLookAt;
 	public PlayerBehaviourController PlayerBehaviour { get; private set; }
 	public PlayerMovementController PlayerMovementController { get; private set; }
 	public PlayerMovementStateMachineController PlayerMovementStateMachineController { get; private set; }
@@ -85,7 +85,9 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerResourcesAmmoManager = _gameObjectPlayer.GetComponent<PlayerResourcesAmmoManager>();
 
 		_gameObjectPlayerHead = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHead");
+		_gameobjectPlayerEyesLookAt = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "EyesLookAt");
 		GameObkectPlayerHatSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHatSlot");
+
 		GameObjectPlayerFirstPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonArmRight");
 		GameObjectPlayerFirstPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonArmLeft");
 		GameObjectPlayerThirdPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonArmRight");
@@ -122,6 +124,7 @@ public class BootstrapSubProcessPlayerSystems
 		ServiceLocator.Register("PlayerCameraBlurFilter", _playerCameraBlurFilter);
 
 		ServiceLocator.Register("GameObjectPlayer", _gameObjectPlayer);
+		ServiceLocator.Register("GameObjectPlayerEyesLookAt", _gameobjectPlayerEyesLookAt);
 		ServiceLocator.Register("GameObjectPlayerHead", _gameObjectPlayerHead);
 		ServiceLocator.Register("GameObjectPlayerCollider", _gameObjectPlayerCollider);
 		ServiceLocator.Register("GameObjectPlayerCamera", _gameObjectPlayerCamera);

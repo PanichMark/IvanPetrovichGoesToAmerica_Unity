@@ -52,7 +52,7 @@ public class NPCDialogueController : MonoBehaviour
 		{ LanguagesEnum.English, new List<string>() }
 	};
 	private bool _isIvanPetrovichSpeaking;
-	private GameObject _playerHead;
+	private GameObject _playerEyesLookAt;
 	public Dictionary<LanguagesEnum, List<string>> LocalizedDialogue => _localizedDialogue;
 	private TextMeshProUGUI _NPCdialogueText;
 	private GameObject _canvasDialogueMenu;
@@ -79,7 +79,7 @@ public class NPCDialogueController : MonoBehaviour
 		_textDialogueYes = ServiceLocator.Resolve<GameObject>("TextDialogueYes");
 		_textDialogueNo = ServiceLocator.Resolve<GameObject>("TextDialogueNo");
 
-		_playerHead = ServiceLocator.Resolve<GameObject>("GameObjectPlayerHead");
+		_playerEyesLookAt = ServiceLocator.Resolve<GameObject>("GameObjectPlayerEyesLookAt");
 	
 		_textComponentDialogueYes = _textDialogueYes.GetComponent<TextMeshProUGUI>();
 		_textComponentDialogueNo = _textDialogueNo.GetComponent<TextMeshProUGUI>();
@@ -161,7 +161,7 @@ public class NPCDialogueController : MonoBehaviour
 			_animator.speed = 0.5f;
 			ChangeGestureAnimation(_originalAnimationStateName);
 			_playerCameraController.SetPostDialogueCameraTransform();
-			OnStopLookingAtObject?.Invoke(_playerHead);
+			OnStopLookingAtObject?.Invoke(_playerEyesLookAt);
 		}
 	}
 
@@ -238,7 +238,7 @@ public class NPCDialogueController : MonoBehaviour
 		_NPCstateMachineController.RotateTowardsPlayer();
 		_playerMovementController.RotatePlayerTowardsNPC(gameObject);
 		_playerCameraController.RotateCameraTowardsNPC(gameObject);
-		OnStartLookingAtObject?.Invoke(_playerHead);
+		OnStartLookingAtObject?.Invoke(_playerEyesLookAt);
 	}
 
 	private void DisplayNextDialogueLine()

@@ -43,7 +43,6 @@ public class HeadInverseKinematicsController : MonoBehaviour
 	private void StartLookingAtObject(GameObject objectToLookAt)
 	{
 		_weightedTransform.transform = objectToLookAt.transform;
-		_weightedTransform.weight = 1f;
 
 		var headData = _headIK.data;
 		headData.sourceObjects = new WeightedTransformArray { _weightedTransform };
@@ -53,8 +52,8 @@ public class HeadInverseKinematicsController : MonoBehaviour
 		neckData.sourceObjects = new WeightedTransformArray { _weightedTransform };
 		_neckIK.data = neckData;
 
-		_headIK.weight = 0f;
-		_neckIK.weight = 0f;
+		_weightedTransform.weight = 0f;
+		UpdateSources();
 
 		_rigBuilder.Build();
 		_animator.Rebind();
@@ -65,8 +64,6 @@ public class HeadInverseKinematicsController : MonoBehaviour
 	private void StopLookingAtObject(GameObject objectToLookAt)
 	{
 		StartCoroutine(LerpWeight(0f));
-
-		// i need to delete Head and Neck from Source Objects list upon StopLookingAt
 	}
 
 	private IEnumerator LerpWeight(float targetWeight)
@@ -74,8 +71,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 		float duration = 1f;
 		float timeElapsed = 0f;
 
-		float startHead = _headIK.weight;
-		float startNeck = _neckIK.weight;
+		float startWeight = _weightedTransform.weight;
 
 		while (timeElapsed < duration)
 		{
@@ -83,13 +79,32 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 			float t = Mathf.Clamp01(timeElapsed / duration);
 
-			_headIK.weight = Mathf.Lerp(startHead, targetWeight, t);
-			_neckIK.weight = Mathf.Lerp(startNeck, targetWeight, t);
+			// Создаем новую структуру с новым весом
+			_weightedTransform = new WeightedTransform(_weightedTransform.transform, Mathf.Lerp(startWeight, targetWeight, t));
+
+			UpdateSources();
 
 			yield return null;
 		}
 
-		_headIK.weight = targetWeight;
-		_neckIK.weight = targetWeight;
+		_weightedTransform = new WeightedTransform(_weightedTransform.transform, targetWeight);
+		UpdateSources();
+
+		if (targetWeight == 0f)
+		{
+			_headIK.data.sourceObjects = new WeightedTransformArray();
+			_neckIK.data.sourceObjects = new WeightedTransformArray();
+		}
+	}
+
+	private void UpdateSources()
+	{
+		var tempHeadData = _headIK.data;
+		tempHeadData.sourceObjects = new WeightedTransformArray { _weightedTransform };
+		_headIK.data = tempHeadData;
+
+		var tempNeckData = _neckIK.data;
+		tempNeckData.sourceObjects = new WeightedTransformArray { _weightedTransform };
+		_neckIK.data = tempNeckData;
 	}
 }
