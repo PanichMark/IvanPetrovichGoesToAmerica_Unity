@@ -382,6 +382,35 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	{
 		transform.position = position;
 	}
+
+	public void RotatePlayerTowardsNPC(GameObject NPC)
+	{
+		StartCoroutine(RotatePlayerTowardsPlayerCoroutine(NPC));
+	}
+
+	private IEnumerator RotatePlayerTowardsPlayerCoroutine(GameObject NPC)
+	{
+		float rotationSpeed = 160f;
+		Vector3 direction = NPC.transform.position - transform.position;
+		float desiredYAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+		Quaternion startRotation = transform.rotation;
+		Quaternion endRotation = Quaternion.Euler(0, desiredYAngle, 0);
+
+		while (true)
+		{
+			float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
+			if (angleDiff < 0.1f)
+			{
+				break;
+			}
+			float step = rotationSpeed * Time.unscaledDeltaTime;
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
+			yield return null;
+		}
+
+		transform.rotation = endRotation;
+	}
+
 	public void SaveData(ref GameData data)
 	{
 		data.PlayerPosition = PlayerTransform.position;

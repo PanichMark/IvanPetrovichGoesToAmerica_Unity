@@ -80,6 +80,16 @@ public class NPCStateMachineController : MonoBehaviour
 		return _lastVisitedStopPoint;
 	}
 
+	public void RotateTowardsPlayer()
+	{
+		if (currentRotationCoroutine != null)
+		{
+			StopCoroutine(currentRotationCoroutine);
+		}
+
+		currentRotationCoroutine = StartCoroutine(RotateTowardsPlayerCoroutine());
+	}
+
 	private IEnumerator RotateTowardsPlayerCoroutine()
 	{
 		float rotationSpeed = 160f;
@@ -101,16 +111,6 @@ public class NPCStateMachineController : MonoBehaviour
 		}
 
 		transform.rotation = endRotation;
-	}
-
-	public void RotateTowardsPlayer()
-	{
-		if (currentRotationCoroutine != null)
-		{
-			StopCoroutine(currentRotationCoroutine);
-		}
-
-		currentRotationCoroutine = StartCoroutine(RotateTowardsPlayerCoroutine());
 	}
 
 	public IEnumerator MoveBetweenAnchorPointsCoroutine()
@@ -171,10 +171,10 @@ public class NPCStateMachineController : MonoBehaviour
 	{
 		if (currentRotationCoroutine != null)
 			StopCoroutine(currentRotationCoroutine);
-		currentRotationCoroutine = StartCoroutine(RotateBackCoroutine(_initialRotationY));
+		currentRotationCoroutine = StartCoroutine(RotateTowardsInitialRotation(_initialRotationY));
 	}
 
-	private IEnumerator RotateBackCoroutine(float targetYAngle)
+	private IEnumerator RotateTowardsInitialRotation(float targetYAngle)
 	{
 		float rotationSpeed = 180f;
 		Quaternion startRotation = transform.rotation;

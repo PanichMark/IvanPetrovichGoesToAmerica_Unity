@@ -11,7 +11,6 @@ public class NPCNeutral : NPCAbstract
 
 		if (_NPCdialogueController != null)
 		{
-			_NPCstateMachineController.RotateTowardsPlayer();
 			_NPCdialogueController.Interact();
 		}
 		else

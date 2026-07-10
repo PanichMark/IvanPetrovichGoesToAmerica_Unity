@@ -1,12 +1,14 @@
-﻿using log4net.Filter;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class BlendShapesController : MonoBehaviour
 {
-	private NPCStateMachineController _NPCStateMachineController;
-	private NPCDialogueController _NPCDialogueController;
+	[SerializeField] private NPCStateMachineController _NPCStateMachineController;
+	[SerializeField] private NPCDialogueController _NPCDialogueController;
 
 	private SkinnedMeshRenderer _skinnedMeshRenderer;
+	private Coroutine _blinkRoutine;
+
 
 	private int _blendShapeEyesClosed;
 	private string[] _blendShapesFacialExpressions;
@@ -15,11 +17,9 @@ public class BlendShapesController : MonoBehaviour
 	private void Start()
 	{
 		_skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
-		_NPCStateMachineController = transform.parent.parent.GetComponent<NPCStateMachineController>();
-		_NPCDialogueController = transform.parent.parent.GetComponent<NPCDialogueController>();
-		//Debug.Log(_NPCDialogueController);
 
 		_blendShapeEyesClosed = _skinnedMeshRenderer.sharedMesh.GetBlendShapeIndex("BlendShape_EyesClosed");
+		Blink();
 
 		_blendShapesFacialExpressions = new string[] {
 			"BlendShape_FacialExpression_Happy",
@@ -40,6 +40,7 @@ public class BlendShapesController : MonoBehaviour
 		};
 
 		_NPCStateMachineController.OnNPCstateDead += CloseEyes;
+		_NPCStateMachineController.OnNPCstateDead += StopBlinking;
 		_NPCStateMachineController.OnNPCstateDead += ResetAllBlendShapesFacialExpressions;
 
 		_NPCDialogueController.OnChangeBlendShapeFacialExpression += ChangeBlendShapeFacialExpression;
@@ -50,11 +51,48 @@ public class BlendShapesController : MonoBehaviour
 	private void OnDestroy()
 	{
 		_NPCStateMachineController.OnNPCstateDead -= CloseEyes;
+		_NPCStateMachineController.OnNPCstateDead -= StopBlinking;
 		_NPCStateMachineController.OnNPCstateDead -= ResetAllBlendShapesFacialExpressions;
 
 		_NPCDialogueController.OnChangeBlendShapeFacialExpression -= ChangeBlendShapeFacialExpression;
 		_NPCDialogueController.OnResetAllBlendShapesFacialExpressions -= ResetAllBlendShapesFacialExpressions;
 		_NPCDialogueController.OnResetAllBlendShapesPhonemes -= ResetAllBlendShapesPhonemes;
+	}
+
+	private void Blink()
+	{
+		if (_blinkRoutine != null)
+		{
+			StopCoroutine(_blinkRoutine);
+		}
+		_blinkRoutine = StartCoroutine(BlinkLoop());
+	}
+
+	private IEnumerator BlinkLoop()
+	{
+		while (true)
+		{
+			CloseEyes();
+			yield return new WaitForSecondsRealtime(0.1f);
+			OpenEyes();
+
+			float nextInterval = Random.Range(2f, 8f);
+			yield return new WaitForSecondsRealtime(nextInterval);
+		}
+	}
+
+	private void StopBlinking()
+	{
+		if (_blinkRoutine != null)
+		{
+			StopCoroutine(_blinkRoutine);
+			_blinkRoutine = null;
+		}
+	}
+
+	private void OpenEyes()
+	{
+		_skinnedMeshRenderer.SetBlendShapeWeight(_blendShapeEyesClosed, 0f);
 	}
 
 	private void CloseEyes()

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using uLipSync;
@@ -12,7 +11,8 @@ public class NPCDialogueController : MonoBehaviour
 	public event BlendShapesResetterHandler OnResetAllBlendShapesFacialExpressions;
 	public event BlendShapesResetterHandler OnResetAllBlendShapesPhonemes;
 	private string _originalAnimationStateName;
-	
+	public PlayerMovementController _playerMovementController;
+	public PlayerCameraController _playerCameraController;
 	public delegate void BlendShapesFacialExpressionsHandler(string newFacialExpression);
 	public event BlendShapesFacialExpressionsHandler OnChangeBlendShapeFacialExpression;
 	private string _currentGestureAnimation;
@@ -62,7 +62,8 @@ public class NPCDialogueController : MonoBehaviour
 		_audioSource = GetComponent<AudioSource>();
 		_NPCabstract = GetComponent<NPCAbstract>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-	
+		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
+		_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 		_animator = GetComponent<Animator>();
 		_animator.speed = 0.5f;
 		_interactionController = ServiceLocator.Resolve<InteractionController>("InteractionController");
@@ -224,8 +225,9 @@ public class NPCDialogueController : MonoBehaviour
 		_gameController.MakeGameUnsavable();
 		ShowNPCDialogueCanvas();
 		DisplayNextDialogueLine();
-
-		//
+		_NPCstateMachineController.RotateTowardsPlayer();
+		_playerMovementController.RotatePlayerTowardsNPC(gameObject);
+		_playerCameraController.RotateCameraTowardsNPC(gameObject);
 	}
 
 	private void DisplayNextDialogueLine()

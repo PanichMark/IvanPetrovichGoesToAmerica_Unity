@@ -78,6 +78,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &-3032111352531172135
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Animation_Humanoid_IdleStanding_Type1
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 3091315475550263998, guid: 3df9367abff42f945a89f114be95b4c6, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1107 &-1460309368854281844
 AnimatorStateMachine:
   serializedVersion: 6
@@ -97,9 +123,6 @@ AnimatorStateMachine:
     m_State: {fileID: -5081625915238695919}
     m_Position: {x: 410, y: -40, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 3031303582628874866}
-    m_Position: {x: 542.72485, y: 64.73529, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: -7027200545276545613}
     m_Position: {x: 474.09164, y: -210.9949, z: 0}
   - serializedVersion: 1
@@ -108,6 +131,12 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 7228304920734183401}
     m_Position: {x: 835.0733, y: -76.7937, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 6553161344463155262}
+    m_Position: {x: 490, y: 80, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -3032111352531172135}
+    m_Position: {x: 440, y: 210, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -117,7 +146,7 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 3031303582628874866}
+  m_DefaultState: {fileID: 6553161344463155262}
 --- !u!1102 &-1125805704324669654
 AnimatorState:
   serializedVersion: 6
@@ -166,14 +195,14 @@ AnimatorController:
     m_IKPass: 1
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &3031303582628874866
+--- !u!1102 &6553161344463155262
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Walking Forward
+  m_Name: Animation_Humanoid_Movement_WalkingForward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -186,7 +215,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: d5218c4980af5ba40865ba3ccc0483d8, type: 3}
+  m_Motion: {fileID: 5946980256173617558, guid: 89eeceb2f6143fd4096caceeeaed0efb, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
