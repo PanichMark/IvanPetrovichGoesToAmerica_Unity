@@ -17,7 +17,7 @@ public class NPCPeaceful : NPCAbstract
 		else
 		{
 			StopAllCoroutines();
-			StartCoroutine(_NPCphrasesController.TemporaryShowPhrases());
+			_NPCphrasesController.TemporaryShowPhrases();
 		}
 	}
 }

@@ -131,6 +131,26 @@ public class NPCDialogueController : MonoBehaviour
 		LoadDialogueFromFiles();
 	}
 
+	public void Interact()
+	{
+		_currentDialogueStepIndex = 0;
+		_dialogueBranchStructIndex = 0;
+		_interactionController.ChangeLayerRecursively(gameObject, LayerMask.NameToLayer("Default"));
+		_originalAnimationStateName = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+		_menuManager.OpenDialogueMenu();
+		IsDialogueActive = true;
+		ChangeGestureAnimation(_dialogueDefaultAnimationStateName.name);
+		_animator.speed = 1;
+		_gameController.MakeGameUnsavable();
+		ShowNPCDialogueCanvas();
+		DisplayNextDialogueLine();
+		_NPCstateMachineController.RotateTowardsPlayer();
+		_playerMovementController.RotatePlayerTowardsNPC(gameObject);
+		_playerCameraController.RotateCameraTowardsNPC(gameObject);
+		OnStartLookingAtObject?.Invoke(_playerEyesLookAt);
+		_uLipSyncBlendShape.updateMethod = UpdateMethod.External;
+	}
+
 	private void ExitNPCDialogue()
 	{
 		if (IsDialogueActive)
@@ -162,6 +182,7 @@ public class NPCDialogueController : MonoBehaviour
 			ChangeGestureAnimation(_originalAnimationStateName);
 			_playerCameraController.SetPostDialogueCameraTransform();
 			OnStopLookingAtObject?.Invoke(_playerEyesLookAt);
+			_uLipSyncBlendShape.updateMethod = UpdateMethod.LipSyncUpdateEvent;
 		}
 	}
 
@@ -222,24 +243,7 @@ public class NPCDialogueController : MonoBehaviour
 		}
 	}
 
-	public void Interact()
-	{
-		_currentDialogueStepIndex = 0;
-		_dialogueBranchStructIndex = 0;
-		_interactionController.ChangeLayerRecursively(gameObject, LayerMask.NameToLayer("Default"));
-		_originalAnimationStateName = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-		_menuManager.OpenDialogueMenu();
-		IsDialogueActive = true;
-		ChangeGestureAnimation(_dialogueDefaultAnimationStateName.name);
-		_animator.speed = 1;
-		_gameController.MakeGameUnsavable();
-		ShowNPCDialogueCanvas();
-		DisplayNextDialogueLine();
-		_NPCstateMachineController.RotateTowardsPlayer();
-		_playerMovementController.RotatePlayerTowardsNPC(gameObject);
-		_playerCameraController.RotateCameraTowardsNPC(gameObject);
-		OnStartLookingAtObject?.Invoke(_playerEyesLookAt);
-	}
+
 
 	private void DisplayNextDialogueLine()
 	{

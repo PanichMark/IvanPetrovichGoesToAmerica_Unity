@@ -16,7 +16,7 @@ public class NPCNeutral : NPCAbstract
 		else
 		{
 			StopAllCoroutines();
-			StartCoroutine(_NPCphrasesController.TemporaryShowPhrases());
+			_NPCphrasesController.TemporaryShowPhrases();
 		}
 	}
 }

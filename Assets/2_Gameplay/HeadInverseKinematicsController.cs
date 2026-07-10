@@ -12,7 +12,9 @@ public class HeadInverseKinematicsController : MonoBehaviour
 	private WeightedTransform _weightedTransform;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private RigBuilder _rigBuilder;
-	
+
+	private Coroutine _currentHeadIKcourutine;
+
 
 	private void Start()
 	{
@@ -40,30 +42,50 @@ public class HeadInverseKinematicsController : MonoBehaviour
 		}
 	}
 
+	private void Update()
+	{
+		Debug.Log(_currentHeadIKcourutine);
+	}
+
 	private void StartLookingAtObject(GameObject objectToLookAt)
 	{
-		_weightedTransform.transform = objectToLookAt.transform;
+		Debug.Log("START LOOKING");
 
-		var headData = _headIK.data;
-		headData.sourceObjects = new WeightedTransformArray { _weightedTransform };
-		_headIK.data = headData;
+		if (_currentHeadIKcourutine != null)
+		{
+			StopAllCoroutines();
+			_currentHeadIKcourutine = null;
+		}
+		else
+		{
+			_weightedTransform.transform = objectToLookAt.transform;
 
-		var neckData = _neckIK.data;
-		neckData.sourceObjects = new WeightedTransformArray { _weightedTransform };
-		_neckIK.data = neckData;
+			var headData = _headIK.data;
+			headData.sourceObjects = new WeightedTransformArray { _weightedTransform };
+			_headIK.data = headData;
 
-		_weightedTransform.weight = 0f;
-		UpdateSources();
+			var neckData = _neckIK.data;
+			neckData.sourceObjects = new WeightedTransformArray { _weightedTransform };
+			_neckIK.data = neckData;
 
-		_rigBuilder.Build();
-		_animator.Rebind();
+			_weightedTransform.weight = 0f;
+			UpdateSources();
 
-		StartCoroutine(LerpWeight(1f));
+			_rigBuilder.Build();
+			_animator.Rebind();
+		}
+
+		_currentHeadIKcourutine = StartCoroutine(LerpWeight(1f));
 	}
 
 	private void StopLookingAtObject(GameObject objectToLookAt)
 	{
-		StartCoroutine(LerpWeight(0f));
+		Debug.Log("STOP LOOKING");
+
+		if (_currentHeadIKcourutine == null)
+		{
+			_currentHeadIKcourutine = StartCoroutine(LerpWeight(0f));
+		}
 	}
 
 	private IEnumerator LerpWeight(float targetWeight)
@@ -95,6 +117,8 @@ public class HeadInverseKinematicsController : MonoBehaviour
 			_headIK.data.sourceObjects = new WeightedTransformArray();
 			_neckIK.data.sourceObjects = new WeightedTransformArray();
 		}
+
+		_currentHeadIKcourutine = null;
 	}
 
 	private void UpdateSources()

@@ -2428,7 +2428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2163de355e8fd8e4b83b631e07455323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateMethod: 4
+  updateMethod: 3
   skinnedMeshRenderer: {fileID: 525242052}
   blendShapes:
   - phoneme: A
@@ -2722,6 +2722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _NPCweapon: {fileID: 2151144761444843108, guid: 6226550dd22049a4c99bce4bd2cf49ff, type: 3}
   _weaponHand: {fileID: 1917160935}
+  _weaponRestingSlot: {fileID: 0}
 --- !u!1 &61510741
 GameObject:
   m_ObjectHideFlags: 0
@@ -57953,7 +57954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2163de355e8fd8e4b83b631e07455323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateMethod: 4
+  updateMethod: 3
   skinnedMeshRenderer: {fileID: 1220205086}
   blendShapes:
   - phoneme: A
@@ -79672,7 +79673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2163de355e8fd8e4b83b631e07455323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateMethod: 4
+  updateMethod: 3
   skinnedMeshRenderer: {fileID: 1852754681}
   blendShapes:
   - phoneme: A
