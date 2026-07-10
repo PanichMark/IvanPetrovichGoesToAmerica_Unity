@@ -43,9 +43,12 @@ public class BlendShapesController : MonoBehaviour
 		_NPCStateMachineController.OnNPCstateDead += StopBlinking;
 		_NPCStateMachineController.OnNPCstateDead += ResetAllBlendShapesFacialExpressions;
 
-		_NPCDialogueController.OnChangeBlendShapeFacialExpression += ChangeBlendShapeFacialExpression;
-		_NPCDialogueController.OnResetAllBlendShapesFacialExpressions += ResetAllBlendShapesFacialExpressions;
-		_NPCDialogueController.OnResetAllBlendShapesPhonemes += ResetAllBlendShapesPhonemes;
+		if (_NPCDialogueController != null)
+		{
+			_NPCDialogueController.OnChangeBlendShapeFacialExpression += ChangeBlendShapeFacialExpression;
+			_NPCDialogueController.OnResetAllBlendShapesFacialExpressions += ResetAllBlendShapesFacialExpressions;
+			_NPCDialogueController.OnResetAllBlendShapesPhonemes += ResetAllBlendShapesPhonemes;
+		}
 	}
 
 	private void OnDestroy()
@@ -54,9 +57,12 @@ public class BlendShapesController : MonoBehaviour
 		_NPCStateMachineController.OnNPCstateDead -= StopBlinking;
 		_NPCStateMachineController.OnNPCstateDead -= ResetAllBlendShapesFacialExpressions;
 
-		_NPCDialogueController.OnChangeBlendShapeFacialExpression -= ChangeBlendShapeFacialExpression;
-		_NPCDialogueController.OnResetAllBlendShapesFacialExpressions -= ResetAllBlendShapesFacialExpressions;
-		_NPCDialogueController.OnResetAllBlendShapesPhonemes -= ResetAllBlendShapesPhonemes;
+		if (_NPCDialogueController != null)
+		{
+			_NPCDialogueController.OnChangeBlendShapeFacialExpression -= ChangeBlendShapeFacialExpression;
+			_NPCDialogueController.OnResetAllBlendShapesFacialExpressions -= ResetAllBlendShapesFacialExpressions;
+			_NPCDialogueController.OnResetAllBlendShapesPhonemes -= ResetAllBlendShapesPhonemes;
+		}
 	}
 
 	private void Blink()

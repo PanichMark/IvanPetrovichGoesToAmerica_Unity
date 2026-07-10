@@ -122,6 +122,7 @@ public class BootstrapSubProcessPlayerSystems
 		ServiceLocator.Register("PlayerCameraBlurFilter", _playerCameraBlurFilter);
 
 		ServiceLocator.Register("GameObjectPlayer", _gameObjectPlayer);
+		ServiceLocator.Register("GameObjectPlayerHead", _gameObjectPlayerHead);
 		ServiceLocator.Register("GameObjectPlayerCollider", _gameObjectPlayerCollider);
 		ServiceLocator.Register("GameObjectPlayerCamera", _gameObjectPlayerCamera);
 

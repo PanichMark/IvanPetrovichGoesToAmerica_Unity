@@ -24,6 +24,9 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private Coroutine _activeRecoilCoroutineSingle;
 	private Vector2 _recoilStartRotationSingle;
 	private Coroutine _activeAutoRecoilCoroutine;
+	private Vector3 _postDialogueCameraPosition;
+	private Quaternion _postDialogueCameraRotation;
+
 	public bool IsAbleToZoomCameraOut { get; private set; } = true;
 
 	public float PlayerCameraDistanceX { get; private set; }
@@ -92,6 +95,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			return;
 		}
 
+	
 		//Debug.Log(_mouseSensitivityMultiplierX);
 		//Debug.Log(_mouseSensitivityMultiplierY);
 
@@ -163,14 +167,18 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 				_canReturn = false; 
 			}
 		}
+
+		//Debug.Log(PlayerCameraDistanceY);
+		//Debug.Log(transform.position.y);
+		//Debug.Log(_isCameraFirstPerson);
 	}
 
-	public void SetToFirstPerson()
+	public void SetCameraToFirstPerson()
 	{
 		_isCameraFirstPerson = true;
 	}
 
-	public void SetToThirdPerson()
+	public void SetCameraToThirdPerson()
 	{
 		_isCameraFirstPerson = false;
 	}
@@ -365,6 +373,21 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		}
 	}
 
+	public void SetPostDialogueCameraTransform()
+	{
+		transform.position = new Vector3(_postDialogueCameraPosition.x, _postDialogueCameraPosition.y, _postDialogueCameraPosition.z);
+    
+		transform.rotation = _postDialogueCameraRotation;
+
+		Vector3 euler = transform.rotation.eulerAngles;
+    
+		float pitch = euler.x > 180f ? euler.x - 360f : euler.x;
+		float yaw = euler.y > 180f ? euler.y - 360f : euler.y;
+
+		_mouseRotation.x = yaw;
+		_mouseRotation.y = -pitch; 
+	}
+
 	public void RotateCameraTowardsNPC(GameObject NPC)
 	{
 		StartCoroutine(RotateCameraTowardsPlayerCoroutine(NPC));
@@ -373,10 +396,10 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private IEnumerator RotateCameraTowardsPlayerCoroutine(GameObject NPC)
 	{
 		float rotationSpeed = 160f;
-		Vector3 direction = NPC.transform.position - transform.position;
-		float desiredYAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-		Quaternion startRotation = transform.rotation;
-		Quaternion endRotation = Quaternion.Euler(0, desiredYAngle, 0);
+
+		Vector3 direction = NPC.transform.position - transform.position + new Vector3(0, 1.65f, 0);
+
+		Quaternion endRotation = Quaternion.LookRotation(direction);
 
 		while (true)
 		{
@@ -391,6 +414,9 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		}
 
 		transform.rotation = endRotation;
+
+		_postDialogueCameraPosition = transform.position;
+		_postDialogueCameraRotation = endRotation;
 	}
 
 	private void SetCameraFOV(float newFov, float MIN_FOV_VALUE, float MAX_FOV_VALUE)

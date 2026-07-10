@@ -62,6 +62,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 			_movementController.GiveCurrentPlayerCameraType("FirstPerson");
 			newState = new PlayerCameraStateFirstPerson(_cameraController, this, _movementController, _playerMovementStateMachineController, _inputDevice);
 			OnFirstPersonCameraState?.Invoke();
+			_cameraController.SetCameraToFirstPerson();
 		}
 		else if (playerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 		{
@@ -69,6 +70,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 			_movementController.GiveCurrentPlayerCameraType("ThirdPerson");
 			newState = new PlayerCameraStateThirdPerson(_cameraController, this, _inputDevice);
 			OnThirdPersonCameraState?.Invoke();
+			_cameraController.SetCameraToThirdPerson();
 		}
 		else if (playerCameraStateType == PlayerCameraStateTypes.Cutscene)
 		{
