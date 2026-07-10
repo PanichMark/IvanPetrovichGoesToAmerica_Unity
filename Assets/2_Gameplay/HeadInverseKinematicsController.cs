@@ -42,14 +42,9 @@ public class HeadInverseKinematicsController : MonoBehaviour
 		}
 	}
 
-	private void Update()
-	{
-		Debug.Log(_currentHeadIKcourutine);
-	}
-
 	private void StartLookingAtObject(GameObject objectToLookAt)
 	{
-		Debug.Log("START LOOKING");
+		//Debug.Log("START LOOKING");
 
 		if (_currentHeadIKcourutine != null)
 		{
@@ -80,7 +75,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 	private void StopLookingAtObject(GameObject objectToLookAt)
 	{
-		Debug.Log("STOP LOOKING");
+		//Debug.Log("STOP LOOKING");
 
 		if (_currentHeadIKcourutine == null)
 		{
@@ -90,6 +85,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 	private IEnumerator LerpWeight(float targetWeight)
 	{
+		//Debug.Log(targetWeight);
 		float duration = 1f;
 		float timeElapsed = 0f;
 

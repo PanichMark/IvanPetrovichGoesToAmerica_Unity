@@ -97,7 +97,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		gameObject.tag = "Interactable";
 		enabled = false;
 		gameObject.AddComponent<Rigidbody>();
-		InteractionObjectPickable.CreateWithName(gameObject, _NPCname);
+		InteractionObjectPickableNonThrowable.CreateWithName(gameObject, _NPCname);
 		Destroy(this);
 	}
 

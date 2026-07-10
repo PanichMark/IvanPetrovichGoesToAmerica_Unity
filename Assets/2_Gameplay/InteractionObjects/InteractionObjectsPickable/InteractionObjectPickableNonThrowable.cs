@@ -2,11 +2,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class InteractionObjectPickable : InteractionObjectPickableAbstract
+public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAbstract
 {
-	public static InteractionObjectPickable CreateWithName(GameObject obj, string interactionItemNameSystem)
+	public static InteractionObjectPickableNonThrowable CreateWithName(GameObject obj, string interactionItemNameSystem)
 	{
-		var component = obj.AddComponent<InteractionObjectPickable>();
+		var component = obj.AddComponent<InteractionObjectPickableNonThrowable>();
 		component._interactionObjectNameSystem = interactionItemNameSystem;
 		return component;
 	}

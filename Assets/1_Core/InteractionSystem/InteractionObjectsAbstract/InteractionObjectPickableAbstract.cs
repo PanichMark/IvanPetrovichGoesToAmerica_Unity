@@ -126,7 +126,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		IsObjectPickedUp = false;
 
 		transform.parent = null;
-
+		transform.localPosition += transform.forward * 0.2f;
 		Physics.IgnoreCollision(Collider, _playerCollider, true);
 		_isCollisionIgnored = true;
 
