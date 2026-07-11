@@ -73,8 +73,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private GameObject _textButtonGameDifficulty;
 	private TextMeshProUGUI _textComponentButtonGameDifficulty;
 	public delegate void SubMenuChooseGameDifficultyHandler();
-	public event SubMenuChooseGameDifficultyHandler OnOpenSubMenuChooseGameDifficulty;
-	public event SubMenuChooseGameDifficultyHandler OnCloseSubMenuChooseGameDifficulty;
+	public event SubMenuChooseGameDifficultyHandler OnOpenSubMenuGameDifficulty;
+	public event SubMenuChooseGameDifficultyHandler OnCloseSubMenuGameDifficulty;
 
 	private GameObject _toggleShowIngameHints;
 	private Toggle _toggleComponentShowIngameHints;
@@ -411,7 +411,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		Debug.Log("OPEN DIFFICULTY");
 		_menuManager.PushPauseMenuLevel();
 		_pauseSubMenuSettingsController.HideSettingsSubMenuCanvas();
-		OnOpenSubMenuChooseGameDifficulty?.Invoke();
+		OnOpenSubMenuGameDifficulty?.Invoke();
 	}
 
 	private void CloseSubMenuChooseGameDifficulty()
@@ -419,7 +419,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		Debug.Log("CLOSE DIFFICULTY");
 		_menuManager.PopPauseMenuLevel();
 		_pauseSubMenuSettingsController.ShowSettingsSubMenuCanvas();
-		OnCloseSubMenuChooseGameDifficulty?.Invoke();
+		OnCloseSubMenuGameDifficulty?.Invoke();
 	}
 
 	public void SetShowIngameHints(bool isOn)

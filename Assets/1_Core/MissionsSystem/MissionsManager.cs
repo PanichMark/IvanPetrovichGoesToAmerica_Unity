@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MissionsManager : MonoBehaviour
 {
-	private GameMissions _allMissions;
+	private GameMissionsList _gameMissions;
 	public MissionAbstract ActiveMission { get; private set; }
 	public int CurrentStepIndex { get; private set; } = 0;
 
@@ -22,16 +22,21 @@ public class MissionsManager : MonoBehaviour
 	private GameObject _textCurrentMissionGoal;
 	private TextMeshProUGUI _textComponentCurrentMissionGoal;
 
-	public void Initialize(LocalizationManager localizationManager, GameSceneManager gameSceneManager, PauseMenuController pauseMenuController, GameMissions gameMissions, ViewModelPauseMenu viewModelPauseMenu)
+	public void Initialize(
+		LocalizationManager localizationManager,
+		GameSceneManager gameSceneManager,
+		PauseMenuController pauseMenuController,
+		ViewModelPauseMenu viewModelPauseMenu)
 	{
 		_localizationManager = localizationManager;
 		_pauseMenuController = pauseMenuController;
-		_allMissions = gameMissions;
 		_gameSceneManager = gameSceneManager;
 		_textCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoalDisplay;
 		_textComponentCurrentMissionGoal = _textCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
 
-		ActiveMission = _allMissions.MissionsInOrder[0];
+		_gameMissions = (GameMissionsList)Resources.Load("GameMissionsList");
+
+		ActiveMission = _gameMissions.MissionsInOrder[0];
 		CurrentStepIndex = 0;
 
 		//Debug.Log("Система миссий инициализирована.");
@@ -89,11 +94,11 @@ public class MissionsManager : MonoBehaviour
 
 	private void StartNextMission()
 	{
-		int currentMissionIndex = System.Array.IndexOf(_allMissions.MissionsInOrder, ActiveMission);
+		int currentMissionIndex = System.Array.IndexOf(_gameMissions.MissionsInOrder, ActiveMission);
 
-		if (currentMissionIndex + 1 < _allMissions.MissionsInOrder.Length)
+		if (currentMissionIndex + 1 < _gameMissions.MissionsInOrder.Length)
 		{
-			ActiveMission = _allMissions.MissionsInOrder[currentMissionIndex + 1];
+			ActiveMission = _gameMissions.MissionsInOrder[currentMissionIndex + 1];
 			CurrentStepIndex = 0;
 		}
 	}

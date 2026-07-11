@@ -40,6 +40,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasPauseSubMenuAppearance;
 	[SerializeField] private GameObject _canvasPauseSubMenuTutorial;
 	[SerializeField] private GameObject _canvasPauseSubMenuSettings;
+	[SerializeField] private GameObject _canvasPauseSubMenuSettingsGameDifficultyController;
 	[SerializeField] private GameObject _canvasPauseMenuConfirmAction;
 
 	[Header("Main Menu")]
@@ -236,6 +237,7 @@ public class Bootstrap : MonoBehaviour
 		_canvasPauseSubMenuAppearance = Instantiate(_canvasPauseSubMenuAppearance);
 		_canvasPauseSubMenuTutorial = Instantiate(_canvasPauseSubMenuTutorial);
 		_canvasPauseSubMenuSettings = Instantiate(_canvasPauseSubMenuSettings);
+		_canvasPauseSubMenuSettingsGameDifficultyController = Instantiate(_canvasPauseSubMenuSettingsGameDifficultyController);
 		_canvasPauseMenuConfirmAction = Instantiate(_canvasPauseMenuConfirmAction);
 
 		_canvasMainMenuReadNews = Instantiate(_canvasMainMenuReadNews);
@@ -299,6 +301,7 @@ public class Bootstrap : MonoBehaviour
 			_canvasPauseSubMenuAppearance,
 			_canvasPauseSubMenuTutorial,
 			_canvasPauseSubMenuSettings,
+			_canvasPauseSubMenuSettingsGameDifficultyController,
 			_canvasPauseMenuConfirmAction,
 			_canvasMainMenuReadNews,
 			_canvasMenuWeaponWheel,

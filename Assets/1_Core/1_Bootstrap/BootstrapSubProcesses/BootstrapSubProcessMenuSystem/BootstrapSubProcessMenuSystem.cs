@@ -23,7 +23,6 @@ public class BootstrapSubProcessMenuSystem
 	public ViewModelMenuWeaponWheel ViewModelWeaponWheel { get; private set; }
 	public ViewModelHUDHealthAndMana ViewModelHUDhealthAndMana {  get; private set; }
 	public ViewModelHUDAmmo ViewModelHUDAmmo {  get; private set; }
-	private TutorialNotesList _tutorialNotesList;
 	public ViewModelHUDInteraction ViewModelHUDInteraction { get; private set; }
 	public ViewModelMenuNote ViewModelMenuNote { get; private set; }
 	public ViewModelMenuLockpickMechanical ViewModelMenuLockpickMechanical { get; private set; }
@@ -34,6 +33,7 @@ public class BootstrapSubProcessMenuSystem
 	public ViewModelMenuChooseFirstLanguage ViewModelMenuChooseFirstLanguage { get; private set; }
 
 	private ViewModelPauseSubMenuSettingsSectionGeneral _viewModelPauseSubMenuSettingsSectionGeneral;
+	private ViewModelPauseSubMenuSettingsGameDifficultyController _viewModelPauseSubMenuSettingsGameDifficultyController;
 	private ViewModelPauseSubMenuSettingsSectionControls _viewModelPauseSubMenuSettingsSectionControls;
 	private ViewModelPauseSubMenuSettingsSectionGraphics _viewModelPauseSubMenuSettingsSectionGraphics;
 	public ViewModelPauseSubMenuSettingsSectionAudio ViewModelPauseSubMenuSettingsSectionAudio { get; private set; }
@@ -83,6 +83,9 @@ public class BootstrapSubProcessMenuSystem
 
 	public PauseSubMenuSettingsSectionControlsController PauseSubMenuSettingsSectionControlsController {  get; private set; }
 
+	private PauseSubMenuSettingsGameDifficultyController __pauseSubMenuSettingsGameDifficultyController;
+	private GameObject _canvasPauseSubMenuSettingsGameDifficultyController;
+
 
 	public PauseSubMenuSettingsSectionGraphicsController PauseSubMenuSettingsSectionGraphicsController { get; private set; }
 
@@ -128,6 +131,7 @@ public class BootstrapSubProcessMenuSystem
 		GameObject canvasPauseSubMenuAppearance,
 		GameObject canvasPauseSubMenuTutorial,
 		GameObject canvasPauseSubMenuSettings,
+		GameObject canvasPauseSubMenuSettingsGameDifficultyController,
 		GameObject canvasMenuConfirmAction,
 		GameObject canvasMainMenuReadNews,
 		GameObject canvasMenuWeaponWheel,
@@ -156,6 +160,7 @@ public class BootstrapSubProcessMenuSystem
 		_canvasPauseSubMenuAppearance = canvasPauseSubMenuAppearance;
 		_canvasPauseSubMenuTutorial = canvasPauseSubMenuTutorial;
 		_canvasPauseSubMenuSettings = canvasPauseSubMenuSettings;
+		_canvasPauseSubMenuSettingsGameDifficultyController = canvasPauseSubMenuSettingsGameDifficultyController;
 		_canvasMenuConfirmAction = canvasMenuConfirmAction;
 		_canvasMainMenuReadNews = canvasMainMenuReadNews;
 		_canvasMenuCutscene = canvasMenuCutscene;
@@ -173,7 +178,6 @@ public class BootstrapSubProcessMenuSystem
 	public IEnumerator InitializeMenuSystem()
 	{
 		_gameObjectBootstrapMenuSystem = new GameObject("Bootstrap_MenuSystem");
-		_tutorialNotesList = (TutorialNotesList)Resources.Load("TutorialNotesList");
 
 		MenuManager = _gameObjectBootstrapMenuSystem.AddComponent<MenuManager>();
 		_menuBackgroundController = _gameObjectBootstrapMenuSystem.AddComponent<MenuBackgroundController>();
@@ -185,6 +189,7 @@ public class BootstrapSubProcessMenuSystem
 		_pauseSubMenuSettingsPlayerPrefs = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsPlayerPrefs>();
 		PauseSubMenuSettingsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsController>();
 		PauseSubMenuSettingsSectionGeneralController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionGeneralController>();
+		__pauseSubMenuSettingsGameDifficultyController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsGameDifficultyController>();
 		PauseSubMenuSettingsSectionControlsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionControlsController>();
 		PauseSubMenuSettingsSectionGraphicsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionGraphicsController>();
 		PauseSubMenuSettingsSectionAudioController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionAudioController>();
@@ -203,6 +208,7 @@ public class BootstrapSubProcessMenuSystem
 		//_viewModelPauseSubMenuAppearance = new ViewModelPauseSubMenuAppearance(_bootstrap, _canvasPauseSubMenuAppearance);
 		_viewModelPauseSubMenuTutorial = new ViewModelPauseSubMenuTutorial(_bootstrap, _canvasPauseSubMenuTutorial);
 		_viewModelPauseSubMenuSettings = new ViewModelPauseSubMenuSettings(_bootstrap, _canvasPauseSubMenuSettings);
+		_viewModelPauseSubMenuSettingsGameDifficultyController = new ViewModelPauseSubMenuSettingsGameDifficultyController(_bootstrap, _canvasPauseSubMenuSettingsGameDifficultyController);
 		_viewModelPauseMenuConfirmAction = new ViewModelPauseMenuConfirmAction(_bootstrap, _canvasMenuConfirmAction);
 		_viewModelMainMenuReadNews = new ViewModelMainMenuReadNews(_bootstrap, _canvasMainMenuReadNews);
 		ViewModelHUDhealthAndMana = new ViewModelHUDHealthAndMana(_bootstrap, _canvasHUDhealthAndMana);
@@ -268,8 +274,7 @@ public class BootstrapSubProcessMenuSystem
 			_localizationManager,
 			PauseMenuController,
 			_canvasPauseSubMenuTutorial,
-			_viewModelPauseSubMenuTutorial,
-			_tutorialNotesList.Notes);
+			_viewModelPauseSubMenuTutorial);
 
 		PauseSubMenuSettingsController.Initialize(
 			_localizationManager,
@@ -286,6 +291,12 @@ public class BootstrapSubProcessMenuSystem
 			PauseMenuController,
 			PauseSubMenuSettingsController,
 			_viewModelPauseSubMenuSettingsSectionGeneral);
+
+		__pauseSubMenuSettingsGameDifficultyController.Initialize(
+			PauseSubMenuSettingsSectionGeneralController,
+			_canvasPauseSubMenuSettingsGameDifficultyController,
+			_viewModelPauseSubMenuSettingsGameDifficultyController
+			);
 
 		PauseSubMenuSettingsSectionControlsController.Initialize(
 			_inputDevice,

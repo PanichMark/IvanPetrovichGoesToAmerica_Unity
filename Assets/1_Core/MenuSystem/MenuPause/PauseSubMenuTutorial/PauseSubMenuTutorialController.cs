@@ -35,14 +35,14 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		LocalizationManager localizationManager,
 		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuTutorial,
-		ViewModelPauseSubMenuTutorial viewModelPauseSubMenuTutorial,
-		List<InteractionObjectNoteData> tutorialList)
+		ViewModelPauseSubMenuTutorial viewModelPauseSubMenuTutorial)
 	{
 		_localizationManager = localizationManager;
 		_pauseMenuController = pauseMenuController;
 		_canvasPauseSubMenuTutorial = canvasPauseSubMenuTutorial;
 		_viewModelPauseSubMenuTutorial = viewModelPauseSubMenuTutorial;
-		_tutorialsList = tutorialList;
+
+		_tutorialsList = ((TutorialNotesList)Resources.Load("TutorialNotesList")).Notes;
 
 		_textTutorial = _viewModelPauseSubMenuTutorial.TextTutorial;
 		_textComponentTutorial = _textTutorial.GetComponent<TextMeshProUGUI>();

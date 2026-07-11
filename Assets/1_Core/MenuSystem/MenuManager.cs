@@ -142,7 +142,7 @@ public class MenuManager : MonoBehaviour
 			}
 		}
 
-		Debug.Log(_pauseMenuLevel.Count);
+		//Debug.Log(_pauseMenuLevel.Count);
 	}
 
 	public void OpenConfirmationOnExitToMainMenu()
