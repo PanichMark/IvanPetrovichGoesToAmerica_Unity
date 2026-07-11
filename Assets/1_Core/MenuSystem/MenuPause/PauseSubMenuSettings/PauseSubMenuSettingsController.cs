@@ -189,6 +189,12 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		}
 	}
 
+	public void OpenSubMenuChooseGameDifficulty()
+	{
+		HideSettingsSubMenuCanvas();
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
+
 	private void OpenSubSettingsSection(GameObject subSettingsSection)
 	{
 		subSettingsSection.SetActive(true);

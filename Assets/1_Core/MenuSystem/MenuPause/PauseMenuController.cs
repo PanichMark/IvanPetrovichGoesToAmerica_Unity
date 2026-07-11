@@ -123,7 +123,7 @@ public class PauseMenuController : MonoBehaviour
 	public void OpenPauseConfirmMenu()
 	{
 		IsPauseConfirmMenuOpened = true;
-		_menuManager.PauseMenuLevel.Push(3);
+		_menuManager.PushPauseMenuLevel();
 		OnOpenConfirmMenu?.Invoke();
 
 		Debug.Log("ConfirmMenu opened");
@@ -134,8 +134,8 @@ public class PauseMenuController : MonoBehaviour
 		IsPauseConfirmMenuOpened = false;
 		OnCloseConfirmMenu?.Invoke();
 		if (_menuManager.PauseMenuLevel.Count > 0)
-		{ 
-			_menuManager.PauseMenuLevel?.Pop();
+		{
+			_menuManager.PopPauseMenuLevel();
 		}
 
 		Debug.Log("ConfirmMenu closed");
@@ -160,7 +160,7 @@ public class PauseMenuController : MonoBehaviour
 		OnCloseAnyPauseSubMenu?.Invoke();
 		if (_menuManager.PauseMenuLevel.Count > 0)
 		{
-			_menuManager.PauseMenuLevel.Pop();
+			_menuManager.PopPauseMenuLevel();
 		}
 
 		if (_gameController.IsMainMenuOpen)
@@ -190,7 +190,7 @@ public class PauseMenuController : MonoBehaviour
 	public void OpenSaveSubMenu()
 	{
 		OnOpenSaveSubMenu?.Invoke();
-		_menuManager.PauseMenuLevel.Push(2);
+		_menuManager.PushPauseMenuLevel();
 		Debug.Log("SaveSubMenu opened");
 		HidePauseMenu();
 	}
@@ -198,7 +198,7 @@ public class PauseMenuController : MonoBehaviour
 	public void OpenLoadSubMenu()
 	{
 		OnOpenLoadSubMenu?.Invoke();
-		_menuManager.PauseMenuLevel.Push(2);
+		_menuManager.PushPauseMenuLevel();
 		Debug.Log("LoadSubMenu opened");
 		HidePauseMenu();
 	}
@@ -206,7 +206,7 @@ public class PauseMenuController : MonoBehaviour
 	public void OpenAppearanceSubMenu()
 	{
 		OnOpenAppearanceSubMenu?.Invoke();
-		_menuManager.PauseMenuLevel.Push(2);
+		_menuManager.PushPauseMenuLevel();
 		Debug.Log("AppearanceSubMenu opened");
 		HidePauseMenu();
 	}
@@ -214,7 +214,7 @@ public class PauseMenuController : MonoBehaviour
 	public void OpenTutorialSubMenu()
 	{
 		OnOpenTutorialSubMenu?.Invoke();
-		_menuManager.PauseMenuLevel.Push(2);
+		_menuManager.PushPauseMenuLevel();
 		Debug.Log("TutorialSubMenu opened");
 		HidePauseMenu();
 	}
@@ -222,7 +222,7 @@ public class PauseMenuController : MonoBehaviour
 	public void OpenSettingsSubMenu()
 	{
 		OnOpenSettingsSubMenu?.Invoke();
-		_menuManager.PauseMenuLevel.Push(2);
+		_menuManager.PushPauseMenuLevel();
 		Debug.Log("SettingsSubMenu opened");
 		HidePauseMenu();
 	}

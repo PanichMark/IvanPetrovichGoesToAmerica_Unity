@@ -45,7 +45,8 @@ public class MenuManager : MonoBehaviour
 	private GameController _gameController;
 	private GameSceneManager _gameSceneManager;
 
-	public Stack<int> PauseMenuLevel = new Stack<int>();
+	private Stack<int> _pauseMenuLevel = new Stack<int>();
+	public Stack<int> PauseMenuLevel => _pauseMenuLevel;
 
 	public void Initialize(
 		Bootstrap bootstrap,
@@ -85,6 +86,18 @@ public class MenuManager : MonoBehaviour
 		Debug.Log("MenuManager Initialized");
 	}
 
+	public void PushPauseMenuLevel()
+	{
+		_pauseMenuLevel.Push(1);
+		Debug.Log($"PauseStack is: {_pauseMenuLevel.Count}");
+	}
+
+	public void PopPauseMenuLevel()
+	{
+		_pauseMenuLevel.Pop();
+		Debug.Log($"PauseStack is: {_pauseMenuLevel.Count}");
+	}
+
 	void Update()
 	{
 		if (!_bootstrap.IsBootstrapInitialized)
@@ -97,11 +110,11 @@ public class MenuManager : MonoBehaviour
 
 		if (_inputDevice.GetKeyPauseMenu() && !_gameController.IsMainMenuOpen)
 		{
-			if (PauseMenuLevel.Count == 0)
+			if (_pauseMenuLevel.Count == 0)
 			{
 				OpenPauseMenu();
 			}
-			else if (PauseMenuLevel.Count == 1)
+			else if (_pauseMenuLevel.Count == 1)
 			{
 				if (_gameController.IsPlayerDead || _gameController.IsMainMenuOpen)
 				{
@@ -123,11 +136,13 @@ public class MenuManager : MonoBehaviour
 					OnClosePauseMenuDuringOpenedCutsceneMenu?.Invoke();
 				}
 			}
-			else if (PauseMenuLevel.Count == 2 && IsConfirmationOnExitToMainMenuOpened == true)
+			else if (_pauseMenuLevel.Count == 2 && IsConfirmationOnExitToMainMenuOpened == true)
 			{
 				CloseConfirmationOnExitToMainMenu();
 			}
 		}
+
+		Debug.Log(_pauseMenuLevel.Count);
 	}
 
 	public void OpenConfirmationOnExitToMainMenu()
@@ -149,7 +164,7 @@ public class MenuManager : MonoBehaviour
 			CloseWeaponWheelMenu();
 		}
 		OnOpenMenuBackground?.Invoke();
-		PauseMenuLevel.Push(1);
+		PushPauseMenuLevel();
 		OnOpenPauseMenu?.Invoke();
 		IsPauseMenuOpened = true;
 		OpenAnyMenu();
@@ -165,8 +180,8 @@ public class MenuManager : MonoBehaviour
 		OnClosePauseMenu?.Invoke();
 		
 		IsPauseMenuOpened = false;
-		if (PauseMenuLevel.Count > 0)
-			PauseMenuLevel.Pop();
+		if (_pauseMenuLevel.Count > 0)
+			PopPauseMenuLevel();
 
 		if (IsInteractionMenuOpened || IsDialogueMenuOpened || IsCutsceneMenuOpened)
 		{

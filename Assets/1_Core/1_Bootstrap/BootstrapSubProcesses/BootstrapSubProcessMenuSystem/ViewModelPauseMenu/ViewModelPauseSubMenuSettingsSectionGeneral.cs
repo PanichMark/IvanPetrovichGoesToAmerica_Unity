@@ -14,8 +14,8 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 	public GameObject DropdownHUDType;
 	public GameObject TextDropdownHUDType;
 
-	public GameObject ButtonGameDifficulty;
-	public GameObject TextButtonGameDifficulty;
+	public GameObject DropdownWeaponWheelType;
+	public GameObject TextDropdownWeaponWheelType;
 
 	public GameObject SliderCameraFOV;
 	public GameObject NumberSliderCameraFOV;
@@ -25,14 +25,14 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 	public GameObject NumberSliderScreenBrightness;
 	public GameObject TextSliderScreenBrightness;
 
-	public GameObject DropdownWeaponWheelType;
-	public GameObject TextDropdownWeaponWheelType;
+	public GameObject ButtonGameDifficulty;
+	public GameObject TextButtonGameDifficulty;
 
-	public GameObject DropdownShowBlood;
-	public GameObject TextDropdownShowBlood;
+	public GameObject ToggleShowIngameHints;
+	public GameObject TextToggleShowIngameHints;
 
-	public GameObject DropdownShowIngameHints;
-	public GameObject TextDropdownShowIngameHints;
+	public GameObject ToggleShowBlood;
+	public GameObject TextToggleShowBlood;
 
 	public ViewModelPauseSubMenuSettingsSectionGeneral(Bootstrap bootstrap, GameObject canvas)
 	{
@@ -48,8 +48,8 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 		DropdownHUDType = bootstrap.FindDeepGameObject(canvas, "DropdownHUDtype");
 		TextDropdownHUDType = bootstrap.FindDeepGameObject(canvas, "TextHUDtype");
 
-		ButtonGameDifficulty = bootstrap.FindDeepGameObject(canvas, "ButtonGameDifficulty");
-		TextButtonGameDifficulty = bootstrap.FindDeepGameObject(canvas, "TextGameDifficulty");
+		DropdownWeaponWheelType = bootstrap.FindDeepGameObject(canvas, "DropdownWeaponWheelType");
+		TextDropdownWeaponWheelType = bootstrap.FindDeepGameObject(canvas, "TextWeaponWheelType");
 
 		SliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "SliderCameraFOV");
 		NumberSliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "NumberCameraFOV");
@@ -59,13 +59,13 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 		NumberSliderScreenBrightness = bootstrap.FindDeepGameObject(canvas, "NumberScreenBrightness");
 		TextSliderScreenBrightness = bootstrap.FindDeepGameObject(canvas, "TextScreenBrightness");
 
-		DropdownWeaponWheelType = bootstrap.FindDeepGameObject(canvas, "DropdownWeaponWheelType");
-		TextDropdownWeaponWheelType = bootstrap.FindDeepGameObject(canvas, "TextWeaponWheelType");
+		ButtonGameDifficulty = bootstrap.FindDeepGameObject(canvas, "ButtonGameDifficulty");
+		TextButtonGameDifficulty = bootstrap.FindDeepGameObject(canvas, "TextGameDifficulty");
 
-		DropdownShowBlood = bootstrap.FindDeepGameObject(canvas, "DropdownShowBlood");
-		TextDropdownShowBlood = bootstrap.FindDeepGameObject(canvas, "TextShowBlood");
+		ToggleShowIngameHints = bootstrap.FindDeepGameObject(canvas, "ToggleShowIngameHints");
+		TextToggleShowIngameHints = bootstrap.FindDeepGameObject(canvas, "TextShowIngameHints");
 
-		DropdownShowIngameHints = bootstrap.FindDeepGameObject(canvas, "DropdownShowIngameHints");
-		TextDropdownShowIngameHints = bootstrap.FindDeepGameObject(canvas, "TextShowIngameHints");
+		ToggleShowBlood = bootstrap.FindDeepGameObject(canvas, "ToggleShowBlood");
+		TextToggleShowBlood = bootstrap.FindDeepGameObject(canvas, "TextShowBlood");
 	}
 }
