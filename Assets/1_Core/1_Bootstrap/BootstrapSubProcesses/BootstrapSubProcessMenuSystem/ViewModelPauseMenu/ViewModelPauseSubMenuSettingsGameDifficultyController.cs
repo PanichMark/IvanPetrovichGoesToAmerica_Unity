@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ViewModelPauseSubMenuSettingsGameDifficultyController : MonoBehaviour
+public class ViewModelPauseSubMenuSettingsGameDifficultyController
 {
 	public GameObject ImageGameDifficulty;
 	public GameObject TextGameDifficulty;

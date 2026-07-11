@@ -24,7 +24,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 		_vfxInstance = Instantiate(
 			_VFXshottEffect,
 			_VFXspawnPoint.position,
-			_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
+			_VFXspawnPoint.rotation,
 			_VFXspawnPoint.transform);
 		_vfxInstance.transform.localScale = Vector3.one * 2.5f;
 

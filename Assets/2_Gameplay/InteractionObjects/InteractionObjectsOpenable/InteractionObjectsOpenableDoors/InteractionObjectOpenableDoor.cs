@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class InteractionObjectOpenableDoorUnbreakable : InteractionObjectOpenableAbstract
+public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, IBreakable
 {
 	protected bool _isAdditionalInteractionHintActive;
 	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
@@ -13,7 +13,10 @@ public class InteractionObjectOpenableDoorUnbreakable : InteractionObjectOpenabl
 	[SerializeField] protected InteractionObjectLockMechanical _mechanicalLockController;
 	[SerializeField] protected InteractionObjectLockElectronic _electronicLockController;
 	[SerializeField] protected InteractionObjectElectricalPanel _electronicElectricalPanel;
-	[SerializeField] protected bool _IsLockedForever;
+	[SerializeField] private float _maxDurability = 100f;
+	[SerializeField] private float _damageThreshold = 50f;
+	[SerializeField] private bool _isDestructable = true;
+	[SerializeField] protected bool _isLockedForever;
 
 	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
@@ -26,10 +29,18 @@ public class InteractionObjectOpenableDoorUnbreakable : InteractionObjectOpenabl
 	private string _interactionHintMessageFail;
 	public override string InteractionHintMessageFail => _interactionHintMessageFail;
 
+	public bool IsObjectBroken => CurrentDurability <= 0f;
+
+	public float CurrentDurability { get; private set; }
+
+	public float DamageThreshold => _damageThreshold;
+
 	void Start()
 	{
 		_keysManager = ServiceLocator.Resolve<KeysManager>("KeysManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+
+		CurrentDurability = _maxDurability;
 
 		Vector3 openedEulerAngles = new Vector3(0, _doorOpenAngle, 0);
 		_openedRotation = Quaternion.Euler(openedEulerAngles);
@@ -39,7 +50,7 @@ public class InteractionObjectOpenableDoorUnbreakable : InteractionObjectOpenabl
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
-		if (!_IsLockedForever)
+		if (!_isLockedForever)
 		{
 			if (_interactionObjectKeyData != null)
 			{
@@ -81,7 +92,7 @@ public class InteractionObjectOpenableDoorUnbreakable : InteractionObjectOpenabl
 
 	public override void Interact()
 	{
-		if (!_IsLockedForever)
+		if (!_isLockedForever)
 		{
 			if (_interactionObjectKeyData != null)
 			{
@@ -126,7 +137,7 @@ public class InteractionObjectOpenableDoorUnbreakable : InteractionObjectOpenabl
 		_localizationManager = localizationManager;
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
 
-		if (!_IsLockedForever)
+		if (!_isLockedForever)
 		{
 			if (_interactionObjectKeyData != null)
 			{
@@ -226,5 +237,34 @@ public class InteractionObjectOpenableDoorUnbreakable : InteractionObjectOpenabl
 		}
 
 		_currentAnimation = null;
+	}
+
+	public void TakeDamage(float amount)
+	{
+		if (_isDestructable)
+		{
+			// Проверка на порог урона
+			if (amount < _damageThreshold)
+			{
+				Debug.Log($"Недостаточно урона для break. Требуется: {_damageThreshold}, получено: {amount}");
+				return;
+			}
+
+			// Нанесение урона
+			CurrentDurability -= amount;
+			Debug.Log($"Нанесено урона: {amount}. Осталось прочности: {CurrentDurability}");
+
+			// Проверка на разрушение
+			if (CurrentDurability <= 0f)
+			{
+				ObjectIsFullyBroken();
+			}
+		}
+	}
+
+	public void ObjectIsFullyBroken()
+	{
+		Debug.Log("Был broke!");
+		Destroy(gameObject);
 	}
 }

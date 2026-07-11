@@ -3483,6 +3483,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 930798155}
     m_Modifications:
     - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
+      propertyPath: _isDestructable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
       propertyPath: _interactionObjectKeyData
       value: 
       objectReference: {fileID: 0}
@@ -8757,6 +8761,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 930798155}
     m_Modifications:
+    - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
+      propertyPath: _isDestructable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5018545827671430844, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
       propertyPath: m_Name
       value: InteractionObject_Openable_Door_DoorWooden
@@ -31987,6 +31995,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 930798155}
     m_Modifications:
     - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
+      propertyPath: _isDestructable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
       propertyPath: _interactionObjectKeyData
       value: 
       objectReference: {fileID: 11400000, guid: 80dc3d61e4c2b5448999285b6cca6f22, type: 2}
@@ -34068,6 +34080,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 930798155}
     m_Modifications:
+    - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
+      propertyPath: _isDestructable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
       propertyPath: _electronicLockController
       value: 
@@ -38478,6 +38494,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 930798155}
     m_Modifications:
+    - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
+      propertyPath: _isDestructable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
       propertyPath: _interactionObjectKeyData
       value: 
@@ -44541,6 +44561,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 203673111384704457, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1290566492094162482, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}
+      propertyPath: _isDestructable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1677861204753882486, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}
+      propertyPath: _isDestructable
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2517146186763100655, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}
@@ -52672,6 +52700,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 930798155}
     m_Modifications:
+    - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
+      propertyPath: _isDestructable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
       propertyPath: _mechanicalLockController
       value: 
@@ -105763,7 +105795,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5447345391589079574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e4eacca33738e54292bfed1a7bc6356, type: 3}
+  m_Script: {fileID: 11500000, guid: 0da23f0dac497b84c84a3a23da8f4b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Openable_Door_DoorWooden
@@ -105773,9 +105805,10 @@ MonoBehaviour:
   _mechanicalLockController: {fileID: 0}
   _electronicLockController: {fileID: 0}
   _electronicElectricalPanel: {fileID: 0}
-  _IsLockedForever: 1
   _maxDurability: 100
   _damageThreshold: 0
+  _isDestructable: 1
+  _isLockedForever: 1
 --- !u!4 &8660860543593075348
 Transform:
   m_ObjectHideFlags: 0

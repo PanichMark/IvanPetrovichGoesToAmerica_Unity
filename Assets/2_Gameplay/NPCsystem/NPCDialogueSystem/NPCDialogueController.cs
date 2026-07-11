@@ -123,12 +123,16 @@ public class NPCDialogueController : MonoBehaviour
 		{
 			_animator.Update(Time.unscaledDeltaTime);
 		}
+
+		//Debug.Log(_currentDialogueStepIndex);
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
+		int temp = _currentDialogueStepIndex;
 		_localizationManager = localizationManager;
 		LoadDialogueFromFiles();
+		_currentDialogueStepIndex = temp;
 	}
 
 	public void Interact()
@@ -188,6 +192,11 @@ public class NPCDialogueController : MonoBehaviour
 
 	private void LoadDialogueFromFiles()
 	{
+		foreach (var list in _localizedDialogue.Values)
+		{
+			list.Clear();
+		}
+
 		if (_NPCdialogueData.DialogueTextfileRussian != null)
 		{
 			using (var reader = new StringReader(_NPCdialogueData.DialogueTextfileRussian.text))
@@ -242,8 +251,6 @@ public class NPCDialogueController : MonoBehaviour
 			_canvasDialogueMenu.SetActive(false);
 		}
 	}
-
-
 
 	private void DisplayNextDialogueLine()
 	{
@@ -415,7 +422,6 @@ public class NPCDialogueController : MonoBehaviour
 			//Debug.Log(newAnimation);
 		
 			_animator.CrossFade(newAnimation, crossfade);
-			
 		}
 	}
 }

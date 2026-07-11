@@ -134,7 +134,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_vfxInstance = Instantiate(
 			_VFXshottEffect,
 			_VFXspawnPoint.position,
-			_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
+			_VFXspawnPoint.rotation,
 			_VFXspawnPoint.transform);
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
@@ -203,7 +203,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
 
-		if (System.Enum.TryParse(this.WeaponName, out WeaponsRangedEnum parsedWeaponType))
+		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
 		{
 			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.TotalAmmoCurrent);
 
