@@ -6947,8 +6947,32 @@ PrefabInstance:
       value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 2155103699817690890, guid: b152f15490bda884db8b14eac371e0bf, type: 3}
+      propertyPath: _closedPositionOffset.y
+      value: 1.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155103699817690890, guid: b152f15490bda884db8b14eac371e0bf, type: 3}
+      propertyPath: _closedPositionOffset.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155103699817690890, guid: b152f15490bda884db8b14eac371e0bf, type: 3}
+      propertyPath: _openedPositionOffset.y
+      value: 1.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155103699817690890, guid: b152f15490bda884db8b14eac371e0bf, type: 3}
+      propertyPath: _electronicElectricalPanel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155103699817690890, guid: b152f15490bda884db8b14eac371e0bf, type: 3}
       propertyPath: _interactionObjectNameSystem
       value: InteractionObject_Openable_Sliding_Vent_VentCover
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155103699817690890, guid: b152f15490bda884db8b14eac371e0bf, type: 3}
+      propertyPath: _intermediatePositionOffset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2155103699817690890, guid: b152f15490bda884db8b14eac371e0bf, type: 3}
+      propertyPath: _intermediatePositionOffset.z
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -44517,6 +44541,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 203673111384704457, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2517146186763100655, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}
+      propertyPath: _intermediatePositionOffset.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3108104612298558377, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}

@@ -121,7 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19085dc4720bf1d4ca0542eb0d9a785e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: 
+  _interactionObjectNameSystem: InteractionObject_Openable_Sliding_VentCover
   _openingSpeed: 3
-  _openLengthForward: 0.2
-  _openLengthUp: 1.2
+  _intermediatePositionOffset: {x: 0, y: 0, z: 0}
+  _closedPositionOffset: {x: 0, y: 0, z: 0}
+  _electronicElectricalPanel: {fileID: 0}

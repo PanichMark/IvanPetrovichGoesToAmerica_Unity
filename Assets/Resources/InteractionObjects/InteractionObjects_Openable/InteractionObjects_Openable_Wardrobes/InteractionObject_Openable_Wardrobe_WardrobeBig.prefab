@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3480807155802362975}
   - component: {fileID: 2771380622345785391}
   - component: {fileID: 799086796196259647}
-  - component: {fileID: 5118270782136477144}
+  - component: {fileID: 2517146186763100655}
   m_Layer: 0
   m_Name: Interior_Furniture_Wardrobe_WardrobeBig_Drawer
   m_TagString: Interactable
@@ -197,7 +197,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1493603, y: 0.34943244, z: 0.049693763}
   m_Center: {x: 0, y: 0.1497453, z: 0.5247694}
---- !u!114 &5118270782136477144
+--- !u!114 &2517146186763100655
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -206,12 +206,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2297594062131201803}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87c688555cb5f2445a1cf75a53809cae, type: 3}
+  m_Script: {fileID: 11500000, guid: 19085dc4720bf1d4ca0542eb0d9a785e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: InteractionObject_Openable_Door_DrawerWardrobe
+  _interactionObjectNameSystem: InteractionObject_Openable_Sliding_Drawer
   _openingSpeed: 3
-  _openLengthForward: 0.5
+  _intermediatePositionOffset: {x: 0, y: 0, z: 0}
+  _openedPositionOffset: {x: 0, y: 0, z: 0.45}
+  _electronicElectricalPanel: {fileID: 0}
 --- !u!1 &2620969588084005013
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,6 +521,8 @@ MonoBehaviour:
   _interactionObjectKeyData: {fileID: 0}
   _mechanicalLockController: {fileID: 0}
   _electronicLockController: {fileID: 0}
+  _electronicElectricalPanel: {fileID: 0}
+  _IsLockedForever: 0
 --- !u!1 &3791344715742830502
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,3 +915,5 @@ MonoBehaviour:
   _interactionObjectKeyData: {fileID: 0}
   _mechanicalLockController: {fileID: 0}
   _electronicLockController: {fileID: 0}
+  _electronicElectricalPanel: {fileID: 0}
+  _IsLockedForever: 0

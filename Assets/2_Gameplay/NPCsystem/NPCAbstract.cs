@@ -26,6 +26,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	protected NPCPhrasesController _NPCphrasesController;
 
 	protected NPCDialogueController _NPCdialogueController;
+	protected NPCWeaponController _NPCweaponController;
 
 
 	private LocalizationManager _localizationManager;
@@ -64,11 +65,15 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		_NPCstateMachineController = GetComponent<NPCStateMachineController>();
 		_NPCdialogueController = GetComponent<NPCDialogueController>();
 
-		_NPCphrasesController.Initialize();
 		_NPCstateMachineController.Initialize();
+		_NPCphrasesController.Initialize();
 		if (_NPCdialogueController != null)
 		{
 			_NPCdialogueController.Initialize();
+		}
+		if (_NPCweaponController != null)
+		{
+			_NPCweaponController.Initialize();
 		}
 
 		_localizationManager.OnLanguageChanged += ChangeLangauge;

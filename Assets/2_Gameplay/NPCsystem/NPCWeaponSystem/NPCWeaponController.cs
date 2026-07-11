@@ -7,7 +7,7 @@ public class NPCWeaponController : MonoBehaviour
 	[SerializeField] private Transform _weaponHand;
 	[SerializeField] private Transform _weaponRestingSlot;
 
-	private void Start()
+	public void Initialize()
 	{
 		GameObject weaponInstance = Instantiate(_NPCweapon);
 		WeaponAbstract weaponComponent = weaponInstance.GetComponent<WeaponAbstract>();
