@@ -280,7 +280,9 @@ public class BootstrapSubProcessMenuSystem
 		PauseSubMenuSettingsSectionGeneralController.Initialize(
 			_bootstrap,
 			_gameController,
+			_inputDevice,	
 			_localizationManager,
+			MenuManager,
 			PauseMenuController,
 			PauseSubMenuSettingsController,
 			_viewModelPauseSubMenuSettingsSectionGeneral);
@@ -352,6 +354,7 @@ public class BootstrapSubProcessMenuSystem
 
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", PauseMenuController);
+		ServiceLocator.Register("PauseSubMenuSettingsController", PauseSubMenuSettingsController);
 		ServiceLocator.Register("MainMenuReadNews", _mainMenuReadNewsController);
 		ServiceLocator.Register("TextChokeNPC", ViewModelHUDAmmo.TextChokeNPC);
 

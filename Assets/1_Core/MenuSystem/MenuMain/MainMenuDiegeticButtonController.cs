@@ -17,6 +17,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private Collider _collider;
 	private SaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
+	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 	private KeyCode _keyPauseMenu;
 	private ICutscene _cutsceneNewGame;
 	public bool IsCutsceneNewGamePlaying { get; private set; }
@@ -43,6 +44,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNewsController>("MainMenuReadNews");
 		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
+		_pauseSubMenuSettingsController = ServiceLocator.Resolve<PauseSubMenuSettingsController>("PauseSubMenuSettingsController");
 
 		_mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
 		_mainMenuReadNews.OnCloseMainMenuReadNews += _playerCameraBlurFilter.DeactivateCameraBlur;
@@ -80,7 +82,15 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 				}
 				if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 2)
 				{
-					_pauseMenuController.ClosePauseConfirmMenu();
+					if (_pauseMenuController.IsPauseConfirmMenuOpened)
+					{
+						_pauseMenuController.ClosePauseConfirmMenu();
+					}
+					else
+					{
+						_pauseSubMenuSettingsController.ShowSettingsSubMenuCanvas();
+						_menuManager.PopPauseMenuLevel();
+					}
 				}
 
 				if (Input.GetKeyDown(_keyPauseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)

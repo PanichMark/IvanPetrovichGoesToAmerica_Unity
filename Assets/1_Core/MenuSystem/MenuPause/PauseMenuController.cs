@@ -131,12 +131,13 @@ public class PauseMenuController : MonoBehaviour
 
 	public void ClosePauseConfirmMenu()
 	{
-		IsPauseConfirmMenuOpened = false;
-		OnCloseConfirmMenu?.Invoke();
-		if (_menuManager.PauseMenuLevel.Count > 0)
+		if (_menuManager.PauseMenuLevel.Count > 0 && IsPauseConfirmMenuOpened)
 		{
 			_menuManager.PopPauseMenuLevel();
 		}
+
+		IsPauseConfirmMenuOpened = false;
+		OnCloseConfirmMenu?.Invoke();
 
 		Debug.Log("ConfirmMenu closed");
 	}

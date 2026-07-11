@@ -7,8 +7,10 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 {
 	private Bootstrap _bootstrap;
 	private GameController _gameController;
+	private IInputDevice _inputDevice;
 	private LocalizationManager _localizationManager;
-	private PauseMenuController _pauseMenuController;
+	private MenuManager _menuManager;
+	private PauseMenuController _pausedMenuController;
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 
 	private GameObject _dropdownScreenResolution;
@@ -72,6 +74,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private TextMeshProUGUI _textComponentButtonGameDifficulty;
 	public delegate void SubMenuChooseGameDifficultyHandler();
 	public event SubMenuChooseGameDifficultyHandler OnOpenSubMenuChooseGameDifficulty;
+	public event SubMenuChooseGameDifficultyHandler OnCloseSubMenuChooseGameDifficulty;
 
 	private GameObject _toggleShowIngameHints;
 	private Toggle _toggleComponentShowIngameHints;
@@ -103,16 +106,20 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	public void Initialize(
 		Bootstrap bootstrap,
 		GameController gameController,
+		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
-		PauseMenuController pauseMenuController,
+		MenuManager menuManager,
+		PauseMenuController pausedMenuController,
 		PauseSubMenuSettingsController pauseSubMenuSettingsController,
 		ViewModelPauseSubMenuSettingsSectionGeneral viewModelPauseSubMenuSettings)
 	{
 		_bootstrap = bootstrap;
 		_gameController = gameController;
+		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
+		_menuManager = menuManager;
+		_pausedMenuController = pausedMenuController;
 		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
-		_pauseMenuController = pauseMenuController;
 		_textComponentNumberSliderCameraFOV = viewModelPauseSubMenuSettings.NumberSliderCameraFOV.GetComponent<TextMeshProUGUI>();
 
 		_dropdownScreenResolution = viewModelPauseSubMenuSettings.DropdownScreenResolution;
@@ -194,6 +201,14 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		Debug.Log("SettingsSectionGeneralController Initialized");
+	}
+
+	private void Update()
+	{
+		if (_inputDevice.GetKeyPauseMenu() && _menuManager.PauseMenuLevel.Count == 3 && !_menuManager.IsConfirmationOnExitToMainMenuOpened && !_pausedMenuController.IsPauseConfirmMenuOpened)
+		{
+			CloseSubMenuChooseGameDifficulty();
+		}
 	}
 
 	public void SaveSettingsGeneral()
@@ -391,10 +406,20 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textComponentNumberSliderScreenBrightness.text = ((int)newScreenBrightness).ToString();
 	}
 
-	public void OpenSubMenuChooseGameDifficulty()
+	private void OpenSubMenuChooseGameDifficulty()
 	{
-		_pauseSubMenuSettingsController.OpenSubMenuChooseGameDifficulty();
+		Debug.Log("OPEN DIFFICULTY");
+		_menuManager.PushPauseMenuLevel();
+		_pauseSubMenuSettingsController.HideSettingsSubMenuCanvas();
 		OnOpenSubMenuChooseGameDifficulty?.Invoke();
+	}
+
+	private void CloseSubMenuChooseGameDifficulty()
+	{
+		Debug.Log("CLOSE DIFFICULTY");
+		_menuManager.PopPauseMenuLevel();
+		_pauseSubMenuSettingsController.ShowSettingsSubMenuCanvas();
+		OnCloseSubMenuChooseGameDifficulty?.Invoke();
 	}
 
 	public void SetShowIngameHints(bool isOn)

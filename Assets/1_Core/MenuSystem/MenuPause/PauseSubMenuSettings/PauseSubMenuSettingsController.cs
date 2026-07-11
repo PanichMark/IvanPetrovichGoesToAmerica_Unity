@@ -165,14 +165,23 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_pauseMenuController.OnOpenSettingsSubMenu += () => OpenSubSettingsSection(_subSettingsSectionGeneral);
-		_pauseMenuController.OnOpenSettingsSubMenu += ShowSettingsSubMenuCanvas;
-		_pauseMenuController.OnCloseAnyPauseSubMenu += HideSettingsSubMenuCanvas;
+		_pauseMenuController.OnOpenSettingsSubMenu += () =>
+		{
+			ShowSettingsSubMenuCanvas();
+			_isPauseSubMenuSettingsOpened = true;
+		};
+		_pauseMenuController.OnCloseAnyPauseSubMenu += () =>
+		{
+			HideSettingsSubMenuCanvas();
+			_isPauseSubMenuSettingsOpened = false;
+		};
+		// do not open Settings Sub Menu while closing Confirmation menu
 
 		Debug.Log("PauseSubMenuSettingsController Initialized");
 	}
+
 	public void ShowSettingsSubMenuCanvas()
 	{
-		_isPauseSubMenuSettingsOpened = true;
 		_canvasPauseSubMenuSettings.gameObject.SetActive(true);
 
 		Debug.Log("Opened SettingsSubMenu");
@@ -182,17 +191,10 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	{
 		if (_isPauseSubMenuSettingsOpened)
 		{
-			_isPauseSubMenuSettingsOpened = false;
 			_canvasPauseSubMenuSettings.gameObject.SetActive(false);
 
 			Debug.Log("Closed SettingsSubMenu");
 		}
-	}
-
-	public void OpenSubMenuChooseGameDifficulty()
-	{
-		HideSettingsSubMenuCanvas();
-		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
 	private void OpenSubSettingsSection(GameObject subSettingsSection)
