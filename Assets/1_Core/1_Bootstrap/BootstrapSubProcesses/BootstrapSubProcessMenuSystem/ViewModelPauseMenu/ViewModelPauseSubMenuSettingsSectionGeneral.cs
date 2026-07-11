@@ -14,6 +14,9 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 	public GameObject DropdownHUDType;
 	public GameObject TextDropdownHUDType;
 
+	public GameObject ButtonGameDifficulty;
+	public GameObject TextButtonGameDifficulty;
+
 	public GameObject SliderCameraFOV;
 	public GameObject NumberSliderCameraFOV;
 	public GameObject TextSliderCameraFOV;
@@ -27,6 +30,9 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 
 	public GameObject DropdownShowBlood;
 	public GameObject TextDropdownShowBlood;
+
+	public GameObject DropdownShowIngameHints;
+	public GameObject TextDropdownShowIngameHints;
 
 	public ViewModelPauseSubMenuSettingsSectionGeneral(Bootstrap bootstrap, GameObject canvas)
 	{
@@ -42,6 +48,9 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 		DropdownHUDType = bootstrap.FindDeepGameObject(canvas, "DropdownHUDtype");
 		TextDropdownHUDType = bootstrap.FindDeepGameObject(canvas, "TextHUDtype");
 
+		ButtonGameDifficulty = bootstrap.FindDeepGameObject(canvas, "ButtonGameDifficulty");
+		TextButtonGameDifficulty = bootstrap.FindDeepGameObject(canvas, "TextGameDifficulty");
+
 		SliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "SliderCameraFOV");
 		NumberSliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "NumberCameraFOV");
 		TextSliderCameraFOV = bootstrap.FindDeepGameObject(canvas, "TextCameraFOV");
@@ -55,5 +64,8 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 
 		DropdownShowBlood = bootstrap.FindDeepGameObject(canvas, "DropdownShowBlood");
 		TextDropdownShowBlood = bootstrap.FindDeepGameObject(canvas, "TextShowBlood");
+
+		DropdownShowIngameHints = bootstrap.FindDeepGameObject(canvas, "DropdownShowIngameHints");
+		TextDropdownShowIngameHints = bootstrap.FindDeepGameObject(canvas, "TextShowIngameHints");
 	}
 }

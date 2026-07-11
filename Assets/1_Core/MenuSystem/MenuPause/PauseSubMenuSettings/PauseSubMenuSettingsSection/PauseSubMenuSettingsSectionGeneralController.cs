@@ -30,6 +30,16 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private TMP_Dropdown _dropdownComponentHUDType;
 	private GameObject _textDropdownHUDType;
 	private TextMeshProUGUI _textComponentDropdownHUDType;
+	public delegate void HUDtypeHandler();
+	public event HUDtypeHandler OnHUDfull;
+	public event HUDtypeHandler OnHUDdialoguesOnly;
+	public event HUDtypeHandler OnHUDdialoguesHide;
+	public event HUDtypeHandler OnHUDturnOff;
+
+	private GameObject _buttonGameDifficulty;
+	private Button _buttonComponentGameDifficulty;
+	private GameObject _textButtonGameDifficulty;
+	private TextMeshProUGUI _textComponentButtonGameDifficulty;
 
 	private GameObject _sliderCameraFOV;
 	private Slider _sliderComponentCameraFOV;
@@ -42,6 +52,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private TextMeshProUGUI _textComponentNumberSliderCameraFOV;
 	private GameObject _textSliderCameraFOV;
 	private TextMeshProUGUI _textComponentSliderCameraFOV;
+	public delegate void CameraFOVeventHandler(float newCameraFOV, float MIN_VALUE_CAMERA_FOV, float MAX_VALUE_CAMERA_FOV);
+	public event CameraFOVeventHandler OnCameraFOVchanged;
 
 	private GameObject _sliderScreenBrightness;
 	private Slider _sliderComponentScreenBrightness;
@@ -63,19 +75,18 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private GameObject _textDropdownShowBlood;
 	private TextMeshProUGUI _textComponentDropdownShowBlood;
 	private bool _isBloodEnabled;
-
-	public delegate void HUDtypeHandler();
-	public event HUDtypeHandler OnHUDfull;
-	public event HUDtypeHandler OnHUDdialoguesOnly;
-	public event HUDtypeHandler OnHUDdialoguesHide;
-	public event HUDtypeHandler OnHUDturnOff;
-
-	public delegate void CameraFOVeventHandler(float newCameraFOV, float MIN_VALUE_CAMERA_FOV, float MAX_VALUE_CAMERA_FOV);
-	public event CameraFOVeventHandler OnCameraFOVchanged;
-
 	public delegate void BloodVisibilityHandler();
 	public event BloodVisibilityHandler OnShowBlood;
 	public event BloodVisibilityHandler OnHideBlood;
+
+	private GameObject _dropdownShowIngameHints;
+	private TMP_Dropdown _dropdownComponentShowIngameHints;
+	private GameObject _textDropdownShowIngameHints;
+	private TextMeshProUGUI _textComponentDropdownShowIngameHints;
+	private bool _areIngameHintsEnabled;
+	public delegate void IngameHintsVisibilityHandler();
+	public event IngameHintsVisibilityHandler OnShowIngameHints;
+	public event IngameHintsVisibilityHandler OnHideIngameHints;
 
 	public delegate void SavePlayerPrefsCameraSettingsEventHandler();
 	public event SavePlayerPrefsCameraSettingsEventHandler OnSaveCameraSettingsData;
@@ -123,6 +134,12 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType;
 		_textComponentDropdownHUDType = viewModelPauseSubMenuSettings.TextDropdownHUDType.GetComponent<TextMeshProUGUI>();
 
+		_buttonGameDifficulty = viewModelPauseSubMenuSettings.ButtonGameDifficulty;
+		_buttonComponentGameDifficulty = viewModelPauseSubMenuSettings.ButtonGameDifficulty.GetComponent<Button>();
+		_buttonComponentGameDifficulty.onClick.AddListener(() => OpenSubMenuChooseGameDifficulty());
+		_textButtonGameDifficulty = viewModelPauseSubMenuSettings.TextButtonGameDifficulty;
+		_textComponentButtonGameDifficulty = viewModelPauseSubMenuSettings.TextButtonGameDifficulty.GetComponent<TextMeshProUGUI>();
+
 		_sliderCameraFOV = viewModelPauseSubMenuSettings.SliderCameraFOV;
 		_sliderComponentCameraFOV = viewModelPauseSubMenuSettings.SliderCameraFOV.GetComponent<Slider>();
 		_sliderComponentCameraFOV.minValue = _MIN_VALUE_CAMERA_FOV;
@@ -154,6 +171,12 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_dropdownComponentShowBlood.onValueChanged.AddListener(SetShowBlood);
 		_textDropdownShowBlood = viewModelPauseSubMenuSettings.TextDropdownShowBlood;
 		_textComponentDropdownShowBlood = viewModelPauseSubMenuSettings.TextDropdownShowBlood.GetComponent<TextMeshProUGUI>();
+
+		_dropdownShowIngameHints = viewModelPauseSubMenuSettings.DropdownShowIngameHints;
+		_dropdownComponentShowIngameHints = viewModelPauseSubMenuSettings.DropdownShowIngameHints.GetComponent<TMP_Dropdown>();
+		_dropdownComponentShowIngameHints.onValueChanged.AddListener(SetShowIngameHints);
+		_textDropdownShowIngameHints = viewModelPauseSubMenuSettings.TextDropdownShowIngameHints;
+		_textComponentDropdownShowIngameHints = viewModelPauseSubMenuSettings.TextDropdownShowIngameHints.GetComponent<TextMeshProUGUI>();
 
 		SetScreenBrightness(100);
 		_sliderComponentScreenBrightness.value = 100;
@@ -320,6 +343,11 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		}
 	}
 
+	public void OpenSubMenuChooseGameDifficulty()
+	{
+
+	}
+
 	public void SetCameraFOV(float newCameraFOV)
 	{
 		CurrentValueCameraFOV = newCameraFOV;
@@ -348,6 +376,18 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textComponentNumberSliderScreenBrightness.text = ((int)newScreenBrightness).ToString();
 	}
 
+	public void SetWeaponWheelType(int dropdownWeaponWheelTypeSlot)
+	{
+		if (dropdownWeaponWheelTypeSlot == 0)
+		{
+			_bootstrap.ChangeWeaponWheelType(WeaponWheelMenuTypes._2D);
+		}
+		else if (dropdownWeaponWheelTypeSlot == 1)
+		{
+			_bootstrap.ChangeWeaponWheelType(WeaponWheelMenuTypes._3D);
+		}
+	}
+
 	public void SetShowBlood(int dropdownShowBloodSlot)
 	{
 		if (dropdownShowBloodSlot == 0)
@@ -360,15 +400,15 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		}
 	}
 
-	public void SetWeaponWheelType(int dropdownWeaponWheelTypeSlot)
+	public void SetShowIngameHints(int dropdownShowIngameHintsSlot)
 	{
-		if (dropdownWeaponWheelTypeSlot == 0)
+		if (dropdownShowIngameHintsSlot == 0)
 		{
-			_bootstrap.ChangeWeaponWheelType(WeaponWheelMenuTypes._2D);
+			OnShowIngameHints?.Invoke();
 		}
-		else if (dropdownWeaponWheelTypeSlot == 1)
+		else if (dropdownShowIngameHintsSlot == 1)
 		{
-			_bootstrap.ChangeWeaponWheelType(WeaponWheelMenuTypes._3D);
+			OnHideIngameHints?.Invoke();
 		}
 	}
 
