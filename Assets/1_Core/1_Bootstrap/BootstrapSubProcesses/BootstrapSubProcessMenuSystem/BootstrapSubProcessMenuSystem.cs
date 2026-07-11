@@ -293,6 +293,7 @@ public class BootstrapSubProcessMenuSystem
 			_viewModelPauseSubMenuSettingsSectionGeneral);
 
 		__pauseSubMenuSettingsGameDifficultyController.Initialize(
+			_localizationManager,
 			PauseSubMenuSettingsSectionGeneralController,
 			_canvasPauseSubMenuSettingsGameDifficultyController,
 			_viewModelPauseSubMenuSettingsGameDifficultyController
