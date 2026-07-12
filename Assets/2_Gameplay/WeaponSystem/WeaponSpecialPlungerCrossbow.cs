@@ -127,6 +127,8 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 
 	private IEnumerator PerformCrossbowShoot(Vector3 point, RaycastHit hit)
 	{
+
+
 		_gameController.PlayerStartedPlunging();
 		//_lineRenderer1stPerson.enabled = true;
 		//_lineRenderer3rdPerson.enabled = true;
@@ -148,6 +150,17 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 
 	private IEnumerator ShootProjectile(Vector3 point)
 	{
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
+		{
+			_lineRenderer1stPerson.enabled = true;
+			_lineRenderer3rdPerson.enabled = false;
+		}
+		else
+		{
+			_lineRenderer1stPerson.enabled = false;
+			_lineRenderer3rdPerson.enabled = true;
+		}
+
 		_projectile1stPerson.transform.SetParent(null);
 		_projectile3rdPerson.transform.SetParent(null);
 
@@ -204,6 +217,7 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	private IEnumerator HookObject(RaycastHit hit)
 	{
 		_projectile1stPerson.transform.SetParent(hit.collider.transform);
+		_projectile3rdPerson.transform.SetParent(hit.collider.transform);
 		ProccessHookedObject(hit);
 
 		while (_isCrossbowAttacking)
