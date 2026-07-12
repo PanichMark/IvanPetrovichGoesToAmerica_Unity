@@ -8,18 +8,18 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	private GameSceneManager _gameSceneManager;
 	private PlayerBehaviourController _playerBehaviour;
 
-	private GameObject _currentHookProjectile;
-	private GameObject _lineStartPoint;
-	private float _projectileSpeed = 10f;
-	private Transform _projectileOriginalParent;
+	private GameObject _projectile;
+	private GameObject _projectileStringStartPoint;
+	
+	private Transform _projectileParent;
 	private bool _isCrossbowAttacking;
 	private GameObject _player;
 	private GameObject _playerCollider;
 	private GameObject _playerCamera;
 	private Rigidbody _playerRigidbody;
-	private Vector3 _currentHookProjectileOriginalPosition;
-	private Quaternion _currentHookProjectileOriginalRotation;
-	private Quaternion _projectileFlyingRotation;
+	private Vector3 _projectileRestPosition;
+	private Quaternion _projectileRestDirection;
+	private Quaternion _projectileFlyingDirection;
 	public override bool IsWeaponAuto => false;
 	private GameObject _hookedObject = null;
 	private Rigidbody _hookedObjectRigidbody = null;
@@ -30,8 +30,8 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	private NavMeshAgent _hookedObjectNavMeshAgent = null;
 
 	private Vector3 _hookPoint;
-	private float _maxHookDistance = 17f;
-	private float _pullSpeed = 12f;
+	private float _maxHookDistance = 20f;
+	private float _projectileSpeed = 15f;
 
 	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
 	public override string WeaponName => "PlungerCrossbow";
@@ -42,13 +42,13 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 
 	public override void InitializeWeapon()
 	{
-		_currentHookProjectile = transform.Find("Projectile").gameObject;
-		_lineStartPoint = transform.Find("StartPoint").gameObject;
-		_projectileOriginalParent = _currentHookProjectile.transform.parent;
+		_projectile = transform.Find("Projectile").gameObject;
+		_projectileStringStartPoint = transform.Find("StartPoint").gameObject;
+		_projectileParent = _projectile.transform.parent;
 
-		_currentHookProjectileOriginalPosition = _currentHookProjectile.transform.localPosition;
-		_currentHookProjectileOriginalRotation = _currentHookProjectile.transform.localRotation;
-		Debug.Log(_currentHookProjectileOriginalPosition);
+		_projectileRestPosition = _projectile.transform.localPosition;
+		_projectileRestDirection = _projectile.transform.localRotation;
+		Debug.Log(_projectileRestPosition);
 
 		_playerCamera = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 
@@ -57,10 +57,11 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 		_playerCollider = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
 		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		//Debug.Log(_gameSceneManager);
 		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>("PlayerBehaviour");
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += StopPlungingCompletely;
-		_gameSceneManager.OnBeginLoadingGameplayScene += StopPlungingCompletely;
+		_gameSceneManager.OnBeginLoadingMainMenuScene += FullStopPlunging;
+		_gameSceneManager.OnBeginLoadingGameplayScene += FullStopPlunging;
 		_playerBehaviour.OnPlayerDisarmed += StopPlunging;
 	}
 
@@ -89,74 +90,64 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 		if ((hit.collider.gameObject.TryGetComponent<NPCAbstract>(out _) ||
 			hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _)))
 		{
-
 			Debug.Log("Крюк зацепил предмет/NPC");
-
-			_currentHookProjectile.transform.SetParent(hit.collider.transform);
-
 			yield return StartCoroutine(HookObject(hit));
-			StartCoroutine(ReturnProjectile());
-			yield return StartCoroutine(PullObjectRoutine());
-
-
-
 		}
 		else
 		{
-			_playerCollider.SetActive(false);
-			
-			_playerRigidbody.useGravity = false;
-			
 			Debug.Log($"Крюк зацепился за: {hit.collider.name}");
-
-
-
-			//StartCoroutine(ReturnProjectile());
-			yield return StartCoroutine(PullPlayerRoutine(point));
+			yield return StartCoroutine(PlungePlayer(point));
 		}
 	}
 
 	private IEnumerator ShootProjectile(Vector3 point)
 	{
-		_currentHookProjectile.transform.SetParent(null);
-		_projectileFlyingRotation = _playerCamera.transform.rotation;
-		_currentHookProjectile.transform.rotation = _projectileFlyingRotation;
+		_projectile.transform.SetParent(null);
+		_projectileFlyingDirection = _playerCamera.transform.rotation;
+		_projectile.transform.rotation = _projectileFlyingDirection;
 
-		while (Vector3.Distance(_currentHookProjectile.transform.position, point) > 0.1f)
+		while (Vector3.Distance(_projectile.transform.position, point) > 0.1f)
 		{
-			_currentHookProjectile.transform.position = Vector3.MoveTowards(_currentHookProjectile.transform.position, point, _projectileSpeed * Time.deltaTime);
+			_projectile.transform.position = Vector3.MoveTowards(_projectile.transform.position, point, _projectileSpeed * Time.deltaTime);
 			yield return null;
 		}
-
-		
 	}
 
-	private IEnumerator PullPlayerRoutine(Vector3 hookPoint)
+	private IEnumerator PlungePlayer(Vector3 hookPoint)
 	{
+		_playerCollider.SetActive(false);
+
+		_playerRigidbody.useGravity = false;
+
 		while (_isCrossbowAttacking)
 		{
 			//Debug.Log("PLUNGING");
 
 			Vector3 directionToHook = (hookPoint - _player.transform.position).normalized;
-			_playerRigidbody.linearVelocity = directionToHook * _pullSpeed;
+			_playerRigidbody.linearVelocity = directionToHook * _projectileSpeed;
 
 			float distanceToHook = Vector3.Distance(_player.transform.position, hookPoint);
 
-			if (distanceToHook < 0.5f)
+			if (distanceToHook < 0.2f)
 			{
 				_player.transform.position = hookPoint;
 				_playerRigidbody.linearVelocity = Vector3.zero;
-				StopPlunging();
+				
 				StartCoroutine(ReturnProjectile());
 				//_currentHookProjectile.transform.SetParent(_projectileOriginalParent);
 				//_currentHookProjectile.transform.localPosition = Vector3.zero;
 			}
+
 			yield return null;
 		}
 	}
 
-	private IEnumerator PullObjectRoutine()
+	private IEnumerator HookObject(RaycastHit hit)
 	{
+		_projectile.transform.SetParent(hit.collider.transform);
+
+		ProccessHookedObject(hit);
+
 		while (_isCrossbowAttacking)
 		{
 			Vector3 finalPosition = _player.transform.position;
@@ -164,7 +155,7 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 			finalPosition += _player.transform.forward * 1.5f;
 
 			Vector3 directionToTarget = (finalPosition - _hookedObject.transform.position).normalized;
-			_hookedObjectRigidbody.linearVelocity = directionToTarget * _pullSpeed;
+			_hookedObjectRigidbody.linearVelocity = directionToTarget * _projectileSpeed;
 
 			float distanceToTarget = Vector3.Distance(_hookedObject.transform.position, finalPosition);
 
@@ -181,7 +172,7 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 		}
 	}
 
-	private IEnumerator HookObject(RaycastHit hit)
+	private void ProccessHookedObject(RaycastHit hit)
 	{
 		_hookedObject = hit.collider.gameObject;
 		_hookedObjectRigidbody = _hookedObject.GetComponent<Rigidbody>();
@@ -210,8 +201,6 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 
 		_hookedObjectRigidbody.useGravity = false;
 		_hookedObjectRigidbody.linearDamping = 0;
-
-		yield return null;
 	}
 
 	private void StopHookingObject()
@@ -233,46 +222,53 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 			_hookedObjectRigidbody = null;
 			_isCrossbowAttacking = false;
 			Debug.Log("Притяжение NPC завершено.");
+
+			//StartCoroutine(ReturnProjectile());
 		}
 	}
 
 	private void OnDestroy()
 	{
 		// Проверка на null защищает от ошибки, если эти объекты были уничтожены
+		//Debug.Log(_gameSceneManager);
 		if (_gameSceneManager != null)
 		{
-			_gameSceneManager.OnBeginLoadingMainMenuScene -= StopPlungingCompletely;
-			_gameSceneManager.OnBeginLoadingGameplayScene -= StopPlungingCompletely;
+			_gameSceneManager.OnBeginLoadingMainMenuScene -= FullStopPlunging;
+			_gameSceneManager.OnBeginLoadingGameplayScene -= FullStopPlunging;
 		}
+
 
 		if (_playerBehaviour != null)
 		{
 			_playerBehaviour.OnPlayerDisarmed -= StopPlunging;
 		}
 
-		StopPlunging();
+
+		OnCrossbowDestroyed();
 	}
 
 	private IEnumerator ReturnProjectile()
 	{
-		while (Vector3.Distance(_currentHookProjectile.transform.position, _currentHookProjectileOriginalPosition) > 0.001f)
+		while (Vector3.Distance(_projectile.transform.position, _projectileRestPosition) > 0.001f)
 		{
 			//Debug.Log("RETURNING");
-			_currentHookProjectile.transform.position = Vector3.MoveTowards(_currentHookProjectile.transform.position, _currentHookProjectileOriginalPosition, _pullSpeed * Time.deltaTime);
+			_projectile.transform.position = Vector3.MoveTowards(_projectile.transform.position, _projectileRestPosition, _projectileSpeed * Time.deltaTime);
 			
 		}
-		_currentHookProjectile.transform.SetParent(_projectileOriginalParent);
-		_currentHookProjectile.transform.localPosition = _currentHookProjectileOriginalPosition;
-		_currentHookProjectile.transform.localRotation = _currentHookProjectileOriginalRotation;
+
+
+		StopPlunging();
 
 		yield return null;
 
 	}
 
-	private void StopPlunging()
+	private void OnCrossbowDestroyed()
 	{
 		if (_isCrossbowAttacking)
 		{
+
+			Destroy(_projectile);
 			_playerRigidbody.useGravity = true;
 			_isCrossbowAttacking = false;
 			Debug.Log("Притяжение завершено.");
@@ -281,9 +277,27 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 		}
 	}
 
-	private void StopPlungingCompletely()
+	private void StopPlunging()
+	{
+		if (_isCrossbowAttacking)
+		{
+			_projectile.transform.SetParent(_projectileParent);
+			_projectile.transform.localPosition = _projectileRestPosition;
+			_projectile.transform.localRotation = _projectileRestDirection;
+
+			_playerRigidbody.useGravity = true;
+			_isCrossbowAttacking = false;
+			Debug.Log("Притяжение завершено.");
+			_gameController.PlayerStoppedPlunging();
+			_playerCollider.SetActive(true);
+		}
+	}
+
+	private void FullStopPlunging()
 	{
 		_playerRigidbody.linearVelocity = Vector3.zero;
+
+
 		StopPlunging();
 	}
 
