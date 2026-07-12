@@ -9,13 +9,21 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	private GameSceneManager _gameSceneManager;
 	private PlayerBehaviourController _playerBehaviour;
 
-	private GameObject _projectile;
-	private GameObject _projectileStringStartPoint;
-	private GameObject _projectileStringEndPoint;
+	private GameObject _currentProjectile;
 
-	private LineRenderer _lineRenderer;
+	private GameObject _projectile1stPerson;
+	private Transform _projectileParent1stPerson;
+	private GameObject _projectileStringStartPoint1stPerson;
+	private GameObject _projectileStringEndPoint1stPerson;
+	private LineRenderer _lineRenderer1stPerson;
 
-	private Transform _projectileParent;
+	private GameObject _projectile3rdPerson;
+	private Transform _projectileParent3rdPerson;
+	private GameObject _projectileStringStartPoint3rdPerson;
+	private GameObject _projectileStringEndPoint3rdPerson;
+	private LineRenderer _lineRenderer3rdPerson;
+
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private bool _isCrossbowAttacking;
 	private GameObject _player;
 	private GameObject _playerCollider;
@@ -46,17 +54,22 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 
 	public override void InitializeWeapon()
 	{
-		_projectile = transform.Find("Projectile").gameObject;
-		_projectileStringStartPoint = transform.Find("ProjectileStringStartPoint").gameObject;
-		_projectileStringEndPoint = _projectile.transform.Find("ProjectileStringEndPoint").gameObject;
+		_projectile1stPerson = FirstPersonWeaponModelInstance.transform.Find("Projectile").gameObject;
+		_projectileParent1stPerson = _projectile1stPerson.transform.parent;
+		_projectileStringStartPoint1stPerson = FirstPersonWeaponModelInstance.transform.Find("ProjectileStringStartPoint").gameObject;
+		_projectileStringEndPoint1stPerson = _projectile1stPerson.transform.Find("ProjectileStringEndPoint").gameObject;
+		_lineRenderer1stPerson = FirstPersonWeaponModelInstance.GetComponent<LineRenderer>();
 
+		_projectile3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("Projectile").gameObject;
+		_projectileParent3rdPerson = _projectile3rdPerson.transform.parent;
+		_projectileStringStartPoint3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("ProjectileStringStartPoint").gameObject;
+		_projectileStringEndPoint3rdPerson = _projectile3rdPerson.transform.Find("ProjectileStringEndPoint").gameObject;
+		_lineRenderer3rdPerson = ThirdPersonWeaponModelInstance.GetComponent<LineRenderer>();
 
-		_projectileParent = _projectile.transform.parent;
-		_lineRenderer = GetComponent<LineRenderer>();
-		_projectileRestPosition = _projectile.transform.localPosition;
-		_projectileRestDirection = _projectile.transform.localRotation;
+		_projectileRestPosition = _projectile1stPerson.transform.localPosition;
+		_projectileRestDirection = _projectile1stPerson.transform.localRotation;
 		//Debug.Log(_projectileRestPosition);
-
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 		_playerCamera = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 
 		_player = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
@@ -67,9 +80,34 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 		//Debug.Log(_gameSceneManager);
 		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>("PlayerBehaviour");
 
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
+		{
+			ChangeCrossbow1stPerson();
+		}
+		else
+		{
+			ChangeCrossbow3rdPerson();
+		}
+
 		_gameSceneManager.OnBeginLoadingMainMenuScene += FullStopPlunging;
 		_gameSceneManager.OnBeginLoadingGameplayScene += FullStopPlunging;
 		_playerBehaviour.OnPlayerDisarmed += StopCrossbowAttack;
+		_playerCameraStateMachineController.OnFirstPersonCameraState += ChangeCrossbow1stPerson;
+		_playerCameraStateMachineController.OnThirdPersonCameraState += ChangeCrossbow3rdPerson;
+	}
+
+	private void ChangeCrossbow1stPerson()
+	{
+		_currentProjectile = _projectile1stPerson;
+		_lineRenderer1stPerson.enabled = true;
+		_lineRenderer3rdPerson.enabled = false;
+	}
+
+	private void ChangeCrossbow3rdPerson()
+	{
+		_currentProjectile = _projectile3rdPerson;
+		_lineRenderer1stPerson.enabled = false;
+		_lineRenderer3rdPerson.enabled = true;
 	}
 
 	public override void WeaponAttack()
@@ -90,7 +128,9 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	private IEnumerator PerformCrossbowShoot(Vector3 point, RaycastHit hit)
 	{
 		_gameController.PlayerStartedPlunging();
-			
+		//_lineRenderer1stPerson.enabled = true;
+		//_lineRenderer3rdPerson.enabled = true;
+
 		yield return StartCoroutine(ShootProjectile(point));
 
 		if ((hit.collider.gameObject.TryGetComponent<NPCAbstract>(out _) ||
@@ -108,13 +148,25 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 
 	private IEnumerator ShootProjectile(Vector3 point)
 	{
-		_projectile.transform.SetParent(null);
-		_projectileFlyingDirection = _playerCamera.transform.rotation;
-		_projectile.transform.rotation = _projectileFlyingDirection;
+		_projectile1stPerson.transform.SetParent(null);
+		_projectile3rdPerson.transform.SetParent(null);
 
-		while (Vector3.Distance(_projectile.transform.position, point) > 0.1f)
+		_projectileFlyingDirection = _playerCamera.transform.rotation;
+		_projectile1stPerson.transform.rotation = _projectileFlyingDirection;
+		_projectile3rdPerson.transform.rotation = _projectileFlyingDirection;
+
+		while (Vector3.Distance(_currentProjectile.transform.position, point) > 0.1f)
 		{
-			_projectile.transform.position = Vector3.MoveTowards(_projectile.transform.position, point, _projectileSpeed * Time.deltaTime);
+			Vector3 newPosFP = Vector3.MoveTowards(_projectile1stPerson.transform.position, point, _projectileSpeed * Time.deltaTime);
+			_projectile1stPerson.transform.position = newPosFP;
+			_lineRenderer1stPerson.SetPosition(0, _projectileStringStartPoint1stPerson.transform.position);
+			_lineRenderer1stPerson.SetPosition(1, _projectileStringEndPoint1stPerson.transform.position);
+			
+			Vector3 newPosTP = Vector3.MoveTowards(_projectile3rdPerson.transform.position, point, _projectileSpeed * Time.deltaTime);
+			_projectile3rdPerson.transform.position = newPosTP;
+			_lineRenderer3rdPerson.SetPosition(0, _projectileStringStartPoint3rdPerson.transform.position);
+			_lineRenderer3rdPerson.SetPosition(1, _projectileStringEndPoint3rdPerson.transform.position);
+			
 			yield return null;
 		}
 	}
@@ -122,7 +174,6 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	private IEnumerator PlungePlayer(Vector3 hookPoint)
 	{
 		_playerCollider.SetActive(false);
-
 		_playerRigidbody.useGravity = false;
 
 		while (_isCrossbowAttacking)
@@ -140,14 +191,19 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 				yield return StartCoroutine(ReturnProjectile());
 			}
 
+			_lineRenderer1stPerson.SetPosition(0, _projectileStringStartPoint1stPerson.transform.position);
+			_lineRenderer1stPerson.SetPosition(1, _projectileStringEndPoint1stPerson.transform.position);
+
+			_lineRenderer3rdPerson.SetPosition(0, _projectileStringStartPoint3rdPerson.transform.position);
+			_lineRenderer3rdPerson.SetPosition(1, _projectileStringEndPoint3rdPerson.transform.position);
+
 			yield return null;
 		}
 	}
 
 	private IEnumerator HookObject(RaycastHit hit)
 	{
-		_projectile.transform.SetParent(hit.collider.transform);
-
+		_projectile1stPerson.transform.SetParent(hit.collider.transform);
 		ProccessHookedObject(hit);
 
 		while (_isCrossbowAttacking)
@@ -169,6 +225,13 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 
 				yield return StartCoroutine(ReturnProjectile());
 			}
+
+			_lineRenderer1stPerson.SetPosition(0, _projectileStringStartPoint1stPerson.transform.position);
+			_lineRenderer1stPerson.SetPosition(1, _projectileStringEndPoint1stPerson.transform.position);
+
+			_lineRenderer3rdPerson.SetPosition(0, _projectileStringStartPoint3rdPerson.transform.position);
+			_lineRenderer3rdPerson.SetPosition(1, _projectileStringEndPoint3rdPerson.transform.position);
+
 			yield return null;
 		}
 	}
@@ -243,24 +306,41 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 			_playerBehaviour.OnPlayerDisarmed -= StopCrossbowAttack;
 		}
 
+		if (_playerCameraStateMachineController != null)
+		{
+			_playerCameraStateMachineController.OnFirstPersonCameraState -= ChangeCrossbow1stPerson;
+			_playerCameraStateMachineController.OnThirdPersonCameraState -= ChangeCrossbow3rdPerson;
+		}
+
 		OnCrossbowDestroyed();
 	}
 
 	private IEnumerator ReturnProjectile()
 	{
-		_projectile.transform.SetParent(null);
+		// Отсоединяем перед движением
+		_projectile1stPerson.transform.SetParent(null);
+		_projectile3rdPerson.transform.SetParent(null);
 
-		SceneManager.MoveGameObjectToScene(_projectile, SceneManager.GetSceneByBuildIndex(0));
+		SceneManager.MoveGameObjectToScene(_projectile1stPerson, SceneManager.GetSceneByBuildIndex(0));
+		SceneManager.MoveGameObjectToScene(_projectile3rdPerson, SceneManager.GetSceneByBuildIndex(0));
 
-		//Vector3 targetWorldPos = _projectileParent.TransformPoint(_projectileRestPosition);
-
-		while (Vector3.Distance(_projectile.transform.position, _projectileRestPosition) > 0.001f)
+		while (Vector3.Distance(_currentProjectile.transform.position, _projectileRestPosition) > 0.001f)
 		{
-			//Debug.Log("BACK!!!");
-			//Debug.Log("RETURNING");
-			_projectile.transform.position = Vector3.MoveTowards(_projectile.transform.position, _projectileRestPosition, _projectileSpeed * Time.deltaTime);
+			Vector3 targetPos1st = Vector3.MoveTowards(_projectile1stPerson.transform.position, _projectileRestPosition, _projectileSpeed * Time.deltaTime);
+			_projectile1stPerson.transform.position = targetPos1st;
 
+			Vector3 targetPos3rd = Vector3.MoveTowards(_projectile3rdPerson.transform.position, _projectileRestPosition, _projectileSpeed * Time.deltaTime);
+			_projectile3rdPerson.transform.position = targetPos3rd;
 		}
+
+		// Возвращаем в иерархию только после того, как они долетели до точки покоя
+		_projectile1stPerson.transform.SetParent(_projectileParent1stPerson);
+		_projectile1stPerson.transform.localPosition = _projectileRestPosition;
+		_projectile1stPerson.transform.localRotation = _projectileRestDirection;
+
+		_projectile3rdPerson.transform.SetParent(_projectileParent3rdPerson);
+		_projectile3rdPerson.transform.localPosition = _projectileRestPosition;
+		_projectile3rdPerson.transform.localRotation = _projectileRestDirection;
 
 		StopCrossbowAttack();
 
@@ -271,7 +351,8 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	{
 		if (_isCrossbowAttacking)
 		{
-			Destroy(_projectile);
+			Destroy(_projectile1stPerson);
+			Destroy(_projectile3rdPerson);
 			_playerRigidbody.useGravity = true;
 			_isCrossbowAttacking = false;
 			Debug.Log("Притяжение завершено.");
@@ -284,15 +365,32 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	{
 		if (_isCrossbowAttacking)
 		{
-			_projectile.transform.SetParent(_projectileParent);
-			_projectile.transform.localPosition = _projectileRestPosition;
-			_projectile.transform.localRotation = _projectileRestDirection;
+			Debug.Log("STOP ATTACKING");
+			// Возвращаем физические объекты к их родителям
+			_projectile1stPerson.transform.SetParent(_projectileParent1stPerson);
+			_projectile1stPerson.transform.localPosition = _projectileRestPosition;
+			_projectile1stPerson.transform.localRotation = _projectileRestDirection;
+
+			_projectile3rdPerson.transform.SetParent(_projectileParent3rdPerson);
+			_projectile3rdPerson.transform.localPosition = _projectileRestPosition;
+			_projectile3rdPerson.transform.localRotation = _projectileRestDirection;
+
+			_lineRenderer1stPerson.SetPosition(0, _projectileStringStartPoint1stPerson.transform.position);
+			_lineRenderer1stPerson.SetPosition(1, _projectileStringEndPoint1stPerson.transform.position);
+
+			_lineRenderer3rdPerson.SetPosition(0, _projectileStringStartPoint3rdPerson.transform.position);
+			_lineRenderer3rdPerson.SetPosition(1, _projectileStringEndPoint3rdPerson.transform.position);
+
 
 			_playerRigidbody.useGravity = true;
 			_isCrossbowAttacking = false;
 			Debug.Log("Притяжение завершено.");
 			_gameController.PlayerStoppedPlunging();
 			_playerCollider.SetActive(true);
+
+			// Отключаем ОБЕ линии рендера
+			_lineRenderer1stPerson.enabled = false;
+			_lineRenderer3rdPerson.enabled = false;
 		}
 	}
 

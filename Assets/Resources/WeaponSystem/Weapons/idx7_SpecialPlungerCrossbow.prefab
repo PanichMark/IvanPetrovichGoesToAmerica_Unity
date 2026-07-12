@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 7552693236883265341}
   - component: {fileID: 2962544025509660874}
   - component: {fileID: 2538468994636503740}
-  - component: {fileID: 2410773411822950527}
+  - component: {fileID: 2988630512091609466}
   m_Layer: 0
   m_Name: idx7_SpecialPlungerCrossbow
   m_TagString: Untagged
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4ca3ddbebf0fd47b94f04f7099a567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!120 &2410773411822950527
+--- !u!120 &2988630512091609466
 LineRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
@@ -237,7 +237,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 0fca8cdf134e71243815e7fb7325db7d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -269,7 +269,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.0172286
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -306,7 +306,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
