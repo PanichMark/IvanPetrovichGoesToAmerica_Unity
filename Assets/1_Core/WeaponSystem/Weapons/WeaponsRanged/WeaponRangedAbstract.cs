@@ -167,9 +167,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
 		}
 
-		HideUsedHarmonicaBullet();
-		PlayerMagazineAmmoCurrent--;
 		
+		PlayerMagazineAmmoCurrent--;
+		HideUsedHarmonicaBullet();
+
 		Debug.Log($"Shoot {WeaponName}");
 
 		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))

@@ -61,10 +61,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 		InstantiateFirstPersonWeaponInstance();
 
 		FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
-		foreach (Transform child in FirstPersonWeaponModelInstance.transform)
-		{
-			child.gameObject.layer = LayerMask.NameToLayer("FirstPerson");
-		}
+
+		SetLayerRecursively(FirstPersonWeaponModelInstance.transform, LayerMask.NameToLayer("FirstPerson"));
 
 		if (handType == WeaponHandsEnum.HandLeft)
 		{
@@ -85,6 +83,15 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		InitializeWeapon();
 		_isWeaponInitialized = true;
+	}
+
+	private void SetLayerRecursively(Transform parent, int layer)
+	{
+		foreach (Transform child in parent)
+		{
+			child.gameObject.layer = layer;
+			SetLayerRecursively(child, layer);
+		}
 	}
 
 	public void InstantiateFirstPersonWeaponInstance()
