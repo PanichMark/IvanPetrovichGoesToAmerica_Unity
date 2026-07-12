@@ -5,6 +5,6 @@ public struct AmmoTypeData
 {
 	public AmmoTypes AmmoTypeSystem;
 	public string AmmoTypeJson;
-	public int TotalAmmoMax;
-	public int TotalAmmoCurrent;
+	public int AmmoMax;
+	public int AmmoReserve;
 }

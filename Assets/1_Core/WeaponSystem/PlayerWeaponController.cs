@@ -251,12 +251,12 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		string key = $"idx{index}_{weaponName}";
 
 		UnlockedWeapons[key] = weaponPrefab;
-		SetHasAnyWeapon();
+		AnyWeaponIsUnlocked();
 
-		var rangedComponent = weaponPrefab.GetComponent<WeaponEugenicAbstract>();
-		if (rangedComponent != null)
+		var eugenicComponent = weaponPrefab.GetComponent<WeaponEugenicAbstract>();
+		if (eugenicComponent != null)
 		{
-			SetHasEugenicWeapon();
+			EugenicWeaponIsUnlocked();
 		}
 
 		OnAnyWeaponUnlocked?.Invoke(weaponPrefab);
@@ -282,13 +282,13 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		return -1;
 	}
 
-	private void SetHasAnyWeapon()
+	private void AnyWeaponIsUnlocked()
 	{
 		HasAnyWeapon = true;
 		_HUDhealthAndManaController.ShowHealthBar();
 	}
 
-	private void SetHasEugenicWeapon()
+	private void EugenicWeaponIsUnlocked()
 	{
 		_HUDhealthAndManaController.ShowManaBar();
 	}
@@ -354,7 +354,6 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			WeaponsRangedEnum newKey = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), rangedNew.WeaponName);
 			if (_ammoManager.WeaponsRangedDictionary.TryGetValue(newKey, out var newData))
 			{
-				//rangedNew.SetPlayerWeaponAmmoType(newData.AmmoTypeSystem);
 				rangedNew.SetPlayerMagazineProperties(newData.MagazineAmmoMax, newData.MagazineAmmoCurrent);
 			}
 		}

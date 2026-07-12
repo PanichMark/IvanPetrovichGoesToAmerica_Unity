@@ -144,7 +144,7 @@ public class HUDammoController : MonoBehaviour
 
 				if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.PlayerWeaponAmmoType, out var ammoData))
 				{
-					_leftWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
+					_leftWeaponAmmoReserveText.text = ammoData.AmmoReserve.ToString();
 				}
 			}
 			else
@@ -163,7 +163,7 @@ public class HUDammoController : MonoBehaviour
 
 				if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(ranged.PlayerWeaponAmmoType, out var ammoData))
 				{
-					_rightWeaponAmmoReserveText.text = ammoData.TotalAmmoCurrent.ToString();
+					_rightWeaponAmmoReserveText.text = ammoData.AmmoReserve.ToString();
 				}
 			}
 			else

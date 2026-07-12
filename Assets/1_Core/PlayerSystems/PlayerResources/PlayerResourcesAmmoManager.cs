@@ -18,14 +18,14 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 	{
 		if (AmmoDictionary.TryGetValue(type, out var data))
 		{
-			int clampedAmount = Mathf.Clamp(newAmount, 0, data.TotalAmmoMax);
+			int clampedAmount = Mathf.Clamp(newAmount, 0, data.AmmoMax);
 
-			if (data.TotalAmmoCurrent != clampedAmount)
+			if (data.AmmoReserve != clampedAmount)
 			{
-				data.TotalAmmoCurrent = clampedAmount;
+				data.AmmoReserve = clampedAmount;
 				AmmoDictionary[type] = data; 
 
-				OnReserveAmmoChanged?.Invoke(type, data.TotalAmmoCurrent);
+				OnReserveAmmoChanged?.Invoke(type, data.AmmoReserve);
 			}
 		}
 	}
@@ -44,8 +44,8 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 
 	public void Initialize()
 	{	
-		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo9mm, TotalAmmoMax = 999, TotalAmmoCurrent = 100 };
-		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo12gauge, TotalAmmoMax = 999, TotalAmmoCurrent = 30 };
+		AmmoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo9mm, AmmoMax = 999, AmmoReserve = 100 };
+		AmmoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo12gauge, AmmoMax = 999, AmmoReserve = 30 };
 	
 		WeaponsRangedDictionary[WeaponsRangedEnum.HarmonicaRevolver] = new WeaponRangedData
 		{
@@ -133,9 +133,9 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 		}
 		if (AmmoDictionary.TryGetValue(type, out var data))
 		{
-			data.TotalAmmoCurrent = Mathf.Min(data.TotalAmmoCurrent + amount, data.TotalAmmoMax);
+			data.AmmoReserve = Mathf.Min(data.AmmoReserve + amount, data.AmmoMax);
 			AmmoDictionary[type] = data;
-			OnReserveAmmoChanged?.Invoke(type, data.TotalAmmoCurrent);
+			OnReserveAmmoChanged?.Invoke(type, data.AmmoReserve);
 		}
 	}
 
@@ -148,9 +148,9 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 		}
 		if (AmmoDictionary.TryGetValue(type, out var data))
 		{
-			data.TotalAmmoCurrent = Mathf.Max(data.TotalAmmoCurrent - amount, 0);
+			data.AmmoReserve = Mathf.Max(data.AmmoReserve - amount, 0);
 			AmmoDictionary[type] = data;
-			OnReserveAmmoChanged?.Invoke(type, data.TotalAmmoCurrent);
+			OnReserveAmmoChanged?.Invoke(type, data.AmmoReserve);
 		}
 	}
 

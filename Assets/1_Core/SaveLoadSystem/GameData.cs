@@ -157,15 +157,15 @@ public class GameData
 			{
 				AmmoTypeSystem = AmmoTypes.Ammo9mm,
 				AmmoTypeJson = AmmoTypes.Ammo9mm.ToString(),
-				TotalAmmoMax = 999,
-				TotalAmmoCurrent = 25
+				AmmoMax = 999,
+				AmmoReserve = 25
 			},
 			new AmmoTypeData
 			{
 				AmmoTypeSystem = AmmoTypes.Ammo12gauge,
 				AmmoTypeJson = AmmoTypes.Ammo12gauge.ToString(),
-				TotalAmmoMax = 999,
-				TotalAmmoCurrent = 10
+				AmmoMax = 999,
+				AmmoReserve = 10
 			}
 		};
 

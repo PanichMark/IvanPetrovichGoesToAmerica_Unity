@@ -34,11 +34,37 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 			_bullets3rdPerson[i] = _cartridge3rdPerson.transform.Find($"Bullet{i + 1}").gameObject;
 			_bullets1stPerson[i] = _cartridge1stPerson.transform.Find($"Bullet{i + 1}").gameObject;
 		}
+
+		ReapplyCartridgePosition();
 	}
 
 	protected override void ApplyWeaponRangedRecoil()
 	{
 		_playerCameraController.ApplyWeaponRecoilSingle(2, 0.02f, 0.08f);
+	}
+
+	private void ReapplyCartridgePosition()
+	{
+		if (PlayerMagazineAmmoCurrent == 0)
+		{
+			_cartridge1stPerson.SetActive(false);
+			_cartridge3rdPerson.SetActive(false);
+			return;
+		}
+
+		int lastShotIndex = PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent - 1;
+
+		if (lastShotIndex >= 0)
+		{
+			_cartridge1stPerson.transform.localPosition += new Vector3(0.025f * (lastShotIndex + 1), 0, 0);
+			_cartridge3rdPerson.transform.localPosition += new Vector3(0.025f * (lastShotIndex + 1), 0, 0);
+
+			for (int i = 0; i <= lastShotIndex; i++)
+			{
+				_bullets3rdPerson[i].SetActive(false);
+				_bullets1stPerson[i].SetActive(false);
+			}
+		}
 	}
 
 	protected override void HideUsedHarmonicaBullet()
@@ -52,7 +78,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		_cartridge1stPerson.transform.localPosition += new Vector3(0.025f, 0, 0);
 		_cartridge3rdPerson.transform.localPosition += new Vector3(0.025f, 0, 0);
 
-		if ((bulletIndex == 4 && PlayerAmmoTotalCurrent > 0))
+		if ((bulletIndex == 4 && PlayerAmmoReserve > 0))
 		{
 			EjectCartridge();
 		}
@@ -94,7 +120,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 	{
 		int count = Mathf.Min(ammoToAdd, PlayerMagazineAmmoMax);
 
-		if (PlayerAmmoTotalCurrent >= 5)
+		if (PlayerAmmoReserve + PlayerMagazineAmmoCurrent >= 5)
 		{
 			for (int i = 0; i < count; i++)
 			{
@@ -104,21 +130,19 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		}
 		else
 		{
-			for (int PlayerAmmoTotalCurrent = 0; PlayerAmmoTotalCurrent < count; PlayerAmmoTotalCurrent++)
+			for (int i = PlayerAmmoReserve; i < count; i++)
 			{
-				_bullets3rdPerson[PlayerAmmoTotalCurrent].SetActive(true);
-				_bullets1stPerson[PlayerAmmoTotalCurrent].SetActive(true);
+				_bullets3rdPerson[i].SetActive(true);
+				_bullets1stPerson[i].SetActive(true);
 			}
 		}
 
 		_cartridge1stPerson.SetActive(true);
 		_cartridge3rdPerson.SetActive(true);
 
-		Debug.Log(PlayerAmmoTotalCurrent);
+		Debug.Log(PlayerAmmoReserve);
 
-
-
-		if (PlayerAmmoTotalCurrent == 0)
+		if (PlayerAmmoReserve == 0)
 		{
 			_cartridge1stPerson.transform.localPosition = _cartridgeOriginalPosition;
 			_cartridge3rdPerson.transform.localPosition = _cartridgeOriginalPosition;

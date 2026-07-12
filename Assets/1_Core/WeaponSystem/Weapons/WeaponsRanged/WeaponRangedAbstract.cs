@@ -14,8 +14,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public int PlayerMagazineAmmoCurrent { get; set; }
 	public int PlayerMagazineAmmoMax { get; protected set; }
 	
-	public int PlayerAmmoTotalCurrent => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoCurrent;
-	public int PlayerAmmoTotalMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].TotalAmmoMax;
+	public int PlayerAmmoReserve => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].AmmoReserve;
+	public int PlayerAmmoMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].AmmoMax;
 	protected BulletHoleManager _bulletHoleManager;
 	protected PlayerCameraController _playerCameraController;
 
@@ -199,18 +199,16 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			return;
 		}
 
-		int reserve = PlayerAmmoTotalCurrent;
-
-		if (reserve <= 0)
+		if (PlayerAmmoReserve <= 0)
 		{
 			Debug.Log("Not enough Ammo to reload");
 			return;
 		}
 
-		int ammoToAdd = Mathf.Min(reserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
+		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
-		data.TotalAmmoCurrent -= ammoToAdd;
+		data.AmmoReserve -= ammoToAdd;
 		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
 
 		PlayerMagazineAmmoCurrent += ammoToAdd;
@@ -218,7 +216,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
 		{
-			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.TotalAmmoCurrent);
+			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.AmmoReserve);
 
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}

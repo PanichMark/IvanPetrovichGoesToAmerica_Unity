@@ -9,5 +9,4 @@ public struct WeaponRangedData
 	public string AmmoTypeJson;
 	public int MagazineAmmoMax;
 	public int MagazineAmmoCurrent;
-	
 }

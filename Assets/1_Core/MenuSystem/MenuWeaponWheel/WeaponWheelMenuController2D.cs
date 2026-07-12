@@ -115,7 +115,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 
 		if (_playerResourcesAmmoManager.AmmoDictionary.TryGetValue(weaponComponent.PlayerWeaponAmmoType, out var ammoData))
 		{
-			_textComponentWeaponAmmoReserveNumber.text = ammoData.TotalAmmoCurrent.ToString();
+			_textComponentWeaponAmmoReserveNumber.text = ammoData.AmmoReserve.ToString();
 		}
 	}
 
@@ -133,7 +133,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 
 					_weaponRangedAbstractLeft = _weaponController.LeftHandWeapon.GetComponent<WeaponRangedAbstract>();
 					_textComponentWeaponAmmoMagazineNumber.text = _weaponRangedAbstractLeft.PlayerMagazineAmmoCurrent.ToString();
-					_textComponentWeaponAmmoReserveNumber.text = _weaponRangedAbstractLeft.PlayerAmmoTotalCurrent.ToString();
+					_textComponentWeaponAmmoReserveNumber.text = _weaponRangedAbstractLeft.PlayerAmmoReserve.ToString();
 				}
 				else
 				{
@@ -161,7 +161,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 
 					_weaponRangedAbstractRight = _weaponController.RightHandWeapon.GetComponent<WeaponRangedAbstract>();
 					_textComponentWeaponAmmoMagazineNumber.text = _weaponRangedAbstractRight.PlayerMagazineAmmoCurrent.ToString();
-					_textComponentWeaponAmmoReserveNumber.text = _weaponRangedAbstractRight.PlayerAmmoTotalCurrent.ToString();
+					_textComponentWeaponAmmoReserveNumber.text = _weaponRangedAbstractRight.PlayerAmmoReserve.ToString();
 				}
 				else
 				{
