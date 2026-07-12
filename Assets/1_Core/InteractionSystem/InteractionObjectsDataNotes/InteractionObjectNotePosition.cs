@@ -5,7 +5,10 @@ public class InteractionObjectNotePosition : ScriptableObject
 {
 	public Vector3 ImagePosition;
 	public Vector2 ImageRotation;
+	public float ImageWidth;
+	public float ImageHeight;
 	public Vector3 TextPosition;
 	public Vector2 TextRotation;
-	public bool IsThereText;
+	public float TextWidth;
+	public float TextHeight;
 }

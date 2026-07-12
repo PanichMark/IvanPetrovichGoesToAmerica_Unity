@@ -6,4 +6,6 @@ public class InteractionObjectNoteData : ScriptableObject
 	public TextAsset NoteText_RU;
 	public TextAsset NoteText_EN;
 	public Sprite NoteImage;
+	public InteractionObjectNotePosition NotePosition;
+	public bool IsLittleText;
 }

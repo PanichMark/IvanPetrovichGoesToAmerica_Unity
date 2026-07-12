@@ -10,7 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 041903f9090d3c44ab940b9dea71e7a1, type: 3}
-  m_Name: InteractionObjectNotePosition_ImageBig
+  m_Name: InteractionObjectNotePosition_Map
   m_EditorClassIdentifier: 
-  PoisitonImage: {x: 0, y: 0, z: 0}
-  PositionText: {x: 0, y: 0, z: 0}
+  ImagePosition: {x: -324, y: 75, z: 0}
+  ImageRotation: {x: 0, y: 0}
+  ImageWidth: 1160
+  ImageHeight: 820
+  TextPosition: {x: 606, y: 60, z: 0}
+  TextRotation: {x: 0, y: 0}
+  TextWidth: 620
+  TextHeight: 460

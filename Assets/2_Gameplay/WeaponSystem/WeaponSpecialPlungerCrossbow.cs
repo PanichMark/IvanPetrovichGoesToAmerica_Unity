@@ -287,11 +287,6 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	{
 		if (_isCrossbowAttacking)
 		{
-			if (_hookedObjectNavMeshAgent != null)
-			{
-			//hookedObjectNavMeshAgent.enabled = true;
-			}
-
 			_hookedObjectRigidbody.linearVelocity = Vector3.zero;
 
 			_hookedObjectRigidbody.useGravity = true;
@@ -309,6 +304,12 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	{
 		// Проверка на null защищает от ошибки, если эти объекты были уничтожены
 		//Debug.Log(_gameSceneManager);
+		if (_hookedObject != null)
+		{
+			StopHookingObject();
+		}
+
+
 		if (_gameSceneManager != null)
 		{
 			_gameSceneManager.OnBeginLoadingMainMenuScene -= FullStopPlunging;
@@ -405,6 +406,11 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 			// Отключаем ОБЕ линии рендера
 			_lineRenderer1stPerson.enabled = false;
 			_lineRenderer3rdPerson.enabled = false;
+
+			if (_hookedObject != null)
+			{
+				StopHookingObject();
+			}
 		}
 	}
 
