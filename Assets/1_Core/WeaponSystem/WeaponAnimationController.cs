@@ -166,13 +166,4 @@ public class WeaponAnimationController : MonoBehaviour
 			_playerAnimator.CrossFade(animation, crossfade);
 		}
 	}
-
-	private void ChangePlayerLegKickAttackAnimation(string animation, float crossfade = 0.2f)
-	{
-		if (_currentPlayerLegKickAttackAnimation != animation)
-		{
-			_currentPlayerLegKickAttackAnimation = animation;
-			_playerAnimator.CrossFade(animation, crossfade);
-		}
-	}
 }

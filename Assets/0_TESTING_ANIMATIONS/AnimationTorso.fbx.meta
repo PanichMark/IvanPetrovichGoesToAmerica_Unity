@@ -52,7 +52,7 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      bodyMask: 01000000010000000000000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
       transformMask:
@@ -61,10 +61,6 @@ ModelImporter:
       - path: Armature_Humanoid
         weight: 1
       - path: Armature_Humanoid/Root
-        weight: 1
-      - path: Armature_Humanoid/Root/ChestPheumaticPiston_Bottom.L
-        weight: 1
-      - path: Armature_Humanoid/Root/ChestPheumaticPiston_Bottom.R
         weight: 1
       - path: Armature_Humanoid/Root/Monowheel_Segment1
         weight: 1
@@ -106,8 +102,6 @@ ModelImporter:
         weight: 1
       - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerThumb1.L/FingerThumb2.L
         weight: 1
-      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/WeaponSlot_Hand.L
-        weight: 1
       - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/UniversalJoint_Palm_Swivel.L
         weight: 1
       - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/UniversalJoint_Palm_Swivel.L/UniversalJoint_Palm_Ball.L
@@ -146,33 +140,13 @@ ModelImporter:
         weight: 1
       - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerThumb1.R/FingerThumb2.R
         weight: 1
-      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R
-        weight: 1
       - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/UniversalJoint_Palm_Swivel.R
         weight: 1
       - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/UniversalJoint_Palm_Swivel.R/UniversalJoint_Palm_Ball.R
         weight: 1
-      - path: Armature_Humanoid/Root/Spine/ChestPheumaticPiston_Top.L
-        weight: 1
-      - path: Armature_Humanoid/Root/Spine/ChestPheumaticPiston_Top.R
-        weight: 1
       - path: Armature_Humanoid/Root/Spine/Neck
         weight: 1
       - path: Armature_Humanoid/Root/Spine/Neck/Head
-        weight: 1
-      - path: Armature_Humanoid/Root/Spine/Neck_Segment1
-        weight: 1
-      - path: Armature_Humanoid/Root/Spine/Neck_Segment1/Neck_Segment2
-        weight: 1
-      - path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.L
-        weight: 1
-      - path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.L/UniversalJoint_Shoulder_Ball.L
-        weight: 1
-      - path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.R
-        weight: 1
-      - path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.R/UniversalJoint_Shoulder_Ball.R
-        weight: 1
-      - path: Armature_Humanoid/Root/Spine/WeaponSlot_Chest
         weight: 1
       - path: Armature_Humanoid/Root/Thigh.L
         weight: 1
@@ -189,16 +163,6 @@ ModelImporter:
       - path: Armature_Humanoid/Root/Thigh.R/Leg.R/Foot.R
         weight: 1
       - path: Armature_Humanoid/Root/Thigh.R/Leg.R/Foot.R/Toes.R
-        weight: 1
-      - path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.L
-        weight: 1
-      - path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.L/UniversalJoint_Hip_Ball.L
-        weight: 1
-      - path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.R
-        weight: 1
-      - path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.R/UniversalJoint_Hip_Ball.R
-        weight: 1
-      - path: Armature_Humanoid/Root/WeaponSlot_Belt
         weight: 1
       maskType: 1
       maskSource: {fileID: 31900000, guid: e1ff3be0015553b4dba85ecf26ce1d3d, type: 2}
