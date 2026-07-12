@@ -167,7 +167,9 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
 		}
 
+		HideUsedHarmonicaBullet();
 		PlayerMagazineAmmoCurrent--;
+		
 		Debug.Log($"Shoot {WeaponName}");
 
 		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
@@ -176,6 +178,16 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 
 		ApplyWeaponRangedRecoil();
+	}
+
+	protected virtual void HideUsedHarmonicaBullet()
+	{
+		// Оставляем пустым или добавляем общую логику для всех оружий
+	}
+
+	protected virtual void RefillHarmonicaCartridge(int ammoToAdd)
+	{
+		// Оставляем пустым или добавляем общую логику для всех оружий
 	}
 
 	public void ReloadPlayerWeapon()
@@ -201,7 +213,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
 
 		PlayerMagazineAmmoCurrent += ammoToAdd;
-
+		RefillHarmonicaCartridge(ammoToAdd);
 
 		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
 		{

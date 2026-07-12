@@ -82,24 +82,24 @@ public class WeaponAnimationController : MonoBehaviour
 		{
 			if (_weaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 			{
-				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 1);
+				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRightEquip"), 1);
 				ChangePlayerWeaponRightAnimation("EquipRightWeapon");
 			}
 			else
 			{
 				ChangePlayerWeaponRightAnimation("UnequipRightWeapon");
-				if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRight")).IsName("UnequipRightWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRight")).normalizedTime >= 0.99f)
+				if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRightEquip")).IsName("UnequipRightWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRightEquip")).normalizedTime >= 0.99f)
 				{
-					_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 0);
+					_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRightEquip"), 0);
 				}
 			}
 		}
 		else
 		{
 			ChangePlayerWeaponRightAnimation("UnequipRightWeapon");
-			if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRight")).IsName("UnequipRightWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRight")).normalizedTime >= 0.99f)
+			if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRightEquip")).IsName("UnequipRightWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponRightEquip")).normalizedTime >= 0.99f)
 			{
-				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 0);
+				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRightEquip"), 0);
 			}
 		}
 
@@ -107,16 +107,16 @@ public class WeaponAnimationController : MonoBehaviour
 		{
 			if (_weaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
 			{
-				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeft"), 1);
+				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeftEquip"), 1);
 				ChangePlayerWeaponLeftAnimation("EquipLeftWeapon");
 			}
 			else
 			{
 				ChangePlayerWeaponLeftAnimation("UnequipLeftWeapon");
 
-				if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeft")).IsName("UnequipLeftWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeft")).normalizedTime >= 0.99f)
+				if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeftEquip")).IsName("UnequipLeftWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeftEquip")).normalizedTime >= 0.99f)
 				{
-					_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeft"), 0);
+					_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeftEquip"), 0);
 				}
 			}
 		}
@@ -124,9 +124,9 @@ public class WeaponAnimationController : MonoBehaviour
 		{
 			ChangePlayerWeaponLeftAnimation("UnequipLeftWeapon");
 
-			if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeft")).IsName("UnequipLeftWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeft")).normalizedTime >= 0.99f)
+			if (_playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeftEquip")).IsName("UnequipLeftWeapon") && _playerAnimator.GetCurrentAnimatorStateInfo(_playerAnimator.GetLayerIndex("WeaponLeftEquip")).normalizedTime >= 0.99f)
 			{
-				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeft"), 0);
+				_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeftEquip"), 0);
 			}
 		}
 
