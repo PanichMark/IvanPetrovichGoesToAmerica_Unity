@@ -25,7 +25,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerCameraStateMachineController = playerCameraStateMachineController;
 
-		ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Idle_Standing_Type1.ToString());
+		ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing_Type1.ToString());
 
 		Debug.Log("PlayerMovementAnimationController Initialized");
 	}
@@ -37,7 +37,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 
 		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdle.ToString())
 		{
-			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Idle_Standing_Type1.ToString());
+			ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing_Type1.ToString());
 		}
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalking.ToString())
 		{
@@ -80,7 +80,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle.ToString())
 		{
 
-			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Idle_Crouching_Type1.ToString());
+			ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Crouching_Type1.ToString());
 		}
 		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking.ToString())
 		{

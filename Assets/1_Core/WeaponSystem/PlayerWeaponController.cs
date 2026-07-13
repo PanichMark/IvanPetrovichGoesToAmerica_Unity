@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Hardware;
 using UnityEngine;
 
 public delegate void OnAnyWeaponUnlocked(GameObject weaponPrefab);
 
 public delegate void OnWeaponChanged(WeaponHandsEnum activeHand);
+
 
 public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 {
@@ -21,9 +21,20 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	public Dictionary<string, GameObject> UnlockedWeapons = new Dictionary<string, GameObject>();
 	public delegate void OnWeaponEqiupment();
 
+
+
+	public delegate void WeaponVisibilityHandler();
+	public event WeaponVisibilityHandler OnShowWeaponRight;
+	public event WeaponVisibilityHandler OnHideWeaponRight;
+	public event WeaponVisibilityHandler OnShowWeaponLeft;
+	public event WeaponVisibilityHandler OnHideWeaponLeft;
+
 	public event OnWeaponEqiupment OnWeaponHidden;
 	private bool _wasRightButtonPressedLastFrame;
 	private bool _wasLeftButtonPressedLastFrame;
+
+	public delegate void WeaponShootHandler(WeaponHandsEnum weaponHandType);
+	public event WeaponShootHandler OnWeaponShoot;
 
 	public event OnAnyWeaponUnlocked OnAnyWeaponUnlocked; 
 
@@ -110,6 +121,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
 			{
 				RightWeaponAttack();
+				OnWeaponShoot?.Invoke(WeaponHandsEnum.HandRight);
 				_wasRightButtonPressedLastFrame = true;
 			}
 		}
@@ -131,6 +143,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
 			{
 				LeftWeaponAttack();
+				OnWeaponShoot?.Invoke(WeaponHandsEnum.HandLeft);
 				_wasLeftButtonPressedLastFrame = true;
 			}
 		}
@@ -484,6 +497,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 				if (RightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
 					RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+
+				OnShowWeaponRight?.Invoke();
 			}
 		}
 		else if (handType == WeaponHandsEnum.HandLeft)
@@ -495,6 +510,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 				if (LeftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
 					LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+
+				OnShowWeaponLeft?.Invoke();
 			}
 		}
 		else
@@ -514,6 +531,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 				if (RightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
 					RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
+
+				OnHideWeaponRight?.Invoke();
 			}
 		}
 		else if (handType == WeaponHandsEnum.HandLeft)
@@ -525,11 +544,9 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 				if (LeftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
 					LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
+
+				OnHideWeaponLeft?.Invoke();
 			}
-		}
-		else
-		{
-			throw new ArgumentException("Неверный тип руки.");
 		}
 	}
 

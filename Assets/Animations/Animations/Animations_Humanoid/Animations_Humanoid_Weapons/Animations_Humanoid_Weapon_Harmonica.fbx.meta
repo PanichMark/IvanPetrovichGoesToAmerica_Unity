@@ -31,18 +31,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Armature_Humanoid|Animation_Humanoid_Weapon_Harmonica_ReloadInsertCartridge
-      takeName: Armature_Humanoid|Animation_Humanoid_Weapon_Harmonica_ReloadInsertCartridge
+      name: Armature_Humanoid|Animation_Humanoid_Weapon_Harmonica_Shoot (1)
+      takeName: Armature_Humanoid|Animation_Humanoid_Weapon_Harmonica_Shoot
       internalID: -2519747967245385749
       firstFrame: 0
-      lastFrame: 59
+      lastFrame: 4
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -254,12 +254,156 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      bodyMask: 01000000010000000000000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature_Humanoid
+        weight: 1
+      - path: Armature_Humanoid/Root
+        weight: 1
+      - path: Armature_Humanoid/Root/ChestPheumaticPiston_Bottom.L
+        weight: 1
+      - path: Armature_Humanoid/Root/ChestPheumaticPiston_Bottom.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Monowheel_Segment1
+        weight: 1
+      - path: Armature_Humanoid/Root/Monowheel_Segment1/Monowheel_Segment2
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerIndex1.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerIndex1.L/FingerIndex2.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerIndex1.L/FingerIndex2.L/FingerIndex3.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerMiddle1.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerMiddle1.L/FingerMiddle2.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerMiddle1.L/FingerMiddle2.L/FingerMiddle3.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerPinky1.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerPinky1.L/FingerPinky2.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerPinky1.L/FingerPinky2.L/FingerPinky3.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerRing1.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerRing1.L/FingerRing2.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerRing1.L/FingerRing2.L/FingerRing3.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerThumb1.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerThumb1.L/FingerThumb2.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/WeaponSlot_Hand.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/UniversalJoint_Palm_Swivel.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/UniversalJoint_Palm_Swivel.L/UniversalJoint_Palm_Ball.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerIndex1.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerIndex1.R/FingerIndex2.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerIndex1.R/FingerIndex2.R/FingerIndex3.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerMiddle1.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerMiddle1.R/FingerMiddle2.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerMiddle1.R/FingerMiddle2.R/FingerMiddle3.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerPinky1.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerPinky1.R/FingerPinky2.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerPinky1.R/FingerPinky2.R/FingerPinky3.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerRing1.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerRing1.R/FingerRing2.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerRing1.R/FingerRing2.R/FingerRing3.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerThumb1.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerThumb1.R/FingerThumb2.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/UniversalJoint_Palm_Swivel.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/UniversalJoint_Palm_Swivel.R/UniversalJoint_Palm_Ball.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/ChestPheumaticPiston_Top.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/ChestPheumaticPiston_Top.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Neck
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Neck/Head
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Neck_Segment1
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/Neck_Segment1/Neck_Segment2
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.L/UniversalJoint_Shoulder_Ball.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.R/UniversalJoint_Shoulder_Ball.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Spine/WeaponSlot_Chest
+        weight: 1
+      - path: Armature_Humanoid/Root/Thigh.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Thigh.L/Leg.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Thigh.L/Leg.L/Foot.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Thigh.L/Leg.L/Foot.L/Toes.L
+        weight: 1
+      - path: Armature_Humanoid/Root/Thigh.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Thigh.R/Leg.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Thigh.R/Leg.R/Foot.R
+        weight: 1
+      - path: Armature_Humanoid/Root/Thigh.R/Leg.R/Foot.R/Toes.R
+        weight: 1
+      - path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.L
+        weight: 1
+      - path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.L/UniversalJoint_Hip_Ball.L
+        weight: 1
+      - path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.R
+        weight: 1
+      - path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.R/UniversalJoint_Hip_Ball.R
+        weight: 1
+      - path: Armature_Humanoid/Root/WeaponSlot_Belt
+        weight: 1
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: e1ff3be0015553b4dba85ecf26ce1d3d, type: 2}
       additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:

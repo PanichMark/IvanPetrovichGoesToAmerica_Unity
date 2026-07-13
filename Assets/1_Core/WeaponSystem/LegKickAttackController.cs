@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public delegate void OnLegKickStateChanged(bool isKicking);
+
 public class LegKickAttackController : MonoBehaviour
 {
 	private Bootstrap _bootstrap;
@@ -11,6 +13,7 @@ public class LegKickAttackController : MonoBehaviour
 	private PlayerWeaponController _playerWeaponController;
 	public bool IsPlayerLegKicking { get; private set; }
 
+	public event OnLegKickStateChanged OnLegKickStateChanged;
 	private float _capsuleHeight;    
 	private float _capsuleRadius;  
 	private float _forwardOffset;   
@@ -75,6 +78,8 @@ public class LegKickAttackController : MonoBehaviour
 		StartCoroutine(_playerMovementController.DisablePlayerMovementDuringLegKickAttack());
 		StartCoroutine(DisableLegKickAttackActivation());
 
+		OnLegKickStateChanged?.Invoke(true);
+
 		Vector3 startPoint = _cachedPlayer.transform.position + _cachedPlayer.transform.forward * _forwardOffset;
 		Vector3 endPoint = _cachedPlayer.transform.position + _cachedPlayer.transform.forward * _forwardOffset + _cachedPlayer.transform.up * _capsuleHeight;
 
@@ -102,6 +107,8 @@ public class LegKickAttackController : MonoBehaviour
 		IsPlayerLegKicking = true;
 		yield return new WaitForSeconds(0.95f);
 		IsPlayerLegKicking = false;
+
+		OnLegKickStateChanged?.Invoke(false);
 	}
 
 	IEnumerator DelayLegKickAttackDamage(IDamageable target, float delayTime, float damageAmount)
