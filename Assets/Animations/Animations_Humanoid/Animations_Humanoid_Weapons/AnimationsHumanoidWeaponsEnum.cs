@@ -1,0 +1,16 @@
+﻿public enum AnimationsHumanoidWeaponsEnum
+{
+	EquipWeapon_Right,
+	UnequipWeapon_Right,
+	EquipWeapon_Left,
+	UnequipWeapon_Left,
+	Ranged_HarmonicaRevolver_HoldWeapon_Right,
+	Ranged_HarmonicaRevolver_Shoot_Right,
+	Ranged_HarmoniceRevolver_InsertCartridge_Right,
+	Ranged_HarmoniceRevolver_PushCartridge_Right,
+	Ranged_HarmonicaRevolver_HoldWeapon_left,
+	Ranged_HarmonicaRevolver_Shoot_Left,
+	Ranged_HarmoniceRevolver_InsertCartridge_Left,
+	Ranged_HarmoniceRevolver_PushCartridge_Left,
+	LegKick
+}

@@ -7,7 +7,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Base Layer
+  m_Name: LayerMovement
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1238238251663467822}
@@ -65,7 +65,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Animation_Humanoid_Movement_RunningForward
+  m_Name: Movement_RunningForward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -91,7 +91,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UnequipRightWeapon
+  m_Name: UnequipWeapon_Right
   m_Speed: -1
   m_CycleOffset: 0
   m_Transitions: []
@@ -117,7 +117,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Animation_Humanoid_IdleStanding_Type1
+  m_Name: Idle_Standing_Type1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -143,7 +143,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EquipLeftWeapon
+  m_Name: EquipWeapon_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -169,7 +169,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WeaponRightEquip
+  m_Name: LayerWeaponRightEquip
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 4690665730277086256}
@@ -180,6 +180,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -6662581459537049471}
     m_Position: {x: 650, y: 230, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 1403832970598694142}
+    m_Position: {x: 663.7463, y: 73.33617, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -197,7 +200,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Jumping
+  m_Name: Movement_Jumping
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -223,7 +226,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Animation_Humanoid_Movement_Crouching
+  m_Name: Movement_Crouching
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -249,7 +252,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LegKick
+  m_Name: LayerLegKick
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8779646177976621909}
@@ -274,7 +277,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Animation_Humanoid_Movement_WalkingLeft
+  m_Name: Movement_WalkingLeft
   m_Speed: -2
   m_CycleOffset: 0
   m_Transitions: []
@@ -300,7 +303,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UnequipLeftWeapon
+  m_Name: UnequipWeapon_Left
   m_Speed: -1
   m_CycleOffset: 0
   m_Transitions: []
@@ -326,7 +329,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Animation_Humanoid_Movement_LedgeClimbing
+  m_Name: Movement_LedgeClimbing
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -352,7 +355,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Animation_Humanoid_Movement_Sliding
+  m_Name: Movement_Sliding
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -378,7 +381,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LookUpDown
+  m_Name: LayerLookUpDown
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8529201749868490044}
@@ -399,7 +402,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AnimatiorController_Player
+  m_Name: AnimatiorController_Humanoid_Player
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: UpDown
@@ -410,7 +413,7 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
-    m_Name: Base Layer
+    m_Name: LayerMovement
     m_StateMachine: {fileID: -9018259318760921067}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -422,7 +425,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: LookUpDown
+    m_Name: LayerLookUpDown
     m_StateMachine: {fileID: -40534765344528160}
     m_Mask: {fileID: 31900000, guid: f8f3653302c7a914595266889802651e, type: 2}
     m_Motions: []
@@ -434,7 +437,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: WeaponRightEquip
+    m_Name: LayerWeaponRightEquip
     m_StateMachine: {fileID: -5426494420079881186}
     m_Mask: {fileID: 31900000, guid: b4b7f7ac64424c14f828d32012bfc267, type: 2}
     m_Motions: []
@@ -446,7 +449,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: WeaponRightAttack
+    m_Name: LayerWeaponRightAttack
     m_StateMachine: {fileID: 4167858689886343810}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -458,7 +461,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: WeaponLeftEquip
+    m_Name: LayerWeaponLeftEquip
     m_StateMachine: {fileID: 7401290483320384815}
     m_Mask: {fileID: 31900000, guid: 2a24be45667e5e1478fff1431ecc762c, type: 2}
     m_Motions: []
@@ -470,7 +473,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: WeaponLeftAttack
+    m_Name: LayerWeaponLeftAttack
     m_StateMachine: {fileID: 4402074116952421038}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -482,7 +485,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: LegKick
+    m_Name: LayerLegKick
     m_StateMachine: {fileID: -4816199193949651861}
     m_Mask: {fileID: 31900000, guid: 29cdc5796f686cf4bb15951ccf6176be, type: 2}
     m_Motions: []
@@ -500,7 +503,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EquipRightWeapon
+  m_Name: EquipWeapon_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -526,7 +529,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Animation_Humanoid_Movement_WalkingBackward
+  m_Name: Movement_WalkingBackward
   m_Speed: -1
   m_CycleOffset: 0
   m_Transitions: []
@@ -552,7 +555,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CrouchingIdle
+  m_Name: Idle_Crouching_Type1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -571,6 +574,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &1403832970598694142
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ranged_HarmonicaRevolver_HoldWeapon
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 0}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &2210851579385703180
 AnimatorState:
   serializedVersion: 6
@@ -578,7 +607,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Animation_Humanoid_Movement_WalkingRight
+  m_Name: Movement_WalkingRight
   m_Speed: 2
   m_CycleOffset: 0
   m_Transitions: []
@@ -604,7 +633,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Animation_Humanoid_Movement_WalkingForward
+  m_Name: Movement_WalkingForward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -687,7 +716,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WeaponRightAttack
+  m_Name: LayerWeaponRightAttack
   m_ChildStates: []
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
@@ -706,7 +735,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WeaponLeftAttack
+  m_Name: LayerWeaponLeftAttack
   m_ChildStates: []
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
@@ -751,7 +780,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Falling
+  m_Name: Movement_Falling
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -777,7 +806,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WeaponLeftEquip
+  m_Name: LayerWeaponLeftEquip
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 3802546854219816234}
