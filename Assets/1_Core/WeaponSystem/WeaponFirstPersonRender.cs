@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
+
 public class WeaponFirstPersonRender : MonoBehaviour
 {
 	private WeaponAbstract _leftHandWeaponComponent;
-	private Bootstrap _bootstrap;
 	private WeaponAbstract _rightHandWeaponComponent;
 	private PlayerCameraStateMachineController _playerCameraStateMachine;
 	private PlayerWeaponController _weaponController;
@@ -15,7 +15,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 	private GameObject _playerThirdPersonHandLeft;
 
 	public void Initialize(
-		Bootstrap bootstrap,
 		GameSceneManager gameSceneManager,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerWeaponController weaponController,
@@ -24,7 +23,6 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		GameObject playerThirdPersonHandRight,
 		GameObject playerThirdPersonHandLeft)
 	{
-		_bootstrap = bootstrap;
 		_gameSceneManager = gameSceneManager;
 		_playerCameraStateMachine = playerCameraStateMachineController;
 		_weaponController = weaponController;
@@ -62,6 +60,9 @@ public class WeaponFirstPersonRender : MonoBehaviour
 				{
 					ShowPlayerWeapon(_rightHandWeaponComponent.FirstPersonWeaponModelInstance, true);
 					HidePlayerWeapon(_rightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
+
+					HideBodyPart(_playerThirdPersonHandRight);
+					ShowFirstPersonHand(_playerFirstPersonHandRight);
 				}
 			}
 			else
@@ -70,8 +71,21 @@ public class WeaponFirstPersonRender : MonoBehaviour
 				{
 					ShowPlayerWeapon(_rightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
 					HidePlayerWeapon(_rightHandWeaponComponent.FirstPersonWeaponModelInstance, true);
+
+					ShowBodyPart(_playerThirdPersonHandRight);
+					HideFirstPersonHand(_playerFirstPersonHandRight);
+				}
+				else
+				{
+					ShowBodyPart(_playerThirdPersonHandRight);
+					HideFirstPersonHand(_playerFirstPersonHandRight);
 				}
 			}
+		}
+		else
+		{
+			ShowBodyPart(_playerThirdPersonHandRight);
+			HideFirstPersonHand(_playerFirstPersonHandRight);
 		}
 	}
 
@@ -85,6 +99,9 @@ public class WeaponFirstPersonRender : MonoBehaviour
 				{
 					ShowPlayerWeapon(_leftHandWeaponComponent.FirstPersonWeaponModelInstance, true);
 					HidePlayerWeapon(_leftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
+
+					HideBodyPart(_playerThirdPersonHandLeft);
+					ShowFirstPersonHand(_playerFirstPersonHandLeft);
 				}
 			}
 			else
@@ -93,43 +110,9 @@ public class WeaponFirstPersonRender : MonoBehaviour
 				{
 					ShowPlayerWeapon(_leftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
 					HidePlayerWeapon(_leftHandWeaponComponent.FirstPersonWeaponModelInstance, true);
-				}
-			}
-		}
-	}
 
-	void FixedUpdate()
-	{
-		if (!_bootstrap.IsBootstrapInitialized)
-			return;
-
-		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")
-		{
-			if (_weaponController.RightHandWeapon != null)
-			{
-				if (_rightHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
-				{
-					HideBodyPart(_playerThirdPersonHandRight);
-					ShowFirstPersonHand(_playerFirstPersonHandRight);
-				}
-				else
-				{
-					ShowBodyPart(_playerThirdPersonHandRight);
-					HideFirstPersonHand(_playerFirstPersonHandRight);
-				}
-			}
-			else
-			{
-				ShowBodyPart(_playerThirdPersonHandRight);
-				HideFirstPersonHand(_playerFirstPersonHandRight);
-			}
-
-			if (_weaponController.LeftHandWeapon != null)
-			{
-				if (_leftHandWeaponComponent.FirstPersonWeaponModelInstance.activeInHierarchy)
-				{
-					HideBodyPart(_playerThirdPersonHandLeft);
-					ShowFirstPersonHand(_playerFirstPersonHandLeft);
+					ShowBodyPart(_playerThirdPersonHandLeft);
+					HideFirstPersonHand(_playerFirstPersonHandLeft);
 				}
 				else
 				{
@@ -137,18 +120,10 @@ public class WeaponFirstPersonRender : MonoBehaviour
 					HideFirstPersonHand(_playerFirstPersonHandLeft);
 				}
 			}
-			else
-			{
-				ShowBodyPart(_playerThirdPersonHandLeft);
-				HideFirstPersonHand(_playerFirstPersonHandLeft);
-			}
 		}
 		else
 		{
-			ShowBodyPart(_playerThirdPersonHandRight);
 			ShowBodyPart(_playerThirdPersonHandLeft);
-
-			HideFirstPersonHand(_playerFirstPersonHandRight);
 			HideFirstPersonHand(_playerFirstPersonHandLeft);
 		}
 	}
