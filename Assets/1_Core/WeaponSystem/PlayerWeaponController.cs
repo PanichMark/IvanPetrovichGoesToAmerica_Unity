@@ -326,6 +326,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 
 		WeaponRangedAbstract rangedToSave = null;
+
 		if (IsLeftHand && LeftHandWeapon != null)
 		{
 			rangedToSave = LeftHandWeaponComponent as WeaponRangedAbstract;
@@ -346,6 +347,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 
 		bool isSameObject = (IsLeftHand && LeftHandWeapon == weaponInstance) || (!IsLeftHand && RightHandWeapon == weaponInstance);
+
 		if (isSameObject)
 		{
 			return;
@@ -355,10 +357,12 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (IsLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
+			HideWeapon(WeaponHandsEnum.HandRight);
 			DestroyWeapon(WeaponHandsEnum.HandRight);
 		}
 		else if (!IsLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
+			HideWeapon(WeaponHandsEnum.HandLeft);
 			DestroyWeapon(WeaponHandsEnum.HandLeft);
 		}
 
@@ -387,6 +391,11 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 			LeftHandWeaponComponent = weaponComponent;
 
+			if (_playerBehaviour.IsPlayerArmed)
+			{
+				ShowWeapon(WeaponHandsEnum.HandLeft);
+			}
+
 			_playerBehaviour.ArmPlayer();
 		}
 		else
@@ -403,6 +412,11 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			weaponComponent.InstantiateWeapon(WeaponHandsEnum.HandRight);
 
 			RightHandWeaponComponent = weaponComponent;
+
+			if (_playerBehaviour.IsPlayerArmed)
+			{
+				ShowWeapon(WeaponHandsEnum.HandRight);
+			}
 
 			_playerBehaviour.ArmPlayer();
 		}

@@ -8,7 +8,7 @@
 	Ranged_HarmonicaRevolver_Shoot_Right,
 	Ranged_HarmoniceRevolver_InsertCartridge_Right,
 	Ranged_HarmoniceRevolver_PushCartridge_Right,
-	Ranged_HarmonicaRevolver_Hold_left,
+	Ranged_HarmonicaRevolver_Hold_Left,
 	Ranged_HarmonicaRevolver_Shoot_Left,
 	Ranged_HarmoniceRevolver_InsertCartridge_Left,
 	Ranged_HarmoniceRevolver_PushCartridge_Left,

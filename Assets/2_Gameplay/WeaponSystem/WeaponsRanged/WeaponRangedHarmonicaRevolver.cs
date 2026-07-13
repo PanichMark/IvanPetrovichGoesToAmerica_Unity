@@ -55,7 +55,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		}
 
 		_cartgridgeSlidingStep = PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent;
-		Debug.Log(_cartgridgeSlidingStep);
+		//Debug.Log(_cartgridgeSlidingStep);
 
 		if (_cartgridgeSlidingStep > 0)
 		{
@@ -104,6 +104,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		SceneManager.MoveGameObjectToScene(_ejectedCartridge, SceneManager.GetSceneByBuildIndex(1));
 
 		_ejectedCartridge.transform.position = transform.position;
+		_ejectedCartridge.transform.rotation = _cartridge1stPerson.transform.rotation;
 
 		_ejectedCartridge.AddComponent<BoxCollider>();
 		_ejectedCartridge.AddComponent<Rigidbody>();

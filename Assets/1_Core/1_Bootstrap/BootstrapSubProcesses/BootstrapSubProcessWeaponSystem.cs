@@ -115,7 +115,8 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController,
 			WeaponController,
 			_legKickAttackController,
-			_gameObjectPlayer);
+			_gameObjectPlayer,
+			_gameObjectPlayerCamera);
 
 		_weaponFirstPersonRender.Initialize(
 			_bootstrap,

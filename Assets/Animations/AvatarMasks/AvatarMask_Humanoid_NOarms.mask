@@ -1,0 +1,155 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AvatarMask_Humanoid_NOarms
+  m_Mask: 01000000010000000100000001000000010000000000000000000000000000000000000001000000010000000000000000000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature_Humanoid
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/ChestPheumaticPiston_Bottom.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/ChestPheumaticPiston_Bottom.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Monowheel_Segment1
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Monowheel_Segment1/Monowheel_Segment2
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerIndex1.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerIndex1.L/FingerIndex2.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerIndex1.L/FingerIndex2.L/FingerIndex3.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerMiddle1.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerMiddle1.L/FingerMiddle2.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerMiddle1.L/FingerMiddle2.L/FingerMiddle3.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerPinky1.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerPinky1.L/FingerPinky2.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerPinky1.L/FingerPinky2.L/FingerPinky3.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerRing1.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerRing1.L/FingerRing2.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerRing1.L/FingerRing2.L/FingerRing3.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerThumb1.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/FingerThumb1.L/FingerThumb2.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/WeaponSlot_Hand.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/UniversalJoint_Palm_Swivel.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/UniversalJoint_Palm_Swivel.L/UniversalJoint_Palm_Ball.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerIndex1.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerIndex1.R/FingerIndex2.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerIndex1.R/FingerIndex2.R/FingerIndex3.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerMiddle1.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerMiddle1.R/FingerMiddle2.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerMiddle1.R/FingerMiddle2.R/FingerMiddle3.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerPinky1.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerPinky1.R/FingerPinky2.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerPinky1.R/FingerPinky2.R/FingerPinky3.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerRing1.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerRing1.R/FingerRing2.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerRing1.R/FingerRing2.R/FingerRing3.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerThumb1.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/FingerThumb1.R/FingerThumb2.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/UniversalJoint_Palm_Swivel.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/UniversalJoint_Palm_Swivel.R/UniversalJoint_Palm_Ball.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/ChestPheumaticPiston_Top.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/ChestPheumaticPiston_Top.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Neck
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Neck/Head
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Neck_Segment1
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/Neck_Segment1/Neck_Segment2
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.L/UniversalJoint_Shoulder_Ball.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.R/UniversalJoint_Shoulder_Ball.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Spine/WeaponSlot_Chest
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Thigh.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Thigh.L/Leg.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Thigh.L/Leg.L/Foot.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Thigh.L/Leg.L/Foot.L/Toes.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Thigh.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Thigh.R/Leg.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Thigh.R/Leg.R/Foot.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/Thigh.R/Leg.R/Foot.R/Toes.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.L/UniversalJoint_Hip_Ball.L
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/UniversalJoint_Hip_Swivel.R/UniversalJoint_Hip_Ball.R
+    m_Weight: 1
+  - m_Path: Armature_Humanoid/Root/WeaponSlot_Belt
+    m_Weight: 1

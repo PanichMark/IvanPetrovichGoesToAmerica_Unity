@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class WeaponAnimationController : MonoBehaviour
 {
@@ -6,11 +7,16 @@ public class WeaponAnimationController : MonoBehaviour
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private PlayerWeaponController _weaponController;
-	private Animator _playerAnimator;
+
+	private Animator _playerAnimator1stPerson;
+	private Animator _playerAnimator3rdPerson;
+
 	private LegKickAttackController _legKickAttack;
 
 	private int _layerWeaponRightEquip;
+	private int _layerWeaponRightUse;
 	private int _layerWeaponLeftEquip;
+	private int _layerWeaponLeftUse;
 	private int _layerLegKick;
 
 	private string _currentPlayerWeaponRightAnimation;
@@ -23,71 +29,104 @@ public class WeaponAnimationController : MonoBehaviour
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerWeaponController weaponController,
 		LegKickAttackController legKickAttack,
-		GameObject player)
+		GameObject player,
+		GameObject playerCamera)
 	{
 		_bootstrap = bootstrap;
-		_playerAnimator = player.GetComponent<Animator>();
+		_playerAnimator1stPerson =playerCamera.GetComponent<Animator>();
+		_playerAnimator3rdPerson = player.GetComponent<Animator>();
 		_playerBehaviour = playerBehaviour;
 		_playerCameraStateMachineController = playerCameraStateMachineController;
 		_weaponController = weaponController;
 		_legKickAttack = legKickAttack;
 
 		_weaponController.OnWeaponShoot += OnWeaponShoot;
-
 		_weaponController.OnShowWeaponRight += ShowWeaponRight;
 		_weaponController.OnHideWeaponRight += HideWeaponRight;
 		_weaponController.OnShowWeaponLeft += ShowWeaponLeft;
 		_weaponController.OnHideWeaponLeft += HideWeaponLeft;
 
-
-
-		_layerWeaponRightEquip = _playerAnimator.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
-		_layerWeaponLeftEquip = _playerAnimator.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftEquip.ToString());
-		_layerLegKick = _playerAnimator.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerLegKick.ToString());
+		_layerWeaponRightEquip = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
+		_layerWeaponRightUse = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightUse.ToString());
+		_layerWeaponLeftEquip = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftEquip.ToString());
+		_layerWeaponLeftUse =_playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftUse.ToString());
+		_layerLegKick = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerLegKick.ToString());
 
 		_legKickAttack.OnLegKickStateChanged += HandleLegKickStateChange;
-
-		Debug.Log("WeaponAnimationController Initialized");
 	}
 
 	private void Update()
 	{
-		if (!_bootstrap.IsBootstrapInitialized) return;
+		if (!_bootstrap.IsBootstrapInitialized)
+			return;
 
 		HandleCameraRotation();
 	}
 
 	private void ShowWeaponRight()
 	{
-		_playerAnimator.SetLayerWeight(_layerWeaponRightEquip, 1);
+		_playerAnimator1stPerson.SetLayerWeight(_layerWeaponRightEquip, 1);
 		ChangePlayerWeaponRightAnimation(AnimationsHumanoidWeaponsEnum.EquipWeapon_Right.ToString());
+		_playerAnimator1stPerson.SetLayerWeight(_layerWeaponRightUse, 1);
+		_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Hold_Right.ToString(), _layerWeaponRightUse);
+
+		_playerAnimator3rdPerson.SetLayerWeight(_layerWeaponRightEquip, 1);
+		ChangePlayerWeaponRightAnimation(AnimationsHumanoidWeaponsEnum.EquipWeapon_Right.ToString());
+		_playerAnimator3rdPerson.SetLayerWeight(_layerWeaponRightUse, 1);
+		_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Hold_Right.ToString(), _layerWeaponRightUse);
+
+		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator3rdPerson, _layerWeaponRightEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Right.ToString()));
+		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator1stPerson, _layerWeaponRightEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Right.ToString()));
 	}
 
 	private void HideWeaponRight()
 	{
 		ChangePlayerWeaponRightAnimation(AnimationsHumanoidWeaponsEnum.UnequipWeapon_Right.ToString());
 
-		var stateInfo = _playerAnimator.GetCurrentAnimatorStateInfo(_layerWeaponRightEquip);
-		if (stateInfo.IsName(AnimationsHumanoidWeaponsEnum.UnequipWeapon_Right.ToString()) && stateInfo.normalizedTime >= 0.99f)
-		{
-			_playerAnimator.SetLayerWeight(_layerWeaponRightEquip, 0);
-		}
+		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator3rdPerson, _layerWeaponRightEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Right.ToString()));
+		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator1stPerson, _layerWeaponRightEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Right.ToString()));
+
+		_playerAnimator1stPerson.SetLayerWeight(_layerWeaponRightUse, 0);
+		_playerAnimator3rdPerson.SetLayerWeight(_layerWeaponRightUse, 0);
 	}
+
 	private void ShowWeaponLeft()
 	{
-		_playerAnimator.SetLayerWeight(_layerWeaponLeftEquip, 1);
+		_playerAnimator1stPerson.SetLayerWeight(_layerWeaponLeftEquip, 1);
 		ChangePlayerWeaponLeftAnimation(AnimationsHumanoidWeaponsEnum.EquipWeapon_Left.ToString());
+		_playerAnimator1stPerson.SetLayerWeight(_layerWeaponLeftUse, 1);
+		_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Hold_Left.ToString(), _layerWeaponLeftUse);
+
+		_playerAnimator3rdPerson.SetLayerWeight(_layerWeaponLeftEquip, 1);
+		ChangePlayerWeaponLeftAnimation(AnimationsHumanoidWeaponsEnum.EquipWeapon_Left.ToString());
+		_playerAnimator3rdPerson.SetLayerWeight(_layerWeaponLeftUse, 1);
+		_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Hold_Left.ToString(), _layerWeaponLeftUse);
+
+		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator3rdPerson, _layerWeaponLeftEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Left.ToString()));
+		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator1stPerson, _layerWeaponLeftEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Left.ToString()));
 	}
+
 	private void HideWeaponLeft()
 	{
 		ChangePlayerWeaponLeftAnimation(AnimationsHumanoidWeaponsEnum.UnequipWeapon_Left.ToString());
 
-		var stateInfo = _playerAnimator.GetCurrentAnimatorStateInfo(_layerWeaponLeftEquip);
-		// Проверяем имя состояния через ToString() от enum, как это сделано в правом обработчике
-		if (stateInfo.IsName(AnimationsHumanoidWeaponsEnum.UnequipWeapon_Left.ToString()) && stateInfo.normalizedTime >= 0.99f)
+		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator3rdPerson, _layerWeaponLeftEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Left.ToString()));
+		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator1stPerson, _layerWeaponLeftEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Left.ToString()));
+
+		_playerAnimator1stPerson.SetLayerWeight(_layerWeaponLeftUse, 0);
+		_playerAnimator3rdPerson.SetLayerWeight(_layerWeaponLeftUse, 0);
+	}
+
+	private IEnumerator WaitForAnimationAndDisable(Animator targetAnimator, int layerIndex, string stateName)
+	{
+		yield return null;
+		var stateInfo = targetAnimator.GetCurrentAnimatorStateInfo(layerIndex);
+		while (!stateInfo.IsName(stateName) || stateInfo.normalizedTime < 0.99f)
 		{
-			_playerAnimator.SetLayerWeight(_layerWeaponLeftEquip, 0);
+			yield return null;
+			stateInfo = targetAnimator.GetCurrentAnimatorStateInfo(layerIndex);
 		}
+		targetAnimator.SetLayerWeight(layerIndex, 0);
 	}
 
 	private void HandleCameraRotation()
@@ -95,7 +134,7 @@ public class WeaponAnimationController : MonoBehaviour
 		float cameraRotationX = _playerCameraStateMachineController.transform.rotation.eulerAngles.x;
 		_adjustedCameraAngle = (cameraRotationX >= 0 && cameraRotationX < 180) ? cameraRotationX : cameraRotationX - 360;
 
-		float startValue = _playerAnimator.GetFloat("UpDown");
+		float startValue = _playerAnimator3rdPerson.GetFloat("UpDown");
 		float endValue = 0f;
 
 		if (_playerBehaviour.IsPlayerArmed)
@@ -111,13 +150,11 @@ public class WeaponAnimationController : MonoBehaviour
 		}
 
 		float newValue = Mathf.Lerp(startValue, endValue, Time.deltaTime * 6);
-		_playerAnimator.SetFloat("UpDown", newValue);
+		_playerAnimator3rdPerson.SetFloat("UpDown", newValue);
 	}
-
 
 	private void OnWeaponShoot(WeaponHandsEnum weaponHandType)
 	{
-		// Логика обработки выстрела остается без изменений
 	}
 
 	private void ChangePlayerWeaponRightAnimation(string animation, float crossfade = 0.2f)
@@ -125,7 +162,7 @@ public class WeaponAnimationController : MonoBehaviour
 		if (_currentPlayerWeaponRightAnimation != animation)
 		{
 			_currentPlayerWeaponRightAnimation = animation;
-			_playerAnimator.CrossFade(animation, crossfade, _layerWeaponRightEquip);
+			_playerAnimator3rdPerson.CrossFade(animation, crossfade, _layerWeaponRightEquip);
 		}
 	}
 
@@ -134,7 +171,7 @@ public class WeaponAnimationController : MonoBehaviour
 		if (_currentPlayerWeaponLeftAnimation != animation)
 		{
 			_currentPlayerWeaponLeftAnimation = animation;
-			_playerAnimator.CrossFade(animation, crossfade, _layerWeaponLeftEquip);
+			_playerAnimator3rdPerson.CrossFade(animation, crossfade, _layerWeaponLeftEquip);
 		}
 	}
 
@@ -142,12 +179,12 @@ public class WeaponAnimationController : MonoBehaviour
 	{
 		if (isKicking)
 		{
-			_playerAnimator.SetLayerWeight(_layerLegKick, 1);
-			_playerAnimator.Play(AnimationsHumanoidWeaponsEnum.LegKick.ToString(), _layerLegKick, 0f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layerLegKick, 1);
+			_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.LegKick.ToString(), _layerLegKick, 0f);
 		}
 		else
 		{
-			_playerAnimator.SetLayerWeight(_layerLegKick, 0);
+			_playerAnimator3rdPerson.SetLayerWeight(_layerLegKick, 0);
 		}
 	}
 }
