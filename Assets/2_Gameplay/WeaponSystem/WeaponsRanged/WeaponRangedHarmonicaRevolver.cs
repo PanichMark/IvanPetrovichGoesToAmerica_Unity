@@ -20,6 +20,8 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	private Vector3 _cartridgeOriginalPosition;
 
+	private int _cartgridgeSlidingStep;
+
 	protected override void InitializeWeaponRanged()
 	{
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
@@ -52,14 +54,15 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 			return;
 		}
 
-		int lastShotIndex = PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent - 1;
+		_cartgridgeSlidingStep = PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent;
+		Debug.Log(_cartgridgeSlidingStep);
 
-		if (lastShotIndex >= 0)
+		if (_cartgridgeSlidingStep > 0)
 		{
-			_cartridge1stPerson.transform.localPosition += new Vector3(0.025f * (lastShotIndex + 1), 0, 0);
-			_cartridge3rdPerson.transform.localPosition += new Vector3(0.025f * (lastShotIndex + 1), 0, 0);
+			_cartridge1stPerson.transform.localPosition += new Vector3(0.025f * (_cartgridgeSlidingStep), 0, 0);
+			_cartridge3rdPerson.transform.localPosition += new Vector3(0.025f * (_cartgridgeSlidingStep), 0, 0);
 
-			for (int i = 0; i <= lastShotIndex; i++)
+			for (int i = 0; i <= _cartgridgeSlidingStep; i++)
 			{
 				_bullets3rdPerson[i].SetActive(false);
 				_bullets1stPerson[i].SetActive(false);
@@ -78,7 +81,11 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		_cartridge1stPerson.transform.localPosition += new Vector3(0.025f, 0, 0);
 		_cartridge3rdPerson.transform.localPosition += new Vector3(0.025f, 0, 0);
 
-		if ((bulletIndex == 4 && PlayerAmmoReserve > 0))
+		_cartgridgeSlidingStep++;
+
+		//Debug.Log(_cartgridgeSlidingStep);
+
+		if (_cartgridgeSlidingStep == 5)
 		{
 			EjectCartridge();
 		}
@@ -120,7 +127,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 	{
 		int count = Mathf.Min(ammoToAdd, PlayerMagazineAmmoMax);
 
-		if (PlayerAmmoReserve + PlayerMagazineAmmoCurrent >= 5)
+		if (_cartgridgeSlidingStep == 0)
 		{
 			for (int i = 0; i < count; i++)
 			{
@@ -140,7 +147,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		_cartridge1stPerson.SetActive(true);
 		_cartridge3rdPerson.SetActive(true);
 
-		Debug.Log(PlayerAmmoReserve);
+		//Debug.Log(PlayerAmmoReserve);
 
 		if (PlayerAmmoReserve == 0)
 		{
@@ -149,8 +156,15 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		}
 		else
 		{
-			_cartridge1stPerson.transform.localPosition -= new Vector3(0.025f * count, 0, 0);
-			_cartridge3rdPerson.transform.localPosition -= new Vector3(0.025f * count, 0, 0);
+			_cartridge1stPerson.transform.localPosition -= new Vector3(0.025f * _cartgridgeSlidingStep, 0, 0);
+			_cartridge3rdPerson.transform.localPosition -= new Vector3(0.025f * _cartgridgeSlidingStep, 0, 0);
 		}
+
+		_cartgridgeSlidingStep = 0;
+	}
+
+	private void Update()
+	{
+		//Debug.Log(_cartgridgeSlidingStep);
 	}
 }
