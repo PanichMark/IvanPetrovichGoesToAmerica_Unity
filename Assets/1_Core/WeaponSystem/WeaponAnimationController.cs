@@ -75,6 +75,7 @@ public class WeaponAnimationController : MonoBehaviour
 
 		HandleCameraRotation();
 
+		/*
 		Debug.Log("##########  FIRST PERSON  ###########");
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(2));
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(3));
@@ -88,6 +89,7 @@ public class WeaponAnimationController : MonoBehaviour
 		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(4));
 		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(5));
 		Debug.Log("######################################");
+		*/
 	}
 
 	private void ShowWeaponRight()
