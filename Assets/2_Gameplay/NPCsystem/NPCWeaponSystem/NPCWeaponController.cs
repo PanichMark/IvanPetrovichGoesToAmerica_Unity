@@ -18,7 +18,7 @@ public class NPCWeaponController : MonoBehaviour
 			return;
 		}
 
-		weaponComponent.InstantiateWeapon(_weaponHand);
+		weaponComponent.InstantiateWeaponNPC(_weaponHand);
 	}
 
 	private void Update()

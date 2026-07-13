@@ -6,6 +6,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 	private WeaponAbstract _rightHandWeaponComponent;
 	private PlayerCameraStateMachineController _playerCameraStateMachine;
 	private PlayerWeaponController _weaponController;
+	private WeaponAnimationController _weaponAnimationController;
 	private GameSceneManager _gameSceneManager;
 
 
@@ -18,6 +19,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		GameSceneManager gameSceneManager,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerWeaponController weaponController,
+		WeaponAnimationController weaponAnimationController,
 		GameObject playerFirstPersonHandRight,
 		GameObject playerFirstPersonHandLeft,
 		GameObject playerThirdPersonHandRight,
@@ -26,6 +28,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		_gameSceneManager = gameSceneManager;
 		_playerCameraStateMachine = playerCameraStateMachineController;
 		_weaponController = weaponController;
+		_weaponAnimationController = weaponAnimationController;
 
 		_playerFirstPersonHandRight = playerFirstPersonHandRight;
 		_playerFirstPersonHandLeft = playerFirstPersonHandLeft;
@@ -46,6 +49,13 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		_playerCameraStateMachine.OnThirdPersonCameraState += UpdateWeaponRightVisibility;
 		_playerCameraStateMachine.OnFirstPersonCameraState += UpdateWeaponLeftVisibility;
 		_playerCameraStateMachine.OnThirdPersonCameraState += UpdateWeaponLeftVisibility;
+
+		_playerCameraStateMachine.OnFirstPersonCameraState += UpdateWeaponRightVisibility;
+		_playerCameraStateMachine.OnThirdPersonCameraState += UpdateWeaponRightVisibility;
+
+		_playerCameraStateMachine.OnFirstPersonCameraState += ShowReloadingHelpingHand;
+		_playerCameraStateMachine.OnThirdPersonCameraState += ShowReloadingHelpingHand;
+		_weaponAnimationController.OnReload += ShowReloadingHelpingHand;
 
 		Debug.Log("WeaponFirstPersonRender Initialized!");
 	}
@@ -125,6 +135,39 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		{
 			ShowBodyPart(_playerThirdPersonHandLeft);
 			HideFirstPersonHand(_playerFirstPersonHandLeft);
+		}
+	}
+
+	public void ShowReloadingHelpingHand()
+	{
+		if (_weaponAnimationController.IsReloading)
+		{
+			if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+			{
+				if (_weaponAnimationController.CurrentReloadingHelpingHand == WeaponHandsEnum.HandRight)
+				{
+					HideBodyPart(_playerThirdPersonHandRight);
+					ShowFirstPersonHand(_playerFirstPersonHandRight);
+				}
+				else
+				{
+					HideBodyPart(_playerThirdPersonHandLeft);
+					ShowFirstPersonHand(_playerFirstPersonHandLeft);
+				}
+			}
+			else
+			{
+				if (_weaponAnimationController.CurrentReloadingHelpingHand == WeaponHandsEnum.HandRight)
+				{
+					ShowBodyPart(_playerThirdPersonHandRight);
+					HideFirstPersonHand(_playerFirstPersonHandRight);
+				}
+				else
+				{
+					ShowBodyPart(_playerThirdPersonHandLeft);
+					HideFirstPersonHand(_playerFirstPersonHandLeft);
+				}
+			}
 		}
 	}
 

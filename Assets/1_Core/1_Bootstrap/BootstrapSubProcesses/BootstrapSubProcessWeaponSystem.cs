@@ -111,6 +111,7 @@ public class BootstrapSubProcessWeaponSystem
 		
 		_weaponAnimationController.Initialize(
 			_bootstrap,
+			_gameController,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
 			_bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController,
 			WeaponController,
@@ -122,6 +123,7 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController,
 			WeaponController,
+			_weaponAnimationController,
 			_bootstrapSubProcessPlayerSystems.GameObjectPlayerFirstPersonHandRight,
 			_bootstrapSubProcessPlayerSystems.GameObjectPlayerFirstPersonHandLeft,
 			_bootstrapSubProcessPlayerSystems.GameObjectPlayerThirdPersonHandRight,

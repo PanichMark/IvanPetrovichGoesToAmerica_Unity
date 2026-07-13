@@ -14,6 +14,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected GameObject _VFXshottEffect;
 	protected Transform _VFXspawnPoint;
 	protected GameObject _vfxInstance;
+	protected bool _isNPCreloading;
 	public int PlayerMagazineAmmoCurrent { get; set; }
 	public int PlayerMagazineAmmoMax { get; protected set; }
 	
@@ -21,7 +22,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public int PlayerAmmoMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].AmmoMax;
 	protected BulletHoleManager _bulletHoleManager;
 	protected PlayerCameraController _playerCameraController;
-	protected bool _isReloading;
 	protected WeaponAnimationController _weaponAnimationController;
 
 	public override void InitializeWeapon()
@@ -33,7 +33,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 			
-			_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXSpawnPoint;
+			_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXspawnPoint;
 			InitializeWeaponRanged();
 		}
 
@@ -54,11 +54,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		if (_playerCameraStateMachineController != null)
 		{
-			_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXSpawnPoint;
+			_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXspawnPoint;
 		}
 	}
 
-	private void ChangeVFXSpawnPoint()
+	private void ChangeVFXspawnPoint()
 	{
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
 		{
@@ -74,7 +74,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		if (PlayerMagazineAmmoCurrent > 0)
 		{
-			if (!_isReloading)
+			if (!_weaponAnimationController.IsReloading)
 			{
 				if (IsWeaponAuto)
 				{
@@ -82,7 +82,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 				}
 				else
 				{
-					ShootPlayerWeapon(WeaponDamage);
+					ShootWeaponPlayer(WeaponDamage);
 				}
 			}
 			else
@@ -129,9 +129,9 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 				break; 
 			}
 
-			ShootPlayerWeapon(WeaponDamage);
+			ShootWeaponPlayer(WeaponDamage);
 
-			ApplyWeaponRangedRecoil();
+			ApplyWeaponRecoil();
 
 			yield return new WaitForSeconds(_weaponAutoAttackSpeedRate);
 
@@ -145,7 +145,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_weaponAutoAttackCourutine = null;
 	}
 
-	protected virtual void ShootPlayerWeapon(float weaponDamage)
+	protected virtual void ShootWeaponPlayer(float weaponDamage)
 	{
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -190,28 +190,16 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
-		ApplyWeaponRangedRecoil();
+		ApplyWeaponRecoil();
 	}
 
-	protected virtual IEnumerator ReloadPlayerWeapon()
+	protected virtual IEnumerator ReloadWeaponPlayer()
 	{
-		if (PlayerMagazineAmmoCurrent >= PlayerMagazineAmmoMax)
-		{
-			Debug.Log("Magazine is already full");
-			yield break;
-		}
-
-		if (PlayerAmmoReserve <= 0)
-		{
-			Debug.Log("Not enough Ammo to reload");
-			yield break;
-		}
-
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		_weaponAnimationController.PrepareReloadAnimation(RangedWeaponType);
+		yield return StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(RangedWeaponType, _weaponHandType));
 
 		data.AmmoReserve -= ammoToAdd;
 		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
@@ -225,11 +213,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
-		_isReloading = false;
-
-		yield return null;
+	
 
 		Debug.Log("Reloaded");
+
+		yield return null;
 	}
 
 	public void SetPlayerMagazineProperties(int maxAmmo, int currentAmmo)
@@ -242,28 +230,40 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	public void Reload()
 	{
-		_isReloading = true;
-
 		if (_isThisPlayerWeapon)
 		{
-			StartCoroutine(ReloadPlayerWeapon());
+			if (PlayerMagazineAmmoCurrent >= PlayerMagazineAmmoMax)
+			{
+				Debug.Log("Magazine is already full");
+				return;
+			}
+
+			if (PlayerAmmoReserve <= 0)
+			{
+				Debug.Log("Not enough Ammo to reload");
+				return;
+			}
+
+			StartCoroutine(ReloadWeaponPlayer());
 		}
 		else
 		{
-			StartCoroutine(ReloadNPCweapon());
+			StartCoroutine(ReloadWeaponNPC());
 		}
 	}
 
-	public void ShootNPCweapon()
+	public void ShootWeaponNPC()
 	{
 	}
 
-	public IEnumerator ReloadNPCweapon()
+	public IEnumerator ReloadWeaponNPC()
 	{
+		_isNPCreloading = true;
+
 		yield return null;
 	}
 
 	protected abstract void InitializeWeaponRanged();
 
-	protected abstract void ApplyWeaponRangedRecoil();
+	protected abstract void ApplyWeaponRecoil();
 }

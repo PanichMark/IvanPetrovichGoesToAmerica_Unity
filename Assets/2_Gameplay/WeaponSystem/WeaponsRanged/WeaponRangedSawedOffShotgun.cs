@@ -17,7 +17,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
-	protected override void ShootPlayerWeapon(float weaponDamage)
+	protected override void ShootWeaponPlayer(float weaponDamage)
 	{
 		int pelletCount = 10;
 		float spreadAngle = 7f;
@@ -78,10 +78,10 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
-		ApplyWeaponRangedRecoil();
+		ApplyWeaponRecoil();
 	}
 
-	protected override void ApplyWeaponRangedRecoil()
+	protected override void ApplyWeaponRecoil()
 	{
 		_playerCameraController.ApplyWeaponRecoilSingle(15, 0.05f, 0.5f);
 	}

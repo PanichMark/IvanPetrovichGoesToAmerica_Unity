@@ -386,8 +386,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			LeftHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke(WeaponHandsEnum.HandLeft);
 
-			weaponComponent.InstantiateWeapon(WeaponHandsEnum.HandLeft);
-			weaponComponent.FlipWeaponModel();
+			weaponComponent.InstantiateWeaponPlayer(WeaponHandsEnum.HandLeft);
+			weaponComponent.MirrorWeaponPlayerModel();
 
 			LeftHandWeaponComponent = weaponComponent;
 
@@ -409,7 +409,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			RightHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke(WeaponHandsEnum.HandRight);
 
-			weaponComponent.InstantiateWeapon(WeaponHandsEnum.HandRight);
+			weaponComponent.InstantiateWeaponPlayer(WeaponHandsEnum.HandRight);
 
 			RightHandWeaponComponent = weaponComponent;
 

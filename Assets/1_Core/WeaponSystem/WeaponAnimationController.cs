@@ -4,6 +4,7 @@ using UnityEngine;
 public class WeaponAnimationController : MonoBehaviour
 {
 	private Bootstrap _bootstrap;
+	private GameController _gameController;
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private PlayerWeaponController _weaponController;
@@ -11,7 +12,15 @@ public class WeaponAnimationController : MonoBehaviour
 	private Animator _playerAnimator1stPerson;
 	private Animator _playerAnimator3rdPerson;
 
+	public delegate void ReloadHandler();
+	public event ReloadHandler OnReload;
+
+	private Coroutine _currentReloadingCoroutine;
+
 	private LegKickAttackController _legKickAttack;
+
+	public bool IsReloading { get; private set; }
+	public WeaponHandsEnum CurrentReloadingHelpingHand {  get; private set; }
 
 	private int _layer1stWeaponRightEquip;
 	private int _layer1stWeaponRightUse;
@@ -35,6 +44,7 @@ public class WeaponAnimationController : MonoBehaviour
 
 	public void Initialize(
 		Bootstrap bootstrap,
+		GameController gameController,
 		PlayerBehaviourController playerBehaviour,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerWeaponController weaponController,
@@ -43,6 +53,7 @@ public class WeaponAnimationController : MonoBehaviour
 		GameObject playerCamera)
 	{
 		_bootstrap = bootstrap;
+		_gameController = gameController;
 		_playerAnimator1stPerson =playerCamera.GetComponent<Animator>();
 		_playerAnimator3rdPerson = player.GetComponent<Animator>();
 		_playerBehaviour = playerBehaviour;
@@ -70,7 +81,10 @@ public class WeaponAnimationController : MonoBehaviour
 		_layer3rdWeaponReload = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponReload.ToString());
 		_layer3rdLegKick = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerLegKick.ToString());
 
-		_playerAnimator1stPerson.SetLayerWeight(0, 0);
+		_gameController.OnPlayerEarlyDeath += CancelReloadingAnimation;
+		_weaponController.OnWeaponHidden += CancelReloadingAnimation;
+
+		//_playerAnimator1stPerson.SetLayerWeight(0, 0);
 
 		_legKickAttack.OnLegKickStateChanged += HandleLegKickStateChange;
 	}
@@ -84,17 +98,23 @@ public class WeaponAnimationController : MonoBehaviour
 
 		/*
 		Debug.Log("##########  FIRST PERSON  ###########");
+		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(0));
+		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(1));
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(2));
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(3));
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(4));
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(5));
+		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(6));
 		Debug.Log("######################################");
 
 		Debug.Log("##########  THIRD PERSON  ###########");
+		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(0));
+		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(1));
 		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(2));
 		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(3));
 		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(4));
 		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(5));
+		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(6));
 		Debug.Log("######################################");
 		*/
 	}
@@ -244,10 +264,64 @@ public class WeaponAnimationController : MonoBehaviour
 		}
 	}
 
-	public void PrepareReloadAnimation(WeaponsRangedEnum rangedWeaponType)
+	private void CancelReloadingAnimation()
+	{ 
+		if (_currentReloadingCoroutine != null)
+		{
+			Debug.Log("Reloading Canceled");
+
+			_currentReloadingCoroutine = null;
+
+			TurnOffAllWeaponLayers();
+
+			IsReloading = false;
+		}
+	}
+
+	public IEnumerator PrepareForReloadingWeapon(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType)
 	{
+		Debug.Log("REALODDIIIIIIIIING");
+
+		_currentReloadingCoroutine = StartCoroutine(ReloadWeapon(rangedWeaponType, weaponHandType));
+
+		yield return _currentReloadingCoroutine;
+	}
+
+	private IEnumerator ReloadWeapon(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType)
+	{
+		TurnOffWeaponAttackLayers();
+		IsReloading = true;
+		
+		if (weaponHandType == WeaponHandsEnum.HandRight)
+		{
+			CurrentReloadingHelpingHand = WeaponHandsEnum.HandLeft;
+		}
+		else
+		{
+			CurrentReloadingHelpingHand = WeaponHandsEnum.HandRight;
+		}
+
+		OnReload?.Invoke();
+
+
+
 		if (rangedWeaponType == WeaponsRangedEnum.HarmonicaRevolver)
 		{
+
+
+			if (weaponHandType == WeaponHandsEnum.HandRight)
+			{
+				_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmoniceRevolver_ReloadInsertCartridge_Right.ToString(), _layer1stWeaponReload, 0f);
+				_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmoniceRevolver_ReloadInsertCartridge_Right.ToString(), _layer3rdWeaponReload, 0f);
+			}
+			else
+			{
+				_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmoniceRevolver_ReloadInsertCartridge_Left.ToString(), _layer1stWeaponReload, 0f);
+				_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmoniceRevolver_ReloadInsertCartridge_Left.ToString(), _layer3rdWeaponReload, 0f);
+			}
+
+			yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponReload).length);
+
 
 		}
 		if (rangedWeaponType == WeaponsRangedEnum.BergmannBayard)
@@ -258,5 +332,60 @@ public class WeaponAnimationController : MonoBehaviour
 		{
 
 		}
+
+		TurnOnWeaponAttackLayers();
+
+		IsReloading = false;
+	}
+
+	private void TurnOnWeaponAttackLayers()
+	{
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, 1);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightUse, 1);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 1);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftUse, 1);
+
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponReload, 0);
+		
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 1);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightUse, 1);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 1);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftUse, 1);
+
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponReload, 0);
+	}
+
+	private void TurnOffWeaponAttackLayers()
+	{
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, 0);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightUse, 0);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 0);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftUse, 0);
+
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponReload, 1);
+		
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 0);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightUse, 0);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 0);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftUse, 0);
+
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponReload, 1);
+	}
+
+	private void TurnOffAllWeaponLayers()
+	{
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, 0);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightUse, 0);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 0);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftUse, 0);
+
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponReload, 0);
+
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 0);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightUse, 0);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 0);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftUse, 0);
+
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponReload, 0);
 	}
 }

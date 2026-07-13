@@ -16,6 +16,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 	protected bool _isWeaponInitialized;
 	protected bool _isThisPlayerWeapon;
 
+	public WeaponHandsEnum _weaponHandType { get; private set; }
+
 	public GameObject FirstPersonWeaponModelInstance { get; protected set; }
 	public GameObject ThirdPersonWeaponModelInstance { get; protected set; }
 
@@ -36,11 +38,12 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract void StopAutoAttacking();
 	public abstract IEnumerator AutoAttackCourutine();
 
-	public void InstantiateWeapon(WeaponHandsEnum handType)
+	public void InstantiateWeaponPlayer(WeaponHandsEnum handType)
 	{
 		_isThisPlayerWeapon = true;
+		_weaponHandType = handType;
 
-		if (handType == WeaponHandsEnum.HandRight)
+		if (_weaponHandType == WeaponHandsEnum.HandRight)
 		{
 			_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
 			_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
@@ -48,7 +51,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 			_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonRightHandWeaponSlotGameObject");
 			_thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
 		}
-		else if (handType == WeaponHandsEnum.HandLeft)
+		else if (_weaponHandType == WeaponHandsEnum.HandLeft)
 		{
 			_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonLeftHandWeaponSlotGameObject");
 			_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
@@ -64,12 +67,12 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		SetLayerRecursively(FirstPersonWeaponModelInstance.transform, LayerMask.NameToLayer("FirstPerson"));
 
-		if (handType == WeaponHandsEnum.HandLeft)
+		if (_weaponHandType == WeaponHandsEnum.HandLeft)
 		{
 			FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonLeftHandWeaponSlotTransform, true);
 			ThirdPersonWeaponModelInstance.transform.SetParent(_thirdPersonLeftHandWeaponSlotTransform, true);
 		}
-		else if (handType == WeaponHandsEnum.HandRight)
+		else if (_weaponHandType == WeaponHandsEnum.HandRight)
 		{
 			FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, true);
 			ThirdPersonWeaponModelInstance.transform.SetParent(_thirdPersonRightHandWeaponSlotTransform, true);
@@ -98,19 +101,19 @@ public abstract class WeaponAbstract : MonoBehaviour
 	{
 		FirstPersonWeaponModelInstance = Instantiate(gameObject);
 		WeaponAbstract FirstPersonWeaponModelInstanceComponent = FirstPersonWeaponModelInstance.GetComponent<WeaponAbstract>();
-		FirstPersonWeaponModelInstanceComponent.MakeOwnerPlayer();
+		FirstPersonWeaponModelInstanceComponent.Make1stPersonWeaponModelOwnerPlayer();
 	}
 
-	public void MakeOwnerPlayer()
+	public void Make1stPersonWeaponModelOwnerPlayer()
 	{
 		_isThisPlayerWeapon = true;
 	}
 
 	public abstract void InitializeWeapon();
 
-	public void InstantiateWeapon(Transform NPCweaponSlotTransform)
+	public void InstantiateWeaponNPC(Transform NPCweaponSlotTransform)
 	{
-		MakeOwnerNPC();
+		_isThisPlayerWeapon = false;
 
 		ThirdPersonWeaponModelInstance = gameObject;
 
@@ -121,14 +124,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
 	}
 
-	public void MakeOwnerNPC()
-	{
-		_isThisPlayerWeapon = false;
-	}
-
 	public void DestroyWeaponModel()
 	{
-
 		if (ThirdPersonWeaponModelInstance != null)
 		{
 			Destroy(ThirdPersonWeaponModelInstance);
@@ -141,7 +138,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 		}
 	}
 
-	public void FlipWeaponModel()
+	public void MirrorWeaponPlayerModel()
 	{
 		if (FirstPersonWeaponModelInstance != null)
 		{

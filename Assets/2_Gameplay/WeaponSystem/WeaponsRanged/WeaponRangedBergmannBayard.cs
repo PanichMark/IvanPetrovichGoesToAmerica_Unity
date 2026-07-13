@@ -17,7 +17,7 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
-	protected override void ApplyWeaponRangedRecoil()
+	protected override void ApplyWeaponRecoil()
 	{
 		_playerCameraController.ApplyWeaponRecoilAuto();
 	}

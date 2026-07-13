@@ -44,7 +44,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		ReapplyCartridgePosition();
 	}
 
-	protected override void ApplyWeaponRangedRecoil()
+	protected override void ApplyWeaponRecoil()
 	{
 		_playerCameraController.ApplyWeaponRecoilSingle(2, 0.02f, 0.08f);
 	}
@@ -160,7 +160,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		_cartgridgeSlidingStep = 0;
 	}
 
-	protected override void ShootPlayerWeapon(float weaponDamage)
+	protected override void ShootWeaponPlayer(float weaponDamage)
 	{
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -212,28 +212,16 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
-		ApplyWeaponRangedRecoil();
+		ApplyWeaponRecoil();
 	}
 
-	protected override IEnumerator ReloadPlayerWeapon()
+	protected override IEnumerator ReloadWeaponPlayer()
 	{
-		if (PlayerMagazineAmmoCurrent >= PlayerMagazineAmmoMax)
-		{
-			Debug.Log("Magazine is already full");
-			yield break;
-		}
-
-		if (PlayerAmmoReserve <= 0)
-		{
-			Debug.Log("Not enough Ammo to reload");
-			yield break;
-		}
-
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		_weaponAnimationController.PrepareReloadAnimation(RangedWeaponType);
+		yield return StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(RangedWeaponType, _weaponHandType));
 
 		data.AmmoReserve -= ammoToAdd;
 		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
@@ -248,8 +236,8 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
-		_isReloading = false;	
-
 		Debug.Log("Reloaded");
+
+		yield return null;
 	}
 }
