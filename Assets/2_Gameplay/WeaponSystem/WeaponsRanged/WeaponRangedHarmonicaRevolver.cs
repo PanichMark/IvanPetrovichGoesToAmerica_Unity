@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
@@ -6,10 +7,13 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 	public override string WeaponName => "HarmonicaRevolver";
 	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
 	public override string WeaponType => WeaponTypes.Ranged.ToString();
+
 	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	public override float WeaponDamage => 34f;
 	public override bool IsWeaponAuto => false;
+
+	public override WeaponsRangedEnum RangedWeaponType => WeaponsRangedEnum.HarmonicaRevolver;
 
 	private GameObject _cartridge1stPerson;
 	private GameObject _cartridge3rdPerson;
@@ -55,7 +59,6 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		}
 
 		_cartgridgeSlidingStep = PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent;
-		//Debug.Log(_cartgridgeSlidingStep);
 
 		if (_cartgridgeSlidingStep > 0)
 		{
@@ -70,7 +73,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		}
 	}
 
-	protected override void HideUsedHarmonicaBullet()
+	private void HideUsedHarmonicaBullet()
 	{
 		_bullets3rdPerson[_cartgridgeSlidingStep].SetActive(false);
 		_bullets1stPerson[_cartgridgeSlidingStep].SetActive(false);
@@ -113,7 +116,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		_cartridge3rdPerson.SetActive(false);
 	}
 
-	protected override void RefillHarmonicaCartridge(int ammoToAdd)
+	private void RefillHarmonicaCartridge(int ammoToAdd)
 	{
 		int count = Mathf.Min(ammoToAdd, PlayerMagazineAmmoMax);
 
@@ -155,5 +158,98 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		}
 
 		_cartgridgeSlidingStep = 0;
+	}
+
+	protected override void ShootPlayerWeapon(float weaponDamage)
+	{
+		RaycastHit hitInfo;
+		IDamageable damageable = null;
+
+		_vfxInstance = Instantiate(
+			_VFXshottEffect,
+			_VFXspawnPoint.position,
+			_VFXspawnPoint.rotation,
+			_VFXspawnPoint.transform);
+
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		{
+			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
+		}
+
+		//Debug.Log(_vfxInstance.transform.position);
+
+		Destroy(_vfxInstance, 0.05f);
+
+
+		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))
+		{
+			damageable = hitInfo.transform.GetComponent<IDamageable>();
+			if (damageable != null && hitInfo.transform.gameObject.layer != 9)
+			{
+				Debug.Log($"Попадание в объект: {hitInfo.transform.name}, Слой: {hitInfo.transform.gameObject.layer}");
+				damageable.TakeDamage(weaponDamage);
+			}
+		}
+
+		// Проверяем, есть ли вообще коллайдер и трансформ у объекта
+		if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 9 && hitInfo.transform.gameObject.layer != 11)
+		{
+			Quaternion rot = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
+
+			// Добавляем четвертый параметр - Transform родителя
+			// Мы всегда хотим, чтобы след был дочерним объектом
+			_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
+		}
+
+
+		PlayerMagazineAmmoCurrent--;
+		HideUsedHarmonicaBullet();
+
+		Debug.Log($"Shoot {WeaponName}");
+
+		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
+		{
+			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
+		}
+
+		ApplyWeaponRangedRecoil();
+	}
+
+	protected override IEnumerator ReloadPlayerWeapon()
+	{
+		if (PlayerMagazineAmmoCurrent >= PlayerMagazineAmmoMax)
+		{
+			Debug.Log("Magazine is already full");
+			yield break;
+		}
+
+		if (PlayerAmmoReserve <= 0)
+		{
+			Debug.Log("Not enough Ammo to reload");
+			yield break;
+		}
+
+		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
+
+		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
+
+		_weaponAnimationController.PrepareReloadAnimation(RangedWeaponType);
+
+		data.AmmoReserve -= ammoToAdd;
+		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
+
+		PlayerMagazineAmmoCurrent += ammoToAdd;
+		RefillHarmonicaCartridge(ammoToAdd);
+
+		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
+		{
+			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.AmmoReserve);
+
+			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
+		}
+
+		_isReloading = false;	
+
+		Debug.Log("Reloaded");
 	}
 }

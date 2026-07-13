@@ -6,5 +6,6 @@
 	LayerWeaponRightUse,
 	LayerWeaponLeftEquip,
 	LayerWeaponLeftUse,
+	LayerWeaponReload,
 	LayerLegKick
 }

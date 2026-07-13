@@ -8,6 +8,9 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected GameObject _shootPoint;
 	protected PlayerCameraStateMachineController _playerCameraStateMachineController;
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
+
+	public abstract WeaponsRangedEnum RangedWeaponType { get; }
+
 	protected GameObject _VFXshottEffect;
 	protected Transform _VFXspawnPoint;
 	protected GameObject _vfxInstance;
@@ -18,6 +21,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public int PlayerAmmoMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].AmmoMax;
 	protected BulletHoleManager _bulletHoleManager;
 	protected PlayerCameraController _playerCameraController;
+	protected bool _isReloading;
+	protected WeaponAnimationController _weaponAnimationController;
 
 	public override void InitializeWeapon()
 	{
@@ -27,8 +32,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
 			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
-			_bulletHoleManager = ServiceLocator.Resolve<BulletHoleManager>("BulletHoleManager");
-
+			
 			_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXSpawnPoint;
 			InitializeWeaponRanged();
 		}
@@ -41,6 +45,9 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		{
 			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
 		}
+
+		_bulletHoleManager = ServiceLocator.Resolve<BulletHoleManager>("BulletHoleManager");
+		_weaponAnimationController = ServiceLocator.Resolve<WeaponAnimationController>("WeaponAnimationController");
 	}
 
 	private void OnDestroy()
@@ -67,25 +74,35 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		if (PlayerMagazineAmmoCurrent > 0)
 		{
-			if (IsWeaponAuto)
+			if (!_isReloading)
 			{
-				StartAutoAttacking();
+				if (IsWeaponAuto)
+				{
+					StartAutoAttacking();
+				}
+				else
+				{
+					ShootPlayerWeapon(WeaponDamage);
+				}
 			}
 			else
 			{
-				ShootPlayerWeapon(WeaponDamage);
+				Debug.Log($"Can't shoot as Reloading!");
 			}
 		}
 		else if (_isThisPlayerWeapon)
 		{
-			Debug.Log($"Not enough Ammo {WeaponName}");
+			Debug.Log($"Not enough Ammo for {WeaponName}");
 		}
 	}
 
 	public override void StartAutoAttacking()
 	{
-		if (_isWeaponAutoAttacking || PlayerMagazineAmmoCurrent <= 0) return;
+		if (_isWeaponAutoAttacking || PlayerMagazineAmmoCurrent <= 0)
+			return;
+
 		_isWeaponAutoAttacking = true;
+
 		if (_weaponAutoAttackCourutine == null)
 		{
 			_weaponAutoAttackCourutine = StartCoroutine(AutoAttackCourutine());
@@ -95,6 +112,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public override void StopAutoAttacking()
 	{
 		_isWeaponAutoAttacking = false;
+
 		if (_weaponAutoAttackCourutine != null)
 		{
 			StopCoroutine(_weaponAutoAttackCourutine);
@@ -123,6 +141,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 				break;
 			}
 		}
+
 		_weaponAutoAttackCourutine = null;
 	}
 
@@ -142,8 +161,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
 		}
 
-		//Debug.Log(_vfxInstance.transform.position);
-
 		Destroy(_vfxInstance, 0.05f);
 
 
@@ -157,19 +174,14 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			}
 		}
 
-		// Проверяем, есть ли вообще коллайдер и трансформ у объекта
 		if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 9 && hitInfo.transform.gameObject.layer != 11)
 		{
 			Quaternion rot = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
 
-			// Добавляем четвертый параметр - Transform родителя
-			// Мы всегда хотим, чтобы след был дочерним объектом
 			_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
 		}
-
 		
 		PlayerMagazineAmmoCurrent--;
-		HideUsedHarmonicaBullet();
 
 		Debug.Log($"Shoot {WeaponName}");
 
@@ -181,38 +193,30 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		ApplyWeaponRangedRecoil();
 	}
 
-	protected virtual void HideUsedHarmonicaBullet()
-	{
-		// Оставляем пустым или добавляем общую логику для всех оружий
-	}
-
-	protected virtual void RefillHarmonicaCartridge(int ammoToAdd)
-	{
-		// Оставляем пустым или добавляем общую логику для всех оружий
-	}
-
-	public void ReloadPlayerWeapon()
+	protected virtual IEnumerator ReloadPlayerWeapon()
 	{
 		if (PlayerMagazineAmmoCurrent >= PlayerMagazineAmmoMax)
 		{
 			Debug.Log("Magazine is already full");
-			return;
+			yield break;
 		}
 
 		if (PlayerAmmoReserve <= 0)
 		{
 			Debug.Log("Not enough Ammo to reload");
-			return;
+			yield break;
 		}
 
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
+
+		_weaponAnimationController.PrepareReloadAnimation(RangedWeaponType);
+
 		data.AmmoReserve -= ammoToAdd;
 		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
 
 		PlayerMagazineAmmoCurrent += ammoToAdd;
-		RefillHarmonicaCartridge(ammoToAdd);
 
 		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
 		{
@@ -220,6 +224,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
+
+		_isReloading = false;
+
+		yield return null;
 
 		Debug.Log("Reloaded");
 	}
@@ -230,24 +238,32 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		PlayerMagazineAmmoCurrent = currentAmmo;
 	}
 
+
+
 	public void Reload()
 	{
+		_isReloading = true;
+
 		if (_isThisPlayerWeapon)
 		{
-			ReloadPlayerWeapon();
+			StartCoroutine(ReloadPlayerWeapon());
+		}
+		else
+		{
+			StartCoroutine(ReloadNPCweapon());
 		}
 	}
 
 	public void ShootNPCweapon()
 	{
-		// TODO
 	}
 
-	public void ReloadNPCweapon()
+	public IEnumerator ReloadNPCweapon()
 	{
-		// TODO
+		yield return null;
 	}
 
 	protected abstract void InitializeWeaponRanged();
+
 	protected abstract void ApplyWeaponRangedRecoil();
 }

@@ -144,6 +144,7 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController);
 
 		ServiceLocator.Register("WeaponController", WeaponController);
+		ServiceLocator.Register("WeaponAnimationController", _weaponAnimationController);
 
 		ServiceLocator.Register("FirstPersonLeftHandWeaponSlotGameObject", _gameObjectFirstPersonLeftHandWeaponSlot);
 		ServiceLocator.Register("FirstPersonRightHandWeaponSlotGameObject", _gameObjectFirstPersonRightHandWeaponSlot);
