@@ -98,22 +98,74 @@ public class BootstrapSubProcessPlayerSystems
 		canvasComponentBackgroundMenu.worldCamera = PlayerCameraComponentPostProcessing;
 		canvasComponentBackgroundMenu.planeDistance = 2;
 
-		PlayerBehaviour.Initialize(_bootstrap, _inputDevice);
-		PlayerMovementController.Initialize(_bootstrap, _inputDevice, _gameSceneManager, PlayerBehaviour);
-		PlayerMovementStateMachineController.Initialize(_bootstrap, _inputDevice, _gameSceneManager, PlayerMovementController);
+		PlayerBehaviour.Initialize(
+			_bootstrap,
+			_inputDevice);
 
-		_playerColliderController.Initialize(_bootstrap, PlayerMovementStateMachineController);
+		PlayerMovementController.Initialize(_bootstrap,
+			_inputDevice,
+			_gameSceneManager,
+			PlayerBehaviour);
 
-		PlayerCameraController.Initialize(_bootstrap, _gameController, _inputDevice, _bootstrapSubProcessMenuSystem.MenuManager, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController, _bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionControlsController, PlayerMovementController, _playerColliderController, _gameObjectPlayer, _gameObjectPlayerCamera);
-		PlayerCameraStateMachineController.Initialize(_bootstrap, _inputDevice, _gameSceneManager, PlayerMovementController, PlayerMovementStateMachineController, PlayerCameraController);
-		_playerCameraBlurFilter.Initialize(_bootstrapSubProcessMenuSystem.MenuManager, PlayerCameraFirstPerson);
-		_playerCameraFirstPersonRender.Initialize(_bootstrap, PlayerCameraStateMachineController, _gameObjectPlayerHead, GameObkectPlayerHatSlot);
+		PlayerMovementStateMachineController.Initialize(
+			_bootstrap,
+			_inputDevice,
+			_gameSceneManager,
+			PlayerMovementController);
 
-		_playerMovementAnimationController.Initialize(_bootstrap, _inputDevice, PlayerBehaviour, PlayerMovementStateMachineController, PlayerCameraStateMachineController, _gameObjectPlayer);
+		_playerColliderController.Initialize(
+			_bootstrap,
+			PlayerMovementStateMachineController);
 
-		_playerResourcesHealthManager.Initialize(_gameController, _bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana, _bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
-		_playerResourcesManaManager.Initialize(_bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana, _bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
-		_playerResourcesMoneyManager.Initialize(_bootstrapSubProcessMenuSystem.ViewModelPauseMenu.TextCurrentPlayerMoneyDisplay);
+		PlayerCameraController.Initialize(
+			_bootstrap,
+			_gameController,
+			_inputDevice,
+			_bootstrapSubProcessMenuSystem.MenuManager,
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController,
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionControlsController,
+			PlayerMovementController,
+			_playerColliderController,
+			_gameObjectPlayer,
+			_gameObjectPlayerCamera);
+
+		PlayerCameraStateMachineController.Initialize(
+			_bootstrap,
+			_inputDevice,
+			_gameSceneManager,
+			PlayerMovementController,
+			PlayerMovementStateMachineController,
+			PlayerCameraController);
+
+		_playerCameraBlurFilter.Initialize(
+			_bootstrapSubProcessMenuSystem.MenuManager,
+			PlayerCameraFirstPerson);
+
+		_playerCameraFirstPersonRender.Initialize(
+			PlayerCameraStateMachineController,
+			_gameObjectPlayerHead,
+			GameObkectPlayerHatSlot);
+
+		_playerMovementAnimationController.Initialize(
+			_bootstrap,
+			_inputDevice,
+			PlayerBehaviour,
+			PlayerMovementStateMachineController,
+			PlayerCameraStateMachineController,
+			_gameObjectPlayer);
+
+		_playerResourcesHealthManager.Initialize(
+			_gameController,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana,
+			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
+
+		_playerResourcesManaManager.Initialize(
+			_bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana,
+			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
+
+		_playerResourcesMoneyManager.Initialize(
+			_bootstrapSubProcessMenuSystem.ViewModelPauseMenu.TextCurrentPlayerMoneyDisplay);
+
 		PlayerResourcesAmmoManager.Initialize();
 
 		ServiceLocator.Register("PlayerBehaviour", PlayerBehaviour);

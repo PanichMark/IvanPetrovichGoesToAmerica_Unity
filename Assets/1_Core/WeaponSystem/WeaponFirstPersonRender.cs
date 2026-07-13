@@ -40,25 +40,21 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(_playerFirstPersonHandLeft);
 		_weaponController.OnWeaponChanged += RegisterWeapons;
 
+		_weaponController.OnWeaponChanged += ChangeWeaponsVisibility;
+
 		Debug.Log("WeaponFirstPersonRender Initialized!");
 	}
 
-	private void Update()
+	private void ChangeWeaponsVisibility(WeaponHandsEnum handType)
 	{
-		if (!_bootstrap.IsBootstrapInitialized)
-			return;
-
-		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
 		{
-			if (_rightHandWeaponComponent != null &&
-				_rightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+			if (handType == WeaponHandsEnum.HandRight)
 			{
 				ShowPlayerWeapon(_rightHandWeaponComponent.FirstPersonWeaponModelInstance, true);
 				HidePlayerWeapon(_rightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
 			}
-
-			if (_leftHandWeaponComponent != null &&
-				_leftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+			else
 			{
 				ShowPlayerWeapon(_leftHandWeaponComponent.FirstPersonWeaponModelInstance, true);
 				HidePlayerWeapon(_leftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
@@ -66,21 +62,20 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		}
 		else
 		{
-			if (_rightHandWeaponComponent != null &&
-				_rightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+			if (handType == WeaponHandsEnum.HandRight)
 			{
 				ShowPlayerWeapon(_rightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
 				HidePlayerWeapon(_rightHandWeaponComponent.FirstPersonWeaponModelInstance, true);
 			}
-
-			if (_leftHandWeaponComponent != null &&
-				_leftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+			else
 			{
 				ShowPlayerWeapon(_leftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
 				HidePlayerWeapon(_leftHandWeaponComponent.FirstPersonWeaponModelInstance, true);
 			}
 		}
 	}
+
+
 
 	void FixedUpdate()
 	{
