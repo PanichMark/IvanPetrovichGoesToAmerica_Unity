@@ -40,11 +40,12 @@ public class WeaponAnimationController : MonoBehaviour
 		_weaponController = weaponController;
 		_legKickAttack = legKickAttack;
 
-		_weaponController.OnWeaponShoot += OnWeaponShoot;
 		_weaponController.OnShowWeaponRight += ShowWeaponRight;
 		_weaponController.OnHideWeaponRight += HideWeaponRight;
 		_weaponController.OnShowWeaponLeft += ShowWeaponLeft;
 		_weaponController.OnHideWeaponLeft += HideWeaponLeft;
+
+		_weaponController.OnWeaponShoot += OnWeaponShoot;
 
 		_layerWeaponRightEquip = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
 		_layerWeaponRightUse = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightUse.ToString());
@@ -61,6 +62,15 @@ public class WeaponAnimationController : MonoBehaviour
 			return;
 
 		HandleCameraRotation();
+
+		/*
+		Debug.Log("##############################");
+		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(2));
+		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(3));
+		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(4));
+		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(5));
+		Debug.Log("##############################");
+		*/
 	}
 
 	private void ShowWeaponRight()
@@ -74,9 +84,6 @@ public class WeaponAnimationController : MonoBehaviour
 		ChangePlayerWeaponRightAnimation(AnimationsHumanoidWeaponsEnum.EquipWeapon_Right.ToString());
 		_playerAnimator3rdPerson.SetLayerWeight(_layerWeaponRightUse, 1);
 		_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Hold_Right.ToString(), _layerWeaponRightUse);
-
-		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator3rdPerson, _layerWeaponRightEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Right.ToString()));
-		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator1stPerson, _layerWeaponRightEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Right.ToString()));
 	}
 
 	private void HideWeaponRight()
@@ -101,9 +108,6 @@ public class WeaponAnimationController : MonoBehaviour
 		ChangePlayerWeaponLeftAnimation(AnimationsHumanoidWeaponsEnum.EquipWeapon_Left.ToString());
 		_playerAnimator3rdPerson.SetLayerWeight(_layerWeaponLeftUse, 1);
 		_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Hold_Left.ToString(), _layerWeaponLeftUse);
-
-		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator3rdPerson, _layerWeaponLeftEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Left.ToString()));
-		StartCoroutine(WaitForAnimationAndDisable(_playerAnimator1stPerson, _layerWeaponLeftEquip, AnimationsHumanoidWeaponsEnum.UnequipWeapon_Left.ToString()));
 	}
 
 	private void HideWeaponLeft()
@@ -119,7 +123,8 @@ public class WeaponAnimationController : MonoBehaviour
 
 	private IEnumerator WaitForAnimationAndDisable(Animator targetAnimator, int layerIndex, string stateName)
 	{
-		yield return null;
+		//Debug.Log("COURUTINE");
+
 		var stateInfo = targetAnimator.GetCurrentAnimatorStateInfo(layerIndex);
 		while (!stateInfo.IsName(stateName) || stateInfo.normalizedTime < 0.99f)
 		{
@@ -127,6 +132,8 @@ public class WeaponAnimationController : MonoBehaviour
 			stateInfo = targetAnimator.GetCurrentAnimatorStateInfo(layerIndex);
 		}
 		targetAnimator.SetLayerWeight(layerIndex, 0);
+
+		//yield return null;
 	}
 
 	private void HandleCameraRotation()
