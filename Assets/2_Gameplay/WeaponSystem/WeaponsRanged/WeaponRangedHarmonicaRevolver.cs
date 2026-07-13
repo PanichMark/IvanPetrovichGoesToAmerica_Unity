@@ -72,18 +72,13 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	protected override void HideUsedHarmonicaBullet()
 	{
-		int bulletIndex = PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent - 1;
-
-		//Debug.Log(bulletIndex);
-		_bullets3rdPerson[bulletIndex].SetActive(false);
-		_bullets1stPerson[bulletIndex].SetActive(false);
+		_bullets3rdPerson[_cartgridgeSlidingStep].SetActive(false);
+		_bullets1stPerson[_cartgridgeSlidingStep].SetActive(false);
 
 		_cartridge1stPerson.transform.localPosition += new Vector3(0.025f, 0, 0);
 		_cartridge3rdPerson.transform.localPosition += new Vector3(0.025f, 0, 0);
 
 		_cartgridgeSlidingStep++;
-
-		//Debug.Log(_cartgridgeSlidingStep);
 
 		if (_cartgridgeSlidingStep == 5)
 		{
@@ -93,7 +88,6 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	private void EjectCartridge()
 	{
-		Debug.Log("EJECT");
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
 		{
 			_ejectedCartridge = Instantiate(_cartridge1stPerson);
@@ -112,12 +106,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		_ejectedCartridge.transform.position = transform.position;
 
 		_ejectedCartridge.AddComponent<BoxCollider>();
-
-		Rigidbody rb1 = _ejectedCartridge.AddComponent<Rigidbody>();
-
-		Destroy(_ejectedCartridge, 30);
-
-		//rb1.interpolation = RigidbodyInterpolation.Interpolate;
+		_ejectedCartridge.AddComponent<Rigidbody>();
 
 		_cartridge1stPerson.SetActive(false);
 		_cartridge3rdPerson.SetActive(false);
@@ -127,9 +116,18 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 	{
 		int count = Mathf.Min(ammoToAdd, PlayerMagazineAmmoMax);
 
-		if (_cartgridgeSlidingStep == 0)
+		_cartridge1stPerson.SetActive(true);
+		_cartridge3rdPerson.SetActive(true);
+
+		for (int i = 0; i < PlayerMagazineAmmoMax; i++)
 		{
-			for (int i = 0; i < count; i++)
+			_bullets3rdPerson[i].SetActive(false);
+			_bullets1stPerson[i].SetActive(false);
+		}
+
+		if (count == 5)
+		{
+			for (int i = 0; i < PlayerMagazineAmmoMax; i++)
 			{
 				_bullets3rdPerson[i].SetActive(true);
 				_bullets1stPerson[i].SetActive(true);
@@ -137,17 +135,12 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		}
 		else
 		{
-			for (int i = PlayerAmmoReserve; i < count; i++)
+			for (int i = 0; i < PlayerMagazineAmmoCurrent; i++)
 			{
 				_bullets3rdPerson[i].SetActive(true);
 				_bullets1stPerson[i].SetActive(true);
 			}
 		}
-
-		_cartridge1stPerson.SetActive(true);
-		_cartridge3rdPerson.SetActive(true);
-
-		//Debug.Log(PlayerAmmoReserve);
 
 		if (PlayerAmmoReserve == 0)
 		{
@@ -161,10 +154,5 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		}
 
 		_cartgridgeSlidingStep = 0;
-	}
-
-	private void Update()
-	{
-		//Debug.Log(_cartgridgeSlidingStep);
 	}
 }
