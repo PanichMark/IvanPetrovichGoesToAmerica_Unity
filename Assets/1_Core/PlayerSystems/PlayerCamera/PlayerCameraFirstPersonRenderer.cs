@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerCameraFirstPersonRender : MonoBehaviour
+public class PlayerCameraFirstPersonRenderer : MonoBehaviour
 {
 	private PlayerCameraStateMachineController _playerStateMachineCamera;
 

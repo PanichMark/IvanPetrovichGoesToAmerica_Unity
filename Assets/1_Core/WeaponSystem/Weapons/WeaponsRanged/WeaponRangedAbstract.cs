@@ -7,6 +7,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected GameObject _shootPoint;
 	protected PlayerCameraStateMachineController _playerCameraStateMachineController;
+
+	public abstract float _waitForAmmoRefill { get; }
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
 
 	public abstract WeaponsRangedEnum RangedWeaponType { get; }
@@ -22,7 +24,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public int PlayerAmmoMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].AmmoMax;
 	protected BulletHoleManager _bulletHoleManager;
 	protected PlayerCameraController _playerCameraController;
-	protected WeaponAnimationController _weaponAnimationController;
+	protected PlayerWeaponAnimationController _weaponAnimationController;
 
 	public override void InitializeWeapon()
 	{
@@ -47,7 +49,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 
 		_bulletHoleManager = ServiceLocator.Resolve<BulletHoleManager>("BulletHoleManager");
-		_weaponAnimationController = ServiceLocator.Resolve<WeaponAnimationController>("WeaponAnimationController");
+		_weaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>("WeaponAnimationController");
 	}
 
 	private void OnDestroy()
@@ -84,10 +86,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 				{
 					ShootWeaponPlayer(WeaponDamage);
 				}
-			}
-			else
-			{
-				Debug.Log($"Can't shoot as Reloading!");
 			}
 		}
 		else if (_isThisPlayerWeapon)
@@ -196,27 +194,24 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected virtual IEnumerator ReloadWeaponPlayer()
 	{
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
-
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		yield return StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(RangedWeaponType, _weaponHandType));
+		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(RangedWeaponType, _weaponHandType, true));
+		yield return new WaitForSeconds(_waitForAmmoRefill);
 
 		data.AmmoReserve -= ammoToAdd;
 		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
-
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
 		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
 		{
 			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.AmmoReserve);
-
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
-	
+		yield return animRoutine;
 
 		Debug.Log("Reloaded");
-
 		yield return null;
 	}
 
@@ -241,6 +236,12 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			if (PlayerAmmoReserve <= 0)
 			{
 				Debug.Log("Not enough Ammo to reload");
+				return;
+			}
+
+			if (_weaponAnimationController.IsReloading)
+			{
+				Debug.Log("Already reloading");
 				return;
 			}
 

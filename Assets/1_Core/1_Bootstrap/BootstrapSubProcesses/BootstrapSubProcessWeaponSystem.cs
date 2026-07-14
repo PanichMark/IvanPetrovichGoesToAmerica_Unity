@@ -23,9 +23,9 @@ public class BootstrapSubProcessWeaponSystem
 
 	private IWeaponWheelMenuController _weaponWheelMenuController;
 
-	private WeaponAnimationController _weaponAnimationController;
+	private PlayerWeaponAnimationController _weaponAnimationController;
 
-	private WeaponFirstPersonRender _weaponFirstPersonRender;
+	private PlayerWeaponFirstPersonRenderer _weaponFirstPersonRender;
 
 	private LegKickAttackController _legKickAttackController;
 	private GameObject _gameObjectPlayer;
@@ -68,8 +68,8 @@ public class BootstrapSubProcessWeaponSystem
 
 		_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
 
-		_weaponAnimationController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponAnimationController>();
-		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponFirstPersonRender>();
+		_weaponAnimationController = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponAnimationController>();
+		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponFirstPersonRenderer>();
 		_legKickAttackController = _GameObjectBootstrapWeaponSystem.AddComponent<LegKickAttackController>();
 		_HUDammoController = _GameObjectBootstrapWeaponSystem.AddComponent<HUDammoController>();
 		_bulletHoleManager = _GameObjectBootstrapWeaponSystem.AddComponent<BulletHoleManager>();

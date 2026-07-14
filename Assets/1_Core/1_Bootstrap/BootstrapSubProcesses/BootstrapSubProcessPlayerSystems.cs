@@ -32,7 +32,7 @@ public class BootstrapSubProcessPlayerSystems
 	public PlayerCameraController PlayerCameraController { get; private set; }
 	public PlayerCameraStateMachineController PlayerCameraStateMachineController { get; private set; }
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
-	private PlayerCameraFirstPersonRender _playerCameraFirstPersonRender;
+	private PlayerCameraFirstPersonRenderer _playerCameraFirstPersonRender;
 
 	private PlayerMovementAnimationController _playerMovementAnimationController;
 
@@ -77,7 +77,7 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerCameraController = _gameObjectPlayerCamera.GetComponent<PlayerCameraController>();
 		PlayerCameraStateMachineController = _gameObjectPlayerCamera.GetComponent<PlayerCameraStateMachineController>();
 		_playerCameraBlurFilter = _gameObjectPlayerCamera.GetComponent<PlayerCameraBlurFilter>();
-		_playerCameraFirstPersonRender = _gameObjectPlayerCamera.GetComponent<PlayerCameraFirstPersonRender>();
+		_playerCameraFirstPersonRender = _gameObjectPlayerCamera.GetComponent<PlayerCameraFirstPersonRenderer>();
 
 		_playerResourcesHealthManager = _gameObjectPlayer.GetComponent<PlayerResourcesHealthManager>();
 		_playerResourcesManaManager = _gameObjectPlayer.GetComponent<PlayerResourcesManaManager>();

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public class WeaponFirstPersonRender : MonoBehaviour
+public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 {
 	private WeaponAbstract _leftHandWeaponComponent;
 	private WeaponAbstract _rightHandWeaponComponent;
 	private PlayerCameraStateMachineController _playerCameraStateMachine;
 	private PlayerWeaponController _weaponController;
-	private WeaponAnimationController _weaponAnimationController;
+	private PlayerWeaponAnimationController _weaponAnimationController;
 	private GameSceneManager _gameSceneManager;
 
 
@@ -19,7 +19,7 @@ public class WeaponFirstPersonRender : MonoBehaviour
 		GameSceneManager gameSceneManager,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerWeaponController weaponController,
-		WeaponAnimationController weaponAnimationController,
+		PlayerWeaponAnimationController weaponAnimationController,
 		GameObject playerFirstPersonHandRight,
 		GameObject playerFirstPersonHandLeft,
 		GameObject playerThirdPersonHandRight,

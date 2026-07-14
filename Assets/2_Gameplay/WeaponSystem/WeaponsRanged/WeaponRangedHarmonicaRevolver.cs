@@ -15,6 +15,8 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	public override WeaponsRangedEnum RangedWeaponType => WeaponsRangedEnum.HarmonicaRevolver;
 
+	public override float _waitForAmmoRefill => 1;
+
 	private GameObject _cartridge1stPerson;
 	private GameObject _cartridge3rdPerson;
 	private GameObject _ejectedCartridge;
@@ -218,26 +220,25 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 	protected override IEnumerator ReloadWeaponPlayer()
 	{
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
-
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		yield return StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(RangedWeaponType, _weaponHandType));
+		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(RangedWeaponType, _weaponHandType, false));
+		yield return new WaitForSeconds(_waitForAmmoRefill);
 
 		data.AmmoReserve -= ammoToAdd;
 		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
-
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 		RefillHarmonicaCartridge(ammoToAdd);
 
 		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
 		{
 			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.AmmoReserve);
-
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
-		Debug.Log("Reloaded");
+		yield return animRoutine;
 
+		Debug.Log("Reloaded");
 		yield return null;
 	}
 }

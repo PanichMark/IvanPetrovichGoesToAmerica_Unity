@@ -6,11 +6,11 @@
 	UnequipWeapon_Left,
 	Ranged_HarmonicaRevolver_Hold_Right,
 	Ranged_HarmonicaRevolver_Shoot_Right,
-	Ranged_HarmoniceRevolver_ReloadInsertCartridge_Right,
-	Ranged_HarmoniceRevolver_ReloadPushCartridge_Right,
+	Ranged_HarmonicaRevolver_ReloadInsertCartridge_Right,
+	Ranged_HarmonicaRevolver_ReloadPushCartridge_Right,
 	Ranged_HarmonicaRevolver_Hold_Left,
 	Ranged_HarmonicaRevolver_Shoot_Left,
-	Ranged_HarmoniceRevolver_ReloadInsertCartridge_Left,
-	Ranged_HarmoniceRevolver_ReloadPushCartridge_Left,
+	Ranged_HarmonicaRevolver_ReloadInsertCartridge_Left,
+	Ranged_HarmonicaRevolver_ReloadPushCartridge_Left,
 	LegKick
 }

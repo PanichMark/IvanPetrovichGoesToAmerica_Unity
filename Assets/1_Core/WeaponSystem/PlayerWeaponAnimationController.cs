@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class WeaponAnimationController : MonoBehaviour
+public class PlayerWeaponAnimationController : MonoBehaviour
 {
 	private Bootstrap _bootstrap;
 	private GameController _gameController;
@@ -96,7 +96,7 @@ public class WeaponAnimationController : MonoBehaviour
 
 		HandleLookUpDown();
 
-		/*
+	/*
 		Debug.Log("##########  FIRST PERSON  ###########");
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(0));
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(1));
@@ -206,7 +206,18 @@ public class WeaponAnimationController : MonoBehaviour
 
 	private void OnWeaponShoot(WeaponHandsEnum weaponHandType)
 	{
-
+		if (weaponHandType == WeaponHandsEnum.HandRight)
+		{
+			Debug.Log("SHOOT RIGHT");
+			//_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Shoot_Right.ToString(), _layer1stWeaponRightUse, 0f);
+			//_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Shoot_Right.ToString(), _layer3rdWeaponRightUse, 0f);
+		}
+		else
+		{
+			Debug.Log("SHOOT LEFT");
+			//_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Shoot_Left.ToString(), _layer1stWeaponLeftUse, 0f);
+			//_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Shoot_Left.ToString(), _layer3rdWeaponLeftUse, 0f);
+		}
 	}
 
 	private void ChangePlayerWeaponEquipAnimation(Animator animator, WeaponHandsEnum weaponHand, string animation, int layer)
@@ -278,32 +289,31 @@ public class WeaponAnimationController : MonoBehaviour
 		}
 	}
 
-	public IEnumerator PrepareForReloadingWeapon(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType)
+	public IEnumerator PrepareForReloadingWeapon(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType, bool isSingleAnimation)
 	{
-		Debug.Log("REALODDIIIIIIIIING");
+		//Debug.Log("REALODDIIIIIIIIING");
 
-		_currentReloadingCoroutine = StartCoroutine(ReloadWeapon(rangedWeaponType, weaponHandType));
+		if (isSingleAnimation == true)
+		{
+			_currentReloadingCoroutine = StartCoroutine(ReloadWeaponSingleAnimation(rangedWeaponType, weaponHandType));
+		}
+		else
+		{
+			_currentReloadingCoroutine = StartCoroutine(ReloadWeaponDoubleAnimation(rangedWeaponType, weaponHandType));
+		}
 
 		yield return _currentReloadingCoroutine;
 	}
 
-	private IEnumerator ReloadWeapon(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType)
+	private IEnumerator ReloadWeaponDoubleAnimation(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType)
 	{
+		//Debug.Log("DOUBEL RELOAD");
 		TurnOffWeaponAttackLayers();
 		IsReloading = true;
-		
-		if (weaponHandType == WeaponHandsEnum.HandRight)
-		{
-			CurrentReloadingHelpingHand = WeaponHandsEnum.HandLeft;
-		}
-		else
-		{
-			CurrentReloadingHelpingHand = WeaponHandsEnum.HandRight;
-		}
+
+		CurrentReloadingHelpingHand = weaponHandType ^ (WeaponHandsEnum)1; //Helping hand is Alternative to weaponHandType
 
 		OnReload?.Invoke();
-
-
 
 		if (rangedWeaponType == WeaponsRangedEnum.HarmonicaRevolver)
 		{
@@ -311,19 +321,38 @@ public class WeaponAnimationController : MonoBehaviour
 
 			if (weaponHandType == WeaponHandsEnum.HandRight)
 			{
-				_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmoniceRevolver_ReloadInsertCartridge_Right.ToString(), _layer1stWeaponReload, 0f);
-				_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmoniceRevolver_ReloadInsertCartridge_Right.ToString(), _layer3rdWeaponReload, 0f);
+				_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_ReloadInsertCartridge_Right.ToString(), _layer1stWeaponReload, 0f);
+				_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_ReloadInsertCartridge_Right.ToString(), _layer3rdWeaponReload, 0f);
 			}
 			else
 			{
-				_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmoniceRevolver_ReloadInsertCartridge_Left.ToString(), _layer1stWeaponReload, 0f);
-				_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmoniceRevolver_ReloadInsertCartridge_Left.ToString(), _layer3rdWeaponReload, 0f);
+				_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_ReloadInsertCartridge_Left.ToString(), _layer1stWeaponReload, 0f);
+				_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_ReloadInsertCartridge_Left.ToString(), _layer3rdWeaponReload, 0f);
 			}
 
 			yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponReload).length);
 
 
 		}
+
+
+		TurnOnWeaponAttackLayers();
+
+		IsReloading = false;
+	}
+
+	private IEnumerator ReloadWeaponSingleAnimation(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType)
+	{
+		TurnOffWeaponAttackLayers();
+		IsReloading = true;
+
+		CurrentReloadingHelpingHand = weaponHandType ^ (WeaponHandsEnum)1; //Helping hand is Alternative to weaponHandType
+
+		OnReload?.Invoke();
+
+
+
+
 		if (rangedWeaponType == WeaponsRangedEnum.BergmannBayard)
 		{
 
@@ -332,6 +361,8 @@ public class WeaponAnimationController : MonoBehaviour
 		{
 
 		}
+
+		yield return null;
 
 		TurnOnWeaponAttackLayers();
 
