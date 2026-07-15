@@ -3,9 +3,10 @@ using System.Collections;
 
 public class PlayerMovementController : MonoBehaviour, ISaveLoad
 {
-	public event System.Action<PlayerMovementStateTypes> OnPlayerMovementStateChanged;
+	public delegate void MovementStateHandler(PlayerMovementStateTypes playerMovementStateType);
+	public event MovementStateHandler OnChangeMovementState;
+
 	private Bootstrap _bootstrap;
-	private IInputDevice _inputDevice;
 	private PlayerBehaviourController _playerBehaviour;
 
 	private Camera _playerCamera;
@@ -75,13 +76,11 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	public void Initialize(
 		Bootstrap bootstrap,
-		IInputDevice inputDevice,
 		GameSceneManager gameSceneManager,
 		PlayerBehaviourController playerBehaviour)
 	{
 		_bootstrap = bootstrap;
 		_gameSceneManager = gameSceneManager;
-		_inputDevice = inputDevice;
 		_playerBehaviour = playerBehaviour;
 		_playerCamera = Camera.main;
 
@@ -230,7 +229,6 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		_playerPreviousFramePosition = transform.position;
 	}
 
-
 	public float ChangePlayerMovementSpeed(float SetSpeed)
 	{
 		PlayerMovementSpeed = SetSpeed;
@@ -283,7 +281,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		PlayerRigidBody.angularVelocity = Vector3.zero;
 		PlayerRigidBody.MovePosition(PlayerRigidBody.transform.position);
 
-		OnPlayerMovementStateChanged?.Invoke(PlayerMovementStateTypes.PlayerCrouchingIdle);
+		OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerCrouchingIdle);
 		IsPlayerSliding = false;
 	}
 
@@ -324,11 +322,11 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		if (Big == true)
 		{
 			ChangePlayerRayPosition(1.9f);
-			OnPlayerMovementStateChanged?.Invoke(PlayerMovementStateTypes.PlayerIdle);
+			OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerStandingIdle);
 		}
 		else
 		{
-			OnPlayerMovementStateChanged?.Invoke(PlayerMovementStateTypes.PlayerCrouchingIdle);
+			OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerCrouchingIdle);
 		}
 
 		IsPlayerLedgeClimbing = false;

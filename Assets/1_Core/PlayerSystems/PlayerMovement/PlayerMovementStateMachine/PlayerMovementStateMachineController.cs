@@ -11,6 +11,9 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 	private PlayerMovementStateAbstract _playerMovementState;
 	public PlayerMovementStateTypes CurrentPlayerMovementStateType { get; private set; }
 
+	public delegate void MovementStateHandler(PlayerMovementStateTypes playerMovementStateType);
+	public event MovementStateHandler OnChangeMovementState;
+
 	public void Initialize(
 		Bootstrap bootstrap,
 		IInputDevice inputDevice,
@@ -22,9 +25,9 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 		_gameSceneManager = gameSceneManager;
 		_playerMovementController = playerMovementController;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingIdle);
 
-		_playerMovementController.OnPlayerMovementStateChanged += SetPlayerMovementState;
+		_playerMovementController.OnChangeMovementState += SetPlayerMovementState;
 
 		Debug.Log("PlayerMovementStateMachineController Initialized");
 	}
@@ -45,11 +48,11 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 
 			CurrentPlayerMovementStateType = newPlayerMovementStateType;
 
-			if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdle)
+			if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerStandingIdle)
 			{
 				newState = new PlayerMovementStateIdle(this, _playerMovementController, _inputDevice);
 			}
-			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalking)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerStandingWalking)
 			{
 				newState = new PlayerMovementStateWalking(this, _playerMovementController, _inputDevice);
 			}
@@ -87,6 +90,8 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 			}
 
 			_playerMovementState = newState;
+
+			OnChangeMovementState?.Invoke(CurrentPlayerMovementStateType);
 
 			Debug.Log("MovementState: " + CurrentPlayerMovementStateType);
 		}

@@ -16,7 +16,6 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 
 	public int CurrentManaReplenishItemsNumber { get; private set; }
 
-	private bool _isInitialized;
 	public void Initialize(ViewModelHUDHealthAndMana viewModelHUDHealthAndMana, ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
 	{
 		_sliderComponentManaBar = viewModelHUDHealthAndMana.SliderManaBar.GetComponent<Slider>();
@@ -27,15 +26,8 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 
 		_sliderComponentManaBar.maxValue = MaxPlayerMana;
 
-		_isInitialized = true;
 
 		Debug.Log("PlayerResourcesManaManager Initialized");
-	}
-
-	void Update()
-	{
-		if (!_isInitialized)
-			return;
 	}
 
 	private void UseManaReplenishItem()

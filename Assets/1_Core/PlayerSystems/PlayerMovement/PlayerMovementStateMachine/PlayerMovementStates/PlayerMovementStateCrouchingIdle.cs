@@ -47,7 +47,7 @@ public class PlayerMovementStateCrouchingIdle : PlayerMovementStateAbstract
 		if (_inputDevice.GetKeyCrouch() && _playerMovementController.IsPlayerAbleToStandUp)
 		{
 			
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingIdle);
 		}
 	}
 }

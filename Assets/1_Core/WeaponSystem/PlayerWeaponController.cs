@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void OnAnyWeaponUnlocked(GameObject weaponPrefab);
 
-public delegate void OnWeaponChanged(WeaponHandsEnum activeHand);
 
 
 public class PlayerWeaponController : MonoBehaviour, ISaveLoad
@@ -36,9 +34,11 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	public delegate void WeaponShootHandler(WeaponHandsEnum weaponHandType);
 	public event WeaponShootHandler OnWeaponShoot;
 
-	public event OnAnyWeaponUnlocked OnAnyWeaponUnlocked; 
+	public delegate void WeaponUnlockHandler(GameObject weaponPrefab);
+	public event WeaponUnlockHandler OnAnyWeaponUnlocked;
 
-	public event OnWeaponChanged OnWeaponChanged;
+	public delegate void WeaponChangeHandler(WeaponHandsEnum activeHand);
+	public event WeaponChangeHandler OnWeaponChanged;
 
 	public bool IsLeftHand {  get; private set; }
 	public bool IsAbleToUseRightWeapon { get; private set; }

@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoad
 {
+	private Bootstrap _bootstrap;
 	private GameController _gameController;
 	private Slider _sliderHealthBar;
 	private Button _buttonHealingItem;
 	private TextMeshProUGUI _healingItemNumber;
+	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	public float MaxPlayerHealth { get; private set; } = 100;
 	public float CurrentPlayerHealth { get; private set; }
 	private int _healingItemEffect = 34;
@@ -18,33 +20,42 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 
 	public bool IsObjectDestroyed => false;
 
+	private bool _isFalling;
+	private float _fallStartTime;
+	private const float MinFallDurationForDamage = 1.0f;
+	private const float DamagePerSecondOverThreshold = 0.2f;
+
 	public float CurrentHealth => CurrentPlayerHealth;
 
-	private bool _isInitialized;
-
-	public void Initialize(GameController gameController, ViewModelHUDHealthAndMana viewModelHUDHealthAndMana, ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
+	public void Initialize(
+		Bootstrap bootstrap,
+		GameController gameController,
+		PlayerMovementStateMachineController playerMovementStateMachineController,
+		ViewModelHUDHealthAndMana viewModelHUDHealthAndMana,
+		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
 	{
+		_bootstrap = bootstrap;
 		_sliderHealthBar = viewModelHUDHealthAndMana.SliderHealthBar.GetComponent<Slider>();
 		_buttonHealingItem = viewModelMenuWeaponWheel.ButtonUseHealingItem.GetComponent<Button>();
 		_healingItemNumber = viewModelMenuWeaponWheel.TextHealingItemNumber.GetComponent<TextMeshProUGUI>();
 		_gameController = gameController;
 		_buttonHealingItem.onClick.AddListener(() => UseHealingItem());
 
+		_playerMovementStateMachineController = playerMovementStateMachineController;
+		_playerMovementStateMachineController.OnChangeMovementState += FallDamage;
 		_sliderHealthBar.maxValue = MaxPlayerHealth;
-
-		_isInitialized = true;
 
 		Debug.Log("PlayerResourcesHealthManager Initialized");
 	}
 
 	void Update()
     {
-		if (!_isInitialized)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (Input.GetKeyDown(KeyCode.T) && SceneManager.GetSceneAt(1).name != "Scene_0_MainMenu")
+		if (Input.GetKeyDown(KeyCode.T) && SceneManager.GetSceneAt(1).name != GameScenesEnum.Scene_0_MainMenu.ToString())
 		{
-			TakeDamage(900);
+			TakeDamage(99999);
 		}
 	}
 
@@ -112,6 +123,44 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 		}
 	}
 
+	private void FallDamage(PlayerMovementStateTypes playerMovementStateType)
+	{
+		if (playerMovementStateType == PlayerMovementStateTypes.PlayerFalling)
+		{
+			if (!_isFalling)
+			{
+				_isFalling = true;
+				_fallStartTime = Time.time;
+			}
+		}
+		else if (_isFalling)
+		{
+			CalculateAndApplyFallDamage();
+			_isFalling = false;
+		}
+	}
+
+	private void CalculateAndApplyFallDamage()
+	{
+		float realGameplayDuration = (Time.time - _fallStartTime) * Time.timeScale;
+
+		if (realGameplayDuration > MinFallDurationForDamage)
+		{
+			float excessDuration = realGameplayDuration - MinFallDurationForDamage;
+
+			// Целая часть секунд сверху порога, которая влияет на множитель
+			int fullSecondsOverThreshold = Mathf.FloorToInt(excessDuration);
+
+			// Базовый урон за первую лишнюю секунду
+			float baseDamage = MaxPlayerHealth * DamagePerSecondOverThreshold;
+
+			// Экспоненциальный рост: 10% * (2 ^ количество полных лишних секунд)
+			float damageToTake = baseDamage * Mathf.Pow(2f, fullSecondsOverThreshold);
+
+			TakeDamage(damageToTake);
+		}
+	}
+
 	public void ObjectIsFullyDamaged()
 	{
 		CurrentPlayerHealth = 0;
@@ -133,6 +182,4 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 
 		_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
 	}
-
-
 }

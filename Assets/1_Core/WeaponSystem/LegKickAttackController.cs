@@ -48,7 +48,7 @@ public class LegKickAttackController : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (_inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && _playerWeaponController.HasAnyWeapon && (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdle || _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalking
+		if (_inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && _playerWeaponController.HasAnyWeapon && (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerStandingIdle || _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerStandingWalking
 			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerRunning || _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle ||
 			_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking))
 		{ 
@@ -72,7 +72,7 @@ public class LegKickAttackController : MonoBehaviour
 		}
 		else
 		{
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingIdle);
 		}
 
 		StartCoroutine(_playerMovementController.DisablePlayerMovementDuringLegKickAttack());

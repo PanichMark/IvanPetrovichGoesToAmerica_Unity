@@ -107,7 +107,6 @@ public class BootstrapSubProcessPlayerSystems
 			_inputDevice);
 
 		PlayerMovementController.Initialize(_bootstrap,
-			_inputDevice,
 			_gameSceneManager,
 			PlayerBehaviour);
 
@@ -159,7 +158,9 @@ public class BootstrapSubProcessPlayerSystems
 			_gameObjectPlayer);
 
 		_playerResourcesHealthManager.Initialize(
+			_bootstrap,
 			_gameController,
+			PlayerMovementStateMachineController,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana,
 			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
 

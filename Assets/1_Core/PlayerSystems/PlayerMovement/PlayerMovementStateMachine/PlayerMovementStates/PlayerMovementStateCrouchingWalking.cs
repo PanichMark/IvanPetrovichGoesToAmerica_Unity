@@ -75,7 +75,7 @@ public class PlayerMovementStateCrouchingWalking : PlayerMovementStateAbstract
 		if (_inputDevice.GetKeyCrouch() && _playerMovementController.IsPlayerAbleToStandUp)
 		{
 			
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalking);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingWalking);
 		}
 	}
 }

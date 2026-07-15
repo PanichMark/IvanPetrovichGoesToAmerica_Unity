@@ -320,16 +320,16 @@ public class NPCStateMachineController : MonoBehaviour
 		{
 			newState = new NPCStateFleeing();
 		}
-		else if (NPCstateType == NPCStateTypes.BeingStrangled)
+		else if (NPCstateType == NPCStateTypes.Strangled)
 		{
 			newState = new NPCStateBeingStrangled(this);
 		}
-		else if (NPCstateType == NPCStateTypes.BeingHooked)
+		else if (NPCstateType == NPCStateTypes.Hooked)
 		{
 			newState = new NPCStateBeingHooked(this);
 			CurrentNPCState = "BeingHooked";
 		}
-		else if (NPCstateType == NPCStateTypes.BeingElectroShocked)
+		else if (NPCstateType == NPCStateTypes.ElectroShocked)
 		{
 			newState = new NPCStateBeingElectroShocked();
 		}

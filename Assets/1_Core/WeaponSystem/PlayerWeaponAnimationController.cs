@@ -283,6 +283,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		{
 			Debug.Log("Reloading Canceled");
 
+			StopAllCoroutines();
+
 			_currentPlayerReloadingCoroutine = null;
 
 			TurnOffAllWeaponLayers();
