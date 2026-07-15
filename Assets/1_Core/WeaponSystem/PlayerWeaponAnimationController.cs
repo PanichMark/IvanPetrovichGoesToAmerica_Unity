@@ -94,7 +94,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		HandleLookUpDown();
 
-	/*
+		/*
 		Debug.Log("##########  FIRST PERSON  ###########");
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(0));
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(1));
@@ -200,7 +200,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetFloat("UpDown", newValue);
 	}
 
-	public IEnumerator WeaponShootAnimation(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType)
+	public IEnumerator WeaponShootAnimation(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType, float weaponAttackSpeedRate)
 	{
 		if (weaponHandType == WeaponHandsEnum.HandRight)
 		{
@@ -215,7 +215,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_Shoot_Left.ToString(), _layer3rdWeaponLeftUse, 0f);
 		}
 
-		yield return new WaitForSeconds(0.3f); // return until animation plays TODO;
+		yield return new WaitForSeconds(weaponAttackSpeedRate); // return until animation plays TODO;
 
 		Debug.Log("Courutine shoot edned");
 
@@ -373,17 +373,29 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private void TurnOnWeaponAttackLayers()
 	{
-		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, 1);
-		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightUse, 1);
-		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 1);
-		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftUse, 1);
+		if (_playerWeaponController.RightHandWeapon != null)
+		{
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, 1);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightUse, 1);
+		}
+		if (_playerWeaponController.LeftHandWeapon != null)
+		{
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 1);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftUse, 1);
+		}
 
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponReload, 0);
-		
-		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 1);
-		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightUse, 1);
-		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 1);
-		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftUse, 1);
+
+		if (_playerWeaponController.RightHandWeapon != null)
+		{
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 1);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightUse, 1);
+		}
+		if (_playerWeaponController.LeftHandWeapon != null)
+		{
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 1);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftUse, 1);
+		}
 
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponReload, 0);
 	}

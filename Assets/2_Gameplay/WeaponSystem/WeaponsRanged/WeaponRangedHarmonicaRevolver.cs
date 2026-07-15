@@ -30,6 +30,8 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	protected override void InitializeWeaponRanged()
 	{
+		_weaponAttackSpeedRate = 0.2f;
+
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 
 		_cartridge1stPerson = FirstPersonWeaponModelInstance.transform.Find("Cartridge").gameObject;
@@ -164,7 +166,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, _weaponHandType));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, _weaponHandType, _weaponAttackSpeedRate));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -219,6 +221,8 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		ApplyWeaponRecoil();
 
 		yield return _currentWeaponPlayerShootRoutine;
+
+		_currentWeaponPlayerShootRoutine = null;
 	}
 
 	protected override IEnumerator ReloadWeaponPlayer()

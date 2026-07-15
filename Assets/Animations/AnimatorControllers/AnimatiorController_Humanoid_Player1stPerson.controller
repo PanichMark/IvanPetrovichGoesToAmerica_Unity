@@ -74,7 +74,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -3317874565184862552, guid: 242a7c5654e33684db5b26fb94b4a0f1, type: 3}
+  m_Motion: {fileID: 0}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -100,7 +100,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -3317874565184862552, guid: 242a7c5654e33684db5b26fb94b4a0f1, type: 3}
+  m_Motion: {fileID: 0}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -449,7 +449,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: LayerWeaponRightUse
     m_StateMachine: {fileID: -3383098449784966075}
-    m_Mask: {fileID: 31900000, guid: 569a6df2a40185b4ab7bb753ea368599, type: 2}
+    m_Mask: {fileID: 31900000, guid: b4b7f7ac64424c14f828d32012bfc267, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -473,7 +473,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: LayerWeaponLeftUse
     m_StateMachine: {fileID: -3318343577570044665}
-    m_Mask: {fileID: 31900000, guid: 156493759f661a541a32fa227ddf2974, type: 2}
+    m_Mask: {fileID: 31900000, guid: 2a24be45667e5e1478fff1431ecc762c, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0

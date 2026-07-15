@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public abstract class WeaponAbstract : MonoBehaviour
@@ -10,9 +9,9 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract Sprite WeaponIcon { get; }
 	public abstract float WeaponDamage { get; }
 	public abstract bool IsWeaponAuto { get; }
-	protected float _weaponAutoAttackSpeedRate;
+	protected float _weaponAttackSpeedRate;
 	protected bool _isWeaponPlayerAutoShooting;
-	protected Coroutine _currentWeaponPlayerAutoShootCourutine;
+	protected Coroutine _currentWeaponPlayerAutoAttackCourutine;
 	protected bool _isWeaponInitialized;
 	protected bool _isThisPlayerWeapon;
 

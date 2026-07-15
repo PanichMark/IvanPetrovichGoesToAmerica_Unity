@@ -43,21 +43,21 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	{
 		if (_isWeaponPlayerAutoShooting) return;
 		_isWeaponPlayerAutoShooting = true;
-		if (_currentWeaponPlayerAutoShootCourutine == null)
+		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
-			_currentWeaponPlayerAutoShootCourutine = StartCoroutine(AutoShootWeaponPlayerCourutine());
+			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoShootWeaponPlayerCourutine());
 		}
 	}
 
 	public override void StopAutoAttacking()
 	{
 		_isWeaponPlayerAutoShooting = false;
-		if (_currentWeaponPlayerAutoShootCourutine != null)
+		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
 			//TurnEugenicVFXOff();
 
-			StopCoroutine(_currentWeaponPlayerAutoShootCourutine);
-			_currentWeaponPlayerAutoShootCourutine = null;
+			StopCoroutine(_currentWeaponPlayerAutoAttackCourutine);
+			_currentWeaponPlayerAutoAttackCourutine = null;
 		}
 	}
 
@@ -74,7 +74,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 
 			AutoEugenicAttack();
 
-			yield return new WaitForSeconds(_weaponAutoAttackSpeedRate);
+			yield return new WaitForSeconds(_weaponAttackSpeedRate);
 
 			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
 			{
@@ -82,7 +82,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 				break;
 			}
 		}
-		_currentWeaponPlayerAutoShootCourutine = null;
+		_currentWeaponPlayerAutoAttackCourutine = null;
 	}
 
 	protected virtual void SingleEugenicAttack()

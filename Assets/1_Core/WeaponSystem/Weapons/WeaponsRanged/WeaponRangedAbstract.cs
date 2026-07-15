@@ -105,9 +105,9 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		_isWeaponPlayerAutoShooting = true;
 
-		if (_currentWeaponPlayerAutoShootCourutine == null)
+		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
-			_currentWeaponPlayerAutoShootCourutine = StartCoroutine(AutoShootWeaponPlayerCourutine());
+			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoShootWeaponPlayerCourutine());
 		}
 	}
 
@@ -115,10 +115,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		_isWeaponPlayerAutoShooting = false;
 
-		if (_currentWeaponPlayerAutoShootCourutine != null)
+		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
-			StopCoroutine(_currentWeaponPlayerAutoShootCourutine);
-			_currentWeaponPlayerAutoShootCourutine = null;
+			StopCoroutine(_currentWeaponPlayerAutoAttackCourutine);
+			_currentWeaponPlayerAutoAttackCourutine = null;
 		}
 	}
 
@@ -144,12 +144,12 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			}
 		}
 
-		_currentWeaponPlayerAutoShootCourutine = null;
+		_currentWeaponPlayerAutoAttackCourutine = null;
 	}
 
 	protected virtual IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, _weaponHandType));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, _weaponHandType, _weaponAttackSpeedRate));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -196,6 +196,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		ApplyWeaponRecoil();
 
 		yield return _currentWeaponPlayerShootRoutine;
+
+		_currentWeaponPlayerShootRoutine = null;
 	}
 
 	protected virtual IEnumerator ReloadWeaponPlayer()
