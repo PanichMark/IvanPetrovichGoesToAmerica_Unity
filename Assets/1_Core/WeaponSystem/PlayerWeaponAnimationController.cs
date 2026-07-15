@@ -309,6 +309,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private IEnumerator ReloadWeaponDoubleAnimation(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType)
 	{
+		float startTime = Time.time;
+
 		//Debug.Log("DOUBEL RELOAD");
 		TurnOffWeaponAttackLayers();
 		IsPlayerReloading = true;
@@ -325,11 +327,15 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			{
 				_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_ReloadInsertCartridge_Right.ToString(), _layer1stWeaponReload, 0f);
 				_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_ReloadInsertCartridge_Right.ToString(), _layer3rdWeaponReload, 0f);
+
+				yield return null; // Make Unity wait to load Anim into RAM, else if not, Animator returns default Anim length = 1f sec 
 			}
 			else
 			{
 				_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_ReloadInsertCartridge_Left.ToString(), _layer1stWeaponReload, 0f);
 				_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_HarmonicaRevolver_ReloadInsertCartridge_Left.ToString(), _layer3rdWeaponReload, 0f);
+
+				yield return null; // Make Unity wait to load Anim into RAM, else if not, Animator returns default Anim length = 1f sec 
 			}
 
 			yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponReload).length);
@@ -341,10 +347,21 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		TurnOnWeaponAttackLayers();
 
 		IsPlayerReloading = false;
+
+
+		// Вычисляем разницу во времени
+		float elapsedTime = Time.time - startTime;
+
+		// Выводим результат в консоль
+		Debug.Log($"Корутина завершена за {elapsedTime:F2} секунд. аа");
+
+		yield return null;
 	}
 
 	private IEnumerator ReloadWeaponSingleAnimation(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType)
 	{
+		float startTime = Time.time;
+
 		TurnOffWeaponAttackLayers();
 		IsPlayerReloading = true;
 
@@ -364,11 +381,17 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		}
 
-		yield return null;
+		// Вычисляем разницу во времени
+		float elapsedTime = Time.time - startTime;
+
+		// Выводим результат в консоль
+		Debug.Log($"Корутина завершена за {elapsedTime:F2} секунд. аа");
 
 		TurnOnWeaponAttackLayers();
 
 		IsPlayerReloading = false;
+
+		yield return null;
 	}
 
 	private void TurnOnWeaponAttackLayers()

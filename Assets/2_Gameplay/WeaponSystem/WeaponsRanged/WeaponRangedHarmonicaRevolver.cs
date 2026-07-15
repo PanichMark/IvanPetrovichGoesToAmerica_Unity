@@ -15,7 +15,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	public override WeaponsRangedEnum RangedWeaponType => WeaponsRangedEnum.HarmonicaRevolver;
 
-	public override float _waitForAmmoRefill => 1;
+	public override float _waitForAmmoRefill => 1.2f;
 
 	private GameObject _cartridge1stPerson;
 	private GameObject _cartridge3rdPerson;
