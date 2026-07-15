@@ -64,7 +64,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 	{
 		if (_weaponController.RightHandWeapon != null)
 		{
-			if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+			if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
 				if (_weaponController.RightHandWeapon.activeInHierarchy)
 				{
@@ -103,7 +103,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 	{
 		if (_weaponController.LeftHandWeapon != null)
 		{
-			if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+			if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
 				if (_weaponController.LeftHandWeapon.activeInHierarchy)
 				{
@@ -142,7 +142,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 	{
 		if (_weaponAnimationController.IsPlayerReloading)
 		{
-			if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+			if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
 				if (_weaponAnimationController.CurrentPlayerReloadingHelpingHand == WeaponHandsEnum.HandRight)
 				{
@@ -273,7 +273,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		{
 			if (renderer is MeshRenderer || renderer is SkinnedMeshRenderer)
 			{
-				if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")
+				if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 				{
 					renderer.enabled = true;
 				}

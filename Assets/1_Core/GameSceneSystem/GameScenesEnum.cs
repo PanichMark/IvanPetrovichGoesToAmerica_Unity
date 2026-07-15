@@ -1,7 +1,7 @@
 ﻿public enum GameScenesEnum
 {
 	Scene_0_MainMenu,
-	Scene_0_GameEndTitles,
+	Scene_0_EndGameTitles,
 	Scene_0_Test,
 	Scene_1_Church,
 	Scene_1_Street,

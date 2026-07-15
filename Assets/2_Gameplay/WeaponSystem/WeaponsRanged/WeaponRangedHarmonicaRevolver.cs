@@ -95,7 +95,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	private void EjectCartridge()
 	{
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_ejectedCartridge = Instantiate(_cartridge1stPerson);
 		}
@@ -177,7 +177,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 			_VFXspawnPoint.rotation,
 			_VFXspawnPoint.transform);
 
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
 		}

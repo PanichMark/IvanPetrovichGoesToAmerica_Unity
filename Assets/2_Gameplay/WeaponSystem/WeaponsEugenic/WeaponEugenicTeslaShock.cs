@@ -26,11 +26,11 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 		_playerWeaponController.OnWeaponHidden += TurnEugenicVFXOff;
 
 
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform;
 		}
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 		{
 			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform;
 		}
@@ -90,7 +90,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 			_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
 			_VFXspawnPoint.transform);
 
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
 		}
@@ -113,11 +113,11 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 	private void ChangeVFXSpawnPoint()
 	{
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform;
 		}
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 		{
 			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform;
 		}

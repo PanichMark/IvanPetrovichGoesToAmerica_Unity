@@ -186,11 +186,11 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		if (_playerBehaviour.IsPlayerArmed)
 		{
-			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 			{
 				endValue = _adjustedCameraAngle * 0.0153846f;
 			}
-			else if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+			else if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
 				endValue = 0f;
 			}

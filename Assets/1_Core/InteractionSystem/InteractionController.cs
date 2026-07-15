@@ -198,11 +198,11 @@ public class InteractionController : MonoBehaviour
 		}
 		else
 		{
-			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
 				_interactionRange = 2.5f;
 			}
-			else if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+			else if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 			{
 				_interactionRange = 2f + _playerCameraController.PlayerCameraDistanceZ;
 			}

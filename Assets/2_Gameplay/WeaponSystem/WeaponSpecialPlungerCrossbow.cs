@@ -80,7 +80,7 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 		//Debug.Log(_gameSceneManager);
 		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>("PlayerBehaviour");
 
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			ChangeCrossbow1stPerson();
 		}
@@ -150,7 +150,7 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 
 	private IEnumerator ShootProjectile(Vector3 point)
 	{
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_lineRenderer1stPerson.enabled = true;
 			_lineRenderer3rdPerson.enabled = false;

@@ -19,9 +19,9 @@
 		_playerCamera.FirstPersonCameraTransform();
 
 		if (
-			_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
-			_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking" ||
-			_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerSliding"
+			_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle ||
+			_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking ||
+			_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerSliding
 		)
 		{
 			_playerCamera.CameraCrouching();

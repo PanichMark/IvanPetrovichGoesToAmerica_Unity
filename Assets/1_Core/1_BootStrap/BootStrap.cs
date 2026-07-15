@@ -10,10 +10,10 @@ public class Bootstrap : MonoBehaviour
 	public event SettingsDataEventHandler OnLoadSettingsData;
 
 	[Header("--- BOOTSTRAP CONFIGS ---")]
-	[SerializeField] private BootstrapConfigIsFirstGameLaunch _firstGameLaunch;
-	[SerializeField] private BootstrapConfigInitializationScreenDuration _initializationScreenDuration;
-	[SerializeField] private BootstrapConfigKeyPauseMenu _pauseMenuKey;
-	[SerializeField] private BootstrapConfigSceneToLoad _sceneToLoad;
+	[SerializeField] private BootstrapConfigIsFirstGameLaunch _configIsFirstGameLaunch;
+	[SerializeField] private BootstrapConfigInitializationScreenDuration _configInitializationScreenDuration;
+	[SerializeField] private BootstrapConfigKeyPauseMenu _configKeyPauseMenu;
+	[SerializeField] private BootstrapConfigFirstSceneToLoad _configFirstSceneToLoad;
 
 	[Header("--- PLAYER CONFIGS ---")]
 	[SerializeField] private BootstrapConfigPlayerTransform _playerPosition;
@@ -28,10 +28,8 @@ public class Bootstrap : MonoBehaviour
 	[Header("Loading Screen")]
 	[SerializeField] private GameObject _canvasLoadingScreen;
 
-	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 	[Header("Menu")]
 	[SerializeField] private GameObject _canvasMenuBackground;
-	public GameObject CanvasMenuBackground => _canvasMenuBackground;
 
 	[Header("Pause Menu")]
 	[SerializeField] private GameObject _canvasPauseMenu;
@@ -40,13 +38,13 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasPauseSubMenuAppearance;
 	[SerializeField] private GameObject _canvasPauseSubMenuTutorial;
 	[SerializeField] private GameObject _canvasPauseSubMenuSettings;
-	[SerializeField] private GameObject _canvasPauseSubMenuSettingsGameDifficultyController;
+	[SerializeField] private GameObject _canvasPauseSubMenuSettingsGameDifficulty;
 	[SerializeField] private GameObject _canvasPauseMenuConfirmAction;
 
 	[Header("Main Menu")]
 	[SerializeField] private GameObject _canvasMainMenuReadNews;
 
-	[Header("HUD")]
+	[Header("HUDs")]
 	[SerializeField] private GameObject _canvasHUDinteraction;
 	[SerializeField] private GameObject _canvasHUDmission;
 	[SerializeField] private GameObject _canvasHUDhealthAndMana;
@@ -62,36 +60,30 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private GameObject _canvasMenuDialogue;
 	[SerializeField] private GameObject _canvasMenuCutscene;
 
-	private PlayerPrefsData _playerPrefsData;
-
-	private GameObject _gameObjectBootstrapTemporaryCamera;
-
-	// Интерфейсы
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
 	public LocalizationManager LocalizationManager { get; private set; }
-	private KeyCode _keyPauseMenu; // Кнопка открывания/закрывания меню паузы
-	public bool IsBootstrapInitialized { get; private set; }
-	private bool _isGamepadConnected; //DO NOT DELETE
+	private PlayerPrefsData _playerPrefsData;
 
-	// Система Сцен
 	private BootstrapSubProcessSceneSystem _bootstrapSubProcessSceneSystem;
-
-	// Система сохранений
 	private BootstrapSubProcessSaveLoadSystem _bootstrapSubProcessSaveLoadSystem;
-
-	// Игрок
+	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
-	private GameObject _gameObjectPlayer;
-	public GameObject GameObjectPlayerCamera {  get; private set; }
-
-	// Система взаимодействия
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
-
-	// Система оружия
 	private BootstrapSubProcessWeaponSystem _bootstrapSubProcessWeaponSystem;
-
 	private BootstrapSubProcessMissionsSystem _bootstrapSubProcessMissionsSystem;
+
+	private KeyCode _keyPauseMenu;
+
+	private GameObject _gameObjectPlayer;
+	public GameObject GameObjectPlayerCamera { get; private set; }
+	private GameObject _gameObjectBootstrapTemporaryCamera;
+
+	/*
+	private bool _isGamepadConnected; // TODO add gamepad support
+	*/
+
+	public bool IsBootstrapInitialized { get; private set; }
 
 	private IEnumerator Start()
 	{
@@ -109,7 +101,7 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(BootstrapSystemsInitialization());
 
-		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration);
+		yield return new WaitForSecondsRealtime(_configInitializationScreenDuration.InitializationScreenDuration);
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
@@ -117,9 +109,9 @@ public class Bootstrap : MonoBehaviour
 
 		Destroy(_canvasBootstrap);
 
-		//PlayerPrefs.DeleteAll(); // ПРОВЕРЯТЬ!!! НЕ УДАЛЯТЬ!!!
+		//PlayerPrefs.DeleteAll(); // DO NOT DELETE, for testing purporses
 
-		if (_playerPrefsData.IsFirstLaunch || _firstGameLaunch.IsFirstGameLaunch)
+		if (_playerPrefsData.IsFirstLaunch || _configIsFirstGameLaunch.IsFirstGameLaunch)
 		{
 			yield return StartCoroutine(ChooseFirstLanguage());
 		}
@@ -141,56 +133,6 @@ public class Bootstrap : MonoBehaviour
 		IsBootstrapInitialized = true;
 	}
 
-	/*
-	private void Update()
-	{
-		if (!_isInitialized)
-			return;
-
-		string[] joysticks = Input.GetJoystickNames();
-		bool isGamepadConnected = joysticks.Length > 0 && !string.IsNullOrEmpty(joysticks[0]);
-
-		if (isGamepadConnected)
-		{
-			if (!_isGamepadConnected)
-			{
-				_isGamepadConnected = true;
-				Debug.Log("Геймпад подключен: " + joysticks[0]);
-			}
-
-			//////////////////////////////////////////////////////////////
-			// Проверяем, была ли нажата любая клавиша в этом кадре
-			if (Input.anyKeyDown)
-			{
-				// Обычно у геймпада 20 кнопок (0-19). Цикл проверяет их все.
-				// Если у вашего геймпада больше кнопок, увеличьте число 20.
-				for (int i = 0; i < 20; i++)
-				{
-					// Проверяем конкретную кнопку по её индексу
-					if (Input.GetKeyDown($"joystick button {i}"))
-					{
-						// Если кнопка нажата, выводим её индекс в консоль
-						Debug.Log($"Нажата кнопка геймпада с индексом: {i}");
-
-						// Раскомментируйте следующую строку, если хотите,
-						// чтобы лог выводился только для первой найденной кнопки.
-						// return; 
-					}
-				}
-			}
-			//////////////////////////////////////////////////////////////////
-		}
-		else
-		{
-			if (_isGamepadConnected)
-			{
-				_isGamepadConnected = false;
-				Debug.Log("Геймпад отключен");
-			}
-		}
-	}
-	*/
-
 	private IEnumerator BootstrapSystemsInitialization()
 	{
 		yield return StartCoroutine(InitializeInterfaces());
@@ -210,7 +152,7 @@ public class Bootstrap : MonoBehaviour
 	{
 		_gameController = new GameController();
 
-		_keyPauseMenu = _pauseMenuKey.KeyPauseMenu;
+		_keyPauseMenu = _configKeyPauseMenu.KeyPauseMenu;
 
 		_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
 		//_inputDevice = new InputGamepad(_gameController);
@@ -237,7 +179,7 @@ public class Bootstrap : MonoBehaviour
 		_canvasPauseSubMenuAppearance = Instantiate(_canvasPauseSubMenuAppearance);
 		_canvasPauseSubMenuTutorial = Instantiate(_canvasPauseSubMenuTutorial);
 		_canvasPauseSubMenuSettings = Instantiate(_canvasPauseSubMenuSettings);
-		_canvasPauseSubMenuSettingsGameDifficultyController = Instantiate(_canvasPauseSubMenuSettingsGameDifficultyController);
+		_canvasPauseSubMenuSettingsGameDifficulty = Instantiate(_canvasPauseSubMenuSettingsGameDifficulty);
 		_canvasPauseMenuConfirmAction = Instantiate(_canvasPauseMenuConfirmAction);
 
 		_canvasMainMenuReadNews = Instantiate(_canvasMainMenuReadNews);
@@ -301,7 +243,7 @@ public class Bootstrap : MonoBehaviour
 			_canvasPauseSubMenuAppearance,
 			_canvasPauseSubMenuTutorial,
 			_canvasPauseSubMenuSettings,
-			_canvasPauseSubMenuSettingsGameDifficultyController,
+			_canvasPauseSubMenuSettingsGameDifficulty,
 			_canvasPauseMenuConfirmAction,
 			_canvasMainMenuReadNews,
 			_canvasMenuWeaponWheel,
@@ -331,6 +273,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessMenuSystem,
 			_gameController,
 			_inputDevice,
+			_canvasMenuBackground,
 			_gameObjectPlayer,
 			GameObjectPlayerCamera);
 
@@ -405,13 +348,6 @@ public class Bootstrap : MonoBehaviour
 		_gameObjectBootstrapTemporaryCamera.AddComponent<Camera>();
 	}
 
-	public void ChangeInputDevice(IInputDevice inputDevice)
-	{
-		//_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
-
-		//_inputDevice = new InputGamepad(_gameController, _keyPauseMenu);
-	}
-
 	public void ChangeLanguage(LanguagesEnum newLanguage)
 	{
 		LocalizationManager.ChangeLanguage(newLanguage);
@@ -427,13 +363,13 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator LoadFirstGameplayScene()
 	{
-		if (_sceneToLoad.SelectedScene == GameScenesEnum.Scene_0_MainMenu)
+		if (_configFirstSceneToLoad.FirstSceneToLoad == GameScenesEnum.Scene_0_MainMenu)
 		{
 			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadMainMenuScene());
 		}
 		else
 		{
-			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene(_sceneToLoad.SelectedScene));
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene(_configFirstSceneToLoad.FirstSceneToLoad));
 		}
 	}
 
@@ -493,7 +429,7 @@ public class Bootstrap : MonoBehaviour
 			}
 		}
 
-		if (_sceneToLoad.SelectedScene.ToString() != "Scene_0_MainMenu")
+		if (_configFirstSceneToLoad.FirstSceneToLoad != GameScenesEnum.Scene_0_MainMenu)
 		{
 			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerPosition.PlayerPosition);
 		}
@@ -520,4 +456,65 @@ public class Bootstrap : MonoBehaviour
 	{
 		ServiceLocator.ClearAllServices();
 	}
+
+	// TODO add gamepad support
+
+	/*
+	private void Update()
+	{
+		if (!_isInitialized)
+			return;
+
+		string[] joysticks = Input.GetJoystickNames();
+		bool isGamepadConnected = joysticks.Length > 0 && !string.IsNullOrEmpty(joysticks[0]);
+
+		if (isGamepadConnected)
+		{
+			if (!_isGamepadConnected)
+			{
+				_isGamepadConnected = true;
+				Debug.Log("Геймпад подключен: " + joysticks[0]);
+			}
+
+			//////////////////////////////////////////////////////////////
+			// Проверяем, была ли нажата любая клавиша в этом кадре
+			if (Input.anyKeyDown)
+			{
+				// Обычно у геймпада 20 кнопок (0-19). Цикл проверяет их все.
+				// Если у вашего геймпада больше кнопок, увеличьте число 20.
+				for (int i = 0; i < 20; i++)
+				{
+					// Проверяем конкретную кнопку по её индексу
+					if (Input.GetKeyDown($"joystick button {i}"))
+					{
+						// Если кнопка нажата, выводим её индекс в консоль
+						Debug.Log($"Нажата кнопка геймпада с индексом: {i}");
+
+						// Раскомментируйте следующую строку, если хотите,
+						// чтобы лог выводился только для первой найденной кнопки.
+						// return; 
+					}
+				}
+			}
+			//////////////////////////////////////////////////////////////////
+		}
+		else
+		{
+			if (_isGamepadConnected)
+			{
+				_isGamepadConnected = false;
+				Debug.Log("Геймпад отключен");
+			}
+		}
+	}
+	*/
+
+	/*
+	public void ChangeInputDevice(IInputDevice inputDevice)
+	{
+		//_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
+
+		//_inputDevice = new InputGamepad(_gameController, _keyPauseMenu);
+	}
+	*/
 }

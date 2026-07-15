@@ -9,9 +9,7 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 
 	private PlayerMovementController _playerMovementController;
 	private PlayerMovementStateAbstract _playerMovementState;
-	private PlayerMovementStateTypes _playerMovementStateType;
-
-	public string CurrentPlayerMovementStateType { get; private set; }
+	public PlayerMovementStateTypes CurrentPlayerMovementStateType { get; private set; }
 
 	public void Initialize(
 		Bootstrap bootstrap,
@@ -39,56 +37,49 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 		_playerMovementState.Update();
 	}
 
-	public void SetPlayerMovementState(PlayerMovementStateTypes playerMovementStateType)
+	public void SetPlayerMovementState(PlayerMovementStateTypes newPlayerMovementStateType)
 	{
 		if (_playerMovementController.IsAbleToChangeMovementType)
 		{
 			PlayerMovementStateAbstract newState;
 
-			if (playerMovementStateType == PlayerMovementStateTypes.PlayerIdle)
+			CurrentPlayerMovementStateType = newPlayerMovementStateType;
+
+			if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdle)
 			{
 				newState = new PlayerMovementStateIdle(this, _playerMovementController, _inputDevice);
-				CurrentPlayerMovementStateType = "PlayerIdle";
 			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerWalking)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalking)
 			{
 				newState = new PlayerMovementStateWalking(this, _playerMovementController, _inputDevice);
-				CurrentPlayerMovementStateType = "PlayerWalking";
 			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle)
 			{
 				newState = new PlayerMovementStateCrouchingIdle(this, _playerMovementController, _inputDevice);
-				CurrentPlayerMovementStateType = "PlayerCrouchingIdle";
 			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking)
 			{
 				newState = new PlayerMovementStateCrouchingWalking(this, _playerMovementController, _inputDevice);
-				CurrentPlayerMovementStateType = "PlayerCrouchingWalking";
 			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerRunning)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerRunning)
 			{
 				newState = new PlayerMovementStateRunning(this, _playerMovementController, _inputDevice);
-				CurrentPlayerMovementStateType = "PlayerRunning";
 			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
 			{
 				newState = new PlayerMovementStateJumping(this,	_playerMovementController, _inputDevice);
-				CurrentPlayerMovementStateType = "PlayerJumping";
 			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerFalling)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerFalling)
 			{
 				newState = new PlayerMovementStateFalling(this, _playerMovementController, _inputDevice);
-				CurrentPlayerMovementStateType = "PlayerFalling";
 			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerSliding)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerSliding)
 			{
 				newState = new PlayerMovementStateSliding(_playerMovementController);
-				CurrentPlayerMovementStateType = "PlayerSliding";
 			}
-			else if (playerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbing)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbing)
 			{
 				newState = new PlayerMovementStateLedgeClimbing(_playerMovementController);
-				CurrentPlayerMovementStateType = "PlayerLedgeClimbing";
 			}
 			else
 			{
@@ -102,14 +93,13 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerMovementStateType = CurrentPlayerMovementStateType;
+		data.PlayerMovementStateType = CurrentPlayerMovementStateType.ToString();
 	}
 
 	public void LoadData(GameData data)
 	{
-		CurrentPlayerMovementStateType = data.PlayerMovementStateType;
+		CurrentPlayerMovementStateType = (PlayerMovementStateTypes)Enum.Parse(typeof(PlayerMovementStateTypes), data.PlayerMovementStateType);
 
-		_playerMovementStateType = (PlayerMovementStateTypes)Enum.Parse(typeof(PlayerMovementStateTypes), CurrentPlayerMovementStateType);
-		SetPlayerMovementState(_playerMovementStateType);
+		SetPlayerMovementState(CurrentPlayerMovementStateType);
 	}
 }

@@ -24,7 +24,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	public Transform PlayerTransform {  get; private set; }
 	public Rigidbody PlayerRigidBody { get; private set; }
 
-	private string _currentPlayerCameraType = "";
+	private PlayerCameraStateTypes _currentPlayerCameraType;
 
 	private Vector3 _playerPreviousFramePosition;
 	public Vector3 PlayerPreviousFramePositionChange { get; private set; }
@@ -202,12 +202,12 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		_playerMovement = new Vector3(PlayerMovementDirectionWithCamera.x, 0, PlayerMovementDirectionWithCamera.z);
 		_playerMovement.Normalize();
 
-		if (_playerBehaviour.IsPlayerArmed == false && (_playerMovement != Vector3.zero) && (_currentPlayerCameraType == PlayerCameraStateTypes.ThirdPerson.ToString()))
+		if (_playerBehaviour.IsPlayerArmed == false && (_playerMovement != Vector3.zero) && (_currentPlayerCameraType == PlayerCameraStateTypes.ThirdPerson))
 		{
 			Quaternion CharacterRotation = Quaternion.LookRotation(_playerMovement, Vector3.up);
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, CharacterRotation, PlayerRotationSpeed * Time.deltaTime);
 		}
-		else if (_playerBehaviour.IsPlayerArmed == true || (_currentPlayerCameraType == PlayerCameraStateTypes.FirstPerson.ToString()))
+		else if (_playerBehaviour.IsPlayerArmed == true || (_currentPlayerCameraType == PlayerCameraStateTypes.FirstPerson))
 		{
 			Quaternion PlayerRotateWhereCameraIsLooking = Quaternion.Euler(transform.localEulerAngles.x, _playerCamera.transform.eulerAngles.y, transform.localEulerAngles.z);
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, PlayerRotateWhereCameraIsLooking, PlayerRotationSpeed * Time.deltaTime);
@@ -374,7 +374,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
 	}
 
-	public void GiveCurrentPlayerCameraType(string cameraType)
+	public void GiveCurrentPlayerCameraType(PlayerCameraStateTypes cameraType)
 	{
 		_currentPlayerCameraType = cameraType;
 	}

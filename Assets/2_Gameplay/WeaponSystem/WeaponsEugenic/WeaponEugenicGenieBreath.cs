@@ -27,11 +27,11 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 		_playerWeaponController.OnWeaponHidden += TurnEugenicVFXOff;
 
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform;
 		}
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 		{
 			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform;
 		}
@@ -50,7 +50,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 				_VFXspawnPoint.transform);
 
 
-			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
 				_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
 			}
@@ -115,12 +115,12 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	private void ChangeVFXSpawnPoint()
 	{
 		//Debug.Log("11111111111111111111");
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			//Debug.Log(FirstPersonWeaponModelInstance);
 			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform;
 		}
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 		{
 			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform;
 		}

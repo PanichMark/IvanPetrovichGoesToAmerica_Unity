@@ -36,7 +36,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 			_VFXspawnPoint.transform);
 		_vfxInstance.transform.localScale = Vector3.one * 2.5f;
 
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
 		}

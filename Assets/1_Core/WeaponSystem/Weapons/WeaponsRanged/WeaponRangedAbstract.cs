@@ -39,11 +39,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			InitializeWeaponRanged();
 		}
 
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform.Find("VFX");
 		}
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 		{
 			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
 		}
@@ -62,11 +62,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	private void ChangeVFXspawnPoint()
 	{
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform.Find("VFX");
 		}
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 		{
 			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
 		}
@@ -160,7 +160,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_VFXspawnPoint.rotation,
 			_VFXspawnPoint.transform);
 
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
 		}

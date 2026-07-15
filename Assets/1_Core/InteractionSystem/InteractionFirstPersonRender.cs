@@ -54,7 +54,7 @@ public class InteractionFirstPersonRender : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "FirstPerson")
+		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			if (_areBothArmsBusy)
 			{
@@ -76,8 +76,7 @@ public class InteractionFirstPersonRender : MonoBehaviour
 				HideFirstPersonHand(_PlayerFirstPersonHandLeft);
 			}
 		}
-
-		if (_playerCameraStateMachine.CurrentPlayerCameraStateType == "ThirdPerson")
+		else
 		{
 			if (_areBothArmsBusy)
 			{

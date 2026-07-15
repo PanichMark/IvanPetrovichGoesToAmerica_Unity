@@ -48,9 +48,9 @@ public class LegKickAttackController : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (_inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && _playerWeaponController.HasAnyWeapon && (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerIdle" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerWalking"
-			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerRunning" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" ||
-			_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"))
+		if (_inputDevice.GetKeyLegKick() && !IsPlayerLegKicking && _playerWeaponController.HasAnyWeapon && (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdle || _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalking
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerRunning || _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle ||
+			_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking))
 		{ 
 			LegKick();
 		}
@@ -66,7 +66,7 @@ public class LegKickAttackController : MonoBehaviour
 	{
 		Debug.Log("LegKick attack");
 
-		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle" || _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking")
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle || _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking)
 		{
 			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingIdle);
 		}

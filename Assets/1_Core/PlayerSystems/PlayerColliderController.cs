@@ -24,10 +24,10 @@ public class PlayerColliderController : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingIdle"
-			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerCrouchingWalking"
-			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerSliding"
-			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerJumping")
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerSliding
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
 		{
             transform.position = transform.parent.position+new Vector3(0f, 0.5f, 0f);
             transform.localScale = new Vector3(1f,  0.5f, 1f);
@@ -38,7 +38,7 @@ public class PlayerColliderController : MonoBehaviour
 			transform.localScale = new Vector3(1f, 1f, 1f);
 		}
 
-		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == "PlayerLedgeClimbing")
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbing)
 		{
 			_playerCollider.enabled = false;
 		}
