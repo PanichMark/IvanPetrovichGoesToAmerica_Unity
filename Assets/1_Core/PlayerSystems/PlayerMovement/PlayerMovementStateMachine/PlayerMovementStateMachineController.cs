@@ -85,6 +85,7 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 			{
 				newState = null;
 			}
+
 			_playerMovementState = newState;
 
 			Debug.Log("MovementState: " + CurrentPlayerMovementStateType);

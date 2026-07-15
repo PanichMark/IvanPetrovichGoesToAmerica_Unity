@@ -100,7 +100,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 	{
 		FirstPersonWeaponModelInstance = Instantiate(gameObject);
 		WeaponAbstract FirstPersonWeaponModelInstanceComponent = FirstPersonWeaponModelInstance.GetComponent<WeaponAbstract>();
-		FirstPersonWeaponModelInstanceComponent.Make1stPersonWeaponModelOwnerPlayer();
+		Destroy(FirstPersonWeaponModelInstanceComponent);
+		//FirstPersonWeaponModelInstanceComponent.Make1stPersonWeaponModelOwnerPlayer();
 	}
 
 	public void Make1stPersonWeaponModelOwnerPlayer()

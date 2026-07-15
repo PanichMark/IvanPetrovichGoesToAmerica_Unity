@@ -60,7 +60,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		Debug.Log("WeaponFirstPersonRender Initialized!");
 	}
 
-	private void UpdateWeaponRightVisibility()
+	public void UpdateWeaponRightVisibility()
 	{
 		if (_weaponController.RightHandWeapon != null)
 		{
@@ -99,7 +99,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		}
 	}
 
-	private void UpdateWeaponLeftVisibility()
+	public void UpdateWeaponLeftVisibility()
 	{
 		if (_weaponController.LeftHandWeapon != null)
 		{

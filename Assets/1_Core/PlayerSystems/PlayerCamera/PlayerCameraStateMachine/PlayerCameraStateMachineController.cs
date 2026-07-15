@@ -84,9 +84,12 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 			newState = null;
 		}
 
-		OnCameraStateChanged?.Invoke();
-		Debug.Log("CameraState: " + CurrentPlayerCameraStateType);
 		_playerCameraState = newState;
+
+		OnCameraStateChanged?.Invoke();
+
+		Debug.Log("CameraState: " + CurrentPlayerCameraStateType);
+	
 	}
 
 	public void SaveData(ref GameData data)

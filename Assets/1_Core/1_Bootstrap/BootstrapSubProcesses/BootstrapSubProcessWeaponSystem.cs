@@ -147,6 +147,8 @@ public class BootstrapSubProcessWeaponSystem
 
 		ServiceLocator.Register("WeaponController", WeaponController);
 		ServiceLocator.Register("WeaponAnimationController", _weaponAnimationController);
+		ServiceLocator.Register("PlayerWeaponFirstPersonRenderer", _weaponFirstPersonRender);
+	
 
 		ServiceLocator.Register("FirstPersonLeftHandWeaponSlotGameObject", _gameObjectFirstPersonLeftHandWeaponSlot);
 		ServiceLocator.Register("FirstPersonRightHandWeaponSlotGameObject", _gameObjectFirstPersonRightHandWeaponSlot);
