@@ -93,8 +93,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		};
 		_menuManager.OnClosePauseMenu += () =>
 		{
-			StopRihtWeaponAutoAttack();
-			StopLeftWeaponAutoAttack();
+			StopAutoShootingRightWeaponPlayer();
+			StopAutoShootingLeftWeaponPlayer();
 		};
 
 		_interactionController.OnGetRidOfThrowable += OnGetRidOfPickableThrowableHandler;
@@ -113,7 +113,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (_inputDevice.GetKeyRightHandWeaponAttackReleased())
 		{
-			StopRihtWeaponAutoAttack();
+			StopAutoShootingRightWeaponPlayer();
 			_wasRightButtonPressedLastFrame = false;
 		}
 		if (RightHandWeapon != null && RightHandWeapon.activeInHierarchy)
@@ -121,7 +121,6 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
 			{
 				RightWeaponAttack();
-				OnWeaponShoot?.Invoke(WeaponHandsEnum.HandRight);
 				_wasRightButtonPressedLastFrame = true;
 			}
 		}
@@ -135,7 +134,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (_inputDevice.GetKeyLeftHandWeaponAttackReleased())
 		{
-			StopLeftWeaponAutoAttack();
+			StopAutoShootingLeftWeaponPlayer();
 			_wasLeftButtonPressedLastFrame = false;
 		}
 		if (LeftHandWeapon != null && LeftHandWeapon.activeInHierarchy)
@@ -143,7 +142,6 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
 			{
 				LeftWeaponAttack();
-				OnWeaponShoot?.Invoke(WeaponHandsEnum.HandLeft);
 				_wasLeftButtonPressedLastFrame = true;
 			}
 		}
@@ -430,7 +428,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void StopRihtWeaponAutoAttack()
+	public void StopAutoShootingRightWeaponPlayer()
 	{
 		if (RightHandWeapon != null)
 		{
@@ -446,7 +444,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void StopLeftWeaponAutoAttack()
+	public void StopAutoShootingLeftWeaponPlayer()
 	{
 		if (LeftHandWeapon != null)
 		{

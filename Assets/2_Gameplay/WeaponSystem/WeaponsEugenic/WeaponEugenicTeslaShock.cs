@@ -103,7 +103,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 			yield return new WaitUntil(() => Time.time >= endTime);
 
-			if (!_isWeaponAutoAttacking)
+			if (!_isWeaponPlayerAutoShooting)
 			{
 				TurnEugenicVFXOff();
 				yield break;

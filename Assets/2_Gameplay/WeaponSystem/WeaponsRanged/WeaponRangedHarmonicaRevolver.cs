@@ -162,8 +162,10 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		_cartgridgeSlidingStep = 0;
 	}
 
-	protected override void ShootWeaponPlayer(float weaponDamage)
+	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, _weaponHandType));
+
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
 
@@ -215,6 +217,8 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		}
 
 		ApplyWeaponRecoil();
+
+		yield return _currentWeaponPlayerShootRoutine;
 	}
 
 	protected override IEnumerator ReloadWeaponPlayer()

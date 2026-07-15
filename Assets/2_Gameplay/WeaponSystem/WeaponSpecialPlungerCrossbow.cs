@@ -426,12 +426,12 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 		//throw new System.NotImplementedException();
 	}
 
-	public override void StartAutoAttacking()
+	public override void StartAutoShootingWeaponPlayer()
 	{
 		//throw new System.NotImplementedException();
 	}
 
-	public override IEnumerator AutoAttackCourutine()
+	public override IEnumerator AutoShootWeaponPlayerCourutine()
 	{
 		//throw new System.NotImplementedException();
 		yield return null;

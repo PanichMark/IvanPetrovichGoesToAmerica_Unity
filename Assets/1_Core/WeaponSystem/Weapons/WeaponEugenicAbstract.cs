@@ -30,7 +30,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		{
 			if (IsWeaponAuto)
 			{
-				StartAutoAttacking(); 
+				StartAutoShootingWeaponPlayer(); 
 			}
 			else 
 			{
@@ -39,35 +39,35 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		}
 	}
 
-	public override void StartAutoAttacking()
+	public override void StartAutoShootingWeaponPlayer()
 	{
-		if (_isWeaponAutoAttacking) return;
-		_isWeaponAutoAttacking = true;
-		if (_weaponAutoAttackCourutine == null)
+		if (_isWeaponPlayerAutoShooting) return;
+		_isWeaponPlayerAutoShooting = true;
+		if (_currentWeaponPlayerAutoShootCourutine == null)
 		{
-			_weaponAutoAttackCourutine = StartCoroutine(AutoAttackCourutine());
+			_currentWeaponPlayerAutoShootCourutine = StartCoroutine(AutoShootWeaponPlayerCourutine());
 		}
 	}
 
 	public override void StopAutoAttacking()
 	{
-		_isWeaponAutoAttacking = false;
-		if (_weaponAutoAttackCourutine != null)
+		_isWeaponPlayerAutoShooting = false;
+		if (_currentWeaponPlayerAutoShootCourutine != null)
 		{
 			//TurnEugenicVFXOff();
 
-			StopCoroutine(_weaponAutoAttackCourutine);
-			_weaponAutoAttackCourutine = null;
+			StopCoroutine(_currentWeaponPlayerAutoShootCourutine);
+			_currentWeaponPlayerAutoShootCourutine = null;
 		}
 	}
 
 	public abstract void TurnEugenicVFXOff();
 
-	public override IEnumerator AutoAttackCourutine()
+	public override IEnumerator AutoShootWeaponPlayerCourutine()
 	{
 		while (true)
 		{
-			if (!_isWeaponAutoAttacking)
+			if (!_isWeaponPlayerAutoShooting)
 			{
 				break;
 			}
@@ -78,11 +78,11 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 
 			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
 			{
-				_isWeaponAutoAttacking = false;
+				_isWeaponPlayerAutoShooting = false;
 				break;
 			}
 		}
-		_weaponAutoAttackCourutine = null;
+		_currentWeaponPlayerAutoShootCourutine = null;
 	}
 
 	protected virtual void SingleEugenicAttack()

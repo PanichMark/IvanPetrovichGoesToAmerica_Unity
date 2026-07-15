@@ -55,7 +55,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 
 		_playerCameraStateMachine.OnFirstPersonCameraState += ShowReloadingHelpingHand;
 		_playerCameraStateMachine.OnThirdPersonCameraState += ShowReloadingHelpingHand;
-		_weaponAnimationController.OnReload += ShowReloadingHelpingHand;
+		_weaponAnimationController.OnPlayerReload += ShowReloadingHelpingHand;
 
 		Debug.Log("WeaponFirstPersonRender Initialized!");
 	}
@@ -140,11 +140,11 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 
 	public void ShowReloadingHelpingHand()
 	{
-		if (_weaponAnimationController.IsReloading)
+		if (_weaponAnimationController.IsPlayerReloading)
 		{
 			if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson.ToString())
 			{
-				if (_weaponAnimationController.CurrentReloadingHelpingHand == WeaponHandsEnum.HandRight)
+				if (_weaponAnimationController.CurrentPlayerReloadingHelpingHand == WeaponHandsEnum.HandRight)
 				{
 					HideBodyPart(_playerThirdPersonHandRight);
 					ShowFirstPersonHand(_playerFirstPersonHandRight);
@@ -157,7 +157,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 			}
 			else
 			{
-				if (_weaponAnimationController.CurrentReloadingHelpingHand == WeaponHandsEnum.HandRight)
+				if (_weaponAnimationController.CurrentPlayerReloadingHelpingHand == WeaponHandsEnum.HandRight)
 				{
 					ShowBodyPart(_playerThirdPersonHandRight);
 					HideFirstPersonHand(_playerFirstPersonHandRight);

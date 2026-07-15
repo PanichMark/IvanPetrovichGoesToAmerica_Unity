@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 {
@@ -18,8 +19,10 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
-	protected override void ShootWeaponPlayer(float weaponDamage)
+	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, _weaponHandType));
+
 		int pelletCount = 10;
 		float spreadAngle = 7f;
 		float range = 100f;
@@ -80,6 +83,8 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 		}
 
 		ApplyWeaponRecoil();
+
+		yield return _currentWeaponPlayerShootRoutine;
 	}
 
 	protected override void ApplyWeaponRecoil()

@@ -24,7 +24,7 @@ public class WeaponMeleeFirefighterSaw : WeaponMeleeAbstract
 	{
 		if (IsWeaponAuto)
 		{
-			StartAutoAttacking();
+			StartAutoShootingWeaponPlayer();
 		}
 		else
 		{
@@ -33,36 +33,36 @@ public class WeaponMeleeFirefighterSaw : WeaponMeleeAbstract
 		}
 	}
 
-	public override void StartAutoAttacking()
+	public override void StartAutoShootingWeaponPlayer()
 	{
-		if (_isWeaponAutoAttacking) return;
-		_isWeaponAutoAttacking = true;
-		if (_weaponAutoAttackCourutine == null)
+		if (_isWeaponPlayerAutoShooting) return;
+		_isWeaponPlayerAutoShooting = true;
+		if (_currentWeaponPlayerAutoShootCourutine == null)
 		{
-			_weaponAutoAttackCourutine = StartCoroutine(AutoAttackCourutine());
+			_currentWeaponPlayerAutoShootCourutine = StartCoroutine(AutoShootWeaponPlayerCourutine());
 		}
 	}
 
 	public override void StopAutoAttacking()
 	{
-		_isWeaponAutoAttacking = false;
-		if (_weaponAutoAttackCourutine != null)
+		_isWeaponPlayerAutoShooting = false;
+		if (_currentWeaponPlayerAutoShootCourutine != null)
 		{
-			StopCoroutine(_weaponAutoAttackCourutine);
-			_weaponAutoAttackCourutine = null;
+			StopCoroutine(_currentWeaponPlayerAutoShootCourutine);
+			_currentWeaponPlayerAutoShootCourutine = null;
 		}
 	}
 
-	public override IEnumerator AutoAttackCourutine()
+	public override IEnumerator AutoShootWeaponPlayerCourutine()
 	{
-		while (_isWeaponAutoAttacking)
+		while (_isWeaponPlayerAutoShooting)
 		{
 			StartCoroutine(MeleeWeaponAttack());
 
 			yield return new WaitForSeconds(_weaponAutoAttackSpeedRate);
 		}
 
-		_weaponAutoAttackCourutine = null;
+		_currentWeaponPlayerAutoShootCourutine = null;
 	}
 
 	protected override IEnumerator MeleeWeaponAttack()

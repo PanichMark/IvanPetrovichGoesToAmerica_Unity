@@ -11,8 +11,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract float WeaponDamage { get; }
 	public abstract bool IsWeaponAuto { get; }
 	protected float _weaponAutoAttackSpeedRate;
-	protected bool _isWeaponAutoAttacking;
-	protected Coroutine _weaponAutoAttackCourutine;
+	protected bool _isWeaponPlayerAutoShooting;
+	protected Coroutine _currentWeaponPlayerAutoShootCourutine;
 	protected bool _isWeaponInitialized;
 	protected bool _isThisPlayerWeapon;
 
@@ -34,9 +34,9 @@ public abstract class WeaponAbstract : MonoBehaviour
 	private Transform _thirdPersonRightHandWeaponSlotTransform;
 
 	public abstract void WeaponAttack();
-	public abstract void StartAutoAttacking();
+	public abstract void StartAutoShootingWeaponPlayer();
 	public abstract void StopAutoAttacking();
-	public abstract IEnumerator AutoAttackCourutine();
+	public abstract IEnumerator AutoShootWeaponPlayerCourutine();
 
 	public void InstantiateWeaponPlayer(WeaponHandsEnum handType)
 	{
