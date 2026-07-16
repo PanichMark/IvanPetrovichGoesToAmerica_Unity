@@ -167,6 +167,8 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 		}
 
 		_projectile1stPerson.transform.SetParent(null);
+		_projectile1stPerson.layer = LayerMask.NameToLayer("Default");
+
 		_projectile3rdPerson.transform.SetParent(null);
 
 		_projectileFlyingDirection = _playerCamera.transform.rotation;
@@ -379,6 +381,7 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 			Debug.Log("STOP ATTACKING");
 			// Возвращаем физические объекты к их родителям
 			_projectile1stPerson.transform.SetParent(_projectileParent1stPerson);
+			_projectile1stPerson.layer = LayerMask.NameToLayer("FirstPerson");
 			_projectile1stPerson.transform.localPosition = _projectile1stPersonRestPosition;
 			_projectile1stPerson.transform.localRotation = _projectile1stPersonRestDirection;
 

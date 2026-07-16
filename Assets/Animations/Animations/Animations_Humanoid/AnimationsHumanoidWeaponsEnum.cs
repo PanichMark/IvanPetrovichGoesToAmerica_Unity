@@ -12,5 +12,11 @@
 	Ranged_HarmonicaRevolver_Shoot_Left,
 	Ranged_HarmonicaRevolver_ReloadInsertCartridge_Left,
 	Ranged_HarmonicaRevolver_ReloadPushCartridge_Left,
+	Ranged_BergmannBayard_Hold_Right,
+	Ranged_BergmannBayard_Shoot_Right,
+	Ranged_BergmannBayard_Hold_Left,
+	Ranged_BergmannBayard_Shoot_Left,
+	Ranged_BergmannBayard_Reload_Right,
+	Ranged_BergmannBayard_Reload_Left,
 	LegKick
 }
