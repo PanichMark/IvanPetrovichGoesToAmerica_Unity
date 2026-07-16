@@ -11,7 +11,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected abstract float _waitForAmmoRefill { get; }
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
 	protected bool _isWeaponPlayerShooting;
-	public abstract WeaponsRangedEnum RangedWeaponType { get; }
 
 	protected GameObject _VFXshottEffect;
 	protected Transform _VFXspawnPoint;
@@ -149,7 +148,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected virtual IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, WeaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(WeaponName, WeaponHandType, _weaponAttackSpeedRate));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -188,7 +187,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		Debug.Log($"Shoot {WeaponName}");
 
-		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
+		if (System.Enum.TryParse(WeaponName.ToString(), out WeaponNames parsedWeaponType))
 		{
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
@@ -212,7 +211,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
-		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
+		if (System.Enum.TryParse(WeaponName.ToString(), out WeaponNames parsedWeaponType))
 		{
 			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.AmmoReserve);
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);

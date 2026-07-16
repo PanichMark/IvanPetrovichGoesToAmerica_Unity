@@ -3,7 +3,7 @@
 [Serializable]
 public struct WeaponRangedData
 {
-	public WeaponsRangedEnum RagnedWeaponSystem;
+	public WeaponNames RagnedWeaponSystem;
 	public string RagnedWeaponJson;
 	public AmmoTypes AmmoTypeSystem;
 	public string AmmoTypeJson;

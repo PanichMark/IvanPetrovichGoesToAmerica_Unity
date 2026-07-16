@@ -105,8 +105,8 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 		_textWeaponAmmoMagazineNumber.SetActive(true);
 		_textWeaponAmmoReserveNumber.SetActive(true);
 		_textWeaponAmmoSeparator.SetActive(true);
-		
-		WeaponsRangedEnum newKey = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), weaponComponent.WeaponName);
+
+		WeaponNames newKey = (WeaponNames)System.Enum.Parse(typeof(WeaponNames), weaponComponent.WeaponName.ToString());
 
 		if (_playerResourcesAmmoManager.WeaponsRangedDictionary.TryGetValue(newKey, out var newData))
 		{

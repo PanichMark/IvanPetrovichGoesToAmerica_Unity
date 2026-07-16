@@ -4,11 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 {
-	public override string WeaponName => "BergmannBayard";
-	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
-	public override WeaponsRangedEnum RangedWeaponType => WeaponsRangedEnum.BergmannBayard;
-	public override string WeaponType => WeaponTypes.Ranged.ToString();
-	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
+	public override WeaponNames WeaponName => WeaponNames.BergmannBayard;
+	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	protected override float _waitForAmmoRefill => 1;
 	public override float WeaponDamage => 20f;
@@ -43,7 +40,7 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, WeaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(WeaponName, WeaponHandType, _weaponAttackSpeedRate));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -84,10 +81,7 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 
 		Debug.Log($"Shoot {WeaponName}");
 
-		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
-		{
-			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
-		}
+		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 
 		ApplyWeaponRecoil();
 

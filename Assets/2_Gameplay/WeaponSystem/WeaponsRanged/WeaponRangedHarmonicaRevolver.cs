@@ -4,16 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 {
-	public override string WeaponName => "HarmonicaRevolver";
-	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
-	public override string WeaponType => WeaponTypes.Ranged.ToString();
-
-	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
+	public override WeaponNames WeaponName => WeaponNames.HarmonicaRevolver;
+	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	public override float WeaponDamage => 34f;
 	public override bool IsWeaponAuto => false;
 
-	public override WeaponsRangedEnum RangedWeaponType => WeaponsRangedEnum.HarmonicaRevolver;
 
 	protected override float _waitForAmmoRefill => _waitForAmmoRefillRevolver;
 
@@ -173,7 +169,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, WeaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(WeaponName, WeaponHandType, _weaponAttackSpeedRate));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -219,11 +215,8 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 		Debug.Log($"Shoot {WeaponName}");
 
-		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
-		{
-			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
-		}
-
+		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
+		
 		ApplyWeaponRecoil();
 
 		yield return _currentWeaponPlayerShootRoutine;
@@ -256,11 +249,8 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 		RefillHarmonicaCartridge(ammoToAdd);
 
-		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
-		{
-			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.AmmoReserve);
-			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
-		}
+		_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.AmmoReserve);
+		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 
 		yield return animRoutine;
 

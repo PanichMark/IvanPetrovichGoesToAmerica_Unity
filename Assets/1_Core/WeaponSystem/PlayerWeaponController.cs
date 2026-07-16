@@ -336,7 +336,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (rangedToSave != null)
 		{
-			WeaponsRangedEnum key = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), rangedToSave.WeaponName);
+			WeaponNames key = (WeaponNames)System.Enum.Parse(typeof(WeaponNames), rangedToSave.WeaponName.ToString());
 			if (_ammoManager.WeaponsRangedDictionary.TryGetValue(key, out var data))
 			{
 				data.MagazineAmmoCurrent = rangedToSave.PlayerMagazineAmmoCurrent;
@@ -366,7 +366,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (weaponComponent is WeaponRangedAbstract rangedNew)
 		{
-			WeaponsRangedEnum newKey = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), rangedNew.WeaponName);
+			WeaponNames newKey = (WeaponNames)System.Enum.Parse(typeof(WeaponNames), rangedNew.WeaponName.ToString());
 			if (_ammoManager.WeaponsRangedDictionary.TryGetValue(newKey, out var newData))
 			{
 				rangedNew.SetPlayerMagazineProperties(newData.MagazineAmmoMax, newData.MagazineAmmoCurrent);
@@ -458,7 +458,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			if (RightHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
 			{
-				WeaponsRangedEnum key = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), rangedWeapon.WeaponName);
+				WeaponNames key = (WeaponNames)System.Enum.Parse(typeof(WeaponNames), rangedWeapon.WeaponName.ToString());
 				if (_ammoManager.WeaponsRangedDictionary.TryGetValue(key, out var data))
 				{
 					data.MagazineAmmoCurrent = rangedWeapon.PlayerMagazineAmmoCurrent;
@@ -479,7 +479,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
 			{
-				WeaponsRangedEnum key = (WeaponsRangedEnum)System.Enum.Parse(typeof(WeaponsRangedEnum), rangedWeapon.WeaponName);
+				WeaponNames key = (WeaponNames)System.Enum.Parse(typeof(WeaponNames), rangedWeapon.WeaponName.ToString());
 				if (_ammoManager.WeaponsRangedDictionary.TryGetValue(key, out var data))
 				{
 					data.MagazineAmmoCurrent = rangedWeapon.PlayerMagazineAmmoCurrent;
@@ -578,7 +578,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			var weaponComp = weaponEntry.Value.GetComponent<WeaponRangedAbstract>();
 			if (weaponComp != null)
 			{
-				WeaponsRangedEnum weaponEnumType;
+				WeaponNames weaponEnumType;
 				System.Enum.TryParse(weaponComp.WeaponNameSystem, out weaponEnumType);
 
 				WeaponRangedData dataToAdd = new WeaponRangedData();
@@ -625,7 +625,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			foreach (var loadedWeaponData in data.UnlockedRangedWeapons)
 			{
 				// 1. Пробуем распарсить строковое представление типа оружия обратно в Enum
-				if (Enum.TryParse(loadedWeaponData.RagnedWeaponJson, out WeaponsRangedEnum parsedWeaponType))
+				if (Enum.TryParse(loadedWeaponData.RagnedWeaponJson, out WeaponNames parsedWeaponType))
 				{
 					// 2. Ищем шаблон этого оружия в словаре менеджера ресурсов
 					if (_ammoManager.WeaponsRangedDictionary.ContainsKey(parsedWeaponType))

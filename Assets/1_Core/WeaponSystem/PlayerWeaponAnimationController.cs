@@ -200,7 +200,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetFloat("UpDown", newValue);
 	}
 
-	public IEnumerator WeaponShootAnimation(WeaponsRangedEnum rangedWeaponType, WeaponHandsEnum weaponHandType, float weaponAttackSpeedRate)
+	public IEnumerator WeaponShootAnimation(WeaponNames rangedWeaponType, WeaponHandsEnum weaponHandType, float weaponAttackSpeedRate)
 	{
 		if (weaponHandType == WeaponHandsEnum.HandRight)
 		{
@@ -323,11 +323,11 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 
 
-		if (weaponRanged.RangedWeaponType == WeaponsRangedEnum.BergmannBayard)
+		if (weaponRanged.WeaponName == WeaponNames.BergmannBayard)
 		{
 
 		}
-		if (weaponRanged.RangedWeaponType == WeaponsRangedEnum.SawedOffShotgun)
+		if (weaponRanged.WeaponName == WeaponNames.SawedOffShotgun)
 		{
 
 		}
@@ -357,7 +357,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		OnPlayerReload?.Invoke();
 
-		if (weaponRanged.RangedWeaponType == WeaponsRangedEnum.HarmonicaRevolver)
+		if (weaponRanged.WeaponName == WeaponNames.HarmonicaRevolver)
 		{
 			if (weaponRanged.WeaponHandType == WeaponHandsEnum.HandRight)
 			{

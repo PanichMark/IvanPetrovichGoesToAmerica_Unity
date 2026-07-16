@@ -3,10 +3,10 @@ using UnityEngine;
 
 public abstract class WeaponAbstract : MonoBehaviour
 {
-	public abstract string WeaponName { get; }
-	public abstract string WeaponNameSystem { get; }
-	public abstract string WeaponType { get; }
-	public abstract Sprite WeaponIcon { get; }
+	public abstract WeaponNames WeaponName { get; }
+	public string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
+	public abstract WeaponTypes WeaponType { get; }
+	public Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
 	public abstract float WeaponDamage { get; }
 	public abstract bool IsWeaponAuto { get; }
 	protected float _weaponAttackSpeedRate;

@@ -3,13 +3,8 @@ using UnityEngine;
 
 public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 {
-	public override string WeaponName => "SawedOffShotgun";
-	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
-
-	public override WeaponsRangedEnum RangedWeaponType => WeaponsRangedEnum.SawedOffShotgun;
-
-	public override string WeaponType => WeaponTypes.Ranged.ToString();
-	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
+	public override WeaponNames WeaponName => WeaponNames.SawedOffShotgun;
+	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo12gauge;
 	public override float WeaponDamage => 100f;
 	protected override float _waitForAmmoRefill => 1;
@@ -23,7 +18,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, WeaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(WeaponName, WeaponHandType, _weaponAttackSpeedRate));
 
 		int pelletCount = 10;
 		float spreadAngle = 7f;
@@ -79,10 +74,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 		PlayerMagazineAmmoCurrent--;
 		Debug.Log($"Shoot {WeaponName}");
 
-		if (System.Enum.TryParse(WeaponName, out WeaponsRangedEnum parsedWeaponType))
-		{
-			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
-		}
+		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 
 		ApplyWeaponRecoil();
 

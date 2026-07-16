@@ -3,10 +3,8 @@ using System.Collections;
 
 public class WeaponMeleeFirefighterSaw : WeaponMeleeAbstract
 {
-	public override string WeaponName => "FirefighterSaw";
-	public override string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
-	public override string WeaponType => WeaponTypes.Melee.ToString();
-	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
+	public override WeaponNames WeaponName => WeaponNames.FirefighterSaw;
+	public override WeaponTypes WeaponType => WeaponTypes.Melee;
 	public override float WeaponDamage => 15f;
 	public override bool IsWeaponAuto => true;
 
