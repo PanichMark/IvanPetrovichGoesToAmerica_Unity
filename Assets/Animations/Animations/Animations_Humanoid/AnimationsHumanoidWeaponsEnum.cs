@@ -18,5 +18,10 @@
 	Ranged_BergmannBayard_Shoot_Left,
 	Ranged_BergmannBayard_Reload_Right,
 	Ranged_BergmannBayard_Reload_Left,
-	LegKick
+	Equip,
+	Uneqiup,
+	Hold,
+	Shoot,
+	Reload,
+	LegKick,
 }

@@ -148,7 +148,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected virtual IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(WeaponName, WeaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(this));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;

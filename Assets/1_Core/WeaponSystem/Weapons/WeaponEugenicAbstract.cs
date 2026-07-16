@@ -74,7 +74,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 
 			AutoEugenicAttack();
 
-			yield return new WaitForSeconds(_weaponAttackSpeedRate);
+			yield return new WaitForSeconds(WeaponAttackSpeedRate);
 
 			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
 			{

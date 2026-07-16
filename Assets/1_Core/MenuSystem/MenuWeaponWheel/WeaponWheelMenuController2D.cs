@@ -204,7 +204,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 	{
 		if (rightHandPressed)
 		{
-			OnOpenWeaponWheelMenu?.Invoke(WeaponHandsEnum.HandRight);
+			OnOpenWeaponWheelMenu?.Invoke(WeaponHandsEnum.Right);
 			ShowWeaponWheelMenuCanvas();
 			_isWeaponLeftHand = false;
 			ShowWeaponName();
@@ -214,7 +214,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 		}
 		else if (leftHandPressed)
 		{
-			OnOpenWeaponWheelMenu?.Invoke(WeaponHandsEnum.HandLeft);
+			OnOpenWeaponWheelMenu?.Invoke(WeaponHandsEnum.Left);
 			ShowWeaponWheelMenuCanvas();
 			_isWeaponLeftHand = true;
 			ShowWeaponName();

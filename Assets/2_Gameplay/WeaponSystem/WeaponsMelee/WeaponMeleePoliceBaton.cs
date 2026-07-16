@@ -7,7 +7,7 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 	public override WeaponTypes WeaponType => WeaponTypes.Melee;
 	public override float WeaponDamage => 45f;
 	public override bool IsWeaponAuto => false;
-
+	public override float WeaponAttackSpeedRate => 0f;
 	private IInputDevice _inputDevice;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerWeaponController _weaponController;

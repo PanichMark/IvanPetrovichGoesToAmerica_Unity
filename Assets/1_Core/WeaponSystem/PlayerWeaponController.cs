@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
 public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 {
 	private Bootstrap _bootstrap;
@@ -21,11 +18,9 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 
 
-	public delegate void WeaponVisibilityHandler();
-	public event WeaponVisibilityHandler OnShowWeaponRight;
-	public event WeaponVisibilityHandler OnHideWeaponRight;
-	public event WeaponVisibilityHandler OnShowWeaponLeft;
-	public event WeaponVisibilityHandler OnHideWeaponLeft;
+	public delegate void WeaponVisibilityHandler(WeaponAbstract weapon);
+	public event WeaponVisibilityHandler OnShowWeapon;
+	public event WeaponVisibilityHandler OnHideWeapon;
 
 	public event OnWeaponEqiupment OnWeaponHidden;
 	private bool _wasRightButtonPressedLastFrame;
@@ -88,7 +83,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 			if (RightHandWeapon != null)
 			{
-				HideWeapon(WeaponHandsEnum.HandRight);
+				HideWeapon(WeaponHandsEnum.Right);
 			}
 		};
 		_menuManager.OnClosePauseMenu += () =>
@@ -212,22 +207,21 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (RightHandWeapon != null && _playerBehaviour.IsPlayerArmed)
 		{
-			ShowWeapon(WeaponHandsEnum.HandRight);
+			ShowWeapon(WeaponHandsEnum.Right);
 		}
 		yield return null;
 	}
 
 	private void OnPlayerArmed()
 	{
-		//Debug.Log(RightHandWeaponComponent);
 		if (RightHandWeaponComponent != null)
 		{
-			ShowWeapon(WeaponHandsEnum.HandRight); 
+			ShowWeapon(WeaponHandsEnum.Right); 
 		}
 
 		if (LeftHandWeaponComponent != null)
 		{
-			ShowWeapon(WeaponHandsEnum.HandLeft);
+			ShowWeapon(WeaponHandsEnum.Left);
 		}
 	}
 
@@ -235,12 +229,12 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		if (RightHandWeaponComponent != null)
 		{
-			HideWeapon(WeaponHandsEnum.HandRight); 
+			HideWeapon(WeaponHandsEnum.Right); 
 		}
 
 		if (LeftHandWeaponComponent != null)
 		{
-			HideWeapon(WeaponHandsEnum.HandLeft); 
+			HideWeapon(WeaponHandsEnum.Left); 
 		}
 
 		OnWeaponHidden?.Invoke();
@@ -355,13 +349,13 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		if (IsLeftHand && RightHandWeapon != null && RightHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
-			HideWeapon(WeaponHandsEnum.HandRight);
-			DestroyWeapon(WeaponHandsEnum.HandRight);
+			HideWeapon(WeaponHandsEnum.Right);
+			DestroyWeapon(WeaponHandsEnum.Right);
 		}
 		else if (!IsLeftHand && LeftHandWeapon != null && LeftHandWeapon.GetComponent<WeaponAbstract>().WeaponNameSystem == newWeaponSystemName)
 		{
-			HideWeapon(WeaponHandsEnum.HandLeft);
-			DestroyWeapon(WeaponHandsEnum.HandLeft);
+			HideWeapon(WeaponHandsEnum.Left);
+			DestroyWeapon(WeaponHandsEnum.Left);
 		}
 
 		if (weaponComponent is WeaponRangedAbstract rangedNew)
@@ -382,16 +376,16 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			}
 
 			LeftHandWeapon = weaponInstance;
-			OnWeaponChanged?.Invoke(WeaponHandsEnum.HandLeft);
+			OnWeaponChanged?.Invoke(WeaponHandsEnum.Left);
 
-			weaponComponent.InstantiateWeaponPlayer(WeaponHandsEnum.HandLeft);
+			weaponComponent.InstantiateWeaponPlayer(WeaponHandsEnum.Left);
 			weaponComponent.MirrorWeaponPlayerModel();
 
 			LeftHandWeaponComponent = weaponComponent;
 
 			if (_playerBehaviour.IsPlayerArmed)
 			{
-				ShowWeapon(WeaponHandsEnum.HandLeft);
+				ShowWeapon(WeaponHandsEnum.Left);
 			}
 
 			_playerBehaviour.ArmPlayer();
@@ -405,15 +399,15 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			}
 
 			RightHandWeapon = weaponInstance;
-			OnWeaponChanged?.Invoke(WeaponHandsEnum.HandRight);
+			OnWeaponChanged?.Invoke(WeaponHandsEnum.Right);
 
-			weaponComponent.InstantiateWeaponPlayer(WeaponHandsEnum.HandRight);
+			weaponComponent.InstantiateWeaponPlayer(WeaponHandsEnum.Right);
 
 			RightHandWeaponComponent = weaponComponent;
 
 			if (_playerBehaviour.IsPlayerArmed)
 			{
-				ShowWeapon(WeaponHandsEnum.HandRight);
+				ShowWeapon(WeaponHandsEnum.Right);
 			}
 
 			_playerBehaviour.ArmPlayer();
@@ -454,7 +448,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void DestroyWeapon(WeaponHandsEnum handType)
 	{
-		if (handType == WeaponHandsEnum.HandRight)
+		if (handType == WeaponHandsEnum.Right)
 		{
 			if (RightHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
 			{
@@ -475,7 +469,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				RightHandWeaponComponent = null;
 			}
 		}
-		else if (handType == WeaponHandsEnum.HandLeft)
+		else if (handType == WeaponHandsEnum.Left)
 		{
 			if (LeftHandWeaponComponent is WeaponRangedAbstract rangedWeapon)
 			{
@@ -500,41 +494,45 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void ShowWeapon(WeaponHandsEnum handType)
 	{
-		if (handType == WeaponHandsEnum.HandRight)
+		if (handType == WeaponHandsEnum.Right)
 		{
 			if (RightHandWeaponComponent != null)
 			{
 				if (RightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+				{
 					RightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
+				}
 
 				if (RightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+				{
 					RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+				}
 
-				OnShowWeaponRight?.Invoke();
+				OnShowWeapon?.Invoke(RightHandWeaponComponent);
 			}
 		}
-		else if (handType == WeaponHandsEnum.HandLeft)
+		else if (handType == WeaponHandsEnum.Left)
 		{
 			if (LeftHandWeaponComponent != null)
 			{
 				if (LeftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
+				{
 					LeftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(true);
+				}
 
 				if (LeftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
+				{
 					LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(true);
+				}
 
-				OnShowWeaponLeft?.Invoke();
+				OnShowWeapon?.Invoke(LeftHandWeaponComponent);
 			}
-		}
-		else
-		{
-			throw new ArgumentException("Неверный тип руки.");
 		}
 	}
 
 	public void HideWeapon(WeaponHandsEnum handType)
 	{
-		if (handType == WeaponHandsEnum.HandRight)
+		if (handType == WeaponHandsEnum.Right)
 		{
 			if (RightHandWeaponComponent != null)
 			{
@@ -544,10 +542,10 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				if (RightHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
 					RightHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
 
-				OnHideWeaponRight?.Invoke();
+				OnHideWeapon?.Invoke(RightHandWeaponComponent);
 			}
 		}
-		else if (handType == WeaponHandsEnum.HandLeft)
+		else if (handType == WeaponHandsEnum.Left)
 		{
 			if (LeftHandWeaponComponent != null)
 			{
@@ -557,7 +555,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				if (LeftHandWeaponComponent.ThirdPersonWeaponModelInstance != null)
 					LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.SetActive(false);
 
-				OnHideWeaponLeft?.Invoke();
+				OnHideWeapon?.Invoke(LeftHandWeaponComponent);
 			}
 		}
 	}
@@ -667,7 +665,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			if (RightHandWeapon != null)
 			{
-				DestroyWeapon(WeaponHandsEnum.HandRight);
+				DestroyWeapon(WeaponHandsEnum.Right);
 			}
 		}
 
@@ -689,7 +687,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			if (LeftHandWeapon != null)
 			{
-				DestroyWeapon(WeaponHandsEnum.HandLeft);
+				DestroyWeapon(WeaponHandsEnum.Left);
 			}
 		}
 	}

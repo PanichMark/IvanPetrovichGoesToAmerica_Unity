@@ -61,7 +61,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		{
 			StartCoroutine(MeleeWeaponAttack());
 
-			yield return new WaitForSeconds(_weaponAttackSpeedRate);
+			yield return new WaitForSeconds(WeaponAttackSpeedRate);
 		}
 
 		_currentWeaponPlayerAutoAttackCourutine = null;

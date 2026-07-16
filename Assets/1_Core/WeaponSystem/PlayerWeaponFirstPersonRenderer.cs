@@ -40,10 +40,8 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(_playerFirstPersonHandLeft);
 		_weaponController.OnWeaponChanged += RegisterWeapons;
 
-		_weaponController.OnShowWeaponRight += UpdateWeaponRightVisibility;
-		_weaponController.OnHideWeaponRight += UpdateWeaponRightVisibility;
-		_weaponController.OnShowWeaponLeft += UpdateWeaponLeftVisibility;
-		_weaponController.OnHideWeaponLeft += UpdateWeaponLeftVisibility;
+		_weaponController.OnShowWeapon += UpdateWeaponVisibility;
+		_weaponController.OnHideWeapon += UpdateWeaponVisibility;
 
 		_playerCameraStateMachine.OnFirstPersonCameraState += UpdateWeaponRightVisibility;
 		_playerCameraStateMachine.OnThirdPersonCameraState += UpdateWeaponRightVisibility;
@@ -60,7 +58,19 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		Debug.Log("WeaponFirstPersonRender Initialized!");
 	}
 
-	public void UpdateWeaponRightVisibility()
+	public void UpdateWeaponVisibility(WeaponAbstract weapon)
+	{
+		if (weapon.WeaponHandType == WeaponHandsEnum.Right)
+		{
+			UpdateWeaponRightVisibility();
+		}
+		else
+		{
+			UpdateWeaponLeftVisibility();
+		}
+	}
+
+	private void UpdateWeaponRightVisibility()
 	{
 		if (_weaponController.RightHandWeapon != null)
 		{
@@ -99,7 +109,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		}
 	}
 
-	public void UpdateWeaponLeftVisibility()
+	private void UpdateWeaponLeftVisibility()
 	{
 		if (_weaponController.LeftHandWeapon != null)
 		{
@@ -144,7 +154,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		{
 			if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
-				if (_weaponAnimationController.CurrentPlayerReloadingHelpingHand == WeaponHandsEnum.HandRight)
+				if (_weaponAnimationController.CurrentPlayerReloadingHelpingHand == WeaponHandsEnum.Right)
 				{
 					HideBodyPart(_playerThirdPersonHandRight);
 					ShowFirstPersonHand(_playerFirstPersonHandRight);
@@ -157,7 +167,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 			}
 			else
 			{
-				if (_weaponAnimationController.CurrentPlayerReloadingHelpingHand == WeaponHandsEnum.HandRight)
+				if (_weaponAnimationController.CurrentPlayerReloadingHelpingHand == WeaponHandsEnum.Right)
 				{
 					ShowBodyPart(_playerThirdPersonHandRight);
 					HideFirstPersonHand(_playerFirstPersonHandRight);
@@ -173,7 +183,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 
 	private void RegisterWeapons(WeaponHandsEnum handType)
 	{
-		if (handType == WeaponHandsEnum.HandLeft)
+		if (handType == WeaponHandsEnum.Left)
 		{
 			if (_weaponController.LeftHandWeapon != null)
 			{

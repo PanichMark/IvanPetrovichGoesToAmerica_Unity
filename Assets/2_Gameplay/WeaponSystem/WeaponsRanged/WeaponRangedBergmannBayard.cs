@@ -8,6 +8,7 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	protected override float _waitForAmmoRefill => 1;
+	public override float WeaponAttackSpeedRate => 0.1f;
 	public override float WeaponDamage => 20f;
 	public override bool IsWeaponAuto => true;
 
@@ -29,7 +30,6 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 
 		_ejectedBullet = ThirdPersonWeaponModelInstance.transform.Find("Bullet").gameObject;
 
-		_weaponAttackSpeedRate = 0.1f;
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
@@ -40,7 +40,7 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(WeaponName, WeaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(this));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;

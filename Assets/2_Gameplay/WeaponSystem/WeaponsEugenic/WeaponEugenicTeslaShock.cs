@@ -8,6 +8,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 	public override float WeaponDamage => 5;
 	public override int ManaCost => 2;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
+	public override float WeaponAttackSpeedRate => 0.33f;
 	public override bool IsWeaponAuto => true;
 	private GameObject _VFXteslaShock;
 	private Transform _VFXspawnPoint;
@@ -17,7 +18,6 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 	protected override void InitializeWeaponEugenic()
 	{
-		_weaponAttackSpeedRate = 0.33f;
 		_VFXteslaShock = Resources.Load<GameObject>($"VFXs/VFX_EugenicTeslaShock/3Dmodel_VFX_TeslaShock");
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
@@ -97,7 +97,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 		while (true)
 		{ 
-			float endTime = Time.time + _weaponAttackSpeedRate;
+			float endTime = Time.time + WeaponAttackSpeedRate;
 
 			yield return new WaitUntil(() => Time.time >= endTime);
 

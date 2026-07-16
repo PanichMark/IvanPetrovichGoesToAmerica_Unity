@@ -8,14 +8,14 @@ public class WeaponMeleeFirefighterSaw : WeaponMeleeAbstract
 	public override float WeaponDamage => 15f;
 	public override bool IsWeaponAuto => true;
 
+	public override float WeaponAttackSpeedRate => 0.2f;
+
 	protected override void InitializeWeaponMelee()
 	{
 		_capsuleHeight = 1.8f;
 		_capsuleRadius = 0.3f;
 		_forwardOffset = 0.5f;
 		_attackDelay = 0f;
-
-		_weaponAttackSpeedRate = 0.2f;
 	}
 
 	public override void WeaponAttack()
@@ -57,7 +57,7 @@ public class WeaponMeleeFirefighterSaw : WeaponMeleeAbstract
 		{
 			StartCoroutine(MeleeWeaponAttack());
 
-			yield return new WaitForSeconds(_weaponAttackSpeedRate);
+			yield return new WaitForSeconds(WeaponAttackSpeedRate);
 		}
 
 		_currentWeaponPlayerAutoAttackCourutine = null;

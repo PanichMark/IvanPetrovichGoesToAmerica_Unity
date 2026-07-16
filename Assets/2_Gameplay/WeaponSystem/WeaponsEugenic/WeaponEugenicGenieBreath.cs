@@ -9,6 +9,8 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	public override int ManaCost => 20;
 	public override bool IsWeaponAuto => false;
 
+	public override float WeaponAttackSpeedRate => 0f;
+
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private float _eugenicAttackRange = 5f;
 	private float _eugenicGenieBreathKnockbackForce = 10f;

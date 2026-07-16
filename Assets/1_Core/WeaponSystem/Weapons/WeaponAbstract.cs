@@ -9,7 +9,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
 	public abstract float WeaponDamage { get; }
 	public abstract bool IsWeaponAuto { get; }
-	protected float _weaponAttackSpeedRate;
+	public abstract float WeaponAttackSpeedRate { get; }
 	protected bool _isWeaponPlayerAutoShooting;
 	protected Coroutine _currentWeaponPlayerAutoAttackCourutine;
 	protected bool _isWeaponInitialized;
@@ -42,7 +42,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 		_isThisPlayerWeapon = true;
 		WeaponHandType = handType;
 
-		if (WeaponHandType == WeaponHandsEnum.HandRight)
+		if (WeaponHandType == WeaponHandsEnum.Right)
 		{
 			_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
 			_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
@@ -50,7 +50,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 			_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonRightHandWeaponSlotGameObject");
 			_thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
 		}
-		else if (WeaponHandType == WeaponHandsEnum.HandLeft)
+		else if (WeaponHandType == WeaponHandsEnum.Left)
 		{
 			_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonLeftHandWeaponSlotGameObject");
 			_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
@@ -66,12 +66,12 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		SetLayerRecursively(FirstPersonWeaponModelInstance.transform, LayerMask.NameToLayer("FirstPerson"));
 
-		if (WeaponHandType == WeaponHandsEnum.HandLeft)
+		if (WeaponHandType == WeaponHandsEnum.Left)
 		{
 			FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonLeftHandWeaponSlotTransform, true);
 			ThirdPersonWeaponModelInstance.transform.SetParent(_thirdPersonLeftHandWeaponSlotTransform, true);
 		}
-		else if (WeaponHandType == WeaponHandsEnum.HandRight)
+		else if (WeaponHandType == WeaponHandsEnum.Right)
 		{
 			FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, true);
 			ThirdPersonWeaponModelInstance.transform.SetParent(_thirdPersonRightHandWeaponSlotTransform, true);

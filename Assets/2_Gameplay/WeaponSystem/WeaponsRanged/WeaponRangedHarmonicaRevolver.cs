@@ -9,7 +9,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	public override float WeaponDamage => 34f;
 	public override bool IsWeaponAuto => false;
-
+	public override float WeaponAttackSpeedRate => 0.2f;
 
 	protected override float _waitForAmmoRefill => _waitForAmmoRefillRevolver;
 
@@ -28,8 +28,6 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	protected override void InitializeWeaponRanged()
 	{
-		_weaponAttackSpeedRate = 0.2f;
-
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 
 		_cartridge1stPerson = FirstPersonWeaponModelInstance.transform.Find("Cartridge").gameObject;
@@ -169,7 +167,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(WeaponName, WeaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(this));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;

@@ -9,16 +9,16 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 	public override float WeaponDamage => 100f;
 	protected override float _waitForAmmoRefill => 1;
 	public override bool IsWeaponAuto => false;
+	public override float WeaponAttackSpeedRate => 0.15f;
 	protected override void InitializeWeaponRanged()
 	{
-		_weaponAttackSpeedRate = 0.15f;
 
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(WeaponName, WeaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(this));
 
 		int pelletCount = 10;
 		float spreadAngle = 7f;

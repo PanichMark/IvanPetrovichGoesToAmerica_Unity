@@ -8,8 +8,7 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	private GameController _gameController;
 	private GameSceneManager _gameSceneManager;
 	private PlayerBehaviourController _playerBehaviour;
-
-	//private GameObject _currentProjectile;
+	public override float WeaponAttackSpeedRate => 0f;
 
 	private GameObject _projectile1stPerson;
 	private Transform _projectileParent1stPerson;
@@ -401,15 +400,8 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 			// Отключаем ОБЕ линии рендера
 			_lineRenderer1stPerson.enabled = false;
 			_lineRenderer3rdPerson.enabled = false;
-
-			if (WeaponHandType == WeaponHandsEnum.HandRight)
-			{
-				_playerWeaponFirstPersonRenderer.UpdateWeaponRightVisibility();
-			}
-			else
-			{
-				_playerWeaponFirstPersonRenderer.UpdateWeaponLeftVisibility();
-			}
+		
+			_playerWeaponFirstPersonRenderer.UpdateWeaponVisibility(this);
 
 			if (_hookedObject != null)
 			{

@@ -133,7 +133,7 @@ public class HUDammoController : MonoBehaviour
 
 	private void UpdateAmmoDisplayForActiveWeapon(WeaponHandsEnum activeHand)
 	{
-		if (activeHand == WeaponHandsEnum.HandLeft)
+		if (activeHand == WeaponHandsEnum.Left)
 		{
 			var ranged = _playerWeaponController.LeftHandWeapon?.GetComponent<WeaponRangedAbstract>();
 			if (_playerWeaponController.LeftHandWeapon != null && ranged != null)
@@ -152,7 +152,7 @@ public class HUDammoController : MonoBehaviour
 				HideLeftWeaponAmmo();
 			}
 		}
-		if (activeHand == WeaponHandsEnum.HandRight)
+		if (activeHand == WeaponHandsEnum.Right)
 		{
 			var ranged = _playerWeaponController.RightHandWeapon?.GetComponent<WeaponRangedAbstract>();
 			if (_playerWeaponController.RightHandWeapon != null && ranged != null)
