@@ -15,7 +15,9 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	public override WeaponsRangedEnum RangedWeaponType => WeaponsRangedEnum.HarmonicaRevolver;
 
-	public override float _waitForAmmoRefill => 1.2f;
+	protected override float _waitForAmmoRefill => _waitForAmmoRefillRevolver;
+
+	private float _waitForAmmoRefillRevolver;
 
 	private GameObject _cartridge1stPerson;
 	private GameObject _cartridge3rdPerson;
@@ -106,6 +108,11 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 		_ejectedCartridge.layer = LayerMask.NameToLayer("Default");
 
+		foreach (Transform child in _ejectedCartridge.transform)
+		{
+			child.gameObject.layer = LayerMask.NameToLayer("Default");
+		}
+
 		_ejectedCartridge.transform.SetParent(null);
 
 		SceneManager.MoveGameObjectToScene(_ejectedCartridge, SceneManager.GetSceneByBuildIndex(1));
@@ -166,7 +173,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, _weaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, WeaponHandType, _weaponAttackSpeedRate));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -207,7 +214,6 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 			_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
 		}
 
-
 		PlayerMagazineAmmoCurrent--;
 		HideUsedHarmonicaBullet();
 
@@ -230,7 +236,19 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(RangedWeaponType, _weaponHandType, false));
+		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, false));
+
+		if (PlayerMagazineAmmoCurrent == 0)
+		{
+			_waitForAmmoRefillRevolver = 1.2f;
+		}
+		else
+		{
+			_waitForAmmoRefillRevolver = 3.8f;
+
+			StartCoroutine(EjectCartridgeDuringLongReload());
+		}
+
 		yield return new WaitForSeconds(_waitForAmmoRefill);
 
 		data.AmmoReserve -= ammoToAdd;
@@ -247,6 +265,15 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		yield return animRoutine;
 
 		Debug.Log("Reloaded");
+		yield return null;
+	}
+
+	private IEnumerator EjectCartridgeDuringLongReload()
+	{
+		yield return new WaitForSeconds(1.25f);
+
+		EjectCartridge();
+
 		yield return null;
 	}
 }

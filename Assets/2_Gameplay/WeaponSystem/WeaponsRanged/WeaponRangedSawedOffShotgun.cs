@@ -12,7 +12,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 	public override Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo12gauge;
 	public override float WeaponDamage => 100f;
-	public override float _waitForAmmoRefill => 1;
+	protected override float _waitForAmmoRefill => 1;
 	public override bool IsWeaponAuto => false;
 	protected override void InitializeWeaponRanged()
 	{
@@ -23,7 +23,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, _weaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, WeaponHandType, _weaponAttackSpeedRate));
 
 		int pelletCount = 10;
 		float spreadAngle = 7f;

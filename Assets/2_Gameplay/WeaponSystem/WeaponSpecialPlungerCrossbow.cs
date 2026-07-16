@@ -402,7 +402,7 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 			_lineRenderer1stPerson.enabled = false;
 			_lineRenderer3rdPerson.enabled = false;
 
-			if (_weaponHandType == WeaponHandsEnum.HandRight)
+			if (WeaponHandType == WeaponHandsEnum.HandRight)
 			{
 				_playerWeaponFirstPersonRenderer.UpdateWeaponRightVisibility();
 			}

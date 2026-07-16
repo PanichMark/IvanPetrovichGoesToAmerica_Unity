@@ -8,7 +8,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected GameObject _shootPoint;
 	protected PlayerCameraStateMachineController _playerCameraStateMachineController;
 	protected Coroutine _currentWeaponPlayerShootRoutine;
-	public abstract float _waitForAmmoRefill { get; }
+	protected abstract float _waitForAmmoRefill { get; }
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
 	protected bool _isWeaponPlayerShooting;
 	public abstract WeaponsRangedEnum RangedWeaponType { get; }
@@ -149,7 +149,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected virtual IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, _weaponHandType, _weaponAttackSpeedRate));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(RangedWeaponType, WeaponHandType, _weaponAttackSpeedRate));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -205,7 +205,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(RangedWeaponType, _weaponHandType, true));
+		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, true));
 		yield return new WaitForSeconds(_waitForAmmoRefill);
 
 		data.AmmoReserve -= ammoToAdd;
