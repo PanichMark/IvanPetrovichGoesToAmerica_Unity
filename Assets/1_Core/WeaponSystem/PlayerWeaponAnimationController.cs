@@ -150,7 +150,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 1);
 		ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, WeaponHandsEnum.Right, AnimationsHumanoidWeaponsEnum.EquipWeapon_Right.ToString(), _layer3rdWeaponRightEquip);
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightUse, 1);
-		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}{weapon.WeaponHandType}", _layer3rdWeaponRightUse);
+		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponRightUse);
 	}
 
 	private void HideWeaponRight(WeaponAbstract weapon)
@@ -316,10 +316,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 	}
 
-	public IEnumerator PrepareForReloadingWeapon(WeaponRangedAbstract weaponRanged, bool isSingleAnimation)
+	public IEnumerator PrepareForReloadingWeapon(WeaponRangedAbstract weaponRanged, bool isSingleAnimation, bool isSecondAnimation)
 	{
-		//Debug.Log("REALODDIIIIIIIIING");
-
 		if (isSingleAnimation == true)
 		{
 			_currentPlayerReloadingCoroutine = StartCoroutine(ReloadWeaponSingleAnimation(weaponRanged));
@@ -330,6 +328,23 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 
 		yield return _currentPlayerReloadingCoroutine;
+
+		if (!isSecondAnimation)
+		{
+			if (_playerWeaponController.RightHandWeaponComponent is WeaponRangedAbstract)
+			{
+				WeaponRangedAbstract weaponRight = _playerWeaponController.RightHandWeaponComponent as WeaponRangedAbstract;
+			
+				if (weaponRanged.WeaponHandType == WeaponHandsEnum.Left && (weaponRight.PlayerMagazineAmmoCurrent < weaponRight.PlayerMagazineAmmoMax))
+				{
+					yield return StartCoroutine(PrepareForReloadingWeapon(weaponRight, weaponRight.IsReloadingAnimationSingle, true));
+				}
+			}
+		}
+		else
+		{
+			yield return null;
+		}
 	}
 
 	private IEnumerator ReloadWeaponSingleAnimation(WeaponRangedAbstract weapon)

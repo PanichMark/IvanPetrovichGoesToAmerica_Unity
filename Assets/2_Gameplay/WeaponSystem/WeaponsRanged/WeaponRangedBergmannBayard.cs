@@ -11,6 +11,7 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 	public override float WeaponAttackSpeedRate => 0.1f;
 	public override float WeaponDamage => 20f;
 	public override bool IsWeaponAuto => true;
+	public override bool IsReloadingAnimationSingle => true;
 
 	private SkinnedMeshRenderer _bergmann1stPersonGunMesh;
 	private SkinnedMeshRenderer _bergmann3rdPersonGunMesh;

@@ -9,6 +9,7 @@ public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 	public override float WeaponDamage => 100f;
 	protected override float _waitForAmmoRefill => 1;
 	public override bool IsWeaponAuto => false;
+	public override bool IsReloadingAnimationSingle => true;
 	public override float WeaponAttackSpeedRate => 0.15f;
 	protected override void InitializeWeaponRanged()
 	{

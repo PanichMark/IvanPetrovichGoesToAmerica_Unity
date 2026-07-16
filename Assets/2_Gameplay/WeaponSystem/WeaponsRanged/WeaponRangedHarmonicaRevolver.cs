@@ -13,6 +13,8 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	protected override float _waitForAmmoRefill => _waitForAmmoRefillRevolver;
 
+	public override bool IsReloadingAnimationSingle => false;
+
 	private float _waitForAmmoRefillRevolver;
 
 	private GameObject _cartridge1stPerson;
@@ -227,7 +229,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, false));
+		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, false));
 
 		if (PlayerMagazineAmmoCurrent == 0)
 		{
