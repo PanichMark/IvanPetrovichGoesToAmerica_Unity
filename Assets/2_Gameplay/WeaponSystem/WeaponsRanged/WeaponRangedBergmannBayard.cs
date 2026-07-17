@@ -93,17 +93,44 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 
 	private IEnumerator BergmannBayardShootMechanism()
 	{
-		_bergmann1stPersonGunMesh.SetBlendShapeWeight(0, 100);
-		_bergmann3rdPersonGunMesh.SetBlendShapeWeight(0, 100);
+		float totalDuration = 0.08f;
+		int shapeIndex = 0;
 
-		yield return new WaitForSeconds (0.04f);
+		float timer = 0f;
+		while (timer < totalDuration)
+		{
+			if (timer < 0.02f)
+			{
+				// Фаза открытия (0 - 0.02 сек)
+				float t = Mathf.Clamp01(timer / 0.02f);
+				_bergmann1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, Mathf.Lerp(0f, 100f, t));
+				_bergmann3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, Mathf.Lerp(0f, 100f, t));
+			}
+			else if (timer >= 0.02f && timer < 0.06f)
+			{
+				// Пауза с открытым затвором (0.02 - 0.06 сек)
+				_bergmann1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, 100f);
+				_bergmann3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, 100f);
 
-		EjectBullet();
+				if (timer >= 0.04f && timer < 0.04f + Time.deltaTime)
+				{
+					EjectBullet();
+				}
+			}
+			else if (timer >= 0.06f)
+			{
+				// Фаза закрытия (0.06 - 0.08 сек)
+				float t = Mathf.Clamp01((timer - 0.06f) / 0.02f);
+				_bergmann1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, Mathf.Lerp(100f, 0f, t));
+				_bergmann3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, Mathf.Lerp(100f, 0f, t));
+			}
 
-		yield return new WaitForSeconds(0.04f);
+			timer += Time.deltaTime;
+			yield return null;
+		}
 
-		_bergmann1stPersonGunMesh.SetBlendShapeWeight(0, 0);
-		_bergmann3rdPersonGunMesh.SetBlendShapeWeight(0, 0);
+		_bergmann1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, 0f);
+		_bergmann3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, 0f);
 	}
 
 	private void EjectBullet()
