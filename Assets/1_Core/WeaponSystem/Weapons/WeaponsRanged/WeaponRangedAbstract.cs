@@ -199,12 +199,12 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_currentWeaponPlayerShootRoutine = null;
 	}
 
-	protected virtual IEnumerator ReloadWeaponPlayer()
+	public virtual IEnumerator ReloadWeaponPlayer(bool isSecondAnimation)
 	{
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, false));
+		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, isSecondAnimation));
 		yield return new WaitForSeconds(_waitForAmmoRefill);
 
 		data.AmmoReserve -= ammoToAdd;
@@ -254,7 +254,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 				return;
 			}
 
-			StartCoroutine(ReloadWeaponPlayer());
+			StartCoroutine(ReloadWeaponPlayer(false));
 		}
 		else
 		{

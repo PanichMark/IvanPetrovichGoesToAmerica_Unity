@@ -16,6 +16,10 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	public delegate void ReloadHandler();
 	public event ReloadHandler OnPlayerReload;
 
+	public delegate void WeaponVisibilityHandler(GameObject weaponRoot, bool castShadows);
+	public event WeaponVisibilityHandler OnShowWeapon;
+	public event WeaponVisibilityHandler OnHideWeapon;
+
 	private Coroutine _currentPlayerReloadingCoroutine;
 
 	private LegKickAttackController _legKickAttack;
@@ -318,6 +322,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	public IEnumerator PrepareForReloadingWeapon(WeaponRangedAbstract weaponRanged, bool isSingleAnimation, bool isSecondAnimation)
 	{
+		HideReloadingHelpingHandWeapon(weaponRanged);
+
 		if (isSingleAnimation == true)
 		{
 			_currentPlayerReloadingCoroutine = StartCoroutine(ReloadWeaponSingleAnimation(weaponRanged));
@@ -337,13 +343,64 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			
 				if (weaponRanged.WeaponHandType == WeaponHandsEnum.Left && (weaponRight.PlayerMagazineAmmoCurrent < weaponRight.PlayerMagazineAmmoMax))
 				{
-					yield return StartCoroutine(PrepareForReloadingWeapon(weaponRight, weaponRight.IsReloadingAnimationSingle, true));
+					if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+					{
+						OnShowWeapon?.Invoke(weaponRight.FirstPersonWeaponModelInstance, true);
+					}
+					else
+					{
+						OnShowWeapon?.Invoke(weaponRight.ThirdPersonWeaponModelInstance, true);
+					}
+
+					yield return StartCoroutine(weaponRight.ReloadWeaponPlayer(true));
 				}
 			}
 		}
 		else
 		{
 			yield return null;
+		}
+
+		ShowReloadingHelpingHandWeapon(weaponRanged);
+	}
+
+	private void ShowReloadingHelpingHandWeapon(WeaponRangedAbstract weaponRanged)
+	{
+		if (weaponRanged.WeaponHandType == WeaponHandsEnum.Right && _playerWeaponController.LeftHandWeapon != null)
+		{
+			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+			{
+				OnShowWeapon?.Invoke(_playerWeaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance, true);
+			}
+			else
+			{
+				OnShowWeapon?.Invoke(_playerWeaponController.LeftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
+			}
+		}
+		else if (weaponRanged.WeaponHandType == WeaponHandsEnum.Left && _playerWeaponController.RightHandWeapon != null)
+		{
+			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+			{
+				OnShowWeapon?.Invoke(_playerWeaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance, true);
+			}
+			else
+			{
+				OnShowWeapon?.Invoke(_playerWeaponController.RightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
+			}
+		}
+	}
+
+	private void HideReloadingHelpingHandWeapon(WeaponRangedAbstract weaponRanged)
+	{
+		if (weaponRanged.WeaponHandType == WeaponHandsEnum.Right && _playerWeaponController.LeftHandWeapon != null)
+		{
+			OnHideWeapon?.Invoke(_playerWeaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance, true);
+			OnHideWeapon?.Invoke(_playerWeaponController.LeftHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
+		}
+		else if (weaponRanged.WeaponHandType == WeaponHandsEnum.Left && _playerWeaponController.RightHandWeapon != null)
+		{
+			OnHideWeapon?.Invoke(_playerWeaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance, true);
+			OnHideWeapon?.Invoke(_playerWeaponController.RightHandWeaponComponent.ThirdPersonWeaponModelInstance, true);
 		}
 	}
 

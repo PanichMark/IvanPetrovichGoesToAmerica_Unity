@@ -224,12 +224,12 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		_currentWeaponPlayerShootRoutine = null;
 	}
 
-	protected override IEnumerator ReloadWeaponPlayer()
+	public override IEnumerator ReloadWeaponPlayer(bool isSecondAnimation)
 	{
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, false));
+		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, isSecondAnimation));
 
 		if (PlayerMagazineAmmoCurrent == 0)
 		{

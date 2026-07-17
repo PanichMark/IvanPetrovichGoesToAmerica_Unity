@@ -53,7 +53,11 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 
 		_playerCameraStateMachine.OnFirstPersonCameraState += ShowReloadingHelpingHand;
 		_playerCameraStateMachine.OnThirdPersonCameraState += ShowReloadingHelpingHand;
+
 		_weaponAnimationController.OnPlayerReload += ShowReloadingHelpingHand;
+		_weaponAnimationController.OnShowWeapon += ShowPlayerWeapon;
+		_weaponAnimationController.OnHideWeapon += HidePlayerWeapon;
+
 
 		Debug.Log("WeaponFirstPersonRender Initialized!");
 	}
