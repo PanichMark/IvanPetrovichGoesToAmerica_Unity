@@ -26,11 +26,11 @@ public abstract class WeaponAbstract : MonoBehaviour
 	protected GameObject _firstPersonRightHandWeaponSlotGameObject;
 	protected Transform _firstPersonRightHandWeaponSlotTransform;
 
-	private GameObject _thirdPersonLeftHandWeaponSlotGameObject;
-	private Transform _thirdPersonLeftHandWeaponSlotTransform;
+	protected GameObject _thirdPersonLeftHandWeaponSlotGameObject;
+	protected Transform _thirdPersonLeftHandWeaponSlotTransform;
 
-	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
-	private Transform _thirdPersonRightHandWeaponSlotTransform;
+	protected GameObject _thirdPersonRightHandWeaponSlotGameObject;
+	protected Transform _thirdPersonRightHandWeaponSlotTransform;
 
 	public abstract void WeaponAttack();
 	public abstract void StartAutoShootingWeaponPlayer();
@@ -42,23 +42,16 @@ public abstract class WeaponAbstract : MonoBehaviour
 		_isThisPlayerWeapon = true;
 		WeaponHandType = handType;
 
-		if (WeaponHandType == WeaponHandsEnum.Right)
-		{
-			_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
-			_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
-
-			_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonRightHandWeaponSlotGameObject");
-			_thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
-		}
-		else if (WeaponHandType == WeaponHandsEnum.Left)
-		{
-			_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonLeftHandWeaponSlotGameObject");
-			_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
-
-			_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonLeftHandWeaponSlotGameObject");
-			_thirdPersonLeftHandWeaponSlotTransform = _thirdPersonLeftHandWeaponSlotGameObject.transform;
-		}
-
+		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
+		_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
+		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonRightHandWeaponSlotGameObject");
+		_thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
+		
+		_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonLeftHandWeaponSlotGameObject");
+		_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
+		_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonLeftHandWeaponSlotGameObject");
+		_thirdPersonLeftHandWeaponSlotTransform = _thirdPersonLeftHandWeaponSlotGameObject.transform;
+		
 		ThirdPersonWeaponModelInstance = gameObject;
 		InstantiateFirstPersonWeaponInstance();
 
