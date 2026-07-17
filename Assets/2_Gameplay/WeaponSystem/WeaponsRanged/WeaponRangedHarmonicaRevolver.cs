@@ -26,7 +26,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	private Vector3 _cartridgeOriginalPosition;
 
-	private int _cartgridgeSlidingStep;
+	public int CartgridgeSlidingStep {  get; set; }
 
 	protected override void InitializeWeaponRanged()
 	{
@@ -60,14 +60,14 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 			return;
 		}
 
-		_cartgridgeSlidingStep = PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent;
+		CartgridgeSlidingStep = PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent;
 
-		if (_cartgridgeSlidingStep > 0)
+		if (CartgridgeSlidingStep > 0)
 		{
-			_cartridge1stPerson.transform.localPosition += new Vector3(0.025f * (_cartgridgeSlidingStep), 0, 0);
-			_cartridge3rdPerson.transform.localPosition += new Vector3(0.025f * (_cartgridgeSlidingStep), 0, 0);
+			_cartridge1stPerson.transform.localPosition += new Vector3(0.025f * (CartgridgeSlidingStep), 0, 0);
+			_cartridge3rdPerson.transform.localPosition += new Vector3(0.025f * (CartgridgeSlidingStep), 0, 0);
 
-			for (int i = 0; i <= _cartgridgeSlidingStep; i++)
+			for (int i = 0; i <= CartgridgeSlidingStep; i++)
 			{
 				_bullets3rdPerson[i].SetActive(false);
 				_bullets1stPerson[i].SetActive(false);
@@ -77,15 +77,15 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	private void HideUsedHarmonicaBullet()
 	{
-		_bullets3rdPerson[_cartgridgeSlidingStep].SetActive(false);
-		_bullets1stPerson[_cartgridgeSlidingStep].SetActive(false);
+		_bullets3rdPerson[CartgridgeSlidingStep].SetActive(false);
+		_bullets1stPerson[CartgridgeSlidingStep].SetActive(false);
 
 		_cartridge1stPerson.transform.localPosition += new Vector3(0.025f, 0, 0);
 		_cartridge3rdPerson.transform.localPosition += new Vector3(0.025f, 0, 0);
 
-		_cartgridgeSlidingStep++;
+		CartgridgeSlidingStep++;
 
-		if (_cartgridgeSlidingStep == 5)
+		if (PlayerMagazineAmmoCurrent == 0)
 		{
 			EjectCartridge();
 		}
@@ -95,11 +95,11 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 	{
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
-			_ejectedCartridge = Instantiate(_cartridge1stPerson);
+			_ejectedCartridge = Instantiate(_cartridge1stPerson, FirstPersonWeaponModelInstance.transform);
 		}
 		else
 		{
-			_ejectedCartridge = Instantiate(_cartridge3rdPerson);
+			_ejectedCartridge = Instantiate(_cartridge3rdPerson, ThirdPersonWeaponModelInstance.transform);
 		}
 
 		_ejectedCartridge.layer = LayerMask.NameToLayer("Default");
@@ -109,12 +109,13 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 			child.gameObject.layer = LayerMask.NameToLayer("Default");
 		}
 
+		_ejectedCartridge.transform.localPosition = _cartridgeOriginalPosition;
+		_ejectedCartridge.transform.localPosition += new Vector3(0.025f * 5, 0, 0);
+		_ejectedCartridge.transform.rotation = _cartridge1stPerson.transform.rotation;
+
 		_ejectedCartridge.transform.SetParent(null);
 
 		SceneManager.MoveGameObjectToScene(_ejectedCartridge, SceneManager.GetSceneByBuildIndex(1));
-
-		_ejectedCartridge.transform.position = transform.position;
-		_ejectedCartridge.transform.rotation = _cartridge1stPerson.transform.rotation;
 
 		_ejectedCartridge.AddComponent<BoxCollider>();
 		_ejectedCartridge.AddComponent<Rigidbody>();
@@ -153,18 +154,10 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 			}
 		}
 
-		if (PlayerAmmoReserve == 0)
-		{
-			_cartridge1stPerson.transform.localPosition = _cartridgeOriginalPosition;
-			_cartridge3rdPerson.transform.localPosition = _cartridgeOriginalPosition;
-		}
-		else
-		{
-			_cartridge1stPerson.transform.localPosition -= new Vector3(0.025f * _cartgridgeSlidingStep, 0, 0);
-			_cartridge3rdPerson.transform.localPosition -= new Vector3(0.025f * _cartgridgeSlidingStep, 0, 0);
-		}
+		_cartridge1stPerson.transform.localPosition -= new Vector3(0.025f * CartgridgeSlidingStep, 0, 0);
+		_cartridge3rdPerson.transform.localPosition -= new Vector3(0.025f * CartgridgeSlidingStep, 0, 0);
 
-		_cartgridgeSlidingStep = 0;
+		CartgridgeSlidingStep = 0;
 	}
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
