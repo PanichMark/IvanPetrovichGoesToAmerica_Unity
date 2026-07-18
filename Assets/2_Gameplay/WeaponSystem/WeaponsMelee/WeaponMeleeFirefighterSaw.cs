@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WeaponMeleeFirefighterSaw : WeaponMeleeAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.FirefighterSaw;
+	public override WeaponNames WeaponName => WeaponNames.CircularSaw;
 	public override WeaponTypes WeaponType => WeaponTypes.Melee;
 	public override float WeaponDamage => 15f;
 	public override bool IsWeaponAuto => true;

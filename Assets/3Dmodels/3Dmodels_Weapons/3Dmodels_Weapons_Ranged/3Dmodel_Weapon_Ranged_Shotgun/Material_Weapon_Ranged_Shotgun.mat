@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CrossBowMaterial
+  m_Name: Material_Weapon_Ranged_Shotgun
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -29,11 +29,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 44d875419fb919e4593cd520b5d22e29, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0a7e67b7eff75e04989e9d78e1d6ccc0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 336aec8c5f685464bafa0f194e8ca2e4, type: 3}
+        m_Texture: {fileID: 2800000, guid: cb94c733fc26bb945b7b172900adda8b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -53,15 +53,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 44d875419fb919e4593cd520b5d22e29, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0a7e67b7eff75e04989e9d78e1d6ccc0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 6ab088ebc2bff75468630319795dc391, type: 3}
+        m_Texture: {fileID: 2800000, guid: f1aaeb827a4b4ad4191bce5b05849842, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: 034c6d111a4606a458b39a3edd7787f1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 20f5f341c29209b49a2d63f52cd793d4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
@@ -124,7 +124,7 @@ Material:
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &5391322644998426538
+--- !u!114 &6278646465677393961
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

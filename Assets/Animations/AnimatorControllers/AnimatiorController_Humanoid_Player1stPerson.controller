@@ -61,7 +61,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_HarmonicaRevolver_Hold_Left
+  m_Name: Ranged_Revolver_Hold_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -87,7 +87,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_HarmonicaRevolver_Hold_Right
+  m_Name: Ranged_Revolver_Hold_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -139,7 +139,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_HarmonicaRevolver_Shoot_Left
+  m_Name: Ranged_Revolver_Shoot_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -191,7 +191,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_HarmonicaRevolver_ReloadInsertCartridge_Left
+  m_Name: Ranged_Revolver_ReloadInsertCartridge_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -217,7 +217,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_HarmonicaRevolver_Shoot_Right
+  m_Name: Ranged_Revolver_Shoot_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -391,7 +391,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_HarmonicaRevolver_ReloadPushCartridge_Right
+  m_Name: Ranged_Revolver_ReloadPushCartridge_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -417,7 +417,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_BergmannBayard_Shoot_Left
+  m_Name: Ranged_AutoPistol_Shoot_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -430,7 +430,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -542588172315743574, guid: b638f00a9cab7e143ae313d389781271, type: 3}
+  m_Motion: {fileID: -7637360387858606924, guid: b638f00a9cab7e143ae313d389781271, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -611,7 +611,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_BergmannBayard_Hold_Left
+  m_Name: Ranged_AutoPistol_Hold_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -624,7 +624,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 5311350871569217982, guid: b638f00a9cab7e143ae313d389781271, type: 3}
+  m_Motion: {fileID: 1437471717217216880, guid: b638f00a9cab7e143ae313d389781271, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -637,7 +637,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_HarmonicaRevolver_ReloadInsertCartridge_Right
+  m_Name: Ranged_Revolver_ReloadInsertCartridge_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -663,7 +663,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_BergmannBayard_Reload_Left
+  m_Name: Ranged_AutoPistol_Reload_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -676,7 +676,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 6365327234424806932, guid: b638f00a9cab7e143ae313d389781271, type: 3}
+  m_Motion: {fileID: -8601123606968383842, guid: b638f00a9cab7e143ae313d389781271, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -753,7 +753,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_HarmonicaRevolver_ReloadPushCartridge_Left
+  m_Name: Ranged_Revolver_ReloadPushCartridge_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -779,7 +779,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_BergmannBayard_Hold_Right
+  m_Name: Ranged_AutoPistol_Hold_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -792,7 +792,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 5311350871569217982, guid: b638f00a9cab7e143ae313d389781271, type: 3}
+  m_Motion: {fileID: 1272956474503551543, guid: b638f00a9cab7e143ae313d389781271, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -857,7 +857,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_BergmannBayard_Reload_Right
+  m_Name: Ranged_AutoPistol_Reload_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -870,7 +870,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 6365327234424806932, guid: b638f00a9cab7e143ae313d389781271, type: 3}
+  m_Motion: {fileID: -1037559806090321442, guid: b638f00a9cab7e143ae313d389781271, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -935,7 +935,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ranged_BergmannBayard_Shoot_Right
+  m_Name: Ranged_AutoPistol_Shoot_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -948,7 +948,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -542588172315743574, guid: b638f00a9cab7e143ae313d389781271, type: 3}
+  m_Motion: {fileID: -9047735121394232602, guid: b638f00a9cab7e143ae313d389781271, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

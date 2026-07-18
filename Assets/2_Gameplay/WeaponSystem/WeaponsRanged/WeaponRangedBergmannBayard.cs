@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.BergmannBayard;
+	public override WeaponNames WeaponName => WeaponNames.AutoPistol;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	protected override float _waitForAmmoRefill => 3.25f;

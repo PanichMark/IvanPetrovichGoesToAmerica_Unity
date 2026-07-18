@@ -52,23 +52,23 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 		_ammoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo9mm, AmmoMax = 999, AmmoReserve = 100 };
 		_ammoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo12gauge, AmmoMax = 999, AmmoReserve = 30 };
 	
-		_weaponsRangedDictionary[WeaponNames.HarmonicaRevolver] = new WeaponRangedData
+		_weaponsRangedDictionary[WeaponNames.Revolver] = new WeaponRangedData
 		{
-			RagnedWeaponSystem = WeaponNames.HarmonicaRevolver,
+			RagnedWeaponSystem = WeaponNames.Revolver,
 			AmmoTypeSystem = AmmoTypes.Ammo9mm,
 			MagazineAmmoMax = 5,
 			MagazineAmmoCurrent = 5
 		};
-		_weaponsRangedDictionary[WeaponNames.BergmannBayard] = new WeaponRangedData
+		_weaponsRangedDictionary[WeaponNames.AutoPistol] = new WeaponRangedData
 		{
-			RagnedWeaponSystem = WeaponNames.BergmannBayard,
+			RagnedWeaponSystem = WeaponNames.AutoPistol,
 			AmmoTypeSystem = AmmoTypes.Ammo9mm,
 			MagazineAmmoMax = 30,
 			MagazineAmmoCurrent = 30
 		};
-		_weaponsRangedDictionary[WeaponNames.SawedOffShotgun] = new WeaponRangedData
+		_weaponsRangedDictionary[WeaponNames.Shotgun] = new WeaponRangedData
 		{
-			RagnedWeaponSystem = WeaponNames.SawedOffShotgun,
+			RagnedWeaponSystem = WeaponNames.Shotgun,
 			AmmoTypeSystem = AmmoTypes.Ammo12gauge,
 			MagazineAmmoMax = 2,
 			MagazineAmmoCurrent = 2

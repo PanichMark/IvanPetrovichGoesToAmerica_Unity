@@ -1,11 +1,11 @@
 ﻿public enum WeaponNames
 {
 	PoliceBaton,
-	FirefighterSaw,
-	HarmonicaRevolver,
-	BergmannBayard,
-	SawedOffShotgun,
+	CircularSaw,
+	Revolver,
+	AutoPistol,
+	Shotgun,
 	TeslaShock,
 	GenieBreath,
-	PlungerCrossbow
+	Crossbow
 }

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.HarmonicaRevolver;
+	public override WeaponNames WeaponName => WeaponNames.Revolver;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	public override float WeaponDamage => 34f;
@@ -26,10 +26,16 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 	private Vector3 _cartridgeOriginalPosition;
 
+	private SkinnedMeshRenderer _revolver1stPersonGunMesh;
+	private SkinnedMeshRenderer _revolver3rdPersonGunMesh;
+
 	public int CartgridgeSlidingStep {  get; set; }
 
 	protected override void InitializeWeaponRanged()
 	{
+		_revolver1stPersonGunMesh = FirstPersonWeaponModelInstance.transform.Find("Gun").GetComponent<SkinnedMeshRenderer>();
+		_revolver3rdPersonGunMesh = ThirdPersonWeaponModelInstance.transform.Find("Gun").GetComponent<SkinnedMeshRenderer>();
+
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 
 		_cartridge1stPerson = FirstPersonWeaponModelInstance.transform.Find("Cartridge").gameObject;
@@ -182,6 +188,7 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 
 		Destroy(_vfxInstance, 0.05f);
 
+		StartCoroutine(RevolverShootMechanism());
 
 		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))
 		{
@@ -258,5 +265,46 @@ public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
 		EjectCartridge();
 
 		yield return null;
+	}
+
+	private IEnumerator RevolverShootMechanism()
+	{
+		float totalDuration = 0.12f; // Общий цикл анимации: 0.01 сек вверх + 0.01 сек вниз
+		int shapeIndex = 0;
+
+		float timer = 0f;
+		while (timer < totalDuration)
+		{
+			// Вычисляем нормализованное время t от 0 до 1 для всего цикла
+			float cycleT = Mathf.Clamp01(timer / totalDuration);
+
+			// Если мы в первой половине цикла (от 0 до 0.5) — открываем барабан
+			if (cycleT <= 0.5f)
+			{
+				// Растягиваем первую половину с [0..0.5] до [0..1]
+				float openT = Mathf.Clamp01(cycleT / 0.5f);
+				float weight = Mathf.Lerp(0f, 100f, openT);
+
+				_revolver1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, weight);
+				_revolver3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, weight);
+			}
+			else // Если во второй половине (от 0.5 до 1) — закрываем
+			{
+				// Сжимаем вторую половину с [0.5..1] до [0..1]
+				float closeT = Mathf.Clamp01((cycleT - 0.5f) / 0.5f);
+				float weight = Mathf.Lerp(100f, 0f, closeT);
+
+				_revolver1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, weight);
+				_revolver3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, weight);
+			}
+
+			timer += Time.deltaTime;
+			yield return null;
+		}
+
+		// Гарантированное обнуление веса после завершения корутины,
+		// чтобы избежать расхождений из-за точности чисел с плавающей запятой.
+		_revolver1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, 0f);
+		_revolver3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, 0f);
 	}
 }

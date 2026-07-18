@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.SawedOffShotgun;
+	public override WeaponNames WeaponName => WeaponNames.Shotgun;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo12gauge;
 	public override float WeaponDamage => 100f;
