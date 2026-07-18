@@ -7,7 +7,7 @@ public class WeaponRangedBergmannBayard : WeaponRangedAbstract
 	public override WeaponNames WeaponName => WeaponNames.BergmannBayard;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
-	protected override float _waitForAmmoRefill => 1;
+	protected override float _waitForAmmoRefill => 3.25f;
 	public override float WeaponAttackSpeedRate => 0.1f;
 	public override float WeaponDamage => 20f;
 	public override bool IsWeaponAuto => true;

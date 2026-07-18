@@ -7,7 +7,7 @@ AvatarMask:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AvatarMask_Humanoid_Default
-  m_Mask: 01000000010000000000000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Mask: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
@@ -110,13 +110,13 @@ AvatarMask:
   - m_Path: Armature_Humanoid/Root/Spine/ChestPheumaticPiston_Top.R
     m_Weight: 1
   - m_Path: Armature_Humanoid/Root/Spine/Neck
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature_Humanoid/Root/Spine/Neck/Head
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature_Humanoid/Root/Spine/Neck_Segment1
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature_Humanoid/Root/Spine/Neck_Segment1/Neck_Segment2
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.L
     m_Weight: 1
   - m_Path: Armature_Humanoid/Root/Spine/UniversalJoint_Shoulder_Swivel.L/UniversalJoint_Shoulder_Ball.L
