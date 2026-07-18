@@ -97,7 +97,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		HandleLookUpDown();
 
-		
+		/*
 		Debug.Log("##########  FIRST PERSON  ###########");
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(0));
 		Debug.Log(_playerAnimator1stPerson.GetLayerWeight(1));
@@ -117,7 +117,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(5));
 		Debug.Log(_playerAnimator3rdPerson.GetLayerWeight(6));
 		Debug.Log("######################################");
-		
+		*/
 	}
 
 	private void ShowWeapon(WeaponAbstract weapon)

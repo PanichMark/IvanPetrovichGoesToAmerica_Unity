@@ -341,16 +341,16 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	{
 		while (true)
 		{
-			float verticalRecoil = Random.Range(0.5f, 3f);
+			float verticalRecoil = Random.Range(0.5f, 2f);
 
 			float horizontalRecoil;
 			if (Random.value < 0.5f)
 			{
-				horizontalRecoil = -Random.Range(0.5f, 2.5f);
+				horizontalRecoil = -Random.Range(0.5f, 1.5f);
 			}
 			else
 			{
-				horizontalRecoil = Random.Range(0.5f, 2.5f);
+				horizontalRecoil = Random.Range(0.5f, 1.5f);
 			}
 
 			float timeElapsed = 0f;
