@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
-public class WeaponSpecialPlungerCrossbow : WeaponAbstract
+public class WeaponSpecialCrossbow : WeaponAbstract
 {
 	private GameController _gameController;
 	private GameSceneManager _gameSceneManager;
@@ -32,7 +32,6 @@ public class WeaponSpecialPlungerCrossbow : WeaponAbstract
 	private Quaternion _projectile1stPersonRestDirection;
 	private Vector3 _projectile3rdPersonRestPosition;
 	private Quaternion _projectile3rdPersonRestDirection;
-
 
 	private Quaternion _projectileFlyingDirection;
 	public override bool IsWeaponAuto => false;

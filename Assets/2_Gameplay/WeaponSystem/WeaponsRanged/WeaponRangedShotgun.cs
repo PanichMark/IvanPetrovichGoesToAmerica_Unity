@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class WeaponRangedSawedOffShotgun : WeaponRangedAbstract
+public class WeaponRangedShotgun : WeaponRangedAbstract
 {
 	public override WeaponNames WeaponName => WeaponNames.Shotgun;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;

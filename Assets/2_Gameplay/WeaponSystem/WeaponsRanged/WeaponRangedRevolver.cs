@@ -2,14 +2,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class WeaponRangedHarmonicaRevolver : WeaponRangedAbstract
+public class WeaponRangedRevolver : WeaponRangedAbstract
 {
 	public override WeaponNames WeaponName => WeaponNames.Revolver;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	public override float WeaponDamage => 34f;
 	public override bool IsWeaponAuto => false;
-	public override float WeaponAttackSpeedRate => 0.2f;
+	public override float WeaponAttackSpeedRate => 0.167f;
 
 	protected override float _waitForAmmoRefill => _waitForAmmoRefillRevolver;
 

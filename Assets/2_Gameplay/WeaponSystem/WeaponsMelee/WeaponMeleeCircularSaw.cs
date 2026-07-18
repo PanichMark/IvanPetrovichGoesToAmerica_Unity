@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WeaponMeleeFirefighterSaw : WeaponMeleeAbstract
+public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 {
 	public override WeaponNames WeaponName => WeaponNames.CircularSaw;
 	public override WeaponTypes WeaponType => WeaponTypes.Melee;

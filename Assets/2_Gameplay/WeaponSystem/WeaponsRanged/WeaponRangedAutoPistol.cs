@@ -2,13 +2,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class WeaponRangedBergmannBayard : WeaponRangedAbstract
+public class WeaponRangedAutoPistol : WeaponRangedAbstract
 {
 	public override WeaponNames WeaponName => WeaponNames.AutoPistol;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	protected override float _waitForAmmoRefill => 3.25f;
-	public override float WeaponAttackSpeedRate => 0.1f;
+	public override float WeaponAttackSpeedRate => 0.133f;
 	public override float WeaponDamage => 20f;
 	public override bool IsWeaponAuto => true;
 	public override bool IsReloadingAnimationSingle => true;
