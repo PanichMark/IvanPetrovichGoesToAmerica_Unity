@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WeaponRangedShotgun : WeaponRangedAbstract
 {
@@ -15,10 +16,20 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	private GameObject _shotgunBarrel1stPerson;
 	private GameObject _shotgunBarrel3rdPerson;
 
+	private GameObject _shellRight1stPerson;
+	private GameObject _shellLeft1stPerson;
+	private GameObject _shellRight3rdPerson;
+	private GameObject _shellLeft3rdPerson;
+
 	protected override void InitializeWeaponRanged()
 	{
 		_shotgunBarrel1stPerson = FirstPersonWeaponModelInstance.transform.Find("Barrel").gameObject;
 		_shotgunBarrel3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("Barrel").gameObject;
+
+		_shellRight1stPerson = _shotgunBarrel1stPerson.transform.Find("ShellRight").gameObject;
+		_shellLeft1stPerson = _shotgunBarrel1stPerson.transform.Find("ShellLeft").gameObject;
+		_shellRight3rdPerson = _shotgunBarrel3rdPerson.transform.Find("ShellRight").gameObject;
+		_shellLeft3rdPerson = _shotgunBarrel3rdPerson.transform.Find("ShellLeft").gameObject;
 
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
@@ -116,6 +127,12 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
+		_shellRight1stPerson.SetActive(true);
+		_shellLeft1stPerson.SetActive(true);
+
+		_shellRight3rdPerson.SetActive(true);
+		_shellLeft3rdPerson.SetActive(true);
+
 		StartCoroutine(ShotgunReloadBreakActionClose());
 
 		yield return animRoutine;
@@ -151,6 +168,11 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 			// Обращаемся к .transform.localRotation
 			barrel1stTrans.localRotation = Quaternion.Lerp(startRot1st, endRot1st, t);
 			barrel3rdTrans.localRotation = Quaternion.Lerp(startRot3rd, endRot3rd, t);
+
+			if (timer > duration/2)
+			{
+				EjectShell();
+			}
 
 			timer += Time.deltaTime;
 			yield return null;
@@ -192,5 +214,93 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 
 		barrel1stTrans.localRotation = endRot1st;
 		barrel3rdTrans.localRotation = endRot3rd;
+	}
+
+	private void EjectShell()
+	{
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+		{
+			GameObject ejectedShellRight = Instantiate(_shellRight1stPerson, _shellRight1stPerson.transform.position, _shellRight1stPerson.transform.rotation);
+
+			ejectedShellRight.transform.SetParent(null);
+			ejectedShellRight.layer = LayerMask.NameToLayer("Default");
+			SceneManager.MoveGameObjectToScene(ejectedShellRight, SceneManager.GetSceneByBuildIndex(1));
+
+			Renderer rendererRight = ejectedShellRight.GetComponent<Renderer>();
+			rendererRight.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
+			Rigidbody rbRight = ejectedShellRight.AddComponent<Rigidbody>();
+			rbRight.useGravity = true;
+
+			rbRight.AddForce(_shellRight1stPerson.transform.up * 2f, ForceMode.Impulse);
+
+			_shellRight1stPerson.SetActive(false);
+
+			StartCoroutine(AddColliderDelayed(ejectedShellRight));
+
+			if (PlayerMagazineAmmoCurrent == 0)
+			{
+				GameObject ejectedShellLeft = Instantiate(_shellLeft1stPerson, _shellLeft1stPerson.transform.position, _shellLeft1stPerson.transform.rotation);
+
+				ejectedShellLeft.transform.SetParent(null);
+				ejectedShellLeft.layer = LayerMask.NameToLayer("Default");
+				SceneManager.MoveGameObjectToScene(ejectedShellLeft, SceneManager.GetSceneByBuildIndex(1));
+
+				Renderer rendererLeft = ejectedShellLeft.GetComponent<Renderer>();
+				rendererLeft.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
+				Rigidbody rbLeft = ejectedShellLeft.AddComponent<Rigidbody>();
+				rbLeft.useGravity = true;
+
+				rbLeft.AddForce(_shellLeft1stPerson.transform.up * 2f, ForceMode.Impulse);
+
+				_shellLeft1stPerson.SetActive(false);
+
+				StartCoroutine(AddColliderDelayed(ejectedShellLeft));
+			}
+		}
+		else
+		{
+			GameObject ejectedShellRight = Instantiate(_shellRight3rdPerson, _shellRight3rdPerson.transform.position, _shellRight3rdPerson.transform.rotation);
+			ejectedShellRight.transform.SetParent(null);
+			ejectedShellRight.layer = LayerMask.NameToLayer("Default");
+			SceneManager.MoveGameObjectToScene(ejectedShellRight, SceneManager.GetSceneByBuildIndex(1));
+
+			Renderer rendererRight = ejectedShellRight.GetComponent<Renderer>();
+			rendererRight.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
+			Rigidbody rbRight = ejectedShellRight.AddComponent<Rigidbody>();
+			rbRight.useGravity = true;
+			rbRight.AddForce(_shellRight3rdPerson.transform.up * 2f, ForceMode.Impulse);
+
+			_shellRight3rdPerson.SetActive(false);
+
+			StartCoroutine(AddColliderDelayed(ejectedShellRight));
+
+			if (PlayerMagazineAmmoCurrent == 0)
+			{
+				GameObject ejectedShellLeft = Instantiate(_shellLeft3rdPerson, _shellLeft3rdPerson.transform.position, _shellLeft3rdPerson.transform.rotation);
+				ejectedShellLeft.transform.SetParent(null);
+				ejectedShellLeft.layer = LayerMask.NameToLayer("Default");
+				SceneManager.MoveGameObjectToScene(ejectedShellLeft, SceneManager.GetSceneByBuildIndex(1));
+
+				Renderer rendererLeft = ejectedShellLeft.GetComponent<Renderer>();
+				rendererLeft.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
+				Rigidbody rbLeft = ejectedShellLeft.AddComponent<Rigidbody>();
+				rbLeft.useGravity = true;
+				rbLeft.AddForce(_shellLeft3rdPerson.transform.up * 2f, ForceMode.Impulse);
+
+				_shellLeft3rdPerson.SetActive(false);
+
+				StartCoroutine(AddColliderDelayed(ejectedShellLeft));
+			}
+		}
+	}
+
+	private IEnumerator AddColliderDelayed(GameObject obj)
+	{
+		yield return new WaitForSeconds(0.1f);
+		obj.AddComponent<BoxCollider>();
 	}
 }
