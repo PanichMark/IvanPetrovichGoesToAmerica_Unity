@@ -211,6 +211,8 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
+		_weaponAudioSource.PlayOneShot(_weaponSoundMagazineInsert);
+
 		yield return animRoutine;
 
 		Debug.Log("Reloaded");
@@ -249,6 +251,8 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 		_magazine3rdPersonNew.SetActive(false);
 
 		yield return new WaitForSeconds(1.09f);
+
+		_weaponAudioSource.PlayOneShot(_weaponSoundMagazineRemove);
 
 		_magazine1stPersonOld.SetActive(false);
 		_magazine3rdPersonOld.SetActive(false);

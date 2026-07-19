@@ -11,7 +11,7 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 	public override bool IsWeaponAuto => false;
 	public override float WeaponAttackSpeedRate => 0.167f;
 
-	[SerializeField] protected AudioClip _weaponSoundCartridgePush;
+	[SerializeField] protected AudioClip _weaponSoundCartridgeEject;
 	[SerializeField] protected AudioClip _weaponSoundCartridgeInsert;
 
 	protected override float _waitForAmmoRefill => _waitForAmmoRefillRevolver;
@@ -131,6 +131,8 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 
 		_cartridge1stPerson.SetActive(false);
 		_cartridge3rdPerson.SetActive(false);
+
+		_weaponAudioSource.PlayOneShot(_weaponSoundCartridgeEject);
 	}
 
 	private void RefillHarmonicaCartridge(int ammoToAdd)
@@ -256,6 +258,8 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 
 		_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.AmmoReserve);
 		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
+
+		_weaponAudioSource.PlayOneShot(_weaponSoundCartridgeInsert);
 
 		yield return animRoutine;
 

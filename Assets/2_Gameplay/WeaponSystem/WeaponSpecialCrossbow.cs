@@ -21,7 +21,8 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	private GameObject _projectileStringStartPoint3rdPerson;
 	private GameObject _projectileStringEndPoint3rdPerson;
 	private LineRenderer _lineRenderer3rdPerson;
-
+	[SerializeField] protected AudioClip _weaponSoundReelRope;
+	[SerializeField] protected AudioClip _weaponSoundPlungerPop;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private bool _isCrossbowAttacking;
 	private GameObject _player;
@@ -32,6 +33,9 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	private Quaternion _projectile1stPersonRestDirection;
 	private Vector3 _projectile3rdPersonRestPosition;
 	private Quaternion _projectile3rdPersonRestDirection;
+
+	private SkinnedMeshRenderer _Crossbow1stPersonSkinnedMesh;
+	private SkinnedMeshRenderer _Crossbow3rdPersonSkinnedMesh;
 
 	private Quaternion _projectileFlyingDirection;
 	public override bool IsWeaponAuto => false;
@@ -58,12 +62,14 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		_projectileStringStartPoint1stPerson = FirstPersonWeaponModelInstance.transform.Find("ProjectileStringStartPoint").gameObject;
 		_projectileStringEndPoint1stPerson = _projectile1stPerson.transform.Find("ProjectileStringEndPoint").gameObject;
 		_lineRenderer1stPerson = FirstPersonWeaponModelInstance.GetComponent<LineRenderer>();
+		_Crossbow1stPersonSkinnedMesh = FirstPersonWeaponModelInstance.transform.Find("Crossbow").GetComponent<SkinnedMeshRenderer>();
 
 		_projectile3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("Projectile").gameObject;
 		_projectileParent3rdPerson = _projectile3rdPerson.transform.parent;
 		_projectileStringStartPoint3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("ProjectileStringStartPoint").gameObject;
 		_projectileStringEndPoint3rdPerson = _projectile3rdPerson.transform.Find("ProjectileStringEndPoint").gameObject;
 		_lineRenderer3rdPerson = ThirdPersonWeaponModelInstance.GetComponent<LineRenderer>();
+		_Crossbow3rdPersonSkinnedMesh = ThirdPersonWeaponModelInstance.transform.Find("Crossbow").GetComponent<SkinnedMeshRenderer>();
 
 		_projectile1stPersonRestPosition = _projectile1stPerson.transform.localPosition;
 		_projectile1stPersonRestDirection = _projectile1stPerson.transform.localRotation;
@@ -129,11 +135,13 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 	private IEnumerator PerformCrossbowShoot(Vector3 point, RaycastHit hit)
 	{
-
+		_weaponAudioSource.PlayOneShot(_weaponSoundReelRope);
 
 		_gameController.PlayerStartedPlunging();
 		//_lineRenderer1stPerson.enabled = true;
 		//_lineRenderer3rdPerson.enabled = true;
+
+		StartCoroutine(StraightenCrossbowLimb());
 
 		yield return StartCoroutine(ShootProjectile(point));
 
@@ -141,6 +149,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 			hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _)))
 		{
 			Debug.Log("Крюк зацепил предмет/NPC");
+
 			yield return StartCoroutine(HookObject(hit));
 		}
 		else
@@ -185,6 +194,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 			yield return null;
 		}
 
+		_weaponAudioSource.PlayOneShot(_weaponSoundPlungerPop);
 	}
 
 	private IEnumerator PlungePlayer(Vector3 hookPoint)
@@ -406,6 +416,11 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 			{
 				StopHookingObject();
 			}
+
+			_Crossbow1stPersonSkinnedMesh.SetBlendShapeWeight(0, 0);
+			_Crossbow3rdPersonSkinnedMesh.SetBlendShapeWeight(0, 0);
+
+			_weaponAudioSource.Stop();
 		}
 	}
 
@@ -430,5 +445,26 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	{
 		//throw new System.NotImplementedException();
 		yield return null;
+	}
+
+	private IEnumerator StraightenCrossbowLimb()
+	{
+		float elapsed = 0f;
+		const float duration = 0.05f;
+
+		while (elapsed < duration)
+		{
+			float t = Mathf.Clamp01(elapsed / duration);
+
+			_Crossbow1stPersonSkinnedMesh.SetBlendShapeWeight(0, Mathf.Lerp(0f, 100f, t));
+			_Crossbow3rdPersonSkinnedMesh.SetBlendShapeWeight(0, Mathf.Lerp(0f, 100f, t));
+
+			elapsed += Time.deltaTime;
+			yield return null;
+		}
+
+		// Фиксация конечного значения на случай погрешности плавающего числа
+		_Crossbow1stPersonSkinnedMesh.SetBlendShapeWeight(0, 100f);
+		_Crossbow3rdPersonSkinnedMesh.SetBlendShapeWeight(0, 100f);
 	}
 }
