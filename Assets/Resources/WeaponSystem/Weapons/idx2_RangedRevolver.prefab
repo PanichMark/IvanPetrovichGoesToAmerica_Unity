@@ -210,6 +210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64a66aa19e11c5e4fa4366efb78f34cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponIcon: {fileID: 21300000, guid: 5e9d271faf8dc9c4aabcd11dbd569b6e, type: 3}
+  _weaponSoundAttack: {fileID: 8300000, guid: 37847c201c1ebc74897fc6ad577bc4d2, type: 3}
+  _weaponSoundCartridgePush: {fileID: 0}
+  _weaponSoundCartridgeInsert: {fileID: 0}
 --- !u!1 &2999586901594743230
 GameObject:
   m_ObjectHideFlags: 0

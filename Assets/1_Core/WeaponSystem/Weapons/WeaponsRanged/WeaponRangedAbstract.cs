@@ -17,6 +17,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected GameObject _vfxInstance;
 	protected bool _isNPCreloading;
 	public int PlayerMagazineAmmoCurrent { get; set; }
+
 	public int PlayerMagazineAmmoMax { get; protected set; }
 	
 	public int PlayerAmmoReserve => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].AmmoReserve;

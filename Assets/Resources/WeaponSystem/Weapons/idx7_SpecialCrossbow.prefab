@@ -211,6 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4ca3ddbebf0fd47b94f04f7099a567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponIcon: {fileID: 21300000, guid: cb1c112e932c7aa45bdf777dc488ceb8, type: 3}
+  _weaponSoundAttack: {fileID: 0}
 --- !u!120 &2988630512091609466
 LineRenderer:
   serializedVersion: 2

@@ -20,6 +20,11 @@ public class BootstrapSubProcessPlayerSystems
 	public GameObject GameObjectPlayerFirstPersonHandRight { get; private set; }
 	public GameObject GameObjectPlayerFirstPersonHandLeft { get; private set; }
 
+	public AudioSource PlayerAudioVoice { get; private set; }
+	public AudioSource PlayerAudioMovement { get; private set; }
+	public AudioSource PlayerAudioWeaponRight { get; private set; }
+	public AudioSource PlayerAudioWeaponLeft { get; private set; }
+
 	public GameObject GameObkectPlayerHatSlot { get; private set; }
 
 	private GameObject _gameObjectPlayerCamera;
@@ -96,6 +101,11 @@ public class BootstrapSubProcessPlayerSystems
 		GameObjectPlayerFirstPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonArmLeft");
 		GameObjectPlayerThirdPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonArmRight");
 		GameObjectPlayerThirdPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerThirdPersonArmLeft");
+
+		PlayerAudioVoice = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerAudioVoice").GetComponent<AudioSource>();
+		PlayerAudioMovement = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerAudioMovement").GetComponent<AudioSource>();
+		PlayerAudioWeaponRight = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerAudioWeaponRight").GetComponent<AudioSource>();
+		PlayerAudioWeaponLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerAudioWeaponLeft").GetComponent<AudioSource>();
 
 		var canvasComponentBackgroundMenu = _canvasMenuBackground.GetComponent<Canvas>();
 		var PlayerCameraComponentPostProcessing = PlayerCameraPostProcessing.GetComponent<Camera>();
@@ -190,6 +200,11 @@ public class BootstrapSubProcessPlayerSystems
 		ServiceLocator.Register("PlayerResourcesManaManager", _playerResourcesManaManager);
 		ServiceLocator.Register("PlayerResourcesMoneyManager", _playerResourcesMoneyManager);
 		ServiceLocator.Register("PlayerResourcesAmmoManager", PlayerResourcesAmmoManager);
+
+		ServiceLocator.Register("PlayerAudioVoice", PlayerAudioVoice);
+		ServiceLocator.Register("PlayerAudioMovement", PlayerAudioMovement);
+		ServiceLocator.Register("PlayerAudioWeaponRight", PlayerAudioWeaponRight);
+		ServiceLocator.Register("PlayerAudioWeaponLeft", PlayerAudioWeaponLeft);
 
 		yield break;
 	}

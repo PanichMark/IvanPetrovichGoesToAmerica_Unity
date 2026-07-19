@@ -22,7 +22,7 @@ public class ViewModelMenuWeaponWheel
 
 	public ViewModelMenuWeaponWheel(Bootstrap bootstrap, GameObject canvas)
 	{
-		GameObjectWeaponWheelSegment = Resources.Load<GameObject>("WeaponSystem/WeaponWheel/WeaponWheelSegment");
+		GameObjectWeaponWheelSegment = Resources.Load<GameObject>("WeaponSystem/WeaponWheelSegment");
 		
 		TextWeaponWheelWeaponName = bootstrap.FindDeepGameObject(canvas, "TextWeaponWheelWeapon");
 		ImageWeaponWheelWeaponIcon = bootstrap.FindDeepGameObject(canvas, "ImageWeaponWheelWeapon");

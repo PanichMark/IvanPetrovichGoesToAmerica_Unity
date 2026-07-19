@@ -11,6 +11,9 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 	public override bool IsWeaponAuto => false;
 	public override float WeaponAttackSpeedRate => 0.167f;
 
+	[SerializeField] protected AudioClip _weaponSoundCartridgePush;
+	[SerializeField] protected AudioClip _weaponSoundCartridgeInsert;
+
 	protected override float _waitForAmmoRefill => _waitForAmmoRefillRevolver;
 
 	public override bool IsReloadingAnimationSingle => false;
@@ -168,6 +171,8 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
+		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
+
 		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(this));
 
 		RaycastHit hitInfo;

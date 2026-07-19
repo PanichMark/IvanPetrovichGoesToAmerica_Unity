@@ -6,7 +6,11 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract WeaponNames WeaponName { get; }
 	public string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
 	public abstract WeaponTypes WeaponType { get; }
-	public Sprite WeaponIcon => Resources.Load<Sprite>($"WeaponSystem/WeaponWheel/Weapon{WeaponType}{WeaponName}Icon");
+
+	[SerializeField] protected Sprite _weaponIcon;
+
+	public Sprite WeaponIcon => _weaponIcon;
+	[SerializeField] protected AudioClip _weaponSoundAttack;
 	public abstract float WeaponDamage { get; }
 	public abstract bool IsWeaponAuto { get; }
 	public abstract float WeaponAttackSpeedRate { get; }
@@ -14,6 +18,9 @@ public abstract class WeaponAbstract : MonoBehaviour
 	protected Coroutine _currentWeaponPlayerAutoAttackCourutine;
 	protected bool _isWeaponInitialized;
 	protected bool _isThisPlayerWeapon;
+
+	protected AudioSource _weaponAudioSource;
+
 
 	public WeaponHandsEnum WeaponHandType { get; private set; }
 
@@ -76,7 +83,16 @@ public abstract class WeaponAbstract : MonoBehaviour
 		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
 
-		InitializeWeapon();
+		if (WeaponHandType == WeaponHandsEnum.Right)
+		{
+			_weaponAudioSource = ServiceLocator.Resolve<AudioSource>("PlayerAudioWeaponRight");
+		}
+		else
+		{
+			_weaponAudioSource = ServiceLocator.Resolve<AudioSource>("PlayerAudioWeaponLeft");
+		}
+
+			InitializeWeapon();
 		_isWeaponInitialized = true;
 	}
 

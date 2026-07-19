@@ -12,7 +12,8 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	public override bool IsWeaponAuto => false;
 	public override bool IsReloadingAnimationSingle => true;
 	public override float WeaponAttackSpeedRate => 0.15f;
-
+	[SerializeField] protected AudioClip _weaponSoundBreakAction;
+	[SerializeField] protected AudioClip _weaponSoundInsertShell;
 	private GameObject _shotgunBarrel1stPerson;
 	private GameObject _shotgunBarrel3rdPerson;
 
@@ -36,6 +37,8 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
+		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
+
 		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(this));
 
 		int pelletCount = 10;
@@ -127,6 +130,14 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 		}
 
+		_weaponAudioSource.PlayOneShot(_weaponSoundInsertShell);
+		if (ammoToAdd == 2)
+		{
+			yield return new WaitForSeconds(0.1f);
+
+			_weaponAudioSource.PlayOneShot(_weaponSoundInsertShell);
+		}
+
 		_shellRight1stPerson.SetActive(true);
 		_shellLeft1stPerson.SetActive(true);
 
@@ -144,6 +155,8 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	private IEnumerator ShotgunReloadBreakActionOpen()
 	{
 		yield return new WaitForSeconds(1.250f);
+
+		_weaponAudioSource.PlayOneShot(_weaponSoundBreakAction);
 
 		float duration = 0.167f;
 		float targetAngle = 75f; // Угол поворота по локальной оси X
@@ -185,6 +198,8 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	private IEnumerator ShotgunReloadBreakActionClose()
 	{
 		yield return new WaitForSeconds(0.417f);
+
+		_weaponAudioSource.PlayOneShot(_weaponSoundBreakAction);
 
 		float duration = 0.208f;
 		float targetAngle = -75f; // Изменено на отрицательное значение

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class WeaponRangedAutoPistol : WeaponRangedAbstract
@@ -18,7 +19,8 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 
 	private Transform _ejectedBullet1stPersonSpawnPoint;
 	private Transform _ejectedBullet3rdPersonSpawnPoint;
-
+	[SerializeField] protected AudioClip _weaponSoundMagazineRemove;
+	[SerializeField] protected AudioClip _weaponSoundMagazineInsert;
 	private GameObject _ejectedBullet;
 
 	private GameObject _magazine1stPersonOld;
@@ -50,6 +52,8 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 
 	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
+		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
+
 		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(this));
 
 		RaycastHit hitInfo;
