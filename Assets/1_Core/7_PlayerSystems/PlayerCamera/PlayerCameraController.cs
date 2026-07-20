@@ -33,7 +33,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	public float PlayerCameraDistanceY { get; private set; }
 	public float PlayerCameraDistanceZ { get; private set; }
 
-	private float _MouseRotationLimit = 80f;
+	private float _MouseRotationLimit = 70f;
 
 	private string _currentPlayerCameraType;
 	private string _previousPlayerCameraType;

@@ -8,12 +8,18 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 	public override float WeaponDamage => 15f;
 	public override bool IsWeaponAuto => true;
 
-	public override float WeaponAttackSpeedRate => 0.2f;
+	public override float WeaponAttackSpeedRate => 0.36f;
 
-	public override float MeleeAttackDelay => 0;
+	public override float MeleeAttackDelay => 0.2f;
+
+	private GameObject _sawBlade1stPerson;
+	private GameObject _sawBlade3rdPerson;
 
 	protected override void InitializeWeaponMelee()
 	{
+		_sawBlade1stPerson = FirstPersonWeaponModelInstance.transform.Find("SawBlade").gameObject;
+		_sawBlade3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("SawBlade").gameObject;
+
 		_capsuleHeight = 1.8f;
 		_capsuleRadius = 0.3f;
 		_forwardOffset = 0.5f;
@@ -66,6 +72,10 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 	protected override IEnumerator MeleeWeaponAttack()
 	{
+		StartCoroutine(RotateSawBlades());
+
+		_currentWeaponPlayerMeleeAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponMeleeAttackAnimation(this));
+
 		Vector3 startPoint = _attackPoint.transform.position + _attackPoint.transform.forward * _forwardOffset;
 		Vector3 endPoint = startPoint + _attackPoint.transform.up * _capsuleHeight;
 
@@ -81,13 +91,47 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 				StartCoroutine(DelayMeleeAttackDamageable(damageable, MeleeAttackDelay));
 			}
 
-			if (hit.collider.TryGetComponent<IBreakable>(out var breakabale))
+			if (hit.collider.TryGetComponent<IBreakable>(out var breakable))
 			{
-				StartCoroutine(DelayMeleeAttackBreakable(breakabale, MeleeAttackDelay));
+				StartCoroutine(DelayMeleeAttackBreakable(breakable, MeleeAttackDelay));
 			}
 		}
 
-		yield return new WaitForSeconds(MeleeAttackDelay + 0.15f);
+		yield return _currentWeaponPlayerMeleeAttackRoutine;
+
 		_isAttacking = false;
+
+		_currentWeaponPlayerMeleeAttackRoutine = null;
+	}
+
+	private IEnumerator RotateSawBlades()
+	{
+		float rotationDuration = WeaponAttackSpeedRate * 0.75f;
+		float rotationSpeed = 100f;
+		float elapsed = 0f;
+
+		if (WeaponHandType == WeaponHandsEnum.Right)
+		{
+			while (elapsed < rotationDuration)
+			{
+				_sawBlade1stPerson.transform.Rotate(Vector3.right, rotationSpeed * Time.deltaTime, Space.Self);
+				_sawBlade3rdPerson.transform.Rotate(Vector3.right, rotationSpeed * Time.deltaTime, Space.Self);
+				elapsed += Time.deltaTime;
+				yield return null;
+			}
+		}
+		else
+		{
+			while (elapsed < rotationDuration)
+			{
+				_sawBlade1stPerson.transform.Rotate(Vector3.left, rotationSpeed * Time.deltaTime, Space.Self);
+				_sawBlade3rdPerson.transform.Rotate(Vector3.left, rotationSpeed * Time.deltaTime, Space.Self);
+				elapsed += Time.deltaTime;
+				yield return null;
+			}
+		}
+
+		_sawBlade1stPerson.transform.localEulerAngles = Vector3.zero;
+		_sawBlade3rdPerson.transform.localEulerAngles = Vector3.zero;
 	}
 }
