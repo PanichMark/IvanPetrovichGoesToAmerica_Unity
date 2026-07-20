@@ -8,7 +8,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 {
 	private IInputDevice _inputDevice;
 	private GameController _gameController;
-	private GameSceneManager _gameSceneManager;
+	private GameScenesManager _gameSceneManager;
 	private SaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
 	private GameObject _textCutsceneDialogue;
@@ -64,7 +64,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
-		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class WeaponSpecialCrossbow : WeaponAbstract
 {
 	private GameController _gameController;
-	private GameSceneManager _gameSceneManager;
+	private GameScenesManager _gameSceneManager;
 	private PlayerBehaviourController _playerBehaviour;
 	public override float WeaponAttackSpeedRate => 0f;
 
@@ -84,7 +84,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		_playerRigidbody = _player.GetComponent<Rigidbody>();
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 		_playerCollider = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
-		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		//Debug.Log(_gameSceneManager);
 		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>("PlayerBehaviour");
 

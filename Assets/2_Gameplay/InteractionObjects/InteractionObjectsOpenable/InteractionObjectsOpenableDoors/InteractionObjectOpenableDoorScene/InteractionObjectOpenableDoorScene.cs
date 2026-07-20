@@ -3,7 +3,7 @@ using System.Collections;
 
 public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 {
-	private GameSceneManager _gameSceneManager;
+	private GameScenesManager _gameSceneManager;
 	[SerializeField] private GameScenesEnum _targetScene;
 	[SerializeField] private InteractionObjectOpenableDoorScenePlayerTransform _interactionObjectOpenableDoorScenePlayerTransform;
 	private PlayerMovementController _playerMovementController;
@@ -12,7 +12,7 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 
 	private void Start()
 	{
-		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");

@@ -56,7 +56,7 @@ public class NPCDialogueController : MonoBehaviour
 	public Dictionary<LanguagesEnum, List<string>> LocalizedDialogue => _localizedDialogue;
 	private TextMeshProUGUI _NPCdialogueText;
 	private GameObject _canvasDialogueMenu;
-	private GameSceneManager _gameSceneManager;
+	private GameScenesManager _gameSceneManager;
 	private int _currentDialogueStepIndex;
 	private bool _canSkip;
 	private NPCStateMachineController _NPCstateMachineController;
@@ -86,7 +86,7 @@ public class NPCDialogueController : MonoBehaviour
 
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_canvasDialogueMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuDialogue");
-		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_NPCdialogueText = ServiceLocator.Resolve<GameObject>("TextDialogueLine").GetComponent<TextMeshProUGUI>();
 
 		_NPCstateMachineController = GetComponent<NPCStateMachineController>();

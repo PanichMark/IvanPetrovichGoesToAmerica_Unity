@@ -30,7 +30,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	private Image _imageComponent;
 
 	public bool IsInteractionHintMessageFailActive => false;
-	private GameSceneManager _gameSceneManager;
+	private GameScenesManager _gameSceneManager;
 
 	private void Start()
 	{
@@ -45,7 +45,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_textBackground = ServiceLocator.Resolve<GameObject>("ImageNoteBlackBackground").GetComponent<Image>();
 		_canvasNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuNote");
 
-		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseAndDeactivate;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
 

@@ -26,7 +26,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	private Button _buttonExitLockpickMechanicalMenu;
 	private TextMeshProUGUI _textButtonExitLockpickMechanicalMenu;
 	private MenuManager _menuManager;
-	private GameSceneManager _gameSceneManager;
+	private GameScenesManager _gameSceneManager;
 
 	private bool _isPuzzleActive;
 	public bool WasUnlocked { get; private set; } = false;
@@ -70,7 +70,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		_buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("ButtonCloseLockpickMechanicalMenu").GetComponent<Button>();
 		_textButtonExitLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("TextButtonCloseLockpickMechanicalMenu").GetComponent<TextMeshProUGUI>();
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
-		_gameSceneManager = ServiceLocator.Resolve<GameSceneManager>("GameSceneManager");
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
 		_gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;
 		_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical");
