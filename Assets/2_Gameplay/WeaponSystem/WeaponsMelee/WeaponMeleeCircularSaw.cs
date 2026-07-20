@@ -10,12 +10,13 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 	public override float WeaponAttackSpeedRate => 0.2f;
 
+	public override float MeleeAttackDelay => 0;
+
 	protected override void InitializeWeaponMelee()
 	{
 		_capsuleHeight = 1.8f;
 		_capsuleRadius = 0.3f;
 		_forwardOffset = 0.5f;
-		_attackDelay = 0f;
 	}
 
 	public override void WeaponAttack()
@@ -77,16 +78,16 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 			if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
 			{
-				StartCoroutine(DelayMeleeAttackDamageable(damageable, _attackDelay));
+				StartCoroutine(DelayMeleeAttackDamageable(damageable, MeleeAttackDelay));
 			}
 
 			if (hit.collider.TryGetComponent<IBreakable>(out var breakabale))
 			{
-				StartCoroutine(DelayMeleeAttackBreakable(breakabale, _attackDelay));
+				StartCoroutine(DelayMeleeAttackBreakable(breakabale, MeleeAttackDelay));
 			}
 		}
 
-		yield return new WaitForSeconds(_attackDelay + 0.15f);
+		yield return new WaitForSeconds(MeleeAttackDelay + 0.15f);
 		_isAttacking = false;
 	}
 }

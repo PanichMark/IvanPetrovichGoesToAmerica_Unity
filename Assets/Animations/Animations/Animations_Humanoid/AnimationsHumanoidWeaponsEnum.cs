@@ -1,9 +1,5 @@
 ﻿public enum AnimationsHumanoidWeaponsEnum
 {
-	EquipWeapon_Right,
-	UnequipWeapon_Right,
-	EquipWeapon_Left,
-	UnequipWeapon_Left,
 	Ranged_Revolver_Hold_Right,
 	Ranged_Revolver_Shoot_Right,
 	Ranged_Revolver_ReloadInsert_Right,
@@ -12,8 +8,6 @@
 	Ranged_Revolver_Shoot_Left,
 	Ranged_Revolver_ReloadInsert_Left,
 	Ranged_Revolver_ReloadPush_Left,
-	Equip,
-	Uneqiup,
 	Hold,
 	Shoot,
 	Reload,

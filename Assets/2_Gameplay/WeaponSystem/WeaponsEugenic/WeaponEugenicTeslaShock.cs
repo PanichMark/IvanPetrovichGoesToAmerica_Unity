@@ -21,7 +21,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 		_VFXteslaShock = Resources.Load<GameObject>($"VFXs/VFX_EugenicTeslaShock/3Dmodel_VFX_TeslaShock");
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
-		_playerWeaponController.OnWeaponHidden += TurnEugenicVFXOff;
+		//_playerWeaponController.OnAllWeaponsHidden += TurnEugenicVFXOff;
 
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
@@ -76,7 +76,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 		if (_playerWeaponController != null)
 		{
-			_playerWeaponController.OnWeaponHidden -= TurnEugenicVFXOff;
+			//_playerWeaponController.OnAllWeaponsHidden -= TurnEugenicVFXOff;
 		}
 	}
 	

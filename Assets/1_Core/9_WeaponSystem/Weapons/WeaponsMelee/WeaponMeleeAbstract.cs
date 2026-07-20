@@ -10,7 +10,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	protected float _capsuleHeight;
 	protected float _capsuleRadius;
 	protected float _forwardOffset;
-	protected float _attackDelay;
+	public abstract float MeleeAttackDelay { get; }
 	protected Coroutine _currentWeaponPlayerMeleeAttackRoutine;
 	[SerializeField] protected WeaponsMeleeTypes _weaponMeleeType;
 
@@ -97,12 +97,9 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 			if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
 			{
-				StartCoroutine(DelayMeleeAttackDamageable(damageable, _attackDelay));
+				StartCoroutine(DelayMeleeAttackDamageable(damageable, MeleeAttackDelay));
 			}
 		}
-
-		yield return new WaitForSeconds(_attackDelay + 0.15f);
-		
 
 		yield return _currentWeaponPlayerMeleeAttackRoutine;
 

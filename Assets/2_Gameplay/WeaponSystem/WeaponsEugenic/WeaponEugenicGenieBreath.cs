@@ -25,7 +25,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
-		_playerWeaponController.OnWeaponHidden += TurnEugenicVFXOff;
+		//_playerWeaponController.OnAllWeaponsHidden += TurnEugenicVFXOff;
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
@@ -142,7 +142,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 		if (_playerWeaponController != null)
 		{
-			_playerWeaponController.OnWeaponHidden -= TurnEugenicVFXOff;
+			//_playerWeaponController.OnAllWeaponsHidden -= TurnEugenicVFXOff;
 		}
 	}
 

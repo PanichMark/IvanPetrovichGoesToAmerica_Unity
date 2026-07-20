@@ -8,6 +8,9 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 	public override float WeaponDamage => 45f;
 	public override bool IsWeaponAuto => false;
 	public override float WeaponAttackSpeedRate => 1.560f;
+
+	public override float MeleeAttackDelay => 0.840f;
+
 	private IInputDevice _inputDevice;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerWeaponController _weaponController;
@@ -40,7 +43,6 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 		_capsuleHeight = 1.8f;
 		_capsuleRadius = 0.3f;
 		_forwardOffset = 0.5f;
-		_attackDelay = 0.5f;
 	}
 
 	public override void WeaponAttack()
@@ -90,7 +92,9 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 	private void PerformChokeAttack()
 	{
 		if (currentChokeCoroutine != null)
+		{
 			StopCoroutine(currentChokeCoroutine);
+		}
 
 		currentChokeCoroutine = StartCoroutine(ChokeCoroutine());
 	}
