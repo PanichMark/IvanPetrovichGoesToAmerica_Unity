@@ -22,7 +22,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 	{
 		if (IsWeaponAuto)
 		{
-			StartAutoShootingWeaponPlayer();
+			StartAutoAttackingWeaponPlayer();
 		}
 		else
 		{
@@ -31,13 +31,13 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 		}
 	}
 
-	public override void StartAutoShootingWeaponPlayer()
+	public override void StartAutoAttackingWeaponPlayer()
 	{
 		if (_isWeaponPlayerAutoShooting) return;
 		_isWeaponPlayerAutoShooting = true;
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
-			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoShootWeaponPlayerCourutine());
+			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
 		}
 	}
 
@@ -51,7 +51,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 		}
 	}
 
-	public override IEnumerator AutoShootWeaponPlayerCourutine()
+	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
 		while (_isWeaponPlayerAutoShooting)
 		{
@@ -77,12 +77,12 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 			if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
 			{
-				StartCoroutine(DelayMeleeAttackDamage(damageable, _attackDelay));
+				StartCoroutine(DelayMeleeAttackDamageable(damageable, _attackDelay));
 			}
 
 			if (hit.collider.TryGetComponent<IBreakable>(out var breakabale))
 			{
-				StartCoroutine(DelayMeleeAttackDamage(breakabale, _attackDelay));
+				StartCoroutine(DelayMeleeAttackBreakable(breakabale, _attackDelay));
 			}
 		}
 

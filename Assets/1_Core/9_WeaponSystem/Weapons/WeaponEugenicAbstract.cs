@@ -29,7 +29,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		{
 			if (IsWeaponAuto)
 			{
-				StartAutoShootingWeaponPlayer(); 
+				StartAutoAttackingWeaponPlayer(); 
 			}
 			else 
 			{
@@ -38,13 +38,13 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		}
 	}
 
-	public override void StartAutoShootingWeaponPlayer()
+	public override void StartAutoAttackingWeaponPlayer()
 	{
 		if (_isWeaponPlayerAutoShooting) return;
 		_isWeaponPlayerAutoShooting = true;
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
-			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoShootWeaponPlayerCourutine());
+			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
 		}
 	}
 
@@ -62,7 +62,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 
 	public abstract void TurnEugenicVFXOff();
 
-	public override IEnumerator AutoShootWeaponPlayerCourutine()
+	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
 		while (true)
 		{

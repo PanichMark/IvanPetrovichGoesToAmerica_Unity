@@ -39,7 +39,7 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	{
 		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
 
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(this));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponShootAnimation(this));
 
 		int pelletCount = 10;
 		float spreadAngle = 7f;
@@ -114,7 +114,7 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, isSecondAnimation));
+		Coroutine animRoutine = StartCoroutine(_playerWeaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, isSecondAnimation));
 
 		StartCoroutine(ShotgunReloadBreakActionOpen());
 

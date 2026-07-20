@@ -436,12 +436,12 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		//throw new System.NotImplementedException();
 	}
 
-	public override void StartAutoShootingWeaponPlayer()
+	public override void StartAutoAttackingWeaponPlayer()
 	{
 		//throw new System.NotImplementedException();
 	}
 
-	public override IEnumerator AutoShootWeaponPlayerCourutine()
+	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
 		//throw new System.NotImplementedException();
 		yield return null;

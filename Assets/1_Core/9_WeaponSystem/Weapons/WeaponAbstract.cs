@@ -18,7 +18,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	protected Coroutine _currentWeaponPlayerAutoAttackCourutine;
 	protected bool _isWeaponInitialized;
 	protected bool _isThisPlayerWeapon;
-
+	protected PlayerWeaponAnimationController _playerWeaponAnimationController;
 	protected AudioSource _weaponAudioSource;
 
 
@@ -40,9 +40,9 @@ public abstract class WeaponAbstract : MonoBehaviour
 	protected Transform _thirdPersonRightHandWeaponSlotTransform;
 
 	public abstract void WeaponAttack();
-	public abstract void StartAutoShootingWeaponPlayer();
+	public abstract void StartAutoAttackingWeaponPlayer();
 	public abstract void StopAutoAttacking();
-	public abstract IEnumerator AutoShootWeaponPlayerCourutine();
+	public abstract IEnumerator AutoAttackWeaponPlayerCourutine();
 
 	public void InstantiateWeaponPlayer(WeaponHandsEnum handType)
 	{
@@ -92,7 +92,10 @@ public abstract class WeaponAbstract : MonoBehaviour
 			_weaponAudioSource = ServiceLocator.Resolve<AudioSource>("PlayerAudioWeaponLeft");
 		}
 
-			InitializeWeapon();
+		_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>("WeaponAnimationController");
+
+		InitializeWeapon();
+
 		_isWeaponInitialized = true;
 	}
 

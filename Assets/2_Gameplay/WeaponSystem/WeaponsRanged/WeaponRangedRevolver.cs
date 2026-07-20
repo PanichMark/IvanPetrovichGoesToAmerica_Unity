@@ -175,7 +175,7 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 	{
 		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
 
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(this));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponShootAnimation(this));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -236,7 +236,7 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, isSecondAnimation));
+		Coroutine animRoutine = StartCoroutine(_playerWeaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, isSecondAnimation));
 
 		if (PlayerMagazineAmmoCurrent == 0)
 		{

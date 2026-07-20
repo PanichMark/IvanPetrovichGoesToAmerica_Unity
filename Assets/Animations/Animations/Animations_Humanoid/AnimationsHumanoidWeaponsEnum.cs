@@ -18,4 +18,5 @@
 	Shoot,
 	Reload,
 	LegKick,
+	Attack
 }

@@ -8,6 +8,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected GameObject _shootPoint;
 	protected PlayerCameraStateMachineController _playerCameraStateMachineController;
 	protected Coroutine _currentWeaponPlayerShootRoutine;
+
 	protected abstract float _waitForAmmoRefill { get; }
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
 	protected bool _isWeaponPlayerShooting;
@@ -24,7 +25,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public int PlayerAmmoMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].AmmoMax;
 	protected BulletHoleManager _bulletHoleManager;
 	protected PlayerCameraController _playerCameraController;
-	protected PlayerWeaponAnimationController _weaponAnimationController;
 
 	public override void InitializeWeapon()
 	{
@@ -49,7 +49,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 
 		_bulletHoleManager = ServiceLocator.Resolve<BulletHoleManager>("BulletHoleManager");
-		_weaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>("WeaponAnimationController");
 	}
 
 	private void OnDestroy()
@@ -76,7 +75,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		if (_isThisPlayerWeapon)
 		{
-			if (_weaponAnimationController.IsPlayerReloading)
+			if (_playerWeaponAnimationController.IsPlayerReloading)
 			{
 				Debug.Log("Can't shoot during reload");
 				return;
@@ -89,7 +88,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 			if (IsWeaponAuto)
 			{
-				StartAutoShootingWeaponPlayer();
+				StartAutoAttackingWeaponPlayer();
 			}
 			else
 			{
@@ -98,7 +97,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 	}
 
-	public override void StartAutoShootingWeaponPlayer()
+	public override void StartAutoAttackingWeaponPlayer()
 	{
 		if (_isWeaponPlayerAutoShooting || PlayerMagazineAmmoCurrent <= 0)
 			return;
@@ -107,7 +106,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
-			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoShootWeaponPlayerCourutine());
+			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
 		}
 	}
 
@@ -122,7 +121,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 	}
 
-	public override IEnumerator AutoShootWeaponPlayerCourutine()
+	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
 		while (true)
 		{
@@ -149,7 +148,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected virtual IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_weaponAnimationController.WeaponShootAnimation(this));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponShootAnimation(this));
 
 		RaycastHit hitInfo;
 		IDamageable damageable = null;
@@ -205,7 +204,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		int ammoToAdd = Mathf.Min(PlayerAmmoReserve, PlayerMagazineAmmoMax - PlayerMagazineAmmoCurrent);
 		var data = _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType];
 
-		Coroutine animRoutine = StartCoroutine(_weaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, isSecondAnimation));
+		Coroutine animRoutine = StartCoroutine(_playerWeaponAnimationController.PrepareForReloadingWeapon(this, IsReloadingAnimationSingle, isSecondAnimation));
 		yield return new WaitForSeconds(_waitForAmmoRefill);
 
 		data.AmmoReserve -= ammoToAdd;
@@ -239,7 +238,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 				Debug.Log("Can't reload during shooting");
 				return;
 			}
-			if (_weaponAnimationController.IsPlayerReloading)
+			if (_playerWeaponAnimationController.IsPlayerReloading)
 			{
 				Debug.Log("Already reloading");
 				return;

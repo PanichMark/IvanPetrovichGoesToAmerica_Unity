@@ -5,12 +5,16 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 {
 	protected GameObject _attackPoint;
 
-	protected bool _isAttacking = false;
+	protected bool _isAttacking;
 
 	protected float _capsuleHeight;
 	protected float _capsuleRadius;
 	protected float _forwardOffset;
 	protected float _attackDelay;
+	protected Coroutine _currentWeaponPlayerMeleeAttackRoutine;
+	[SerializeField] protected WeaponsMeleeTypes _weaponMeleeType;
+
+	public WeaponsMeleeTypes WeaponMeleeType => _weaponMeleeType;
 
 	public override void InitializeWeapon()
 	{
@@ -24,9 +28,15 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	public override void WeaponAttack()
 	{
+		if (_isAttacking)
+		{
+			Debug.Log("Already attacking melee");
+			return;
+		}
+
 		if (IsWeaponAuto)
 		{
-			StartAutoShootingWeaponPlayer();
+			StartAutoAttackingWeaponPlayer();
 		}
 		else
 		{
@@ -35,13 +45,17 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		}
 	}
 
-	public override void StartAutoShootingWeaponPlayer()
+	public override void StartAutoAttackingWeaponPlayer()
 	{
-		if (_isWeaponPlayerAutoShooting) return;
+		if (_isWeaponPlayerAutoShooting)
+		{
+			return;
+		}
+
 		_isWeaponPlayerAutoShooting = true;
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
-			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoShootWeaponPlayerCourutine());
+			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
 		}
 	}
 
@@ -55,7 +69,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		}
 	}
 
-	public override IEnumerator AutoShootWeaponPlayerCourutine()
+	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
 		while (_isWeaponPlayerAutoShooting)
 		{
@@ -69,6 +83,8 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	protected virtual IEnumerator MeleeWeaponAttack()
 	{
+		_currentWeaponPlayerMeleeAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponMeleeAttackAnimation(this));
+
 		Vector3 startPoint = _attackPoint.transform.position + _attackPoint.transform.forward * _forwardOffset;
 		Vector3 endPoint = startPoint + _attackPoint.transform.up * _capsuleHeight;
 
@@ -81,21 +97,27 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 			if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
 			{
-				StartCoroutine(DelayMeleeAttackDamage(damageable, _attackDelay));
+				StartCoroutine(DelayMeleeAttackDamageable(damageable, _attackDelay));
 			}
 		}
 
 		yield return new WaitForSeconds(_attackDelay + 0.15f);
+		
+
+		yield return _currentWeaponPlayerMeleeAttackRoutine;
+
 		_isAttacking = false;
+
+		_currentWeaponPlayerMeleeAttackRoutine = null;
 	}
 
-	protected IEnumerator DelayMeleeAttackDamage(IDamageable target, float delayTime)
+	protected IEnumerator DelayMeleeAttackDamageable(IDamageable target, float delayTime)
 	{
 		yield return new WaitForSeconds(delayTime);
 		target.TakeDamage(WeaponDamage);
 	}
 
-	protected IEnumerator DelayMeleeAttackDamage(IBreakable target, float delayTime)
+	protected IEnumerator DelayMeleeAttackBreakable(IBreakable target, float delayTime)
 	{
 		yield return new WaitForSeconds(delayTime);
 		target.TakeDamage(WeaponDamage);
