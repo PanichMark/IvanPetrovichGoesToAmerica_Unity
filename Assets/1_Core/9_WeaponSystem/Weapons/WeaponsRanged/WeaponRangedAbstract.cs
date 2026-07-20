@@ -75,7 +75,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		if (_isThisPlayerWeapon)
 		{
-			if (_playerWeaponAnimationController.IsPlayerReloading)
+			if (_playerWeaponAnimationController.IsReloading)
 			{
 				Debug.Log("Can't shoot during reload");
 				return;
@@ -238,7 +238,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 				Debug.Log("Can't reload during shooting");
 				return;
 			}
-			if (_playerWeaponAnimationController.IsPlayerReloading)
+			if (_playerWeaponAnimationController.IsReloading)
 			{
 				Debug.Log("Already reloading");
 				return;

@@ -154,7 +154,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 
 	public void ShowReloadingHelpingHand()
 	{
-		if (_weaponAnimationController.IsPlayerReloading)
+		if (_weaponAnimationController.IsReloading)
 		{
 			if (_playerCameraStateMachine.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{

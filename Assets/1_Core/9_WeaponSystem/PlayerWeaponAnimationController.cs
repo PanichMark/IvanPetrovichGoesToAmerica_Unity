@@ -24,8 +24,9 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private LegKickAttackController _legKickAttack;
 
-	public bool IsMeleeAttacking { get; private set; }
-	public bool IsPlayerReloading { get; private set; }
+	public bool IsRightMeleeAttacking { get; private set; }
+	public bool IsLeftMeleeAttacking { get; private set; }
+	public bool IsReloading { get; private set; }
 	public WeaponHandsEnum CurrentPlayerReloadingHelpingHand {  get; private set; }
 
 	private int _layer1stWeaponRightEquip;
@@ -74,6 +75,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerWeaponController.OnShowWeapon += ShowWeapon;
 		_playerWeaponController.OnHideWeapon += HideWeapon;
 
+		_playerWeaponController.OnWeaponChanged += CancelWeaponHandAnimation;
+
 		_layer1stWeaponRightEquip = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
 		_layer1stWeaponRightArm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightArm.ToString());
 		_layer1stWeaponRightPalm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightPalm.ToString());
@@ -92,6 +95,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_layer3rdLegKick = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerLegKick.ToString());
 
 		_gameController.OnPlayerEarlyDeath += CancelAllWeaponsAnimation;
+
 
 		_legKickAttack.OnLegKickStateChanged += HandleLegKickStateChange;
 	}
@@ -168,6 +172,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponRightEquip, false));
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, 0);
+
+		CancelWeaponHandAnimation(WeaponHandsEnum.Right);
 	}
 
 	private void ShowWeaponLeft(WeaponAbstract weapon)
@@ -188,6 +194,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponLeftEquip, false));
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 0);
+
+		CancelWeaponHandAnimation(WeaponHandsEnum.Left);
 	}
 
 	private IEnumerator ChangePlayerWeaponEquipAnimation(Animator animator, int layer, bool equip)
@@ -195,7 +203,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		float elapsed = 0f;
 		float startWeight = animator.GetLayerWeight(layer);
 		float targetWeight;
-		float transitionSpeed = 0.76f;
+		float transitionSpeed = 0.5f;
 
 		if (equip == true)
 		{
@@ -268,9 +276,16 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	public IEnumerator WeaponMeleeAttackAnimation(WeaponMeleeAbstract weaponMelee)
 	{
-		IsMeleeAttacking = true;
+		if (weaponMelee.WeaponHandType == WeaponHandsEnum.Right)
+		{
+			IsRightMeleeAttacking = true;
+		}
+		else
+		{
+			IsLeftMeleeAttacking = true;
+		}
 
-		TurnOnMeleeAttackLayer();
+		TurnOnMeleeAttackLayer(weaponMelee.WeaponHandType);
 
 		if (weaponMelee.WeaponMeleeType == WeaponsMeleeTypes.Baton)
 		{
@@ -290,11 +305,19 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		yield return new WaitForSeconds(weaponMelee.WeaponAttackSpeedRate); // return until animation plays TODO;
 
-		TurnOffMeleeAttackLayer();
+		TurnOffMeleeAttackLayer(weaponMelee.WeaponHandType);
+		//Debug.Log(weaponMelee.WeaponHandType);
+
+		if (weaponMelee.WeaponHandType == WeaponHandsEnum.Right)
+		{
+			IsRightMeleeAttacking = false;
+		}
+		else
+		{
+			IsLeftMeleeAttacking = false;
+		}
 
 		Debug.Log("Courutine MeleeAttack ended");
-
-		IsMeleeAttacking = false;
 
 		yield return null;
 	}
@@ -312,26 +335,74 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 	}
 
+	private void CancelWeaponHandAnimation(WeaponHandsEnum handType)
+	{
+		StopAllCoroutines();
+
+		if (handType == WeaponHandsEnum.Right)
+		{
+			if (IsRightMeleeAttacking)
+			{
+				Debug.Log("Melee Right attack Canceled");
+
+				IsRightMeleeAttacking = false;
+
+				TurnOffMeleeAttackLayer(handType);
+			}
+		}
+		else
+		{
+			if (IsLeftMeleeAttacking)
+			{
+				Debug.Log("Melee Left attack Canceled");
+
+				IsLeftMeleeAttacking = false;
+
+				TurnOffMeleeAttackLayer(handType);
+			}
+		}
+
+		if (IsReloading)
+		{
+			TurnOnWeaponRangeAttackLayers();
+
+			_currentPlayerReloadingCoroutine = null;
+
+			IsReloading = false;
+		}
+	}
+
 	private void CancelAllWeaponsAnimation()
 	{
 		StopAllCoroutines();
 
-		if (IsMeleeAttacking)
+		if (IsRightMeleeAttacking)
 		{
-			Debug.Log("Melee attacl Canceled");
+			Debug.Log("Melee Right attack Canceled");
 
-			IsMeleeAttacking = false;
+			IsRightMeleeAttacking = false;
 
-			TurnOffMeleeAttackLayer();
+			TurnOffMeleeAttackLayer(WeaponHandsEnum.Right);
 		}
 
-		if (_currentPlayerReloadingCoroutine != null)
+		if (IsLeftMeleeAttacking)
+		{
+			Debug.Log("Melee Left attack Canceled");
+
+			IsLeftMeleeAttacking = false;
+
+			TurnOffMeleeAttackLayer(WeaponHandsEnum.Left);
+		}
+
+		if (IsReloading)
 		{
 			Debug.Log("Reloading Canceled");
 
+			TurnOnWeaponRangeAttackLayers();
+
 			_currentPlayerReloadingCoroutine = null;
 
-			IsPlayerReloading = false;
+			IsReloading = false;
 		}
 	}
 
@@ -424,7 +495,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		float startTime = Time.time;
 
 		TurnOffWeaponRangeAttackLayers();
-		IsPlayerReloading = true;
+		IsReloading = true;
 
 		CurrentPlayerReloadingHelpingHand = weapon.WeaponHandType ^ (WeaponHandsEnum)1; //Helping hand is Alternative to weaponHandType
 
@@ -445,7 +516,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		TurnOnWeaponRangeAttackLayers();
 
-		IsPlayerReloading = false;
+		IsReloading = false;
 
 		yield return null;
 	}
@@ -456,7 +527,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		//Debug.Log("DOUBEL RELOAD");
 		TurnOffWeaponRangeAttackLayers();
-		IsPlayerReloading = true;
+		IsReloading = true;
 
 		CurrentPlayerReloadingHelpingHand = weaponRanged.WeaponHandType ^ (WeaponHandsEnum)1; //Helping hand is Alternative to weaponHandType
 
@@ -516,11 +587,9 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponReload).length);
 		}
 
-
 		TurnOnWeaponRangeAttackLayers();
 
-		IsPlayerReloading = false;
-
+		IsReloading = false;
 
 		// Вычисляем разницу во времени
 		float elapsedTime = Time.time - startTime;
@@ -531,79 +600,68 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		yield return null;
 	}
 
-	private void TurnOnMeleeAttackLayer()
+	private void TurnOnMeleeAttackLayer(WeaponHandsEnum handType)
 	{
-		if (_playerWeaponController.RightHandWeapon != null && _playerWeaponController.RightHandWeaponComponent is WeaponMeleeAbstract)
+		Debug.Log("TURN ON");
+
+		if (handType == WeaponHandsEnum.Right)
 		{
 			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, 0);
 			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightArm, 1);
 			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, 0);
-		}
-		if (_playerWeaponController.LeftHandWeapon != null && _playerWeaponController.LeftHandWeaponComponent is WeaponMeleeAbstract)
-		{
-			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 0);
-			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, 1);
-			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 0);
-		}
 
-		if (_playerWeaponController.RightHandWeapon != null && _playerWeaponController.RightHandWeaponComponent is WeaponMeleeAbstract)
-		{
 			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 0);
 			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightArm, 1);
 			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, 0);
 		}
-		if (_playerWeaponController.LeftHandWeapon != null && _playerWeaponController.LeftHandWeaponComponent is WeaponMeleeAbstract)
+		else
 		{
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 0);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, 1);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 0);
+
 			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 0);
 			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftArm, 1);
 			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 0);
 		}
 	}
 
-	private void TurnOffMeleeAttackLayer()
+	private void TurnOffMeleeAttackLayer(WeaponHandsEnum handType)
 	{
-		if (_playerWeaponController.RightHandWeapon != null && _playerWeaponController.RightHandWeaponComponent is WeaponMeleeAbstract)
+		Debug.Log("TURN OFF");
+
+		if (handType == WeaponHandsEnum.Right)
 		{
-			if (IsMeleeAttacking == true)
+			if (IsRightMeleeAttacking == true)
 			{
 				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, 1);
 				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, 1);
-			}
 
-			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightArm, 0);
-		}
-		if (_playerWeaponController.LeftHandWeapon != null && _playerWeaponController.LeftHandWeaponComponent is WeaponMeleeAbstract)
-		{
-			if (IsMeleeAttacking == true)
-			{
-				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 1);
-				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 1);
-			}
-
-			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, 0);
-		}
-
-		if (_playerWeaponController.RightHandWeapon != null && _playerWeaponController.RightHandWeaponComponent is WeaponMeleeAbstract)
-		{
-			if (IsMeleeAttacking == true)
-			{
 				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 1);
 				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, 1);
 			}
 
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightArm, 0);
+
 			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightArm, 0);
 		}
-		if (_playerWeaponController.LeftHandWeapon != null && _playerWeaponController.LeftHandWeaponComponent is WeaponMeleeAbstract)
+		else
 		{
-			if (IsMeleeAttacking == true)
+			if (IsLeftMeleeAttacking == true)
 			{
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 1);
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 1);
+
 				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 1);
 				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 1);
 			}
 
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, 0);
+
 			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftArm, 0);
 		}
 	}
+
 
 	private void TurnOnWeaponRangeAttackLayers()
 	{
