@@ -3,9 +3,11 @@
 	LayerMovement,
 	LayerLookUpDown,
 	LayerWeaponRightEquip,
-	LayerWeaponRightUse,
+	LayerWeaponRightArm,
+	LayerWeaponRightPalm,
 	LayerWeaponLeftEquip,
-	LayerWeaponLeftUse,
+	LayerWeaponLeftArm,
+	LayerWeaponLeftPalm,
 	LayerWeaponReload,
 	LayerLegKick
 }

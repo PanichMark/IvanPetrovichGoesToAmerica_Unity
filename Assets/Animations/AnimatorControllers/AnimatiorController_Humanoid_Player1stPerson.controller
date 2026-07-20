@@ -184,6 +184,25 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1107 &-5177248732361165852
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LayerWeaponLeftArm
+  m_ChildStates: []
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 0}
 --- !u!1102 &-5081712069184532122
 AnimatorState:
   serializedVersion: 6
@@ -373,7 +392,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LayerWeaponRightUse
+  m_Name: LayerWeaponRightPalm
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 6701342992845297362}
@@ -416,7 +435,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LayerWeaponLeftUse
+  m_Name: LayerWeaponLeftPalm
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -3051570959224000023}
@@ -667,7 +686,7 @@ AnimatorController:
   m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
-    m_Name: EMPTY index 0
+    m_Name: 1stPerson Doesn't have Movement
     m_StateMachine: {fileID: 37833796591214013}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -679,7 +698,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: EMPTY index 1
+    m_Name: 1stPerson Doesn't have LookUpDown
     m_StateMachine: {fileID: 3483605745301369512}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -703,7 +722,19 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: LayerWeaponRightUse
+    m_Name: LayerWeaponRightArm
+    m_StateMachine: {fileID: 5610485909659000079}
+    m_Mask: {fileID: 31900000, guid: db6c11ddd2edcee4d9d3b00fd36b826e, type: 2}
+    m_Motions: []
+    m_Behaviours: []
+    m_BlendingMode: 0
+    m_SyncedLayerIndex: -1
+    m_DefaultWeight: 0
+    m_IKPass: 0
+    m_SyncedLayerAffectsTiming: 0
+    m_Controller: {fileID: 9100000}
+  - serializedVersion: 5
+    m_Name: LayerWeaponRightPalm
     m_StateMachine: {fileID: -3383098449784966075}
     m_Mask: {fileID: 31900000, guid: 504c216d9660c244d8cd469345f0f9bb, type: 2}
     m_Motions: []
@@ -727,7 +758,19 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: LayerWeaponLeftUse
+    m_Name: LayerWeaponLeftArm
+    m_StateMachine: {fileID: -5177248732361165852}
+    m_Mask: {fileID: 31900000, guid: dba06557aa342df4ca6dc3d6450e75a8, type: 2}
+    m_Motions: []
+    m_Behaviours: []
+    m_BlendingMode: 0
+    m_SyncedLayerIndex: -1
+    m_DefaultWeight: 0
+    m_IKPass: 0
+    m_SyncedLayerAffectsTiming: 0
+    m_Controller: {fileID: 9100000}
+  - serializedVersion: 5
+    m_Name: LayerWeaponLeftPalm
     m_StateMachine: {fileID: -3318343577570044665}
     m_Mask: {fileID: 31900000, guid: 2f9c5b994c6896e43957f833312ebab6, type: 2}
     m_Motions: []
@@ -751,7 +794,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: EMPTY index 6
+    m_Name: 1stPerson Doesn't have LegKick
     m_StateMachine: {fileID: 1113808623972191008}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -769,7 +812,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EMPTY index 0
+  m_Name: 1stPerson Doesn't have Movement
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8197701350887665007}
@@ -869,7 +912,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EMPTY index 6
+  m_Name: 1stPerson Doesn't have LegKick
   m_ChildStates: []
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
@@ -940,7 +983,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EMPTY index 1
+  m_Name: 1stPerson Doesn't have LookUpDown
   m_ChildStates: []
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
@@ -1030,6 +1073,25 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1107 &5610485909659000079
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LayerWeaponRightArm
+  m_ChildStates: []
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 0}
 --- !u!1102 &6425786756830812388
 AnimatorState:
   serializedVersion: 6

@@ -162,6 +162,25 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1107 &-7395712111289881803
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LayerWeaponLeftArm
+  m_ChildStates: []
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 0}
 --- !u!1107 &-7269143260576444661
 AnimatorStateMachine:
   serializedVersion: 6
@@ -882,7 +901,19 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: LayerWeaponRightUse
+    m_Name: LayerWeaponRightArm
+    m_StateMachine: {fileID: 7950401823249917851}
+    m_Mask: {fileID: 31900000, guid: db6c11ddd2edcee4d9d3b00fd36b826e, type: 2}
+    m_Motions: []
+    m_Behaviours: []
+    m_BlendingMode: 0
+    m_SyncedLayerIndex: -1
+    m_DefaultWeight: 0
+    m_IKPass: 0
+    m_SyncedLayerAffectsTiming: 0
+    m_Controller: {fileID: 9100000}
+  - serializedVersion: 5
+    m_Name: LayerWeaponRightPalm
     m_StateMachine: {fileID: 4167858689886343810}
     m_Mask: {fileID: 31900000, guid: 504c216d9660c244d8cd469345f0f9bb, type: 2}
     m_Motions: []
@@ -906,7 +937,19 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: LayerWeaponLeftUse
+    m_Name: LayerWeaponLeftArm
+    m_StateMachine: {fileID: -7395712111289881803}
+    m_Mask: {fileID: 31900000, guid: dba06557aa342df4ca6dc3d6450e75a8, type: 2}
+    m_Motions: []
+    m_Behaviours: []
+    m_BlendingMode: 0
+    m_SyncedLayerIndex: -1
+    m_DefaultWeight: 0
+    m_IKPass: 0
+    m_SyncedLayerAffectsTiming: 0
+    m_Controller: {fileID: 9100000}
+  - serializedVersion: 5
+    m_Name: LayerWeaponLeftPalm
     m_StateMachine: {fileID: 4402074116952421038}
     m_Mask: {fileID: 31900000, guid: 2f9c5b994c6896e43957f833312ebab6, type: 2}
     m_Motions: []
@@ -1239,7 +1282,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LayerWeaponRightUse
+  m_Name: LayerWeaponRightPalm
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -7064404804135447171}
@@ -1282,7 +1325,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LayerWeaponLeftUse
+  m_Name: LayerWeaponLeftPalm
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -4451537475668557506}
@@ -1528,6 +1571,25 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1107 &7950401823249917851
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LayerWeaponRightArm
+  m_ChildStates: []
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 0}
 --- !u!1102 &8234408590569380862
 AnimatorState:
   serializedVersion: 6

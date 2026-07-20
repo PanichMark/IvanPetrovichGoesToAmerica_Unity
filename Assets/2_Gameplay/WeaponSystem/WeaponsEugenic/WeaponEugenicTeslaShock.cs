@@ -85,7 +85,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 		_vfxInstance = Instantiate(
 			_VFXteslaShock,
 			_VFXspawnPoint.position,
-			_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
+			_VFXspawnPoint.rotation * Quaternion.Euler(0, 0, 0),
 			_VFXspawnPoint.transform);
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)

@@ -46,7 +46,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 			_vfxInstance = Instantiate(
 				_VFXgenieBreath,
 				_VFXspawnPoint.position,
-				_VFXspawnPoint.rotation * Quaternion.Euler(90, 0, 0),
+				_VFXspawnPoint.rotation * Quaternion.Euler(0, 0, 0),
 				_VFXspawnPoint.transform);
 
 

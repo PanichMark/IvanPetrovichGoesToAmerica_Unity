@@ -5,7 +5,6 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 {
 	public abstract int ManaCost {  get; }
 
-
 	protected GameObject _eugenicSourcePoint;
 	protected GameObject _eugenicAttackDirection;
 

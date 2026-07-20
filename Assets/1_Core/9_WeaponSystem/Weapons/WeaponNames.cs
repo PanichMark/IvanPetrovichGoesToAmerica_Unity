@@ -1,6 +1,6 @@
 ﻿public enum WeaponNames
 {
-	PoliceBaton,
+	Baton,
 	CircularSaw,
 	Revolver,
 	AutoPistol,
