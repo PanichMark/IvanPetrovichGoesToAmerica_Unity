@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c785abd9fdaf24bad74487bddb1b75, type: 3}
+  m_Name: GameCanvasesList
+  m_EditorClassIdentifier: 
+  CanvasBootstrap: {fileID: 6714391010334597348, guid: 08d27b996c6eb024eb92725af576e2f4, type: 3}
+  CanvasChooseFirstLanguage: {fileID: 3631761839384464562, guid: a08dfd77bf8853546b06669d99445fee, type: 3}
+  CanvasLoadingScreen: {fileID: 472678922251620575, guid: fa544696e09b1264dac7627c0d42d682, type: 3}
+  CanvasMenuBackground: {fileID: 3535118516016722887, guid: b840826d49eee394e8a9949eea913ef0, type: 3}
+  CanvasPauseMenu: {fileID: 8073867487923853320, guid: dbe31a4f8c1107a42a76c5855b3c2483, type: 3}
+  CanvasPauseSubMenuSave: {fileID: 5903125011697291700, guid: 104664eef1b78e24294c3d4712d18631, type: 3}
+  CanvasPauseSubMenuLoad: {fileID: 8269768497378364233, guid: 6b7668360b2dcbf43bcd7c76ed62cc13, type: 3}
+  CanvasPauseSubMenuAppearance: {fileID: 3996022776004995110, guid: 7211552481043d74ea4fc5bc36150aae, type: 3}
+  CanvasPauseSubMenuTutorial: {fileID: 9007672131740602156, guid: e54e3075776696742b98a781b2e668bb, type: 3}
+  CanvasPauseSubMenuSettings: {fileID: 5973256293069603521, guid: e59295eb67009e948b49ab6add309082, type: 3}
+  CanvasPauseSubMenuSettingsGameDifficulty: {fileID: 7516811381906435999, guid: ed41a20b131b7bf45b6351f3af99d258, type: 3}
+  CanvasPauseMenuConfirmAction: {fileID: 6687278301934337374, guid: 0a9b945291032064d9135ddd212ebc01, type: 3}
+  CanvasMainMenuReadNews: {fileID: 5088196628814102599, guid: 2ae53a7a3f9f8e14e957fee489e7773e, type: 3}
+  CanvasHUDinteraction: {fileID: 3487674979134261898, guid: 14a2db8b24d87894796b2a9ecea9df18, type: 3}
+  CanvasHUDmission: {fileID: 7013465812184165696, guid: 244baf2275efdb14991acdf8187e9f21, type: 3}
+  CanvasHUDhealthAndMana: {fileID: 2273119861689627557, guid: b56cff88fa0a71d4c997dbf30e8463af, type: 3}
+  CanvasHUDammo: {fileID: 7881737827081216030, guid: 5dc631800390ba94299385bb1f83e8d0, type: 3}
+  CanvasMenuWeaponWheel: {fileID: 5879893543200193792, guid: c44457cccf516d44eb926a4ac41336d9, type: 3}
+  CanvasMenuNote: {fileID: 1408695191542219954, guid: f2531bfd9b65a3246abd9686a4fc63a4, type: 3}
+  CanvasMenuLockpickMechanical: {fileID: 7539572659657130930, guid: cf1afa49f7269b042a808ccd9c3b00ec, type: 3}
+  CanvasMenuLockpickElectronic: {fileID: 6687112978874478098, guid: c18885d8a26596b45bb1a1aed88d24ac, type: 3}
+  CanvasMenuDialogue: {fileID: 2369867205936427668, guid: cb2bfa7c8bc40784286bf8a61ff9f674, type: 3}
+  CanvasMenuCutscene: {fileID: 5044422707526274748, guid: b3627b6c4cc99cd408f4c0bd29f5a20e, type: 3}

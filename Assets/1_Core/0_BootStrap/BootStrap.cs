@@ -9,6 +9,9 @@ public class Bootstrap : MonoBehaviour
 	public delegate void SettingsDataEventHandler();
 	public event SettingsDataEventHandler OnLoadSettingsData;
 
+	[Header("--- CANVASES ---")]
+	[SerializeField] private GameCanvasesList _gameCanvasesList;
+
 	[Header("--- BOOTSTRAP CONFIGS ---")]
 	[SerializeField] private BootstrapConfigIsFirstGameLaunch _configIsFirstGameLaunch;
 	[SerializeField] private BootstrapConfigInitializationScreenDuration _configInitializationScreenDuration;
@@ -20,45 +23,29 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private BootstrapConfigPlayerWeapons _playerWeapons;
 	[SerializeField] private BootstrapConfigPlayerResourcesAmmo _playerAmmo;
 
-	[Header("--- CANVASES ---")]
-	[Header("Bootstrap")]
-	[SerializeField] private GameObject _canvasBootstrap;
-	[SerializeField] private GameObject _canvasChooseLanguage;
-
-	[Header("Loading Screen")]
-	[SerializeField] private GameObject _canvasLoadingScreen;
-
-	[Header("Menu")]
-	[SerializeField] private GameObject _canvasMenuBackground;
-
-	[Header("Pause Menu")]
-	[SerializeField] private GameObject _canvasPauseMenu;
-	[SerializeField] private GameObject _canvasPauseSubMenuSave;
-	[SerializeField] private GameObject _canvasPauseSubMenuLoad;
-	[SerializeField] private GameObject _canvasPauseSubMenuAppearance;
-	[SerializeField] private GameObject _canvasPauseSubMenuTutorial;
-	[SerializeField] private GameObject _canvasPauseSubMenuSettings;
-	[SerializeField] private GameObject _canvasPauseSubMenuSettingsGameDifficulty;
-	[SerializeField] private GameObject _canvasPauseMenuConfirmAction;
-
-	[Header("Main Menu")]
-	[SerializeField] private GameObject _canvasMainMenuReadNews;
-
-	[Header("HUDs")]
-	[SerializeField] private GameObject _canvasHUDinteraction;
-	[SerializeField] private GameObject _canvasHUDmission;
-	[SerializeField] private GameObject _canvasHUDhealthAndMana;
-	[SerializeField] private GameObject _canvasHUDammo;
-
-	[Header("Weapon Wheel Menu")]
-	[SerializeField] private GameObject _canvasMenuWeaponWheel;
-
-	[Header("Interaction Menu")]
-	[SerializeField] private GameObject _canvasMenuNote;
-	[SerializeField] private GameObject _canvasMenuLockpickMechanical;
-	[SerializeField] private GameObject _canvasMenuLockpickElectronic;
-	[SerializeField] private GameObject _canvasMenuDialogue;
-	[SerializeField] private GameObject _canvasMenuCutscene;
+	private GameObject _canvasBootstrap;
+	private GameObject _canvasChooseFirstLanguage;
+	private GameObject _canvasLoadingScreen;
+	private GameObject _canvasMenuBackground;
+	private GameObject _canvasPauseMenu;
+	private GameObject _canvasPauseSubMenuSave;
+	private GameObject _canvasPauseSubMenuLoad;
+	private GameObject _canvasPauseSubMenuAppearance;
+	private GameObject _canvasPauseSubMenuTutorial;
+	private GameObject _canvasPauseSubMenuSettings;
+	private GameObject _canvasPauseSubMenuSettingsGameDifficulty;
+	private GameObject _canvasPauseMenuConfirmAction;
+	private GameObject _canvasMainMenuReadNews;
+	private GameObject _canvasHUDinteraction;
+	private GameObject _canvasHUDmission;
+	private GameObject _canvasHUDhealthAndMana;
+	private GameObject _canvasHUDammo;
+	private GameObject _canvasMenuWeaponWheel;
+	private GameObject _canvasMenuNote;
+	private GameObject _canvasMenuLockpickMechanical;
+	private GameObject _canvasMenuLockpickElectronic;
+	private GameObject _canvasMenuDialogue;
+	private GameObject _canvasMenuCutscene;
 
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
@@ -91,7 +78,7 @@ public class Bootstrap : MonoBehaviour
 
 		ServiceLocator.ClearAllServices();
 
-		_canvasBootstrap = Instantiate(_canvasBootstrap);
+		_canvasBootstrap = Instantiate(_gameCanvasesList.CanvasBootstrap);
 
 		Time.timeScale = 0f;
 		Cursor.lockState = CursorLockMode.Locked;
@@ -120,7 +107,7 @@ public class Bootstrap : MonoBehaviour
 			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString("Language")));
 		}
 
-		Destroy(_canvasChooseLanguage);
+		Destroy(_canvasChooseFirstLanguage);
 
 		Destroy(_gameObjectBootstrapTemporaryCamera);
 
@@ -167,36 +154,37 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeCanvases()
 	{
-		_canvasChooseLanguage = Instantiate(_canvasChooseLanguage);
+		_canvasChooseFirstLanguage = Instantiate(_gameCanvasesList.CanvasChooseFirstLanguage);
 
-		_canvasLoadingScreen = Instantiate(_canvasLoadingScreen);
+		_canvasLoadingScreen = Instantiate(_gameCanvasesList.CanvasLoadingScreen);
 	
-		_canvasMenuBackground = Instantiate(_canvasMenuBackground);
+		_canvasMenuBackground = Instantiate(_gameCanvasesList.CanvasMenuBackground);
 
-	    _canvasPauseMenu = Instantiate(_canvasPauseMenu);
-		_canvasPauseSubMenuSave = Instantiate(_canvasPauseSubMenuSave);
-		_canvasPauseSubMenuLoad = Instantiate(_canvasPauseSubMenuLoad);
-		_canvasPauseSubMenuAppearance = Instantiate(_canvasPauseSubMenuAppearance);
-		_canvasPauseSubMenuTutorial = Instantiate(_canvasPauseSubMenuTutorial);
-		_canvasPauseSubMenuSettings = Instantiate(_canvasPauseSubMenuSettings);
-		_canvasPauseSubMenuSettingsGameDifficulty = Instantiate(_canvasPauseSubMenuSettingsGameDifficulty);
-		_canvasPauseMenuConfirmAction = Instantiate(_canvasPauseMenuConfirmAction);
+	    _canvasPauseMenu = Instantiate(_gameCanvasesList.CanvasPauseMenu);
+		_canvasPauseSubMenuSave = Instantiate(_gameCanvasesList.CanvasPauseSubMenuSave);
+		_canvasPauseSubMenuLoad = Instantiate(_gameCanvasesList.CanvasPauseSubMenuLoad);
+		_canvasPauseSubMenuAppearance = Instantiate(_gameCanvasesList.CanvasPauseSubMenuAppearance);
+		_canvasPauseSubMenuTutorial = Instantiate(_gameCanvasesList.CanvasPauseSubMenuTutorial);
+		_canvasPauseSubMenuSettings = Instantiate(_gameCanvasesList.CanvasPauseSubMenuSettings);
+		_canvasPauseSubMenuSettingsGameDifficulty = Instantiate(_gameCanvasesList.CanvasPauseSubMenuSettingsGameDifficulty);
+		_canvasPauseMenuConfirmAction = Instantiate(_gameCanvasesList.CanvasPauseMenuConfirmAction);
 
-		_canvasMainMenuReadNews = Instantiate(_canvasMainMenuReadNews);
+		_canvasMainMenuReadNews = Instantiate(_gameCanvasesList.CanvasMainMenuReadNews);
 
-		_canvasMenuWeaponWheel = Instantiate(_canvasMenuWeaponWheel);
+		_canvasMenuWeaponWheel = Instantiate(_gameCanvasesList.CanvasMenuWeaponWheel);
 
-		_canvasMenuCutscene = Instantiate(_canvasMenuCutscene);
+		_canvasMenuWeaponWheel = Instantiate(_gameCanvasesList.CanvasMenuWeaponWheel);
+		_canvasMenuCutscene = Instantiate(_gameCanvasesList.CanvasMenuCutscene);
 
-		_canvasHUDhealthAndMana = Instantiate(_canvasHUDhealthAndMana);
-		_canvasHUDammo = Instantiate(_canvasHUDammo);
-		_canvasHUDinteraction = Instantiate(_canvasHUDinteraction);
-		_canvasHUDmission = Instantiate(_canvasHUDmission);
+		_canvasHUDhealthAndMana = Instantiate(_gameCanvasesList.CanvasHUDhealthAndMana);
+		_canvasHUDammo = Instantiate(_gameCanvasesList.CanvasHUDammo);
+		_canvasHUDinteraction = Instantiate(_gameCanvasesList.CanvasHUDinteraction);
+		_canvasHUDmission = Instantiate(_gameCanvasesList.CanvasHUDmission);
 
-		_canvasMenuNote = Instantiate(_canvasMenuNote);
-		_canvasMenuLockpickElectronic = Instantiate(_canvasMenuLockpickElectronic);
-		_canvasMenuLockpickMechanical = Instantiate(_canvasMenuLockpickMechanical);
-		_canvasMenuDialogue = Instantiate(_canvasMenuDialogue);
+		_canvasMenuNote = Instantiate(_gameCanvasesList.CanvasMenuNote);
+		_canvasMenuLockpickElectronic = Instantiate(_gameCanvasesList.CanvasMenuLockpickElectronic);
+		_canvasMenuLockpickMechanical = Instantiate(_gameCanvasesList.CanvasMenuLockpickMechanical);
+		_canvasMenuDialogue = Instantiate(_gameCanvasesList.CanvasMenuDialogue);
 
 		Debug.Log("=== CANVASES INITIALIZED ===");
 		yield break;
@@ -235,7 +223,7 @@ public class Bootstrap : MonoBehaviour
 			_gameController,
 			_inputDevice,
 			LocalizationManager,
-			_canvasChooseLanguage,
+			_canvasChooseFirstLanguage,
 			_canvasMenuBackground,
 			_canvasPauseMenu,
 			_canvasPauseSubMenuSave,
@@ -378,7 +366,7 @@ public class Bootstrap : MonoBehaviour
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
-		_canvasChooseLanguage.SetActive(true);
+		_canvasChooseFirstLanguage.SetActive(true);
 
 		bool languageSelected = false;
 
@@ -401,7 +389,7 @@ public class Bootstrap : MonoBehaviour
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
-		Destroy(_canvasChooseLanguage);
+		Destroy(_canvasChooseFirstLanguage);
 
 		_playerPrefsData.SetNotFirstLaunch();
 	}
