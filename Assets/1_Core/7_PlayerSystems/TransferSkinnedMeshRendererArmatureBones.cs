@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class AssignMeshes : MonoBehaviour
+public class TransferSkinnedMeshRendererArmatureBones : MonoBehaviour
 {
 	[SerializeField] private Transform _baseArmatureRootBone;
 	[SerializeField] private GameObject _meshTorso;
@@ -11,15 +11,17 @@ public class AssignMeshes : MonoBehaviour
 
 	private SkinnedMeshRenderer _torsoSkinnedMeshRenderer;
 	private Transform[] _torsoMeshBones;
+	private Transform[] _baseArmatureBonesTransform;
+	private Dictionary<string, Transform> _baseArmatureBoneNames ;
 
 	private void Start()
 	{
-		var baseArmatureBonesTransform = _baseArmatureRootBone.GetComponentsInChildren<Transform>();
+		_baseArmatureBonesTransform = _baseArmatureRootBone.GetComponentsInChildren<Transform>();
+		_baseArmatureBoneNames = new Dictionary<string, Transform>();
 
-		var baseArmatureBoneNames = new Dictionary<string, Transform>();
-		foreach (var bone in baseArmatureBonesTransform)
+		foreach (var bone in _baseArmatureBonesTransform)
 		{
-			baseArmatureBoneNames[bone.name] = bone;
+			_baseArmatureBoneNames[bone.name] = bone;
 		}
 
 		if (_meshTorso != null)
@@ -48,9 +50,9 @@ public class AssignMeshes : MonoBehaviour
 					Transform foundBone = null;
 
 					// Пытаемся найти кость сначала точным совпадением, затем через Trim() и ToLower()
-					if (!baseArmatureBoneNames.TryGetValue(targetName, out foundBone))
+					if (!_baseArmatureBoneNames.TryGetValue(targetName, out foundBone))
 					{
-						foreach (var kvp in baseArmatureBoneNames)
+						foreach (var kvp in _baseArmatureBoneNames)
 						{
 							if (kvp.Key.Trim().ToLower() == targetName.ToLower())
 							{
@@ -68,7 +70,7 @@ public class AssignMeshes : MonoBehaviour
 					else
 					{
 						Debug.LogError($"[AssignMeshes] КОСТЬ НЕ НАЙДЕНА: '{targetName}'. Доступные примеры в базе: " +
-										$"{string.Join(", ", baseArmatureBoneNames.Keys.Take(5))}...");
+										$"{string.Join(", ", _baseArmatureBoneNames.Keys.Take(5))}...");
 						bindPoses[i] = transform.localToWorldMatrix;
 						hasErrors = true;
 					}
@@ -84,7 +86,7 @@ public class AssignMeshes : MonoBehaviour
 
 			for (int i = 0; i < _torsoSkinnedMeshRenderer.bones.Length; i++)
 			{
-				_torsoMeshBones[i] = baseArmatureBoneNames[_torsoSkinnedMeshRenderer.bones[i].name];
+				_torsoMeshBones[i] = _baseArmatureBoneNames[_torsoSkinnedMeshRenderer.bones[i].name];
 			}
 
 			_torsoSkinnedMeshRenderer.bones = _torsoMeshBones;
@@ -105,11 +107,11 @@ public class AssignMeshes : MonoBehaviour
 
 			for (int i = 0; i < limbsSkinnedMeshRenderer.bones.Length; i++)
 			{
-				limbsMeshBones[i] = baseArmatureBoneNames[limbsSkinnedMeshRenderer.bones[i].name];
+				limbsMeshBones[i] = _baseArmatureBoneNames[limbsSkinnedMeshRenderer.bones[i].name];
 
 				if (_meshTorso != null)
 				{ 
-				_torsoMeshBones[i] = baseArmatureBoneNames[_torsoSkinnedMeshRenderer.bones[i].name];
+					_torsoMeshBones[i] = _baseArmatureBoneNames[_torsoSkinnedMeshRenderer.bones[i].name];
 				}
 			}
 
@@ -122,5 +124,20 @@ public class AssignMeshes : MonoBehaviour
 				Destroy(armature.gameObject);
 			}
 		}
+	}
+
+	public void TransferWeaponEugenicBones(GameObject eugenicArmature, SkinnedMeshRenderer eugenicSkinnedMesh, WeaponHandsEnum weaponHand)
+	{
+		var _eugenicMeshBones = new Transform[eugenicSkinnedMesh.bones.Length];
+
+		for (int i = 0; i < eugenicSkinnedMesh.bones.Length; i++)
+		{
+			_eugenicMeshBones[i] = _baseArmatureBoneNames[eugenicSkinnedMesh.bones[i].name];
+		}
+
+		eugenicSkinnedMesh.bones = _eugenicMeshBones;
+		eugenicSkinnedMesh.rootBone = _baseArmatureRootBone;
+
+		Destroy(eugenicArmature.gameObject);
 	}
 }

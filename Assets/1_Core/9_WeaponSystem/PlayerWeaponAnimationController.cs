@@ -28,6 +28,9 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	public bool IsReloading { get; private set; }
 	public WeaponHandsEnum CurrentPlayerReloadingHelpingHand {  get; private set; }
 
+	private TransferSkinnedMeshRendererArmatureBones _transferBonesFirstPerson;
+	private TransferSkinnedMeshRendererArmatureBones _transferBonesThirdPerson;
+
 	private int _layer1stWeaponRightEquip;
 	private int _layer1stWeaponRightArm;
 	private int _layer1stWeaponRightPalm;
@@ -54,6 +57,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerWeaponController weaponController,
 		LegKickAttackController legKickAttack,
+		TransferSkinnedMeshRendererArmatureBones transferBonesFirstPerson,
+		TransferSkinnedMeshRendererArmatureBones transferBonesThirdPerson,
 		GameObject player,
 		GameObject playerCamera)
 	{
@@ -65,6 +70,9 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerCameraStateMachineController = playerCameraStateMachineController;
 		_playerWeaponController = weaponController;
 		_legKickAttack = legKickAttack;
+
+		_transferBonesFirstPerson = transferBonesFirstPerson;
+		_transferBonesThirdPerson = transferBonesThirdPerson;
 
 		_layer1stWeaponRightEquip = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
 		_layer1stWeaponRightArm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightArm.ToString());
@@ -146,6 +154,11 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponRightEquip, true));
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, 1);
 		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponRightPalm);
+
+		if (weapon is WeaponEugenicAbstract)
+		{
+			TransferWeaponEugenicBones(WeaponHandsEnum.Right);
+		}
 	}
 
 	private void ShowWeaponLeft(WeaponAbstract weapon)
@@ -157,6 +170,11 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponLeftEquip, true));
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 1);
 		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponLeftPalm);
+
+		if (weapon is WeaponEugenicAbstract)
+		{
+			TransferWeaponEugenicBones(WeaponHandsEnum.Left);
+		}
 	}
 
 	private void HideWeapon(WeaponAbstract weapon)
@@ -219,6 +237,26 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		animator.SetLayerWeight(layer, targetWeight);
 
 		yield return null;
+	}
+
+	private void TransferWeaponEugenicBones(WeaponHandsEnum weaponHand)
+	{
+		GameObject eugenicArmature = null;
+		SkinnedMeshRenderer eugenicSkinnedMesh = null;
+
+		if (weaponHand == WeaponHandsEnum.Right)
+		{
+			eugenicArmature = _playerWeaponController.RightHandWeapon.transform.Find("Armature_Humanoid").gameObject;
+			eugenicSkinnedMesh = _playerWeaponController.RightHandWeapon.transform.Find("Eugenic").GetComponent<SkinnedMeshRenderer>();
+		}
+		else
+		{
+			eugenicArmature = _playerWeaponController.LeftHandWeapon.transform.Find("Armature_Humanoid").gameObject;
+			eugenicSkinnedMesh = _playerWeaponController.LeftHandWeapon.transform.Find("Eugenic").GetComponent<SkinnedMeshRenderer>();
+		}
+
+		_transferBonesFirstPerson.TransferWeaponEugenicBones(eugenicArmature, eugenicSkinnedMesh, weaponHand);
+		_transferBonesThirdPerson.TransferWeaponEugenicBones(eugenicArmature, eugenicSkinnedMesh, weaponHand);
 	}
 
 	public IEnumerator WeaponMeleeAttackAnimation(WeaponMeleeAbstract weaponMelee)

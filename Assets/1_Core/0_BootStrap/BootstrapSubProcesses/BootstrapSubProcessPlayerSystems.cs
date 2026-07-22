@@ -20,6 +20,9 @@ public class BootstrapSubProcessPlayerSystems
 	public GameObject GameObjectPlayerFirstPersonHandRight { get; private set; }
 	public GameObject GameObjectPlayerFirstPersonHandLeft { get; private set; }
 
+	public TransferSkinnedMeshRendererArmatureBones TransferBonesFirstPerson { get; private set; }
+	public TransferSkinnedMeshRendererArmatureBones TransferBonesThirdPerson {  get; private set; }	
+
 	public AudioSource PlayerAudioVoice { get; private set; }
 	public AudioSource PlayerAudioMovement { get; private set; }
 	public AudioSource PlayerAudioWeaponRight { get; private set; }
@@ -76,7 +79,7 @@ public class BootstrapSubProcessPlayerSystems
 		_gameObjectPlayerCollider = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerCollider");
 		PlayerCameraFirstPerson = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraFirstPerson");
 		PlayerCameraPostProcessing = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraIgnorePostProcessing");
-		
+
 		PlayerBehaviour = _gameObjectPlayer.GetComponent<PlayerBehaviourController>();
 		PlayerMovementController = _gameObjectPlayer.GetComponent<PlayerMovementController>();
 		PlayerMovementStateMachineController = _gameObjectPlayer.GetComponent<PlayerMovementStateMachineController>();
@@ -106,6 +109,9 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerAudioMovement = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerAudioMovement").GetComponent<AudioSource>();
 		PlayerAudioWeaponRight = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerAudioWeaponRight").GetComponent<AudioSource>();
 		PlayerAudioWeaponLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerAudioWeaponLeft").GetComponent<AudioSource>();
+
+		TransferBonesThirdPerson = _gameObjectPlayer.GetComponent<TransferSkinnedMeshRendererArmatureBones>();
+		TransferBonesFirstPerson = _gameObjectPlayerCamera.GetComponent<TransferSkinnedMeshRendererArmatureBones>();
 
 		var canvasComponentBackgroundMenu = _canvasMenuBackground.GetComponent<Canvas>();
 		var PlayerCameraComponentPostProcessing = PlayerCameraPostProcessing.GetComponent<Camera>();

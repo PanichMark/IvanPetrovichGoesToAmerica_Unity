@@ -8103,6 +8103,7 @@ GameObject:
   - component: {fileID: 8369775448740300669}
   - component: {fileID: 4262145783915235012}
   - component: {fileID: 4825932389084348054}
+  - component: {fileID: 2319118727805248895}
   m_Layer: 9
   m_Name: Bootstrap_PlayerGameObject
   m_TagString: Untagged
@@ -8273,6 +8274,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b1769f9fcf21e84c95100d0591a7d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2319118727805248895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5524229887350033321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseArmatureRootBone: {fileID: 3849432857565603428}
+  _meshTorso: {fileID: 5229562852802862265}
+  _baseMeshTorso: 0
+  _meshesLimbs:
+  - {fileID: 2336142298286414556}
+  - {fileID: 2373328431707958961}
+  - {fileID: 8715968640929608802}
+  - {fileID: 1050574078749283882}
+  - {fileID: 220868568885879006}
 --- !u!1 &5534346720933813190
 GameObject:
   m_ObjectHideFlags: 0
@@ -11994,7 +12016,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2997721739074878472}
-  - component: {fileID: 5169669452051155223}
   m_Layer: 0
   m_Name: Player3Dmodel
   m_TagString: Untagged
@@ -12022,27 +12043,6 @@ Transform:
   - {fileID: 3674834995659740090}
   m_Father: {fileID: 8980266059544550673}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5169669452051155223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8257283809027021503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseArmatureRootBone: {fileID: 3849432857565603428}
-  _meshTorso: {fileID: 5229562852802862265}
-  _baseMeshTorso: 0
-  _meshesLimbs:
-  - {fileID: 2336142298286414556}
-  - {fileID: 2373328431707958961}
-  - {fileID: 8715968640929608802}
-  - {fileID: 1050574078749283882}
-  - {fileID: 220868568885879006}
 --- !u!1 &8299459844656534943
 GameObject:
   m_ObjectHideFlags: 0

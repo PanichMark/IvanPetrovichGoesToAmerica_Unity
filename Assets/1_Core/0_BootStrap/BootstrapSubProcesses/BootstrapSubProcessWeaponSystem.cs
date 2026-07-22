@@ -116,6 +116,8 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController,
 			WeaponController,
 			_legKickAttackController,
+			_bootstrapSubProcessPlayerSystems.TransferBonesFirstPerson,
+			_bootstrapSubProcessPlayerSystems.TransferBonesThirdPerson,
 			_gameObjectPlayer,
 			_gameObjectPlayerCamera);
 
