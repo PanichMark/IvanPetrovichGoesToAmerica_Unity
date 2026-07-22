@@ -9,7 +9,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	protected GameObject _eugenicAttackDirection;
 
 	protected PlayerResourcesManaManager _playerResourcesManaManager;
-
+	protected Coroutine _currentWeaponPlayerEugenicAttackRoutine;
 	public override void InitializeWeapon()
 	{
 		if (_isThisPlayerWeapon == true)
@@ -33,7 +33,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 			}
 			else 
 			{
-				SingleEugenicAttack();
+				StartCoroutine(SingleEugenicAttack());
 			}
 		}
 	}
@@ -84,9 +84,9 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		_currentWeaponPlayerAutoAttackCourutine = null;
 	}
 
-	protected virtual void SingleEugenicAttack()
+	protected virtual IEnumerator SingleEugenicAttack()
 	{
-
+		yield return null;
 	}
 
 	protected virtual void AutoEugenicAttack()

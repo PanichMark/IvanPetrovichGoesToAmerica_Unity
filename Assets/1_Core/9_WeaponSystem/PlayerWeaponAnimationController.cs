@@ -23,8 +23,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private LegKickAttackController _legKickAttack;
 
-	public bool IsRightMeleeAttacking { get; private set; }
-	public bool IsLeftMeleeAttacking { get; private set; }
+	public bool IsRightFullArmAttacking { get; private set; }
+	public bool IsLeftFullArmAttacking { get; private set; }
 	public bool IsReloading { get; private set; }
 	public WeaponHandsEnum CurrentPlayerReloadingHelpingHand {  get; private set; }
 
@@ -267,77 +267,98 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_transferBonesThirdPerson.TransferWeaponEugenicBones(eugenicArmatureThirdPerson, eugenicSkinnedMeshThirdPerson, weaponHand);
 	}
 
-	public IEnumerator WeaponMeleeAttackAnimation(WeaponMeleeAbstract weaponMelee)
+	public IEnumerator WeaponFullArmAttackAnimation(WeaponAbstract weaponFullArm)
 	{
-		if (weaponMelee.WeaponHandType == WeaponHandsEnum.Right)
+		if (weaponFullArm.WeaponHandType == WeaponHandsEnum.Right)
 		{
-			IsRightMeleeAttacking = true;
+			IsRightFullArmAttacking = true;
 		}
 		else
 		{
-			IsLeftMeleeAttacking = true;
+			IsLeftFullArmAttacking = true;
 		}
 
-		TurnOnMeleeAttackLayer(weaponMelee.WeaponHandType);
+		TurnOnFullArmLayer(weaponFullArm.WeaponHandType);
 
-		if (weaponMelee.WeaponMeleeType == WeaponsMeleeTypes.Baton)
+		if (weaponFullArm is WeaponMeleeAbstract weaponMeleeFullArm)
 		{
-			if (weaponMelee.WeaponHandType == WeaponHandsEnum.Right)
+			if (weaponMeleeFullArm.WeaponMeleeType == WeaponsMeleeTypes.Baton)
 			{
-				Debug.Log("MELLE ATTACK RIGHT ANIMATION");
-				_playerAnimator1stPerson.Play($"{weaponMelee.WeaponType}_Baton_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer1stWeaponRightArm, 0f);
-				_playerAnimator3rdPerson.Play($"{weaponMelee.WeaponType}_Baton_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
+				if (weaponFullArm.WeaponHandType == WeaponHandsEnum.Right)
+				{
+					Debug.Log("MELLE ATTACK RIGHT ANIMATION");
+					_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_Baton_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponRightArm, 0f);
+					_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_Baton_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
+				}
+				else
+				{
+					Debug.Log("MELLE ATTACK LEFT ANIMATION");
+					_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_Baton_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
+					_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_Baton_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
+				}
 			}
-			else
+			if (weaponMeleeFullArm.WeaponMeleeType == WeaponsMeleeTypes.Knife)
 			{
-				Debug.Log("MELLE ATTACK LEFT ANIMATION");
-				_playerAnimator1stPerson.Play($"{weaponMelee.WeaponType}_Baton_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
-				_playerAnimator3rdPerson.Play($"{weaponMelee.WeaponType}_Baton_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
+				if (weaponFullArm.WeaponHandType == WeaponHandsEnum.Right)
+				{
+					Debug.Log("MELLE ATTACK RIGHT ANIMATION");
+					_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_Knife_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponRightArm, 0f);
+					_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_Knife_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
+				}
+				else
+				{
+					Debug.Log("MELLE ATTACK LEFT ANIMATION");
+					_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_Knife_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
+					_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_Knife_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
+				}
+			}
+			if (weaponMeleeFullArm.WeaponMeleeType == WeaponsMeleeTypes.CircularSaw)
+			{
+				if (weaponFullArm.WeaponHandType == WeaponHandsEnum.Right)
+				{
+					Debug.Log("MELLE ATTACK RIGHT ANIMATION");
+					_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_CircularSaw_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponRightArm, 0f);
+					_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_CircularSaw_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
+				}
+				else
+				{
+					Debug.Log("MELLE ATTACK LEFT ANIMATION");
+					_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_CircularSaw_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
+					_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_CircularSaw_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
+				}
 			}
 		}
-		if (weaponMelee.WeaponMeleeType == WeaponsMeleeTypes.Knife)
+		if (weaponFullArm is WeaponEugenicAbstract weaponEugenicFullArm)
 		{
-			if (weaponMelee.WeaponHandType == WeaponHandsEnum.Right)
+			if (weaponEugenicFullArm.WeaponName == WeaponNames.GenieBreath)
 			{
-				Debug.Log("MELLE ATTACK RIGHT ANIMATION");
-				_playerAnimator1stPerson.Play($"{weaponMelee.WeaponType}_Knife_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer1stWeaponRightArm, 0f);
-				_playerAnimator3rdPerson.Play($"{weaponMelee.WeaponType}_Knife_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
-			}
-			else
-			{
-				Debug.Log("MELLE ATTACK LEFT ANIMATION");
-				_playerAnimator1stPerson.Play($"{weaponMelee.WeaponType}_Knife_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
-				_playerAnimator3rdPerson.Play($"{weaponMelee.WeaponType}_Knife_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
-			}
-		}
-		if (weaponMelee.WeaponMeleeType == WeaponsMeleeTypes.CircularSaw)
-		{
-			if (weaponMelee.WeaponHandType == WeaponHandsEnum.Right)
-			{
-				Debug.Log("MELLE ATTACK RIGHT ANIMATION");
-				_playerAnimator1stPerson.Play($"{weaponMelee.WeaponType}_CircularSaw_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer1stWeaponRightArm, 0f);
-				_playerAnimator3rdPerson.Play($"{weaponMelee.WeaponType}_CircularSaw_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
-			}
-			else
-			{
-				Debug.Log("MELLE ATTACK LEFT ANIMATION");
-				_playerAnimator1stPerson.Play($"{weaponMelee.WeaponType}_CircularSaw_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
-				_playerAnimator3rdPerson.Play($"{weaponMelee.WeaponType}_CircularSaw_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponMelee.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
+				if (weaponFullArm.WeaponHandType == WeaponHandsEnum.Right)
+				{
+					Debug.Log("MELLE ATTACK RIGHT ANIMATION");
+					_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_GenieBreath_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponRightArm, 0f);
+					_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_GenieBreath_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
+				}
+				else
+				{
+					Debug.Log("MELLE ATTACK LEFT ANIMATION");
+					_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_GenieBreath_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
+					_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_GenieBreath_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
+				}
 			}
 		}
 
-		yield return new WaitForSeconds(weaponMelee.WeaponAttackSpeedRate); // return until animation plays TODO;
+		yield return new WaitForSeconds(weaponFullArm.WeaponAttackSpeedRate); // return until animation plays TODO;
 
-		TurnOffMeleeAttackLayer(weaponMelee.WeaponHandType);
+		TurnOffFullArmLayer(weaponFullArm.WeaponHandType);
 		//Debug.Log(weaponMelee.WeaponHandType);
 
-		if (weaponMelee.WeaponHandType == WeaponHandsEnum.Right)
+		if (weaponFullArm.WeaponHandType == WeaponHandsEnum.Right)
 		{
-			IsRightMeleeAttacking = false;
+			IsRightFullArmAttacking = false;
 		}
 		else
 		{
-			IsLeftMeleeAttacking = false;
+			IsLeftFullArmAttacking = false;
 		}
 
 		Debug.Log("Courutine MeleeAttack ended");
@@ -345,7 +366,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		yield return null;
 	}
 
-	private void TurnOnMeleeAttackLayer(WeaponHandsEnum handType)
+	private void TurnOnFullArmLayer(WeaponHandsEnum handType)
 	{
 		Debug.Log($"turn ON melee layer {handType}");
 
@@ -371,13 +392,13 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 	}
 
-	private void TurnOffMeleeAttackLayer(WeaponHandsEnum handType)
+	private void TurnOffFullArmLayer(WeaponHandsEnum handType)
 	{
 		Debug.Log($"turn OFF melee layer {handType}");
 
 		if (handType == WeaponHandsEnum.Right)
 		{
-			if (IsRightMeleeAttacking == true)
+			if (IsRightFullArmAttacking == true)
 			{
 				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, 1);
 				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, 1);
@@ -392,7 +413,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 		else
 		{
-			if (IsLeftMeleeAttacking == true)
+			if (IsLeftFullArmAttacking == true)
 			{
 				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 1);
 				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 1);
@@ -692,24 +713,24 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	{
 		if (handType == WeaponHandsEnum.Right)
 		{
-			if (IsRightMeleeAttacking)
+			if (IsRightFullArmAttacking)
 			{
 				Debug.Log("Melee Right attack Canceled");
 
-				IsRightMeleeAttacking = false;
+				IsRightFullArmAttacking = false;
 
-				TurnOffMeleeAttackLayer(handType);
+				TurnOffFullArmLayer(handType);
 			}
 		}
 		else
 		{
-			if (IsLeftMeleeAttacking)
+			if (IsLeftFullArmAttacking)
 			{
 				Debug.Log("Melee Left attack Canceled");
 
-				IsLeftMeleeAttacking = false;
+				IsLeftFullArmAttacking = false;
 
-				TurnOffMeleeAttackLayer(handType);
+				TurnOffFullArmLayer(handType);
 			}
 		}
 

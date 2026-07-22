@@ -83,7 +83,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	protected virtual IEnumerator MeleeWeaponAttack()
 	{
-		_currentWeaponPlayerMeleeAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponMeleeAttackAnimation(this));
+		_currentWeaponPlayerMeleeAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this));
 
 		Vector3 startPoint = _attackPoint.transform.position + _attackPoint.transform.forward * _forwardOffset;
 		Vector3 endPoint = startPoint + _attackPoint.transform.up * _capsuleHeight;
