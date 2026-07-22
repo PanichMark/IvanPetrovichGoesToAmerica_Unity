@@ -16,7 +16,7 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	[SerializeField] protected AudioClip _weaponSoundInsertShell;
 	private GameObject _shotgunBarrel1stPerson;
 	private GameObject _shotgunBarrel3rdPerson;
-
+	protected override float _weaponRange => 15f;
 	private GameObject _shellRight1stPerson;
 	private GameObject _shellLeft1stPerson;
 	private GameObject _shellRight3rdPerson;

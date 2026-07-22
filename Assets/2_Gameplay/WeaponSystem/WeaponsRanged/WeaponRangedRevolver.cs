@@ -34,6 +34,8 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 
 	public int CartgridgeSlidingStep {  get; set; }
 
+	protected override float _weaponRange => 50f;
+
 	protected override void InitializeWeaponRanged()
 	{
 		_revolver1stPersonGunMesh = FirstPersonWeaponModelInstance.transform.Find("Gun").GetComponent<SkinnedMeshRenderer>();
@@ -180,7 +182,7 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 		StartCoroutine(RevolverShootMechanism());
 
 		// --- ГЛАВНЫЙ RAYCAST: собираем ВСЕ объекты на пути ---
-		RaycastHit[] hits = Physics.RaycastAll(_shootPoint.transform.position, _shootPoint.transform.forward, 100f);
+		RaycastHit[] hits = Physics.RaycastAll(_shootPoint.transform.position, _shootPoint.transform.forward, _weaponRange);
 		System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance)); // Сортируем от лица
 
 		if (hits.Length > 0)
@@ -201,91 +203,6 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 
 		yield return _currentWeaponPlayerShootRoutine;
 		_currentWeaponPlayerShootRoutine = null;
-	}
-
-	private void ProcessDamage(RaycastHit[] hits, float weaponDamage)
-	{
-		int layerNPC = LayerMask.NameToLayer("NPC");
-		IDamageable damageable = null;
-
-		foreach (var hit in hits)
-		{
-			// Проверяем маску ТОЛЬКО для хитбоксов, которые лежат за корнем
-			bool isInDamageMask = ((1 << hit.transform.gameObject.layer) & _playerWeaponController.LayersToDamage) != 0;
-
-			if (isInDamageMask)
-			{
-				Transform targetTransform = hit.transform;
-
-				while (targetTransform != null)
-				{
-					damageable = targetTransform.GetComponent<IDamageable>();
-					if (damageable != null)
-					{
-						Debug.Log($"Попадание в объект: {hit.transform.name}, Слой: {hit.transform.gameObject.layer}");
-						damageable.TakeDamage(weaponDamage);
-						return; // Нашли и нанесли урон - выходим из метода
-					}
-
-					// Останавливаемся, если дошли до корня модели персонажа-NPC
-					if (targetTransform.gameObject.layer == layerNPC)
-					{
-						break;
-					}
-					targetTransform = targetTransform.parent;
-				}
-			}
-		}
-	}
-
-	private void SpawnBulletHoleDecal(RaycastHit[] allHits)
-	{
-		int layerOrganismBody = LayerMask.NameToLayer("HitboxBody_Organism");
-		int layerOrganismHead = LayerMask.NameToLayer("HitboxHead_Organism");
-		int layerNPC = LayerMask.NameToLayer("NPC");
-
-		if (allHits.Length == 0) return;
-
-		RaycastHit targetHit = new RaycastHit();
-		bool foundTarget = false;
-
-		// Проходим по ВСЕМ объектам, в которые попала пуля
-		foreach (var hit in allHits)
-		{
-			// Ищем ПЕРВЫЙ объект, чей слой входит в маску повреждений
-			if (((1 << hit.transform.gameObject.layer) & _playerWeaponController.LayersToDamage) != 0)
-			{
-				targetHit = hit;
-				foundTarget = true;
-				break; // Нашли нужный хитбокс - выходим
-			}
-		}
-
-		// Если ни один слой не подошел под маску LayersToDamage (попали просто в стену или пол), 
-		// то берем самый первый физический объект
-		if (!foundTarget)
-		{
-			targetHit = allHits[0];
-		}
-
-		// Проверка слоев UI/Эфиров перед спавном
-		if (targetHit.transform.gameObject.layer != 9 && targetHit.transform.gameObject.layer != 11 && targetHit.transform.gameObject.layer != 16)
-		{
-			bool isBloodTarget = targetHit.transform.gameObject.layer == layerOrganismBody || targetHit.transform.gameObject.layer == layerOrganismHead;
-			Quaternion rot = Quaternion.FromToRotation(Vector3.up, targetHit.normal);
-			_bulletHoleManager.SpawnDecal(targetHit.point, rot, isBloodTarget, targetHit.transform);
-		}
-	}
-
-	// Метод SpawnMuzzleVFX остается без изменений
-	private void SpawnMuzzleVFX()
-	{
-		_vfxInstance = Instantiate(_VFXshottEffect, _VFXspawnPoint.position, _VFXspawnPoint.rotation, _VFXspawnPoint.transform);
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
-		{
-			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
-		}
-		Destroy(_vfxInstance, 0.05f);
 	}
 
 	public override IEnumerator ReloadWeaponPlayer(bool isSecondAnimation)
