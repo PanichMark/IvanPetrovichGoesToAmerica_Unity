@@ -15,7 +15,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 	[SerializeField] protected InteractionObjectElectricalPanel _electronicElectricalPanel;
 	[SerializeField] private float _maxDurability = 100f;
 	[SerializeField] private float _damageThreshold = 50f;
-	[SerializeField] private bool _isDestructable = true;
+	[SerializeField] private bool _isDestructable;
 	[SerializeField] protected bool _isLockedForever;
 
 	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";

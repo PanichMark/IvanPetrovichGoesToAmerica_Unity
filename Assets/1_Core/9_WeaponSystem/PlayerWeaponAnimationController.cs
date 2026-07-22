@@ -241,22 +241,30 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private void TransferWeaponEugenicBones(WeaponHandsEnum weaponHand)
 	{
-		GameObject eugenicArmature = null;
-		SkinnedMeshRenderer eugenicSkinnedMesh = null;
+		GameObject eugenicArmatureFirstPerson = null;
+		SkinnedMeshRenderer eugenicSkinnedMeshFirstPerson = null;
+		GameObject eugenicArmatureThirdPerson = null;
+		SkinnedMeshRenderer eugenicSkinnedMeshThirdPerson = null;
 
 		if (weaponHand == WeaponHandsEnum.Right)
 		{
-			eugenicArmature = _playerWeaponController.RightHandWeapon.transform.Find("Armature_Humanoid").gameObject;
-			eugenicSkinnedMesh = _playerWeaponController.RightHandWeapon.transform.Find("Eugenic").GetComponent<SkinnedMeshRenderer>();
+			eugenicArmatureFirstPerson = _playerWeaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Armature_Humanoid").gameObject;
+			eugenicSkinnedMeshFirstPerson = _playerWeaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Eugenic").GetComponent<SkinnedMeshRenderer>();
+
+			eugenicArmatureThirdPerson = _playerWeaponController.RightHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Armature_Humanoid").gameObject;
+			eugenicSkinnedMeshThirdPerson = _playerWeaponController.RightHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Eugenic").GetComponent<SkinnedMeshRenderer>();
 		}
 		else
 		{
-			eugenicArmature = _playerWeaponController.LeftHandWeapon.transform.Find("Armature_Humanoid").gameObject;
-			eugenicSkinnedMesh = _playerWeaponController.LeftHandWeapon.transform.Find("Eugenic").GetComponent<SkinnedMeshRenderer>();
+			eugenicArmatureFirstPerson = _playerWeaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Armature_Humanoid").gameObject;
+			eugenicSkinnedMeshFirstPerson = _playerWeaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Eugenic").GetComponent<SkinnedMeshRenderer>();
+
+			eugenicArmatureThirdPerson = _playerWeaponController.LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Armature_Humanoid").gameObject;
+			eugenicSkinnedMeshThirdPerson = _playerWeaponController.LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Eugenic").GetComponent<SkinnedMeshRenderer>();
 		}
 
-		_transferBonesFirstPerson.TransferWeaponEugenicBones(eugenicArmature, eugenicSkinnedMesh, weaponHand);
-		_transferBonesThirdPerson.TransferWeaponEugenicBones(eugenicArmature, eugenicSkinnedMesh, weaponHand);
+		_transferBonesFirstPerson.TransferWeaponEugenicBones(eugenicArmatureFirstPerson, eugenicSkinnedMeshFirstPerson, weaponHand);
+		_transferBonesThirdPerson.TransferWeaponEugenicBones(eugenicArmatureThirdPerson, eugenicSkinnedMeshThirdPerson, weaponHand);
 	}
 
 	public IEnumerator WeaponMeleeAttackAnimation(WeaponMeleeAbstract weaponMelee)

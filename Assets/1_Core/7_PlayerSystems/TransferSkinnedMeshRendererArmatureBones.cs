@@ -130,9 +130,29 @@ public class TransferSkinnedMeshRendererArmatureBones : MonoBehaviour
 	{
 		var _eugenicMeshBones = new Transform[eugenicSkinnedMesh.bones.Length];
 
-		for (int i = 0; i < eugenicSkinnedMesh.bones.Length; i++)
+		if (weaponHand == WeaponHandsEnum.Right)
 		{
-			_eugenicMeshBones[i] = _baseArmatureBoneNames[eugenicSkinnedMesh.bones[i].name];
+			for (int i = 0; i < eugenicSkinnedMesh.bones.Length; i++)
+			{
+				_eugenicMeshBones[i] = _baseArmatureBoneNames[eugenicSkinnedMesh.bones[i].name];
+			}
+		}
+		else 
+		{
+			for (int i = 0; i < eugenicSkinnedMesh.bones.Length; i++)
+			{
+				string name = eugenicSkinnedMesh.bones[i].name;
+				if (name.EndsWith(".R"))
+				{
+					name = name.Substring(0, name.Length - 2) + ".L";
+				}
+				else if (name.EndsWith(".L"))
+				{
+					name = name.Substring(0, name.Length - 2) + ".R";
+				}
+
+				_eugenicMeshBones[i] = _baseArmatureBoneNames[name];
+			}
 		}
 
 		eugenicSkinnedMesh.bones = _eugenicMeshBones;

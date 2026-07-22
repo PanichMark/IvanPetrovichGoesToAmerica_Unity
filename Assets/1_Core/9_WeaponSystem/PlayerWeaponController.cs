@@ -389,7 +389,10 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			OnWeaponChanged?.Invoke(WeaponHandsEnum.Left);
 
 			weaponComponent.InstantiateWeaponPlayer(this, WeaponHandsEnum.Left);
-			weaponComponent.MirrorWeaponPlayerModel();
+			if (weaponComponent is not WeaponEugenicAbstract)
+			{
+				weaponComponent.MirrorWeaponPlayerModel();
+			}
 
 			LeftHandWeaponComponent = weaponComponent;
 
