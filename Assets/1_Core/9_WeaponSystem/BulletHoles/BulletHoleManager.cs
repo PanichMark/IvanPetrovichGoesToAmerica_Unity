@@ -4,14 +4,13 @@ using UnityEngine;
 public class BulletHoleManager : MonoBehaviour
 {
 	private Sprite _decalSpriteDefault;
-	private Sprite _decalSpriteDamageable;
+	private Sprite _decalSpriteBlood;
 	private bool _isBloodVisible;
 	private int _maxInstances = 50;
 	private List<SpriteRenderer> _decalList = new List<SpriteRenderer>();
 	private Transform _decalParent;
 	private int _currentIndex = 0;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
-
 	private GameScenesManager _gameSceneManager;
 
 	public void Initialize(GameScenesManager gameSceneManager, PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController)
@@ -20,9 +19,9 @@ public class BulletHoleManager : MonoBehaviour
 		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
 
 		_decalSpriteDefault = Resources.Load<Sprite>("Sprites/Sprites_BulletHoles/Sprite_BulletHole_Solid");
-		_decalSpriteDamageable = Resources.Load<Sprite>("Sprites/Sprites_BulletHoles/Sprite_BulletHole_Blood");
+		_decalSpriteBlood = Resources.Load<Sprite>("Sprites/Sprites_BulletHoles/Sprite_BulletHole_Blood");
 
-		if (_decalSpriteDefault == null || _decalSpriteDamageable == null)
+		if (_decalSpriteDefault == null || _decalSpriteBlood == null)
 		{
 			Debug.LogError("[BulletHoleManager] Один из спрайтов не найден! Проверьте пути в Assets/Resources.");
 			return;
@@ -68,7 +67,7 @@ public class BulletHoleManager : MonoBehaviour
 		_currentIndex = 0;
 	}
 
-	public void SpawnDecal(Vector3 position, Quaternion rotation, bool isDamageableTarget, Transform parentTransform)
+	public void SpawnDecal(Vector3 position, Quaternion rotation, bool isBloodTarget, Transform parentTransform)
 	{
 		if (_currentIndex < _maxInstances && _decalList[_currentIndex] != null)
 		{
@@ -78,9 +77,9 @@ public class BulletHoleManager : MonoBehaviour
 			sr.transform.rotation = rotation * Quaternion.Euler(-90f, 0, 0);
 			sr.transform.Translate(0, 0, 0.01f, Space.Self);
 
-			if (isDamageableTarget)
+			if (isBloodTarget)
 			{
-				sr.sprite = _decalSpriteDamageable;
+				sr.sprite = _decalSpriteBlood;
 				sr.enabled = _isBloodVisible;
 			}
 			else
@@ -104,7 +103,7 @@ public class BulletHoleManager : MonoBehaviour
 		_isBloodVisible = false;
 		foreach (var sr in _decalList)
 		{
-			if (sr.gameObject.activeSelf && sr.sprite == _decalSpriteDamageable)
+			if (sr.gameObject.activeSelf && sr.sprite == _decalSpriteBlood)
 			{
 				sr.enabled = false;
 			}
@@ -116,7 +115,7 @@ public class BulletHoleManager : MonoBehaviour
 		_isBloodVisible = true;
 		foreach (var sr in _decalList)
 		{
-			if (sr.gameObject.activeSelf && sr.sprite == _decalSpriteDamageable)
+			if (sr.gameObject.activeSelf && sr.sprite == _decalSpriteBlood)
 			{
 				sr.enabled = true;
 			}

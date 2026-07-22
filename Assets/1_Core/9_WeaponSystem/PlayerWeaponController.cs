@@ -22,7 +22,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	private bool _wasRightButtonPressedLastFrame;
 	private bool _wasLeftButtonPressedLastFrame;
-
+	public int LayersToDamage => _layersToDamage;
+	private int _layersToDamage;
 	public delegate void WeaponShootHandler(WeaponHandsEnum weaponHandType);
 	public event WeaponShootHandler OnWeaponShoot;
 
@@ -61,6 +62,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		_ammoManager = ammoManager;
 		_interactionController = interactionController;
 		_HUDhealthAndManaController = HUDhealthAndManaController;
+
+		_layersToDamage = LayerMask.GetMask("HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
 
 		IsAbleToUseRightWeapon = true;
 		IsAbleToUseLeftWeapon = true;
@@ -373,7 +376,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			LeftHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke(WeaponHandsEnum.Left);
 
-			weaponComponent.InstantiateWeaponPlayer(WeaponHandsEnum.Left);
+			weaponComponent.InstantiateWeaponPlayer(this, WeaponHandsEnum.Left);
 			weaponComponent.MirrorWeaponPlayerModel();
 
 			LeftHandWeaponComponent = weaponComponent;
@@ -396,7 +399,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			RightHandWeapon = weaponInstance;
 			OnWeaponChanged?.Invoke(WeaponHandsEnum.Right);
 
-			weaponComponent.InstantiateWeaponPlayer(WeaponHandsEnum.Right);
+			weaponComponent.InstantiateWeaponPlayer(this, WeaponHandsEnum.Right);
 
 			RightHandWeaponComponent = weaponComponent;
 

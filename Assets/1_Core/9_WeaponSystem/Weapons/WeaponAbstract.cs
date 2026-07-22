@@ -18,6 +18,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	protected Coroutine _currentWeaponPlayerAutoAttackCourutine;
 	protected bool _isWeaponInitialized;
 	protected bool _isThisPlayerWeapon;
+	protected PlayerWeaponController _playerWeaponController;
 	protected PlayerWeaponAnimationController _playerWeaponAnimationController;
 	protected AudioSource _weaponAudioSource;
 
@@ -44,8 +45,10 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract void StopAutoAttacking();
 	public abstract IEnumerator AutoAttackWeaponPlayerCourutine();
 
-	public void InstantiateWeaponPlayer(WeaponHandsEnum handType)
+	public void InstantiateWeaponPlayer(PlayerWeaponController playerWeaponController, WeaponHandsEnum handType)
 	{
+		_playerWeaponController = playerWeaponController;
+
 		_isThisPlayerWeapon = true;
 		WeaponHandType = handType;
 

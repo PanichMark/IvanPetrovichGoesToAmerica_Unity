@@ -166,9 +166,33 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		Destroy(_vfxInstance, 0.05f);
 
-		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))
+		bool didHit = Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f, _playerWeaponController.LayersToDamage);
+
+		if (didHit)
 		{
-			damageable = hitInfo.transform.GetComponent<IDamageable>();
+			Transform currentTransform = hitInfo.transform;
+
+			while (currentTransform != null && currentTransform.gameObject.layer != LayerMask.NameToLayer("NPC"))
+			{
+				currentTransform = currentTransform.parent;
+			}
+
+			if (currentTransform != null)
+			{
+				damageable = currentTransform.GetComponent<IDamageable>();
+			}
+
+			// Логика декалей теперь ВНУТРИ блока попадания
+			int layerOrganismBody = LayerMask.NameToLayer("HitboxBody_Organism");
+			int layerOrganismHead = LayerMask.NameToLayer("HitboxHead_Organism");
+			bool isDamageableTarget = hitInfo.transform.gameObject.layer == layerOrganismBody || hitInfo.transform.gameObject.layer == layerOrganismHead;
+
+			if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 9 && hitInfo.transform.gameObject.layer != 11 && hitInfo.transform.gameObject.layer != 16)
+			{
+				Quaternion rot = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
+				_bulletHoleManager.SpawnDecal(hitInfo.point, rot, isDamageableTarget, hitInfo.transform);
+			}
+
 			if (damageable != null && hitInfo.transform.gameObject.layer != 9)
 			{
 				Debug.Log($"Попадание в объект: {hitInfo.transform.name}, Слой: {hitInfo.transform.gameObject.layer}");
@@ -176,13 +200,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			}
 		}
 
-		if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 9 && hitInfo.transform.gameObject.layer != 11)
-		{
-			Quaternion rot = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
-
-			_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
-		}
-		
 		PlayerMagazineAmmoCurrent--;
 
 		Debug.Log($"Shoot {WeaponName}");

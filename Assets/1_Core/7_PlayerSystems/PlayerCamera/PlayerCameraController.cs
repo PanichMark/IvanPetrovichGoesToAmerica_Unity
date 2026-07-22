@@ -71,7 +71,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		PlayerCameraDistanceZ = 3.25f;
 		_mainCamera = _playerCamera.GetComponent<Camera>();
 
-		_layersForCameraColliderToIgnore = ~LayerMask.GetMask("InvisibleWall", "HitboxBody", "HitboxHead");
+		_layersForCameraColliderToIgnore = ~LayerMask.GetMask("InvisibleWall", "HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
 
 		_pauseSubMenuSettingsSectionGeneralController.OnCameraFOVchanged += SetCameraFOV;
 		_pauseSubMenuSettingsSectionGeneralController.OnSaveCameraSettingsData += SendCameraFOV;

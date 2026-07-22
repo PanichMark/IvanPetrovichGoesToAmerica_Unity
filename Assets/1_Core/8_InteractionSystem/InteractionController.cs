@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using Codice.Client.BaseCommands.CheckIn.Progress;
 
 public class InteractionController : MonoBehaviour
 {
@@ -38,7 +37,7 @@ public class InteractionController : MonoBehaviour
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
 	private Coroutine _showAdditionalHintCoroutine;
-
+	private int _layersInteractionToIgnore;
 	private PlayerBehaviourController _playerBehaviour;
 
 	private IInteractable _lookedAtIInteractable;
@@ -129,6 +128,8 @@ public class InteractionController : MonoBehaviour
 		_menuManager.OnOpenCutsceneMenu += ChangeInteractionRange;
 		_menuManager.OnCloseCutsceneMenu += ChangeInteractionRange;
 		_playerCameraStateMachineController.OnCameraStateChanged += ChangeInteractionRange;
+
+		_layersInteractionToIgnore = LayerMask.GetMask("HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
 
 		Debug.Log("InteractionController Initialized");
 	}
@@ -287,7 +288,12 @@ public class InteractionController : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (_isInteractionObjectLookedAt = Physics.Raycast(_playerCameraController.transform.position, _playerCameraController.transform.forward, out _hitObject, _interactionRange))
+		if (_isInteractionObjectLookedAt = _isInteractionObjectLookedAt = Physics.Raycast(
+		_playerCameraController.transform.position,
+		_playerCameraController.transform.forward,
+		out _hitObject,
+		_interactionRange,
+		~_layersInteractionToIgnore))
 		{
 
 		}
@@ -504,13 +510,19 @@ public class InteractionController : MonoBehaviour
 
 	public void ChangeLayerRecursively(GameObject obj, int layerIndex)
 	{
-		//Debug.Log("CALL!!!");
-		obj.layer = layerIndex;
+		// Проверяем ТОЛЬКО текущий объект на попадание в списки исключений
+		bool isIgnoredByMask = ((1 << obj.layer) & _layersInteractionToIgnore) != 0;
+		bool isNpc = LayerMask.LayerToName(obj.layer) == "NPC";
+
+		if (!isIgnoredByMask && !isNpc)
+		{
+			obj.layer = layerIndex;
+		}
+
+		// Рекурсия по детям работает всегда, независимо от того, был ли покрашен родитель
 		foreach (Transform child in obj.transform)
 		{
 			ChangeLayerRecursively(child.gameObject, layerIndex);
-			//Debug.Log(obj);
 		}
-			//Debug.Log(layerIndex);
 	}
 }
