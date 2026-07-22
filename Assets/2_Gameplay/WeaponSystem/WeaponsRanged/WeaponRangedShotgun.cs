@@ -7,7 +7,7 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	public override WeaponNames WeaponName => WeaponNames.Shotgun;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo12gauge;
-	public override float WeaponDamage => 100f;
+	public override float WeaponDamage => 20f;
 	protected override float _waitForAmmoRefill => 3.125f;
 	public override bool IsWeaponAuto => false;
 	public override bool IsReloadingAnimationSingle => true;
@@ -21,6 +21,10 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	private GameObject _shellLeft1stPerson;
 	private GameObject _shellRight3rdPerson;
 	private GameObject _shellLeft3rdPerson;
+
+	private int _pelletCount = 10;
+	private float _spreadAngle = 7f;
+
 
 	protected override void InitializeWeaponRanged()
 	{
@@ -37,42 +41,22 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 
 	protected override IEnumerator OnSpecificShootMechanics()
 	{
-		int pelletCount = 10;
-		float spreadAngle = 7f;
-		float range = 100f;
-
-		for (int i = 0; i < pelletCount; i++)
+		for (int i = 0; i < _pelletCount; i++)
 		{
 			Quaternion randomRotation = Random.rotationUniform;
-			Quaternion spreadRotation = Quaternion.Slerp(Quaternion.identity, randomRotation, spreadAngle / 90f);
+			Quaternion spreadRotation = Quaternion.Slerp(Quaternion.identity, randomRotation, _spreadAngle / 90f);
 			Vector3 finalDirection = spreadRotation * _shootPoint.transform.forward;
 
-			Color rayColor = Physics.Raycast(_shootPoint.transform.position, finalDirection, out RaycastHit hitInfo, range) ? Color.red : Color.yellow;
-			Debug.DrawRay(_shootPoint.transform.position, finalDirection * range, rayColor, 2f);
+			RaycastHit[] hits = Physics.RaycastAll(_shootPoint.transform.position, finalDirection, _weaponRange);
+			System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
-			if (hitInfo.collider != null)
+			if (hits.Length > 0)
 			{
-				IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
-				if (damageable != null && hitInfo.transform.gameObject.layer != 9)
-				{
-					damageable.TakeDamage(WeaponDamage / pelletCount);
-				}
-
-				IBreakable breakable = hitInfo.transform.GetComponent<IBreakable>();
-				if (breakable != null)
-				{
-					breakable.TakeDamage(WeaponDamage / pelletCount);
-				}
-
-				if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 9 && hitInfo.transform.gameObject.layer != 11)
-				{
-					Quaternion rot = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
-					_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
-				}
+				SpawnBulletHoleDecal(hits);
+				ProcessDamage(hits, WeaponDamage, 10);
 			}
 		}
 
-		ApplyWeaponRecoil();
 		yield return null;
 	}
 

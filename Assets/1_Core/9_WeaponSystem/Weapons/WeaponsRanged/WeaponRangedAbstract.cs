@@ -156,19 +156,21 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
 
-		RaycastHit[] hits = Physics.RaycastAll(_shootPoint.transform.position, _shootPoint.transform.forward, _weaponRange);
-		System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+		if (WeaponName != WeaponNames.Shotgun)
+		{
+			RaycastHit[] hits = Physics.RaycastAll(_shootPoint.transform.position, _shootPoint.transform.forward, _weaponRange);
+			System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+			if (hits.Length > 0)
+			{
+				SpawnBulletHoleDecal(hits);
+				ProcessDamage(hits, weaponDamage, 3);
+			}
+		}
 
 		SpawnMuzzleVFX();
-
 		PlayerMagazineAmmoCurrent--;
 		StartCoroutine(OnSpecificShootMechanics());
-
-		if (hits.Length > 0)
-		{
-			SpawnBulletHoleDecal(hits);
-			ProcessDamage(hits, weaponDamage);
-		}
 
 		ApplyWeaponRecoil();
 		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
@@ -178,7 +180,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_currentWeaponPlayerShootRoutine = null;
 	}
 
-	protected virtual void ProcessDamage(RaycastHit[] hits, float weaponDamage)
+	protected void ProcessDamage(RaycastHit[] hits, float weaponDamage, float headshotMultiplier)
 	{
 		IDamageable damageable = null;
 
@@ -197,7 +199,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 						if (((1 << hit.transform.gameObject.layer) & (_playerWeaponController.LayersHeads)) != 0)
 						{
-							finalDamage *= 3f;
+							finalDamage *= headshotMultiplier;
 						}
 
 						Debug.Log($"{WeaponName} Damaged {targetTransform.name} by {finalDamage}");
@@ -217,7 +219,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 	}
 
-	protected virtual void SpawnBulletHoleDecal(RaycastHit[] allHits)
+	protected void SpawnBulletHoleDecal(RaycastHit[] allHits)
 	{
 		if (allHits.Length == 0)
 		{
@@ -251,7 +253,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 	}
 
-	protected virtual void SpawnMuzzleVFX()
+	protected void SpawnMuzzleVFX()
 	{
 		_vfxInstance = Instantiate(_VFXshottEffect, _VFXspawnPoint.position, _VFXspawnPoint.rotation, _VFXspawnPoint.transform);
 
