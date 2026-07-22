@@ -8458,9 +8458,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 1108788975380253757}
-  bakeTorsoMesh: 0
-  meshes:
+  _baseArmatureRootBone: {fileID: 1108788975380253757}
+  _meshTorso: {fileID: 0}
+  _baseMeshTorso: 0
+  _meshesLimbs:
   - {fileID: 6780012779541865954}
   - {fileID: 6960034031799164454}
   - {fileID: 3212884675096539060}

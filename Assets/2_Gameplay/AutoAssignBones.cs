@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class AssignMeshes : MonoBehaviour
 {
-	[SerializeField] private Transform baseArmature;
-	[SerializeField] private bool bakeTorsoMesh = false;
-	[SerializeField] private List<GameObject> meshes;
-	
+	[SerializeField] private Transform _baseArmatureRootBone;
+	[SerializeField] private GameObject _meshTorso;
+	[SerializeField] private bool _baseMeshTorso = false;
+	[SerializeField] private List<GameObject> _meshesLimbs;
+
+	private SkinnedMeshRenderer _torsoSkinnedMeshRenderer;
+	private Transform[] _torsoMeshBones;
 
 	private void Start()
 	{
-		var baseArmatureBonesTransform = baseArmature.GetComponentsInChildren<Transform>();
+		var baseArmatureBonesTransform = _baseArmatureRootBone.GetComponentsInChildren<Transform>();
 
 		var baseArmatureBoneNames = new Dictionary<string, Transform>();
 		foreach (var bone in baseArmatureBonesTransform)
@@ -20,31 +22,28 @@ public class AssignMeshes : MonoBehaviour
 			baseArmatureBoneNames[bone.name] = bone;
 		}
 
-		for (int index = 0; index < meshes.Count; index++)
+		if (_meshTorso != null)
 		{
-			var skinnedMeshRenderer = meshes[index].GetComponent<SkinnedMeshRenderer>();
+			_torsoSkinnedMeshRenderer = _meshTorso.GetComponent<SkinnedMeshRenderer>();
+			_torsoMeshBones = new Transform[_torsoSkinnedMeshRenderer.bones.Length];
 
-			var modularMeshBones = new Transform[skinnedMeshRenderer.bones.Length];
-
-			if (index == 0 && bakeTorsoMesh == true)
+			if (_baseMeshTorso)
 			{
-				if (skinnedMeshRenderer == null || skinnedMeshRenderer.sharedMesh == null) return;
-
-				var originalMesh = skinnedMeshRenderer.sharedMesh;
-				Debug.Log($"[AssignMeshes] Копируем меш '{meshes[index].name}'...");
+				var originalMesh = _torsoSkinnedMeshRenderer.sharedMesh;
+				Debug.Log($"[AssignMeshes] Копируем меш '{_meshTorso.name}'...");
 
 				var newMesh = Instantiate(originalMesh);
-				skinnedMeshRenderer.sharedMesh = newMesh;
+				_torsoSkinnedMeshRenderer.sharedMesh = newMesh;
 
-				Matrix4x4[] bindPoses = new Matrix4x4[modularMeshBones.Length];
+				Matrix4x4[] bindPoses = new Matrix4x4[_torsoMeshBones.Length];
 				bool hasErrors = false;
 
-				for (int i = 0; i < modularMeshBones.Length; i++)
+				for (int i = 0; i < _torsoMeshBones.Length; i++)
 				{
 					// Защита от пустых ссылок внутри массива bones самого рендерера
-					if (skinnedMeshRenderer.bones[i] == null) continue;
+					if (_torsoSkinnedMeshRenderer.bones[i] == null) continue;
 
-					string targetName = skinnedMeshRenderer.bones[i].name.Trim();
+					string targetName = _torsoSkinnedMeshRenderer.bones[i].name.Trim();
 
 					Transform foundBone = null;
 
@@ -63,13 +62,13 @@ public class AssignMeshes : MonoBehaviour
 
 					if (foundBone != null)
 					{
-						modularMeshBones[i] = foundBone;
+						_torsoMeshBones[i] = foundBone;
 						bindPoses[i] = foundBone.worldToLocalMatrix * transform.localToWorldMatrix;
 					}
 					else
 					{
 						Debug.LogError($"[AssignMeshes] КОСТЬ НЕ НАЙДЕНА: '{targetName}'. Доступные примеры в базе: " +
-									   $"{string.Join(", ", baseArmatureBoneNames.Keys.Take(5))}...");
+										$"{string.Join(", ", baseArmatureBoneNames.Keys.Take(5))}...");
 						bindPoses[i] = transform.localToWorldMatrix;
 						hasErrors = true;
 					}
@@ -79,19 +78,45 @@ public class AssignMeshes : MonoBehaviour
 				{
 					newMesh.bindposes = bindPoses;
 					//Resources.UnloadAsset(originalMesh);
-					Debug.Log($"[AssignMeshes] Меш '{meshes[index].name}' успешно переназначен.");
+					Debug.Log($"[AssignMeshes] Меш '{_meshTorso.name}' успешно переназначен.");
 				}
 			}
 
-			for (int i = 0; i < skinnedMeshRenderer.bones.Length; i++)
+			for (int i = 0; i < _torsoSkinnedMeshRenderer.bones.Length; i++)
 			{
-				modularMeshBones[i] = baseArmatureBoneNames[skinnedMeshRenderer.bones[i].name];
+				_torsoMeshBones[i] = baseArmatureBoneNames[_torsoSkinnedMeshRenderer.bones[i].name];
 			}
 
-			skinnedMeshRenderer.bones = modularMeshBones;
-			skinnedMeshRenderer.rootBone = baseArmature;
+			_torsoSkinnedMeshRenderer.bones = _torsoMeshBones;
+			_torsoSkinnedMeshRenderer.rootBone = _baseArmatureRootBone;
 
-			var armature = meshes[index].transform.parent.Find("Armature_Humanoid");
+			var armature = _meshTorso.transform.parent.Find("Armature_Humanoid");
+			if (armature != null)
+			{
+				Destroy(armature.gameObject);
+			}
+		}
+
+		for (int index = 0; index < _meshesLimbs.Count; index++)
+		{
+			var limbsSkinnedMeshRenderer = _meshesLimbs[index].GetComponent<SkinnedMeshRenderer>();
+
+			var limbsMeshBones = new Transform[limbsSkinnedMeshRenderer.bones.Length];
+
+			for (int i = 0; i < limbsSkinnedMeshRenderer.bones.Length; i++)
+			{
+				limbsMeshBones[i] = baseArmatureBoneNames[limbsSkinnedMeshRenderer.bones[i].name];
+
+				if (_meshTorso != null)
+				{ 
+				_torsoMeshBones[i] = baseArmatureBoneNames[_torsoSkinnedMeshRenderer.bones[i].name];
+				}
+			}
+
+			limbsSkinnedMeshRenderer.bones = limbsMeshBones;
+			limbsSkinnedMeshRenderer.rootBone = _baseArmatureRootBone;
+
+			var armature = _meshesLimbs[index].transform.parent.Find("Armature_Humanoid");
 			if (armature != null)
 			{
 				Destroy(armature.gameObject);

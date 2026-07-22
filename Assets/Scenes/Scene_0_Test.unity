@@ -9610,10 +9610,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 2509852567112519021}
-  bakeTorsoMesh: 0
-  meshes:
-  - {fileID: 2090291269339289569}
+  _baseArmatureRootBone: {fileID: 2509852567112519021}
+  _meshTorso: {fileID: 2090291269339289569}
+  _baseMeshTorso: 0
+  _meshesLimbs:
   - {fileID: 4539414220072372576}
   - {fileID: 3927592449712943683}
 --- !u!95 &227747800
@@ -9626,7 +9626,7 @@ Animator:
   m_GameObject: {fileID: 227747798}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: eabc6cfb9e5dfc34599a448a430f7105, type: 3}
-  m_Controller: {fileID: 9100000, guid: f78bb3cebc5a28647ad3dab0876f66f4, type: 2}
+  m_Controller: {fileID: 9100000, guid: bfc7c332de52a1340a44c4136beba1f8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -21233,10 +21233,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 2064960595}
-  bakeTorsoMesh: 0
-  meshes:
-  - {fileID: 329036121}
+  _baseArmatureRootBone: {fileID: 2064960595}
+  _meshTorso: {fileID: 329036121}
+  _baseMeshTorso: 0
+  _meshesLimbs:
   - {fileID: 1852754680}
   - {fileID: 222044884}
   - {fileID: 766729861}
@@ -23876,10 +23876,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 939633657}
-  bakeTorsoMesh: 0
-  meshes:
-  - {fileID: 760578063}
+  _baseArmatureRootBone: {fileID: 939633657}
+  _meshTorso: {fileID: 760578063}
+  _baseMeshTorso: 0
+  _meshesLimbs:
   - {fileID: 1220205085}
   - {fileID: 1362214195}
   - {fileID: 1489183566}
@@ -28407,10 +28407,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 1568243728}
-  bakeTorsoMesh: 0
-  meshes:
-  - {fileID: 1625122998929075653}
+  _baseArmatureRootBone: {fileID: 1568243728}
+  _meshTorso: {fileID: 1625122998929075653}
+  _baseMeshTorso: 1
+  _meshesLimbs:
   - {fileID: 2129164347}
   - {fileID: 27991592}
 --- !u!95 &719290942
@@ -28423,7 +28423,7 @@ Animator:
   m_GameObject: {fileID: 719290940}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e774c30d083ea1247a3a0409a572c022, type: 3}
-  m_Controller: {fileID: 9100000, guid: f78bb3cebc5a28647ad3dab0876f66f4, type: 2}
+  m_Controller: {fileID: 9100000, guid: bfc7c332de52a1340a44c4136beba1f8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -34249,10 +34249,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 1923911961762496073}
-  bakeTorsoMesh: 0
-  meshes:
-  - {fileID: 256611538}
+  _baseArmatureRootBone: {fileID: 1923911961762496073}
+  _meshTorso: {fileID: 256611538}
+  _baseMeshTorso: 0
+  _meshesLimbs:
   - {fileID: 59827246}
   - {fileID: 693984165}
   - {fileID: 623254654}
@@ -41634,10 +41634,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 222087111}
-  bakeTorsoMesh: 0
-  meshes:
-  - {fileID: 597373796}
+  _baseArmatureRootBone: {fileID: 222087111}
+  _meshTorso: {fileID: 597373796}
+  _baseMeshTorso: 0
+  _meshesLimbs:
   - {fileID: 760608611}
   - {fileID: 1884945857}
   - {fileID: 1433380614}
@@ -49656,10 +49656,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 5502917768533321444}
-  bakeTorsoMesh: 0
-  meshes:
-  - {fileID: 1629975999}
+  _baseArmatureRootBone: {fileID: 5502917768533321444}
+  _meshTorso: {fileID: 1629975999}
+  _baseMeshTorso: 0
+  _meshesLimbs:
   - {fileID: 1534936811992865793}
   - {fileID: 1802811877}
 --- !u!95 &1273787053
@@ -49672,7 +49672,7 @@ Animator:
   m_GameObject: {fileID: 1273787051}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: eabc6cfb9e5dfc34599a448a430f7105, type: 3}
-  m_Controller: {fileID: 9100000, guid: 80490c143374ad043994b4bfb9f7277c, type: 2}
+  m_Controller: {fileID: 9100000, guid: bfc7c332de52a1340a44c4136beba1f8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -60176,10 +60176,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 2271180373612596283}
-  bakeTorsoMesh: 0
-  meshes:
-  - {fileID: 7879016215887518237}
+  _baseArmatureRootBone: {fileID: 2271180373612596283}
+  _meshTorso: {fileID: 7879016215887518237}
+  _baseMeshTorso: 0
+  _meshesLimbs:
   - {fileID: 581856309}
   - {fileID: 4611919190849330095}
   - {fileID: 5870391649024931205}
@@ -60193,7 +60193,7 @@ Animator:
   m_GameObject: {fileID: 1582623803}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: eabc6cfb9e5dfc34599a448a430f7105, type: 3}
-  m_Controller: {fileID: 9100000, guid: f78bb3cebc5a28647ad3dab0876f66f4, type: 2}
+  m_Controller: {fileID: 9100000, guid: bfc7c332de52a1340a44c4136beba1f8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -69730,7 +69730,6 @@ GameObject:
   - component: {fileID: 1854547199}
   - component: {fileID: 1854547198}
   - component: {fileID: 1854547197}
-  - component: {fileID: 1854547208}
   m_Layer: 0
   m_Name: NPC_Sweeper (1)
   m_TagString: Interactable
@@ -70068,33 +70067,6 @@ Transform:
   - {fileID: 1927354987}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!54 &1854547208
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854547196}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &1855708331
 GameObject:
   m_ObjectHideFlags: 0
@@ -73953,10 +73925,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 1464218865249320083}
-  bakeTorsoMesh: 1
-  meshes:
-  - {fileID: 2906256733480440341}
+  _baseArmatureRootBone: {fileID: 1464218865249320083}
+  _meshTorso: {fileID: 2906256733480440341}
+  _baseMeshTorso: 1
+  _meshesLimbs:
   - {fileID: 538316835906181445}
   - {fileID: 6503854399045262139}
 --- !u!95 &1941108390
@@ -73969,7 +73941,7 @@ Animator:
   m_GameObject: {fileID: 1941108388}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e774c30d083ea1247a3a0409a572c022, type: 3}
-  m_Controller: {fileID: 9100000, guid: f78bb3cebc5a28647ad3dab0876f66f4, type: 2}
+  m_Controller: {fileID: 9100000, guid: bfc7c332de52a1340a44c4136beba1f8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -89870,7 +89842,6 @@ GameObject:
   - component: {fileID: 2616978140777799520}
   - component: {fileID: 2616978140777799523}
   - component: {fileID: 2616978140777799524}
-  - component: {fileID: 2616978140777799525}
   m_Layer: 0
   m_Name: NPC_Sweeper
   m_TagString: Interactable
@@ -94011,33 +93982,6 @@ MonoBehaviour:
   - m_Rig: {fileID: 1315273297}
     m_Active: 1
   m_Effectors: []
---- !u!54 &2616978140777799525
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1780422656902466120}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &2623672444006744070
 GameObject:
   m_ObjectHideFlags: 0

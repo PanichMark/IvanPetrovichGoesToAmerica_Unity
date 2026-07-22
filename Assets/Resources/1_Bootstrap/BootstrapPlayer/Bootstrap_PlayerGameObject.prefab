@@ -12034,10 +12034,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115c3bb46e89b0a43b0ba1a4b690c01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseArmature: {fileID: 3849432857565603428}
-  bakeTorsoMesh: 0
-  meshes:
-  - {fileID: 5229562852802862265}
+  _baseArmatureRootBone: {fileID: 3849432857565603428}
+  _meshTorso: {fileID: 5229562852802862265}
+  _baseMeshTorso: 0
+  _meshesLimbs:
   - {fileID: 2336142298286414556}
   - {fileID: 2373328431707958961}
   - {fileID: 8715968640929608802}
