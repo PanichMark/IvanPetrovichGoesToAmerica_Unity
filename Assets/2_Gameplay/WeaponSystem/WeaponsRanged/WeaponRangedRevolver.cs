@@ -173,36 +173,13 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 		CartgridgeSlidingStep = 0;
 	}
 
-	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
+	protected override IEnumerator OnSpecificShootMechanics()
 	{
-		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponShootAnimation(this));
-
-		SpawnMuzzleVFX();
 		StartCoroutine(RevolverShootMechanism());
 
-		// --- ГЛАВНЫЙ RAYCAST: собираем ВСЕ объекты на пути ---
-		RaycastHit[] hits = Physics.RaycastAll(_shootPoint.transform.position, _shootPoint.transform.forward, _weaponRange);
-		System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance)); // Сортируем от лица
-
-		if (hits.Length > 0)
-		{
-			// Передаем ВЕСЬ массив попаданий в методы обработки
-			SpawnBulletHoleDecal(hits);
-			ProcessDamage(hits, weaponDamage);
-
-		}
-
-		PlayerMagazineAmmoCurrent--;
 		HideUsedHarmonicaBullet();
 
-		Debug.Log($"Shoot {WeaponName}");
-		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
-
-		ApplyWeaponRecoil();
-
-		yield return _currentWeaponPlayerShootRoutine;
-		_currentWeaponPlayerShootRoutine = null;
+		yield return null;
 	}
 
 	public override IEnumerator ReloadWeaponPlayer(bool isSecondAnimation)

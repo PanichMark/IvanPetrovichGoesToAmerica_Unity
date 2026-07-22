@@ -24,6 +24,14 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	private bool _wasLeftButtonPressedLastFrame;
 	public int LayersToDamage => _layersToDamage;
 	private int _layersToDamage;
+	public int LayersOrganisms => _layersOrganisms;
+	private int _layersOrganisms;
+	public int LayersHeads => _layersHeads;
+	private int _layersHeads;
+
+	public int LayerNPC => _layerNPC;
+	private int _layerNPC;
+
 	public delegate void WeaponShootHandler(WeaponHandsEnum weaponHandType);
 	public event WeaponShootHandler OnWeaponShoot;
 
@@ -64,6 +72,10 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		_HUDhealthAndManaController = HUDhealthAndManaController;
 
 		_layersToDamage = LayerMask.GetMask("HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
+		_layersOrganisms = LayerMask.GetMask("HitboxBody_Organism", "HitboxHead_Organism");
+		_layersHeads = LayerMask.GetMask("HitboxHead_Organism", "HitboxHead_Robot");
+
+		_layerNPC = LayerMask.GetMask("NPC");
 
 		IsAbleToUseRightWeapon = true;
 		IsAbleToUseLeftWeapon = true;

@@ -17,13 +17,11 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	private GameObject _VFXgenieBreath;
 	private Transform _VFXspawnPoint;
 	private GameObject _vfxInstance;
-	private PlayerWeaponController _playerWeaponController;
 
 	protected override void InitializeWeaponEugenic()
 	{
 		_VFXgenieBreath = Resources.Load<GameObject>($"VFXs/VFX_EugenicGenieBreath");
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
-		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
 		//_playerWeaponController.OnAllWeaponsHidden += TurnEugenicVFXOff;
 

@@ -50,81 +50,23 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 		_playerCameraController.ApplyWeaponRecoilAuto();
 	}
 
-	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
-	{
-		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
-
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponShootAnimation(this));
-
-		RaycastHit hitInfo;
-		IDamageable damageable = null;
-
-		_vfxInstance = Instantiate(
-			_VFXshottEffect,
-			_VFXspawnPoint.position,
-			_VFXspawnPoint.rotation,
-			_VFXspawnPoint.transform);
-
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
-		{
-			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
-		}
-
-		Destroy(_vfxInstance, 0.05f);
-
-		StartCoroutine(BergmannBayardShootMechanism());
-
-		if (Physics.Raycast(_shootPoint.transform.position, _shootPoint.transform.forward, out hitInfo, 100f))
-		{
-			damageable = hitInfo.transform.GetComponent<IDamageable>();
-			if (damageable != null && hitInfo.transform.gameObject.layer != 9)
-			{
-				Debug.Log($"Попадание в объект: {hitInfo.transform.name}, Слой: {hitInfo.transform.gameObject.layer}");
-				damageable.TakeDamage(weaponDamage);
-			}
-		}
-
-		if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 9 && hitInfo.transform.gameObject.layer != 11)
-		{
-			Quaternion rot = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
-
-			_bulletHoleManager.SpawnDecal(hitInfo.point, rot, damageable != null, hitInfo.transform);
-		}
-
-		PlayerMagazineAmmoCurrent--;
-
-		Debug.Log($"Shoot {WeaponName}");
-
-		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
-
-		ApplyWeaponRecoil();
-
-		yield return _currentWeaponPlayerShootRoutine;
-
-		_currentWeaponPlayerShootRoutine = null;
-	}
-
-	private IEnumerator BergmannBayardShootMechanism()
+	protected override IEnumerator OnSpecificShootMechanics()
 	{
 		float totalDuration = 0.08f;
 		int shapeIndex = 0;
-
 		float timer = 0f;
 		while (timer < totalDuration)
 		{
 			if (timer < 0.02f)
 			{
-				// Фаза открытия (0 - 0.02 сек)
 				float t = Mathf.Clamp01(timer / 0.02f);
 				_bergmann1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, Mathf.Lerp(0f, 100f, t));
 				_bergmann3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, Mathf.Lerp(0f, 100f, t));
 			}
 			else if (timer >= 0.02f && timer < 0.06f)
 			{
-				// Пауза с открытым затвором (0.02 - 0.06 сек)
 				_bergmann1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, 100f);
 				_bergmann3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, 100f);
-
 				if (timer >= 0.04f && timer < 0.04f + Time.deltaTime)
 				{
 					EjectBullet();
@@ -132,16 +74,13 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 			}
 			else if (timer >= 0.06f)
 			{
-				// Фаза закрытия (0.06 - 0.08 сек)
 				float t = Mathf.Clamp01((timer - 0.06f) / 0.02f);
 				_bergmann1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, Mathf.Lerp(100f, 0f, t));
 				_bergmann3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, Mathf.Lerp(100f, 0f, t));
 			}
-
 			timer += Time.deltaTime;
 			yield return null;
 		}
-
 		_bergmann1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, 0f);
 		_bergmann3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, 0f);
 	}

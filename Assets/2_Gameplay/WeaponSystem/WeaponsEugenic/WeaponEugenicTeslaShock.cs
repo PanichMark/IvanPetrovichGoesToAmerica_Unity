@@ -13,15 +13,12 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 	private GameObject _VFXteslaShock;
 	private Transform _VFXspawnPoint;
 	private GameObject _vfxInstance;
-	private PlayerWeaponController _playerWeaponController;
 	public float AttackRange => 2f;
 
 	protected override void InitializeWeaponEugenic()
 	{
 		_VFXteslaShock = Resources.Load<GameObject>($"VFXs/VFX_EugenicTeslaShock/3Dmodel_VFX_TeslaShock");
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
-		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
-		//_playerWeaponController.OnAllWeaponsHidden += TurnEugenicVFXOff;
 
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)

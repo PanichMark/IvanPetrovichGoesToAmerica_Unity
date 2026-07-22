@@ -148,50 +148,43 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_currentWeaponPlayerAutoAttackCourutine = null;
 	}
 
-	protected virtual IEnumerator ShootWeaponPlayer(float weaponDamage)
+	protected abstract IEnumerator OnSpecificShootMechanics();
+
+	protected IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
+		Debug.Log($"{WeaponName} Shoot");
+
 		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponShootAnimation(this));
+
+		RaycastHit[] hits = Physics.RaycastAll(_shootPoint.transform.position, _shootPoint.transform.forward, _weaponRange);
+		System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
 		SpawnMuzzleVFX();
 
-		// --- ГЛАВНЫЙ RAYCAST: собираем ВСЕ объекты на пути ---
-		RaycastHit[] hits = Physics.RaycastAll(_shootPoint.transform.position, _shootPoint.transform.forward, _weaponRange);
-		System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance)); // Сортируем от лица
+		PlayerMagazineAmmoCurrent--;
+		StartCoroutine(OnSpecificShootMechanics());
 
 		if (hits.Length > 0)
 		{
-			// Передаем ВЕСЬ массив попаданий в методы обработки
 			SpawnBulletHoleDecal(hits);
 			ProcessDamage(hits, weaponDamage);
-
 		}
 
-		PlayerMagazineAmmoCurrent--;
-
-		Debug.Log($"Shoot {WeaponName}");
+		ApplyWeaponRecoil();
 		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 
-		ApplyWeaponRecoil();
-
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponShootAnimation(this));
 		yield return _currentWeaponPlayerShootRoutine;
 		_currentWeaponPlayerShootRoutine = null;
 	}
 
 	protected virtual void ProcessDamage(RaycastHit[] hits, float weaponDamage)
 	{
-		int layerNPC = LayerMask.NameToLayer("NPC");
 		IDamageable damageable = null;
-
-		// Выносим слои головы в переменные для читаемости (и добавляем роботизированный хитбокс)
-		int layerOrganismHead = LayerMask.NameToLayer("HitboxHead_Organism");
-		int layerRobotHead = LayerMask.NameToLayer("HitboxHead_Robot");
 
 		foreach (var hit in hits)
 		{
-			bool isInDamageMask = ((1 << hit.transform.gameObject.layer) & _playerWeaponController.LayersToDamage) != 0;
-
-			if (isInDamageMask)
+			if (((1 << hit.transform.gameObject.layer) & _playerWeaponController.LayersToDamage) != 0)
 			{
 				Transform targetTransform = hit.transform;
 
@@ -202,27 +195,22 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 					{
 						float finalDamage = weaponDamage;
 
-						// Проверяем слой ТОГО ОБЪЕКТА, где найден IDamageable
-						if (hit.transform.gameObject.layer == layerOrganismHead ||
-							hit.transform.gameObject.layer == layerRobotHead)
+						if (((1 << hit.transform.gameObject.layer) & (_playerWeaponController.LayersHeads)) != 0)
 						{
-							finalDamage *= 3f; // Умножаем урон на 3
-							Debug.Log($"Критическое попадание в голову ({hit.transform.name})! Урон x3: {finalDamage}");
-						}
-						else
-						{
-							Debug.Log($"Попадание в тело/конечность: {hit.transform.name}, Слой: {hit.transform.gameObject.layer}. Базовый урон: {finalDamage}");
+							finalDamage *= 3f;
 						}
 
+						Debug.Log($"{WeaponName} Damaged {targetTransform.name} by {finalDamage}");
 						damageable.TakeDamage(finalDamage);
+
 						return;
 					}
 
-					// Останавливаемся, если дошли до корня модели персонажа-NPC
-					if (targetTransform.gameObject.layer == layerNPC)
+					if (targetTransform.gameObject.layer == _playerWeaponController.LayerNPC)
 					{
 						break;
 					}
+
 					targetTransform = targetTransform.parent;
 				}
 			}
@@ -231,51 +219,47 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected virtual void SpawnBulletHoleDecal(RaycastHit[] allHits)
 	{
-		int layerOrganismBody = LayerMask.NameToLayer("HitboxBody_Organism");
-		int layerOrganismHead = LayerMask.NameToLayer("HitboxHead_Organism");
-		int layerNPC = LayerMask.NameToLayer("NPC");
-
-		if (allHits.Length == 0) return;
+		if (allHits.Length == 0)
+		{
+			return;
+		}
 
 		RaycastHit targetHit = new RaycastHit();
 		bool foundTarget = false;
 
-		// Проходим по ВСЕМ объектам, в которые попала пуля
 		foreach (var hit in allHits)
 		{
-			// Ищем ПЕРВЫЙ объект, чей слой входит в маску повреждений
 			if (((1 << hit.transform.gameObject.layer) & _playerWeaponController.LayersToDamage) != 0)
 			{
 				targetHit = hit;
 				foundTarget = true;
-				break; // Нашли нужный хитбокс - выходим
+
+				break;
 			}
 		}
 
-		// Если ни один слой не подошел под маску LayersToDamage (попали просто в стену или пол), 
-		// то берем самый первый физический объект
 		if (!foundTarget)
 		{
 			targetHit = allHits[0];
 		}
 
-		// Проверка слоев UI/Эфиров перед спавном
 		if (targetHit.transform.gameObject.layer != 9 && targetHit.transform.gameObject.layer != 11 && targetHit.transform.gameObject.layer != 16)
 		{
-			bool isBloodTarget = targetHit.transform.gameObject.layer == layerOrganismBody || targetHit.transform.gameObject.layer == layerOrganismHead;
+			bool isBloodTarget = ((1 << targetHit.transform.gameObject.layer) & (_playerWeaponController.LayersOrganisms)) != 0;
 			Quaternion rot = Quaternion.FromToRotation(Vector3.up, targetHit.normal);
 			_bulletHoleManager.SpawnDecal(targetHit.point, rot, isBloodTarget, targetHit.transform);
 		}
 	}
 
-	// Метод SpawnMuzzleVFX остается без изменений
 	protected virtual void SpawnMuzzleVFX()
 	{
 		_vfxInstance = Instantiate(_VFXshottEffect, _VFXspawnPoint.position, _VFXspawnPoint.rotation, _VFXspawnPoint.transform);
+
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
 			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
 		}
+
 		Destroy(_vfxInstance, 0.05f);
 	}
 

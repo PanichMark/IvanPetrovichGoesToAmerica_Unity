@@ -35,39 +35,19 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
-	protected override IEnumerator ShootWeaponPlayer(float weaponDamage)
+	protected override IEnumerator OnSpecificShootMechanics()
 	{
-		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
-
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponShootAnimation(this));
-
 		int pelletCount = 10;
 		float spreadAngle = 7f;
 		float range = 100f;
 
-		_vfxInstance = Instantiate(
-			_VFXshottEffect,
-			_VFXspawnPoint.position,
-			_VFXspawnPoint.rotation,
-			_VFXspawnPoint.transform);
-		_vfxInstance.transform.localScale = Vector3.one * 2.5f;
-
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
-		{
-			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
-		}
-
-		Destroy(_vfxInstance, 0.05f);
-
 		for (int i = 0; i < pelletCount; i++)
 		{
-			RaycastHit hitInfo;
-
 			Quaternion randomRotation = Random.rotationUniform;
 			Quaternion spreadRotation = Quaternion.Slerp(Quaternion.identity, randomRotation, spreadAngle / 90f);
 			Vector3 finalDirection = spreadRotation * _shootPoint.transform.forward;
 
-			Color rayColor = Physics.Raycast(_shootPoint.transform.position, finalDirection, out hitInfo, range) ? Color.red : Color.yellow;
+			Color rayColor = Physics.Raycast(_shootPoint.transform.position, finalDirection, out RaycastHit hitInfo, range) ? Color.red : Color.yellow;
 			Debug.DrawRay(_shootPoint.transform.position, finalDirection * range, rayColor, 2f);
 
 			if (hitInfo.collider != null)
@@ -75,13 +55,13 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 				IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
 				if (damageable != null && hitInfo.transform.gameObject.layer != 9)
 				{
-					damageable.TakeDamage(weaponDamage / pelletCount);
+					damageable.TakeDamage(WeaponDamage / pelletCount);
 				}
 
 				IBreakable breakable = hitInfo.transform.GetComponent<IBreakable>();
 				if (breakable != null)
 				{
-					breakable.TakeDamage(weaponDamage / pelletCount);
+					breakable.TakeDamage(WeaponDamage / pelletCount);
 				}
 
 				if ((hitInfo.collider.CompareTag("Untagged") || hitInfo.collider.CompareTag("Interactable")) && hitInfo.transform.gameObject.layer != 9 && hitInfo.transform.gameObject.layer != 11)
@@ -92,16 +72,8 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 			}
 		}
 
-		PlayerMagazineAmmoCurrent--;
-		Debug.Log($"Shoot {WeaponName}");
-
-		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
-
 		ApplyWeaponRecoil();
-
-		yield return _currentWeaponPlayerShootRoutine;
-
-		_currentWeaponPlayerShootRoutine = null;
+		yield return null;
 	}
 
 	protected override void ApplyWeaponRecoil()
