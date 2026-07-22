@@ -42,7 +42,20 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		_playerColliderGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
 		_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
 
-		Collider = GetComponent<Collider>();
+		Collider = GetComponent<BoxCollider>();
+
+		if (Collider == null)
+		{
+			Collider = gameObject.AddComponent<BoxCollider>();
+
+			BoxCollider box = (BoxCollider)Collider;
+			box.center = new Vector3(0f, 0.5f, 0f);
+			box.size = new Vector3(0.7f, 1f, 0.7f);
+
+			var rigidbody = GetComponent<Rigidbody>();
+			rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+		}
+
 		RigidBody = GetComponent<Rigidbody>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
 

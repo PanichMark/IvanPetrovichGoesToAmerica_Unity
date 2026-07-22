@@ -6,8 +6,13 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 {
 	public static InteractionObjectPickableNonThrowable CreateWithName(GameObject obj, string interactionItemNameSystem)
 	{
-		var component = obj.AddComponent<InteractionObjectPickableNonThrowable>();
+		var component = obj.GetComponent<InteractionObjectPickableNonThrowable>();
+		if (component == null)
+		{
+			component = obj.AddComponent<InteractionObjectPickableNonThrowable>();
+		}
 		component._interactionObjectNameSystem = interactionItemNameSystem;
+
 		return component;
 	}
 

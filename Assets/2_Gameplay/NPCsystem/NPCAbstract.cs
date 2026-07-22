@@ -2,7 +2,7 @@
 using UnityEngine.AI;
 using TMPro;
 
-[RequireComponent(typeof(CapsuleCollider))]
+//[RequireComponent(typeof(CapsuleCollider))]
 //[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(AudioSource))]
@@ -104,7 +104,15 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	{
 		gameObject.tag = "Interactable";
 		enabled = false;
-		//gameObject.AddComponent<Rigidbody>();
+
+		var capsuleCollider = GetComponent<CapsuleCollider>();
+		if (capsuleCollider != null)
+		{
+			Destroy(capsuleCollider);
+		}
+
+		gameObject.AddComponent<Rigidbody>();
+
 		InteractionObjectPickableNonThrowable.CreateWithName(gameObject, _NPCname);
 		Destroy(this);
 	}
@@ -120,7 +128,6 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 
 			if (IsNPCdead)
 			{
-				ObjectIsFullyDamaged();
 				_textNPCcurrentHealth.SetActive(false);
 				_NPCstateMachineController.SetNPCState(NPCStateTypes.Dead);
 			}
