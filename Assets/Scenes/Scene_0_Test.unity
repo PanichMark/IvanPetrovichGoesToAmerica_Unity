@@ -31791,7 +31791,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -41596,7 +41596,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1043773904}
   - component: {fileID: 1043773905}
-  m_Layer: 16
+  m_Layer: 0
   m_Name: NPC_Sweeper_3Dmodel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45567,6 +45567,7 @@ GameObject:
   - component: {fileID: 1172950682}
   - component: {fileID: 1172950689}
   - component: {fileID: 1172950690}
+  - component: {fileID: 1172950691}
   m_Layer: 0
   m_Name: NPC_Citizen (2)
   m_TagString: Interactable
@@ -45831,6 +45832,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!54 &1172950691
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172950681}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1173507905
 GameObject:
   m_ObjectHideFlags: 0
@@ -69702,6 +69730,7 @@ GameObject:
   - component: {fileID: 1854547199}
   - component: {fileID: 1854547198}
   - component: {fileID: 1854547197}
+  - component: {fileID: 1854547208}
   m_Layer: 0
   m_Name: NPC_Sweeper (1)
   m_TagString: Interactable
@@ -70039,6 +70068,33 @@ Transform:
   - {fileID: 1927354987}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!54 &1854547208
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854547196}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1855708331
 GameObject:
   m_ObjectHideFlags: 0
@@ -73298,6 +73354,7 @@ GameObject:
   - component: {fileID: 1938486442}
   - component: {fileID: 1938486441}
   - component: {fileID: 1938486440}
+  - component: {fileID: 1938486451}
   m_Layer: 16
   m_Name: Hitbox TEST
   m_TagString: Interactable
@@ -73635,6 +73692,33 @@ Transform:
   - {fileID: 546338850}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!54 &1938486451
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938486439}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 69121
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 61440
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 32
+  m_CollisionDetection: 0
 --- !u!1 &1939264013
 GameObject:
   m_ObjectHideFlags: 0
@@ -89814,6 +89898,7 @@ GameObject:
   - component: {fileID: 2616978140777799520}
   - component: {fileID: 2616978140777799523}
   - component: {fileID: 2616978140777799524}
+  - component: {fileID: 2616978140777799525}
   m_Layer: 0
   m_Name: NPC_Sweeper
   m_TagString: Interactable
@@ -93954,6 +94039,33 @@ MonoBehaviour:
   - m_Rig: {fileID: 1315273297}
     m_Active: 1
   m_Effectors: []
+--- !u!54 &2616978140777799525
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780422656902466120}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2623672444006744070
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,9 +2,12 @@
 using UnityEngine.AI;
 using TMPro;
 
+[RequireComponent(typeof(CapsuleCollider))]
+//[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(NPCStateMachineController))]
+
 
 public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 {
@@ -101,23 +104,26 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	{
 		gameObject.tag = "Interactable";
 		enabled = false;
-		gameObject.AddComponent<Rigidbody>();
+		//gameObject.AddComponent<Rigidbody>();
 		InteractionObjectPickableNonThrowable.CreateWithName(gameObject, _NPCname);
 		Destroy(this);
 	}
 
 	public void TakeDamage(float amount)
 	{
-		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
-		_currentHealth -= amount;
-
-		_textComponentNPCcurrentHealth.text = _currentHealth.ToString();
-
-		if (IsNPCdead)
+		if (!IsNPCdead)
 		{
-			ObjectIsFullyDamaged();
-			_textNPCcurrentHealth.SetActive(false);
-			_NPCstateMachineController.SetNPCState(NPCStateTypes.Dead);
+			Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
+			_currentHealth -= amount;
+
+			_textComponentNPCcurrentHealth.text = _currentHealth.ToString();
+
+			if (IsNPCdead)
+			{
+				ObjectIsFullyDamaged();
+				_textNPCcurrentHealth.SetActive(false);
+				_NPCstateMachineController.SetNPCState(NPCStateTypes.Dead);
+			}
 		}
 	}
 
@@ -133,7 +139,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		_currentHealth = 0;
 		StopAllCoroutines();
 		ConvertToPickableObject();
-		gameObject.AddComponent<DamageableCorpse>();
+		//gameObject.AddComponent<NPCdamageableBody>();
 		_NPCphrasesController.ClearPhrases();
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -54,6 +55,12 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 			{
 				SpawnBulletHoleDecal(hits);
 				ProcessDamage(hits, WeaponDamage, 10);
+
+				IBreakable breakable = hits[0].transform.GetComponent<IBreakable>();
+				if (breakable != null)
+				{
+					breakable.TakeDamage(WeaponDamage);
+				}
 			}
 		}
 

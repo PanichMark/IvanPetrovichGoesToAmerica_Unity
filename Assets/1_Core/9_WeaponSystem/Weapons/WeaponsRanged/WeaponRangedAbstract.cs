@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class WeaponRangedAbstract : WeaponAbstract
@@ -182,38 +183,42 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected void ProcessDamage(RaycastHit[] hits, float weaponDamage, float headshotMultiplier)
 	{
-		IDamageable damageable = null;
+		HashSet<IDamageable> damagedTargets = new HashSet<IDamageable>();
 
 		foreach (var hit in hits)
 		{
-			if (((1 << hit.transform.gameObject.layer) & _playerWeaponController.LayersToDamage) != 0)
+			if (((1 << hit.collider.gameObject.layer) & _playerWeaponController.LayersToDamage) != 0)
 			{
-				Transform targetTransform = hit.transform;
+				IDamageable damageable = null;
+				Transform checkTarget = hit.transform;
 
-				while (targetTransform != null)
+				while (checkTarget != null)
 				{
-					damageable = targetTransform.GetComponent<IDamageable>();
+					damageable = checkTarget.GetComponent<IDamageable>();
 					if (damageable != null)
 					{
-						float finalDamage = weaponDamage;
-
-						if (((1 << hit.transform.gameObject.layer) & (_playerWeaponController.LayersHeads)) != 0)
+						if (!damagedTargets.Contains(damageable))
 						{
-							finalDamage *= headshotMultiplier;
+							damagedTargets.Add(damageable);
+							float finalDamage = weaponDamage;
+
+							if (((1 << hit.collider.gameObject.layer) & (_playerWeaponController.LayersHeads)) != 0)
+							{
+								finalDamage *= headshotMultiplier;
+							}
+
+							Debug.Log($"{WeaponName} Damaged {damageable} by {finalDamage}");
+							damageable.TakeDamage(finalDamage);
 						}
-
-						Debug.Log($"{WeaponName} Damaged {targetTransform.name} by {finalDamage}");
-						damageable.TakeDamage(finalDamage);
-
-						return;
+						break;
 					}
 
-					if (targetTransform.gameObject.layer == _playerWeaponController.LayerNPC)
+					if (checkTarget.gameObject.layer == _playerWeaponController.LayerNPC && checkTarget != hit.transform)
 					{
 						break;
 					}
 
-					targetTransform = targetTransform.parent;
+					checkTarget = checkTarget.parent;
 				}
 			}
 		}
@@ -226,16 +231,25 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			return;
 		}
 
+		Debug.Log($"[BaseWeapon] SpawnDecal called. Total hits received: {allHits.Length}");
+
+		foreach (var hit in allHits)
+		{
+			string layerName = LayerMask.LayerToName(hit.collider.gameObject.layer);
+			Debug.Log($"  -> Hit Object: {hit.collider.name}, Layer: {layerName} ({hit.collider.gameObject.layer})");
+		}
+
 		RaycastHit targetHit = new RaycastHit();
 		bool foundTarget = false;
 
 		foreach (var hit in allHits)
 		{
-			if (((1 << hit.transform.gameObject.layer) & _playerWeaponController.LayersToDamage) != 0)
+			int layerMaskCheck = (1 << hit.collider.gameObject.layer) & _playerWeaponController.LayersToDamage;
+
+			if (layerMaskCheck != 0)
 			{
 				targetHit = hit;
 				foundTarget = true;
-
 				break;
 			}
 		}
@@ -245,11 +259,18 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			targetHit = allHits[0];
 		}
 
-		if (targetHit.transform.gameObject.layer != 9 && targetHit.transform.gameObject.layer != 11 && targetHit.transform.gameObject.layer != 16)
+		if (targetHit.collider.gameObject.layer != 9 && targetHit.collider.gameObject.layer != 11 && targetHit.collider.gameObject.layer != 16)
 		{
-			bool isBloodTarget = ((1 << targetHit.transform.gameObject.layer) & (_playerWeaponController.LayersOrganisms)) != 0;
+			bool isBloodTarget = ((1 << targetHit.collider.gameObject.layer) & (_playerWeaponController.LayersOrganisms)) != 0;
 			Quaternion rot = Quaternion.FromToRotation(Vector3.up, targetHit.normal);
+
+			Debug.Log($"[BaseWeapon] Spawning decal on: {targetHit.collider.name} at {targetHit.point}. Blood: {isBloodTarget}");
+
 			_bulletHoleManager.SpawnDecal(targetHit.point, rot, isBloodTarget, targetHit.transform);
+		}
+		else
+		{
+			Debug.Log("[BaseWeapon] Skipped decal spawn because layer was UI/Ignore/Aura");
 		}
 	}
 
