@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
+public class WeaponMeleeBaton : WeaponMeleeAbstract
 {
 	public override WeaponNames WeaponName => WeaponNames.Baton;
 	public override WeaponTypes WeaponType => WeaponTypes.Melee;
@@ -31,11 +31,11 @@ public class WeaponMeleePoliceBaton : WeaponMeleeAbstract
 
 		_chokeNPCtext = ServiceLocator.Resolve<GameObject>("TextChokeNPC");
 
-		if (_weaponController.RightHandWeaponComponent is WeaponMeleePoliceBaton)
+		if (_weaponController.RightHandWeaponComponent is WeaponMeleeBaton)
 		{
 			_isItRightHand = true;
 		}
-		if (_weaponController.LeftHandWeaponComponent is WeaponMeleePoliceBaton)
+		if (_weaponController.LeftHandWeaponComponent is WeaponMeleeBaton)
 		{
 			_isItRightHand = false;	
 		}

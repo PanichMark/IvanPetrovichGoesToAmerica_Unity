@@ -26,7 +26,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private Coroutine _activeAutoRecoilCoroutine;
 	private Vector3 _postDialogueCameraPosition;
 	private Quaternion _postDialogueCameraRotation;
-
+	private int _layersForCameraColliderToIgnore;
 	public bool IsAbleToZoomCameraOut { get; private set; } = true;
 
 	public float PlayerCameraDistanceX { get; private set; }
@@ -70,6 +70,8 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		PlayerCameraDistanceY = -1.75f;
 		PlayerCameraDistanceZ = 3.25f;
 		_mainCamera = _playerCamera.GetComponent<Camera>();
+
+		_layersForCameraColliderToIgnore = ~LayerMask.GetMask("InvisibleWall", "HitboxBody", "HitboxHead");
 
 		_pauseSubMenuSettingsSectionGeneralController.OnCameraFOVchanged += SetCameraFOV;
 		_pauseSubMenuSettingsSectionGeneralController.OnSaveCameraSettingsData += SendCameraFOV;
@@ -138,7 +140,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 		if (_playerCollider != null)
 		{
-			if (Physics.Linecast(_playerCollider.transform.position, transform.position, out _hit, ~LayerMask.GetMask("InvisibleWall")))
+			if (Physics.Linecast(_playerCollider.transform.position, transform.position, out _hit, _layersForCameraColliderToIgnore))
 			{
 				if (!_canReturn)
 				{
