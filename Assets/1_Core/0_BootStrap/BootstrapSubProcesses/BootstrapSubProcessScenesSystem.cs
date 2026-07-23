@@ -38,7 +38,16 @@ public class BootstrapSubProcessScenesSystem
 		_imageLoadingScreen = _canvasLoadingScreen.transform.Find("ImageScene").GetComponent<Image>();
 
 
-		GameSceneManager.Initialize(_gameController, _localizationManager, _canvasLoadingScreen, _textLoadingReady, _textSceneName, _textSceneDescription, _sliderLoadingStatus, _imageLoadingScreen);
+		GameSceneManager.Initialize(
+			_gameController,
+			_localizationManager,
+			_bootstrap.GameData.GameScenesList,
+			_canvasLoadingScreen,
+			_textLoadingReady,
+			_textSceneName,
+			_textSceneDescription,
+			_sliderLoadingStatus,
+			_imageLoadingScreen);
 
 		ServiceLocator.Register("GameSceneManager", GameSceneManager);
 

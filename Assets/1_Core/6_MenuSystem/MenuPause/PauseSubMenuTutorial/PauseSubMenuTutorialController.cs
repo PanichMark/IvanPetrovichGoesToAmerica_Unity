@@ -130,7 +130,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 
 		Debug.Log($"Showing TutorialNote #{_currentNoteIndex + 1}");
 
-		string textToShow = _localizationManager.GetLanguageSuffix(data);
+		string textToShow = _localizationManager.GetNoteLanguageSuffix(data);
 
 		_textComponentTutorial.text = textToShow;
 

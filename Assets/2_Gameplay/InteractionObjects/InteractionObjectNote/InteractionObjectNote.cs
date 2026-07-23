@@ -80,7 +80,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 				_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_NoText")}";
 			}
 
-			_textComponent.text = _localizationManager.GetLanguageSuffix(_noteData);
+			_textComponent.text = _localizationManager.GetNoteLanguageSuffix(_noteData);
 		}
 	}
 
@@ -121,7 +121,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 			_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_NoText")}";
 		}
 
-		_textComponent.text = _localizationManager.GetLanguageSuffix(_noteData);
+		_textComponent.text = _localizationManager.GetNoteLanguageSuffix(_noteData);
 
 		_imageRectTransform.anchoredPosition = _noteData.NotePosition.ImagePosition;
 		_imageRectTransform.localEulerAngles = new Vector3(0f, 0f, _noteData.NotePosition.ImageRotation.x);

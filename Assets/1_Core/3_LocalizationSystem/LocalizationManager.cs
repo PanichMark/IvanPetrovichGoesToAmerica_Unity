@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class LocalizationManager
@@ -71,29 +69,22 @@ public class LocalizationManager
 		}
 	}
 
-	public string GetLanguageSuffix()
-	{
-		if (CurrentLanguage == LanguagesEnum.Russian)
-		{
-			return "RU";
-		}
-		if (CurrentLanguage == LanguagesEnum.English)
-		{
-			return "EN";
-		}
-		else
-		{
-			throw new NotImplementedException("This language NOT supported");
-		}
-	}
-
-	public string GetLanguageSuffix(InteractionObjectNoteData noteData)
+	public string GetNoteLanguageSuffix(InteractionObjectNoteData noteData)
 	{
 		if (noteData == null)
 			return string.Empty;
 
 		// Получаем суффикс языка
-		string suffix = GetLanguageSuffix();
+		string suffix = null;
+
+		if (CurrentLanguage == LanguagesEnum.Russian)
+		{
+			suffix =  "RU";
+		}
+		if (CurrentLanguage == LanguagesEnum.English)
+		{
+			suffix = "EN";
+		}
 
 		// Формируем имя поля, которое хотим найти
 		string fieldName = "NoteText_" + suffix;

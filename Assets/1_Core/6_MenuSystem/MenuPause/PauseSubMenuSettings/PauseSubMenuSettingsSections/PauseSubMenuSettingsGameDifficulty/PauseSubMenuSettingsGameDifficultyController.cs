@@ -112,7 +112,7 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 	private void UpdateUIDifficulty()
 	{
 		InteractionObjectNoteData data = _difficultiesList.Notes[_currentIndex];
-		string textToShow = _localizationManager.GetLanguageSuffix(data);
+		string textToShow = _localizationManager.GetNoteLanguageSuffix(data);
 		_textComponent.text = textToShow;
 
 		Sprite spriteToShow = data.NoteImage;

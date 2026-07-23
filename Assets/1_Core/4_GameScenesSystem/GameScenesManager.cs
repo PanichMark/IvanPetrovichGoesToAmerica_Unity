@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Codice.Client.Common.GameUI;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,7 +20,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 	private GameObject _sliderLoadingStatus;
 	private Slider _sliderComponentLoadingStatus;
 	private Image _imageLoadingScreen;
-	
+	private GameScenesList _gameScenesList;
 	public delegate void LoadSceneHandler();
 	public event LoadSceneHandler OnBeginLoadingMainMenuScene;
 	public event LoadSceneHandler OnEndLoadingMainMenuScene;
@@ -29,6 +30,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 	public void Initialize(
 		GameController gameController,
 		LocalizationManager localizationManager,
+		GameScenesList gameScenesList,
 		GameObject canvasLoadingScreen,
 		GameObject textLoadingReady,
 		GameObject textSceneName,
@@ -39,8 +41,9 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		_gameController = gameController;
 		_localizationManager = localizationManager;
 		_textLoadingReady = textLoadingReady;
+		_gameScenesList = gameScenesList;
 		_textComponentLoadingReady = _textLoadingReady.GetComponent<TMP_Text>();
-		_canvasLoadingScreen = canvasLoadingScreen;	
+		_canvasLoadingScreen = canvasLoadingScreen;
 		_textSceneName = textSceneName;
 		_textComponentSceneName = _textSceneName.GetComponent<TMP_Text>();
 		_textSceneDescription = textSceneDescription;
@@ -67,9 +70,20 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		
 		Time.timeScale = 0f;
 
-		string sceneName = scene.ToString(); 
+		string sceneName = scene.ToString();
 
-		Sprite spriteToUse = Resources.Load<Sprite>($"Sprites/Sprites_LoadingScreens/{sceneName}");
+		Sprite spriteToUse = null;
+
+		int currentSceneData = 0;
+
+		for (currentSceneData = 0; currentSceneData < _gameScenesList.GameScenes.Count; currentSceneData++)
+		{
+			if (_gameScenesList.GameScenes[currentSceneData].GameScene.ToString() == sceneName)
+			{
+				spriteToUse = _gameScenesList.GameScenes[currentSceneData].SceneLoadingScreenImage;
+				break;
+			}
+		}
 
 		_imageLoadingScreen.sprite = spriteToUse;
 		
@@ -81,11 +95,18 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		_textSceneName.SetActive(true);
 		_textSceneDescription.SetActive(true);
 
-		string languageSuffix = _localizationManager.GetLanguageSuffix();
+		TextAsset descriptionTextAsset = null;
 
-		string descriptionFileName = $"Text_Description_{sceneName}_{languageSuffix}";
+		if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+		{
+			descriptionTextAsset = _gameScenesList.GameScenes[currentSceneData].SceneDescription_RU;
+		}
+		if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
+		{
+			descriptionTextAsset = _gameScenesList.GameScenes[currentSceneData].SceneDescription_EN;
+		}
 
-		TextAsset descriptionTextAsset = Resources.Load<TextAsset>($"Texts/Texts_Descriptions/Texts_Descriptions_Scenes/{descriptionFileName}");
+		//TextAsset descriptionTextAsset = Resources.Load<TextAsset>($"Texts/Texts_Descriptions/Texts_Descriptions_Scenes/{descriptionFileName}");
 
 		if (descriptionTextAsset != null)
 		{
@@ -93,8 +114,8 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		}
 		else
 		{
-			_textComponentSceneDescription.text = ($"SCENE DESCRIPTION FOR \"{languageSuffix}\" NOT FOUND");
-			Debug.LogWarning($"SCENE DESCRIPTION FOR \"{languageSuffix}\" NOT FOUND");
+			_textComponentSceneDescription.text = ($"SCENE DESCRIPTION FOR \"{_localizationManager.CurrentLanguage}\" NOT FOUND");
+			Debug.LogWarning($"SCENE DESCRIPTION FOR \"{_localizationManager.CurrentLanguage}\" NOT FOUND");
 		}
 
 		if (SceneManager.sceneCount > 1)
