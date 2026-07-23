@@ -41,8 +41,6 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 
 		_magazine1stPersonOld = FirstPersonWeaponModelInstance.transform.Find("Magazine").gameObject;
 		_magazine3rdPersonOld = ThirdPersonWeaponModelInstance.transform.Find("Magazine").gameObject;
-
-		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
 	protected override void ApplyWeaponRecoil()

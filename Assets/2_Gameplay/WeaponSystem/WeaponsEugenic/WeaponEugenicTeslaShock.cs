@@ -10,14 +10,10 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	public override float WeaponAttackSpeedRate => 0.4f;
 	public override bool IsWeaponAuto => true;
-	private GameObject _VFXteslaShock;
-	private Transform _VFXspawnPoint;
-	private GameObject _vfxInstance;
 	public float AttackRange => 2f;
 
 	protected override void InitializeWeaponEugenic()
 	{
-		_VFXteslaShock = Resources.Load<GameObject>($"VFXs/VFX_EugenicTeslaShock/3Dmodel_VFX_TeslaShock");
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 
 
@@ -112,7 +108,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 	private IEnumerator ShowVFX()
 	{
 		_vfxInstance = Instantiate(
-			_VFXteslaShock,
+			_VFXeffect,
 			_VFXspawnPoint.position,
 			_VFXspawnPoint.rotation * Quaternion.Euler(0, 0, 0),
 			_VFXspawnPoint.transform);

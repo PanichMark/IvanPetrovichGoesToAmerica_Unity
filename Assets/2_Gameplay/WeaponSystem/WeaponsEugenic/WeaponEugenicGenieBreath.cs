@@ -16,13 +16,10 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private float _eugenicAttackRange = 3f;
 	private float _eugenicGenieBreathKnockbackForce = 10f;
-	private GameObject _VFXgenieBreath;
-	private Transform _VFXspawnPoint;
-	private GameObject _vfxInstance;
+
 
 	protected override void InitializeWeaponEugenic()
 	{
-		_VFXgenieBreath = Resources.Load<GameObject>("VFXs/VFX_EugenicGenieBreath");
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 		_playerGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
 
@@ -57,7 +54,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
 				_vfxInstance = Instantiate(
-				_VFXgenieBreath,
+				_VFXeffect,
 				_VFXspawnPoint.position,
 				_VFXspawnPoint.rotation * Quaternion.Euler(0, 0, 0),
 				_VFXspawnPoint.transform);
@@ -65,7 +62,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 			{
 				_vfxInstance = Instantiate(
-					_VFXgenieBreath,
+					_VFXeffect,
 					_VFXspawnPoint.position + Vector3.up * 1.2f,
 					_playerCameraGameObject.transform.rotation * Quaternion.Euler(0, 0, 0),
 					_VFXspawnPoint.transform);

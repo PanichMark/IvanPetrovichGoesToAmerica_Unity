@@ -10,6 +10,10 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 
 	protected PlayerResourcesManaManager _playerResourcesManaManager;
 	protected Coroutine _currentWeaponPlayerEugenicAttackRoutine;
+
+	[SerializeField] protected GameObject _VFXeffect;
+	protected Transform _VFXspawnPoint;
+	protected GameObject _vfxInstance;
 	public override void InitializeWeapon()
 	{
 		if (_isThisPlayerWeapon == true)

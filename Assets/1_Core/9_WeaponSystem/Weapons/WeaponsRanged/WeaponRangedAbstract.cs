@@ -16,7 +16,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
 	protected bool _isWeaponPlayerShooting;
 	public abstract bool IsReloadingAnimationSingle { get; }
-	protected GameObject _VFXshottEffect;
+	[SerializeField] protected GameObject _VFXmuzzleFlashEffect;
 	protected Transform _VFXspawnPoint;
 	protected GameObject _vfxInstance;
 	protected bool _isNPCreloading;
@@ -276,7 +276,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected void SpawnMuzzleVFX()
 	{
-		_vfxInstance = Instantiate(_VFXshottEffect, _VFXspawnPoint.position, _VFXspawnPoint.rotation, _VFXspawnPoint.transform);
+		_vfxInstance = Instantiate(_VFXmuzzleFlashEffect, _VFXspawnPoint.position, _VFXspawnPoint.rotation, _VFXspawnPoint.transform);
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{

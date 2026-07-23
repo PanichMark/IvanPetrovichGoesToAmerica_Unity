@@ -36,8 +36,6 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 		_shellLeft1stPerson = _shotgunBarrel1stPerson.transform.Find("ShellLeft").gameObject;
 		_shellRight3rdPerson = _shotgunBarrel3rdPerson.transform.Find("ShellRight").gameObject;
 		_shellLeft3rdPerson = _shotgunBarrel3rdPerson.transform.Find("ShellLeft").gameObject;
-
-		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
 	}
 
 	protected override IEnumerator OnSpecificShootMechanics()

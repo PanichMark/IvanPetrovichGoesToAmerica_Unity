@@ -41,8 +41,6 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 		_revolver1stPersonGunMesh = FirstPersonWeaponModelInstance.transform.Find("Gun").GetComponent<SkinnedMeshRenderer>();
 		_revolver3rdPersonGunMesh = ThirdPersonWeaponModelInstance.transform.Find("Gun").GetComponent<SkinnedMeshRenderer>();
 
-		_VFXshottEffect = Resources.Load<GameObject>($"VFXs/VFX_MuzzleFlash");
-
 		_cartridge1stPerson = FirstPersonWeaponModelInstance.transform.Find("Cartridge").gameObject;
 		_cartridge3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("Cartridge").gameObject;
 
