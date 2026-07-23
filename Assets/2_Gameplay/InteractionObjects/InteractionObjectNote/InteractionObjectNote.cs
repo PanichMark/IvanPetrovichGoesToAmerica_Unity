@@ -68,7 +68,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		{
 			_localizationManager = localizationManager;
 
-			if (!_noteData.IsLittleText)
+			if (!_noteData.IsNoteToGlanceAt)
 			{
 				_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Read")}";
 				_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_Text")}";
@@ -110,7 +110,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_imageComponent.gameObject.SetActive(true);
 		_imageComponent.sprite = _noteData.NoteImage;
 
-		if (!_noteData.IsLittleText)
+		if (!_noteData.IsNoteToGlanceAt)
 		{
 			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Read")}";
 			_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_Text")}";

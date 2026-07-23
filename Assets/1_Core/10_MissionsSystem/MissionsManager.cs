@@ -26,6 +26,7 @@ public class MissionsManager : MonoBehaviour
 		LocalizationManager localizationManager,
 		GameScenesManager gameSceneManager,
 		PauseMenuController pauseMenuController,
+		GameMissionsList gameMissions,
 		ViewModelPauseMenu viewModelPauseMenu)
 	{
 		_localizationManager = localizationManager;
@@ -34,7 +35,7 @@ public class MissionsManager : MonoBehaviour
 		_textCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoalDisplay;
 		_textComponentCurrentMissionGoal = _textCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
 
-		_gameMissions = (GameMissionsList)Resources.Load("GameMissionsList");
+		_gameMissions = gameMissions;
 
 		ActiveMission = _gameMissions.MissionsInOrder[0];
 		CurrentStepIndex = 0;

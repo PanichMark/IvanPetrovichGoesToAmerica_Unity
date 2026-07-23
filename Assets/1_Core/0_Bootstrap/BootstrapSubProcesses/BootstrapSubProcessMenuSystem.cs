@@ -9,6 +9,7 @@ public class BootstrapSubProcessMenuSystem
 	private GameObject _canvasHUDmission;
 
 	private MenuBackgroundController _menuBackgroundController;
+	private GameTutorialsList _tutorialsList;
 	public ViewModelPauseMenu ViewModelPauseMenu {  get; private set; }
 	private ViewModelPauseSubMenuSave _viewModelPauseSubMenuSave;
 	private ViewModelPauseSubMenuLoad _viewModelPauseSubMenuLoad;
@@ -173,6 +174,8 @@ public class BootstrapSubProcessMenuSystem
 		_canvasMenuLockpickElectronic = canvasMenuLockpickElectronic;
 		_canvasMenuDialogue = canvasMenuDialogue;
 		_canvasMenuNote = canvasMenuNote;
+
+		_tutorialsList = bootstrap.GameData.GameTutorialsList;
 	}
 
 	public IEnumerator InitializeMenuSystem()
@@ -274,6 +277,7 @@ public class BootstrapSubProcessMenuSystem
 			_localizationManager,
 			PauseMenuController,
 			_canvasPauseSubMenuTutorial,
+			_tutorialsList,
 			_viewModelPauseSubMenuTutorial);
 
 		PauseSubMenuSettingsController.Initialize(
@@ -295,9 +299,9 @@ public class BootstrapSubProcessMenuSystem
 		__pauseSubMenuSettingsGameDifficultyController.Initialize(
 			_localizationManager,
 			PauseSubMenuSettingsSectionGeneralController,
+			_bootstrap.GameData.GameDifficultiesList,
 			_canvasPauseSubMenuSettingsGameDifficultyController,
-			_viewModelPauseSubMenuSettingsGameDifficultyController
-			);
+			_viewModelPauseSubMenuSettingsGameDifficultyController);
 
 		PauseSubMenuSettingsSectionControlsController.Initialize(
 			_inputDevice,

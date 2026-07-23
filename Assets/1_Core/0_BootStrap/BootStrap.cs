@@ -9,8 +9,9 @@ public class Bootstrap : MonoBehaviour
 	public delegate void SettingsDataEventHandler();
 	public event SettingsDataEventHandler OnLoadSettingsData;
 
-	[Header("--- CANVASES ---")]
-	[SerializeField] private GameCanvasesList _gameCanvasesList;
+	[Header("--- GAME DATA ---")]
+	[SerializeField] private BootstrapGameDataList _gameData;
+	public BootstrapGameDataList GameData => _gameData;
 
 	[Header("--- BOOTSTRAP CONFIGS ---")]
 	[SerializeField] private BootstrapConfigIsFirstGameLaunch _configIsFirstGameLaunch;
@@ -78,7 +79,7 @@ public class Bootstrap : MonoBehaviour
 
 		ServiceLocator.ClearAllServices();
 
-		_canvasBootstrap = Instantiate(_gameCanvasesList.CanvasBootstrap);
+		_canvasBootstrap = Instantiate(_gameData.GameCanvasesList.CanvasBootstrap);
 
 		Time.timeScale = 0f;
 		Cursor.lockState = CursorLockMode.Locked;
@@ -154,37 +155,37 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeCanvases()
 	{
-		_canvasChooseFirstLanguage = Instantiate(_gameCanvasesList.CanvasChooseFirstLanguage);
+		_canvasChooseFirstLanguage = Instantiate(_gameData.GameCanvasesList.CanvasChooseFirstLanguage);
 
-		_canvasLoadingScreen = Instantiate(_gameCanvasesList.CanvasLoadingScreen);
+		_canvasLoadingScreen = Instantiate(_gameData.GameCanvasesList.CanvasLoadingScreen);
 	
-		_canvasMenuBackground = Instantiate(_gameCanvasesList.CanvasMenuBackground);
+		_canvasMenuBackground = Instantiate(_gameData.GameCanvasesList.CanvasMenuBackground);
 
-	    _canvasPauseMenu = Instantiate(_gameCanvasesList.CanvasPauseMenu);
-		_canvasPauseSubMenuSave = Instantiate(_gameCanvasesList.CanvasPauseSubMenuSave);
-		_canvasPauseSubMenuLoad = Instantiate(_gameCanvasesList.CanvasPauseSubMenuLoad);
-		_canvasPauseSubMenuAppearance = Instantiate(_gameCanvasesList.CanvasPauseSubMenuAppearance);
-		_canvasPauseSubMenuTutorial = Instantiate(_gameCanvasesList.CanvasPauseSubMenuTutorial);
-		_canvasPauseSubMenuSettings = Instantiate(_gameCanvasesList.CanvasPauseSubMenuSettings);
-		_canvasPauseSubMenuSettingsGameDifficulty = Instantiate(_gameCanvasesList.CanvasPauseSubMenuSettingsGameDifficulty);
-		_canvasPauseMenuConfirmAction = Instantiate(_gameCanvasesList.CanvasPauseMenuConfirmAction);
+	    _canvasPauseMenu = Instantiate(_gameData.GameCanvasesList.CanvasPauseMenu);
+		_canvasPauseSubMenuSave = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuSave);
+		_canvasPauseSubMenuLoad = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuLoad);
+		_canvasPauseSubMenuAppearance = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuAppearance);
+		_canvasPauseSubMenuTutorial = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuTutorial);
+		_canvasPauseSubMenuSettings = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuSettings);
+		_canvasPauseSubMenuSettingsGameDifficulty = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuSettingsGameDifficulty);
+		_canvasPauseMenuConfirmAction = Instantiate(_gameData.GameCanvasesList.CanvasPauseMenuConfirmAction);
 
-		_canvasMainMenuReadNews = Instantiate(_gameCanvasesList.CanvasMainMenuReadNews);
+		_canvasMainMenuReadNews = Instantiate(_gameData.GameCanvasesList.CanvasMainMenuReadNews);
 
-		_canvasMenuWeaponWheel = Instantiate(_gameCanvasesList.CanvasMenuWeaponWheel);
+		_canvasMenuWeaponWheel = Instantiate(_gameData.GameCanvasesList.CanvasMenuWeaponWheel);
 
-		_canvasMenuWeaponWheel = Instantiate(_gameCanvasesList.CanvasMenuWeaponWheel);
-		_canvasMenuCutscene = Instantiate(_gameCanvasesList.CanvasMenuCutscene);
+		_canvasMenuWeaponWheel = Instantiate(_gameData.GameCanvasesList.CanvasMenuWeaponWheel);
+		_canvasMenuCutscene = Instantiate(_gameData.GameCanvasesList.CanvasMenuCutscene);
 
-		_canvasHUDhealthAndMana = Instantiate(_gameCanvasesList.CanvasHUDhealthAndMana);
-		_canvasHUDammo = Instantiate(_gameCanvasesList.CanvasHUDammo);
-		_canvasHUDinteraction = Instantiate(_gameCanvasesList.CanvasHUDinteraction);
-		_canvasHUDmission = Instantiate(_gameCanvasesList.CanvasHUDmission);
+		_canvasHUDhealthAndMana = Instantiate(_gameData.GameCanvasesList.CanvasHUDhealthAndMana);
+		_canvasHUDammo = Instantiate(_gameData.GameCanvasesList.CanvasHUDammo);
+		_canvasHUDinteraction = Instantiate(_gameData.GameCanvasesList.CanvasHUDinteraction);
+		_canvasHUDmission = Instantiate(_gameData.GameCanvasesList.CanvasHUDmission);
 
-		_canvasMenuNote = Instantiate(_gameCanvasesList.CanvasMenuNote);
-		_canvasMenuLockpickElectronic = Instantiate(_gameCanvasesList.CanvasMenuLockpickElectronic);
-		_canvasMenuLockpickMechanical = Instantiate(_gameCanvasesList.CanvasMenuLockpickMechanical);
-		_canvasMenuDialogue = Instantiate(_gameCanvasesList.CanvasMenuDialogue);
+		_canvasMenuNote = Instantiate(_gameData.GameCanvasesList.CanvasMenuNote);
+		_canvasMenuLockpickElectronic = Instantiate(_gameData.GameCanvasesList.CanvasMenuLockpickElectronic);
+		_canvasMenuLockpickMechanical = Instantiate(_gameData.GameCanvasesList.CanvasMenuLockpickMechanical);
+		_canvasMenuDialogue = Instantiate(_gameData.GameCanvasesList.CanvasMenuDialogue);
 
 		Debug.Log("=== CANVASES INITIALIZED ===");
 		yield break;

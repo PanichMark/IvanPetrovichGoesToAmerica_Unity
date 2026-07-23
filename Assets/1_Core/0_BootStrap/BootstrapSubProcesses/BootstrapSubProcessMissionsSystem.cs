@@ -11,6 +11,7 @@ public class BootstrapSubProcessMissionsSystem
 	private LocalizationManager _localizationManager;
 	private MissionsManager _missionsManager;
 	private BootstrapSubProcessScenesSystem _bootstrapSubProcessSceneSystem;
+	private GameMissionsList _gameMissions;
 
 	public BootstrapSubProcessMissionsSystem(
 		Bootstrap bootstrap,
@@ -22,6 +23,7 @@ public class BootstrapSubProcessMissionsSystem
 		_localizationManager = _bootstrap.LocalizationManager;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 		_playerCameraGameObject = playerCameraGameObject;
+		_gameMissions = _bootstrap.GameData.GameMissionsList;
 		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
 	}
 
@@ -33,8 +35,18 @@ public class BootstrapSubProcessMissionsSystem
 
 		_missionGoalMarkerManager = _gameObjectBootstrapMissionsSystem.AddComponent<MissionGoalMarkerController>();
 
-		_missionsManager.Initialize(_localizationManager, _bootstrapSubProcessSceneSystem.GameSceneManager, _bootstrapSubProcessMenuSystem.PauseMenuController, _bootstrapSubProcessMenuSystem.ViewModelPauseMenu);
-		_missionGoalMarkerManager.Initialize(_bootstrapSubProcessSceneSystem.GameSceneManager, _missionsManager, _playerCameraGameObject, _bootstrapSubProcessMenuSystem.ViewModelHUDMission.ImageMissionGoalMarker);
+		_missionsManager.Initialize(
+			_localizationManager,
+			_bootstrapSubProcessSceneSystem.GameSceneManager,
+			_bootstrapSubProcessMenuSystem.PauseMenuController,
+			_gameMissions,
+			_bootstrapSubProcessMenuSystem.ViewModelPauseMenu);
+
+		_missionGoalMarkerManager.Initialize(
+			_bootstrapSubProcessSceneSystem.GameSceneManager,
+			_missionsManager, 
+			_playerCameraGameObject,
+			_bootstrapSubProcessMenuSystem.ViewModelHUDMission.ImageMissionGoalMarker);
 
 		ServiceLocator.Register("MissionsManager", _missionsManager);
 

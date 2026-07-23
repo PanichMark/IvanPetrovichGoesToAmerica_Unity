@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7968887224968274582}
   - component: {fileID: 4006196211601909102}
   m_Layer: 0
-  m_Name: BootStrap
+  m_Name: Bootstrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3111ffddc8a1d604895768280c24a8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameCanvasesList: {fileID: 11400000, guid: 43ea8eb7774cda24ca967023a897ea99, type: 2}
+  _gameData: {fileID: 11400000, guid: c0b59741d1d422949996e0bcbed55959, type: 2}
   _configIsFirstGameLaunch: {fileID: 11400000, guid: 7b1b17737fd7b1d4faff3890b899f73f, type: 2}
   _configInitializationScreenDuration: {fileID: 11400000, guid: c1e8e3f3f72514d418c1ed6d7f0cbae9, type: 2}
   _configKeyPauseMenu: {fileID: 11400000, guid: 27c59f544162d4c45a0fd0c1994f6b80, type: 2}

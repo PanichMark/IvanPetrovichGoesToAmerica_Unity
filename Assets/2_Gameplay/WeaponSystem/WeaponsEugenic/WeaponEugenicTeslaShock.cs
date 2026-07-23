@@ -8,7 +8,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 	public override float WeaponDamage => 5;
 	public override int ManaCost => 0;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
-	public override float WeaponAttackSpeedRate => 0.2f;
+	public override float WeaponAttackSpeedRate => 0.4f;
 	public override bool IsWeaponAuto => true;
 	private GameObject _VFXteslaShock;
 	private Transform _VFXspawnPoint;

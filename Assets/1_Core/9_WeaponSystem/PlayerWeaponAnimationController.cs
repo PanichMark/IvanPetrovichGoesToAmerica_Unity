@@ -75,18 +75,18 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_transferBonesThirdPerson = transferBonesThirdPerson;
 
 		_layer1stWeaponRightEquip = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
-		_layer1stWeaponRightArm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightArm.ToString());
+		_layer1stWeaponRightArm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightFullArm.ToString());
 		_layer1stWeaponRightPalm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightPalm.ToString());
 		_layer1stWeaponLeftEquip = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftEquip.ToString());
-		_layer1stWeaponLeftArm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftArm.ToString());
+		_layer1stWeaponLeftArm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftFullArm.ToString());
 		_layer1stWeaponLeftPalm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftPalm.ToString());
 		_layer1stWeaponReload = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponReload.ToString());
 
 		_layer3rdWeaponRightEquip = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
-		_layer3rdWeaponRightArm = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightArm.ToString());
+		_layer3rdWeaponRightArm = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightFullArm.ToString());
 		_layer3rdWeaponRightPalm = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightPalm.ToString());
 		_layer3rdWeaponLeftEquip = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftEquip.ToString());
-		_layer3rdWeaponLeftArm = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftArm.ToString());
+		_layer3rdWeaponLeftArm = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftFullArm.ToString());
 		_layer3rdWeaponLeftPalm =_playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftPalm.ToString());
 		_layer3rdWeaponReload = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponReload.ToString());
 		_layer3rdLegKick = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerLegKick.ToString());
@@ -425,27 +425,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			_playerAnimator3rdPerson.Play($"{weaponPalm.WeaponType}_{weaponPalm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponPalm.WeaponHandType}", _layer3rdWeaponLeftPalm, 0f);
 		}
 
-		if (weaponPalm.WeaponName == WeaponNames.TeslaShock)
-		{
-			yield return new WaitForSeconds(0.8f);
-
-			if (weaponPalm.WeaponHandType == WeaponHandsEnum.Right)
-			{
-				ShowWeaponRight(weaponPalm);
-			}
-			else
-			{
-				ShowWeaponLeft(weaponPalm);
-			}
-		}
-		else
-		{
-			yield return new WaitForSeconds(weaponPalm.WeaponAttackSpeedRate); // return until animation plays TODO;
-
-			TurnOffFullArmLayer(weaponPalm.WeaponHandType);
-		}
-
-		//yield return new WaitForSeconds(weaponPalm.WeaponAttackSpeedRate); // return until animation plays TODO;
+		yield return new WaitForSeconds(weaponPalm.WeaponAttackSpeedRate); // return until animation plays TODO;
 
 		Debug.Log("Courutine shoot ended");
 

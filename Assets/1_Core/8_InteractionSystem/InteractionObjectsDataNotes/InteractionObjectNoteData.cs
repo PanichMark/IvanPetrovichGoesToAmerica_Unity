@@ -7,5 +7,5 @@ public class InteractionObjectNoteData : ScriptableObject
 	public TextAsset NoteText_EN;
 	public Sprite NoteImage;
 	public InteractionObjectNotePosition NotePosition;
-	public bool IsLittleText;
+	public bool IsNoteToGlanceAt;
 }

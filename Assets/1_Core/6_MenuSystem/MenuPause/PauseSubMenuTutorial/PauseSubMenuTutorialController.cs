@@ -12,7 +12,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 
 	private ViewModelPauseSubMenuTutorial _viewModelPauseSubMenuTutorial;
 
-	private List<InteractionObjectNoteData> _tutorialsList = new List<InteractionObjectNoteData>();
+	private GameTutorialsList _tutorialsList;
 
 	private GameObject _imageTutorial;
 	private Image _imageComponentTutorial;
@@ -35,6 +35,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		LocalizationManager localizationManager,
 		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuTutorial,
+		GameTutorialsList tutorialsList,
 		ViewModelPauseSubMenuTutorial viewModelPauseSubMenuTutorial)
 	{
 		_localizationManager = localizationManager;
@@ -42,7 +43,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		_canvasPauseSubMenuTutorial = canvasPauseSubMenuTutorial;
 		_viewModelPauseSubMenuTutorial = viewModelPauseSubMenuTutorial;
 
-		_tutorialsList = ((TutorialNotesList)Resources.Load("TutorialNotesList")).Notes;
+		_tutorialsList = tutorialsList;
 
 		_textTutorial = _viewModelPauseSubMenuTutorial.TextTutorial;
 		_textComponentTutorial = _textTutorial.GetComponent<TextMeshProUGUI>();
@@ -92,7 +93,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		_isPauseSubMenuTutorialOpened = true;
 		_canvasPauseSubMenuTutorial.SetActive(true);
 
-		if (_tutorialsList.Count > 0)
+		if (_tutorialsList.Notes.Count > 0)
 		{
 			_currentNoteIndex = 0;
 			UpdateUIWithCurrentNote();
@@ -111,21 +112,21 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 
 	private void NextTutorial()
 	{
-		_currentNoteIndex = (_currentNoteIndex + 1) % _tutorialsList.Count;
+		_currentNoteIndex = (_currentNoteIndex + 1) % _tutorialsList.Notes.Count;
 
 		UpdateUIWithCurrentNote();
 	}
 
 	private void PreviousTutorial()
 	{
-		_currentNoteIndex = (_currentNoteIndex - 1 + _tutorialsList.Count) % _tutorialsList.Count;
+		_currentNoteIndex = (_currentNoteIndex - 1 + _tutorialsList.Notes.Count) % _tutorialsList.Notes.Count;
 
 		UpdateUIWithCurrentNote();
 	}
 
 	private void UpdateUIWithCurrentNote()
 	{
-		InteractionObjectNoteData data = _tutorialsList[_currentNoteIndex];
+		InteractionObjectNoteData data = _tutorialsList.Notes[_currentNoteIndex];
 
 		Debug.Log($"Showing TutorialNote #{_currentNoteIndex + 1}");
 
