@@ -43,8 +43,14 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 	protected override IEnumerator SingleEugenicAttack()
 	{
+		_currentWeaponPlayerEugenicAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this));
+
+		_playerResourcesManaManager.UseMana(ManaCost);
+
 		if (_vfxInstance == null)
 		{
+			yield return new WaitForSeconds(0.52f);
+
 			// Сохраняем данные для анимации ДО запуска корутины
 			_flightDirection = _playerCameraGameObject.transform.forward.normalized;
 
@@ -70,18 +76,10 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 			Vector3 startPosition = _vfxInstance.transform.position;
 			_targetPosition = startPosition + _flightDirection * _eugenicAttackRange;
 
-			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
-			{
-				//_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
-			}
 
-			// Запускаем корутину, которая и анимирует, и удалит объект
+
 			StartCoroutine(AnimateAndDestroyVFX());
 		}
-
-		_currentWeaponPlayerEugenicAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this));
-
-		_playerResourcesManaManager.UseMana(ManaCost);
 
 		Vector3 attackOrigin = _eugenicAttackDirection.transform.position + _eugenicAttackDirection.transform.forward * 1.5f;
 		Collider[] hitColliders = Physics.OverlapSphere(attackOrigin, _eugenicAttackRange);
@@ -109,6 +107,8 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 		}
 
 		yield return _currentWeaponPlayerEugenicAttackRoutine;
+
+		_isAttacking = false;
 	}
 
 	private IEnumerator AnimateAndDestroyVFX()

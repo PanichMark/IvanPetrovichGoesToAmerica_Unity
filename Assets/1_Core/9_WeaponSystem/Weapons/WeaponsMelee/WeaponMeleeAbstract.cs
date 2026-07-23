@@ -41,7 +41,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		else
 		{
 			_isAttacking = true;
-			StartCoroutine(MeleeWeaponAttack());
+			StartCoroutine(SingleMeleeWeaponAttack());
 		}
 	}
 
@@ -73,7 +73,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	{
 		while (_isWeaponPlayerAutoShooting)
 		{
-			StartCoroutine(MeleeWeaponAttack());
+			StartCoroutine(SingleMeleeWeaponAttack());
 
 			yield return new WaitForSeconds(WeaponAttackSpeedRate);
 		}
@@ -81,7 +81,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		_currentWeaponPlayerAutoAttackCourutine = null;
 	}
 
-	protected virtual IEnumerator MeleeWeaponAttack()
+	protected virtual IEnumerator SingleMeleeWeaponAttack()
 	{
 		_currentWeaponPlayerMeleeAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this));
 

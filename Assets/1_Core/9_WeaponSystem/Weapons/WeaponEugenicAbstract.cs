@@ -4,7 +4,7 @@ using System.Collections;
 public abstract class WeaponEugenicAbstract : WeaponAbstract
 {
 	public abstract int ManaCost {  get; }
-
+	protected bool _isAttacking;
 	protected GameObject _eugenicSourcePoint;
 	protected GameObject _eugenicAttackDirection;
 
@@ -27,15 +27,23 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	{
 		if (_playerResourcesManaManager.CurrentPlayerMana >= ManaCost)
 		{
+			if (_isAttacking)
+			{
+				Debug.Log("Already attacking eugenic");
+				return;
+			}
+
 			if (IsWeaponAuto)
 			{
-				StartAutoAttackingWeaponPlayer(); 
+				StartAutoAttackingWeaponPlayer();
 			}
-			else 
+			else
 			{
+				_isAttacking = true;
 				StartCoroutine(SingleEugenicAttack());
 			}
 		}
+
 	}
 
 	public override void StartAutoAttackingWeaponPlayer()

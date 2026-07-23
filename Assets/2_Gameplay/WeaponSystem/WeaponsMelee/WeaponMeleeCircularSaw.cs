@@ -34,7 +34,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 		else
 		{
 			_isAttacking = true;
-			StartCoroutine(MeleeWeaponAttack());
+			StartCoroutine(SingleMeleeWeaponAttack());
 		}
 	}
 
@@ -62,7 +62,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 	{
 		while (_isWeaponPlayerAutoShooting)
 		{
-			StartCoroutine(MeleeWeaponAttack());
+			StartCoroutine(SingleMeleeWeaponAttack());
 
 			yield return new WaitForSeconds(WeaponAttackSpeedRate);
 		}
@@ -70,7 +70,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 		_currentWeaponPlayerAutoAttackCourutine = null;
 	}
 
-	protected override IEnumerator MeleeWeaponAttack()
+	protected override IEnumerator SingleMeleeWeaponAttack()
 	{
 		StartCoroutine(RotateSawBlades());
 
