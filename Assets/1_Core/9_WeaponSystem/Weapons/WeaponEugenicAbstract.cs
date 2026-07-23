@@ -48,8 +48,8 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 
 	public override void StartAutoAttackingWeaponPlayer()
 	{
-		if (_isWeaponPlayerAutoShooting) return;
-		_isWeaponPlayerAutoShooting = true;
+		if (_isWeaponPlayerAutoAttacking) return;
+		_isWeaponPlayerAutoAttacking = true;
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
 			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
@@ -58,7 +58,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 
 	public override void StopAutoAttacking()
 	{
-		_isWeaponPlayerAutoShooting = false;
+		_isWeaponPlayerAutoAttacking = false;
 		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
 			//TurnEugenicVFXOff();
@@ -74,18 +74,18 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	{
 		while (true)
 		{
-			if (!_isWeaponPlayerAutoShooting)
+			if (!_isWeaponPlayerAutoAttacking)
 			{
 				break;
 			}
 
-			AutoEugenicAttack();
+			StartCoroutine(SingleEugenicAttack());
 
 			yield return new WaitForSeconds(WeaponAttackSpeedRate);
 
 			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
 			{
-				_isWeaponPlayerAutoShooting = false;
+				_isWeaponPlayerAutoAttacking = false;
 				break;
 			}
 		}
@@ -95,11 +95,6 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	protected virtual IEnumerator SingleEugenicAttack()
 	{
 		yield return null;
-	}
-
-	protected virtual void AutoEugenicAttack()
-	{
-
 	}
 
 	protected abstract void InitializeWeaponEugenic();

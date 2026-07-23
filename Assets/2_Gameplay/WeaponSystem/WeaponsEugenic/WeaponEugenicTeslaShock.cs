@@ -6,7 +6,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 	public override WeaponNames WeaponName => WeaponNames.TeslaShock;
 	public override WeaponTypes WeaponType => WeaponTypes.Eugenic;
 	public override float WeaponDamage => 5;
-	public override int ManaCost => 2;
+	public override int ManaCost => 0;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	public override float WeaponAttackSpeedRate => 0.2f;
 	public override bool IsWeaponAuto => true;
@@ -33,8 +33,34 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 		_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXSpawnPoint;
 	}
 
-	protected override void AutoEugenicAttack()
+	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
+		while (true)
+		{
+			if (!_isWeaponPlayerAutoAttacking)
+			{
+				break;
+			}
+
+			StartCoroutine(SingleEugenicAttack());
+
+			yield return new WaitForSeconds(0.8f);
+
+			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
+			{
+				_isWeaponPlayerAutoAttacking = false;
+				break;
+			}
+		}
+		_currentWeaponPlayerAutoAttackCourutine = null;
+	}
+
+	protected override IEnumerator SingleEugenicAttack()
+	{
+		Debug.Log("SINGLE BRUH!");
+
+		_currentWeaponPlayerEugenicAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponPalmAttackAnimation(this));
+
 		if (_vfxInstance == null)
 		{
 			StartCoroutine(ShowVFX());
@@ -62,6 +88,12 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 				Debug.Log($"[{WeaponName}] Электроударил {hit.name}");
 			}
 		}
+
+		yield return _currentWeaponPlayerEugenicAttackRoutine;
+
+		_isAttacking = false;
+
+		_currentWeaponPlayerEugenicAttackRoutine = null;
 	}
 
 	private void OnDestroy()
@@ -98,7 +130,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 			yield return new WaitUntil(() => Time.time >= endTime);
 
-			if (!_isWeaponPlayerAutoShooting)
+			if (!_isWeaponPlayerAutoAttacking)
 			{
 				TurnEugenicVFXOff();
 				yield break;

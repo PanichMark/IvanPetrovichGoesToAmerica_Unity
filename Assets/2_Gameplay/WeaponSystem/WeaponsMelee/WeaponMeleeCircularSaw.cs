@@ -40,8 +40,8 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 	public override void StartAutoAttackingWeaponPlayer()
 	{
-		if (_isWeaponPlayerAutoShooting) return;
-		_isWeaponPlayerAutoShooting = true;
+		if (_isWeaponPlayerAutoAttacking) return;
+		_isWeaponPlayerAutoAttacking = true;
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
 			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
@@ -50,7 +50,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 	public override void StopAutoAttacking()
 	{
-		_isWeaponPlayerAutoShooting = false;
+		_isWeaponPlayerAutoAttacking = false;
 		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
 			StopCoroutine(_currentWeaponPlayerAutoAttackCourutine);
@@ -60,7 +60,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
-		while (_isWeaponPlayerAutoShooting)
+		while (_isWeaponPlayerAutoAttacking)
 		{
 			StartCoroutine(SingleMeleeWeaponAttack());
 

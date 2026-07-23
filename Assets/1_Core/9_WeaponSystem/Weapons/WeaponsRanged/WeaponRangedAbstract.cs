@@ -102,10 +102,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	public override void StartAutoAttackingWeaponPlayer()
 	{
-		if (_isWeaponPlayerAutoShooting || PlayerMagazineAmmoCurrent <= 0)
+		if (_isWeaponPlayerAutoAttacking || PlayerMagazineAmmoCurrent <= 0)
 			return;
 
-		_isWeaponPlayerAutoShooting = true;
+		_isWeaponPlayerAutoAttacking = true;
 
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
@@ -115,7 +115,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	public override void StopAutoAttacking()
 	{
-		_isWeaponPlayerAutoShooting = false;
+		_isWeaponPlayerAutoAttacking = false;
 
 		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
@@ -128,7 +128,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		while (true)
 		{
-			if (!_isWeaponPlayerAutoShooting)
+			if (!_isWeaponPlayerAutoAttacking)
 			{
 				break; 
 			}
@@ -141,7 +141,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 			if (PlayerMagazineAmmoCurrent <= 0)
 			{
-				_isWeaponPlayerAutoShooting = false;
+				_isWeaponPlayerAutoAttacking = false;
 				break;
 			}
 		}
@@ -176,7 +176,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		ApplyWeaponRecoil();
 		_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(WeaponName, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
 
-		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponShootAnimation(this));
+		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponPalmAttackAnimation(this));
 		yield return _currentWeaponPlayerShootRoutine;
 		_currentWeaponPlayerShootRoutine = null;
 	}

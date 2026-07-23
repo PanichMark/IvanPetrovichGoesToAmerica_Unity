@@ -14,7 +14,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract float WeaponDamage { get; }
 	public abstract bool IsWeaponAuto { get; }
 	public abstract float WeaponAttackSpeedRate { get; }
-	protected bool _isWeaponPlayerAutoShooting;
+	protected bool _isWeaponPlayerAutoAttacking;
 	protected Coroutine _currentWeaponPlayerAutoAttackCourutine;
 	protected bool _isWeaponInitialized;
 	protected bool _isThisPlayerWeapon;
