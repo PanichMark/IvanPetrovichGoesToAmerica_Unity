@@ -221,6 +221,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			ShowWeapon(WeaponHandsEnum.Right);
 		}
+
 		yield return null;
 	}
 
