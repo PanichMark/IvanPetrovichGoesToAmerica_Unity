@@ -16,7 +16,12 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 	[SerializeField] private float _maxDurability = 100f;
 	[SerializeField] private float _damageThreshold = 50f;
 	[SerializeField] private bool _isDestructable;
+	[SerializeField] private GameObject _doorNormal;
+	[SerializeField] private GameObject _doorDamaged;
+	[SerializeField] private GameObject _doorBroken;
 	[SerializeField] protected bool _isLockedForever;
+	private Collider _collider;
+	private SkinnedMeshRenderer _doorBrokenSkinnedMeshRenderer;
 
 	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
@@ -37,6 +42,13 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 
 	void Start()
 	{
+		_collider = GetComponent<Collider>();
+
+		if (_isDestructable)
+		{
+			_doorBrokenSkinnedMeshRenderer = _doorBroken.GetComponent<SkinnedMeshRenderer>();
+		}
+
 		_keysManager = ServiceLocator.Resolve<KeysManager>("KeysManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
@@ -254,6 +266,12 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 			CurrentDurability -= amount;
 			Debug.Log($"Нанесено урона: {amount}. Осталось прочности: {CurrentDurability}");
 
+			if (CurrentDurability <= _maxDurability / 2)
+			{
+				_doorNormal.SetActive(false);
+				_doorDamaged.SetActive(true);
+			}
+
 			// Проверка на разрушение
 			if (CurrentDurability <= 0f)
 			{
@@ -265,6 +283,26 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 	public void ObjectIsFullyBroken()
 	{
 		Debug.Log("Был broke!");
-		Destroy(gameObject);
+		_collider.enabled = false;
+		_doorDamaged.SetActive(false);
+		_doorBroken.SetActive(true);
+
+		StartCoroutine(BreakBlendShapeAnimation());
+	}
+
+	IEnumerator BreakBlendShapeAnimation()
+	{
+		float duration = 0.5f;
+		float elapsed = 0f;
+		int index = 0;
+
+		while (elapsed < duration)
+		{
+			elapsed += Time.deltaTime;
+			_doorBrokenSkinnedMeshRenderer.SetBlendShapeWeight(index, Mathf.Lerp(0f, 100f, elapsed / duration));
+			yield return null;
+		}
+
+		_doorBrokenSkinnedMeshRenderer.SetBlendShapeWeight(index, 100f);
 	}
 }
