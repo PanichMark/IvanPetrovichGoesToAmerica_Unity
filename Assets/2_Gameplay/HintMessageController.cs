@@ -2,17 +2,15 @@
 
 public class HintMessageController : MonoBehaviour
 {
-	[SerializeField] private GameObject _noteObject;
+	[SerializeField] private InteractionObjectNote _noteObject;
 	private Collider _triggerZone;
 
-	private InteractionObjectNote _interactionNote;
 	private GameObject _playerCollider;
 
 	private void Awake()
 	{
-		_interactionNote = _noteObject.GetComponent<InteractionObjectNote>();
 
-		_playerCollider = ServiceLocator.Resolve<GameObject>("PlayerColliderGameObject");
+		_playerCollider = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
 
 		_triggerZone = GetComponent<Collider>();
 
@@ -23,7 +21,9 @@ public class HintMessageController : MonoBehaviour
 	{
 		if (other.gameObject == _playerCollider)
 		{
-			_interactionNote.Interact();
+			Debug.Log("SHOW HINT!");
+
+			_noteObject.Interact();
 
 			_triggerZone.enabled = false;
 		}

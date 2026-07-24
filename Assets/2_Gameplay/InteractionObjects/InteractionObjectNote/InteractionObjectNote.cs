@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class InteractionObjectNote : MonoBehaviour, IInteractable
 {
@@ -28,6 +29,8 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	private RectTransform _textBackgroundTransform;
 	private TextMeshProUGUI _textComponent;
 	private Image _imageComponent;
+
+	[SerializeField] private InteractionObjectNote _noteToOpenAfter;
 
 	public bool IsInteractionHintMessageFailActive => false;
 	private GameScenesManager _gameSceneManager;
@@ -58,6 +61,8 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_textBackgroundTransform = _textBackground.gameObject.GetComponent<RectTransform>();
 
 		_buttonExitNoteMenu.onClick.AddListener(CloseAndDeactivate);
+	
+
 		_menuManager.OnOpenPauseMenu += HideNoteCanvas;
 		_menuManager.OnClosePauseMenu += ShowNoteCanvas;
 	}
@@ -102,6 +107,8 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	public void Interact()
 	{
+		Debug.Log("BRUH!");
+
 		_menuManager.OpenInteractionMenu();
 		_isReading = true;
 
@@ -154,9 +161,22 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 			_imageComponent.sprite = null;
 	
 			_canvasNoteMenu.SetActive(false);
+		
 			_menuManager.CloseInteractionMenu();
 
 			gameObject.tag = "Interactable";
+
+			if (_noteToOpenAfter != null)
+			{
+				StartCoroutine(DelayedOpenNextNote());
+			}
 		}
+	}
+
+	private IEnumerator DelayedOpenNextNote()
+	{
+		yield return new WaitForSecondsRealtime(0.01f);
+
+		_noteToOpenAfter.Interact();
 	}
 }
