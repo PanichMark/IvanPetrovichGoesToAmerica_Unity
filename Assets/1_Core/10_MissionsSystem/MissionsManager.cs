@@ -1,16 +1,13 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MissionsManager : MonoBehaviour
 {
 	private GameMissionsList _gameMissions;
 	public MissionAbstract ActiveMission { get; private set; }
 	public int CurrentStepIndex { get; private set; } = 0;
-
-	private PauseMenuController _pauseMenuController;
 	private LocalizationManager _localizationManager;
-
-	// --- СОБЫТИЕ ДЛЯ УВЕДОМЛЕНИЯ ---
+	private HUDmissionsController _HUDmissionsController;
+	
 	public delegate void OnStepChangedDelegate();
 	public event OnStepChangedDelegate OnCurrentStepChanged;
 	private GameScenesManager _gameSceneManager;
@@ -19,45 +16,32 @@ public class MissionsManager : MonoBehaviour
 
 	public delegate void DestructionEventHandler(GameObject destroyedObject, bool wasLethal);
 	public event DestructionEventHandler OnAnyObjectDestroyed;
-	private GameObject _textCurrentMissionGoal;
-	private TextMeshProUGUI _textComponentCurrentMissionGoal;
+
 
 	public void Initialize(
 		LocalizationManager localizationManager,
 		GameScenesManager gameSceneManager,
-		PauseMenuController pauseMenuController,
-		GameMissionsList gameMissions,
-		ViewModelPauseMenu viewModelPauseMenu)
+		HUDmissionsController HUDmissionsController,
+		GameMissionsList gameMissions)
 	{
 		_localizationManager = localizationManager;
-		_pauseMenuController = pauseMenuController;
 		_gameSceneManager = gameSceneManager;
-		_textCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoalDisplay;
-		_textComponentCurrentMissionGoal = _textCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
+		_HUDmissionsController = HUDmissionsController;
 
 		_gameMissions = gameMissions;
 
 		ActiveMission = _gameMissions.MissionsInOrder[0];
-		CurrentStepIndex = 0;
 
-		//Debug.Log("Система миссий инициализирована.");
-		//Debug.Log($"Активирована первая миссия: {ActiveMission.name}");
+		CurrentStepIndex = 0;
 
 		if (ActiveMission.Steps.Length > 0)
 		{
-			// Получаем текущий шаг (на старте это всегда первый шаг, индекс 0)
-			MissionStepAbstract currentStep = ActiveMission.Steps[CurrentStepIndex];
-
-			// --- ИЗМЕНЕНИЕ ---
-			// Вызываем наш новый метод для получения локализованного текста
-			string localizedGoalText = GetLocalizedGoalText(currentStep);
-			SetCurrentMissionGoalText(localizedGoalText);
-			// ----------------
-
-			//Debug.Log($"Миссия: {ActiveMission.name} - Шаг 1");
+			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
+			_HUDmissionsController.SetCurrentMissionGoalText(localizedGoalText);
 		}
-		//_gameSceneManager.OnEndLoadingGameplayScene += Req
+
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		_gameSceneManager.OnEndLoadingGameplayScene += ShowMissionGoalHUDonSceneLoad;
 
 		Debug.Log("MissionsManager Initialized");
 	}
@@ -70,6 +54,13 @@ public class MissionsManager : MonoBehaviour
 		ActiveMission.Steps[CurrentStepIndex].OnStepCompleted();
 	}
 
+	private void ShowMissionGoalHUDonSceneLoad()
+	{
+		string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
+
+		_HUDmissionsController.ShowNewMissionGoalHUDnotification(localizedGoalText);
+	}
+
 	public void CompleteCurrentStep()
 	{
 		CurrentStepIndex++;
@@ -77,14 +68,15 @@ public class MissionsManager : MonoBehaviour
 		if (CurrentStepIndex < ActiveMission.Steps.Length)
 		{
 			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
-			SetCurrentMissionGoalText(localizedGoalText);
+
+			_HUDmissionsController.ShowNewMissionGoalHUDnotification(localizedGoalText);
+			_HUDmissionsController.SetCurrentMissionGoalText(localizedGoalText);
 		}
 		else
 		{
-			SetCurrentMissionGoalText("");
+			_HUDmissionsController.SetCurrentMissionGoalText("");
 		}
 
-		// --- УВЕДОМЛЕНИЕ ЧЕРЕЗ DELEGATE ---
 		OnCurrentStepChanged?.Invoke();
 
 		if (CurrentStepIndex >= ActiveMission.Steps.Length)
@@ -130,12 +122,7 @@ public class MissionsManager : MonoBehaviour
 		if (ActiveMission != null && ActiveMission.Steps.Length > 0)
 		{
 			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
-			SetCurrentMissionGoalText(localizedGoalText);
+			_HUDmissionsController.SetCurrentMissionGoalText(localizedGoalText);
 		}
-	}
-
-	public void SetCurrentMissionGoalText(string textGoal)
-	{
-		_textComponentCurrentMissionGoal.text = textGoal;
 	}
 }

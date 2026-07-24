@@ -55,6 +55,8 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 			Debug.Log($"[MissionMarker] Условие: '{condition.GetType().Name}'. Владелец: {ownerName}. Выполнено: {conditionMet}");
 
+			Debug.Log(condition.Owner);
+
 			if (condition.Owner != null && !conditionMet)
 			{
 				Debug.Log($"[MissionMarker] Найдена активная цель: {condition.Owner.name}");
@@ -152,7 +154,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 	private void UpdateCurrentStepCache()
 	{
-		if (_missionsManager?.ActiveMission == null || _missionsManager.CurrentStepIndex < 0)
+		if (_missionsManager.ActiveMission == null || _missionsManager.CurrentStepIndex < 0)
 		{
 			_currentMissionStepCache = null;
 			return;

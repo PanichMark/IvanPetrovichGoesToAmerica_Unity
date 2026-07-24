@@ -7,13 +7,13 @@ public class MissionStep : MissionStepAbstract, ICurrentMissionStep
 {
 	[TextArea(3, 10)]
 	public string StepDescription;
-	public List<MissionStepConditionAbstract> Sonditions = new List<MissionStepConditionAbstract>();
+	public List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
 
 	// --- ДОБАВЬТЕ ЭТО СВОЙСТВО ---
 	// Оно преобразует список конкретных условий в список общих интерфейсов
 	public IReadOnlyList<ICurrentMissionCondition> Conditions
 	{
-		get { return Sonditions.ConvertAll(c => (ICurrentMissionCondition)c); }
+		get { return StepConditions.ConvertAll(c => (ICurrentMissionCondition)c); }
 	}
 	// ---------------------------------
 
@@ -29,6 +29,6 @@ public class MissionStep : MissionStepAbstract, ICurrentMissionStep
 
 	private bool AreAllConditionsMet()
 	{
-		return Sonditions.All(cond => cond.IsConditionMet());
+		return StepConditions.All(cond => cond.IsConditionMet());
 	}
 }

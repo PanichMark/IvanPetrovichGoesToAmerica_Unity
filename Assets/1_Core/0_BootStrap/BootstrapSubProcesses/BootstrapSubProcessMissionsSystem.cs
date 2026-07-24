@@ -38,9 +38,8 @@ public class BootstrapSubProcessMissionsSystem
 		_missionsManager.Initialize(
 			_localizationManager,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
-			_bootstrapSubProcessMenuSystem.PauseMenuController,
-			_gameMissions,
-			_bootstrapSubProcessMenuSystem.ViewModelPauseMenu);
+			_bootstrapSubProcessMenuSystem.HUDmissionsController,
+			_gameMissions);
 
 		_missionGoalMarkerManager.Initialize(
 			_bootstrapSubProcessSceneSystem.GameSceneManager,

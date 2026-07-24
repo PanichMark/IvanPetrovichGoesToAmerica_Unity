@@ -18,7 +18,7 @@ public class BootstrapSubProcessMenuSystem
 	private ViewModelPauseSubMenuSettings _viewModelPauseSubMenuSettings;
 	private ViewModelPauseMenuConfirmAction _viewModelPauseMenuConfirmAction;
 	private ViewModelMainMenuReadNews _viewModelMainMenuReadNews;
-	private HUDmissionsController _HUDmissionsController;
+	public HUDmissionsController HUDmissionsController { get; private set; }
 	private GameObject _canvasMenuChooseFirstLanguage;
 	public ViewModelHUDMission ViewModelHUDMission { get; private set; }
 	public ViewModelMenuWeaponWheel ViewModelWeaponWheel { get; private set; }
@@ -201,7 +201,7 @@ public class BootstrapSubProcessMenuSystem
 		_cutsceneMenuController = _gameObjectBootstrapMenuSystem.AddComponent<CutsceneMenuController>();
 		HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
-		_HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
+		HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
 
 		ViewModelMenuChooseFirstLanguage = new ViewModelMenuChooseFirstLanguage(_bootstrap, _canvasMenuChooseFirstLanguage);
 
@@ -360,12 +360,13 @@ public class BootstrapSubProcessMenuSystem
 			_canvasHUDhealthAndMana,
 			ViewModelHUDhealthAndMana);
 
-		_HUDmissionsController.Initialize(
+		HUDmissionsController.Initialize(
 			_gameController,
 			_gameSceneManager,
 			MenuManager,
 			PauseSubMenuSettingsSectionGeneralController,
 			_canvasHUDmission,
+			ViewModelPauseMenu,
 			ViewModelHUDMission);
 
 		ServiceLocator.Register("MenuManager", MenuManager);
