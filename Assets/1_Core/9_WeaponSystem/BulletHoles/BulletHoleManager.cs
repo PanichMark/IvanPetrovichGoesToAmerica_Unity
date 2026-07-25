@@ -98,6 +98,25 @@ public class BulletHoleManager : MonoBehaviour
 		}
 	}
 
+	public void ReturnSpecificDecalsToPool(SpriteRenderer[] decalsToReturn)
+	{
+		if (decalsToReturn == null) return;
+
+		foreach (var sr in decalsToReturn)
+		{
+			// Проверяем, что объект принадлежит нашему пулу и сейчас активен
+			if (sr != null && _decalList.Contains(sr) && sr.gameObject.activeSelf)
+			{
+				sr.transform.SetParent(_decalParent, false);
+				sr.transform.localPosition = Vector3.zero;
+				sr.transform.localRotation = Quaternion.identity;
+				sr.transform.localScale = Vector3.one * 0.05f;
+
+				sr.gameObject.SetActive(false);
+			}
+		}
+	}
+
 	public void HideBloodDecals()
 	{
 		_isBloodVisible = false;

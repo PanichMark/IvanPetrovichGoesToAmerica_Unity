@@ -1,9 +1,11 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, IBreakable
 {
 	protected bool _isAdditionalInteractionHintActive;
+	private BulletHoleManager _bulletHoleManager;
 	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 	[SerializeField] private int _doorOpenAngle = 90;
 	protected string _interactionHintMessageMain;
@@ -42,6 +44,8 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 
 	void Start()
 	{
+		_bulletHoleManager = ServiceLocator.Resolve<BulletHoleManager>("BulletHoleManager");
+
 		_collider = GetComponent<Collider>();
 
 		if (_isDestructable)
@@ -287,7 +291,33 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 		_doorDamaged.SetActive(false);
 		_doorBroken.SetActive(true);
 
+		ReturnAttachedDecalsToPool();
 		StartCoroutine(BreakBlendShapeAnimation());
+	}
+
+	private void ReturnAttachedDecalsToPool()
+	{
+		List<SpriteRenderer> decalsToReturn = new List<SpriteRenderer>();
+
+		int childCount = transform.childCount;
+		for (int i = 0; i < childCount; i++)
+		{
+			Transform child = transform.GetChild(i);
+
+			if (child.name.StartsWith("Pooled_Decal"))
+			{
+				var sr = child.GetComponent<SpriteRenderer>();
+				if (sr != null)
+				{
+					decalsToReturn.Add(sr);
+				}
+			}
+		}
+
+		if (decalsToReturn.Count > 0)
+		{
+			_bulletHoleManager.ReturnSpecificDecalsToPool(decalsToReturn.ToArray());
+		}
 	}
 
 	IEnumerator BreakBlendShapeAnimation()
