@@ -5,7 +5,7 @@ using UnityEngine;
 public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, IBreakable
 {
 	protected bool _isAdditionalInteractionHintActive;
-	private BulletHoleManager _bulletHoleManager;
+	private ObjectPoolWeaponController _bulletHoleManager;
 	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 	[SerializeField] private int _doorOpenAngle = 90;
 	protected string _interactionHintMessageMain;
@@ -44,7 +44,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 
 	void Start()
 	{
-		_bulletHoleManager = ServiceLocator.Resolve<BulletHoleManager>("BulletHoleManager");
+		_bulletHoleManager = ServiceLocator.Resolve<ObjectPoolWeaponController>("ObjectPoolWeaponController");
 
 		_collider = GetComponent<Collider>();
 

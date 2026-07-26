@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletHoleManager : MonoBehaviour
+public class ObjectPoolWeaponController : MonoBehaviour
 {
 	private Sprite _decalSpriteDefault;
 	private Sprite _decalSpriteBlood;

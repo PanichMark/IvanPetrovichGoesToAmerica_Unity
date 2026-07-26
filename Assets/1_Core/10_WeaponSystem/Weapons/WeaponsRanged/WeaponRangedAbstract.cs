@@ -26,7 +26,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	
 	public int PlayerAmmoReserve => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].AmmoReserve;
 	public int PlayerAmmoMax => _playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType].AmmoMax;
-	protected BulletHoleManager _bulletHoleManager;
+	protected ObjectPoolWeaponController _bulletHoleManager;
 	protected PlayerCameraController _playerCameraController;
 
 	public override void InitializeWeapon()
@@ -51,7 +51,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
 		}
 
-		_bulletHoleManager = ServiceLocator.Resolve<BulletHoleManager>("BulletHoleManager");
+		_bulletHoleManager = ServiceLocator.Resolve<ObjectPoolWeaponController>("ObjectPoolWeaponController");
 	}
 
 	private void OnDestroy()

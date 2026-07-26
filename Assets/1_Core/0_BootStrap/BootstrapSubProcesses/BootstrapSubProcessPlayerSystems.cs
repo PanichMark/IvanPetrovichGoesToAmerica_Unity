@@ -74,7 +74,7 @@ public class BootstrapSubProcessPlayerSystems
 		_gameObjectPlayerCamera = playerMainCameraGameObject;
 	}
 
-	public IEnumerator InitializePlayerSystems()
+	public IEnumerator Initialize()
 	{
 		_gameObjectPlayerCollider = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerCollider");
 		PlayerCameraFirstPerson = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraFirstPerson");

@@ -19,9 +19,9 @@ public class BootstrapSubProcessPlayerPrefsSystem
 		_subProcessMenuSystem = subProcessMenuSystem;
 	}
 
-	public IEnumerator InitializePlayerPrefsSystem()
+	public IEnumerator Initialize()
 	{
-		_gameObjectBootstrapPlayerPrefsSystem = new GameObject("Bootstrap_MenuSystem");
+		_gameObjectBootstrapPlayerPrefsSystem = new GameObject("Bootstrap_PlayerPrefsSystem");
 
 		_pauseSubMenuSettingsPlayerPrefs = _gameObjectBootstrapPlayerPrefsSystem.AddComponent<PlayerPrefsSettingsController>();
 

@@ -33,8 +33,6 @@ public class BootstrapSubProcessWeaponSystem
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private HUDammoController _HUDammoController;
 
-	private BulletHoleManager _bulletHoleManager;
-
 	public BootstrapSubProcessWeaponSystem(
 		Bootstrap bootstrap,
 		GameController gameController,
@@ -60,7 +58,7 @@ public class BootstrapSubProcessWeaponSystem
 		_playerResourcesAmmoManager = bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager;
 	}
 
-	public IEnumerator InitializeWeaponSystem()
+	public IEnumerator Initialize()
 	{
 		_GameObjectBootstrapWeaponSystem = new GameObject("Bootstrap_WeaponSystem");
 
@@ -72,7 +70,7 @@ public class BootstrapSubProcessWeaponSystem
 		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponFirstPersonRenderer>();
 		_legKickAttackController = _GameObjectBootstrapWeaponSystem.AddComponent<LegKickAttackController>();
 		_HUDammoController = _GameObjectBootstrapWeaponSystem.AddComponent<HUDammoController>();
-		_bulletHoleManager = _GameObjectBootstrapWeaponSystem.AddComponent<BulletHoleManager>();
+		
 
 		_gameObjectFirstPersonRightHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlot_Hand.R");
 		_gameObjectFirstPersonLeftHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlot_Hand.L");
@@ -143,10 +141,6 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessMenuSystem.CanvasHUDammo,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo);
 
-		_bulletHoleManager.Initialize(
-			_bootstrapSubProcessSceneSystem.GameSceneManager,
-			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController);
-
 		ServiceLocator.Register("WeaponController", WeaponController);
 		ServiceLocator.Register("WeaponAnimationController", _weaponAnimationController);
 		ServiceLocator.Register("PlayerWeaponFirstPersonRenderer", _weaponFirstPersonRender);
@@ -156,8 +150,6 @@ public class BootstrapSubProcessWeaponSystem
 		ServiceLocator.Register("FirstPersonRightHandWeaponSlotGameObject", _gameObjectFirstPersonRightHandWeaponSlot);
 		ServiceLocator.Register("ThirdPersonLeftHandWeaponSlotGameObject", _gameObjectThirdPersonLeftHandWeaponSlot);
 		ServiceLocator.Register("ThirdPersonRightHandWeaponSlotGameObject", _gameObjectThirdPersonRightHandWeaponSlot);
-
-		ServiceLocator.Register("BulletHoleManager", _bulletHoleManager);
 
 		yield break;
 	}

@@ -178,7 +178,7 @@ public class BootstrapSubProcessMenuSystem
 		_tutorialsList = bootstrap.GameData.GameTutorialsList;
 	}
 
-	public IEnumerator InitializeMenuSystem()
+	public IEnumerator Initialize()
 	{
 		_gameObjectBootstrapMenuSystem = new GameObject("Bootstrap_MenuSystem");
 

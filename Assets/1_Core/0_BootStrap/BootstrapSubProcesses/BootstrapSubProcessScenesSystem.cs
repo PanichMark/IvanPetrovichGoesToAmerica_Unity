@@ -26,7 +26,7 @@ public class BootstrapSubProcessScenesSystem
 		_localizationManager = localizationManager;
 	}
 
-	public IEnumerator InitializeSceneSystem()
+	public IEnumerator Initialize()
 	{
 		_gameObjectBootstrapGameSceneSystem = new GameObject("Bootstrap_GameSceneSystem");
 		GameSceneManager = _gameObjectBootstrapGameSceneSystem.AddComponent<GameScenesManager>();

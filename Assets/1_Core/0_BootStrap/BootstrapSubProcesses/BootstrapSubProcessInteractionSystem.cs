@@ -45,7 +45,7 @@ public class BootstrapSubProcessInteractionSystem
 		_playerCameraStateMachineController = bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController;
 	}
 
-	public IEnumerator InitializeInteractionSystem()
+	public IEnumerator Initialize()
 	{
 		_gameObjectBootstrapInteractionSystem = new GameObject("Bootstrap_InteractionSystem");
 

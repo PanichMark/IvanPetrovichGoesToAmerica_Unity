@@ -61,6 +61,7 @@ public class Bootstrap : MonoBehaviour
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
 	private BootstrapSubProcessWeaponSystem _bootstrapSubProcessWeaponSystem;
 	private BootstrapSubProcessMissionsSystem _bootstrapSubProcessMissionsSystem;
+	private BootstrapSubProcessObjectPoolSystem _bootstrapSubProcessObjectPoolSystem;
 
 	private KeyCode _keyPauseMenu;
 
@@ -134,6 +135,7 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(InitializeInteractionSystem());
 		yield return StartCoroutine(InitializeWeaponSystem());
 		yield return StartCoroutine(InitializeMissionsSystem());
+		yield return StartCoroutine(InitializeObjectPoolSystem());
 
 		yield return StartCoroutine(RegisterBootstrapDependencies());
 	}
@@ -201,7 +203,7 @@ public class Bootstrap : MonoBehaviour
 			LocalizationManager,
 			_canvasLoadingScreen);
 
-		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.InitializeSceneSystem());
+		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.Initialize());
 
 		Debug.Log("=== SCENE SYSTEM INITIALIZED ===");
 	}
@@ -212,7 +214,7 @@ public class Bootstrap : MonoBehaviour
 			_gameController,
 			_bootstrapSubProcessSceneSystem);
 
-		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.InitializeSaveLoadSystem());
+		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.Initialize());
 
 		Debug.Log("=== SAVELOAD SYSTEM INITIALIZED ===");
 	}
@@ -248,7 +250,7 @@ public class Bootstrap : MonoBehaviour
 			_canvasMenuLockpickElectronic,
 			_canvasMenuDialogue);
 
-		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.InitializeMenuSystem());
+		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.Initialize());
 
 		Debug.Log("=== MENU SYSTEM INITIALIZED ===");
 	}
@@ -260,7 +262,7 @@ public class Bootstrap : MonoBehaviour
 			_inputDevice,
 			_bootstrapSubProcessMenuSystem);
 
-		yield return StartCoroutine(_bootstrapSubProcessPlayerPrefsSystem.InitializePlayerPrefsSystem());
+		yield return StartCoroutine(_bootstrapSubProcessPlayerPrefsSystem.Initialize());
 
 		Debug.Log("=== PLAYERPREFS SYSTEM INITIALIZED ===");
 	}
@@ -281,7 +283,7 @@ public class Bootstrap : MonoBehaviour
 			_gameObjectPlayer,
 			GameObjectPlayerCamera);
 
-		yield return StartCoroutine(_bootstrapSubProcessPlayerSystems.InitializePlayerSystems());
+		yield return StartCoroutine(_bootstrapSubProcessPlayerSystems.Initialize());
 
 		Debug.Log("=== PLAYER SYSTEMS INITIALIZED ===");
 	}
@@ -297,7 +299,7 @@ public class Bootstrap : MonoBehaviour
 			_inputDevice,
 			LocalizationManager);
 
-		yield return StartCoroutine(_bootstrapSubProcessInteractionSystem.InitializeInteractionSystem());
+		yield return StartCoroutine(_bootstrapSubProcessInteractionSystem.Initialize());
 
 		Debug.Log("=== INTERACTION SYSTEM INITIALIZED ===");
 	}
@@ -316,7 +318,7 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessPlayerSystems,
 			_bootstrapSubProcessInteractionSystem);
 
-		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.InitializeWeaponSystem());
+		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.Initialize());
 
 		Debug.Log("=== WEAPON SYSTEM INITIALIZED ===");
 	}
@@ -329,9 +331,20 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessMenuSystem,
 			GameObjectPlayerCamera);
 
-		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.InitializeMissionsSystem());
+		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.Initialize());
 
 		Debug.Log("=== MISSIONS SYSTEM INITIALIZED ===");
+	}
+
+	private IEnumerator InitializeObjectPoolSystem()
+	{
+		_bootstrapSubProcessObjectPoolSystem = new BootstrapSubProcessObjectPoolSystem(
+			_bootstrapSubProcessSceneSystem,
+			_bootstrapSubProcessMenuSystem);
+
+		yield return StartCoroutine(_bootstrapSubProcessObjectPoolSystem.Initialize());
+
+		Debug.Log("=== OBJECT POOL SYSTEM INITIALIZED ===");
 	}
 
 	private IEnumerator RegisterBootstrapDependencies()

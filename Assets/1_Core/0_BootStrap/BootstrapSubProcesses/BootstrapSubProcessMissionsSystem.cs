@@ -27,7 +27,7 @@ public class BootstrapSubProcessMissionsSystem
 		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
 	}
 
-	public IEnumerator InitializeMissionsSystem()
+	public IEnumerator Initialize()
 	{
 		_gameObjectBootstrapMissionsSystem = new GameObject("Bootstrap_MissionsSystem");
 		

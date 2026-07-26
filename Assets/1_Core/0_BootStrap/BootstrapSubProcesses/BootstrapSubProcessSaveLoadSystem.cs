@@ -15,7 +15,7 @@ public class BootstrapSubProcessSaveLoadSystem
 		_gameSceneManager = bootstrapSubProcessSceneSystem.GameSceneManager;
 	}
 
-	public IEnumerator InitializeSaveLoadSystem()
+	public IEnumerator Initialize()
 	{
 		_gameObjectBootstrapSaveLoadSystem = new GameObject("Bootstrap_SaveLoadSystem");
 
