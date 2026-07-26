@@ -45,7 +45,7 @@ public class PlayerPrefsData
 	public bool ShowBlood { get; set; }
 
 	//Settings Controls
-	public Dictionary<string, KeyCode> KeyBindings { get; set; } = new Dictionary<string, KeyCode>();
+	public Dictionary<InputControlsEnum, KeyCode> KeyBindings { get; set; } = new Dictionary<InputControlsEnum, KeyCode>();
 	public float MouseSensitivityX { get; set; }
 	public float MouseSensitivityY { get; set; }
 

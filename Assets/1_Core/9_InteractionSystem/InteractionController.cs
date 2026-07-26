@@ -226,13 +226,13 @@ public class InteractionController : MonoBehaviour
 			if (_currentIThrowable != null)
 			{
 				OnPickUpThrowable?.Invoke();
-				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKeyInteract()}\n{_HUDInteractionThrowText} {_inputDevice.GetNameOfKeyRightHandWeaponAttack()}";
+				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}\n{_HUDInteractionThrowText} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackRightHand)}";
 				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
 			}
 			else
 			{
 				OnPickUpNonThrowable?.Invoke();
-				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKeyInteract()}";
+				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}";
 				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
 			}
 
@@ -333,7 +333,7 @@ public class InteractionController : MonoBehaviour
 
 				if (_currentInteractableObject != null)
 				{
-					_mainInteractionText.text = $"{_lookedAtIInteractable.InteractionHintMessageMain}\n{_HUDInteractionMainTextInteract} {_inputDevice.GetNameOfKeyInteract()}";
+					_mainInteractionText.text = $"{_lookedAtIInteractable.InteractionHintMessageMain}\n{_HUDInteractionMainTextInteract} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}";
 
 				}
 

@@ -60,7 +60,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 		_pauseSubMenuSettingsSectionAudioController = pauseSubMenuSettingsSectionAudioController;
 
 		var defaultBindings = _inputDevice.GetDefaultKeyBindings();
-		List<string> actionNames = new List<string>(defaultBindings.Keys);
+		List<InputControlsEnum> actionNames = new List<InputControlsEnum>(defaultBindings.Keys);
 
 		_bootstrap.OnLoadSettingsData += () => LoadSettings(actionNames);
 
@@ -118,7 +118,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 		Debug.Log("Saved Settings Audio");
 	}
 
-	public void LoadSettings(List<string> actionNamesToLoad)
+	public void LoadSettings(List<InputControlsEnum> actionNamesToLoad)
 	{
 		var data = new PlayerPrefsData();
 
@@ -133,7 +133,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 		{
 			int loadedBindingsCount = 0;
 
-			foreach (string actionName in actionNamesToLoad)
+			foreach (InputControlsEnum actionName in actionNamesToLoad)
 			{
 				string key = KeyBindingPrefix + actionName;
 				if (PlayerPrefs.HasKey(key))

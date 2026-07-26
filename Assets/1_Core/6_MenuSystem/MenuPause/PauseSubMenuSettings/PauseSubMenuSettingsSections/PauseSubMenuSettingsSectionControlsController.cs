@@ -102,10 +102,16 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		}
 		foreach (var field in _inputFieldsComponentsControls)
 		{
-			var matchingBinding = bindings.FirstOrDefault(b => b.action == field.name.Replace("InputFieldControl", ""));
-			if (matchingBinding != default)
+			string actionName = field.name.Replace("InputFieldControl", "");
+
+			if (System.Enum.TryParse(typeof(InputControlsEnum), actionName, out object parsedEnum))
 			{
-				field.text = matchingBinding.key.ToString();
+				InputControlsEnum actionEnum = (InputControlsEnum)parsedEnum;
+				var matchingBinding = bindings.FirstOrDefault(b => b.action == actionEnum);
+				if (matchingBinding != default)
+				{
+					field.text = matchingBinding.key.ToString();
+				}
 			}
 		}
 		foreach (var field in _inputFieldsComponentsControls)
@@ -114,7 +120,11 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 			field.onEndEdit.AddListener((string text) =>
 			{
 				string actionName = field.name.Replace("InputFieldControl", "");
-				HandleRebinding(actionName, text);
+
+				if (System.Enum.TryParse(typeof(InputControlsEnum), actionName, out object parsedEnum))
+				{
+					HandleRebinding((InputControlsEnum)parsedEnum, text);
+				}
 			});
 			field.onValueChanged.AddListener((string text) => KeepLastCharacter(field));
 		}
@@ -161,26 +171,26 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		return _lastValidChar;
 	}
 
-	void HandleRebinding(string actionName, string newKeyStr)
+	void HandleRebinding(InputControlsEnum actionName, string newKeyStr)
 	{
 		if (!Enum.TryParse<KeyCode>(newKeyStr, out KeyCode newKey))
 		{
 			return;
 		}
 
-		var currentBindings = _inputDevice.GetCurrentKeyBindings().ToDictionary(kvp => kvp.action, kvp => kvp.key);
+		var currentBindings = _inputDevice.GetCurrentKeyBindings().ToDictionary(b => b.action, b => b.key);
 
-		var conflictingAction = currentBindings.FirstOrDefault(kvp => kvp.Value == newKey && kvp.Key != actionName).Key;
+		var conflictEntry = currentBindings.FirstOrDefault(b => b.Value == newKey && b.Key != actionName);
 
-		if (conflictingAction != null)
+		if (conflictEntry.Key != null)
 		{
 			KeyCode oldKeyOfThisAction = currentBindings[actionName];
 
 			_inputDevice.RebindKey(actionName, newKey);
-			_inputDevice.RebindKey(conflictingAction, oldKeyOfThisAction);
+			_inputDevice.RebindKey(conflictEntry.Key, oldKeyOfThisAction);
 
 			UpdateInputFieldText(actionName, newKey);
-			UpdateInputFieldText(conflictingAction, oldKeyOfThisAction);
+			UpdateInputFieldText(conflictEntry.Key, oldKeyOfThisAction);
 		}
 		else
 		{
@@ -189,11 +199,11 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		}
 	}
 
-	private void UpdateInputFieldText(string actionName, KeyCode key)
+	private void UpdateInputFieldText(InputControlsEnum actionName, KeyCode key)
 	{
 		foreach (var field in _inputFieldsComponentsControls)
 		{
-			if (field.name.StartsWith(actionName))
+			if (field.name.StartsWith(actionName.ToString()))
 			{
 				field.text = key.ToString();
 				break;
@@ -235,7 +245,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 		currentData.MouseSensitivityX = _currentValueMouseSensitivityX;
 		currentData.MouseSensitivityY = _currentValueMouseSensitivityY;
-		currentData.KeyBindings = new Dictionary<string, KeyCode>(_inputDevice.CurrentKeyboardKeyBindings);
+		currentData.KeyBindings = new Dictionary<InputControlsEnum, KeyCode>(_inputDevice.CurrentKeyboardKeyBindings);
 
 		OnSaveSettingsControlsData?.Invoke(currentData);
 	}
@@ -267,12 +277,17 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 		foreach (var field in _inputFieldsComponentsControls)
 		{
-			string actionName = field.name.Replace("InputFieldControl", "");
+			string actionNameStr = field.name.Replace("InputFieldControl", "");
 
-			if (defaultData.KeyBindings.TryGetValue(actionName, out var key))
+			if (System.Enum.TryParse(typeof(InputControlsEnum), actionNameStr, out object parsedEnum))
 			{
-				field.text = key.ToString();
-				_inputDevice.RebindKey(actionName, key);
+				InputControlsEnum actionEnum = (InputControlsEnum)parsedEnum;
+
+				if (defaultData.KeyBindings.TryGetValue(actionEnum, out var key))
+				{
+					field.text = key.ToString();
+					_inputDevice.RebindKey(actionEnum, key);
+				}
 			}
 		}
 	}
@@ -293,17 +308,17 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		{
 			foreach (var kvp in data.KeyBindings)
 			{
-				string actionName = kvp.Key;
+				InputControlsEnum actionEnum = kvp.Key;
 				KeyCode savedKey = kvp.Value;
 
 				foreach (var field in _inputFieldsComponentsControls)
 				{
-					string fieldActionName = field.name.Replace("InputFieldControl", "");
+					string fieldActionNameStr = field.name.Replace("InputFieldControl", "");
 
-					if (fieldActionName == actionName)
+					if (fieldActionNameStr == actionEnum.ToString())
 					{
 						field.text = savedKey.ToString();
-						_inputDevice.RebindKey(actionName, savedKey);
+						_inputDevice.RebindKey(actionEnum, savedKey);
 						break;
 					}
 				}

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InputKeyboard : IInputDevice
 {
-	private readonly Dictionary<string, KeyCode> _initialKeyboardKeyBindings;
+	private readonly Dictionary<InputControlsEnum, KeyCode> _initialKeyboardKeyBindings;
 
 	private GameController _gameController;
 
@@ -27,52 +27,51 @@ public class InputKeyboard : IInputDevice
 	{
 		_gameController = gameController;
 		_keyPauseMenu = keyPauseMenu;
-		_initialKeyboardKeyBindings = new Dictionary<string, KeyCode>(_keyboardKeyBindings);
+		_initialKeyboardKeyBindings = new Dictionary<InputControlsEnum, KeyCode>(_keyboardKeyBindings);
 
 		Debug.Log("InputKeyboard Initialized");
 	}
 
-	private Dictionary<string, KeyCode> _keyboardKeyBindings = new Dictionary<string, KeyCode>()
+	private Dictionary<InputControlsEnum, KeyCode> _keyboardKeyBindings = new Dictionary<InputControlsEnum, KeyCode>()
 	{
-		{"MoveForward", KeyCode.W},
-		{"MoveBackward", KeyCode.S},
-		{"MoveRight", KeyCode.D},
-		{"MoveLeft", KeyCode.A},
-		{"Run", KeyCode.LeftShift},
-		{"Jump", KeyCode.Space},
-		{"Crouch", KeyCode.LeftControl},
-		{"Interact", KeyCode.F},
-
-		{"ChangeCameraView", KeyCode.V},
-		{"ChangeCameraShoulder", KeyCode.C},
-		{"WeaponWheelRightHand", KeyCode.E},
-		{"WeaponWheelLeftHand", KeyCode.Q},
-		{"WeaponAttackRightHand", KeyCode.Mouse1},
-		{"WeaponAttackLeftHand", KeyCode.Mouse0},
-		{"WeaponReload", KeyCode.R},
-		{"LegKick", KeyCode.Mouse2},
+		{ InputControlsEnum.MoveForward, KeyCode.W },
+		{ InputControlsEnum.MoveBackward, KeyCode.S },
+		{ InputControlsEnum.MoveRight, KeyCode.D },
+		{ InputControlsEnum.MoveLeft, KeyCode.A },
+		{ InputControlsEnum.Run, KeyCode.LeftShift },
+		{ InputControlsEnum.Jump, KeyCode.Space },
+		{ InputControlsEnum.Crouch, KeyCode.LeftControl },
+		{ InputControlsEnum.Interact, KeyCode.F },
+		{ InputControlsEnum.ChangeCameraView, KeyCode.V },
+		{ InputControlsEnum.ChangeCameraShoulder, KeyCode.C },
+		{ InputControlsEnum.WeaponWheelRightHand, KeyCode.E },
+		{ InputControlsEnum.WeaponWheelLeftHand, KeyCode.Q },
+		{ InputControlsEnum.WeaponAttackRightHand, KeyCode.Mouse1 },
+		{ InputControlsEnum.WeaponAttackLeftHand, KeyCode.Mouse0 },
+		{ InputControlsEnum.WeaponReload, KeyCode.R },
+		{ InputControlsEnum.LegKick, KeyCode.Mouse2 }
 	};
 
-	public IReadOnlyDictionary<string, KeyCode> CurrentKeyboardKeyBindings
+	public IReadOnlyDictionary<InputControlsEnum, KeyCode> CurrentKeyboardKeyBindings
 	{
 		get
 		{
-			return new ReadOnlyDictionary<string, KeyCode>(_keyboardKeyBindings);
+			return new ReadOnlyDictionary<InputControlsEnum, KeyCode>(_keyboardKeyBindings);
 		}
 	}
 
-	public IReadOnlyDictionary<string, KeyCode> GetDefaultKeyBindings()
+	public IReadOnlyDictionary<InputControlsEnum, KeyCode> GetDefaultKeyBindings()
 	{
-		var copyOfInitialBindings = new Dictionary<string, KeyCode>(_initialKeyboardKeyBindings);
-		return new ReadOnlyDictionary<string, KeyCode>(copyOfInitialBindings);
+		var copyOfInitialBindings = new Dictionary<InputControlsEnum, KeyCode>(_initialKeyboardKeyBindings);
+		return new ReadOnlyDictionary<InputControlsEnum, KeyCode>(copyOfInitialBindings);
 	}
 
-	public IEnumerable<(string action, KeyCode key)> GetCurrentKeyBindings()
+	public IEnumerable<(InputControlsEnum action, KeyCode key)> GetCurrentKeyBindings()
 	{
 		return _keyboardKeyBindings.Select(kvp => (kvp.Key, kvp.Value));
 	}
 
-	public void RebindKey(string actionName, KeyCode newKey)
+	public void RebindKey(InputControlsEnum actionName, KeyCode newKey)
 	{
 		if (!_keyboardKeyBindings.ContainsKey(actionName))
 			Debug.LogError($"Нет такого действия '{actionName}'.");
@@ -91,12 +90,12 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyUp()
 	{
-		if (Input.GetKey(_keyboardKeyBindings["MoveForward"]) &&
-			Input.GetKey(_keyboardKeyBindings["MoveBackward"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveForward]) &&
+			Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveBackward]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return false;
 		}
-		else if (Input.GetKey(_keyboardKeyBindings["MoveForward"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		else if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveForward]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -105,12 +104,12 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyDown()
 	{
-		if (Input.GetKey(_keyboardKeyBindings["MoveForward"]) &&
-			Input.GetKey(_keyboardKeyBindings["MoveBackward"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveForward]) &&
+			Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveBackward]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return false;
 		}
-		else if (Input.GetKey(_keyboardKeyBindings["MoveBackward"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		else if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveBackward]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -119,12 +118,12 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyRight()
 	{
-		if (Input.GetKey(_keyboardKeyBindings["MoveRight"]) &&
-			Input.GetKey(_keyboardKeyBindings["MoveLeft"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveRight]) &&
+			Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveLeft]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return false;
 		}
-		else if (Input.GetKey(_keyboardKeyBindings["MoveRight"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		else if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveRight]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -133,12 +132,12 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyLeft()
 	{
-		if (Input.GetKey(_keyboardKeyBindings["MoveRight"]) &&
-			Input.GetKey(_keyboardKeyBindings["MoveLeft"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveRight]) &&
+			Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveLeft]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return false;
 		}
-		else if (Input.GetKey(_keyboardKeyBindings["MoveLeft"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		else if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.MoveLeft]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -147,7 +146,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyChangeCameraView()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["ChangeCameraView"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.ChangeCameraView]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -156,7 +155,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyChangeCameraShoulder()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["ChangeCameraShoulder"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.ChangeCameraShoulder]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -167,14 +166,14 @@ public class InputKeyboard : IInputDevice
 	{
 		if (!_isKeyInteractBeingHeld)
 		{
-			if (Input.GetKeyDown(_keyboardKeyBindings["Interact"]) && _gameController.IsPlayerControllable)
+			if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.Interact]) && _gameController.IsPlayerControllable)
 			{
 				_lastTimeSinceKeyHideWeaponWasHeld = Time.time;
 			
 				_isKeyInteractBeingHeld = true;
 			}
 		}
-		else if (Input.GetKeyUp(_keyboardKeyBindings["Interact"]) && _gameController.IsPlayerControllable) 
+		else if (Input.GetKeyUp(_keyboardKeyBindings[InputControlsEnum.Interact]) && _gameController.IsPlayerControllable) 
 		{
 			_isKeyInteractBeingHeld = false;
 		}
@@ -189,7 +188,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyReload()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["WeaponReload"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.WeaponReload]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -198,7 +197,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyRun()
 	{
-		if (Input.GetKey(_keyboardKeyBindings["Run"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.Run]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -207,7 +206,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyJump()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["Jump"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.Jump]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -216,7 +215,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyJumpBeingHeld()
 	{
-		if (Input.GetKey(_keyboardKeyBindings["Jump"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.Jump]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -225,7 +224,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyCrouch()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["Crouch"]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.Crouch]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
 		{
 			return true;
 		}
@@ -234,7 +233,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyLegKick()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["LegKick"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.LegKick]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -248,7 +247,7 @@ public class InputKeyboard : IInputDevice
 			return false; 
 		}
 
-		if (Input.GetKeyDown(_keyboardKeyBindings["Interact"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.Interact]) && _gameController.IsPlayerControllable)
 		{
 			_isKeyInteractBeingHeld = false;
 			return true;
@@ -256,14 +255,10 @@ public class InputKeyboard : IInputDevice
 		return false;
 	}
 
-	public string GetNameOfKeyInteract()
-	{
-		return _keyboardKeyBindings["Interact"].ToString();
-	}
 
 	public bool GetKeyRightHandWeaponWheel()
 	{
-		if (Input.GetKey(_keyboardKeyBindings["WeaponWheelRightHand"]) && !_isLeftHandWeaponWheelOpened && _gameController.IsPlayerControllable)
+		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.WeaponWheelRightHand]) && !_isLeftHandWeaponWheelOpened && _gameController.IsPlayerControllable)
 		{
 			_isRightHandWeaponWheelOpened = true;
 			
@@ -279,7 +274,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyLeftHandWeaponWheel()
 	{
-		if (Input.GetKey(_keyboardKeyBindings["WeaponWheelLeftHand"]) && !_isRightHandWeaponWheelOpened && _gameController.IsPlayerControllable)
+		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.WeaponWheelLeftHand]) && !_isRightHandWeaponWheelOpened && _gameController.IsPlayerControllable)
 		{
 			_isLeftHandWeaponWheelOpened = true;
 			
@@ -294,7 +289,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyRightHandWeaponAttack()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["WeaponAttackRightHand"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.WeaponAttackRightHand]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -303,26 +298,16 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyLeftHandWeaponAttack()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings["WeaponAttackLeftHand"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.WeaponAttackLeftHand]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
 		else return false;
 	}
 
-	public string GetNameOfKeyRightHandWeaponAttack()
-	{
-		return _keyboardKeyBindings["WeaponAttackRightHand"].ToString();
-	}
-
-	public string GetNameOfKeyLeftHandWeaponAttack()
-	{
-		return _keyboardKeyBindings["WeaponAttackLeftHand"].ToString();
-	}
-
 	public bool GetKeyRightHandWeaponAttackReleased()
 	{
-		if (Input.GetKeyUp(_keyboardKeyBindings["WeaponAttackRightHand"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyUp(_keyboardKeyBindings[InputControlsEnum.WeaponAttackRightHand]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -331,7 +316,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyLeftHandWeaponAttackReleased()
 	{
-		if (Input.GetKeyUp(_keyboardKeyBindings["WeaponAttackLeftHand"]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyUp(_keyboardKeyBindings[InputControlsEnum.WeaponAttackLeftHand]) && _gameController.IsPlayerControllable)
 		{
 			return true;
 		}
@@ -361,6 +346,17 @@ public class InputKeyboard : IInputDevice
 			return true;
 		}
 		return false;
+	}
+
+	public string GetNameOfKey(InputControlsEnum actionName)
+	{
+		if (_keyboardKeyBindings.TryGetValue(actionName, out KeyCode key))
+		{
+			return key.ToString();
+		}
+
+		Debug.LogWarning($"[InputKeyboard] Не найдено действие '{actionName}' для получения имени клавиши.");
+		return "?";
 	}
 
 	public float CameraAxisX()

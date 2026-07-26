@@ -28,12 +28,10 @@ public interface IInputDevice
 	bool GetKeyLeftHandWeaponAttack();
 	bool GetKeyRightHandWeaponAttackReleased();
 	bool GetKeyLeftHandWeaponAttackReleased();
-	string GetNameOfKeyInteract();
-	string GetNameOfKeyRightHandWeaponAttack();
-	string GetNameOfKeyLeftHandWeaponAttack();
+	string GetNameOfKey(InputControlsEnum actionName);
 
-	IEnumerable<(string action, KeyCode key)> GetCurrentKeyBindings();
-	IReadOnlyDictionary<string, KeyCode> CurrentKeyboardKeyBindings { get; }
-	IReadOnlyDictionary<string, KeyCode> GetDefaultKeyBindings();
-	void RebindKey(string actionName, KeyCode newKey);
+	IEnumerable<(InputControlsEnum action, KeyCode key)> GetCurrentKeyBindings();
+	IReadOnlyDictionary<InputControlsEnum, KeyCode> CurrentKeyboardKeyBindings { get; }
+	IReadOnlyDictionary<InputControlsEnum, KeyCode> GetDefaultKeyBindings();
+	void RebindKey(InputControlsEnum actionName, KeyCode newKey);
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿/*
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
@@ -106,7 +107,7 @@ public class InputGamepad : IInputDevice
 
 		{"Reload", "joystick button 15"}, // X
 		{"LegKick", "joystick button 2"} //??? Кнопка правого джойстика
-		*/
+		
 	};
 
 	public IReadOnlyDictionary<string, KeyCode> CurrentKeyboardKeyBindings
@@ -318,11 +319,6 @@ public class InputGamepad : IInputDevice
 		return false;
 	}
 
-	public string GetNameOfKeyInteract()
-	{
-		return _gamepadBindings["Interact"].ToString();
-	}
-
 	public bool GetKeyRightHandWeaponWheel()
 	{
 		if (Input.GetKey(_gamepadBindings["RightHandWeaponWheel"]) && !_isLeftHandWeaponWheelOpened)
@@ -368,16 +364,6 @@ public class InputGamepad : IInputDevice
 			return true;
 		}
 		else return false;
-	}
-
-	public string GetNameOfKeyRightHandWeaponAttack()
-	{
-		return _gamepadBindings["RightHandWeaponAttack"].ToString();
-	}
-
-	public string GetNameOfKeyLeftHandWeaponAttack()
-	{
-		return _gamepadBindings["LeftHandWeaponAttack"].ToString();
 	}
 
 	public bool GetKeyRightHandWeaponAttackReleased()
@@ -432,4 +418,10 @@ public class InputGamepad : IInputDevice
 	{
 		throw new System.NotImplementedException();
 	}
+
+	public string GetNameOfKey(string actionName)
+	{
+		throw new System.NotImplementedException();
+	}
 }
+*/
