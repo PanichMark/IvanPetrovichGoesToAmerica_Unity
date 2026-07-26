@@ -5,7 +5,7 @@ public class BootstrapSubProcessPlayerPrefsSystem
 {
 	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
-	private PlayerPrefsGameSettingsController _pauseSubMenuSettingsPlayerPrefs;
+	private PlayerPrefsSettingsController _pauseSubMenuSettingsPlayerPrefs;
 	private BootstrapSubProcessMenuSystem _subProcessMenuSystem;
 	private GameObject _gameObjectBootstrapPlayerPrefsSystem;
 
@@ -23,7 +23,7 @@ public class BootstrapSubProcessPlayerPrefsSystem
 	{
 		_gameObjectBootstrapPlayerPrefsSystem = new GameObject("Bootstrap_MenuSystem");
 
-		_pauseSubMenuSettingsPlayerPrefs = _gameObjectBootstrapPlayerPrefsSystem.AddComponent<PlayerPrefsGameSettingsController>();
+		_pauseSubMenuSettingsPlayerPrefs = _gameObjectBootstrapPlayerPrefsSystem.AddComponent<PlayerPrefsSettingsController>();
 
 		_pauseSubMenuSettingsPlayerPrefs.Initialize(
 			_bootstrap,

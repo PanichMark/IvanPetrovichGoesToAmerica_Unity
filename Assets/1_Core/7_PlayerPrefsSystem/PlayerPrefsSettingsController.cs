@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerPrefsGameSettingsController: MonoBehaviour
+public class PlayerPrefsSettingsController: MonoBehaviour
 {
-	public string FPSlimit { get; private set; } = "FPSlimit";
-	public string CameraFOV { get; private set; } = "CameraFOV";
-	public string WeaponWheelType { get; private set; } = "WeaponWheelType";
+	public string FPSlimit { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.FPSlimit.ToString();
+	public string CameraFOV { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.CameraFOV.ToString();
+	public string WeaponWheelType { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.WeaponWheelType.ToString();
 
 	private Bootstrap _bootstrap;
-	public string Language { get; private set; } = "Language";
+	public string Language { get; private set; } = PlayerPrefsSettingsSectionAudioEnum.Language.ToString();
 	private IInputDevice _inputDevice;
 
-	public string MouseSensitivityX { get; private set; } = "MouseSensitivityX";
-	public string MouseSensitivityY { get; private set; } = "MouseSensitivityY";
-	public string KeybindingsPrefix  { get; private set; } = "KeyBinding_";
-	
+	public string MouseSensitivityX { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.MouseSensitivityX.ToString();
+	public string MouseSensitivityY { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.MouseSensitivityY.ToString();
+	public string KeyBindingPrefix  { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.KeyBinding_.ToString();
+
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	private PauseSubMenuSettingsSectionControlsController _pauseSubMenuSettingsSectionControlsController;
 	private PauseSubMenuSettingsSectionGraphicsController _pauseSubMenuSettingsSectionGraphicsController;
@@ -71,7 +71,7 @@ public class PlayerPrefsGameSettingsController: MonoBehaviour
 
 		foreach (var binding in data.KeyBindings)
 		{
-			PlayerPrefs.SetString(KeybindingsPrefix + binding.Key, binding.Value.ToString());
+			PlayerPrefs.SetString(KeyBindingPrefix + binding.Key, binding.Value.ToString());
 		}
 
 		PlayerPrefs.Save();
@@ -88,7 +88,7 @@ public class PlayerPrefsGameSettingsController: MonoBehaviour
 
 	public void SaveSettingsAudio(PlayerPrefsData data)
 	{
-		PlayerPrefs.SetString(Language, data.CurrentLanguage);
+		PlayerPrefs.SetString(Language, data.Language);
 
 		PlayerPrefs.Save();
 
@@ -112,7 +112,7 @@ public class PlayerPrefsGameSettingsController: MonoBehaviour
 
 			foreach (string actionName in actionNamesToLoad)
 			{
-				string key = KeybindingsPrefix + actionName;
+				string key = KeyBindingPrefix + actionName;
 				if (PlayerPrefs.HasKey(key))
 				{
 					string savedValueStr = PlayerPrefs.GetString(key);
@@ -136,7 +136,7 @@ public class PlayerPrefsGameSettingsController: MonoBehaviour
 			}
 		}
 
-		data.CurrentLanguage = PlayerPrefs.GetString(Language);
+		data.Language = PlayerPrefs.GetString(Language);
 
 		_pauseSubMenuSettingsSectionGeneralController.ApplySystemLoadedSettings(data);
 		_pauseSubMenuSettingsSectionControlsController.ApplySystemLoadedSettings(data);
@@ -160,7 +160,7 @@ public class PlayerPrefsGameSettingsController: MonoBehaviour
 
 		foreach (string key in allKeysArray)
 		{
-			if (!string.IsNullOrEmpty(key) && key.StartsWith(KeybindingsPrefix))
+			if (!string.IsNullOrEmpty(key) && key.StartsWith(KeyBindingPrefix))
 			{
 				PlayerPrefs.DeleteKey(key);
 			}
@@ -175,7 +175,7 @@ public class PlayerPrefsGameSettingsController: MonoBehaviour
 	{
 		PlayerPrefs.Save();
 
-		Debug.Log("Rset SettingsGraphics");
+		Debug.Log("Reset SettingsGraphics");
 	}
 
 	public void ResetSettingsAudio()

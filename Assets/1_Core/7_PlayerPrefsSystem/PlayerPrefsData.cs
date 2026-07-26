@@ -45,5 +45,5 @@ public class PlayerPrefsData
 	public int VolumeVoices { get; set; }
 	public int VolumeMusicAmbience { get; set; }
 	public int VolumeMusicIngame { get; set; }
-	public string CurrentLanguage { get; set; }
+	public string Language { get; set; }
 }
