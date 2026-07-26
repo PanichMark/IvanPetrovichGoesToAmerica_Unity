@@ -4,17 +4,17 @@ using UnityEngine;
 public class PlayerPrefsData
 {
 	//Is game launched for the first time
-	private const string KEY_IS_FIRST_LAUNCH = "IsGameLaunchedForTheFirstTime";
+	private const string WAS_INITIAL_LANGUAGE_CHOSEN = "WasInitialLanguageChosen";
+	private const string WERE_TERMS_AND_CONDITIONS_SIGNED = "WereTermsAndConditionsSigned";
 
-	public bool IsFirstLaunch
+	public bool WasInitialLanguageChosen
 	{
-		get => PlayerPrefs.GetInt(KEY_IS_FIRST_LAUNCH, 1) == 1;
-		set => PlayerPrefs.SetInt(KEY_IS_FIRST_LAUNCH, value ? 1 : 0);
+		get => PlayerPrefs.GetInt(WAS_INITIAL_LANGUAGE_CHOSEN, 0) == 1;
 	}
 
-	public void SetNotFirstLaunch()
+	public void SetChooseInitialLanguage()
 	{
-		PlayerPrefs.SetInt(KEY_IS_FIRST_LAUNCH, 0);
+		PlayerPrefs.SetInt(WAS_INITIAL_LANGUAGE_CHOSEN, 1);
 		PlayerPrefs.Save();
 	}
 

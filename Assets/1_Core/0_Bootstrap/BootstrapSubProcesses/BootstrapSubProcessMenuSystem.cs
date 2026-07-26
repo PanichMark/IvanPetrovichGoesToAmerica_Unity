@@ -94,7 +94,7 @@ public class BootstrapSubProcessMenuSystem
 	public PauseSubMenuSettingsSectionAudioController PauseSubMenuSettingsSectionAudioController { get; private set; }
 
 
-	private PauseSubMenuSettingsPlayerPrefs _pauseSubMenuSettingsPlayerPrefs;
+	
 
 	private PauseMenuConfirmActionController _pauseMenuConfirmActionController;
 	private GameObject _canvasMenuConfirmAction;
@@ -189,7 +189,6 @@ public class BootstrapSubProcessMenuSystem
 		_pauseSubMenuLoadController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuLoadController>();
 		_pauseSubMenuTutorialController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuTutorialController>();
 		//_pauseSubMenuAppearanceController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuAppearanceController>();
-		_pauseSubMenuSettingsPlayerPrefs = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsPlayerPrefs>();
 		PauseSubMenuSettingsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsController>();
 		PauseSubMenuSettingsSectionGeneralController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionGeneralController>();
 		__pauseSubMenuSettingsGameDifficultyController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsGameDifficultyController>();
@@ -318,14 +317,6 @@ public class BootstrapSubProcessMenuSystem
 			_localizationManager,
 			PauseMenuController,
 			ViewModelPauseSubMenuSettingsSectionAudio);
-
-		_pauseSubMenuSettingsPlayerPrefs.Initialize(
-			_bootstrap,
-			_inputDevice,
-			PauseSubMenuSettingsSectionGeneralController,
-			PauseSubMenuSettingsSectionControlsController,
-			PauseSubMenuSettingsSectionGraphicsController,
-			PauseSubMenuSettingsSectionAudioController);
 
 		_pauseMenuConfirmActionController.Initialize(
 			_localizationManager,

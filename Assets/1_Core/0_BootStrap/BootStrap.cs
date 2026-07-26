@@ -14,7 +14,7 @@ public class Bootstrap : MonoBehaviour
 	public BootstrapGameDataList GameData => _gameData;
 
 	[Header("--- BOOTSTRAP CONFIGS ---")]
-	[SerializeField] private BootstrapConfigIsFirstGameLaunch _configIsFirstGameLaunch;
+	[SerializeField] private BootstrapConfigWasInitialLanguageChosen _configWasInitialLanguageChosen;
 	[SerializeField] private BootstrapConfigInitializationScreenDuration _configInitializationScreenDuration;
 	[SerializeField] private BootstrapConfigKeyPauseMenu _configKeyPauseMenu;
 	[SerializeField] private BootstrapConfigFirstSceneToLoad _configFirstSceneToLoad;
@@ -56,6 +56,7 @@ public class Bootstrap : MonoBehaviour
 	private BootstrapSubProcessScenesSystem _bootstrapSubProcessSceneSystem;
 	private BootstrapSubProcessSaveLoadSystem _bootstrapSubProcessSaveLoadSystem;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
+	private BootstrapSubProcessPlayerPrefsSystem _bootstrapSubProcessPlayerPrefsSystem;
 	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
 	private BootstrapSubProcessWeaponSystem _bootstrapSubProcessWeaponSystem;
@@ -99,9 +100,9 @@ public class Bootstrap : MonoBehaviour
 
 		//PlayerPrefs.DeleteAll(); // DO NOT DELETE, for testing purporses
 
-		if (_playerPrefsData.IsFirstLaunch || _configIsFirstGameLaunch.IsFirstGameLaunch)
+		if (_playerPrefsData.WasInitialLanguageChosen == false || _configWasInitialLanguageChosen.WasInitialLanguageChosen == false)
 		{
-			yield return StartCoroutine(ChooseFirstLanguage());
+			yield return StartCoroutine(ChooseInitialLanguage());
 		}
 		else
 		{
@@ -129,6 +130,7 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(InitializeSaveLoadSystem());
 		yield return StartCoroutine(InitializeMenuSystem());
 		yield return StartCoroutine(InitializePlayerSystems());
+		yield return StartCoroutine(InitializePlayerPrefsSystem());
 		yield return StartCoroutine(InitializeInteractionSystem());
 		yield return StartCoroutine(InitializeWeaponSystem());
 		yield return StartCoroutine(InitializeMissionsSystem());
@@ -251,6 +253,19 @@ public class Bootstrap : MonoBehaviour
 		Debug.Log("=== MENU SYSTEM INITIALIZED ===");
 	}
 
+	private IEnumerator InitializePlayerPrefsSystem()
+	{
+		_bootstrapSubProcessPlayerPrefsSystem = new BootstrapSubProcessPlayerPrefsSystem(
+			this,
+			_inputDevice,
+			_bootstrapSubProcessMenuSystem);
+
+		yield return StartCoroutine(_bootstrapSubProcessPlayerPrefsSystem.InitializePlayerPrefsSystem());
+
+		Debug.Log("=== PLAYERPREFS SYSTEM INITIALIZED ===");
+	}
+
+
 	private IEnumerator InitializePlayerSystems()
 	{
 		_gameObjectPlayer = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerGameObject"));
@@ -362,7 +377,7 @@ public class Bootstrap : MonoBehaviour
 		}
 	}
 
-	private IEnumerator ChooseFirstLanguage()
+	private IEnumerator ChooseInitialLanguage()
 	{
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
@@ -392,7 +407,7 @@ public class Bootstrap : MonoBehaviour
 
 		Destroy(_canvasChooseFirstLanguage);
 
-		_playerPrefsData.SetNotFirstLaunch();
+		_playerPrefsData.SetChooseInitialLanguage();
 	}
 
 	private void ApplyBootstrapPlayerConfigs()

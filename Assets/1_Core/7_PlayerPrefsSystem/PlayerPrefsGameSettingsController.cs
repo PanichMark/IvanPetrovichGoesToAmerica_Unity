@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PauseSubMenuSettingsPlayerPrefs: MonoBehaviour
+public class PlayerPrefsGameSettingsController: MonoBehaviour
 {
 	public string FPSlimit { get; private set; } = "FPSlimit";
 	public string CameraFOV { get; private set; } = "CameraFOV";
