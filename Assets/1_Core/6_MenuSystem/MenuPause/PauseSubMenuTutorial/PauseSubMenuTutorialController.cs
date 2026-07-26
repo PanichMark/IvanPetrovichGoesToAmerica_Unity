@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +6,7 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 {
 	private LocalizationManager _localizationManager;
 	private PauseMenuController _pauseMenuController;
-
+	private IInputDevice _inputDevice;
 	private GameObject _canvasPauseSubMenuTutorial;
 
 	private ViewModelPauseSubMenuTutorial _viewModelPauseSubMenuTutorial;
@@ -32,12 +31,14 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 	private bool _isInitialized;
 
 	public void Initialize(
+		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
 		PauseMenuController pauseMenuController,
 		GameObject canvasPauseSubMenuTutorial,
 		GameTutorialsList tutorialsList,
 		ViewModelPauseSubMenuTutorial viewModelPauseSubMenuTutorial)
 	{
+		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
 		_pauseMenuController = pauseMenuController;
 		_canvasPauseSubMenuTutorial = canvasPauseSubMenuTutorial;
@@ -130,9 +131,14 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 
 		Debug.Log($"Showing TutorialNote #{_currentNoteIndex + 1}");
 
-		string textToShow = _localizationManager.GetNoteLanguageSuffix(data);
+		// 1. Получаем сырой текст (например: "Двигайтесь на кнопки {MoveForward}")
+		string rawTextToShow = _localizationManager.GetNoteLanguageSuffix(data);
 
-		_textComponentTutorial.text = textToShow;
+		// 2. ОБЯЗАТЕЛЬНО пропускаем его через ReplaceActionTags и сохраняем результат
+		string finalText = ReplaceActionTags(rawTextToShow);
+
+		// 3. Отдаем ВЕСЬ отформатированный текст компоненту TextMeshPro
+		_textComponentTutorial.text = finalText;
 
 		Sprite spriteToShow = data.NoteImage;
 		_imageComponentTutorial.sprite = spriteToShow;
@@ -146,6 +152,34 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 		{
 			_imageTutorial.SetActive(false);
 		}
+	}
+
+	private string ReplaceActionTags(string input)
+	{
+		// Ищем всё, что находится внутри фигурных скобок {здесь}
+		System.Text.RegularExpressions.Regex tagRegex = new(@"\{([^}]+)\}");
+
+		return tagRegex.Replace(input, match =>
+		{
+			string actionStringFromFile = match.Groups[1].Value;
+
+			// Пытаемся превратить строку из файла (например, "Run") в наш Enum
+			if (System.Enum.TryParse(typeof(InputControlsEnum), actionStringFromFile, out object parsedEnum))
+			{
+				InputControlsEnum actionEnum = (InputControlsEnum)parsedEnum;
+
+				// Спрашиваем у инпута актуальное имя кнопки
+				string keyName = _inputDevice.GetNameOfKey(actionEnum);
+
+				// Возвращаем готовую строку с кастомным цветом
+				return _inputDevice.GetNameOfKey(actionEnum);
+			}
+			else
+			{
+				Debug.LogWarning($"В туториале найден неизвестный тег {{{actionStringFromFile}}}. Проверьте .txt файл.");
+				return match.Value;
+			}
+		});
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)

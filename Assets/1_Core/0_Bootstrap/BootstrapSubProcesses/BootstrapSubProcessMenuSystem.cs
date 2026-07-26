@@ -273,6 +273,7 @@ public class BootstrapSubProcessMenuSystem
 		*/
 
 		_pauseSubMenuTutorialController.Initialize(
+			_inputDevice,
 			_localizationManager,
 			PauseMenuController,
 			_canvasPauseSubMenuTutorial,
