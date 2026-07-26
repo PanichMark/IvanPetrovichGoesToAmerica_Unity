@@ -339,6 +339,7 @@ public class Bootstrap : MonoBehaviour
 	private IEnumerator InitializeObjectPoolSystem()
 	{
 		_bootstrapSubProcessObjectPoolSystem = new BootstrapSubProcessObjectPoolSystem(
+			this,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem);
 

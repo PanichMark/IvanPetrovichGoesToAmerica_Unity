@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BootstrapSubProcessObjectPoolSystem
 {
+	private Bootstrap _bootstrap;
 	private BootstrapSubProcessScenesSystem _bootstrapSubProcessSceneSystem;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 	private PlayerPrefsSettingsController _pauseSubMenuSettingsPlayerPrefs;
@@ -11,9 +12,11 @@ public class BootstrapSubProcessObjectPoolSystem
 	private ObjectPoolWeaponController _objectPoolWeaponController;
 
 	public BootstrapSubProcessObjectPoolSystem(
+		Bootstrap bootstrap,
 		BootstrapSubProcessScenesSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem)
 	{
+		_bootstrap = bootstrap;
 		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
 	}
@@ -25,6 +28,7 @@ public class BootstrapSubProcessObjectPoolSystem
 		_objectPoolWeaponController = _gameObjectBootstrapObjectPoolSystem.AddComponent<ObjectPoolWeaponController>();
 
 		_objectPoolWeaponController.Initialize(
+			_bootstrap,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController);
 

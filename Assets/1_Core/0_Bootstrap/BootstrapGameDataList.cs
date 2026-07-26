@@ -6,6 +6,7 @@ public class BootstrapGameDataList : ScriptableObject
     public GameCanvasesList GameCanvasesList;
 	public GameScenesList GameScenesList;
 	public GameMissionsList GameMissionsList;
+	public GameObjectPoolsList GameObjectPoolsList;
 	public GameTutorialsList GameTutorialsList;
     public GameDifficultiesList GameDifficultiesList;
 }

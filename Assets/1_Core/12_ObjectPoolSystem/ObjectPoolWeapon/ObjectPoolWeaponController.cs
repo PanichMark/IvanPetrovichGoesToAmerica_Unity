@@ -12,20 +12,22 @@ public class ObjectPoolWeaponController : MonoBehaviour
 	private int _currentIndex = 0;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	private GameScenesManager _gameSceneManager;
+	private ObjectPoolWeaponList _objectPoolWeaponList;
+	private Bootstrap _bootstrap;
 
-	public void Initialize(GameScenesManager gameSceneManager, PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController)
+	public void Initialize(
+		Bootstrap bootstrap,
+		GameScenesManager gameSceneManager,
+		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController)
 	{
+		_bootstrap = bootstrap;
 		_gameSceneManager = gameSceneManager;
 		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
+		_objectPoolWeaponList = _bootstrap.GameData.GameObjectPoolsList.ObjectPoolWeaponList;
 
-		_decalSpriteDefault = Resources.Load<Sprite>("Sprites/BulletHoles/Sprite_BulletHole_Solid");
-		_decalSpriteBlood = Resources.Load<Sprite>("Sprites/BulletHoles/Sprite_BulletHole_Blood");
+		_decalSpriteDefault = _objectPoolWeaponList.BulletHoldSolid.objectPoolSprite;
+		_decalSpriteBlood = _objectPoolWeaponList.BulletHoldBlood.objectPoolSprite;
 
-		if (_decalSpriteDefault == null || _decalSpriteBlood == null)
-		{
-			Debug.LogError("[BulletHoleManager] Один из спрайтов не найден! Проверьте пути в Assets/Resources.");
-			return;
-		}
 		_isBloodVisible = true;
 		RecreatePool();
 

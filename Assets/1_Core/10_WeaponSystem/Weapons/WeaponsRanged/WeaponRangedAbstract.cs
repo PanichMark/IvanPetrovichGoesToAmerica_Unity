@@ -231,12 +231,12 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			return;
 		}
 
-		Debug.Log($"[BaseWeapon] SpawnDecal called. Total hits received: {allHits.Length}");
+		//Debug.Log($"[BaseWeapon] SpawnDecal called. Total hits received: {allHits.Length}");
 
 		foreach (var hit in allHits)
 		{
 			string layerName = LayerMask.LayerToName(hit.collider.gameObject.layer);
-			Debug.Log($"  -> Hit Object: {hit.collider.name}, Layer: {layerName} ({hit.collider.gameObject.layer})");
+			//Debug.Log($"  -> Hit Object: {hit.collider.name}, Layer: {layerName} ({hit.collider.gameObject.layer})");
 		}
 
 		RaycastHit targetHit = new RaycastHit();
@@ -264,13 +264,13 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			bool isBloodTarget = ((1 << targetHit.collider.gameObject.layer) & (_playerWeaponController.LayersOrganisms)) != 0;
 			Quaternion rot = Quaternion.FromToRotation(Vector3.up, targetHit.normal);
 
-			Debug.Log($"[BaseWeapon] Spawning decal on: {targetHit.collider.name} at {targetHit.point}. Blood: {isBloodTarget}");
+			//Debug.Log($"[BaseWeapon] Spawning decal on: {targetHit.collider.name} at {targetHit.point}. Blood: {isBloodTarget}");
 
 			_bulletHoleManager.SpawnDecal(targetHit.point, rot, isBloodTarget, targetHit.transform);
 		}
 		else
 		{
-			Debug.Log("[BaseWeapon] Skipped decal spawn because layer was UI/Ignore/Aura");
+			//Debug.Log("[BaseWeapon] Skipped decal spawn because layer was UI/Ignore/Aura");
 		}
 	}
 
