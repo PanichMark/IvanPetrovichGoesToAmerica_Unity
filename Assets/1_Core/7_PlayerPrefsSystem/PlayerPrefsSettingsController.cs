@@ -4,22 +4,45 @@ using UnityEngine;
 
 public class PlayerPrefsSettingsController: MonoBehaviour
 {
-	public string FPSlimit { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.FPSlimit.ToString();
-	public string CameraFOV { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.CameraFOV.ToString();
-	public string WeaponWheelType { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.WeaponWheelType.ToString();
-
 	private Bootstrap _bootstrap;
-	public string Language { get; private set; } = PlayerPrefsSettingsSectionAudioEnum.Language.ToString();
 	private IInputDevice _inputDevice;
-
-	public string MouseSensitivityX { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.MouseSensitivityX.ToString();
-	public string MouseSensitivityY { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.MouseSensitivityY.ToString();
-	public string KeyBindingPrefix  { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.KeyBinding_.ToString();
 
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	private PauseSubMenuSettingsSectionControlsController _pauseSubMenuSettingsSectionControlsController;
 	private PauseSubMenuSettingsSectionGraphicsController _pauseSubMenuSettingsSectionGraphicsController;
 	private PauseSubMenuSettingsSectionAudioController _pauseSubMenuSettingsSectionAudioController;
+
+	//General
+	public string ScreenResolution { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.ScreenResolution.ToString();
+	public string WindowType { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.WindowType.ToString();
+	public string FPSlimit { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.FPSlimit.ToString();
+	public string HUDtype { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.HUDtype.ToString();
+	public string WeaponWheelType { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.WeaponWheelType.ToString();
+	public string CameraFOV { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.CameraFOV.ToString();
+	public string ScreenBrightness { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.ScreenBrightness.ToString();
+
+	//Not available in Demo
+	//public string GameDifficulty { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.GameDifficulty.ToString();
+	public string ShowIngameTutorials { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.ShowIngameTutorials.ToString();
+	public string ShowBlood { get; private set; } = PlayerPrefsSettingsSectionGeneralEnum.ShowBlood.ToString();
+
+	//Controls
+	public string KeyBindingPrefix { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.KeyBinding_.ToString();
+	public string MouseSensitivityX { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.MouseSensitivityX.ToString();
+	public string MouseSensitivityY { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.MouseSensitivityY.ToString();
+
+	//Not available in Demo
+	//But its empty logic remains to avoid NULL
+	//Graphics
+
+	//Audio
+	public string Language { get; private set; } = PlayerPrefsSettingsSectionAudioEnum.Language.ToString();
+	public string VolumeGeneral { get; private set; } = PlayerPrefsSettingsSectionAudioEnum.VolumeGeneral.ToString();
+	public string VolumeEnvironment { get; private set; } = PlayerPrefsSettingsSectionAudioEnum.VolumeEnvironment.ToString();
+	public string VolumeEffects { get; private set; } = PlayerPrefsSettingsSectionAudioEnum.VolumeEffects.ToString();
+	public string VolumeVoices { get; private set; } = PlayerPrefsSettingsSectionAudioEnum.VolumeVoices.ToString();
+	public string VolumeMusicAmbience { get; private set; } = PlayerPrefsSettingsSectionAudioEnum.VolumeMusicAmbience.ToString();
+	public string VolumeMusicIngame { get; private set; } = PlayerPrefsSettingsSectionAudioEnum.VolumeMusicIngame.ToString();
 
 	public void Initialize(
 		Bootstrap bootstrap,
@@ -50,7 +73,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 		_pauseSubMenuSettingsSectionAudioController.OnSaveSettingsAudioData += SaveSettingsAudio;
 		_pauseSubMenuSettingsSectionAudioController.OnResetSettingsAudioData += ResetSettingsAudio;
 
-		Debug.Log("PauseSubMenuSettingsPlayerPrefs Initialized");
+		Debug.Log("PlayerPrefsSettingsController Initialized");
 	}
 
 	public void SaveSettingsGeneral(PlayerPrefsData data)
@@ -61,7 +84,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 
 		PlayerPrefs.Save();
 
-		Debug.Log("Saved SettingsGeneral");
+		Debug.Log("Saved Settings General");
 	}
 
 	public void SaveSettingsControls(PlayerPrefsData data)
@@ -76,14 +99,14 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 
 		PlayerPrefs.Save();
 
-		Debug.Log("Saved SettingsControls");
+		Debug.Log("Saved Settings Controls");
 	}
 
 	public void SaveSettingsGraphics(PlayerPrefsData data)
 	{
 		PlayerPrefs.Save();
 
-		Debug.Log("Saved SettingsGraphics");
+		Debug.Log("Saved Settings Graphics");
 	}
 
 	public void SaveSettingsAudio(PlayerPrefsData data)
@@ -92,7 +115,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 
 		PlayerPrefs.Save();
 
-		Debug.Log("Saved SettingsAudio");
+		Debug.Log("Saved Settings Audio");
 	}
 
 	public void LoadSettings(List<string> actionNamesToLoad)
@@ -147,7 +170,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 	{
 		PlayerPrefs.DeleteKey(CameraFOV);
 
-		Debug.Log("Reset SettingsGeneral");
+		Debug.Log("Reset Settings General");
 	}
 
 	public void ResetSettingsControls()
@@ -168,14 +191,14 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 
 		PlayerPrefs.Save();
 
-		Debug.Log("Reset SettingsControls");
+		Debug.Log("Reset Settings Controls");
 	}
 
 	public void ResetSettingsGraphics()
 	{
 		PlayerPrefs.Save();
 
-		Debug.Log("Reset SettingsGraphics");
+		Debug.Log("Reset Settings Graphics");
 	}
 
 	public void ResetSettingsAudio()
@@ -186,6 +209,6 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 
 		PlayerPrefs.Save();
 
-		Debug.Log("Reset SettingsAduio");
+		Debug.Log("Reset Settings Audio");
 	}
 }

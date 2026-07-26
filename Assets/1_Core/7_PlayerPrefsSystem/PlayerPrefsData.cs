@@ -3,47 +3,61 @@ using UnityEngine;
 
 public class PlayerPrefsData
 {
-	//Is game launched for the first time
-	private const string WAS_INITIAL_LANGUAGE_CHOSEN = "WasInitialLanguageChosen";
-	private const string WERE_TERMS_AND_CONDITIONS_SIGNED = "WereTermsAndConditionsSigned";
+	//Game Initialization
+	private string _wasInitialLanguageChosen = PlayerPrefsGameInitializationEnum.WasInitialLanguageChosen.ToString();
 
 	public bool WasInitialLanguageChosen
 	{
-		get => PlayerPrefs.GetInt(WAS_INITIAL_LANGUAGE_CHOSEN, 0) == 1;
+		get => PlayerPrefs.GetInt(_wasInitialLanguageChosen, 0) == 1;
 	}
 
-	public void SetChooseInitialLanguage()
+	public void ChooseInitialLanguage()
 	{
-		PlayerPrefs.SetInt(WAS_INITIAL_LANGUAGE_CHOSEN, 1);
+		PlayerPrefs.SetInt(_wasInitialLanguageChosen, 1);
 		PlayerPrefs.Save();
 	}
 
-	//SettingsSectionGeneral
+	private string _wereTermsAndConditionsSigned = PlayerPrefsGameInitializationEnum.WereTermsAndConditionsSigned.ToString();
 
-	//ScreenResolution
-	//WindowType
+	public bool WereTermsAndConditionsSigned
+	{
+		get => PlayerPrefs.GetInt(_wereTermsAndConditionsSigned, 0) == 1;
+	}
+
+	public void SignTermsAndConditions()
+	{
+		PlayerPrefs.SetInt(_wereTermsAndConditionsSigned, 1);
+		PlayerPrefs.Save();
+	}
+
+	//Settings General
+	public string ScreenResolution { get; set; }
+	public string WindowType { get; set; }
 	public int FPSlimit { get; set; }
-	//HUDtype
-	public float CameraFOV { get; set; }
-	public int ScreenBrightness { get; set; }
-
+	public string HUDtype { get; set; }
 	public string WeaponWheelType { get; set; }
+	public float CameraFOV { get; set; }
+	public float ScreenBrightness { get; set; }
 
-	//SettingsSectionControls
+	//Not available in Demo
+	//public string GameDifficulty { get; set; }
+	public bool ShowIngameTutorials { get; set; }
+	public bool ShowBlood { get; set; }
+
+	//Settings Controls
+	public Dictionary<string, KeyCode> KeyBindings { get; set; } = new Dictionary<string, KeyCode>();
 	public float MouseSensitivityX { get; set; }
 	public float MouseSensitivityY { get; set; }
-	public Dictionary<string, KeyCode> KeyBindings { get; set; } = new Dictionary<string, KeyCode>();
 
+	//Not available in Demo
+	//Settings Graphics
 
-	//SettingsSectionGraphics
-	//NONE for Demo version!!!!
-
-	//Audio
+	//Settings Audio
+	public string Language { get; set; }
 	public int VolumeGeneral { get; set; }
 	public int VolumeEnvironment { get; set; }
 	public int VolumeEffects { get; set; }
 	public int VolumeVoices { get; set; }
 	public int VolumeMusicAmbience { get; set; }
 	public int VolumeMusicIngame { get; set; }
-	public string Language { get; set; }
 }

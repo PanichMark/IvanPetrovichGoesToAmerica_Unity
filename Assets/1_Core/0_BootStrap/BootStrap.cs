@@ -407,7 +407,7 @@ public class Bootstrap : MonoBehaviour
 
 		Destroy(_canvasChooseFirstLanguage);
 
-		_playerPrefsData.SetChooseInitialLanguage();
+		_playerPrefsData.ChooseInitialLanguage();
 	}
 
 	private void ApplyBootstrapPlayerConfigs()
