@@ -18,8 +18,8 @@ public class BulletHoleManager : MonoBehaviour
 		_gameSceneManager = gameSceneManager;
 		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
 
-		_decalSpriteDefault = Resources.Load<Sprite>("Sprites/Sprites_BulletHoles/Sprite_BulletHole_Solid");
-		_decalSpriteBlood = Resources.Load<Sprite>("Sprites/Sprites_BulletHoles/Sprite_BulletHole_Blood");
+		_decalSpriteDefault = Resources.Load<Sprite>("Sprites/BulletHoles/Sprite_BulletHole_Solid");
+		_decalSpriteBlood = Resources.Load<Sprite>("Sprites/BulletHoles/Sprite_BulletHole_Blood");
 
 		if (_decalSpriteDefault == null || _decalSpriteBlood == null)
 		{
