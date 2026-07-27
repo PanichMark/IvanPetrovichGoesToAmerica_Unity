@@ -82,7 +82,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
-		_cubeFollow = Resources.Load<GameObject>("InteractionObjects/InteractionObjects_Locks/Lock_Mechanical_PuzzleCube");
+		_cubeFollow = Resources.Load<GameObject>("InteractionObjects/Locks/Lock_Mechanical_PuzzleCube");
 
 		_buttonMoveLockMechanismUp.onClick.AddListener(RotateGearUp);
 		_buttonMoveLockMechanismDown.onClick.AddListener(RotateGearDown);
