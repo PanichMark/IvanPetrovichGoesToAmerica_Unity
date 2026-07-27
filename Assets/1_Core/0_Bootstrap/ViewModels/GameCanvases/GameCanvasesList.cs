@@ -8,7 +8,7 @@ public class GameCanvasesList : ScriptableObject
 	public GameObject CanvasChooseFirstLanguage;
 
 	[Header("Loading Screen")]
-	public GameObject CanvasLoadingScreen;
+	public GameObject CanvasSceneLoadingScreen;
 
 	[Header("Menu")]
 	public GameObject CanvasMenuBackground;

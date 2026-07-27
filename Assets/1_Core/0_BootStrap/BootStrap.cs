@@ -26,7 +26,7 @@ public class Bootstrap : MonoBehaviour
 
 	private GameObject _canvasBootstrap;
 	private GameObject _canvasChooseFirstLanguage;
-	private GameObject _canvasLoadingScreen;
+	private GameObject _canvasSceneLoadingScreen;
 	private GameObject _canvasMenuBackground;
 	private GameObject _canvasPauseMenu;
 	private GameObject _canvasPauseSubMenuSave;
@@ -161,7 +161,7 @@ public class Bootstrap : MonoBehaviour
 	{
 		_canvasChooseFirstLanguage = Instantiate(_gameData.GameCanvasesList.CanvasChooseFirstLanguage);
 
-		_canvasLoadingScreen = Instantiate(_gameData.GameCanvasesList.CanvasLoadingScreen);
+		_canvasSceneLoadingScreen = Instantiate(_gameData.GameCanvasesList.CanvasSceneLoadingScreen);
 	
 		_canvasMenuBackground = Instantiate(_gameData.GameCanvasesList.CanvasMenuBackground);
 
@@ -201,7 +201,7 @@ public class Bootstrap : MonoBehaviour
 			this, 
 			_gameController,
 			LocalizationManager,
-			_canvasLoadingScreen);
+			_canvasSceneLoadingScreen);
 
 		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.Initialize());
 

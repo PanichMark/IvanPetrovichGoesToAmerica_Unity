@@ -10,6 +10,7 @@ public class BootstrapSubProcessMenuSystem
 
 	private MenuBackgroundController _menuBackgroundController;
 	private GameTutorialsList _tutorialsList;
+	
 	public ViewModelPauseMenu ViewModelPauseMenu {  get; private set; }
 	private ViewModelPauseSubMenuSave _viewModelPauseSubMenuSave;
 	private ViewModelPauseSubMenuLoad _viewModelPauseSubMenuLoad;
@@ -38,7 +39,7 @@ public class BootstrapSubProcessMenuSystem
 	private ViewModelPauseSubMenuSettingsSectionControls _viewModelPauseSubMenuSettingsSectionControls;
 	private ViewModelPauseSubMenuSettingsSectionGraphics _viewModelPauseSubMenuSettingsSectionGraphics;
 	public ViewModelPauseSubMenuSettingsSectionAudio ViewModelPauseSubMenuSettingsSectionAudio { get; private set; }
-
+	
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
 	private LocalizationManager _localizationManager;
@@ -224,6 +225,8 @@ public class BootstrapSubProcessMenuSystem
 		ViewModelMenuLockpickElectronic = new ViewModelMenuLockpickElectronic(_bootstrap, _canvasMenuLockpickElectronic);
 		ViewModelMenuDialogue = new ViewModelMenuDialogue(_bootstrap, _canvasMenuDialogue);
 		ViewModelMenuCutscene = new ViewModelMenuCutscene(_bootstrap, _canvasMenuCutscene);
+
+
 
 		_viewModelPauseSubMenuSettingsSectionGeneral = new ViewModelPauseSubMenuSettingsSectionGeneral(_bootstrap, _canvasPauseSubMenuSettings);
 		_viewModelPauseSubMenuSettingsSectionControls = new ViewModelPauseSubMenuSettingsSectionControls(_bootstrap, _canvasPauseSubMenuSettings);

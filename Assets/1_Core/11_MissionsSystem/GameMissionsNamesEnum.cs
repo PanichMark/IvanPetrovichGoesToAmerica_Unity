@@ -1,0 +1,4 @@
+﻿public enum GameMissionsNamesEnum
+{
+	Mission_0_NothingEverHappensInThisCountry
+}

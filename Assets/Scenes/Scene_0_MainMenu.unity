@@ -777,6 +777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53184a1acd29b4945b28fdb19e42a4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainMenuDiegeticButtonsEnum: 1
 --- !u!1 &661294276
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,6 +1691,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7599f708eb5d337479fe1be1ea788468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cutsceneDialogueData: {fileID: 0}
+  _dialogueActorsMapping: []
   _shouldMovePlayer: 1
   _newPlayerPosition: {x: 11, y: 6, z: 2.3}
   _shouldLoadScene: 1
@@ -2359,6 +2362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53184a1acd29b4945b28fdb19e42a4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainMenuDiegeticButtonsEnum: 7
 --- !u!1 &1964817284
 GameObject:
   m_ObjectHideFlags: 0
@@ -2820,6 +2824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53184a1acd29b4945b28fdb19e42a4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainMenuDiegeticButtonsEnum: 3
 --- !u!1 &3615552159872211542
 GameObject:
   m_ObjectHideFlags: 0
@@ -2902,6 +2907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53184a1acd29b4945b28fdb19e42a4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainMenuDiegeticButtonsEnum: 4
 --- !u!64 &4136227658761765102
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3003,6 +3009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53184a1acd29b4945b28fdb19e42a4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainMenuDiegeticButtonsEnum: 6
 --- !u!23 &4539702727606696259
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3328,6 +3335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53184a1acd29b4945b28fdb19e42a4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainMenuDiegeticButtonsEnum: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

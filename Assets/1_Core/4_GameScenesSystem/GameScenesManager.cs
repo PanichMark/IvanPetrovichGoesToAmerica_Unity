@@ -1,5 +1,4 @@
-﻿using Codice.Client.Common.GameUI;
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,17 +8,19 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 {
 	private GameController _gameController;
 	private LocalizationManager _localizationManager;
-
 	private GameObject _canvasLoadingScreen;
 	private TMP_Text _textComponentLoadingReady;
 	private GameObject _textLoadingReady;
+	private GameObject _textMissionName;
+	private TMP_Text _textComponentMissionName;
 	private GameObject _textSceneName;
 	private TMP_Text _textComponentSceneName;
 	private GameObject _textSceneDescription;
 	private TMP_Text _textComponentSceneDescription;
 	private GameObject _sliderLoadingStatus;
 	private Slider _sliderComponentLoadingStatus;
-	private Image _imageLoadingScreen;
+	private GameObject _imageLoadingScreen;
+	private Image _imageComponentLoadingScreen;
 	private GameScenesList _gameScenesList;
 	public delegate void LoadSceneHandler();
 	public event LoadSceneHandler OnBeginLoadingMainMenuScene;
@@ -32,25 +33,26 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		LocalizationManager localizationManager,
 		GameScenesList gameScenesList,
 		GameObject canvasLoadingScreen,
-		GameObject textLoadingReady,
-		GameObject textSceneName,
-		GameObject textSceneDescription,
-		GameObject sliderLoadingStatus,
-		Image imageLoadingScreen)
+		ViewModelSceneLoadingScreen viewModelSceneLoadingScreen)
 	{
 		_gameController = gameController;
 		_localizationManager = localizationManager;
-		_textLoadingReady = textLoadingReady;
+		_textLoadingReady = viewModelSceneLoadingScreen.TextLoadingIsReady;
 		_gameScenesList = gameScenesList;
 		_textComponentLoadingReady = _textLoadingReady.GetComponent<TMP_Text>();
 		_canvasLoadingScreen = canvasLoadingScreen;
-		_textSceneName = textSceneName;
+		_textSceneName = viewModelSceneLoadingScreen.TextSceneName;
 		_textComponentSceneName = _textSceneName.GetComponent<TMP_Text>();
-		_textSceneDescription = textSceneDescription;
+		_textSceneDescription = viewModelSceneLoadingScreen.TextSceneDescription;
 		_textComponentSceneDescription = _textSceneDescription.GetComponent<TMP_Text>();
-		_sliderLoadingStatus = sliderLoadingStatus;
+		_sliderLoadingStatus = viewModelSceneLoadingScreen.SliderSceneLoadingStatus;
 		_sliderComponentLoadingStatus = _sliderLoadingStatus.GetComponent<Slider>();
-		_imageLoadingScreen = imageLoadingScreen;
+		_imageLoadingScreen = viewModelSceneLoadingScreen.ImageScene;
+		_imageComponentLoadingScreen = viewModelSceneLoadingScreen.ImageScene.GetComponent<Image>();
+
+		_textMissionName = viewModelSceneLoadingScreen.TextMissionName;
+		_textComponentMissionName = viewModelSceneLoadingScreen.TextMissionName.GetComponent<TMP_Text>();
+
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		Debug.Log("GameSceneManager Initialized");
 	}
@@ -71,6 +73,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		Time.timeScale = 0f;
 
 		string sceneName = scene.ToString();
+		string missionName = null;
 
 		Sprite spriteToUse = null;
 
@@ -81,12 +84,14 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 			if (_gameScenesList.GameScenes[currentSceneData].GameScene.ToString() == sceneName)
 			{
 				spriteToUse = _gameScenesList.GameScenes[currentSceneData].SceneLoadingScreenImage;
+				missionName = _gameScenesList.GameScenes[currentSceneData].GameMissionName.ToString();
 				break;
 			}
 		}
 
-		_imageLoadingScreen.sprite = spriteToUse;
-		
+		_imageComponentLoadingScreen.sprite = spriteToUse;
+
+		_textComponentMissionName.text = _localizationManager.GetLocalizedString(missionName);
 		_textComponentSceneName.text = _localizationManager.GetLocalizedString(sceneName);
 
 		_sliderLoadingStatus.SetActive(true);
@@ -198,7 +203,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		_textLoadingReady.SetActive(false);
 
 		Sprite spriteToUse = Resources.Load<Sprite>("Sprites/Sprites_LoadingScreens/Scene_0_MainMenu");
-		_imageLoadingScreen.sprite = spriteToUse;
+		_imageComponentLoadingScreen.sprite = spriteToUse;
 
 		if (SceneManager.sceneCount > 1)
 		{

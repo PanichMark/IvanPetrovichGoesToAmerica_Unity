@@ -20,6 +20,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 	private KeyCode _keyPauseMenu;
 	private ICutscene _cutsceneNewGame;
+	[SerializeField] private MainMenuDiegeticButtonsEnum _mainMenuDiegeticButtonsEnum;
 	public bool IsCutsceneNewGamePlaying { get; private set; }
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private MainMenuCanvasController _mainMenuCanvasController;
@@ -117,7 +118,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		if (name == "NewGame")
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.NewGame)
 		{
 			Debug.Log("START NEW GAME");
 			DisableAllColliders();
@@ -128,14 +129,18 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			_cutsceneNewGame.TriggerCutscene();
 			IsCutsceneNewGamePlaying = true;
 		}
-		else if (name == "TestScene")
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.TestScene)
 		{
 			Debug.Log("TEST SCENE");
 			DisableAllColliders();
 			_gameController.CloseMainMenu();
 			StartCoroutine(LoadTestScene());
 		}
-		else if (name == "LoadGame")
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.EndGameTitles)
+		{
+
+		}
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.LoadGame)
 		{
 			Debug.Log("OPEN LOAD GAME");
 			_menuBackgroundController.ShowCanvasMenuBackground();
@@ -144,7 +149,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			_menuManager.OpenAnyMenu();
 			_pauseMenuController.OpenLoadSubMenu();
 		}
-		else if (name == "Settings")
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.Settings)
 		{
 			Debug.Log("OPEN SETTINGS");
 			_menuBackgroundController.ShowCanvasMenuBackground();
@@ -153,7 +158,11 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			_menuManager.OpenAnyMenu();
 			_pauseMenuController.OpenSettingsSubMenu();
 		}
-		else if (name == "ReadNews")
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission)
+		{
+
+		}
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews)
 		{
 			Debug.Log("OPEN NEWS");
 			_menuBackgroundController.ShowCanvasMenuBackground();
@@ -162,7 +171,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			DisableAllColliders();
 			_playerCameraBlurFilter.ActivateCameraBlur();
 		}
-		else if (name == "ExitGame")
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ExitGame)
 		{
 			Debug.Log("EXIT GAME");
 			Application.Quit();

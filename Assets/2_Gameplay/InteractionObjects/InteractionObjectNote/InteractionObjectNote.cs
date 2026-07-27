@@ -1,12 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections;
 using TMPro;
-using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class InteractionObjectNote : MonoBehaviour, IInteractable
 {
 	public string InteractionObjectNameSystem => null;
 	[SerializeField] private string _interactionObjectNameUI;
+	private IInputDevice _inputDevice;
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameUI)}";
 	private TextMeshProUGUI _textButtonExit;
 	[SerializeField] private InteractionObjectNoteData _noteData;
@@ -40,6 +42,8 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		_textButtonExit = ServiceLocator.Resolve<GameObject>("TextButtonCloseReadNoteMenu").GetComponent<TextMeshProUGUI>();
+
+		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
 
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_buttonExitNoteMenu = ServiceLocator.Resolve<GameObject>("ButtonCloseReadNoteMenu").GetComponent<Button>();
@@ -128,7 +132,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 			_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_NoText")}";
 		}
 
-		_textComponent.text = _localizationManager.GetNoteLanguageSuffix(_noteData);
+		_textComponent.text = ReplaceActionTags(_localizationManager.GetNoteLanguageSuffix(_noteData));
 
 		_imageRectTransform.anchoredPosition = _noteData.NotePosition.ImagePosition;
 		_imageRectTransform.localEulerAngles = new Vector3(0f, 0f, _noteData.NotePosition.ImageRotation.x);
@@ -148,6 +152,35 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	public void InteractCutscene()
 	{
 		Interact();
+	}
+
+	private string ReplaceActionTags(string input)
+	{
+		if (_inputDevice == null || string.IsNullOrEmpty(input))
+		{
+			return input;
+		}
+
+		System.Text.RegularExpressions.Regex tagRegex = new(@"\{([^}]+)\}");
+
+		return tagRegex.Replace(input, match =>
+		{
+			string actionStringFromFile = match.Groups[1].Value;
+
+			// Пытаемся превратить строку из файла (например, "Run") в наш Enum
+			if (System.Enum.TryParse(typeof(InputControlsEnum), actionStringFromFile, out object parsedEnum))
+			{
+				InputControlsEnum actionEnum = (InputControlsEnum)parsedEnum;
+
+				// Спрашиваем у инпута актуальное имя кнопки с учетом раскладки/геймпада
+				return _inputDevice.GetNameOfKey(actionEnum);
+			}
+			else
+			{
+				Debug.LogWarning($"В заметке '{_interactionObjectNameUI}' найден неизвестный тег {{{actionStringFromFile}}}. Проверьте .txt файл.");
+				return match.Value;
+			}
+		});
 	}
 
 	private void CloseAndDeactivate()
