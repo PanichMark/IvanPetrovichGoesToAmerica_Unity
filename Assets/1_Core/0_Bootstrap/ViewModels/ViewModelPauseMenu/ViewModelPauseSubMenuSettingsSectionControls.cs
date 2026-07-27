@@ -43,7 +43,7 @@ public class ViewModelPauseSubMenuSettingsSectionControls
 
 		for (int i = 0; i < nputFieldControlsNames.Length; i++)
 		{
-			InputFieldsControls[i] = bootstrap.FindDeepGameObject(canvas, $"InputFieldControl{nputFieldControlsNames[i]}");
+			InputFieldsControls[i] = bootstrap.FindDeepGameObject(canvas, $"KeyBinding_{nputFieldControlsNames[i]}");
 		}
 
 		for (int i = 0; i < nputFieldControlsNames.Length; i++)

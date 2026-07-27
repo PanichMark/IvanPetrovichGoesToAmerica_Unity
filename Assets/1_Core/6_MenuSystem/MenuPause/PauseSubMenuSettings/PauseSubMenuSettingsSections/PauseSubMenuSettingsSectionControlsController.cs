@@ -102,7 +102,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		}
 		foreach (var field in _inputFieldsComponentsControls)
 		{
-			string actionName = field.name.Replace("InputFieldControl", "");
+			string actionName = field.name.Replace(PlayerPrefsSettingsSectionControlsEnum.KeyBinding_.ToString(), "");
 
 			if (System.Enum.TryParse(typeof(InputControlsEnum), actionName, out object parsedEnum))
 			{
@@ -119,7 +119,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 			field.onValidateInput += ValidateAndConvertInput;
 			field.onEndEdit.AddListener((string text) =>
 			{
-				string actionName = field.name.Replace("InputFieldControl", "");
+				string actionName = field.name.Replace(PlayerPrefsSettingsSectionControlsEnum.KeyBinding_.ToString(), "");
 
 				if (System.Enum.TryParse(typeof(InputControlsEnum), actionName, out object parsedEnum))
 				{
@@ -179,16 +179,13 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		}
 
 		var currentBindings = _inputDevice.GetCurrentKeyBindings().ToDictionary(b => b.action, b => b.key);
-
 		var conflictEntry = currentBindings.FirstOrDefault(b => b.Value == newKey && b.Key != actionName);
 
 		if (conflictEntry.Key != null)
 		{
 			KeyCode oldKeyOfThisAction = currentBindings[actionName];
-
 			_inputDevice.RebindKey(actionName, newKey);
 			_inputDevice.RebindKey(conflictEntry.Key, oldKeyOfThisAction);
-
 			UpdateInputFieldText(actionName, newKey);
 			UpdateInputFieldText(conflictEntry.Key, oldKeyOfThisAction);
 		}
@@ -277,7 +274,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 		foreach (var field in _inputFieldsComponentsControls)
 		{
-			string actionNameStr = field.name.Replace("InputFieldControl", "");
+			string actionNameStr = field.name.Replace(PlayerPrefsSettingsSectionControlsEnum.KeyBinding_.ToString(), "");
 
 			if (System.Enum.TryParse(typeof(InputControlsEnum), actionNameStr, out object parsedEnum))
 			{
@@ -294,34 +291,37 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
+		// Слайдеры обновляем как обычно
 		SetMouseSensitivityX(data.MouseSensitivityX);
 		_sliderComponentMouseSensitivityX.value = data.MouseSensitivityX;
 		_textComponentNumberSliderMouseSensitivityX.text = data.MouseSensitivityX.ToString();
-		OnMouseSensitivityXchanged(data.MouseSensitivityX);
+		OnMouseSensitivityXchanged?.Invoke(data.MouseSensitivityX);
 
 		SetMouseSensitivityY(data.MouseSensitivityY);
 		_sliderComponentMouseSensitivityY.value = data.MouseSensitivityY;
 		_textComponentNumberSliderMouseSensitivityY.text = data.MouseSensitivityY.ToString();
-		OnMouseSensitivityYchanged(data.MouseSensitivityY);
+		OnMouseSensitivityYchanged?.Invoke(data.MouseSensitivityY);
 
+		// === КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ ДЛЯ БИНДОВ ===
 		if (data.KeyBindings != null && data.KeyBindings.Count > 0)
 		{
 			foreach (var kvp in data.KeyBindings)
 			{
 				InputControlsEnum actionEnum = kvp.Key;
-				KeyCode savedKey = kvp.Value;
+				KeyCode savedKeyFromFile = kvp.Value; // Берем значение СТРОГО из загруженных данных
 
-				foreach (var field in _inputFieldsComponentsControls)
+				// 1. Обновляем текст в поле ввода через наш безопасный словарь полей
+				string fieldActionNameStr = PlayerPrefsSettingsSectionControlsEnum.KeyBinding_.ToString() + actionEnum.ToString(); // Собираем имя поля
+
+				var field = _inputFieldsComponentsControls.FirstOrDefault(f => f.name == fieldActionNameStr);
+				if (field != null)
 				{
-					string fieldActionNameStr = field.name.Replace("InputFieldControl", "");
-
-					if (fieldActionNameStr == actionEnum.ToString())
-					{
-						field.text = savedKey.ToString();
-						_inputDevice.RebindKey(actionEnum, savedKey);
-						break;
-					}
+					field.text = savedKeyFromFile.ToString();
 				}
+
+				// 2. Применяем настройки КЛАВИАТУРЫ (самого устройства) 
+				// Это нужно сделать ОДИН раз после цикла или здесь же
+				_inputDevice.RebindKey(actionEnum, savedKeyFromFile);
 			}
 		}
 	}
