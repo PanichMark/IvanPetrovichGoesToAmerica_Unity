@@ -94,15 +94,15 @@ public class InteractionObjectOpenableDoorScene : InteractionObjectOpenableDoor
 	{
 		Debug.Log("LOADING: " + _targetScene);
 
-		Transform parentTransform = transform.parent;
+		gameObject.transform.SetParent(null);
 
-		DontDestroyOnLoad(parentTransform.gameObject);
+		DontDestroyOnLoad(gameObject);
 
 		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(_targetScene));
 
 		_playerMovementController.SetPlayerPosition(_interactionObjectOpenableDoorScenePlayerTransform.PlayerPosition);
 		_playerMovementController.SetPlayerRotation(_interactionObjectOpenableDoorScenePlayerTransform.PlayerRotation);
 
-		Destroy(parentTransform.gameObject);
+		Destroy(gameObject);
 	}
 }

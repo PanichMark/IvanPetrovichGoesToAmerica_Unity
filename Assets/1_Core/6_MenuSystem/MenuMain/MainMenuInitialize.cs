@@ -6,6 +6,7 @@ public class MainMenuInitialize : MonoBehaviour
     [SerializeField] private MainMenuReadNewsController _readNewsController;
     [SerializeField] private MainMenuCanvasController _canvasController;
     [SerializeField] private MainMenuDiegeticButtonController[] _diegeticButtonController;
+	[SerializeField] private Material _diegeticButtonMaterial;
 
     void Start()
     {
@@ -14,7 +15,7 @@ public class MainMenuInitialize : MonoBehaviour
 
 		for (int i = 0; i < _diegeticButtonController.Length; i++)
 		{
-			_diegeticButtonController[i].Initialize(_mainMenuChooseMissionController, _readNewsController);
+			_diegeticButtonController[i].Initialize(_mainMenuChooseMissionController, _readNewsController, _diegeticButtonMaterial);
 		}
 
 		_canvasController.Initialize(_mainMenuChooseMissionController, _readNewsController);

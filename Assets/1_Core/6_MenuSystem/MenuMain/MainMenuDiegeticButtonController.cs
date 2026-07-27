@@ -26,7 +26,10 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private MainMenuCanvasController _mainMenuCanvasController;
 
-	public void Initialize(MainMenuChooseMissionController mainMenuChooseMissionController, MainMenuReadNewsController mainMenuReadNews)
+	public void Initialize(
+		MainMenuChooseMissionController mainMenuChooseMissionController,
+		MainMenuReadNewsController mainMenuReadNews,
+		Material hoverMaterial)
 	{
 		_instances.Add(this);
 
@@ -35,7 +38,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_defaultMaterial = _renderer.material;
 		_mainMenuCanvasController = GameObject.Find("MainMenuCanvasController").GetComponent<MainMenuCanvasController>();
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
-		_hoverMaterial = Resources.Load<Material>("Materials/Material_MainMenuDiegeticButton");
+		_hoverMaterial = hoverMaterial;
 		//_cutsceneNewGame = GameObject.Find("CutsceneNewGame").GetComponent<ICutscene>();
 		_menuBackgroundController = ServiceLocator.Resolve<MenuBackgroundController>("MenuBackgroundController");
 		_keyPauseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
@@ -122,7 +125,9 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 					}
 				}
 			}
-			if (Input.GetKeyDown(_keyPauseMenu) && (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission) || (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews))
+			if (Input.GetKeyDown(_keyPauseMenu) &&
+			((_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission) ||
+			 (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews)))
 			{
 				if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission && _mainMenuChooseMissionController.IsMainMenuChooseMissionOpened)
 				{
@@ -233,6 +238,8 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	IEnumerator LoadTestScene()
 	{
+		gameObject.transform.SetParent(null);
+
 		DontDestroyOnLoad(gameObject);
 
 		//yield return StartCoroutine(_saveLoadController.NewGame());

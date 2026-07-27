@@ -149,12 +149,12 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7893935688373385305}
-  - {fileID: 627007118}
   - {fileID: 543450652209522775}
   - {fileID: 4136227658761765100}
   - {fileID: 3140028038922175985}
   - {fileID: 3745622628038038274}
   - {fileID: 879098283}
+  - {fileID: 627007118}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &173932774
@@ -2000,6 +2000,7 @@ MonoBehaviour:
   - {fileID: 4312392363938348704}
   - {fileID: 1771432269}
   - {fileID: 879098284}
+  _diegeticButtonMaterial: {fileID: 2100000, guid: db02f26ad31fea6479294797dd62bee9, type: 2}
 --- !u!4 &1128389436
 Transform:
   m_ObjectHideFlags: 0
