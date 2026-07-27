@@ -357,6 +357,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register("GameController", _gameController);
 		ServiceLocator.Register("InputDevice", _inputDevice);
 		ServiceLocator.Register("KeyPauseMenu", _keyPauseMenu);
+		ServiceLocator.Register("GameScenesList", GameData.GameScenesList);
 
 		Debug.Log("=== BOOTSTRAP SERVICES REGISTERED ===");
 
