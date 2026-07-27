@@ -11,6 +11,8 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	private SaveLoadController _saveLoadController;
 	private PauseMenuController _pauseMenuController;
 
+	private GameScenesList _gameScenesList;
+
 	private ViewModelPauseSubMenuLoad _viewModelPauseSubMenuLoad;
 
 	private GameObject _canvasPauseSubMenuLoad;
@@ -33,9 +35,11 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		LocalizationManager localizationManager,
 		SaveLoadController saveLoadController,
 		PauseMenuController pauseMenuController,
+		GameScenesList gameScenesList,
 		GameObject canvasPauseSubMenuLoad,
 		ViewModelPauseSubMenuLoad viewModelPauseSubMenuLoad)
 	{
+		_gameScenesList	= gameScenesList;
 		_localizationManager = localizationManager;
 		_saveLoadController = saveLoadController;
 		_pauseMenuController = pauseMenuController;
@@ -101,25 +105,29 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	{
 		var extendedSaveInfos = _saveLoadController.GetExtendedSaveInfo();
 
-		for (int i = 0; i < extendedSaveInfos.Length; i++)
+		for (int safeFileIndex = 0; safeFileIndex < extendedSaveInfos.Length; safeFileIndex++)
 		{
-			string currentDateAndTime = extendedSaveInfos[i].SavefileDateAndTime;
-			string currentSceneNameSystem = extendedSaveInfos[i].SafefileSceneNameSystem;
+			string currentDateAndTime = extendedSaveInfos[safeFileIndex].SavefileDateAndTime;
+			string currentSceneNameSystem = extendedSaveInfos[safeFileIndex].SafefileSceneNameSystem;
 
 			if (!string.IsNullOrEmpty(currentSceneNameSystem))
 			{
-				_buttonsLoadGameFile[i].SetActive(true);
+				_buttonsLoadGameFile[safeFileIndex].SetActive(true);
 
-				_textComponentsGameFileDateAndTime[i].text = currentDateAndTime;
-				_textComponentsGameFileSceneName[i].text = _localizationManager.GetLocalizedString(currentSceneNameSystem);
+				_textComponentsGameFileDateAndTime[safeFileIndex].text = currentDateAndTime;
+				_textComponentsGameFileSceneName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentSceneNameSystem);
 
-				Sprite spriteScene = Resources.Load<Sprite>($"Sprites/Sprites_LoadingScreens/{currentSceneNameSystem}");
-
-				_imagesComponentsSceneGameFile[i].sprite = spriteScene;
+				for (int sceneDataIndex = 0; sceneDataIndex < _gameScenesList.GameScenes.Count; sceneDataIndex++)
+				{
+					if (_gameScenesList.GameScenes[sceneDataIndex].GameScene.ToString() == currentSceneNameSystem)
+					{
+						_imagesComponentsSceneGameFile[safeFileIndex].sprite = _gameScenesList.GameScenes[sceneDataIndex].SceneLoadingScreenImage;
+					}
+				}
 			}
 			else
 			{
-				_buttonsLoadGameFile[i].SetActive(false);
+				_buttonsLoadGameFile[safeFileIndex].SetActive(false);
 			}
 		}
 	}

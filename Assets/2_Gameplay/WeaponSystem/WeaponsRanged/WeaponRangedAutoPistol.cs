@@ -202,7 +202,7 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 		GameObject magazineTrownAway = Instantiate(_magazine3rdPersonNew, _magazine3rdPersonNew.transform.position, _magazine3rdPersonNew.transform.rotation);
 		magazineTrownAway.transform.SetParent(null);
 		magazineTrownAway.layer = LayerMask.NameToLayer("Default");
-		SceneManager.MoveGameObjectToScene(magazineTrownAway, SceneManager.GetSceneByBuildIndex(1));
+		SceneManager.MoveGameObjectToScene(magazineTrownAway, SceneManager.GetSceneAt(1));
 
 		Renderer renderer = magazineTrownAway.GetComponent<Renderer>();
 		renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;

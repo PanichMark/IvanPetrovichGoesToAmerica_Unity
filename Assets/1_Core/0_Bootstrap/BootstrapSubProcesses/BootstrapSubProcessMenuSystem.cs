@@ -259,6 +259,7 @@ public class BootstrapSubProcessMenuSystem
 			_localizationManager,
 			_saveLoadController,
 			PauseMenuController,
+			_bootstrap.GameData.GameScenesList,
 			_canvasPauseSubMenuSave,
 			_viewModelPauseSubMenuSave);
 
@@ -266,6 +267,7 @@ public class BootstrapSubProcessMenuSystem
 			_localizationManager,
 			_saveLoadController,
 			PauseMenuController,
+			_bootstrap.GameData.GameScenesList,
 			_canvasPauseSubMenuLoad,
 			_viewModelPauseSubMenuLoad);
 
