@@ -7,6 +7,7 @@ public class MainMenuReadNewsController : MonoBehaviour
 	private GameObject _canvasMainMenuReadNews;
 	private Button _buttonYouTube;
 	private Button _buttonGitHub;
+	private ViewModelMainMenuReadNews _viewModelMainMenuReadNews;
 
 	private const string YOUTUBE_URL = "https://youtube.com/@panichmark";
 	private const string GITHUB_URL = "https://github.com/PanichMark/IvanPetrovichGoesToAmerica_Unity";
@@ -16,14 +17,14 @@ public class MainMenuReadNewsController : MonoBehaviour
 	
 	public bool IsMainMenuReadNewsOpened {  get; private set; }
 
-	public void Initialize(
-		GameObject canvasMainMenuReadNews,
-		ViewModelMainMenuReadNews viewModelMainMenuReadNews)
+	public void Initialize()
 	{
-		_canvasMainMenuReadNews = canvasMainMenuReadNews;
-		_buttonCloseMainMenuReadNews = viewModelMainMenuReadNews.ButtonCloseMainMenuReadNews.GetComponent<Button>();
-		_buttonYouTube = viewModelMainMenuReadNews.ButtonYouTube.GetComponent<Button>();
-		_buttonGitHub = viewModelMainMenuReadNews.ButtonGitHub.GetComponent<Button>();
+		_viewModelMainMenuReadNews = ServiceLocator.Resolve<ViewModelMainMenuReadNews>("ViewModelMainMenuReadNews");
+		_canvasMainMenuReadNews = ServiceLocator.Resolve<GameObject>("CanvasMainMenuReadNews");
+
+		_buttonCloseMainMenuReadNews = _viewModelMainMenuReadNews.ButtonCloseMainMenuReadNews.GetComponent<Button>();
+		_buttonYouTube = _viewModelMainMenuReadNews.ButtonYouTube.GetComponent<Button>();
+		_buttonGitHub = _viewModelMainMenuReadNews.ButtonGitHub.GetComponent<Button>();
 
 		_buttonCloseMainMenuReadNews.onClick.AddListener(() => HideCanvasMainMenuReadNews());
 

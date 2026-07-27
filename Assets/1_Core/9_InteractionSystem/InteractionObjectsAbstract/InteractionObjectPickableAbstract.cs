@@ -145,7 +145,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 		StartCoroutine(EnableCollisionAfterDelay(0.05f));
 
-		SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByBuildIndex(1));
+		SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneAt(1));
 	}
 
 	private IEnumerator EnableCollisionAfterDelay(float delay)

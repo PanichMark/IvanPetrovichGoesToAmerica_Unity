@@ -26,7 +26,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private MainMenuCanvasController _mainMenuCanvasController;
 
-	void Start()
+	public void Initialize(MainMenuChooseMissionController mainMenuChooseMissionController, MainMenuReadNewsController mainMenuReadNews)
 	{
 		_instances.Add(this);
 
@@ -44,24 +44,49 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNewsController>("MainMenuReadNewsController");
-		_mainMenuChooseMissionController = ServiceLocator.Resolve<MainMenuChooseMissionController>("MainMenuChooseMissionController");
+
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews)
+		{
+			_mainMenuReadNews = mainMenuReadNews;
+
+			_mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
+			_mainMenuReadNews.OnCloseMainMenuReadNews += _playerCameraBlurFilter.DeactivateCameraBlur;
+			_mainMenuReadNews.OnCloseMainMenuReadNews += _menuBackgroundController.HideCanvasMenuBackground;
+		}
+
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission)
+		{
+			_mainMenuChooseMissionController = mainMenuChooseMissionController;
+		}
+
 		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
 		_pauseSubMenuSettingsController = ServiceLocator.Resolve<PauseSubMenuSettingsController>("PauseSubMenuSettingsController");
 
-		_mainMenuReadNews.OnCloseMainMenuReadNews += EnableAllColliders;
-		_mainMenuReadNews.OnCloseMainMenuReadNews += _playerCameraBlurFilter.DeactivateCameraBlur;
-		_mainMenuReadNews.OnCloseMainMenuReadNews += _menuBackgroundController.HideCanvasMenuBackground;
+
 		_pauseMenuController.OnCloseAnyPauseSubMenu += EnableAllColliders;
+
+		_mainMenuChooseMissionController.OnCloseMainMenuChooseMission += EnableAllColliders;
+		_mainMenuChooseMissionController.OnCloseMainMenuChooseMission += _playerCameraBlurFilter.DeactivateCameraBlur;
+		_mainMenuChooseMissionController.OnCloseMainMenuChooseMission += _menuBackgroundController.HideCanvasMenuBackground;
 	}
 
 	void OnDestroy()
 	{
 		_instances.Remove(this);
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews)
+		{
+			_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
+			_mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
+			_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
+		}
 
-		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
-		_mainMenuReadNews.OnCloseMainMenuReadNews -= EnableAllColliders;
-		_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission)
+		{
+			_mainMenuChooseMissionController.OnCloseMainMenuChooseMission -= EnableAllColliders;
+			_mainMenuChooseMissionController.OnCloseMainMenuChooseMission -= _playerCameraBlurFilter.DeactivateCameraBlur;
+			_mainMenuChooseMissionController.OnCloseMainMenuChooseMission -= _menuBackgroundController.HideCanvasMenuBackground;
+		}
+
 		_pauseMenuController.OnCloseAnyPauseSubMenu -= EnableAllColliders;
 
 		if (IsCutsceneNewGamePlaying)

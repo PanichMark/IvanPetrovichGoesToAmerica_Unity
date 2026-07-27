@@ -101,7 +101,7 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 
 		ejectedBullet.transform.SetParent(null);
 		ejectedBullet.layer = LayerMask.NameToLayer("Default");
-		SceneManager.MoveGameObjectToScene(ejectedBullet, SceneManager.GetSceneByBuildIndex(1));
+		SceneManager.MoveGameObjectToScene(ejectedBullet, SceneManager.GetSceneAt(1));
 
 		Renderer renderer = ejectedBullet.GetComponent<Renderer>();
 		renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;

@@ -12,7 +12,7 @@ public class MainMenuCanvasController : MonoBehaviour
 
 	private TextMeshProUGUI[] _diegeticTextsList;
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
-	void Start()
+	public void Initialize()
     {
         _localizationManager = ServiceLocator.Resolve<LocalizationManager > ("LocalizationManager");
        
@@ -65,6 +65,7 @@ public class MainMenuCanvasController : MonoBehaviour
 	private void OnDestroy()
 	{
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= ShowMainMenuCanvas;
+		_mainMenuChooseMission.OnCloseMainMenuChooseMission -= ShowMainMenuCanvas;
 		_menuManager.OnCloseAnyMenu -= ShowMainMenuCanvas;
 		_localizationManager.OnLanguageChanged -= ChangeLanguage;
 	}

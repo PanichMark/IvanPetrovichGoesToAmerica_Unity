@@ -10,11 +10,9 @@ public class MainMenuChooseMissionController : MonoBehaviour
 
 	public bool IsMainMenuChooseMissionOpened { get; private set; }
 
-	public void Initialize(
-	GameObject canvasMainMenuChooseMission,
-	ViewModelMainMenuChooseMission viewModelMainMenuChooseMission)
+	public void Initialize()
 	{
-		_canvasMainMenuChooseMission = canvasMainMenuChooseMission;
+		_canvasMainMenuChooseMission = ServiceLocator.Resolve<GameObject>("CanvasMainMenuChooseMission");
 	}
 
 	public void ShowCanvasMainMenuChooseMission()

@@ -200,7 +200,7 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 
 			ejectedShellRight.transform.SetParent(null);
 			ejectedShellRight.layer = LayerMask.NameToLayer("Default");
-			SceneManager.MoveGameObjectToScene(ejectedShellRight, SceneManager.GetSceneByBuildIndex(1));
+			SceneManager.MoveGameObjectToScene(ejectedShellRight, SceneManager.GetSceneAt(1));
 
 			Renderer rendererRight = ejectedShellRight.GetComponent<Renderer>();
 			rendererRight.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;

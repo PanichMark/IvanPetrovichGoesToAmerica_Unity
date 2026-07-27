@@ -124,7 +124,7 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 
 		_ejectedCartridge.transform.SetParent(null);
 
-		SceneManager.MoveGameObjectToScene(_ejectedCartridge, SceneManager.GetSceneByBuildIndex(1));
+		SceneManager.MoveGameObjectToScene(_ejectedCartridge, SceneManager.GetSceneAt(1));
 
 		_ejectedCartridge.AddComponent<BoxCollider>();
 		_ejectedCartridge.AddComponent<Rigidbody>();

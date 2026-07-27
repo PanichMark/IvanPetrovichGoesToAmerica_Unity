@@ -10,7 +10,6 @@ public class BootstrapSubProcessMenuSystem
 
 	private MenuBackgroundController _menuBackgroundController;
 	private GameTutorialsList _tutorialsList;
-	private MainMenuChooseMissionController _mainMenuChooseMissionController;
 	private GameObject _canvasMainMenuChooseMission;
 	public ViewModelMainMenuChooseMission ViewModelMainMenuChooseMission { get; private set; }
 	public ViewModelPauseMenu ViewModelPauseMenu {  get; private set; }
@@ -103,7 +102,6 @@ public class BootstrapSubProcessMenuSystem
 	private GameObject _canvasMenuConfirmAction;
 	
 
-	private MainMenuReadNewsController _mainMenuReadNewsController;
 	private GameObject _canvasMainMenuReadNews;
 
 
@@ -201,12 +199,10 @@ public class BootstrapSubProcessMenuSystem
 		PauseSubMenuSettingsSectionGraphicsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionGraphicsController>();
 		PauseSubMenuSettingsSectionAudioController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionAudioController>();
 		_pauseMenuConfirmActionController = _gameObjectBootstrapMenuSystem.AddComponent<PauseMenuConfirmActionController>();
-		_mainMenuReadNewsController = _gameObjectBootstrapMenuSystem.AddComponent<MainMenuReadNewsController>();
 		_cutsceneMenuController = _gameObjectBootstrapMenuSystem.AddComponent<CutsceneMenuController>();
 		HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
 		HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
-		_mainMenuChooseMissionController = _gameObjectBootstrapMenuSystem.AddComponent<MainMenuChooseMissionController>();
 
 		ViewModelMenuChooseFirstLanguage = new ViewModelMenuChooseFirstLanguage(_bootstrap, _canvasMenuChooseFirstLanguage);
 
@@ -343,14 +339,6 @@ public class BootstrapSubProcessMenuSystem
 			_canvasMenuConfirmAction,
 			_viewModelPauseMenuConfirmAction);
 
-		_mainMenuChooseMissionController.Initialize(
-			_canvasMainMenuChooseMission,
-			ViewModelMainMenuChooseMission);
-
-		_mainMenuReadNewsController.Initialize(
-			_canvasMainMenuReadNews,
-			_viewModelMainMenuReadNews);
-
 		_cutsceneMenuController.Initialize(
 			_gameSceneManager,
 			MenuManager,
@@ -373,8 +361,11 @@ public class BootstrapSubProcessMenuSystem
 			ViewModelPauseMenu,
 			ViewModelHUDMission);
 
-		ServiceLocator.Register("MainMenuChooseMissionController", _mainMenuChooseMissionController);
-		ServiceLocator.Register("MainMenuReadNewsController", _mainMenuReadNewsController);
+		ServiceLocator.Register("ViewModelMainMenuChooseMission", ViewModelMainMenuChooseMission);
+		ServiceLocator.Register("CanvasMainMenuChooseMission", _canvasMainMenuChooseMission);
+		ServiceLocator.Register("ViewModelMainMenuReadNews", _viewModelMainMenuReadNews);
+		ServiceLocator.Register("CanvasMainMenuReadNews", _canvasMainMenuReadNews);
+
 
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", PauseMenuController);
