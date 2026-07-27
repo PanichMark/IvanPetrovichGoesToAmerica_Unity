@@ -51,19 +51,6 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	private const float _STEP_VALUE_MOUSE_SENSITIVITY = 0.1f;
 	private char _lastValidChar;
 
-	private readonly char[][] _layoutMap = new char[][]
-	{
-		new char[] {'Й', 'Q'}, new char[] {'Ц', 'W'}, new char[] {'У', 'E'}, new char[] {'К', 'R'},
-		new char[] {'Е', 'T'}, new char[] {'Н', 'Y'}, new char[] {'Г', 'U'}, new char[] {'Ш', 'I'},
-		new char[] {'Щ', 'O'}, new char[] {'З', 'P'}, new char[] {'Х', '['}, new char[] {'Ъ', ']'},
-		new char[] {'Ф', 'A'}, new char[] {'Ы', 'S'}, new char[] {'В', 'D'}, new char[] {'А', 'F'},
-		new char[] {'П', 'G'}, new char[] {'Р', 'H'}, new char[] {'О', 'J'}, new char[] {'Л', 'K'},
-		new char[] {'Д', 'L'}, new char[] {'Ж', ';'}, new char[] {'Э', '\''}, new char[] {'Я', 'Z'},
-		new char[] {'Ч', 'X'}, new char[] {'С', 'C'}, new char[] {'М', 'V'}, new char[] {'И', 'B'},
-		new char[] {'Т', 'N'}, new char[] {'Ь', 'M'}, new char[] {'Б', ','}, new char[] {'Ю', '.'},
-		new char[] {'.', '/'},
-	};
-
 	public void Initialize(
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
@@ -101,6 +88,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		{
 			_inputFieldsComponentsControls[i] = viewModelPauseSubMenuSettings.InputFieldsControls[i].GetComponent<TMP_InputField>();
 		}
+		// ... первый цикл (загрузка текста из _inputDevice) остается прежним ...
 		foreach (var field in _inputFieldsComponentsControls)
 		{
 			string actionName = field.name.Replace(PlayerPrefsSettingsSectionControlsEnum.KeyBinding_.ToString(), "");
@@ -115,23 +103,31 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 				}
 			}
 		}
+
+		// ... первый цикл загрузки данных остается прежним ...
+
 		foreach (var field in _inputFieldsComponentsControls)
 		{
+			// Очищаем всё перед новой подпиской
+			field.onValidateInput -= ValidateAndConvertInput;
+			field.onSelect.RemoveAllListeners();
+			field.onDeselect.RemoveAllListeners();
+
+			// Валидация символов во время набора (остается)
 			field.onValidateInput += ValidateAndConvertInput;
 
-			// УДАЛИТЕ старый onEndEdit listener из предыдущего сообщения
-
-			// Вместо него подписываемся на клик по полю
-			int indexCopy = Array.IndexOf(_inputFieldsComponentsControls, field); // Сохраняем индекс, чтобы избежать closure trap
 			string actionName = field.name.Replace(PlayerPrefsSettingsSectionControlsEnum.KeyBinding_.ToString(), "");
-
 			if (System.Enum.TryParse(typeof(InputControlsEnum), actionName, out object parsedEnum))
 			{
 				InputControlsEnum actionEnum = (InputControlsEnum)parsedEnum;
 
-				// Используем AddListener без параметров через лямбду-замыкание
+				// Запуск физического захвата по клику
 				field.onSelect.AddListener((string text) =>
 					StartCoroutine(WaitForKeyPress(field, actionEnum)));
+
+				// Проверка ТОЛЬКО ПРИ ПОТЕРЕ ФОКУСА
+				field.onDeselect.AddListener((string finalText) =>
+					OnInputFieldFocusLost(field, actionEnum, finalText));
 			}
 		}
 		_textFieldsControls = viewModelPauseSubMenuSettings.InputFieldsControls;
@@ -154,61 +150,30 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 	char ValidateAndConvertInput(string text, int charIndex, char addedChar)
 	{
-		Debug.Log($"[Validate] Raw input: '{addedChar}' (Code: {(int)addedChar})");
-
-		// Пробел — это печатаемый символ, поэтому IsControl его пропускает. Ловим его первым.
-		if (addedChar == ' ')
-		{
-			_lastValidChar = InputKeysSpecialSystem.Space.ToString()[0];
-			return _lastValidChar;
-		}
-
+		// Блокируем любые управляющие символы (Backspace, Delete и т.д.), чтобы они не очищали поле
 		if (char.IsControl(addedChar))
 		{
 			return '\0';
 		}
 
-		char upperCaseChar = char.ToUpperInvariant(addedChar);
+		string upperCaseStr = char.ToUpperInvariant(addedChar).ToString();
 
-		if (char.IsDigit(upperCaseChar))
+		// Проверяем, входит ли введенный символ в наш разрешенный список
+		if (Enum.TryParse<InputAllowedKeys>(upperCaseStr, true, out _))
 		{
-			_lastValidChar = upperCaseChar;
-			return upperCaseChar;
+			_lastValidChar = addedChar;
+			return addedChar;
 		}
 
-		if (char.IsLetter(upperCaseChar) && upperCaseChar <= 'Z')
-		{
-			_lastValidChar = upperCaseChar;
-			return upperCaseChar;
-		}
-
-		foreach (var entry in _layoutMap)
-		{
-			if (entry[0] == upperCaseChar)
-			{
-				_lastValidChar = entry[1];
-				return entry[1];
-			}
-		}
-
-		switch (upperCaseChar)
-		{
-			case ',': _lastValidChar = InputKeysSpecialSystem.Comma.ToString()[0]; break;
-			case '.': _lastValidChar = InputKeysSpecialSystem.Period.ToString()[0]; break;
-			case '/': _lastValidChar = InputKeysSpecialSystem.Slash.ToString()[0]; break;
-			default:
-				Debug.LogWarning($"Символ {upperCaseChar} не обнаружен в раскладке!");
-				return '\0';
-		}
-
-		return _lastValidChar;
+		// Если символа нет в InputAllowedKeys (например, F1, ~, [ ), блокируем его ввод
+		Debug.LogWarning($"Символ {upperCaseStr} запрещен к ручному вводу.");
+		return '\0';
 	}
 
 	void HandleRebinding(InputControlsEnum actionName, string newKeyStr)
 	{
 		Debug.Log($"[HandleRebinding] Attempting to bind Action: {actionName} to Key String: '{newKeyStr}'");
 
-		// 1. Защита от пустой строки (часто прилетает от Tab, Escape или просто потери фокуса)
 		if (string.IsNullOrWhiteSpace(newKeyStr))
 		{
 			return;
@@ -217,36 +182,34 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		string cleanString = newKeyStr.Trim();
 		KeyCode parsedUnityKey;
 
-		// 2. Сначала ВСЕГДА проверяем наш специальный enum (Tab, Shift, Ctrl...)
-		if (Enum.TryParse<InputKeysSpecialSystem>(cleanString, true, out var customKey))
+		// ВАЖНО: Сначала проверяем наш кастомный enum, а затем СТАНДАРТНЫЙ KeyCode
+		if (Enum.TryParse<InputAllowedKeys>(cleanString, true, out var customKey))
 		{
-			Debug.Log($"[HandleRebinding] Parsed as InputKeysSpecialSystem: {customKey}");
-
-			// Пытаемся превратить имя вашего enum (например, "LeftShift") в системный KeyCode
 			if (!Enum.TryParse<KeyCode>(customKey.ToString(), out parsedUnityKey))
 			{
-				Debug.LogError($"[HandleRebinding] CRITICAL: Your InputKeysSpecialSystem.{customKey} does not match any UnityEngine.KeyCode field!");
+				Debug.LogError($"CRITICAL MISMATCH: {customKey} has no Unity mapping.");
 				return;
 			}
 		}
-		// 3. Затем пробуем стандартные буквы и цифры
 		else if (Enum.TryParse<KeyCode>(cleanString, out parsedUnityKey))
 		{
-			Debug.Log($"[HandleRebinding] Parsed as standard Unity KeyCode: {parsedUnityKey}");
+			// === ДУБЛИРУЮЩАЯ ПРОВЕРКА ===
+			// Если парсер Unity смог распознать строку (например, "F1"), но её нет в нашем списке - отменяем действие
+			if (!Enum.IsDefined(typeof(InputAllowedKeys), parsedUnityKey.ToString()))
+			{
+				Debug.LogWarning($"[HandleRebinding] KeyCode '{parsedUnityKey}' is forbidden by InputAllowedKeys policy.");
+				return;
+			}
 		}
 		else
 		{
-			Debug.LogWarning($"[HandleRebinding] Unknown key string: '{newKeyStr}'. Binding cancelled.");
+			Debug.LogWarning($"Unknown key string: '{newKeyStr}'. Binding cancelled.");
 			return;
 		}
 
-		var currentBindings = _inputDevice.GetCurrentKeyBindings()
-			.ToDictionary(kvp => kvp.action, kvp => kvp.key);
-
-		InputControlsEnum? conflictingAction = currentBindings
-			.Where(kvp => kvp.Key != actionName && kvp.Value == parsedUnityKey)
-			.Select(kvp => (InputControlsEnum?)kvp.Key)
-			.FirstOrDefault();
+		// ... остальной код свапа биндов остается без изменений ...
+		var currentBindings = _inputDevice.GetCurrentKeyBindings().ToDictionary(kvp => kvp.action, kvp => kvp.key);
+		InputControlsEnum? conflictingAction = currentBindings.Where(kvp => kvp.Key != actionName && kvp.Value == parsedUnityKey).Select(kvp => (InputControlsEnum?)kvp.Key).FirstOrDefault();
 
 		_inputDevice.RebindKey(actionName, parsedUnityKey);
 		UpdateInputFieldText(actionName, parsedUnityKey);
@@ -258,14 +221,9 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 			UpdateInputFieldText(conflictingAction.Value, oldKeyOfThisAction);
 		}
 
-		var finalBindingsSnapshot = _inputDevice.GetCurrentKeyBindings()
-			.ToDictionary(kvp => kvp.action, kvp => kvp.key);
-
+		var finalBindingsSnapshot = _inputDevice.GetCurrentKeyBindings().ToDictionary(kvp => kvp.action, kvp => kvp.key);
 		string debugLog = $"[HandleRebinding] FINAL BINDINGS DUMP AFTER SWAP:\n";
-		foreach (var binding in finalBindingsSnapshot.OrderBy(b => b.Key))
-		{
-			debugLog += $"   {binding.Key} : {binding.Value}\n";
-		}
+		foreach (var binding in finalBindingsSnapshot.OrderBy(b => b.Key)) { debugLog += $"   {binding.Key} : {binding.Value}\n"; }
 		Debug.Log(debugLog);
 	}
 
@@ -278,17 +236,6 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 				// Отображаем имя ключа "как есть" (LeftShift, Space, Tab)
 				field.text = key.ToString();
 				break;
-			}
-		}
-	}
-
-	private void KeepLastCharacter(TMP_InputField field)
-	{
-		if (!string.IsNullOrEmpty(field.text))
-		{
-			if (field.text != "Space")
-			{
-				field.text = field.text[field.text.Length - 1].ToString();
 			}
 		}
 	}
@@ -402,7 +349,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		Debug.Log($"[Rebind] Listening for key press for action: {action}...");
 
 		string originalText = targetField.text;
-		bool wasFocused = true; // Флаг отслеживания фокуса
+		bool wasFocused = true;
 
 		targetField.readOnly = true;
 		targetField.text = "...";
@@ -414,7 +361,6 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 		while (timer < delay)
 		{
-			// Проверяем, не потеряло ли поле фокус во время задержки
 			if (!targetField.isFocused && wasFocused)
 			{
 				CancelRebinding(targetField, originalText);
@@ -428,7 +374,6 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 
 		while (true)
 		{
-			// Постоянно проверяем потерю фокуса во время ожидания нажатия
 			if (!targetField.isFocused)
 			{
 				CancelRebinding(targetField, originalText);
@@ -439,6 +384,15 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 			{
 				if (Input.GetKeyDown(kcode))
 				{
+					// === НОВАЯ ПРОВЕРКА ===
+					// Игнорируем всё, чего нет в нашем "белом списке" InputAllowedKeys
+					if (!Enum.IsDefined(typeof(InputAllowedKeys), kcode.ToString()))
+					{
+						Debug.Log($"[Rebind] Key '{kcode}' is not in the allowed list. Ignoring.");
+						continue; // Просто ждем следующую клавишу, не выходя из режима записи
+					}
+
+					// Системные клавиши отмены/подтверждения
 					if (kcode == KeyCode.Escape || kcode == KeyCode.Return || kcode == KeyCode.Tab)
 					{
 						if (kcode == KeyCode.Escape)
@@ -448,6 +402,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 						continue;
 					}
 
+					// Блокировка ЛКМ для действий вне белого списка мыши
 					if (kcode == KeyCode.Mouse0 && !IsMouseBindingAllowed(action))
 					{
 						continue;
@@ -470,11 +425,61 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		}
 	}
 
+	private void OnInputFieldEditingFinished(TMP_InputField field, InputControlsEnum action, string enteredText)
+	{
+		Debug.Log($"[UI] Editing finished for {action}. Entered: '{enteredText}'");
+
+		// Если строка пустая (например, игрок нажал Enter сразу после клика)
+		if (string.IsNullOrWhiteSpace(enteredText))
+		{
+			CancelRebinding(field, _inputDevice.GetCurrentKeyBindings()
+				.FirstOrDefault(b => b.action == action).key.ToString());
+			return;
+		}
+
+		KeyCode parsedUnityKey;
+		bool isValid = false;
+
+		// Проверяем ровно так же, как в HandleRebinding
+		if (Enum.TryParse<InputAllowedKeys>(enteredText.Trim(), true, out var customKey))
+		{
+			if (Enum.TryParse<KeyCode>(customKey.ToString(), out parsedUnityKey))
+			{
+				isValid = true;
+			}
+		}
+		else if (Enum.TryParse<KeyCode>(enteredText.Trim(), out parsedUnityKey))
+		{
+			if (Enum.IsDefined(typeof(InputAllowedKeys), parsedUnityKey.ToString()))
+			{
+				isValid = true;
+			}
+		}
+
+		if (isValid)
+		{
+			// Если ключ разрешен — применяем бинд программно
+			HandleRebinding(action, parsedUnityKey.ToString());
+		}
+		else
+		{
+			// Если ключ запрещен — возвращаем старое значение из устройства
+			var currentBinding = _inputDevice.GetCurrentKeyBindings()
+				.FirstOrDefault(b => b.action == action);
+
+			CancelRebinding(field, currentBinding.key.ToString());
+		}
+
+		// Принудительно снимаем выделение с поля, чтобы "выйти" из него
+		EventSystem.current.SetSelectedGameObject(null);
+	}
+
 	// Вспомогательные методы для чистоты кода:
-	private void CancelRebinding(TMP_InputField field, string text)
+	private void CancelRebinding(TMP_InputField field, string fallbackText)
 	{
 		field.readOnly = false;
-		field.text = text;
+		field.text = fallbackText;
+		// Selection здесь устанавливать не обязательно, так как это сделает onEndEdit -> SetSelectedGameObject(null)
 	}
 
 	private bool IsPointerOverUI()
@@ -501,7 +506,61 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 				return false;
 		}
 	}
+	private void OnInputFieldFocusLost(TMP_InputField field, InputControlsEnum action, string enteredTextFromEvent)
+	{
+		Debug.Log($"[UI] Focus lost for {action}. Checking value...");
 
+		// Берем актуальный текст из компонента
+		string currentText = field.text.Trim();
+
+		KeyCode parsedUnityKey;
+		bool isValid = false;
+
+		if (string.IsNullOrEmpty(currentText))
+		{
+			var binding = _inputDevice.GetCurrentKeyBindings().FirstOrDefault(b => b.action == action);
+			CancelRebinding(field, binding.key.ToString());
+
+			// Снимаем фокус программно
+			EventSystem.current.SetSelectedGameObject(null);
+			return;
+		}
+
+		// Проверяем ровно так же, как в HandleRebinding
+		if (Enum.TryParse<InputAllowedKeys>(currentText, true, out var customKey))
+		{
+			if (Enum.TryParse<KeyCode>(customKey.ToString(), out parsedUnityKey))
+			{
+				isValid = true;
+			}
+		}
+		else if (Enum.TryParse<KeyCode>(currentText, out parsedUnityKey))
+		{
+			if (Enum.IsDefined(typeof(InputAllowedKeys), parsedUnityKey.ToString()))
+			{
+				isValid = true;
+			}
+		}
+
+		if (isValid)
+		{
+			// Если ключ разрешен — применяем бинд 
+			HandleRebinding(action, parsedUnityKey.ToString());
+		}
+		else
+		{
+			// === КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ ===
+			// Если введен мусор (F13, [, ;;) - откатываем к тому, что было ДО редактирования
+			var oldBinding = _inputDevice.GetCurrentKeyBindings().FirstOrDefault(b => b.action == action);
+
+			// Возвращаем старый текст
+			CancelRebinding(field, oldBinding.key.ToString());
+
+			// Принудительно снимаем выделение с ЭТОГО поля
+			// Это заставит UI выйти из режима набора текста
+			EventSystem.current.SetSelectedGameObject(null);
+		}
+	}
 	private void ChangeLanguage(LocalizationManager	localizationManager)
 	{
 		_localizationManager = localizationManager;

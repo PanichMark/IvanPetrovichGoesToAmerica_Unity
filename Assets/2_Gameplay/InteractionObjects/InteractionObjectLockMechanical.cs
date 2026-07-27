@@ -100,23 +100,26 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	private void Update()
 	{
-		if (!_isMovingOrRotating && !_menuManager.IsPauseMenuOpened)
+		if (_isPuzzleActive)
 		{
-			if (Input.GetKeyDown(KeyCode.UpArrow))
+			if (!_isMovingOrRotating && !_menuManager.IsPauseMenuOpened)
 			{
-				RotateGearUp();
-			}
-			if (Input.GetKeyDown(KeyCode.DownArrow))
-			{
-				RotateGearDown();
-			}
-			if (Input.GetKeyDown(KeyCode.RightArrow))
-			{
-				MoveRight();
-			}
-			if (Input.GetKeyDown(KeyCode.LeftArrow))
-			{
-				MoveLeft();
+				if (Input.GetKeyDown(KeyCode.UpArrow))
+				{
+					RotateGearUp();
+				}
+				if (Input.GetKeyDown(KeyCode.DownArrow))
+				{
+					RotateGearDown();
+				}
+				if (Input.GetKeyDown(KeyCode.RightArrow))
+				{
+					MoveRight();
+				}
+				if (Input.GetKeyDown(KeyCode.LeftArrow))
+				{
+					MoveLeft();
+				}
 			}
 		}
 	}
