@@ -184,30 +184,27 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		string bindingsLog = string.Join("\n", currentBindings.Select(kvp =>
 			$"   {kvp.Key} : {kvp.Value}"));
 
-		Debug.Log($"=== [LIVE BINDINGS DUMP] ===\n{bindingsLog}\n==========================");
-		Debug.Log(actionName);
-		Debug.Log(newKey);
+		//Debug.Log($"=== [LIVE BINDINGS DUMP] ===\n{bindingsLog}\n==========================");
+		//Debug.Log(actionName);
+		//Debug.Log(newKey);
 
 		InputControlsEnum? conflictingAction = currentBindings
 			.Where(kvp => kvp.Key != actionName && kvp.Value == newKey)
 			.Select(kvp => (InputControlsEnum?)kvp.Key)
 			.FirstOrDefault();
 
-		Debug.Log(conflictingAction);
+		//Debug.Log(conflictingAction);
+
+		_inputDevice.RebindKey(actionName, newKey);
+		UpdateInputFieldText(actionName, newKey);
 
 		if (conflictingAction.HasValue)
 		{
 			KeyCode oldKeyOfThisAction = currentBindings[actionName];
-			Debug.Log(oldKeyOfThisAction);
-			_inputDevice.RebindKey(actionName, newKey);
-			UpdateInputFieldText(actionName, newKey);
+			//Debug.Log(oldKeyOfThisAction);
+
 			_inputDevice.RebindKey(conflictingAction.Value, oldKeyOfThisAction);
 			UpdateInputFieldText(conflictingAction.Value, oldKeyOfThisAction);
-		}
-		else
-		{
-			_inputDevice.RebindKey(actionName, newKey);
-			UpdateInputFieldText(actionName, newKey);
 		}
 	}
 
@@ -215,7 +212,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	{
 		foreach (var field in _inputFieldsComponentsControls)
 		{
-			if (field.name.StartsWith(actionName.ToString()))
+			if (field.name.StartsWith(PlayerPrefsSettingsSectionControlsEnum.KeyBinding_.ToString() + actionName.ToString()))
 			{
 				field.text = key.ToString();
 				break;
@@ -227,7 +224,10 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	{
 		if (!string.IsNullOrEmpty(field.text))
 		{
-			field.text = field.text[field.text.Length - 1].ToString();
+			if (field.text != "Space")
+			{
+				field.text = field.text[field.text.Length - 1].ToString();
+			}
 		}
 	}
 
