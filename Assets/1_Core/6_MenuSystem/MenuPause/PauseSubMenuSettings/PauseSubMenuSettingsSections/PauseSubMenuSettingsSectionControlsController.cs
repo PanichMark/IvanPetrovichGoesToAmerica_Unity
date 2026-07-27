@@ -178,16 +178,31 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 			return;
 		}
 
-		var currentBindings = _inputDevice.GetCurrentKeyBindings().ToDictionary(b => b.action, b => b.key);
-		var conflictEntry = currentBindings.FirstOrDefault(b => b.Value == newKey && b.Key != actionName);
+		var currentBindings = _inputDevice.GetCurrentKeyBindings()
+			.ToDictionary(kvp => kvp.action, kvp => kvp.key);
 
-		if (conflictEntry.Key != null)
+		string bindingsLog = string.Join("\n", currentBindings.Select(kvp =>
+			$"   {kvp.Key} : {kvp.Value}"));
+
+		Debug.Log($"=== [LIVE BINDINGS DUMP] ===\n{bindingsLog}\n==========================");
+		Debug.Log(actionName);
+		Debug.Log(newKey);
+
+		InputControlsEnum? conflictingAction = currentBindings
+			.Where(kvp => kvp.Key != actionName && kvp.Value == newKey)
+			.Select(kvp => (InputControlsEnum?)kvp.Key)
+			.FirstOrDefault();
+
+		Debug.Log(conflictingAction);
+
+		if (conflictingAction.HasValue)
 		{
 			KeyCode oldKeyOfThisAction = currentBindings[actionName];
+			Debug.Log(oldKeyOfThisAction);
 			_inputDevice.RebindKey(actionName, newKey);
-			_inputDevice.RebindKey(conflictEntry.Key, oldKeyOfThisAction);
 			UpdateInputFieldText(actionName, newKey);
-			UpdateInputFieldText(conflictEntry.Key, oldKeyOfThisAction);
+			_inputDevice.RebindKey(conflictingAction.Value, oldKeyOfThisAction);
+			UpdateInputFieldText(conflictingAction.Value, oldKeyOfThisAction);
 		}
 		else
 		{
