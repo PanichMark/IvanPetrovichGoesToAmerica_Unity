@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public class ViewModelMenuChooseFirstLanguage
+public class ViewModelBootstrapChooseFirstLanguage
 {
 	public GameObject ButtonRussianLangauge;
 	public GameObject ButtonEnglishLanguage;
 
-	public ViewModelMenuChooseFirstLanguage(Bootstrap bootstrap, GameObject canvas)
+	public ViewModelBootstrapChooseFirstLanguage(Bootstrap bootstrap, GameObject canvas)
 	{
 		ButtonRussianLangauge = bootstrap.FindDeepGameObject(canvas, "Russian");
 		ButtonEnglishLanguage = bootstrap.FindDeepGameObject(canvas, "English");

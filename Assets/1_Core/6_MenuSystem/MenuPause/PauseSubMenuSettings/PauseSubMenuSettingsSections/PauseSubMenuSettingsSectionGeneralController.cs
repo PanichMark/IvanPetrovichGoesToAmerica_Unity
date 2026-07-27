@@ -228,7 +228,6 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_sliderComponentCameraFOV.value = data.CameraFOV;
 		CurrentValueCameraFOV = data.CameraFOV;
 		SetShowIngameTutorials(data.ShowIngameTutorials);
-		Debug.Log(data.ShowIngameTutorials);
 		SetShowBlood(data.ShowBlood);
 	}
 

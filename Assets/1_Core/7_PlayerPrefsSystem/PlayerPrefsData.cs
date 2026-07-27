@@ -3,30 +3,17 @@ using UnityEngine;
 
 public class PlayerPrefsData
 {
-	//Game Initialization
-	private string _wasInitialLanguageChosen = PlayerPrefsGameInitializationEnum.WasInitialLanguageChosen.ToString();
+	//Bootstrap Prerequisites
+	private string _bootstrapArePrerequisitesMet = PlayerPrefsGameInitializationEnum.BootstrapArePrerequisitesMet.ToString();
 
-	public bool WasInitialLanguageChosen
+	public bool BootstrapArePrerequisitesMet
 	{
-		get => PlayerPrefs.GetInt(_wasInitialLanguageChosen, 0) == 1;
+		get => PlayerPrefs.GetInt(_bootstrapArePrerequisitesMet, 0) == 1;
 	}
 
 	public void ChooseInitialLanguage()
 	{
-		PlayerPrefs.SetInt(_wasInitialLanguageChosen, 1);
-		PlayerPrefs.Save();
-	}
-
-	private string _wereTermsAndConditionsSigned = PlayerPrefsGameInitializationEnum.WereTermsAndConditionsSigned.ToString();
-
-	public bool WereTermsAndConditionsSigned
-	{
-		get => PlayerPrefs.GetInt(_wereTermsAndConditionsSigned, 0) == 1;
-	}
-
-	public void SignTermsAndConditions()
-	{
-		PlayerPrefs.SetInt(_wereTermsAndConditionsSigned, 1);
+		PlayerPrefs.SetInt(_bootstrapArePrerequisitesMet, 1);
 		PlayerPrefs.Save();
 	}
 
@@ -60,4 +47,9 @@ public class PlayerPrefsData
 	public int VolumeVoices { get; set; }
 	public int VolumeMusicAmbience { get; set; }
 	public int VolumeMusicIngame { get; set; }
+}
+
+public enum PlayerPrefsGameInitializationEnum
+{
+	BootstrapArePrerequisitesMet
 }

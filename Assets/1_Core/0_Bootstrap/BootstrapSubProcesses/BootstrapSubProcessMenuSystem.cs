@@ -33,7 +33,7 @@ public class BootstrapSubProcessMenuSystem
 	public ViewModelMenuDialogue ViewModelMenuDialogue { get; private set; }
 
 	public ViewModelMenuCutscene ViewModelMenuCutscene { get; private set; }
-	public ViewModelMenuChooseFirstLanguage ViewModelMenuChooseFirstLanguage { get; private set; }
+	public ViewModelBootstrapChooseFirstLanguage ViewModelMenuChooseFirstLanguage { get; private set; }
 
 	private ViewModelPauseSubMenuSettingsSectionGeneral _viewModelPauseSubMenuSettingsSectionGeneral;
 	private ViewModelPauseSubMenuSettingsGameDifficultyController _viewModelPauseSubMenuSettingsGameDifficultyController;
@@ -204,7 +204,7 @@ public class BootstrapSubProcessMenuSystem
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
 		HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
 
-		ViewModelMenuChooseFirstLanguage = new ViewModelMenuChooseFirstLanguage(_bootstrap, _canvasMenuChooseFirstLanguage);
+		ViewModelMenuChooseFirstLanguage = new ViewModelBootstrapChooseFirstLanguage(_bootstrap, _canvasMenuChooseFirstLanguage);
 
 		ViewModelPauseMenu = new ViewModelPauseMenu(_bootstrap, _canvasPauseMenu);
 		_viewModelPauseSubMenuSave = new ViewModelPauseSubMenuSave(_bootstrap, _canvasPauseSubMenuSave);

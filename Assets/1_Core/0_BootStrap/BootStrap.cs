@@ -14,7 +14,7 @@ public class Bootstrap : MonoBehaviour
 	public BootstrapGameDataList GameData => _gameData;
 
 	[Header("--- BOOTSTRAP CONFIGS ---")]
-	[SerializeField] private BootstrapConfigWasInitialLanguageChosen _configWasInitialLanguageChosen;
+	[SerializeField] private BootstrapConfigArePrerequisitesMet _configBootstrapConfigArePrerequisitesMet;
 	[SerializeField] private BootstrapConfigInitializationScreenDuration _configInitializationScreenDuration;
 	[SerializeField] private BootstrapConfigKeyPauseMenu _configKeyPauseMenu;
 	[SerializeField] private BootstrapConfigFirstSceneToLoad _configFirstSceneToLoad;
@@ -102,13 +102,13 @@ public class Bootstrap : MonoBehaviour
 
 		//PlayerPrefs.DeleteAll(); // DO NOT DELETE, for testing purporses
 
-		if (_playerPrefsData.WasInitialLanguageChosen == false || _configWasInitialLanguageChosen.WasInitialLanguageChosen == false)
+		if (_playerPrefsData.BootstrapArePrerequisitesMet == false || _configBootstrapConfigArePrerequisitesMet.BootstrapArePrerequisitesMet == false)
 		{
-			yield return StartCoroutine(ChooseInitialLanguage());
+			yield return StartCoroutine(BootstrapPrerequisites());
 		}
 		else
 		{
-			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString("Language")));
+			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString(PlayerPrefsSettingsSectionAudioEnum.Language.ToString())));
 		}
 
 		Destroy(_canvasChooseFirstLanguage);
@@ -395,6 +395,13 @@ public class Bootstrap : MonoBehaviour
 		}
 	}
 
+	private IEnumerator BootstrapPrerequisites()
+	{
+		yield return StartCoroutine(ChooseInitialLanguage());
+
+		//yield return StartCoroutine(SignTermsAndConditions());
+	}
+
 	private IEnumerator ChooseInitialLanguage()
 	{
 		Cursor.lockState = CursorLockMode.None;
@@ -426,6 +433,11 @@ public class Bootstrap : MonoBehaviour
 		Destroy(_canvasChooseFirstLanguage);
 
 		_playerPrefsData.ChooseInitialLanguage();
+	}
+
+	private IEnumerator SignTermsAndConditions()
+	{
+		yield return null;
 	}
 
 	private void ApplyBootstrapPlayerConfigs()
