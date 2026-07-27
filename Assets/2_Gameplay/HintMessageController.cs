@@ -6,10 +6,11 @@ public class HintMessageController : MonoBehaviour
 	private Collider _triggerZone;
 
 	private GameObject _playerCollider;
+	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController; 
 
 	private void Awake()
 	{
-
+		_pauseSubMenuSettingsSectionGeneralController = ServiceLocator.Resolve<PauseSubMenuSettingsSectionGeneralController>("PauseSubMenuSettingsSectionGeneralController");
 		_playerCollider = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
 
 		_triggerZone = GetComponent<Collider>();
@@ -19,13 +20,16 @@ public class HintMessageController : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject == _playerCollider)
+		if (_pauseSubMenuSettingsSectionGeneralController.AreIngameTutorialsEnabled)
 		{
-			Debug.Log("SHOW HINT!");
+			if (other.gameObject == _playerCollider)
+			{
+				Debug.Log("SHOW HINT!");
 
-			_noteObject.Interact();
+				_noteObject.Interact();
 
-			_triggerZone.enabled = false;
+				_triggerZone.enabled = false;
+			}
 		}
 	}
 }

@@ -80,10 +80,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private Toggle _toggleComponentShowIngameHints;
 	private GameObject _textToggleShowIngameHints;
 	private TextMeshProUGUI _textComponentToggleShowIngameHints;
-	private bool _areIngameHintsEnabled;
-	public delegate void IngameHintsVisibilityHandler();
-	public event IngameHintsVisibilityHandler OnShowIngameHints;
-	public event IngameHintsVisibilityHandler OnHideIngameHints;
+	public bool AreIngameTutorialsEnabled { get; private set; }
 
 	private GameObject _toggleShowBlood;
 	private Toggle _toggleComponentShowBlood;
@@ -180,7 +177,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		_toggleShowIngameHints = viewModelPauseSubMenuSettings.ToggleShowIngameHints;
 		_toggleComponentShowIngameHints = viewModelPauseSubMenuSettings.ToggleShowIngameHints.GetComponent<Toggle>();
-		_toggleComponentShowIngameHints.onValueChanged.AddListener(SetShowIngameHints);
+		_toggleComponentShowIngameHints.onValueChanged.AddListener(SetShowIngameTutorials);
 		_textToggleShowIngameHints = viewModelPauseSubMenuSettings.TextToggleShowIngameHints;
 		_textComponentToggleShowIngameHints = viewModelPauseSubMenuSettings.TextToggleShowIngameHints.GetComponent<TextMeshProUGUI>();
 
@@ -192,9 +189,6 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		SetScreenBrightness(100);
 		_sliderComponentScreenBrightness.value = 100;
-
-		SetShowIngameHints(true);
-		SetShowBlood(true);
 
 		_gameController.OnOpenMainMenu += () => OnCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
 	
@@ -219,6 +213,9 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		currentData.CameraFOV = CurrentValueCameraFOV;
 		currentData.FPSlimit = _currentFPSlimit;
+		currentData.ShowIngameTutorials = _toggleComponentShowIngameHints.isOn;
+		currentData.ShowBlood = _toggleComponentShowBlood.isOn;
+
 
 		OnSaveSettingsGeneralData?.Invoke(currentData);
 	}
@@ -230,6 +227,9 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		SetCameraFOV(data.CameraFOV);
 		_sliderComponentCameraFOV.value = data.CameraFOV;
 		CurrentValueCameraFOV = data.CameraFOV;
+		SetShowIngameTutorials(data.ShowIngameTutorials);
+		Debug.Log(data.ShowIngameTutorials);
+		SetShowBlood(data.ShowBlood);
 	}
 
 	public void ResetSettingsGeneral()
@@ -240,6 +240,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		{
 			FPSlimit = 60,
 			CameraFOV = _MIN_VALUE_CAMERA_FOV,
+			ShowIngameTutorials = true,
+			ShowBlood = true,
 		};
 
 		OnSaveSettingsGeneralData?.Invoke(defaultData);
@@ -248,6 +250,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		SetCameraFOV(_MIN_VALUE_CAMERA_FOV);
 		_sliderComponentCameraFOV.value = _MIN_VALUE_CAMERA_FOV;
+		SetShowIngameTutorials(true);
+		SetShowBlood(true);
 	}
 
 	public void SetScreenResolution(int dropdownScreenResolutionSlot)
@@ -422,15 +426,15 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		OnCloseSubMenuGameDifficulty?.Invoke();
 	}
 
-	public void SetShowIngameHints(bool isOn)
+	public void SetShowIngameTutorials(bool isOn)
 	{
 		if (isOn)
 		{
-			OnShowIngameHints?.Invoke();
+			AreIngameTutorialsEnabled = true;
 		}
 		else
 		{
-			OnHideIngameHints?.Invoke();
+			AreIngameTutorialsEnabled = false;
 		}
 
 		_toggleComponentShowIngameHints.isOn = isOn;

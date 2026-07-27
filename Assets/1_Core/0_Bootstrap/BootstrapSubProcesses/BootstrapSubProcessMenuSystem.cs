@@ -372,6 +372,7 @@ public class BootstrapSubProcessMenuSystem
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", PauseMenuController);
 		ServiceLocator.Register("PauseSubMenuSettingsController", PauseSubMenuSettingsController);
+		ServiceLocator.Register("PauseSubMenuSettingsSectionGeneralController", PauseSubMenuSettingsSectionGeneralController);
 		ServiceLocator.Register("TextChokeNPC", ViewModelHUDAmmo.TextChokeNPC);
 
 		ServiceLocator.Register("CanvasMenuNote", _canvasMenuNote);
