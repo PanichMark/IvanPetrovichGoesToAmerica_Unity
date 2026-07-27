@@ -38,6 +38,8 @@ public class MainMenuReadNewsController : MonoBehaviour
 	{
 		IsMainMenuReadNewsOpened = true;
 		_canvasMainMenuReadNews.SetActive(true);
+
+		Debug.Log("Show ReadNews");
 	}
 
 	public void HideCanvasMainMenuReadNews()
@@ -45,6 +47,8 @@ public class MainMenuReadNewsController : MonoBehaviour
 		IsMainMenuReadNewsOpened = false;
 		OnCloseMainMenuReadNews?.Invoke();
 		_canvasMainMenuReadNews.SetActive(false);
+
+		Debug.Log("Hide ReadNews");
 	}
 
 	private void OpenUrl(string url)

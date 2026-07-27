@@ -12,13 +12,13 @@ public class MainMenuCanvasController : MonoBehaviour
 
 	private TextMeshProUGUI[] _diegeticTextsList;
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
-	public void Initialize()
+	public void Initialize(MainMenuChooseMissionController mainMenuChooseMission, MainMenuReadNewsController mainMenuReadNews)
     {
         _localizationManager = ServiceLocator.Resolve<LocalizationManager > ("LocalizationManager");
        
 		_CanvasDiegeticText = GameObject.Find("CanvasMainMenu");
-		_mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNewsController>("MainMenuReadNewsController");
-		_mainMenuChooseMission = ServiceLocator.Resolve<MainMenuChooseMissionController>("MainMenuChooseMissionController");
+		_mainMenuReadNews = mainMenuReadNews;
+		_mainMenuChooseMission = mainMenuChooseMission;
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_canvasGameVersion = GameObject.Find("CanvasMainMenu").transform.Find("CanvasGameVersion").gameObject;
 
@@ -45,6 +45,8 @@ public class MainMenuCanvasController : MonoBehaviour
 		_mainMenuReadNews.OnCloseMainMenuReadNews += ShowMainMenuCanvas;
 		_mainMenuChooseMission.OnCloseMainMenuChooseMission += ShowMainMenuCanvas;
 		_menuManager.OnCloseAnyMenu += ShowMainMenuCanvas;
+
+		Debug.Log("MainMenuCanvasController Initialized");
 	}
 
 	public void HideGameVersionCanvas()

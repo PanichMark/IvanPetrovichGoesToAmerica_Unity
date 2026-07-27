@@ -17,6 +17,6 @@ public class MainMenuInitialize : MonoBehaviour
 			_diegeticButtonController[i].Initialize(_mainMenuChooseMissionController, _readNewsController);
 		}
 
-		_canvasController.Initialize();
+		_canvasController.Initialize(_mainMenuChooseMissionController, _readNewsController);
 	}
 }

@@ -36,7 +36,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_mainMenuCanvasController = GameObject.Find("MainMenuCanvasController").GetComponent<MainMenuCanvasController>();
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 		_hoverMaterial = Resources.Load<Material>("Materials/Material_MainMenuDiegeticButton");
-		_cutsceneNewGame = GameObject.Find("CutsceneNewGame").GetComponent<ICutscene>();
+		//_cutsceneNewGame = GameObject.Find("CutsceneNewGame").GetComponent<ICutscene>();
 		_menuBackgroundController = ServiceLocator.Resolve<MenuBackgroundController>("MenuBackgroundController");
 		_keyPauseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
@@ -44,6 +44,17 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
+		_pauseSubMenuSettingsController = ServiceLocator.Resolve<PauseSubMenuSettingsController>("PauseSubMenuSettingsController");
+
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission)
+		{
+			_mainMenuChooseMissionController = mainMenuChooseMissionController;
+
+			_mainMenuChooseMissionController.OnCloseMainMenuChooseMission += EnableAllColliders;
+			_mainMenuChooseMissionController.OnCloseMainMenuChooseMission += _playerCameraBlurFilter.DeactivateCameraBlur;
+			_mainMenuChooseMissionController.OnCloseMainMenuChooseMission += _menuBackgroundController.HideCanvasMenuBackground;
+		}
 
 		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews)
 		{
@@ -54,25 +65,15 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			_mainMenuReadNews.OnCloseMainMenuReadNews += _menuBackgroundController.HideCanvasMenuBackground;
 		}
 
-		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission)
-		{
-			_mainMenuChooseMissionController = mainMenuChooseMissionController;
-		}
-
-		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
-		_pauseSubMenuSettingsController = ServiceLocator.Resolve<PauseSubMenuSettingsController>("PauseSubMenuSettingsController");
-
-
 		_pauseMenuController.OnCloseAnyPauseSubMenu += EnableAllColliders;
 
-		_mainMenuChooseMissionController.OnCloseMainMenuChooseMission += EnableAllColliders;
-		_mainMenuChooseMissionController.OnCloseMainMenuChooseMission += _playerCameraBlurFilter.DeactivateCameraBlur;
-		_mainMenuChooseMissionController.OnCloseMainMenuChooseMission += _menuBackgroundController.HideCanvasMenuBackground;
+		Debug.Log($"MainMenu DiegeticButon-{_mainMenuDiegeticButtonsEnum} Initialized");
 	}
 
 	void OnDestroy()
 	{
 		_instances.Remove(this);
+
 		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews)
 		{
 			_mainMenuReadNews.OnCloseMainMenuReadNews -= _playerCameraBlurFilter.DeactivateCameraBlur;
@@ -98,9 +99,9 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	private void Update()
 	{
-		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.NewGame)
+		if (!IsCutsceneNewGamePlaying)
 		{
-			if (!IsCutsceneNewGamePlaying)
+			if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.NewGame)
 			{
 				if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 1)
 				{
@@ -120,26 +121,19 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 						_menuManager.PopPauseMenuLevel();
 					}
 				}
-
-				if (Input.GetKeyDown(_keyPauseMenu))
+			}
+			if (Input.GetKeyDown(_keyPauseMenu) && (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission) || (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews))
+			{
+				if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission && _mainMenuChooseMissionController.IsMainMenuChooseMissionOpened)
 				{
-					if (_mainMenuReadNews.IsMainMenuReadNewsOpened)
-					{
-						_mainMenuReadNews.HideCanvasMainMenuReadNews();
-						_menuBackgroundController.HideCanvasMenuBackground();
-						_playerCameraBlurFilter.DeactivateCameraBlur();
-					}
-					if (_mainMenuChooseMissionController.IsMainMenuChooseMissionOpened)
-					{
-						_mainMenuChooseMissionController.HideCanvasMainMenuChooseMission();
-						_menuBackgroundController.HideCanvasMenuBackground();
-						_playerCameraBlurFilter.DeactivateCameraBlur();
-					}
+					_mainMenuChooseMissionController.HideCanvasMainMenuChooseMission();
+				}
+				if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews && _mainMenuReadNews.IsMainMenuReadNewsOpened)
+				{
+					_mainMenuReadNews.HideCanvasMainMenuReadNews();
 				}
 			}
-			//Debug.Log(IsCutsceneNewGamePlaying);
 		}
-		
 	}
 
 	void OnMouseEnter()

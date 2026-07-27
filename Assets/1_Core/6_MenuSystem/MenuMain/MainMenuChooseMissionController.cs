@@ -13,12 +13,16 @@ public class MainMenuChooseMissionController : MonoBehaviour
 	public void Initialize()
 	{
 		_canvasMainMenuChooseMission = ServiceLocator.Resolve<GameObject>("CanvasMainMenuChooseMission");
+
+		Debug.Log("MainMenuChooseMissionController Initialized");
 	}
 
 	public void ShowCanvasMainMenuChooseMission()
 	{
 		IsMainMenuChooseMissionOpened = true;
 		_canvasMainMenuChooseMission.SetActive(true);
+
+		Debug.Log("Show ChooseMission");
 	}
 
 	public void HideCanvasMainMenuChooseMission()
@@ -26,5 +30,7 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		IsMainMenuChooseMissionOpened = false;
 		OnCloseMainMenuChooseMission?.Invoke();
 		_canvasMainMenuChooseMission.SetActive(false);
+
+		Debug.Log("Hide ChooseMission");
 	}
 }
