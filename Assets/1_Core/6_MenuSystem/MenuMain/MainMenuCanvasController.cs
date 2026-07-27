@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using TMPro;
-using Codice.Client.BaseCommands.CheckIn.Progress;
 
 public class MainMenuCanvasController : MonoBehaviour
 {
     private LocalizationManager _localizationManager;
 	private GameObject _CanvasDiegeticText;
 	private MainMenuReadNewsController _mainMenuReadNews;
+	private MainMenuChooseMissionController _mainMenuChooseMission;
 	private MenuManager _menuManager;
 	private GameObject _canvasGameVersion;
 
@@ -17,7 +17,8 @@ public class MainMenuCanvasController : MonoBehaviour
         _localizationManager = ServiceLocator.Resolve<LocalizationManager > ("LocalizationManager");
        
 		_CanvasDiegeticText = GameObject.Find("CanvasMainMenu");
-		_mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNewsController>("MainMenuReadNews");
+		_mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNewsController>("MainMenuReadNewsController");
+		_mainMenuChooseMission = ServiceLocator.Resolve<MainMenuChooseMissionController>("MainMenuChooseMissionController");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_canvasGameVersion = GameObject.Find("CanvasMainMenu").transform.Find("CanvasGameVersion").gameObject;
 
@@ -42,6 +43,7 @@ public class MainMenuCanvasController : MonoBehaviour
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_mainMenuReadNews.OnCloseMainMenuReadNews += ShowMainMenuCanvas;
+		_mainMenuChooseMission.OnCloseMainMenuChooseMission += ShowMainMenuCanvas;
 		_menuManager.OnCloseAnyMenu += ShowMainMenuCanvas;
 	}
 

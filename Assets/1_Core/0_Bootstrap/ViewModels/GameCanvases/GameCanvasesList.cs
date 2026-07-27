@@ -24,6 +24,7 @@ public class GameCanvasesList : ScriptableObject
 	public GameObject CanvasPauseMenuConfirmAction;
 
 	[Header("Main Menu")]
+	public GameObject CanvasMainMenuChooseMission;
 	public GameObject CanvasMainMenuReadNews;
 
 	[Header("HUDs")]

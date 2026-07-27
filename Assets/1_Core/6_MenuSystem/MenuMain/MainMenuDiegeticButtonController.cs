@@ -21,6 +21,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private KeyCode _keyPauseMenu;
 	private ICutscene _cutsceneNewGame;
 	[SerializeField] private MainMenuDiegeticButtonsEnum _mainMenuDiegeticButtonsEnum;
+	private MainMenuChooseMissionController _mainMenuChooseMissionController;
 	public bool IsCutsceneNewGamePlaying { get; private set; }
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private MainMenuCanvasController _mainMenuCanvasController;
@@ -43,7 +44,8 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNewsController>("MainMenuReadNews");
+		_mainMenuReadNews = ServiceLocator.Resolve<MainMenuReadNewsController>("MainMenuReadNewsController");
+		_mainMenuChooseMissionController = ServiceLocator.Resolve<MainMenuChooseMissionController>("MainMenuChooseMissionController");
 		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
 		_pauseSubMenuSettingsController = ServiceLocator.Resolve<PauseSubMenuSettingsController>("PauseSubMenuSettingsController");
 
@@ -71,7 +73,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	private void Update()
 	{
-		if (name == "NewGame")
+		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.NewGame)
 		{
 			if (!IsCutsceneNewGamePlaying)
 			{
@@ -94,11 +96,20 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 					}
 				}
 
-				if (Input.GetKeyDown(_keyPauseMenu) && _mainMenuReadNews.IsMainMenuReadNewsOpened)
+				if (Input.GetKeyDown(_keyPauseMenu))
 				{
-					_mainMenuReadNews.HideCanvasMainMenuReadNews();
-					_menuBackgroundController.HideCanvasMenuBackground();
-					_playerCameraBlurFilter.DeactivateCameraBlur();
+					if (_mainMenuReadNews.IsMainMenuReadNewsOpened)
+					{
+						_mainMenuReadNews.HideCanvasMainMenuReadNews();
+						_menuBackgroundController.HideCanvasMenuBackground();
+						_playerCameraBlurFilter.DeactivateCameraBlur();
+					}
+					if (_mainMenuChooseMissionController.IsMainMenuChooseMissionOpened)
+					{
+						_mainMenuChooseMissionController.HideCanvasMainMenuChooseMission();
+						_menuBackgroundController.HideCanvasMenuBackground();
+						_playerCameraBlurFilter.DeactivateCameraBlur();
+					}
 				}
 			}
 			//Debug.Log(IsCutsceneNewGamePlaying);
@@ -160,7 +171,12 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		}
 		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission)
 		{
-
+			Debug.Log("CHOOSE MISSION");
+			_menuBackgroundController.ShowCanvasMenuBackground();
+			_mainMenuCanvasController.HideMainMenuCanvas();
+			_mainMenuChooseMissionController.ShowCanvasMainMenuChooseMission();
+			DisableAllColliders();
+			_playerCameraBlurFilter.ActivateCameraBlur();
 		}
 		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews)
 		{

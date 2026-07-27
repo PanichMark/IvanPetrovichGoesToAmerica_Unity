@@ -36,6 +36,7 @@ public class Bootstrap : MonoBehaviour
 	private GameObject _canvasPauseSubMenuSettings;
 	private GameObject _canvasPauseSubMenuSettingsGameDifficulty;
 	private GameObject _canvasPauseMenuConfirmAction;
+	private GameObject _canvasMainMenuChooseMission;
 	private GameObject _canvasMainMenuReadNews;
 	private GameObject _canvasHUDinteraction;
 	private GameObject _canvasHUDmission;
@@ -174,6 +175,7 @@ public class Bootstrap : MonoBehaviour
 		_canvasPauseSubMenuSettingsGameDifficulty = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuSettingsGameDifficulty);
 		_canvasPauseMenuConfirmAction = Instantiate(_gameData.GameCanvasesList.CanvasPauseMenuConfirmAction);
 
+		_canvasMainMenuChooseMission = Instantiate(_gameData.GameCanvasesList.CanvasMainMenuChooseMission);
 		_canvasMainMenuReadNews = Instantiate(_gameData.GameCanvasesList.CanvasMainMenuReadNews);
 
 		_canvasMenuWeaponWheel = Instantiate(_gameData.GameCanvasesList.CanvasMenuWeaponWheel);
@@ -248,7 +250,8 @@ public class Bootstrap : MonoBehaviour
 			_canvasMenuNote,
 			_canvasMenuLockpickMechanical,
 			_canvasMenuLockpickElectronic,
-			_canvasMenuDialogue);
+			_canvasMenuDialogue,
+			_canvasMainMenuChooseMission);
 
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.Initialize());
 
