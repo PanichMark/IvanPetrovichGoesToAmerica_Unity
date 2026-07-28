@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "BootstrapGameDataList", menuName = "BootstrapConfigs/BootstrapGameDataList")]
+[CreateAssetMenu(fileName = "BootstrapGameDataList", menuName = "Configs/GameData/BootstrapGameDataList")]
 public class BootstrapGameDataList : ScriptableObject
 {
 	public TermsAndConditions TermsAndConditions;

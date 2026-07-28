@@ -14,16 +14,19 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private BootstrapGameDataList _gameData;
 	public BootstrapGameDataList GameData => _gameData;
 
-	[Header("--- BOOTSTRAP CONFIGS ---")]
-	[SerializeField] private BootstrapConfigArePrerequisitesMet _configBootstrapConfigArePrerequisitesMet;
-	[SerializeField] private BootstrapConfigInitializationScreenDuration _configInitializationScreenDuration;
-	[SerializeField] private BootstrapConfigKeyPauseMenu _configKeyPauseMenu;
-	[SerializeField] private BootstrapConfigFirstSceneToLoad _configFirstSceneToLoad;
+	[Header("---  CONFIGS PLAYERPREFS ---")]
+	[SerializeField] private ConfigPlayerPrefsPresequisites _playerPrefsPresequisites;
+	[SerializeField] private ConfigPlayerPrefsReset _playerPrefsReset;
 
-	[Header("--- PLAYER CONFIGS ---")]
-	[SerializeField] private BootstrapConfigPlayerTransform _playerPosition;
-	[SerializeField] private BootstrapConfigPlayerWeapons _playerWeapons;
-	[SerializeField] private BootstrapConfigPlayerResourcesAmmo _playerAmmo;
+	[Header("---  CONFIGS BOOTSTRAP ---")]
+	[SerializeField] private ConfigBootstrapInitializationScreenDuration _initializationScreenDuration;
+	[SerializeField] private ConfigBootstrapKeyPauseMenu _keyPauseMenu;
+	[SerializeField] private ConfigBootstrapFirstSceneToLoad _firstSceneToLoad;
+
+	[Header("--- CONFIGS PLAYER  ---")]
+	[SerializeField] private ConfigPlayerTransform _playerTransform;
+	[SerializeField] private ConfigPlayerWeapons _playerWeapons;
+	[SerializeField] private ConfigPlayerResourcesAmmo _playerAmmo;
 
 	private GameObject _canvasBootstrapInitialization;
 	private GameObject _canvasBootstrapChooseFirstLanguage;
@@ -66,7 +69,7 @@ public class Bootstrap : MonoBehaviour
 	private BootstrapSubProcessMissionsSystem _bootstrapSubProcessMissionsSystem;
 	private BootstrapSubProcessObjectPoolSystem _bootstrapSubProcessObjectPoolSystem;
 
-	private KeyCode _keyPauseMenu;
+	private KeyCode _keyCodePauseMenu;
 
 	private GameObject _gameObjectPlayer;
 	public GameObject GameObjectPlayerCamera { get; private set; }
@@ -94,7 +97,7 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(BootstrapSystemsInitialization());
 
-		yield return new WaitForSecondsRealtime(_configInitializationScreenDuration.InitializationScreenDuration);
+		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration);
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
@@ -102,9 +105,12 @@ public class Bootstrap : MonoBehaviour
 
 		Destroy(_canvasBootstrapInitialization);
 
-		//PlayerPrefs.DeleteAll(); // DO NOT DELETE, for testing purporses
+		if (_playerPrefsReset.ResetPlayerPrefs == true)
+		{
+			PlayerPrefs.DeleteAll();
+		}
 
-		if (_playerPrefsData.BootstrapArePrerequisitesMet == false || _configBootstrapConfigArePrerequisitesMet.BootstrapArePrerequisitesMet == false)
+		if (_playerPrefsData.BootstrapArePrerequisitesMet == false || _playerPrefsPresequisites.ArePrerequisitesMet == false)
 		{
 			yield return StartCoroutine(BootstrapPrerequisites());
 		}
@@ -145,9 +151,9 @@ public class Bootstrap : MonoBehaviour
 	{
 		_gameController = new GameController();
 
-		_keyPauseMenu = _configKeyPauseMenu.KeyPauseMenu;
+		_keyCodePauseMenu = _keyPauseMenu.KeyPauseMenu;
 
-		_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
+		_inputDevice = new InputKeyboard(_gameController, _keyCodePauseMenu);
 		//_inputDevice = new InputGamepad(_gameController);
 
 		LocalizationManager = new LocalizationManager();
@@ -387,13 +393,13 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator LoadFirstGameplayScene()
 	{
-		if (_configFirstSceneToLoad.FirstSceneToLoad == GameScenesEnum.Scene_0_MainMenu)
+		if (_firstSceneToLoad.FirstSceneToLoad == GameScenesEnum.Scene_0_MainMenu)
 		{
 			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadMainMenuScene());
 		}
 		else
 		{
-			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene(_configFirstSceneToLoad.FirstSceneToLoad));
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene(_firstSceneToLoad.FirstSceneToLoad));
 		}
 	}
 
@@ -516,9 +522,9 @@ public class Bootstrap : MonoBehaviour
 			}
 		}
 
-		if (_configFirstSceneToLoad.FirstSceneToLoad != GameScenesEnum.Scene_0_MainMenu)
+		if (_firstSceneToLoad.FirstSceneToLoad != GameScenesEnum.Scene_0_MainMenu)
 		{
-			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerPosition.PlayerPosition);
+			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerTransform.PlayerPosition);
 		}
 	}
 
