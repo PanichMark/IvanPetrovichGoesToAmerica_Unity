@@ -4,8 +4,9 @@
 public class GameCanvasesList : ScriptableObject
 {
 	[Header("Bootstrap")]
-	public GameObject CanvasBootstrap;
-	public GameObject CanvasChooseFirstLanguage;
+	public GameObject CanvasBootstrapInitialization;
+	public GameObject CanvasBootstrapChooseFirstLanguage;
+	public GameObject CanvasBootstrapSignTermsAndConditions;
 
 	[Header("Loading Screen")]
 	public GameObject CanvasSceneLoadingScreen;

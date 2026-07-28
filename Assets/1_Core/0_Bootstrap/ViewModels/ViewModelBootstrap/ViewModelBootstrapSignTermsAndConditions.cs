@@ -1,16 +1,29 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ViewModelBootstrapSignTermsAndConditions : MonoBehaviour
+public class ViewModelBootstrapSignTermsAndConditions
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+	public GameObject TextHeaderTermsAndConditions;
+	public GameObject TextTermsAndConditions;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public GameObject ButtonSign;
+	public GameObject TextButtonSign;
+	public GameObject ButtonRefuse;
+	public GameObject TextButtonRefuse;
+
+	public GameObject ToggleAgreeWithTerms;
+	public GameObject TextToggleAgreeWithTerms;
+
+	public ViewModelBootstrapSignTermsAndConditions(Bootstrap bootstrap, GameObject canvas)
+	{
+		TextHeaderTermsAndConditions = bootstrap.FindDeepGameObject(canvas, "TextHeaderTermsAndConditions");
+		TextTermsAndConditions = bootstrap.FindDeepGameObject(canvas, "TextTermsAndConditions");
+
+		ButtonSign = bootstrap.FindDeepGameObject(canvas, "ButtonSign");
+		TextButtonSign = bootstrap.FindDeepGameObject(canvas, "TextButtonSign");
+		ButtonRefuse = bootstrap.FindDeepGameObject(canvas, "ButtonRefuse");
+		TextButtonRefuse = bootstrap.FindDeepGameObject(canvas, "TextButtonRefuse");
+
+		ToggleAgreeWithTerms = bootstrap.FindDeepGameObject(canvas, "ToggleAgreeWithTerms");
+		TextToggleAgreeWithTerms = bootstrap.FindDeepGameObject(canvas, "TextToggleAgreeWithTerms");
+	}
 }

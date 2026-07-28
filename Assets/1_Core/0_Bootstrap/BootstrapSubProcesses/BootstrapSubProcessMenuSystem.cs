@@ -11,6 +11,8 @@ public class BootstrapSubProcessMenuSystem
 	private MenuBackgroundController _menuBackgroundController;
 	private GameTutorialsList _tutorialsList;
 	private GameObject _canvasMainMenuChooseMission;
+	private GameObject _canvasBootstrapSignTermsAndConditions;
+	public ViewModelBootstrapSignTermsAndConditions ViewModelBootstrapSignTermsAndConditions { get; private set; }
 	public ViewModelMainMenuChooseMission ViewModelMainMenuChooseMission { get; private set; }
 	public ViewModelPauseMenu ViewModelPauseMenu {  get; private set; }
 	private ViewModelPauseSubMenuSave _viewModelPauseSubMenuSave;
@@ -146,8 +148,10 @@ public class BootstrapSubProcessMenuSystem
 		GameObject canvasMenuLockpickMechanical,
 		GameObject canvasMenuLockpickElectronic,
 		GameObject canvasMenuDialogue,
-		GameObject canvasMainMenuChooseMission)
+		GameObject canvasMainMenuChooseMission,
+		GameObject canvasBootstrapSignTermsAndConditions)
 	{
+		_canvasBootstrapSignTermsAndConditions = canvasBootstrapSignTermsAndConditions;
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
 		_gameController = gameController;
@@ -226,7 +230,7 @@ public class BootstrapSubProcessMenuSystem
 		ViewModelMenuLockpickElectronic = new ViewModelMenuLockpickElectronic(_bootstrap, _canvasMenuLockpickElectronic);
 		ViewModelMenuDialogue = new ViewModelMenuDialogue(_bootstrap, _canvasMenuDialogue);
 		ViewModelMenuCutscene = new ViewModelMenuCutscene(_bootstrap, _canvasMenuCutscene);
-
+		ViewModelBootstrapSignTermsAndConditions = new ViewModelBootstrapSignTermsAndConditions(_bootstrap, _canvasBootstrapSignTermsAndConditions);
 		ViewModelMainMenuChooseMission = new ViewModelMainMenuChooseMission(_bootstrap, _canvasMainMenuChooseMission);
 
 		_viewModelPauseSubMenuSettingsSectionGeneral = new ViewModelPauseSubMenuSettingsSectionGeneral(_bootstrap, _canvasPauseSubMenuSettings);

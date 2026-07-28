@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,8 +25,9 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private BootstrapConfigPlayerWeapons _playerWeapons;
 	[SerializeField] private BootstrapConfigPlayerResourcesAmmo _playerAmmo;
 
-	private GameObject _canvasBootstrap;
-	private GameObject _canvasChooseFirstLanguage;
+	private GameObject _canvasBootstrapInitialization;
+	private GameObject _canvasBootstrapChooseFirstLanguage;
+	private GameObject _canvasBootstrapSignTermsAndConditions;
 	private GameObject _canvasSceneLoadingScreen;
 	private GameObject _canvasMenuBackground;
 	private GameObject _canvasPauseMenu;
@@ -82,7 +84,7 @@ public class Bootstrap : MonoBehaviour
 
 		ServiceLocator.ClearAllServices();
 
-		_canvasBootstrap = Instantiate(_gameData.GameCanvasesList.CanvasBootstrap);
+		_canvasBootstrapInitialization = Instantiate(_gameData.GameCanvasesList.CanvasBootstrapInitialization);
 
 		Time.timeScale = 0f;
 		Cursor.lockState = CursorLockMode.Locked;
@@ -98,7 +100,7 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.SaveLoadController.NewGame());
 
-		Destroy(_canvasBootstrap);
+		Destroy(_canvasBootstrapInitialization);
 
 		//PlayerPrefs.DeleteAll(); // DO NOT DELETE, for testing purporses
 
@@ -110,8 +112,6 @@ public class Bootstrap : MonoBehaviour
 		{
 			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString(PlayerPrefsSettingsSectionAudioEnum.Language.ToString())));
 		}
-
-		Destroy(_canvasChooseFirstLanguage);
 
 		Destroy(_gameObjectBootstrapTemporaryCamera);
 
@@ -160,7 +160,8 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeCanvases()
 	{
-		_canvasChooseFirstLanguage = Instantiate(_gameData.GameCanvasesList.CanvasChooseFirstLanguage);
+		_canvasBootstrapChooseFirstLanguage = Instantiate(_gameData.GameCanvasesList.CanvasBootstrapChooseFirstLanguage);
+		_canvasBootstrapSignTermsAndConditions = Instantiate(_gameData.GameCanvasesList.CanvasBootstrapSignTermsAndConditions);
 
 		_canvasSceneLoadingScreen = Instantiate(_gameData.GameCanvasesList.CanvasSceneLoadingScreen);
 	
@@ -230,7 +231,7 @@ public class Bootstrap : MonoBehaviour
 			_gameController,
 			_inputDevice,
 			LocalizationManager,
-			_canvasChooseFirstLanguage,
+			_canvasBootstrapChooseFirstLanguage,
 			_canvasMenuBackground,
 			_canvasPauseMenu,
 			_canvasPauseSubMenuSave,
@@ -251,7 +252,8 @@ public class Bootstrap : MonoBehaviour
 			_canvasMenuLockpickMechanical,
 			_canvasMenuLockpickElectronic,
 			_canvasMenuDialogue,
-			_canvasMainMenuChooseMission);
+			_canvasMainMenuChooseMission,
+			_canvasBootstrapSignTermsAndConditions);
 
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.Initialize());
 
@@ -399,7 +401,9 @@ public class Bootstrap : MonoBehaviour
 	{
 		yield return StartCoroutine(ChooseInitialLanguage());
 
-		//yield return StartCoroutine(SignTermsAndConditions());
+		yield return StartCoroutine(SignTermsAndConditions());
+
+		_playerPrefsData.ChooseInitialLanguage();
 	}
 
 	private IEnumerator ChooseInitialLanguage()
@@ -407,7 +411,7 @@ public class Bootstrap : MonoBehaviour
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
-		_canvasChooseFirstLanguage.SetActive(true);
+		_canvasBootstrapChooseFirstLanguage.SetActive(true);
 
 		bool languageSelected = false;
 
@@ -430,14 +434,50 @@ public class Bootstrap : MonoBehaviour
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
-		Destroy(_canvasChooseFirstLanguage);
-
-		_playerPrefsData.ChooseInitialLanguage();
+		Destroy(_canvasBootstrapChooseFirstLanguage);
 	}
 
 	private IEnumerator SignTermsAndConditions()
 	{
-		yield return null;
+		_canvasBootstrapSignTermsAndConditions.SetActive(true);
+
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+
+		bool termsRead = false;
+		bool termsAknowledged = false;
+		bool termsSigned = false;
+
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextHeaderTermsAndConditions.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("");
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextButtonSign.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("");
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextButtonRefuse.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("");
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextToggleAgreeWithTerms.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("");
+
+		if (LocalizationManager.CurrentLanguage == LanguagesEnum.Russian)
+		{
+			_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextTermsAndConditions.GetComponent<TextMeshProUGUI>().text = GameData.TermsAndConditions.TermsAndConditions_RU.text;
+		}
+		else
+		{
+			_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextTermsAndConditions.GetComponent<TextMeshProUGUI>().text = GameData.TermsAndConditions.TermsAndConditions_RU.text;
+		}
+
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ButtonSign.GetComponent<Button>().onClick.AddListener(() =>
+		{
+
+		});
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ButtonRefuse.GetComponent<Button>().onClick.AddListener(() =>
+		{
+			Debug.Log("EXIT GAME");
+			Application.Quit();
+		});
+
+		yield return new WaitUntil(() => termsRead);
+
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
+		Destroy(_canvasBootstrapSignTermsAndConditions);
 	}
 
 	private void ApplyBootstrapPlayerConfigs()

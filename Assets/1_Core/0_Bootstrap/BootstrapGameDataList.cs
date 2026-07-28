@@ -3,6 +3,7 @@
 [CreateAssetMenu(fileName = "BootstrapGameDataList", menuName = "BootstrapConfigs/BootstrapGameDataList")]
 public class BootstrapGameDataList : ScriptableObject
 {
+	public TermsAndConditions TermsAndConditions;
     public GameCanvasesList GameCanvasesList;
 	public GameScenesList GameScenesList;
 	public GameMissionsList GameMissionsList;
