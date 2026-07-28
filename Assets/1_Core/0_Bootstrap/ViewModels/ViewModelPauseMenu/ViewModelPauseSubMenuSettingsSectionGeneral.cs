@@ -27,6 +27,7 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 
 	public GameObject ButtonGameDifficulty;
 	public GameObject TextButtonGameDifficulty;
+	public GameObject TextButtonDifficultyNormal;
 
 	public GameObject ToggleShowIngameHints;
 	public GameObject TextToggleShowIngameHints;
@@ -61,6 +62,7 @@ public class ViewModelPauseSubMenuSettingsSectionGeneral
 
 		ButtonGameDifficulty = bootstrap.FindDeepGameObject(canvas, "ButtonGameDifficulty");
 		TextButtonGameDifficulty = bootstrap.FindDeepGameObject(canvas, "TextGameDifficulty");
+		TextButtonDifficultyNormal = bootstrap.FindDeepGameObject(canvas, "TextButtonDifficultyNormal");
 
 		ToggleShowIngameHints = bootstrap.FindDeepGameObject(canvas, "ToggleShowIngameHints");
 		TextToggleShowIngameHints = bootstrap.FindDeepGameObject(canvas, "TextShowIngameHints");

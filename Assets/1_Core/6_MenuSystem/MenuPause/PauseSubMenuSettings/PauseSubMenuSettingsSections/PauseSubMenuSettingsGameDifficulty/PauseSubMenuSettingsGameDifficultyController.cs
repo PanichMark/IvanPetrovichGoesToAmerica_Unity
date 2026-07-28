@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
@@ -12,15 +11,17 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 
 	private GameDifficultiesList _difficultiesList;
 
-	private GameObject _imageContainer;
-	private Image _imageComponent;
-	private GameObject _textContainer;
-	private TextMeshProUGUI _textComponent;
+	private GameObject _imageGameDifficulty;
+	private Image _imageComponentGameDifficulty;
+	private GameObject _textGameDifficultyHeader;
+	private TextMeshProUGUI _textComponentGameDifficultyHeader;
+	private GameObject _textGameDifficultyDescription;
+	private TextMeshProUGUI _textComponentGameDifficultyDescription;
 
-	private GameObject _buttonNext;
-	private GameObject _buttonPrevious;
-	private GameObject _buttonClose;
-	private TextMeshProUGUI _textButtonComponentClose;
+	private GameObject _buttonNextGameDifficulty;
+	private GameObject _buttonPreviousGameDifficulty;
+	private GameObject _buttonCloseSettingsGameDifficulty;
+	private TextMeshProUGUI _textComponentButtonCloseSettingsGameDifficulty;
 
 	private bool _isOpened;
 	private int _currentIndex = 0;
@@ -39,19 +40,26 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 
 		_difficultiesList = difficultiesList;
 
-		_textContainer = viewModelPauseSubMenuSettingsGameDifficultyController.TextGameDifficulty;
-		_textComponent = _textContainer.GetComponent<TextMeshProUGUI>();
-		_imageContainer = viewModelPauseSubMenuSettingsGameDifficultyController.ImageGameDifficulty;
-		_imageComponent = _imageContainer.GetComponent<Image>();
+		_textGameDifficultyHeader = viewModelPauseSubMenuSettingsGameDifficultyController.TextGameDifficultyHeader;
+		_textComponentGameDifficultyHeader = _textGameDifficultyHeader.GetComponent<TextMeshProUGUI>();
+		_textGameDifficultyDescription = viewModelPauseSubMenuSettingsGameDifficultyController.TextGameDifficultyDescription;
+		_textComponentGameDifficultyDescription = _textGameDifficultyDescription.GetComponent<TextMeshProUGUI>();
 
-		_buttonNext = viewModelPauseSubMenuSettingsGameDifficultyController.ButtonNextGameDifficulty;
-		_buttonNext.GetComponent<Button>().onClick.AddListener(() => NextDifficulty());
-		_buttonPrevious = viewModelPauseSubMenuSettingsGameDifficultyController.ButtonPreviousGameDifficulty;
-		_buttonPrevious.GetComponent<Button>().onClick.AddListener(() => PreviousDifficulty());
+		_imageGameDifficulty = viewModelPauseSubMenuSettingsGameDifficultyController.ImageGameDifficulty;
+		_imageComponentGameDifficulty = _imageGameDifficulty.GetComponent<Image>();
 
-		_buttonClose = viewModelPauseSubMenuSettingsGameDifficultyController.ButtonCloseSettingsGameDifficulty;
-		_buttonClose.GetComponent<Button>().onClick.AddListener(() => _pauseSubMenuSettingsSectionGeneralController.CloseSubMenuChooseGameDifficulty());
-		_textButtonComponentClose = viewModelPauseSubMenuSettingsGameDifficultyController.TextButtonCloseSettingsGameDifficulty.GetComponent<TextMeshProUGUI>();
+		Sprite spriteToShow = _difficultiesList.Notes[_currentIndex].NoteImage;
+		_imageComponentGameDifficulty.sprite = spriteToShow;
+		_imageGameDifficulty.SetActive(spriteToShow != null);
+
+		_buttonNextGameDifficulty = viewModelPauseSubMenuSettingsGameDifficultyController.ButtonNextGameDifficulty;
+		_buttonNextGameDifficulty.GetComponent<Button>().onClick.AddListener(() => NextDifficulty());
+		_buttonPreviousGameDifficulty = viewModelPauseSubMenuSettingsGameDifficultyController.ButtonPreviousGameDifficulty;
+		_buttonPreviousGameDifficulty.GetComponent<Button>().onClick.AddListener(() => PreviousDifficulty());
+
+		_buttonCloseSettingsGameDifficulty = viewModelPauseSubMenuSettingsGameDifficultyController.ButtonCloseSettingsGameDifficulty;
+		_buttonCloseSettingsGameDifficulty.GetComponent<Button>().onClick.AddListener(() => _pauseSubMenuSettingsSectionGeneralController.CloseSubMenuChooseGameDifficulty());
+		_textComponentButtonCloseSettingsGameDifficulty = viewModelPauseSubMenuSettingsGameDifficultyController.TextButtonCloseSettingsGameDifficulty.GetComponent<TextMeshProUGUI>();
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
@@ -81,11 +89,8 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 		_isOpened = true;
 		_canvasGameDifficulty.SetActive(true);
 
-		if (_difficultiesList.Notes.Count > 0)
-		{
-			_currentIndex = 0;
-			UpdateUIDifficulty();
-		}
+		_currentIndex = 1;
+		UpdateGameDifficultyUI();
 	}
 
 	private void HideMenuGameDifficulty()
@@ -100,30 +105,32 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 	private void NextDifficulty()
 	{
 		_currentIndex = (_currentIndex + 1) % _difficultiesList.Notes.Count;
-		UpdateUIDifficulty();
+		UpdateGameDifficultyUI();
 	}
 
 	private void PreviousDifficulty()
 	{
 		_currentIndex = (_currentIndex - 1 + _difficultiesList.Notes.Count) % _difficultiesList.Notes.Count;
-		UpdateUIDifficulty();
+		UpdateGameDifficultyUI();
 	}
 
-	private void UpdateUIDifficulty()
+	private void UpdateGameDifficultyUI()
 	{
+		_textComponentGameDifficultyHeader.text = _localizationManager.GetLocalizedString($"UI_Menu_PauseSubMenuSettingsGameDifficultyController_GameDifficulty{_currentIndex}");
+
 		InteractionObjectNoteData data = _difficultiesList.Notes[_currentIndex];
 		string textToShow = _localizationManager.GetNoteLanguageSuffix(data);
-		_textComponent.text = textToShow;
+		_textComponentGameDifficultyDescription.text = textToShow;
 
 		Sprite spriteToShow = data.NoteImage;
-		_imageComponent.sprite = spriteToShow;
-		_imageContainer.SetActive(spriteToShow != null);
+		_imageComponentGameDifficulty.sprite = spriteToShow;
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		_textButtonComponentClose.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsGameDifficultyController_ButtonClose");
-		UpdateUIDifficulty();
+		_textComponentButtonCloseSettingsGameDifficulty.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsGameDifficultyController_ButtonClose");
+
+		UpdateGameDifficultyUI();
 	}
 }

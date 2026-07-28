@@ -72,6 +72,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private Button _buttonComponentGameDifficulty;
 	private GameObject _textButtonGameDifficulty;
 	private TextMeshProUGUI _textComponentButtonGameDifficulty;
+	private GameObject _textButtonDifficultyNormal;
+	private TextMeshProUGUI _textComponentButtonDifficultyNormal;
 	public delegate void SubMenuChooseGameDifficultyHandler();
 	public event SubMenuChooseGameDifficultyHandler OnOpenSubMenuGameDifficulty;
 	public event SubMenuChooseGameDifficultyHandler OnCloseSubMenuGameDifficulty;
@@ -174,6 +176,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_buttonComponentGameDifficulty.onClick.AddListener(() => OpenSubMenuChooseGameDifficulty());
 		_textButtonGameDifficulty = viewModelPauseSubMenuSettings.TextButtonGameDifficulty;
 		_textComponentButtonGameDifficulty = viewModelPauseSubMenuSettings.TextButtonGameDifficulty.GetComponent<TextMeshProUGUI>();
+		_textButtonDifficultyNormal = viewModelPauseSubMenuSettings.TextButtonDifficultyNormal;
+		_textComponentButtonDifficultyNormal = viewModelPauseSubMenuSettings.TextButtonDifficultyNormal.GetComponent<TextMeshProUGUI>();
 
 		_toggleShowIngameHints = viewModelPauseSubMenuSettings.ToggleShowIngameHints;
 		_toggleComponentShowIngameHints = viewModelPauseSubMenuSettings.ToggleShowIngameHints.GetComponent<Toggle>();
@@ -499,6 +503,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textComponentSliderScreenBrightness.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderScreenBrightness");
 
 		_textComponentButtonGameDifficulty.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextButtonShowIngameHints");
+		_textComponentButtonDifficultyNormal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_ButtonDifficultyNormal");
 
 		_textComponentToggleShowIngameHints.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextToggleShowIngameHints");
 
