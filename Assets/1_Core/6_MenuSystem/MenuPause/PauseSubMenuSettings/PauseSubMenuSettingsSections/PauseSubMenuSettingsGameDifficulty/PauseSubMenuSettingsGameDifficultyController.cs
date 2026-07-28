@@ -23,6 +23,10 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 	private GameObject _buttonCloseSettingsGameDifficulty;
 	private TextMeshProUGUI _textComponentButtonCloseSettingsGameDifficulty;
 
+	public GameObject _difficultyNotAvailavle;
+	public GameObject _textDifficultyNotAvailavle;
+	public TextMeshProUGUI _textComponentDifficultyNotAvailable;
+
 	private bool _isOpened;
 	private int _currentIndex = 0;
 	private bool _isInitialized;
@@ -60,6 +64,10 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 		_buttonCloseSettingsGameDifficulty = viewModelPauseSubMenuSettingsGameDifficultyController.ButtonCloseSettingsGameDifficulty;
 		_buttonCloseSettingsGameDifficulty.GetComponent<Button>().onClick.AddListener(() => _pauseSubMenuSettingsSectionGeneralController.CloseSubMenuChooseGameDifficulty());
 		_textComponentButtonCloseSettingsGameDifficulty = viewModelPauseSubMenuSettingsGameDifficultyController.TextButtonCloseSettingsGameDifficulty.GetComponent<TextMeshProUGUI>();
+
+		_difficultyNotAvailavle = viewModelPauseSubMenuSettingsGameDifficultyController.DifficultyNotAvailable;
+		_textDifficultyNotAvailavle = viewModelPauseSubMenuSettingsGameDifficultyController.TextDifficultyNotAvailable;
+		_textComponentDifficultyNotAvailable = viewModelPauseSubMenuSettingsGameDifficultyController.TextDifficultyNotAvailable.GetComponent<TextMeshProUGUI>();
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
@@ -116,6 +124,17 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 
 	private void UpdateGameDifficultyUI()
 	{
+		if (_currentIndex == 1)
+		{
+			 _difficultyNotAvailavle.SetActive(false);
+			_imageComponentGameDifficulty.color = Color.white;
+		}
+		else
+		{
+			_difficultyNotAvailavle.SetActive(true);
+			_imageComponentGameDifficulty.color = Color.grey;
+		}
+
 		_textComponentGameDifficultyHeader.text = _localizationManager.GetLocalizedString($"UI_Menu_PauseSubMenuSettingsGameDifficultyController_GameDifficulty{_currentIndex}");
 
 		InteractionObjectNoteData data = _difficultiesList.Notes[_currentIndex];
@@ -130,6 +149,7 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 	{
 		_localizationManager = localizationManager;
 		_textComponentButtonCloseSettingsGameDifficulty.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsGameDifficultyController_ButtonClose");
+		_textComponentDifficultyNotAvailable.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsGameDifficultyController_GameDifficulty_NOT_AVAILABLE_IN_DEMO");
 
 		UpdateGameDifficultyUI();
 	}

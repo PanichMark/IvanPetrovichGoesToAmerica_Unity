@@ -12,6 +12,9 @@ public class ViewModelPauseSubMenuSettingsGameDifficultyController
 	public GameObject ButtonCloseSettingsGameDifficulty;
 	public GameObject TextButtonCloseSettingsGameDifficulty;
 
+	public GameObject DifficultyNotAvailable;
+	public GameObject TextDifficultyNotAvailable;
+
 	public ViewModelPauseSubMenuSettingsGameDifficultyController(Bootstrap bootstrap, GameObject canvas)
 	{
 		ImageGameDifficulty = bootstrap.FindDeepGameObject(canvas, "ImageGameDifficulty");
@@ -23,5 +26,8 @@ public class ViewModelPauseSubMenuSettingsGameDifficultyController
 
 		ButtonCloseSettingsGameDifficulty = bootstrap.FindDeepGameObject(canvas, "ButtonCloseSettingsGameDifficulty");
 		TextButtonCloseSettingsGameDifficulty = bootstrap.FindDeepGameObject(canvas, "TextButtonCloseSettingsGameDifficulty");
+
+		DifficultyNotAvailable = bootstrap.FindDeepGameObject(canvas, "DifficultyNotAvailable");
+		TextDifficultyNotAvailable = bootstrap.FindDeepGameObject(canvas, "TextDifficultyNotAvailable");
 	}
 }
