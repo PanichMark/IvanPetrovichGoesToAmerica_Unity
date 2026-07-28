@@ -403,7 +403,7 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(SignTermsAndConditions());
 
-		_playerPrefsData.ChooseInitialLanguage();
+		_playerPrefsData.SetBootstrapPrerequisitesMet();
 	}
 
 	private IEnumerator ChooseInitialLanguage()
@@ -444,9 +444,13 @@ public class Bootstrap : MonoBehaviour
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
-		bool termsRead = false;
 		bool termsAkcnowledged = false;
 		bool termsSigned = false;
+
+		var toggleComponent = _bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ToggleAgreeWithTerms.GetComponent<Toggle>();
+		var buttonSignComponent = _bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ButtonSign.GetComponent<Button>();
+
+		buttonSignComponent.interactable = false;
 
 		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextHeaderTermsAndConditions.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_BootstrapSignTermsnAndConditions_TextHeaderTermsAndConditions");
 		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextButtonSign.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_BootstrapSignTermsnAndConditions_ButtonSign");
@@ -462,30 +466,26 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextTermsAndConditions.GetComponent<TextMeshProUGUI>().text = GameData.TermsAndConditions.TermsAndConditions_EN.text;
 		}
 
-		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ToggleAgreeWithTerms.GetComponent<Toggle>().isOn = false;
-		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ToggleAgreeWithTerms.GetComponent<Toggle>().onValueChanged.AddListener((bool isOn) =>
+		toggleComponent.isOn = false;
+
+		toggleComponent.onValueChanged.AddListener((bool isOn) =>
 		{
-			if (isOn)
-			{
-				termsAkcnowledged = true;
-			}
-			else
-			{
-				termsAkcnowledged = false;
-			}
+			termsAkcnowledged = isOn;
+			buttonSignComponent.interactable = isOn;
 		});
 
 		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ButtonSign.GetComponent<Button>().onClick.AddListener(() =>
 		{
-
+			termsSigned = true;
 		});
+
 		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ButtonRefuse.GetComponent<Button>().onClick.AddListener(() =>
 		{
 			Debug.Log("EXIT GAME");
 			Application.Quit();
 		});
 
-		yield return new WaitUntil(() => termsRead);
+		yield return new WaitUntil(() => termsSigned);
 
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;

@@ -11,10 +11,12 @@ public class PlayerPrefsData
 		get => PlayerPrefs.GetInt(_bootstrapArePrerequisitesMet, 0) == 1;
 	}
 
-	public void ChooseInitialLanguage()
+	public void SetBootstrapPrerequisitesMet()
 	{
 		PlayerPrefs.SetInt(_bootstrapArePrerequisitesMet, 1);
 		PlayerPrefs.Save();
+
+		Debug.Log("Bootstrap Prerequisites Are Met");
 	}
 
 	//Settings General
