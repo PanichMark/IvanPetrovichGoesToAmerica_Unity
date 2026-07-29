@@ -8,7 +8,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 	private GameScenesManager _gameSceneManager;
 
 	private PlayerCameraStateAbstract _playerCameraState;
-
+	private PauseMenuConfirmActionController _pauseMenuConfirmActionController;
 	private PlayerMovementController _movementController;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerCameraController _cameraController;
@@ -25,10 +25,12 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 		Bootstrap bootstrap,
 		IInputDevice inputDevice,
 		GameScenesManager gameSceneManager,
+		PauseMenuConfirmActionController pauseMenuConfirmActionController,
 		PlayerMovementController playerMovementController,
 		PlayerMovementStateMachineController playerMovementStateMachineController,
 		PlayerCameraController playerCameraController)
 	{
+		_pauseMenuConfirmActionController = pauseMenuConfirmActionController;
 		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
 		_gameSceneManager = gameSceneManager;
@@ -37,6 +39,8 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 		_cameraController = playerCameraController;
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
+
+		_pauseMenuConfirmActionController.OnSetPlayerCameraToFirstPerson += () => SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 
 		Debug.Log("PlayerCameraStateMachineController Initialized");
 	}

@@ -152,6 +152,7 @@ public class BootstrapSubProcessPlayerSystems
 			_bootstrap,
 			_inputDevice,
 			_gameSceneManager,
+			_bootstrapSubProcessMenuSystem.PauseMenuConfirmActionController,
 			PlayerMovementController,
 			PlayerMovementStateMachineController,
 			PlayerCameraController);

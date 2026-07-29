@@ -55,7 +55,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 			Debug.Log($"[MissionMarker] Условие: '{condition.GetType().Name}'. Владелец: {ownerName}. Выполнено: {conditionMet}");
 
-			Debug.Log(condition.Owner);
+			//Debug.Log(condition.Owner);
 
 			if (condition.Owner != null && !conditionMet)
 			{

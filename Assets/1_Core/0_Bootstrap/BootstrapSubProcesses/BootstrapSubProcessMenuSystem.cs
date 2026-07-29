@@ -100,7 +100,7 @@ public class BootstrapSubProcessMenuSystem
 
 	
 
-	private PauseMenuConfirmActionController _pauseMenuConfirmActionController;
+	public PauseMenuConfirmActionController PauseMenuConfirmActionController {  get; private set; }
 	private GameObject _canvasMenuConfirmAction;
 	
 
@@ -202,7 +202,7 @@ public class BootstrapSubProcessMenuSystem
 		PauseSubMenuSettingsSectionControlsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionControlsController>();
 		PauseSubMenuSettingsSectionGraphicsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionGraphicsController>();
 		PauseSubMenuSettingsSectionAudioController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionAudioController>();
-		_pauseMenuConfirmActionController = _gameObjectBootstrapMenuSystem.AddComponent<PauseMenuConfirmActionController>();
+		PauseMenuConfirmActionController = _gameObjectBootstrapMenuSystem.AddComponent<PauseMenuConfirmActionController>();
 		_cutsceneMenuController = _gameObjectBootstrapMenuSystem.AddComponent<CutsceneMenuController>();
 		HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
@@ -329,7 +329,8 @@ public class BootstrapSubProcessMenuSystem
 			PauseMenuController,
 			ViewModelPauseSubMenuSettingsSectionAudio);
 
-		_pauseMenuConfirmActionController.Initialize(
+		PauseMenuConfirmActionController.Initialize(
+			_gameController,
 			_localizationManager,
 			_gameSceneManager,
 			_saveLoadController,
@@ -373,6 +374,7 @@ public class BootstrapSubProcessMenuSystem
 		ServiceLocator.Register("CanvasMainMenuReadNews", _canvasMainMenuReadNews);
 
 		ServiceLocator.Register("PauseSubMenuSettingsGameDifficultyController", _pauseSubMenuSettingsGameDifficultyController);
+		ServiceLocator.Register("PauseMenuConfirmActionController", PauseMenuConfirmActionController);
 
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", PauseMenuController);

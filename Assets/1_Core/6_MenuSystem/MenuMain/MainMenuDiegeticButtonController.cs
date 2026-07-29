@@ -138,7 +138,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			((_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission) ||
 			 (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews)))
 			{
-				if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission && _mainMenuChooseMissionController.IsMainMenuChooseMissionOpened)
+				if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission && _mainMenuChooseMissionController.IsMainMenuChooseMissionOpened && _menuManager.PauseMenuLevel.Count == 1)
 				{
 					_mainMenuChooseMissionController.HideCanvasMainMenuChooseMission();
 				}
@@ -209,6 +209,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			_mainMenuCanvasController.HideMainMenuCanvas();
 			_mainMenuChooseMissionController.ShowCanvasMainMenuChooseMission();
 			DisableAllColliders();
+			_menuManager.PushPauseMenuLevel();
 			_playerCameraBlurFilter.ActivateCameraBlur();
 		}
 		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews)

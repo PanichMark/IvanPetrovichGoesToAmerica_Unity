@@ -1,13 +1,15 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class MainMenuChooseMissionController : MonoBehaviour
 {
+	private PauseMenuConfirmActionController _pauseMenuConfirmActionController;
 	private GameObject _canvasMainMenuChooseMission;
 	public delegate void MainMenuChooseMissionHandler();
 	public event MainMenuChooseMissionHandler OnCloseMainMenuChooseMission;
 	private ViewModelMainMenuChooseMission _viewModelMainMenuChooseMission;
+	private MenuManager _menuManager;
 
 	private LocalizationManager _localizationManager;
 	private GameScenesList _gameScenesList;
@@ -33,6 +35,8 @@ public class MainMenuChooseMissionController : MonoBehaviour
 
 	public void Initialize()
 	{
+		_pauseMenuConfirmActionController = ServiceLocator.Resolve<PauseMenuConfirmActionController>("PauseMenuConfirmActionController");
+		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_canvasMainMenuChooseMission = ServiceLocator.Resolve<GameObject>("CanvasMainMenuChooseMission");
 		_viewModelMainMenuChooseMission = ServiceLocator.Resolve<ViewModelMainMenuChooseMission>("ViewModelMainMenuChooseMission");
@@ -46,6 +50,9 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		{
 			_buttonsComponentsMissions[i] = _viewModelMainMenuChooseMission.Missions[i].GetComponent<Button>();
 		}
+		_buttonsComponentsMissions[0].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesEnum.Scene_1_Church, _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextPrologue")));
+		_buttonsComponentsMissions[1].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesEnum.Scene_1_RevenueHouse, _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameScene.ToString())));
+		_buttonsComponentsMissions[2].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesEnum.Scene_1_InnerYard, _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameScene.ToString())));
 
 		_imagesComponentsMissions = new Image[_viewModelMainMenuChooseMission.Missions.Length];
 		for (int i = 0; i < _viewModelMainMenuChooseMission.Missions.Length; i++)
@@ -85,6 +92,11 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		Debug.Log("MainMenuChooseMissionController Initialized");
 	}
 
+	private void OnDestroy()
+	{
+		HideCanvasMainMenuChooseMission();
+	}
+
 	public void ShowCanvasMainMenuChooseMission()
 	{
 		IsMainMenuChooseMissionOpened = true;
@@ -98,6 +110,11 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		IsMainMenuChooseMissionOpened = false;
 		OnCloseMainMenuChooseMission?.Invoke();
 		_canvasMainMenuChooseMission.SetActive(false);
+
+		if (_menuManager.PauseMenuLevel.Count > 0)
+		{
+			_menuManager.PopPauseMenuLevel();
+		}
 
 		Debug.Log("Hide ChooseMission");
 	}

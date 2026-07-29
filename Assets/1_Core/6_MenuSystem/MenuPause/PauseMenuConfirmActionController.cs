@@ -5,11 +5,14 @@ using TMPro;
 
 public class PauseMenuConfirmActionController : MonoBehaviour
 {
+	public delegate void PlayerCameraStateMenuEventHandler();
+	public event PlayerCameraStateMenuEventHandler OnSetPlayerCameraToFirstPerson;
+
 	private LocalizationManager _localizationManager;
 	private GameScenesManager _gameSceneManager;
 	private SaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
-
+	private GameController _gameController;
 	private PauseMenuController _pauseMenuController;
 	private PauseSubMenuSaveController _pauseSubMenuSaveController;
 	private PauseSubMenuLoadController _pauseSubMenuLoadController;
@@ -49,9 +52,12 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	private string _textConfirmSaveSettings;
 	private string _textConfirmResetSettings;
 
+	private string _textLoadEpisode;
+
 	private Action _actionOnAccept;
 
 	public void Initialize(
+		GameController gameController,
 		LocalizationManager localizationManager,
 		GameScenesManager gameSceneManager,
 		SaveLoadController saveLoadController,
@@ -67,6 +73,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		GameObject canvasPauseSubMenuConfirm,
 		ViewModelPauseMenuConfirmAction viewModelPauseMenuConfirmAction)
 	{
+		_gameController = gameController;
 		_localizationManager = localizationManager;
 		_gameSceneManager = gameSceneManager;
 		_saveLoadController = saveLoadController;
@@ -237,6 +244,18 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_actionOnAccept = () => _pauseSubMenuSettingsSectionAudioController.ResetSettingsAudio();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
+
+	public void HandleShowForChooseEpisode(GameScenesEnum sceneToLoad, string episodeMessage)
+	{
+		_textComponentActionMessage.text = $"{_textLoadEpisode} {episodeMessage}?";
+		_actionOnAccept = () =>
+		{
+			_gameController.CloseMainMenu();
+			StartCoroutine(_gameSceneManager.LoadGameplayScene(sceneToLoad));
+			OnSetPlayerCameraToFirstPerson?.Invoke();
+		};
+		_pauseMenuController.OpenPauseConfirmMenu();
+	}
 	
 	private void ExecuteAccept()
 	{
@@ -277,5 +296,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 
 		_textButtonComponentConfirmAction.text = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_ButtonConfirmAction");
 		_textButtonComponentCancelAction.text = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_ButtonCancelAction");
+
+		_textLoadEpisode = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_LoadEpisode");
 	}
 }
