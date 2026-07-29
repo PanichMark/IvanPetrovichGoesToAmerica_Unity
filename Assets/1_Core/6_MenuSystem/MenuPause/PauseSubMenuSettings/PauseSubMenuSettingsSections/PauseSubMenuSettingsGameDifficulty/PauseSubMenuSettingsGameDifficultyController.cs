@@ -27,7 +27,7 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 	public GameObject _textDifficultyNotAvailavle;
 	public TextMeshProUGUI _textComponentDifficultyNotAvailable;
 
-	private bool _isOpened;
+	public bool IsChooseGameDifficultyMenuOpened { get; private set; }
 	private int _currentIndex = 0;
 	private bool _isInitialized;
 
@@ -79,7 +79,7 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!_isInitialized || !_isOpened) return;
+		if (!_isInitialized || !IsChooseGameDifficultyMenuOpened) return;
 
 		if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
@@ -94,18 +94,18 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 
 	private void ShowMenuGameDifficulty()
 	{
-		_isOpened = true;
+		IsChooseGameDifficultyMenuOpened = true;
 		_canvasGameDifficulty.SetActive(true);
 
 		_currentIndex = 1;
 		UpdateGameDifficultyUI();
 	}
 
-	private void HideMenuGameDifficulty()
+	public void HideMenuGameDifficulty()
 	{
-		if (_isOpened)
+		if (IsChooseGameDifficultyMenuOpened)
 		{
-			_isOpened = false;
+			IsChooseGameDifficultyMenuOpened = false;
 			_canvasGameDifficulty.SetActive(false);
 		}
 	}

@@ -25,6 +25,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	public bool IsCutsceneNewGamePlaying { get; private set; }
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private MainMenuCanvasController _mainMenuCanvasController;
+	private PauseSubMenuSettingsGameDifficultyController _pauseSubMenuSettingsGameDifficultyController;
 
 	public void Initialize(
 		MainMenuChooseMissionController mainMenuChooseMissionController,
@@ -49,6 +50,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
 		_pauseSubMenuSettingsController = ServiceLocator.Resolve<PauseSubMenuSettingsController>("PauseSubMenuSettingsController");
+		_pauseSubMenuSettingsGameDifficultyController = ServiceLocator.Resolve<PauseSubMenuSettingsGameDifficultyController>("PauseSubMenuSettingsGameDifficultyController");
 
 		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission)
 		{
@@ -114,13 +116,20 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 				}
 				if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 2)
 				{
+					if (!_pauseMenuController.IsPauseConfirmMenuOpened && !_pauseSubMenuSettingsGameDifficultyController.IsChooseGameDifficultyMenuOpened)
+					{
+						_pauseSubMenuSettingsController.ShowSettingsSubMenuCanvas();
+						_menuManager.PopPauseMenuLevel();
+					}
 					if (_pauseMenuController.IsPauseConfirmMenuOpened)
 					{
 						_pauseMenuController.ClosePauseConfirmMenu();
 					}
-					else
+					if (_pauseSubMenuSettingsGameDifficultyController.IsChooseGameDifficultyMenuOpened)
 					{
+						_pauseSubMenuSettingsGameDifficultyController.HideMenuGameDifficulty();
 						_pauseSubMenuSettingsController.ShowSettingsSubMenuCanvas();
+
 						_menuManager.PopPauseMenuLevel();
 					}
 				}

@@ -88,7 +88,7 @@ public class BootstrapSubProcessMenuSystem
 
 	public PauseSubMenuSettingsSectionControlsController PauseSubMenuSettingsSectionControlsController {  get; private set; }
 
-	private PauseSubMenuSettingsGameDifficultyController __pauseSubMenuSettingsGameDifficultyController;
+	private PauseSubMenuSettingsGameDifficultyController _pauseSubMenuSettingsGameDifficultyController;
 	private GameObject _canvasPauseSubMenuSettingsGameDifficultyController;
 
 
@@ -198,7 +198,7 @@ public class BootstrapSubProcessMenuSystem
 		//_pauseSubMenuAppearanceController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuAppearanceController>();
 		PauseSubMenuSettingsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsController>();
 		PauseSubMenuSettingsSectionGeneralController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionGeneralController>();
-		__pauseSubMenuSettingsGameDifficultyController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsGameDifficultyController>();
+		_pauseSubMenuSettingsGameDifficultyController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsGameDifficultyController>();
 		PauseSubMenuSettingsSectionControlsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionControlsController>();
 		PauseSubMenuSettingsSectionGraphicsController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionGraphicsController>();
 		PauseSubMenuSettingsSectionAudioController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSettingsSectionAudioController>();
@@ -306,7 +306,7 @@ public class BootstrapSubProcessMenuSystem
 			PauseSubMenuSettingsController,
 			_viewModelPauseSubMenuSettingsSectionGeneral);
 
-		__pauseSubMenuSettingsGameDifficultyController.Initialize(
+		_pauseSubMenuSettingsGameDifficultyController.Initialize(
 			_localizationManager,
 			PauseSubMenuSettingsSectionGeneralController,
 			_bootstrap.GameData.GameDifficultiesList,
@@ -372,6 +372,7 @@ public class BootstrapSubProcessMenuSystem
 		ServiceLocator.Register("ViewModelMainMenuReadNews", _viewModelMainMenuReadNews);
 		ServiceLocator.Register("CanvasMainMenuReadNews", _canvasMainMenuReadNews);
 
+		ServiceLocator.Register("PauseSubMenuSettingsGameDifficultyController", _pauseSubMenuSettingsGameDifficultyController);
 
 		ServiceLocator.Register("MenuManager", MenuManager);
 		ServiceLocator.Register("PauseMenuController", PauseMenuController);
