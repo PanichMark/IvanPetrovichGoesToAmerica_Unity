@@ -16,6 +16,7 @@ public class WeaponWheelMenuButton2D : MonoBehaviour
 	private WeaponAbstract _weaponComponent;
 	private WeaponRangedAbstract _weaponRangedAbstract;
 	private GameObject _previousWeapon;
+	private Color _highlightedColor;
 
 	public void Initialize(LocalizationManager localizationManager, PlayerWeaponController weaponController, WeaponWheelMenuController2D weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
 	{
@@ -25,7 +26,7 @@ public class WeaponWheelMenuButton2D : MonoBehaviour
 		_WeaponPrefab = weaponPrefab;
 		_weaponComponent = weaponComponent;
 		_WeaponName = _localizationManager.GetLocalizedString(_weaponComponent.WeaponNameSystem);
-		_WeaponIcon = _weaponComponent.WeaponIcon;
+		_WeaponIcon = _weaponComponent.WeaponIconBig;
 
 		var button = GetComponent<Button>();
 		button.onClick.AddListener(() => SelectWeapon());
@@ -34,6 +35,7 @@ public class WeaponWheelMenuButton2D : MonoBehaviour
 		_button = button; 
 
 		_originalNormalColor = _button.colors.normalColor;
+		_highlightedColor = _button.colors.highlightedColor;
 
 		_weaponWheelController.OnOpenWeaponWheelMenu += OnOpenWeaponWheel;
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -97,7 +99,7 @@ public class WeaponWheelMenuButton2D : MonoBehaviour
 		{
 			if (activeWeaponComponent.WeaponNameSystem == buttonWeaponComponent.WeaponNameSystem)
 			{
-				ChangeButtonColor(new Color(209f / 255f, 138f / 255f, 36f / 255f));
+				ChangeButtonColor(_highlightedColor);
 			}
 			else
 			{

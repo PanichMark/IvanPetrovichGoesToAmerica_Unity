@@ -29,6 +29,6 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 
 		var weaponComponent = _weapon.GetComponent<WeaponAbstract>();
-		LootObjectIcon = weaponComponent.WeaponIcon;
+		LootObjectIcon = weaponComponent.WeaponIconBig;
 	}
 }

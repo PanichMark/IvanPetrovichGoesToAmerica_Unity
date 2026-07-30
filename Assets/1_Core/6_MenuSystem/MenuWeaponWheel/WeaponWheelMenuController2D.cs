@@ -266,7 +266,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 			WeaponAbstract weaponComponent = activeWeapons[i].GetComponent<WeaponAbstract>();
 			if (weaponComponent != null)
 			{
-				iconImage.sprite = weaponComponent.WeaponIcon;
+				iconImage.sprite = weaponComponent.WeaponIconSmall;
 			}
 			else
 			{
@@ -335,7 +335,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 			if (_weaponController.LeftHandWeapon != null)
 			{
 				WeaponIcon.gameObject.SetActive(true);
-				WeaponIcon.sprite = _weaponController.LeftHandWeaponComponent.WeaponIcon;
+				WeaponIcon.sprite = _weaponController.LeftHandWeaponComponent.WeaponIconBig;
 			}
 			else
 			{
@@ -351,7 +351,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 			if (_weaponController.RightHandWeapon != null)
 			{
 				WeaponIcon.gameObject.SetActive(true);
-				WeaponIcon.sprite = _weaponController.RightHandWeaponComponent.WeaponIcon;
+				WeaponIcon.sprite = _weaponController.RightHandWeaponComponent.WeaponIconBig;
 			}
 			else
 			{

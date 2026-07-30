@@ -7,9 +7,11 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
 	public abstract WeaponTypes WeaponType { get; }
 
-	[SerializeField] protected Sprite _weaponIcon;
+	[SerializeField] protected Sprite _weaponIconBig;
+	[SerializeField] protected Sprite _weaponIconSmall;
 
-	public Sprite WeaponIcon => _weaponIcon;
+	public Sprite WeaponIconBig => _weaponIconBig;
+	public Sprite WeaponIconSmall => _weaponIconSmall;
 	[SerializeField] protected AudioClip _weaponSoundAttack;
 	public abstract float WeaponDamage { get; }
 	public abstract bool IsWeaponAuto { get; }
