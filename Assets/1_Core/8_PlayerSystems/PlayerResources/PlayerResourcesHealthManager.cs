@@ -75,7 +75,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 				}
 
 				//Debug.Log(CurrentPlayerHealth);
-				_sliderHealthBar.value = CurrentPlayerHealth;
+				_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
 
 				_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
 
@@ -108,14 +108,14 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 			CurrentPlayerHealth = MaxPlayerHealth;
 		}
 
-		_sliderHealthBar.value = CurrentPlayerHealth;
+		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
 	}
 
 	public void TakeDamage(float amount)
 	{
 		CurrentPlayerHealth -= amount;
 
-		_sliderHealthBar.value = CurrentPlayerHealth;
+		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
 
 		if (CurrentPlayerHealth <= 0)
 		{
@@ -178,7 +178,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 		CurrentPlayerHealth = data.PlayerHealth;
 		CurrentHealingItemsNumber = data.HealingItems;
 
-		_sliderHealthBar.value = CurrentPlayerHealth;
+		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
 
 		_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
 	}

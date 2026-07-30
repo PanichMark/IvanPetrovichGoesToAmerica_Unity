@@ -71,7 +71,7 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 	{
 		CurrentPlayerMana += Mana;
 
-		_sliderComponentManaBar.value = CurrentPlayerMana;
+		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
 
 		ShowSliderManaBarFillArea();
 
@@ -82,7 +82,7 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 	{
 		CurrentPlayerMana -= ManaCost;
 
-		_sliderComponentManaBar.value = CurrentPlayerMana;
+		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
 
 		if (CurrentPlayerMana <= 0)
 		{
@@ -103,7 +103,7 @@ public class PlayerResourcesManaManager : MonoBehaviour, ISaveLoad
 		CurrentPlayerMana = data.PlayerMana;
 		CurrentManaReplenishItemsNumber = data.ManaReplenishItems;
 
-		_sliderComponentManaBar.value = CurrentPlayerMana;
+		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
 
 		_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
 	}
