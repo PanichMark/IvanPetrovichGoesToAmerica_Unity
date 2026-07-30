@@ -15,10 +15,10 @@ public class HUDammoController : MonoBehaviour
 
 	private GameObject _rightWeaponAmmoMagazine;
 	private GameObject _rightWeaponAmmoReserve;
-	private GameObject _rightWeaponAmmoSeparator;
+	private GameObject _rightWeaponAmmoBox;
 	private GameObject _leftWeaponAmmoMagazine;
 	private GameObject _leftWeaponAmmoReserve;
-	private GameObject _leftWeaponAmmoSeparator;
+	private GameObject _lightWeaponAmmoBox;
 
 	private TMP_Text _rightWeaponAmmoMagazineText;
 	private TMP_Text _rightWeaponAmmoReserveText;
@@ -51,10 +51,10 @@ public class HUDammoController : MonoBehaviour
 
 		_rightWeaponAmmoMagazine = viewModelHUDAmmo.TextRightWeaponAmmoMagazineNumber;
 		_rightWeaponAmmoReserve = viewModelHUDAmmo.TextRightWeaponAmmoReserveNumber;
-		_rightWeaponAmmoSeparator = viewModelHUDAmmo.RightWeaponAmmoSeparator;
+		_rightWeaponAmmoBox = viewModelHUDAmmo.RightWeaponAmmoBox;
 		_leftWeaponAmmoMagazine = viewModelHUDAmmo.TextLeftWeaponAmmoMagazineNumber;
 		_leftWeaponAmmoReserve = viewModelHUDAmmo.TextLeftWeaponAmmoReserveNumber;
-		_leftWeaponAmmoSeparator = viewModelHUDAmmo.LeftWeaponAmmoSeparator;
+		_lightWeaponAmmoBox = viewModelHUDAmmo.LeftWeaponAmmoBox;
 
 		_rightWeaponAmmoMagazineText = _rightWeaponAmmoMagazine.GetComponent<TMP_Text>();
 		_rightWeaponAmmoReserveText = _rightWeaponAmmoReserve.GetComponent<TMP_Text>();
@@ -228,29 +228,21 @@ public class HUDammoController : MonoBehaviour
 
 	public void ShowRightWeaponAmmo()
 	{
-		_rightWeaponAmmoMagazine.SetActive(true);
-		_rightWeaponAmmoReserve.SetActive(true);
-		_rightWeaponAmmoSeparator.SetActive(true);
+		_rightWeaponAmmoBox.SetActive(true);
 	}
 
 	public void HideRightWeaponAmmo()
 	{
-		_rightWeaponAmmoMagazine.SetActive(false);
-		_rightWeaponAmmoReserve.SetActive(false);
-		_rightWeaponAmmoSeparator.SetActive(false);
+		_rightWeaponAmmoBox.SetActive(false);
 	}
 
 	public void ShowLeftWeaponAmmo()
 	{
-		_leftWeaponAmmoMagazine.SetActive(true);
-		_leftWeaponAmmoReserve.SetActive(true);
-		_leftWeaponAmmoSeparator.SetActive(true);
+		_lightWeaponAmmoBox.SetActive(true);
 	}
 
 	public void HideLeftWeaponAmmo()
 	{
-		_leftWeaponAmmoMagazine.SetActive(false);
-		_leftWeaponAmmoReserve.SetActive(false);
-		_leftWeaponAmmoSeparator.SetActive(false);
+		_lightWeaponAmmoBox.SetActive(false);
 	}
 }
