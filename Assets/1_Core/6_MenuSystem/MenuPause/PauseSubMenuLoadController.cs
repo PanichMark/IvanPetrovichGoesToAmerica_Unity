@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PauseSubMenuLoadController : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	public event Action<int> OnRequestLoadSaveFileConfirmation;
 
 	private LocalizationManager _localizationManager;
@@ -32,6 +33,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	private bool _isPauseSubMenuLoadOpened;
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		LocalizationManager localizationManager,
 		SaveLoadController saveLoadController,
 		PauseMenuController pauseMenuController,
@@ -39,6 +41,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		GameObject canvasPauseSubMenuLoad,
 		ViewModelPauseSubMenuLoad viewModelPauseSubMenuLoad)
 	{
+		_bootstrap = bootstrap;
 		_gameScenesList	= gameScenesList;
 		_localizationManager = localizationManager;
 		_saveLoadController = saveLoadController;
@@ -49,15 +52,15 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		_textComponentPauseSubMenuLoad = _viewModelPauseSubMenuLoad.TextPauseSubMenuLoad.GetComponent<TextMeshProUGUI>();
 
 		_buttonsLoadGameFile = _viewModelPauseSubMenuLoad.ButtonsLoadGameFile;
-		_buttonsComponentsLoadGameFile = new Button[_viewModelPauseSubMenuLoad.ButtonsLoadGameFile.Length];
+		_buttonsComponentsLoadGameFile = new Button[_bootstrap.GameData.NumberOfSafeFileSlots];
 
-		_textComponentsGameFileDateAndTime = new TextMeshProUGUI[_viewModelPauseSubMenuLoad.ButtonsLoadGameFile.Length];
-		_textComponentsGameFileSceneName = new TextMeshProUGUI[_viewModelPauseSubMenuLoad.ButtonsLoadGameFile.Length];
-		_imagesComponentsSceneGameFile = new Image[_viewModelPauseSubMenuLoad.ButtonsLoadGameFile.Length];
+		_textComponentsGameFileDateAndTime = new TextMeshProUGUI[_bootstrap.GameData.NumberOfSafeFileSlots];
+		_textComponentsGameFileSceneName = new TextMeshProUGUI[_bootstrap.GameData.NumberOfSafeFileSlots];
+		_imagesComponentsSceneGameFile = new Image[_bootstrap.GameData.NumberOfSafeFileSlots];
 
-		for (int i = 0; i < _viewModelPauseSubMenuLoad.ButtonsLoadGameFile.Length; i++)
+		for (int i = 0; i < _bootstrap.GameData.NumberOfSafeFileSlots; i++)
 		{
-			int slot = i + 1; 
+			int slot = i + 1;
 
 			_buttonsComponentsLoadGameFile[i] = _buttonsLoadGameFile[i].GetComponent<Button>();
 			_buttonsComponentsLoadGameFile[i].onClick.AddListener(() => OnRequestLoadSaveFileConfirmation?.Invoke(slot));

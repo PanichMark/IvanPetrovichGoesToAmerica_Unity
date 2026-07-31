@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class SaveLoadController : MonoBehaviour
 {
+	private Bootstrap _bootstrap;
 	private GameScenesManager _gameSceneManager;
 	private GameController _gameController;
 
@@ -18,11 +19,10 @@ public class SaveLoadController : MonoBehaviour
 	private List<ISaveLoad> _gameplaySaveLoadObjects;
 
 	private const string _SAFE_FILE_DATA_TEMP = "SafeFile_TEMP.json";
-	private const string _SAFE_FILE_DATA_SLOT_1 = "SafeFileSlot_1.json";
-	private const string _SAFE_FILE_DATA_SLOT_2 = "SafeFileSlot_2.json";
-	private const string _SAFE_FILE_DATA_SLOT_3 = "SafeFileSlot_3.json";
-	private const string _SAFE_FILE_DATA_SLOT_4 = "SafeFileSlot_4.json";
-	private const string _SAFE_FILE_DATA_SLOT_5 = "SafeFileSlot_5.json";
+
+	private string[] _saveFilePaths;
+	private const string _SAVE_SLOT_PREFIX = "SafeFileSlot_";
+	private const string _SAVE_SLOT_SUFFIX = ".json";
 
 	public string SceneNameToLoad { get; private set; }
 	public bool IsSavingFinished { get; private set; }
@@ -32,10 +32,21 @@ public class SaveLoadController : MonoBehaviour
 	public event GameSafeFileHandler OnSafeFileLoad;
 	public event GameSafeFileHandler OnSafeFileSaved;
 
-	public void Initialize(GameScenesManager gameSceneManager, GameController gameController)
+	public void Initialize(
+		Bootstrap bootstrap,
+		GameScenesManager gameSceneManager,
+		GameController gameController)
 	{
+		_bootstrap = bootstrap;
 		_gameSceneManager = gameSceneManager;
 		_gameController = gameController;
+
+		_saveFilePaths = new string[_bootstrap.GameData.NumberOfSafeFileSlots];
+
+		for (int i = 0; i < _bootstrap.GameData.NumberOfSafeFileSlots; i++)
+		{
+			_saveFilePaths[i] = $"{_SAVE_SLOT_PREFIX}{i + 1}{_SAVE_SLOT_SUFFIX}";
+		}
 
 		_gameSceneManager.OnEndLoadingGameplayScene += () => StartCoroutine(OnSceneLoadUpdateGameplayObjects());
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => StartCoroutine(NewGame());
@@ -75,26 +86,9 @@ public class SaveLoadController : MonoBehaviour
 				yield break;
 			}
 		}
-		
-		if (saveSlotNumber == 1)
-        {
-             _fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_1);
-        }
-		else if (saveSlotNumber == 2)
+		else
 		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_2);
-		}
-		else if (saveSlotNumber == 3)
-		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_3);
-		}
-		else if (saveSlotNumber == 4)
-		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_4);
-		}
-		else if (saveSlotNumber == 5)
-		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_5);
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _saveFilePaths[saveSlotNumber - 1]);
 		}
 
 		foreach (ISaveLoad saveLoadObj in _persistentSaveLoadObjects)
@@ -130,32 +124,8 @@ public class SaveLoadController : MonoBehaviour
 
 		OnSafeFileLoad?.Invoke();
 		_gameController.CloseMainMenu();
-		
-		if (loadSlotNumber == 1)
-		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_1);
-		
-		}
-		else if (loadSlotNumber == 2)
-		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_2);
-		
-		}
-		else if (loadSlotNumber == 3)
-		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_3);
-			
-		}
-		else if (loadSlotNumber == 4)
-		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_4);
-			
-		}
-		else if (loadSlotNumber == 5)
-		{
-			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_5);
-			
-		}
+
+		_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _saveFilePaths[loadSlotNumber - 1]);
 
 		_gameData = _fileDataHandler.Load();
 
@@ -180,26 +150,7 @@ public class SaveLoadController : MonoBehaviour
 
 		string fullPath = "";
 
-		if (deleteSlotNumber == 1)
-		{
-			fullPath = Path.Combine(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_1);
-		}
-		else if (deleteSlotNumber == 2)
-		{
-			fullPath = Path.Combine(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_2);
-		}
-		else if (deleteSlotNumber == 3)
-		{
-			fullPath = Path.Combine(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_3);
-		}
-		else if (deleteSlotNumber == 4)
-		{
-			fullPath = Path.Combine(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_4);
-		}
-		else if (deleteSlotNumber == 5)
-		{
-			fullPath = Path.Combine(Application.persistentDataPath, _SAFE_FILE_DATA_SLOT_5);
-		}
+		_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _saveFilePaths[deleteSlotNumber - 1]);
 
 		try
 		{
@@ -309,11 +260,10 @@ public class SaveLoadController : MonoBehaviour
 	{
 		var extendedInfo = new List<(string DateAndTime, string SceneNameSystem)>();
 
-		extendedInfo.Add(GetExtendedSaveDataForFile(_SAFE_FILE_DATA_SLOT_1));
-		extendedInfo.Add(GetExtendedSaveDataForFile(_SAFE_FILE_DATA_SLOT_2));
-		extendedInfo.Add(GetExtendedSaveDataForFile(_SAFE_FILE_DATA_SLOT_3));
-		extendedInfo.Add(GetExtendedSaveDataForFile(_SAFE_FILE_DATA_SLOT_4));
-		extendedInfo.Add(GetExtendedSaveDataForFile(_SAFE_FILE_DATA_SLOT_5));
+		for (int i = 0; i < _saveFilePaths.Length; i++)
+		{
+			extendedInfo.Add(GetExtendedSaveDataForFile(_saveFilePaths[i]));
+		}
 
 		return extendedInfo.ToArray();
 	}

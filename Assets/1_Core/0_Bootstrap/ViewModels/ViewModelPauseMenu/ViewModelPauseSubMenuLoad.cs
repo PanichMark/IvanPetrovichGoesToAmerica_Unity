@@ -3,8 +3,6 @@ using TMPro;
 
 public class ViewModelPauseSubMenuLoad
 {
-	private int _numberOfSlots = 5;
-
 	public GameObject TextPauseSubMenuLoad;
 
 	public GameObject[] ButtonsLoadGameFile;
@@ -19,17 +17,17 @@ public class ViewModelPauseSubMenuLoad
 
 	public ViewModelPauseSubMenuLoad(Bootstrap bootstrap, GameObject canvas)
 	{
-		ButtonsLoadGameFile = new GameObject[_numberOfSlots];
-		TextGameFileMissionName = new GameObject[_numberOfSlots];
-		TextGameFileSceneName = new GameObject[_numberOfSlots];
-		TextGameFileDateAndTime = new GameObject[_numberOfSlots];
-		ImageSceneGameFile = new GameObject[_numberOfSlots];
+		ButtonsLoadGameFile = new GameObject[bootstrap.GameData.NumberOfSafeFileSlots];
+		TextGameFileMissionName = new GameObject[bootstrap.GameData.NumberOfSafeFileSlots];
+		TextGameFileSceneName = new GameObject[bootstrap.GameData.NumberOfSafeFileSlots];
+		TextGameFileDateAndTime = new GameObject[bootstrap.GameData.NumberOfSafeFileSlots];
+		ImageSceneGameFile = new GameObject[bootstrap.GameData.NumberOfSafeFileSlots];
 
-		TextGameFileSlotNumber = new TextMeshProUGUI[_numberOfSlots];
+		TextGameFileSlotNumber = new TextMeshProUGUI[bootstrap.GameData.NumberOfSafeFileSlots];
 
 		TextPauseSubMenuLoad = bootstrap.FindDeepGameObject(canvas, "TextPauseSubMenuLoad");
 
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < bootstrap.GameData.NumberOfSafeFileSlots; i++)
 		{
 			string slotRootName = "ButtonLoadGameFile" + (i + 1);
 

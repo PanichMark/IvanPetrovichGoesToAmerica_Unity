@@ -220,6 +220,7 @@ public class Bootstrap : MonoBehaviour
 	private IEnumerator InitializeSaveLoadSystem()
 	{
 		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(
+			this,
 			_gameController,
 			_bootstrapSubProcessSceneSystem);
 
