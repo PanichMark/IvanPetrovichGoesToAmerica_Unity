@@ -56,6 +56,9 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 
 	private Action _actionOnAccept;
 
+	private Color _confirmDefaultColor;
+	private Color _confirmHighlightedColor;
+
 	public void Initialize(
 		GameController gameController,
 		LocalizationManager localizationManager,
@@ -105,6 +108,9 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_textButtonCancelAction = viewModelPauseMenuConfirmAction.TextButtonCancelAction;
 		_textButtonComponentCancelAction = viewModelPauseMenuConfirmAction.TextButtonCancelAction.GetComponent<TextMeshProUGUI>();
 
+		_confirmDefaultColor = _buttonComponentConfirmAction.colors.normalColor;
+		_confirmHighlightedColor = _buttonComponentConfirmAction.colors.highlightedColor;
+
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_pauseSubMenuSaveController.OnRequestNewSaveFileConfirmation += HandleShowForNewSaveFile;
@@ -133,6 +139,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 
 	public void HideCanvasConfirmAction()
 	{
+		ChangeConfirmButtonColorToDefault();
 		_canvasPauseSubMenuConfirm.SetActive(false);
 		_actionOnAccept = null;
 	}
@@ -162,6 +169,8 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_actionOnAccept = () => _saveLoadController.DeleteGame(slot);
 
 		_pauseMenuController.OpenPauseConfirmMenu();
+
+		ChangeConfirmButtonColorToRed();
 	}
 
 	private void HandleShowForLoadSaveFile(int slot)
@@ -175,6 +184,8 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 
 	private void HandleShowForExitToMainMenu()
 	{
+		ChangeConfirmButtonColorToRed();
+
 		_menuManager.OpenConfirmationOnExitToMainMenu();
 
 		_textComponentActionMessage.text = $"{_textConfirmExitToMainMenu}";
@@ -199,6 +210,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	{
 		_textComponentActionMessage.text = $"{_textConfirmResetSettings} {_textSettingsGeneral}?";
 		_actionOnAccept = () => _pauseSubMenuSettingsSectionGeneralController.ResetSettingsGeneral();
+		ChangeConfirmButtonColorToRed();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
@@ -213,6 +225,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	{
 		_textComponentActionMessage.text = $"{_textConfirmResetSettings} {_textSettingsControls}?";
 		_actionOnAccept = () => _pauseSubMenuSettingsSectionControlsController.ResetSettingsControls();
+		ChangeConfirmButtonColorToRed();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
@@ -227,6 +240,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	{
 		_textComponentActionMessage.text = $"{_textConfirmResetSettings} {_textSettingsGraphics}?";
 		_actionOnAccept = () => _pauseSubMenuSettingsSectionGraphicsController.ResetSettingsGraphics();
+		ChangeConfirmButtonColorToRed();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
@@ -242,6 +256,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	{
 		_textComponentActionMessage.text = $"{_textConfirmResetSettings} {_textSettingsAudio}?";
 		_actionOnAccept = () => _pauseSubMenuSettingsSectionAudioController.ResetSettingsAudio();
+		ChangeConfirmButtonColorToRed();
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
@@ -260,11 +275,15 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	private void ExecuteAccept()
 	{
 		_actionOnAccept?.Invoke();
-		_pauseMenuController.ClosePauseConfirmMenu(); 
+		_pauseMenuController.ClosePauseConfirmMenu();
+
+		ChangeConfirmButtonColorToDefault();
 	}
 
 	private void ExecuteCancel()
 	{
+		ChangeConfirmButtonColorToDefault();
+
 		if (_menuManager.IsConfirmationOnExitToMainMenuOpened)
 		{
 			_menuManager.CloseConfirmationOnExitToMainMenu();
@@ -273,6 +292,24 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		{
 			_pauseMenuController.ClosePauseConfirmMenu();
 		}
+	}
+
+	private void ChangeConfirmButtonColorToRed()
+	{
+		ColorBlock colors = _buttonComponentConfirmAction.colors;
+		colors.normalColor = new Color(0.576f, 0f, 0f);
+		colors.highlightedColor = new Color(0.804f, 0f, 0f);
+		colors.pressedColor = new Color(0.804f, 0f, 0f);
+		_buttonComponentConfirmAction.colors = colors;
+	}
+
+	private void ChangeConfirmButtonColorToDefault()
+	{
+		ColorBlock colors = _buttonComponentConfirmAction.colors;
+
+		colors.normalColor = _confirmDefaultColor;
+
+		_buttonComponentConfirmAction.colors = colors;
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
