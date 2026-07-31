@@ -177,7 +177,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 	{
 		_menuManager.OpenConfirmationOnExitToMainMenu();
 
-		_textComponentActionMessage.text = $"{_textConfirmExitToMainMenu}?";
+		_textComponentActionMessage.text = $"{_textConfirmExitToMainMenu}";
 
 		_actionOnAccept = () => 
 		{
