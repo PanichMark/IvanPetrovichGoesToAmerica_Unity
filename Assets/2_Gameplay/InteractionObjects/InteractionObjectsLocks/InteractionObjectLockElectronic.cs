@@ -32,7 +32,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private GameObject _canvasLockpickElectronicMenu;
 	private SaveLoadController _saveLoadController;
 	private GameScenesManager _gameSceneManager;
-
+	private Color _colorOriginal;
 	private List<int> _alarmIndices;
 	private int _movesLeft = 5;
 
@@ -50,7 +50,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Hack");
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-
+		_colorOriginal = _buttonsLockElectrical[0].GetComponent<Button>().colors.normalColor;
 
 		_buttonExitLockpickElectronicMenu.onClick.AddListener(CloseElectronicLockPuzzle);
 
@@ -118,7 +118,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			ColorBlock colors = button.colors;
-			colors.normalColor = Color.grey;
+			colors.normalColor = _colorOriginal;
 			button.colors = colors;
 			button.interactable = true;
 			button.onClick?.RemoveAllListeners();
@@ -185,7 +185,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 			{
 				Button button = buttonObj.GetComponent<Button>();
 				ColorBlock colors = button.colors;
-				colors.disabledColor = (i % 2 == 0) ? Color.green : Color.grey;
+				colors.disabledColor = (i % 2 == 0) ? Color.green : _colorOriginal;
 				button.colors = colors;
 			}
 
@@ -212,7 +212,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 			{
 				Button button = buttonObj.GetComponent<Button>();
 				ColorBlock colors = button.colors;
-				colors.disabledColor = (i % 2 == 0) ? Color.red : Color.grey;
+				colors.disabledColor = (i % 2 == 0) ? Color.red : _colorOriginal;
 				button.colors = colors;
 			}
 
@@ -223,7 +223,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		{
 			Button button = buttonObj.GetComponent<Button>();
 			ColorBlock colors = button.colors;
-			colors.normalColor = Color.grey;
+			colors.normalColor = _colorOriginal;
 			button.colors = colors;
 			button.interactable = true;
 		}
