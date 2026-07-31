@@ -21,6 +21,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 	private TextMeshProUGUI _textComponentPauseSubMenuSave;
 
+	private GameObject _buttonBoxCreateNewGameFile;
 	private GameObject _buttonCreateNewGameFile;
 	private Button _buttonComponentCreateNewGameFile;
 	private TextMeshProUGUI _textButtonComponentCreateNewGameFile;
@@ -62,6 +63,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		_textComponentPauseSubMenuSave = _viewModelPauseSubMenuSave.TextPauseSubMenuSave.GetComponent<TextMeshProUGUI>();
 
+		_buttonBoxCreateNewGameFile = _viewModelPauseSubMenuSave.ButtonBoxCreateNewGameFile;
 		_buttonCreateNewGameFile = _viewModelPauseSubMenuSave.ButtonCreateNewGameFile;
 		_buttonComponentCreateNewGameFile = _buttonCreateNewGameFile.GetComponent<Button>();
 		_buttonComponentCreateNewGameFile.onClick.AddListener(() =>
@@ -140,9 +142,9 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		bool hasEmptySlot = FindFirstEmptySlot() != -1;
 
-		if (_buttonCreateNewGameFile.activeSelf != hasEmptySlot)
+		if (_buttonBoxCreateNewGameFile.activeSelf != hasEmptySlot)
 		{
-			_buttonCreateNewGameFile.SetActive(hasEmptySlot);
+			_buttonBoxCreateNewGameFile.SetActive(hasEmptySlot);
 		}
 	}
 
@@ -185,7 +187,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		RefreshButtonLabelsAndVisibility();
 
 		bool hasEmptySlot = FindFirstEmptySlot() != -1;
-		_buttonCreateNewGameFile.SetActive(hasEmptySlot);
+		_buttonBoxCreateNewGameFile.SetActive(hasEmptySlot);
 	}
 
 	private void HideSaveSubMenuCanvas()

@@ -5,6 +5,7 @@ public class ViewModelPauseSubMenuSave
 {
 	public GameObject TextPauseSubMenuSave;
 
+	public GameObject ButtonBoxCreateNewGameFile;
 	public GameObject ButtonCreateNewGameFile;
 	public GameObject TextButtonCreateNewGameFile;
 
@@ -41,6 +42,7 @@ public class ViewModelPauseSubMenuSave
 
 		TextPauseSubMenuSave = bootstrap.FindDeepGameObject(canvas, "TextPauseSubMenuSave");
 
+		ButtonBoxCreateNewGameFile = bootstrap.FindDeepGameObject(canvas, "ButtonBoxCreateNewGameFile");
 		ButtonCreateNewGameFile = bootstrap.FindDeepGameObject(canvas, "ButtonCreateNewGameFile");
 		TextButtonCreateNewGameFile = bootstrap.FindDeepGameObject(canvas, "TextCreateNewGameFile");
 
