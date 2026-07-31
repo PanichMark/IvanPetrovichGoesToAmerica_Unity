@@ -148,7 +148,7 @@ public class SaveLoadController : MonoBehaviour
 			return;
 		}
 
-		string fullPath = "";
+		string fullPath = Path.Combine(Application.persistentDataPath, _saveFilePaths[deleteSlotNumber - 1]);
 
 		_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _saveFilePaths[deleteSlotNumber - 1]);
 

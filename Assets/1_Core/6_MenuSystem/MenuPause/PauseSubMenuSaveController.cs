@@ -8,6 +8,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	public event Action<int> OnRequestRewriteSaveFileConfirmation;
 	public event Action<int> OnRequestNewSaveFileConfirmation;
 	public event Action<int> OnRequestDeleteSaveFileConfirmation;
+
+	private Bootstrap _bootstrap;
 	private GameScenesList _gameScenesList;
 	private LocalizationManager _localizationManager;
 	private SaveLoadController _saveLoadController;
@@ -22,6 +24,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	private GameObject _buttonCreateNewGameFile;
 	private Button _buttonComponentCreateNewGameFile;
 	private TextMeshProUGUI _textButtonComponentCreateNewGameFile;
+
+	private GameObject[] _containersSaveGameFile;
 
 	private GameObject[] _buttonsRewriteGameFile;
 	private Button[] _buttonsComponentsRewriteGameFile;
@@ -40,6 +44,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	private bool _isPauseSubMenuSaveOpened;
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		LocalizationManager localizationManager,
 		SaveLoadController saveLoadController,
 		PauseMenuController pauseMenuController,
@@ -47,6 +52,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		GameObject canvasPauseSubMenuSave,
 		ViewModelPauseSubMenuSave viewModelPauseSubMenuSave)
 	{
+		_bootstrap = bootstrap;
 		_localizationManager = localizationManager;
 		_saveLoadController = saveLoadController;
 		_pauseMenuController = pauseMenuController;
@@ -68,20 +74,23 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		});
 		_textButtonComponentCreateNewGameFile = _viewModelPauseSubMenuSave.TextButtonCreateNewGameFile.GetComponent<TextMeshProUGUI>();
 
-		_buttonsRewriteGameFile = new GameObject[_viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length];
+		_containersSaveGameFile = new GameObject[_bootstrap.GameData.NumberOfSafeFileSlots];
+		_containersSaveGameFile = _viewModelPauseSubMenuSave.ContainersSaveGameFile;
+
+		_buttonsRewriteGameFile = new GameObject[_bootstrap.GameData.NumberOfSafeFileSlots];
 		_buttonsRewriteGameFile = _viewModelPauseSubMenuSave.ButtonsRewriteGameFile;
-		_buttonsComponentsRewriteGameFile = new Button[_viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length];
+		_buttonsComponentsRewriteGameFile = new Button[_bootstrap.GameData.NumberOfSafeFileSlots];
 
-		_textComponentsGameFileDateAndTime = new TextMeshProUGUI[_viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length];
-		_textComponentsGameFileSceneName = new TextMeshProUGUI[_viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length];
-		_imagesComponentsSceneGameFile = new Image[_viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length];
+		_textComponentsGameFileDateAndTime = new TextMeshProUGUI[_bootstrap.GameData.NumberOfSafeFileSlots];
+		_textComponentsGameFileSceneName = new TextMeshProUGUI[_bootstrap.GameData.NumberOfSafeFileSlots];
+		_imagesComponentsSceneGameFile = new Image[_bootstrap.GameData.NumberOfSafeFileSlots];
 
-		_buttonsDeleteGameFile = new GameObject[_viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length];
+		_buttonsDeleteGameFile = new GameObject[_bootstrap.GameData.NumberOfSafeFileSlots];
 		_buttonsDeleteGameFile = _viewModelPauseSubMenuSave.ButtonsDeleteGameFile;
-		_buttonsComponentsDeleteGameFile = new Button[_viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length];
-		_textButtonsComponentsDeleteGameFile = new TextMeshProUGUI[_viewModelPauseSubMenuSave.ButtonsDeleteGameFile.Length];
+		_buttonsComponentsDeleteGameFile = new Button[_bootstrap.GameData.NumberOfSafeFileSlots];
+		_textButtonsComponentsDeleteGameFile = new TextMeshProUGUI[_bootstrap.GameData.NumberOfSafeFileSlots];
 
-		for (int i = 0; i < _viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length; i++)
+		for (int i = 0; i < _bootstrap.GameData.NumberOfSafeFileSlots; i++)
 		{
 			int slot = i + 1;
 
@@ -148,7 +157,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 			if (!string.IsNullOrEmpty(currentSceneNameSystem))
 			{
-				_buttonsRewriteGameFile[safeFileIndex].SetActive(true);
+				_containersSaveGameFile[safeFileIndex].SetActive(true);
 
 				_textComponentsGameFileDateAndTime[safeFileIndex].text = currentDateAndTime;
 				_textComponentsGameFileSceneName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentSceneNameSystem);
@@ -163,7 +172,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			}
 			else
 			{
-				_buttonsRewriteGameFile[safeFileIndex].SetActive(false);
+				_containersSaveGameFile[safeFileIndex].SetActive(false);
 			}
 		}
 	}

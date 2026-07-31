@@ -13,7 +13,6 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	private PauseMenuController _pauseMenuController;
 
 	private GameScenesList _gameScenesList;
-
 	private ViewModelPauseSubMenuLoad _viewModelPauseSubMenuLoad;
 
 	private GameObject _canvasPauseSubMenuLoad;
