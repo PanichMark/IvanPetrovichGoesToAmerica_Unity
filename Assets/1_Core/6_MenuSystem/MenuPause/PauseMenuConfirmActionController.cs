@@ -308,6 +308,8 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		ColorBlock colors = _buttonComponentConfirmAction.colors;
 
 		colors.normalColor = _confirmDefaultColor;
+		colors.highlightedColor = _confirmHighlightedColor;
+		colors.pressedColor = _confirmHighlightedColor;
 
 		_buttonComponentConfirmAction.colors = colors;
 	}
