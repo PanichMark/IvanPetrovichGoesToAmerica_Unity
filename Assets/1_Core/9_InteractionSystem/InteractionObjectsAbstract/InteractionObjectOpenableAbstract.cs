@@ -17,7 +17,8 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction { get; protected set; }
 
-	public virtual bool IsObjectOpened { get; protected set; }
+	[SerializeField] protected bool _isObjectOpened;
+	public virtual bool IsObjectOpened => _isObjectOpened;
 
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
@@ -63,7 +64,7 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 				var existingItem = targetList[indexInList];
 
 				existingItem.WasOpenableObjectUnlocked = WasOpenableUnlocked;
-				existingItem.WasOpenableObjectOpened = IsObjectOpened;
+				existingItem.WasOpenableObjectOpened = _isObjectOpened;
 				existingItem.OpenableObjectNameSystem = InteractionObjectNameSystem;
 
 				targetList[indexInList] = existingItem;
@@ -75,7 +76,7 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 					OpenableObjectIndex = OpenableObjectIndex,
 					OpenableObjectNameSystem = InteractionObjectNameSystem,
 					WasOpenableObjectUnlocked = WasOpenableUnlocked,
-					WasOpenableObjectOpened = IsObjectOpened
+					WasOpenableObjectOpened = _isObjectOpened
 				});
 			}
 		}

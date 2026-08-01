@@ -24,7 +24,7 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 
 	public void Start()
 	{
-		IsObjectOpened = false;
+		_isObjectOpened = false;
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
@@ -107,7 +107,7 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 	private IEnumerator OpenSequence()
 	{
 		Debug.Log($"Was opened {InteractionObjectNameUI}");
-		IsObjectOpened = true;
+		_isObjectOpened = true;
 
 		if (_intermediatePositionOffset != Vector3.zero)
 		{
@@ -130,7 +130,7 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 	private IEnumerator CloseSequence()
 	{
 		Debug.Log($"Was closed {InteractionObjectNameUI}");
-		IsObjectOpened = false;
+		_isObjectOpened = false;
 
 		if (_intermediatePositionOffset != Vector3.zero)
 		{

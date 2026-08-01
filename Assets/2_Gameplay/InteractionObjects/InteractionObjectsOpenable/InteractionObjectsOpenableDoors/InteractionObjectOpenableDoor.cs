@@ -66,6 +66,13 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
+		if (_isObjectOpened)
+		{
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+
+			transform.localRotation = _openedRotation;
+		}
+
 		if (!_isLockedForever)
 		{
 			if (_interactionObjectKeyData != null)
@@ -206,13 +213,13 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 		if (!IsObjectOpened)
 		{
 			Debug.Log($"Opened {InteractionObjectNameUI}");
-			IsObjectOpened = true;
+			_isObjectOpened = true;
 			_currentAnimation = StartCoroutine(OpenDoor());
 		}
 		else
 		{
 			Debug.Log($"Closed {InteractionObjectNameUI}");
-			IsObjectOpened = false;
+			_isObjectOpened = false;
 			_currentAnimation = StartCoroutine(CloseDoor());
 		}
 
