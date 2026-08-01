@@ -230,6 +230,11 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		transform.rotation = rotation;
 	}
 
+	public void SetCameraRotationY(float rotationY)
+	{
+		_mouseRotation.x += rotationY;
+	}
+
 	public string GetCurrentPlayerCameraType()
 	{
 		return _currentPlayerCameraType.ToString();
@@ -273,6 +278,16 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		{
 			_mouseRotation.y += _inputDevice.CameraAxisY() * _mouseSensitivityMultiplierY;
 			_mouseRotation.x += _inputDevice.CameraAxisX() * _mouseSensitivityMultiplierX;
+
+			while (_mouseRotation.x < 0f)
+			{
+				_mouseRotation.x += 360f;
+			}
+			while (_mouseRotation.x >= 360f)
+			{
+				_mouseRotation.x -= 360f;
+			}
+
 			_mouseRotation.y = Mathf.Clamp(_mouseRotation.y, _MouseRotationLimit * -1, _MouseRotationLimit);
 			_mouseScrollWheel = _inputDevice.CameraScroll();
 

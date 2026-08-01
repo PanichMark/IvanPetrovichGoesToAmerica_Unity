@@ -526,6 +526,8 @@ public class Bootstrap : MonoBehaviour
 		if (_firstSceneToLoad.FirstSceneToLoad != GameScenesEnum.Scene_0_MainMenu)
 		{
 			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerTransform.PlayerPosition);
+			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerRotationY(_playerTransform.PlayerRotationY);
+			_bootstrapSubProcessPlayerSystems.PlayerCameraController.SetCameraRotationY(_playerTransform.PlayerRotationY);
 		}
 	}
 

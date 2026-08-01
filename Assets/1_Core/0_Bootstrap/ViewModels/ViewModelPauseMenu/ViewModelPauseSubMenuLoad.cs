@@ -35,7 +35,7 @@ public class ViewModelPauseSubMenuLoad
 			string slotRootName = "ButtonLoadGameFile" + (i + 1);
 
 			ButtonsLoadGameFile[i] = bootstrap.FindDeepGameObject(canvas, $"{slotRootName}");
-			Debug.Log(ButtonsLoadGameFile[i]);
+			//Debug.Log(ButtonsLoadGameFile[i]);
 			TextGameFileMissionName[i] = bootstrap.FindDeepGameObject(ButtonsLoadGameFile[i], "TextMissionName");
 			TextGameFileSceneName[i] = bootstrap.FindDeepGameObject(ButtonsLoadGameFile[i], "TextSceneName");
 			TextGameFileDateAndTime[i] = bootstrap.FindDeepGameObject(ButtonsLoadGameFile[i], "TextDateAndTime");

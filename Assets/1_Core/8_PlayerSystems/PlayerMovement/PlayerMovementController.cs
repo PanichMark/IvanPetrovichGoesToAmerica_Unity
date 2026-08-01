@@ -367,9 +367,9 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		_jumpWaitOnSlope = true; 
 	}
 
-	public void SetPlayerRotation(float rotationY)
+	public void SetPlayerRotationY(float rotationY)
 	{
-		transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+		//transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
 	}
 
 	public void GiveCurrentPlayerCameraType(PlayerCameraStateTypes cameraType)

@@ -76,7 +76,7 @@ public class InteractionObjectLoadScene : MonoBehaviour, IInteractable
 		if (_interactionObjectOpenableDoorScenePlayerTransform != null && _playerMovementController != null)
 		{
 			_playerMovementController.SetPlayerPosition(_interactionObjectOpenableDoorScenePlayerTransform.PlayerPosition);
-			_playerMovementController.SetPlayerRotation(_interactionObjectOpenableDoorScenePlayerTransform.PlayerRotation);
+			_playerMovementController.SetPlayerRotationY(_interactionObjectOpenableDoorScenePlayerTransform.PlayerRotation);
 		}
 
 		Destroy(gameObject);
