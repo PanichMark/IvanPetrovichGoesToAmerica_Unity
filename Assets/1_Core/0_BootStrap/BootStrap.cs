@@ -282,8 +282,8 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializePlayerSystems()
 	{
-		_gameObjectPlayer = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerGameObject"));
-		GameObjectPlayerCamera = Instantiate((GameObject)Resources.Load("1_Bootstrap/BootstrapPlayer/Bootstrap_PlayerCameraGameObject"));
+		_gameObjectPlayer = Instantiate((GameObject)Resources.Load("1_Bootstrap/Player/Bootstrap_PlayerGameObject"));
+		GameObjectPlayerCamera = Instantiate((GameObject)Resources.Load("1_Bootstrap/Player/Bootstrap_PlayerCameraGameObject"));
 
 		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(
 			this,

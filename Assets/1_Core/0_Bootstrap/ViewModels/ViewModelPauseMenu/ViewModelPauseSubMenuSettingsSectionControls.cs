@@ -13,6 +13,8 @@ public class ViewModelPauseSubMenuSettingsSectionControls
 	public GameObject[] InputFieldsControls = new GameObject[16];
 	public GameObject[] TextControls = new GameObject[16];
 
+	public GameObject Scrollbar;
+
 	public ViewModelPauseSubMenuSettingsSectionControls(Bootstrap bootstrap, GameObject canvas)
 	{
 		SliderMouseSensitivityX = bootstrap.FindDeepGameObject(canvas, "SliderMouseSensitivityX");
@@ -50,5 +52,7 @@ public class ViewModelPauseSubMenuSettingsSectionControls
 		{
 			TextControls[i] = bootstrap.FindDeepGameObject(canvas, $"TextControl{nputFieldControlsNames[i]}");
 		}
+
+		Scrollbar = bootstrap.FindDeepGameObject(canvas, "Scrollbar");
 	}
 }

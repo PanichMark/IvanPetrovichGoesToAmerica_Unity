@@ -51,6 +51,10 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	private const float _STEP_VALUE_MOUSE_SENSITIVITY = 0.1f;
 	private char _lastValidChar;
 
+	private GameObject _scrollbar;
+	private Scrollbar _scrollbarComponent;
+	private float _scrollbarHandleSize = 0.195f;
+
 	public void Initialize(
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
@@ -80,6 +84,10 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		_textComponentNumberSliderMouseSensitivityY = viewModelPauseSubMenuSettings.NumberSliderMouseSensitivityY.GetComponent<TextMeshProUGUI>();
 		_textSliderMouseSensitivityY = viewModelPauseSubMenuSettings.TextSliderMouseSensitivityY;
 		_textComponentSliderMouseSensitivityY = viewModelPauseSubMenuSettings.TextSliderMouseSensitivityY.GetComponent<TextMeshProUGUI>();
+
+		_scrollbar = viewModelPauseSubMenuSettings.Scrollbar;
+		_scrollbarComponent = viewModelPauseSubMenuSettings.Scrollbar.GetComponent<Scrollbar>();
+		Canvas.willRenderCanvases += EnforceFixedHandleSize;
 
 		var bindings = _inputDevice.GetCurrentKeyBindings().ToList();
 		_inputFieldsControls = viewModelPauseSubMenuSettings.InputFieldsControls;
@@ -146,6 +154,11 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		Debug.Log("SettingsSectionControlsController Initialized");
+	}
+
+	private void EnforceFixedHandleSize()
+	{
+		_scrollbarComponent.size = Mathf.Clamp(_scrollbarHandleSize, 0f, 1f);
 	}
 
 	char ValidateAndConvertInput(string text, int charIndex, char addedChar)
