@@ -5,8 +5,11 @@ using System.Collections.Generic;
 [System.Serializable]
 public class GameData
 {
-	//Important
+	//DateAndTime
 	public string SafeFileDateAndTime;
+
+	//Mission
+	public string MissionNameSystem;
 
 	//Scene
 	public string SceneNameSystem;
@@ -123,8 +126,11 @@ public class GameData
 
 	public GameData()
 	{
-		//Important
+		//DateAndTime
 		SafeFileDateAndTime = DateTime.Now.ToString();
+
+		//Mission
+		MissionNameSystem = GameMissionsNamesEnum.Mission_0_NothingEverHappensInThisCountry.ToString();
 
 		//Scene
 		SceneNameSystem = GameScenesEnum.Scene_0_Test.ToString();

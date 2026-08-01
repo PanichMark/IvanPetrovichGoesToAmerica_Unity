@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MissionsManager : MonoBehaviour
+public class MissionsManager : MonoBehaviour, ISaveLoad
 {
 	private GameMissionsList _gameMissions;
 	public MissionAbstract ActiveMission { get; private set; }
@@ -124,5 +124,15 @@ public class MissionsManager : MonoBehaviour
 			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
 			_HUDmissionsController.SetCurrentMissionGoalText(localizedGoalText);
 		}
+	}
+
+	public void SaveData(ref GameData data)
+	{
+		data.MissionNameSystem = ActiveMission.MissionName;
+	}
+
+	public void LoadData(GameData data)
+	{
+		
 	}
 }

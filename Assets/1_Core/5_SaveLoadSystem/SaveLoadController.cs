@@ -256,9 +256,9 @@ public class SaveLoadController : MonoBehaviour
 		yield break;
 	}
 
-	public (string SavefileDateAndTime, string SafefileSceneNameSystem)[] GetExtendedSaveInfo()
+	public (string SavefileDateAndTime, string SafeFileMissionNameSystem, string SafefileSceneNameSystem)[] GetExtendedSaveInfo()
 	{
-		var extendedInfo = new List<(string DateAndTime, string SceneNameSystem)>();
+		var extendedInfo = new List<(string DateAndTime, string MissionNAmeSystem, string SceneNameSystem)>();
 
 		for (int i = 0; i < _saveFilePaths.Length; i++)
 		{
@@ -268,7 +268,7 @@ public class SaveLoadController : MonoBehaviour
 		return extendedInfo.ToArray();
 	}
 
-	private (string SavefileDateAndTime, string SafefileSceneNameSystem) GetExtendedSaveDataForFile(string fileName)
+	private (string SavefileDateAndTime, string SafeFileMissionNameSystem, string SafefileSceneNameSystem) GetExtendedSaveDataForFile(string fileName)
 	{
 		try
 		{
@@ -277,18 +277,19 @@ public class SaveLoadController : MonoBehaviour
 			{
 				return (
 					gameData.SafeFileDateAndTime,
+					gameData.MissionNameSystem,
 					gameData.SceneNameSystem
 				);
 			}
 			else
 			{
-				return (null, null);
+				return (null, null, null);
 			}
 		}
 		catch (Exception e)
 		{
 			Debug.LogWarning($"Ошибка при чтении файла '{fileName}'\n{e.Message}");
-			return (null, null);
+			return (null, null, null);
 		}
 	}
 }

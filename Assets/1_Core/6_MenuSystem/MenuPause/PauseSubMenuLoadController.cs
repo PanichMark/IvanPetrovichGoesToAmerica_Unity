@@ -22,6 +22,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	private GameObject[] _buttonsLoadGameFile;
 	private Button[] _buttonsComponentsLoadGameFile;
 	private TextMeshProUGUI[] _textComponentsGameFileDateAndTime;
+	private TextMeshProUGUI[] _textComponentsGameFileMissionName;
 	private TextMeshProUGUI[] _textComponentsGameFileSceneName;
 	private Image[] _imagesComponentsSceneGameFile;
 
@@ -59,6 +60,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		_buttonsComponentsLoadGameFile = new Button[_bootstrap.GameData.NumberOfSafeFileSlots];
 
 		_textComponentsGameFileDateAndTime = new TextMeshProUGUI[_bootstrap.GameData.NumberOfSafeFileSlots];
+		_textComponentsGameFileMissionName = new TextMeshProUGUI[_bootstrap.GameData.NumberOfSafeFileSlots];
 		_textComponentsGameFileSceneName = new TextMeshProUGUI[_bootstrap.GameData.NumberOfSafeFileSlots];
 		_imagesComponentsSceneGameFile = new Image[_bootstrap.GameData.NumberOfSafeFileSlots];
 
@@ -70,6 +72,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 			_buttonsComponentsLoadGameFile[i].onClick.AddListener(() => OnRequestLoadSaveFileConfirmation?.Invoke(slot));
 
 			_textComponentsGameFileDateAndTime[i] = _viewModelPauseSubMenuLoad.TextGameFileDateAndTime[i].GetComponent<TextMeshProUGUI>();
+			_textComponentsGameFileMissionName[i] = _viewModelPauseSubMenuLoad.TextGameFileMissionName[i].GetComponent<TextMeshProUGUI>();
 			_textComponentsGameFileSceneName[i] = _viewModelPauseSubMenuLoad.TextGameFileSceneName[i].GetComponent<TextMeshProUGUI>();
 			_imagesComponentsSceneGameFile[i] = _viewModelPauseSubMenuLoad.ImageSceneGameFile[i].GetComponent<Image>();
 		}
@@ -127,6 +130,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		for (int safeFileIndex = 0; safeFileIndex < extendedSaveInfos.Length; safeFileIndex++)
 		{
 			string currentDateAndTime = extendedSaveInfos[safeFileIndex].SavefileDateAndTime;
+			string currentMissionNameSystem = extendedSaveInfos[safeFileIndex].SafeFileMissionNameSystem;
 			string currentSceneNameSystem = extendedSaveInfos[safeFileIndex].SafefileSceneNameSystem;
 
 			if (!string.IsNullOrEmpty(currentSceneNameSystem))
@@ -136,6 +140,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 				activeLoadButtonsCount++;
 
 				_textComponentsGameFileDateAndTime[safeFileIndex].text = currentDateAndTime;
+				_textComponentsGameFileMissionName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentMissionNameSystem);
 				_textComponentsGameFileSceneName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentSceneNameSystem);
 
 				for (int sceneDataIndex = 0; sceneDataIndex < _gameScenesList.GameScenes.Count; sceneDataIndex++)
