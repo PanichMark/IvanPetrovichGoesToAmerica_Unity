@@ -42,6 +42,11 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	private Button _buttonComponentClosePauseSubMenuSave;
 	private TextMeshProUGUI _textButtonComponentClosePauseSubMenuSave;
 
+	private GameObject _scrollbar;
+	private Scrollbar _scrollbarComponent;
+	private float _scrollbarHandleSize = 0.11f;
+	private GameObject _scrollbarHandle;
+
 	private bool _isPauseSubMenuSaveOpened;
 
 	public void Initialize(
@@ -113,6 +118,11 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		_buttonComponentClosePauseSubMenuSave.onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
 		_textButtonComponentClosePauseSubMenuSave = _viewModelPauseSubMenuSave.TextButtonClosePauseSubMenuSave.GetComponent<TextMeshProUGUI>();
 
+		_scrollbar = _viewModelPauseSubMenuSave.Scrollbar;
+		_scrollbarComponent = _viewModelPauseSubMenuSave.Scrollbar.GetComponent<Scrollbar>();
+		Canvas.willRenderCanvases += EnforceFixedHandleSize;
+		_scrollbarHandle = _viewModelPauseSubMenuSave.ScrollbarHandle;
+
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_saveLoadController.OnSafeFileDelete += UpdateAllUIElements;
@@ -122,6 +132,11 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		_pauseMenuController.OnCloseAnyPauseSubMenu += HideSaveSubMenuCanvas;
 
 		Debug.Log("PauseSubMenuSaveController Initialized");
+	}
+
+	private void EnforceFixedHandleSize()
+	{
+		_scrollbarComponent.size = Mathf.Clamp(_scrollbarHandleSize, 0f, 1f);
 	}
 
 	private int FindFirstEmptySlot()
@@ -152,6 +167,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	{
 		var extendedSaveInfos = _saveLoadController.GetExtendedSaveInfo();
 
+		int activeSaveButtonsCount = 0;
+
 		for (int safeFileIndex = 0; safeFileIndex < extendedSaveInfos.Length; safeFileIndex++)
 		{
 			string currentDateAndTime = extendedSaveInfos[safeFileIndex].SavefileDateAndTime;
@@ -160,6 +177,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 			if (!string.IsNullOrEmpty(currentSceneNameSystem))
 			{
 				_containersSaveGameFile[safeFileIndex].SetActive(true);
+
+				activeSaveButtonsCount++;
 
 				_textComponentsGameFileDateAndTime[safeFileIndex].text = currentDateAndTime;
 				_textComponentsGameFileSceneName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentSceneNameSystem);
@@ -177,6 +196,8 @@ public class PauseSubMenuSaveController : MonoBehaviour
 				_containersSaveGameFile[safeFileIndex].SetActive(false);
 			}
 		}
+
+		_scrollbarHandle.gameObject.SetActive(activeSaveButtonsCount > 5);
 	}
 
 	private void ShowSaveSubMenuCanvas()

@@ -29,6 +29,11 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	private Button _buttonComponentClosePauseSubMenuLoad;
 	private TextMeshProUGUI _textButtonComponentClosePauseSubMenuLoad;
 
+	private GameObject _scrollbar;
+	private Scrollbar _scrollbarComponent;
+	private float _scrollbarHandleSize = 0.11f;
+	private GameObject _scrollbarHandle;
+
 	private bool _isPauseSubMenuLoadOpened;
 
 	public void Initialize(
@@ -74,6 +79,11 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		_buttonComponentClosePauseSubMenuLoad.onClick.AddListener(() => _pauseMenuController.ClosePauseSubMenu());
 		_textButtonComponentClosePauseSubMenuLoad = _viewModelPauseSubMenuLoad.TextButtonClosePauseSubMenuLoad.GetComponent<TextMeshProUGUI>();
 
+		_scrollbar = _viewModelPauseSubMenuLoad.Scrollbar;
+		_scrollbarComponent = _viewModelPauseSubMenuLoad.Scrollbar.GetComponent<Scrollbar>();
+		Canvas.willRenderCanvases += EnforceFixedHandleSize;
+		_scrollbarHandle = _viewModelPauseSubMenuLoad.ScrollbarHandle;
+
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_saveLoadController.OnSafeFileSaved += RefreshButtonLabelsAndVisibility; 
@@ -83,6 +93,11 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		_pauseMenuController.OnCloseAnyPauseSubMenu += HideLoadSubMenuCanvas;
 
 		Debug.Log("PauseSubMenuLoadController");
+	}
+
+	private void EnforceFixedHandleSize()
+	{
+		_scrollbarComponent.size = Mathf.Clamp(_scrollbarHandleSize, 0f, 1f);
 	}
 
 	public void ShowLoadSubMenuCanvas()
@@ -107,6 +122,8 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	{
 		var extendedSaveInfos = _saveLoadController.GetExtendedSaveInfo();
 
+		int activeLoadButtonsCount = 0;
+
 		for (int safeFileIndex = 0; safeFileIndex < extendedSaveInfos.Length; safeFileIndex++)
 		{
 			string currentDateAndTime = extendedSaveInfos[safeFileIndex].SavefileDateAndTime;
@@ -115,6 +132,8 @@ public class PauseSubMenuLoadController : MonoBehaviour
 			if (!string.IsNullOrEmpty(currentSceneNameSystem))
 			{
 				_buttonsLoadGameFile[safeFileIndex].SetActive(true);
+
+				activeLoadButtonsCount++;
 
 				_textComponentsGameFileDateAndTime[safeFileIndex].text = currentDateAndTime;
 				_textComponentsGameFileSceneName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentSceneNameSystem);
@@ -132,6 +151,8 @@ public class PauseSubMenuLoadController : MonoBehaviour
 				_buttonsLoadGameFile[safeFileIndex].SetActive(false);
 			}
 		}
+
+		_scrollbarHandle.gameObject.SetActive(activeLoadButtonsCount > 6);
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)

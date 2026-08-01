@@ -25,6 +25,9 @@ public class ViewModelPauseSubMenuSave
 	public GameObject ButtonClosePauseSubMenuSave;
 	public GameObject TextButtonClosePauseSubMenuSave;
 
+	public GameObject Scrollbar;
+	public GameObject ScrollbarHandle;
+
 	public ViewModelPauseSubMenuSave(Bootstrap bootstrap, GameObject canvas)
 	{
 		ContainersSaveGameFile = new GameObject[bootstrap.GameData.NumberOfSafeFileSlots];
@@ -77,5 +80,8 @@ public class ViewModelPauseSubMenuSave
 
 		ButtonClosePauseSubMenuSave = bootstrap.FindDeepGameObject(canvas, "ButtonClosePauseSubMenuSave");
 		TextButtonClosePauseSubMenuSave = bootstrap.FindDeepGameObject(canvas, "TextButtonClosePauseSubMenuSave");
+
+		Scrollbar = bootstrap.FindDeepGameObject(canvas, "Scrollbar");
+		ScrollbarHandle = bootstrap.FindDeepGameObject(canvas, "ScrollbarHandle");
 	}
 }
