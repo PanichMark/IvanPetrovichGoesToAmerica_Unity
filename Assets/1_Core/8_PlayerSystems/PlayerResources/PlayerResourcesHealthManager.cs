@@ -23,7 +23,7 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 	private bool _isFalling;
 	private float _fallStartTime;
 	private const float MinFallDurationForDamage = 1.0f;
-	private const float DamagePerSecondOverThreshold = 0.2f;
+	private const float DamagePerSecondOverThreshold = 0.5f;
 
 	public float CurrentHealth => CurrentPlayerHealth;
 
