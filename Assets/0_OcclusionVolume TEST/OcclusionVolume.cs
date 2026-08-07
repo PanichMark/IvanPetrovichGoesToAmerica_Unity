@@ -15,30 +15,46 @@ public class VolumeOcclusion : MonoBehaviour
 #if UNITY_EDITOR
 	void OnValidate()
 	{
-		if (!Application.isPlaying)
-			UpdateAffectedObjects();
+		UpdateAffectedObjects();
 	}
 #endif
 
-	void LateUpdate()
+#if UNITY_EDITOR
+	Vector3 _lastPosition;
+	Quaternion _lastRotation;
+	Vector3 _lastScale;
+
+	void Awake()
 	{
-		if (_collider != null && Application.isPlaying)
-			UpdateAffectedObjects();
+		_lastPosition = transform.position;
+		_lastRotation = transform.rotation;
+		_lastScale = transform.localScale;
 	}
 
-	// Обновление при изменении положения/свойств самого объекта в редакторе
-#if UNITY_EDITOR
-	void OnTransformChildrenChanged()
+	void Update() // Только в редакторе!
 	{
-		if (!Application.isPlaying)
+		if (_collider == null || !enabled) return;
+
+		bool changed =
+			transform.position != _lastPosition ||
+			transform.rotation != _lastRotation ||
+			transform.localScale != _lastScale;
+
+		if (changed)
+		{
 			UpdateAffectedObjects();
+
+			_lastPosition = transform.position;
+			_lastRotation = transform.rotation;
+			_lastScale = transform.localScale;
+		}
 	}
+
+
 #endif
 
 	private void UpdateAffectedObjects()
 	{
-		if (_collider == null || !enabled) return;
-
 		var bounds = _collider.bounds;
 
 		foreach (var renderer in FindObjectsOfType<MeshRenderer>())
@@ -79,4 +95,6 @@ public class VolumeOcclusion : MonoBehaviour
 			_propertyBlocks.Remove(renderer);
 		}
 	}
+
+
 }
