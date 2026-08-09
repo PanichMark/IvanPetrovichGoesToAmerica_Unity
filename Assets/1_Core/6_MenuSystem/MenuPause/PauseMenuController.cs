@@ -12,12 +12,27 @@ public class PauseMenuController : MonoBehaviour
 	private MenuManager _menuManager;
 	private MenuBackgroundController _menuBackgroundController;
 
+	private RectTransform _loadButtonRect;
+	private RectTransform _settingsButtonRect;
+	private RectTransform _exitToMainMenuButtonRect;
+
+	private Vector2 _loadButtonDefaultAnchoredPos;
+	private Vector2 _settingsButtonDefaultAnchoredPos;
+	private Vector2 _exitToMainMenuButtonDefaultAnchoredPos;
+
 	private GameObject _canvasPauseMenu;
 	private GameObject[] _buttonsPauseMenu;
 	private Button[] _buttonsComponentsPauseMenu;
 	private TextMeshProUGUI[] _textComponentsButtonsPauseMenu;
+
+	private GameObject _currentMission;
 	private TextMeshProUGUI _textComponentsCurrentMissionGoal;
+
+	private GameObject _playerMoney;
 	private TextMeshProUGUI _textComponentsCurrentPlayerMoney;
+
+	private GameObject _textDeathMessage;
+	private TextMeshProUGUI _textComponentDeathMessage;
 
 	public bool IsPauseConfirmMenuOpened { get; private set; }
 
@@ -55,10 +70,29 @@ public class PauseMenuController : MonoBehaviour
 
 		_buttonsPauseMenu = viewModelPauseMenu.ButtonsPauseMenu;
 		_buttonsComponentsPauseMenu = new Button[viewModelPauseMenu.ButtonsPauseMenu.Length];
+
 		for (int i = 0; i < viewModelPauseMenu.ButtonsPauseMenu.Length; i++)
 		{
-			_buttonsComponentsPauseMenu[i] = viewModelPauseMenu.ButtonsPauseMenu[i].GetComponent<Button>();
+			var buttonObj = viewModelPauseMenu.ButtonsPauseMenu[i];
+			_buttonsComponentsPauseMenu[i] = buttonObj.GetComponent<Button>();
+
+			if (i == 2) // Load
+			{
+				_loadButtonRect = buttonObj.GetComponent<RectTransform>();
+				_loadButtonDefaultAnchoredPos = _loadButtonRect.anchoredPosition;
+			}
+			else if (i == 5) // Settings
+			{
+				_settingsButtonRect = buttonObj.GetComponent<RectTransform>();
+				_settingsButtonDefaultAnchoredPos = _settingsButtonRect.anchoredPosition;
+			}
+			else if (i == 6) // ExitToMainMenu
+			{
+				_exitToMainMenuButtonRect = buttonObj.GetComponent<RectTransform>();
+				_exitToMainMenuButtonDefaultAnchoredPos = _exitToMainMenuButtonRect.anchoredPosition;
+			}
 		}
+
 		_buttonsComponentsPauseMenu[0].onClick.AddListener(_menuManager.ClosePauseMenu);
 		_buttonsComponentsPauseMenu[1].onClick.AddListener(OpenSaveSubMenu);               
 		_buttonsComponentsPauseMenu[2].onClick.AddListener(OpenLoadSubMenu);               
@@ -66,19 +100,27 @@ public class PauseMenuController : MonoBehaviour
 		_buttonsComponentsPauseMenu[4].onClick.AddListener(OpenTutorialSubMenu);
 		_buttonsComponentsPauseMenu[5].onClick.AddListener(OpenSettingsSubMenu);
 		_buttonsComponentsPauseMenu[6].onClick.AddListener(ExitToMainMenu);
+
 		_textComponentsButtonsPauseMenu = new TextMeshProUGUI[viewModelPauseMenu.TextButtonsPauseMenu.Length];
+
 		for (int i = 0; i < viewModelPauseMenu.TextButtonsPauseMenu.Length; i++)
 		{
 			_textComponentsButtonsPauseMenu[i] = viewModelPauseMenu.TextButtonsPauseMenu[i].GetComponent<TextMeshProUGUI>();
 		}
 
+		_currentMission = viewModelPauseMenu.CurrentMission;
 		_textComponentsCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
+
+		_playerMoney = viewModelPauseMenu.PlayerMoney;
 		_textComponentsCurrentPlayerMoney = viewModelPauseMenu.TextCurrentPlayerMoney.GetComponent<TextMeshProUGUI>();
+
+		_textDeathMessage = viewModelPauseMenu.TextDeathMessage;
+		_textComponentDeathMessage = viewModelPauseMenu.TextDeathMessage.GetComponent<TextMeshProUGUI>();
 
 		_gameController.OnSaveGameAvailable += EnableSaveButton;
 		_gameController.OnSaveGameUnavailable += DisableSaveButton;
-		_gameController.OnPlayerLateDeath += HideDeathPauseMenuButtons;
-		_gameController.OnPlayerRevive += ShowDeathPauseMenuButtons;
+		_gameController.OnPlayerLateDeath += PauseMenuOnDeath;
+		_gameController.OnPlayerRevive += PauseMenuOnRevive;
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
@@ -142,18 +184,38 @@ public class PauseMenuController : MonoBehaviour
 		Debug.Log("ConfirmMenu closed");
 	}
 
-	private void ShowDeathPauseMenuButtons()
+	private void PauseMenuOnDeath()
 	{
-		_buttonsPauseMenu[0].SetActive(true);
-		_buttonsPauseMenu[1].SetActive(true);
-		_buttonsPauseMenu[3].SetActive(true);
-	}
+		_textDeathMessage.SetActive(true);
 
-	private void HideDeathPauseMenuButtons()
-	{
 		_buttonsPauseMenu[0].SetActive(false);
 		_buttonsPauseMenu[1].SetActive(false);
 		_buttonsPauseMenu[3].SetActive(false);
+		_buttonsPauseMenu[4].SetActive(false);
+
+		_loadButtonRect.anchoredPosition = new Vector2(_loadButtonDefaultAnchoredPos.x, -38);
+		_settingsButtonRect.anchoredPosition = new Vector2(_settingsButtonDefaultAnchoredPos.x, -153.5f);
+		_exitToMainMenuButtonRect.anchoredPosition = new Vector2(_exitToMainMenuButtonDefaultAnchoredPos.x, -269.5f);
+
+		_playerMoney.SetActive(false);
+		_currentMission.SetActive(false);
+	}
+
+	private void PauseMenuOnRevive()
+	{
+		_textDeathMessage.SetActive(false);
+
+		_buttonsPauseMenu[0].SetActive(true);
+		_buttonsPauseMenu[1].SetActive(true);
+		_buttonsPauseMenu[3].SetActive(true);
+		_buttonsPauseMenu[4].SetActive(true);
+
+		_loadButtonRect.anchoredPosition = _loadButtonDefaultAnchoredPos;
+		_settingsButtonRect.anchoredPosition = _settingsButtonDefaultAnchoredPos;
+		_exitToMainMenuButtonRect.anchoredPosition = _exitToMainMenuButtonDefaultAnchoredPos;
+
+		_playerMoney.SetActive(true);
+		_currentMission.SetActive(true);
 	}
 
 	public void ClosePauseSubMenu()
@@ -256,5 +318,7 @@ public class PauseMenuController : MonoBehaviour
 
 		_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_TextCurrentMissionGoal");
 		_textComponentsCurrentPlayerMoney.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_TextCurrentPlayerMoney");
+
+		_textComponentDeathMessage.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_TextDeathMessage");
 	}
 }

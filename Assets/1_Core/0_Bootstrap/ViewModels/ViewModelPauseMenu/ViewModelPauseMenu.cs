@@ -5,11 +5,15 @@ public class ViewModelPauseMenu
 	public GameObject[] ButtonsPauseMenu;
 	public GameObject[] TextButtonsPauseMenu;
 
+	public GameObject CurrentMission;
 	public GameObject TextCurrentMissionGoal;
 	public GameObject TextCurrentMissionGoalDisplay;
 
+	public GameObject PlayerMoney;
 	public GameObject TextCurrentPlayerMoney;
 	public GameObject TextCurrentPlayerMoneyDisplay;
+
+	public GameObject TextDeathMessage;
 
 	public ViewModelPauseMenu(Bootstrap bootstrap, GameObject canvas)
 	{
@@ -34,10 +38,14 @@ public class ViewModelPauseMenu
 			bootstrap.FindDeepGameObject(canvas, "TextButtonPauseMenuExitToMainMenu")
 		};
 
+		CurrentMission = bootstrap.FindDeepGameObject(canvas, "CurrentMission");
 		TextCurrentMissionGoal = bootstrap.FindDeepGameObject(canvas, "TextCurrentMissionGoal");
 		TextCurrentMissionGoalDisplay = bootstrap.FindDeepGameObject(canvas, "TextCurrentMissionGoalDisplay");
 
+		PlayerMoney = bootstrap.FindDeepGameObject(canvas, "PlayerMoney");
 		TextCurrentPlayerMoney = bootstrap.FindDeepGameObject(canvas, "TextCurrentPlayerMoney");
 		TextCurrentPlayerMoneyDisplay = bootstrap.FindDeepGameObject(canvas, "TextCurrentPlayerMoneyDisplay");
+
+		TextDeathMessage = bootstrap.FindDeepGameObject(canvas, "TextDeathMessage");
 	}
 }
