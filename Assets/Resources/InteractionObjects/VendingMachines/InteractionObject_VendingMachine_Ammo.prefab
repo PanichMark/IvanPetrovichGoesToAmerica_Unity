@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1775556681946765084
+--- !u!1 &1646646736678058577
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1436608464648555942}
-  - component: {fileID: 2612088182346170883}
-  - component: {fileID: 262606348610287305}
+  - component: {fileID: 4338932625690009852}
+  - component: {fileID: 4762053622100324637}
+  - component: {fileID: 4658942613964759611}
   m_Layer: 0
-  m_Name: 3Dmodel_Prop_VendingMachine_Ammo
+  m_Name: Prop_VendingMachine_Ammo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1436608464648555942
+--- !u!4 &4338932625690009852
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775556681946765084}
+  m_GameObject: {fileID: 1646646736678058577}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8184831249402264239}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2612088182346170883
+--- !u!33 &4762053622100324637
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775556681946765084}
+  m_GameObject: {fileID: 1646646736678058577}
   m_Mesh: {fileID: -1890968584614368226, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
---- !u!23 &262606348610287305
+--- !u!23 &4658942613964759611
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775556681946765084}
+  m_GameObject: {fileID: 1646646736678058577}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: be1de46078d9de342af95b68fa7ef7ba, type: 2}
+  - {fileID: 2100000, guid: e2f649f34724b744895fb24a9d459693, type: 2}
   - {fileID: 2100000, guid: fd1cd3f1726b03842bdfef8077239bfc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 8240620425649579139}
   - component: {fileID: 4607809141320618361}
   m_Layer: 0
-  m_Name: 3Dmodel_Prop_VendingMachine_Ammo_PushDoor
+  m_Name: Prop_VendingMachine_Ammo_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 2945238990188413373}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.258, z: 0.414}
+  m_LocalPosition: {x: 0, y: 0.34, z: 0.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -127,7 +127,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2945238990188413373}
-  m_Mesh: {fileID: 8346332964632285935, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
+  m_Mesh: {fileID: -2654973425681793916, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
 --- !u!23 &4607809141320618361
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -151,7 +151,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: be1de46078d9de342af95b68fa7ef7ba, type: 2}
+  - {fileID: 2100000, guid: e2f649f34724b744895fb24a9d459693, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -185,9 +185,9 @@ GameObject:
   - component: {fileID: 3666693398555064507}
   - component: {fileID: 8481519907602152401}
   - component: {fileID: 9153207712490833238}
-  - component: {fileID: 6979379434961867074}
+  - component: {fileID: 2987325787083540871}
   m_Layer: 0
-  m_Name: 3Dmodel_Prop_VendingMachine_Ammo_Reel
+  m_Name: Prop_VendingMachine_Ammo_Cylinder
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,7 +202,7 @@ Transform:
   m_GameObject: {fileID: 5842179549794067399}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.312, z: -0.106}
+  m_LocalPosition: {x: 0, y: 1.291, z: -0.131}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -215,7 +215,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5842179549794067399}
-  m_Mesh: {fileID: -3530076216078333910, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
+  m_Mesh: {fileID: 5666376304865575510, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
 --- !u!23 &8481519907602152401
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -275,7 +275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationDuration: 1
   _rotationAngle: 90
---- !u!64 &6979379434961867074
+--- !u!64 &2987325787083540871
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -296,7 +296,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -3530076216078333910, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
+  m_Mesh: {fileID: 5666376304865575510, guid: 76ffdf07da546b743badfae64be0fb43, type: 3}
 --- !u!1 &8764897025864242599
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,8 +306,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8184831249402264239}
-  - component: {fileID: 2250663228573348133}
-  - component: {fileID: 7716324098770934317}
   - component: {fileID: 3362052713649829069}
   - component: {fileID: 1816772294858383329}
   - component: {fileID: 1829851473230053450}
@@ -333,65 +331,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1436608464648555942}
+  - {fileID: 4338932625690009852}
   - {fileID: 9205779870503753178}
   - {fileID: 7606137028625093585}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2250663228573348133
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8764897025864242599}
-  m_Mesh: {fileID: -331551485775205893, guid: b8deec434de502d45af4a7a54c260df8, type: 3}
---- !u!23 &7716324098770934317
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8764897025864242599}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 3f6d71dde5b477c48ba76bb927f72a0f, type: 2}
-  - {fileID: -7863859003979326724, guid: b8deec434de502d45af4a7a54c260df8, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &3362052713649829069
 BoxCollider:
   m_ObjectHideFlags: 0
