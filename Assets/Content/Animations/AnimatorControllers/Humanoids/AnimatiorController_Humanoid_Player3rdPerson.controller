@@ -896,6 +896,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -1326579268721660433}
     m_Position: {x: 320.88245, y: -59.117645, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 5271536864995304236}
+    m_Position: {x: 480, y: 20, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -1854,6 +1857,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 6120069117283374547, guid: dd9b02c9069d6224ea5f3d6be76d465b, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &5271536864995304236
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Bottle
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 2812030679355163062, guid: 948a7bf056e0f1949be8a73b6c4b8fce, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

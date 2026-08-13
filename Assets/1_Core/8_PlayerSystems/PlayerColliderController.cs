@@ -24,8 +24,8 @@ public class PlayerColliderController : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle
-			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching
 			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerSliding
 			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
 		{
@@ -38,7 +38,7 @@ public class PlayerColliderController : MonoBehaviour
 			transform.localScale = new Vector3(1f, 1f, 1f);
 		}
 
-		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbing)
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbingStanding)
 		{
 			_playerCollider.enabled = false;
 		}

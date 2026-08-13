@@ -15,7 +15,7 @@
 	{
 		if (_playerMovementController.IsPlayerFalling == false)
 		{
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdleStanding);
 		}
 		if (_playerMovementController.IsPlayerFalling == false && _inputDevice.GetKeyRun())
 		{
@@ -23,7 +23,7 @@
 		}
 		if (_playerMovementController.IsPlayerFalling == false)
 		{
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingWalking);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalkingStanding);
 		}
 	}
 }

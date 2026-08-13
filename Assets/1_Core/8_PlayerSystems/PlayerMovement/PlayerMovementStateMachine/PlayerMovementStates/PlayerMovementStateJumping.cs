@@ -54,12 +54,12 @@ public class PlayerMovementStateJumping : PlayerMovementStateAbstract
 		if (_playerMovementController.IsPlayerGrounded == true)
 		{
 
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdleStanding);
 		}
 
 		if (_inputDevice.GetKeyJumpBeingHeld() && _playerMovementController.IsPlayerAbleToClimbLedge)
 		{
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerLedgeClimbing);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerLedgeClimbingStanding);
 		}
 	}
 }

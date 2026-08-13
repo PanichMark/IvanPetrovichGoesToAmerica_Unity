@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public class PlayerMovementStateCrouchingIdle : PlayerMovementStateAbstract
+public class PlayerMovementStateIdleCrouching : PlayerMovementStateAbstract
 {
 	private IInputDevice _inputDevice;
 	private Transform _playerTransform;
 	private Rigidbody _playerRigidBody;
 
-	public PlayerMovementStateCrouchingIdle(PlayerMovementStateMachineController playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice)
+	public PlayerMovementStateIdleCrouching(PlayerMovementStateMachineController playerMovementStateMachineController, PlayerMovementController playerMovementController, IInputDevice inputDevice)
 	{
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerMovementController = playerMovementController;
@@ -23,7 +23,7 @@ public class PlayerMovementStateCrouchingIdle : PlayerMovementStateAbstract
 	{
 		if ((_inputDevice.GetKeyUp() || _inputDevice.GetKeyDown() || _inputDevice.GetKeyRight() || _inputDevice.GetKeyLeft()))
 		{
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerCrouchingWalking);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalkingCrouching);
 		}
 
 		if (_inputDevice.GetKeyRun() && (_inputDevice.GetKeyUp() || _inputDevice.GetKeyDown() || _inputDevice.GetKeyRight() || _inputDevice.GetKeyLeft()) && _playerMovementController.IsPlayerAbleToStandUp)
@@ -47,7 +47,7 @@ public class PlayerMovementStateCrouchingIdle : PlayerMovementStateAbstract
 		if (_inputDevice.GetKeyCrouch() && _playerMovementController.IsPlayerAbleToStandUp)
 		{
 			
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdleStanding);
 		}
 	}
 }

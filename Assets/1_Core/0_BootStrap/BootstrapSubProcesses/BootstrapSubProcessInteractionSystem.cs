@@ -19,8 +19,6 @@ public class BootstrapSubProcessInteractionSystem
 	private GameObject _gameObjectBootstrapInteractionSystem;
 	public InteractionController InteractionController { get; private set; }
 	private InteractionAnimationController _interactionAnimationController;
-	//private InteractionFirstPersonRender _interactionFirstPersonRender;
-
 
 	private GameObject _gameObjectPlayer;
 	private KeysManager _keysManager;
@@ -56,8 +54,6 @@ public class BootstrapSubProcessInteractionSystem
 		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
 
 		GameObjectSpineSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Spine");
-
-		//_interactionFirstPersonRender = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionFirstPersonRender>();
 
 		InteractionController.Initialize(
 			_bootstrap,

@@ -35,11 +35,11 @@ public class PlayerMovementAnimationController: MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerStandingIdle)
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleStanding)
 		{
 			ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing_Type1.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerStandingWalking)
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingStanding)
 		{
 			if (_playerBehaviour.IsPlayerArmed == true || (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson))
 			{
@@ -77,12 +77,12 @@ public class PlayerMovementAnimationController: MonoBehaviour
 
 			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_Falling.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle)
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing)
 		{
 
 			ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Crouching_Type1.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking)
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
 		{
 
 			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_Crouching.ToString());
@@ -92,7 +92,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 
 			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_Sliding.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbing)
+		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbingStanding)
 		{
 			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_LedgeClimbing.ToString());
 		}

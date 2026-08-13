@@ -51,7 +51,7 @@ public class PlayerMovementStateRunning : PlayerMovementStateAbstract
 
 		if (_playerWorldMovement.x == 0 && _playerWorldMovement.z == 0)
 		{
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingIdle);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdleStanding);
 		}
 
 		if (_inputDevice.GetKeyJump() && _playerMovementController.IsPlayerGrounded && _playerMovementController.IsPlayerAbleToStandUp)
@@ -67,7 +67,7 @@ public class PlayerMovementStateRunning : PlayerMovementStateAbstract
 
 		if (!_inputDevice.GetKeyRun())
 		{
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingWalking);
+			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerWalkingStanding);
 		}
 
 		if (_inputDevice.GetKeyCrouch())

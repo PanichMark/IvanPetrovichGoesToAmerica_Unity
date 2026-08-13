@@ -26,25 +26,27 @@ public class InteractionAnimationController : MonoBehaviour
 		Debug.Log("InteractionAnimationController Initialized");
 	}
 
-	private void PickUpWithRightHand(InteractionObjectsPickableTypes pickableType)
-	{
-		_playerAnimator.SetLayerWeight(_layerPickableRightArm, 1f);
-		_playerAnimator.Play(pickableType.ToString(), _layerPickableRightArm, 0f);
-	}
-
 	private void PickUpWithBothHands(InteractionObjectsPickableTypes pickableType)
 	{
 		_playerAnimator.SetLayerWeight(_layerPickableBothArms, 1f);
 		_playerAnimator.Play(pickableType.ToString(), _layerPickableBothArms, 0f);
 	}
 
-	private void DropWithRightHand()
+	private void PickUpWithRightHand(InteractionObjectsPickableTypes pickableType)
 	{
-		_playerAnimator.SetLayerWeight(_layerPickableRightArm, 0f);
+		_playerAnimator.SetLayerWeight(_layerPickableRightArm, 1f);
+		_playerAnimator.Play(pickableType.ToString(), _layerPickableRightArm, 0f);
 	}
 
 	private void DropWithBothHands()
 	{
+		Debug.Log("DROP BOTH");
 		_playerAnimator.SetLayerWeight(_layerPickableBothArms, 0f);
+	}
+
+	private void DropWithRightHand()
+	{
+		Debug.Log("DROP RIGHT");
+		_playerAnimator.SetLayerWeight(_layerPickableRightArm, 0f);
 	}
 }

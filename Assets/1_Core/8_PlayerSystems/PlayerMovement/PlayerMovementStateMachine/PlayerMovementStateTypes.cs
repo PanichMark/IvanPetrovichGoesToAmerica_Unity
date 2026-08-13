@@ -1,15 +1,17 @@
 ﻿public enum PlayerMovementStateTypes
 {
-    PlayerStandingIdle,
-    PlayerStandingWalking,
-	PlayerCrouchingIdle,
-	PlayerCrouchingWalking,
+    PlayerIdleStanding,
+	PlayerIdleCrouhcing,
+	PlayerWalkingStanding,
+	PlayerWalkingCrouching,
 	PlayerRunning,
     PlayerJumping,
     PlayerFalling,
     PlayerSliding,
-    PlayerLedgeClimbing,
+    PlayerLedgeClimbingStanding,
+	PlayerLedgeClimbingCrouching,
 	PlayerStranglingNPC,
-    PlayerCarryingNPC,
+    PlayerCarryingObject,
 	PlayerPlunging,
+    PlayerDying
 }

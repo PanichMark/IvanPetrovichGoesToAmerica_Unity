@@ -245,7 +245,6 @@ public class InteractionController : MonoBehaviour
 	{
 		_currentIPickable.DropOffObject();
 		_currentIPickable = null;
-		_currentIThrowable = null;
 		_changedPickedUpState = false;
 		CurrentPickableObject = null;
 		ChangeInteractionRange();
@@ -261,6 +260,8 @@ public class InteractionController : MonoBehaviour
 		}
 		else
 		{
+			_currentIThrowable = null;
+
 			OnGetRidOfThrowable?.Invoke();
 
 			if (_playerBehaviour.IsPlayerArmed == true)
@@ -292,6 +293,8 @@ public class InteractionController : MonoBehaviour
 			return;
 
 		//Debug.Log(_currentIPickable);
+		//Debug.Log(_currentIThrowable);
+
 		//Debug.Log(_currentIThrowable);
 
 		if (_isInteractionObjectLookedAt = Physics.Raycast(

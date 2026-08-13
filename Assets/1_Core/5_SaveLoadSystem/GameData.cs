@@ -138,7 +138,7 @@ public class GameData
 		//Player 
 		PlayerPosition = new Vector3(0, 0, -5);
 		PlayerRotation = new Quaternion(0, 0, 0, 0);
-		PlayerMovementStateType = PlayerMovementStateTypes.PlayerStandingIdle.ToString();
+		PlayerMovementStateType = PlayerMovementStateTypes.PlayerIdleStanding.ToString();
 
 		//Camera
 		PlayerCameraDistanceY = -1.75f;

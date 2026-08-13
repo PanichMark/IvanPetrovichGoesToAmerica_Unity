@@ -25,7 +25,7 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 		_gameSceneManager = gameSceneManager;
 		_playerMovementController = playerMovementController;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerStandingIdle);
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdleStanding);
 
 		_playerMovementController.OnChangeMovementState += SetPlayerMovementState;
 
@@ -48,21 +48,21 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 
 			CurrentPlayerMovementStateType = newPlayerMovementStateType;
 
-			if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerStandingIdle)
+			if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleStanding)
 			{
-				newState = new PlayerMovementStateIdle(this, _playerMovementController, _inputDevice);
+				newState = new PlayerMovementStateIdleStanding(this, _playerMovementController, _inputDevice);
 			}
-			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerStandingWalking)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingStanding)
 			{
-				newState = new PlayerMovementStateWalking(this, _playerMovementController, _inputDevice);
+				newState = new PlayerMovementStateWalkingStanding(this, _playerMovementController, _inputDevice);
 			}
-			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingIdle)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing)
 			{
-				newState = new PlayerMovementStateCrouchingIdle(this, _playerMovementController, _inputDevice);
+				newState = new PlayerMovementStateIdleCrouching(this, _playerMovementController, _inputDevice);
 			}
-			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerCrouchingWalking)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
 			{
-				newState = new PlayerMovementStateCrouchingWalking(this, _playerMovementController, _inputDevice);
+				newState = new PlayerMovementStateWalkingCrouching(this, _playerMovementController, _inputDevice);
 			}
 			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerRunning)
 			{
@@ -80,9 +80,9 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 			{
 				newState = new PlayerMovementStateSliding(_playerMovementController);
 			}
-			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbing)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbingStanding)
 			{
-				newState = new PlayerMovementStateLedgeClimbing(_playerMovementController);
+				newState = new PlayerMovementStateLedgeClimbingStanding(_playerMovementController);
 			}
 			else
 			{

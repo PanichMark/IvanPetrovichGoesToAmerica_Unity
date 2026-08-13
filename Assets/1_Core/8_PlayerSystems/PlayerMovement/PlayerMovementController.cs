@@ -281,7 +281,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		PlayerRigidBody.angularVelocity = Vector3.zero;
 		PlayerRigidBody.MovePosition(PlayerRigidBody.transform.position);
 
-		OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerCrouchingIdle);
+		OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerIdleCrouhcing);
 		IsPlayerSliding = false;
 	}
 
@@ -322,11 +322,11 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		if (Big == true)
 		{
 			ChangePlayerRayPosition(1.9f);
-			OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerStandingIdle);
+			OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerIdleStanding);
 		}
 		else
 		{
-			OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerCrouchingIdle);
+			OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerIdleCrouhcing);
 		}
 
 		IsPlayerLedgeClimbing = false;
