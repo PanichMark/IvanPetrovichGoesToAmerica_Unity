@@ -58,22 +58,20 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		_weaponAnimationController.OnShowWeapon += ShowPlayerWeapon;
 		_weaponAnimationController.OnHideWeapon += HidePlayerWeapon;
 
-		_weaponAnimationController.OnShowThirdPersonHand += ShowThirdPersonHandAfterFirstPersonCameraUnarmed;
+		_weaponAnimationController.OnShowThirdPersonHand += ShowThirdPersonHand;
 
 		Debug.Log("WeaponFirstPersonRender Initialized!");
 	}
 
-	private void ShowThirdPersonHandAfterFirstPersonCameraUnarmed(WeaponHandsEnum handType)
+	private void ShowThirdPersonHand(WeaponHandsEnum handType)
 	{
 		if (handType == WeaponHandsEnum.Right)
 		{
 			ShowBodyPart(_playerThirdPersonHandRight);
-			HideFirstPersonHand(_playerFirstPersonHandRight);
 		}
 		else
 		{
 			ShowBodyPart(_playerThirdPersonHandLeft);
-			HideFirstPersonHand(_playerFirstPersonHandLeft);
 		}
 	}
 

@@ -218,15 +218,15 @@ public class InteractionController : MonoBehaviour
 		_currentIPickable = CurrentPickableObject.GetComponent<IPickable>();
 		_currentIThrowable = CurrentPickableObject.GetComponent<IThrowable>();
 
-		Debug.Log(_currentIPickable);
-		Debug.Log(_currentIThrowable);
+		//Debug.Log(_currentIPickable);
+		//Debug.Log(_currentIThrowable);
 
 		if (!_changedPickedUpState)
 		{
 			ChangeInteractionRange();
 			_changedPickedUpState = true;
 		}
-
+	
 		if (_currentIThrowable != null)
 		{
 			OnPickUpThrowable?.Invoke(_currentIPickable.PickableType);
@@ -245,6 +245,7 @@ public class InteractionController : MonoBehaviour
 	{
 		_currentIPickable.DropOffObject();
 		_currentIPickable = null;
+		_currentIThrowable = null;
 		_changedPickedUpState = false;
 		CurrentPickableObject = null;
 		ChangeInteractionRange();
@@ -290,6 +291,9 @@ public class InteractionController : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
+		//Debug.Log(_currentIPickable);
+		//Debug.Log(_currentIThrowable);
+
 		if (_isInteractionObjectLookedAt = Physics.Raycast(
 		_playerCameraController.transform.position,
 		_playerCameraController.transform.forward,
@@ -302,8 +306,15 @@ public class InteractionController : MonoBehaviour
 		}
 		else
 		{
-			_mainInteractionText.text = null;
-			_failInteractionText.text = null;
+			if (_currentIPickable != null || _currentIThrowable != null)
+			{
+		
+			}
+			else
+			{
+				_mainInteractionText.text = null;
+				_failInteractionText.text = null;
+			}
 		}
 
 		if (CurrentPickableObject != null)

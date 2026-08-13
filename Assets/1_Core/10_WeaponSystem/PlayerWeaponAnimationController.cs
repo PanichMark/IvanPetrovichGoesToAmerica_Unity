@@ -19,9 +19,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	public event WeaponVisibilityHandler OnShowWeapon;
 	public event WeaponVisibilityHandler OnHideWeapon;
 
-	public delegate void ShowThirdPersonHandAfterFirstPersonCameraUnarmedHandler(WeaponHandsEnum handType);
-	public event ShowThirdPersonHandAfterFirstPersonCameraUnarmedHandler OnShowThirdPersonHand;
-
+	public delegate void ShowThirdPersonHandHandler(WeaponHandsEnum handType);
+	public event ShowThirdPersonHandHandler OnShowThirdPersonHand;
 
 	private Coroutine _currentPlayerReloadingCoroutine;
 
@@ -238,14 +237,12 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			yield return null;
 		}
 
-		animator.SetLayerWeight(layer, targetWeight);
-
-		if (animator == _playerAnimator1stPerson && equip == false)
+		if (animator == _playerAnimator1stPerson && _playerBehaviour.IsPlayerArmed == false && equip == false)
 		{
-			//Debug.Log(000000000);
-			//Debug.Log(handType);
 			OnShowThirdPersonHand?.Invoke(handType);
 		}
+
+		animator.SetLayerWeight(layer, targetWeight);
 
 		yield return null;
 	}
