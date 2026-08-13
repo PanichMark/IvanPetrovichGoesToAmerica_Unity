@@ -38,6 +38,10 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	public bool IsObjectPickedUp { get; protected set; }
 
+	protected virtual void InitializePickable()
+	{
+	}
+
 	void Start()
 	{
 		_pickableObjectTransform = GetComponent<Transform>();
@@ -69,6 +73,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Pickup");
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+
+		InitializePickable();
 	}
 
 	public void AssignPickableObjectsIndexes(int index)
@@ -127,7 +133,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			Collider.enabled = false;
 			RigidBody.isKinematic = true;
 
-			StartCoroutine(MoveTowardsInFrontOfPlayer());
+			StartCoroutine(MoveTowardsPlayer());
 
 			transform.parent = _gameObjectSpineSlot.transform;
 			transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
@@ -164,7 +170,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		}
 	}
 
-	IEnumerator MoveTowardsInFrontOfPlayer()
+	protected virtual IEnumerator MoveTowardsPlayer()
 	{
 		while (true)
 		{

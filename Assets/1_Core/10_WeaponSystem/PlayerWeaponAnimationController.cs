@@ -7,6 +7,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	private GameController _gameController;
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
+	private InteractionController _interactionController;
 	private PlayerWeaponController _playerWeaponController;
 
 	private Animator _playerAnimator1stPerson;
@@ -58,6 +59,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		GameController gameController,
 		PlayerBehaviourController playerBehaviour,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
+		InteractionController interactionController,
 		PlayerWeaponController weaponController,
 		LegKickAttackController legKickAttack,
 		TransferSkinnedMeshRendererArmatureBones transferBonesFirstPerson,
@@ -71,6 +73,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson = player.GetComponent<Animator>();
 		_playerBehaviour = playerBehaviour;
 		_playerCameraStateMachineController = playerCameraStateMachineController;
+		_interactionController = interactionController;
 		_playerWeaponController = weaponController;
 		_legKickAttack = legKickAttack;
 
@@ -230,6 +233,16 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			targetWeight = 0f;
 		}
 
+		yield return null;
+
+		if (_interactionController.CurrentPickableObject != null)
+		{
+			if (animator == _playerAnimator1stPerson && _playerBehaviour.IsPlayerArmed == false && equip == false)
+			{
+				OnShowThirdPersonHand?.Invoke(handType);
+			}
+		}
+
 		while (elapsed < transitionSpeed)
 		{
 			elapsed += Time.deltaTime;
@@ -237,9 +250,12 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			yield return null;
 		}
 
-		if (animator == _playerAnimator1stPerson && _playerBehaviour.IsPlayerArmed == false && equip == false)
+		if (_interactionController.CurrentPickableObject == null)
 		{
-			OnShowThirdPersonHand?.Invoke(handType);
+			if (animator == _playerAnimator1stPerson && _playerBehaviour.IsPlayerArmed == false && equip == false)
+			{
+				OnShowThirdPersonHand?.Invoke(handType);
+			}
 		}
 
 		animator.SetLayerWeight(layer, targetWeight);
