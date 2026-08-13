@@ -213,76 +213,75 @@ public class InteractionController : MonoBehaviour
 		}
 	}
 
-	private void PickUpInteractableObject()
+	private void PickUpPickableObject()
 	{
-		if (CurrentPickableObject != null)
+		_currentIPickable = CurrentPickableObject.GetComponent<IPickable>();
+		_currentIThrowable = CurrentPickableObject.GetComponent<IThrowable>();
+
+		Debug.Log(_currentIPickable);
+		Debug.Log(_currentIThrowable);
+
+		if (!_changedPickedUpState)
 		{
-			_currentIPickable = CurrentPickableObject.GetComponent<IPickable>();
-			_currentIThrowable = CurrentPickableObject.GetComponent<IThrowable>();
+			ChangeInteractionRange();
+			_changedPickedUpState = true;
+		}
 
-			if (!_changedPickedUpState)
+		if (_currentIThrowable != null)
+		{
+			OnPickUpThrowable?.Invoke(_currentIPickable.PickableType);
+			_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}\n{_HUDInteractionThrowText} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackRightHand)}";
+			ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
+		}
+		else
+		{
+			OnPickUpNonThrowable?.Invoke(_currentIPickable.PickableType);
+			_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}";
+			ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
+		}
+	}
+
+	private void DropPickable()
+	{
+		_currentIPickable.DropOffObject();
+		_currentIPickable = null;
+		_changedPickedUpState = false;
+		CurrentPickableObject = null;
+		ChangeInteractionRange();
+		//Debug.Log(_playerBehaviour.WasPlayerArmed);
+		if (_currentIThrowable == null)
+		{
+			OnGetRidOfNonThrowable?.Invoke();
+
+			if (_playerBehaviour.WasPlayerArmed == true)
 			{
-				ChangeInteractionRange();
-				_changedPickedUpState = true;
+				_playerBehaviour.ArmPlayer();
 			}
+		}
+		else
+		{
+			OnGetRidOfThrowable?.Invoke();
 
-			if (_currentIThrowable != null)
+			if (_playerBehaviour.IsPlayerArmed == true)
 			{
-				OnPickUpThrowable?.Invoke(_currentIPickable.PickableType);
-				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}\n{_HUDInteractionThrowText} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackRightHand)}";
-				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
+				_playerBehaviour.ArmPlayer();
 			}
-			else
-			{
-				OnPickUpNonThrowable?.Invoke(_currentIPickable.PickableType);
-				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}";
-				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
-			}
+		}
+	}
 
-			if (_inputDevice.GetKeyInteract() || _gameController.IsPlayerDead)
-			{
-				
-				_currentIPickable.DropOffObject();
-				_currentIPickable = null;
-				_changedPickedUpState = false;
-				CurrentPickableObject = null;
-				ChangeInteractionRange();
-				//Debug.Log(_playerBehaviour.WasPlayerArmed);
-				if (_currentIThrowable == null)
-				{
-					OnGetRidOfNonThrowable?.Invoke();
-
-					if (_playerBehaviour.WasPlayerArmed == true)
-					{
-						_playerBehaviour.ArmPlayer();
-					}
-				}
-				else
-				{
-					OnGetRidOfThrowable?.Invoke();
-
-					if (_playerBehaviour.IsPlayerArmed == true)
-					{
-						_playerBehaviour.ArmPlayer();
-					}
-				}
-			}
-
-			if (_currentIThrowable != null && _inputDevice.GetKeyRightHandWeaponAttack())
-			{
-				OnGetRidOfThrowable?.Invoke();
-				_currentIThrowable.ThrowObject();
-				_currentIPickable = null;
-				_currentIThrowable = null;
-				_changedPickedUpState = false;
-				CurrentPickableObject = null;
-				ChangeInteractionRange();
-				//Debug.Log(_playerBehaviour.WasPlayerArmed);
-				if (_playerBehaviour.WasPlayerArmed == true)
-				{
-					_playerBehaviour.ArmPlayer();
-				}
-			}
+	private void ThrowThrowable()
+	{
+		OnGetRidOfThrowable?.Invoke();
+		_currentIThrowable.ThrowObject();
+		_currentIPickable = null;
+		_currentIThrowable = null;
+		_changedPickedUpState = false;
+		CurrentPickableObject = null;
+		ChangeInteractionRange();
+		//Debug.Log(_playerBehaviour.WasPlayerArmed);
+		if (_playerBehaviour.WasPlayerArmed == true)
+		{
+			_playerBehaviour.ArmPlayer();
 		}
 	}
 
@@ -291,12 +290,13 @@ public class InteractionController : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (_isInteractionObjectLookedAt = _isInteractionObjectLookedAt = Physics.Raycast(
+		if (_isInteractionObjectLookedAt = Physics.Raycast(
 		_playerCameraController.transform.position,
 		_playerCameraController.transform.forward,
 		out _hitObject,
 		_interactionRange,
-		~_layersInteractionToIgnore))
+		~_layersInteractionToIgnore) &&
+		_hitObject.collider.CompareTag("Interactable"))
 		{
 
 		}
@@ -306,12 +306,20 @@ public class InteractionController : MonoBehaviour
 			_failInteractionText.text = null;
 		}
 
-		if (CurrentPickableObject == null)
+		if (CurrentPickableObject != null)
 		{
-			PickUpInteractableObject();
+			if (_inputDevice.GetKeyInteract() || _gameController.IsPlayerDead)
+			{
+				DropPickable();
+			}
+
+			if (_inputDevice.GetKeyRightHandWeaponAttack() && _currentIThrowable != null)
+			{
+				ThrowThrowable();
+			}
 		}
 
-		if (_isInteractionObjectLookedAt && _hitObject.collider.tag == "Interactable")
+		if (_isInteractionObjectLookedAt)
 		{
 			_lookedAtIInteractable = _hitObject.collider.GetComponent<IInteractable>();
 			_lookedAtIThrowableObject = _hitObject.collider.GetComponent<IThrowable>();
@@ -340,7 +348,6 @@ public class InteractionController : MonoBehaviour
 				if (_currentInteractableObject != null)
 				{
 					_mainInteractionText.text = $"{_lookedAtIInteractable.InteractionHintMessageMain}\n{_HUDInteractionMainTextInteract} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}";
-
 				}
 
 				if (_inputDevice.GetKeyInteract())
@@ -351,7 +358,7 @@ public class InteractionController : MonoBehaviour
 					{
 						_failInteractionText.text = _lookedAtIInteractable.InteractionHintMessageFail;
 						if (_showAdditionalHintCoroutine != null)
-							StopCoroutine(_showAdditionalHintCoroutine); 
+							StopCoroutine(_showAdditionalHintCoroutine);
 
 						_showAdditionalHintCoroutine = StartCoroutine(ShowInteractionObjectHintMessage());
 					}
@@ -359,7 +366,7 @@ public class InteractionController : MonoBehaviour
 					{
 						if (_showAdditionalHintCoroutine != null)
 						{
-							StopCoroutine(_showAdditionalHintCoroutine); 
+							StopCoroutine(_showAdditionalHintCoroutine);
 						}
 
 						if (_lookedAtIGainedItem != null)
@@ -378,6 +385,8 @@ public class InteractionController : MonoBehaviour
 					if (_lookedAtIPickable != null && _lookedAtIPickable.IsObjectPickedUp)
 					{
 						CurrentPickableObject = renderer;
+
+						PickUpPickableObject();
 					}
 				}
 			}
@@ -394,7 +403,7 @@ public class InteractionController : MonoBehaviour
 
 				if (_showAdditionalHintCoroutine != null)
 				{
-					StopCoroutine(_showAdditionalHintCoroutine); 
+					StopCoroutine(_showAdditionalHintCoroutine);
 					_failInteractionText.text = null;
 				}
 			}
