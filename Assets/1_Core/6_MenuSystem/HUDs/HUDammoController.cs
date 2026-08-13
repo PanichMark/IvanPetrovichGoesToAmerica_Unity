@@ -89,7 +89,7 @@ public class HUDammoController : MonoBehaviour
 
 		_playerWeaponController.OnWeaponChanged += UpdateAmmoDisplayForActiveWeapon;
 
-		_interactionController.OnPickUpThrowable += HideRightWeaponAmmo;
+		_interactionController.OnPickUpThrowable += (InteractionObjectsPickableTypes pickableType) => { HideRightWeaponAmmo(); };
 		_interactionController.OnGetRidOfThrowable += () => 
 		{
 			if (_playerWeaponController.RightHandWeapon != null)

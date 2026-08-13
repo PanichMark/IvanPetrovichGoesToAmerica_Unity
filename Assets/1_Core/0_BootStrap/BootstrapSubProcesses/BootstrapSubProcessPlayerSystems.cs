@@ -28,7 +28,7 @@ public class BootstrapSubProcessPlayerSystems
 	public AudioSource PlayerAudioWeaponRight { get; private set; }
 	public AudioSource PlayerAudioWeaponLeft { get; private set; }
 
-	public GameObject GameObkectPlayerHatSlot { get; private set; }
+	public GameObject GameObjectPlayerHatSlot { get; private set; }
 
 	private GameObject _gameObjectPlayerCamera;
 	public GameObject PlayerCameraFirstPerson { get; private set; }
@@ -98,7 +98,7 @@ public class BootstrapSubProcessPlayerSystems
 
 		_gameObjectPlayerHead = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHead");
 		_gameobjectPlayerEyesLookAt = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "EyesLookAt");
-		GameObkectPlayerHatSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHatSlot");
+		GameObjectPlayerHatSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHatSlot");
 
 		GameObjectPlayerFirstPersonHandRight = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonArmRight");
 		GameObjectPlayerFirstPersonHandLeft = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "PlayerFirstPersonArmLeft");
@@ -164,7 +164,7 @@ public class BootstrapSubProcessPlayerSystems
 		_playerCameraFirstPersonRender.Initialize(
 			PlayerCameraStateMachineController,
 			_gameObjectPlayerHead,
-			GameObkectPlayerHatSlot);
+			GameObjectPlayerHatSlot);
 
 		_playerMovementAnimationController.Initialize(
 			_bootstrap,

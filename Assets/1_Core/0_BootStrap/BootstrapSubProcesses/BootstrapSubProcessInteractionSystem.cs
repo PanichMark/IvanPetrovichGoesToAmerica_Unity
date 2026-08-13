@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class BootstrapSubProcessInteractionSystem
 {
@@ -13,16 +11,18 @@ public class BootstrapSubProcessInteractionSystem
 	private LocalizationManager _localizationManager;
 
 	private GameScenesManager _gameSceneManager;
-
+	public GameObject GameObjectSpineSlot {  get; private set; }
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerCameraController _playerCameraController;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
 	private GameObject _gameObjectBootstrapInteractionSystem;
 	public InteractionController InteractionController { get; private set; }
-	//private InteractionAnimationController _interactionAnimationController;
+	private InteractionAnimationController _interactionAnimationController;
 	//private InteractionFirstPersonRender _interactionFirstPersonRender;
 
+
+	private GameObject _gameObjectPlayer;
 	private KeysManager _keysManager;
 
 	public BootstrapSubProcessInteractionSystem(
@@ -32,7 +32,8 @@ public class BootstrapSubProcessInteractionSystem
 		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
 		GameController gameController,
 		IInputDevice inputDevice,
-		LocalizationManager localizationManager)
+		LocalizationManager localizationManager,
+		GameObject gameObjectPlayer)
 	{
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
@@ -43,6 +44,8 @@ public class BootstrapSubProcessInteractionSystem
 		_playerBehaviour = bootstrapSubProcessPlayerSystems.PlayerBehaviour;
 		_playerCameraController = bootstrapSubProcessPlayerSystems.PlayerCameraController;
 		_playerCameraStateMachineController = bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController;
+
+		_gameObjectPlayer = gameObjectPlayer;
 	}
 
 	public IEnumerator Initialize()
@@ -50,7 +53,10 @@ public class BootstrapSubProcessInteractionSystem
 		_gameObjectBootstrapInteractionSystem = new GameObject("Bootstrap_InteractionSystem");
 
 		InteractionController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionController>();
-		//_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
+		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
+
+		GameObjectSpineSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Spine");
+
 		//_interactionFirstPersonRender = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionFirstPersonRender>();
 
 		InteractionController.Initialize(
@@ -67,9 +73,15 @@ public class BootstrapSubProcessInteractionSystem
 			_bootstrapSubProcessMenuSystem.CanvasHUDinteraction,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDInteraction);
 
+		_interactionAnimationController.Initialize
+			(InteractionController,
+			_gameObjectPlayer,
+			GameObjectSpineSlot);
+
 		_keysManager = new KeysManager();
 
 		ServiceLocator.Register("InteractionController", InteractionController);
+		ServiceLocator.Register("GameObjectSpineSlot", GameObjectSpineSlot);
 		ServiceLocator.Register("KeysManager", _keysManager);
 
 		yield break;

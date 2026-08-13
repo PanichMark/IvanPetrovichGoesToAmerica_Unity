@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InteractionAnimationController : MonoBehaviour
 {
@@ -9,78 +8,24 @@ public class InteractionAnimationController : MonoBehaviour
 	private string _currentPlayerRightHandWeaponAnimation = "";
 	private string _currentPlayerLeftHandWeaponAnimation = "";
 	private string _currentPlayerLegKickAttackAnimation = "";
-
-	public void Initialize(GameObject player, InteractionController interactionController)
+	private GameObject _gameObjectSpineSlot;
+	public void Initialize(
+		InteractionController interactionController,
+		GameObject player,
+		GameObject gameObjectSpineSlot)
 	{
 		_playerAnimator = player.GetComponent<Animator>();
 		_interactionController = interactionController;
-
-		_interactionController.OnPickUpNonThrowable += PickUpWithBothHands;
-		_interactionController.OnPickUpThrowable += PickUpWithRightHand;
+		_gameObjectSpineSlot = gameObjectSpineSlot;
+		//_interactionController.OnPickUpNonThrowable += PickUpWithBothHands;
+		//_interactionController.OnPickUpThrowable += PickUpWithRightHand;
 		_interactionController.OnGetRidOfNonThrowable += () =>
 		{
-			DropBothWithHands();
-			DropWithRightHand();
+			//DropBothWithHands();
+			//DropWithRightHand();
 		};
 
 		Debug.Log("InteractionAnimationController Initialized");
 	}
 
-	private void PickUpWithBothHands()
-	{
-		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 1);
-		ChangePlayerRightHandWeaponAnimation("EquipRightWeapon");
-
-		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeft"), 1);
-		ChangePlayerLeftHandWeaponAnimation("EquipLeftWeapon");
-	}
-
-	private void DropBothWithHands()
-	{
-		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 0);
-		ChangePlayerRightHandWeaponAnimation("UnequipRightWeapon");
-
-		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponLeft"), 0);
-		ChangePlayerLeftHandWeaponAnimation("UnequipLeftWeapon");
-	}
-
-	private void PickUpWithRightHand()
-	{
-		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 1);
-		ChangePlayerRightHandWeaponAnimation("EquipRightWeapon");
-	}
-
-	private void DropWithRightHand()
-	{
-		_playerAnimator.SetLayerWeight(_playerAnimator.GetLayerIndex("WeaponRight"), 0);
-		ChangePlayerRightHandWeaponAnimation("UnequipRightWeapon");
-	}
-
-	private void ChangePlayerRightHandWeaponAnimation(string animation, float crossfade = 0.2f)
-	{
-		if (_currentPlayerRightHandWeaponAnimation != animation)
-		{
-			_currentPlayerRightHandWeaponAnimation = animation;
-			_playerAnimator.CrossFade(animation, crossfade);
-		}
-	}
-
-	private void ChangePlayerLeftHandWeaponAnimation(string animation, float crossfade = 0.2f)
-	{
-		if (_currentPlayerLeftHandWeaponAnimation != animation)
-		{
-			_currentPlayerLeftHandWeaponAnimation = animation;
-			_playerAnimator.CrossFade(animation, crossfade);
-		}
-	}
-
-	////??????? idk
-	private void ChangePlayerLegKickAttackAnimation(string animation, float crossfade = 0.2f)
-	{
-		if (_currentPlayerLegKickAttackAnimation != animation)
-		{
-			_currentPlayerLegKickAttackAnimation = animation;
-			_playerAnimator.CrossFade(animation, crossfade);
-		}
-	}
 }

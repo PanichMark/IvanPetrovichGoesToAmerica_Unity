@@ -129,7 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Pickable_Throwable_Bottle
-  _health: 70
+  _pickableType: 4
+  _health: 1
 --- !u!65 &965328751918964007
 BoxCollider:
   m_ObjectHideFlags: 0

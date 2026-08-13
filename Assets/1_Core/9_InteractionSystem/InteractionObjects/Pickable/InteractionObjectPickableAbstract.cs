@@ -9,6 +9,10 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	[SerializeField] protected string _interactionObjectNameSystem;
 
+	public InteractionObjectsPickableTypes PickableType => _pickableType;
+
+	[SerializeField] protected InteractionObjectsPickableTypes _pickableType;
+
 	protected Collider _playerCollider;
 	protected bool _isCollisionIgnored = false;
 	protected bool _isPlayerInsideTrigger = false;
@@ -22,7 +26,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	public GameObject CachedPlayer { get; protected set; }
 	public Collider Collider { get; protected set; }
 	public Rigidbody RigidBody { get; protected set; }
-
+	private GameObject _gameObjectSpineSlot;
 	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
 	public virtual string InteractionObjectNameUI { get; protected set; }
 
@@ -58,6 +62,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 		RigidBody = GetComponent<Rigidbody>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
+		_gameObjectSpineSlot = ServiceLocator.Resolve<GameObject>("GameObjectSpineSlot");
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
@@ -124,7 +129,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 			StartCoroutine(MoveTowardsInFrontOfPlayer());
 
-			transform.parent = CachedPlayer.transform;
+			transform.parent = _gameObjectSpineSlot.transform;
 			transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
 			IsObjectPickedUp = true;
 		}

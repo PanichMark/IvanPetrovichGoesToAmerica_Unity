@@ -12,11 +12,14 @@ public class InteractionController : MonoBehaviour
 	private float _interactionRange = 50f;
 	private ViewModelHUDInteraction _viewModelHUDInteraction;
 	private LocalizationManager _localizationManager;
-	public delegate void PickableObjectsHandler();
-	public event PickableObjectsHandler OnPickUpThrowable;
-	public event PickableObjectsHandler OnPickUpNonThrowable;
-	public event PickableObjectsHandler OnGetRidOfNonThrowable;
-	public event PickableObjectsHandler OnGetRidOfThrowable;
+	public delegate void PickableObjectsPickUpHandler(InteractionObjectsPickableTypes pickableType);
+
+	public event PickableObjectsPickUpHandler OnPickUpThrowable;
+	public event PickableObjectsPickUpHandler OnPickUpNonThrowable;
+
+	public delegate void PickableObjectsGetRidOfHandler();
+	public event PickableObjectsGetRidOfHandler OnGetRidOfNonThrowable;
+	public event PickableObjectsGetRidOfHandler OnGetRidOfThrowable;
 
 	private string _HUDInteractionMainTextInteract;
 	private string _HUDInteractionDropText;
@@ -225,13 +228,13 @@ public class InteractionController : MonoBehaviour
 
 			if (_currentIThrowable != null)
 			{
-				OnPickUpThrowable?.Invoke();
+				OnPickUpThrowable?.Invoke(_currentIPickable.PickableType);
 				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}\n{_HUDInteractionThrowText} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackRightHand)}";
 				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
 			}
 			else
 			{
-				OnPickUpNonThrowable?.Invoke();
+				OnPickUpNonThrowable?.Invoke(_currentIPickable.PickableType);
 				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}";
 				ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
 			}

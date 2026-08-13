@@ -83,12 +83,12 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		_playerBehaviour.OnPlayerArmed += OnPlayerArmed;
 		_playerBehaviour.OnPlayerDisarmed += OnPlayerDisarmed;
 
-		_interactionController.OnPickUpNonThrowable += () =>
+		_interactionController.OnPickUpNonThrowable += (InteractionObjectsPickableTypes pickableType) =>
 		{
 			IsAbleToUseRightWeapon = false;
 			IsAbleToUseLeftWeapon = false;
 		};
-		_interactionController.OnPickUpThrowable += () =>
+		_interactionController.OnPickUpThrowable += (InteractionObjectsPickableTypes pickableType) =>
 		{
 			IsAbleToUseRightWeapon = false;
 			IsAbleToUseLeftWeapon = true;
