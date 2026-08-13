@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class NPCStateAttacking : NPCStateAbstract
+public class NPCstateAttacking : NPCstateAbstract
 {
-    public NPCStateAttacking()
+    public NPCstateAttacking()
     {
 
     }

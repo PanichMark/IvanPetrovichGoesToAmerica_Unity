@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class NPCStateAlarmed : NPCStateAbstract
+public class NPCstateAlarmed : NPCstateAbstract
 {
-    public NPCStateAlarmed()
+    public NPCstateAlarmed()
     {
 
     }

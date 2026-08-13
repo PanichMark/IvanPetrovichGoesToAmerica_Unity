@@ -5,7 +5,7 @@ using uLipSync;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NPCDialogueController : MonoBehaviour
+public class NPCdialogueController : MonoBehaviour
 {
 	public delegate void BlendShapesResetterHandler();
 	public event BlendShapesResetterHandler OnResetAllBlendShapesFacialExpressions;
@@ -21,17 +21,17 @@ public class NPCDialogueController : MonoBehaviour
 	public event HeadIKHandler OnStopLookingAtObject;
 
 	private string _currentGestureAnimation;
-	[SerializeField] private NPCDialogueData _NPCdialogueData;
+	[SerializeField] private NPCdialogueData _NPCdialogueData;
 	private uLipSyncBlendShape _uLipSyncBlendShape;
-	public NPCDialogueData NPCdialogueData => _NPCdialogueData;
+	public NPCdialogueData NPCdialogueData => _NPCdialogueData;
 	private GameController _gameController;
-	[SerializeField] private List<NPCDialogueBranchData> _dialogueBranchStructsList;
+	[SerializeField] private List<NPCdialogueBranchData> _dialogueBranchStructsList;
 
 	[SerializeField] private AnimationClip _dialogueDefaultAnimationStateName;
-	[SerializeField] private List<NPCDialogueGesturesData> _dialogueGesturesDataList;
+	[SerializeField] private List<NPCdialogueGesturesData> _dialogueGesturesDataList;
 	private Animator _animator;
 
-	[SerializeField] private List<NPCDialogueFacialExpressionsData> _dialogueFacialExpressionsDataList;
+	[SerializeField] private List<NPCdialogueFacialExpressionsData> _dialogueFacialExpressionsDataList;
 	private AudioSource _audioSource;
 	private int _dialogueBranchStructIndex;
 	private MenuManager _menuManager;
@@ -42,7 +42,7 @@ public class NPCDialogueController : MonoBehaviour
 	private bool _PerformActionOnYesFinal;
 	private GameObject _textDialogueYes;
 	private GameObject _textDialogueNo;
-	private NPCAbstract _NPCabstract;
+	private NPCabstract _NPCabstract;
 	private TextMeshProUGUI _textComponentDialogueYes;
 	private TextMeshProUGUI _textComponentDialogueNo;
 	private InteractionController _interactionController;
@@ -59,14 +59,14 @@ public class NPCDialogueController : MonoBehaviour
 	private GameScenesManager _gameSceneManager;
 	private int _currentDialogueStepIndex;
 	private bool _canSkip;
-	private NPCStateMachineController _NPCstateMachineController;
+	private NPCstateMachineController _NPCstateMachineController;
 	public bool IsDialogueActive { get; private set; }
 
 	public void Initialize()
 	{
 		_uLipSyncBlendShape = GetComponent<uLipSyncBlendShape>();
 		_audioSource = GetComponent<AudioSource>();
-		_NPCabstract = GetComponent<NPCAbstract>();
+		_NPCabstract = GetComponent<NPCabstract>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 		_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
@@ -89,7 +89,7 @@ public class NPCDialogueController : MonoBehaviour
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_NPCdialogueText = ServiceLocator.Resolve<GameObject>("TextDialogueLine").GetComponent<TextMeshProUGUI>();
 
-		_NPCstateMachineController = GetComponent<NPCStateMachineController>();
+		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
 
 		_menuManager.OnOpenPauseMenu += HideNPCDialogueCanvas;
 		_menuManager.OnClosePauseMenu += ShowNPCDialogueCanvas;

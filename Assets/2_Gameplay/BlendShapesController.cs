@@ -3,8 +3,8 @@ using System.Collections;
 
 public class BlendShapesController : MonoBehaviour
 {
-	[SerializeField] private NPCStateMachineController _NPCStateMachineController;
-	[SerializeField] private NPCDialogueController _NPCDialogueController;
+	[SerializeField] private NPCstateMachineController _NPCStateMachineController;
+	[SerializeField] private NPCdialogueController _NPCDialogueController;
 
 	private SkinnedMeshRenderer _skinnedMeshRenderer;
 	private Coroutine _blinkRoutine;

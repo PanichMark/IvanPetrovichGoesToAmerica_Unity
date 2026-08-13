@@ -1,6 +1,6 @@
-﻿public class NPCStateDead : NPCStateAbstract
+﻿public class NPCstateDead : NPCstateAbstract
 {
-	public NPCStateDead(NPCStateMachineController npcStateMachineController)
+	public NPCstateDead(NPCstateMachineController npcStateMachineController)
 	{
 		_NPCStateMachineController = npcStateMachineController;
 		_NPCStateMachineController.StopAnchorMove();

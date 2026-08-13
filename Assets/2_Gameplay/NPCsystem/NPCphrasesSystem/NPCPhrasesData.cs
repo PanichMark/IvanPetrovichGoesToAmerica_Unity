@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NPCphrasesData", menuName = "NPC/NPCphrasesData")]
-public class NPCPhrasesData : ScriptableObject
+public class NPCphrasesData : ScriptableObject
 {
 	public TextAsset PhrasesFileRussian;
 	public AudioClip[] PhrasesVoicelinesRussian;

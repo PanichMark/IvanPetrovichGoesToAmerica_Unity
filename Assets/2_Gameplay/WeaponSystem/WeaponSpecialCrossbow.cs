@@ -43,8 +43,8 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	private Rigidbody _hookedObjectRigidbody;
 	private Collider _hookedObjectCollider;
 
-	private NPCStateMachineController _NPCstateMachineController;
-	private NPCAbstract _NPCabstract;
+	private NPCstateMachineController _NPCstateMachineController;
+	private NPCabstract _NPCabstract;
 	private NavMeshAgent _hookedObjectNavMeshAgent;
 
 	private Vector3 _hookPoint;
@@ -145,7 +145,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 		yield return StartCoroutine(ShootProjectile(point));
 
-		if ((hit.collider.gameObject.TryGetComponent<NPCAbstract>(out _) ||
+		if ((hit.collider.gameObject.TryGetComponent<NPCabstract>(out _) ||
 			hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _)))
 		{
 			Debug.Log("Крюк зацепил предмет/NPC");
@@ -280,14 +280,14 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		{
 			_hookedObjectNavMeshAgent.enabled = false;
 		}
-		_NPCabstract = _hookedObject?.GetComponent<NPCAbstract>();
-		_NPCstateMachineController = _hookedObject?.GetComponent<NPCStateMachineController>();
+		_NPCabstract = _hookedObject?.GetComponent<NPCabstract>();
+		_NPCstateMachineController = _hookedObject?.GetComponent<NPCstateMachineController>();
 		if (_NPCstateMachineController != null && _NPCabstract != null)
 		{
 			//////
 			//ПОТОМ ПОМЕНЯТЬ НА BEING HOOKED !!!
 			//////
-			_NPCstateMachineController.SetNPCState(NPCStateTypes.Dead);
+			_NPCstateMachineController.SetNPCState(NPCstateTypes.Dead);
 		}
 
 		_hookedObjectCollider.enabled = false;

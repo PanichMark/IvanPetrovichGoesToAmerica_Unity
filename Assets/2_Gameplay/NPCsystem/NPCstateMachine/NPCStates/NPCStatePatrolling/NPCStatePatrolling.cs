@@ -1,6 +1,6 @@
-﻿public class NPCStatePatrolling : NPCStateAbstract
+﻿public class NPCstatePatrolling : NPCstateAbstract
 {
-	public NPCStatePatrolling(NPCStateMachineController npcStateMachineController)
+	public NPCstatePatrolling(NPCstateMachineController npcStateMachineController)
 	{
 		_NPCStateMachineController = npcStateMachineController;
 		_NPCStateMachineController.TurnNavmeshOn();
@@ -11,7 +11,7 @@
 	{
 		foreach (var config in _NPCStateMachineController.AnchorData)
 		{
-			var triggerPoint = config.AnchorPoint;
+			var triggerPoint = config.NPCanchorPoint;
 
 			if (_NPCStateMachineController.GetLastVisitedStopPoint() == triggerPoint)
 				continue;
@@ -20,7 +20,7 @@
 			{
 				_NPCStateMachineController.SetLastVisitedStopPoint(triggerPoint);
 				_NPCStateMachineController.SetNPCState(
-					NPCStateTypes.StationaryAction,
+					NPCstateTypes.StationaryAction,
 					config.NPCwaitDuration
 				);
 			}

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NPCdialogueData", menuName = "NPC/NPCdialogueData")]
-public class NPCDialogueData : ScriptableObject
+public class NPCdialogueData : ScriptableObject
 {
 	public TextAsset DialogueTextfileRussian;
 	public AudioClip[] DialogueVoicelinesRussian;

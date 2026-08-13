@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public struct NPCDialogueGesturesData
+public struct NPCdialogueGesturesData
 {
 	public int DialogueStep;
 	public AnimationClip Gesture;

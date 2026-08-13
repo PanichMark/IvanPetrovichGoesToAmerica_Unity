@@ -4,5 +4,5 @@
 public struct CutsceneDataNPC
 {
 	public GameObject npcObject;
-	public NPCStateTypes stateToSet;
+	public NPCstateTypes stateToSet;
 }

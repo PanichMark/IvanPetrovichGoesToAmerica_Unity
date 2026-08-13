@@ -6,8 +6,8 @@ public class HeadInverseKinematicsController : MonoBehaviour
 {
 	[SerializeField] private MultiAimConstraint _headIK;
 	[SerializeField] private MultiAimConstraint _neckIK;
-	[SerializeField] private NPCPhrasesController _NPCPhrasesController;
-	[SerializeField] private NPCDialogueController _NPCDialogueController;
+	[SerializeField] private NPCphrasesController _NPCPhrasesController;
+	[SerializeField] private NPCdialogueController _NPCDialogueController;
 
 	private WeightedTransform _weightedTransform;
 	[SerializeField] private Animator _animator;

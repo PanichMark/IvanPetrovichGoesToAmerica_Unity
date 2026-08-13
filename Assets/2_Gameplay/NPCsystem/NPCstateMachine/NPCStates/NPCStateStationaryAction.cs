@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public class NPCStateStationaryAction : NPCStateAbstract
+public class NPCstateStationaryAction : NPCstateAbstract
 {
 	private float timer;
 	private float animationDuration;
 
-	public NPCStateStationaryAction(NPCStateMachineController npcStateMachineController, float animationDuration)
+	public NPCstateStationaryAction(NPCstateMachineController npcStateMachineController, float animationDuration)
 	{
 		this._NPCStateMachineController = npcStateMachineController;
 		this.animationDuration = animationDuration;
@@ -22,7 +22,7 @@ public class NPCStateStationaryAction : NPCStateAbstract
 
 			if (timer >= animationDuration)
 			{
-				_NPCStateMachineController.SetNPCState(NPCStateTypes.Patrolling);
+				_NPCStateMachineController.SetNPCState(NPCstateTypes.Patrolling);
 			}
 		}
 	}

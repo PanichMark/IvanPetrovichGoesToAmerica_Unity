@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class NPCStateFalling : NPCStateAbstract
+public class NPCstateFalling : NPCstateAbstract
 {
     
 }

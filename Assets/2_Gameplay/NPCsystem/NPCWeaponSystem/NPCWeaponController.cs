@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class NPCWeaponController : MonoBehaviour
+public class NPCweaponController : MonoBehaviour
 {
 	[SerializeField] private GameObject _NPCweapon;
 	public Vector3 NPCWeaponSlotTransform { get; private set; }

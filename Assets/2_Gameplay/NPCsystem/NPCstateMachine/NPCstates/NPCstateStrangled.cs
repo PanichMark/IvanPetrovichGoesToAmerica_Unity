@@ -1,6 +1,6 @@
-﻿public class NPCStateBeingStrangled : NPCStateAbstract
+﻿public class NPCstateStrangled : NPCstateAbstract
 {
-	public NPCStateBeingStrangled(NPCStateMachineController npcStateMachineController)
+	public NPCstateStrangled(NPCstateMachineController npcStateMachineController)
 	{
 		_NPCStateMachineController = npcStateMachineController;
 		_NPCStateMachineController.StopAnchorMove();

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class NPCStateStandingUp : NPCStateAbstract
+public class NPCstateStandingUp : NPCstateAbstract
 {
-	public NPCStateStandingUp()
+	public NPCstateStandingUp()
 	{
 
 	}

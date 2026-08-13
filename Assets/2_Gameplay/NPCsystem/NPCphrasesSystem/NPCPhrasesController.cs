@@ -4,14 +4,14 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 
-public class NPCPhrasesController : MonoBehaviour
+public class NPCphrasesController : MonoBehaviour
 {
 	public delegate void HeadIKHandler(GameObject objectToLookAt);
 	public event HeadIKHandler OnStartLookingAtObject;
 	public event HeadIKHandler OnStopLookingAtObject;
 	private GameObject _playerEyesLookAt;
 	private AudioSource _audioSource;
-	private NPCAbstract _NPCabstract;
+	private NPCabstract _NPCabstract;
 	private bool _isPhrasePlaying = false;
 	private LocalizationManager _localizationManager;
 	private Dictionary<LanguagesEnum, List<string>> _localizedNPSphrases = new Dictionary<LanguagesEnum, List<string>>
@@ -25,13 +25,13 @@ public class NPCPhrasesController : MonoBehaviour
 		{LanguagesEnum.English, new List<AudioClip>() }
 	};
 
-	[SerializeField] private NPCPhrasesData _NPCphrasesData;
+	[SerializeField] private NPCphrasesData _NPCphrasesData;
 	private GameObject _NPCphrasesText;
 	private TextMeshProUGUI _NPCphrasesTextComponent;
 
 	public void Initialize()
 	{
-		_NPCabstract = GetComponent<NPCAbstract>();
+		_NPCabstract = GetComponent<NPCabstract>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_NPCphrasesText = ServiceLocator.Resolve<GameObject>("TextPhraseLine");
 		_NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();

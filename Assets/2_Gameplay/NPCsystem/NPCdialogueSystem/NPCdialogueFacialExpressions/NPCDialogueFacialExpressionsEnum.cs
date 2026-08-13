@@ -1,4 +1,4 @@
-﻿public enum NPCDialogueFacialExpressionsEnum
+﻿public enum NPCdialogueFacialExpressionsEnum
 {
 	BlendShape_FacialExpression_Happy,
 	BlendShape_FacialExpression_Surprised,

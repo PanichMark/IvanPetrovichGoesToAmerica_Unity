@@ -1,6 +1,6 @@
-﻿public abstract class NPCStateAbstract
+﻿public abstract class NPCstateAbstract
 {
-	protected NPCStateMachineController _NPCStateMachineController;
+	protected NPCstateMachineController _NPCStateMachineController;
 	public virtual void Update()
 	{
 

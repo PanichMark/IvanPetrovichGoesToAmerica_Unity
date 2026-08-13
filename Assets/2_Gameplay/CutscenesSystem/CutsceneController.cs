@@ -17,7 +17,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private PlayerWeaponController _playerWeaponController;
 	private LocalizationManager _localizationManager;
-	private NPCStateMachineController _NPCcontroller;
+	private NPCstateMachineController _NPCcontroller;
 	private AudioSource _audioSource;
 	private PlayableDirector _director;
 	private bool _isCutsceneDialogueActorPlayer;
@@ -82,7 +82,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		{
 			foreach (var data in _NPCstateChanges)
 			{
-				if (data.npcObject != null && data.npcObject.GetComponent<NPCStateMachineController>() != null)
+				if (data.npcObject != null && data.npcObject.GetComponent<NPCstateMachineController>() != null)
 				{
 					_shouldChangeNPCState = true;
 					break; 
@@ -308,7 +308,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 			{
 				if (data.npcObject != null)
 				{
-					var controller = data.npcObject.GetComponent<NPCStateMachineController>();
+					var controller = data.npcObject.GetComponent<NPCstateMachineController>();
 					if (controller != null)
 					{
 						controller.SetNPCState(data.stateToSet);

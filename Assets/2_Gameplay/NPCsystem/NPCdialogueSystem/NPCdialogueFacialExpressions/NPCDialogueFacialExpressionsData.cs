@@ -2,8 +2,8 @@
 
 [Serializable]
 
-public struct NPCDialogueFacialExpressionsData
+public struct NPCdialogueFacialExpressionsData
 {
 	public int DialogueStep;
-	public NPCDialogueFacialExpressionsEnum FacialExpression;
+	public NPCdialogueFacialExpressionsEnum FacialExpression;
 }

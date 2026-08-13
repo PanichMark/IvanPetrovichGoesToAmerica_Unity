@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class NPCStateBeingHooked : NPCStateAbstract
+public class NPCstateHooked : NPCstateAbstract
 {
-	public NPCStateBeingHooked(NPCStateMachineController npcStateMachineController)
+	public NPCstateHooked(NPCstateMachineController npcStateMachineController)
 	{
 		_NPCStateMachineController = npcStateMachineController;
 		_NPCStateMachineController.StopAnchorMove();

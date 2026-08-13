@@ -73,7 +73,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		foreach (var hit in hitColliders)
 		{
 			if (hit.gameObject == _attackPoint) continue;
-			if (hit.GetComponent<NPCAbstract>() != null)
+			if (hit.GetComponent<NPCabstract>() != null)
 			{
 				newDetection = true;
 				break;

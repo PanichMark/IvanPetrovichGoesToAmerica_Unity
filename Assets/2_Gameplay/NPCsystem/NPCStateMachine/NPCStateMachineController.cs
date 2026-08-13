@@ -3,29 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NPCStateMachineController : MonoBehaviour
+public class NPCstateMachineController : MonoBehaviour
 {
 	public delegate void NPCstateHandler();
 	public event NPCstateHandler OnNPCstateDead;
 
-	[SerializeField] private NPCStateTypes _initialState = NPCStateTypes.StationaryAction;
+	[SerializeField] private NPCstateTypes _initialState = NPCstateTypes.StationaryAction;
 	private float _animationDuration = 99999f;
 	private float _initialRotationY;
 	private GameObject _cachedPlayer;
 
 	//[SerializeField] private List<GameObject> _anchorPoints = new List<GameObject>();
-	[SerializeField] private List<NPCAnchorData> _anchorData = new List<NPCAnchorData>();
+	[SerializeField] private List<NPCanchorData> _anchorData = new List<NPCanchorData>();
 
-	private NPCStateAbstract _NPCstate;
-	private NPCStateTypes _NPCstateType;
-	private NPCAbstract _NPCabstract;
+	private NPCstateAbstract _NPCstate;
+	private NPCstateTypes _NPCstateType;
+	private NPCabstract _NPCabstract;
 	private NavMeshAgent _navMeshAgent;
 	private int _nextIndex = 0;
 	private GameObject _lastVisitedStopPoint;
 	private Coroutine _currentMovementCoroutine;
 
 	public string CurrentNPCState { get; private set; } = "StationaryAction";
-	public List<NPCAnchorData> AnchorData => _anchorData;
+	public List<NPCanchorData> AnchorData => _anchorData;
 	//public List<GameObject> AnchorPoints => _anchorPoints;
 	public float AnimationDuration => _animationDuration;
 	public Coroutine currentRotationCoroutine { get; private set; }
@@ -35,7 +35,7 @@ public class NPCStateMachineController : MonoBehaviour
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 		_initialRotationY = transform.eulerAngles.y;
 		_cachedPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
-		_NPCabstract = GetComponent<NPCAbstract>();
+		_NPCabstract = GetComponent<NPCabstract>();
 		//Debug.Log(_initialState);
 		SetNPCState(_initialState);
 
@@ -62,7 +62,7 @@ public class NPCStateMachineController : MonoBehaviour
 		for (int i = 0; i < _anchorData.Count; i++)
 		{
 			// Сравниваем поле AnchorPoint структуры с нашим объектом
-			if (_anchorData[i].AnchorPoint == _lastVisitedStopPoint)
+			if (_anchorData[i].NPCanchorPoint == _lastVisitedStopPoint)
 			{
 				return i;
 			}
@@ -128,7 +128,7 @@ public class NPCStateMachineController : MonoBehaviour
 				// 1. Получаем цель для движения
 				// _anchorData[_nextIndex] - это структура NPCAnchorData
 				// .AnchorPoint - это поле GameObject внутри этой структуры
-				GameObject targetPoint = _anchorData[_nextIndex].AnchorPoint;
+				GameObject targetPoint = _anchorData[_nextIndex].NPCanchorPoint;
 
 				// 2. Устанавливаем точку назначения для NavMeshAgent
 				if (targetPoint != null) // Проверка на случай, если AnchorPoint не назначен
@@ -260,102 +260,102 @@ public class NPCStateMachineController : MonoBehaviour
 		_navMeshAgent.enabled = false;
 	}
 
-	public void SetNPCState(NPCStateTypes stateType, float animDuration)
+	public void SetNPCState(NPCstateTypes stateType, float animDuration)
 	{
 		_animationDuration = animDuration;
 		SetNPCState(stateType);
 	}
 
-	public void SetNPCState(NPCStateTypes NPCstateType)
+	public void SetNPCState(NPCstateTypes NPCstateType)
 	{
-		NPCStateAbstract newState;
+		NPCstateAbstract newState;
 
-		if (NPCstateType == NPCStateTypes.StationaryAction)
+		if (NPCstateType == NPCstateTypes.StationaryAction)
 		{
-			newState = new NPCStateStationaryAction(this, _animationDuration);
+			newState = new NPCstateStationaryAction(this, _animationDuration);
 			CurrentNPCState = "StationaryAction";
 			_NPCabstract.gameObject.tag = "Interactable";
 		}
-		else if (NPCstateType == NPCStateTypes.Patrolling)
+		else if (NPCstateType == NPCstateTypes.Patrolling)
 		{
-			newState = new NPCStatePatrolling(this);
+			newState = new NPCstatePatrolling(this);
 			CurrentNPCState = "Patrolling";
 			_NPCabstract.gameObject.tag = "Interactable";
 		}
-		else if (NPCstateType == NPCStateTypes.Interested)
+		else if (NPCstateType == NPCstateTypes.Interested)
 		{
-			newState = new NPCStateInterested();
+			newState = new NPCstateInterested();
 		}
-		else if (NPCstateType == NPCStateTypes.Searching)
+		else if (NPCstateType == NPCstateTypes.Searching)
 		{
-			newState = new NPCStateSearching();
+			newState = new NPCstateSearching();
 		}
-		else if (NPCstateType == NPCStateTypes.Alarmed)
+		else if (NPCstateType == NPCstateTypes.Alarmed)
 		{
-			newState = new NPCStateAlarmed();
+			newState = new NPCstateAlarmed();
 		}
-		else if (NPCstateType == NPCStateTypes.Chasing)
+		else if (NPCstateType == NPCstateTypes.Chasing)
 		{
-			newState = new NPCStateChasing();
+			newState = new NPCstateChasing();
 		}
-		else if (NPCstateType == NPCStateTypes.Attacking)
+		else if (NPCstateType == NPCstateTypes.Attacking)
 		{
-			newState = new NPCStateAttacking();
+			newState = new NPCstateAttacking();
 		}
-		else if (NPCstateType == NPCStateTypes.Reloading)
+		else if (NPCstateType == NPCstateTypes.Reloading)
 		{
-			newState = new NPCStateReloading();
+			newState = new NPCstateReloading();
 		}
-		else if (NPCstateType == NPCStateTypes.Scared)
+		else if (NPCstateType == NPCstateTypes.Huddled)
 		{
-			newState = new NPCStateScared();
+			newState = new NPCstateHuddled();
 			CurrentNPCState = "Scared";
 			_NPCabstract.gameObject.tag = "Untagged";
 		}
-		else if (NPCstateType == NPCStateTypes.Hysteric)
+		else if (NPCstateType == NPCstateTypes.Hysteric)
 		{
-			newState = new NPCStateHysteric();
+			newState = new NPCstateHysteric();
 		}
-		else if (NPCstateType == NPCStateTypes.Fleeing)
+		else if (NPCstateType == NPCstateTypes.Fleeing)
 		{
-			newState = new NPCStateFleeing();
+			newState = new NPCstateFleeing();
 		}
-		else if (NPCstateType == NPCStateTypes.Strangled)
+		else if (NPCstateType == NPCstateTypes.Strangled)
 		{
-			newState = new NPCStateBeingStrangled(this);
+			newState = new NPCstateStrangled(this);
 		}
-		else if (NPCstateType == NPCStateTypes.Hooked)
+		else if (NPCstateType == NPCstateTypes.Hooked)
 		{
-			newState = new NPCStateBeingHooked(this);
+			newState = new NPCstateHooked(this);
 			CurrentNPCState = "BeingHooked";
 		}
-		else if (NPCstateType == NPCStateTypes.ElectroShocked)
+		else if (NPCstateType == NPCstateTypes.ElectroShocked)
 		{
-			newState = new NPCStateBeingElectroShocked();
+			newState = new NPCstateElectroShocked();
 		}
-		else if (NPCstateType == NPCStateTypes.KnockedOff)
+		else if (NPCstateType == NPCstateTypes.KnockedOff)
 		{
-			newState = new NPCStateKnockedOff();
+			newState = new NPCstateKnockedOff();
 		}
-		else if (NPCstateType == NPCStateTypes.BlownAway)
+		else if (NPCstateType == NPCstateTypes.BlownAway)
 		{
-			newState = new NPCStateBlownAway();
+			newState = new NPCstateBlownAway();
 		}
-		else if (NPCstateType == NPCStateTypes.Falling)
+		else if (NPCstateType == NPCstateTypes.Falling)
 		{
-			newState = new NPCStateFalling();
+			newState = new NPCstateFalling();
 		}
-		else if (NPCstateType == NPCStateTypes.StandingUp)
+		else if (NPCstateType == NPCstateTypes.StandingUp)
 		{
-			newState = new NPCStateStandingUp();
+			newState = new NPCstateStandingUp();
 		}
-		else if (NPCstateType == NPCStateTypes.Unconscious)
+		else if (NPCstateType == NPCstateTypes.Unconscious)
 		{
-			newState = new NPCStateUnconscious();
+			newState = new NPCstateUnconscious();
 		}
-		else if (NPCstateType == NPCStateTypes.Dead)
+		else if (NPCstateType == NPCstateTypes.Dead)
 		{
-			newState = new NPCStateDead(this);
+			newState = new NPCstateDead(this);
 			
 			_NPCabstract.ObjectIsFullyDamaged();
 			OnNPCstateDead?.Invoke();

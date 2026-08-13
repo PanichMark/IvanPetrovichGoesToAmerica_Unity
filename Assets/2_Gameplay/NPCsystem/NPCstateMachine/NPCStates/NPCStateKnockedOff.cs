@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class NPCStateKnockedOff : NPCStateAbstract
+public class NPCstateKnockedOff : NPCstateAbstract
 {
-	public NPCStateKnockedOff()
+	public NPCstateKnockedOff()
 	{
 
 	}

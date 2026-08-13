@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public struct NPCAnchorData
+public struct NPCanchorData
 {
-	public GameObject AnchorPoint;
+	public GameObject NPCanchorPoint;
 	public float NPCwaitDuration;
 	public Vector3 NPCrotation;
 }

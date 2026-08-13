@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class NPCStateHysteric: NPCStateAbstract
+public class NPCstateHysteric: NPCstateAbstract
 {
-	public NPCStateHysteric()
+	public NPCstateHysteric()
 	{
 
 	}

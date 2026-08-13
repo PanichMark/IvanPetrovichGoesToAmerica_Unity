@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class NPCStateBlownAway : NPCStateAbstract
+public class NPCstateBlownAway : NPCstateAbstract
 {
-	public NPCStateBlownAway()
+	public NPCstateBlownAway()
 	{
 
 	}

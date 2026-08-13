@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class NPCStateSearching : NPCStateAbstract
+public class NPCstateSearching : NPCstateAbstract
 {
-    public NPCStateSearching()
+    public NPCstateSearching()
     {
 
     }

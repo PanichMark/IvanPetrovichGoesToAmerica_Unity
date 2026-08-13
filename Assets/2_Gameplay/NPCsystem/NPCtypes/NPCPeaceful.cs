@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(NPCPhrasesController))]
+[RequireComponent(typeof(NPCphrasesController))]
 
-public class NPCPeaceful : NPCAbstract
+public class NPCpeaceful : NPCabstract
 {
 	public override void Interact()
 	{

@@ -6,10 +6,10 @@ using TMPro;
 //[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(NPCStateMachineController))]
+[RequireComponent(typeof(NPCstateMachineController))]
 
 
-public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
+public abstract class NPCabstract : MonoBehaviour, IInteractable, IDamageable
 {
 	private GameObject _canvasNPCstatus;
 	private GameObject _textNPCcurrentState;
@@ -26,14 +26,14 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 	public bool IsNPCdead => _currentHealth <= 0;
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
-	protected NPCPhrasesController _NPCphrasesController;
+	protected NPCphrasesController _NPCphrasesController;
 
-	protected NPCDialogueController _NPCdialogueController;
-	protected NPCWeaponController _NPCweaponController;
+	protected NPCdialogueController _NPCdialogueController;
+	protected NPCweaponController _NPCweaponController;
 
 
 	private LocalizationManager _localizationManager;
-	protected NPCStateMachineController _NPCstateMachineController;
+	protected NPCstateMachineController _NPCstateMachineController;
 
 	public string InteractionObjectNameSystem => _NPCname;
 	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_NPCname);
@@ -64,9 +64,9 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
 		_textComponentNPCcurrentHealth.text = _NPCconfigHealth.NPCcurrentHealth.ToString();
 
-		_NPCphrasesController = GetComponent<NPCPhrasesController>();
-		_NPCstateMachineController = GetComponent<NPCStateMachineController>();
-		_NPCdialogueController = GetComponent<NPCDialogueController>();
+		_NPCphrasesController = GetComponent<NPCphrasesController>();
+		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
+		_NPCdialogueController = GetComponent<NPCdialogueController>();
 
 		_NPCstateMachineController.Initialize();
 		_NPCphrasesController.Initialize();
@@ -129,7 +129,7 @@ public abstract class NPCAbstract : MonoBehaviour, IInteractable, IDamageable
 			if (IsNPCdead)
 			{
 				_textNPCcurrentHealth.SetActive(false);
-				_NPCstateMachineController.SetNPCState(NPCStateTypes.Dead);
+				_NPCstateMachineController.SetNPCState(NPCstateTypes.Dead);
 			}
 		}
 	}

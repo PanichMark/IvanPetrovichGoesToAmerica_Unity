@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class NPCStateReloading : NPCStateAbstract
+public class NPCstateReloading : NPCstateAbstract
 {
-	public NPCStateReloading()
+	public NPCstateReloading()
 	{
 
 	}

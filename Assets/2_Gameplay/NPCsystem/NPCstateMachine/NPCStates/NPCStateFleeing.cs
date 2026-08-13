@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class NPCStateFleeing : NPCStateAbstract
+public class NPCstateFleeing : NPCstateAbstract
 {
-    public NPCStateFleeing()
+    public NPCstateFleeing()
     {
 
     }

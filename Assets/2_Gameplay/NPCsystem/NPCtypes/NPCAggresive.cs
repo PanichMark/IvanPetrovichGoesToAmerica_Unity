@@ -1,4 +1,4 @@
-﻿public class NPCAggresive : NPCNeutral
+﻿public class NPCaggresive : NPCneutral
 {
 	public override bool IsInteractionHintMessageFailActive => false;
 
