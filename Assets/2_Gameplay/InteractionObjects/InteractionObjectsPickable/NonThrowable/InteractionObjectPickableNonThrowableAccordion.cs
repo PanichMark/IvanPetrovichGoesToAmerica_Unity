@@ -3,26 +3,28 @@ using UnityEngine;
 
 public class InteractionObjectPickableNonThrowableAccordion : InteractionObjectPickableNonThrowable
 {
-	private const int AnimationFrames = 15;
+	private const float AnimationDuration = 0.604f;
 	private const float TargetWeight = 100f;
 
 	private SkinnedMeshRenderer _accordionSkinnedMeshRenderer;
+	private float _animationStartTime;
 
 	public override void PickUpObject()
 	{
 		base.PickUpObject();
-		SetAccordionBlendShape(0f);
-		StartCoroutine(PlayHoldShakeAnimation());
+		_animationStartTime = Time.time;
+		StartCoroutine(PlayAccordionBlendShapeAnimation());
 	}
 
 	protected override IEnumerator MoveTowardsPlayer()
 	{
 		while (true)
 		{
-			Vector3 targetPosition = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.5f + Vector3.up * 1f;
-
+			Vector3 targetPosition = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.3f + Vector3.up * 0.9f;
 			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
-			//transform.localRotation = CachedPlayer.transform.localRotation;
+
+			Quaternion targetRotation = Quaternion.LookRotation(-CachedPlayer.transform.forward, Vector3.up) * Quaternion.Euler(0f, 180f, 0f);
+			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
 
 			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
 				break;
@@ -30,7 +32,8 @@ public class InteractionObjectPickableNonThrowableAccordion : InteractionObjectP
 			yield return null;
 		}
 
-		transform.position = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.5f + Vector3.up * 1f;
+		transform.position = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.3f + Vector3.up * 0.9f;
+		transform.rotation = Quaternion.LookRotation(-CachedPlayer.transform.forward, Vector3.up) * Quaternion.Euler(0f, 180f, 0f);
 	}
 
 	public override void DropOffObject()
@@ -40,36 +43,23 @@ public class InteractionObjectPickableNonThrowableAccordion : InteractionObjectP
 		base.DropOffObject();
 	}
 
-	private IEnumerator PlayHoldShakeAnimation()
+	private IEnumerator PlayAccordionBlendShapeAnimation()
 	{
 		while (IsObjectPickedUp)
 		{
-			for (int i = 0; i <= AnimationFrames; i++)
-			{
-				if (!IsObjectPickedUp) yield break;
-				SetAccordionBlendShape(Mathf.Lerp(0f, TargetWeight, (float)i / AnimationFrames));
-				yield return null;
-			}
-
-			for (int i = AnimationFrames; i >= 0; i--)
-			{
-				if (!IsObjectPickedUp) yield break;
-				SetAccordionBlendShape(Mathf.Lerp(0f, TargetWeight, (float)i / AnimationFrames));
-				yield return null;
-			}
+			float phase = Mathf.PingPong(Time.time - _animationStartTime, AnimationDuration) / AnimationDuration;
+			SetAccordionBlendShape(Mathf.Lerp(0f, TargetWeight, phase));
+			yield return null;
 		}
 	}
 
 	private void SetAccordionBlendShape(float weight)
 	{
-		if (_accordionSkinnedMeshRenderer != null)
-		{
-			_accordionSkinnedMeshRenderer.SetBlendShapeWeight(0, weight);
-		}
+		_accordionSkinnedMeshRenderer.SetBlendShapeWeight(0, weight);
 	}
 
-	protected override void InitializePickable()  
+	protected override void InitializePickable()
 	{
-		_accordionSkinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+		_accordionSkinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
 	}
 }
