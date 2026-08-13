@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BlendShapesController : MonoBehaviour
+public class HeadBlendShapesController : MonoBehaviour
 {
 	[SerializeField] private NPCstateMachineController _NPCStateMachineController;
 	[SerializeField] private NPCdialogueController _NPCDialogueController;
 
 	private SkinnedMeshRenderer _skinnedMeshRenderer;
 	private Coroutine _blinkRoutine;
-
 
 	private int _blendShapeEyesClosed;
 	private string[] _blendShapesFacialExpressions;

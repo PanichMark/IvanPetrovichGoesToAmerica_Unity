@@ -48,17 +48,6 @@ public class PlayerResourcesHealthManager : MonoBehaviour, IDamageable, ISaveLoa
 		Debug.Log("PlayerResourcesHealthManager Initialized");
 	}
 
-	void Update()
-    {
-		if (!_bootstrap.IsBootstrapInitialized)
-			return;
-
-		if (Input.GetKeyDown(KeyCode.T) && SceneManager.GetSceneAt(1).name != GameScenesEnum.Scene_0_MainMenu.ToString())
-		{
-			TakeDamage(99999);
-		}
-	}
-
     private void UseHealingItem()
     {
         if (CurrentHealingItemsNumber > 0)
