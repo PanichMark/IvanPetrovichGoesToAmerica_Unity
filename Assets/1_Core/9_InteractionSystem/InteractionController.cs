@@ -306,7 +306,10 @@ public class InteractionController : MonoBehaviour
 			_failInteractionText.text = null;
 		}
 
-		PickUpInteractableObject();
+		if (CurrentPickableObject == null)
+		{
+			PickUpInteractableObject();
+		}
 
 		if (_isInteractionObjectLookedAt && _hitObject.collider.tag == "Interactable")
 		{

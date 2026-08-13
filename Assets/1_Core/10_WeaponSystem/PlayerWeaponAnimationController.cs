@@ -19,6 +19,10 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	public event WeaponVisibilityHandler OnShowWeapon;
 	public event WeaponVisibilityHandler OnHideWeapon;
 
+	public delegate void ShowThirdPersonHandAfterFirstPersonCameraUnarmedHandler(WeaponHandsEnum handType);
+	public event ShowThirdPersonHandAfterFirstPersonCameraUnarmedHandler OnShowThirdPersonHand;
+
+
 	private Coroutine _currentPlayerReloadingCoroutine;
 
 	private LegKickAttackController _legKickAttack;
@@ -147,11 +151,11 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private void ShowWeaponRight(WeaponAbstract weapon)
 	{
-		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponRightEquip, true));
+		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponRightEquip, WeaponHandsEnum.Right, true));
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, 1);
 		_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer1stWeaponRightPalm);
 
-		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponRightEquip, true));
+		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponRightEquip, WeaponHandsEnum.Right,true));
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, 1);
 		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponRightPalm);
 
@@ -163,11 +167,11 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private void ShowWeaponLeft(WeaponAbstract weapon)
 	{
-		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponLeftEquip, true));
+		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponLeftEquip, WeaponHandsEnum.Left, true));
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 1);
 		_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer1stWeaponLeftPalm);
 
-		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponLeftEquip, true));
+		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponLeftEquip, WeaponHandsEnum.Left, true));
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 1);
 		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponLeftPalm);
 
@@ -193,10 +197,10 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	{
 		CancelWeaponHandAnimation(WeaponHandsEnum.Right);
 
-		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponRightEquip, false));
+		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponRightEquip, WeaponHandsEnum.Right, false));
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, 0);
 
-		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponRightEquip, false));
+		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponRightEquip, WeaponHandsEnum.Right, false));
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, 0);
 	}
 
@@ -204,14 +208,14 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	{
 		CancelWeaponHandAnimation(WeaponHandsEnum.Left);
 
-		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponLeftEquip, false));
+		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponLeftEquip, WeaponHandsEnum.Left, false));
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 0);
 
-		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponLeftEquip, false));
+		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponLeftEquip, WeaponHandsEnum.Left, false));
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 0);
 	}
 
-	private IEnumerator ChangePlayerWeaponEquipAnimation(Animator animator, int layer, bool equip)
+	private IEnumerator ChangePlayerWeaponEquipAnimation(Animator animator, int layer, WeaponHandsEnum handType, bool equip)
 	{
 		float elapsed = 0f;
 		float startWeight = animator.GetLayerWeight(layer);
@@ -235,6 +239,13 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 
 		animator.SetLayerWeight(layer, targetWeight);
+
+		if (animator == _playerAnimator1stPerson && equip == false)
+		{
+			//Debug.Log(000000000);
+			//Debug.Log(handType);
+			OnShowThirdPersonHand?.Invoke(handType);
+		}
 
 		yield return null;
 	}

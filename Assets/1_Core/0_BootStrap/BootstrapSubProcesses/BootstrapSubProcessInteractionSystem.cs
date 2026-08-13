@@ -75,8 +75,7 @@ public class BootstrapSubProcessInteractionSystem
 
 		_interactionAnimationController.Initialize
 			(InteractionController,
-			_gameObjectPlayer,
-			GameObjectSpineSlot);
+			_gameObjectPlayer);
 
 		_keysManager = new KeysManager();
 

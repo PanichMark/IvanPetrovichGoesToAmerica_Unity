@@ -2,6 +2,8 @@
 {
 	LayerMovement,
 	LayerLookUpDown,
+	LayerPickableBothArms,
+	LayerPickableRightArm,
 	LayerWeaponRightEquip,
 	LayerWeaponRightFullArm,
 	LayerWeaponRightPalm,
