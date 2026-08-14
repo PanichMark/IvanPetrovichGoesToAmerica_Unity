@@ -7,12 +7,16 @@ public class LocalizationManager
 {
 	private Dictionary<string, Dictionary<string, string>> _localizations = new Dictionary<string, Dictionary<string, string>>();
 
+	private Bootstrap _bootstrap;
+
 	public LanguagesEnum CurrentLanguage { get; private set; }
 	public delegate void ChangeLanguageEvent(LocalizationManager localizationManager);
 	public event ChangeLanguageEvent OnLanguageChanged;
 
-	public LocalizationManager()
+	public LocalizationManager(Bootstrap bootstrap)
 	{
+		_bootstrap = bootstrap;
+
 		LoadFromLocalizationCSV();
 	
 		Debug.Log("Localization Manager Initialized");
@@ -40,14 +44,14 @@ public class LocalizationManager
 
 	private void LoadFromLocalizationCSV()
 	{
-		TextAsset csvFile = Resources.Load("IvanPetrovichGoesToAmerica_Localization") as TextAsset;
-		if (csvFile == null)
+		TextAsset localizationMain = _bootstrap.GameData.LocalizationMain;
+		if (localizationMain == null)
 		{
 			Debug.LogError("Could not load CSV file");
 			return;
 		}
 
-		using (StreamReader sr = new StreamReader(new MemoryStream(csvFile.bytes)))
+		using (StreamReader sr = new StreamReader(new MemoryStream(localizationMain.bytes)))
 		{
 			string line;
 			while ((line = sr.ReadLine()) != null)

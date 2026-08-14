@@ -29,8 +29,6 @@ public class InteractionObjectLoadScene : MonoBehaviour, IInteractable
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GoToScene");
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
-
-
 	}
 
 	private void OnDestroy()

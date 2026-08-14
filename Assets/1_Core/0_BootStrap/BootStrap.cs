@@ -74,11 +74,6 @@ public class Bootstrap : MonoBehaviour
 	private GameObject _gameObjectPlayer;
 	public GameObject GameObjectPlayerCamera { get; private set; }
 	private GameObject _gameObjectBootstrapTemporaryCamera;
-
-	/*
-	private bool _isGamepadConnected; // TODO add gamepad support
-	*/
-
 	public bool IsBootstrapInitialized { get; private set; }
 
 	private IEnumerator Start()
@@ -154,9 +149,8 @@ public class Bootstrap : MonoBehaviour
 		_keyCodePauseMenu = _keyPauseMenu.KeyPauseMenu;
 
 		_inputDevice = new InputKeyboard(_gameController, _keyCodePauseMenu);
-		//_inputDevice = new InputGamepad(_gameController);
 
-		LocalizationManager = new LocalizationManager();
+		LocalizationManager = new LocalizationManager(this);
 
 		_playerPrefsData = new PlayerPrefsData();
 
@@ -554,65 +548,4 @@ public class Bootstrap : MonoBehaviour
 	{
 		ServiceLocator.ClearAllServices();
 	}
-
-	// TODO add gamepad support
-
-	/*
-	private void Update()
-	{
-		if (!_isInitialized)
-			return;
-
-		string[] joysticks = Input.GetJoystickNames();
-		bool isGamepadConnected = joysticks.Length > 0 && !string.IsNullOrEmpty(joysticks[0]);
-
-		if (isGamepadConnected)
-		{
-			if (!_isGamepadConnected)
-			{
-				_isGamepadConnected = true;
-				Debug.Log("Геймпад подключен: " + joysticks[0]);
-			}
-
-			//////////////////////////////////////////////////////////////
-			// Проверяем, была ли нажата любая клавиша в этом кадре
-			if (Input.anyKeyDown)
-			{
-				// Обычно у геймпада 20 кнопок (0-19). Цикл проверяет их все.
-				// Если у вашего геймпада больше кнопок, увеличьте число 20.
-				for (int i = 0; i < 20; i++)
-				{
-					// Проверяем конкретную кнопку по её индексу
-					if (Input.GetKeyDown($"joystick button {i}"))
-					{
-						// Если кнопка нажата, выводим её индекс в консоль
-						Debug.Log($"Нажата кнопка геймпада с индексом: {i}");
-
-						// Раскомментируйте следующую строку, если хотите,
-						// чтобы лог выводился только для первой найденной кнопки.
-						// return; 
-					}
-				}
-			}
-			//////////////////////////////////////////////////////////////////
-		}
-		else
-		{
-			if (_isGamepadConnected)
-			{
-				_isGamepadConnected = false;
-				Debug.Log("Геймпад отключен");
-			}
-		}
-	}
-	*/
-
-	/*
-	public void ChangeInputDevice(IInputDevice inputDevice)
-	{
-		//_inputDevice = new InputKeyboard(_gameController, _keyPauseMenu);
-
-		//_inputDevice = new InputGamepad(_gameController, _keyPauseMenu);
-	}
-	*/
 }

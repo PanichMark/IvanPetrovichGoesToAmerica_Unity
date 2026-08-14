@@ -4,6 +4,7 @@
 public class BootstrapGameDataList : ScriptableObject
 {
 	public int NumberOfSafeFileSlots;
+	public TextAsset LocalizationMain;
 	public TermsAndConditions TermsAndConditions;
     public GameCanvasesList GameCanvasesList;
 	public GameScenesList GameScenesList;
