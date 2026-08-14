@@ -42776,7 +42776,7 @@ MonoBehaviour:
   m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 1
+  m_SoftShadowQuality: 2
 --- !u!108 &476582489
 Light:
   m_ObjectHideFlags: 0
@@ -70381,6 +70381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _NPCphrasesData: {fileID: 0}
 --- !u!114 &778882794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70393,6 +70394,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _initialState: 0
+  _anchorData: []
 --- !u!114 &778882795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70405,6 +70408,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isHuman: 0
+  _NPCname: 
+  _NPCconfigBodyType: {fileID: 0}
+  _NPCconfigHealth: {fileID: 0}
 --- !u!195 &778882796
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -105163,6 +105170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _initialState: 0
+  _anchorData: []
 --- !u!114 &1172950683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105175,6 +105184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isHuman: 0
+  _NPCname: 
+  _NPCconfigBodyType: {fileID: 0}
+  _NPCconfigHealth: {fileID: 0}
 --- !u!195 &1172950684
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -105301,6 +105314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _NPCphrasesData: {fileID: 0}
 --- !u!82 &1172950690
 AudioSource:
   m_ObjectHideFlags: 0
@@ -162721,6 +162735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _NPCphrasesData: {fileID: 0}
 --- !u!114 &1854547203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162733,6 +162748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _initialState: 0
+  _anchorData: []
 --- !u!114 &1854547204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162745,6 +162762,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isHuman: 0
+  _NPCname: 
+  _NPCconfigBodyType: {fileID: 0}
+  _NPCconfigHealth: {fileID: 0}
 --- !u!195 &1854547205
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -170741,6 +170762,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _NPCphrasesData: {fileID: 0}
 --- !u!114 &1938486446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170753,6 +170775,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _initialState: 0
+  _anchorData: []
 --- !u!114 &1938486447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170765,6 +170789,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isHuman: 0
+  _NPCname: 
+  _NPCconfigBodyType: {fileID: 0}
+  _NPCconfigHealth: {fileID: 0}
 --- !u!195 &1938486448
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -207907,6 +207935,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30c01eafdaa357a439d6f5079893587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerMovementController: {fileID: 0}
+  _playerCameraController: {fileID: 0}
+  _NPCdialogueData: {fileID: 0}
+  _dialogueBranchStructsList: []
+  _dialogueDefaultAnimationStateName: {fileID: 0}
+  _dialogueGesturesDataList: []
+  _dialogueFacialExpressionsDataList: []
 --- !u!114 &2616978140777799513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207919,6 +207954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _NPCphrasesData: {fileID: 0}
 --- !u!114 &2616978140777799514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207931,6 +207967,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _initialState: 0
+  _anchorData: []
 --- !u!114 &2616978140777799515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207943,6 +207981,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isHuman: 0
+  _NPCname: 
+  _NPCconfigBodyType: {fileID: 0}
+  _NPCconfigHealth: {fileID: 0}
 --- !u!195 &2616978140777799517
 NavMeshAgent:
   m_ObjectHideFlags: 0

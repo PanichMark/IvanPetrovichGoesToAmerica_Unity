@@ -69,7 +69,10 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 	{
 		if (handType == WeaponHandsEnum.Right)
 		{
-			ShowBodyPart(_playerThirdPersonHandRight);
+			if (_interactionController.CurrentIThrowable == null)
+			{
+				ShowBodyPart(_playerThirdPersonHandRight);
+			}
 		}
 		else
 		{
@@ -81,7 +84,10 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 	{
 		if (weapon.WeaponHandType == WeaponHandsEnum.Right)
 		{
-			UpdateWeaponRightVisibility();
+			if (_interactionController.CurrentIThrowable == null)
+			{
+				UpdateWeaponRightVisibility();
+			}
 		}
 		else
 		{
@@ -123,7 +129,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		}
 		else
 		{
-			if (_interactionController._currentIThrowable == null)
+			if (_interactionController.CurrentIThrowable == null)
 			{
 				ShowBodyPart(_playerThirdPersonHandRight);
 				HideFirstPersonHand(_playerFirstPersonHandRight);

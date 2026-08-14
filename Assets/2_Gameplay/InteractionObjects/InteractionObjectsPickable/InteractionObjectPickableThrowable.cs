@@ -13,6 +13,8 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 	[SerializeField, Min(0)] private float _health;
 
+	private Coroutine _moveTowardsPlayerCoroutine;
+
 	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
 	public float CurrentHealth
 	{
@@ -46,6 +48,39 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Pickup");
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+
+		_playerCameraStateMachineController.OnFirstPersonCameraState += ChangeThrowableCameraStateFirst;
+		_playerCameraStateMachineController.OnThirdPersonCameraState += ChangeThrowableCameraStateThird;
+	}
+
+	private void ChangeThrowableCameraStateFirst()
+	{
+		if (IsObjectPickedUp)
+		{
+			gameObject.layer = LayerMask.NameToLayer("FirstPerson");
+
+			StopAllCoroutines();
+			_moveTowardsPlayerCoroutine = null;
+
+			transform.parent = _firstPersonRightHandWeaponSlotGameObject.transform;
+			transform.position = _firstPersonRightHandWeaponSlotGameObject.transform.position;
+			transform.rotation = Quaternion.Euler(0, _firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		}
+	}
+
+	private void ChangeThrowableCameraStateThird()
+	{
+		if (IsObjectPickedUp)
+		{
+			gameObject.layer = LayerMask.NameToLayer("Default");
+
+			StopAllCoroutines();
+			_moveTowardsPlayerCoroutine = null;
+
+			transform.parent = _thirdPersonRightHandWeaponSlotGameObject.transform;
+			transform.position = _thirdPersonRightHandWeaponSlotGameObject.transform.position;
+			transform.rotation = Quaternion.Euler(0, _thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		}
 	}
 
 	public override void PickUpObject()
@@ -60,11 +95,11 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
-				StartCoroutine(MoveTowardsRightHandFirstPerson());
+				_moveTowardsPlayerCoroutine = StartCoroutine(MoveTowardsRightHandFirstPerson());
 			}
 			else
 			{
-				StartCoroutine(MoveTowardsRightHandThirdPerson());
+				_moveTowardsPlayerCoroutine = StartCoroutine(MoveTowardsRightHandThirdPerson());
 			}
 
 			IsObjectPickedUp = true;
@@ -101,6 +136,8 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		throwDirection.Normalize();
 
 		RigidBody.AddForce(throwDirection * ObjectThrowPower, ForceMode.Impulse);
+
+		gameObject.layer = LayerMask.NameToLayer("Default");
 	}
 
 	public void TakeDamage(float amount)
@@ -121,6 +158,8 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	
 	private IEnumerator MoveTowardsRightHandFirstPerson()
 	{
+		gameObject.layer = LayerMask.NameToLayer("FirstPerson");
+
 		while (true)
 		{
 			Vector3 targetPosition = _firstPersonRightHandWeaponSlotGameObject.transform.position;

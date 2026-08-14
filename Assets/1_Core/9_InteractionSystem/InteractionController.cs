@@ -50,7 +50,7 @@ public class InteractionController : MonoBehaviour
 	private IGainedItem _lookedAtIGainedItem;
 
 	private IPickable _currentIPickable;
-	public IThrowable _currentIThrowable {  get; private set; }
+	public IThrowable CurrentIThrowable {  get; private set; }
 
 	private RaycastHit _hitObject;
 	private bool _isInteractionObjectLookedAt;
@@ -216,7 +216,7 @@ public class InteractionController : MonoBehaviour
 	private void PickUpPickableObject()
 	{
 		_currentIPickable = CurrentPickableObject.GetComponent<IPickable>();
-		_currentIThrowable = CurrentPickableObject.GetComponent<IThrowable>();
+		CurrentIThrowable = CurrentPickableObject.GetComponent<IThrowable>();
 
 		//Debug.Log(_currentIPickable);
 		//Debug.Log(_currentIThrowable);
@@ -227,11 +227,11 @@ public class InteractionController : MonoBehaviour
 			_changedPickedUpState = true;
 		}
 	
-		if (_currentIThrowable != null)
+		if (CurrentIThrowable != null)
 		{
 			OnPickUpThrowable?.Invoke(_currentIPickable.PickableType);
 			_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}\n{_HUDInteractionThrowText} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackRightHand)}";
-			ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
+			//ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("FirstPerson"));
 		}
 		else
 		{
@@ -249,7 +249,7 @@ public class InteractionController : MonoBehaviour
 		CurrentPickableObject = null;
 		ChangeInteractionRange();
 		//Debug.Log(_playerBehaviour.WasPlayerArmed);
-		if (_currentIThrowable == null)
+		if (CurrentIThrowable == null)
 		{
 			OnGetRidOfNonThrowable?.Invoke();
 
@@ -260,7 +260,7 @@ public class InteractionController : MonoBehaviour
 		}
 		else
 		{
-			_currentIThrowable = null;
+			CurrentIThrowable = null;
 
 			OnGetRidOfThrowable?.Invoke();
 
@@ -274,9 +274,9 @@ public class InteractionController : MonoBehaviour
 	private void ThrowThrowable()
 	{
 		OnGetRidOfThrowable?.Invoke();
-		_currentIThrowable.ThrowObject();
+		CurrentIThrowable.ThrowObject();
 		_currentIPickable = null;
-		_currentIThrowable = null;
+		CurrentIThrowable = null;
 		_changedPickedUpState = false;
 		CurrentPickableObject = null;
 		ChangeInteractionRange();
@@ -309,7 +309,7 @@ public class InteractionController : MonoBehaviour
 		}
 		else
 		{
-			if (_currentIPickable != null || _currentIThrowable != null)
+			if (_currentIPickable != null || CurrentIThrowable != null)
 			{
 		
 			}
@@ -327,7 +327,7 @@ public class InteractionController : MonoBehaviour
 				DropPickable();
 			}
 
-			if (_inputDevice.GetKeyRightHandWeaponAttack() && _currentIThrowable != null)
+			if (_inputDevice.GetKeyRightHandWeaponAttack() && CurrentIThrowable != null)
 			{
 				ThrowThrowable();
 			}
@@ -413,7 +413,10 @@ public class InteractionController : MonoBehaviour
 		{
 			if (_currentInteractableObject != null)
 			{
-				ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Default"));
+				if (CurrentIThrowable == null)
+				{
+					ChangeLayerRecursively(_currentInteractableObject, LayerMask.NameToLayer("Default"));
+				}
 
 				if (_showAdditionalHintCoroutine != null)
 				{

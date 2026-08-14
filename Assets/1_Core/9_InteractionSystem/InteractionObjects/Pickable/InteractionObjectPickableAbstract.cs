@@ -145,6 +145,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	{
 		Debug.Log($"Dropped off {InteractionObjectNameSystem}");
 		gameObject.tag = "Interactable";
+		gameObject.layer = LayerMask.NameToLayer("Default");
 		Collider.enabled = true;
 		RigidBody.isKinematic = false;
 		IsObjectPickedUp = false;

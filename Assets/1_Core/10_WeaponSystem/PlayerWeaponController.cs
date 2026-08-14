@@ -229,7 +229,10 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	{
 		if (RightHandWeaponComponent != null)
 		{
-			ShowWeapon(WeaponHandsEnum.Right); 
+			if (_interactionController.CurrentIThrowable == null)
+			{
+				ShowWeapon(WeaponHandsEnum.Right);
+			}
 		}
 
 		if (LeftHandWeaponComponent != null)
