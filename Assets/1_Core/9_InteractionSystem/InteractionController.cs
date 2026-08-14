@@ -50,7 +50,7 @@ public class InteractionController : MonoBehaviour
 	private IGainedItem _lookedAtIGainedItem;
 
 	private IPickable _currentIPickable;
-	private IThrowable _currentIThrowable;
+	public IThrowable _currentIThrowable {  get; private set; }
 
 	private RaycastHit _hitObject;
 	private bool _isInteractionObjectLookedAt;

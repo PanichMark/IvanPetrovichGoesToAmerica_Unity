@@ -9,7 +9,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 	private PlayerWeaponAnimationController _weaponAnimationController;
 	private GameScenesManager _gameSceneManager;
 
-
+	private InteractionController _interactionController;
 	private GameObject _playerFirstPersonHandRight;
 	private GameObject _playerFirstPersonHandLeft;
 	private GameObject _playerThirdPersonHandRight;
@@ -18,6 +18,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 	public void Initialize(
 		GameScenesManager gameSceneManager,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
+		InteractionController interactionController,
 		PlayerWeaponController weaponController,
 		PlayerWeaponAnimationController weaponAnimationController,
 		GameObject playerFirstPersonHandRight,
@@ -27,6 +28,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 	{
 		_gameSceneManager = gameSceneManager;
 		_playerCameraStateMachine = playerCameraStateMachineController;
+		_interactionController = interactionController;
 		_weaponController = weaponController;
 		_weaponAnimationController = weaponAnimationController;
 
@@ -121,8 +123,11 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		}
 		else
 		{
-			ShowBodyPart(_playerThirdPersonHandRight);
-			HideFirstPersonHand(_playerFirstPersonHandRight);
+			if (_interactionController._currentIThrowable == null)
+			{
+				ShowBodyPart(_playerThirdPersonHandRight);
+				HideFirstPersonHand(_playerFirstPersonHandRight);
+			}
 		}
 	}
 

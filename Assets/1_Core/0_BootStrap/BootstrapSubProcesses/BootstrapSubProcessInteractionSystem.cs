@@ -9,18 +9,23 @@ public class BootstrapSubProcessInteractionSystem
 	private GameController _gameController;
 	private IInputDevice _inputDevice;
 	private LocalizationManager _localizationManager;
-
+	private GameObject _playerFirstPersonHandRight;
+	private GameObject _playerThirdPersonHandRight;
 	private GameScenesManager _gameSceneManager;
 	public GameObject GameObjectSpineSlot {  get; private set; }
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerCameraController _playerCameraController;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
+	private InteractionFirstPersonRenderer _interactionFirstPersonRenderer;
+
 	private GameObject _gameObjectBootstrapInteractionSystem;
 	public InteractionController InteractionController { get; private set; }
 	private InteractionAnimationController _interactionAnimationController;
 
 	private GameObject _gameObjectPlayer;
+	private GameObject _gameObjectPlayerCamera;
+
 	private KeysManager _keysManager;
 
 	public BootstrapSubProcessInteractionSystem(
@@ -31,7 +36,8 @@ public class BootstrapSubProcessInteractionSystem
 		GameController gameController,
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
-		GameObject gameObjectPlayer)
+		GameObject gameObjectPlayer,
+		GameObject gameObjectPlayerCamera)
 	{
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
@@ -43,7 +49,11 @@ public class BootstrapSubProcessInteractionSystem
 		_playerCameraController = bootstrapSubProcessPlayerSystems.PlayerCameraController;
 		_playerCameraStateMachineController = bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController;
 
+		_playerFirstPersonHandRight = bootstrapSubProcessPlayerSystems.GameObjectPlayerFirstPersonHandRight;
+		_playerThirdPersonHandRight = bootstrapSubProcessPlayerSystems.GameObjectPlayerThirdPersonHandRight;
+
 		_gameObjectPlayer = gameObjectPlayer;
+		_gameObjectPlayerCamera = gameObjectPlayerCamera;
 	}
 
 	public IEnumerator Initialize()
@@ -52,6 +62,7 @@ public class BootstrapSubProcessInteractionSystem
 
 		InteractionController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionController>();
 		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
+		_interactionFirstPersonRenderer = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionFirstPersonRenderer>();
 
 		GameObjectSpineSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Spine");
 
@@ -71,7 +82,15 @@ public class BootstrapSubProcessInteractionSystem
 
 		_interactionAnimationController.Initialize
 			(InteractionController,
-			_gameObjectPlayer);
+			_gameObjectPlayer,
+			_gameObjectPlayerCamera);
+
+		_interactionFirstPersonRenderer.Initialize(
+			_gameSceneManager,
+			_playerCameraStateMachineController,
+			InteractionController,
+			_playerFirstPersonHandRight,
+			_playerThirdPersonHandRight);
 
 		_keysManager = new KeysManager();
 

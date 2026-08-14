@@ -310,7 +310,8 @@ public class Bootstrap : MonoBehaviour
 			_gameController,
 			_inputDevice,
 			LocalizationManager,
-			_gameObjectPlayer);
+			_gameObjectPlayer,
+			GameObjectPlayerCamera);
 
 		yield return StartCoroutine(_bootstrapSubProcessInteractionSystem.Initialize());
 

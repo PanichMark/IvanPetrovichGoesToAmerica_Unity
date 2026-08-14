@@ -9,9 +9,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	private bool _canObjectBeDestroyedOnImpact;
 	public bool IsObjectDestroyed => _wasObjectDestroyed;
 	public float ObjectThrowPower => 10f;
-
-	private bool _isItFirstPerson;
-	//private GameObject _firstPersonRightHandWeaponSlotGameObject;
+	private GameObject _firstPersonRightHandWeaponSlotGameObject;
 
 	[SerializeField, Min(0)] private float _health;
 
@@ -31,29 +29,13 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
-	private void OnDestroy()
-	{
-		/*
-		_playerCameraStateMachineController.OnFirstPersonCameraState -= () =>
-		{
-			ThrowableObjectToFirstPerson();
-			_isItFirstPerson = true;
-		};
-		*/
-		_playerCameraStateMachineController.OnThirdPersonCameraState -= () =>
-		{
-			ThrowableObjectToThirdPerson();
-			_isItFirstPerson = false;
-		};
-	}
-
 	private void Start()
 	{
 		_pickableLayer = LayerMask.NameToLayer("Pickable");
 		_playerLayer = LayerMask.NameToLayer("Player");
 		_playerColliderGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
 		_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
-		//_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
+		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
 		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonRightHandWeaponSlotGameObject");
 		Collider = GetComponent<Collider>();
 		RigidBody = GetComponent<Rigidbody>();
@@ -61,45 +43,9 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
 
-		/*
-		_playerCameraStateMachineController.OnFirstPersonCameraState += () =>
-		{
-			ThrowableObjectToFirstPerson();
-			_isItFirstPerson = true;
-		};
-		*/
-
-		_playerCameraStateMachineController.OnThirdPersonCameraState += () =>
-		{
-			ThrowableObjectToThirdPerson();
-			_isItFirstPerson = false;
-		};
-
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Pickup");
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
-	}
-
-	/*
-	private void ThrowableObjectToFirstPerson()
-	{
-		if (IsObjectPickedUp)
-		{
-			transform.parent = _firstPersonRightHandWeaponSlotGameObject.transform;
-			transform.position = _firstPersonRightHandWeaponSlotGameObject.transform.position;
-			transform.rotation = Quaternion.Euler(0, _firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
-		}
-	}
-	*/
-
-	private void ThrowableObjectToThirdPerson()
-	{
-		if (IsObjectPickedUp)
-		{
-			transform.parent = _thirdPersonRightHandWeaponSlotGameObject.transform;
-			transform.position = _thirdPersonRightHandWeaponSlotGameObject.transform.position;
-			transform.rotation = Quaternion.Euler(0, _thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
-		}
 	}
 
 	public override void PickUpObject()
@@ -112,8 +58,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			Collider.enabled = false;
 			RigidBody.isKinematic = true;
 
-			/*
-			if (_isItFirstPerson)
+			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
 				StartCoroutine(MoveTowardsRightHandFirstPerson());
 			}
@@ -121,9 +66,6 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			{
 				StartCoroutine(MoveTowardsRightHandThirdPerson());
 			}
-			*/
-
-			StartCoroutine(MoveTowardsRightHandThirdPerson());
 
 			IsObjectPickedUp = true;
 		}
@@ -176,8 +118,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 		Destroy(gameObject);
 	}
-
-	/*
+	
 	private IEnumerator MoveTowardsRightHandFirstPerson()
 	{
 		while (true)
@@ -198,7 +139,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		transform.position = _firstPersonRightHandWeaponSlotGameObject.transform.position;
 		transform.rotation = Quaternion.Euler(0, _firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
 	}
-	*/
+	
 
 	private IEnumerator MoveTowardsRightHandThirdPerson()
 	{
