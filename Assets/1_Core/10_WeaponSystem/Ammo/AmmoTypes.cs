@@ -1,5 +1,6 @@
 ﻿public enum AmmoTypes
 {
 	Ammo9mm,
-	Ammo12gauge
+	Ammo12gauge,
+	AmmoTranquilizerDart
 }

@@ -281,6 +281,12 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -8588750164135705554}
     m_Position: {x: 660, y: 190, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 4080563102934602768}
+    m_Position: {x: 870, y: 190, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 6143251698065908221}
+    m_Position: {x: 870, y: 140, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -598,6 +604,32 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 50, y: 200, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 8779646177976621909}
+--- !u!1102 &-4641513417821661935
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ranged_Tranquilizer_Attack_Right
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 575897497876172205, guid: 5b0c3c88754127e40be030cd9ea3250f, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &-4636103935489475076
 AnimatorState:
   serializedVersion: 6
@@ -1668,6 +1700,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &4080563102934602768
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ranged_Tranquilizer_Reload_Right
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: -3905490389092394180, guid: 5b0c3c88754127e40be030cd9ea3250f, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1107 &4167858689886343810
 AnimatorStateMachine:
   serializedVersion: 6
@@ -1694,7 +1752,7 @@ AnimatorStateMachine:
     m_Position: {x: 870, y: 140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4939472424073640615}
-    m_Position: {x: 1710, y: 190, z: 0}
+    m_Position: {x: 1920, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3991030865665670680}
     m_Position: {x: 1080, y: 190, z: 0}
@@ -1709,13 +1767,19 @@ AnimatorStateMachine:
     m_Position: {x: 450, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2959403835033896676}
-    m_Position: {x: 1500, y: 190, z: 0}
+    m_Position: {x: 1710, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1497616515351175271}
-    m_Position: {x: 1290, y: 140, z: 0}
+    m_Position: {x: 1500, y: 140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6776289095253021473}
+    m_Position: {x: 1500, y: 190, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 9092558753787068932}
     m_Position: {x: 1290, y: 190, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -4641513417821661935}
+    m_Position: {x: 1290, y: 140, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -1752,7 +1816,7 @@ AnimatorStateMachine:
     m_Position: {x: 870, y: 140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7365012177490038766}
-    m_Position: {x: 1710, y: 190, z: 0}
+    m_Position: {x: 1920, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7957757846812575112}
     m_Position: {x: 1080, y: 190, z: 0}
@@ -1767,13 +1831,19 @@ AnimatorStateMachine:
     m_Position: {x: 450, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3713978833326673063}
-    m_Position: {x: 1500, y: 190, z: 0}
+    m_Position: {x: 1710, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2582575963060892293}
-    m_Position: {x: 1290, y: 140, z: 0}
+    m_Position: {x: 1500, y: 140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3203361942461595660}
+    m_Position: {x: 1500, y: 190, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 8230430049606909330}
     m_Position: {x: 1290, y: 190, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 6584682700584109660}
+    m_Position: {x: 1290, y: 140, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -2020,6 +2090,32 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -1998522619071542797}
+--- !u!1102 &6143251698065908221
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ranged_Tranquilizer_Reload_Left
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 2951640445382376687, guid: 5b0c3c88754127e40be030cd9ea3250f, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &6264762161900805741
 AnimatorState:
   serializedVersion: 6
@@ -2041,6 +2137,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7610416588624343347, guid: f5bfa86c022ad974e8b351564a00cedf, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &6584682700584109660
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ranged_Tranquilizer_Attack_Left
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 1542928082660125268, guid: 5b0c3c88754127e40be030cd9ea3250f, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2203,6 +2325,32 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 50, y: 200, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 5481999747441786176}
+--- !u!1102 &8230430049606909330
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ranged_Tranquilizer_Hold_Left
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: -2649879104543286383, guid: 5b0c3c88754127e40be030cd9ea3250f, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &8234408590569380862
 AnimatorState:
   serializedVersion: 6
@@ -2328,6 +2476,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 0}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &9092558753787068932
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ranged_Tranquilizer_Hold_Right
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 5810373069792221950, guid: 5b0c3c88754127e40be030cd9ea3250f, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

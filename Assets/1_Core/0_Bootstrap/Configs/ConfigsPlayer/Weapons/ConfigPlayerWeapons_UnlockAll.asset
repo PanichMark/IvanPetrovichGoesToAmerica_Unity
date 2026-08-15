@@ -15,7 +15,7 @@ MonoBehaviour:
   AvailableWeapons:
   - WeaponPrefab: {fileID: 4834892234495708273, guid: 49643d32c6595304f84297c5ab491994, type: 3}
     IsWeaponUnlocked: 1
-  - WeaponPrefab: {fileID: 7702790595763287087, guid: e058f2d8ec2b79d48ae6844d4f7b2f4d, type: 3}
+  - WeaponPrefab: {fileID: 4834892234495708273, guid: a37b306fc0c06d04caaf0c9d04ffb7c1, type: 3}
     IsWeaponUnlocked: 1
   - WeaponPrefab: {fileID: 2151144761444843108, guid: 6226550dd22049a4c99bce4bd2cf49ff, type: 3}
     IsWeaponUnlocked: 1
@@ -28,4 +28,6 @@ MonoBehaviour:
   - WeaponPrefab: {fileID: 2235938425154306676, guid: 365964d639e756047950d9cb38ee7afe, type: 3}
     IsWeaponUnlocked: 1
   - WeaponPrefab: {fileID: 6141407380874793440, guid: 8c327820676d5d2459974b0f29cfade5, type: 3}
+    IsWeaponUnlocked: 1
+  - WeaponPrefab: {fileID: 7702790595763287087, guid: e058f2d8ec2b79d48ae6844d4f7b2f4d, type: 3}
     IsWeaponUnlocked: 1

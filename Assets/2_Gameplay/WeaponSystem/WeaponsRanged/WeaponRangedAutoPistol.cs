@@ -12,6 +12,7 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 	public override float WeaponDamage => 20f;
 	public override bool IsWeaponAuto => true;
 	protected override float _weaponRange => 30f;
+	public override bool LeavesBulletHole => true;
 	public override bool IsReloadingAnimationSingle => true;
 
 	private SkinnedMeshRenderer _bergmann1stPersonGunMesh;

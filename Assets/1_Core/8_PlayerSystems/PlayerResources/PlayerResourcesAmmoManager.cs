@@ -51,7 +51,8 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 	{	
 		_ammoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo9mm, AmmoMax = 999, AmmoReserve = 100 };
 		_ammoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo12gauge, AmmoMax = 999, AmmoReserve = 30 };
-	
+		_ammoDictionary[AmmoTypes.AmmoTranquilizerDart] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.AmmoTranquilizerDart, AmmoMax = 999, AmmoReserve = 10 };
+
 		_weaponsRangedDictionary[WeaponNames.Revolver] = new WeaponRangedData
 		{
 			RagnedWeaponSystem = WeaponNames.Revolver,
@@ -73,7 +74,14 @@ public class PlayerResourcesAmmoManager : MonoBehaviour, ISaveLoad
 			MagazineAmmoMax = 2,
 			MagazineAmmoCurrent = 2
 		};
-			
+		_weaponsRangedDictionary[WeaponNames.Tranquilizer] = new WeaponRangedData
+		{
+			RagnedWeaponSystem = WeaponNames.Tranquilizer,
+			AmmoTypeSystem = AmmoTypes.AmmoTranquilizerDart,
+			MagazineAmmoMax = 1,
+			MagazineAmmoCurrent = 1
+		};
+
 		Debug.Log("PlayerResourcesAmmoManager Initialized");
 	}
 

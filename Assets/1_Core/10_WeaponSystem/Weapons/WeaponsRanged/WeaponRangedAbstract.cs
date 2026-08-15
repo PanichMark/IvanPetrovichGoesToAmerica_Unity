@@ -14,6 +14,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected abstract float _waitForAmmoRefill { get; }
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
+
+	public abstract bool LeavesBulletHole {  get; }
 	protected bool _isWeaponPlayerShooting;
 	public abstract bool IsReloadingAnimationSingle { get; }
 	[SerializeField] protected GameObject _VFXmuzzleFlashEffect;
@@ -149,7 +151,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_currentWeaponPlayerAutoAttackCourutine = null;
 	}
 
-	protected abstract IEnumerator OnSpecificShootMechanics();
+	protected virtual IEnumerator OnSpecificShootMechanics()
+	{
+		yield return null;
+	}
 
 	protected IEnumerator ShootWeaponPlayer(float weaponDamage)
 	{
@@ -169,7 +174,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			}
 		}
 
-		SpawnMuzzleVFX();
+		if (_VFXmuzzleFlashEffect != null)
+		{
+			SpawnMuzzleVFX();
+		}
+
 		PlayerMagazineAmmoCurrent--;
 		StartCoroutine(OnSpecificShootMechanics());
 
@@ -266,7 +275,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 			//Debug.Log($"[BaseWeapon] Spawning decal on: {targetHit.collider.name} at {targetHit.point}. Blood: {isBloodTarget}");
 
-			_bulletHoleManager.SpawnDecal(targetHit.point, rot, isBloodTarget, targetHit.transform);
+			if (LeavesBulletHole)
+			{
+				_bulletHoleManager.SpawnDecal(targetHit.point, rot, isBloodTarget, targetHit.transform);
+			}
 		}
 		else
 		{
@@ -362,5 +374,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 	protected abstract void InitializeWeaponRanged();
 
-	protected abstract void ApplyWeaponRecoil();
+	protected virtual void ApplyWeaponRecoil()
+	{
+
+	}
 }

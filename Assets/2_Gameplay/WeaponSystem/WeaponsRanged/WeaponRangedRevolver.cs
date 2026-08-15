@@ -10,6 +10,7 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 	public override float WeaponDamage => 34f;
 	public override bool IsWeaponAuto => false;
 	public override float WeaponAttackSpeedRate => 0.167f;
+	public override bool LeavesBulletHole => true;
 
 	[SerializeField] protected AudioClip _weaponSoundCartridgeEject;
 	[SerializeField] protected AudioClip _weaponSoundCartridgeInsert;

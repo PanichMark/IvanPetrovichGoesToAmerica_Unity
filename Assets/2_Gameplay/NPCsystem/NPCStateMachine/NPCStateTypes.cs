@@ -20,6 +20,7 @@
 	ElectroShocked,
 	Falling,
 	StandingUp,
+	Dizzy,
 	Unconscious,
 	Dead
 }

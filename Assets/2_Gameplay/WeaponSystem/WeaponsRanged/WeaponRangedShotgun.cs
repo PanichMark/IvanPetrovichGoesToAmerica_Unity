@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,6 +17,9 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	private GameObject _shotgunBarrel1stPerson;
 	private GameObject _shotgunBarrel3rdPerson;
 	protected override float _weaponRange => 15f;
+
+	public override bool LeavesBulletHole => true;
+
 	private GameObject _shellRight1stPerson;
 	private GameObject _shellLeft1stPerson;
 	private GameObject _shellRight3rdPerson;
@@ -240,7 +242,7 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 			GameObject ejectedShellRight = Instantiate(_shellRight3rdPerson, _shellRight3rdPerson.transform.position, _shellRight3rdPerson.transform.rotation);
 			ejectedShellRight.transform.SetParent(null);
 			ejectedShellRight.layer = LayerMask.NameToLayer("Default");
-			SceneManager.MoveGameObjectToScene(ejectedShellRight, SceneManager.GetSceneByBuildIndex(1));
+			SceneManager.MoveGameObjectToScene(ejectedShellRight, SceneManager.GetSceneAt(1));
 
 			Renderer rendererRight = ejectedShellRight.GetComponent<Renderer>();
 			rendererRight.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
@@ -258,7 +260,7 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 				GameObject ejectedShellLeft = Instantiate(_shellLeft3rdPerson, _shellLeft3rdPerson.transform.position, _shellLeft3rdPerson.transform.rotation);
 				ejectedShellLeft.transform.SetParent(null);
 				ejectedShellLeft.layer = LayerMask.NameToLayer("Default");
-				SceneManager.MoveGameObjectToScene(ejectedShellLeft, SceneManager.GetSceneByBuildIndex(1));
+				SceneManager.MoveGameObjectToScene(ejectedShellLeft, SceneManager.GetSceneAt(1));
 
 				Renderer rendererLeft = ejectedShellLeft.GetComponent<Renderer>();
 				rendererLeft.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;

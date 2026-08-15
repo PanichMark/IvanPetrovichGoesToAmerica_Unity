@@ -5,6 +5,7 @@
 	Revolver,
 	AutoPistol,
 	Shotgun,
+	Tranquilizer,
 	TeslaShock,
 	GenieBreath,
 	Crossbow
