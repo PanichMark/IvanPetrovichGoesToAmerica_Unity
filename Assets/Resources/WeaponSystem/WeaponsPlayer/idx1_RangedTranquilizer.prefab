@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 2d1a959019dbcb449a33c5c9b791c947, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -219,8 +219,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 437dd1e0d88a25146b763c35ee73dd73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponIconBig: {fileID: 0}
-  _weaponIconSmall: {fileID: 0}
+  _weaponIconBig: {fileID: 21300000, guid: d4f9dd59a45848f49bddce846687e180, type: 3}
+  _weaponIconSmall: {fileID: 21300000, guid: 2e70bb0b1cd85254689de36cac946d94, type: 3}
   _weaponSoundAttack: {fileID: 0}
   _VFXmuzzleFlashEffect: {fileID: 0}
 --- !u!1 &5149340824586010826
@@ -287,7 +287,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 2d1a959019dbcb449a33c5c9b791c947, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
