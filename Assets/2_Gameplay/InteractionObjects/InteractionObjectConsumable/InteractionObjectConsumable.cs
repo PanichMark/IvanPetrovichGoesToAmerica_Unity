@@ -15,7 +15,7 @@ public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLo
 	public string InteractionObjectNameSystem => _ConsumableName;
 
 	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(InteractionObjectNameSystem);
-	private PlayerResourcesHealthManager _playerResourcesHealthManager;
+	private PlayerHealthController _playerResourcesHealthManager;
 	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	public string InteractionHintMessageAction => _interactionHintMessageAction;
 	private string _interactionHintMessageAction;
@@ -25,7 +25,7 @@ public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLo
 
 	private void Start()
 	{
-		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
+		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>("PlayerResourcesHealthManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		ConsumableObjectCollider = GetComponent<Collider>();
 		GameObjectPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuController
 {
-	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
+	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
 	private GameObject _weaponWheelMenuCanvas;
 	private Bootstrap _bootstrap;
 	private GameObject _playerCamera;
@@ -30,7 +30,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 	private bool _isWeaponLeftHand = false;
 	private WeaponRangedAbstract _weaponRangedAbstractRight;
 	private WeaponRangedAbstract _weaponRangedAbstractLeft;
-	public delegate void WeaponWheelMenuHandler(WeaponHandsEnum activeHand);
+	public delegate void WeaponWheelMenuHandler(WeaponHandType activeHand);
 	public event WeaponWheelMenuHandler OnOpenWeaponWheelMenu;
 	private GameObject _weaponIconImage;
 	private IInputDevice _inputDevice;
@@ -52,7 +52,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 		LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
-		PlayerResourcesAmmoManager playerResourcesAmmoManager,
+		PlayerWeaponAmmoController playerResourcesAmmoManager,
 		PlayerWeaponController weaponController,
 		GameObject weaponWheelMenuCanvas,
 		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel,
@@ -103,7 +103,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 		_textWeaponAmmoReserveNumber.SetActive(true);
 		_textWeaponAmmoSeparator.SetActive(true);
 
-		WeaponNames newKey = (WeaponNames)System.Enum.Parse(typeof(WeaponNames), weaponComponent.WeaponName.ToString());
+		PlayerWeaponNames newKey = (PlayerWeaponNames)System.Enum.Parse(typeof(PlayerWeaponNames), weaponComponent.WeaponName.ToString());
 
 		if (_playerResourcesAmmoManager.WeaponsRangedDictionary.TryGetValue(newKey, out var newData))
 		{
@@ -285,7 +285,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 		if (rightHandPressed)
 		{
 			_isWeaponLeftHand = false;
-			OnOpenWeaponWheelMenu?.Invoke(WeaponHandsEnum.Right);
+			OnOpenWeaponWheelMenu?.Invoke(WeaponHandType.Right);
 			ShowWeaponWheelMenuCanvas();
 		
 			ShowWeaponName();
@@ -296,7 +296,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 		else if (leftHandPressed)
 		{
 			_isWeaponLeftHand = true;
-			OnOpenWeaponWheelMenu?.Invoke(WeaponHandsEnum.Left);
+			OnOpenWeaponWheelMenu?.Invoke(WeaponHandType.Left);
 			ShowWeaponWheelMenuCanvas();
 		
 			ShowWeaponName();

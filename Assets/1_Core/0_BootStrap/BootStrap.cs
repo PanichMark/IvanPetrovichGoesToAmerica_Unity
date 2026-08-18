@@ -63,9 +63,9 @@ public class Bootstrap : MonoBehaviour
 	private BootstrapSubProcessSaveLoadSystem _bootstrapSubProcessSaveLoadSystem;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 	private BootstrapSubProcessPlayerPrefsSystem _bootstrapSubProcessPlayerPrefsSystem;
-	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
-	private BootstrapSubProcessPlayerInteractionSystem _bootstrapSubProcessInteractionSystem;
-	private BootstrapSubProcessPlayerWeaponSystem _bootstrapSubProcessWeaponSystem;
+	private BootstrapSubProcessPlayerCoreSystems _bootstrapSubProcessPlayerSystems;
+	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
+	private BootstrapSubProcessWeaponSystem _bootstrapSubProcessWeaponSystem;
 	private BootstrapSubProcessMissionsSystem _bootstrapSubProcessMissionsSystem;
 	private BootstrapSubProcessObjectPoolSystem _bootstrapSubProcessObjectPoolSystem;
 
@@ -279,7 +279,7 @@ public class Bootstrap : MonoBehaviour
 		_gameObjectPlayer = Instantiate((GameObject)Resources.Load("1_Bootstrap/Player/Bootstrap_PlayerGameObject"));
 		GameObjectPlayerCamera = Instantiate((GameObject)Resources.Load("1_Bootstrap/Player/Bootstrap_PlayerCameraGameObject"));
 
-		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(
+		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerCoreSystems(
 			this,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
@@ -296,7 +296,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeInteractionSystem()
 	{
-		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessPlayerInteractionSystem(
+		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessInteractionSystem(
 			this,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
@@ -314,7 +314,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeWeaponSystem()
 	{
-		_bootstrapSubProcessWeaponSystem = new BootstrapSubProcessPlayerWeaponSystem(
+		_bootstrapSubProcessWeaponSystem = new BootstrapSubProcessWeaponSystem(
 			this,
 			_gameController,
 			_inputDevice,
@@ -512,7 +512,7 @@ public class Bootstrap : MonoBehaviour
 		{
 			foreach (var ammoEntry in startAmmoEntries)
 			{
-				_bootstrapSubProcessPlayerSystems.PlayerResourcesAmmoManager.SetNewInitialAmmo(
+				_bootstrapSubProcessWeaponSystem.PlayerResourcesAmmoManager.SetNewInitialAmmo(
 					ammoEntry.AmmoType,
 					ammoEntry.StartAmount
 				);

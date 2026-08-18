@@ -18,7 +18,7 @@ public interface IWeaponWheelMenuController
 		LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
-		PlayerResourcesAmmoManager playerResourcesAmmoManager,
+		PlayerWeaponAmmoController playerResourcesAmmoManager,
 		PlayerWeaponController weaponController,
 		GameObject weaponWheelMenuCanvas,
 		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel,

@@ -1,0 +1,110 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public abstract class WeaponEugenicAbstract : WeaponAbstract
+{
+	public abstract int ManaCost {  get; }
+	protected bool _isAttacking;
+	protected GameObject _eugenicSourcePoint;
+	protected GameObject _eugenicAttackDirection;
+
+	protected PlayerManaController _playerResourcesManaManager;
+	protected Coroutine _currentWeaponPlayerEugenicAttackRoutine;
+
+	[SerializeField] protected GameObject _VFXeffect;
+	protected Transform _VFXspawnPoint;
+	protected GameObject _vfxInstance;
+	public override void InitializeWeapon()
+	{
+		if (_isThisPlayerWeapon == true)
+		{
+			_eugenicAttackDirection = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
+			_eugenicSourcePoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
+
+			_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>("PlayerResourcesManaManager");
+		}
+
+		InitializeWeaponEugenic();
+	}
+
+	public override void WeaponAttack()
+	{
+		if (_playerResourcesManaManager.CurrentPlayerMana >= ManaCost)
+		{
+			if (_isAttacking)
+			{
+				Debug.Log("Already attacking eugenic");
+				return;
+			}
+
+			if (IsWeaponAuto)
+			{
+				StartAutoAttackingWeaponPlayer();
+			}
+			else
+			{
+				_isAttacking = true;
+				StartCoroutine(SingleEugenicAttack());
+			}
+		}
+
+	}
+
+	public override void StartAutoAttackingWeaponPlayer()
+	{
+		if (_isWeaponPlayerAutoAttacking) return;
+		_isWeaponPlayerAutoAttacking = true;
+		if (_currentWeaponPlayerAutoAttackCourutine == null)
+		{
+			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
+		}
+	}
+
+	public override void StopAutoAttacking()
+	{
+		_isWeaponPlayerAutoAttacking = false;
+		if (_currentWeaponPlayerAutoAttackCourutine != null)
+		{
+			//TurnEugenicVFXOff();
+
+			StopCoroutine(_currentWeaponPlayerAutoAttackCourutine);
+			_currentWeaponPlayerAutoAttackCourutine = null;
+		}
+	}
+
+	public abstract void TurnEugenicVFXOff();
+
+	public override IEnumerator AutoAttackWeaponPlayerCourutine()
+	{
+		while (true)
+		{
+			if (!_isWeaponPlayerAutoAttacking)
+			{
+				break;
+			}
+
+			StartCoroutine(SingleEugenicAttack());
+
+			yield return new WaitForSeconds(WeaponAttackSpeedRate);
+
+			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
+			{
+				_isWeaponPlayerAutoAttacking = false;
+				break;
+			}
+		}
+		_currentWeaponPlayerAutoAttackCourutine = null;
+	}
+
+	protected virtual IEnumerator SingleEugenicAttack()
+	{
+		yield return null;
+	}
+
+	protected abstract void InitializeWeaponEugenic();
+
+	private void OnDestroy()
+	{
+		//TurnEugenicVFXOff();
+	}
+}

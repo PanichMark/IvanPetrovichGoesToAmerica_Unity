@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.CircularSaw;
+	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.CircularSaw;
 	public override WeaponTypes WeaponType => WeaponTypes.Melee;
 	public override float WeaponDamage => 15f;
 	public override bool IsWeaponAuto => true;
@@ -110,7 +110,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 		float rotationSpeed = 100f;
 		float elapsed = 0f;
 
-		if (WeaponHandType == WeaponHandsEnum.Right)
+		if (WeaponHandType == WeaponHandType.Right)
 		{
 			while (elapsed < rotationDuration)
 			{

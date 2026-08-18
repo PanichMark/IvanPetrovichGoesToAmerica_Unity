@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.GenieBreath;
+	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.GenieBreath;
 	public override WeaponTypes WeaponType => WeaponTypes.Eugenic;
 	public override float WeaponDamage => 100;
 	public override int ManaCost => 0;

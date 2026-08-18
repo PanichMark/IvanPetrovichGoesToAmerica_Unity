@@ -3,11 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class TESTdealDamageToPlayer : MonoBehaviour
 {
-	private PlayerResourcesHealthManager _playerResourcesHealthManager;
+	private PlayerHealthController _playerResourcesHealthManager;
 
 	private void Start()
 	{
-		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
+		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>("PlayerResourcesHealthManager");
 	}
 
 	void Update()

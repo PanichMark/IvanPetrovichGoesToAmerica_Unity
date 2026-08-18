@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.TeslaShock;
+	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.TeslaShock;
 	public override WeaponTypes WeaponType => WeaponTypes.Eugenic;
 	public override float WeaponDamage => 5;
 	public override int ManaCost => 0;

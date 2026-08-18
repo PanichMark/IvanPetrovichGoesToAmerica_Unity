@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WeaponRangedTranquilizer : WeaponRangedAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.Tranquilizer;
+	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Tranquilizer;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.AmmoTranquilizerDart;
 	public override float WeaponDamage => 0;

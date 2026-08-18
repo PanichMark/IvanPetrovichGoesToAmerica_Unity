@@ -51,7 +51,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	private float _maxHookDistance = 20f;
 	private float _projectileSpeed = 15f;
 
-	public override WeaponNames WeaponName => WeaponNames.Crossbow;
+	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Crossbow;
 	public override WeaponTypes WeaponType => WeaponTypes.Special;
 	public override float WeaponDamage => 0;
 

@@ -4,7 +4,7 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 {
 	private bool _isInteractionHintMessageFailActive;
 	public override bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
-	private PlayerResourcesManaManager _playerResourcesManaManager;
+	private PlayerManaController _playerResourcesManaManager;
 
 	[SerializeField] Sprite _lootObjectIcon;
 	public override Sprite LootObjectIcon => _lootObjectIcon;
@@ -44,7 +44,7 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 
 	protected override void SetUpLootObjectReferences()
 	{
-		_playerResourcesManaManager = ServiceLocator.Resolve<PlayerResourcesManaManager>("PlayerResourcesManaManager");
+		_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>("PlayerResourcesManaManager");
 		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }

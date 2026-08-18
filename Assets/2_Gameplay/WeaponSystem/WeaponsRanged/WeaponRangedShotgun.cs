@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class WeaponRangedShotgun : WeaponRangedAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.Shotgun;
+	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Shotgun;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo12gauge;
 	public override float WeaponDamage => 20f;
@@ -87,7 +87,7 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
-		if (System.Enum.TryParse(WeaponName.ToString(), out WeaponNames parsedWeaponType))
+		if (System.Enum.TryParse(WeaponName.ToString(), out PlayerWeaponNames parsedWeaponType))
 		{
 			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.AmmoReserve);
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);

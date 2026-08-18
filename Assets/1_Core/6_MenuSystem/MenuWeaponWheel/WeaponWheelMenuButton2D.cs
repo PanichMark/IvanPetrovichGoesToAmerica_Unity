@@ -44,9 +44,9 @@ public class WeaponWheelMenuButton2D : MonoBehaviour
 		//Debug.Log("NEW BUTTON!!!!!");
 	}
 
-	private void OnOpenWeaponWheel(WeaponHandsEnum activeHand)
+	private void OnOpenWeaponWheel(WeaponHandType activeHand)
 	{
-		if (activeHand == WeaponHandsEnum.Left)
+		if (activeHand == WeaponHandType.Left)
 		{
 			_previousWeapon = _weaponController.LeftHandWeapon;
 		}
@@ -57,15 +57,15 @@ public class WeaponWheelMenuButton2D : MonoBehaviour
 		HandleOnWeaponChanged(activeHand);
 	}
 
-	private void OnWeaponChange(WeaponHandsEnum activeHand)
+	private void OnWeaponChange(WeaponHandType activeHand)
 	{
 		HandleOnWeaponChanged(activeHand);
 		_previousWeapon = _currentWeapon;
 	}
 
-	private void HandleOnWeaponChanged(WeaponHandsEnum activeHand)
+	private void HandleOnWeaponChanged(WeaponHandType activeHand)
 	{
-		if (activeHand == WeaponHandsEnum.Left)
+		if (activeHand == WeaponHandType.Left)
 		{
 			_currentWeapon = _weaponController.LeftHandWeapon;
 		}

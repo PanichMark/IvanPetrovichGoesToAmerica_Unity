@@ -17,7 +17,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 	[SerializeField] private string _moneyType;
 	private string _moneyForUI;
 	public event IInteractable.InteractableObjectHandler OnInteract;
-	private PlayerResourcesMoneyManager _playerResourcesMoneyManager;
+	private PlayerMoneyController _playerResourcesMoneyManager;
 	private bool _isAdditionalInteractionHintActive;
 	private LocalizationManager _localizationManager;
 
@@ -37,7 +37,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 
 		_goodsComponent = _goodsForSale.GetComponent<InteractionObjectLootAbstract>();
 
-		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerResourcesMoneyManager>("PlayerResourcesMoneyManager");
+		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerMoneyController>("PlayerResourcesMoneyManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
 		_moneyForUI = _localizationManager.GetLocalizedString(_moneyType);

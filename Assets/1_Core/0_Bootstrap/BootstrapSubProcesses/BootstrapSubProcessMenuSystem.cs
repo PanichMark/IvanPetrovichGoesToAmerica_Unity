@@ -113,7 +113,7 @@ public class BootstrapSubProcessMenuSystem
 	public HUDhealthAndManaController HUDhealthAndManaController { get; private set; }
 	private GameObject _canvasHUDhealthAndMana;
 
-	public PlayerResourcesAmmoManager PlayerResourcesAmmoManager { get; private set; }
+	public PlayerWeaponAmmoController PlayerResourcesAmmoManager { get; private set; }
 	public HUDammoController HUDammoController { get; private set; }
 
 	public GameObject CanvasHUDammo {  get; private set; }

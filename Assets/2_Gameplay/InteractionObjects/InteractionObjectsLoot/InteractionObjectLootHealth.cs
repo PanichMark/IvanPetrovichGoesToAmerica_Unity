@@ -2,7 +2,7 @@
 
 public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 {
-	private PlayerResourcesHealthManager _playerResourcesHealthManager;
+	private PlayerHealthController _playerResourcesHealthManager;
 	private bool _isInteractionHintMessageFailActive;
 
 	public override bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
@@ -48,7 +48,7 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 
 	protected override void SetUpLootObjectReferences()
 	{
-		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
+		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>("PlayerResourcesHealthManager");
 
 		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}

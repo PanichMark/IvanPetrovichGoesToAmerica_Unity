@@ -18,12 +18,12 @@ public class InteractionObjectElectricalPanel : MonoBehaviour, IInteractable, IE
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
-	private PlayerResourcesHealthManager _playerResourcesHealthManager;
+	private PlayerHealthController _playerResourcesHealthManager;
 
 	private void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerResourcesHealthManager>("PlayerResourcesHealthManager");
+		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>("PlayerResourcesHealthManager");
 
 		if (IsOutOfService)
 		{

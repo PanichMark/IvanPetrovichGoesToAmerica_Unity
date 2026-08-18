@@ -126,7 +126,7 @@ public class TransferSkinnedMeshRendererArmatureBones : MonoBehaviour
 		}
 	}
 
-	public void TransferWeaponEugenicBones(GameObject eugenicArmature, SkinnedMeshRenderer eugenicSkinnedMesh, WeaponHandsEnum weaponHand)
+	public void TransferWeaponEugenicBones(GameObject eugenicArmature, SkinnedMeshRenderer eugenicSkinnedMesh, WeaponHandType weaponHand)
 	{
 		var _eugenicMeshBones = new Transform[eugenicSkinnedMesh.bones.Length];
 

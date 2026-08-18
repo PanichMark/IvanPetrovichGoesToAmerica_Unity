@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class WeaponRangedAutoPistol : WeaponRangedAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.AutoPistol;
+	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.AutoPistol;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	protected override float _waitForAmmoRefill => 3.25f;
@@ -143,7 +143,7 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 		_playerResourcesAmmoManager.AmmoDictionary[PlayerWeaponAmmoType] = data;
 		PlayerMagazineAmmoCurrent += ammoToAdd;
 
-		if (System.Enum.TryParse(WeaponName.ToString(), out WeaponNames parsedWeaponType))
+		if (System.Enum.TryParse(WeaponName.ToString(), out PlayerWeaponNames parsedWeaponType))
 		{
 			_playerResourcesAmmoManager.NotifyReserveAmmoChanged(PlayerWeaponAmmoType, data.AmmoReserve);
 			_playerResourcesAmmoManager.NotifyMagazineAmmoChanged(parsedWeaponType, PlayerWeaponAmmoType, PlayerMagazineAmmoCurrent);
@@ -159,7 +159,7 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 
 	private IEnumerator ReloadMagazineVisibility()
 	{
-		if (WeaponHandType == WeaponHandsEnum.Right)
+		if (WeaponHandType == WeaponHandType.Right)
 		{
 			_magazine1stPersonNew = Instantiate(_magazine3rdPersonOld, _firstPersonLeftHandWeaponSlotTransform);
 			_magazine3rdPersonNew = Instantiate(_magazine3rdPersonOld, _thirdPersonLeftHandWeaponSlotTransform);

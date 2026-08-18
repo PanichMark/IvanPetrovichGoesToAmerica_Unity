@@ -9,7 +9,7 @@ public class HUDammoController : MonoBehaviour
 	private GameScenesManager _gameSceneManager;
 	private GameController _gameController;
 	private PlayerWeaponController _playerWeaponController;
-	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
+	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerInteractionController _interactionController;
 
@@ -34,7 +34,7 @@ public class HUDammoController : MonoBehaviour
 		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
 		PlayerBehaviourController playerBehaviour,
 		PlayerWeaponController weaponController,
-		PlayerResourcesAmmoManager playerResourcesAmmoManager,
+		PlayerWeaponAmmoController playerResourcesAmmoManager,
 		PlayerInteractionController interactionController,
 		GameObject canvasHUDammo,
 		ViewModelHUDAmmo viewModelHUDAmmo)
@@ -131,9 +131,9 @@ public class HUDammoController : MonoBehaviour
 		_HUDammo.SetActive(false);
 	}
 
-	private void UpdateAmmoDisplayForActiveWeapon(WeaponHandsEnum activeHand)
+	private void UpdateAmmoDisplayForActiveWeapon(WeaponHandType activeHand)
 	{
-		if (activeHand == WeaponHandsEnum.Left)
+		if (activeHand == WeaponHandType.Left)
 		{
 			var ranged = _playerWeaponController.LeftHandWeapon?.GetComponent<WeaponRangedAbstract>();
 			if (_playerWeaponController.LeftHandWeapon != null && ranged != null)
@@ -152,7 +152,7 @@ public class HUDammoController : MonoBehaviour
 				HideLeftWeaponAmmo();
 			}
 		}
-		if (activeHand == WeaponHandsEnum.Right)
+		if (activeHand == WeaponHandType.Right)
 		{
 			var ranged = _playerWeaponController.RightHandWeapon?.GetComponent<WeaponRangedAbstract>();
 			if (_playerWeaponController.RightHandWeapon != null && ranged != null)
@@ -203,7 +203,7 @@ public class HUDammoController : MonoBehaviour
 		}
 	}
 
-	private void UpdateMagazineDisplay(WeaponNames weaponType, AmmoTypes ammoType, int newAmount)
+	private void UpdateMagazineDisplay(PlayerWeaponNames weaponType, AmmoTypes ammoType, int newAmount)
 	{
 		if (_playerWeaponController.RightHandWeapon != null)
 		{

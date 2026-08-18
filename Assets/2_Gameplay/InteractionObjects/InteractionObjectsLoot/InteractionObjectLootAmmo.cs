@@ -2,7 +2,7 @@
 
 public class InteractionObjectLootAmmo : InteractionObjectLootAbstract
 {
-	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
+	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
 	[SerializeField] Sprite _lootObjectIcon;
 	public override Sprite LootObjectIcon => _lootObjectIcon;
 	[SerializeField] private AmmoTypes _ammoTypes;
@@ -24,6 +24,6 @@ public class InteractionObjectLootAmmo : InteractionObjectLootAbstract
 
 	protected override void SetUpLootObjectReferences()
 	{
-		_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerResourcesAmmoManager>("PlayerResourcesAmmoManager");
+		_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>("PlayerResourcesAmmoManager");
 	}
 }

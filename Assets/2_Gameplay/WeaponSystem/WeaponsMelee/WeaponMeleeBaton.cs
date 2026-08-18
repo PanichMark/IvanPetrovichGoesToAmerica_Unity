@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WeaponMeleeBaton : WeaponMeleeAbstract
 {
-	public override WeaponNames WeaponName => WeaponNames.Baton;
+	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Baton;
 	public override WeaponTypes WeaponType => WeaponTypes.Melee;
 	public override float WeaponDamage => 45f;
 	public override bool IsWeaponAuto => false;
