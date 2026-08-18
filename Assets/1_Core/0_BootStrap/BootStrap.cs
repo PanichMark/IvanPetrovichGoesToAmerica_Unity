@@ -64,8 +64,8 @@ public class Bootstrap : MonoBehaviour
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 	private BootstrapSubProcessPlayerPrefsSystem _bootstrapSubProcessPlayerPrefsSystem;
 	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
-	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
-	private BootstrapSubProcessWeaponSystem _bootstrapSubProcessWeaponSystem;
+	private BootstrapSubProcessPlayerInteractionSystem _bootstrapSubProcessInteractionSystem;
+	private BootstrapSubProcessPlayerWeaponSystem _bootstrapSubProcessWeaponSystem;
 	private BootstrapSubProcessMissionsSystem _bootstrapSubProcessMissionsSystem;
 	private BootstrapSubProcessObjectPoolSystem _bootstrapSubProcessObjectPoolSystem;
 
@@ -296,7 +296,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeInteractionSystem()
 	{
-		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessInteractionSystem(
+		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessPlayerInteractionSystem(
 			this,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,
@@ -314,7 +314,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator InitializeWeaponSystem()
 	{
-		_bootstrapSubProcessWeaponSystem = new BootstrapSubProcessWeaponSystem(
+		_bootstrapSubProcessWeaponSystem = new BootstrapSubProcessPlayerWeaponSystem(
 			this,
 			_gameController,
 			_inputDevice,

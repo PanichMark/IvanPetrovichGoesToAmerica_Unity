@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class BootstrapSubProcessWeaponSystem
+public class BootstrapSubProcessPlayerWeaponSystem
 {
 	private BootstrapSubProcessScenesSystem _bootstrapSubProcessSceneSystem;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
 	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
-	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
+	private BootstrapSubProcessPlayerInteractionSystem _bootstrapSubProcessInteractionSystem;
 
 	private Bootstrap _bootstrap;
 	private GameController _gameController;
@@ -33,7 +33,7 @@ public class BootstrapSubProcessWeaponSystem
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private HUDammoController _HUDammoController;
 
-	public BootstrapSubProcessWeaponSystem(
+	public BootstrapSubProcessPlayerWeaponSystem(
 		Bootstrap bootstrap,
 		GameController gameController,
 		IInputDevice inputDevice,
@@ -43,7 +43,7 @@ public class BootstrapSubProcessWeaponSystem
 		BootstrapSubProcessScenesSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
-		BootstrapSubProcessInteractionSystem bootstrapSubSystemInteraction)
+		BootstrapSubProcessPlayerInteractionSystem bootstrapSubSystemInteraction)
 	{
 		_bootstrap = bootstrap;
 		_gameController = gameController;

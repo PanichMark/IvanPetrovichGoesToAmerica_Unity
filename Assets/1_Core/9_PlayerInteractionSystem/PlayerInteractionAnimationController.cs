@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InteractionAnimationController : MonoBehaviour
+public class PlayerInteractionAnimationController : MonoBehaviour
 {
-	private InteractionController _interactionController;
+	private PlayerInteractionController _interactionController;
 	private Animator _playerAnimator3rdPerson;
 	private Animator _playerAnimator1stPerson;
 
@@ -12,7 +12,7 @@ public class InteractionAnimationController : MonoBehaviour
 	private int _layerPickableRightArm1st;
 
 	public void Initialize(
-		InteractionController interactionController,
+		PlayerInteractionController interactionController,
 		GameObject player,
 		GameObject playerCamera)
 	{

@@ -7,7 +7,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	private GameController _gameController;
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
-	private InteractionController _interactionController;
+	private PlayerInteractionController _interactionController;
 	private PlayerWeaponController _playerWeaponController;
 
 	private Animator _playerAnimator1stPerson;
@@ -59,7 +59,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		GameController gameController,
 		PlayerBehaviourController playerBehaviour,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
-		InteractionController interactionController,
+		PlayerInteractionController interactionController,
 		PlayerWeaponController weaponController,
 		LegKickAttackController legKickAttack,
 		TransferSkinnedMeshRendererArmatureBones transferBonesFirstPerson,

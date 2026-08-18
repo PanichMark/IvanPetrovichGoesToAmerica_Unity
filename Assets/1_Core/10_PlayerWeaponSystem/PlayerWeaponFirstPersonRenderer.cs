@@ -9,7 +9,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 	private PlayerWeaponAnimationController _weaponAnimationController;
 	private GameScenesManager _gameSceneManager;
 
-	private InteractionController _interactionController;
+	private PlayerInteractionController _interactionController;
 	private GameObject _playerFirstPersonHandRight;
 	private GameObject _playerFirstPersonHandLeft;
 	private GameObject _playerThirdPersonHandRight;
@@ -18,7 +18,7 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 	public void Initialize(
 		GameScenesManager gameSceneManager,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
-		InteractionController interactionController,
+		PlayerInteractionController interactionController,
 		PlayerWeaponController weaponController,
 		PlayerWeaponAnimationController weaponAnimationController,
 		GameObject playerFirstPersonHandRight,

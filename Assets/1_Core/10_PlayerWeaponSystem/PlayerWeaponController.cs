@@ -9,7 +9,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	private IInputDevice _inputDevice;
 	private MenuManager _menuManager;
 	private PlayerBehaviourController _playerBehaviour;
-	private InteractionController _interactionController;
+	private PlayerInteractionController _interactionController;
 	private PlayerResourcesAmmoManager _ammoManager;
 	private HUDhealthAndManaController _HUDhealthAndManaController;
 	private GameController _gameController;
@@ -60,7 +60,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		PlayerBehaviourController playerBehaviour,
 		HUDhealthAndManaController HUDhealthAndManaController,
 		PlayerResourcesAmmoManager ammoManager,
-		InteractionController interactionController)
+		PlayerInteractionController interactionController)
 	{
 		_bootstrap = bootstrap;
 		_gameController = gameController;

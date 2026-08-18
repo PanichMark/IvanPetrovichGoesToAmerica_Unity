@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
-public class InteractionFirstPersonRenderer : MonoBehaviour
+public class PlayerInteractionFirstPersonRenderer : MonoBehaviour
 {
 	private GameObject _currentThrowableObject;
 	private GameObject _playerFirstPersonHandRight;
 	private GameObject _playerThirdPersonHandRight;
 	private PlayerCameraStateMachineController _playerCameraStateMachine;
 	private GameScenesManager _gameSceneManager;
-	private InteractionController _interactionController;
+	private PlayerInteractionController _interactionController;
 
 	public void Initialize(
 		GameScenesManager gameSceneManager,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
-		InteractionController interactionController,
+		PlayerInteractionController interactionController,
 		GameObject playerFirstPersonHandRight,
 		GameObject playerThirdPersonHandRight)
 	{

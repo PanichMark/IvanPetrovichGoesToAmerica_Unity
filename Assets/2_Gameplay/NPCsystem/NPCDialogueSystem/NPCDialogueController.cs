@@ -45,7 +45,7 @@ public class NPCdialogueController : MonoBehaviour
 	private NPCabstract _NPCabstract;
 	private TextMeshProUGUI _textComponentDialogueYes;
 	private TextMeshProUGUI _textComponentDialogueNo;
-	private InteractionController _interactionController;
+	private PlayerInteractionController _interactionController;
 	private Dictionary<LanguagesEnum, List<string>> _localizedDialogue = new Dictionary<LanguagesEnum, List<string>>
 	{
 		{ LanguagesEnum.Russian, new List<string>() },
@@ -72,7 +72,7 @@ public class NPCdialogueController : MonoBehaviour
 		_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 		_animator = GetComponent<Animator>();
 		_animator.speed = 0.5f;
-		_interactionController = ServiceLocator.Resolve<InteractionController>("InteractionController");
+		_interactionController = ServiceLocator.Resolve<PlayerInteractionController>("InteractionController");
 		_buttonDialogueYes = ServiceLocator.Resolve<GameObject>("ButtonDialogueYes").GetComponent<Button>();
 		_buttonDialogueNo = ServiceLocator.Resolve<GameObject>("ButtonDialogueNo").GetComponent<Button>();
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");

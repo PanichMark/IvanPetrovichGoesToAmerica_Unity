@@ -11,7 +11,7 @@ public class HUDammoController : MonoBehaviour
 	private PlayerWeaponController _playerWeaponController;
 	private PlayerResourcesAmmoManager _playerResourcesAmmoManager;
 	private PlayerBehaviourController _playerBehaviour;
-	private InteractionController _interactionController;
+	private PlayerInteractionController _interactionController;
 
 	private GameObject _rightWeaponAmmoMagazine;
 	private GameObject _rightWeaponAmmoReserve;
@@ -35,7 +35,7 @@ public class HUDammoController : MonoBehaviour
 		PlayerBehaviourController playerBehaviour,
 		PlayerWeaponController weaponController,
 		PlayerResourcesAmmoManager playerResourcesAmmoManager,
-		InteractionController interactionController,
+		PlayerInteractionController interactionController,
 		GameObject canvasHUDammo,
 		ViewModelHUDAmmo viewModelHUDAmmo)
 	{

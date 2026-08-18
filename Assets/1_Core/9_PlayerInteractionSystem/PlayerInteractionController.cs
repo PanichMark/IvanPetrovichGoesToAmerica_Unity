@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InteractionController : MonoBehaviour
+public class PlayerInteractionController : MonoBehaviour
 {
 	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;

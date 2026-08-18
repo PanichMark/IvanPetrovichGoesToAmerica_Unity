@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class BootstrapSubProcessInteractionSystem
+public class BootstrapSubProcessPlayerInteractionSystem
 {
 	private Bootstrap _bootstrap;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
@@ -17,18 +17,18 @@ public class BootstrapSubProcessInteractionSystem
 	private PlayerCameraController _playerCameraController;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
-	private InteractionFirstPersonRenderer _interactionFirstPersonRenderer;
+	private PlayerInteractionFirstPersonRenderer _interactionFirstPersonRenderer;
 
 	private GameObject _gameObjectBootstrapInteractionSystem;
-	public InteractionController InteractionController { get; private set; }
-	private InteractionAnimationController _interactionAnimationController;
+	public PlayerInteractionController InteractionController { get; private set; }
+	private PlayerInteractionAnimationController _interactionAnimationController;
 
 	private GameObject _gameObjectPlayer;
 	private GameObject _gameObjectPlayerCamera;
 
 	private KeysManager _keysManager;
 
-	public BootstrapSubProcessInteractionSystem(
+	public BootstrapSubProcessPlayerInteractionSystem(
 		Bootstrap bootstrap,
 		BootstrapSubProcessScenesSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
@@ -60,9 +60,9 @@ public class BootstrapSubProcessInteractionSystem
 	{
 		_gameObjectBootstrapInteractionSystem = new GameObject("Bootstrap_InteractionSystem");
 
-		InteractionController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionController>();
-		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionAnimationController>();
-		_interactionFirstPersonRenderer = _gameObjectBootstrapInteractionSystem.AddComponent<InteractionFirstPersonRenderer>();
+		InteractionController = _gameObjectBootstrapInteractionSystem.AddComponent<PlayerInteractionController>();
+		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<PlayerInteractionAnimationController>();
+		_interactionFirstPersonRenderer = _gameObjectBootstrapInteractionSystem.AddComponent<PlayerInteractionFirstPersonRenderer>();
 
 		GameObjectSpineSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Spine");
 
