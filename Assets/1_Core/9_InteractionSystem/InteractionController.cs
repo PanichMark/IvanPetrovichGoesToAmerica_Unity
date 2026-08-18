@@ -21,6 +21,9 @@ public class InteractionController : MonoBehaviour
 	public event PickableObjectsGetRidOfHandler OnGetRidOfNonThrowable;
 	public event PickableObjectsGetRidOfHandler OnGetRidOfThrowable;
 
+	public delegate void ThrowableObjedctThrowHandler(InteractionObjectsPickableTypes throwableType);
+	public event ThrowableObjedctThrowHandler OnThrowTrowable;
+
 	private string _HUDInteractionMainTextInteract;
 	private string _HUDInteractionDropText;
 	private string _HUDInteractionThrowText;
@@ -271,9 +274,10 @@ public class InteractionController : MonoBehaviour
 		}
 	}
 
-	private void ThrowThrowable()
+	public void EarlyThrowThrowable()
 	{
-		OnGetRidOfThrowable?.Invoke();
+		//OnThrowTrowable?.Invoke();
+		//OnGetRidOfThrowable?.Invoke();
 		CurrentIThrowable.ThrowObject();
 		_currentIPickable = null;
 		CurrentIThrowable = null;
@@ -281,6 +285,29 @@ public class InteractionController : MonoBehaviour
 		CurrentPickableObject = null;
 		ChangeInteractionRange();
 		//Debug.Log(_playerBehaviour.WasPlayerArmed);
+		/*
+		if (_playerBehaviour.WasPlayerArmed == true)
+		{
+			_playerBehaviour.ArmPlayer();
+		}
+		*/
+	}
+
+	public void LateThrowThrowable()
+	{
+		//OnThrowTrowable?.Invoke();
+		OnGetRidOfThrowable?.Invoke();
+		/*
+		CurrentIThrowable.ThrowObject();
+		_currentIPickable = null;
+		CurrentIThrowable = null;
+		_changedPickedUpState = false;
+		CurrentPickableObject = null;
+		ChangeInteractionRange();
+		//Debug.Log(_playerBehaviour.WasPlayerArmed);
+
+		*/
+
 		if (_playerBehaviour.WasPlayerArmed == true)
 		{
 			_playerBehaviour.ArmPlayer();
@@ -329,7 +356,8 @@ public class InteractionController : MonoBehaviour
 
 			if (_inputDevice.GetKeyRightHandWeaponAttack() && CurrentIThrowable != null)
 			{
-				ThrowThrowable();
+				OnThrowTrowable?.Invoke(_currentIPickable.PickableType);
+				//ThrowThrowable();
 			}
 		}
 

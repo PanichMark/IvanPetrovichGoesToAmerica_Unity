@@ -117,7 +117,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Accordion
+  m_Name: Accordion_Hold
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -130,7 +130,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -5651354992271377134, guid: 2a4f54ed3fc23da4f9229eeb56c0fc1c, type: 3}
+  m_Motion: {fileID: 8404284167217286563, guid: 2a4f54ed3fc23da4f9229eeb56c0fc1c, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -931,6 +931,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 5271536864995304236}
     m_Position: {x: 480, y: 20, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 2157544865994271201}
+    m_Position: {x: 390, y: 90, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -1052,7 +1055,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Crate
+  m_Name: Crate_Hold
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1065,7 +1068,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -3065345582713947808, guid: 82afddf8f86c91a4db7d27ec7a24b902, type: 3}
+  m_Motion: {fileID: -8915667789263977893, guid: 82afddf8f86c91a4db7d27ec7a24b902, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1539,6 +1542,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &2157544865994271201
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Bottle_Throw
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: -6921806236467170345, guid: 948a7bf056e0f1949be8a73b6c4b8fce, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &2210851579385703180
 AnimatorState:
   serializedVersion: 6
@@ -1939,7 +1968,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Bottle
+  m_Name: Bottle_Hold
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1952,7 +1981,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 2812030679355163062, guid: 948a7bf056e0f1949be8a73b6c4b8fce, type: 3}
+  m_Motion: {fileID: 1800393990599169941, guid: 948a7bf056e0f1949be8a73b6c4b8fce, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2079,7 +2108,7 @@ AnimatorStateMachine:
     m_Position: {x: 390, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8291864110855636571}
-    m_Position: {x: 432.57812, y: 219.49246, z: 0}
+    m_Position: {x: 430, y: 220, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

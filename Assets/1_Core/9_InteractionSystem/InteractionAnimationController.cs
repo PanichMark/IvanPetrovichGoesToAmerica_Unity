@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class InteractionAnimationController : MonoBehaviour
 {
@@ -28,22 +29,25 @@ public class InteractionAnimationController : MonoBehaviour
 		_interactionController.OnGetRidOfThrowable += DropWithRightHand;
 		_interactionController.OnGetRidOfNonThrowable += DropWithBothHands;
 
+		_interactionController.OnThrowTrowable += ThrowWithRightHand;
+
+
 		Debug.Log("InteractionAnimationController Initialized");
 	}
 
 	private void PickUpWithBothHands(InteractionObjectsPickableTypes pickableType)
 	{
 		_playerAnimator3rdPerson.SetLayerWeight(_layerPickableBothArms3rd, 1f);
-		_playerAnimator3rdPerson.Play(pickableType.ToString(), _layerPickableBothArms3rd, 0f);
+		_playerAnimator3rdPerson.Play($"{pickableType.ToString()}_Hold", _layerPickableBothArms3rd, 0f);
 	}
 
 	private void PickUpWithRightHand(InteractionObjectsPickableTypes pickableType)
 	{
 		_playerAnimator3rdPerson.SetLayerWeight(_layerPickableRightArm3rd, 1f);
-		_playerAnimator3rdPerson.Play(pickableType.ToString(), _layerPickableRightArm3rd, 0f);
+		_playerAnimator3rdPerson.Play($"{pickableType.ToString()}_Hold", _layerPickableRightArm3rd, 0f);
 
 		_playerAnimator1stPerson.SetLayerWeight(_layerPickableRightArm1st, 1f);
-		_playerAnimator1stPerson.Play(pickableType.ToString(), _layerPickableRightArm1st, 0f);
+		_playerAnimator1stPerson.Play($"{pickableType.ToString()}_Hold", _layerPickableRightArm1st, 0f);
 	}
 
 	private void DropWithBothHands()
@@ -58,5 +62,25 @@ public class InteractionAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetLayerWeight(_layerPickableRightArm3rd, 0f);
 
 		_playerAnimator1stPerson.SetLayerWeight(_layerPickableRightArm1st, 0f);
+	}
+
+	private void ThrowWithRightHand(InteractionObjectsPickableTypes throwableType)
+	{
+		StartCoroutine(ThrowWithRightHandCoroutine());
+
+		_playerAnimator3rdPerson.Play($"{throwableType.ToString()}_Throw", _layerPickableRightArm3rd, 0f);
+
+		_playerAnimator1stPerson.Play($"{throwableType.ToString()}_Throw", _layerPickableRightArm1st, 0f);
+	}
+
+	private IEnumerator ThrowWithRightHandCoroutine()
+	{
+		yield return new WaitForSeconds(0.4f);
+
+		_interactionController.EarlyThrowThrowable();
+
+		yield return new WaitForSeconds(0.35f);
+
+		_interactionController.LateThrowThrowable();
 	}
 }
