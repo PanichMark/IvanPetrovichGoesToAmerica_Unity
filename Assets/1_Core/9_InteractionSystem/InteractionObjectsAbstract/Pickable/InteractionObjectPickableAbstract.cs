@@ -136,7 +136,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			StartCoroutine(MoveTowardsPlayer());
 
 			transform.parent = _gameObjectSpineSlot.transform;
-			transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
+			//transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
 			IsObjectPickedUp = true;
 		}
 	}
@@ -171,12 +171,15 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		}
 	}
 
-	protected virtual IEnumerator MoveTowardsPlayer()
+	private IEnumerator MoveTowardsPlayer()
 	{
 		while (true)
 		{
-			Vector3 targetPosition = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.5f + Vector3.up * 1f;
+			Vector3 targetPosition = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.3f + Vector3.up * 0.9f;
 			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
+
+			Quaternion targetRotation = Quaternion.LookRotation(CachedPlayer.transform.forward, Vector3.up);
+			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
 
 			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
 				break;
@@ -184,7 +187,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			yield return null;
 		}
 
-		transform.position = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.5f + Vector3.up * 1f;
+		transform.position = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.3f + Vector3.up * 0.9f;
+		transform.rotation = Quaternion.LookRotation(CachedPlayer.transform.forward, Vector3.up);
 	}
 
 	public virtual void SaveData(ref GameData data)

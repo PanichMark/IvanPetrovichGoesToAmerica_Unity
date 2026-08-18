@@ -3,7 +3,7 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class InteractionObjectTVController : MonoBehaviour, IElectroShockable
+public class InteractionObjectTVcontroller : MonoBehaviour, IElectroShockable
 {
 	public delegate void TVStateChangedHandler(bool isOn);
 	public event TVStateChangedHandler OnTVStateChanged;

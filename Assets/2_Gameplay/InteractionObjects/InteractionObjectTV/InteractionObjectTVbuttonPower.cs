@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
+public class InteractionObjectTVbuttonPower : MonoBehaviour, IInteractable
 {
 	private string _interactionHintMessageAction;
 	private LocalizationManager _localizationManager;
-	private InteractionObjectTVController _tvController;
+	private InteractionObjectTVcontroller _tvController;
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
@@ -20,7 +20,7 @@ public class InteractionObjectTVPowerButton : MonoBehaviour, IInteractable
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		// Находим контроллер (предполагается, что он на том же родителе)
-		_tvController = transform.parent.GetComponent<InteractionObjectTVController>();
+		_tvController = transform.parent.GetComponent<InteractionObjectTVcontroller>();
 
 		// Подписываемся на событие изменения состояния ТВ в контроллере
 		_tvController.OnTVStateChanged += UpdateHintAndState;

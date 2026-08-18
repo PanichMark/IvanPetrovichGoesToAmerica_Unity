@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectTVButtonChannel : MonoBehaviour, IInteractable
+public class InteractionObjectTVbuttonChannel : MonoBehaviour, IInteractable
 {
 	[SerializeField] private string _interactionObjectNameSystem;
 	[SerializeField] private bool _isNextChannel;
 
 	// Ссылка на контроллер, который управляет всем ТВ
-	private InteractionObjectTVController _tvController;
+	private InteractionObjectTVcontroller _tvController;
 
 	private Collider _collider;
 
@@ -24,7 +24,7 @@ public class InteractionObjectTVButtonChannel : MonoBehaviour, IInteractable
 		_collider = GetComponent<Collider>();
 
 		// Находим контроллер на родительском объекте
-		_tvController = transform.parent.GetComponent<InteractionObjectTVController>();
+		_tvController = transform.parent.GetComponent<InteractionObjectTVcontroller>();
 
 		// Изначально кнопка неактивна, так как ТВ выключен
 		DisableButtonChannel();

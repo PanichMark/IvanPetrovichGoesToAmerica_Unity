@@ -16,26 +16,6 @@ public class InteractionObjectPickableNonThrowableAccordion : InteractionObjectP
 		StartCoroutine(PlayAccordionBlendShapeAnimation());
 	}
 
-	protected override IEnumerator MoveTowardsPlayer()
-	{
-		while (true)
-		{
-			Vector3 targetPosition = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.3f + Vector3.up * 0.9f;
-			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
-
-			Quaternion targetRotation = Quaternion.LookRotation(-CachedPlayer.transform.forward, Vector3.up) * Quaternion.Euler(0f, 180f, 0f);
-			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
-
-			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
-				break;
-
-			yield return null;
-		}
-
-		transform.position = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.3f + Vector3.up * 0.9f;
-		transform.rotation = Quaternion.LookRotation(-CachedPlayer.transform.forward, Vector3.up) * Quaternion.Euler(0f, 180f, 0f);
-	}
-
 	public override void DropOffObject()
 	{
 		StopAllCoroutines();

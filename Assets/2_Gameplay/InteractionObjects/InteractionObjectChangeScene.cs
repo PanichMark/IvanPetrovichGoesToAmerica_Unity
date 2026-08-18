@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InteractionObjectLoadScene : MonoBehaviour, IInteractable
+public class InteractionObjectChangeScene : MonoBehaviour, IInteractable
 {
 	private GameScenesManager _gameSceneManager;
 	[SerializeField] private GameScenesEnum _targetScene;
-	[SerializeField] private InteractionObjectOpenableDoorScenePlayerTransform _interactionObjectOpenableDoorScenePlayerTransform;
+	[SerializeField] private InteractionObjectChangeScenePlayerTransform _interactionObjectOpenableDoorScenePlayerTransform;
 	private PlayerMovementController _playerMovementController;
 	private LocalizationManager _localizationManager;
 
@@ -74,7 +74,7 @@ public class InteractionObjectLoadScene : MonoBehaviour, IInteractable
 		if (_interactionObjectOpenableDoorScenePlayerTransform != null && _playerMovementController != null)
 		{
 			_playerMovementController.SetPlayerPosition(_interactionObjectOpenableDoorScenePlayerTransform.PlayerPosition);
-			_playerMovementController.SetPlayerRotationY(_interactionObjectOpenableDoorScenePlayerTransform.PlayerRotation);
+			_playerMovementController.SetPlayerRotationY(_interactionObjectOpenableDoorScenePlayerTransform.PlayerRotationY);
 		}
 
 		Destroy(gameObject);
