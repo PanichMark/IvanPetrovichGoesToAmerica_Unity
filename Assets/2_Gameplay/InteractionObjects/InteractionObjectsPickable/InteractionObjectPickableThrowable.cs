@@ -11,6 +11,9 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	public float ObjectThrowPower => 10f;
 	private GameObject _firstPersonRightHandWeaponSlotGameObject;
 
+	[SerializeField] private float _damage;
+	[SerializeField] private bool _canDamageBreakable;
+
 	[SerializeField, Min(0)] private float _health;
 
 	private Coroutine _moveTowardsPlayerCoroutine;
@@ -110,6 +113,21 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	{
 		if (_canObjectBeDestroyedOnImpact)
 		{
+			var damageable = collision.gameObject.GetComponent<IDamageable>();
+			if (damageable != null)
+			{
+				damageable.TakeDamage(_damage);
+			}
+
+			if (_canDamageBreakable)
+			{
+				var breakable = collision.gameObject.GetComponent<IBreakable>();
+				if (breakable != null)
+				{
+					breakable.TakeDamage(_damage);
+				}
+			}
+
 			RigidBody.isKinematic = true;
 
 			_wasObjectDestroyed = true;

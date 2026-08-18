@@ -26,9 +26,9 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 	private GameObject _safeRotatorySection1;
 	private GameObject _safeRotatorySection2;
 	private GameObject _safeRotatorySection3;
-	private InteractionObjectSafeSection _section1;
-	private InteractionObjectSafeSection _section2;
-	private InteractionObjectSafeSection _section3;
+	private InteractionObjectSafeRotationSection _section1;
+	private InteractionObjectSafeRotationSection _section2;
+	private InteractionObjectSafeRotationSection _section3;
 
 	private float _safeDoorOpeningSpeed = 100f;
 	private Quaternion _safeDoorOpenedRotation;
@@ -46,9 +46,9 @@ public class InteractionObjectSafeController : MonoBehaviour, IInteractable
 		_safeRotatorySection2 = transform.parent.Find("SafeSection2").gameObject;
 		_safeRotatorySection3 = transform.parent.Find("SafeSection3").gameObject;
 
-		_section1 = _safeRotatorySection1.GetComponent<InteractionObjectSafeSection>();
-		_section2 = _safeRotatorySection2.GetComponent<InteractionObjectSafeSection>();
-		_section3 = _safeRotatorySection3.GetComponent<InteractionObjectSafeSection>();
+		_section1 = _safeRotatorySection1.GetComponent<InteractionObjectSafeRotationSection>();
+		_section2 = _safeRotatorySection2.GetComponent<InteractionObjectSafeRotationSection>();
+		_section3 = _safeRotatorySection3.GetComponent<InteractionObjectSafeRotationSection>();
 
 		Vector3 openedEulerAngles = new Vector3(0, -90, 0);
 		_safeDoorOpenedRotation = Quaternion.Euler(openedEulerAngles);

@@ -6,5 +6,6 @@
 	Pig,
 	Bottle,
 	Glass,
-	Egg
+	Egg,
+	Brick
 }

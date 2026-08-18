@@ -9,9 +9,9 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	[SerializeField] protected string _interactionObjectNameSystem;
 
-	public InteractionObjectsPickableTypes PickableType => _pickableType;
+	[SerializeField] private InteractionObjectPickableData _interactionObjectPickableType;
 
-	[SerializeField] protected InteractionObjectsPickableTypes _pickableType;
+	public InteractionObjectsPickableTypes PickableType => _interactionObjectPickableType.PickableType;
 
 	protected Collider _playerCollider;
 	protected bool _isCollisionIgnored = false;
@@ -175,10 +175,11 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	{
 		while (true)
 		{
-			Vector3 targetPosition = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.3f + Vector3.up * 0.9f;
+			Vector3 targetPosition = CachedPlayer.transform.TransformPoint(_interactionObjectPickableType.Position);
+
 			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
 
-			Quaternion targetRotation = Quaternion.LookRotation(CachedPlayer.transform.forward, Vector3.up);
+			Quaternion targetRotation = Quaternion.LookRotation(CachedPlayer.transform.forward, Vector3.up) * _interactionObjectPickableType.Rotation;
 			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.deltaTime);
 
 			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
@@ -187,8 +188,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			yield return null;
 		}
 
-		transform.position = CachedPlayer.transform.position + CachedPlayer.transform.forward * 0.3f + Vector3.up * 0.9f;
-		transform.rotation = Quaternion.LookRotation(CachedPlayer.transform.forward, Vector3.up);
+		transform.position = CachedPlayer.transform.TransformPoint(_interactionObjectPickableType.Position);
+		transform.rotation = Quaternion.LookRotation(CachedPlayer.transform.forward, Vector3.up) * _interactionObjectPickableType.Rotation;
 	}
 
 	public virtual void SaveData(ref GameData data)

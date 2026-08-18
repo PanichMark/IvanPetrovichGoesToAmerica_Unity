@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
-public class InteractionObjectSafeSection : MonoBehaviour, IInteractable
+public class InteractionObjectSafeRotationSection : MonoBehaviour, IInteractable
 {
 	[SerializeField] private string _interactionObjectNameUI;
 	[SerializeField] private int _safeSectionSlotNumber;
