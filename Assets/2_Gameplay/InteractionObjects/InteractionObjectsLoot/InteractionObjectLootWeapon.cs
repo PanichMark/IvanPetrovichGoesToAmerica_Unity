@@ -6,6 +6,7 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 	public override Sprite LootObjectIcon => _lootObjectIcon;
 
 	[SerializeField] private GameObject _weapon;
+	[SerializeField] private InteractionObjectNote _noteObject;
 
 	private PlayerWeaponController _playerWeaponController;
 
@@ -22,6 +23,11 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 		base.InteractCutscene();
 		Debug.Log($"You picked up {InteractionObjectNameUI}");
 		_playerWeaponController.UnlockWeapon(_weapon);
+	}
+
+	protected override void OnAfterLooted()
+	{
+		_noteObject.Interact();
 	}
 
 	protected override void SetUpLootObjectReferences()

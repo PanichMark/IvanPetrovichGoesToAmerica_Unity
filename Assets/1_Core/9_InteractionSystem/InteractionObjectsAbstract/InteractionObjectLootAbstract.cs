@@ -77,7 +77,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		LootObjectIndex = index;
 	}
 
-	IEnumerator MoveTowardsPlayer()
+	private IEnumerator MoveTowardsPlayer()
 	{
 		float currentSpeed = 3.5f; 
 		float speedIncrease = 5;
@@ -96,6 +96,13 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 			currentSpeed += speedIncrease * Time.deltaTime;
 			yield return null;
 		}
+
+		OnAfterLooted();
+	}
+
+	protected virtual void OnAfterLooted()
+	{
+
 	}
 
 	public void SaveData(ref GameData data)
