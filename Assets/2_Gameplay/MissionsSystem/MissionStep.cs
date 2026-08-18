@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MissionStep", menuName = "Missions/MissionStep")]
-public class MissionStep : MissionStepAbstract, ICurrentMissionStep
+public class MissionStep : MissionStepAbstract, IMissionStep
 {
 	[TextArea(3, 10)]
 	public string StepDescription;
@@ -11,9 +11,9 @@ public class MissionStep : MissionStepAbstract, ICurrentMissionStep
 
 	// --- ДОБАВЬТЕ ЭТО СВОЙСТВО ---
 	// Оно преобразует список конкретных условий в список общих интерфейсов
-	public IReadOnlyList<ICurrentMissionCondition> Conditions
+	public IReadOnlyList<IMissionStepCondition> Conditions
 	{
-		get { return StepConditions.ConvertAll(c => (ICurrentMissionCondition)c); }
+		get { return StepConditions.ConvertAll(c => (IMissionStepCondition)c); }
 	}
 	// ---------------------------------
 

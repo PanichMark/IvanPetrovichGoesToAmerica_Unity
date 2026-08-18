@@ -11,7 +11,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 	private float markerOffset = 20f;
 	private float markerHeight;
 
-	private ICurrentMissionStep _currentMissionStepCache;
+	private IMissionStep _currentMissionStepCache;
 
 	public void Initialize(
 		GameScenesManager gameSceneManager,
@@ -162,7 +162,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 		try
 		{
-			_currentMissionStepCache = _missionsManager.ActiveMission.Steps[_missionsManager.CurrentStepIndex] as ICurrentMissionStep;
+			_currentMissionStepCache = _missionsManager.ActiveMission.Steps[_missionsManager.CurrentStepIndex] as IMissionStep;
 		}
 		catch (System.IndexOutOfRangeException)
 		{

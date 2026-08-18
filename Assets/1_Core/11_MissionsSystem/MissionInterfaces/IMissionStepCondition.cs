@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-public interface ICurrentMissionCondition
+public interface IMissionStepCondition
 {
 	// Проверяет, выполнено ли условие
 	bool IsMet();

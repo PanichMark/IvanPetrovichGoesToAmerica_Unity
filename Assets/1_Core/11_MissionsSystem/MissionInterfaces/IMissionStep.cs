@@ -3,8 +3,8 @@
 
 using System.Collections.Generic;
 
-public interface ICurrentMissionStep
+public interface IMissionStep
 {
 	// Возвращает список условий текущего шага
-	IReadOnlyList<ICurrentMissionCondition> Conditions { get; }
+	IReadOnlyList<IMissionStepCondition> Conditions { get; }
 }

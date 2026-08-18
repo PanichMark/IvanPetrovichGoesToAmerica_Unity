@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "StepConditionOnInteraction", menuName = "Missions/MissionStepConditions/StepConditionOnInteraction")]
-public class MissionStepConditionOnInteraction : MissionStepConditionAbstract, ICurrentMissionCondition
+public class MissionStepConditionInteractable : MissionStepConditionAbstract, IMissionStepCondition
 {
 	private bool _isCompleted = false;
 	// --- РЕАЛИЗАЦИЯ ИНТЕРФЕЙСА ---
