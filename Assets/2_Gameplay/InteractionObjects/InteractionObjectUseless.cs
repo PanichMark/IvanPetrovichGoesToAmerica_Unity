@@ -1,13 +1,7 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectBreakable : MonoBehaviour, IInteractable, IBreakable
+public class InteractionObjectUseless : MonoBehaviour, IInteractable
 {
-	public bool IsObjectBroken => throw new System.NotImplementedException();
-
-	public float CurrentDurability => throw new System.NotImplementedException();
-
-	public float DamageThreshold => throw new System.NotImplementedException();
-
 	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
 
 	public string InteractionObjectNameUI => throw new System.NotImplementedException();
@@ -28,16 +22,6 @@ public class InteractionObjectBreakable : MonoBehaviour, IInteractable, IBreakab
 	}
 
 	public void InteractCutscene()
-	{
-		throw new System.NotImplementedException();
-	}
-
-	public void ObjectIsFullyBroken()
-	{
-		throw new System.NotImplementedException();
-	}
-
-	public void TakeDamage(float amount)
 	{
 		throw new System.NotImplementedException();
 	}
