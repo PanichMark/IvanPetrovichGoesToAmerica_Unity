@@ -197,7 +197,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyRun()
 	{
-		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.Run]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.Run]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove && !_gameController.IsPlayerMovementRestrictedByCarryingNonThrowable)
 		{
 			return true;
 		}
@@ -206,7 +206,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyJump()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.Jump]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.Jump]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove && !_gameController.IsPlayerMovementRestrictedByCarryingNonThrowable)
 		{
 			return true;
 		}
@@ -215,7 +215,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyJumpBeingHeld()
 	{
-		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.Jump]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove)
+		if (Input.GetKey(_keyboardKeyBindings[InputControlsEnum.Jump]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove && !_gameController.IsPlayerMovementRestrictedByCarryingNonThrowable)
 		{
 			return true;
 		}
@@ -233,7 +233,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyLegKick()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.LegKick]) && _gameController.IsPlayerControllable)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.LegKick]) && _gameController.IsPlayerControllable && !_gameController.IsPlayerMovementRestrictedByCarryingNonThrowable)
 		{
 			return true;
 		}

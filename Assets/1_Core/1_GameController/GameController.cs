@@ -3,12 +3,12 @@ using System.Collections;
 public class GameController
 {
 	public bool IsPlayerControllable { get; private set; }
-	public bool IsPlayerAbleToMove { get; private set;}
+	public bool IsPlayerAbleToMove { get; private set; }
+	public bool IsPlayerMovementRestrictedByCarryingNonThrowable { get; private set; }
 	public bool IsPlayerDead { get; private set; }
 	public bool IsPlayerPlunging { get; private set; }
 	public bool IsMainMenuOpen {  get; private set; }
 	public bool IsPauseMenuAvailable { get; private set; }
-
 	public bool IsGameAbleToSave { get; private set; }
 
 	public delegate void SaveGameAvailabilityHandler();
@@ -137,5 +137,15 @@ public class GameController
 	{
 		IsGameAbleToSave = false;
 		OnSaveGameUnavailable?.Invoke();
+	}
+
+	public void RestrictPlayerMovementWhileCarryingNonThrowable()
+	{
+		IsPlayerMovementRestrictedByCarryingNonThrowable = true;
+	}
+
+	public void UnrestrictPlayerMovementWhileCarryingNonThrowable()
+	{
+		IsPlayerMovementRestrictedByCarryingNonThrowable = false;
 	}
 }

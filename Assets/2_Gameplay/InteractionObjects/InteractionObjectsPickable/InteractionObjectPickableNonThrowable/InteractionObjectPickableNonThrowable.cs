@@ -17,25 +17,13 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	}
 
 	private PlayerMovementController _playerMovementController;
-	private PlayerMovementStateMachineController _playerMovementStateMachineController;
+	private GameController _gameController;
 
 	public override void PickUpObject()
 	{
 		base.PickUpObject();
 
-		/*
-		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing ||
-			_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
-		{
-
-		}
-
-		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleStanding ||
-		_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingStanding)
-		{
-
-		}
-		*/
+		_gameController.RestrictPlayerMovementWhileCarryingNonThrowable();
 
 		HalfTheMovementSpeed();
 	}
@@ -44,13 +32,15 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	{
 		base.DropOffObject();
 
+		_gameController.UnrestrictPlayerMovementWhileCarryingNonThrowable();
+
 		RestoreTheMovementSpeed();
 	}
 
 	protected override void InitializePickable()
 	{
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
-		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>("PlayerMovementStateMachineController");
+		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 
 		_playerMovementController.OnMovementSpeedChangedByStateMachine += HalfTheMovementSpeed;
 	}
@@ -59,13 +49,13 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	{
 		if (IsObjectPickedUp)
 		{
-			_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed / 2, false);
+			_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed / 1.75f, false);
 		}
 	}
 
 	private void RestoreTheMovementSpeed()
 	{
-		_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed * 2, false);
+		_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed * 1.75f, false);
 	}
 
 	protected virtual void OnDestroy()

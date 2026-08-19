@@ -113,7 +113,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		Debug.Log(PlayerMovementSpeed);
+		//Debug.Log(PlayerMovementSpeed);
 
 		IsPlayerGrounded = Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out _hitInfo, _playerFloorDetectionRayCastLength);
 		IsPlayerAbleToStandUp = !Physics.Raycast(transform.position + new Vector3(0, PlayerUpRayYPosition, 0), Vector3.up, out _hitInfo, 0.3f);
