@@ -46,40 +46,40 @@ public class GameData
 	public string WeaponLeftHand;
 
 	[JsonProperty("NPCs")]
-	public Dictionary<GameScenesEnum, List<NPCdata>> NPCdataByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<NPCdata>> NPCdataByScene;
 
 	[JsonProperty("LootObjects")]
-	public Dictionary<GameScenesEnum, List<LootObjectData>> LootObjectsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>> LootObjectsByScene;
 
 	[JsonProperty("ConsumableObjects")]
-	public Dictionary<GameScenesEnum, List<ConsumableObjectData>> ConsumableObjectsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<ConsumableObjectData>> ConsumableObjectsByScene;
 
 	[JsonProperty("PickableObjects")]
-	public Dictionary<GameScenesEnum, List<PickableObjectData>> PickableObjectsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>> PickableObjectsByScene;
 
 	[JsonProperty("Keys")]
-	public Dictionary<GameScenesEnum, List<KeyData>> KeysByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<KeyData>> KeysByScene;
 
 	[JsonProperty("OpenableObjects")]
-	public Dictionary<GameScenesEnum, List<OpenableObjectData>> OpenableObjectsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<OpenableObjectData>> OpenableObjectsByScene;
 
 	[JsonProperty("Safes")]
-	public Dictionary<GameScenesEnum, List<SafeData>> SafesByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<SafeData>> SafesByScene;
 
 	[JsonProperty("VendingMachines")]
-	public Dictionary<GameScenesEnum, List<VendingMachineData>> VendingMachinesByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<VendingMachineData>> VendingMachinesByScene;
 
 	[JsonProperty("Elevators")]
-	public Dictionary<GameScenesEnum, List<ElevatorData>> ElevatorsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<ElevatorData>> ElevatorsByScene;
 
 	[JsonProperty("Lights")]
-	public Dictionary<GameScenesEnum, List<LightData>> LightsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<LightData>> LightsByScene;
 
 	[JsonProperty("TVs")]
-	public Dictionary<GameScenesEnum, List<TVdata>> TVsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<TVdata>> TVsByScene;
 
 	[JsonProperty("Phonographs")]
-	public Dictionary<GameScenesEnum, List<PhonographData>> PhonographsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<PhonographData>> PhonographsByScene;
 
 	public GameData()
 	{
@@ -90,7 +90,7 @@ public class GameData
 		MissionNameSystem = GameMissionsNamesEnum.Mission_0_NothingEverHappensInThisCountry.ToString();
 
 		//Scene
-		SceneNameSystem = GameScenesEnum.Scene_0_Test.ToString();
+		SceneNameSystem = GameScenesSystemEnum.Scene_0_Test.ToString();
 
 		//Player 
 		PlayerPosition = new Vector3(0, 0, -5);
@@ -157,10 +157,10 @@ public class GameData
 		PhonographsByScene = CreateEmptyDictionary<PhonographData>();
 	}
 
-	private Dictionary<GameScenesEnum, List<T>> CreateEmptyDictionary<T>()
+	private Dictionary<GameScenesGameplayDataEnum, List<T>> CreateEmptyDictionary<T>()
 	{
-		var dict = new Dictionary<GameScenesEnum, List<T>>();
-		foreach (GameScenesEnum scene in Enum.GetValues(typeof(GameScenesEnum)))
+		var dict = new Dictionary<GameScenesGameplayDataEnum, List<T>>();
+		foreach (GameScenesGameplayDataEnum scene in Enum.GetValues(typeof(GameScenesGameplayDataEnum)))
 		{
 			dict[scene] = new List<T>();
 		}

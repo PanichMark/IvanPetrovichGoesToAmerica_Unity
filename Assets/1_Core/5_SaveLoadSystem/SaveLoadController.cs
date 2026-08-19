@@ -135,7 +135,7 @@ public class SaveLoadController : MonoBehaviour
 		{
 			persistentLoadObj.LoadData(_gameData);
 		}
-		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesEnum)Enum.Parse(typeof(GameScenesEnum), SceneNameToLoad)));
+		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), SceneNameToLoad)));
 
 		yield break;
 	}

@@ -51,7 +51,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	[SerializeField] private Vector3 _newPlayerPosition;
 
 	[Header("Load scene")] [SerializeField] bool _shouldLoadScene;
-	[SerializeField] private GameScenesEnum _sceneToLoadAfterCutscene;
+	[SerializeField] private GameScenesSystemEnum _sceneToLoadAfterCutscene;
 
 	[Header("NPC state")] [SerializeField] private List<CutsceneDataNPC> _NPCstateChanges = new List<CutsceneDataNPC>();
 

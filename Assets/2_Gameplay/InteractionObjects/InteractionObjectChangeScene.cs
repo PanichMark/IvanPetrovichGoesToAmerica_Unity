@@ -4,7 +4,7 @@ using System.Collections;
 public class InteractionObjectChangeScene : MonoBehaviour, IInteractable
 {
 	private GameScenesManager _gameSceneManager;
-	[SerializeField] private GameScenesEnum _targetScene;
+	[SerializeField] private GameScenesSystemEnum _targetScene;
 	[SerializeField] private InteractionObjectChangeScenePlayerTransform _interactionObjectOpenableDoorScenePlayerTransform;
 	private PlayerMovementController _playerMovementController;
 	private LocalizationManager _localizationManager;

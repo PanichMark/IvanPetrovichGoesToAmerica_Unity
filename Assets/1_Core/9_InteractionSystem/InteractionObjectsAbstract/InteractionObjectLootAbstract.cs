@@ -107,12 +107,12 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public void SaveData(ref GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
 		// Инициализируем словарь или список для текущей сцены, если их нет
 		if (data.LootObjectsByScene == null)
 		{
-			data.LootObjectsByScene = new Dictionary<GameScenesEnum, List<LootObjectData>>();
+			data.LootObjectsByScene = new Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>>();
 		}
 		if (!data.LootObjectsByScene.ContainsKey(currentScene))
 		{
@@ -142,7 +142,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public void LoadData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
 		if (data.LootObjectsByScene == null || !data.LootObjectsByScene.TryGetValue(currentScene, out var sourceList)) return;
 

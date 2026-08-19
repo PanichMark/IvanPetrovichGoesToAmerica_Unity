@@ -50,9 +50,9 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		{
 			_buttonsComponentsMissions[i] = _viewModelMainMenuChooseMission.Missions[i].GetComponent<Button>();
 		}
-		_buttonsComponentsMissions[0].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesEnum.Scene_1_Church, _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextPrologue")));
-		_buttonsComponentsMissions[1].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesEnum.Scene_1_RevenueHouse, _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameScene.ToString())));
-		_buttonsComponentsMissions[2].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesEnum.Scene_1_InnerYard, _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameScene.ToString())));
+		_buttonsComponentsMissions[0].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesSystemEnum.Scene_1_Church, _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextPrologue")));
+		_buttonsComponentsMissions[1].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesSystemEnum.Scene_1_RevenueHouse, _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameScene.ToString())));
+		_buttonsComponentsMissions[2].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesSystemEnum.Scene_1_InnerYard, _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameScene.ToString())));
 
 		_imagesComponentsMissions = new Image[_viewModelMainMenuChooseMission.Missions.Length];
 		for (int i = 0; i < _viewModelMainMenuChooseMission.Missions.Length; i++)

@@ -12,7 +12,7 @@ public class TESTdealDamageToPlayer : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.T) && SceneManager.GetSceneAt(1).name != GameScenesEnum.Scene_0_MainMenu.ToString())
+		if (Input.GetKeyDown(KeyCode.T) && SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_0_MainMenu.ToString())
 		{
 			_playerResourcesHealthManager.TakeDamage(99999);
 		}

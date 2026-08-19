@@ -18,12 +18,12 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 
 	public override void SaveData(ref GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
 		// Инициализируем словарь или список для текущей сцены, если их нет
 		if (data.PickableObjectsByScene == null)
 		{
-			data.PickableObjectsByScene = new Dictionary<GameScenesEnum, List<PickableObjectData>>();
+			data.PickableObjectsByScene = new Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>>();
 		}
 		if (!data.PickableObjectsByScene.ContainsKey(currentScene))
 		{
@@ -53,7 +53,7 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 
 	public override void LoadData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
 		if (data.PickableObjectsByScene == null || !data.PickableObjectsByScene.TryGetValue(currentScene, out var sourceList)) return;
 

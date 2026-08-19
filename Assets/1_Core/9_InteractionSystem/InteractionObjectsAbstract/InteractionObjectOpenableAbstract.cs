@@ -32,12 +32,12 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 
 	public void SaveData(ref GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
 		// Инициализируем словарь или список для текущей сцены, если их нет
 		if (data.OpenableObjectsByScene == null)
 		{
-			data.OpenableObjectsByScene = new Dictionary<GameScenesEnum, List<OpenableObjectData>>();
+			data.OpenableObjectsByScene = new Dictionary<GameScenesGameplayDataEnum, List<OpenableObjectData>>();
 		}
 		if (!data.OpenableObjectsByScene.ContainsKey(currentScene))
 		{
@@ -72,7 +72,7 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 
 	public void LoadData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
 		if (data.OpenableObjectsByScene == null || !data.OpenableObjectsByScene.TryGetValue(currentScene, out var sourceList)) return;
 

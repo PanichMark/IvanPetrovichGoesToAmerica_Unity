@@ -62,7 +62,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		_localizationManager = localizationManager;
 	}
 
-	public IEnumerator LoadGameplayScene(GameScenesEnum scene)
+	public IEnumerator LoadGameplayScene(GameScenesSystemEnum scene)
 	{
 		_gameController.GameplaySceneLoadBegan();
 		OnBeginLoadingGameplayScene?.Invoke();

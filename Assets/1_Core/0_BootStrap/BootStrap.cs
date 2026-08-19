@@ -390,7 +390,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator LoadFirstGameplayScene()
 	{
-		if (_firstSceneToLoad.FirstSceneToLoad == GameScenesEnum.Scene_0_MainMenu)
+		if (_firstSceneToLoad.FirstSceneToLoad == GameScenesSystemEnum.Scene_0_MainMenu)
 		{
 			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadMainMenuScene());
 		}
@@ -519,7 +519,7 @@ public class Bootstrap : MonoBehaviour
 			}
 		}
 
-		if (_firstSceneToLoad.FirstSceneToLoad != GameScenesEnum.Scene_0_MainMenu)
+		if (_firstSceneToLoad.FirstSceneToLoad != GameScenesSystemEnum.Scene_0_MainMenu)
 		{
 			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerTransform.PlayerPosition);
 			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerRotationY(_playerTransform.PlayerRotationY);
