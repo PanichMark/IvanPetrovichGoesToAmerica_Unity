@@ -110,16 +110,16 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
 		// Инициализируем словарь или список для текущей сцены, если их нет
-		if (data.LootObjectsByScene == null)
+		if (data.LootObjectsData == null)
 		{
-			data.LootObjectsByScene = new Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>>();
+			data.LootObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>>();
 		}
-		if (!data.LootObjectsByScene.ContainsKey(currentScene))
+		if (!data.LootObjectsData.ContainsKey(currentScene))
 		{
-			data.LootObjectsByScene[currentScene] = new List<LootObjectData>();
+			data.LootObjectsData[currentScene] = new List<LootObjectData>();
 		}
 
-		var targetList = data.LootObjectsByScene[currentScene];
+		var targetList = data.LootObjectsData[currentScene];
 
 		int indexInList = targetList.FindIndex(item => item.LootObjectIndex == LootObjectIndex);
 
@@ -127,7 +127,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		{
 			LootObjectIndex = LootObjectIndex,
 			LootObjectNameSystem = InteractionObjectNameSystem,
-			WasLootObjectCollected = WasLootItemCollected
+			IsLootObjectCollected = WasLootItemCollected
 		};
 
 		if (indexInList != -1)
@@ -144,13 +144,13 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
-		if (data.LootObjectsByScene == null || !data.LootObjectsByScene.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) return;
 
 		if (sourceList.Count > 0)
 		{
 			LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == LootObjectIndex);
 
-			if (savedState.LootObjectIndex != 0 && savedState.WasLootObjectCollected)
+			if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
 			{
 				WasLootItemCollected = true;
 				Destroy(gameObject);

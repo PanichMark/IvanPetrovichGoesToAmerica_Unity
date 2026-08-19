@@ -174,7 +174,7 @@ public class PlayerWeaponAmmoController : MonoBehaviour, ISaveLoad
 			saveStruct.AmmoTypeJson = kvp.Key.ToString();
 			ammoList.Add(saveStruct);
 		}
-		data.AmmoDictionary = ammoList;
+		data.PlayerAmmo = ammoList;
 
 		List<WeaponRangedData> weaponList = new List<WeaponRangedData>();
 		foreach (var kvp in _weaponsRangedDictionary)

@@ -35,16 +35,16 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
 		// Инициализируем словарь или список для текущей сцены, если их нет
-		if (data.OpenableObjectsByScene == null)
+		if (data.OpenableObjectsData == null)
 		{
-			data.OpenableObjectsByScene = new Dictionary<GameScenesGameplayDataEnum, List<OpenableObjectData>>();
+			data.OpenableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<OpenableObjectData>>();
 		}
-		if (!data.OpenableObjectsByScene.ContainsKey(currentScene))
+		if (!data.OpenableObjectsData.ContainsKey(currentScene))
 		{
-			data.OpenableObjectsByScene[currentScene] = new List<OpenableObjectData>();
+			data.OpenableObjectsData[currentScene] = new List<OpenableObjectData>();
 		}
 
-		var targetList = data.OpenableObjectsByScene[currentScene];
+		var targetList = data.OpenableObjectsData[currentScene];
 
 		int indexInList = targetList.FindIndex(item => item.OpenableObjectIndex == OpenableObjectIndex);
 
@@ -52,8 +52,8 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 		{
 			var existingItem = targetList[indexInList];
 
-			existingItem.WasOpenableObjectUnlocked = WasOpenableUnlocked;
-			existingItem.WasOpenableObjectOpened = _isObjectOpened;
+			existingItem.IsOpenableObjectUnlocked = WasOpenableUnlocked;
+			existingItem.IsOpenableObjectOpened = _isObjectOpened;
 			existingItem.OpenableObjectNameSystem = InteractionObjectNameSystem;
 
 			targetList[indexInList] = existingItem;
@@ -64,8 +64,8 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 			{
 				OpenableObjectIndex = OpenableObjectIndex,
 				OpenableObjectNameSystem = InteractionObjectNameSystem,
-				WasOpenableObjectUnlocked = WasOpenableUnlocked,
-				WasOpenableObjectOpened = _isObjectOpened
+				IsOpenableObjectUnlocked = WasOpenableUnlocked,
+				IsOpenableObjectOpened = _isObjectOpened
 			});
 		}
 	}
@@ -74,13 +74,13 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
-		if (data.OpenableObjectsByScene == null || !data.OpenableObjectsByScene.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.OpenableObjectsData == null || !data.OpenableObjectsData.TryGetValue(currentScene, out var sourceList)) return;
 
 		var savedState = sourceList.Find(item => item.OpenableObjectIndex == OpenableObjectIndex);
 
 		if (savedState.Equals(default(OpenableObjectData))) return;
 
-		WasOpenableUnlocked = savedState.WasOpenableObjectUnlocked;
-		_isObjectOpened = savedState.WasOpenableObjectOpened;
+		WasOpenableUnlocked = savedState.IsOpenableObjectUnlocked;
+		_isObjectOpened = savedState.IsOpenableObjectOpened;
 	}
 }

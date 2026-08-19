@@ -224,16 +224,16 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
 		// Инициализируем словарь или список для текущей сцены, если их нет
-		if (data.PickableObjectsByScene == null)
+		if (data.PickableObjectsData == null)
 		{
-			data.PickableObjectsByScene = new Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>>();
+			data.PickableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>>();
 		}
-		if (!data.PickableObjectsByScene.ContainsKey(currentScene))
+		if (!data.PickableObjectsData.ContainsKey(currentScene))
 		{
-			data.PickableObjectsByScene[currentScene] = new List<PickableObjectData>();
+			data.PickableObjectsData[currentScene] = new List<PickableObjectData>();
 		}
 
-		var targetList = data.PickableObjectsByScene[currentScene];
+		var targetList = data.PickableObjectsData[currentScene];
 
 		int indexInList = targetList.FindIndex(item => item.PickableObjectIndex == PickableObjectIndex);
 
@@ -241,8 +241,8 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		{
 			PickableObjectIndex = PickableObjectIndex,
 			PickableObjectNameSystem = InteractionObjectNameSystem,
-			WasPickableObjectPickedUp = IsObjectPickedUp,
-			WasPickableObjectDestroyed = _wasObjectDestroyed
+			IsPickableObjectPickedUp = IsObjectPickedUp,
+			IsPickableObjectDestroyed = _wasObjectDestroyed
 		};
 
 		if (indexInList != -1)
@@ -259,14 +259,14 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
-		if (data.PickableObjectsByScene == null || !data.PickableObjectsByScene.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) return;
 
 		var savedState = sourceList.Find(item => item.PickableObjectIndex == PickableObjectIndex);
 
 		if (savedState.Equals(default(PickableObjectData))) return;
 
-		IsObjectPickedUp = savedState.WasPickableObjectPickedUp;
-		_wasObjectDestroyed = savedState.WasPickableObjectDestroyed;
+		IsObjectPickedUp = savedState.IsPickableObjectPickedUp;
+		_wasObjectDestroyed = savedState.IsPickableObjectDestroyed;
 
 		if (_wasObjectDestroyed || IsObjectPickedUp)
 		{

@@ -197,16 +197,16 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
 		// Инициализируем словарь или список для текущей сцены, если их нет
-		if (data.PickableObjectsByScene == null)
+		if (data.PickableObjectsData == null)
 		{
-			data.PickableObjectsByScene = new Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>>();
+			data.PickableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>>();
 		}
-		if (!data.PickableObjectsByScene.ContainsKey(currentScene))
+		if (!data.PickableObjectsData.ContainsKey(currentScene))
 		{
-			data.PickableObjectsByScene[currentScene] = new List<PickableObjectData>();
+			data.PickableObjectsData[currentScene] = new List<PickableObjectData>();
 		}
 
-		var targetList = data.PickableObjectsByScene[currentScene];
+		var targetList = data.PickableObjectsData[currentScene];
 
 		int indexInList = targetList.FindIndex(item => item.PickableObjectIndex == PickableObjectIndex);
 
@@ -214,9 +214,9 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		{
 			PickableObjectIndex = PickableObjectIndex,
 			PickableObjectNameSystem = InteractionObjectNameSystem,
-			PickableObjecPosition = _pickableObjectTransform.position,
+			PickableObjectPosition = _pickableObjectTransform.position,
 			PickableObjecRotation = _pickableObjectTransform.rotation,
-			WasPickableObjectPickedUp = IsObjectPickedUp
+			IsPickableObjectPickedUp = IsObjectPickedUp
 		};
 
 		if (indexInList != -1)
@@ -233,13 +233,13 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
-		if (data.PickableObjectsByScene == null || !data.PickableObjectsByScene.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) return;
 
 		var savedState = sourceList.Find(item => item.PickableObjectIndex == PickableObjectIndex);
 
 		if (savedState.Equals(default(PickableObjectData))) return;
 
-		IsObjectPickedUp = savedState.WasPickableObjectPickedUp;
+		IsObjectPickedUp = savedState.IsPickableObjectPickedUp;
 
 		if (IsObjectPickedUp)
 		{
@@ -247,7 +247,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		}
 		else
 		{
-			_pickableObjectTransform.position = savedState.PickableObjecPosition;
+			_pickableObjectTransform.position = savedState.PickableObjectPosition;
 			_pickableObjectTransform.rotation = savedState.PickableObjecRotation;
 		}
 	}

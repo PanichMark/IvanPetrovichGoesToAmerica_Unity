@@ -8,8 +8,8 @@ public class PlayerManaController : MonoBehaviour, ISaveLoad
 	private GameObject _sliderManaBarFillArea;
 	private Button _buttonManaReplenishtem;
 	private TextMeshProUGUI _manaReplenishItemNumber;
-	public int MaxPlayerMana { get; private set; } = 100;
-	public int CurrentPlayerMana { get; private set; }
+	public float MaxPlayerMana { get; private set; } = 100f;
+	public float CurrentPlayerMana { get; private set; }
 
 	private int _manaItemEffect = 34;
 	public int MaxManaReplenishItemsNumber { get; private set; } = 9;
@@ -95,13 +95,13 @@ public class PlayerManaController : MonoBehaviour, ISaveLoad
 	public void SaveData(ref GameData data)
 	{
 		data.PlayerMana = CurrentPlayerMana;
-		data.ManaReplenishItems = CurrentManaReplenishItemsNumber;
+		data.PlayerManaReplenishItemsNumber = CurrentManaReplenishItemsNumber;
 	}
 
 	public void LoadData(GameData data)
 	{
 		CurrentPlayerMana = data.PlayerMana;
-		CurrentManaReplenishItemsNumber = data.ManaReplenishItems;
+		CurrentManaReplenishItemsNumber = data.PlayerManaReplenishItemsNumber;
 
 		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
 

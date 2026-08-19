@@ -15,71 +15,81 @@ public class GameData
 	//Scene
 	public string SceneNameSystem;
 
-	//Player 
+	//Player Movement
 	public Vector3 PlayerPosition;
 	public Quaternion PlayerRotation;
 	public string PlayerMovementStateType;
 
-	//Camera
+	//PlayerCamera
 	public float PlayerCameraDistanceY;
 	public float PlayerCameraDistanceZ;
-	public Quaternion CameraRotation;
-	public string CurrentPlayerCameraStateType;
-	public bool IsCameraShoulderRight;
+	public Quaternion PlayerCameraRotation;
+	public string PlayerCameraCurrentStateType;
+	public bool IsPlayerCameraShoulderRight;
 
-	//Behaviour
+	//PlayerBehaviour
 	public bool IsPlayerArmed;
 	public bool WasPlayerArmed;
 
-	//Resources
+	//PlayerResources
 	public float PlayerHealth;
-	public int HealingItems;
-	public int PlayerMana;
-	public int ManaReplenishItems;
+	public int PlayerHealingItemsNumber;
+	public float PlayerMana;
+	public int PlayerManaReplenishItemsNumber;
 	public int PlayerMoney;
-	public List<AmmoTypeData> AmmoDictionary;
 
-	//Weapons
+	//PlayerWeapons
 	public List<string> UnlockedWeapons;
 	public List<WeaponRangedData> UnlockedRangedWeapons;
+	public List<AmmoTypeData> PlayerAmmo;
 	public string WeaponRightHand;
 	public string WeaponLeftHand;
 
+	//GameplayObjects
 	[JsonProperty("NPCs")]
-	public Dictionary<GameScenesGameplayDataEnum, List<NPCdata>> NPCdataByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<NPCdata>> NPCsData;
 
 	[JsonProperty("LootObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>> LootObjectsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>> LootObjectsData;
 
 	[JsonProperty("ConsumableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<ConsumableObjectData>> ConsumableObjectsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<ConsumableObjectData>> ConsumableObjectsData;
 
 	[JsonProperty("PickableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>> PickableObjectsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>> PickableObjectsData;
 
 	[JsonProperty("Keys")]
-	public Dictionary<GameScenesGameplayDataEnum, List<KeyData>> KeysByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<KeyData>> KeysData;
 
 	[JsonProperty("OpenableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<OpenableObjectData>> OpenableObjectsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<OpenableObjectData>> OpenableObjectsData;
 
 	[JsonProperty("Safes")]
-	public Dictionary<GameScenesGameplayDataEnum, List<SafeData>> SafesByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<SafeData>> SafesData;
 
 	[JsonProperty("VendingMachines")]
-	public Dictionary<GameScenesGameplayDataEnum, List<VendingMachineData>> VendingMachinesByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<VendingMachineData>> VendingMachinesData;
 
 	[JsonProperty("Elevators")]
-	public Dictionary<GameScenesGameplayDataEnum, List<ElevatorData>> ElevatorsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<ElevatorData>> ElevatorsData;
 
 	[JsonProperty("Lights")]
-	public Dictionary<GameScenesGameplayDataEnum, List<LightData>> LightsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<LightData>> LightsData;
 
 	[JsonProperty("TVs")]
-	public Dictionary<GameScenesGameplayDataEnum, List<TVdata>> TVsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<TVdata>> TVsData;
 
 	[JsonProperty("Phonographs")]
-	public Dictionary<GameScenesGameplayDataEnum, List<PhonographData>> PhonographsByScene;
+	public Dictionary<GameScenesGameplayDataEnum, List<PhonographData>> PhonographsData;
+
+	[JsonProperty("BreakableObjects")]
+	public Dictionary<GameScenesGameplayDataEnum, List<BreakableObjectData>> BreakableObjectsData;
+
+	[JsonProperty("ElectricalPanels")]
+	public Dictionary<GameScenesGameplayDataEnum, List<ElectricalPanelData>> ElectricalPanelsData;
+
+	[JsonProperty("HintMessages")]
+	public Dictionary<GameScenesGameplayDataEnum, List<HintMessageData>> HintMessagesData;
 
 	public GameData()
 	{
@@ -92,29 +102,33 @@ public class GameData
 		//Scene
 		SceneNameSystem = GameScenesSystemEnum.Scene_0_Test.ToString();
 
-		//Player 
+		//Player Movement
 		PlayerPosition = new Vector3(0, 0, -5);
 		PlayerRotation = new Quaternion(0, 0, 0, 0);
 		PlayerMovementStateType = PlayerMovementStateTypes.PlayerIdleStanding.ToString();
 
-		//Camera
+		//PlayerCamera
 		PlayerCameraDistanceY = -1.75f;
 		PlayerCameraDistanceZ = 3.25f;
-		CameraRotation = new Quaternion(0, 0, 0, 0);
-		CurrentPlayerCameraStateType = PlayerCameraStateTypes.FirstPerson.ToString();
-		IsCameraShoulderRight = true;
+		PlayerCameraRotation = new Quaternion(0, 0, 0, 0);
+		PlayerCameraCurrentStateType = PlayerCameraStateTypes.FirstPerson.ToString();
+		IsPlayerCameraShoulderRight = true;
 
-		//Behaviour
+		//PlayerBehaviour
 		IsPlayerArmed = false;
 		WasPlayerArmed = false;
 
-		//Resources
+		//PlayerResources
 		PlayerHealth = 50;
-		HealingItems = 1;
+		PlayerHealingItemsNumber = 1;
 		PlayerMana = 50;
-		ManaReplenishItems = 1;
+		PlayerManaReplenishItemsNumber = 1;
 		PlayerMoney = 200;
-		AmmoDictionary = new List<AmmoTypeData>
+
+		//PlayerWeapons
+		UnlockedWeapons = new List<string>();
+		UnlockedRangedWeapons = new List<WeaponRangedData>();
+		PlayerAmmo = new List<AmmoTypeData>
 		{
 			new AmmoTypeData
 			{
@@ -131,10 +145,6 @@ public class GameData
 				AmmoReserve = 10
 			}
 		};
-
-		//Weapons
-		UnlockedWeapons = new List<string>();
-		UnlockedRangedWeapons = new List<WeaponRangedData>();
 		WeaponRightHand = null;
 		WeaponLeftHand = null;
 
@@ -143,18 +153,21 @@ public class GameData
 
 	private void InitializeGameplayObjectsData()
 	{
-		NPCdataByScene = CreateEmptyDictionary<NPCdata>();
-		LootObjectsByScene = CreateEmptyDictionary<LootObjectData>();
-		ConsumableObjectsByScene = CreateEmptyDictionary<ConsumableObjectData>();
-		PickableObjectsByScene = CreateEmptyDictionary<PickableObjectData>();
-		KeysByScene = CreateEmptyDictionary<KeyData>();
-		OpenableObjectsByScene = CreateEmptyDictionary<OpenableObjectData>();
-		SafesByScene = CreateEmptyDictionary<SafeData>();
-		VendingMachinesByScene = CreateEmptyDictionary<VendingMachineData>();
-		ElevatorsByScene = CreateEmptyDictionary<ElevatorData>();
-		LightsByScene = CreateEmptyDictionary<LightData>();
-		TVsByScene = CreateEmptyDictionary<TVdata>();
-		PhonographsByScene = CreateEmptyDictionary<PhonographData>();
+		NPCsData = CreateEmptyDictionary<NPCdata>();
+		LootObjectsData = CreateEmptyDictionary<LootObjectData>();
+		ConsumableObjectsData = CreateEmptyDictionary<ConsumableObjectData>();
+		PickableObjectsData = CreateEmptyDictionary<PickableObjectData>();
+		KeysData = CreateEmptyDictionary<KeyData>();
+		OpenableObjectsData = CreateEmptyDictionary<OpenableObjectData>();
+		SafesData = CreateEmptyDictionary<SafeData>();
+		VendingMachinesData = CreateEmptyDictionary<VendingMachineData>();
+		ElevatorsData = CreateEmptyDictionary<ElevatorData>();
+		LightsData = CreateEmptyDictionary<LightData>();
+		TVsData = CreateEmptyDictionary<TVdata>();
+		PhonographsData = CreateEmptyDictionary<PhonographData>();
+		BreakableObjectsData = CreateEmptyDictionary<BreakableObjectData>();
+		ElectricalPanelsData = CreateEmptyDictionary<ElectricalPanelData>();
+		HintMessagesData = CreateEmptyDictionary<HintMessageData>();
 	}
 
 	private Dictionary<GameScenesGameplayDataEnum, List<T>> CreateEmptyDictionary<T>()
@@ -171,7 +184,13 @@ public class GameData
 [System.Serializable]
 public struct NPCdata
 {
+	public int NPCindex;
+	public string NPCnameSystem;
 
+	public Vector3 NPCposition;
+	public Quaternion NPCrotation;
+	public string NPCstate;
+	public float NPChealth;
 }
 
 [System.Serializable]
@@ -179,13 +198,17 @@ public struct LootObjectData
 {
 	public int LootObjectIndex;
 	public string LootObjectNameSystem;
-	public bool WasLootObjectCollected;
+
+	public bool IsLootObjectCollected;
 }
 
 [System.Serializable]
 public struct ConsumableObjectData
 {
+	public int ConsumableObjectIndex;
+	public string ConsumableObjectNameSystem;
 
+	public bool IsConsumableObjectConsumed;
 }
 
 [System.Serializable]
@@ -193,17 +216,19 @@ public struct PickableObjectData
 {
 	public int PickableObjectIndex;
 	public string PickableObjectNameSystem;
-	public Vector3 PickableObjecPosition;
+
+	public Vector3 PickableObjectPosition;
 	public Quaternion PickableObjecRotation;
-	public bool WasPickableObjectPickedUp;
-	public bool WasPickableObjectDestroyed;
+	public bool IsPickableObjectPickedUp;
+	public bool IsPickableObjectDestroyed;
 }
 
 [System.Serializable]
 public struct KeyData
 {
-	public string KeyName;
-	public bool WasKeyCollected;
+	public string KeyNameSystem;
+
+	public bool IsKeyCollected;
 }
 
 [System.Serializable]
@@ -211,42 +236,90 @@ public struct OpenableObjectData
 {
 	public int OpenableObjectIndex;
 	public string OpenableObjectNameSystem;
-	public bool WasOpenableObjectUnlocked;
-	public bool WasOpenableObjectOpened;
+
+	public bool IsOpenableObjectOpened;
+	public bool IsOpenableObjectUnlocked;
+	public bool IsOpenableObjectDestroyed;
 }
 
 [System.Serializable]
 public struct SafeData
 {
+	public int SafeIndex;
+	public string SafeNameSystem;
 
+	public bool IsSafeOpened;
+	public int SafeRotationSection_1_Position;
+	public int SafeRotationSection_2_Position;
+	public int SafeRotationSection_3_Position;
 }
 
 [System.Serializable]
 public struct VendingMachineData
 {
-
+	public int VendingMachineIndex;
+	public string VendingMachineNameSystem;
 }
 
 [System.Serializable]
 public struct ElevatorData
 {
-
+	public int ElevatorIndex;
+	public string ElevatorNameSystem;
 }
 
 [System.Serializable]
 public struct LightData
 {
+	public int LightIndex;
+	public string LightNameSystem;
 
+	public bool IsLightTurnedOn;
 }
 
 [System.Serializable]
 public struct TVdata
 {
+	public int TVindex;
+	public string TVnameSystem;
 
+	public bool IsTVturnedOn;
+	public int TVchannel;
 }
 
 [System.Serializable]
 public struct PhonographData
 {
+	public int PhonographIndex;
+	public string PhonographNameSystem;
 
+	public bool IsPhonographTurnedOn;
+}
+
+[System.Serializable]
+public struct BreakableObjectData
+{
+	public int BreakableObjectIndex;
+	public string BreakableObjectSystem;
+
+	public bool IsBreakableObjectDestroyed;
+	public float BreakableObjectHealth;
+}
+
+[System.Serializable]
+public struct ElectricalPanelData
+{
+	public int ElectricalPanelIndex;
+	public string ElectricalPanelSystem;
+
+	public bool IsElectricalPanelOutOfService;
+}
+
+[System.Serializable]
+public struct HintMessageData
+{
+	public int HintMessageIndex;
+	public string HintMessageSystem;
+
+	public bool WasHintMessageShown;
 }

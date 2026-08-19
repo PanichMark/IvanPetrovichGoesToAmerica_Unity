@@ -32,17 +32,17 @@ public class KeysManager: ISaveLoad
 	public void SaveData(ref GameData data)
 	{
 		// Используем Scene_0_Test как единый глобальный контейнер для ключей
-		if (!data.KeysByScene.ContainsKey(GameScenesGameplayDataEnum.Scene_0_Test))
+		if (!data.KeysData.ContainsKey(GameScenesGameplayDataEnum.Scene_0_Test))
 		{
-			data.KeysByScene[GameScenesGameplayDataEnum.Scene_0_Test] = new List<KeyData>();
+			data.KeysData[GameScenesGameplayDataEnum.Scene_0_Test] = new List<KeyData>();
 		}
 
-		var targetList = data.KeysByScene[GameScenesGameplayDataEnum.Scene_0_Test];
+		var targetList = data.KeysData[GameScenesGameplayDataEnum.Scene_0_Test];
 		targetList.Clear();
 
 		foreach (string keyId in _collectedKeys)
 		{
-			targetList.Add(new KeyData { KeyName = keyId });
+			targetList.Add(new KeyData { KeyNameSystem = keyId });
 		}
 	}
 
