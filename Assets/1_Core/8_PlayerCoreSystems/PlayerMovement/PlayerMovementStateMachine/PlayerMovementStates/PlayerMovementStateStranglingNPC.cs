@@ -1,16 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerMovementStateStranglingNPC : MonoBehaviour
+public class PlayerMovementStateStranglingNPC : PlayerMovementStateAbstract
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

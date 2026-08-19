@@ -23,6 +23,11 @@ public class InteractionObjectPickableNonThrowableAccordion : InteractionObjectP
 		base.DropOffObject();
 	}
 
+	protected override void OnDestroy()
+	{
+		base.OnDestroy(); // Затем вызовется логика родителя
+	}
+
 	private IEnumerator PlayAccordionBlendShapeAnimation()
 	{
 		while (IsObjectPickedUp)
@@ -40,6 +45,8 @@ public class InteractionObjectPickableNonThrowableAccordion : InteractionObjectP
 
 	protected override void InitializePickable()
 	{
+		base.InitializePickable();
+
 		_accordionSkinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
 	}
 }

@@ -9,6 +9,9 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	private Bootstrap _bootstrap;
 	private PlayerBehaviourController _playerBehaviour;
 
+	public delegate void MovementSpeedHandler();
+	public event MovementSpeedHandler OnMovementSpeedChangedByStateMachine;
+
 	private Camera _playerCamera;
 
 	private Vector3 _playerWorldMovement;
@@ -110,6 +113,8 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
+		Debug.Log(PlayerMovementSpeed);
+
 		IsPlayerGrounded = Physics.Raycast(transform.position + new Vector3(0, PlayerDownRayYPosition, 0), Vector3.down, out _hitInfo, _playerFloorDetectionRayCastLength);
 		IsPlayerAbleToStandUp = !Physics.Raycast(transform.position + new Vector3(0, PlayerUpRayYPosition, 0), Vector3.up, out _hitInfo, 0.3f);
 		IsPlayerFalling = (PlayerPreviousFramePositionChange.y < -0.01f && IsPlayerGrounded == false);
@@ -123,7 +128,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 			IsPlayerJumping = false;
 		}
 
-			bool isAllBoxesColliding;
+		bool isAllBoxesColliding;
 		bool isBigRectangleClear;
 		bool isSmallRectangleClear;
 
@@ -229,9 +234,15 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		_playerPreviousFramePosition = transform.position;
 	}
 
-	public float ChangePlayerMovementSpeed(float SetSpeed)
+	public float ChangePlayerMovementSpeed(float SetSpeed, bool isChangedByStateMachine)
 	{
 		PlayerMovementSpeed = SetSpeed;
+
+		if (isChangedByStateMachine)
+		{
+			OnMovementSpeedChangedByStateMachine?.Invoke();
+		}
+
 		return PlayerMovementSpeed;
 	}
 

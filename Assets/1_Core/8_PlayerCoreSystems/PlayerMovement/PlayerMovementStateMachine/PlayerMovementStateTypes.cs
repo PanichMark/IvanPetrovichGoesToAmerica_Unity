@@ -11,7 +11,6 @@
     PlayerLedgeClimbingStanding,
 	PlayerLedgeClimbingCrouching,
 	PlayerStranglingNPC,
-    PlayerCarryingObject,
 	PlayerPlunging,
     PlayerDying
 }

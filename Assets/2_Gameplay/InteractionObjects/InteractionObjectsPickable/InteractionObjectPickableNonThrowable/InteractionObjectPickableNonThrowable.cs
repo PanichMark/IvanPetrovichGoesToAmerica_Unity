@@ -16,6 +16,63 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 		return component;
 	}
 
+	private PlayerMovementController _playerMovementController;
+	private PlayerMovementStateMachineController _playerMovementStateMachineController;
+
+	public override void PickUpObject()
+	{
+		base.PickUpObject();
+
+		/*
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing ||
+			_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
+		{
+
+		}
+
+		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleStanding ||
+		_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingStanding)
+		{
+
+		}
+		*/
+
+		HalfTheMovementSpeed();
+	}
+
+	public override void DropOffObject()
+	{
+		base.DropOffObject();
+
+		RestoreTheMovementSpeed();
+	}
+
+	protected override void InitializePickable()
+	{
+		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
+		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>("PlayerMovementStateMachineController");
+
+		_playerMovementController.OnMovementSpeedChangedByStateMachine += HalfTheMovementSpeed;
+	}
+
+	private void HalfTheMovementSpeed()
+	{
+		if (IsObjectPickedUp)
+		{
+			_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed / 2, false);
+		}
+	}
+
+	private void RestoreTheMovementSpeed()
+	{
+		_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed * 2, false);
+	}
+
+	protected virtual void OnDestroy()
+	{
+		_playerMovementController.OnMovementSpeedChangedByStateMachine -= HalfTheMovementSpeed;
+	}
+
 	public override void SaveData(ref GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;

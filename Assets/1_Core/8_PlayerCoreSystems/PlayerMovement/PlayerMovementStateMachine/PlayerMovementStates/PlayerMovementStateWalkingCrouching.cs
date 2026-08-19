@@ -15,7 +15,7 @@ public class PlayerMovementStateWalkingCrouching : PlayerMovementStateAbstract
 		_playerTransform = _playerMovementController.PlayerTransform;
 		_playerRigidBody = _playerMovementController.PlayerRigidBody;
 
-		_playerMovementController.ChangePlayerMovementSpeed(1.8f);
+		_playerMovementController.ChangePlayerMovementSpeed(1.8f, true);
 		_playerMovementController.ChangePlayerRayPosition(1.2f);
 	}
 	public override void Update()

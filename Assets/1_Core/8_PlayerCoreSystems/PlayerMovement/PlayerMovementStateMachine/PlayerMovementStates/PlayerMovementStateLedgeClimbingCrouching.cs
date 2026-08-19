@@ -1,16 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerMovementStateLedgeClimbingCrouching : MonoBehaviour
+public class PlayerMovementStateLedgeClimbingCrouching : PlayerMovementStateAbstract
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

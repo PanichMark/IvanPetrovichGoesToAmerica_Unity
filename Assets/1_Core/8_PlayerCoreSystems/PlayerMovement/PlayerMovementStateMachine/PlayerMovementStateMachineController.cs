@@ -52,13 +52,13 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 			{
 				newState = new PlayerMovementStateIdleStanding(this, _playerMovementController, _inputDevice);
 			}
-			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingStanding)
-			{
-				newState = new PlayerMovementStateWalkingStanding(this, _playerMovementController, _inputDevice);
-			}
 			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing)
 			{
 				newState = new PlayerMovementStateIdleCrouching(this, _playerMovementController, _inputDevice);
+			}
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingStanding)
+			{
+				newState = new PlayerMovementStateWalkingStanding(this, _playerMovementController, _inputDevice);
 			}
 			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
 			{
@@ -83,6 +83,22 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbingStanding)
 			{
 				newState = new PlayerMovementStateLedgeClimbingStanding(_playerMovementController);
+			}
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbingCrouching)
+			{
+				newState = new PlayerMovementStateLedgeClimbingCrouching();
+			}
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerStranglingNPC)
+			{
+				newState = new PlayerMovementStateStranglingNPC();
+			}
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerPlunging)
+			{
+				newState = new PlayerMovementStatePlunging();
+			}
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerDying)
+			{
+				newState = new PlayerMovementStateDying();
 			}
 			else
 			{
