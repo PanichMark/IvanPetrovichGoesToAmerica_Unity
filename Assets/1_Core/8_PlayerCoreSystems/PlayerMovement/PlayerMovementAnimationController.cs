@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
-public class PlayerMovementAnimationController: MonoBehaviour
+public class PlayerMovementAnimationController : MonoBehaviour
 {
-	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
@@ -11,37 +10,32 @@ public class PlayerMovementAnimationController: MonoBehaviour
 	private Animator _playerAnimator;
 
 	public void Initialize(
-		Bootstrap bootstrap,
 		IInputDevice inputDevice,
 		PlayerBehaviourController playerBehaviour,
 		PlayerMovementStateMachineController playerMovementStateMachineController,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		GameObject player)
 	{
-		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
-		_playerAnimator = player.GetComponent<Animator>();
 		_playerBehaviour = playerBehaviour;
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerCameraStateMachineController = playerCameraStateMachineController;
+		_playerAnimator = player.GetComponent<Animator>();
+
+		_playerMovementStateMachineController.OnChangeMovementState += HandleMovementStateChanged;
 
 		ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing_Type1.ToString());
-
-		Debug.Log("PlayerMovementAnimationController Initialized");
 	}
 
-	private void Update()
+	private void HandleMovementStateChanged(PlayerMovementStateTypes newStateType)
 	{
-		if (!_bootstrap.IsBootstrapInitialized)
-			return;
-
-		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleStanding)
+		if (newStateType == PlayerMovementStateTypes.PlayerIdleStanding)
 		{
 			ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing_Type1.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingStanding)
+		else if (newStateType == PlayerMovementStateTypes.PlayerWalkingStanding)
 		{
-			if (_playerBehaviour.IsPlayerArmed == true || (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson))
+			if (_playerBehaviour.IsPlayerArmed || _playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
 				if (_inputDevice.GetKeyUp())
 				{
@@ -51,6 +45,7 @@ public class PlayerMovementAnimationController: MonoBehaviour
 				{
 					ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingBackward.ToString());
 				}
+
 				if (_inputDevice.GetKeyRight())
 				{
 					ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingRight.ToString());
@@ -60,39 +55,36 @@ public class PlayerMovementAnimationController: MonoBehaviour
 					ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingLeft.ToString());
 				}
 			}
-			else ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingForward.ToString());
+			else
+			{
+				ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingForward.ToString());
+			}
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerRunning)
+		else if (newStateType == PlayerMovementStateTypes.PlayerRunning)
 		{
-
 			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_RunningForward.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
+		else if (newStateType == PlayerMovementStateTypes.PlayerJumping)
 		{
-
 			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_Jumping.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerFalling)
+		else if (newStateType == PlayerMovementStateTypes.PlayerFalling)
 		{
-
 			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_Falling.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing)
+		else if (newStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing)
 		{
-
 			ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Crouching_Type1.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
+		else if (newStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
 		{
-
 			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_Crouching.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerSliding)
+		else if (newStateType == PlayerMovementStateTypes.PlayerSliding)
 		{
-
 			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_Sliding.ToString());
 		}
-		else if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbingStanding)
+		else if (newStateType == PlayerMovementStateTypes.PlayerLedgeClimbingStanding)
 		{
 			ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_LedgeClimbing.ToString());
 		}

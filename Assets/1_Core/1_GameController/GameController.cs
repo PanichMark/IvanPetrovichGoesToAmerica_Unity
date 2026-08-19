@@ -12,8 +12,8 @@ public class GameController
 	public bool IsGameAbleToSave { get; private set; }
 
 	public delegate void SaveGameAvailabilityHandler();
-	public event PlayerDeathHandler OnSaveGameAvailable;
-	public event PlayerDeathHandler OnSaveGameUnavailable;
+	public event SaveGameAvailabilityHandler OnSaveGameAvailable;
+	public event SaveGameAvailabilityHandler OnSaveGameUnavailable;
 
 	public delegate void PlayerDeathHandler();
 	public event PlayerDeathHandler OnPlayerEarlyDeath;
@@ -28,6 +28,7 @@ public class GameController
 	{
 		IsPlayerAbleToMove = true;
 		IsGameAbleToSave = true;
+
 		Debug.Log("GameController Initialized");
 	}
 

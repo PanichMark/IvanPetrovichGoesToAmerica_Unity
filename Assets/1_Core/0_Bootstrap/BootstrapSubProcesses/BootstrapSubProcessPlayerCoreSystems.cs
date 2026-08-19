@@ -164,7 +164,6 @@ public class BootstrapSubProcessPlayerCoreSystems
 			GameObjectPlayerHatSlot);
 
 		_playerMovementAnimationController.Initialize(
-			_bootstrap,
 			_inputDevice,
 			PlayerBehaviour,
 			PlayerMovementStateMachineController,
