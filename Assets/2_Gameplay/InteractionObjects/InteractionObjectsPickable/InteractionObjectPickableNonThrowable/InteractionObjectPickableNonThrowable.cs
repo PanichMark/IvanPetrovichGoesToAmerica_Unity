@@ -18,58 +18,54 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 
 	public override void SaveData(ref GameData data)
 	{
-		List<PickableObjectData> targetList = null;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
 
-		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
+		// Инициализируем словарь или список для текущей сцены, если их нет
+		if (data.PickableObjectsByScene == null)
 		{
-			targetList = data.PickableObjects_Scene_0_Test;
+			data.PickableObjectsByScene = new Dictionary<GameScenesEnum, List<PickableObjectData>>();
 		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Church))
+		if (!data.PickableObjectsByScene.ContainsKey(currentScene))
 		{
-			targetList = data.PickableObjects_Scene_1_Church;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
-		{
-			targetList = data.PickableObjects_Scene_1_Street;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_RevenueHouse))
-		{
-			targetList = data.PickableObjects_Scene_1_RevenueHouse;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_InnerYard))
-		{
-			targetList = data.PickableObjects_Scene_1_InnerYard;
+			data.PickableObjectsByScene[currentScene] = new List<PickableObjectData>();
 		}
 
-		if (targetList != null)
+		var targetList = data.PickableObjectsByScene[currentScene];
+
+		int indexInList = targetList.FindIndex(item => item.PickableObjectIndex == PickableObjectIndex);
+
+		var updatedItem = new PickableObjectData
 		{
-			int indexInList = targetList.FindIndex(item => item.PickableObjectIndex == PickableObjectIndex);
+			PickableObjectIndex = PickableObjectIndex,
+			PickableObjectNameSystem = InteractionObjectNameSystem,
+			WasPickableObjectPickedUp = IsObjectPickedUp
+		};
 
-			if (indexInList != -1)
-			{
-				PickableObjectData updatedItem = new PickableObjectData
-				{
-					PickableObjectIndex = PickableObjectIndex,
-					PickableObjectNameSystem = InteractionObjectNameSystem,
-					WasPickableObjectPickedUp = IsObjectPickedUp
-				};
-
-				targetList[indexInList] = updatedItem;
-			}
-			else
-			{
-				targetList.Add(new PickableObjectData
-				{
-					PickableObjectIndex = PickableObjectIndex,
-					PickableObjectNameSystem = InteractionObjectNameSystem,
-					WasPickableObjectPickedUp = IsObjectPickedUp
-				});
-			}
+		if (indexInList != -1)
+		{
+			targetList[indexInList] = updatedItem;
+		}
+		else
+		{
+			targetList.Add(updatedItem);
 		}
 	}
 
 	public override void LoadData(GameData data)
 	{
-		
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
+
+		if (data.PickableObjectsByScene == null || !data.PickableObjectsByScene.TryGetValue(currentScene, out var sourceList)) return;
+
+		var savedState = sourceList.Find(item => item.PickableObjectIndex == PickableObjectIndex);
+
+		if (savedState.Equals(default(PickableObjectData))) return;
+
+		IsObjectPickedUp = savedState.WasPickableObjectPickedUp;
+
+		if (IsObjectPickedUp)
+		{
+			gameObject.SetActive(false);
+		}
 	}
 }

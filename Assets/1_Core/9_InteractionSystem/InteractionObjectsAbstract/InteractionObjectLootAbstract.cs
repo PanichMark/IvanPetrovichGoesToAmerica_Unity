@@ -107,82 +107,46 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public void SaveData(ref GameData data)
 	{
-		List<LootObjectData> targetList = null;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
 
-		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
+		// Инициализируем словарь или список для текущей сцены, если их нет
+		if (data.LootObjectsByScene == null)
 		{
-			targetList = data.LootObjects_Scene_0_Test;
+			data.LootObjectsByScene = new Dictionary<GameScenesEnum, List<LootObjectData>>();
 		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Church))
+		if (!data.LootObjectsByScene.ContainsKey(currentScene))
 		{
-			targetList = data.LootObjects_Scene_1_Church;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
-		{
-			targetList = data.LootObjects_Scene_1_Street;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_RevenueHouse))
-		{
-			targetList = data.LootObjects_Scene_1_RevenueHouse;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_InnerYard))
-		{
-			targetList = data.LootObjects_Scene_1_InnerYard;
+			data.LootObjectsByScene[currentScene] = new List<LootObjectData>();
 		}
 
-		if (targetList != null)
+		var targetList = data.LootObjectsByScene[currentScene];
+
+		int indexInList = targetList.FindIndex(item => item.LootObjectIndex == LootObjectIndex);
+
+		var updatedItem = new LootObjectData
 		{
-			int indexInList = targetList.FindIndex(item => item.LootObjectIndex == LootObjectIndex);
+			LootObjectIndex = LootObjectIndex,
+			LootObjectNameSystem = InteractionObjectNameSystem,
+			WasLootObjectCollected = WasLootItemCollected
+		};
 
-			if (indexInList != -1)
-			{
-				LootObjectData updatedItem = new LootObjectData
-				{
-					LootObjectIndex = LootObjectIndex,
-					LootObjectNameSystem = InteractionObjectNameSystem,
-					WasLootObjectCollected = WasLootItemCollected 
-				};
-
-				targetList[indexInList] = updatedItem;
-			}
-			else
-			{
-				targetList.Add(new LootObjectData
-				{
-					LootObjectIndex = LootObjectIndex,
-					LootObjectNameSystem = InteractionObjectNameSystem,
-					WasLootObjectCollected = WasLootItemCollected
-				});
-			}
+		if (indexInList != -1)
+		{
+			targetList[indexInList] = updatedItem;
+		}
+		else
+		{
+			targetList.Add(updatedItem);
 		}
 	}
 
 	public void LoadData(GameData data)
 	{
-		List<LootObjectData> sourceList = null;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
 
-		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
-		{
-			sourceList = data.LootObjects_Scene_0_Test;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Church))
-		{
-			sourceList = data.LootObjects_Scene_1_Church;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
-		{
-			sourceList = data.LootObjects_Scene_1_Street;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_RevenueHouse))
-		{
-			sourceList = data.LootObjects_Scene_1_RevenueHouse;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_InnerYard))
-		{
-			sourceList = data.LootObjects_Scene_1_InnerYard;
-		}
+		if (data.LootObjectsByScene == null || !data.LootObjectsByScene.TryGetValue(currentScene, out var sourceList)) return;
 
-		if (sourceList != null && sourceList.Count > 0)
+		if (sourceList.Count > 0)
 		{
 			LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == LootObjectIndex);
 

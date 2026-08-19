@@ -31,11 +31,18 @@ public class KeysManager: ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		//data.CollectedKeys.Clear();
+		// Используем Scene_0_Test как единый глобальный контейнер для ключей
+		if (!data.KeysByScene.ContainsKey(GameScenesEnum.Scene_0_Test))
+		{
+			data.KeysByScene[GameScenesEnum.Scene_0_Test] = new List<KeyData>();
+		}
+
+		var targetList = data.KeysByScene[GameScenesEnum.Scene_0_Test];
+		targetList.Clear();
 
 		foreach (string keyId in _collectedKeys)
 		{
-			data.CollectedKeys.Add(new KeyData { KeyName = keyId, WasKeyCollected = true });
+			targetList.Add(new KeyData { KeyName = keyId });
 		}
 	}
 

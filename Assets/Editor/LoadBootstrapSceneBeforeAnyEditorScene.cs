@@ -3,9 +3,9 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 
 [InitializeOnLoadAttribute]
-public static class LoadBootstrapSceneBeforeAnyEditScene
+public static class LoadBootstrapSceneBeforeAnyEditorScene
 {
-	static LoadBootstrapSceneBeforeAnyEditScene()
+	static LoadBootstrapSceneBeforeAnyEditorScene()
 	{
 		EditorApplication.playModeStateChanged += HandlePlayModeChange;
 	}

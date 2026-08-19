@@ -1,6 +1,7 @@
 ﻿using System;
-using UnityEngine;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using UnityEngine;
 
 [System.Serializable]
 public class GameData
@@ -44,85 +45,41 @@ public class GameData
 	public string WeaponRightHand;
 	public string WeaponLeftHand;
 
-	//NPCs
-	public List<NPCdata> NPCdata_Scene_0_Test;
-	public List<NPCdata> NPCdata_Scene_1_Church;
-	public List<NPCdata> NPCdata_Scene_1_Street;
-	public List<NPCdata> NPCdata_Scene_1_RevenueHouse;
-	public List<NPCdata> NPCdata_Scene_1_InnerYard;
+	[JsonProperty("NPCs")]
+	public Dictionary<GameScenesEnum, List<NPCdata>> NPCdataByScene;
 
-	//LootObjects
-	public List<LootObjectData> LootObjects_Scene_0_Test;
-	public List<LootObjectData> LootObjects_Scene_1_Church;
-	public List<LootObjectData> LootObjects_Scene_1_Street;
-	public List<LootObjectData> LootObjects_Scene_1_RevenueHouse;
-	public List<LootObjectData> LootObjects_Scene_1_InnerYard;
+	[JsonProperty("LootObjects")]
+	public Dictionary<GameScenesEnum, List<LootObjectData>> LootObjectsByScene;
 
-	// ConsumableObjects
-	public List<ConsumableObjectData> ConsumableObjectData_Scene_0_Test;
-	public List<ConsumableObjectData> ConsumableObjectData_Scene_1_Church;
-	public List<ConsumableObjectData> ConsumableObjectData_Scene_1_Street;
-	public List<ConsumableObjectData> ConsumableObjectData_Scene_1_RevenueHouse;
-	public List<ConsumableObjectData> ConsumableObjectData_Scene_1_InnerYard;
+	[JsonProperty("ConsumableObjects")]
+	public Dictionary<GameScenesEnum, List<ConsumableObjectData>> ConsumableObjectsByScene;
 
-	//PickableObjects
-	public List<PickableObjectData> PickableObjects_Scene_0_Test;
-	public List<PickableObjectData> PickableObjects_Scene_1_Church;
-	public List<PickableObjectData> PickableObjects_Scene_1_Street;
-	public List<PickableObjectData> PickableObjects_Scene_1_RevenueHouse;
-	public List<PickableObjectData> PickableObjects_Scene_1_InnerYard;
+	[JsonProperty("PickableObjects")]
+	public Dictionary<GameScenesEnum, List<PickableObjectData>> PickableObjectsByScene;
 
-	//Keys
-	public List<KeyData> CollectedKeys;
+	[JsonProperty("Keys")]
+	public Dictionary<GameScenesEnum, List<KeyData>> KeysByScene;
 
-	//Openable Objects
-	public List<OpenableObjectData> OpenableObjects_Scene_0_Test;
-	public List<OpenableObjectData> OpenableObjects_Scene_1_Church;
-	public List<OpenableObjectData> OpenableObjects_Scene_1_Street;
-	public List<OpenableObjectData> OpenableObjects_Scene_1_RevenueHouse;
-	public List<OpenableObjectData> OpenableObjects_Scene_1_InnerYard;
+	[JsonProperty("OpenableObjects")]
+	public Dictionary<GameScenesEnum, List<OpenableObjectData>> OpenableObjectsByScene;
 
-	//Safes
-	public List<SafeData> SafesData_Scene_0_Test;
-	public List<SafeData> SafesData_Scene_1_Church;
-	public List<SafeData> SafesData_Scene_1_Street;
-	public List<SafeData> SafesData_Scene_1_RevenueHouse;
-	public List<SafeData> SafesData_Scene_1_InnerYard;
+	[JsonProperty("Safes")]
+	public Dictionary<GameScenesEnum, List<SafeData>> SafesByScene;
 
-	//VendingMachine
-	public List<VendingMachineData> VendingMachinesData_Scene_0_Test;
-	public List<VendingMachineData> VendingMachinesData_Scene_1_Church;
-	public List<VendingMachineData> VendingMachinesData_Scene_1_Street;
-	public List<VendingMachineData> VendingMachinesData_Scene_1_RevenueHouse;
-	public List<VendingMachineData> VendingMachinesData_Scene_1_InnerYard;
+	[JsonProperty("VendingMachines")]
+	public Dictionary<GameScenesEnum, List<VendingMachineData>> VendingMachinesByScene;
 
-	//Elevators
-	public List<ElevatorData> ElevatorsData_Scene_0_Test;
-	public List<ElevatorData> ElevatorsData_Scene_1_Church;
-	public List<ElevatorData> ElevatorsData_Scene_1_Street;
-	public List<ElevatorData> ElevatorsData_Scene_1_RevenueHouse;
-	public List<ElevatorData> ElevatorsData_Scene_1_InnerYard;
+	[JsonProperty("Elevators")]
+	public Dictionary<GameScenesEnum, List<ElevatorData>> ElevatorsByScene;
 
-	//Lights
-	public List<LightData> LightsData_Scene_0_Test;
-	public List<LightData> LightsData_Scene_1_Church;
-	public List<LightData> LightsData_Scene_1_Street;
-	public List<LightData> LightsData_Scene_1_RevenueHouse;
-	public List<LightData> LightsData_Scene_1_InnerYard;
+	[JsonProperty("Lights")]
+	public Dictionary<GameScenesEnum, List<LightData>> LightsByScene;
 
-	//TVs
-	public List<TVdata> TVsData_Scene_0_Test;
-	public List<TVdata> TVsData_Scene_1_Church;
-	public List<TVdata> TVsData_Scene_1_Street;
-	public List<TVdata> TVsData_Scene_1_RevenueHouse;
-	public List<TVdata> TVsData_Scene_1_InnerYard;
+	[JsonProperty("TVs")]
+	public Dictionary<GameScenesEnum, List<TVdata>> TVsByScene;
 
-	//Phonographs
-	public List<PhonographData> PhonographsData_Scene_0_Test;
-	public List<PhonographData> PhonographsData_Scene_1_Church;
-	public List<PhonographData> PhonographsData_Scene_1_Street;
-	public List<PhonographData> PhonographsData_Scene_1_RevenueHouse;
-	public List<PhonographData> PhonographsData_Scene_1_InnerYard;
+	[JsonProperty("Phonographs")]
+	public Dictionary<GameScenesEnum, List<PhonographData>> PhonographsByScene;
 
 	public GameData()
 	{
@@ -181,85 +138,33 @@ public class GameData
 		WeaponRightHand = null;
 		WeaponLeftHand = null;
 
-		//NPCs
-		NPCdata_Scene_0_Test = new List<NPCdata>();
-		NPCdata_Scene_1_Church = new List<NPCdata>();
-		NPCdata_Scene_1_Street = new List<NPCdata>();
-		NPCdata_Scene_1_RevenueHouse = new List<NPCdata>();
-		NPCdata_Scene_1_InnerYard = new List<NPCdata>();
+		InitializeGameplayObjectsData();
+	}
 
-		//LootObjects
-		LootObjects_Scene_0_Test = new List<LootObjectData>();
-		LootObjects_Scene_1_Church = new List<LootObjectData>();
-		LootObjects_Scene_1_Street = new List<LootObjectData>();
-		LootObjects_Scene_1_RevenueHouse = new List<LootObjectData>();
-		LootObjects_Scene_1_InnerYard = new List<LootObjectData>();
+	private void InitializeGameplayObjectsData()
+	{
+		NPCdataByScene = CreateEmptyDictionary<NPCdata>();
+		LootObjectsByScene = CreateEmptyDictionary<LootObjectData>();
+		ConsumableObjectsByScene = CreateEmptyDictionary<ConsumableObjectData>();
+		PickableObjectsByScene = CreateEmptyDictionary<PickableObjectData>();
+		KeysByScene = CreateEmptyDictionary<KeyData>();
+		OpenableObjectsByScene = CreateEmptyDictionary<OpenableObjectData>();
+		SafesByScene = CreateEmptyDictionary<SafeData>();
+		VendingMachinesByScene = CreateEmptyDictionary<VendingMachineData>();
+		ElevatorsByScene = CreateEmptyDictionary<ElevatorData>();
+		LightsByScene = CreateEmptyDictionary<LightData>();
+		TVsByScene = CreateEmptyDictionary<TVdata>();
+		PhonographsByScene = CreateEmptyDictionary<PhonographData>();
+	}
 
-		//ConsumableObjects
-		ConsumableObjectData_Scene_0_Test = new List<ConsumableObjectData>();
-		ConsumableObjectData_Scene_1_Church = new List<ConsumableObjectData>();
-		ConsumableObjectData_Scene_1_Street = new List<ConsumableObjectData>();
-		ConsumableObjectData_Scene_1_RevenueHouse = new List<ConsumableObjectData>();
-		ConsumableObjectData_Scene_1_InnerYard = new List<ConsumableObjectData>();
-
-		//PickableObjects
-		PickableObjects_Scene_0_Test = new List<PickableObjectData>();
-		PickableObjects_Scene_1_Church = new List<PickableObjectData>();
-		PickableObjects_Scene_1_Street = new List<PickableObjectData>();
-		PickableObjects_Scene_1_RevenueHouse = new List<PickableObjectData>();
-		PickableObjects_Scene_1_InnerYard = new List<PickableObjectData>();
-
-		//Keys
-		CollectedKeys = new List<KeyData>();
-
-		//Openable Objects
-		OpenableObjects_Scene_0_Test = new List<OpenableObjectData>();
-		OpenableObjects_Scene_1_Church = new List<OpenableObjectData>();
-		OpenableObjects_Scene_1_Street = new List<OpenableObjectData>();
-		OpenableObjects_Scene_1_RevenueHouse = new List<OpenableObjectData>();
-		OpenableObjects_Scene_1_InnerYard = new List<OpenableObjectData>();
-
-		//Safes
-		SafesData_Scene_0_Test = new List<SafeData>();
-		SafesData_Scene_1_Church = new List<SafeData>();
-		SafesData_Scene_1_Street = new List<SafeData>();
-		SafesData_Scene_1_RevenueHouse = new List<SafeData>();
-		SafesData_Scene_1_InnerYard = new List<SafeData>();
-
-		//VendingMachines
-		VendingMachinesData_Scene_0_Test = new List<VendingMachineData>();
-		VendingMachinesData_Scene_1_Church = new List<VendingMachineData>();
-		VendingMachinesData_Scene_1_Street = new List<VendingMachineData>();
-		VendingMachinesData_Scene_1_RevenueHouse = new List<VendingMachineData>();
-		VendingMachinesData_Scene_1_InnerYard = new List<VendingMachineData>();
-
-		//Elevators
-		ElevatorsData_Scene_0_Test = new List<ElevatorData>();
-		ElevatorsData_Scene_1_Church = new List<ElevatorData>();
-		ElevatorsData_Scene_1_Street = new List<ElevatorData>();
-		ElevatorsData_Scene_1_RevenueHouse = new List<ElevatorData>();
-		ElevatorsData_Scene_1_InnerYard = new List<ElevatorData>();
-
-		//Lights
-		LightsData_Scene_0_Test = new List<LightData>();
-		LightsData_Scene_1_Church = new List<LightData>();
-		LightsData_Scene_1_Street = new List<LightData>();
-		LightsData_Scene_1_RevenueHouse = new List<LightData>();
-		LightsData_Scene_1_InnerYard = new List<LightData>();
-
-		//TVs
-		TVsData_Scene_0_Test = new List<TVdata>();
-		TVsData_Scene_1_Church = new List<TVdata>();
-		TVsData_Scene_1_Street = new List<TVdata>();
-		TVsData_Scene_1_RevenueHouse = new List<TVdata>();
-		TVsData_Scene_1_InnerYard = new List<TVdata>();
-
-		//Phonographs
-		PhonographsData_Scene_0_Test = new List<PhonographData>();
-		PhonographsData_Scene_1_Church = new List<PhonographData>();
-		PhonographsData_Scene_1_Street = new List<PhonographData>();
-		PhonographsData_Scene_1_RevenueHouse = new List<PhonographData>();
-		PhonographsData_Scene_1_InnerYard = new List<PhonographData>();
+	private Dictionary<GameScenesEnum, List<T>> CreateEmptyDictionary<T>()
+	{
+		var dict = new Dictionary<GameScenesEnum, List<T>>();
+		foreach (GameScenesEnum scene in Enum.GetValues(typeof(GameScenesEnum)))
+		{
+			dict[scene] = new List<T>();
+		}
+		return dict;
 	}
 }
 

@@ -32,58 +32,55 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 
 	public void SaveData(ref GameData data)
 	{
-		List<OpenableObjectData> targetList = null;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
 
-		if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_0_Test))
+		// Инициализируем словарь или список для текущей сцены, если их нет
+		if (data.OpenableObjectsByScene == null)
 		{
-			targetList = data.OpenableObjects_Scene_0_Test;
+			data.OpenableObjectsByScene = new Dictionary<GameScenesEnum, List<OpenableObjectData>>();
 		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Church))
+		if (!data.OpenableObjectsByScene.ContainsKey(currentScene))
 		{
-			targetList = data.OpenableObjects_Scene_1_Church;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_Street))
-		{
-			targetList = data.OpenableObjects_Scene_1_Street;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_RevenueHouse))
-		{
-			targetList = data.OpenableObjects_Scene_1_RevenueHouse;
-		}
-		else if (SceneManager.GetSceneAt(1).name == nameof(GameScenesEnum.Scene_1_InnerYard))
-		{
-			targetList = data.OpenableObjects_Scene_1_InnerYard;
+			data.OpenableObjectsByScene[currentScene] = new List<OpenableObjectData>();
 		}
 
-		if (targetList != null)
-		{
-			int indexInList = targetList.FindIndex(item => item.OpenableObjectIndex == OpenableObjectIndex);
+		var targetList = data.OpenableObjectsByScene[currentScene];
 
-			if (indexInList != -1)
+		int indexInList = targetList.FindIndex(item => item.OpenableObjectIndex == OpenableObjectIndex);
+
+		if (indexInList != -1)
+		{
+			var existingItem = targetList[indexInList];
+
+			existingItem.WasOpenableObjectUnlocked = WasOpenableUnlocked;
+			existingItem.WasOpenableObjectOpened = _isObjectOpened;
+			existingItem.OpenableObjectNameSystem = InteractionObjectNameSystem;
+
+			targetList[indexInList] = existingItem;
+		}
+		else
+		{
+			targetList.Add(new OpenableObjectData
 			{
-				var existingItem = targetList[indexInList];
-
-				existingItem.WasOpenableObjectUnlocked = WasOpenableUnlocked;
-				existingItem.WasOpenableObjectOpened = _isObjectOpened;
-				existingItem.OpenableObjectNameSystem = InteractionObjectNameSystem;
-
-				targetList[indexInList] = existingItem;
-			}
-			else
-			{
-				targetList.Add(new OpenableObjectData
-				{
-					OpenableObjectIndex = OpenableObjectIndex,
-					OpenableObjectNameSystem = InteractionObjectNameSystem,
-					WasOpenableObjectUnlocked = WasOpenableUnlocked,
-					WasOpenableObjectOpened = _isObjectOpened
-				});
-			}
+				OpenableObjectIndex = OpenableObjectIndex,
+				OpenableObjectNameSystem = InteractionObjectNameSystem,
+				WasOpenableObjectUnlocked = WasOpenableUnlocked,
+				WasOpenableObjectOpened = _isObjectOpened
+			});
 		}
 	}
 
 	public void LoadData(GameData data)
 	{
-		//throw new System.NotImplementedException();
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesEnum currentScene)) return;
+
+		if (data.OpenableObjectsByScene == null || !data.OpenableObjectsByScene.TryGetValue(currentScene, out var sourceList)) return;
+
+		var savedState = sourceList.Find(item => item.OpenableObjectIndex == OpenableObjectIndex);
+
+		if (savedState.Equals(default(OpenableObjectData))) return;
+
+		WasOpenableUnlocked = savedState.WasOpenableObjectUnlocked;
+		_isObjectOpened = savedState.WasOpenableObjectOpened;
 	}
 }

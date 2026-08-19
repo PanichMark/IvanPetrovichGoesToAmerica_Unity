@@ -2,93 +2,118 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 public class FileDataHandler
 {
-	private string dataDirPath = "";
+	private readonly string _dataDirPath;
+	private readonly string _dataFileName;
 
-	private string dataFileName = "";
+	// --- 1. ВЛОЖЕННЫЕ КОНВЕРТЕРЫ ---
+	// Они живут ВНУТРИ этого файла, создавать отдельные скрипты не нужно.
 
+	public class Vector3Converter : JsonConverter<Vector3>
+	{
+		public override void WriteJson(JsonWriter writer, Vector3 value, JsonSerializer serializer)
+		{
+			writer.WriteStartObject();
+			writer.WritePropertyName("x"); writer.WriteValue(value.x);
+			writer.WritePropertyName("y"); writer.WriteValue(value.y);
+			writer.WritePropertyName("z"); writer.WriteValue(value.z);
+			writer.WriteEndObject();
+		}
+
+		public override Vector3 ReadJson(JsonReader reader, Type objectType, Vector3 existingValue, bool hasExistingValue, JsonSerializer serializer)
+		{
+			var json = JObject.Load(reader); // Читаем объект { "x": ..., "y": ... }
+			return new Vector3(json["x"].ToObject<float>(),
+							   json["y"].ToObject<float>(),
+							   json["z"].ToObject<float>());
+		}
+	}
+
+	public class QuaternionConverter : JsonConverter<Quaternion>
+	{
+		public override void WriteJson(JsonWriter writer, Quaternion value, JsonSerializer serializer)
+		{
+			writer.WriteStartObject();
+			writer.WritePropertyName("x"); writer.WriteValue(value.x);
+			writer.WritePropertyName("y"); writer.WriteValue(value.y);
+			writer.WritePropertyName("z"); writer.WriteValue(value.z);
+			writer.WritePropertyName("w"); writer.WriteValue(value.w);
+			writer.WriteEndObject();
+		}
+
+		public override Quaternion ReadJson(JsonReader reader, Type objectType, Quaternion existingValue, bool hasExistingValue, JsonSerializer serializer)
+		{
+			var json = JObject.Load(reader);
+			return new Quaternion(json["x"].ToObject<float>(),
+								  json["y"].ToObject<float>(),
+								  json["z"].ToObject<float>(),
+								  json["w"].ToObject<float>());
+		}
+	}
+
+	// --- 2. НАСТРОЙКИ СЕРИАЛИЗАЦИИ ---
+	private static readonly JsonSerializerSettings _settings = new JsonSerializerSettings
+	{
+		TypeNameHandling = TypeNameHandling.Auto,
+		Formatting = Formatting.Indented,
+		NullValueHandling = NullValueHandling.Ignore,
+
+		Converters = new List<JsonConverter>
+		{
+			new Newtonsoft.Json.Converters.StringEnumConverter(),
+            // Добавляем наши локальные конвертеры сюда
+            new FileDataHandler.Vector3Converter(),
+			new FileDataHandler.QuaternionConverter()
+		},
+
+		Error = (sender, args) =>
+		{
+			if (args.ErrorContext.Error.GetType().Name.Contains("JsonSerializationException"))
+			{
+				args.ErrorContext.Handled = true;
+			}
+		}
+	};
+
+	// --- 3. КОНСТРУКТОР И МЕТОДЫ (остались прежними) ---
 	public FileDataHandler(string dataDirPath, string dataFileName)
 	{
-		this.dataDirPath = dataDirPath;
-		this.dataFileName = dataFileName;
+		_dataDirPath = dataDirPath;
+		_dataFileName = dataFileName;
 	}
 
 	public GameData Load()
 	{
-		string fullPath = Path.Combine(dataDirPath, dataFileName);
-		GameData loadedData = null;
-		if (File.Exists(fullPath))
-		{
-			try
-			{
-				string dataToLoad = "";
-				using (FileStream stream = new FileStream(fullPath, FileMode.Open))
-				{
-					using (StreamReader reader = new StreamReader(stream))
-					{
-						dataToLoad = reader.ReadToEnd();
-					}
-				}
-				loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
+		string fullPath = Path.Combine(_dataDirPath, _dataFileName);
+		if (!File.Exists(fullPath)) return null;
 
-			}
-			catch (Exception e)
-			{
-				Debug.LogError("Loading error: " + fullPath + "/n" + e);
-			}
+		try
+		{
+			string dataToLoad = File.ReadAllText(fullPath);
+			return JsonConvert.DeserializeObject<GameData>(dataToLoad, _settings);
 		}
-		return loadedData;
+		catch (Exception e)
+		{
+			Debug.LogError("Loading error: " + fullPath + "\n" + e);
+			return null;
+		}
 	}
 
 	public void Save(GameData data)
 	{
-		string fullPath = Path.Combine(dataDirPath, dataFileName);
+		string fullPath = Path.Combine(_dataDirPath, _dataFileName);
 		try
 		{
 			Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
-			if (data.LootObjects_Scene_0_Test != null)
-			{
-				var sortedScene0 = new List<LootObjectData>(data.LootObjects_Scene_0_Test);
-				sortedScene0.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
-				data.LootObjects_Scene_0_Test = sortedScene0;
-			}
-			if (data.LootObjects_Scene_1_Church != null)
-			{
-				var sortedScene1 = new List<LootObjectData>(data.LootObjects_Scene_1_Church);
-				sortedScene1.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
-				data.LootObjects_Scene_1_Church = sortedScene1;
-			}
-			if (data.LootObjects_Scene_1_Street != null)
-			{
-				var sortedScene1 = new List<LootObjectData>(data.LootObjects_Scene_1_Street);
-				sortedScene1.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
-				data.LootObjects_Scene_1_Street = sortedScene1;
-			}
-			if (data.LootObjects_Scene_1_RevenueHouse != null)
-			{
-				var sortedScene1 = new List<LootObjectData>(data.LootObjects_Scene_1_RevenueHouse);
-				sortedScene1.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
-				data.LootObjects_Scene_1_RevenueHouse = sortedScene1;
-			}
-			if (data.LootObjects_Scene_1_InnerYard != null)
-			{
-				var sortedScene1 = new List<LootObjectData>(data.LootObjects_Scene_1_InnerYard);
-				sortedScene1.Sort((a, b) => a.LootObjectIndex.CompareTo(b.LootObjectIndex));
-				data.LootObjects_Scene_1_InnerYard = sortedScene1;
-			}
-
-			string dataToStore = JsonUtility.ToJson(data, true);
-
-			using (FileStream stream = new FileStream(fullPath, FileMode.Create))
-			{
-				using (StreamWriter writer = new StreamWriter(stream))
-				{
-					writer.Write(dataToStore);
-				}
-			}
+			// ВАЖНО: Используем наш settings со сконфигурированными конвертерами
+			string dataToStore = JsonConvert.SerializeObject(data, _settings);
+			File.WriteAllText(fullPath, dataToStore);
 		}
 		catch (Exception e)
 		{
@@ -98,27 +123,18 @@ public class FileDataHandler
 
 	public GameData LoadFromFile(string fileName)
 	{
-		string fullPath = Path.Combine(dataDirPath, fileName);
-		GameData loadedData = null;
-		if (File.Exists(fullPath))
+		string fullPath = Path.Combine(_dataDirPath, fileName);
+		if (!File.Exists(fullPath)) return null;
+
+		try
 		{
-			try
-			{
-				string dataToLoad = "";
-				using (FileStream stream = new FileStream(fullPath, FileMode.Open))
-				{
-					using (StreamReader reader = new StreamReader(stream))
-					{
-						dataToLoad = reader.ReadToEnd();
-					}
-				}
-				loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
-			}
-			catch (Exception e)
-			{
-				Debug.LogError("Loading error: " + fullPath + "\n" + e);
-			}
+			string dataToLoad = File.ReadAllText(fullPath);
+			return JsonConvert.DeserializeObject<GameData>(dataToLoad, _settings);
 		}
-		return loadedData;
+		catch (Exception e)
+		{
+			Debug.LogError("Loading error: " + fullPath + "\n" + e);
+			return null;
+		}
 	}
 }
