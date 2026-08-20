@@ -3,11 +3,14 @@ using System.Collections;
 
 public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLoad
 {
+	[Header("Object Info")]
 	[SerializeField] private string _ConsumableName;
-	[SerializeField] private float _healthToRestore;
-
 	[SerializeField] private InteractionObjectConsumableTypes _interactionObjectConsumableTypes;
+
+	[Header("Object Effects")]
+	[SerializeField] private float _healthAffected;
 	[SerializeField] private bool _isRotten;
+
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	public GameObject GameObjectPlayer { get; protected set; }
 	private LocalizationManager _localizationManager;
@@ -76,11 +79,11 @@ public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLo
 			{
 				if (!_isRotten)
 				{
-					_playerResourcesHealthManager.ReceiveHealth(_healthToRestore);
+					_playerResourcesHealthManager.ReceiveHealth(_healthAffected);
 				}
 				else
 				{
-					_playerResourcesHealthManager.TakeDamage(_healthToRestore);
+					_playerResourcesHealthManager.TakeDamage(_healthAffected);
 				}
 
 				Destroy(gameObject);
@@ -96,11 +99,11 @@ public class InteractionObjectConsumable : MonoBehaviour, IInteractable, ISaveLo
 	{
 		if (!_isRotten)
 		{
-			_playerResourcesHealthManager.ReceiveHealth(_healthToRestore);
+			_playerResourcesHealthManager.ReceiveHealth(_healthAffected);
 		}
 		else
 		{
-			_playerResourcesHealthManager.TakeDamage(_healthToRestore);
+			_playerResourcesHealthManager.TakeDamage(_healthAffected);
 		}
 
 		Destroy(gameObject);

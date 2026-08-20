@@ -7,14 +7,18 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 {
 	public delegate void InteractionDelegate();
 	private List<GameObject> _spawnedGoods = new List<GameObject>();
+	[Header("Object Info")]
 	[SerializeField] private string _vendingMachineName;
+	[SerializeField] private PlayerMoneyTypes _moneyType;
+
+	[Header("Goods Info")]
 	[SerializeField] protected GameObject _goodsForSale;
 	[SerializeField] protected int _goodsPrice;
 	protected string _goodsName;
 	protected float _vendingMachineElectroHealth;
 	protected bool _isOutOfService;
 	private InteractionObjectLootAbstract _goodsComponent;
-	[SerializeField] private string _moneyType;
+
 	private string _moneyForUI;
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	private PlayerMoneyController _playerResourcesMoneyManager;
@@ -40,7 +44,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerMoneyController>("PlayerResourcesMoneyManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
-		_moneyForUI = _localizationManager.GetLocalizedString(_moneyType);
+		_moneyForUI = _localizationManager.GetLocalizedString($"Money_{_moneyType}");
 
 		_localizationManager.OnLanguageChanged += ChangeLangauge;
 	}
@@ -53,7 +57,7 @@ public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IEl
 	public void ChangeLangauge(LocalizationManager localizationManager)
 	{
 		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
-		_moneyForUI = _localizationManager.GetLocalizedString(_moneyType);
+		_moneyForUI = _localizationManager.GetLocalizedString($"Money_{_moneyType}");
 	}
 
 	public void Interact()

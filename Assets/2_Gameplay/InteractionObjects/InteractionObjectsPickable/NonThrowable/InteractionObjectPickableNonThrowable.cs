@@ -17,6 +17,8 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	private PlayerMovementController _playerMovementController;
 	private GameController _gameController;
 
+	[Header("Object Health")]
+	[SerializeField] private float _health;
 	[SerializeField] private bool _isObjectBreakable;
 	public bool IsObjectDestroyed => throw new System.NotImplementedException();
 
