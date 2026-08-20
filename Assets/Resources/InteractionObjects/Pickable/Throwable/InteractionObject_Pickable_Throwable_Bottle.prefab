@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2191562471391580536}
   - component: {fileID: 5391623991841408717}
   - component: {fileID: 965328751918964007}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: InteractionObject_Pickable_Throwable_Bottle
   m_TagString: Interactable
   m_Icon: {fileID: 0}
@@ -131,6 +131,7 @@ MonoBehaviour:
   _interactionObjectNameSystem: InteractionObject_Pickable_Throwable_Bottle
   _interactionObjectPickableType: {fileID: 11400000, guid: f06abb95f931bce43832101c38356be3, type: 2}
   _damage: 10
+  _canDamageBreakable: 0
   _health: 1
 --- !u!65 &965328751918964007
 BoxCollider:
