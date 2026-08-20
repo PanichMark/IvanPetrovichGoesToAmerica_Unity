@@ -16,7 +16,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	protected Collider _playerCollider;
 	protected bool _isCollisionIgnored = false;
 	protected bool _isPlayerInsideTrigger = false;
-	private Transform _pickableObjectTransform;
+	//private Transform _pickableObjectTransform;
 	protected GameObject _playerColliderGameObject;
 	protected int _pickableLayer;
 	protected int _playerLayer;
@@ -44,7 +44,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	void Start()
 	{
-		_pickableObjectTransform = GetComponent<Transform>();
+		//_pickableObjectTransform = GetComponent<Transform>();
 		_pickableLayer = LayerMask.NameToLayer("Pickable");
 		_playerLayer = LayerMask.NameToLayer("Player");
 		_playerColliderGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
@@ -214,8 +214,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		{
 			PickableObjectIndex = PickableObjectIndex,
 			PickableObjectNameSystem = InteractionObjectNameSystem,
-			PickableObjectPosition = _pickableObjectTransform.position,
-			PickableObjectRotation = _pickableObjectTransform.rotation,
+			PickableObjectPosition = gameObject.transform.position,
+			PickableObjectRotation = gameObject.transform.rotation,
 			IsPickableObjectPickedUp = IsObjectPickedUp
 		};
 
@@ -247,8 +247,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		}
 		else
 		{
-			_pickableObjectTransform.position = savedState.PickableObjectPosition;
-			_pickableObjectTransform.rotation = savedState.PickableObjectRotation;
+			gameObject.transform.position = savedState.PickableObjectPosition;
+			gameObject.transform.rotation = savedState.PickableObjectRotation;
 		}
 	}
 }

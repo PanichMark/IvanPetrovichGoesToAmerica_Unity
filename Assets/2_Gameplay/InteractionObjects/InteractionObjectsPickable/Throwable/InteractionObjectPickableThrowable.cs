@@ -219,6 +219,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		transform.rotation = Quaternion.Euler(0, _thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
 	}
 
+	/*
 	public override void SaveData(ref GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
@@ -273,4 +274,5 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			gameObject.SetActive(false);
 		}
 	}
+	*/
 }

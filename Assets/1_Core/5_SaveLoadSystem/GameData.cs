@@ -227,7 +227,9 @@ public struct NPCdata
 	public int NPCindex;
 	public string NPCnameSystem;
 
+	[JsonConverter(typeof(FileDataHandler.Vector3Converter))]
 	public Vector3 NPCposition;
+	[JsonConverter(typeof(FileDataHandler.QuaternionConverter))]
 	public Quaternion NPCrotation;
 	public int NPCnextAnchorPoint;
 	public string NPCstate;
@@ -258,7 +260,9 @@ public struct PickableObjectData
 	public int PickableObjectIndex;
 	public string PickableObjectNameSystem;
 
+	[JsonConverter(typeof(FileDataHandler.Vector3Converter))]
 	public Vector3 PickableObjectPosition;
+	[JsonConverter(typeof(FileDataHandler.QuaternionConverter))]
 	public Quaternion PickableObjectRotation;
 	public bool IsPickableObjectPickedUp;
 	public bool IsPickableObjectDestroyed;
