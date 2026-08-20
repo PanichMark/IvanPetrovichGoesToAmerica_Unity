@@ -584,7 +584,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.UnlockedWeapons = new List<string>(UnlockedWeapons.Keys);
+		data.PlayerWeapons.UnlockedWeapons = new List<string>(UnlockedWeapons.Keys);
 
 		List<WeaponRangedData> rangedWeaponIds = new List<WeaponRangedData>();
 
@@ -612,19 +612,19 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			}
 		}
 
-		data.UnlockedRangedWeapons = rangedWeaponIds;
+		data.PlayerWeapons.UnlockedRangedWeapons = rangedWeaponIds;
 
 		// Сохранение активного оружия в руках
-		data.WeaponRightHand = RightHandWeapon?.GetComponent<WeaponAbstract>()?.WeaponNameSystem;
-		data.WeaponLeftHand = LeftHandWeapon?.GetComponent<WeaponAbstract>()?.WeaponNameSystem;
+		data.PlayerWeapons.WeaponRightHand = RightHandWeapon?.GetComponent<WeaponAbstract>()?.WeaponNameSystem;
+		data.PlayerWeapons.WeaponLeftHand = LeftHandWeapon?.GetComponent<WeaponAbstract>()?.WeaponNameSystem;
 	}
 
 	public void LoadData(GameData data)
 	{
-		if (data.UnlockedWeapons != null)
+		if (data.PlayerWeapons.UnlockedWeapons != null)
 		{
 			ResetAllWeapons();
-			foreach (string weaponKey in data.UnlockedWeapons)
+			foreach (string weaponKey in data.PlayerWeapons.UnlockedWeapons)
 			{
 				GameObject weaponPrefab = Resources.Load<GameObject>("Weapons/" + weaponKey);
 				if (weaponPrefab != null)
@@ -635,9 +635,9 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 
 		// Загрузка состояния дальнобойного оружия (патроны и т.д.)
-		if (data.UnlockedRangedWeapons != null)
+		if (data.PlayerWeapons.UnlockedRangedWeapons != null)
 		{
-			foreach (var loadedWeaponData in data.UnlockedRangedWeapons)
+			foreach (var loadedWeaponData in data.PlayerWeapons.UnlockedRangedWeapons)
 			{
 				// 1. Пробуем распарсить строковое представление типа оружия обратно в Enum
 				if (Enum.TryParse(loadedWeaponData.RagnedWeaponJson, out PlayerWeaponNames parsedWeaponType))
@@ -666,12 +666,12 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 
 		// Загрузка активного оружия в правую руку
-		if (!string.IsNullOrEmpty(data.WeaponRightHand))
+		if (!string.IsNullOrEmpty(data.PlayerWeapons.WeaponRightHand))
 		{
 			foreach (var unlockedWeapon in UnlockedWeapons)
 			{
 				WeaponAbstract comp = unlockedWeapon.Value.GetComponent<WeaponAbstract>();
-				if (comp != null && comp.WeaponNameSystem == data.WeaponRightHand)
+				if (comp != null && comp.WeaponNameSystem == data.PlayerWeapons.WeaponRightHand)
 				{
 					SelectWeapon(unlockedWeapon.Value);
 					break;
@@ -687,13 +687,13 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 
 		// Загрузка активного оружия в левую руку
-		if (!string.IsNullOrEmpty(data.WeaponLeftHand))
+		if (!string.IsNullOrEmpty(data.PlayerWeapons.WeaponLeftHand))
 		{
 			IsLeftHand = true; // Устанавливаем флаг, что выбираем для левой руки
 			foreach (var unlockedWeapon in UnlockedWeapons)
 			{
 				WeaponAbstract comp = unlockedWeapon.Value.GetComponent<WeaponAbstract>();
-				if (comp != null && comp.WeaponNameSystem == data.WeaponLeftHand)
+				if (comp != null && comp.WeaponNameSystem == data.PlayerWeapons.WeaponLeftHand)
 				{
 					SelectWeapon(unlockedWeapon.Value);
 					break;

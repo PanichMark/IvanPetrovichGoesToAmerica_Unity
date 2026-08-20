@@ -98,12 +98,12 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerCameraCurrentStateType = CurrentPlayerCameraStateType.ToString();
+		data.PlayerCamera.PlayerCameraStateType = CurrentPlayerCameraStateType.ToString();
 	}
 
 	public void LoadData(GameData data)
 	{
-		CurrentPlayerCameraStateType = (PlayerCameraStateTypes)Enum.Parse(typeof(PlayerCameraStateTypes), data.PlayerCameraCurrentStateType);
+		CurrentPlayerCameraStateType = (PlayerCameraStateTypes)Enum.Parse(typeof(PlayerCameraStateTypes), data.PlayerCamera.PlayerCameraStateType);
 
 		SetPlayerCameraState(CurrentPlayerCameraStateType);
 	}

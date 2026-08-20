@@ -247,19 +247,19 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerCameraDistanceY = PlayerCameraDistanceY;
-		data.PlayerCameraDistanceZ = PlayerCameraDistanceZ;
-		data.PlayerCameraRotation = new Quaternion(-_mouseRotation.x, _mouseRotation.y, 0, 0);
-		data.IsPlayerCameraShoulderRight = _isCameraShoulderRight;
+		data.PlayerCamera.PLayerCameraDistanceY = PlayerCameraDistanceY;
+		data.PlayerCamera.PlayerCameraDistanceZ = PlayerCameraDistanceZ;
+		data.PlayerCamera.PlayerCameraRotation = new Quaternion(-_mouseRotation.x, _mouseRotation.y, 0, 0);
+		data.PlayerCamera.PlayerCameraIsShoulderRight = _isCameraShoulderRight;
 	}
 
 	public void LoadData(GameData data)
 	{
-		PlayerCameraDistanceY = data.PlayerCameraDistanceY;
-		PlayerCameraDistanceZ = data.PlayerCameraDistanceZ;
-		_mouseRotation.x = -data.PlayerCameraRotation.x;
-		_mouseRotation.y = data.PlayerCameraRotation.y;
-		_isCameraShoulderRight = data.IsPlayerCameraShoulderRight;
+		PlayerCameraDistanceY = data.PlayerCamera.PLayerCameraDistanceY;
+		PlayerCameraDistanceZ = data.PlayerCamera.PlayerCameraDistanceZ;
+		_mouseRotation.x = -data.PlayerCamera.PlayerCameraRotation.x;
+		_mouseRotation.y = data.PlayerCamera.PlayerCameraRotation.y;
+		_isCameraShoulderRight = data.PlayerCamera.PlayerCameraIsShoulderRight;
 	}
 
 	private void ChangeMouseSensitivityMultiplierX(float newMouseSensitivityX)

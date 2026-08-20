@@ -51,12 +51,12 @@ public class PlayerMoneyController : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerMoney = PlayerMoney;
+		data.PlayerResources.PlayerMoney = PlayerMoney;
 	}
 
 	public void LoadData(GameData data)
 	{
-		PlayerMoney = data.PlayerMoney;
+		PlayerMoney = data.PlayerResources.PlayerMoney;
 		UpdateMoneyDisplay();
 	}
 }

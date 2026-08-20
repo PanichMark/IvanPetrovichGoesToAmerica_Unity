@@ -157,14 +157,14 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerHealth = CurrentPlayerHealth;
-		data.PlayerHealingItemsNumber = CurrentHealingItemsNumber;
+		data.PlayerResources.PlayerHealth = CurrentPlayerHealth;
+		data.PlayerResources.PlayerHealingItemsNumber = CurrentHealingItemsNumber;
 	}
 
 	public void LoadData(GameData data)
 	{
-		CurrentPlayerHealth = data.PlayerHealth;
-		CurrentHealingItemsNumber = data.PlayerHealingItemsNumber;
+		CurrentPlayerHealth = data.PlayerResources.PlayerHealth;
+		CurrentHealingItemsNumber = data.PlayerResources.PlayerHealingItemsNumber;
 
 		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
 

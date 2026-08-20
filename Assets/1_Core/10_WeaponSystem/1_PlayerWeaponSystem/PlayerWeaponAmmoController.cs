@@ -174,7 +174,7 @@ public class PlayerWeaponAmmoController : MonoBehaviour, ISaveLoad
 			saveStruct.AmmoTypeJson = kvp.Key.ToString();
 			ammoList.Add(saveStruct);
 		}
-		data.PlayerAmmo = ammoList;
+		data.PlayerWeapons.Ammo = ammoList;
 
 		List<WeaponRangedData> weaponList = new List<WeaponRangedData>();
 		foreach (var kvp in _weaponsRangedDictionary)
@@ -183,7 +183,7 @@ public class PlayerWeaponAmmoController : MonoBehaviour, ISaveLoad
 			saveStruct.RagnedWeaponJson = kvp.Key.ToString();
 			weaponList.Add(saveStruct);
 		}
-		data.UnlockedRangedWeapons = weaponList;
+		data.PlayerWeapons.UnlockedRangedWeapons = weaponList;
 	}
 
 	public void LoadData(GameData data)

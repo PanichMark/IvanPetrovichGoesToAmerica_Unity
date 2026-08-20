@@ -15,35 +15,20 @@ public class GameData
 	//Scene
 	public string SceneNameSystem;
 
-	//Player Movement
-	public Vector3 PlayerPosition;
-	public Quaternion PlayerRotation;
-	public string PlayerMovementStateType;
+	[JsonProperty("PlayerBehaviour")]
+	public PlayerBehaviourData PlayerBehaviour = new PlayerBehaviourData();
 
-	//PlayerCamera
-	public float PlayerCameraDistanceY;
-	public float PlayerCameraDistanceZ;
-	public Quaternion PlayerCameraRotation;
-	public string PlayerCameraCurrentStateType;
-	public bool IsPlayerCameraShoulderRight;
+	[JsonProperty("PlayerMovement")]
+	public PlayerMovementData PlayerMovement = new PlayerMovementData();
 
-	//PlayerBehaviour
-	public bool IsPlayerArmed;
-	public bool WasPlayerArmed;
+	[JsonProperty("PlayerCamera")]
+	public PlayerCameraData PlayerCamera = new PlayerCameraData();
 
-	//PlayerResources
-	public float PlayerHealth;
-	public int PlayerHealingItemsNumber;
-	public float PlayerMana;
-	public int PlayerManaReplenishItemsNumber;
-	public int PlayerMoney;
+	[JsonProperty("PlayerResources")]
+	public PlayerResourcesData PlayerResources = new PlayerResourcesData();
 
-	//PlayerWeapons
-	public List<string> UnlockedWeapons;
-	public List<WeaponRangedData> UnlockedRangedWeapons;
-	public List<AmmoTypeData> PlayerAmmo;
-	public string WeaponRightHand;
-	public string WeaponLeftHand;
+	[JsonProperty("PlayerWeapons")]
+	public PlayerWeaponsData PlayerWeapons = new PlayerWeaponsData();
 
 	//GameplayObjects
 	[JsonProperty("NPCs")]
@@ -102,33 +87,33 @@ public class GameData
 		//Scene
 		SceneNameSystem = GameScenesSystemEnum.Scene_0_Test.ToString();
 
-		//Player Movement
-		PlayerPosition = new Vector3(0, 0, -5);
-		PlayerRotation = new Quaternion(0, 0, 0, 0);
-		PlayerMovementStateType = PlayerMovementStateTypes.PlayerIdleStanding.ToString();
+		//PlayerBehaviour
+		PlayerBehaviour.IsArmed = false;
+		PlayerBehaviour.WasArmed = false;
+
+		// PlayerMovement
+		PlayerMovement.PlayerPosition = new Vector3(0, 0, -5);
+		PlayerMovement.PlayerRotation = new Quaternion(0, 0, 0, 0);
+		PlayerMovement.PlayerMovementStateType = PlayerMovementStateTypes.PlayerIdleStanding.ToString();
 
 		//PlayerCamera
-		PlayerCameraDistanceY = -1.75f;
-		PlayerCameraDistanceZ = 3.25f;
-		PlayerCameraRotation = new Quaternion(0, 0, 0, 0);
-		PlayerCameraCurrentStateType = PlayerCameraStateTypes.FirstPerson.ToString();
-		IsPlayerCameraShoulderRight = true;
-
-		//PlayerBehaviour
-		IsPlayerArmed = false;
-		WasPlayerArmed = false;
+		PlayerCamera.PLayerCameraDistanceY = -1.75f;
+		PlayerCamera.PlayerCameraDistanceZ = 3.25f;
+		PlayerCamera.PlayerCameraRotation = new Quaternion(0, 0, 0, 0);
+		PlayerCamera.PlayerCameraStateType = PlayerCameraStateTypes.FirstPerson.ToString();
+		PlayerCamera.PlayerCameraIsShoulderRight = true;
 
 		//PlayerResources
-		PlayerHealth = 50;
-		PlayerHealingItemsNumber = 1;
-		PlayerMana = 50;
-		PlayerManaReplenishItemsNumber = 1;
-		PlayerMoney = 200;
+		PlayerResources.PlayerHealth = 50;
+		PlayerResources.PlayerHealingItemsNumber = 1;
+		PlayerResources.PlayerMana = 50;
+		PlayerResources.PlayerManaReplenishItemsNumber = 1;
+		PlayerResources.PlayerMoney = 200;
 
 		//PlayerWeapons
-		UnlockedWeapons = new List<string>();
-		UnlockedRangedWeapons = new List<WeaponRangedData>();
-		PlayerAmmo = new List<AmmoTypeData>
+		PlayerWeapons.UnlockedWeapons = new List<string>();
+		PlayerWeapons.UnlockedRangedWeapons = new List<WeaponRangedData>();
+		PlayerWeapons.Ammo = new List<AmmoTypeData>
 		{
 			new AmmoTypeData
 			{
@@ -143,10 +128,17 @@ public class GameData
 				AmmoTypeJson = AmmoTypes.Ammo12gauge.ToString(),
 				AmmoMax = 999,
 				AmmoReserve = 10
+			},
+			new AmmoTypeData
+			{
+				AmmoTypeSystem = AmmoTypes.AmmoTranquilizerDart,
+				AmmoTypeJson = AmmoTypes.AmmoTranquilizerDart.ToString(),
+				AmmoMax = 999,
+				AmmoReserve = 5
 			}
 		};
-		WeaponRightHand = null;
-		WeaponLeftHand = null;
+		PlayerWeapons.WeaponRightHand = null;
+		PlayerWeapons.WeaponLeftHand = null;
 
 		InitializeGameplayObjectsData();
 	}
@@ -179,6 +171,52 @@ public class GameData
 		}
 		return dict;
 	}
+}
+
+[System.Serializable]
+public class PlayerBehaviourData
+{
+	public bool IsArmed;
+	public bool WasArmed;
+}
+
+[System.Serializable]
+public class PlayerMovementData
+{
+	public Vector3 PlayerPosition;
+	public Quaternion PlayerRotation;
+	public string PlayerMovementStateType;
+}
+
+[System.Serializable]
+public class PlayerCameraData
+{
+	public float PLayerCameraDistanceY;
+	public float PlayerCameraDistanceZ;
+	[JsonConverter(typeof(FileDataHandler.QuaternionConverter))]
+	public Quaternion PlayerCameraRotation;
+	public string PlayerCameraStateType;
+	public bool PlayerCameraIsShoulderRight;
+}
+
+[System.Serializable]
+public class PlayerResourcesData
+{
+	public float PlayerHealth;
+	public int PlayerHealingItemsNumber;
+	public float PlayerMana;
+	public int PlayerManaReplenishItemsNumber;
+	public int PlayerMoney;
+}
+
+[System.Serializable]
+public class PlayerWeaponsData
+{
+	public List<string> UnlockedWeapons;
+	public List<WeaponRangedData> UnlockedRangedWeapons;
+	public List<AmmoTypeData> Ammo;
+	public string WeaponRightHand;
+	public string WeaponLeftHand;
 }
 
 [System.Serializable]

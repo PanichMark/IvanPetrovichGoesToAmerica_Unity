@@ -422,13 +422,13 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerPosition = PlayerTransform.position;
-		data.PlayerRotation = PlayerTransform.rotation;
+		data.PlayerMovement.PlayerPosition = PlayerTransform.position;
+		data.PlayerMovement.PlayerRotation = PlayerTransform.rotation;
 	}
 
 	public void LoadData(GameData data)
 	{
-		PlayerTransform.position = data.PlayerPosition;
-		PlayerTransform.rotation = data.PlayerRotation;
+		PlayerTransform.position = data.PlayerMovement.PlayerPosition;
+		PlayerTransform.rotation = data.PlayerMovement.PlayerRotation;
 	}
 }

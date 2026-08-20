@@ -94,14 +94,14 @@ public class PlayerManaController : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerMana = CurrentPlayerMana;
-		data.PlayerManaReplenishItemsNumber = CurrentManaReplenishItemsNumber;
+		data.PlayerResources.PlayerMana = CurrentPlayerMana;
+		data.PlayerResources.PlayerManaReplenishItemsNumber = CurrentManaReplenishItemsNumber;
 	}
 
 	public void LoadData(GameData data)
 	{
-		CurrentPlayerMana = data.PlayerMana;
-		CurrentManaReplenishItemsNumber = data.PlayerManaReplenishItemsNumber;
+		CurrentPlayerMana = data.PlayerResources.PlayerMana;
+		CurrentManaReplenishItemsNumber = data.PlayerResources.PlayerManaReplenishItemsNumber;
 
 		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
 

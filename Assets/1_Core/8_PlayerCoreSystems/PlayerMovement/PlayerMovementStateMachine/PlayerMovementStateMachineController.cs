@@ -115,12 +115,12 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerMovementStateType = CurrentPlayerMovementStateType.ToString();
+		data.PlayerMovement.PlayerMovementStateType = CurrentPlayerMovementStateType.ToString();
 	}
 
 	public void LoadData(GameData data)
 	{
-		CurrentPlayerMovementStateType = (PlayerMovementStateTypes)Enum.Parse(typeof(PlayerMovementStateTypes), data.PlayerMovementStateType);
+		CurrentPlayerMovementStateType = (PlayerMovementStateTypes)Enum.Parse(typeof(PlayerMovementStateTypes), data.PlayerMovement.PlayerMovementStateType);
 
 		SetPlayerMovementState(CurrentPlayerMovementStateType);
 	}
