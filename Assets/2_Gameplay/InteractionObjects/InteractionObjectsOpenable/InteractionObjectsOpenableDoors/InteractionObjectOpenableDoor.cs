@@ -42,7 +42,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 
 	public float DuribilityThreshold => _damageThreshold;
 
-	public bool CanObjectBeBroken => throw new System.NotImplementedException();
+	public bool CanObjectBeBroken => true;
 
 	void Start()
 	{

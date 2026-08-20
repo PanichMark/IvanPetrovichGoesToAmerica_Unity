@@ -58,7 +58,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	{
 	}
 
-	void Start()
+	void Awake()
 	{
 		//_pickableObjectTransform = GetComponent<Transform>();
 		_pickableLayer = LayerMask.NameToLayer("Pickable");
@@ -296,7 +296,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			RigidBody.isKinematic = true;
 
 			SetPickableObjectTransformAtPlayerArms();
-			Debug.Log(_playerInteractionController);
+			//Debug.Log(_playerInteractionController);
 			_playerInteractionController.PickUpObjectOnLoadData(gameObject);
 
 			if (_playerInteractionController.CurrentIThrowable == null)

@@ -127,6 +127,8 @@ MonoBehaviour:
   _health: 50
   _canBeBroken: 1
   _breakingThreshold: 0
+  _isMovementRestricted: 1
+  _movementSpeedPenaltyMultiplier: 0.5
 --- !u!54 &6077644675594425952
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -14,6 +14,10 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 		return component;
 	}
 
+	[Header("NonThrowable Movement")]
+	[SerializeField] private bool _isMovementRestricted;
+	[SerializeField] private float _movementSpeedPenaltyMultiplier;
+
 	private PlayerMovementController _playerMovementController;
 
 
@@ -21,42 +25,54 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	{
 		base.PickUpObject();
 
-		_gameController.RestrictPlayerMovementWhileCarryingNonThrowable();
+		if (_isMovementRestricted)
+		{
+			_gameController.RestrictPlayerMovementWhileCarryingNonThrowable();
 
-		HalfTheMovementSpeed();
+			HalfTheMovementSpeed();
+		}
 	}
 
 	public override void DropOffObject()
 	{
 		base.DropOffObject();
 
-		_gameController.UnrestrictPlayerMovementWhileCarryingNonThrowable();
+		if (_isMovementRestricted)
+		{
+			_gameController.UnrestrictPlayerMovementWhileCarryingNonThrowable();
 
-		RestoreTheMovementSpeed();
+			RestoreTheMovementSpeed();
+		}
 	}
 
 	protected override void InitializePickable()
 	{
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 
-		_playerMovementController.OnMovementSpeedChangedByStateMachine += HalfTheMovementSpeed;
+		if (_isMovementRestricted)
+		{
+			_playerMovementController.OnMovementSpeedChangedByStateMachine += HalfTheMovementSpeed;
+		}
 	}
 
 	private void HalfTheMovementSpeed()
 	{
 		if (IsObjectPickedUp)
 		{
-			_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed / 1.75f, false);
+			_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed * _movementSpeedPenaltyMultiplier, false);
 		}
 	}
 
 	private void RestoreTheMovementSpeed()
 	{
-		_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed * 1.75f, false);
+		_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed * _movementSpeedPenaltyMultiplier, false);
 	}
 
 	protected virtual void OnDestroy()
 	{
-		_playerMovementController.OnMovementSpeedChangedByStateMachine -= HalfTheMovementSpeed;
+		if (_isMovementRestricted)
+		{
+			_playerMovementController.OnMovementSpeedChangedByStateMachine -= HalfTheMovementSpeed;
+		}
 	}
 }
