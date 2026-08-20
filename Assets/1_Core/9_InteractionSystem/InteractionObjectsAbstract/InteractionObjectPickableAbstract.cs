@@ -18,6 +18,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	[SerializeField] private bool _canBeBroken;
 	[SerializeField] private float _breakingThreshold;
 
+	protected PlayerInteractionController _playerInteractionController;
+	protected GameController _gameController;
 	protected Collider _playerCollider;
 	protected bool _isCollisionIgnored = false;
 	protected bool _isPlayerInsideTrigger = false;
@@ -45,9 +47,9 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	public bool CanObjectBeBroken => _canBeBroken;
 
-	public bool IsObjectDestroyed => _wasObjectDestroyed;
+	public bool IsObjectDestroyed => _isObjectDestroyed;
 
-	protected bool _wasObjectDestroyed;
+	protected bool _isObjectDestroyed;
 	public float CurrentDurability => _health;
 
 	public float DuribilityThreshold => _breakingThreshold;
@@ -63,7 +65,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		_playerLayer = LayerMask.NameToLayer("Player");
 		_playerColliderGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
 		_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
-
+		_gameController = ServiceLocator.Resolve<GameController>("GameController");
+		_playerInteractionController = ServiceLocator.Resolve<PlayerInteractionController>("InteractionController");
 		Collider = GetComponent<BoxCollider>();
 
 		if (Collider == null)
@@ -149,7 +152,6 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 			StartCoroutine(MoveTowardsPlayer());
 
-			transform.parent = _gameObjectSpineSlot.transform;
 			//transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
 			IsObjectPickedUp = true;
 		}
@@ -202,11 +204,40 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			yield return null;
 		}
 
+		SetPickableObjectTransformAtPlayerArms();
+	}
+
+	protected virtual void SetPickableObjectTransformAtPlayerArms()
+	{
+		transform.parent = _gameObjectSpineSlot.transform;
 		transform.position = CachedPlayer.transform.TransformPoint(_interactionObjectPickableType.Position);
 		transform.rotation = Quaternion.LookRotation(CachedPlayer.transform.forward, Vector3.up) * _interactionObjectPickableType.Rotation;
 	}
 
-	public virtual void SaveData(ref GameData data)
+	public virtual void TakeBreakDamage(float amount)
+	{
+		if (CanObjectBeBroken)
+		{
+			if (amount >= DuribilityThreshold)
+			{
+				_health -= amount;
+
+				if (_health <= 0)
+				{
+					ObjectIsFullyBroken();
+				}
+			}
+		}
+	}
+
+	public void ObjectIsFullyBroken()
+	{
+		_isObjectDestroyed = true;
+
+		Destroy(gameObject);
+	}
+
+	public void SaveData(ref GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
@@ -230,7 +261,8 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			PickableObjectNameSystem = InteractionObjectNameSystem,
 			PickableObjectPosition = gameObject.transform.position,
 			PickableObjectRotation = gameObject.transform.rotation,
-			IsPickableObjectPickedUp = IsObjectPickedUp
+			IsPickableObjectPickedUp = IsObjectPickedUp,
+			IsPickableObjectDestroyed = _isObjectDestroyed
 		};
 
 		if (indexInList != -1)
@@ -243,7 +275,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		}
 	}
 
-	public virtual void LoadData(GameData data)
+	public void LoadData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
@@ -257,35 +289,29 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 		if (IsObjectPickedUp)
 		{
-			//gameObject.SetActive(false);
+			IsObjectPickedUp = false;
+
+			gameObject.tag = "Untagged";
+			Collider.enabled = false;
+			RigidBody.isKinematic = true;
+
+			SetPickableObjectTransformAtPlayerArms();
+			Debug.Log(_playerInteractionController);
+			_playerInteractionController.PickUpObjectOnLoadData(gameObject);
+
+			if (_playerInteractionController.CurrentIThrowable == null)
+			{
+				_gameController.RestrictPlayerMovementWhileCarryingNonThrowable();
+			}
+
+			IsObjectPickedUp = true;
 		}
 		else
 		{
+
 			gameObject.transform.position = savedState.PickableObjectPosition;
 			gameObject.transform.rotation = savedState.PickableObjectRotation;
 		}
-	}
-
-	public virtual void TakeBreakDamage(float amount)
-	{
-		if (CanObjectBeBroken)
-		{
-			if (amount >= DuribilityThreshold)
-			{
-				_health -= amount;
-
-				if (_health <= 0)
-				{
-					ObjectIsFullyBroken();
-				}
-			}
-		}
-	}
-
-	public void ObjectIsFullyBroken()
-	{
-		_wasObjectDestroyed = true;
-
-		Destroy(gameObject);
+		
 	}
 }

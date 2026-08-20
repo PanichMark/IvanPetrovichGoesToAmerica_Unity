@@ -151,7 +151,9 @@ public class PlayerInteractionController : MonoBehaviour, ISaveLoad
 	private void ShowCanvasHUDInteraction()
 	{
 		if (!_gameController.IsMainMenuOpen)
+		{
 			_canvasHUDinteraction.gameObject.SetActive(true);
+		}
 
 		_itemsTexts[2].text = null;
 		_itemsTexts[2].gameObject.SetActive(false);
@@ -586,13 +588,22 @@ public class PlayerInteractionController : MonoBehaviour, ISaveLoad
 		}
 	}
 
+	public void PickUpObjectOnLoadData(GameObject pickableObject)
+	{
+		CurrentPickableObject = pickableObject;
+		PickUpPickableObject();
+	}
+
 	public void SaveData(ref GameData data)
 	{
-		//throw new System.NotImplementedException();
+
 	}
 
 	public void LoadData(GameData data)
 	{
-		//throw new System.NotImplementedException();
+		if (CurrentPickableObject != null)
+		{
+			DropPickable();
+		}
 	}
 }

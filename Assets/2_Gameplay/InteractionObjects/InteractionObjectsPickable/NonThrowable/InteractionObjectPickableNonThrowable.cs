@@ -15,7 +15,6 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	}
 
 	private PlayerMovementController _playerMovementController;
-	private GameController _gameController;
 
 
 	public override void PickUpObject()
@@ -39,7 +38,6 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	protected override void InitializePickable()
 	{
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
-		_gameController = ServiceLocator.Resolve<GameController>("GameController");
 
 		_playerMovementController.OnMovementSpeedChangedByStateMachine += HalfTheMovementSpeed;
 	}

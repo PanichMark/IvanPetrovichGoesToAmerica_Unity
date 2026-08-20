@@ -120,7 +120,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 			RigidBody.isKinematic = true;
 
-			_wasObjectDestroyed = true;
+			_isObjectDestroyed = true;
 			Destroy(gameObject);
 			Debug.Log($"{InteractionObjectNameSystem} was destroyed on impact!");
 		}
@@ -153,7 +153,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	{
 		Debug.Log($"{InteractionObjectNameSystem} was destroyed!");
 
-		_wasObjectDestroyed = true;
+		_isObjectDestroyed = true;
 
 		Destroy(gameObject);
 	}
@@ -176,9 +176,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			yield return null;
 		}
 
-		transform.parent = _firstPersonRightHandWeaponSlotGameObject.transform;
-		transform.position = _firstPersonRightHandWeaponSlotGameObject.transform.position;
-		transform.rotation = Quaternion.Euler(0, _firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		SetPickableObjectTransformAtPlayerArms();
 	}
 	
 
@@ -198,9 +196,23 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			yield return null;
 		}
 
-		transform.parent = _thirdPersonRightHandWeaponSlotGameObject.transform;
-		transform.position = _thirdPersonRightHandWeaponSlotGameObject.transform.position;
-		transform.rotation = Quaternion.Euler(0, _thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		SetPickableObjectTransformAtPlayerArms();
+	}
+
+	protected override void SetPickableObjectTransformAtPlayerArms()
+	{
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+		{
+			transform.parent = _firstPersonRightHandWeaponSlotGameObject.transform;
+			transform.position = _firstPersonRightHandWeaponSlotGameObject.transform.position;
+			transform.rotation = Quaternion.Euler(0, _firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		}
+		else
+		{
+			transform.parent = _thirdPersonRightHandWeaponSlotGameObject.transform;
+			transform.position = _thirdPersonRightHandWeaponSlotGameObject.transform.position;
+			transform.rotation = Quaternion.Euler(0, _thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		}
 	}
 
 	public void TakeDamage(float amount)
