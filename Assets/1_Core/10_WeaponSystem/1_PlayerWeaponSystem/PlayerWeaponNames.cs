@@ -1,6 +1,8 @@
 ﻿public enum PlayerWeaponNames
 {
 	Baton,
+	Rapier,
+	ElectroShockMace,
 	CircularSaw,
 	Revolver,
 	AutoPistol,
@@ -8,5 +10,8 @@
 	Tranquilizer,
 	TeslaShock,
 	GenieBreath,
-	Crossbow
+	OgnivaRage,
+	MisterMorozko,
+	Crossbow,
+	SeethroughMonocular
 }

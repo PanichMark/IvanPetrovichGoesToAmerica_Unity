@@ -310,7 +310,7 @@ public class PlayerInteractionController : MonoBehaviour
 
 		if (_playerBehaviour.WasPlayerArmed == true)
 		{
-			_playerBehaviour.ArmPlayer();
+			//_playerBehaviour.ArmPlayer();
 		}
 	}
 

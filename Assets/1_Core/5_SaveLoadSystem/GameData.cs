@@ -221,6 +221,7 @@ public struct NPCdata
 
 	public Vector3 NPCposition;
 	public Quaternion NPCrotation;
+	public int NPCnextAnchorPoint;
 	public string NPCstate;
 	public float NPChealth;
 }
@@ -291,6 +292,9 @@ public struct VendingMachineData
 {
 	public int VendingMachineIndex;
 	public string VendingMachineNameSystem;
+
+	public float VendingMachineElectroHealth;
+	public int VendingMachineSpawnedGoods;
 }
 
 [System.Serializable]
@@ -334,7 +338,6 @@ public struct BreakableObjectData
 	public int BreakableObjectIndex;
 	public string BreakableObjectSystem;
 
-	public bool IsBreakableObjectDestroyed;
 	public float BreakableObjectHealth;
 }
 

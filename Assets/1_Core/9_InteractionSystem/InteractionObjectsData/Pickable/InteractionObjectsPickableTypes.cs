@@ -4,8 +4,13 @@
 	Body,
 	Accordion,
 	Pig,
+	SniperFifle,
+	MaximGun,
+	GrenadeLauncher,
 	Bottle,
 	Glass,
 	Egg,
-	Brick
+	Brick,
+	GrenadeRdultovsky,
+	GrenadeImpact
 }
