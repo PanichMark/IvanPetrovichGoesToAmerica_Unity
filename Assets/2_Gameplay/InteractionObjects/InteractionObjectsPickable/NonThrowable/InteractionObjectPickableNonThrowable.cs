@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
-public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAbstract
+public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAbstract, IBreakable
 {
 	public static InteractionObjectPickableNonThrowable CreateWithName(GameObject obj, string interactionItemNameSystem)
 	{
@@ -18,6 +16,15 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 
 	private PlayerMovementController _playerMovementController;
 	private GameController _gameController;
+
+	[SerializeField] private bool _isObjectBreakable;
+	public bool IsObjectDestroyed => throw new System.NotImplementedException();
+
+	public float CurrentDurability => throw new System.NotImplementedException();
+
+	public float DuribilityThreshold => throw new System.NotImplementedException();
+
+	public bool CanObjectBeBroken => throw new System.NotImplementedException();
 
 	public override void PickUpObject()
 	{
@@ -63,58 +70,13 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 		_playerMovementController.OnMovementSpeedChangedByStateMachine -= HalfTheMovementSpeed;
 	}
 
-	/*
-	public override void SaveData(ref GameData data)
+	public void TakeDamage(float amount)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
-
-		// Инициализируем словарь или список для текущей сцены, если их нет
-		if (data.PickableObjectsData == null)
-		{
-			data.PickableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>>();
-		}
-		if (!data.PickableObjectsData.ContainsKey(currentScene))
-		{
-			data.PickableObjectsData[currentScene] = new List<PickableObjectData>();
-		}
-
-		var targetList = data.PickableObjectsData[currentScene];
-
-		int indexInList = targetList.FindIndex(item => item.PickableObjectIndex == PickableObjectIndex);
-
-		var updatedItem = new PickableObjectData
-		{
-			PickableObjectIndex = PickableObjectIndex,
-			PickableObjectNameSystem = InteractionObjectNameSystem,
-			IsPickableObjectPickedUp = IsObjectPickedUp
-		};
-
-		if (indexInList != -1)
-		{
-			targetList[indexInList] = updatedItem;
-		}
-		else
-		{
-			targetList.Add(updatedItem);
-		}
+		//throw new System.NotImplementedException();
 	}
 
-	public override void LoadData(GameData data)
+	public void ObjectIsFullyBroken()
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
-
-		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) return;
-
-		var savedState = sourceList.Find(item => item.PickableObjectIndex == PickableObjectIndex);
-
-		if (savedState.Equals(default(PickableObjectData))) return;
-
-		IsObjectPickedUp = savedState.IsPickableObjectPickedUp;
-
-		if (IsObjectPickedUp)
-		{
-			gameObject.SetActive(false);
-		}
+		Destroy(gameObject);
 	}
-	*/
 }

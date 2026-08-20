@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstract, IThrowable, IDamageable
+public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstract, IThrowable, IDamageable, IBreakable
 {
 	private bool _wasObjectDestroyed;
 	private bool _canObjectBeDestroyedOnImpact;
@@ -11,26 +9,29 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	public float ObjectThrowPower => 10f;
 	private GameObject _firstPersonRightHandWeaponSlotGameObject;
 
+	[Header("Object Health")]
+	[SerializeField, Min(0)] private float _health;
+	[SerializeField] private bool _canBeDamaged;
+	[SerializeField] private bool _canBeBroken;
+	[SerializeField] private float _breakingThreshold;
+
+	[Header("Object Damage")]
 	[SerializeField] private float _damage;
 	[SerializeField] private bool _canDamageBreakable;
 
-	[SerializeField, Min(0)] private float _health;
 
-	private Coroutine _moveTowardsPlayerCoroutine;
 
 	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
-	public float CurrentHealth
-	{
-		get => _health;
-		set
-		{
-			_health = value;
-			if (_health <= 0)
-			{
-				ObjectIsFullyDamaged();
-			}
-		}
-	}
+	public float CurrentHealth => _health;
+
+
+	public float CurrentDurability => _health;
+
+	public float DuribilityThreshold => _breakingThreshold;
+
+	public bool CanObjectBeDamaged => _canBeDamaged;
+
+	public bool CanObjectBeBroken => _canBeBroken;
 
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
@@ -63,7 +64,6 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			gameObject.layer = LayerMask.NameToLayer("FirstPerson");
 
 			StopAllCoroutines();
-			_moveTowardsPlayerCoroutine = null;
 
 			transform.parent = _firstPersonRightHandWeaponSlotGameObject.transform;
 			transform.position = _firstPersonRightHandWeaponSlotGameObject.transform.position;
@@ -78,7 +78,6 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			gameObject.layer = LayerMask.NameToLayer("Default");
 
 			StopAllCoroutines();
-			_moveTowardsPlayerCoroutine = null;
 
 			transform.parent = _thirdPersonRightHandWeaponSlotGameObject.transform;
 			transform.position = _thirdPersonRightHandWeaponSlotGameObject.transform.position;
@@ -98,11 +97,11 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
-				_moveTowardsPlayerCoroutine = StartCoroutine(MoveTowardsRightHandFirstPerson());
+				StartCoroutine(MoveTowardsRightHandFirstPerson());
 			}
 			else
 			{
-				_moveTowardsPlayerCoroutine = StartCoroutine(MoveTowardsRightHandThirdPerson());
+				StartCoroutine(MoveTowardsRightHandThirdPerson());
 			}
 
 			IsObjectPickedUp = true;
@@ -114,7 +113,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		if (_canObjectBeDestroyedOnImpact)
 		{
 			var damageable = collision.gameObject.GetComponent<IDamageable>();
-			if (damageable != null)
+			if (damageable != null && damageable.CanObjectBeDamaged)
 			{
 				damageable.TakeDamage(_damage);
 			}
@@ -122,7 +121,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			if (_canDamageBreakable)
 			{
 				var breakable = collision.gameObject.GetComponent<IBreakable>();
-				if (breakable != null)
+				if (breakable != null && breakable.CanObjectBeBroken)
 				{
 					breakable.TakeDamage(_damage);
 				}
@@ -160,9 +159,29 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 	public void TakeDamage(float amount)
 	{
-		Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
+		if (_canBeDamaged)
+		{
+			Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
 
-		CurrentHealth -= amount;
+			_health -= amount;
+
+			if (_health <= 0)
+			{
+				ObjectIsFullyDamaged();
+			}
+		}
+		if (_canBeBroken)
+		{
+			if (amount >= DuribilityThreshold)
+			{
+				_health -= amount;
+
+				if (_health <= 0)
+				{
+					ObjectIsFullyDamaged();
+				}
+			}
+		}
 	}
 
 	public void ObjectIsFullyDamaged()
@@ -217,6 +236,15 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		transform.parent = _thirdPersonRightHandWeaponSlotGameObject.transform;
 		transform.position = _thirdPersonRightHandWeaponSlotGameObject.transform.position;
 		transform.rotation = Quaternion.Euler(0, _thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+	}
+
+	public void ObjectIsFullyBroken()
+	{
+		Debug.Log($"{InteractionObjectNameSystem} was destroyed!");
+
+		_wasObjectDestroyed = true;
+
+		Destroy(gameObject);
 	}
 
 	/*

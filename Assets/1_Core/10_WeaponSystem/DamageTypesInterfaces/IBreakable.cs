@@ -1,8 +1,9 @@
 ﻿public interface IBreakable
 {
-	bool IsObjectBroken { get; }
+	bool CanObjectBeBroken {  get; }
+	bool IsObjectDestroyed { get; }
 	float CurrentDurability { get; }
-	float DamageThreshold { get; }
+	float DuribilityThreshold { get; }
 
 	void TakeDamage(float amount);
 

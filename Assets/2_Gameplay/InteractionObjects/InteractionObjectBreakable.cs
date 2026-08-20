@@ -2,11 +2,11 @@
 
 public class InteractionObjectBreakable : MonoBehaviour, IInteractable, IBreakable
 {
-	public bool IsObjectBroken => throw new System.NotImplementedException();
+	public bool IsObjectDestroyed => throw new System.NotImplementedException();
 
 	public float CurrentDurability => throw new System.NotImplementedException();
 
-	public float DamageThreshold => throw new System.NotImplementedException();
+	public float DuribilityThreshold => throw new System.NotImplementedException();
 
 	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
 
@@ -19,6 +19,8 @@ public class InteractionObjectBreakable : MonoBehaviour, IInteractable, IBreakab
 	public string InteractionHintMessageFail => throw new System.NotImplementedException();
 
 	public bool IsInteractionHintMessageFailActive => throw new System.NotImplementedException();
+
+	public bool CanObjectBeBroken => throw new System.NotImplementedException();
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
 

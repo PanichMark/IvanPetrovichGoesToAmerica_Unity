@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInteractionController : MonoBehaviour
+public class PlayerInteractionController : MonoBehaviour, ISaveLoad
 {
 	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
@@ -584,5 +584,15 @@ public class PlayerInteractionController : MonoBehaviour
 		{
 			ChangeLayerRecursively(child.gameObject, layerIndex);
 		}
+	}
+
+	public void SaveData(ref GameData data)
+	{
+		//throw new System.NotImplementedException();
+	}
+
+	public void LoadData(GameData data)
+	{
+		//throw new System.NotImplementedException();
 	}
 }

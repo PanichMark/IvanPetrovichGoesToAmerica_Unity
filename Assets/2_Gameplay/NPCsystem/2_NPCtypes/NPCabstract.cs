@@ -49,6 +49,8 @@ public abstract class NPCabstract : MonoBehaviour, IInteractable, IDamageable
 	private float _currentHealth;
 	public float CurrentHealth => _currentHealth;
 
+	public bool CanObjectBeDamaged => throw new System.NotImplementedException();
+
 	private void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");

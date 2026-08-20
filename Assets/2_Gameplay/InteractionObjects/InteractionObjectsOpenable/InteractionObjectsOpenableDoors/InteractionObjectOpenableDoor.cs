@@ -36,11 +36,13 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 	private string _interactionHintMessageFail;
 	public override string InteractionHintMessageFail => _interactionHintMessageFail;
 
-	public bool IsObjectBroken => CurrentDurability <= 0f;
+	public bool IsObjectDestroyed => CurrentDurability <= 0f;
 
 	public float CurrentDurability { get; private set; }
 
-	public float DamageThreshold => _damageThreshold;
+	public float DuribilityThreshold => _damageThreshold;
+
+	public bool CanObjectBeBroken => throw new System.NotImplementedException();
 
 	void Start()
 	{

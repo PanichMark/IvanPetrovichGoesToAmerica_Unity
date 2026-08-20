@@ -26,6 +26,8 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, ISaveLoad
 
 	public float CurrentHealth => CurrentPlayerHealth;
 
+	public bool CanObjectBeDamaged => true;
+
 	public void Initialize(
 		Bootstrap bootstrap,
 		GameController gameController,

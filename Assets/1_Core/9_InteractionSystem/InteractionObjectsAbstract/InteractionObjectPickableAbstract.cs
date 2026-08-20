@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, ISaveLoad, IPickable
 {
 	protected LocalizationManager _localizationManager;
-
+	[Header("Object Info")]
 	[SerializeField] protected string _interactionObjectNameSystem;
 
 	[SerializeField] private InteractionObjectPickableData _interactionObjectPickableType;
@@ -243,7 +243,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 		if (IsObjectPickedUp)
 		{
-			gameObject.SetActive(false);
+			//gameObject.SetActive(false);
 		}
 		else
 		{

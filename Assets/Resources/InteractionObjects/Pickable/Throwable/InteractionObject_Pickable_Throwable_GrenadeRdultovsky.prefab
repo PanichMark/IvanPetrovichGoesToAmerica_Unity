@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 624689168165568007}
   - component: {fileID: 7948531721403320371}
   - component: {fileID: 2191562471391580536}
-  - component: {fileID: 5391623991841408717}
   - component: {fileID: 965328751918964007}
+  - component: {fileID: 18380771753035878}
   m_Layer: 0
-  m_Name: InteractionObject_Pickable_Throwable_Brick
+  m_Name: InteractionObject_Pickable_Throwable_GrenadeRdultovsky
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,26 +116,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5391623991841408717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4734627040192705269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba07b4e85a5f364bb78126e35c42413, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: InteractionObject_Pickable_Throwable_Brick
-  _interactionObjectPickableType: {fileID: 11400000, guid: f06abb95f931bce43832101c38356be3, type: 2}
-  _damage: 100
-  _canBeDamaged: 0
-  _health: 10
-  _canBeBroken: 1
-  _breakingThreshold: 0
-  _canDamageBreakable: 1
 --- !u!65 &965328751918964007
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -157,3 +137,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &18380771753035878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4734627040192705269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0253c37d759dd1745b44de3958dcb9f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionObjectNameSystem: 
+  _interactionObjectPickableType: {fileID: 0}
+  _health: 0
+  _canBeDamaged: 0
+  _canBeBroken: 0
+  _breakingThreshold: 0
+  _damage: 0
+  _canDamageBreakable: 0
