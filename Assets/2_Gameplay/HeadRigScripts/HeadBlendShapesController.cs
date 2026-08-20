@@ -5,6 +5,7 @@ public class HeadBlendShapesController : MonoBehaviour
 {
 	[SerializeField] private NPCstateMachineController _NPCStateMachineController;
 	[SerializeField] private NPCdialogueController _NPCDialogueController;
+	[SerializeField] private bool _isThisPlayerHead;
 
 	private SkinnedMeshRenderer _skinnedMeshRenderer;
 	private Coroutine _blinkRoutine;
@@ -38,29 +39,35 @@ public class HeadBlendShapesController : MonoBehaviour
 			"BlendShape_Phoneme_S"
 		};
 
-		_NPCStateMachineController.OnNPCstateDead += CloseEyes;
-		_NPCStateMachineController.OnNPCstateDead += StopBlinking;
-		_NPCStateMachineController.OnNPCstateDead += ResetAllBlendShapesFacialExpressions;
-
-		if (_NPCDialogueController != null)
+		if (!_isThisPlayerHead)
 		{
-			_NPCDialogueController.OnChangeBlendShapeFacialExpression += ChangeBlendShapeFacialExpression;
-			_NPCDialogueController.OnResetAllBlendShapesFacialExpressions += ResetAllBlendShapesFacialExpressions;
-			_NPCDialogueController.OnResetAllBlendShapesPhonemes += ResetAllBlendShapesPhonemes;
+			_NPCStateMachineController.OnNPCstateDead += CloseEyes;
+			_NPCStateMachineController.OnNPCstateDead += StopBlinking;
+			_NPCStateMachineController.OnNPCstateDead += ResetAllBlendShapesFacialExpressions;
+
+			if (_NPCDialogueController != null)
+			{
+				_NPCDialogueController.OnChangeBlendShapeFacialExpression += ChangeBlendShapeFacialExpression;
+				_NPCDialogueController.OnResetAllBlendShapesFacialExpressions += ResetAllBlendShapesFacialExpressions;
+				_NPCDialogueController.OnResetAllBlendShapesPhonemes += ResetAllBlendShapesPhonemes;
+			}
 		}
 	}
 
 	private void OnDestroy()
 	{
-		_NPCStateMachineController.OnNPCstateDead -= CloseEyes;
-		_NPCStateMachineController.OnNPCstateDead -= StopBlinking;
-		_NPCStateMachineController.OnNPCstateDead -= ResetAllBlendShapesFacialExpressions;
-
-		if (_NPCDialogueController != null)
+		if (!_isThisPlayerHead)
 		{
-			_NPCDialogueController.OnChangeBlendShapeFacialExpression -= ChangeBlendShapeFacialExpression;
-			_NPCDialogueController.OnResetAllBlendShapesFacialExpressions -= ResetAllBlendShapesFacialExpressions;
-			_NPCDialogueController.OnResetAllBlendShapesPhonemes -= ResetAllBlendShapesPhonemes;
+			_NPCStateMachineController.OnNPCstateDead -= CloseEyes;
+			_NPCStateMachineController.OnNPCstateDead -= StopBlinking;
+			_NPCStateMachineController.OnNPCstateDead -= ResetAllBlendShapesFacialExpressions;
+
+			if (_NPCDialogueController != null)
+			{
+				_NPCDialogueController.OnChangeBlendShapeFacialExpression -= ChangeBlendShapeFacialExpression;
+				_NPCDialogueController.OnResetAllBlendShapesFacialExpressions -= ResetAllBlendShapesFacialExpressions;
+				_NPCDialogueController.OnResetAllBlendShapesPhonemes -= ResetAllBlendShapesPhonemes;
+			}
 		}
 	}
 
