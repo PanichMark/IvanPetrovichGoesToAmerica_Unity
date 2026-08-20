@@ -3,8 +3,7 @@
 [Serializable]
 public struct AmmoTypeData
 {
-	public AmmoTypes AmmoTypeSystem;
-	public string AmmoTypeJson;
+	public AmmoTypes AmmoType;
 	public int AmmoMax;
 	public int AmmoReserve;
 }

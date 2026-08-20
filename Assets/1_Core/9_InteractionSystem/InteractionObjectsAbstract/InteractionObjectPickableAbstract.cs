@@ -215,7 +215,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			PickableObjectIndex = PickableObjectIndex,
 			PickableObjectNameSystem = InteractionObjectNameSystem,
 			PickableObjectPosition = _pickableObjectTransform.position,
-			PickableObjecRotation = _pickableObjectTransform.rotation,
+			PickableObjectRotation = _pickableObjectTransform.rotation,
 			IsPickableObjectPickedUp = IsObjectPickedUp
 		};
 
@@ -248,7 +248,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		else
 		{
 			_pickableObjectTransform.position = savedState.PickableObjectPosition;
-			_pickableObjectTransform.rotation = savedState.PickableObjecRotation;
+			_pickableObjectTransform.rotation = savedState.PickableObjectRotation;
 		}
 	}
 }

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using UnityEngine;
 
 [System.Serializable]
@@ -88,8 +88,8 @@ public class GameData
 		SceneNameSystem = GameScenesSystemEnum.Scene_0_Test.ToString();
 
 		//PlayerBehaviour
-		PlayerBehaviour.IsArmed = false;
-		PlayerBehaviour.WasArmed = false;
+		PlayerBehaviour.IsPlayerArmed = false;
+		PlayerBehaviour.WasPlayerArmed = false;
 
 		// PlayerMovement
 		PlayerMovement.PlayerPosition = new Vector3(0, 0, -5);
@@ -101,7 +101,7 @@ public class GameData
 		PlayerCamera.PlayerCameraDistanceZ = 3.25f;
 		PlayerCamera.PlayerCameraRotation = new Quaternion(0, 0, 0, 0);
 		PlayerCamera.PlayerCameraStateType = PlayerCameraStateTypes.FirstPerson.ToString();
-		PlayerCamera.PlayerCameraIsShoulderRight = true;
+		PlayerCamera.IsPlayerCameraShoulderRight = true;
 
 		//PlayerResources
 		PlayerResources.PlayerHealth = 50;
@@ -111,34 +111,28 @@ public class GameData
 		PlayerResources.PlayerMoney = 200;
 
 		//PlayerWeapons
-		PlayerWeapons.UnlockedWeapons = new List<string>();
-		PlayerWeapons.UnlockedRangedWeapons = new List<WeaponRangedData>();
-		PlayerWeapons.Ammo = new List<AmmoTypeData>
+		PlayerWeapons.UnlockedPlayerWeapons = new List<string>();
+		PlayerWeapons.UnlockedPlayerRangedWeapons = new List<WeaponRangedData>();
+		PlayerWeapons.PlayerAmmo = new List<AmmoTypeData>
 		{
 			new AmmoTypeData
 			{
-				AmmoTypeSystem = AmmoTypes.Ammo9mm,
-				AmmoTypeJson = AmmoTypes.Ammo9mm.ToString(),
-				AmmoMax = 999,
+				AmmoType = AmmoTypes.Ammo9mm,
 				AmmoReserve = 25
 			},
 			new AmmoTypeData
 			{
-				AmmoTypeSystem = AmmoTypes.Ammo12gauge,
-				AmmoTypeJson = AmmoTypes.Ammo12gauge.ToString(),
-				AmmoMax = 999,
+				AmmoType = AmmoTypes.Ammo12gauge,
 				AmmoReserve = 10
 			},
 			new AmmoTypeData
 			{
-				AmmoTypeSystem = AmmoTypes.AmmoTranquilizerDart,
-				AmmoTypeJson = AmmoTypes.AmmoTranquilizerDart.ToString(),
-				AmmoMax = 999,
+				AmmoType = AmmoTypes.AmmoTranquilizerDart,
 				AmmoReserve = 5
 			}
 		};
-		PlayerWeapons.WeaponRightHand = null;
-		PlayerWeapons.WeaponLeftHand = null;
+		PlayerWeapons.PlayerWeaponRightHand = null;
+		PlayerWeapons.PlayerWeaponLeftHand = null;
 
 		InitializeGameplayObjectsData();
 	}
@@ -176,8 +170,8 @@ public class GameData
 [System.Serializable]
 public class PlayerBehaviourData
 {
-	public bool IsArmed;
-	public bool WasArmed;
+	public bool IsPlayerArmed;
+	public bool WasPlayerArmed;
 }
 
 [System.Serializable]
@@ -196,7 +190,7 @@ public class PlayerCameraData
 	[JsonConverter(typeof(FileDataHandler.QuaternionConverter))]
 	public Quaternion PlayerCameraRotation;
 	public string PlayerCameraStateType;
-	public bool PlayerCameraIsShoulderRight;
+	public bool IsPlayerCameraShoulderRight;
 }
 
 [System.Serializable]
@@ -212,11 +206,11 @@ public class PlayerResourcesData
 [System.Serializable]
 public class PlayerWeaponsData
 {
-	public List<string> UnlockedWeapons;
-	public List<WeaponRangedData> UnlockedRangedWeapons;
-	public List<AmmoTypeData> Ammo;
-	public string WeaponRightHand;
-	public string WeaponLeftHand;
+	public List<string> UnlockedPlayerWeapons;
+	public List<WeaponRangedData> UnlockedPlayerRangedWeapons;
+	public List<AmmoTypeData> PlayerAmmo;
+	public string PlayerWeaponRightHand;
+	public string PlayerWeaponLeftHand;
 }
 
 [System.Serializable]
@@ -256,7 +250,7 @@ public struct PickableObjectData
 	public string PickableObjectNameSystem;
 
 	public Vector3 PickableObjectPosition;
-	public Quaternion PickableObjecRotation;
+	public Quaternion PickableObjectRotation;
 	public bool IsPickableObjectPickedUp;
 	public bool IsPickableObjectDestroyed;
 }

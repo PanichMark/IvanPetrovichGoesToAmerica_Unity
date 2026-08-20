@@ -47,35 +47,35 @@ public class PlayerWeaponAmmoController : MonoBehaviour, ISaveLoad
 
 	public void Initialize()
 	{	
-		_ammoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo9mm, AmmoMax = 999, AmmoReserve = 100 };
-		_ammoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.Ammo12gauge, AmmoMax = 999, AmmoReserve = 30 };
-		_ammoDictionary[AmmoTypes.AmmoTranquilizerDart] = new AmmoTypeData { AmmoTypeSystem = AmmoTypes.AmmoTranquilizerDart, AmmoMax = 999, AmmoReserve = 10 };
+		_ammoDictionary[AmmoTypes.Ammo9mm] = new AmmoTypeData { AmmoType = AmmoTypes.Ammo9mm, AmmoMax = 999, AmmoReserve = 100 };
+		_ammoDictionary[AmmoTypes.Ammo12gauge] = new AmmoTypeData { AmmoType = AmmoTypes.Ammo12gauge, AmmoMax = 999, AmmoReserve = 30 };
+		_ammoDictionary[AmmoTypes.AmmoTranquilizerDart] = new AmmoTypeData { AmmoType = AmmoTypes.AmmoTranquilizerDart, AmmoMax = 999, AmmoReserve = 10 };
 
 		_weaponsRangedDictionary[PlayerWeaponNames.Revolver] = new WeaponRangedData
 		{
-			RagnedWeaponSystem = PlayerWeaponNames.Revolver,
-			AmmoTypeSystem = AmmoTypes.Ammo9mm,
+			RagnedWeapon = PlayerWeaponNames.Revolver,
+			AmmoType = AmmoTypes.Ammo9mm,
 			MagazineAmmoMax = 5,
 			MagazineAmmoCurrent = 5
 		};
 		_weaponsRangedDictionary[PlayerWeaponNames.AutoPistol] = new WeaponRangedData
 		{
-			RagnedWeaponSystem = PlayerWeaponNames.AutoPistol,
-			AmmoTypeSystem = AmmoTypes.Ammo9mm,
+			RagnedWeapon = PlayerWeaponNames.AutoPistol,
+			AmmoType = AmmoTypes.Ammo9mm,
 			MagazineAmmoMax = 30,
 			MagazineAmmoCurrent = 30
 		};
 		_weaponsRangedDictionary[PlayerWeaponNames.Shotgun] = new WeaponRangedData
 		{
-			RagnedWeaponSystem = PlayerWeaponNames.Shotgun,
-			AmmoTypeSystem = AmmoTypes.Ammo12gauge,
+			RagnedWeapon = PlayerWeaponNames.Shotgun,
+			AmmoType = AmmoTypes.Ammo12gauge,
 			MagazineAmmoMax = 2,
 			MagazineAmmoCurrent = 2
 		};
 		_weaponsRangedDictionary[PlayerWeaponNames.Tranquilizer] = new WeaponRangedData
 		{
-			RagnedWeaponSystem = PlayerWeaponNames.Tranquilizer,
-			AmmoTypeSystem = AmmoTypes.AmmoTranquilizerDart,
+			RagnedWeapon = PlayerWeaponNames.Tranquilizer,
+			AmmoType = AmmoTypes.AmmoTranquilizerDart,
 			MagazineAmmoMax = 1,
 			MagazineAmmoCurrent = 1
 		};
@@ -97,7 +97,7 @@ public class PlayerWeaponAmmoController : MonoBehaviour, ISaveLoad
 		// и увеличиваем у них значение MagazineAmmoCurrent.
 		foreach (var weaponEntry in _weaponsRangedDictionary)
 		{
-			if (weaponEntry.Value.AmmoTypeSystem == type)
+			if (weaponEntry.Value.AmmoType == type)
 			{
 				var data = weaponEntry.Value;
 				data.MagazineAmmoCurrent = Mathf.Min(data.MagazineAmmoMax, data.MagazineAmmoCurrent + amount);
@@ -123,7 +123,7 @@ public class PlayerWeaponAmmoController : MonoBehaviour, ISaveLoad
 		// Аналогично, находим оружие и уменьшаем его боезапас
 		foreach (var weaponEntry in _weaponsRangedDictionary)
 		{
-			if (weaponEntry.Value.AmmoTypeSystem == type)
+			if (weaponEntry.Value.AmmoType == type)
 			{
 				var data = weaponEntry.Value;
 				data.MagazineAmmoCurrent = Mathf.Max(0, data.MagazineAmmoCurrent - amount);
@@ -171,19 +171,19 @@ public class PlayerWeaponAmmoController : MonoBehaviour, ISaveLoad
 		foreach (var kvp in _ammoDictionary)
 		{
 			AmmoTypeData saveStruct = kvp.Value;
-			saveStruct.AmmoTypeJson = kvp.Key.ToString();
+			saveStruct.AmmoType = kvp.Key;
 			ammoList.Add(saveStruct);
 		}
-		data.PlayerWeapons.Ammo = ammoList;
+		data.PlayerWeapons.PlayerAmmo = ammoList;
 
 		List<WeaponRangedData> weaponList = new List<WeaponRangedData>();
 		foreach (var kvp in _weaponsRangedDictionary)
 		{
 			WeaponRangedData saveStruct = kvp.Value;
-			saveStruct.RagnedWeaponJson = kvp.Key.ToString();
+			saveStruct.RagnedWeapon = kvp.Key;
 			weaponList.Add(saveStruct);
 		}
-		data.PlayerWeapons.UnlockedRangedWeapons = weaponList;
+		data.PlayerWeapons.UnlockedPlayerRangedWeapons = weaponList;
 	}
 
 	public void LoadData(GameData data)

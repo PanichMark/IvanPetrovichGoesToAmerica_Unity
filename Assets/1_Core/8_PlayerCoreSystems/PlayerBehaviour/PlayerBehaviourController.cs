@@ -70,14 +70,14 @@ public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		IsPlayerArmed = data.PlayerBehaviour.IsArmed;
-		WasPlayerArmed = data.PlayerBehaviour.WasArmed;
+		IsPlayerArmed = data.PlayerBehaviour.IsPlayerArmed;
+		WasPlayerArmed = data.PlayerBehaviour.WasPlayerArmed;
 	}
 
 	public void LoadData(GameData data)
 	{
-		data.PlayerBehaviour.IsArmed = IsPlayerArmed;
-		data.PlayerBehaviour.WasArmed = WasPlayerArmed;
+		data.PlayerBehaviour.IsPlayerArmed = IsPlayerArmed;
+		data.PlayerBehaviour.WasPlayerArmed = WasPlayerArmed;
 
 		/*
 		if (IsPlayerArmed)
