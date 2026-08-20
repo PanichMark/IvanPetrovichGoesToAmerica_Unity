@@ -216,7 +216,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 								finalDamage *= headshotMultiplier;
 							}
 
-							Debug.Log($"{WeaponName} Damaged {damageable} by {finalDamage}");
+							//Debug.Log($"{WeaponName} Damaged {damageable} by {finalDamage}");
 							damageable.TakeDamage(finalDamage);
 						}
 						break;

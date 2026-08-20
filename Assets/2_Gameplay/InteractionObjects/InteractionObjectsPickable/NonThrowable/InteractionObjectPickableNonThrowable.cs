@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAbstract, IBreakable
+public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAbstract
 {
 	public static InteractionObjectPickableNonThrowable CreateWithName(GameObject obj, string interactionItemNameSystem)
 	{
@@ -17,16 +17,6 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	private PlayerMovementController _playerMovementController;
 	private GameController _gameController;
 
-	[Header("Object Health")]
-	[SerializeField] private float _health;
-	[SerializeField] private bool _isObjectBreakable;
-	public bool IsObjectDestroyed => throw new System.NotImplementedException();
-
-	public float CurrentDurability => throw new System.NotImplementedException();
-
-	public float DuribilityThreshold => throw new System.NotImplementedException();
-
-	public bool CanObjectBeBroken => throw new System.NotImplementedException();
 
 	public override void PickUpObject()
 	{
@@ -70,15 +60,5 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	protected virtual void OnDestroy()
 	{
 		_playerMovementController.OnMovementSpeedChangedByStateMachine -= HalfTheMovementSpeed;
-	}
-
-	public void TakeDamage(float amount)
-	{
-		//throw new System.NotImplementedException();
-	}
-
-	public void ObjectIsFullyBroken()
-	{
-		Destroy(gameObject);
 	}
 }

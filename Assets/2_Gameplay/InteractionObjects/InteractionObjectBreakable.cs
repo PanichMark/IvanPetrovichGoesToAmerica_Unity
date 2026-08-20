@@ -39,7 +39,7 @@ public class InteractionObjectBreakable : MonoBehaviour, IInteractable, IBreakab
 		throw new System.NotImplementedException();
 	}
 
-	public void TakeDamage(float amount)
+	public void TakeBreakDamage(float amount)
 	{
 		throw new System.NotImplementedException();
 	}

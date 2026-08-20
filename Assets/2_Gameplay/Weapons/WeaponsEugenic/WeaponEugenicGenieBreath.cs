@@ -92,7 +92,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 			IBreakable breakable = hit.GetComponent<IBreakable>();
 			if (breakable != null)
 			{
-				breakable.TakeDamage(WeaponDamage);
+				breakable.TakeBreakDamage(WeaponDamage);
 			}
 
 			Rigidbody rb = hit.GetComponent<Rigidbody>();

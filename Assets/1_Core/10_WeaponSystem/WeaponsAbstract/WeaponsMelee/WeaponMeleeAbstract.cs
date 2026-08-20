@@ -117,7 +117,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	protected IEnumerator DelayMeleeAttackBreakable(IBreakable target, float delayTime)
 	{
 		yield return new WaitForSeconds(delayTime);
-		target.TakeDamage(WeaponDamage);
+		target.TakeBreakDamage(WeaponDamage);
 	}
 
 	protected abstract void InitializeWeaponMelee();

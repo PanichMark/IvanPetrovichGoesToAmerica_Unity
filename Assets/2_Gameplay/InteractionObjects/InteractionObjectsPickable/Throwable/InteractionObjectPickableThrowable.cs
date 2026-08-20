@@ -1,19 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstract, IThrowable, IDamageable, IBreakable
+public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstract, IThrowable, IDamageable
 {
-	private bool _wasObjectDestroyed;
 	private bool _canObjectBeDestroyedOnImpact;
-	public bool IsObjectDestroyed => _wasObjectDestroyed;
 	public float ObjectThrowPower => 10f;
 	private GameObject _firstPersonRightHandWeaponSlotGameObject;
 
-	[Header("Object Health")]
-	[SerializeField, Min(0)] private float _health;
+
 	[SerializeField] private bool _canBeDamaged;
-	[SerializeField] private bool _canBeBroken;
-	[SerializeField] private float _breakingThreshold;
+	[SerializeField] private bool IsDestroyedUponImpact;
 
 	[Header("Object Damage")]
 	[SerializeField] private float _damage;
@@ -25,13 +21,8 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 	public float CurrentHealth => _health;
 
 
-	public float CurrentDurability => _health;
-
-	public float DuribilityThreshold => _breakingThreshold;
-
 	public bool CanObjectBeDamaged => _canBeDamaged;
 
-	public bool CanObjectBeBroken => _canBeBroken;
 
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
@@ -121,9 +112,9 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			if (_canDamageBreakable)
 			{
 				var breakable = collision.gameObject.GetComponent<IBreakable>();
-				if (breakable != null && breakable.CanObjectBeBroken)
+				if (breakable != null && breakable.CanObjectBeBroken && !breakable.IsObjectDestroyed)
 				{
-					breakable.TakeDamage(_damage);
+					breakable.TakeBreakDamage(_damage);
 				}
 			}
 
@@ -157,32 +148,6 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		gameObject.layer = LayerMask.NameToLayer("Default");
 	}
 
-	public void TakeDamage(float amount)
-	{
-		if (_canBeDamaged)
-		{
-			Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
-
-			_health -= amount;
-
-			if (_health <= 0)
-			{
-				ObjectIsFullyDamaged();
-			}
-		}
-		if (_canBeBroken)
-		{
-			if (amount >= DuribilityThreshold)
-			{
-				_health -= amount;
-
-				if (_health <= 0)
-				{
-					ObjectIsFullyDamaged();
-				}
-			}
-		}
-	}
 
 	public void ObjectIsFullyDamaged()
 	{
@@ -238,69 +203,18 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		transform.rotation = Quaternion.Euler(0, _thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
 	}
 
-	public void ObjectIsFullyBroken()
+	public void TakeDamage(float amount)
 	{
-		Debug.Log($"{InteractionObjectNameSystem} was destroyed!");
-
-		_wasObjectDestroyed = true;
-
-		Destroy(gameObject);
-	}
-
-	/*
-	public override void SaveData(ref GameData data)
-	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
-
-		// Инициализируем словарь или список для текущей сцены, если их нет
-		if (data.PickableObjectsData == null)
+		if (CanObjectBeDamaged)
 		{
-			data.PickableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>>();
-		}
-		if (!data.PickableObjectsData.ContainsKey(currentScene))
-		{
-			data.PickableObjectsData[currentScene] = new List<PickableObjectData>();
-		}
+			Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
 
-		var targetList = data.PickableObjectsData[currentScene];
+			_health -= amount;
 
-		int indexInList = targetList.FindIndex(item => item.PickableObjectIndex == PickableObjectIndex);
-
-		var updatedItem = new PickableObjectData
-		{
-			PickableObjectIndex = PickableObjectIndex,
-			PickableObjectNameSystem = InteractionObjectNameSystem,
-			IsPickableObjectPickedUp = IsObjectPickedUp,
-			IsPickableObjectDestroyed = _wasObjectDestroyed
-		};
-
-		if (indexInList != -1)
-		{
-			targetList[indexInList] = updatedItem;
-		}
-		else
-		{
-			targetList.Add(updatedItem);
+			if (_health <= 0)
+			{
+				ObjectIsFullyDamaged();
+			}
 		}
 	}
-
-	public override void LoadData(GameData data)
-	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
-
-		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) return;
-
-		var savedState = sourceList.Find(item => item.PickableObjectIndex == PickableObjectIndex);
-
-		if (savedState.Equals(default(PickableObjectData))) return;
-
-		IsObjectPickedUp = savedState.IsPickableObjectPickedUp;
-		_wasObjectDestroyed = savedState.IsPickableObjectDestroyed;
-
-		if (_wasObjectDestroyed || IsObjectPickedUp)
-		{
-			gameObject.SetActive(false);
-		}
-	}
-	*/
 }

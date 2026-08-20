@@ -124,7 +124,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Pickable_NonThrowable_WoodenCrate
   _interactionObjectPickableType: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
-  _isObjectBreakable: 1
+  _health: 50
+  _canBeBroken: 1
+  _breakingThreshold: 0
 --- !u!54 &6077644675594425952
 Rigidbody:
   m_ObjectHideFlags: 0

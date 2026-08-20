@@ -122,6 +122,6 @@ public class PlayerLegKickAttackController : MonoBehaviour
 	{
 		yield return new WaitForSeconds(delayTime);
 
-		target.TakeDamage(damageAmount);
+		target.TakeBreakDamage(damageAmount);
 	}
 }

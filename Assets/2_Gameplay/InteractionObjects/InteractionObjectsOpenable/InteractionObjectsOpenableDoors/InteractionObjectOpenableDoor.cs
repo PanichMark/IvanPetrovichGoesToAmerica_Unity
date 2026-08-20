@@ -264,7 +264,7 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 		_currentAnimation = null;
 	}
 
-	public void TakeDamage(float amount)
+	public void TakeBreakDamage(float amount)
 	{
 		if (_isDestructable)
 		{

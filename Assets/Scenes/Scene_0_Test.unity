@@ -114857,6 +114857,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractionObject_Pickable_Throwable_Brick
       objectReference: {fileID: 0}
+    - target: {fileID: 5391623991841408717, guid: 1474d2b1a9b6d824bab97a6d3c143b3a, type: 3}
+      propertyPath: _canBeBroken
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5391623991841408717, guid: 1474d2b1a9b6d824bab97a6d3c143b3a, type: 3}
+      propertyPath: _canBeDamaged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7948531721403320371, guid: 1474d2b1a9b6d824bab97a6d3c143b3a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -142001,6 +142009,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractionObject_Pickable_Throwable_Bottle (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4734627040192705269, guid: ba998f969f8b24e4da8fda103351886e, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5391623991841408717, guid: ba998f969f8b24e4da8fda103351886e, type: 3}
+      propertyPath: _canBeBroken
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5391623991841408717, guid: ba998f969f8b24e4da8fda103351886e, type: 3}
+      propertyPath: _canBeDamaged
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -152429,6 +152449,10 @@ PrefabInstance:
     - target: {fileID: 4734627040192705269, guid: 1474d2b1a9b6d824bab97a6d3c143b3a, type: 3}
       propertyPath: m_Name
       value: InteractionObject_Pickable_Throwable_Brick (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5391623991841408717, guid: 1474d2b1a9b6d824bab97a6d3c143b3a, type: 3}
+      propertyPath: _canBeBroken
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7948531721403320371, guid: 1474d2b1a9b6d824bab97a6d3c143b3a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

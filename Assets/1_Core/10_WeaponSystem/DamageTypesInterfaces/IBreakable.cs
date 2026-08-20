@@ -5,7 +5,7 @@
 	float CurrentDurability { get; }
 	float DuribilityThreshold { get; }
 
-	void TakeDamage(float amount);
+	void TakeBreakDamage(float amount);
 
 	void ObjectIsFullyBroken();
 }

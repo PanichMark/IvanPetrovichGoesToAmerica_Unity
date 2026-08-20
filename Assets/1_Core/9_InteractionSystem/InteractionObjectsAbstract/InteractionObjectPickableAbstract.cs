@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, ISaveLoad, IPickable
+public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, ISaveLoad, IPickable, IBreakable
 {
 	protected LocalizationManager _localizationManager;
 	[Header("Object Info")]
@@ -12,6 +12,11 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	[SerializeField] private InteractionObjectPickableData _interactionObjectPickableType;
 
 	public InteractionObjectsPickableTypes PickableType => _interactionObjectPickableType.PickableType;
+
+	[Header("Object Health")]
+	[SerializeField] protected float _health;
+	[SerializeField] private bool _canBeBroken;
+	[SerializeField] private float _breakingThreshold;
 
 	protected Collider _playerCollider;
 	protected bool _isCollisionIgnored = false;
@@ -37,6 +42,15 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	public virtual bool IsInteractionHintMessageFailActive => false;
 
 	public bool IsObjectPickedUp { get; protected set; }
+
+	public bool CanObjectBeBroken => _canBeBroken;
+
+	public bool IsObjectDestroyed => _wasObjectDestroyed;
+
+	protected bool _wasObjectDestroyed;
+	public float CurrentDurability => _health;
+
+	public float DuribilityThreshold => _breakingThreshold;
 
 	protected virtual void InitializePickable()
 	{
@@ -250,5 +264,28 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			gameObject.transform.position = savedState.PickableObjectPosition;
 			gameObject.transform.rotation = savedState.PickableObjectRotation;
 		}
+	}
+
+	public virtual void TakeBreakDamage(float amount)
+	{
+		if (CanObjectBeBroken)
+		{
+			if (amount >= DuribilityThreshold)
+			{
+				_health -= amount;
+
+				if (_health <= 0)
+				{
+					ObjectIsFullyBroken();
+				}
+			}
+		}
+	}
+
+	public void ObjectIsFullyBroken()
+	{
+		_wasObjectDestroyed = true;
+
+		Destroy(gameObject);
 	}
 }
