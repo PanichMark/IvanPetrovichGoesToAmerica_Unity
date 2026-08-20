@@ -129,7 +129,7 @@ public class SaveLoadController : MonoBehaviour
 
 		_gameData = _fileDataHandler.Load();
 
-		SceneNameToLoad = _gameData.SceneNameSystem;
+		SceneNameToLoad = _gameData.Scene;
 
 		foreach (ISaveLoad persistentLoadObj in _persistentSaveLoadObjects)
 		{
@@ -277,8 +277,8 @@ public class SaveLoadController : MonoBehaviour
 			{
 				return (
 					gameData.SafeFileDateAndTime,
-					gameData.MissionNameSystem,
-					gameData.SceneNameSystem
+					gameData.MissionData.Mission,
+					gameData.Scene
 				);
 			}
 			else

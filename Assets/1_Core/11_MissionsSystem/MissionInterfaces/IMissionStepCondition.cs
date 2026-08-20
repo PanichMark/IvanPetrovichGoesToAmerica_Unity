@@ -10,4 +10,6 @@ public interface IMissionStepCondition
 
 	// Позволяет получить владельца условия (объект в мире)
 	GameObject Owner { get; }
+
+	void ResetStepConditionMetStateInEditMode();
 }

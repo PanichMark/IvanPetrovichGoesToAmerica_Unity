@@ -5638,6 +5638,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _NPCStateMachineController: {fileID: 1938486446}
   _NPCDialogueController: {fileID: 0}
+  _isThisPlayerHead: 0
 --- !u!1 &60632680
 GameObject:
   m_ObjectHideFlags: 0
@@ -68268,6 +68269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _NPCStateMachineController: {fileID: 778882794}
   _NPCDialogueController: {fileID: 0}
+  _isThisPlayerHead: 0
 --- !u!1 &761113664
 GameObject:
   m_ObjectHideFlags: 0
@@ -109031,6 +109033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _NPCStateMachineController: {fileID: 1854547203}
   _NPCDialogueController: {fileID: 0}
+  _isThisPlayerHead: 0
 --- !u!1 &1220436450
 GameObject:
   m_ObjectHideFlags: 0
@@ -111447,7 +111450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57da4d8cbea72043bfcf0a4089cf6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _linkedMissionCondition: {fileID: 11400000, guid: b93a992c3bb62e8479c35eb96ccc5110, type: 2}
+  _linkedMissionCondition: {fileID: 11400000, guid: d9ada3130dc747d4396422619caf4850, type: 2}
 --- !u!1 &1247842369
 GameObject:
   m_ObjectHideFlags: 0
@@ -148983,7 +148986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57da4d8cbea72043bfcf0a4089cf6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _linkedMissionCondition: {fileID: 11400000, guid: d9ada3130dc747d4396422619caf4850, type: 2}
+  _linkedMissionCondition: {fileID: 11400000, guid: b93a992c3bb62e8479c35eb96ccc5110, type: 2}
 --- !u!1 &1694994087
 GameObject:
   m_ObjectHideFlags: 0
@@ -162540,6 +162543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _NPCStateMachineController: {fileID: 2616978140777799514}
   _NPCDialogueController: {fileID: 2616978140777799512}
+  _isThisPlayerHead: 0
 --- !u!1 &1852970788
 GameObject:
   m_ObjectHideFlags: 0

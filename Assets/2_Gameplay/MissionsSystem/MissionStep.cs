@@ -23,7 +23,7 @@ public class MissionStep : MissionStepAbstract, IMissionStep
 		if (AreAllConditionsMet())
 		{
 			// Находит активный менеджер в сцене и сообщает о завершении шага.
-			FindObjectOfType<MissionsManager>().CompleteCurrentStep();
+			FindObjectOfType<MissionsManager>().CompleteCurrentStep(false);
 		}
 	}
 

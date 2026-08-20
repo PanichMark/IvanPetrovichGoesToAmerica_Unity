@@ -4,10 +4,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StepConditionOnInteraction", menuName = "Missions/MissionStepConditions/StepConditionOnInteraction")]
 public class MissionStepConditionInteractable : MissionStepConditionAbstract, IMissionStepCondition
 {
-	private bool _isCompleted = false;
+	private bool _isCompleted;
 	// --- РЕАЛИЗАЦИЯ ИНТЕРФЕЙСА ---
 	public bool IsMet() => _isCompleted;
-	public GameObject Owner => base.OwnerObject;
+	public GameObject Owner => OwnerObject;
 	// ---------------------------
 
 	// ... остальной код класса остается БЕЗ ИЗМЕНЕНИЙ ...
@@ -26,5 +26,10 @@ public class MissionStepConditionInteractable : MissionStepConditionAbstract, IM
 			Debug.Log($"[Условие] Взаимодействие с {OwnerObject.name} засчитано.");
 			NotifyMissionManager(); // Сообщаем менеджеру о завершении шага
 		}
+	}
+
+	public void ResetStepConditionMetStateInEditMode()
+	{
+		_isCompleted = false;
 	}
 }

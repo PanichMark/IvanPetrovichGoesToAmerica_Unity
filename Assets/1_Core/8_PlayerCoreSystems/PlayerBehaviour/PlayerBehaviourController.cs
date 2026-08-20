@@ -79,7 +79,6 @@ public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 		data.PlayerBehaviour.IsPlayerArmed = IsPlayerArmed;
 		data.PlayerBehaviour.WasPlayerArmed = WasPlayerArmed;
 
-		/*
 		if (IsPlayerArmed)
 		{
 			ArmPlayer();
@@ -88,6 +87,5 @@ public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 		{
 			DisarmPlayer();
 		}
-		*/
 	}
 }

@@ -4,7 +4,7 @@ public class MissionsManager : MonoBehaviour, ISaveLoad
 {
 	private GameMissionsList _gameMissions;
 	public MissionAbstract ActiveMission { get; private set; }
-	public int CurrentStepIndex { get; private set; } = 0;
+	public int CurrentStepIndex { get; private set; }
 	private LocalizationManager _localizationManager;
 	private HUDmissionsController _HUDmissionsController;
 	
@@ -32,7 +32,7 @@ public class MissionsManager : MonoBehaviour, ISaveLoad
 
 		ActiveMission = _gameMissions.MissionsInOrder[0];
 
-		CurrentStepIndex = 0;
+		CurrentStepIndex = 1;
 
 		if (ActiveMission.Steps.Length > 0)
 		{
@@ -44,6 +44,26 @@ public class MissionsManager : MonoBehaviour, ISaveLoad
 		_gameSceneManager.OnEndLoadingGameplayScene += ShowMissionGoalHUDonSceneLoad;
 
 		Debug.Log("MissionsManager Initialized");
+	}
+
+	private void ResetStepConditionMetStateInEditMode()
+	{
+		if (ActiveMission == null || CurrentStepIndex < 0 || CurrentStepIndex >= ActiveMission.Steps.Length)
+			return;
+
+		var currentStep = ActiveMission.Steps[CurrentStepIndex];
+
+		// Приводим шаг к интерфейсу, чтобы получить доступ к списку условий
+		if (currentStep is IMissionStep typedStep)
+		{
+			foreach (var condition in typedStep.Conditions)
+			{
+				if (condition is IMissionStepCondition resettableCondition)
+				{
+					resettableCondition.ResetStepConditionMetStateInEditMode();
+				}
+			}
+		}
 	}
 
 	public void CheckAndCompleteCurrentStep()
@@ -61,9 +81,14 @@ public class MissionsManager : MonoBehaviour, ISaveLoad
 		_HUDmissionsController.ShowNewMissionGoalHUDnotification(localizedGoalText);
 	}
 
-	public void CompleteCurrentStep()
+	public void CompleteCurrentStep(bool isCalledByLoadSafeFile)
 	{
-		CurrentStepIndex++;
+		if (!isCalledByLoadSafeFile)
+		{
+			CurrentStepIndex++;
+		}
+
+		ResetStepConditionMetStateInEditMode();
 
 		if (CurrentStepIndex < ActiveMission.Steps.Length)
 		{
@@ -121,6 +146,7 @@ public class MissionsManager : MonoBehaviour, ISaveLoad
 
 		if (ActiveMission != null && ActiveMission.Steps.Length > 0)
 		{
+			//Debug.Log(CurrentStepIndex);
 			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
 			_HUDmissionsController.SetCurrentMissionGoalText(localizedGoalText);
 		}
@@ -128,11 +154,15 @@ public class MissionsManager : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.MissionNameSystem = ActiveMission.MissionName;
+		data.MissionData.Mission = ActiveMission.MissionName;
+		data.MissionData.MissionStep = CurrentStepIndex;
 	}
 
 	public void LoadData(GameData data)
 	{
-		
+		CurrentStepIndex = data.MissionData.MissionStep;
+		CompleteCurrentStep(true);
+		//CheckAndCompleteCurrentStep();
+		//CompleteCurrentStep();
 	}
 }

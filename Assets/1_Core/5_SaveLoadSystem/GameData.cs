@@ -9,11 +9,11 @@ public class GameData
 	//DateAndTime
 	public string SafeFileDateAndTime;
 
-	//Mission
-	public string MissionNameSystem;
-
 	//Scene
-	public string SceneNameSystem;
+	public string Scene;
+
+	[JsonProperty("MissionData")]
+	public MissionData MissionData = new MissionData();
 
 	[JsonProperty("PlayerBehaviour")]
 	public PlayerBehaviourData PlayerBehaviour = new PlayerBehaviourData();
@@ -81,11 +81,12 @@ public class GameData
 		//DateAndTime
 		SafeFileDateAndTime = DateTime.Now.ToString();
 
-		//Mission
-		MissionNameSystem = GameMissionsNamesEnum.Mission_0_NothingEverHappensInThisCountry.ToString();
-
 		//Scene
-		SceneNameSystem = GameScenesSystemEnum.Scene_0_Test.ToString();
+		Scene = GameScenesSystemEnum.Scene_0_Test.ToString();
+
+		//Mission
+		MissionData.Mission = GameMissionsNamesEnum.Mission_0_NothingEverHappensInThisCountry.ToString();
+		MissionData.MissionStep = 0;
 
 		//PlayerBehaviour
 		PlayerBehaviour.IsPlayerArmed = false;
@@ -165,6 +166,13 @@ public class GameData
 		}
 		return dict;
 	}
+}
+
+[System.Serializable]
+public class MissionData
+{
+	public string Mission;
+	public int MissionStep;
 }
 
 [System.Serializable]

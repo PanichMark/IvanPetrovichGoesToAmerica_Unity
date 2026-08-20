@@ -17,6 +17,8 @@ public class MissionStepObjectRegistrationInteractable : MonoBehaviour
 
 	public void TriggerInteraction()
 	{
+		Debug.Log("INTERACTED!!!!!");
+
 		if (_linkedMissionCondition is MissionStepConditionInteractable interactionCondition)
 		{
 			interactionCondition.OnPlayerInteracted(gameObject);

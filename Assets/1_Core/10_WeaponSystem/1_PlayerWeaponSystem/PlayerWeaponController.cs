@@ -622,9 +622,10 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			ResetAllWeapons();
 			foreach (string weaponKey in data.PlayerWeapons.UnlockedPlayerWeapons)
 			{
-				GameObject weaponPrefab = Resources.Load<GameObject>("Weapons/" + weaponKey);
+				GameObject weaponPrefab = Resources.Load<GameObject>("WeaponSystem/WeaponsPlayer/" + weaponKey);
 				if (weaponPrefab != null)
 				{
+					//Debug.Log(weaponPrefab);
 					UnlockWeapon(weaponPrefab);
 				}
 			}
@@ -663,7 +664,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		*/
 
 		// Загрузка активного оружия в правую руку
-		if (!string.IsNullOrEmpty(data.PlayerWeapons.PlayerWeaponRightHand))
+
+		if (data.PlayerWeapons.PlayerWeaponRightHand != null)
 		{
 			foreach (var unlockedWeapon in UnlockedWeapons)
 			{
@@ -677,21 +679,29 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 		else
 		{
-			if (RightHandWeapon != null)
-			{
+			//if (RightHandWeapon != null)
+			//{
 				DestroyWeapon(WeaponHandType.Right);
-			}
+			//}
 		}
 
 		// Загрузка активного оружия в левую руку
-		if (!string.IsNullOrEmpty(data.PlayerWeapons.PlayerWeaponLeftHand))
+		if (data.PlayerWeapons.PlayerWeaponLeftHand != null)
 		{
 			IsLeftHand = true; // Устанавливаем флаг, что выбираем для левой руки
+
+			
 			foreach (var unlockedWeapon in UnlockedWeapons)
 			{
+				//Debug.Log(unlockedWeapon);
+				
 				WeaponAbstract comp = unlockedWeapon.Value.GetComponent<WeaponAbstract>();
+
+				//Debug.Log(comp.WeaponNameSystem);
+				//Debug.Log(data.PlayerWeapons.PlayerWeaponLeftHand);
 				if (comp != null && comp.WeaponNameSystem == data.PlayerWeapons.PlayerWeaponLeftHand)
 				{
+					//Debug.Log(unlockedWeapon);
 					SelectWeapon(unlockedWeapon.Value);
 					break;
 				}
@@ -699,10 +709,10 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 		else
 		{
-			if (LeftHandWeapon != null)
-			{
+			//if (LeftHandWeapon != null)
+			//{
 				DestroyWeapon(WeaponHandType.Left);
-			}
+			//}
 		}
 	}
 }
