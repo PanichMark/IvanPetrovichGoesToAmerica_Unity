@@ -15,7 +15,7 @@ public class PlayerMovementStateWalkingStanding : PlayerMovementStateAbstract
 		_playerTransform = _playerMovementController.PlayerTransform;
 		_playerRigidBody = _playerMovementController.PlayerRigidBody;
 
-		_playerMovementController.ChangePlayerMovementSpeed(3, true);
+		_playerMovementController.ChangePlayerMovementSpeed(1, true);
 		_playerMovementController.ChangePlayerRayPosition(1.9f);
 	}
 

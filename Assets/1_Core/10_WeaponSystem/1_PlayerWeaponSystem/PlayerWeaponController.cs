@@ -45,7 +45,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 	public bool IsAbleToUseRightWeapon { get; private set; }
 	public bool IsAbleToUseLeftWeapon { get; private set; }
 
-	public bool HasAnyWeapon { get; private set; } = false;
+	public bool HasAnyWeapon { get; private set; }
 	public GameObject LeftHandWeapon { get; private set; }
 	public GameObject RightHandWeapon { get; private set; }
 
@@ -617,6 +617,14 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void LoadData(GameData data)
 	{
+		HideWeapon(WeaponHandType.Right);
+		DestroyWeapon(WeaponHandType.Right);
+
+		HideWeapon(WeaponHandType.Left);
+		DestroyWeapon(WeaponHandType.Left);
+
+
+
 		if (data.PlayerWeapons.UnlockedPlayerWeapons != null)
 		{
 			ResetAllWeapons();
@@ -677,13 +685,6 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				}
 			}
 		}
-		else
-		{
-			//if (RightHandWeapon != null)
-			//{
-				DestroyWeapon(WeaponHandType.Right);
-			//}
-		}
 
 		// Загрузка активного оружия в левую руку
 		if (data.PlayerWeapons.PlayerWeaponLeftHand != null)
@@ -706,13 +707,6 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 					break;
 				}
 			}
-		}
-		else
-		{
-			//if (LeftHandWeapon != null)
-			//{
-				DestroyWeapon(WeaponHandType.Left);
-			//}
 		}
 	}
 }

@@ -10,6 +10,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	private PlayerBehaviourController _playerBehaviour;
 
 	public delegate void MovementSpeedHandler();
+	public event MovementSpeedHandler OnChangePlayerMovementSpeedChangedByPickable;
 	public event MovementSpeedHandler OnMovementSpeedChangedByStateMachine;
 
 	private Camera _playerCamera;
@@ -35,7 +36,8 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	private RaycastHit _hitInfo;
 
-	public float PlayerMovementSpeed { get; private set; }
+	public float PlayerCurrentMovementSpeed { get; private set; }
+	public float PlayerDefaultMovementSpeed { get; private set; }
 	public float PlayerRotationSpeed { get; private set; }
 
 	public float PlayerSlidingSpeed { get; private set; }
@@ -97,7 +99,8 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		IsAbleToChangeMovementType = true;
 
-		PlayerMovementSpeed = 3f;
+		PlayerDefaultMovementSpeed = 3f;
+		PlayerCurrentMovementSpeed = PlayerDefaultMovementSpeed;
 
 		PlayerSlidingSpeed = 7.5f;
 
@@ -193,13 +196,13 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 		if (IsPlayerOnSlope == true)
 		{
-			_correctedMovement = _playerMovement * PlayerMovementSpeed * Time.deltaTime;
+			_correctedMovement = _playerMovement * PlayerCurrentMovementSpeed * Time.deltaTime;
 			_projection = Vector3.Project(_correctedMovement, _hitInfo.normal);
 			PlayerRigidBody.MovePosition(PlayerRigidBody.position + _correctedMovement - _projection);
 		}
 		else
 		{
-			PlayerRigidBody.MovePosition(PlayerRigidBody.position + _playerMovement * PlayerMovementSpeed * Time.deltaTime);
+			PlayerRigidBody.MovePosition(PlayerRigidBody.position + _playerMovement * PlayerCurrentMovementSpeed * Time.deltaTime);
 		}
 
 		var PlayerMovementDirectionWithCamera = (_playerWorldMovement.z * _playerCamera.transform.forward + _playerWorldMovement.x * _playerCamera.transform.right);
@@ -234,16 +237,20 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		_playerPreviousFramePosition = transform.position;
 	}
 
-	public float ChangePlayerMovementSpeed(float SetSpeed, bool isChangedByStateMachine)
+	public float ChangePlayerMovementSpeed(float speedMultiplier, bool isChangedByStateMachine)
 	{
-		PlayerMovementSpeed = SetSpeed;
+		PlayerCurrentMovementSpeed = PlayerDefaultMovementSpeed * speedMultiplier;
 
 		if (isChangedByStateMachine)
 		{
 			OnMovementSpeedChangedByStateMachine?.Invoke();
 		}
+		else
+		{
+			OnChangePlayerMovementSpeedChangedByPickable?.Invoke();
+		}
 
-		return PlayerMovementSpeed;
+		return PlayerCurrentMovementSpeed;
 	}
 
 	public void ChangePlayerRotationSpeed(float speed)

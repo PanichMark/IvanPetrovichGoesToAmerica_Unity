@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class HUDammoController : MonoBehaviour
+public class HUDammoController : MonoBehaviour, ISaveLoad
 {
 	private MenuManager _menuManager;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
@@ -18,7 +18,7 @@ public class HUDammoController : MonoBehaviour
 	private GameObject _rightWeaponAmmoBox;
 	private GameObject _leftWeaponAmmoMagazine;
 	private GameObject _leftWeaponAmmoReserve;
-	private GameObject _lightWeaponAmmoBox;
+	private GameObject _leftWeaponAmmoBox;
 
 	private TMP_Text _rightWeaponAmmoMagazineText;
 	private TMP_Text _rightWeaponAmmoReserveText;
@@ -54,7 +54,7 @@ public class HUDammoController : MonoBehaviour
 		_rightWeaponAmmoBox = viewModelHUDAmmo.RightWeaponAmmoBox;
 		_leftWeaponAmmoMagazine = viewModelHUDAmmo.TextLeftWeaponAmmoMagazineNumber;
 		_leftWeaponAmmoReserve = viewModelHUDAmmo.TextLeftWeaponAmmoReserveNumber;
-		_lightWeaponAmmoBox = viewModelHUDAmmo.LeftWeaponAmmoBox;
+		_leftWeaponAmmoBox = viewModelHUDAmmo.LeftWeaponAmmoBox;
 
 		_rightWeaponAmmoMagazineText = _rightWeaponAmmoMagazine.GetComponent<TMP_Text>();
 		_rightWeaponAmmoReserveText = _rightWeaponAmmoReserve.GetComponent<TMP_Text>();
@@ -238,11 +238,30 @@ public class HUDammoController : MonoBehaviour
 
 	public void ShowLeftWeaponAmmo()
 	{
-		_lightWeaponAmmoBox.SetActive(true);
+
+		_leftWeaponAmmoBox.SetActive(true);
 	}
 
 	public void HideLeftWeaponAmmo()
 	{
-		_lightWeaponAmmoBox.SetActive(false);
+		_leftWeaponAmmoBox.SetActive(false);
+	}
+
+	public void SaveData(ref GameData data)
+	{
+		//throw new System.NotImplementedException();
+	}
+
+	public void LoadData(GameData data)
+	{
+		if (_playerWeaponController != null && _playerWeaponController.RightHandWeapon != null)
+		{
+			UpdateAmmoDisplayForActiveWeapon(WeaponHandType.Right);
+		}
+
+		if (_playerWeaponController != null && _playerWeaponController.LeftHandWeapon != null)
+		{
+			UpdateAmmoDisplayForActiveWeapon(WeaponHandType.Left);
+		}
 	}
 }

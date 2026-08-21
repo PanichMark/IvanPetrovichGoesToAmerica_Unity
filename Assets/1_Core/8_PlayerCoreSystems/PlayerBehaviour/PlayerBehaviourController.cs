@@ -32,6 +32,13 @@ public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 			DisarmPlayer();
 		}
 
+		/*
+		Debug.Log("IS");
+		Debug.Log(IsPlayerArmed);
+		Debug.Log("WAS");
+		Debug.Log(WasPlayerArmed);
+		*/
+
 		//Debug.Log(IsPlayerArmed);
 	}
 
@@ -76,10 +83,15 @@ public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 
 	public void LoadData(GameData data)
 	{
+		IsPlayerArmed = false;
+		WasPlayerArmed = false;
+
+		OnPlayerDisarmed?.Invoke();
+
 		data.PlayerBehaviour.IsPlayerArmed = IsPlayerArmed;
 		data.PlayerBehaviour.WasPlayerArmed = WasPlayerArmed;
 
-		DisarmPlayer();
+
 
 		if (IsPlayerArmed)
 		{

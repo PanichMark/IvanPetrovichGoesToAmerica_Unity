@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectPickableNonThrowableMaximGun : InteractionObjectPickableNonThrowable
+public class InteractionObjectPickableNonThrowableWeapon : InteractionObjectPickableNonThrowable
 {
 	[Header("Object Damage")]
 	[SerializeField] private float _damage;

@@ -30,7 +30,7 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 		{
 			_gameController.RestrictPlayerMovementWhileCarryingNonThrowable();
 
-			HalfTheMovementSpeed();
+			DecreaseTheMovementSpeed();
 		}
 	}
 
@@ -52,28 +52,28 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 
 		if (_isMovementRestricted)
 		{
-			_playerMovementController.OnMovementSpeedChangedByStateMachine += HalfTheMovementSpeed;
+			_playerMovementController.OnMovementSpeedChangedByStateMachine += DecreaseTheMovementSpeed;
 		}
 	}
 
-	private void HalfTheMovementSpeed()
+	private void DecreaseTheMovementSpeed()
 	{
 		if (IsObjectPickedUp)
 		{
-			_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed * _movementSpeedPenaltyMultiplier, false);
+			_playerMovementController.ChangePlayerMovementSpeed(_movementSpeedPenaltyMultiplier, false);
 		}
 	}
 
 	private void RestoreTheMovementSpeed()
 	{
-		_playerMovementController.ChangePlayerMovementSpeed(_playerMovementController.PlayerMovementSpeed * _movementSpeedPenaltyMultiplier, false);
+		_playerMovementController.ChangePlayerMovementSpeed(1, false);
 	}
 
 	protected virtual void OnDestroy()
 	{
 		if (_isMovementRestricted)
 		{
-			_playerMovementController.OnMovementSpeedChangedByStateMachine -= HalfTheMovementSpeed;
+			_playerMovementController.OnMovementSpeedChangedByStateMachine -= DecreaseTheMovementSpeed;
 		}
 	}
 
