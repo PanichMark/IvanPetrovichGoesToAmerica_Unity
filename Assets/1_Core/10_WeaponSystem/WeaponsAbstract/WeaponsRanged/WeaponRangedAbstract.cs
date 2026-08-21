@@ -18,9 +18,8 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public abstract bool LeavesBulletHole {  get; }
 	protected bool _isWeaponPlayerShooting;
 	public abstract bool IsReloadingAnimationSingle { get; }
-	[SerializeField] protected GameObject _VFXmuzzleFlashEffect;
-	protected Transform _VFXspawnPoint;
-	protected GameObject _vfxInstance;
+	protected GameObject _VFXmuzzleFlashEffect1stPerson;
+	protected GameObject _VFXmuzzleFlashEffect3rdPerson;
 	protected bool _isNPCreloading;
 	public int PlayerMagazineAmmoCurrent { get; set; }
 
@@ -39,41 +38,14 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>("PlayerResourcesAmmoManager");
 			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
-			
-			_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXspawnPoint;
+
 			InitializeWeaponRanged();
 		}
 
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
-		{
-			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform.Find("VFX");
-		}
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
-		{
-			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
-		}
-
+		_VFXmuzzleFlashEffect1stPerson = FirstPersonWeaponModelInstance.transform.Find("VFX")?.gameObject;
+		_VFXmuzzleFlashEffect3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("VFX")?.gameObject;
+		
 		_bulletHoleManager = ServiceLocator.Resolve<ObjectPoolWeaponController>("ObjectPoolWeaponController");
-	}
-
-	private void OnDestroy()
-	{
-		if (_playerCameraStateMachineController != null)
-		{
-			_playerCameraStateMachineController.OnCameraStateChanged -= ChangeVFXspawnPoint;
-		}
-	}
-
-	private void ChangeVFXspawnPoint()
-	{
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
-		{
-			_VFXspawnPoint = FirstPersonWeaponModelInstance.transform.Find("VFX");
-		}
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
-		{
-			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform.Find("VFX");
-		}
 	}
 
 	public override void WeaponAttack()
@@ -174,10 +146,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			}
 		}
 
-		if (_VFXmuzzleFlashEffect != null)
-		{
-			SpawnMuzzleVFX();
-		}
+		StartCoroutine(ShowMuzzleVFX());
 
 		PlayerMagazineAmmoCurrent--;
 		StartCoroutine(OnSpecificShootMechanics());
@@ -286,16 +255,29 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		}
 	}
 
-	protected void SpawnMuzzleVFX()
+	protected IEnumerator ShowMuzzleVFX()
 	{
-		_vfxInstance = Instantiate(_VFXmuzzleFlashEffect, _VFXspawnPoint.position, _VFXspawnPoint.rotation, _VFXspawnPoint.transform);
-
-		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+		if (_VFXmuzzleFlashEffect1stPerson != null)
 		{
-			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
+			_VFXmuzzleFlashEffect1stPerson.SetActive(true);
 		}
 
-		Destroy(_vfxInstance, 0.05f);
+		if (_VFXmuzzleFlashEffect3rdPerson != null)
+		{
+			_VFXmuzzleFlashEffect3rdPerson.SetActive(true);
+		}
+
+		yield return new WaitForSeconds(0.05f);
+
+		if (_VFXmuzzleFlashEffect1stPerson != null)
+		{
+			_VFXmuzzleFlashEffect1stPerson.SetActive(false);
+		}
+
+		if (_VFXmuzzleFlashEffect3rdPerson != null)
+		{
+			_VFXmuzzleFlashEffect3rdPerson.SetActive(false);
+		}
 	}
 
 	public virtual IEnumerator ReloadWeaponPlayer(bool isSecondAnimation)

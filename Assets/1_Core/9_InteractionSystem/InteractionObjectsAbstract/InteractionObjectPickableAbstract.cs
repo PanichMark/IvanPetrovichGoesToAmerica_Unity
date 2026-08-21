@@ -128,7 +128,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	public void Interact()
 	{
-		PickUpObject();
+		PickUpObject(false);
 	}
 
 	public void InteractCutscene()
@@ -141,7 +141,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		IsObjectPickedUp = true;
 	}
 
-	public virtual void PickUpObject()
+	public virtual void PickUpObject(bool isPickedUpByLoadSafeFile)
 	{
 		if (!IsObjectPickedUp)
 		{
@@ -150,7 +150,14 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			Collider.enabled = false;
 			RigidBody.isKinematic = true;
 
-			StartCoroutine(MoveTowardsPlayer());
+			if (!isPickedUpByLoadSafeFile)
+			{
+				StartCoroutine(MoveTowardsPlayer());
+			}
+			else
+			{
+				SetPickableObjectTransformAtPlayerArms();
+			}
 
 			//transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
 			IsObjectPickedUp = true;
@@ -275,7 +282,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		}
 	}
 
-	public void LoadData(GameData data)
+	public virtual void LoadData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 
@@ -291,20 +298,9 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		{
 			IsObjectPickedUp = false;
 
-			gameObject.tag = "Untagged";
-			Collider.enabled = false;
-			RigidBody.isKinematic = true;
-
-			SetPickableObjectTransformAtPlayerArms();
+			PickUpObject(true);
 			//Debug.Log(_playerInteractionController);
 			_playerInteractionController.PickUpObjectOnLoadData(gameObject);
-
-			if (_playerInteractionController.CurrentIThrowable == null)
-			{
-				_gameController.RestrictPlayerMovementWhileCarryingNonThrowable();
-			}
-
-			IsObjectPickedUp = true;
 		}
 		else
 		{

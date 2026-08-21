@@ -79,6 +79,8 @@ public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 		data.PlayerBehaviour.IsPlayerArmed = IsPlayerArmed;
 		data.PlayerBehaviour.WasPlayerArmed = WasPlayerArmed;
 
+		DisarmPlayer();
+
 		if (IsPlayerArmed)
 		{
 			ArmPlayer();

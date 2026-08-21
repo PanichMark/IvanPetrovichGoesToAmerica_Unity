@@ -9,9 +9,9 @@ public class InteractionObjectPickableNonThrowableAccordion : InteractionObjectP
 	private SkinnedMeshRenderer _accordionSkinnedMeshRenderer;
 	private float _animationStartTime;
 
-	public override void PickUpObject()
+	public override void PickUpObject(bool isPickedUpByLoadSafeFile)
 	{
-		base.PickUpObject();
+		base.PickUpObject(isPickedUpByLoadSafeFile);
 		_animationStartTime = Time.time;
 		StartCoroutine(PlayAccordionBlendShapeAnimation());
 	}

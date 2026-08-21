@@ -76,7 +76,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 		}
 	}
 
-	public override void PickUpObject()
+	public override void PickUpObject(bool isPickedUpByLoadSafeFile)
 	{
 		if (!IsObjectPickedUp)
 		{
@@ -86,13 +86,20 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			Collider.enabled = false;
 			RigidBody.isKinematic = true;
 
-			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+			if (!isPickedUpByLoadSafeFile)
 			{
-				StartCoroutine(MoveTowardsRightHandFirstPerson());
+				if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+				{
+					StartCoroutine(MoveTowardsRightHandFirstPerson());
+				}
+				else
+				{
+					StartCoroutine(MoveTowardsRightHandThirdPerson());
+				}
 			}
 			else
 			{
-				StartCoroutine(MoveTowardsRightHandThirdPerson());
+				SetPickableObjectTransformAtPlayerArms();
 			}
 
 			IsObjectPickedUp = true;
