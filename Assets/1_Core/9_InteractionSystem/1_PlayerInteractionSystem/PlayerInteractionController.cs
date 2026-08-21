@@ -235,13 +235,24 @@ public class PlayerInteractionController : MonoBehaviour, ISaveLoad
 		if (CurrentIThrowable != null)
 		{
 			OnPickUpThrowable?.Invoke(_currentIPickable.PickableType);
+
 			_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}\n{_HUDInteractionThrowText} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackRightHand)}";
 			//ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("FirstPerson"));
 		}
 		else
 		{
 			OnPickUpNonThrowable?.Invoke(_currentIPickable.PickableType);
-			_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}";
+
+			WeaponPickableRangedAbstract pickableRangedWeapon = CurrentPickableObject.GetComponent<WeaponPickableRangedAbstract>();
+			if (pickableRangedWeapon == null)
+			{
+				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}";
+			}
+			else
+			{
+				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}\n{_localizationManager.GetLocalizedString(pickableRangedWeapon.WeaponRightMouseButtonAttackMessage)} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackRightHand)}\n{_localizationManager.GetLocalizedString(pickableRangedWeapon.WeaponLeftMouseButtonAttackMessage)} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackLeftHand)}";
+			}
+
 			ChangeLayerRecursively(CurrentPickableObject, LayerMask.NameToLayer("Default"));
 		}
 	}

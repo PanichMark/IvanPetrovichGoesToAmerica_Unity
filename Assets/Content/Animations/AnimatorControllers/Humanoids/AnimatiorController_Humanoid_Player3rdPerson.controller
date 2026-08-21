@@ -1055,7 +1055,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weapon_MaximGun_PreFire
+  m_Name: Ranged_MaximGun_PreFire
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1736,7 +1736,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weapon_MaximGun_Attack
+  m_Name: Ranged_MaximGun_Attack
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -2219,7 +2219,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weapon_MaximGun_Aim
+  m_Name: Ranged_MaximGun_Aim
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -2323,7 +2323,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weapon_MaximGun_UnAim
+  m_Name: Ranged_MaximGun_UnAim
   m_Speed: -1
   m_CycleOffset: 0
   m_Transitions: []
@@ -2636,7 +2636,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weapon_MaximGun_Hold
+  m_Name: Ranged_MaximGun_Hold
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

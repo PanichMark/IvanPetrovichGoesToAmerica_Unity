@@ -133,8 +133,10 @@ MonoBehaviour:
   _health: 0
   _canBeBroken: 0
   _breakingThreshold: 0
-  _isMovementRestricted: 0
-  _movementSpeedPenaltyMultiplier: 0
+  _isMovementRestricted: 1
+  _movementSpeedPenaltyMultiplier: 0.35
+  _weaponRightMouseButtonAttackMessage: HUD_Interaction_HintMessage_PickableWeapon_MaximGun_AttackRight
+  _weaponLeftMouseButtonAttackMessage: HUD_Interaction_HintMessage_PickableWeapon_MaximGun_AttackLeft
   _damage: 0
   _attackSpeedRate: 0
 --- !u!65 &5082930833271842599

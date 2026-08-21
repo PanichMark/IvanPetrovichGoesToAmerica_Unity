@@ -31,23 +31,27 @@ public class PlayerInteractionAnimationController : MonoBehaviour
 
 		_interactionController.OnThrowTrowable += ThrowWithRightHand;
 
-
 		Debug.Log("InteractionAnimationController Initialized");
 	}
 
 	private void PickUpWithBothHands(InteractionObjectsPickableTypes pickableType)
 	{
 		_playerAnimator3rdPerson.SetLayerWeight(_layerPickableBothArms3rd, 1f);
-		_playerAnimator3rdPerson.Play($"{pickableType.ToString()}_Hold", _layerPickableBothArms3rd, 0f);
+		_playerAnimator3rdPerson.Play($"{pickableType.ToString()}_{AnimationsHumanoidPickableEnum.Hold}", _layerPickableBothArms3rd, 0f);
+
+		if (pickableType == InteractionObjectsPickableTypes.MaximGun)
+		{
+			_playerAnimator3rdPerson.Play($"{WeaponTypes.Ranged}_{pickableType}_{AnimationsHumanoidPickableEnum.Hold}", _layerPickableBothArms3rd, 0f);
+		}
 	}
 
 	private void PickUpWithRightHand(InteractionObjectsPickableTypes pickableType)
 	{
 		_playerAnimator3rdPerson.SetLayerWeight(_layerPickableRightArm3rd, 1f);
-		_playerAnimator3rdPerson.Play($"{pickableType.ToString()}_Hold", _layerPickableRightArm3rd, 0f);
+		_playerAnimator3rdPerson.Play($"{pickableType.ToString()}_{AnimationsHumanoidPickableEnum.Hold}", _layerPickableRightArm3rd, 0f);
 
 		_playerAnimator1stPerson.SetLayerWeight(_layerPickableRightArm1st, 1f);
-		_playerAnimator1stPerson.Play($"{pickableType.ToString()}_Hold", _layerPickableRightArm1st, 0f);
+		_playerAnimator1stPerson.Play($"{pickableType.ToString()}_{AnimationsHumanoidPickableEnum.Hold}", _layerPickableRightArm1st, 0f);
 	}
 
 	private void DropWithBothHands()
@@ -68,9 +72,9 @@ public class PlayerInteractionAnimationController : MonoBehaviour
 	{
 		StartCoroutine(ThrowWithRightHandCoroutine());
 
-		_playerAnimator3rdPerson.Play($"{throwableType.ToString()}_Throw", _layerPickableRightArm3rd, 0f);
+		_playerAnimator3rdPerson.Play($"{throwableType.ToString()}_{AnimationsHumanoidPickableEnum.Throw}", _layerPickableRightArm3rd, 0f);
 
-		_playerAnimator1stPerson.Play($"{throwableType.ToString()}_Throw", _layerPickableRightArm1st, 0f);
+		_playerAnimator1stPerson.Play($"{throwableType.ToString()}_{AnimationsHumanoidPickableEnum.Throw}", _layerPickableRightArm1st, 0f);
 	}
 
 	private IEnumerator ThrowWithRightHandCoroutine()

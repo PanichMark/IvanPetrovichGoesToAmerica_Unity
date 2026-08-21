@@ -3,9 +3,14 @@
 	Hold,
 	Attack,
 	Reload,
+	LegKick,
+
 	Ranged_Revolver_ReloadInsert_Right,
 	Ranged_Revolver_ReloadPush_Right,
 	Ranged_Revolver_ReloadInsert_Left,
 	Ranged_Revolver_ReloadPush_Left,
-	LegKick
+
+	PickableWeapon_Ranged_MaximGun_Aim,
+	PickableWeapon_Ranged_MaximGun_UnAim,
+	PickableWeapon_Ranged_MaximGun_Prefire
 }
