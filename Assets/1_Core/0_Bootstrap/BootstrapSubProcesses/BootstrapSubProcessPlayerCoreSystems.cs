@@ -166,6 +166,7 @@ public class BootstrapSubProcessPlayerCoreSystems
 		_playerMovementAnimationController.Initialize(
 			_inputDevice,
 			PlayerBehaviour,
+			PlayerMovementController,
 			PlayerMovementStateMachineController,
 			PlayerCameraStateMachineController,
 			_gameObjectPlayer);

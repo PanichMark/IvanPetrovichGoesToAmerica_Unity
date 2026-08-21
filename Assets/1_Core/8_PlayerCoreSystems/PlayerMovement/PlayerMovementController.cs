@@ -9,9 +9,12 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 	private Bootstrap _bootstrap;
 	private PlayerBehaviourController _playerBehaviour;
 
-	public delegate void MovementSpeedHandler();
-	public event MovementSpeedHandler OnChangePlayerMovementSpeedChangedByPickable;
-	public event MovementSpeedHandler OnMovementSpeedChangedByStateMachine;
+	
+	public delegate void MovementSpeedStateMachineHandler();
+	public event MovementSpeedStateMachineHandler OnMovementSpeedChangedByStateMachine;
+
+	public delegate void MovementSpeedPickableHandler(float speed);
+	public event MovementSpeedPickableHandler OnChangePlayerMovementSpeedChangedByPickable;
 
 	private Camera _playerCamera;
 
@@ -247,7 +250,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		}
 		else
 		{
-			OnChangePlayerMovementSpeedChangedByPickable?.Invoke();
+			OnChangePlayerMovementSpeedChangedByPickable?.Invoke(speedMultiplier);
 		}
 
 		return PlayerCurrentMovementSpeed;

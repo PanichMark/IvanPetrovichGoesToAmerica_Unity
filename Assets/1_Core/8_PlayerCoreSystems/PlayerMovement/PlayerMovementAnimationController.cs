@@ -8,16 +8,19 @@ public class PlayerMovementAnimationController : MonoBehaviour
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private string _currentPlayerMovementAnimation;
 	private Animator _playerAnimator;
+	private PlayerMovementController _playerMovementController;
 
 	public void Initialize(
 		IInputDevice inputDevice,
 		PlayerBehaviourController playerBehaviour,
+		PlayerMovementController playerMovementController,
 		PlayerMovementStateMachineController playerMovementStateMachineController,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		GameObject player)
 	{
 		_inputDevice = inputDevice;
 		_playerBehaviour = playerBehaviour;
+		_playerMovementController = playerMovementController;
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_playerCameraStateMachineController = playerCameraStateMachineController;
 		_playerAnimator = player.GetComponent<Animator>();
@@ -25,6 +28,13 @@ public class PlayerMovementAnimationController : MonoBehaviour
 		_playerMovementStateMachineController.OnChangeMovementState += HandleMovementStateChanged;
 
 		ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing_Type1.ToString());
+
+		_playerMovementController.OnChangePlayerMovementSpeedChangedByPickable += ChangeMovementAnimationsSpeed;
+
+		_playerMovementController.OnMovementSpeedChangedByStateMachine += () =>
+		{
+			ChangeMovementAnimationsSpeed(1);
+		};
 	}
 
 	private void HandleMovementStateChanged(PlayerMovementStateTypes newStateType)
@@ -97,5 +107,10 @@ public class PlayerMovementAnimationController : MonoBehaviour
 			_currentPlayerMovementAnimation = animation;
 			_playerAnimator.CrossFade(animation, crossfade);
 		}
+	}
+
+	private void ChangeMovementAnimationsSpeed(float speed)
+	{
+		_playerAnimator.SetFloat("Speed", speed);
 	}
 }
