@@ -11,7 +11,7 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 	public override float WeaponAttackSpeedRate => 0.3f;
 
 	public override bool IsReloadingAnimationSingle => true;
-	protected override float _weaponRange => 100;
+	public override float WeaponRange => 100;
 	public override bool LeavesBulletHole => false;
 	protected override float _waitForAmmoRefill => 3.15f;
 

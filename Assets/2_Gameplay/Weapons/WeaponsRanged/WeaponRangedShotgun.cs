@@ -16,7 +16,7 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	[SerializeField] protected AudioClip _weaponSoundInsertShell;
 	private GameObject _shotgunBarrel1stPerson;
 	private GameObject _shotgunBarrel3rdPerson;
-	protected override float _weaponRange => 15f;
+	public override float WeaponRange => 15f;
 
 	public override bool LeavesBulletHole => true;
 
@@ -46,9 +46,9 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 		{
 			Quaternion randomRotation = Random.rotationUniform;
 			Quaternion spreadRotation = Quaternion.Slerp(Quaternion.identity, randomRotation, _spreadAngle / 90f);
-			Vector3 finalDirection = spreadRotation * _shootPoint.transform.forward;
+			Vector3 finalDirection = spreadRotation * WeaponRangedShootPoint.transform.forward;
 
-			RaycastHit[] hits = Physics.RaycastAll(_shootPoint.transform.position, finalDirection, _weaponRange);
+			RaycastHit[] hits = Physics.RaycastAll(WeaponRangedShootPoint.transform.position, finalDirection, WeaponRange);
 			System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
 			if (hits.Length > 0)

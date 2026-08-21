@@ -35,7 +35,7 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 
 	public int CartgridgeSlidingStep {  get; set; }
 
-	protected override float _weaponRange => 50f;
+	public override float WeaponRange => 50f;
 
 	protected override void InitializeWeaponRanged()
 	{

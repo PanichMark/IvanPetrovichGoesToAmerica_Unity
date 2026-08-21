@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class WeaponRangedAbstract : WeaponAbstract
+public abstract class WeaponRangedAbstract : WeaponAbstract, IWeaponRanged
 {
 	protected PlayerWeaponAmmoController _playerResourcesAmmoManager;
 
-	protected GameObject _shootPoint;
+	public GameObject WeaponRangedShootPoint {  get; protected set; }
 	protected PlayerCameraStateMachineController _playerCameraStateMachineController;
 	protected Coroutine _currentWeaponPlayerShootRoutine;
 
-	protected abstract float _weaponRange { get; }
+	public abstract float WeaponRange { get; }
 
 	protected abstract float _waitForAmmoRefill { get; }
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
@@ -35,7 +35,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		if (_isThisPlayerWeapon)
 		{
 			_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
-			_shootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
+			WeaponRangedShootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>("PlayerResourcesAmmoManager");
 			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
 
@@ -136,7 +136,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		if (WeaponName != PlayerWeaponNames.Shotgun)
 		{
-			RaycastHit[] hits = Physics.RaycastAll(_shootPoint.transform.position, _shootPoint.transform.forward, _weaponRange);
+			RaycastHit[] hits = Physics.RaycastAll(WeaponRangedShootPoint.transform.position, WeaponRangedShootPoint.transform.forward, WeaponRange);
 			System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
 			if (hits.Length > 0)

@@ -6,6 +6,7 @@
 	CircularSaw,
 	Revolver,
 	AutoPistol,
+	RepeatingHandgun,
 	Shotgun,
 	Tranquilizer,
 	TeslaShock,
