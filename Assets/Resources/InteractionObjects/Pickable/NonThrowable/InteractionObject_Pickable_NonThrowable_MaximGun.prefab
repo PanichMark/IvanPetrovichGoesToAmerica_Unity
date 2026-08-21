@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 6912786558503489601}
   - component: {fileID: 6346857122528240361}
   - component: {fileID: 2452251808231528990}
-  - component: {fileID: 1521209683281078021}
   - component: {fileID: 6077644675594425952}
   - component: {fileID: 1208503500655591841}
+  - component: {fileID: 5082930833271842599}
   m_Layer: 0
   m_Name: InteractionObject_Pickable_NonThrowable_MaximGun
   m_TagString: Interactable
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4023577473073585539}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -3433024999594751363, guid: 943c475bae9db9c46a3c395451126f4b, type: 3}
 --- !u!23 &2452251808231528990
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 164354616e030a045a3d48c5ac88c30a, type: 2}
+  - {fileID: 2100000, guid: 2bad5c10cc5d11c4d99f3ef7240f7e02, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -89,27 +89,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1521209683281078021
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4023577473073585539}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6077644675594425952
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -149,9 +128,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c019e7e9028cc4eabf43273250b92a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: 
-  _interactionObjectPickableType: {fileID: 0}
+  _interactionObjectNameSystem: InteractionObject_Pickable_NonThrowable_WeaponRanged_MaximGun
+  _interactionObjectPickableType: {fileID: 11400000, guid: 12b0c0209c3318045b7f195fdf474d8f, type: 2}
   _health: 0
-  _isObjectBreakable: 0
+  _canBeBroken: 0
+  _breakingThreshold: 0
+  _isMovementRestricted: 0
+  _movementSpeedPenaltyMultiplier: 0
   _damage: 0
   _attackSpeedRate: 0
+--- !u!65 &5082930833271842599
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4023577473073585539}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.36507332, y: 0.6547625, z: 1.0843616}
+  m_Center: {x: -0.022536635, y: -0.07261883, z: 0.25781927}
