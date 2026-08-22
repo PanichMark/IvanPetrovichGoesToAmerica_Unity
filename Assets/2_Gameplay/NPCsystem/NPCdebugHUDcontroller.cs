@@ -27,6 +27,8 @@ public class NPCdebugHUDcontroller : MonoBehaviour
 
 		_textComponentNPCcurrentHealth.text = _NPChealthController.NPCconfigHealth.NPCcurrentHealth.ToString();
 
+		ShowNewNPCstate(_NPCstateMachineController.CurrentNPCState);
+
 		_NPCstateMachineController.OnNewNPCstate += ShowNewNPCstate;
 		_NPChealthController.OnNPChealthChanged += ShowNewNPChealth;
 	}

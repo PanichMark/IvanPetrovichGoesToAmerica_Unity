@@ -232,7 +232,7 @@ public struct NPCdata
 	[JsonConverter(typeof(FileDataHandler.QuaternionConverter))]
 	public Quaternion NPCrotation;
 	public int NPCnextAnchorPoint;
-	public string NPCstate;
+	public NPCstateTypes NPCstate;
 	public float NPChealth;
 }
 

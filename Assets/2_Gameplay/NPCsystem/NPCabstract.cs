@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 [RequireComponent(typeof(NPChealthController))]
 [RequireComponent(typeof(NPCstateMachineController))]
@@ -7,7 +10,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(NPCdebugHUDcontroller))]
 
-public abstract class NPCabstract : MonoBehaviour, IInteractable
+public abstract class NPCabstract : NPCcore, IInteractable
 {
 
 	//[SerializeField] private bool _isHuman;
@@ -25,6 +28,7 @@ public abstract class NPCabstract : MonoBehaviour, IInteractable
 	protected NPCdebugHUDcontroller _NPCdebugHUDcontroller;
 	protected NPCdialogueController _NPCdialogueController;
 	protected NPCweaponController _NPCweaponController;
+	protected InteractionObjectPickableNonThrowable _pickable;
 	private NavMeshAgent _navMeshAgent;
 
 	private LocalizationManager _localizationManager;
@@ -118,6 +122,16 @@ public abstract class NPCabstract : MonoBehaviour, IInteractable
 
 		gameObject.tag = "Interactable";
 		enabled = false;
+		_NPChealthController.enabled = false;
+
+		if (_NPCphrasesController != null)
+		{
+			_NPCphrasesController.enabled = false;
+		}
+		if (_NPCdialogueController != null)
+		{
+			_NPCdialogueController.enabled = false;
+		}
 
 		var capsuleCollider = GetComponent<CapsuleCollider>();
 		if (capsuleCollider != null)
@@ -127,7 +141,59 @@ public abstract class NPCabstract : MonoBehaviour, IInteractable
 
 		gameObject.AddComponent<Rigidbody>();
 
-		InteractionObjectPickableNonThrowable.CreateWithName(gameObject, _NPCname, _pickableBodyData);
-		Destroy(this);
+		_pickable = InteractionObjectPickableNonThrowable.CreateWithName(gameObject, _NPCname, _pickableBodyData);
+
+		//Destroy(this);
+	}
+
+	public override void SaveData(ref GameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+
+		if (data.NPCsData == null || !data.NPCsData.ContainsKey(currentScene))
+			return;
+
+		var targetList = data.NPCsData[currentScene];
+
+		int indexInList = targetList.FindIndex(item => item.NPCindex == NPCindex);
+
+		var updatedItem = new NPCdata
+		{
+			NPCindex = NPCindex,
+			NPCnameSystem = InteractionObjectNameSystem,
+			NPCposition = gameObject.transform.position,
+			NPCrotation = gameObject.transform.rotation,
+			NPCnextAnchorPoint = _NPCstateMachineController.AnchorData.Count,
+			NPCstate = _NPCstateMachineController.CurrentNPCState,
+			NPChealth = _NPChealthController.CurrentHealth
+		};
+
+		if (indexInList != -1)
+		{
+			targetList[indexInList] = updatedItem;
+		}
+		else
+		{
+			targetList.Add(updatedItem);
+		}
+	}
+
+	public override void LoadData(GameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+
+		if (data.NPCsData == null || !data.NPCsData.TryGetValue(currentScene, out var sourceList)) return;
+
+		var savedState = sourceList.Find(item => item.NPCindex == NPCindex);
+
+		if (savedState.Equals(default(NPCdata))) return;
+
+		gameObject.transform.position = savedState.NPCposition;
+		gameObject.transform.rotation = savedState.NPCrotation;
+
+		_NPChealthController.SetCurrentHealth(savedState.NPChealth);
+
+		int safeAnchorIndex = Mathf.Clamp(savedState.NPCnextAnchorPoint, 0, _NPCstateMachineController.AnchorData.Count > 0 ? _NPCstateMachineController.AnchorData.Count - 1 : 0);
+		_NPCstateMachineController.SetNPCState(savedState.NPCstate);
 	}
 }

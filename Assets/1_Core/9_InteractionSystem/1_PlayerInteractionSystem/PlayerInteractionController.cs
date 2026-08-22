@@ -374,6 +374,8 @@ public class PlayerInteractionController : MonoBehaviour, ISaveLoad
 			}
 		}
 
+		//Debug.Log(_lookedAtIInteractable);
+
 		if (_isInteractionObjectLookedAt)
 		{
 			_lookedAtIInteractable = _hitObject.collider.GetComponent<IInteractable>();

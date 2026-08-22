@@ -186,6 +186,7 @@ public class SaveLoadController : MonoBehaviour
 
 	private void AssignGameplayObjectIndexes()
 	{
+		AssignNPCsIndexes();
 		AssignLootObjectsIndexes();
 		AssignPickableObjectsIndexes();
 		AssignOpenableObjectsIndexes();
@@ -226,6 +227,18 @@ public class SaveLoadController : MonoBehaviour
 		for (int index = 0; index < openableObjects.Length; index++)
 		{
 			openableObjects[index].AssignOpenableObjectsIndexes(index);
+		}
+	}
+
+	private void AssignNPCsIndexes()
+	{
+		NPCcore[] TVs = FindObjectsOfType<NPCcore>();
+
+		Array.Sort(TVs, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
+
+		for (int index = 0; index < TVs.Length; index++)
+		{
+			TVs[index].AssignNPCsIndexes(index);
 		}
 	}
 

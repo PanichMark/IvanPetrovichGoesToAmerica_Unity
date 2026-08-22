@@ -25,6 +25,11 @@ public class NPChealthController : MonoBehaviour, IDamageable
 		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
 	}
 
+	public void SetCurrentHealth(float Health)
+	{
+
+	}
+
 	public void TakeDamage(float amount)
 	{
 		if (_currentHealth > 0)
@@ -46,10 +51,12 @@ public class NPChealthController : MonoBehaviour, IDamageable
 	{
 		Debug.Log($"{_NPCabstract.InteractionObjectNameSystem} is Dead");
 
+		enabled = false;	
+
 		_currentHealth = 0;
 
 		_NPCstateMachineController.SetNPCState(NPCstateTypes.Dead);
 
-		Destroy(this);
+		//Destroy(this);
 	}
 }
