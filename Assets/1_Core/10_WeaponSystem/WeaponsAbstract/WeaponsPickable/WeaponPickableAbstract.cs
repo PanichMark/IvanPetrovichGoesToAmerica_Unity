@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public abstract class WeaponPickableAbstract : InteractionObjectPickableNonThrowable, IPickableWeapon
 {
@@ -10,18 +11,27 @@ public abstract class WeaponPickableAbstract : InteractionObjectPickableNonThrow
 
 	public string WeaponLeftMouseButtonAttackMessage => _weaponLeftMouseButtonAttackMessage;
 
-	[Header("Weapon Attack Data")]
-	[SerializeField] private bool _isWeaponAuto;
-	[SerializeField] private float _damage;
-	[SerializeField] private float _attackSpeedRate;
+	public abstract float WeaponDamage { get; }
+	public abstract bool IsWeaponAuto { get; }
+	public abstract float WeaponAttackSpeedRate { get; }
 
-	public void AttackRight()
+	protected AudioSource _weaponAudioSource;
+
+	protected PlayerInteractionAnimationController _playerInteractionAnimationController;
+
+	public virtual void AttackRight()
 	{
 		Debug.Log("PickableWeapon RIGHT attack");
 	}
 
-	public void AttackLeft()
+	public virtual void AttackLeft()
 	{
 		Debug.Log("PickableWeapon LEFT attack");
 	}
+
+	public abstract void InitializeWeapon();
+
+	public abstract void StartAutoAttacking();
+	public abstract void StopAutoAttacking();
+	public abstract IEnumerator AutoAttackWeaponCourutine();
 }

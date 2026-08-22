@@ -1,16 +1,47 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
-public class WeaponPickableRangedAbstract : WeaponPickableAbstract
+public abstract class WeaponPickableRangedAbstract : WeaponPickableAbstract
 {
-	public float WeaponRange => throw new System.NotImplementedException();
+	public abstract float WeaponRange { get; }
 
-	public AmmoTypes PlayerWeaponAmmoType => throw new System.NotImplementedException();
+	public abstract bool LeavesBulletHole { get; }
 
-	public bool LeavesBulletHole => throw new System.NotImplementedException();
+	public abstract int WeaponReserveAmmoCurrent { get; }
+	public abstract int WeaponMagazineAmmoCurrent { get; }
 
-	public int PlayerMagazineAmmoCurrent => throw new System.NotImplementedException();
+	public abstract int WeaponMagazineAmmoMax { get; }
 
-	public int PlayerMagazineAmmoMax => throw new System.NotImplementedException();
+	public abstract GameObject WeaponRangedShootPoint { get; }
 
-	public GameObject WeaponRangedShootPoint => throw new System.NotImplementedException();
+	public override void AttackRight()
+	{
+		Debug.Log("PickableWeapon RIGHT attack");
+	}
+
+	public override void AttackLeft()
+	{
+		Debug.Log("PickableWeapon LEFT attack");
+	}
+
+	public override void InitializeWeapon()
+	{
+		//throw new System.NotImplementedException();
+	}
+
+	public override void StartAutoAttacking()
+	{
+		//throw new System.NotImplementedException();
+	}
+
+	public override void StopAutoAttacking()
+	{
+		//throw new System.NotImplementedException();
+	}
+
+	public override IEnumerator AutoAttackWeaponCourutine()
+	{
+		//throw new System.NotImplementedException();
+		yield return null;
+	}
 }
