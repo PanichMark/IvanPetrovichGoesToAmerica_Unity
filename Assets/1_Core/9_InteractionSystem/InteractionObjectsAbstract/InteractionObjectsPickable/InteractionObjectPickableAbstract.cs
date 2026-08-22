@@ -159,6 +159,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	public virtual void DropOffObject()
 	{
+		StopAllCoroutines();
 		Debug.Log($"Dropped off {InteractionObjectNameSystem}");
 		gameObject.tag = "Interactable";
 		gameObject.layer = LayerMask.NameToLayer("Default");

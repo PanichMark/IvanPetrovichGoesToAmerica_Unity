@@ -71,7 +71,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		_interactionController = interactionController;
 		_HUDhealthAndManaController = HUDhealthAndManaController;
 
-		_layersToDamage = LayerMask.GetMask("Default", "HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
+		_layersToDamage = LayerMask.GetMask("Default", "Outline", "HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
 		_layersOrganisms = LayerMask.GetMask("HitboxBody_Organism", "HitboxHead_Organism");
 		_layersHeads = LayerMask.GetMask("HitboxHead_Organism", "HitboxHead_Robot");
 
