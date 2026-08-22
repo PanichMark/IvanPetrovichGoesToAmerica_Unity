@@ -250,6 +250,8 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		}
 		else
 		{
+			//Debug.Log(speedMultiplier);
+
 			OnChangePlayerMovementSpeedChangedByPickable?.Invoke(speedMultiplier);
 		}
 

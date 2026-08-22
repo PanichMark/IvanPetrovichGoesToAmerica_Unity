@@ -11,8 +11,8 @@ public class NPCdialogueController : MonoBehaviour
 	public event BlendShapesResetterHandler OnResetAllBlendShapesFacialExpressions;
 	public event BlendShapesResetterHandler OnResetAllBlendShapesPhonemes;
 	private string _originalAnimationStateName;
-	public PlayerMovementController _playerMovementController;
-	public PlayerCameraController _playerCameraController;
+	private PlayerMovementController _playerMovementController;
+	private PlayerCameraController _playerCameraController;
 	public delegate void BlendShapesFacialExpressionsHandler(string newFacialExpression);
 	public event BlendShapesFacialExpressionsHandler OnChangeBlendShapeFacialExpression;
 

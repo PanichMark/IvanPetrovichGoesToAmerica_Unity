@@ -9,13 +9,13 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	[Header("Object Info")]
 	[SerializeField] protected string _interactionObjectNameSystem;
 
-	[SerializeField] private InteractionObjectPickableData _interactionObjectPickableType;
+	[SerializeField] protected InteractionObjectPickableData _interactionObjectPickableType;
 
 	public InteractionObjectsPickableTypes PickableType => _interactionObjectPickableType.PickableType;
 
 	[Header("Object Health")]
 	[SerializeField] protected float _health;
-	[SerializeField] private bool _canBeBroken;
+	[SerializeField] protected bool _canBeBroken;
 	[SerializeField] private float _breakingThreshold;
 
 	protected PlayerInteractionController _playerInteractionController;
@@ -23,13 +23,13 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	protected Collider _playerCollider;
 	protected bool _isCollisionIgnored = false;
 	protected bool _isPlayerInsideTrigger = false;
-	//private Transform _pickableObjectTransform;
+	
 	protected GameObject _playerColliderGameObject;
 	protected int _pickableLayer;
 	protected int _playerLayer;
 	public int PickableObjectIndex { get; protected set; }
 	public event IInteractable.InteractableObjectHandler OnInteract;
-
+	protected bool _isCreatedAsBody;
 	public GameObject CachedPlayer { get; protected set; }
 	public Collider Collider { get; protected set; }
 	public Rigidbody RigidBody { get; protected set; }
@@ -56,6 +56,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 	protected virtual void InitializePickable()
 	{
+
 	}
 
 	void Awake()
@@ -69,25 +70,17 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		_playerInteractionController = ServiceLocator.Resolve<PlayerInteractionController>("InteractionController");
 		Collider = GetComponent<BoxCollider>();
 
-		if (Collider == null)
-		{
-			Collider = gameObject.AddComponent<BoxCollider>();
-
-			BoxCollider box = (BoxCollider)Collider;
-			box.center = new Vector3(0f, 0.5f, 0f);
-			box.size = new Vector3(0.7f, 1f, 0.7f);
-
-			var rigidbody = GetComponent<Rigidbody>();
-			rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-		}
-
 		RigidBody = GetComponent<Rigidbody>();
 		CachedPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
 		_gameObjectSpineSlot = ServiceLocator.Resolve<GameObject>("GameObjectSpineSlot");
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
-		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		if (!_isCreatedAsBody && _interactionObjectNameSystem != null)
+		{
+			InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		}
+
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Pickup");
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 

@@ -19,10 +19,11 @@ public abstract class NPCabstract : MonoBehaviour, IInteractable, IDamageable
 	[SerializeField] private bool _isHuman;
 	[SerializeField] protected string _NPCname;
 
-	[SerializeField] ConfigNPCBodyType _NPCconfigBodyType;
+	[SerializeField] private ConfigNPCBodyType _NPCconfigBodyType;
 	
 	public bool IsHuman => _isHuman;
-	[SerializeField] ConfigNPCHealth _NPCconfigHealth;
+	[SerializeField] private ConfigNPCHealth _NPCconfigHealth;
+	[SerializeField] private InteractionObjectPickableData _pickableBodyData;
 	public bool IsNPCdead => _currentHealth <= 0;
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
@@ -115,7 +116,7 @@ public abstract class NPCabstract : MonoBehaviour, IInteractable, IDamageable
 
 		gameObject.AddComponent<Rigidbody>();
 
-		InteractionObjectPickableNonThrowable.CreateWithName(gameObject, _NPCname);
+		InteractionObjectPickableNonThrowable.CreateWithName(gameObject, _NPCname, _pickableBodyData);
 		Destroy(this);
 	}
 

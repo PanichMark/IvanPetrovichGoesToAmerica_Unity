@@ -3,16 +3,36 @@ using UnityEngine.SceneManagement;
 
 public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAbstract
 {
-	public static InteractionObjectPickableNonThrowable CreateWithName(GameObject obj, string interactionItemNameSystem)
+	public static InteractionObjectPickableNonThrowable CreateWithName(GameObject obj, string interactionItemNameSystem, InteractionObjectPickableData pickableBodyData)
 	{
 		var component = obj.GetComponent<InteractionObjectPickableNonThrowable>();
 		if (component == null)
 		{
 			component = obj.AddComponent<InteractionObjectPickableNonThrowable>();
 		}
-		component._interactionObjectNameSystem = interactionItemNameSystem;
+		Debug.Log(component);
+	
+		component.SetUpPickableBody(interactionItemNameSystem, pickableBodyData);
 
 		return component;
+	}
+
+	protected void SetUpPickableBody(string interactionObjectNameSystem, InteractionObjectPickableData pickableBodyData)
+	{
+		_interactionObjectPickableType = pickableBodyData;
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(interactionObjectNameSystem);
+
+
+		Collider = gameObject.AddComponent<BoxCollider>();
+
+		BoxCollider box = (BoxCollider)Collider;
+		box.center = new Vector3(0f, 0.5f, 0f);
+		box.size = new Vector3(0.7f, 1f, 0.7f);
+
+		var rigidbody = GetComponent<Rigidbody>();
+		rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
+		InitializePickable();
 	}
 
 	[Header("NonThrowable Movement")]
@@ -21,13 +41,18 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 
 	private PlayerMovementController _playerMovementController;
 
-
 	public override void PickUpObject(bool isPickedUpByLoadSafeFile)
 	{
 		base.PickUpObject(isPickedUpByLoadSafeFile);
 
+		//Debug.Log(_movementSpeedPenaltyMultiplier);
+		//Debug.Log(_playerMovementController);
+		//Debug.Log(_isMovementRestricted);
+
 		if (_isMovementRestricted)
 		{
+			//Debug.Log("RSTRICT!");
+
 			_gameController.RestrictPlayerMovementWhileCarryingNonThrowable();
 
 			DecreaseTheMovementSpeed();
@@ -50,6 +75,11 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	{
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 
+		_isCreatedAsBody = true;
+		_canBeBroken = false;
+		_isMovementRestricted = true;
+		_movementSpeedPenaltyMultiplier = 0.5f;
+
 		if (_isMovementRestricted)
 		{
 			_playerMovementController.OnMovementSpeedChangedByStateMachine += DecreaseTheMovementSpeed;
@@ -60,6 +90,7 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 	{
 		if (IsObjectPickedUp)
 		{
+			//Debug.Log(_movementSpeedPenaltyMultiplier);
 			_playerMovementController.ChangePlayerMovementSpeed(_movementSpeedPenaltyMultiplier, false);
 		}
 	}
