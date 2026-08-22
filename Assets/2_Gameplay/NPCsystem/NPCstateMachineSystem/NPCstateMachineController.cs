@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class NPCstateMachineController : MonoBehaviour
 {
-	public delegate void NPCstateHandler();
-	public event NPCstateHandler OnNPCstateDead;
+	public delegate void NPCstateHandler(NPCstateTypes newState);
+	public event NPCstateHandler OnNewNPCstate;
 
 	[SerializeField] private NPCstateTypes _initialState = NPCstateTypes.StationaryAction;
 	private float _animationDuration = 99999f;
@@ -24,18 +24,20 @@ public class NPCstateMachineController : MonoBehaviour
 	private GameObject _lastVisitedStopPoint;
 	private Coroutine _currentMovementCoroutine;
 
-	public string CurrentNPCState { get; private set; } = "StationaryAction";
+	public NPCstateTypes CurrentNPCState { get; private set; }
 	public List<NPCanchorData> AnchorData => _anchorData;
 	//public List<GameObject> AnchorPoints => _anchorPoints;
 	public float AnimationDuration => _animationDuration;
 	public Coroutine currentRotationCoroutine { get; private set; }
 
-	public void Initialize()
+	public void Initialize(
+		NPCabstract NPCabstract,
+		NavMeshAgent navMeshAgent)
 	{
-		_navMeshAgent = GetComponent<NavMeshAgent>();
+		_NPCabstract = NPCabstract;
 		_initialRotationY = transform.eulerAngles.y;
 		_cachedPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
-		_NPCabstract = GetComponent<NPCabstract>();
+		_navMeshAgent = navMeshAgent;
 		//Debug.Log(_initialState);
 		SetNPCState(_initialState);
 
@@ -273,13 +275,13 @@ public class NPCstateMachineController : MonoBehaviour
 		if (NPCstateType == NPCstateTypes.StationaryAction)
 		{
 			newState = new NPCstateStationaryAction(this, _animationDuration);
-			CurrentNPCState = "StationaryAction";
+			CurrentNPCState = NPCstateTypes.StationaryAction;
 			_NPCabstract.gameObject.tag = "Interactable";
 		}
 		else if (NPCstateType == NPCstateTypes.Patrolling)
 		{
 			newState = new NPCstatePatrolling(this);
-			CurrentNPCState = "Patrolling";
+			CurrentNPCState = NPCstateTypes.Patrolling;
 			_NPCabstract.gameObject.tag = "Interactable";
 		}
 		else if (NPCstateType == NPCstateTypes.Interested)
@@ -309,7 +311,7 @@ public class NPCstateMachineController : MonoBehaviour
 		else if (NPCstateType == NPCstateTypes.Huddled)
 		{
 			newState = new NPCstateHuddled();
-			CurrentNPCState = "Scared";
+			//CurrentNPCState = "Scared";
 			_NPCabstract.gameObject.tag = "Untagged";
 		}
 		else if (NPCstateType == NPCstateTypes.Hysteric)
@@ -327,7 +329,7 @@ public class NPCstateMachineController : MonoBehaviour
 		else if (NPCstateType == NPCstateTypes.Hooked)
 		{
 			newState = new NPCstateHooked(this);
-			CurrentNPCState = "BeingHooked";
+			CurrentNPCState = NPCstateTypes.Hooked;
 		}
 		else if (NPCstateType == NPCstateTypes.ElectroShocked)
 		{
@@ -356,12 +358,10 @@ public class NPCstateMachineController : MonoBehaviour
 		else if (NPCstateType == NPCstateTypes.Dead)
 		{
 			newState = new NPCstateDead(this);
-			
-			_NPCabstract.ObjectIsFullyDamaged();
-			OnNPCstateDead?.Invoke();
-			//_NPCabstract.ConvertToPickableObject();
-			//Debug.Log("BRUH!");
-			CurrentNPCState = "Dead";
+
+			_NPCabstract.ConvertToPickableObject();
+
+			CurrentNPCState = NPCstateTypes.Dead;
 		}
 		else
 		{
@@ -370,6 +370,8 @@ public class NPCstateMachineController : MonoBehaviour
 		}
 
 		_NPCstate = newState;
-		_NPCabstract.ShowNPCcurrentState(CurrentNPCState);
+
+		OnNewNPCstate?.Invoke(NPCstateType);
+		//_NPCabstract.ShowNPCcurrentState(CurrentNPCState);
 	}
 }

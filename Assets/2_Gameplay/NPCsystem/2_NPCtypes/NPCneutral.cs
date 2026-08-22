@@ -6,7 +6,8 @@ public class NPCneutral : NPCabstract
 {
 	public override void Interact()
 	{
-		if (_NPCstateMachineController?.CurrentNPCState != "StationaryAction" && _NPCstateMachineController?.CurrentNPCState != "Patrolling")
+		if (_NPCstateMachineController?.CurrentNPCState != NPCstateTypes.StationaryAction
+			&& _NPCstateMachineController?.CurrentNPCState != NPCstateTypes.Patrolling)
 			return;
 
 		if (_NPCdialogueController != null)

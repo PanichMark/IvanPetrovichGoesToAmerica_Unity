@@ -1,37 +1,31 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
-using TMPro;
 
-//[RequireComponent(typeof(CapsuleCollider))]
-//[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NPChealthController))]
+[RequireComponent(typeof(NPCstateMachineController))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(NPCstateMachineController))]
+[RequireComponent(typeof(NPCdebugHUDcontroller))]
 
-
-public abstract class NPCabstract : MonoBehaviour, IInteractable, IDamageable
+public abstract class NPCabstract : MonoBehaviour, IInteractable
 {
-	private GameObject _canvasNPCstatus;
-	private GameObject _textNPCcurrentState;
-	private TextMeshProUGUI _textComponentNPCcurrentState;
-	private GameObject _textNPCcurrentHealth;
-	private TextMeshProUGUI _textComponentNPCcurrentHealth;
-	[SerializeField] private bool _isHuman;
+
+	//[SerializeField] private bool _isHuman;
 	[SerializeField] protected string _NPCname;
 
 	[SerializeField] private ConfigNPCBodyType _NPCconfigBodyType;
 	
-	public bool IsHuman => _isHuman;
-	[SerializeField] private ConfigNPCHealth _NPCconfigHealth;
+
 	[SerializeField] private InteractionObjectPickableData _pickableBodyData;
-	public bool IsNPCdead => _currentHealth <= 0;
+
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
 	protected NPCphrasesController _NPCphrasesController;
-
+	protected NPChealthController _NPChealthController;
+	protected NPCdebugHUDcontroller _NPCdebugHUDcontroller;
 	protected NPCdialogueController _NPCdialogueController;
 	protected NPCweaponController _NPCweaponController;
-
+	private NavMeshAgent _navMeshAgent;
 
 	private LocalizationManager _localizationManager;
 	protected NPCstateMachineController _NPCstateMachineController;
@@ -45,42 +39,57 @@ public abstract class NPCabstract : MonoBehaviour, IInteractable, IDamageable
 	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction => _interactionHintMessageAction;
 	private string _interactionHintMessageAction;
-	public bool IsObjectDestroyed => false;
 
-	private float _currentHealth;
-	public float CurrentHealth => _currentHealth;
+	protected virtual void InitializeNPC()
+	{
 
-	public bool CanObjectBeDamaged => throw new System.NotImplementedException();
+	}
 
 	private void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Talk");
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
+		_navMeshAgent = GetComponent<NavMeshAgent>();
 
-		_canvasNPCstatus = transform.Find("CanvasNPCstatus").gameObject;
-		_textNPCcurrentState = _canvasNPCstatus.transform.Find("TextNPCcurrentState").gameObject;
-		_textComponentNPCcurrentState = _textNPCcurrentState.GetComponent<TextMeshProUGUI>();
-		_textNPCcurrentHealth = _canvasNPCstatus.transform.Find("TextNPCcurrentHealth").gameObject;
-		_textComponentNPCcurrentHealth = _textNPCcurrentHealth.GetComponent<TextMeshProUGUI>();
-
-		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
-		_textComponentNPCcurrentHealth.text = _NPCconfigHealth.NPCcurrentHealth.ToString();
-
-		_NPCphrasesController = GetComponent<NPCphrasesController>();
 		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
+		_NPChealthController = GetComponent<NPChealthController>();
+		_NPCphrasesController = GetComponent<NPCphrasesController>();
 		_NPCdialogueController = GetComponent<NPCdialogueController>();
+		_NPCweaponController = GetComponent<NPCweaponController>();	
+		_NPCdebugHUDcontroller = GetComponent<NPCdebugHUDcontroller>();
+		
+		_NPCstateMachineController.Initialize(
+			this,
+			_navMeshAgent);
 
-		_NPCstateMachineController.Initialize();
-		_NPCphrasesController.Initialize();
+		_NPChealthController.Initialize(
+			this,
+			_NPCstateMachineController);
+
+		if (_NPCphrasesController != null)
+		{
+			_NPCphrasesController.Initialize();
+		}
+
 		if (_NPCdialogueController != null)
 		{
 			_NPCdialogueController.Initialize();
 		}
+
 		if (_NPCweaponController != null)
 		{
 			_NPCweaponController.Initialize();
 		}
+
+		if (_NPCdebugHUDcontroller != null)
+		{
+			_NPCdebugHUDcontroller.Initialize(
+				_NPChealthController,
+				_NPCstateMachineController);
+		}
+
+		InitializeNPC();
 
 		_localizationManager.OnLanguageChanged += ChangeLangauge;
 	}
@@ -105,6 +114,8 @@ public abstract class NPCabstract : MonoBehaviour, IInteractable, IDamageable
 
 	public void ConvertToPickableObject()
 	{
+		//Debug.Log("CONVERT!!!");
+
 		gameObject.tag = "Interactable";
 		enabled = false;
 
@@ -118,38 +129,5 @@ public abstract class NPCabstract : MonoBehaviour, IInteractable, IDamageable
 
 		InteractionObjectPickableNonThrowable.CreateWithName(gameObject, _NPCname, _pickableBodyData);
 		Destroy(this);
-	}
-
-	public void TakeDamage(float amount)
-	{
-		if (!IsNPCdead)
-		{
-			Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
-			_currentHealth -= amount;
-
-			_textComponentNPCcurrentHealth.text = _currentHealth.ToString();
-
-			if (IsNPCdead)
-			{
-				_textNPCcurrentHealth.SetActive(false);
-				_NPCstateMachineController.SetNPCState(NPCstateTypes.Dead);
-			}
-		}
-	}
-
-	public void ShowNPCcurrentState(string newState)
-	{
-		_textComponentNPCcurrentState.text = newState;
-	}
-
-	public void ObjectIsFullyDamaged()
-	{
-		Debug.Log($"{_NPCname} is Dead");
-	
-		_currentHealth = 0;
-		StopAllCoroutines();
-		ConvertToPickableObject();
-		//gameObject.AddComponent<NPCdamageableBody>();
-		_NPCphrasesController.ClearPhrases();
 	}
 }

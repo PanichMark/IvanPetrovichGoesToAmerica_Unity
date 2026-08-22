@@ -41,9 +41,9 @@ public class HeadBlendShapesController : MonoBehaviour
 
 		if (!_isThisPlayerHead)
 		{
-			_NPCStateMachineController.OnNPCstateDead += CloseEyes;
-			_NPCStateMachineController.OnNPCstateDead += StopBlinking;
-			_NPCStateMachineController.OnNPCstateDead += ResetAllBlendShapesFacialExpressions;
+			//_NPCStateMachineController.NewNPCstate += CloseEyes;
+			//_NPCStateMachineController.NewNPCstate += StopBlinking;
+			//_NPCStateMachineController.NewNPCstate += ResetAllBlendShapesFacialExpressions;
 
 			if (_NPCDialogueController != null)
 			{
@@ -58,9 +58,9 @@ public class HeadBlendShapesController : MonoBehaviour
 	{
 		if (!_isThisPlayerHead)
 		{
-			_NPCStateMachineController.OnNPCstateDead -= CloseEyes;
-			_NPCStateMachineController.OnNPCstateDead -= StopBlinking;
-			_NPCStateMachineController.OnNPCstateDead -= ResetAllBlendShapesFacialExpressions;
+			//_NPCStateMachineController.NewNPCstate -= CloseEyes;
+			//_NPCStateMachineController.NewNPCstate -= StopBlinking;
+			//_NPCStateMachineController.NewNPCstate -= ResetAllBlendShapesFacialExpressions;
 
 			if (_NPCDialogueController != null)
 			{
