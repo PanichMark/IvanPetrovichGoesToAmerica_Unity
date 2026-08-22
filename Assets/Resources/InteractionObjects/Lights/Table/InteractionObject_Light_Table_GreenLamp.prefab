@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5675441026622070446}
   - component: {fileID: 8206856742240378438}
   - component: {fileID: 9000967060292608775}
-  - component: {fileID: 8282104449740644840}
+  - component: {fileID: 1687824499822707101}
   m_Layer: 0
   m_Name: Chain
   m_TagString: Interactable
@@ -110,7 +110,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5049204204301148039, guid: 2d9ec686c0118f641b5b0cced9feb729, type: 3}
---- !u!114 &8282104449740644840
+--- !u!114 &1687824499822707101
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,12 +119,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4818563111126234771}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa029cbfd713c0c44bceccb7c35f1c98, type: 3}
+  m_Script: {fileID: 11500000, guid: e94fed4ded9fdad4589403829c70deef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: InteractionObject_Light_Table
-  _lightObject: {fileID: 7348757310344606709}
-  _lightEmissionColor: {r: 1, g: 1, b: 1, a: 1}
+  _lightSwitchController: {fileID: 7430648406335014405}
+  _interactionObjectNameSystem: InteractionObject_Light_Switch
+  _isButtonSingle: 1
+  _isThisTurnOnButton: 1
 --- !u!1 &6013647879854677384
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,6 +137,7 @@ GameObject:
   - component: {fileID: 7005358469096350598}
   - component: {fileID: 1685939350480146193}
   - component: {fileID: 280050559267253398}
+  - component: {fileID: 7430648406335014405}
   m_Layer: 0
   m_Name: InteractionObject_Light_Table_GreenLamp
   m_TagString: Untagged
@@ -213,6 +215,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7430648406335014405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013647879854677384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e639c0a4a864b1d4799596a9f6d2630b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lightObjectsList:
+  - {fileID: 7348757310344606709}
+  _lightEmissionColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &7348757310344606709
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,9 +4,10 @@ using UnityEditor.XR;
 
 public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, IElectroShockable
 {
-	private InteractionObjectLightSwitchController _lightSwitchController;
+	[SerializeField] private InteractionObjectLightSwitchController _lightSwitchController;
 
 	[SerializeField] private string _interactionObjectNameSystem;
+	[SerializeField] private bool _isButtonSingle;
 	[SerializeField] private bool _isThisTurnOnButton = true;
 	private LocalizationManager _localizationManager;
 	private bool _isLightTurnedOn;
@@ -24,8 +25,6 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 	void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-
-		_lightSwitchController = GetComponentInParent<InteractionObjectLightSwitchController>();
 
 		_lightMaterialsList.Clear();
 
@@ -55,13 +54,27 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 	// Этот метод теперь только решает, что вызвать: TurnOn или TurnOff
 	public void Interact()
 	{
-		if (_isThisTurnOnButton)
+		if (_isButtonSingle)
 		{
-			TurnOn();
+			if (!_isLightTurnedOn)
+			{
+				TurnOn();
+			}
+			else
+			{
+				TurnOff();
+			}
 		}
 		else
 		{
-			TurnOff();
+			if (_isThisTurnOnButton)
+			{
+				TurnOn();
+			}
+			else
+			{
+				TurnOff();
+			}
 		}
 	}
 
