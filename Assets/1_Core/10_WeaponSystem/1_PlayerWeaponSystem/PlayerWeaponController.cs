@@ -123,11 +123,12 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			StopAutoShootingRightWeaponPlayer();
 			_wasRightButtonPressedLastFrame = false;
 		}
-		if (RightHandWeapon != null && RightHandWeapon.activeInHierarchy)
+		if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened)
 		{
-			if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
+			RightWeaponAttack();
+
+			if (RightHandWeapon != null && RightHandWeapon.activeInHierarchy)
 			{
-				RightWeaponAttack();
 				_wasRightButtonPressedLastFrame = true;
 			}
 		}
@@ -144,11 +145,12 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			StopAutoShootingLeftWeaponPlayer();
 			_wasLeftButtonPressedLastFrame = false;
 		}
-		if (LeftHandWeapon != null && LeftHandWeapon.activeInHierarchy)
+		if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened)
 		{
-			if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
+			LeftWeaponAttack();
+
+			if (LeftHandWeapon != null && LeftHandWeapon.activeInHierarchy)
 			{
-				LeftWeaponAttack();
 				_wasLeftButtonPressedLastFrame = true;
 			}
 		}
@@ -433,9 +435,20 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void RightWeaponAttack()
 	{
-		if (RightHandWeapon != null && _playerBehaviour.IsPlayerArmed)
+		//Debug.Log("RIGHT!");
+
+		if (RightHandWeapon != null && _playerBehaviour.IsPlayerArmed && IsAbleToUseRightWeapon)
 		{
 			RightHandWeaponComponent.WeaponAttack();
+		}
+		if (_interactionController.CurrentPickableObject != null)
+		{
+			var pickableWeapon = _interactionController.CurrentPickableObject.GetComponent<InteractionObjectPickableAbstract>();
+
+			if (pickableWeapon is IPickableWeapon rangedWeapon)
+			{
+				rangedWeapon.AttackRight();
+			}
 		}
 	}
 
@@ -449,9 +462,18 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public void LeftWeaponAttack()
 	{
-		if (LeftHandWeapon != null && _playerBehaviour.IsPlayerArmed)
+		if (LeftHandWeapon != null && _playerBehaviour.IsPlayerArmed && IsAbleToUseLeftWeapon)
 		{
 			LeftHandWeaponComponent.WeaponAttack();
+		}
+		if (_interactionController.CurrentPickableObject != null)
+		{
+			var pickableWeapon = _interactionController.CurrentPickableObject.GetComponent<InteractionObjectPickableAbstract>();
+
+			if (pickableWeapon is IPickableWeapon rangedWeapon)
+			{
+				rangedWeapon.AttackLeft();
+			}
 		}
 	}
 
@@ -622,8 +644,6 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 		HideWeapon(WeaponHandType.Left);
 		DestroyWeapon(WeaponHandType.Left);
-
-
 
 		if (data.PlayerWeapons.UnlockedPlayerWeapons != null)
 		{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class WeaponRangedAbstract : WeaponAbstract, IWeaponRanged
+public abstract class WeaponRangedAbstract : WeaponAbstract
 {
 	protected PlayerWeaponAmmoController _playerResourcesAmmoManager;
 
