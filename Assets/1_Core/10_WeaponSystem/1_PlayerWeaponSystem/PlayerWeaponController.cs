@@ -445,7 +445,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			var pickableWeapon = _interactionController.CurrentPickableObject.GetComponent<InteractionObjectPickableAbstract>();
 
-			if (pickableWeapon is IPickableWeapon rangedWeapon)
+			if (pickableWeapon is IWeaponPickable rangedWeapon)
 			{
 				rangedWeapon.AttackRight();
 			}
@@ -470,7 +470,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		{
 			var pickableWeapon = _interactionController.CurrentPickableObject.GetComponent<InteractionObjectPickableAbstract>();
 
-			if (pickableWeapon is IPickableWeapon rangedWeapon)
+			if (pickableWeapon is IWeaponPickable rangedWeapon)
 			{
 				rangedWeapon.AttackLeft();
 			}

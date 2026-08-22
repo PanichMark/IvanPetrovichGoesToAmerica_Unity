@@ -1,6 +1,7 @@
 ﻿public enum PlayerMoneyTypes
 {
-	Rubles,
-	Dollars,
+	Ruble,
+	Dollar,
+	Goldmark,
 	WeaponLicense
 }

@@ -1,4 +1,4 @@
-﻿public interface IPickableWeapon
+﻿public interface IWeaponPickable
 {
 	void AttackRight();
 	void AttackLeft();
