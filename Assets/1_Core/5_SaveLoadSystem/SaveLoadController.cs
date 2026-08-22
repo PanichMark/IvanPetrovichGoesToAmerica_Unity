@@ -189,6 +189,7 @@ public class SaveLoadController : MonoBehaviour
 		AssignLootObjectsIndexes();
 		AssignPickableObjectsIndexes();
 		AssignOpenableObjectsIndexes();
+		AssignLightsIndexes();
 	}
 
 	private void AssignLootObjectsIndexes()
@@ -227,6 +228,17 @@ public class SaveLoadController : MonoBehaviour
 		}
 	}
 
+	private void AssignLightsIndexes()
+	{
+		InteractionObjectLightAbstract[] lights = FindObjectsOfType<InteractionObjectLightAbstract>();
+
+		Array.Sort(lights, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
+
+		for (int index = 0; index < lights.Length; index++)
+		{
+			lights[index].AssignLightsIndexes(index);
+		}
+	}
 
 	private List<ISaveLoad> FindAllPersistentSaveLoadObjects()
 	{

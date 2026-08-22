@@ -11,14 +11,13 @@ public class InteractionObjectTVcontroller : MonoBehaviour, IElectroShockable
 	public bool IsTVturnedOn;
 	private VideoPlayer _videoPlayer;
 	[SerializeField] private List<VideoClip> _videoClips = new List<VideoClip>();
-	private RawImage _tvScreen;
+	[SerializeField] private RawImage _tvScreen;
 
 	private int _currentChannelIndex = 0;
 
 	void Start()
 	{
 		_videoPlayer = GetComponent<VideoPlayer>();
-		_tvScreen = transform.Find("TVcanvas").Find("TVscreen").GetComponent<RawImage>();
 		_videoPlayer.targetTexture = _tvScreen.texture as RenderTexture;
 
 		// Изначально телевизор выключен

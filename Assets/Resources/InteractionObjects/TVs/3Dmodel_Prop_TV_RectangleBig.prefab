@@ -699,10 +699,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9141dcfff1bdb2547a6920b9d966dad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTVturnedOn: 0
   _videoClips:
   - {fileID: 32900000, guid: 35d78581a2bd40d4e9032dc7f93ad269, type: 3}
   - {fileID: 32900000, guid: 3b107ae606a558247bc551ad2d5ee5c2, type: 3}
   - {fileID: 32900000, guid: fca1f1c6de81dc944b3195d8fa9bafa4, type: 3}
+  _tvScreen: {fileID: 2059356099307396353}
 --- !u!328 &4858078336277815232
 VideoPlayer:
   m_ObjectHideFlags: 0

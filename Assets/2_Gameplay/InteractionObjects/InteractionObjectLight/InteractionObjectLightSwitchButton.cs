@@ -10,8 +10,7 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 	[SerializeField] private bool _isButtonSingle;
 	[SerializeField] private bool _isThisTurnOnButton = true;
 	private LocalizationManager _localizationManager;
-	private bool _isLightTurnedOn;
-	private List<Material> _lightMaterialsList = new List<Material>();
+
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
@@ -26,19 +25,8 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
-		_lightMaterialsList.Clear();
-
-		foreach (var obj in _lightSwitchController.LightObjectsList)
-		{
-			if (obj == null) continue;
-
-			Renderer renderer = obj.GetComponent<Renderer>();
-			if (renderer != null)
-			{
-				_lightMaterialsList.Add(renderer.material);
-			}
-		}
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+
 		if (_isThisTurnOnButton)
 		{
 			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn")}";
@@ -49,79 +37,31 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 		}
 	}
 
-	// ... (другие части класса остаются без изменений)
-
-	// Этот метод теперь только решает, что вызвать: TurnOn или TurnOff
 	public void Interact()
 	{
 		if (_isButtonSingle)
 		{
-			if (!_isLightTurnedOn)
+			if (!_lightSwitchController.IsLightTurnedOn)
 			{
-				TurnOn();
+				_lightSwitchController.TurnOn();
 			}
 			else
 			{
-				TurnOff();
+				_lightSwitchController.TurnOff();
 			}
 		}
 		else
 		{
 			if (_isThisTurnOnButton)
 			{
-				TurnOn();
+				_lightSwitchController.TurnOn();
 			}
 			else
 			{
-				TurnOff();
+				_lightSwitchController.TurnOff();
 			}
 		}
 	}
-
-	// Метод для включения света
-	private void TurnOn()
-	{
-		_isLightTurnedOn = true;
-
-		for (int i = 0; i < _lightMaterialsList.Count; i++)
-		{
-			// Проверка на null, чтобы избежать ошибок, если материал не назначен
-			if (_lightMaterialsList[i] == null) continue;
-
-			// Устанавливаем цвет свечения из контроллера
-			_lightMaterialsList[i].SetColor("_EmissionColor", _lightSwitchController.LightEmissionColor);
-
-			// Принудительно обновляем состояние эмиссии (включаем её)
-			_lightMaterialsList[i].DisableKeyword("_EMISSION");
-			_lightMaterialsList[i].EnableKeyword("_EMISSION");
-
-			// Устанавливаем флаг для работы с глобальным освещением в реальном времени
-			_lightMaterialsList[i].globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
-		}
-	}
-
-	// Метод для выключения света
-	private void TurnOff()
-	{
-		_isLightTurnedOn = false;
-
-		for (int i = 0; i < _lightMaterialsList.Count; i++)
-		{
-			// Проверка на null
-			if (_lightMaterialsList[i] == null) continue;
-
-			// Выключаем свечение, устанавливая черный цвет
-			_lightMaterialsList[i].SetColor("_EmissionColor", Color.black);
-
-			// Принудительно обновляем состояние эмиссии (выключаем её)
-			_lightMaterialsList[i].DisableKeyword("_EMISSION");
-			_lightMaterialsList[i].EnableKeyword("_EMISSION");
-
-			// Флаг оставляем, чтобы при включении не было артефактов
-			_lightMaterialsList[i].globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
-		}
-	}
-	// ...
 
 	public void InteractCutscene()
 	{
@@ -144,9 +84,9 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 
 	public void Electrify(float damage)
 	{
-		if (!_isLightTurnedOn)
+		if (!_lightSwitchController.IsLightTurnedOn)
 		{
-			TurnOn();
+			_lightSwitchController.TurnOn();
 		}
 	}
 }
