@@ -32,7 +32,7 @@ public class InteractionObjectTVbuttonChannel : MonoBehaviour, IInteractable
 		// --- ИСПРАВЛЕННАЯ ЛОГИКА ---
 		// Подписываемся на событие изменения состояния ТВ из КОНТРОЛЛЕРА.
 		// Это делает кнопку канала независимой от кнопки питания.
-		_tvController.OnTVStateChanged += isOn =>
+		_tvController.OnTVstateChanged += isOn =>
 		{
 			if (isOn)
 			{

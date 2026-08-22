@@ -23,7 +23,7 @@ public class InteractionObjectTVbuttonPower : MonoBehaviour, IInteractable
 		_tvController = transform.parent.GetComponent<InteractionObjectTVcontroller>();
 
 		// Подписываемся на событие изменения состояния ТВ в контроллере
-		_tvController.OnTVStateChanged += UpdateHintAndState;
+		_tvController.OnTVstateChanged += UpdateHintAndState;
 
 		// Устанавливаем начальную подсказку (ТВ по умолчанию выключен)
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON");

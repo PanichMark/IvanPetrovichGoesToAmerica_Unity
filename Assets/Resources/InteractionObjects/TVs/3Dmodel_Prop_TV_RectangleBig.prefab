@@ -486,7 +486,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1084297137893723827
 RectTransform:
   m_ObjectHideFlags: 0
@@ -699,7 +699,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9141dcfff1bdb2547a6920b9d966dad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsTVturnedOn: 0
   _videoClips:
   - {fileID: 32900000, guid: 35d78581a2bd40d4e9032dc7f93ad269, type: 3}
   - {fileID: 32900000, guid: 3b107ae606a558247bc551ad2d5ee5c2, type: 3}
