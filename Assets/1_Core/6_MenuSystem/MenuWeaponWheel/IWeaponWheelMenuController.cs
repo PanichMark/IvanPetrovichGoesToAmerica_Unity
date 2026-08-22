@@ -12,12 +12,17 @@ public interface IWeaponWheelMenuController
 
 	void ShowWeaponName();
 
+	void RestrictWeaponWheelWhilePickable();
+	void UnrestrictWeaponWheelWhilePickable();
+
+
 	void Initialize(
 		Bootstrap bootstrap,
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
+		PlayerInteractionController playerInteractionController,
 		PlayerWeaponAmmoController playerResourcesAmmoManager,
 		PlayerWeaponController weaponController,
 		GameObject weaponWheelMenuCanvas,

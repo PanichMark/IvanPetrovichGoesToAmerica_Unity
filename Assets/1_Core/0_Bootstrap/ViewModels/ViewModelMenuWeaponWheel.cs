@@ -20,6 +20,10 @@ public class ViewModelMenuWeaponWheel
 	public GameObject ButtonUseManaReplenishItem;
 	public GameObject TextManaReplenishItemNumber;
 
+	public GameObject TextWeaponWheelUnavailable;
+
+	public GameObject WeaponWheelData;
+
 	public ViewModelMenuWeaponWheel(Bootstrap bootstrap, GameObject canvas)
 	{
 		GameObjectWeaponWheelSegment = Resources.Load<GameObject>("WeaponSystem/WeaponWheelSegment");
@@ -39,5 +43,9 @@ public class ViewModelMenuWeaponWheel
 
 		ButtonUseManaReplenishItem = bootstrap.FindDeepGameObject(canvas, "ButtonUseManaReplenishItem");
 		TextManaReplenishItemNumber = bootstrap.FindDeepGameObject(canvas, "TextManaReplenishItemNumber");
+
+		TextWeaponWheelUnavailable = bootstrap.FindDeepGameObject(canvas, "TextWeaponWheelUnavailable");
+
+		WeaponWheelData = bootstrap.FindDeepGameObject(canvas, "WeaponWheelData");
 	}
 }

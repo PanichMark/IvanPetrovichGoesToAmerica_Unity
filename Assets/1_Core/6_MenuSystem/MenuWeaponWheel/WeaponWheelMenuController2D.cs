@@ -19,7 +19,14 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 	private GameObject _weaponWheelRadius;
 	private GameObject _weaponIconImage;
 	public TextMeshProUGUI WeaponText { get; private set; }            
-	public TextMeshProUGUI WeaponWheelName { get; private set; }       
+	public TextMeshProUGUI WeaponWheelName { get; private set; }
+	private PlayerInteractionController _playerInteractionController;
+
+	private GameObject _textWeaponWheelUnavailable;
+	private TextMeshProUGUI _textComponentWeaponWheelUnavailable;
+
+	private GameObject _weaponWheelData;
+
 
 	private List<GameObject> _wheelSegments = new List<GameObject>();
 	private bool _isWeaponLeftHand = false;
@@ -52,6 +59,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 		LocalizationManager localizationManager,
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
+		PlayerInteractionController playerInteractionController,
 		PlayerWeaponAmmoController playerResourcesAmmoManager,
 		PlayerWeaponController weaponController,
 		GameObject weaponWheelMenuCanvas,
@@ -62,6 +70,7 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
 		_playerBehaviour = playerBehaviour;
+		_playerInteractionController = playerInteractionController;
 		_playerResourcesAmmoManager = playerResourcesAmmoManager;
 		_weaponController = weaponController;
 		_menuManager = menuManager;
@@ -78,6 +87,12 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 		_textComponentWeaponAmmoReserveNumber = viewModelMenuWeaponWheel.TextWeaponAmmoReserveNumber.GetComponent<TextMeshProUGUI>();
 		_textWeaponAmmoSeparator = viewModelMenuWeaponWheel.TextWeaponAmmoSeparator;
 		_textComponentWeaponAmmoSeparator = viewModelMenuWeaponWheel.TextWeaponAmmoSeparator.GetComponent<TextMeshProUGUI>();
+
+		_textWeaponWheelUnavailable = viewModelMenuWeaponWheel.TextWeaponWheelUnavailable;
+		_textComponentWeaponWheelUnavailable = viewModelMenuWeaponWheel.TextWeaponWheelUnavailable.GetComponent<TextMeshProUGUI>();
+
+		_weaponWheelData = viewModelMenuWeaponWheel.WeaponWheelData;
+
 		_weaponWheelRadius.SetActive(true);
 		_weaponIconImage.SetActive(true);
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
@@ -85,9 +100,32 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_weaponWheelHandRight = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandRight")}";
 		_weaponWheelHandLeft = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandLeft")}";
+		_textComponentWeaponWheelUnavailable.text = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_Unavailable")}";
 		_weaponController.OnAnyWeaponUnlocked += OnWeaponUnlocked;
 
 		Debug.Log("WeaponWheelMenuController2D Initialized");
+	}
+
+	public void RestrictWeaponWheelWhilePickable()
+	{
+		foreach (GameObject segment in _wheelSegments)
+		{
+			segment.GetComponent<Button>().interactable = false;
+		}
+
+		_weaponWheelData.SetActive(false);
+		_textWeaponWheelUnavailable.SetActive(true);
+	}
+
+	public void UnrestrictWeaponWheelWhilePickable()
+	{
+		foreach (GameObject segment in _wheelSegments)
+		{
+			segment.GetComponent<Button>().interactable = true;
+		}
+
+		_weaponWheelData.SetActive(true);
+		_textWeaponWheelUnavailable.SetActive(false);
 	}
 
 	public void HideWeaponAmmo()
@@ -211,6 +249,11 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 			ShowWeaponIcon();
 			ShowWeaponAmmo();
 			WeaponWheelName.text = _weaponWheelHandRight;
+
+			if (_playerInteractionController.CurrentPickableObject != null)
+			{
+				RestrictWeaponWheelWhilePickable();
+			}
 		}
 		else if (leftHandPressed)
 		{
@@ -221,10 +264,16 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 			ShowWeaponIcon();
 			ShowWeaponAmmo();
 			WeaponWheelName.text = _weaponWheelHandLeft;
+
+			if (_playerInteractionController.CurrentPickableObject != null && _playerInteractionController.CurrentIThrowable == null)
+			{
+				RestrictWeaponWheelWhilePickable();
+			}
 		}
 		else
 		{
 			HideWeaponWheelMenuCanvas();
+			UnrestrictWeaponWheelWhilePickable();
 		}
 	}
 
