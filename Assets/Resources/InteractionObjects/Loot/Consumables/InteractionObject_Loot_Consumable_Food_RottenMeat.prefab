@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2883248428095299769}
   - component: {fileID: 1145635717084860247}
   m_Layer: 0
-  m_Name: InteractionObject_Consumable_Food_RottenMeat
+  m_Name: InteractionObject_Loot_Consumable_Food_RottenMeat
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdea6a770b217d44ea88d606cb91ce06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ConsumableName: InteractionObject_Consumable_Food_RottenMeat
+  _interactionObjectNameSystem: InteractionObject_Loot_Consumable_Food_RottenMeat
   _interactionObjectConsumableTypes: 0
   _healthAffected: 60
   _isRotten: 1

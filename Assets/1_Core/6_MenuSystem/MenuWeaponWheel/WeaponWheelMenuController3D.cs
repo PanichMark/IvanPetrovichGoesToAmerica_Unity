@@ -22,6 +22,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 	private float _rotationSpeed = 40f;  
 	private GameObject _weaponModelsContainer;
 	private List<GameObject> _weaponModels3D = new List<GameObject>();
+	private bool _isWeaponWheelRestricted;
 	public TextMeshProUGUI WeaponText { get; private set; }
 	public TextMeshProUGUI WeaponWheelName { get; private set; }
 	private GameObject _weaponWheelRadius;
@@ -105,10 +106,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 
 	public void RestrictWeaponWheelWhilePickable()
 	{
-		foreach (GameObject segment in _wheelSegments)
-		{
-			//segment.GetComponent<Button>().interactable = false;
-		}
+		_isWeaponWheelRestricted = true;
 
 		_weaponWheelData.SetActive(false);
 		_textWeaponWheelUnavailable.SetActive(true);
@@ -116,10 +114,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 
 	public void UnrestrictWeaponWheelWhilePickable()
 	{
-		foreach (GameObject segment in _wheelSegments)
-		{
-			//segment.GetComponent<Button>().interactable = true;
-		}
+		_isWeaponWheelRestricted = false;
 
 		_weaponWheelData.SetActive(true);
 		_textWeaponWheelUnavailable.SetActive(false);
@@ -254,7 +249,10 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 				Quaternion startRotation = _weaponModelsContainer.transform.rotation;
 				_targetRotation = startRotation * Quaternion.Euler(0, angleForOneStep * direction, 0);
 
-				StartCoroutine(RotateWeaponModels(worldRotations));
+				if (!_isWeaponWheelRestricted)
+				{
+					StartCoroutine(RotateWeaponModels(worldRotations));
+				}
 			}
 		}
 	}
@@ -327,6 +325,11 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 			ShowWeaponPrefabs();
 			ShowWeaponAmmo();
 			WeaponWheelName.text = _weaponWheelHandRight;
+
+			if (_playerInteractionController.CurrentPickableObject != null)
+			{
+				RestrictWeaponWheelWhilePickable();
+			}
 		}
 		else if (leftHandPressed)
 		{
@@ -338,11 +341,18 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 			ShowWeaponPrefabs();
 			ShowWeaponAmmo();
 			WeaponWheelName.text = _weaponWheelHandLeft;
+
+			if (_playerInteractionController.CurrentPickableObject != null && _playerInteractionController.CurrentIThrowable == null)
+			{
+				RestrictWeaponWheelWhilePickable();
+			}
 		}
 		else
 		{
 			HideWeaponWheelMenuCanvas();
 			HideWeaponPrefabs();
+
+			UnrestrictWeaponWheelWhilePickable();
 		}
 	}
 
@@ -757,6 +767,8 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 
 		_weaponWheelHandRight = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandRight")}";
 		_weaponWheelHandLeft = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandLeft")}";
+
+		_textComponentWeaponWheelUnavailable.text = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_Unavailable")}";
 
 		ShowWeaponName();
 	}

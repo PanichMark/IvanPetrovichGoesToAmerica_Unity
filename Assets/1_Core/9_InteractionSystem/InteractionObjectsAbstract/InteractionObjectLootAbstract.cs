@@ -15,7 +15,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 	public Collider LootObjectCollider { get; protected set; }
 	public string InteractionHintMessageAction { get; protected set; }
 
-	public virtual bool WasLootItemCollected { get; protected set; }
+	public bool WasLootItemCollected { get; protected set; }
 
 	public int LootObjectIndex { get; protected set; }
 
@@ -37,7 +37,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		GameObjectPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot");
-		SetUpLootObjectReferences();
+		InitializeLootObject();
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
@@ -60,13 +60,13 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		Destroy(gameObject);
 	}
 
-	public void ChangeLanguage(LocalizationManager localizationManager)
+	public virtual void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot");
 	}
 
-	protected virtual void SetUpLootObjectReferences()
+	protected virtual void InitializeLootObject()
 	{
 
 	}
@@ -95,6 +95,8 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 			currentSpeed += speedIncrease * Time.deltaTime;
 			yield return null;
 		}
+
+		WasLootItemCollected = true;
 
 		OnAfterLooted();
 	}

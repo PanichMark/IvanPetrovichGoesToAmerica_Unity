@@ -14,7 +14,6 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 		Debug.Log($"Picked up {InteractionObjectNameUI}, received {_moneyValue} rubles");
 
 		_playerResourcesMoneyManager.AddMoney(_moneyValue);
-		WasLootItemCollected = true;
 	}
 
 	public override void InteractCutscene()
@@ -23,10 +22,9 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 		Debug.Log($"Picked up {InteractionObjectNameUI}, received {_moneyValue} rubles");
 
 		_playerResourcesMoneyManager.AddMoney(_moneyValue);
-		WasLootItemCollected = true;
 	}
 
-	protected override void SetUpLootObjectReferences()
+	protected override void InitializeLootObject()
 	{
 		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerMoneyController>("PlayerResourcesMoneyManager");
 	}

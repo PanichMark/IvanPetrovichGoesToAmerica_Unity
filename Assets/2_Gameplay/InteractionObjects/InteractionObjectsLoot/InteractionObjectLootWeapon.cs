@@ -30,7 +30,7 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 		_noteObject.Interact();
 	}
 
-	protected override void SetUpLootObjectReferences()
+	protected override void InitializeLootObject()
 	{
 		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
 

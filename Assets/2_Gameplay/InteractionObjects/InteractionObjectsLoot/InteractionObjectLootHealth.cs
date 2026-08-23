@@ -20,7 +20,6 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 
 			_playerResourcesHealthManager.AddHealingItem();
 			_isInteractionHintMessageFailActive = false;
-			WasLootItemCollected = true;
 			
 		}
 		else
@@ -38,7 +37,6 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 
 			_playerResourcesHealthManager.AddHealingItem();
 			_isInteractionHintMessageFailActive = false;
-			WasLootItemCollected = true;
 		}
 		else
 		{
@@ -46,7 +44,7 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 		}
 	}
 
-	protected override void SetUpLootObjectReferences()
+	protected override void InitializeLootObject()
 	{
 		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>("PlayerResourcesHealthManager");
 

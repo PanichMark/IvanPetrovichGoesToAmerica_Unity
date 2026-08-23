@@ -1,8 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
-using UnityEngine.Video;
 
 [RequireComponent(typeof(NPChealthController))]
 [RequireComponent(typeof(NPCstateMachineController))]
@@ -52,7 +50,7 @@ public abstract class NPCabstract : NPCcore, IInteractable
 	private void Start()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Talk");
+
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 
@@ -93,6 +91,15 @@ public abstract class NPCabstract : NPCcore, IInteractable
 				_NPCstateMachineController);
 		}
 
+		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead)
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Talk");
+		}
+		else
+		{
+			_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
+		}
+
 		InitializeNPC();
 
 		_localizationManager.OnLanguageChanged += ChangeLangauge;
@@ -112,7 +119,16 @@ public abstract class NPCabstract : NPCcore, IInteractable
 	private void ChangeLangauge(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Talk");
+
+		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead)
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Talk");
+		}
+		else
+		{
+			_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
+		}
+
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
 	}
 
@@ -143,6 +159,7 @@ public abstract class NPCabstract : NPCcore, IInteractable
 
 		_pickable = InteractionObjectPickableNonThrowable.CreateWithName(gameObject, _NPCname, _pickableBodyData);
 
+		_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
 		//Destroy(this);
 	}
 

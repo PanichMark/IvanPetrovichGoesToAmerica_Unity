@@ -37,9 +37,6 @@ public class GameData
 	[JsonProperty("LootObjects")]
 	public Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>> LootObjectsData;
 
-	[JsonProperty("ConsumableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<ConsumableObjectData>> ConsumableObjectsData;
-
 	[JsonProperty("PickableObjects")]
 	public Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>> PickableObjectsData;
 
@@ -142,7 +139,6 @@ public class GameData
 	{
 		NPCsData = CreateEmptyDictionary<NPCdata>();
 		LootObjectsData = CreateEmptyDictionary<LootObjectData>();
-		ConsumableObjectsData = CreateEmptyDictionary<ConsumableObjectData>();
 		PickableObjectsData = CreateEmptyDictionary<PickableObjectData>();
 		KeysData = CreateEmptyDictionary<KeyData>();
 		OpenableObjectsData = CreateEmptyDictionary<OpenableObjectData>();
@@ -243,15 +239,6 @@ public struct LootObjectData
 	public string LootObjectNameSystem;
 
 	public bool IsLootObjectCollected;
-}
-
-[System.Serializable]
-public struct ConsumableObjectData
-{
-	public int ConsumableObjectIndex;
-	public string ConsumableObjectNameSystem;
-
-	public bool IsConsumableObjectConsumed;
 }
 
 [System.Serializable]

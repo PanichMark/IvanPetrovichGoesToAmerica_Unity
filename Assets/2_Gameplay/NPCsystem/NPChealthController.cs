@@ -13,7 +13,7 @@ public class NPChealthController : MonoBehaviour, IDamageable
 	private float _currentHealth;
 	public float CurrentHealth => _currentHealth;
 	private NPCphrasesController _NPCphrasesController;
-	public bool CanObjectBeDamaged => throw new System.NotImplementedException();
+	public bool CanObjectBeDamaged => true;
 	private NPCstateMachineController _NPCstateMachineController;
 	public void Initialize(
 		NPCabstract NPCabstract,

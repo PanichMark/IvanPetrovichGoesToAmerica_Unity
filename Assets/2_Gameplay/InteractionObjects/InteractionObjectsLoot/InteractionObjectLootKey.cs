@@ -6,8 +6,7 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 	private KeysManager _keysManager;
 	private string _keyID;
 
-
-	protected override void SetUpLootObjectReferences()
+	protected override void InitializeLootObject()
 	{
 		_keysManager = ServiceLocator.Resolve<KeysManager>("KeysManager");
 		_keyID = _keyData.keyID.ToString();
@@ -15,11 +14,9 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 
 	public override void Interact()
 	{
+		base.Interact();
+
 		_keysManager.AddKey(_keyID);
 		Debug.Log($"Added key: {_keyID}");
-
-		WasLootItemCollected = true;
-		
-		base.Interact(); 
 	}
 }

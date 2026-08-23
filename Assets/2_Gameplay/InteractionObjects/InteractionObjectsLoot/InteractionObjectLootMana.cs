@@ -17,7 +17,6 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 
 			_playerResourcesManaManager.AddManaReplenishItem();
 			_isInteractionHintMessageFailActive = false;
-			WasLootItemCollected = true;
 		}
 		else
 		{
@@ -34,7 +33,6 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 
 			_playerResourcesManaManager.AddManaReplenishItem();
 			_isInteractionHintMessageFailActive = false;
-			WasLootItemCollected = true;
 		}
 		else
 		{
@@ -42,7 +40,7 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 		}
 	}
 
-	protected override void SetUpLootObjectReferences()
+	protected override void InitializeLootObject()
 	{
 		_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>("PlayerResourcesManaManager");
 		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);

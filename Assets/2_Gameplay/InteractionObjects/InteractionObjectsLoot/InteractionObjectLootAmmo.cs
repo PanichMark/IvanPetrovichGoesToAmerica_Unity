@@ -22,7 +22,7 @@ public class InteractionObjectLootAmmo : InteractionObjectLootAbstract
 		_playerResourcesAmmoManager.AddAmmoToReserve(_ammoTypes, _ammoCapacity);
 	}
 
-	protected override void SetUpLootObjectReferences()
+	protected override void InitializeLootObject()
 	{
 		_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>("PlayerResourcesAmmoManager");
 	}
