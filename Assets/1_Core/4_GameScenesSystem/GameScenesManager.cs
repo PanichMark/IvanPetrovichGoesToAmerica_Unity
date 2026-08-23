@@ -143,7 +143,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
 			{
 				float unloadProgress = 0f;
-				float unloadTarget = 0.5f; 
+				float unloadTarget = 0.25f; 
 
 				Debug.Log($"Scene_{loadedScene.name} UNloading started");
 
@@ -163,11 +163,14 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		
 		Debug.Log($"{sceneName} loading started");
 
-		AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive); 
+		AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+
+		float loadProgress = 0.25f;
+		float loadTarget = 0.5f;
 
 		while (!operation.isDone)
 		{
-			float loadProgressForSlider = Mathf.Lerp(0.5f, 1f, operation.progress / 0.9f);
+			float loadProgressForSlider = Mathf.Lerp(loadProgress, loadTarget, operation.progress / 0.9f);
 
 			_sliderComponentLoadingStatus.value = loadProgressForSlider;
 
@@ -176,10 +179,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		HasLoadedGameplayScene = true;
 
-		_sliderComponentLoadingStatus.value = 1f;
-		_sliderLoadingStatus.SetActive(false);
-		_textLoadingReady.SetActive(true);
-		_textComponentLoadingReady.text = _localizationManager.GetLocalizedString("UI_LoadingScreen_LoadingIsReady");
+
 
 		Debug.Log($"{sceneName} loading ended");
 		
@@ -191,8 +191,13 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		if (_isInitialSceneLoad == false)
 		{
-			yield return new WaitWhile(() => IsWaitingForGameplayData == false);
+			yield return new WaitWhile(() => IsWaitingForGameplayData == true);
 		}
+
+		_sliderComponentLoadingStatus.value = 1f;
+		_sliderLoadingStatus.SetActive(false);
+		_textLoadingReady.SetActive(true);
+		_textComponentLoadingReady.text = _localizationManager.GetLocalizedString("UI_LoadingScreen_LoadingIsReady");
 
 		yield return new WaitWhile(() => !Input.anyKeyDown);
 
@@ -201,6 +206,8 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		_gameController.UnblockInput();
 
 		Time.timeScale = 1f;
+
+		_isInitialSceneLoad = false;
 
 		Debug.Log($"SceneLoaded {scene}");
 
@@ -276,5 +283,11 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 	{
 		Debug.Log("LOADED GAMEPLAY AFTER LOAD!");
 		IsWaitingForGameplayData = false;
+	}
+
+	// Добавь этот публичный метод в класс GameScenesManager
+	public void SetLoadingSliderValue(float value)
+	{
+		_sliderComponentLoadingStatus.value = value;
 	}
 }

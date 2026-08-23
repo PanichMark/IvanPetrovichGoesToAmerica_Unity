@@ -14,7 +14,7 @@ public class SaveLoadController : MonoBehaviour
 
 	private FileDataHandler _fileDataHandler;
 	private GameData _gameData;
-
+	private int LoadedObjectsCount;
 	private List<ISaveLoad> _persistentSaveLoadObjects;
 	private List<ISaveLoad> _gameplaySaveLoadObjects;
 
@@ -25,8 +25,8 @@ public class SaveLoadController : MonoBehaviour
 	private const string _SAVE_SLOT_SUFFIX = ".json";
 
 	public delegate void GameSaveProcessHandler();
-	public event GameSaveProcessHandler OnStartSavingProcess;
-	public event GameSaveProcessHandler OnEndSavingProcess;
+	public event GameSaveProcessHandler OnStartGameDataProcessForUI;
+	public event GameSaveProcessHandler OnEndGameDataProcessForUI;
 
 	public string SceneNameToLoad { get; private set; }
 	public bool IsSavingFinished { get; private set; }
@@ -103,7 +103,7 @@ public class SaveLoadController : MonoBehaviour
 			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _saveFilePaths[saveSlotNumber - 1]);
 		}
 
-		OnStartSavingProcess?.Invoke();
+		OnStartGameDataProcessForUI?.Invoke();
 
 		foreach (ISaveLoad saveLoadObj in _persistentSaveLoadObjects)
 		{
@@ -124,7 +124,7 @@ public class SaveLoadController : MonoBehaviour
 			Debug.Log("Data saved to slot " + saveSlotNumber);
 		}
 
-		OnEndSavingProcess?.Invoke();
+		OnEndGameDataProcessForUI?.Invoke();
 
 		IsSavingFinished = true;
 		yield break;
@@ -147,16 +147,31 @@ public class SaveLoadController : MonoBehaviour
 
 		SceneNameToLoad = _gameData.Scene;
 
-		// Сначала физически загружаем сцену и ждем её готовности
+		// Запускаем сцену (она сама заполнит шкалу до 0.667)
 		StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), SceneNameToLoad)));
 
-		yield return new WaitWhile(() => _gameSceneManager.HasLoadedGameplayScene == true);
+		// Ждем, пока ASYNC SCENE LOAD не закончится
+		yield return new WaitWhile(() => _gameSceneManager.HasLoadedGameplayScene == false);
 
-		Debug.Log("LOADING 222222222222222222");
+		Debug.Log("LOADING 222222222222222222"); // СЦЕНА ЗАГРУЖЕНА
+
+		int totalObjects = _persistentSaveLoadObjects.Count;
+		LoadedObjectsCount = 0;
+
+
+
 		// Грузим персистентные объекты (инвентарь игрока)
 		foreach (ISaveLoad persistentLoadObj in _persistentSaveLoadObjects)
 		{
 			yield return persistentLoadObj.LoadData(_gameData);
+
+			LoadedObjectsCount++;
+			float progress = Mathf.Lerp(0.5f, 0.75f, (float)LoadedObjectsCount / totalObjects);
+
+			// --- ОБНОВЛЕНИЕ СЛАЙДЕРА ---
+
+			_gameSceneManager.SetLoadingSliderValue(progress);
+			
 		}
 		Debug.Log("LOADING 333333333333333");
 
@@ -164,18 +179,30 @@ public class SaveLoadController : MonoBehaviour
 		yield return UpdateGameplaySaveLoadObjects();
 		Debug.Log("LOADING 444444444444");
 
+		totalObjects += _gameplaySaveLoadObjects.Count;
+
 		// ТЕПЕРЬ грузим в них данные
-		for (int i = _gameplaySaveLoadObjects.Count - 1; i >= 0; i--) // Используем цикл с конца для защиты от Destroy
+		for (int i = _gameplaySaveLoadObjects.Count - 1; i >= 0; i--)
 		{
 			yield return _gameplaySaveLoadObjects[i].LoadData(_gameData);
+
+			LoadedObjectsCount++;
+			float progress = Mathf.Lerp(0.75f, 1f, (float)LoadedObjectsCount / totalObjects);
+
+			// --- ОБНОВЛЕНИЕ СЛАЙДЕРА ---
+			_gameSceneManager.SetLoadingSliderValue(progress);
+
 		}
 		Debug.Log("LOADING 5555555555555555");
 
 		// Сохраняем актуальное состояние во временный слот (-1)
 		yield return SaveGame(-1);
+		Debug.Log("LOADING 66666666666666666");
 
-		// Говорим менеджеру сцен: "Данные применены, можно выключать UI"
+		// Говорим менеджеру: "Данные применены, можно выключать UI"
 		_gameSceneManager.ApplyGameplayDataFinished();
+
+		Debug.Log("LOADING 77777777777777777");
 	}
 
 	public void DeleteGame(int deleteSlotNumber)
@@ -211,6 +238,8 @@ public class SaveLoadController : MonoBehaviour
 
 	IEnumerator OnSceneLoadUpdateGameplayObjects()
 	{
+		OnStartGameDataProcessForUI?.Invoke();
+
 		yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
 
 		foreach (ISaveLoad gameplayLoadObj in _gameplaySaveLoadObjects)
@@ -219,6 +248,8 @@ public class SaveLoadController : MonoBehaviour
 		}
 
 		yield return StartCoroutine(SaveGame(-1));
+
+		OnEndGameDataProcessForUI?.Invoke();
 
 		yield break;
 	}

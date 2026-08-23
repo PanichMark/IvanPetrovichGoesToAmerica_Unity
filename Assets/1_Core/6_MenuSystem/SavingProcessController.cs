@@ -11,8 +11,8 @@ public class SavingProcessController : MonoBehaviour
 		_saveLoadController = saveLoadController;
 		_canvasSavingProcess = canvasSavingProcess;
 
-		_saveLoadController.OnStartSavingProcess += ShowCanvasSavingProcess;
-		_saveLoadController.OnEndSavingProcess += HideCanvasSavingProcess;
+		_saveLoadController.OnStartGameDataProcessForUI += ShowCanvasSavingProcess;
+		_saveLoadController.OnEndGameDataProcessForUI += HideCanvasSavingProcess;
 	}
 
 	private void ShowCanvasSavingProcess()
