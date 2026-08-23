@@ -1,13 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using TMPro;
+using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 [RequireComponent(typeof(NPChealthController))]
 [RequireComponent(typeof(NPCstateMachineController))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(NPCdebugHUDcontroller))]
+[RequireComponent(typeof(NPCdetectionManager))]
+[RequireComponent(typeof(NPCdetectionSignController))]
 
 public abstract class NPCabstract : NPCcore, IInteractable
 {
@@ -20,6 +23,11 @@ public abstract class NPCabstract : NPCcore, IInteractable
 
 	[SerializeField] private InteractionObjectPickableData _pickableBodyData;
 
+	private GameObject _canvasNPCstatus;
+	private GameObject _imageDetectionSign;
+	private GameObject _textNPCcurrentState;
+	private GameObject _textNPCcurrentHealth;
+
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
 	protected NPCphrasesController _NPCphrasesController;
@@ -27,6 +35,8 @@ public abstract class NPCabstract : NPCcore, IInteractable
 	protected NPCdebugHUDcontroller _NPCdebugHUDcontroller;
 	protected NPCdialogueController _NPCdialogueController;
 	protected NPCweaponController _NPCweaponController;
+	protected NPCdetectionManager _NPCdetectionManager;
+	protected NPCdetectionSignController _NPCdetectionSignController;
 	protected InteractionObjectPickableNonThrowable _pickable;
 	private NavMeshAgent _navMeshAgent;
 
@@ -55,11 +65,18 @@ public abstract class NPCabstract : NPCcore, IInteractable
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 
+		_canvasNPCstatus = transform.Find("CanvasNPCstatus").gameObject;
+		_textNPCcurrentState = _canvasNPCstatus.transform.Find("TextNPCcurrentState").gameObject;
+		_textNPCcurrentHealth = _canvasNPCstatus.transform.Find("TextNPCcurrentHealth").gameObject;
+		_imageDetectionSign = _canvasNPCstatus.transform.Find("DetectionSign").gameObject;
+
 		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
 		_NPChealthController = GetComponent<NPChealthController>();
 		_NPCphrasesController = GetComponent<NPCphrasesController>();
 		_NPCdialogueController = GetComponent<NPCdialogueController>();
-		_NPCweaponController = GetComponent<NPCweaponController>();	
+		_NPCweaponController = GetComponent<NPCweaponController>();
+		_NPCdetectionManager = GetComponent<NPCdetectionManager>();	
+		_NPCdetectionSignController = GetComponent<NPCdetectionSignController>();
 		_NPCdebugHUDcontroller = GetComponent<NPCdebugHUDcontroller>();
 		
 		_NPCstateMachineController.Initialize(
@@ -85,11 +102,20 @@ public abstract class NPCabstract : NPCcore, IInteractable
 			_NPCweaponController.Initialize();
 		}
 
+		_NPCdetectionManager.Initialize();
+
+		_NPCdetectionSignController.Initialize(
+			_NPCdetectionManager,
+			_canvasNPCstatus,
+			_imageDetectionSign);
+
 		if (_NPCdebugHUDcontroller != null)
 		{
 			_NPCdebugHUDcontroller.Initialize(
 				_NPChealthController,
-				_NPCstateMachineController);
+				_NPCstateMachineController,
+				_textNPCcurrentState,
+				_textNPCcurrentHealth);
 		}
 
 		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead)
