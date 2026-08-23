@@ -13,6 +13,7 @@ public class BootstrapSubProcessMenuSystem
 	private GameObject _canvasMainMenuChooseMission;
 	private GameObject _canvasBootstrapSignTermsAndConditions;
 	public ViewModelBootstrapSignTermsAndConditions ViewModelBootstrapSignTermsAndConditions { get; private set; }
+	public ViewModelSavingProcess ViewModelSavingProcess { get; private set; }
 	public ViewModelMainMenuChooseMission ViewModelMainMenuChooseMission { get; private set; }
 	private SavingProcessController _savingProcessController;
 	public ViewModelPauseMenu ViewModelPauseMenu {  get; private set; }
@@ -228,7 +229,7 @@ public class BootstrapSubProcessMenuSystem
 		ViewModelHUDAmmo = new ViewModelHUDAmmo(_bootstrap, CanvasHUDammo);
 		ViewModelWeaponWheel = new ViewModelMenuWeaponWheel(_bootstrap, CanvasMenuWeaponWheel);
 		ViewModelHUDMission = new ViewModelHUDMission(_bootstrap, _canvasHUDmission);
-
+		ViewModelSavingProcess = new ViewModelSavingProcess(_bootstrap, _canvasSavingProcess);
 		ViewModelHUDInteraction = new ViewModelHUDInteraction(_bootstrap, CanvasHUDinteraction);
 		ViewModelMenuNote = new ViewModelMenuNote(_bootstrap, _canvasMenuNote);
 		ViewModelMenuLockpickMechanical = new ViewModelMenuLockpickMechanical(_bootstrap, _canvasMenuLockpickMechanical);
@@ -377,7 +378,8 @@ public class BootstrapSubProcessMenuSystem
 
 		_savingProcessController.Initialize(
 			_saveLoadController,
-			_canvasSavingProcess);
+			_canvasSavingProcess,
+			ViewModelSavingProcess);
 
 		ServiceLocator.Register("ViewModelMainMenuChooseMission", ViewModelMainMenuChooseMission);
 		ServiceLocator.Register("CanvasMainMenuChooseMission", _canvasMainMenuChooseMission);

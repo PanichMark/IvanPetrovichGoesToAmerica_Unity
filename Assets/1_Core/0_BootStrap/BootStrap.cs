@@ -29,6 +29,8 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private ConfigPlayerWeapons _playerWeapons;
 	[SerializeField] private ConfigPlayerResourcesAmmo _playerAmmo;
 
+	private ViewModelBootstrapInitialization _viewModelBootstrapInitialization;
+
 	private GameObject _canvasBootstrapInitialization;
 	private GameObject _canvasBootstrapChooseFirstLanguage;
 	private GameObject _canvasBootstrapSignTermsAndConditions;
@@ -85,6 +87,9 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.ClearAllServices();
 
 		_canvasBootstrapInitialization = Instantiate(_gameData.GameCanvasesList.CanvasBootstrapInitialization);
+		_canvasBootstrapInitialization.SetActive(true);
+		_viewModelBootstrapInitialization = new ViewModelBootstrapInitialization(this, _canvasBootstrapInitialization);
+		_viewModelBootstrapInitialization.BootstrapInitializationPart1.SetActive(true);
 
 		Time.timeScale = 0f;
 		Cursor.lockState = CursorLockMode.Locked;
@@ -95,12 +100,15 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(BootstrapSystemsInitialization());
 
 		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration);
+		_viewModelBootstrapInitialization.BootstrapInitializationPart1.SetActive(false);
+		_viewModelBootstrapInitialization.BootstrapInitializationPart2.SetActive(true);
+
+		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration);
+		_viewModelBootstrapInitialization.BootstrapInitializationPart2.SetActive(false);
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.SaveLoadController.NewGame());
-
-		Destroy(_canvasBootstrapInitialization);
 
 		if (_playerPrefsReset.ResetPlayerPrefs == true)
 		{
@@ -116,6 +124,13 @@ public class Bootstrap : MonoBehaviour
 			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString(PlayerPrefsSettingsSectionAudioEnum.Language.ToString())));
 		}
 
+		_viewModelBootstrapInitialization.BootstrapInitializationPart2.SetActive(false);
+		_viewModelBootstrapInitialization.BootstrapInitializationPart3.SetActive(true);
+		_viewModelBootstrapInitialization.TextSavingProcessIcon.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SavingProcess");
+
+		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration * 2);
+
+		_canvasBootstrapInitialization.SetActive(false);
 		Destroy(_gameObjectBootstrapTemporaryCamera);
 
 		yield return StartCoroutine(LoadFirstGameplayScene());
@@ -128,6 +143,21 @@ public class Bootstrap : MonoBehaviour
 		OnLoadSettingsData?.Invoke();
 
 		IsBootstrapInitialized = true;
+	}
+
+	private void Update()
+	{
+		if (IsBootstrapInitialized)
+			return;
+
+		RotateGear(300f);
+	}
+
+	private void RotateGear(float speed)
+	{
+		Vector3 currentRotation = _viewModelBootstrapInitialization.Gear.transform.localEulerAngles;
+		currentRotation.z += speed * Time.unscaledDeltaTime;
+		_viewModelBootstrapInitialization.Gear.transform.localEulerAngles = currentRotation;
 	}
 
 	private IEnumerator BootstrapSystemsInitialization()

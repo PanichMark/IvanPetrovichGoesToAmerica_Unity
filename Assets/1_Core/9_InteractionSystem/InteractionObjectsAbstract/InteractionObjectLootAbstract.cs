@@ -57,7 +57,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public virtual void InteractCutscene()
 	{
-		Destroy(gameObject);
+		gameObject.SetActive(false);
 	}
 
 	public virtual void ChangeLanguage(LocalizationManager localizationManager)
@@ -88,7 +88,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
 			{
-				Destroy(gameObject);
+				gameObject.SetActive(false);
 				break;
 			}
 
@@ -154,7 +154,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 			if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
 			{
 				WasLootItemCollected = true;
-				Destroy(gameObject);
+				gameObject.SetActive(false);
 			}
 		}
 

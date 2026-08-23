@@ -4,15 +4,31 @@ public class SavingProcessController : MonoBehaviour
 {
 	private SaveLoadController _saveLoadController;
 	private GameObject _canvasSavingProcess;
+	private GameObject _gear;
+
 	public void Initialize(
 		SaveLoadController saveLoadController,
-		GameObject canvasSavingProcess)
+		GameObject canvasSavingProcess,
+		ViewModelSavingProcess viewModelSavingProcess)
 	{
 		_saveLoadController = saveLoadController;
 		_canvasSavingProcess = canvasSavingProcess;
+		_gear = viewModelSavingProcess.Gear;
 
 		_saveLoadController.OnStartGameDataProcessForUI += ShowCanvasSavingProcess;
 		_saveLoadController.OnEndGameDataProcessForUI += HideCanvasSavingProcess;
+	}
+
+	private void Update()
+	{
+		RotateGear(300f);
+	}
+
+	private void RotateGear(float speed)
+	{
+		Vector3 currentRotation = _gear.transform.localEulerAngles;
+		currentRotation.z += speed * Time.unscaledDeltaTime;
+		_gear.transform.localEulerAngles = currentRotation;
 	}
 
 	private void ShowCanvasSavingProcess()

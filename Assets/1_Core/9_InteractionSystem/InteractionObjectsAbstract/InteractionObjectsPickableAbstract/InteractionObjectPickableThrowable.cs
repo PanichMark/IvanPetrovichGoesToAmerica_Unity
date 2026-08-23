@@ -128,7 +128,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 			RigidBody.isKinematic = true;
 
 			_isObjectDestroyed = true;
-			Destroy(gameObject);
+			gameObject.SetActive(false);
 			Debug.Log($"{InteractionObjectNameSystem} was destroyed on impact!");
 		}
 	}
@@ -162,7 +162,7 @@ public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstr
 
 		_isObjectDestroyed = true;
 
-		Destroy(gameObject);
+		gameObject.SetActive(false);
 	}
 	
 	private IEnumerator MoveTowardsRightHandFirstPerson()

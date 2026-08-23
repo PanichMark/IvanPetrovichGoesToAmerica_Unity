@@ -235,7 +235,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	{
 		_isObjectDestroyed = true;
 
-		Destroy(gameObject);
+		gameObject.SetActive(false);
 	}
 
 	public IEnumerator SaveData(GameData data)
@@ -295,6 +295,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		if (savedState.Equals(default(PickableObjectData))) yield break;
 
 		IsObjectPickedUp = savedState.IsPickableObjectPickedUp;
+		_isObjectDestroyed = savedState.IsPickableObjectDestroyed;
 
 		if (IsObjectPickedUp)
 		{
@@ -307,6 +308,11 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		{
 			gameObject.transform.position = savedState.PickableObjectPosition;
 			gameObject.transform.rotation = savedState.PickableObjectRotation;
+		}
+
+		if (_isObjectDestroyed)
+		{
+			gameObject.SetActive(false);
 		}
 
 		yield return null;
