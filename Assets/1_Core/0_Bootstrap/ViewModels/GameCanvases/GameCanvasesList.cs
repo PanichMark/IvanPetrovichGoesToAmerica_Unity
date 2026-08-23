@@ -11,6 +11,9 @@ public class GameCanvasesList : ScriptableObject
 	[Header("Loading Screen")]
 	public GameObject CanvasSceneLoadingScreen;
 
+	[Header("Saving Process")]
+	public GameObject CanvasSavingProcess;
+
 	[Header("Menu")]
 	public GameObject CanvasMenuBackground;
 

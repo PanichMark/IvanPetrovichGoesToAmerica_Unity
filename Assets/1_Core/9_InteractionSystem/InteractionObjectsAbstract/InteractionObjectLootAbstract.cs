@@ -141,7 +141,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		}
 	}
 
-	public void LoadData(GameData data)
+	public virtual void LoadData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
 

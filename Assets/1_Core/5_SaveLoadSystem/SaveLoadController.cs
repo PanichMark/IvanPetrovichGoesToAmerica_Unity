@@ -24,6 +24,10 @@ public class SaveLoadController : MonoBehaviour
 	private const string _SAVE_SLOT_PREFIX = "SafeFileSlot_";
 	private const string _SAVE_SLOT_SUFFIX = ".json";
 
+	public delegate void GameSaveProcessHandler();
+	public event GameSaveProcessHandler OnStartSavingProcess;
+	public event GameSaveProcessHandler OnEndSavingProcess;
+
 	public string SceneNameToLoad { get; private set; }
 	public bool IsSavingFinished { get; private set; }
 
@@ -75,6 +79,7 @@ public class SaveLoadController : MonoBehaviour
 	public IEnumerator SaveGame(int saveSlotNumber)
 	{
 		IsSavingFinished = false;
+		_fileDataHandler = null;
 
 		if (saveSlotNumber == -1)
 		{
@@ -90,6 +95,8 @@ public class SaveLoadController : MonoBehaviour
 		{
 			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _saveFilePaths[saveSlotNumber - 1]);
 		}
+
+		OnStartSavingProcess?.Invoke();
 
 		foreach (ISaveLoad saveLoadObj in _persistentSaveLoadObjects)
 		{
@@ -109,6 +116,8 @@ public class SaveLoadController : MonoBehaviour
 
 			Debug.Log("Data saved to slot " + saveSlotNumber);
 		}
+
+		OnEndSavingProcess?.Invoke();
 
 		IsSavingFinished = true;
 		yield break;

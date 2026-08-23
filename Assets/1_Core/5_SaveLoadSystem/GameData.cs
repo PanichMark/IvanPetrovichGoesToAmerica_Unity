@@ -12,6 +12,7 @@ public class GameData
 	//Scene
 	public string Scene;
 
+	//CoreObjects
 	[JsonProperty("MissionData")]
 	public MissionData MissionData = new MissionData();
 
@@ -39,9 +40,6 @@ public class GameData
 
 	[JsonProperty("PickableObjects")]
 	public Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>> PickableObjectsData;
-
-	[JsonProperty("Keys")]
-	public Dictionary<GameScenesGameplayDataEnum, List<KeyData>> KeysData;
 
 	[JsonProperty("OpenableObjects")]
 	public Dictionary<GameScenesGameplayDataEnum, List<OpenableObjectData>> OpenableObjectsData;
@@ -140,7 +138,6 @@ public class GameData
 		NPCsData = CreateEmptyDictionary<NPCdata>();
 		LootObjectsData = CreateEmptyDictionary<LootObjectData>();
 		PickableObjectsData = CreateEmptyDictionary<PickableObjectData>();
-		KeysData = CreateEmptyDictionary<KeyData>();
 		OpenableObjectsData = CreateEmptyDictionary<OpenableObjectData>();
 		SafesData = CreateEmptyDictionary<SafeData>();
 		VendingMachinesData = CreateEmptyDictionary<VendingMachineData>();
@@ -253,14 +250,6 @@ public struct PickableObjectData
 	public Quaternion PickableObjectRotation;
 	public bool IsPickableObjectPickedUp;
 	public bool IsPickableObjectDestroyed;
-}
-
-[System.Serializable]
-public struct KeyData
-{
-	public string KeyNameSystem;
-
-	public bool IsKeyCollected;
 }
 
 [System.Serializable]

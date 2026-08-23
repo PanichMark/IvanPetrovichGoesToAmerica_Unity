@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class KeysManager: ISaveLoad
+public class KeysManager
 { 
 	private List<string> _collectedKeys = new List<string>();
 
@@ -21,33 +21,11 @@ public class KeysManager: ISaveLoad
 			_collectedKeys.Add(keyId);
 		}
 
-		Debug.Log(_collectedKeys.Count);
+		//Debug.Log(_collectedKeys.Count);
 	}
 
 	public void RemoveKey(string keyId)
 	{
 		_collectedKeys.Remove(keyId);
-	}
-
-	public void SaveData(ref GameData data)
-	{
-		// Используем Scene_0_Test как единый глобальный контейнер для ключей
-		if (!data.KeysData.ContainsKey(GameScenesGameplayDataEnum.Scene_0_Test))
-		{
-			data.KeysData[GameScenesGameplayDataEnum.Scene_0_Test] = new List<KeyData>();
-		}
-
-		var targetList = data.KeysData[GameScenesGameplayDataEnum.Scene_0_Test];
-		targetList.Clear();
-
-		foreach (string keyId in _collectedKeys)
-		{
-			targetList.Add(new KeyData { KeyNameSystem = keyId });
-		}
-	}
-
-	public void LoadData(GameData data)
-	{
-		//throw new System.NotImplementedException();
 	}
 }

@@ -14,6 +14,7 @@ public class BootstrapSubProcessMenuSystem
 	private GameObject _canvasBootstrapSignTermsAndConditions;
 	public ViewModelBootstrapSignTermsAndConditions ViewModelBootstrapSignTermsAndConditions { get; private set; }
 	public ViewModelMainMenuChooseMission ViewModelMainMenuChooseMission { get; private set; }
+	private SavingProcessController _savingProcessController;
 	public ViewModelPauseMenu ViewModelPauseMenu {  get; private set; }
 	private ViewModelPauseSubMenuSave _viewModelPauseSubMenuSave;
 	private ViewModelPauseSubMenuLoad _viewModelPauseSubMenuLoad;
@@ -22,6 +23,7 @@ public class BootstrapSubProcessMenuSystem
 	private ViewModelPauseSubMenuSettings _viewModelPauseSubMenuSettings;
 	private ViewModelPauseMenuConfirmAction _viewModelPauseMenuConfirmAction;
 	private ViewModelMainMenuReadNews _viewModelMainMenuReadNews;
+	private GameObject _canvasSavingProcess;
 	public HUDmissionsController HUDmissionsController { get; private set; }
 	private GameObject _canvasMenuChooseFirstLanguage;
 	public ViewModelHUDMission ViewModelHUDMission { get; private set; }
@@ -129,6 +131,7 @@ public class BootstrapSubProcessMenuSystem
 		LocalizationManager localizationManager,
 		GameObject canvasMenuChooseFirstLanguage,
 		GameObject canvasMenuBackground,
+		GameObject canvasSavingProcess,
 		GameObject canvasPauseMenu,
 		GameObject canvasPauseSubMenuSave,
 		GameObject canvasPauseSubMenuLoad,
@@ -151,6 +154,7 @@ public class BootstrapSubProcessMenuSystem
 		GameObject canvasMainMenuChooseMission,
 		GameObject canvasBootstrapSignTermsAndConditions)
 	{
+		_canvasSavingProcess = canvasSavingProcess;
 		_canvasBootstrapSignTermsAndConditions = canvasBootstrapSignTermsAndConditions;
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
@@ -207,6 +211,7 @@ public class BootstrapSubProcessMenuSystem
 		HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
 		HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
+		_savingProcessController = _gameObjectBootstrapMenuSystem.AddComponent<SavingProcessController>();
 
 		ViewModelMenuChooseFirstLanguage = new ViewModelBootstrapChooseFirstLanguage(_bootstrap, _canvasMenuChooseFirstLanguage);
 
@@ -369,6 +374,10 @@ public class BootstrapSubProcessMenuSystem
 			_canvasHUDmission,
 			ViewModelPauseMenu,
 			ViewModelHUDMission);
+
+		_savingProcessController.Initialize(
+			_saveLoadController,
+			_canvasSavingProcess);
 
 		ServiceLocator.Register("ViewModelMainMenuChooseMission", ViewModelMainMenuChooseMission);
 		ServiceLocator.Register("CanvasMainMenuChooseMission", _canvasMainMenuChooseMission);
