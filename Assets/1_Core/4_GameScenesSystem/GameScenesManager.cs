@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class GameScenesManager : MonoBehaviour, ISaveLoad
 {
 	public bool IsWaitingForGameplayData {  get; private set; }
+	public bool HasLoadedGameplayScene { get; private set; }
 	private GameController _gameController;
 	private LocalizationManager _localizationManager;
 	private GameObject _canvasLoadingScreen;
@@ -28,6 +29,8 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 	public event LoadSceneHandler OnEndLoadingMainMenuScene;
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
+
+	private bool _isInitialSceneLoad;
 
 	public void Initialize(
 		GameController gameController,
@@ -55,6 +58,8 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		_textComponentMissionName = viewModelSceneLoadingScreen.TextMissionName.GetComponent<TMP_Text>();
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+
+		_isInitialSceneLoad = true;
 		Debug.Log("GameSceneManager Initialized");
 	}
 
@@ -65,8 +70,14 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 	public IEnumerator LoadGameplayScene(GameScenesSystemEnum scene)
 	{
+		HasLoadedGameplayScene = false;
 		_gameController.GameplaySceneLoadBegan();
-		IsWaitingForGameplayData = true;
+
+		if (_isInitialSceneLoad == false)
+		{
+			IsWaitingForGameplayData = true;
+		}
+
 		OnBeginLoadingGameplayScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
 		Cursor.lockState = CursorLockMode.Locked;
@@ -163,6 +174,8 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 			yield return null;
 		}
 
+		HasLoadedGameplayScene = true;
+
 		_sliderComponentLoadingStatus.value = 1f;
 		_sliderLoadingStatus.SetActive(false);
 		_textLoadingReady.SetActive(true);
@@ -176,7 +189,10 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		_gameController.BlockInput();
 
-		while (IsWaitingForGameplayData) { yield return null; }
+		if (_isInitialSceneLoad == false)
+		{
+			yield return new WaitWhile(() => IsWaitingForGameplayData == false);
+		}
 
 		yield return new WaitWhile(() => !Input.anyKeyDown);
 

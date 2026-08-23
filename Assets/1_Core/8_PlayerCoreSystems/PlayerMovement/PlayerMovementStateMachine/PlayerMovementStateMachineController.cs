@@ -30,12 +30,14 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 
 		_playerMovementController.OnChangeMovementState += SetPlayerMovementState;
 
+		SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdleStanding);
+
 		Debug.Log("PlayerMovementStateMachineController Initialized");
 	}
 
 	public void Update()
 	{
-		if (!_bootstrap.IsBootstrapInitialized && _playerMovementState != null && _playerMovementController == null && _gameSceneManager.IsWaitingForGameplayData)
+		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
 		_playerMovementState.Update();

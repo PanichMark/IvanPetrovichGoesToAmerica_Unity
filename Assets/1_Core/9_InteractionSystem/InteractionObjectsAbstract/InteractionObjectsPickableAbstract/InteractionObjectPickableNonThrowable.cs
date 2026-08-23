@@ -11,7 +11,7 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 		{
 			component = obj.AddComponent<InteractionObjectPickableNonThrowable>();
 		}
-		Debug.Log(component);
+		//Debug.Log(component);
 	
 		component.SetUpPickableBody(interactionItemNameSystem, pickableBodyData);
 

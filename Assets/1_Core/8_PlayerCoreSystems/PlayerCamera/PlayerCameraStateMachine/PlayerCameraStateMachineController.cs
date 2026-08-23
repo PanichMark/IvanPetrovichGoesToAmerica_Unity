@@ -43,12 +43,14 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 
 		_pauseMenuConfirmActionController.OnSetPlayerCameraToFirstPerson += () => SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 
+		SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
+
 		Debug.Log("PlayerCameraStateMachineController Initialized");
 	}
 
 	private void Update()
 	{
-		if (!_bootstrap.IsBootstrapInitialized && _playerCameraState != null && _playerCameraState == null && _gameSceneManager.IsWaitingForGameplayData)
+		if (!_bootstrap.IsBootstrapInitialized)
 		{
 			return;
 		}
