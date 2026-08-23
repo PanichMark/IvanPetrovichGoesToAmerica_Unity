@@ -12,9 +12,9 @@ public class NPChealthController : MonoBehaviour, IDamageable
 	private NPCabstract _NPCabstract;
 	private float _currentHealth;
 	public float CurrentHealth => _currentHealth;
-	private NPCphrasesController _NPCphrasesController;
 	public bool CanObjectBeDamaged => true;
 	private NPCstateMachineController _NPCstateMachineController;
+
 	public void Initialize(
 		NPCabstract NPCabstract,
 		NPCstateMachineController NPCstateMachineController)
@@ -25,9 +25,18 @@ public class NPChealthController : MonoBehaviour, IDamageable
 		_currentHealth = _NPCconfigHealth.NPCcurrentHealth;
 	}
 
-	public void SetCurrentHealth(float Health)
+	public void SetCurrentHealthFromLoad(float Health)
 	{
+		_currentHealth = Health;
 
+		OnNPChealthChanged?.Invoke(_currentHealth);
+
+		if (_currentHealth <= 0)
+		{
+			enabled = false;
+
+			_currentHealth = 0;
+		}
 	}
 
 	public void TakeDamage(float amount)
@@ -55,8 +64,8 @@ public class NPChealthController : MonoBehaviour, IDamageable
 
 		_currentHealth = 0;
 
-		_NPCstateMachineController.SetNPCState(NPCstateTypes.Dead);
 
-		//Destroy(this);
+		_NPCstateMachineController.SetNPCState(NPCstateTypes.Dead);
+		
 	}
 }

@@ -434,8 +434,16 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 
 	public void SaveData(ref GameData data)
 	{
-		data.PlayerMovement.PlayerPosition = PlayerTransform.position;
-		data.PlayerMovement.PlayerRotation = PlayerTransform.rotation;
+		data.PlayerMovement.PlayerPosition = new Vector3(
+			Mathf.Round(PlayerTransform.position.x * 100f) / 100f,
+			Mathf.Round(PlayerTransform.position.y * 100f) / 100f,
+			Mathf.Round(PlayerTransform.position.z * 100f) / 100f);
+
+		data.PlayerMovement.PlayerRotation = new Quaternion(
+			Mathf.Round(PlayerTransform.rotation.x * 100f) / 100f,
+			Mathf.Round(PlayerTransform.rotation.y * 100f) / 100f,
+			Mathf.Round(PlayerTransform.rotation.z * 100f) / 100f,
+			Mathf.Round(PlayerTransform.rotation.w * 100f) / 100f);
 	}
 
 	public void LoadData(GameData data)

@@ -260,8 +260,15 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		{
 			PickableObjectIndex = PickableObjectIndex,
 			PickableObjectNameSystem = InteractionObjectNameSystem,
-			PickableObjectPosition = gameObject.transform.position,
-			PickableObjectRotation = gameObject.transform.rotation,
+			PickableObjectPosition = new Vector3(
+			Mathf.Round(gameObject.transform.position.x * 100f) / 100f,
+			Mathf.Round(gameObject.transform.position.y * 100f) / 100f,
+			Mathf.Round(gameObject.transform.position.z * 100f) / 100f),
+			PickableObjectRotation = new Quaternion(
+			Mathf.Round(gameObject.transform.rotation.x * 100f) / 100f,
+			Mathf.Round(gameObject.transform.rotation.y * 100f) / 100f,
+			Mathf.Round(gameObject.transform.rotation.z * 100f) / 100f,
+			Mathf.Round(gameObject.transform.rotation.w * 100f) / 100f),
 			IsPickableObjectPickedUp = IsObjectPickedUp,
 			IsPickableObjectDestroyed = _isObjectDestroyed
 		};

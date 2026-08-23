@@ -178,11 +178,18 @@ public abstract class NPCabstract : NPCcore, IInteractable
 		{
 			NPCindex = NPCindex,
 			NPCnameSystem = InteractionObjectNameSystem,
-			NPCposition = gameObject.transform.position,
-			NPCrotation = gameObject.transform.rotation,
+			NPCposition = new Vector3(
+		Mathf.Round(gameObject.transform.position.x * 100f) / 100f,
+		Mathf.Round(gameObject.transform.position.y * 100f) / 100f,
+		Mathf.Round(gameObject.transform.position.z * 100f) / 100f),
+			NPCrotation = new Quaternion(
+		Mathf.Round(gameObject.transform.rotation.x * 100f) / 100f,
+		Mathf.Round(gameObject.transform.rotation.y * 100f) / 100f,
+		Mathf.Round(gameObject.transform.rotation.z * 100f) / 100f,
+		Mathf.Round(gameObject.transform.rotation.w * 100f) / 100f),
 			NPCnextAnchorPoint = _NPCstateMachineController.AnchorData.Count,
 			NPCstate = _NPCstateMachineController.CurrentNPCState,
-			NPChealth = _NPChealthController.CurrentHealth
+			NPChealth = Mathf.Round(_NPChealthController.CurrentHealth * 100f) / 100f
 		};
 
 		if (indexInList != -1)
@@ -208,7 +215,7 @@ public abstract class NPCabstract : NPCcore, IInteractable
 		gameObject.transform.position = savedState.NPCposition;
 		gameObject.transform.rotation = savedState.NPCrotation;
 
-		_NPChealthController.SetCurrentHealth(savedState.NPChealth);
+		_NPChealthController.SetCurrentHealthFromLoad(savedState.NPChealth);
 
 		int safeAnchorIndex = Mathf.Clamp(savedState.NPCnextAnchorPoint, 0, _NPCstateMachineController.AnchorData.Count > 0 ? _NPCstateMachineController.AnchorData.Count - 1 : 0);
 		_NPCstateMachineController.SetNPCState(savedState.NPCstate);

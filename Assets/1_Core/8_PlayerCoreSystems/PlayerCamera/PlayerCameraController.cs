@@ -245,23 +245,6 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		return _previousPlayerCameraType.ToString();
 	}
 
-	public void SaveData(ref GameData data)
-	{
-		data.PlayerCamera.PLayerCameraDistanceY = PlayerCameraDistanceY;
-		data.PlayerCamera.PlayerCameraDistanceZ = PlayerCameraDistanceZ;
-		data.PlayerCamera.PlayerCameraRotation = new Quaternion(-_mouseRotation.x, _mouseRotation.y, 0, 0);
-		data.PlayerCamera.IsPlayerCameraShoulderRight = _isCameraShoulderRight;
-	}
-
-	public void LoadData(GameData data)
-	{
-		PlayerCameraDistanceY = data.PlayerCamera.PLayerCameraDistanceY;
-		PlayerCameraDistanceZ = data.PlayerCamera.PlayerCameraDistanceZ;
-		_mouseRotation.x = -data.PlayerCamera.PlayerCameraRotation.x;
-		_mouseRotation.y = data.PlayerCamera.PlayerCameraRotation.y;
-		_isCameraShoulderRight = data.PlayerCamera.IsPlayerCameraShoulderRight;
-	}
-
 	private void ChangeMouseSensitivityMultiplierX(float newMouseSensitivityX)
 	{
 		_mouseSensitivityMultiplierX = newMouseSensitivityX;	
@@ -446,5 +429,29 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 	private void SendCameraFOV()
 	{
 		_pauseSubMenuSettingsSectionGeneralController.GetCameraCurrentFOV(_currentFOV);
+	}
+
+	public void SaveData(ref GameData data)
+	{
+		data.PlayerCamera.PLayerCameraDistanceY = Mathf.Round(PlayerCameraDistanceY * 100f) / 100f;
+		data.PlayerCamera.PlayerCameraDistanceZ = Mathf.Round(PlayerCameraDistanceZ * 100f) / 100f;
+
+		Quaternion tempRotation = new Quaternion(-_mouseRotation.x, _mouseRotation.y, 0, 0);
+		data.PlayerCamera.PlayerCameraRotation = new Quaternion(
+			Mathf.Round(tempRotation.x * 100f) / 100f,
+			Mathf.Round(tempRotation.y * 100f) / 100f,
+			Mathf.Round(tempRotation.z * 100f) / 100f,
+			Mathf.Round(tempRotation.w * 100f) / 100f);
+
+		data.PlayerCamera.IsPlayerCameraShoulderRight = _isCameraShoulderRight;
+	}
+
+	public void LoadData(GameData data)
+	{
+		PlayerCameraDistanceY = data.PlayerCamera.PLayerCameraDistanceY;
+		PlayerCameraDistanceZ = data.PlayerCamera.PlayerCameraDistanceZ;
+		_mouseRotation.x = -data.PlayerCamera.PlayerCameraRotation.x;
+		_mouseRotation.y = data.PlayerCamera.PlayerCameraRotation.y;
+		_isCameraShoulderRight = data.PlayerCamera.IsPlayerCameraShoulderRight;
 	}
 }
