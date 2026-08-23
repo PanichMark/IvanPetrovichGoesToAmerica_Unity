@@ -89473,6 +89473,8 @@ GameObject:
   - component: {fileID: 1172950691}
   - component: {fileID: 1172950692}
   - component: {fileID: 1172950693}
+  - component: {fileID: 1172950695}
+  - component: {fileID: 1172950694}
   m_Layer: 0
   m_Name: NPC_Citizen (2)
   m_TagString: Interactable
@@ -89783,6 +89785,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11816908c46ca704fb92502c6aec76eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1172950694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172950681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dd0c6c59faf3f34d9463777451ee29c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1172950695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172950681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eb26071c8cdc9042b81136b57009c91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1173698910
@@ -139713,6 +139739,8 @@ GameObject:
   - component: {fileID: 1854547197}
   - component: {fileID: 1854547208}
   - component: {fileID: 1854547209}
+  - component: {fileID: 1854547211}
+  - component: {fileID: 1854547210}
   m_Layer: 0
   m_Name: NPC_Sweeper (1)
   m_TagString: Interactable
@@ -140054,6 +140082,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11816908c46ca704fb92502c6aec76eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1854547210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854547196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dd0c6c59faf3f34d9463777451ee29c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1854547211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854547196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eb26071c8cdc9042b81136b57009c91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1855324558
@@ -146785,6 +146837,8 @@ GameObject:
   - component: {fileID: 1938486440}
   - component: {fileID: 1938486451}
   - component: {fileID: 1938486452}
+  - component: {fileID: 1938486454}
+  - component: {fileID: 1938486453}
   m_Layer: 16
   m_Name: Hitbox TEST
   m_TagString: Interactable
@@ -147126,6 +147180,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11816908c46ca704fb92502c6aec76eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1938486453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938486439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dd0c6c59faf3f34d9463777451ee29c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1938486454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938486439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eb26071c8cdc9042b81136b57009c91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1939213409

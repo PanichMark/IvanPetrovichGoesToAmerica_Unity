@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "BootstrapGameDataList", menuName = "Configs/GameData/BootstrapGameDataList")]
 public class BootstrapGameDataList : ScriptableObject
 {
 	public int NumberOfSafeFileSlots;
+	public List<Sprite> NPCdetectionSignFrames;
 	public TextAsset LocalizationMain;
 	public TermsAndConditions TermsAndConditions;
     public GameCanvasesList GameCanvasesList;

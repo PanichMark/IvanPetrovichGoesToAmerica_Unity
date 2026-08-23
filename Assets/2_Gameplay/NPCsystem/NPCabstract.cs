@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -9,8 +9,6 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(NPCdebugHUDcontroller))]
-[RequireComponent(typeof(NPCdetectionManager))]
-[RequireComponent(typeof(NPCdetectionSignController))]
 
 public abstract class NPCabstract : NPCcore, IInteractable
 {
@@ -19,10 +17,10 @@ public abstract class NPCabstract : NPCcore, IInteractable
 	[SerializeField] protected string _NPCname;
 
 	[SerializeField] private ConfigNPCBodyType _NPCconfigBodyType;
-	
 
 	[SerializeField] private InteractionObjectPickableData _pickableBodyData;
-
+	private GameObject _playerCameraGameObject;
+	private Camera _playerCamera;
 	private GameObject _canvasNPCstatus;
 	private GameObject _imageDetectionSign;
 	private GameObject _textNPCcurrentState;
@@ -39,7 +37,7 @@ public abstract class NPCabstract : NPCcore, IInteractable
 	protected NPCdetectionSignController _NPCdetectionSignController;
 	protected InteractionObjectPickableNonThrowable _pickable;
 	private NavMeshAgent _navMeshAgent;
-
+	private List<Sprite> _detectionSignFrames;
 	private LocalizationManager _localizationManager;
 	protected NPCstateMachineController _NPCstateMachineController;
 
@@ -60,6 +58,9 @@ public abstract class NPCabstract : NPCcore, IInteractable
 
 	private void Start()
 	{
+		_playerCameraGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
+		_playerCamera = _playerCameraGameObject.GetComponent<Camera>();
+		_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>("NPCdetectionSignFrames");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
@@ -107,7 +108,9 @@ public abstract class NPCabstract : NPCcore, IInteractable
 		_NPCdetectionSignController.Initialize(
 			_NPCdetectionManager,
 			_canvasNPCstatus,
-			_imageDetectionSign);
+			_imageDetectionSign,
+			_detectionSignFrames,
+			_playerCamera);
 
 		if (_NPCdebugHUDcontroller != null)
 		{

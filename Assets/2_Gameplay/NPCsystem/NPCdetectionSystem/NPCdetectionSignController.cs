@@ -4,61 +4,42 @@ using System.Collections.Generic;
 
 public class NPCdetectionSignController : MonoBehaviour
 {
+	private Camera _playerCamera;
 	private GameObject _canvasNPCstatus;
 	private GameObject _imageDetectionSign;
 	private Image _imageComponentDetectionSign;
 	private NPCdetectionManager _NPCdetectionManager;
-	private List<Sprite> _frames = new List<Sprite>();
-
-	public void Initialize(NPCdetectionManager NPCdetectionManager, GameObject canvasNPCstatus, GameObject imageDetectionSign)
+	private List<Sprite> _detectionSignFrames = new List<Sprite>();
+	public void Initialize(
+		NPCdetectionManager npcDetectionManager,
+		GameObject canvasNPCstatus,
+		GameObject imageDetectionSign,
+		List<Sprite> detectionSignFrames,
+		Camera playerCamera)
 	{
-		_NPCdetectionManager = NPCdetectionManager;
+		_NPCdetectionManager = npcDetectionManager;
 		_canvasNPCstatus = canvasNPCstatus;
 		_imageDetectionSign = imageDetectionSign;
 		_imageComponentDetectionSign = _imageDetectionSign.GetComponent<Image>();
+		_detectionSignFrames = detectionSignFrames;
 
-		LoadFramesFromTexture();
+		//_canvasNPCstatus.GetComponent<Canvas>().worldCamera = playerCamera;
+		_playerCamera = playerCamera;
 		UpdateSpriteByMeter(0f);
 		_NPCdetectionManager.OnMeterChanged += UpdateSpriteByMeter;
 	}
 
-	private void LoadFramesFromTexture()
+	private void Update()
 	{
-		_frames.Clear();
-		Sprite currentSprite = _imageComponentDetectionSign.sprite;
-
-		string baseName = currentSprite.name;
-		int padding = currentSprite.packed ? 2 : 0;
-
-		Debug.Log("[Sign] Base sprite name: " + baseName);
-		Debug.Log("[Sign] Total sprites in project memory: " + Resources.FindObjectsOfTypeAll<Sprite>().Length);
-
-		// Нативный способ получить ВСЕ куски из этой конкретной текстуры (SpriteSheet)
-		Object[] rawAssets = Resources.LoadAll("", typeof(Sprite));
-		foreach (var obj in rawAssets)
-		{
-			Sprite sprite = obj as Sprite;
-			if (sprite != null && sprite.texture == currentSprite.texture)
-			{
-				// Проверяем, что это кусок сетки, а не целая картинка целиком
-				if (sprite.rect.width < currentSprite.texture.width - padding)
-				{
-					_frames.Add(sprite);
-				}
-			}
-		}
-
-		_frames.Sort((a, b) => string.Compare(a.name, b.name));
-		Debug.Log("[Sign] Frames loaded successfully. Count: " + _frames.Count);
-		for (int i = 0; i < _frames.Count; i++)
-		{
-			Debug.Log("Frame " + i + ": " + _frames[i].name);
-		}
+		_canvasNPCstatus.transform.LookAt(_playerCamera.transform);
 	}
 
 	private void OnDestroy()
 	{
-		_NPCdetectionManager.OnMeterChanged -= UpdateSpriteByMeter;
+		if (_NPCdetectionManager != null)
+		{
+			_NPCdetectionManager.OnMeterChanged -= UpdateSpriteByMeter;
+		}
 	}
 
 	private void UpdateSpriteByMeter(float meterValue)
@@ -66,17 +47,11 @@ public class NPCdetectionSignController : MonoBehaviour
 		bool shouldShow = meterValue > 0f;
 		_imageDetectionSign.SetActive(shouldShow);
 
-		if (!shouldShow || _frames.Count == 0) return;
+		if (!shouldShow || _detectionSignFrames.Count == 0) return;
 
-		float step = 100f / _frames.Count;
-		int frameIndex = Mathf.FloorToInt(meterValue / step);
+		float normalizedValue = Mathf.Clamp01(meterValue / 100f);
+		int frameIndex = Mathf.RoundToInt(normalizedValue * (_detectionSignFrames.Count - 1));
 
-		if (frameIndex >= _frames.Count)
-		{
-			frameIndex = _frames.Count - 1;
-		}
-
-		Debug.Log("[Sign] Meter: " + meterValue + ". Step: " + step + ". Index: " + frameIndex + ". Sprite: " + _frames[frameIndex].name);
-		_imageComponentDetectionSign.sprite = _frames[frameIndex];
+		_imageComponentDetectionSign.sprite = _detectionSignFrames[frameIndex];
 	}
 }
