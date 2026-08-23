@@ -8780,7 +8780,7 @@ Transform:
   m_GameObject: {fileID: 115502248}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.27, y: 0.5, z: -5.14}
+  m_LocalPosition: {x: -9.880001, y: 0.5, z: -4.8699994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -139980,8 +139980,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28210390db927248bb499b0611afcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialState: 0
-  _anchorData: []
+  _initialState: 1
+  _anchorData:
+  - NPCanchorPoint: {fileID: 36382688}
+    NPCwaitDuration: 0
+    NPCrotation: {x: 0, y: 0, z: 0}
+  - NPCanchorPoint: {fileID: 160834045}
+    NPCwaitDuration: 0
+    NPCrotation: {x: 0, y: 0, z: 0}
+  - NPCanchorPoint: {fileID: 1546642819}
+    NPCwaitDuration: 0
+    NPCrotation: {x: 0, y: 0, z: 0}
+  - NPCanchorPoint: {fileID: 116053961}
+    NPCwaitDuration: 0
+    NPCrotation: {x: 0, y: 0, z: 0}
+  - NPCanchorPoint: {fileID: 1905203400}
+    NPCwaitDuration: 0
+    NPCrotation: {x: 0, y: 0, z: 0}
+  - NPCanchorPoint: {fileID: 1378876659}
+    NPCwaitDuration: 0
+    NPCrotation: {x: 0, y: 0, z: 0}
 --- !u!114 &1854547204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146204,7 +146222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
+  m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
@@ -162498,15 +162516,15 @@ RectTransform:
   m_GameObject: {fileID: 2135076340}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1927354987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -960, y: -540}
-  m_SizeDelta: {x: 500, y: 500}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2135076342
 MonoBehaviour:
@@ -167434,7 +167452,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6527207299170144780, guid: cd56cb3b93539254fa271ccf08c8f78b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.6499996
+      value: -4.86
       objectReference: {fileID: 0}
     - target: {fileID: 6527207299170144780, guid: cd56cb3b93539254fa271ccf08c8f78b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -167442,7 +167460,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6527207299170144780, guid: cd56cb3b93539254fa271ccf08c8f78b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.2700005
+      value: -4.32
       objectReference: {fileID: 0}
     - target: {fileID: 6527207299170144780, guid: cd56cb3b93539254fa271ccf08c8f78b, type: 3}
       propertyPath: m_LocalRotation.w

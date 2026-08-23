@@ -50,7 +50,7 @@ public class NPCdetectionSignController : MonoBehaviour
 
 	private void Update()
 	{
-		Vector3 targetPosition = transform.position + new Vector3(0f, 1.8f, 0f);
+		Vector3 targetPosition = transform.position + new Vector3(0f, 2.2f, 0f);
 		Vector3 screenPoint = _playerCamera.WorldToViewportPoint(targetPosition);
 
 		Debug.DrawLine(_playerCamera.transform.position, transform.position, Color.cyan);
