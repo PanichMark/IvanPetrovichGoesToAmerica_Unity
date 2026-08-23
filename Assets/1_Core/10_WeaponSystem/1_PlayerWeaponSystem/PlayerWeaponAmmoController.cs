@@ -191,6 +191,8 @@ public class PlayerWeaponAmmoController : MonoBehaviour, ISaveLoad
 
 	public IEnumerator LoadData(GameData data)
 	{
+		//Debug.Log("LOAD AMMO");
+
 		yield return null;
 	}
 }

@@ -33,7 +33,7 @@ public class MissionsManager : MonoBehaviour, ISaveLoad
 
 		ActiveMission = _gameMissions.MissionsInOrder[0];
 
-		CurrentStepIndex = 1;
+		CurrentStepIndex = 0;
 
 		if (ActiveMission.Steps.Length > 0)
 		{
@@ -115,9 +115,9 @@ public class MissionsManager : MonoBehaviour, ISaveLoad
 	{
 		int currentMissionIndex = System.Array.IndexOf(_gameMissions.MissionsInOrder, ActiveMission);
 
-		if (currentMissionIndex + 1 < _gameMissions.MissionsInOrder.Length)
+		if (currentMissionIndex < _gameMissions.MissionsInOrder.Length)
 		{
-			ActiveMission = _gameMissions.MissionsInOrder[currentMissionIndex + 1];
+			ActiveMission = _gameMissions.MissionsInOrder[currentMissionIndex];
 			CurrentStepIndex = 0;
 		}
 	}
@@ -164,6 +164,8 @@ public class MissionsManager : MonoBehaviour, ISaveLoad
 	{
 		CurrentStepIndex = data.MissionData.MissionStep;
 		CompleteCurrentStep(true);
+
+		//Debug.Log(CurrentStepIndex);
 
 		yield return null;
 	}

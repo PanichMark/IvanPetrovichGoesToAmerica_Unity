@@ -24,6 +24,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private ConfigBootstrapFirstSceneToLoad _firstSceneToLoad;
 
 	[Header("--- CONFIGS PLAYER  ---")]
+	[SerializeField] private bool _applyConfigsPLayer;
 	[SerializeField] private ConfigPlayerTransform _playerTransform;
 	[SerializeField] private ConfigPlayerWeapons _playerWeapons;
 	[SerializeField] private ConfigPlayerResourcesAmmo _playerAmmo;
@@ -119,7 +120,10 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(LoadFirstGameplayScene());
 
-		ApplyBootstrapPlayerConfigs();
+		if (_applyConfigsPLayer)
+		{
+			ApplyBootstrapPlayerConfigs();
+		}
 
 		OnLoadSettingsData?.Invoke();
 

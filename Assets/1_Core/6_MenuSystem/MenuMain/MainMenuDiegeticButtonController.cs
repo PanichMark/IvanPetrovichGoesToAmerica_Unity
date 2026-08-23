@@ -261,6 +261,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	IEnumerator StartNewGame()
 	{
-		yield return StartCoroutine(_saveLoadController.NewGame());
+		yield return null;
+		//yield return StartCoroutine(_saveLoadController.NewGame());
 	}
 }

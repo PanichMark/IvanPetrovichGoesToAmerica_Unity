@@ -639,6 +639,8 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 	public IEnumerator LoadData(GameData data)
 	{
+		//Debug.Log("LOAD WEAPONS");
+
 		HideWeapon(WeaponHandType.Right);
 		DestroyWeapon(WeaponHandType.Right);
 
