@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class NPCcore : MonoBehaviour, ISaveLoad
 {
@@ -9,11 +10,13 @@ public class NPCcore : MonoBehaviour, ISaveLoad
 		NPCindex = index;
 	}
 
-	public virtual void LoadData(GameData data)
+	public virtual IEnumerator SaveData(GameData data)
 	{
+		yield return null;
 	}
 
-	public virtual void SaveData(ref GameData data)
+	public virtual IEnumerator LoadData(GameData data)
 	{
+		yield return null;
 	}
 }

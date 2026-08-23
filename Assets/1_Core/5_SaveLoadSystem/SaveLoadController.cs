@@ -100,12 +100,12 @@ public class SaveLoadController : MonoBehaviour
 
 		foreach (ISaveLoad saveLoadObj in _persistentSaveLoadObjects)
 		{
-			saveLoadObj.SaveData(ref _gameData);
+			yield return saveLoadObj.SaveData(_gameData);
 		}
 
 		foreach (ISaveLoad saveLoadObj in _gameplaySaveLoadObjects)
 		{
-			saveLoadObj.SaveData(ref _gameData);
+			yield return saveLoadObj.SaveData(_gameData);
 		}
 
 		_fileDataHandler.Save(_gameData);
@@ -140,13 +140,35 @@ public class SaveLoadController : MonoBehaviour
 
 		SceneNameToLoad = _gameData.Scene;
 
+		// Грузим объекты, которые не зависят от сцены (инвентарь, навыки и т.д.)
 		foreach (ISaveLoad persistentLoadObj in _persistentSaveLoadObjects)
 		{
-			persistentLoadObj.LoadData(_gameData);
+			yield return persistentLoadObj.LoadData(_gameData);
 		}
-		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), SceneNameToLoad)));
 
-		yield break;
+		// Запускаем сцену и ждем ЕЁ внутреннюю корутину до самого конца
+		var sceneLoadingRoutine = _gameSceneManager.LoadGameplayScene((GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), SceneNameToLoad));
+
+		while (sceneLoadingRoutine.MoveNext())
+		{
+			yield return sceneLoadingRoutine.Current;
+		}
+
+		// Обновляем список геймплейных объектов НОВОЙ сцены
+		yield return UpdateGameplaySaveLoadObjects();
+
+		// Грузим данные конкретно для объектов новой сцены
+		foreach (ISaveLoad gameplayLoadObj in _gameplaySaveLoadObjects)
+		{
+			yield return gameplayLoadObj.LoadData(_gameData);
+		}
+
+		_gameSceneManager.ApplyGameplayDataFinished();
+
+		// Теперь сохраняем временный сейв с актуальными индексами новых объектов
+		yield return SaveGame(-1);
+
+		
 	}
 
 	public void DeleteGame(int deleteSlotNumber)

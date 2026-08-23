@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 [RequireComponent(typeof(NPChealthController))]
 [RequireComponent(typeof(NPCstateMachineController))]
@@ -163,12 +164,12 @@ public abstract class NPCabstract : NPCcore, IInteractable
 		//Destroy(this);
 	}
 
-	public override void SaveData(ref GameData data)
+	public override IEnumerator SaveData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
 		if (data.NPCsData == null || !data.NPCsData.ContainsKey(currentScene))
-			return;
+			yield break;
 
 		var targetList = data.NPCsData[currentScene];
 
@@ -179,14 +180,14 @@ public abstract class NPCabstract : NPCcore, IInteractable
 			NPCindex = NPCindex,
 			NPCnameSystem = InteractionObjectNameSystem,
 			NPCposition = new Vector3(
-		Mathf.Round(gameObject.transform.position.x * 100f) / 100f,
-		Mathf.Round(gameObject.transform.position.y * 100f) / 100f,
-		Mathf.Round(gameObject.transform.position.z * 100f) / 100f),
+				Mathf.Round(gameObject.transform.position.x * 100f) / 100f,
+				Mathf.Round(gameObject.transform.position.y * 100f) / 100f,
+				Mathf.Round(gameObject.transform.position.z * 100f) / 100f),
 			NPCrotation = new Quaternion(
-		Mathf.Round(gameObject.transform.rotation.x * 100f) / 100f,
-		Mathf.Round(gameObject.transform.rotation.y * 100f) / 100f,
-		Mathf.Round(gameObject.transform.rotation.z * 100f) / 100f,
-		Mathf.Round(gameObject.transform.rotation.w * 100f) / 100f),
+				Mathf.Round(gameObject.transform.rotation.x * 100f) / 100f,
+				Mathf.Round(gameObject.transform.rotation.y * 100f) / 100f,
+				Mathf.Round(gameObject.transform.rotation.z * 100f) / 100f,
+				Mathf.Round(gameObject.transform.rotation.w * 100f) / 100f),
 			NPCnextAnchorPoint = _NPCstateMachineController.AnchorData.Count,
 			NPCstate = _NPCstateMachineController.CurrentNPCState,
 			NPChealth = Mathf.Round(_NPChealthController.CurrentHealth * 100f) / 100f
@@ -200,17 +201,19 @@ public abstract class NPCabstract : NPCcore, IInteractable
 		{
 			targetList.Add(updatedItem);
 		}
+
+		yield return null;
 	}
 
-	public override void LoadData(GameData data)
+	public override IEnumerator LoadData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.NPCsData == null || !data.NPCsData.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.NPCsData == null || !data.NPCsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
 		var savedState = sourceList.Find(item => item.NPCindex == NPCindex);
 
-		if (savedState.Equals(default(NPCdata))) return;
+		if (savedState.Equals(default(NPCdata))) yield break;
 
 		gameObject.transform.position = savedState.NPCposition;
 		gameObject.transform.rotation = savedState.NPCrotation;
@@ -219,5 +222,7 @@ public abstract class NPCabstract : NPCcore, IInteractable
 
 		int safeAnchorIndex = Mathf.Clamp(savedState.NPCnextAnchorPoint, 0, _NPCstateMachineController.AnchorData.Count > 0 ? _NPCstateMachineController.AnchorData.Count - 1 : 0);
 		_NPCstateMachineController.SetNPCState(savedState.NPCstate);
+
+		yield return null;
 	}
 }

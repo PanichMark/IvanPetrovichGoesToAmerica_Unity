@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public abstract class InteractionObjectLightAbstract : MonoBehaviour, ISaveLoad
 {
@@ -55,12 +56,12 @@ public abstract class InteractionObjectLightAbstract : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
 		if (data.LightsData == null || !data.LightsData.ContainsKey(currentScene))
-			return;
+			yield break;
 
 		var targetList = data.LightsData[currentScene];
 
@@ -81,17 +82,19 @@ public abstract class InteractionObjectLightAbstract : MonoBehaviour, ISaveLoad
 		{
 			targetList.Add(updatedItem);
 		}
+
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.LightsData == null || !data.LightsData.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.LightsData == null || !data.LightsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
 		var savedState = sourceList.Find(item => item.LightIndex == LightIndex);
 
-		if (savedState.Equals(default(LightData))) return;
+		if (savedState.Equals(default(LightData))) yield break;
 
 		if (savedState.IsLightTurnedOn)
 		{
@@ -101,5 +104,7 @@ public abstract class InteractionObjectLightAbstract : MonoBehaviour, ISaveLoad
 		{
 			TurnOff();
 		}
+
+		yield return null;
 	}
 }

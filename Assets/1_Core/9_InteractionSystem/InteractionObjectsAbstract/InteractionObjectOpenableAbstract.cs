@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IInteractable, ISaveLoad
 {
@@ -30,11 +31,10 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 
 	public abstract void InteractCutscene();
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		// Инициализируем словарь или список для текущей сцены, если их нет
 		if (data.OpenableObjectsData == null)
 		{
 			data.OpenableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<OpenableObjectData>>();
@@ -68,19 +68,23 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 				IsOpenableObjectOpened = _isObjectOpened
 			});
 		}
+
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.OpenableObjectsData == null || !data.OpenableObjectsData.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.OpenableObjectsData == null || !data.OpenableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
 		var savedState = sourceList.Find(item => item.OpenableObjectIndex == OpenableObjectIndex);
 
-		if (savedState.Equals(default(OpenableObjectData))) return;
+		if (savedState.Equals(default(OpenableObjectData))) yield break;
 
 		WasOpenableUnlocked = savedState.IsOpenableObjectUnlocked;
 		_isObjectOpened = savedState.IsOpenableObjectOpened;
+
+		yield return null;
 	}
 }

@@ -1,5 +1,7 @@
-﻿public interface ISaveLoad
+﻿using System.Collections;
+
+public interface ISaveLoad
 {
-    void SaveData(ref GameData data);
-    void LoadData(GameData data);
+	IEnumerator SaveData(GameData data);
+	IEnumerator LoadData(GameData data);
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class InteractionObjectLootKey : InteractionObjectLootAbstract
 {
@@ -21,13 +22,13 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 		Debug.Log($"Added key: {_keyID}");
 	}
 
-	public override void LoadData(GameData data)
+	public override IEnumerator LoadData(GameData data)
 	{
 		_keysManager.RemoveKey(_keyID);
 
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
 		if (sourceList.Count > 0)
 		{
@@ -36,11 +37,11 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 			if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
 			{
 				WasLootItemCollected = true;
-
 				_keysManager.AddKey(_keyID);
-
 				Destroy(gameObject);
 			}
 		}
+
+		yield return null;
 	}
 }

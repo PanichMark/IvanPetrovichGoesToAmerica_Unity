@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 {
@@ -75,13 +76,14 @@ public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		IsPlayerArmed = data.PlayerBehaviour.IsPlayerArmed;
 		WasPlayerArmed = data.PlayerBehaviour.WasPlayerArmed;
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		IsPlayerArmed = false;
 		WasPlayerArmed = false;
@@ -91,8 +93,6 @@ public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 		data.PlayerBehaviour.IsPlayerArmed = IsPlayerArmed;
 		data.PlayerBehaviour.WasPlayerArmed = WasPlayerArmed;
 
-
-
 		if (IsPlayerArmed)
 		{
 			ArmPlayer();
@@ -101,5 +101,7 @@ public class PlayerBehaviourController : MonoBehaviour, ISaveLoad
 		{
 			DisarmPlayer();
 		}
+
+		yield return null;
 	}
 }

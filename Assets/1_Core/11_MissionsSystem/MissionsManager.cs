@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class MissionsManager : MonoBehaviour, ISaveLoad
 {
@@ -152,17 +153,18 @@ public class MissionsManager : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		data.MissionData.Mission = ActiveMission.MissionName;
 		data.MissionData.MissionStep = CurrentStepIndex;
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		CurrentStepIndex = data.MissionData.MissionStep;
 		CompleteCurrentStep(true);
-		//CheckAndCompleteCurrentStep();
-		//CompleteCurrentStep();
+
+		yield return null;
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerManaController : MonoBehaviour, ISaveLoad
 {
@@ -92,22 +93,6 @@ public class PlayerManaController : MonoBehaviour, ISaveLoad
 		Debug.Log($"used: {ManaCost} mana");
 	}
 
-	public void SaveData(ref GameData data)
-	{
-		data.PlayerResources.PlayerMana = CurrentPlayerMana;
-		data.PlayerResources.PlayerManaReplenishItemsNumber = CurrentManaReplenishItemsNumber;
-	}
-
-	public void LoadData(GameData data)
-	{
-		CurrentPlayerMana = data.PlayerResources.PlayerMana;
-		CurrentManaReplenishItemsNumber = data.PlayerResources.PlayerManaReplenishItemsNumber;
-
-		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
-
-		_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
-	}
-
 	private void ShowSliderManaBarFillArea()
 	{
 		_sliderManaBarFillArea.SetActive(true);
@@ -116,5 +101,24 @@ public class PlayerManaController : MonoBehaviour, ISaveLoad
 	private void HideSliderManaBarFillArea()
 	{
 		_sliderManaBarFillArea.SetActive(false);
+	}
+
+	public IEnumerator SaveData(GameData data)
+	{
+		data.PlayerResources.PlayerMana = CurrentPlayerMana;
+		data.PlayerResources.PlayerManaReplenishItemsNumber = CurrentManaReplenishItemsNumber;
+		yield return null;
+	}
+
+	public IEnumerator LoadData(GameData data)
+	{
+		CurrentPlayerMana = data.PlayerResources.PlayerMana;
+		CurrentManaReplenishItemsNumber = data.PlayerResources.PlayerManaReplenishItemsNumber;
+
+		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
+
+		_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+
+		yield return null;
 	}
 }

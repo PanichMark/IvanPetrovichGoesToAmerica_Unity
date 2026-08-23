@@ -607,16 +607,18 @@ public class PlayerInteractionController : MonoBehaviour, ISaveLoad
 		PickUpPickableObject();
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
-
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		if (CurrentPickableObject != null)
 		{
 			DropPickable();
 		}
+
+		yield return null;
 	}
 }

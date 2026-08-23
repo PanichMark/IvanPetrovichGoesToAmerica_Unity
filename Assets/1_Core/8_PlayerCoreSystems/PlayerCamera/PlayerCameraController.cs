@@ -431,7 +431,7 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 		_pauseSubMenuSettingsSectionGeneralController.GetCameraCurrentFOV(_currentFOV);
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		data.PlayerCamera.PLayerCameraDistanceY = Mathf.Round(PlayerCameraDistanceY * 100f) / 100f;
 		data.PlayerCamera.PlayerCameraDistanceZ = Mathf.Round(PlayerCameraDistanceZ * 100f) / 100f;
@@ -444,14 +444,18 @@ public class PlayerCameraController : MonoBehaviour, ISaveLoad
 			Mathf.Round(tempRotation.w * 100f) / 100f);
 
 		data.PlayerCamera.IsPlayerCameraShoulderRight = _isCameraShoulderRight;
+
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		PlayerCameraDistanceY = data.PlayerCamera.PLayerCameraDistanceY;
 		PlayerCameraDistanceZ = data.PlayerCamera.PlayerCameraDistanceZ;
 		_mouseRotation.x = -data.PlayerCamera.PlayerCameraRotation.x;
 		_mouseRotation.y = data.PlayerCamera.PlayerCameraRotation.y;
 		_isCameraShoulderRight = data.PlayerCamera.IsPlayerCameraShoulderRight;
+
+		yield return null;
 	}
 }

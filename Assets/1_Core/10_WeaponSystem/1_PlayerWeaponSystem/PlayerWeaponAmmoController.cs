@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public delegate void OnAmmoChangedHandler(AmmoTypes type, int newAmount);
 
@@ -165,7 +166,7 @@ public class PlayerWeaponAmmoController : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		List<AmmoTypeData> ammoList = new List<AmmoTypeData>();
 		foreach (var kvp in _ammoDictionary)
@@ -184,36 +185,12 @@ public class PlayerWeaponAmmoController : MonoBehaviour, ISaveLoad
 			weaponList.Add(saveStruct);
 		}
 		data.PlayerWeapons.UnlockedPlayerRangedWeapons = weaponList;
+
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
-		/*
-		AmmoDictionary.Clear();
-
-		if (data.AmmoDictionary != null)
-		{
-			foreach (var loadedAmmo in data.AmmoDictionary)
-			{
-				if (Enum.TryParse(loadedAmmo.AmmoTypeJson, out AmmoTypes parsedType))
-				{
-					AmmoDictionary[parsedType] = loadedAmmo;
-					OnReserveAmmoChanged?.Invoke(parsedType, loadedAmmo.TotalAmmoCurrent);
-				}
-			}
-		}
-
-		WeaponsRangedDictionary.Clear();
-		if (data.UnlockedRangedWeapons != null)
-		{
-			foreach (var loadedWeapon in data.UnlockedRangedWeapons)
-			{
-				if (Enum.TryParse(loadedWeapon.RagnedWeaponJson, out WeaponRangedEnum parsedWeaponType))
-				{
-					WeaponsRangedDictionary[parsedWeaponType] = loadedWeapon;
-				}
-			}
-		}
-		*/
+		yield return null;
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAbstract
 {
@@ -108,15 +109,15 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 		}
 	}
 
-	public override void LoadData(GameData data)
+	public override IEnumerator LoadData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
 		var savedState = sourceList.Find(item => item.PickableObjectIndex == PickableObjectIndex);
 
-		if (savedState.Equals(default(PickableObjectData))) return;
+		if (savedState.Equals(default(PickableObjectData))) yield break;
 
 		IsObjectPickedUp = savedState.IsPickableObjectPickedUp;
 
@@ -125,7 +126,6 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 			IsObjectPickedUp = false;
 
 			PickUpObject(true);
-			//Debug.Log(_playerInteractionController);
 			_playerInteractionController.PickUpObjectOnLoadData(gameObject);
 
 			if (_playerInteractionController.CurrentIThrowable == null && _isMovementRestricted)
@@ -135,10 +135,10 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 		}
 		else
 		{
-
 			gameObject.transform.position = savedState.PickableObjectPosition;
 			gameObject.transform.rotation = savedState.PickableObjectRotation;
 		}
 
+		yield return null;
 	}
 }

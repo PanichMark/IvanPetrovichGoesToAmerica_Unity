@@ -604,7 +604,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		return new List<GameObject>(UnlockedWeapons.Values);
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		data.PlayerWeapons.UnlockedPlayerWeapons = new List<string>(UnlockedWeapons.Keys);
 
@@ -620,8 +620,7 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 
 				WeaponRangedData dataToAdd = new WeaponRangedData();
 				dataToAdd.RagnedWeapon = weaponEnumType;
-            
-				// Получаем данные об оружии из менеджера ресурсов по его типу
+
 				if (_ammoManager.WeaponsRangedDictionary.TryGetValue(weaponEnumType, out WeaponRangedData weaponState))
 				{
 					dataToAdd.MagazineAmmoCurrent = weaponState.MagazineAmmoCurrent;
@@ -632,12 +631,13 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			}
 		}
 
-		// Сохранение активного оружия в руках
 		data.PlayerWeapons.PlayerWeaponRightHand = RightHandWeapon?.GetComponent<WeaponAbstract>()?.WeaponNameSystem;
 		data.PlayerWeapons.PlayerWeaponLeftHand = LeftHandWeapon?.GetComponent<WeaponAbstract>()?.WeaponNameSystem;
+
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		HideWeapon(WeaponHandType.Right);
 		DestroyWeapon(WeaponHandType.Right);
@@ -653,45 +653,34 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 				GameObject weaponPrefab = Resources.Load<GameObject>("WeaponSystem/WeaponsPlayer/" + weaponKey);
 				if (weaponPrefab != null)
 				{
-					//Debug.Log(weaponPrefab);
 					UnlockWeapon(weaponPrefab);
 				}
 			}
 		}
+
 		/*
 		// Загрузка состояния дальнобойного оружия (патроны и т.д.)
 		if (data.PlayerWeapons.UnlockedPlayerRangedWeapons != null)
 		{
 			foreach (var loadedWeaponData in data.PlayerWeapons.UnlockedPlayerRangedWeapons)
 			{
-				// 1. Пробуем распарсить строковое представление типа оружия обратно в Enum
 				if (Enum.TryParse(loadedWeaponData.RagnedWeapon, out PlayerWeaponNames parsedWeaponType))
 				{
-					// 2. Ищем шаблон этого оружия в словаре менеджера ресурсов
 					if (_ammoManager.WeaponsRangedDictionary.ContainsKey(parsedWeaponType))
 					{
-						// 3. Получаем ссылку на данные шаблона
 						var weaponState = _ammoManager.WeaponsRangedDictionary[parsedWeaponType];
-
-						// 4. Применяем загруженные данные о состоянии магазина
 						weaponState.MagazineAmmoCurrent = loadedWeaponData.MagazineAmmoCurrent;
 
-						// Если нужно, можно восстановить и тип патронов из JSON
 						if (Enum.TryParse(loadedWeaponData.AmmoType, out AmmoTypes parsedAmmoType))
 						{
 							weaponState.AmmoType = parsedAmmoType;
 						}
-
-						// 5. ОБЯЗАТЕЛЬНО сохраняем обновленные данные обратно в словарь,
-						// так как структуры (struct) передаются по значению, а не по ссылке.
 						_ammoManager.WeaponsRangedDictionary[parsedWeaponType] = weaponState;
 					}
 				}
 			}
 		}
 		*/
-
-		// Загрузка активного оружия в правую руку
 
 		if (data.PlayerWeapons.PlayerWeaponRightHand != null)
 		{
@@ -706,27 +695,21 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 			}
 		}
 
-		// Загрузка активного оружия в левую руку
 		if (data.PlayerWeapons.PlayerWeaponLeftHand != null)
 		{
-			IsLeftHand = true; // Устанавливаем флаг, что выбираем для левой руки
+			IsLeftHand = true;
 
-			
 			foreach (var unlockedWeapon in UnlockedWeapons)
 			{
-				//Debug.Log(unlockedWeapon);
-				
 				WeaponAbstract comp = unlockedWeapon.Value.GetComponent<WeaponAbstract>();
-
-				//Debug.Log(comp.WeaponNameSystem);
-				//Debug.Log(data.PlayerWeapons.PlayerWeaponLeftHand);
 				if (comp != null && comp.WeaponNameSystem == data.PlayerWeapons.PlayerWeaponLeftHand)
 				{
-					//Debug.Log(unlockedWeapon);
 					SelectWeapon(unlockedWeapon.Value);
 					break;
 				}
 			}
 		}
+
+		yield return null;
 	}
 }

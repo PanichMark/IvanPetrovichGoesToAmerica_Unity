@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class PlayerMoneyController : MonoBehaviour, ISaveLoad
 {
@@ -49,14 +50,17 @@ public class PlayerMoneyController : MonoBehaviour, ISaveLoad
 		_playerComponentMoneyText.text = PlayerMoney.ToString();
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		data.PlayerResources.PlayerMoney = PlayerMoney;
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		PlayerMoney = data.PlayerResources.PlayerMoney;
 		UpdateMoneyDisplay();
+
+		yield return null;
 	}
 }

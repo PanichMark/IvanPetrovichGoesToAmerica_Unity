@@ -238,11 +238,10 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		Destroy(gameObject);
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		// Инициализируем словарь или список для текущей сцены, если их нет
 		if (data.PickableObjectsData == null)
 		{
 			data.PickableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>>();
@@ -261,14 +260,14 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			PickableObjectIndex = PickableObjectIndex,
 			PickableObjectNameSystem = InteractionObjectNameSystem,
 			PickableObjectPosition = new Vector3(
-			Mathf.Round(gameObject.transform.position.x * 100f) / 100f,
-			Mathf.Round(gameObject.transform.position.y * 100f) / 100f,
-			Mathf.Round(gameObject.transform.position.z * 100f) / 100f),
+				Mathf.Round(gameObject.transform.position.x * 100f) / 100f,
+				Mathf.Round(gameObject.transform.position.y * 100f) / 100f,
+				Mathf.Round(gameObject.transform.position.z * 100f) / 100f),
 			PickableObjectRotation = new Quaternion(
-			Mathf.Round(gameObject.transform.rotation.x * 100f) / 100f,
-			Mathf.Round(gameObject.transform.rotation.y * 100f) / 100f,
-			Mathf.Round(gameObject.transform.rotation.z * 100f) / 100f,
-			Mathf.Round(gameObject.transform.rotation.w * 100f) / 100f),
+				Mathf.Round(gameObject.transform.rotation.x * 100f) / 100f,
+				Mathf.Round(gameObject.transform.rotation.y * 100f) / 100f,
+				Mathf.Round(gameObject.transform.rotation.z * 100f) / 100f,
+				Mathf.Round(gameObject.transform.rotation.w * 100f) / 100f),
 			IsPickableObjectPickedUp = IsObjectPickedUp,
 			IsPickableObjectDestroyed = _isObjectDestroyed
 		};
@@ -281,17 +280,19 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		{
 			targetList.Add(updatedItem);
 		}
+
+		yield return null;
 	}
 
-	public virtual void LoadData(GameData data)
+	public virtual IEnumerator LoadData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
 		var savedState = sourceList.Find(item => item.PickableObjectIndex == PickableObjectIndex);
 
-		if (savedState.Equals(default(PickableObjectData))) return;
+		if (savedState.Equals(default(PickableObjectData))) yield break;
 
 		IsObjectPickedUp = savedState.IsPickableObjectPickedUp;
 
@@ -300,15 +301,14 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 			IsObjectPickedUp = false;
 
 			PickUpObject(true);
-			//Debug.Log(_playerInteractionController);
 			_playerInteractionController.PickUpObjectOnLoadData(gameObject);
 		}
 		else
 		{
-
 			gameObject.transform.position = savedState.PickableObjectPosition;
 			gameObject.transform.rotation = savedState.PickableObjectRotation;
 		}
-		
+
+		yield return null;
 	}
 }

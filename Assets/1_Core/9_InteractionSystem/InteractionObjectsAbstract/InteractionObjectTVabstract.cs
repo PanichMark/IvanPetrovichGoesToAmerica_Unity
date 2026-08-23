@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using System.Collections;
 
 public abstract class InteractionObjectTVabstract : MonoBehaviour, ISaveLoad
 {
@@ -77,12 +78,12 @@ public abstract class InteractionObjectTVabstract : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
 		if (data.TVsData == null || !data.TVsData.ContainsKey(currentScene))
-			return;
+			yield break;
 
 		var targetList = data.TVsData[currentScene];
 
@@ -104,20 +105,22 @@ public abstract class InteractionObjectTVabstract : MonoBehaviour, ISaveLoad
 		{
 			targetList.Add(updatedItem);
 		}
+
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.TVsData == null || !data.TVsData.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.TVsData == null || !data.TVsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
 		var savedState = sourceList.Find(item => item.TVindex == TVindex);
 
-		if (savedState.Equals(default(TVdata))) return;
+		if (savedState.Equals(default(TVdata))) yield break;
 
 		IsTVturnedOn = savedState.IsTVturnedOn;
-		
+
 		if (IsTVturnedOn)
 		{
 			TurnOn();
@@ -132,5 +135,7 @@ public abstract class InteractionObjectTVabstract : MonoBehaviour, ISaveLoad
 			_currentChannelIndex = Mathf.Clamp(savedState.TVchannel, 0, _videoClips.Count - 1);
 			PlayChannel(_currentChannelIndex);
 		}
+
+		yield return null;
 	}
 }

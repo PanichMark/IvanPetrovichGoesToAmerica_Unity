@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerHealthController : MonoBehaviour, IDamageable, ISaveLoad
 {
@@ -157,13 +158,14 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, ISaveLoad
 		StartCoroutine(_gameController.PlayerHasDied());
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		data.PlayerResources.PlayerHealth = CurrentPlayerHealth;
 		data.PlayerResources.PlayerHealingItemsNumber = CurrentHealingItemsNumber;
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		CurrentPlayerHealth = data.PlayerResources.PlayerHealth;
 		CurrentHealingItemsNumber = data.PlayerResources.PlayerHealingItemsNumber;
@@ -171,5 +173,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, ISaveLoad
 		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
 
 		_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+
+		yield return null;
 	}
 }

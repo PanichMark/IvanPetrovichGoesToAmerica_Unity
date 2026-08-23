@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 {
@@ -47,7 +48,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 
 	private void Update()
 	{
-		if (!_bootstrap.IsBootstrapInitialized)
+		if (!_bootstrap.IsBootstrapInitialized && _playerCameraState != null && _playerCameraState == null && _gameSceneManager.IsWaitingForGameplayData)
 		{
 			return;
 		}
@@ -96,15 +97,18 @@ public class PlayerCameraStateMachineController : MonoBehaviour, ISaveLoad
 	
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		data.PlayerCamera.PlayerCameraStateType = CurrentPlayerCameraStateType.ToString();
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		CurrentPlayerCameraStateType = (PlayerCameraStateTypes)Enum.Parse(typeof(PlayerCameraStateTypes), data.PlayerCamera.PlayerCameraStateType);
 
 		SetPlayerCameraState(CurrentPlayerCameraStateType);
+
+		yield return null;
 	}
 }

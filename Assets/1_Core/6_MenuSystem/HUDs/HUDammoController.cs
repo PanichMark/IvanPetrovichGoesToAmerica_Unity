@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class HUDammoController : MonoBehaviour, ISaveLoad
 {
@@ -247,12 +248,12 @@ public class HUDammoController : MonoBehaviour, ISaveLoad
 		_leftWeaponAmmoBox.SetActive(false);
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
-		//throw new System.NotImplementedException();
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		if (_playerWeaponController != null && _playerWeaponController.RightHandWeapon != null)
 		{
@@ -263,5 +264,7 @@ public class HUDammoController : MonoBehaviour, ISaveLoad
 		{
 			UpdateAmmoDisplayForActiveWeapon(WeaponHandType.Left);
 		}
+
+		yield return null;
 	}
 }

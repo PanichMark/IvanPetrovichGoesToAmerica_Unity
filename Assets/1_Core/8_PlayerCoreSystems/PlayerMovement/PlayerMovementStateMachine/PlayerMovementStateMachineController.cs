@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 {
@@ -34,7 +35,7 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 
 	public void Update()
 	{
-		if (!_bootstrap.IsBootstrapInitialized)
+		if (!_bootstrap.IsBootstrapInitialized && _playerMovementState != null && _playerMovementController == null && _gameSceneManager.IsWaitingForGameplayData)
 			return;
 
 		_playerMovementState.Update();
@@ -113,15 +114,18 @@ public class PlayerMovementStateMachineController : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		data.PlayerMovement.PlayerMovementStateType = CurrentPlayerMovementStateType.ToString();
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		CurrentPlayerMovementStateType = (PlayerMovementStateTypes)Enum.Parse(typeof(PlayerMovementStateTypes), data.PlayerMovement.PlayerMovementStateType);
 
 		SetPlayerMovementState(CurrentPlayerMovementStateType);
+
+		yield return null;
 	}
 }

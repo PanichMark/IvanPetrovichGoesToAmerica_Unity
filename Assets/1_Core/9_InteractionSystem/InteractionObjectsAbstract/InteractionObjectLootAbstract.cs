@@ -106,11 +106,10 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		// Инициализируем словарь или список для текущей сцены, если их нет
 		if (data.LootObjectsData == null)
 		{
 			data.LootObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>>();
@@ -121,7 +120,6 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		}
 
 		var targetList = data.LootObjectsData[currentScene];
-
 		int indexInList = targetList.FindIndex(item => item.LootObjectIndex == LootObjectIndex);
 
 		var updatedItem = new LootObjectData
@@ -139,13 +137,15 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		{
 			targetList.Add(updatedItem);
 		}
+
+		yield return null;
 	}
 
-	public virtual void LoadData(GameData data)
+	public virtual IEnumerator LoadData(GameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) return;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) return;
+		if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
 		if (sourceList.Count > 0)
 		{
@@ -157,5 +157,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 				Destroy(gameObject);
 			}
 		}
+
+		yield return null;
 	}
 }

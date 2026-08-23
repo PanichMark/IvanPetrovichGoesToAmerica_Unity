@@ -432,7 +432,7 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 		transform.rotation = endRotation;
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		data.PlayerMovement.PlayerPosition = new Vector3(
 			Mathf.Round(PlayerTransform.position.x * 100f) / 100f,
@@ -444,11 +444,15 @@ public class PlayerMovementController : MonoBehaviour, ISaveLoad
 			Mathf.Round(PlayerTransform.rotation.y * 100f) / 100f,
 			Mathf.Round(PlayerTransform.rotation.z * 100f) / 100f,
 			Mathf.Round(PlayerTransform.rotation.w * 100f) / 100f);
+
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
 		PlayerTransform.position = data.PlayerMovement.PlayerPosition;
 		PlayerTransform.rotation = data.PlayerMovement.PlayerRotation;
+
+		yield return null;
 	}
 }

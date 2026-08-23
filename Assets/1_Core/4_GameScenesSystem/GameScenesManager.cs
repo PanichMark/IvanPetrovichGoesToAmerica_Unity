@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class GameScenesManager : MonoBehaviour, ISaveLoad
 {
+	public bool IsWaitingForGameplayData {  get; private set; }
 	private GameController _gameController;
 	private LocalizationManager _localizationManager;
 	private GameObject _canvasLoadingScreen;
@@ -65,6 +66,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 	public IEnumerator LoadGameplayScene(GameScenesSystemEnum scene)
 	{
 		_gameController.GameplaySceneLoadBegan();
+		IsWaitingForGameplayData = true;
 		OnBeginLoadingGameplayScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
 		Cursor.lockState = CursorLockMode.Locked;
@@ -174,6 +176,8 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		_gameController.BlockInput();
 
+		while (IsWaitingForGameplayData) { yield return null; }
+
 		yield return new WaitWhile(() => !Input.anyKeyDown);
 
 		_canvasLoadingScreen.SetActive(false);
@@ -241,13 +245,20 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		yield break;
 	}
 
-	public void SaveData(ref GameData data)
+	public IEnumerator SaveData(GameData data)
 	{
 		data.Scene = SceneManager.GetSceneAt(1).name;
+		yield return null;
 	}
 
-	public void LoadData(GameData data)
+	public IEnumerator LoadData(GameData data)
 	{
+		yield return null;
+	}
 
+	public void ApplyGameplayDataFinished() 
+	{
+		Debug.Log("LOADED GAMEPLAY AFTER LOAD!");
+		IsWaitingForGameplayData = false;
 	}
 }
