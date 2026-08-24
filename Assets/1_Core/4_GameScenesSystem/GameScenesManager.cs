@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class GameScenesManager : MonoBehaviour, ISaveLoad
 {
-	public bool IsWaitingForGameplayDataToLoad {  get; private set; }
+	public bool IsWaitingForNewGameplayDataToLoad {  get; private set; }
+	public bool IsWaitingForOldGameplayDataToSave { get; private set; }
 	public bool HasLoadedGameplayScene { get; private set; }
 	private GameController _gameController;
 	private LocalizationManager _localizationManager;
@@ -30,7 +31,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
 
-	//private bool _isInitialSceneLoad;
+	public bool WasInitialGameplaySceneLoaded {  get; private set; }
 
 	public void Initialize(
 		GameController gameController,
@@ -77,7 +78,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		//if (_isInitialSceneLoad == false)
 		//{
-		IsWaitingForGameplayDataToLoad = true;
+		
 		//}
 
 		OnBeginLoadingGameplayScene?.Invoke();
@@ -147,6 +148,12 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 				float unloadProgress = 0f;
 				float unloadTarget = 0.25f;
 
+				if (WasInitialGameplaySceneLoaded)
+				{
+					IsWaitingForOldGameplayDataToSave = true;
+					yield return new WaitWhile(() => IsWaitingForOldGameplayDataToSave == true);
+				}
+
 				Debug.Log($"Unloading scene {loadedScene.name} Started");
 
 				AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(loadedScene);
@@ -180,7 +187,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		}
 
 		HasLoadedGameplayScene = true;
-
+		IsWaitingForNewGameplayDataToLoad = true;
 
 
 		Debug.Log($"Loading scene {sceneName} Ended");
@@ -193,7 +200,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		//if (_isInitialSceneLoad == false)
 		//{
-		yield return new WaitWhile(() => IsWaitingForGameplayDataToLoad == true);
+		yield return new WaitWhile(() => IsWaitingForNewGameplayDataToLoad == true);
 		//}
 
 		_sliderComponentLoadingStatus.value = 1f;
@@ -210,10 +217,10 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		Time.timeScale = 1f;
 
 		//_isInitialSceneLoad = false;
-
+		WasInitialGameplaySceneLoaded = true;
 		Debug.Log($"Loading scene {sceneName} Ended Initial");
 
-		yield break;
+		yield return null;
 	}
 
 	public IEnumerator LoadMainMenuScene()
@@ -267,7 +274,9 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		Debug.Log("Scene_MainMenu loading ended");
 	
 		_canvasLoadingScreen.SetActive(false);
-		yield break;
+
+		WasInitialGameplaySceneLoaded = true;
+		yield return null;
 	}
 
 	public IEnumerator SaveData(GameData data)
@@ -283,8 +292,14 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 	public void ApplyGameplayDataLoadingFinished() 
 	{
-		Debug.Log("LOADED GAMEPLAY AFTER LOAD!");
-		IsWaitingForGameplayDataToLoad = false;
+		//Debug.Log("LOADED GAMEPLAY AFTER LOAD!");
+		IsWaitingForNewGameplayDataToLoad = false;
+	}
+
+	public void SavedOldGameplayData()
+	{
+		//Debug.Log("LOADED GAMEPLAY AFTER LOAD!");
+		IsWaitingForOldGameplayDataToSave = false;
 	}
 
 	// Добавь этот публичный метод в класс GameScenesManager

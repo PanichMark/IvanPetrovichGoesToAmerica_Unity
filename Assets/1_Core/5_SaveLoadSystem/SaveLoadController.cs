@@ -36,6 +36,7 @@ public class SaveLoadController : MonoBehaviour
 	public event GameSafeFileHandler OnSafeFileLoad;
 	public event GameSafeFileHandler OnSafeFileSaved;
 
+
 	public void Initialize(
 		Bootstrap bootstrap,
 		GameScenesManager gameSceneManager,
@@ -52,11 +53,19 @@ public class SaveLoadController : MonoBehaviour
 			_saveFilePaths[i] = $"{_SAVE_SLOT_PREFIX}{i + 1}{_SAVE_SLOT_SUFFIX}";
 		}
 
+		_gameSceneManager.OnBeginLoadingGameplayScene += () =>
+		{
+			if (_gameSceneManager.WasInitialGameplaySceneLoaded)
+			{
+				StartCoroutine(OnBeforeSceneUnloadedSaveGameplayObjects());
+			}
+		};
+		
 		_gameSceneManager.OnEndLoadingGameplayScene += () =>
 		{
 			//if (IsSavingFinished == false)
 			//{
-				StartCoroutine(OnSceneLoadUpdateGameplayObjects());
+				StartCoroutine(OnAfterSceneLoadedUpdateAndLoadUpdateGameplayObjects());
 				//StartCoroutine(LoadGame(-1));
 			//}
 		};
@@ -138,6 +147,11 @@ public class SaveLoadController : MonoBehaviour
 			Debug.Log("Data saved to slot " + saveSlotNumber);
 		}
 
+		if (_gameSceneManager.WasInitialGameplaySceneLoaded)
+		{
+			_gameSceneManager.SavedOldGameplayData();
+		}
+
 		OnEndGameDataProcessForUI?.Invoke();
 
 		IsSavingFinished = true;
@@ -146,7 +160,7 @@ public class SaveLoadController : MonoBehaviour
 
 	public IEnumerator LoadGame(int loadSlotNumber)
 	{
-		Debug.Log("LOADING 1111111");
+		Debug.Log($"LoadGame_1 Started loading Slot {loadSlotNumber}");
 		if (_gameData == null)
 		{
 			Debug.Log("NO GAMEDATA TO LOAD");
@@ -163,7 +177,7 @@ public class SaveLoadController : MonoBehaviour
 		if (loadSlotNumber == -1)
 		{
 			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_TEMP);
-
+			Debug.Log($"LoadGame is TEMPslot");
 			if (_gameData == null)
 			{
 				Debug.Log("NO GAMEDATA TO SAVE");
@@ -173,6 +187,7 @@ public class SaveLoadController : MonoBehaviour
 		else
 		{
 			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _saveFilePaths[loadSlotNumber - 1]);
+			Debug.Log($"LoadGame is {loadSlotNumber} slot");
 		}
 
 		_gameData = _fileDataHandler.Load();
@@ -182,13 +197,13 @@ public class SaveLoadController : MonoBehaviour
 		// Запускаем сцену (она сама заполнит шкалу до 0.667)
 		if (loadSlotNumber != -1)
 		{
+			Debug.Log($"LoadGame_2 loading new scene");
+
 			StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), SceneNameToLoad)));
 
 			// Ждем, пока ASYNC SCENE LOAD не закончится
 			yield return new WaitWhile(() => _gameSceneManager.HasLoadedGameplayScene == false);
 		}
-
-		Debug.Log("LOADING 222222222222222222"); // СЦЕНА ЗАГРУЖЕНА
 
 		int totalObjects = _coreSaveLoadObjects.Count;
 		LoadedObjectsCount = 0;
@@ -196,6 +211,7 @@ public class SaveLoadController : MonoBehaviour
 
 		if (loadSlotNumber != -1)
 		{
+			Debug.Log($"LoadGame_3 Started loading CoreObjects");
 			// Грузим персистентные объекты (инвентарь игрока)
 			foreach (ISaveLoad coreLoadObj in _coreSaveLoadObjects)
 			{
@@ -209,12 +225,14 @@ public class SaveLoadController : MonoBehaviour
 				_gameSceneManager.SetLoadingSliderValue(progress);
 
 			}
-		}
-		Debug.Log("LOADING 333333333333333");
+			Debug.Log($"LoadGame_4 Ended loading CoreObjects");
 
-		// ОБНОВЛЯЕМ СПИСОК НОВЫХ ОБЪЕКТОВ СРАЗУ ПОСЛЕ ЗАГРУЗКИ СЦЕНЫ
-		yield return UpdateGameplaySaveLoadObjects();
-		Debug.Log("LOADING 444444444444");
+
+			Debug.Log($"LoadGame_5 Started update and load GameplayObjects");
+			// ОБНОВЛЯЕМ СПИСОК НОВЫХ ОБЪЕКТОВ СРАЗУ ПОСЛЕ ЗАГРУЗКИ СЦЕНЫ
+			yield return UpdateAndLoadGameplaySaveLoadObjects();
+			Debug.Log($"LoadGame_6 Ended update and load GameplayObjects");
+		}
 
 		totalObjects += _gameplaySaveLoadObjects.Count;
 
@@ -230,16 +248,16 @@ public class SaveLoadController : MonoBehaviour
 			_gameSceneManager.SetLoadingSliderValue(progress);
 
 		}
-		Debug.Log("LOADING 5555555555555555");
+		Debug.Log("LOADING 777777777777");
 
 		// Сохраняем актуальное состояние во временный слот (-1)
-		yield return StartCoroutine(SaveGame(-1));
-		Debug.Log("LOADING 66666666666666666");
+		//yield return StartCoroutine(SaveGame(-1));
+		Debug.Log("LOADING 888888888888");
 
 		// Говорим менеджеру: "Данные применены, можно выключать UI"
 		_gameSceneManager.ApplyGameplayDataLoadingFinished();
 
-		Debug.Log("LOADING 77777777777777777");
+		Debug.Log("LOADING 999999999999");
 	}
 
 	public void DeleteGame(int deleteSlotNumber)
@@ -273,13 +291,21 @@ public class SaveLoadController : MonoBehaviour
 		}
 	}
 
-	IEnumerator OnSceneLoadUpdateGameplayObjects()
+	private IEnumerator OnBeforeSceneUnloadedSaveGameplayObjects()
+	{
+		yield return StartCoroutine(SaveGame(-1));
+
+		yield return null;
+	}
+
+
+	private IEnumerator OnAfterSceneLoadedUpdateAndLoadUpdateGameplayObjects()
 	{
 		Debug.Log("OnSceneLoadUpdateGameplayObjects Started");
 
 		OnStartGameDataProcessForUI?.Invoke();
 
-		yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
+		yield return StartCoroutine(UpdateAndLoadGameplaySaveLoadObjects());
 
 		yield return StartCoroutine(LoadGame(-1));
 
@@ -287,7 +313,7 @@ public class SaveLoadController : MonoBehaviour
 
 		Debug.Log("OnSceneLoadUpdateGameplayObjects Ended");
 
-		yield break;
+		yield return null;
 	}
 
 	private void AssignGameplayObjectIndexes()
@@ -388,7 +414,7 @@ public class SaveLoadController : MonoBehaviour
 		return new List<ISaveLoad>(gameplaySceneObjects);
 	}
 
-	public IEnumerator UpdateGameplaySaveLoadObjects()
+	public IEnumerator UpdateAndLoadGameplaySaveLoadObjects()
 	{
 		if (_gameplaySaveLoadObjects != null)
 			_gameplaySaveLoadObjects.Clear();
