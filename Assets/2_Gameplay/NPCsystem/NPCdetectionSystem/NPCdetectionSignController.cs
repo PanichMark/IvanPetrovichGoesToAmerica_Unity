@@ -70,8 +70,8 @@ public class NPCdetectionSignController : MonoBehaviour
 	{
 		_npcDetectionManager.OnMeterChanged -= UpdateSpriteByMeter;
 
-		_menuManager.OnOpenAnyMenu += HideCanvasNPC;
-		_menuManager.OnCloseAnyMenu += ShowCanvasNPC;
+		_menuManager.OnOpenAnyMenu -= HideCanvasNPC;
+		_menuManager.OnCloseAnyMenu -= ShowCanvasNPC;
 	}
 
 	private void Update()

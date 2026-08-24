@@ -53,7 +53,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 	protected override IEnumerator SingleEugenicAttack()
 	{
-		Debug.Log("SINGLE BRUH!");
+		//Debug.Log("SINGLE BRUH!");
 
 		_currentWeaponPlayerEugenicAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponPalmAttackAnimation(this));
 
@@ -154,7 +154,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 	public override void TurnEugenicVFXOff()
 	{
-		Debug.Log("TURN OFF!");
+		//Debug.Log("TURN OFF!");
 		Destroy(_vfxInstance);
 	}
 }
