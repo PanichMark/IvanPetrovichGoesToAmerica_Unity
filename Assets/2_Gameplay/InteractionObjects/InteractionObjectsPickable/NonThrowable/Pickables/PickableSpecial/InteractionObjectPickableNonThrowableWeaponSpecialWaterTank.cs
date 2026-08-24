@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class WeaponPickableMeleeAbstract : WeaponPickableAbstract
+public class InteractionObjectPickableNonThrowableWeaponSpecialWaterTank : InteractionObjectPickableNonThrowableWeaponAbstract
 {
 	public override float WeaponDamage => throw new System.NotImplementedException();
 
