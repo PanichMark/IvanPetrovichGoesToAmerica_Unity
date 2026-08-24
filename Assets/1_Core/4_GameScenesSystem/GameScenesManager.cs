@@ -30,7 +30,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
 
-	private bool _isInitialSceneLoad;
+	//private bool _isInitialSceneLoad;
 
 	public void Initialize(
 		GameController gameController,
@@ -59,7 +59,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
-		_isInitialSceneLoad = true;
+		//_isInitialSceneLoad = true;
 		Debug.Log("GameSceneManager Initialized");
 	}
 
@@ -75,10 +75,10 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		HasLoadedGameplayScene = false;
 		_gameController.GameplaySceneLoadBegan();
 
-		if (_isInitialSceneLoad == false)
-		{
-			IsWaitingForGameplayDataToLoad = true;
-		}
+		//if (_isInitialSceneLoad == false)
+		//{
+		IsWaitingForGameplayDataToLoad = true;
+		//}
 
 		OnBeginLoadingGameplayScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
@@ -191,10 +191,10 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		_gameController.BlockInput();
 
-		if (_isInitialSceneLoad == false)
-		{
-			yield return new WaitWhile(() => IsWaitingForGameplayDataToLoad == true);
-		}
+		//if (_isInitialSceneLoad == false)
+		//{
+		yield return new WaitWhile(() => IsWaitingForGameplayDataToLoad == true);
+		//}
 
 		_sliderComponentLoadingStatus.value = 1f;
 		_sliderLoadingStatus.SetActive(false);
@@ -209,7 +209,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		Time.timeScale = 1f;
 
-		_isInitialSceneLoad = false;
+		//_isInitialSceneLoad = false;
 
 		Debug.Log($"Loading scene {sceneName} Ended Initial");
 

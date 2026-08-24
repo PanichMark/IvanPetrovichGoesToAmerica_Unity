@@ -15,7 +15,7 @@ public class SaveLoadController : MonoBehaviour
 	private FileDataHandler _fileDataHandler;
 	private GameData _gameData;
 	private int LoadedObjectsCount;
-	private List<ISaveLoad> _persistentSaveLoadObjects;
+	private List<ISaveLoad> _coreSaveLoadObjects;
 	private List<ISaveLoad> _gameplaySaveLoadObjects;
 
 	private const string _SAFE_FILE_DATA_TEMP = "SafeFile_TEMP.json";
@@ -54,11 +54,11 @@ public class SaveLoadController : MonoBehaviour
 
 		_gameSceneManager.OnEndLoadingGameplayScene += () =>
 		{
-			if (IsSavingFinished == false)
-			{
+			//if (IsSavingFinished == false)
+			//{
 				StartCoroutine(OnSceneLoadUpdateGameplayObjects());
-				StartCoroutine(LoadGame(-1));
-			}
+				//StartCoroutine(LoadGame(-1));
+			//}
 		};
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => StartCoroutine(NewGame());
@@ -68,10 +68,10 @@ public class SaveLoadController : MonoBehaviour
 
 	public IEnumerator NewGame()
 	{
-		_persistentSaveLoadObjects = FindAllPersistentSaveLoadObjects();
-
+		_coreSaveLoadObjects = FindAllCoreSaveLoadObjects();
+		
 		_gameData = new GameData();
-
+		
 		
 		_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_TEMP);
 		_fileDataHandler.Save(_gameData);
@@ -79,7 +79,7 @@ public class SaveLoadController : MonoBehaviour
 		//yield return StartCoroutine(SaveGame(-1));
 
 
-		foreach (ISaveLoad saveLoadObj in _persistentSaveLoadObjects)
+		foreach (ISaveLoad saveLoadObj in _coreSaveLoadObjects)
 		{
 			yield return saveLoadObj.LoadData(_gameData);
 		}
@@ -116,9 +116,12 @@ public class SaveLoadController : MonoBehaviour
 
 		OnStartGameDataProcessForUI?.Invoke();
 
-		foreach (ISaveLoad saveLoadObj in _persistentSaveLoadObjects)
+		if (saveSlotNumber != -1)
 		{
-			yield return saveLoadObj.SaveData(_gameData);
+			foreach (ISaveLoad saveLoadObj in _coreSaveLoadObjects)
+			{
+				yield return saveLoadObj.SaveData(_gameData);
+			}
 		}
 
 		foreach (ISaveLoad saveLoadObj in _gameplaySaveLoadObjects)
@@ -151,7 +154,11 @@ public class SaveLoadController : MonoBehaviour
 		}
 
 		OnSafeFileLoad?.Invoke();
-		_gameController.CloseMainMenu();
+
+		if (_gameController.IsMainMenuOpen)
+		{
+			_gameController.CloseMainMenu();
+		}
 
 		if (loadSlotNumber == -1)
 		{
@@ -183,23 +190,25 @@ public class SaveLoadController : MonoBehaviour
 
 		Debug.Log("LOADING 222222222222222222"); // СЦЕНА ЗАГРУЖЕНА
 
-		int totalObjects = _persistentSaveLoadObjects.Count;
+		int totalObjects = _coreSaveLoadObjects.Count;
 		LoadedObjectsCount = 0;
 
 
-
-		// Грузим персистентные объекты (инвентарь игрока)
-		foreach (ISaveLoad persistentLoadObj in _persistentSaveLoadObjects)
+		if (loadSlotNumber != -1)
 		{
-			yield return persistentLoadObj.LoadData(_gameData);
+			// Грузим персистентные объекты (инвентарь игрока)
+			foreach (ISaveLoad coreLoadObj in _coreSaveLoadObjects)
+			{
+				yield return coreLoadObj.LoadData(_gameData);
 
-			LoadedObjectsCount++;
-			float progress = Mathf.Lerp(0.5f, 0.75f, (float)LoadedObjectsCount / totalObjects);
+				LoadedObjectsCount++;
+				float progress = Mathf.Lerp(0.5f, 0.75f, (float)LoadedObjectsCount / totalObjects);
 
-			// --- ОБНОВЛЕНИЕ СЛАЙДЕРА ---
+				// --- ОБНОВЛЕНИЕ СЛАЙДЕРА ---
 
-			_gameSceneManager.SetLoadingSliderValue(progress);
-			
+				_gameSceneManager.SetLoadingSliderValue(progress);
+
+			}
 		}
 		Debug.Log("LOADING 333333333333333");
 
@@ -224,7 +233,7 @@ public class SaveLoadController : MonoBehaviour
 		Debug.Log("LOADING 5555555555555555");
 
 		// Сохраняем актуальное состояние во временный слот (-1)
-		yield return SaveGame(-1);
+		yield return StartCoroutine(SaveGame(-1));
 		Debug.Log("LOADING 66666666666666666");
 
 		// Говорим менеджеру: "Данные применены, можно выключать UI"
@@ -272,12 +281,7 @@ public class SaveLoadController : MonoBehaviour
 
 		yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
 
-		foreach (ISaveLoad gameplayLoadObj in _gameplaySaveLoadObjects)
-		{
-			gameplayLoadObj.LoadData(_gameData);
-		}
-
-		yield return StartCoroutine(SaveGame(-1));
+		yield return StartCoroutine(LoadGame(-1));
 
 		OnEndGameDataProcessForUI?.Invoke();
 
@@ -368,7 +372,7 @@ public class SaveLoadController : MonoBehaviour
 		}
 	}
 
-	private List<ISaveLoad> FindAllPersistentSaveLoadObjects()
+	private List<ISaveLoad> FindAllCoreSaveLoadObjects()
 	{
 		IEnumerable<ISaveLoad> saveLoadObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoad>();
 

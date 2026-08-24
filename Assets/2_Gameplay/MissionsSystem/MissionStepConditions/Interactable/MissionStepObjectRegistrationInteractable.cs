@@ -9,7 +9,7 @@ public class MissionStepObjectRegistrationInteractable : MonoBehaviour
 	private void Start()
 	{
 		_linkedMissionCondition.RegisterOwner(gameObject);
-		Debug.Log($"{gameObject.name} зарегистрировал себя в условии {_linkedMissionCondition.name}");
+		//Debug.Log($"{gameObject.name} зарегистрировал себя в условии {_linkedMissionCondition.name}");
 
 		_interactable = GetComponent<IInteractable>();
 		_interactable.OnInteract += TriggerInteraction;
@@ -17,7 +17,7 @@ public class MissionStepObjectRegistrationInteractable : MonoBehaviour
 
 	public void TriggerInteraction()
 	{
-		Debug.Log("INTERACTED!!!!!");
+		//Debug.Log("INTERACTED!!!!!");
 
 		if (_linkedMissionCondition is MissionStepConditionInteractable interactionCondition)
 		{

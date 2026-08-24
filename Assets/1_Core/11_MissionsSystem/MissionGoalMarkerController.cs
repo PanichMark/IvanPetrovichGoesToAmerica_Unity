@@ -56,19 +56,19 @@ public class MissionGoalMarkerController : MonoBehaviour
 			string ownerName = condition.Owner ? condition.Owner.name : "NULL";
 			bool conditionMet = condition.IsMet();
 
-			Debug.Log($"[MissionMarker] Условие: '{condition.GetType().Name}'. Владелец: {ownerName}. Выполнено: {conditionMet}");
+			//Debug.Log($"[MissionMarker] Условие: '{condition.GetType().Name}'. Владелец: {ownerName}. Выполнено: {conditionMet}");
 
 			//Debug.Log(condition.Owner);
 			//Debug.Log(conditionMet);
 
 			if (condition.Owner != null && !conditionMet)
 			{
-				Debug.Log($"[MissionMarker] Найдена активная цель: {condition.Owner.name}");
+				//Debug.Log($"[MissionMarker] Найдена активная цель: {condition.Owner.name}");
 				_gameObjectMissionGoal = condition.Owner;
 				return condition.Owner;
 			}
 		}
-		Debug.Log("[MissionMarker] Активных целей для отслеживания не найдено.");
+		//Debug.Log("[MissionMarker] Активных целей для отслеживания не найдено.");
 		return null;
 	}
 
@@ -152,7 +152,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 	public void CheckMissionStep()
 	{
-		Debug.Log("[MissionMarker] Checking for MissionStep Objective");
+		//Debug.Log("[MissionMarker] Checking for MissionStep Objective");
 		HandleStepChanged();
 	}
 
