@@ -1,4 +1,4 @@
-﻿public interface IWeaponPickable
+﻿public interface IPickableWeapon
 {
 	public string WeaponRightMouseButtonAttackMessage { get; }
 	public string WeaponLeftMouseButtonAttackMessage { get; }

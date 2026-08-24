@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class InteractionObjectPickableNonThrowableWeaponRangedTeslaRifle : InteractionObjectPickableNonThrowableWeaponAbstract
+public class InteractionObjectPickableWeaponMeleeAbstract : InteractionObjectPickableWeaponAbstract
 {
 	public override float WeaponDamage => throw new System.NotImplementedException();
 

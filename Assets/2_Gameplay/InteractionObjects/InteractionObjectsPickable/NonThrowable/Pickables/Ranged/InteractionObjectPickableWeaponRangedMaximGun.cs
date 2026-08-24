@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectPickableNonThrowableWeaponRangedMaximGun : InteractionObjectPickableNonThrowableWeaponRangedAbstract
+public class InteractionObjectPickableWeaponRangedMaximGun : InteractionObjectPickableWeaponRangedAbstract
 {
 	public override float WeaponRange => throw new System.NotImplementedException();
 

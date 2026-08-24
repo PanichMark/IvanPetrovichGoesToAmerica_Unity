@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public abstract class InteractionObjectPickableNonThrowableWeaponRangedAbstract : InteractionObjectPickableNonThrowableWeaponAbstract
+public abstract class InteractionObjectPickableWeaponRangedAbstract : InteractionObjectPickableWeaponAbstract
 {
 	public abstract float WeaponRange { get; }
 
