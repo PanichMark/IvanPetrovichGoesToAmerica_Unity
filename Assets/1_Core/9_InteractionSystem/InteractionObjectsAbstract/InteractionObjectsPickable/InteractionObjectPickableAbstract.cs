@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IInteractable, ISaveLoad, IPickable, IBreakable
+public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad, IInteractable, IPickable, IBreakable
 {
 	protected LocalizationManager _localizationManager;
 	[Header("Object Info")]
@@ -27,7 +27,6 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 	protected GameObject _playerColliderGameObject;
 	protected int _pickableLayer;
 	protected int _playerLayer;
-	public int PickableObjectIndex { get; protected set; }
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	protected bool _isCreatedAsBody;
 	public GameObject CachedPlayer { get; protected set; }
@@ -85,11 +84,6 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		InitializePickable();
-	}
-
-	public void AssignPickableObjectsIndexes(int index)
-	{
-		PickableObjectIndex = index;
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -238,7 +232,7 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		gameObject.SetActive(false);
 	}
 
-	public IEnumerator SaveData(GameData data)
+	public override IEnumerator SaveData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
@@ -253,11 +247,11 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 
 		var targetList = data.PickableObjectsData[currentScene];
 
-		int indexInList = targetList.FindIndex(item => item.PickableObjectIndex == PickableObjectIndex);
+		int indexInList = targetList.FindIndex(item => item.PickableObjectIndex == GameplayObjectIndex);
 
 		var updatedItem = new PickableObjectData
 		{
-			PickableObjectIndex = PickableObjectIndex,
+			PickableObjectIndex = GameplayObjectIndex,
 			PickableObjectNameSystem = InteractionObjectNameSystem,
 			PickableObjectPosition = new Vector3(
 				Mathf.Round(gameObject.transform.position.x * 100f) / 100f,
@@ -284,13 +278,13 @@ public abstract class InteractionObjectPickableAbstract : MonoBehaviour, IIntera
 		yield return null;
 	}
 
-	public virtual IEnumerator LoadData(GameData data)
+	public override IEnumerator LoadData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
 		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
-		var savedState = sourceList.Find(item => item.PickableObjectIndex == PickableObjectIndex);
+		var savedState = sourceList.Find(item => item.PickableObjectIndex == GameplayObjectIndex);
 
 		if (savedState.Equals(default(PickableObjectData))) yield break;
 

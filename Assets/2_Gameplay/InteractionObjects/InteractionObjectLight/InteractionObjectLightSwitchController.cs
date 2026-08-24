@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class InteractionObjectLightSwitchController : MonoBehaviour, ISaveLoad
+public class InteractionObjectLightSwitchController : GameplayObjectSaveLoad
 {
 	[SerializeField] protected List<GameObject> _lightObjectsList = new List<GameObject>();
 	[SerializeField] protected Color _lightEmissionColor = Color.white;
@@ -11,7 +11,6 @@ public class InteractionObjectLightSwitchController : MonoBehaviour, ISaveLoad
 	public bool IsLightTurnedOn { get; protected set; }
 
 	private readonly List<Material> _cachedMaterials = new List<Material>();
-	public int LightIndex { get; protected set; }
 	protected virtual void Start()
 	{
 		CacheMaterials();
@@ -31,17 +30,16 @@ public class InteractionObjectLightSwitchController : MonoBehaviour, ISaveLoad
 		}
 	}
 
-	public void AssignLightsIndexes(int index)
+	public void TurnOn()
 	{
-		LightIndex = index;
+		IsLightTurnedOn = true;
+		ApplyEmission(_lightEmissionColor);
 	}
 
-	public virtual void TurnOn()
+	public  void TurnOff()
 	{
-	}
-
-	public virtual void TurnOff()
-	{
+		IsLightTurnedOn = false;
+		ApplyEmission(Color.black);
 	}
 
 	protected void ApplyEmission(Color color)
@@ -65,11 +63,11 @@ public class InteractionObjectLightSwitchController : MonoBehaviour, ISaveLoad
 
 		var targetList = data.LightsData[currentScene];
 
-		int indexInList = targetList.FindIndex(item => item.LightIndex == LightIndex);
+		int indexInList = targetList.FindIndex(item => item.LightIndex == GameplayObjectIndex);
 
 		var updatedItem = new LightData
 		{
-			LightIndex = LightIndex,
+			LightIndex = GameplayObjectIndex,
 			LightNameSystem = name,
 			IsLightTurnedOn = IsLightTurnedOn
 		};
@@ -92,7 +90,7 @@ public class InteractionObjectLightSwitchController : MonoBehaviour, ISaveLoad
 
 		if (data.LightsData == null || !data.LightsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
-		var savedState = sourceList.Find(item => item.LightIndex == LightIndex);
+		var savedState = sourceList.Find(item => item.LightIndex == GameplayObjectIndex);
 
 		if (savedState.Equals(default(LightData))) yield break;
 

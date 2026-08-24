@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(NPCdebugHUDcontroller))]
 
-public abstract class NPCabstract : NPCcore, IInteractable
+public abstract class NPCabstract : GameplayObjectSaveLoad, IInteractable
 {
 
 	//[SerializeField] private bool _isHuman;
@@ -203,11 +203,11 @@ public abstract class NPCabstract : NPCcore, IInteractable
 
 		var targetList = data.NPCsData[currentScene];
 
-		int indexInList = targetList.FindIndex(item => item.NPCindex == NPCindex);
+		int indexInList = targetList.FindIndex(item => item.NPCindex == GameplayObjectIndex);
 
 		var updatedItem = new NPCdata
 		{
-			NPCindex = NPCindex,
+			NPCindex = GameplayObjectIndex,
 			NPCnameSystem = InteractionObjectNameSystem,
 			NPCposition = new Vector3(
 				Mathf.Round(gameObject.transform.position.x * 100f) / 100f,
@@ -241,7 +241,7 @@ public abstract class NPCabstract : NPCcore, IInteractable
 
 		if (data.NPCsData == null || !data.NPCsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
-		var savedState = sourceList.Find(item => item.NPCindex == NPCindex);
+		var savedState = sourceList.Find(item => item.NPCindex == GameplayObjectIndex);
 
 		if (savedState.Equals(default(NPCdata))) yield break;
 

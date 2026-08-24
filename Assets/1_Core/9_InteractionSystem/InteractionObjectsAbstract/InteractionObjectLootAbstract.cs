@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractable, IGainedItem, ISaveLoad
+public abstract class InteractionObjectLootAbstract : GameplayObjectSaveLoad, IInteractable, IGainedItem
 {
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	[SerializeField] protected string _interactionObjectNameSystem;
@@ -17,7 +17,6 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	public bool WasLootItemCollected { get; protected set; }
 
-	public int LootObjectIndex { get; protected set; }
 
 	public TextMeshProUGUI NameGainedItem => null;
 
@@ -71,11 +70,6 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	}
 
-	public void AssignLootObjectsIndexes(int index)
-	{
-		LootObjectIndex = index;
-	}
-
 	private IEnumerator MoveTowardsPlayer()
 	{
 		float currentSpeed = 3.5f; 
@@ -106,7 +100,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 	}
 
-	public IEnumerator SaveData(GameData data)
+	public override IEnumerator SaveData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
@@ -120,11 +114,11 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		}
 
 		var targetList = data.LootObjectsData[currentScene];
-		int indexInList = targetList.FindIndex(item => item.LootObjectIndex == LootObjectIndex);
+		int indexInList = targetList.FindIndex(item => item.LootObjectIndex == GameplayObjectIndex);
 
 		var updatedItem = new LootObjectData
 		{
-			LootObjectIndex = LootObjectIndex,
+			LootObjectIndex = GameplayObjectIndex,
 			LootObjectNameSystem = InteractionObjectNameSystem,
 			IsLootObjectCollected = WasLootItemCollected
 		};
@@ -141,7 +135,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 		yield return null;
 	}
 
-	public virtual IEnumerator LoadData(GameData data)
+	public override IEnumerator LoadData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
@@ -149,7 +143,7 @@ public abstract class InteractionObjectLootAbstract : MonoBehaviour, IInteractab
 
 		if (sourceList.Count > 0)
 		{
-			LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == LootObjectIndex);
+			LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == GameplayObjectIndex);
 
 			if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
 			{

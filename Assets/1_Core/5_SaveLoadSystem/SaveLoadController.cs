@@ -129,13 +129,13 @@ public class SaveLoadController : MonoBehaviour
 
 		OnStartGameDataProcessForUI?.Invoke();
 
-		if (saveSlotNumber != -1)
-		{
+		//if (saveSlotNumber != -1)
+		//{
 			foreach (ISaveLoad saveLoadObj in _coreSaveLoadObjects)
 			{
 				yield return saveLoadObj.SaveData(_gameData);
 			}
-		}
+		//}
 
 		foreach (ISaveLoad saveLoadObj in _gameplaySaveLoadObjects)
 		{
@@ -362,92 +362,18 @@ public class SaveLoadController : MonoBehaviour
 
 		yield return null;
 	}
-
-	private void AssignGameplayObjectIndexes()
+	
+	private void AssignGameplayObjectsSaveLoadIndexes()
 	{
-		/*
-		AssignNPCsIndexes();
-		AssignLootObjectsIndexes();
-		AssignPickableObjectsIndexes();
-		AssignOpenableObjectsIndexes();
-		AssignTVsIndexes();
-		AssignLightsIndexes();
-		*/
-	}
+		GameplayObjectSaveLoad[] gameplayObjectsSaveLoad = FindObjectsOfType<GameplayObjectSaveLoad>();
 
-	/*
-	private void AssignLootObjectsIndexes()
-	{
-		InteractionObjectLootAbstract[] lootObjects = FindObjectsOfType<InteractionObjectLootAbstract>();
+		Array.Sort(gameplayObjectsSaveLoad, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
 
-		Array.Sort(lootObjects, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
-
-		for (int index = 0; index < lootObjects.Length; index++)
+		for (int index = 0; index < gameplayObjectsSaveLoad.Length; index++)
 		{
-			lootObjects[index].AssignLootObjectsIndexes(index);
+			gameplayObjectsSaveLoad[index].AssignGameplayObjectIndex(index);
 		}
 	}
-
-	private void AssignPickableObjectsIndexes()
-	{
-		InteractionObjectPickableAbstract[] pickableObjects = FindObjectsOfType<InteractionObjectPickableAbstract>();
-
-		Array.Sort(pickableObjects, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
-
-		for (int index = 0; index < pickableObjects.Length; index++)
-		{
-			pickableObjects[index].AssignPickableObjectsIndexes(index);
-		}
-	}
-
-	private void AssignOpenableObjectsIndexes()
-	{
-		InteractionObjectOpenableAbstract[] openableObjects = FindObjectsOfType<InteractionObjectOpenableAbstract>();
-
-		Array.Sort(openableObjects, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
-
-		for (int index = 0; index < openableObjects.Length; index++)
-		{
-			openableObjects[index].AssignOpenableObjectsIndexes(index);
-		}
-	}
-
-	private void AssignNPCsIndexes()
-	{
-		NPCcore[] TVs = FindObjectsOfType<NPCcore>();
-
-		Array.Sort(TVs, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
-
-		for (int index = 0; index < TVs.Length; index++)
-		{
-			TVs[index].AssignNPCsIndexes(index);
-		}
-	}
-
-	private void AssignTVsIndexes()
-	{
-		InteractionObjectTVabstract[] TVs = FindObjectsOfType<InteractionObjectTVabstract>();
-
-		Array.Sort(TVs, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
-
-		for (int index = 0; index < TVs.Length; index++)
-		{
-			TVs[index].AssignTVsIndexes(index);
-		}
-	}
-
-	private void AssignLightsIndexes()
-	{
-		InteractionObjectLightAbstract[] lights = FindObjectsOfType<InteractionObjectLightAbstract>();
-
-		Array.Sort(lights, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
-
-		for (int index = 0; index < lights.Length; index++)
-		{
-			lights[index].AssignLightsIndexes(index);
-		}
-	}
-	*/
 
 	private List<ISaveLoad> FindAllCoreSaveLoadObjects()
 	{
@@ -468,9 +394,11 @@ public class SaveLoadController : MonoBehaviour
 	public IEnumerator UpdateAndLoadGameplaySaveLoadObjects()
 	{
 		if (_gameplaySaveLoadObjects != null)
+		{
 			_gameplaySaveLoadObjects.Clear();
+		}
 
-		AssignGameplayObjectIndexes();
+		AssignGameplayObjectsSaveLoadIndexes();
 
 		_gameplaySaveLoadObjects = FindAllGameplaySaveLoadObjects();
 

@@ -32,7 +32,7 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 
 		if (sourceList.Count > 0)
 		{
-			LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == LootObjectIndex);
+			LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == GameplayObjectIndex);
 
 			if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
 			{

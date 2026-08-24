@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class InteractionObjectVendingMachine : MonoBehaviour, IInteractable, IElectroShockable
+public class InteractionObjectVendingMachine : GameplayObjectSaveLoad, IInteractable, IElectroShockable
 {
 	public delegate void InteractionDelegate();
 	private List<GameObject> _spawnedGoods = new List<GameObject>();

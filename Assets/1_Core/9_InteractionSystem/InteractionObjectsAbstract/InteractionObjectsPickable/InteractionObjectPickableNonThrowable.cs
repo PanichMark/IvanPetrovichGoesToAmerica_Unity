@@ -115,7 +115,7 @@ public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAb
 
 		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
-		var savedState = sourceList.Find(item => item.PickableObjectIndex == PickableObjectIndex);
+		var savedState = sourceList.Find(item => item.PickableObjectIndex == GameplayObjectIndex);
 
 		if (savedState.Equals(default(PickableObjectData))) yield break;
 

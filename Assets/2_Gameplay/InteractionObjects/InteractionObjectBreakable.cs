@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectBreakable : MonoBehaviour, IInteractable, IBreakable
+public class InteractionObjectBreakable : GameplayObjectSaveLoad, IInteractable, IBreakable
 {
 	public bool IsObjectDestroyed => throw new System.NotImplementedException();
 

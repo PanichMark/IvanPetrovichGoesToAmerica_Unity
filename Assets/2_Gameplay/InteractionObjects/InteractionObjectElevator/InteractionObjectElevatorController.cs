@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InteractionObjectElevatorController : MonoBehaviour
+public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 {
 	[SerializeField] private float _elevatorSpeed = 2.0f;
 	[SerializeField] private float _elevatorUpPosition = 5.0f;

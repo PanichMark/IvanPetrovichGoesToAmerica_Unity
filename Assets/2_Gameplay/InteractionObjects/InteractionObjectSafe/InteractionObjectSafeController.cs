@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class InteractionObjectSafeController : MonoBehaviour, IInteractable
+public class InteractionObjectSafeController : GameplayObjectSaveLoad, IInteractable
 {
 	[SerializeField] private string _interactionObjectNameUI;
 

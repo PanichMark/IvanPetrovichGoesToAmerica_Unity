@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IInteractable, ISaveLoad
+public abstract class InteractionObjectOpenableAbstract : GameplayObjectSaveLoad, IInteractable
 {
 	[SerializeField] protected string _interactionObjectNameSystem;
 
@@ -13,7 +13,6 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 	public virtual string InteractionObjectNameUI => null;
 	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	public virtual string InteractionHintMessageFail => null;
-	public int OpenableObjectIndex { get; protected set; }
 	public bool WasOpenableUnlocked { get; protected set; }
 	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction { get; protected set; }
@@ -23,15 +22,11 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
-	public void AssignOpenableObjectsIndexes(int index)
-	{
-		OpenableObjectIndex = index;
-	}
 	public abstract void Interact();
 
 	public abstract void InteractCutscene();
 
-	public IEnumerator SaveData(GameData data)
+	public override IEnumerator SaveData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
@@ -46,7 +41,7 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 
 		var targetList = data.OpenableObjectsData[currentScene];
 
-		int indexInList = targetList.FindIndex(item => item.OpenableObjectIndex == OpenableObjectIndex);
+		int indexInList = targetList.FindIndex(item => item.OpenableObjectIndex == GameplayObjectIndex);
 
 		if (indexInList != -1)
 		{
@@ -62,7 +57,7 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 		{
 			targetList.Add(new OpenableObjectData
 			{
-				OpenableObjectIndex = OpenableObjectIndex,
+				OpenableObjectIndex = GameplayObjectIndex,
 				OpenableObjectNameSystem = InteractionObjectNameSystem,
 				IsOpenableObjectUnlocked = WasOpenableUnlocked,
 				IsOpenableObjectOpened = _isObjectOpened
@@ -72,13 +67,13 @@ public abstract class InteractionObjectOpenableAbstract : MonoBehaviour, IIntera
 		yield return null;
 	}
 
-	public IEnumerator LoadData(GameData data)
+	public override IEnumerator LoadData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
 		if (data.OpenableObjectsData == null || !data.OpenableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
-		var savedState = sourceList.Find(item => item.OpenableObjectIndex == OpenableObjectIndex);
+		var savedState = sourceList.Find(item => item.OpenableObjectIndex == GameplayObjectIndex);
 
 		if (savedState.Equals(default(OpenableObjectData))) yield break;
 
