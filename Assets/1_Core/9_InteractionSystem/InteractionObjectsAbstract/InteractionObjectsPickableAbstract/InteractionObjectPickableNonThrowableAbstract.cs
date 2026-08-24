@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class InteractionObjectPickableNonThrowableAbstract : InteractionObjectPickableAbstract
+public abstract class InteractionObjectPickableNonThrowableAbstract : InteractionObjectPickableAbstract
 {
 	public static InteractionObjectPickableNonThrowableAbstract CreateWithName(GameObject obj, string interactionItemNameSystem, InteractionObjectPickableData pickableBodyData)
 	{

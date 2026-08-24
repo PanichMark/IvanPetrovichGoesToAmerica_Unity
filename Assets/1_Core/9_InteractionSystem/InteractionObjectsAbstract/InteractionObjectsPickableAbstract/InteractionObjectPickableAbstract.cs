@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad, IInteractable, IPickable, IBreakable
+public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad, IInteractable, IPickable
 {
 	protected LocalizationManager _localizationManager;
 	[Header("Object Info")]

@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class InteractionObjectPickableNonThrowableUnbreakable : MonoBehaviour
+public class InteractionObjectPickableNonThrowableUndestructable : InteractionObjectPickableNonThrowableAbstract
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

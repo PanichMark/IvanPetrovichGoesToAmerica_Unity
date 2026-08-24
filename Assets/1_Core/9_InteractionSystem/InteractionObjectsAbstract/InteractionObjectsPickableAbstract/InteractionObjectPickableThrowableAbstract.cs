@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class InteractionObjectPickableThrowable : InteractionObjectPickableAbstract, IThrowable, IDamageable
+public abstract class InteractionObjectPickableThrowableAbstract : InteractionObjectPickableAbstract, IThrowable
 {
 	private bool _canObjectBeDestroyedOnImpact;
 	public float ObjectThrowPower => 10f;
