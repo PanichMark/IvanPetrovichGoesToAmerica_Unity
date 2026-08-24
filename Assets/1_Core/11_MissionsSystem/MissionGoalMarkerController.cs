@@ -10,15 +10,18 @@ public class MissionGoalMarkerController : MonoBehaviour
 	private GameScenesManager _gameSceneManager;
 	private float markerOffset = 20f;
 	private float markerHeight;
-
+	private Bootstrap _bootstrap;
 	private IMissionStep _currentMissionStepCache;
+	private float _markerBorderOffset = 50f;
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		GameScenesManager gameSceneManager,
 		MissionsManager missionsManager,
 		GameObject playerCamera,
 		GameObject imageMissionGoalMarker)
 	{
+		_bootstrap = bootstrap;
 		_missionsManager = missionsManager;
 		_imageMissionGoalMarker = imageMissionGoalMarker;
 		_imageMissionGoalMarkerRectTransform = _imageMissionGoalMarker.GetComponent<RectTransform>();
@@ -71,7 +74,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 	private void Update()
 	{
-		if (_gameObjectMissionGoal == null)
+		if (!_bootstrap.IsBootstrapInitialized || _gameObjectMissionGoal == null)
 		{
 			return; 
 		}
@@ -91,11 +94,11 @@ public class MissionGoalMarkerController : MonoBehaviour
 		{
 			if (screenPoint.x < 0)
 			{
-				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width + 50;
+				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width + _markerBorderOffset;
 			}
 			else
 			{
-				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width - 50;
+				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width - _markerBorderOffset;
 			}
 		}
 		else
@@ -108,11 +111,11 @@ public class MissionGoalMarkerController : MonoBehaviour
 		{
 			if (screenPoint.y < 0)
 			{
-				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height + 50;
+				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height + _markerBorderOffset;
 			}
 			else
 			{
-				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height - 50;
+				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height - _markerBorderOffset;
 			}
 		}
 		else

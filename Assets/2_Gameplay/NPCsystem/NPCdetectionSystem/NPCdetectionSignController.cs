@@ -7,14 +7,16 @@ public class NPCdetectionSignController : MonoBehaviour
 	private NPCdetectionManager _npcDetectionManager;
 
 	// Ссылки разделены: холст отдельно, картинка отдельно
-	private RectTransform _imageRectTransform;
-
+	private RectTransform _imageDetectionSignRectTransform;
+	private GameObject _imageDetectionSign;
 	private Image _imageComponentDetectionSign;
 	private Camera _playerCamera;
 	private List<Sprite> _detectionSignFrames = new List<Sprite>();
 
-	[SerializeField] private float markerOffset = 20f;
-	private float markerHeight;
+	private float _detectionSignOffset = 20f;
+	private float _detectionSignHeight;
+
+	private float _detectionSignBorderOffset = 50f;
 
 	public void Initialize(
 		NPCdetectionManager npcDetectionManager,
@@ -24,17 +26,17 @@ public class NPCdetectionSignController : MonoBehaviour
 		Camera playerCamera)
 	{
 		_npcDetectionManager = npcDetectionManager;
-
+		_imageDetectionSign = imageDetectionSign;
 		// Берем RectTransform именно у картинки, а не у Canvas
-		_imageRectTransform = imageDetectionSign.GetComponent<RectTransform>();
+		_imageDetectionSignRectTransform = _imageDetectionSign.GetComponent<RectTransform>();
 
-		_imageComponentDetectionSign = imageDetectionSign.GetComponent<Image>();
+		_imageComponentDetectionSign = _imageDetectionSign.GetComponent<Image>();
 		_detectionSignFrames = detectionSignFrames;
 		_playerCamera = playerCamera;
 
-		markerHeight = _imageRectTransform.rect.height;
+		_detectionSignHeight = _imageDetectionSignRectTransform.rect.height;
 
-		Debug.Log("[NPC Sign] Initialized. Frames count: " + _detectionSignFrames.Count);
+		//Debug.Log("[NPC Sign] Initialized. Frames count: " + _detectionSignFrames.Count);
 
 		UpdateSpriteByMeter(0f);
 		_npcDetectionManager.OnMeterChanged += UpdateSpriteByMeter;
@@ -50,6 +52,84 @@ public class NPCdetectionSignController : MonoBehaviour
 
 	private void Update()
 	{
+		if (!_imageDetectionSign.activeInHierarchy)
+		{
+			return;
+		}
+
+		
+		Vector3 targetPosition = transform.position + new Vector3(0f, 2.2f, 0f);
+		Vector3 screenPoint = _playerCamera.WorldToViewportPoint(targetPosition);
+
+		if (screenPoint.z <= 0)
+		{
+			return;
+		}
+
+		bool isOnScreenX = screenPoint.x >= 0 && screenPoint.x <= 1;
+		bool isOnScreenY = screenPoint.y >= 0 && screenPoint.y <= 1;
+
+		float xPos;
+		if (!isOnScreenX)
+		{
+			if (screenPoint.x < 0)
+			{
+				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width + _detectionSignBorderOffset;
+			}
+			else
+			{
+				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width - _detectionSignBorderOffset;
+			}
+		}
+		else
+		{
+			xPos = screenPoint.x * Screen.width;
+		}
+
+		float yPos;
+		if (!isOnScreenY)
+		{
+			if (screenPoint.y < 0)
+			{
+				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height + _detectionSignBorderOffset;
+			}
+			else
+			{
+				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height - _detectionSignBorderOffset;
+			}
+		}
+		else
+		{
+			yPos = screenPoint.y * Screen.height;
+		}
+
+		if (isOnScreenX)
+		{
+			if (screenPoint.x < 0)
+			{
+				xPos -= _detectionSignOffset;
+			}
+			else if (screenPoint.x > 1)
+			{
+				xPos += _detectionSignOffset;
+			}
+		}
+
+		if (isOnScreenY)
+		{
+			if (screenPoint.y < 0)
+			{
+				yPos -= _detectionSignOffset;
+			}
+			else if (screenPoint.y > 1)
+			{
+				yPos += _detectionSignHeight + _detectionSignOffset;
+			}
+		}
+
+		_imageDetectionSignRectTransform.anchoredPosition = new Vector2(xPos, yPos);
+		
+		/*
 		Vector3 targetPosition = transform.position + new Vector3(0f, 2.2f, 0f);
 		Vector3 screenPoint = _playerCamera.WorldToViewportPoint(targetPosition);
 
@@ -57,7 +137,7 @@ public class NPCdetectionSignController : MonoBehaviour
 
 		if (screenPoint.z <= 0)
 		{
-			Debug.LogWarning("[NPC Sign] Target is behind the camera or too close.");
+			//Debug.LogWarning("[NPC Sign] Target is behind the camera or too close.");
 			return;
 		}
 
@@ -66,15 +146,15 @@ public class NPCdetectionSignController : MonoBehaviour
 
 		string xState = isOnScreenX ? "Inside" : "Outside";
 		string yState = isOnScreenY ? "Inside" : "Outside";
-		Debug.Log($"[NPC Sign] Viewport: ({screenPoint.x:F2}, {screenPoint.y:F2}). X: {xState}. Y: {yState}");
+		//Debug.Log($"[NPC Sign] Viewport: ({screenPoint.x:F2}, {screenPoint.y:F2}). X: {xState}. Y: {yState}");
 
 		float xPos;
 		if (!isOnScreenX)
 		{
 			if (screenPoint.x < 0.5f)
-				xPos = markerOffset;
+				xPos = _detectionSignOffset;
 			else
-				xPos = Screen.width - markerOffset;
+				xPos = Screen.width - _detectionSignOffset;
 		}
 		else
 		{
@@ -85,9 +165,9 @@ public class NPCdetectionSignController : MonoBehaviour
 		if (!isOnScreenY)
 		{
 			if (screenPoint.y < 0.5f)
-				yPos = markerOffset;
+				yPos = _detectionSignOffset;
 			else
-				yPos = Screen.height - markerOffset - markerHeight;
+				yPos = Screen.height - _detectionSignOffset - _detectionSignHeight;
 		}
 		else
 		{
@@ -95,9 +175,10 @@ public class NPCdetectionSignController : MonoBehaviour
 		}
 
 		// Применяем позицию к картинке, а не к Canvas
-		_imageRectTransform.position = new Vector3(xPos, yPos, 0f);
+		_imageDetectionSignRectTransform.position = new Vector3(xPos, yPos, 0f);
 
-		Debug.Log($"[NPC Sign] Final UI Pos: ({xPos:F0}, {yPos:F0})");
+		//Debug.Log($"[NPC Sign] Final UI Pos: ({xPos:F0}, {yPos:F0})");
+		*/
 	}
 
 	private void UpdateSpriteByMeter(float meterValue)
@@ -107,14 +188,14 @@ public class NPCdetectionSignController : MonoBehaviour
 
 		if (!shouldShow || _detectionSignFrames.Count == 0)
 		{
-			Debug.LogWarning("[NPC Sign] Tried to update sprite, but frames are missing or value is 0.");
+			//Debug.LogWarning("[NPC Sign] Tried to update sprite, but frames are missing or value is 0.");
 			return;
 		}
 
 		float normalizedValue = Mathf.Clamp01(meterValue / 100f);
 		int frameIndex = Mathf.RoundToInt(normalizedValue * (_detectionSignFrames.Count - 1));
 
-		Debug.Log($"[NPC Sign] Meter: {meterValue:F1} -> Frame Index: {frameIndex}/{_detectionSignFrames.Count - 1} ({_detectionSignFrames[frameIndex].name})");
+		//Debug.Log($"[NPC Sign] Meter: {meterValue:F1} -> Frame Index: {frameIndex}/{_detectionSignFrames.Count - 1} ({_detectionSignFrames[frameIndex].name})");
 
 		_imageComponentDetectionSign.sprite = _detectionSignFrames[frameIndex];
 	}

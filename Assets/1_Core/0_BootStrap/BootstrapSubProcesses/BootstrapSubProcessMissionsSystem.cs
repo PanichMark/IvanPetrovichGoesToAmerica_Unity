@@ -42,6 +42,7 @@ public class BootstrapSubProcessMissionsSystem
 			_gameMissions);
 
 		_missionGoalMarkerManager.Initialize(
+			_bootstrap,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_missionsManager, 
 			_playerCameraGameObject,
