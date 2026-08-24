@@ -29,9 +29,9 @@ public class NPCphrasesController : MonoBehaviour
 	private GameObject _NPCphrasesText;
 	private TextMeshProUGUI _NPCphrasesTextComponent;
 
-	public void Initialize()
+	public void Initialize(NPCabstract NPCabstract)
 	{
-		_NPCabstract = GetComponent<NPCabstract>();
+		_NPCabstract = NPCabstract;
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_NPCphrasesText = ServiceLocator.Resolve<GameObject>("TextPhraseLine");
 		_NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();

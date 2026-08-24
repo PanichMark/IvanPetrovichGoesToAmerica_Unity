@@ -20,7 +20,6 @@ public abstract class NPCabstract : NPCcore, IInteractable
 
 	[SerializeField] private InteractionObjectPickableData _pickableBodyData;
 	private GameObject _playerCameraGameObject;
-	private Camera _playerCamera;
 	private GameObject _canvasNPCstatus;
 	private GameObject _imageDetectionSign;
 	private GameObject _textNPCcurrentState;
@@ -59,7 +58,6 @@ public abstract class NPCabstract : NPCcore, IInteractable
 	private void Start()
 	{
 		_playerCameraGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
-		_playerCamera = _playerCameraGameObject.GetComponent<Camera>();
 		_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>("NPCdetectionSignFrames");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
@@ -90,12 +88,14 @@ public abstract class NPCabstract : NPCcore, IInteractable
 
 		if (_NPCphrasesController != null)
 		{
-			_NPCphrasesController.Initialize();
+			_NPCphrasesController.Initialize(
+				this);
 		}
 
 		if (_NPCdialogueController != null)
 		{
-			_NPCdialogueController.Initialize();
+			_NPCdialogueController.Initialize(
+				_NPCstateMachineController);
 		}
 
 		if (_NPCweaponController != null)
@@ -110,7 +110,7 @@ public abstract class NPCabstract : NPCcore, IInteractable
 			_canvasNPCstatus,
 			_imageDetectionSign,
 			_detectionSignFrames,
-			_playerCamera);
+			_playerCameraGameObject);
 
 		if (_NPCdebugHUDcontroller != null)
 		{

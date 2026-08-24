@@ -8,8 +8,8 @@ public class MissionGoalMarkerController : MonoBehaviour
 	private Camera _playerCameraComponent;
 	private GameObject _gameObjectMissionGoal;
 	private GameScenesManager _gameSceneManager;
-	private float markerOffset = 20f;
-	private float markerHeight;
+	private float _markerOffset = 20f;
+	private float _markerHeight;
 	private Bootstrap _bootstrap;
 	private IMissionStep _currentMissionStepCache;
 	private float _markerBorderOffset = 45f;
@@ -32,7 +32,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 		_gameSceneManager.OnEndLoadingGameplayScene += CheckMissionStep;
 		//Invoke(nameof(RequestRecheck), 0.1f);
 
-		markerHeight = _imageMissionGoalMarkerRectTransform.rect.height;
+		_markerHeight = _imageMissionGoalMarkerRectTransform.rect.height;
 
 		Debug.Log("MissionGoalMarkerController Initialized");
 	}
@@ -127,11 +127,11 @@ public class MissionGoalMarkerController : MonoBehaviour
 		{
 			if (screenPoint.x < 0)
 			{
-				xPos -= markerOffset;
+				xPos -= _markerOffset;
 			}
 			else if (screenPoint.x > 1)
 			{
-				xPos += markerOffset;
+				xPos += _markerOffset;
 			}
 		}
 
@@ -139,11 +139,11 @@ public class MissionGoalMarkerController : MonoBehaviour
 		{
 			if (screenPoint.y < 0)
 			{
-				yPos -= markerOffset;
+				yPos -= _markerOffset;
 			}
 			else if (screenPoint.y > 1)
 			{
-				yPos += markerHeight + markerOffset;
+				yPos += _markerHeight + _markerOffset;
 			}
 		}
 

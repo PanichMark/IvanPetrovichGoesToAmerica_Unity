@@ -62,7 +62,7 @@ public class NPCdialogueController : MonoBehaviour
 	private NPCstateMachineController _NPCstateMachineController;
 	public bool IsDialogueActive { get; private set; }
 
-	public void Initialize()
+	public void Initialize(NPCstateMachineController NPCstateMachineController)
 	{
 		_uLipSyncBlendShape = GetComponent<uLipSyncBlendShape>();
 		_audioSource = GetComponent<AudioSource>();
@@ -89,7 +89,7 @@ public class NPCdialogueController : MonoBehaviour
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_NPCdialogueText = ServiceLocator.Resolve<GameObject>("TextDialogueLine").GetComponent<TextMeshProUGUI>();
 
-		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
+		_NPCstateMachineController = NPCstateMachineController;
 
 		_menuManager.OnOpenPauseMenu += HideNPCDialogueCanvas;
 		_menuManager.OnClosePauseMenu += ShowNPCDialogueCanvas;

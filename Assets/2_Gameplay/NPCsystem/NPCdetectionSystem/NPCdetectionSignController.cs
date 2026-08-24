@@ -5,27 +5,34 @@ using System.Collections.Generic;
 public class NPCdetectionSignController : MonoBehaviour
 {
 	private NPCdetectionManager _npcDetectionManager;
-
+	private GameObject _playerCameraGameObject;
 	// Ссылки разделены: холст отдельно, картинка отдельно
 	private RectTransform _imageDetectionSignRectTransform;
 	private GameObject _imageDetectionSign;
 	private Image _imageComponentDetectionSign;
-	private Camera _playerCamera;
+	private Camera _playerCameraComponent;
 	private List<Sprite> _detectionSignFrames = new List<Sprite>();
-
+	private GameObject _canvasNpcStatus;
 	private float _detectionSignOffset = 20f;
 	private float _detectionSignHeight;
 
 	private float _detectionSignBorderOffsetX = 40f;
 	private float _detectionSignBorderOffsetY = 55f;
 
+
+	private float _minDistanceForScale = 6f; // Минимальное расстояние до начала эффекта
+	private float _scaleMultiplier = 6f;     // Во сколько раз увеличится размер на минимальном расстоянии
+
+	private MenuManager _menuManager;
+
 	public void Initialize(
 		NPCdetectionManager npcDetectionManager,
 		GameObject canvasNpcStatus, // Оставляем для общего контроля видимости
 		GameObject imageDetectionSign,
 		List<Sprite> detectionSignFrames,
-		Camera playerCamera)
+		GameObject playerCameraGameObject)
 	{
+		_canvasNpcStatus = canvasNpcStatus;
 		_npcDetectionManager = npcDetectionManager;
 		_imageDetectionSign = imageDetectionSign;
 		// Берем RectTransform именно у картинки, а не у Canvas
@@ -33,22 +40,38 @@ public class NPCdetectionSignController : MonoBehaviour
 
 		_imageComponentDetectionSign = _imageDetectionSign.GetComponent<Image>();
 		_detectionSignFrames = detectionSignFrames;
-		_playerCamera = playerCamera;
+		_playerCameraGameObject = playerCameraGameObject;
+		_playerCameraComponent = _playerCameraGameObject.GetComponent<Camera>();
 
 		_detectionSignHeight = _imageDetectionSignRectTransform.rect.height;
 
 		//Debug.Log("[NPC Sign] Initialized. Frames count: " + _detectionSignFrames.Count);
 
+
+		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		_menuManager.OnOpenAnyMenu += HideCanvasNPC;
+		_menuManager.OnCloseAnyMenu += ShowCanvasNPC;
+
 		UpdateSpriteByMeter(0f);
 		_npcDetectionManager.OnMeterChanged += UpdateSpriteByMeter;
 	}
 
+	private void ShowCanvasNPC()
+	{
+		_canvasNpcStatus.SetActive(true);
+	}
+
+	private void HideCanvasNPC()
+	{
+		_canvasNpcStatus.SetActive(false);
+	}
+
 	private void OnDestroy()
 	{
-		if (_npcDetectionManager != null)
-		{
-			_npcDetectionManager.OnMeterChanged -= UpdateSpriteByMeter;
-		}
+		_npcDetectionManager.OnMeterChanged -= UpdateSpriteByMeter;
+
+		_menuManager.OnOpenAnyMenu += HideCanvasNPC;
+		_menuManager.OnCloseAnyMenu += ShowCanvasNPC;
 	}
 
 	private void Update()
@@ -58,9 +81,8 @@ public class NPCdetectionSignController : MonoBehaviour
 			return;
 		}
 
-		
 		Vector3 targetPosition = transform.position + new Vector3(0f, 2.2f, 0f);
-		Vector3 screenPoint = _playerCamera.WorldToViewportPoint(targetPosition);
+		Vector3 screenPoint = _playerCameraComponent.WorldToViewportPoint(targetPosition);
 
 		if (screenPoint.z <= 0)
 		{
@@ -129,57 +151,8 @@ public class NPCdetectionSignController : MonoBehaviour
 		}
 
 		_imageDetectionSignRectTransform.anchoredPosition = new Vector2(xPos  - Screen.width / 2, yPos - Screen.height / 2);
-		
-		/*
-		Vector3 targetPosition = transform.position + new Vector3(0f, 2.2f, 0f);
-		Vector3 screenPoint = _playerCamera.WorldToViewportPoint(targetPosition);
 
-		Debug.DrawLine(_playerCamera.transform.position, transform.position, Color.cyan);
-
-		if (screenPoint.z <= 0)
-		{
-			//Debug.LogWarning("[NPC Sign] Target is behind the camera or too close.");
-			return;
-		}
-
-		bool isOnScreenX = screenPoint.x >= 0 && screenPoint.x <= 1;
-		bool isOnScreenY = screenPoint.y >= 0 && screenPoint.y <= 1;
-
-		string xState = isOnScreenX ? "Inside" : "Outside";
-		string yState = isOnScreenY ? "Inside" : "Outside";
-		//Debug.Log($"[NPC Sign] Viewport: ({screenPoint.x:F2}, {screenPoint.y:F2}). X: {xState}. Y: {yState}");
-
-		float xPos;
-		if (!isOnScreenX)
-		{
-			if (screenPoint.x < 0.5f)
-				xPos = _detectionSignOffset;
-			else
-				xPos = Screen.width - _detectionSignOffset;
-		}
-		else
-		{
-			xPos = screenPoint.x * Screen.width;
-		}
-
-		float yPos;
-		if (!isOnScreenY)
-		{
-			if (screenPoint.y < 0.5f)
-				yPos = _detectionSignOffset;
-			else
-				yPos = Screen.height - _detectionSignOffset - _detectionSignHeight;
-		}
-		else
-		{
-			yPos = screenPoint.y * Screen.height;
-		}
-
-		// Применяем позицию к картинке, а не к Canvas
-		_imageDetectionSignRectTransform.position = new Vector3(xPos, yPos, 0f);
-
-		//Debug.Log($"[NPC Sign] Final UI Pos: ({xPos:F0}, {yPos:F0})");
-		*/
+		UpdateScaleByDistance();
 	}
 
 	private void UpdateSpriteByMeter(float meterValue)
@@ -199,5 +172,22 @@ public class NPCdetectionSignController : MonoBehaviour
 		//Debug.Log($"[NPC Sign] Meter: {meterValue:F1} -> Frame Index: {frameIndex}/{_detectionSignFrames.Count - 1} ({_detectionSignFrames[frameIndex].name})");
 
 		_imageComponentDetectionSign.sprite = _detectionSignFrames[frameIndex];
+	}
+
+	private void UpdateScaleByDistance()
+	{
+		float distance = Vector3.Distance(_playerCameraComponent.transform.position, transform.position);
+
+		// Если дальше минимальной дистанции — возвращаем стандартный масштаб
+		if (distance >= _minDistanceForScale)
+		{
+			_imageDetectionSignRectTransform.localScale = Vector3.one;
+			return;
+		}
+
+		float t = Mathf.InverseLerp(_minDistanceForScale, 0f, distance);
+		float currentScaleValue = Mathf.Lerp(1f, _scaleMultiplier, t);
+
+		_imageDetectionSignRectTransform.localScale = new Vector3(currentScaleValue, currentScaleValue, currentScaleValue);
 	}
 }
