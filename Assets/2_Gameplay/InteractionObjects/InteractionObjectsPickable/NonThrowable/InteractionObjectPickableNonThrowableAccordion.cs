@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class InteractionObjectPickableNonThrowableAccordion : InteractionObjectPickableNonThrowable
+public class InteractionObjectPickableNonThrowableAccordion : InteractionObjectPickableNonThrowableAbstract
 {
 	private const float AnimationDuration = 0.604f;
 	private const float TargetWeight = 100f;

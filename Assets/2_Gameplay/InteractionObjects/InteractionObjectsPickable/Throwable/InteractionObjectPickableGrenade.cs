@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectPickableThrowableGrenade : InteractionObjectPickableThrowable
+public class InteractionObjectPickableGrenade : InteractionObjectPickableThrowable
 {
 	[SerializeField] private float _explosionRadius;
 	[SerializeField] private bool _explodeOnImpact;

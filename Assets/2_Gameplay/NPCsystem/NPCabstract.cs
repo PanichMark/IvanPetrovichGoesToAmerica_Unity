@@ -34,7 +34,7 @@ public abstract class NPCabstract : GameplayObjectSaveLoad, IInteractable
 	protected NPCweaponController _NPCweaponController;
 	protected NPCdetectionManager _NPCdetectionManager;
 	protected NPCdetectionSignController _NPCdetectionSignController;
-	protected InteractionObjectPickableNonThrowable _pickable;
+	protected InteractionObjectPickableNonThrowableAbstract _pickable;
 	private NavMeshAgent _navMeshAgent;
 	private List<Sprite> _detectionSignFrames;
 	private LocalizationManager _localizationManager;
@@ -188,7 +188,7 @@ public abstract class NPCabstract : GameplayObjectSaveLoad, IInteractable
 
 		gameObject.AddComponent<Rigidbody>();
 
-		_pickable = InteractionObjectPickableNonThrowable.CreateWithName(gameObject, _NPCname, _pickableBodyData);
+		_pickable = InteractionObjectPickableNonThrowableAbstract.CreateWithName(gameObject, _NPCname, _pickableBodyData);
 
 		_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
 		//Destroy(this);

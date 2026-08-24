@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class InteractionObjectPickableWeaponAbstract : InteractionObjectPickableNonThrowable, IPickableWeapon
+public abstract class InteractionObjectPickableWeaponAbstract : InteractionObjectPickableNonThrowableAbstract
 {
 	[Header("Weapon Attack Info")]
 	[SerializeField] private string _weaponRightMouseButtonAttackMessage;

@@ -243,7 +243,7 @@ public class PlayerInteractionController : MonoBehaviour, ISaveLoad
 		{
 			OnPickUpNonThrowable?.Invoke(_currentIPickable.PickableType);
 
-			IPickableWeapon pickableRangedWeapon = CurrentPickableObject.GetComponent<IPickableWeapon>();
+			var pickableRangedWeapon = CurrentPickableObject.GetComponent<InteractionObjectPickableWeaponAbstract>();
 			if (pickableRangedWeapon == null)
 			{
 				_mainInteractionText.text = $"{_HUDInteractionDropText} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}";

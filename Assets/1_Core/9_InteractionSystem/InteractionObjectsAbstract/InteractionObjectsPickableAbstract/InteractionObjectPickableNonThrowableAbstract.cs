@@ -2,14 +2,14 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class InteractionObjectPickableNonThrowable : InteractionObjectPickableAbstract
+public class InteractionObjectPickableNonThrowableAbstract : InteractionObjectPickableAbstract
 {
-	public static InteractionObjectPickableNonThrowable CreateWithName(GameObject obj, string interactionItemNameSystem, InteractionObjectPickableData pickableBodyData)
+	public static InteractionObjectPickableNonThrowableAbstract CreateWithName(GameObject obj, string interactionItemNameSystem, InteractionObjectPickableData pickableBodyData)
 	{
-		var component = obj.GetComponent<InteractionObjectPickableNonThrowable>();
+		var component = obj.GetComponent<InteractionObjectPickableNonThrowableAbstract>();
 		if (component == null)
 		{
-			component = obj.AddComponent<InteractionObjectPickableNonThrowable>();
+			component = obj.AddComponent<InteractionObjectPickableNonThrowableAbstract>();
 		}
 		//Debug.Log(component);
 	

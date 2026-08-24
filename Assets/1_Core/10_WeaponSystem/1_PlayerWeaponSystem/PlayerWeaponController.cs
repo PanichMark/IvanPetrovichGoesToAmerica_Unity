@@ -443,11 +443,11 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 		if (_interactionController.CurrentPickableObject != null)
 		{
-			var pickableWeapon = _interactionController.CurrentPickableObject.GetComponent<InteractionObjectPickableAbstract>();
+			var pickableWeapon = _interactionController.CurrentPickableObject.GetComponent<InteractionObjectPickableWeaponAbstract>();
 
-			if (pickableWeapon is IPickableWeapon rangedWeapon)
+			if (pickableWeapon != null)
 			{
-				rangedWeapon.AttackRight();
+				pickableWeapon.AttackRight();
 			}
 		}
 	}
@@ -468,11 +468,11 @@ public class PlayerWeaponController : MonoBehaviour, ISaveLoad
 		}
 		if (_interactionController.CurrentPickableObject != null)
 		{
-			var pickableWeapon = _interactionController.CurrentPickableObject.GetComponent<InteractionObjectPickableAbstract>();
+			var pickableWeapon = _interactionController.CurrentPickableObject.GetComponent<InteractionObjectPickableWeaponAbstract>();
 
-			if (pickableWeapon is IPickableWeapon rangedWeapon)
+			if (pickableWeapon != null)
 			{
-				rangedWeapon.AttackLeft();
+				pickableWeapon.AttackLeft();
 			}
 		}
 	}
