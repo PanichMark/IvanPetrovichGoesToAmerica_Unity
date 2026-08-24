@@ -7,21 +7,14 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 	public float ObjectThrowPower => 10f;
 	private GameObject _firstPersonRightHandWeaponSlotGameObject;
 
-
-	[SerializeField] private bool _canBeDamaged;
 	[SerializeField] private bool IsDestroyedUponImpact;
 
 	[Header("Object Damage")]
 	[SerializeField] private float _damage;
 	[SerializeField] private bool _canDamageBreakable;
 
-
-
 	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
-	public float CurrentHealth => _health;
 
-
-	public bool CanObjectBeDamaged => _canBeDamaged;
 
 
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
@@ -222,18 +215,5 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 		}
 	}
 
-	public void TakeDamage(float amount)
-	{
-		if (CanObjectBeDamaged)
-		{
-			Debug.Log($"{InteractionObjectNameSystem} was damaged by {amount}, current health {CurrentHealth - amount}");
 
-			_health -= amount;
-
-			if (_health <= 0)
-			{
-				ObjectIsFullyDamaged();
-			}
-		}
-	}
 }

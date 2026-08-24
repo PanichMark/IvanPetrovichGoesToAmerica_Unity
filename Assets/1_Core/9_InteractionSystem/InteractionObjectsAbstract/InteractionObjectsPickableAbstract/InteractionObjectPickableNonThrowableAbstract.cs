@@ -4,44 +4,12 @@ using System.Collections;
 
 public abstract class InteractionObjectPickableNonThrowableAbstract : InteractionObjectPickableAbstract
 {
-	public static InteractionObjectPickableNonThrowableAbstract CreateWithName(GameObject obj, string interactionItemNameSystem, InteractionObjectPickableData pickableBodyData)
-	{
-		var component = obj.GetComponent<InteractionObjectPickableNonThrowableAbstract>();
-		if (component == null)
-		{
-			component = obj.AddComponent<InteractionObjectPickableNonThrowableAbstract>();
-		}
-		//Debug.Log(component);
-	
-		component.SetUpPickableBody(interactionItemNameSystem, pickableBodyData);
-
-		return component;
-	}
-
-	protected void SetUpPickableBody(string interactionObjectNameSystem, InteractionObjectPickableData pickableBodyData)
-	{
-		_interactionObjectPickableType = pickableBodyData;
-		InteractionObjectNameUI = _localizationManager.GetLocalizedString(interactionObjectNameSystem);
-
-
-		Collider = gameObject.AddComponent<BoxCollider>();
-
-		BoxCollider box = (BoxCollider)Collider;
-		box.center = new Vector3(0f, 0.5f, 0f);
-		box.size = new Vector3(0.7f, 1f, 0.7f);
-
-		var rigidbody = GetComponent<Rigidbody>();
-		rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-
-		InitializePickable();
-	}
-
 	[Header("NonThrowable Movement")]
 	[SerializeField] private bool _isMovementRestricted;
 	[SerializeField] private float _movementSpeedPenaltyMultiplier;
 
 	private PlayerMovementController _playerMovementController;
-
+	private bool _isCreatedAsBody;
 	public override void PickUpObject(bool isPickedUpByLoadSafeFile)
 	{
 		base.PickUpObject(isPickedUpByLoadSafeFile);
@@ -76,10 +44,9 @@ public abstract class InteractionObjectPickableNonThrowableAbstract : Interactio
 	{
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
 
-		_isCreatedAsBody = true;
-		_canBeBroken = false;
-		_isMovementRestricted = true;
-		_movementSpeedPenaltyMultiplier = 0.5f;
+		//_isCreatedAsBody = true;
+		//_isMovementRestricted = true;
+		//_movementSpeedPenaltyMultiplier = 0.5f;
 
 		if (_isMovementRestricted)
 		{

@@ -13,11 +13,6 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad
 
 	public InteractionObjectsPickableTypes PickableType => _interactionObjectPickableType.PickableType;
 
-	[Header("Object Health")]
-	[SerializeField] protected float _health;
-	[SerializeField] protected bool _canBeBroken;
-	[SerializeField] private float _breakingThreshold;
-
 	protected PlayerInteractionController _playerInteractionController;
 	protected GameController _gameController;
 	protected Collider _playerCollider;
@@ -28,7 +23,6 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad
 	protected int _pickableLayer;
 	protected int _playerLayer;
 	public event IInteractable.InteractableObjectHandler OnInteract;
-	protected bool _isCreatedAsBody;
 	public GameObject CachedPlayer { get; protected set; }
 	public Collider Collider { get; protected set; }
 	public Rigidbody RigidBody { get; protected set; }
@@ -44,14 +38,10 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad
 
 	public bool IsObjectPickedUp { get; protected set; }
 
-	public bool CanObjectBeBroken => _canBeBroken;
 
 	public bool IsObjectDestroyed => _isObjectDestroyed;
 
 	protected bool _isObjectDestroyed;
-	public float CurrentDurability => _health;
-
-	public float DuribilityThreshold => _breakingThreshold;
 
 	protected virtual void InitializePickable()
 	{
@@ -75,7 +65,7 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
-		if (!_isCreatedAsBody && _interactionObjectNameSystem != null)
+		if (_interactionObjectNameSystem != null)
 		{
 			InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		}
@@ -118,24 +108,26 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad
 		PickUpObject(false);
 	}
 
-	public void InteractCutscene()
-	{
-		gameObject.tag = "Untagged";
-		Collider.enabled = false;
-		RigidBody.isKinematic = true;
-		transform.parent = CachedPlayer.transform;
-		transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
-		IsObjectPickedUp = true;
-	}
-
 	public virtual void PickUpObject(bool isPickedUpByLoadSafeFile)
 	{
 		if (!IsObjectPickedUp)
 		{
 			Debug.Log($"Picked up {InteractionObjectNameSystem}");
 			gameObject.tag = "Untagged";
-			Collider.enabled = false;
-			RigidBody.isKinematic = true;
+
+			// Рекурсивно отключаем все коллайдеры в иерархии
+			var allColliders = GetComponentsInChildren<Collider>(true);
+			foreach (var col in allColliders)
+			{
+				col.enabled = false;
+			}
+
+			// Рекурсивно переводим все Rigidbody в кинематический режим
+			var allRigidbodies = GetComponentsInChildren<Rigidbody>(true);
+			foreach (var rb in allRigidbodies)
+			{
+				rb.isKinematic = true;
+			}
 
 			if (!isPickedUpByLoadSafeFile)
 			{
@@ -146,7 +138,6 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad
 				SetPickableObjectTransformAtPlayerArms();
 			}
 
-			//transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
 			IsObjectPickedUp = true;
 		}
 	}
@@ -157,29 +148,85 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad
 		Debug.Log($"Dropped off {InteractionObjectNameSystem}");
 		gameObject.tag = "Interactable";
 		gameObject.layer = LayerMask.NameToLayer("Default");
-		Collider.enabled = true;
-		RigidBody.isKinematic = false;
+
+		// Рекурсивно включаем все коллайдеры обратно
+		var allColliders = GetComponentsInChildren<Collider>(true);
+		foreach (var col in allColliders)
+		{
+			col.enabled = true;
+		}
+
+		// Рекурсивно возвращаем всем телам динамическую физику
+		var allRigidbodies = GetComponentsInChildren<Rigidbody>(true);
+		foreach (var rb in allRigidbodies)
+		{
+			rb.isKinematic = false;
+		}
+
 		IsObjectPickedUp = false;
 
 		transform.parent = null;
 		transform.localPosition += transform.forward * 0.3f;
-		Physics.IgnoreCollision(Collider, _playerCollider, true);
-		_isCollisionIgnored = true;
+
+		// Внимание: Physics.IgnoreCollision работает только для конкретной ПАРЫ компонентов.
+		// Если у вас много детей-коллайдеров, игнорирование придется настраивать для каждого из них отдельно,
+		// либо использовать другой подход (например, слои Collision Matrix).
+		if (_playerCollider != null)
+		{
+			foreach (var col in allColliders)
+			{
+				Physics.IgnoreCollision(col, _playerCollider, true);
+			}
+			_isCollisionIgnored = true;
+		}
 
 		StartCoroutine(EnableCollisionAfterDelay(0.05f));
 
 		SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneAt(1));
 	}
 
+	// Этот метод также изменен согласно вашему запросу "везде"
+	public void InteractCutscene()
+	{
+		gameObject.tag = "Untagged";
+
+		var allColliders = GetComponentsInChildren<Collider>(true);
+		foreach (var col in allColliders)
+		{
+			col.enabled = false;
+		}
+
+		var allRigidbodies = GetComponentsInChildren<Rigidbody>(true);
+		foreach (var rb in allRigidbodies)
+		{
+			rb.isKinematic = true;
+		}
+
+		transform.parent = CachedPlayer.transform;
+		transform.rotation = Quaternion.Euler(0, CachedPlayer.transform.localEulerAngles.y + 180, 0);
+		IsObjectPickedUp = true;
+	}
+
 	private IEnumerator EnableCollisionAfterDelay(float delay)
 	{
 		yield return new WaitForSeconds(delay);
 
-		if (Collider != null && _playerCollider != null)
+		if (_playerCollider == null)
 		{
-			Physics.IgnoreCollision(Collider, _playerCollider, false);
 			_isCollisionIgnored = false;
+			yield break;
 		}
+
+		// Получаем все коллайдеры (включая детей), которые были отключены при подборе
+		var allColliders = GetComponentsInChildren<Collider>(true);
+
+		foreach (var col in allColliders)
+		{
+			// Включаем столкновение для каждого из них с коллайдером игрока
+			Physics.IgnoreCollision(col, _playerCollider, false);
+		}
+
+		_isCollisionIgnored = false;
 	}
 
 	private IEnumerator MoveTowardsPlayer()
@@ -209,28 +256,6 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectSaveLoad
 		transform.rotation = Quaternion.LookRotation(CachedPlayer.transform.forward, Vector3.up) * _interactionObjectPickableType.Rotation;
 	}
 
-	public virtual void TakeBreakDamage(float amount)
-	{
-		if (CanObjectBeBroken)
-		{
-			if (amount >= DuribilityThreshold)
-			{
-				_health -= amount;
-
-				if (_health <= 0)
-				{
-					ObjectIsFullyBroken();
-				}
-			}
-		}
-	}
-
-	public void ObjectIsFullyBroken()
-	{
-		_isObjectDestroyed = true;
-
-		gameObject.SetActive(false);
-	}
 
 	public override IEnumerator SaveData(GameData data)
 	{

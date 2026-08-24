@@ -188,7 +188,7 @@ public abstract class NPCabstract : GameplayObjectSaveLoad, IInteractable
 
 		gameObject.AddComponent<Rigidbody>();
 
-		_pickable = InteractionObjectPickableNonThrowableAbstract.CreateWithName(gameObject, _NPCname, _pickableBodyData);
+		_pickable = InteractionObjectPickableNonThrowableUndestructable.CreateWithName(gameObject, _NPCname, _pickableBodyData);
 
 		_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
 		//Destroy(this);

@@ -16,9 +16,11 @@ GameObject:
   - component: {fileID: 2050623434813028913}
   - component: {fileID: 1631204065924820986}
   - component: {fileID: 3415144245846769399}
+  - component: {fileID: 1213708961742934949}
+  - component: {fileID: 5839836429865181148}
   m_Layer: 0
   m_Name: InteractionObject_Safe_SafeSquare
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -197,6 +199,49 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6000001, y: 0.7999999, z: 0.035418227}
   m_Center: {x: 2.961672e-17, y: 0.39999995, z: 0.017709088}
+--- !u!114 &1213708961742934949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348570349953599362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d6995fa24cfba439227bb97b02d953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionObjectNameSystem: InteractionObject_Safe_SafeMedium
+  _interactionObjectPickableType: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
+  _isMovementRestricted: 1
+  _movementSpeedPenaltyMultiplier: 0.5
+--- !u!54 &5839836429865181148
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348570349953599362}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3641484556880735531
 GameObject:
   m_ObjectHideFlags: 0
