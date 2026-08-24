@@ -62,7 +62,7 @@ public class InteractionObjectChangeScene : MonoBehaviour, IInteractable
 
 	private IEnumerator LoadGameplayScene()
 	{
-		Debug.Log("LOADING: " + _targetScene);
+		//Debug.Log("LOADING: " + _targetScene);
 
 		// Отвязываем объект от родителя двери или стены, чтобы он не уничтожился при смене сцены
 		gameObject.transform.SetParent(null);

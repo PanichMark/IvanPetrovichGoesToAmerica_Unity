@@ -64,7 +64,7 @@ public class VolumeOcclusion : MonoBehaviour
 			if (isInside)
 			{
 				ApplyAO(renderer, aoMultiplier);
-				Debug.Log($"Объект {renderer.name}: AO={aoMultiplier}");
+				//Debug.Log($"Объект {renderer.name}: AO={aoMultiplier}");
 			}
 			else if (_propertyBlocks.ContainsKey(renderer))
 			{

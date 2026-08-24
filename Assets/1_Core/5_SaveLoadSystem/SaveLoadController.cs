@@ -57,6 +57,7 @@ public class SaveLoadController : MonoBehaviour
 			if (IsSavingFinished == false)
 			{
 				StartCoroutine(OnSceneLoadUpdateGameplayObjects());
+				StartCoroutine(LoadGame(-1));
 			}
 		};
 
@@ -71,16 +72,26 @@ public class SaveLoadController : MonoBehaviour
 
 		_gameData = new GameData();
 
+		
 		_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_TEMP);
 		_fileDataHandler.Save(_gameData);
+		
+		//yield return StartCoroutine(SaveGame(-1));
+
 
 		foreach (ISaveLoad saveLoadObj in _persistentSaveLoadObjects)
 		{
-			saveLoadObj.LoadData(_gameData);
+			yield return saveLoadObj.LoadData(_gameData);
 		}
+		
 
 		Debug.Log("### New Game Started ###");
 		yield break;
+	}
+
+	private void Update()
+	{
+		//Debug.Log(IsSavingFinished);
 	}
 
 	public IEnumerator SaveGame(int saveSlotNumber)
@@ -142,16 +153,33 @@ public class SaveLoadController : MonoBehaviour
 		OnSafeFileLoad?.Invoke();
 		_gameController.CloseMainMenu();
 
-		_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _saveFilePaths[loadSlotNumber - 1]);
+		if (loadSlotNumber == -1)
+		{
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_TEMP);
+
+			if (_gameData == null)
+			{
+				Debug.Log("NO GAMEDATA TO SAVE");
+				yield break;
+			}
+		}
+		else
+		{
+			_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _saveFilePaths[loadSlotNumber - 1]);
+		}
+
 		_gameData = _fileDataHandler.Load();
 
 		SceneNameToLoad = _gameData.Scene;
 
 		// Запускаем сцену (она сама заполнит шкалу до 0.667)
-		StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), SceneNameToLoad)));
+		if (loadSlotNumber != -1)
+		{
+			StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), SceneNameToLoad)));
 
-		// Ждем, пока ASYNC SCENE LOAD не закончится
-		yield return new WaitWhile(() => _gameSceneManager.HasLoadedGameplayScene == false);
+			// Ждем, пока ASYNC SCENE LOAD не закончится
+			yield return new WaitWhile(() => _gameSceneManager.HasLoadedGameplayScene == false);
+		}
 
 		Debug.Log("LOADING 222222222222222222"); // СЦЕНА ЗАГРУЖЕНА
 
@@ -200,7 +228,7 @@ public class SaveLoadController : MonoBehaviour
 		Debug.Log("LOADING 66666666666666666");
 
 		// Говорим менеджеру: "Данные применены, можно выключать UI"
-		_gameSceneManager.ApplyGameplayDataFinished();
+		_gameSceneManager.ApplyGameplayDataLoadingFinished();
 
 		Debug.Log("LOADING 77777777777777777");
 	}
@@ -238,6 +266,8 @@ public class SaveLoadController : MonoBehaviour
 
 	IEnumerator OnSceneLoadUpdateGameplayObjects()
 	{
+		Debug.Log("OnSceneLoadUpdateGameplayObjects Started");
+
 		OnStartGameDataProcessForUI?.Invoke();
 
 		yield return StartCoroutine(UpdateGameplaySaveLoadObjects());
@@ -250,6 +280,8 @@ public class SaveLoadController : MonoBehaviour
 		yield return StartCoroutine(SaveGame(-1));
 
 		OnEndGameDataProcessForUI?.Invoke();
+
+		Debug.Log("OnSceneLoadUpdateGameplayObjects Ended");
 
 		yield break;
 	}
