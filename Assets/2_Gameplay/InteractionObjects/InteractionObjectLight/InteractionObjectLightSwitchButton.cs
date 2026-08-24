@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using UnityEditor.XR;
 
 public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, IElectroShockable
 {

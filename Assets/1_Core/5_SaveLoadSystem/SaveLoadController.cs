@@ -365,14 +365,17 @@ public class SaveLoadController : MonoBehaviour
 
 	private void AssignGameplayObjectIndexes()
 	{
+		/*
 		AssignNPCsIndexes();
 		AssignLootObjectsIndexes();
 		AssignPickableObjectsIndexes();
 		AssignOpenableObjectsIndexes();
 		AssignTVsIndexes();
 		AssignLightsIndexes();
+		*/
 	}
 
+	/*
 	private void AssignLootObjectsIndexes()
 	{
 		InteractionObjectLootAbstract[] lootObjects = FindObjectsOfType<InteractionObjectLootAbstract>();
@@ -444,6 +447,7 @@ public class SaveLoadController : MonoBehaviour
 			lights[index].AssignLightsIndexes(index);
 		}
 	}
+	*/
 
 	private List<ISaveLoad> FindAllCoreSaveLoadObjects()
 	{
