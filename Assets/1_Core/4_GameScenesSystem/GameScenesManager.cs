@@ -31,6 +31,8 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
 
+	private bool _wasPreviouslyCopiedToTEMP;
+
 	public bool WasInitialGameplaySceneLoaded {  get; private set; }
 
 	public void Initialize(
@@ -150,8 +152,12 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 				if (WasInitialGameplaySceneLoaded)
 				{
-					IsWaitingForOldGameplayDataToSave = true;
-					yield return new WaitWhile(() => IsWaitingForOldGameplayDataToSave == true);
+					if (!_wasPreviouslyCopiedToTEMP)
+					{
+						IsWaitingForOldGameplayDataToSave = true;
+						yield return new WaitWhile(() => IsWaitingForOldGameplayDataToSave == true);
+					}
+					_wasPreviouslyCopiedToTEMP = false;
 				}
 
 				Debug.Log($"Unloading scene {loadedScene.name} Started");
@@ -300,6 +306,12 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 	{
 		//Debug.Log("LOADED GAMEPLAY AFTER LOAD!");
 		IsWaitingForOldGameplayDataToSave = false;
+	}
+
+	public void SkipWaitingDueToTEMPcopied()
+	{
+		//Debug.Log("LOADED GAMEPLAY AFTER LOAD!");
+		_wasPreviouslyCopiedToTEMP = true;
 	}
 
 	// Добавь этот публичный метод в класс GameScenesManager
