@@ -12,7 +12,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 	private float markerHeight;
 	private Bootstrap _bootstrap;
 	private IMissionStep _currentMissionStepCache;
-	private float _markerBorderOffset = 50f;
+	private float _markerBorderOffset = 45f;
 
 	public void Initialize(
 		Bootstrap bootstrap,

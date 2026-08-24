@@ -117,6 +117,7 @@ public abstract class NPCabstract : NPCcore, IInteractable
 			_NPCdebugHUDcontroller.Initialize(
 				_NPChealthController,
 				_NPCstateMachineController,
+				_canvasNPCstatus,
 				_textNPCcurrentState,
 				_textNPCcurrentHealth);
 		}

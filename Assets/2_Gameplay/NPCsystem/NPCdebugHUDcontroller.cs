@@ -15,13 +15,13 @@ public class NPCdebugHUDcontroller : MonoBehaviour
 	public void Initialize(
 		NPChealthController NPChealthController,
 		NPCstateMachineController NPCstateMachineController,
+		GameObject canvasNPCstatus,
 		GameObject textNPCcurrentState,
 		GameObject textNPCcurrentHealth)
 	{
 		_NPChealthController = NPChealthController;
 		_NPCstateMachineController = NPCstateMachineController;
-
-		_canvasNPCstatus = transform.Find("CanvasNPCstatus").gameObject;
+		_canvasNPCstatus = canvasNPCstatus;
 		_textNPCcurrentState = textNPCcurrentState;
 		_textComponentNPCcurrentState = _textNPCcurrentState.GetComponent<TextMeshProUGUI>();
 		_textNPCcurrentHealth = textNPCcurrentHealth;

@@ -16,7 +16,8 @@ public class NPCdetectionSignController : MonoBehaviour
 	private float _detectionSignOffset = 20f;
 	private float _detectionSignHeight;
 
-	private float _detectionSignBorderOffset = 50f;
+	private float _detectionSignBorderOffsetX = 40f;
+	private float _detectionSignBorderOffsetY = 55f;
 
 	public void Initialize(
 		NPCdetectionManager npcDetectionManager,
@@ -74,11 +75,11 @@ public class NPCdetectionSignController : MonoBehaviour
 		{
 			if (screenPoint.x < 0)
 			{
-				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width + _detectionSignBorderOffset;
+				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width + _detectionSignBorderOffsetX;
 			}
 			else
 			{
-				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width - _detectionSignBorderOffset;
+				xPos = Mathf.Clamp01(screenPoint.x) * Screen.width - _detectionSignBorderOffsetX;
 			}
 		}
 		else
@@ -91,11 +92,11 @@ public class NPCdetectionSignController : MonoBehaviour
 		{
 			if (screenPoint.y < 0)
 			{
-				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height + _detectionSignBorderOffset;
+				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height + _detectionSignBorderOffsetY;
 			}
 			else
 			{
-				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height - _detectionSignBorderOffset;
+				yPos = Mathf.Clamp01(screenPoint.y) * Screen.height - _detectionSignBorderOffsetY;
 			}
 		}
 		else
@@ -127,7 +128,7 @@ public class NPCdetectionSignController : MonoBehaviour
 			}
 		}
 
-		_imageDetectionSignRectTransform.anchoredPosition = new Vector2(xPos, yPos);
+		_imageDetectionSignRectTransform.anchoredPosition = new Vector2(xPos  - Screen.width / 2, yPos - Screen.height / 2);
 		
 		/*
 		Vector3 targetPosition = transform.position + new Vector3(0f, 2.2f, 0f);
