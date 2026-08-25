@@ -64,14 +64,10 @@ public class SaveLoadController : MonoBehaviour
 		
 		_gameSceneManager.OnEndLoadingGameplayScene += () =>
 		{
-			//if (IsSavingFinished == false)
-			//{
 			if (!_isLoadingFromSaveFile)
 			{
 				StartCoroutine(OnAfterSceneLoadedUpdateAndLoadUpdateGameplayObjects());
 			}
-				//StartCoroutine(LoadGame(-1));
-			//}
 		};
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += () => StartCoroutine(NewGame());
@@ -85,32 +81,21 @@ public class SaveLoadController : MonoBehaviour
 		
 		_gameData = new GameData();
 		
-		
 		_fileDataHandler = new FileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_TEMP);
 		_fileDataHandler.Save(_gameData);
 		
-		//yield return StartCoroutine(SaveGame(-1));
-
-
 		foreach (ISaveLoad saveLoadObj in _coreSaveLoadObjects)
 		{
 			yield return saveLoadObj.LoadData(_gameData);
 		}
 		
-
 		Debug.Log("### New Game Started ###");
 		yield break;
-	}
-
-	private void Update()
-	{
-		//Debug.Log(IsSavingFinished);
 	}
 
 	public IEnumerator SaveGame(int saveSlotNumber)
 	{
 		IsSavingFinished = false;
-		//_fileDataHandler = null;
 
 		if (saveSlotNumber == -1)
 		{
@@ -129,14 +114,11 @@ public class SaveLoadController : MonoBehaviour
 
 		OnStartGameDataProcessForUI?.Invoke();
 
-		//if (saveSlotNumber != -1)
-		//{
-			foreach (ISaveLoad saveLoadObj in _coreSaveLoadObjects)
-			{
-				yield return saveLoadObj.SaveData(_gameData);
-			}
-		//}
-
+		foreach (ISaveLoad saveLoadObj in _coreSaveLoadObjects)
+		{
+			yield return saveLoadObj.SaveData(_gameData);
+		}
+	
 		foreach (ISaveLoad saveLoadObj in _gameplaySaveLoadObjects)
 		{
 			yield return saveLoadObj.SaveData(_gameData);
@@ -164,8 +146,6 @@ public class SaveLoadController : MonoBehaviour
 
 	public IEnumerator LoadGame(int loadSlotNumber)
 	{
-
-
 		Debug.Log($"LoadGame_1 Started loading Slot {loadSlotNumber}");
 		if (_gameData == null)
 		{
@@ -202,25 +182,22 @@ public class SaveLoadController : MonoBehaviour
 
 		SceneNameToLoad = _gameData.Scene;
 
-		// Запускаем сцену (она сама заполнит шкалу до 0.667)
 		if (loadSlotNumber != -1)
 		{
 			Debug.Log($"LoadGame_2 loading new scene");
 
 			StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), SceneNameToLoad)));
 
-			// Ждем, пока ASYNC SCENE LOAD не закончится
 			yield return new WaitWhile(() => _gameSceneManager.HasLoadedGameplayScene == false);
 		}
 
 		int totalObjects = _coreSaveLoadObjects.Count;
 		LoadedObjectsCount = 0;
 
-
 		if (loadSlotNumber != -1)
 		{
 			Debug.Log($"LoadGame_3 Started loading CoreObjects");
-			// Грузим персистентные объекты (инвентарь игрока)
+		
 			foreach (ISaveLoad coreLoadObj in _coreSaveLoadObjects)
 			{
 				yield return coreLoadObj.LoadData(_gameData);
@@ -228,25 +205,18 @@ public class SaveLoadController : MonoBehaviour
 				LoadedObjectsCount++;
 				float progress = Mathf.Lerp(0.5f, 0.75f, (float)LoadedObjectsCount / totalObjects);
 
-				// --- ОБНОВЛЕНИЕ СЛАЙДЕРА ---
-
 				_gameSceneManager.SetLoadingSliderValue(progress);
-
 			}
 			Debug.Log($"LoadGame_4 Ended loading CoreObjects");
 
-
 			Debug.Log($"LoadGame_5 Started update and load GameplayObjects");
-			// ОБНОВЛЯЕМ СПИСОК НОВЫХ ОБЪЕКТОВ СРАЗУ ПОСЛЕ ЗАГРУЗКИ СЦЕНЫ
+	
 			yield return UpdateAndLoadGameplaySaveLoadObjects();
 			Debug.Log($"LoadGame_6 Ended update and load GameplayObjects");
-
-
 		}
 
 		totalObjects += _gameplaySaveLoadObjects.Count;
 
-		// ТЕПЕРЬ грузим в них данные
 		for (int i = _gameplaySaveLoadObjects.Count - 1; i >= 0; i--)
 		{
 			yield return _gameplaySaveLoadObjects[i].LoadData(_gameData);
@@ -254,48 +224,28 @@ public class SaveLoadController : MonoBehaviour
 			LoadedObjectsCount++;
 			float progress = Mathf.Lerp(0.75f, 1f, (float)LoadedObjectsCount / totalObjects);
 
-			// --- ОБНОВЛЕНИЕ СЛАЙДЕРА ---
 			_gameSceneManager.SetLoadingSliderValue(progress);
 
 		}
 		Debug.Log("LOADING 777777777777");
 
-		// Сохраняем актуальное состояние во временный слот (-1)
-		//yield return StartCoroutine(SaveGame(-1));
 		Debug.Log("LOADING 888888888888");
 
-		// Говорим менеджеру: "Данные применены, можно выключать UI"
 		_gameSceneManager.ApplyGameplayDataLoadingFinished();
 		_isLoadingFromSaveFile = false;
 
-		// *** НАЧАЛО НОВОЙ ЛОГИКИ КОПИРОВАНИЯ ***
 		if (loadSlotNumber != -1)
 		{
 			Debug.Log($"Starting copy of slot {loadSlotNumber} to TEMP...");
 
-			// Сбрасываем флаг перед запуском
-
-			// Запускаем начало процесса для UI
-			//OnStartGameDataProcessForUI?.Invoke();
-
-			// Запускаем саму копию как отдельную корутину
 			StartCoroutine(CopyCurrentSlotToTempAsync(loadSlotNumber));
-
-			// ЖДЕМ, пока копия не завершится. 
-			// Это удержит очередь loadgame от вызова OnEnd до завершения копирования.
-			//yield return new WaitWhile(() => _isCopyingToTemp);
-
-			// Копирование завершено, вызываем финал для UI
-			
 		}
 		else
 		{
 			OnEndGameDataProcessForUI?.Invoke();
 		}
-			// *** КОНЕЦ НОВОЙ ЛОГИКИ ***
 
-
-			Debug.Log("LOADING 999999999999");
+		Debug.Log("LOADING 999999999999");
 	}
 
 	public void DeleteGame(int deleteSlotNumber)
@@ -336,15 +286,13 @@ public class SaveLoadController : MonoBehaviour
 			yield return StartCoroutine(SaveGame(-1));
 		}
 		else
-		{
-			//Debug.Log("WAS TEMPED!!!");
+		{ 
 			_gameSceneManager.SkipWaitingDueToTEMPcopied();
 			_WasSavedToTEMPbeforeLoadingNewScene = false;
 		}
-		//Debug.Log("WAS TEMPED!!!");
+
 		yield return null;
 	}
-
 
 	private IEnumerator OnAfterSceneLoadedUpdateAndLoadUpdateGameplayObjects()
 	{
@@ -355,8 +303,6 @@ public class SaveLoadController : MonoBehaviour
 		yield return StartCoroutine(UpdateAndLoadGameplaySaveLoadObjects());
 
 		yield return StartCoroutine(LoadGame(-1));
-
-		//OnEndGameDataProcessForUI?.Invoke();
 
 		Debug.Log("OnSceneLoadUpdateGameplayObjects Ended");
 
@@ -374,7 +320,6 @@ public class SaveLoadController : MonoBehaviour
 			gameplayObjectsSaveLoad[index].AssignGameplayObjectIndex(index);
 		}
 	}
-
 	private List<ISaveLoad> FindAllCoreSaveLoadObjects()
 	{
 		IEnumerable<ISaveLoad> saveLoadObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoad>();
@@ -384,9 +329,7 @@ public class SaveLoadController : MonoBehaviour
 
 	private List<ISaveLoad> FindAllGameplaySaveLoadObjects()
 	{
-		IEnumerable<ISaveLoad> gameplaySceneObjects = SceneManager.GetSceneAt(1).GetRootGameObjects()
-																  .SelectMany(go => go.GetComponentsInChildren<MonoBehaviour>())
-																  .OfType<ISaveLoad>();
+		IEnumerable<ISaveLoad> gameplaySceneObjects = SceneManager.GetSceneAt(1).GetRootGameObjects().SelectMany(go => go.GetComponentsInChildren<MonoBehaviour>()).OfType<ISaveLoad>();
 
 		return new List<ISaveLoad>(gameplaySceneObjects);
 	}
@@ -442,18 +385,12 @@ public class SaveLoadController : MonoBehaviour
 		}
 	}
 
-	// Вспомогательный адаптер для запуска Task внутри IEnumerator
 	private IEnumerator RunTask(Task task)
 	{
-		// 1. Блок ожидания вынесен отдельно (вне try-catch)
 		yield return new WaitWhile(() => !task.IsCompleted);
 
-		// 2. Теперь проверяем результат в обычном потоке C#
 		try
 		{
-			// Пробрасываем ошибку, если она была. 
-			// Обращение к свойству .Exception само по себе не выбрасывает AggregateException,
-			// поэтому используем конструкцию ниже для явного выброса или просто читаем InnerExceptions.
 			if (task.Exception != null)
 			{
 				throw task.Exception;
@@ -463,12 +400,11 @@ public class SaveLoadController : MonoBehaviour
 		}
 		catch (AggregateException ae)
 		{
-			// Task.Run оборачивает любые ошибки в AggregateException
 			foreach (var ex in ae.InnerExceptions)
 			{
 				Debug.LogError($"Async operation failed: {ex.Message}");
 			}
-			// Повторно выбрасываем, чтобы вызывающая корутина могла узнать о сбое
+			
 			throw;
 		}
 		catch (Exception ex)
@@ -490,15 +426,10 @@ public class SaveLoadController : MonoBehaviour
 			yield break;
 		}
 
-		// Запускаем асинхронную копию
 		Task copyTask = Task.Run(() => File.Copy(sourcePath, destPath, true));
 
-		// Ждем завершения задачи (вызов StartCoroutine тоже содержит yield, 
-		// поэтому он обязан быть вне try-catch)
 		yield return StartCoroutine(RunTask(copyTask));
 
-		// Этот вызов сработает только если RunTask завершился без исключения.
-		// Если же "throw" из RunTask дошел сюда, выполнение метода прервется.
 		_WasSavedToTEMPbeforeLoadingNewScene = true;
 		OnEndGameDataProcessForUI?.Invoke();
 	}
