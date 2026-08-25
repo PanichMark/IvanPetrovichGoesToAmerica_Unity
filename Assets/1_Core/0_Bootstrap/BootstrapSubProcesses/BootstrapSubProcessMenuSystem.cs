@@ -7,7 +7,7 @@ public class BootstrapSubProcessMenuSystem
 
 	private BootstrapSubProcessScenesSystem _bootstrapSubProcessSceneSystem;
 	private GameObject _canvasHUDmission;
-
+	private BootstrapSubProcessSaveLoadSystem _bootstrapSubProcessSaveLoadSystem;
 	private MenuBackgroundController _menuBackgroundController;
 	private GameTutorialsList _tutorialsList;
 	private GameObject _canvasMainMenuChooseMission;
@@ -156,6 +156,7 @@ public class BootstrapSubProcessMenuSystem
 		GameObject canvasBootstrapSignTermsAndConditions)
 	{
 		_canvasSavingProcess = canvasSavingProcess;
+		_bootstrapSubProcessSaveLoadSystem = bootstrapSubProcessSaveLoadSystem;
 		_canvasBootstrapSignTermsAndConditions = canvasBootstrapSignTermsAndConditions;
 		_bootstrap = bootstrap;
 		_bootstrapSubProcessSceneSystem = bootstrapSubProcessSceneSystem;
@@ -309,6 +310,7 @@ public class BootstrapSubProcessMenuSystem
 			_gameController,
 			_inputDevice,	
 			_localizationManager,
+			_bootstrapSubProcessSaveLoadSystem.PauseSubMenuSettingsPlayerPrefs,
 			MenuManager,
 			PauseMenuController,
 			PauseSubMenuSettingsController,
@@ -324,16 +326,19 @@ public class BootstrapSubProcessMenuSystem
 		PauseSubMenuSettingsSectionControlsController.Initialize(
 			_inputDevice,
 			_localizationManager,
+			_bootstrapSubProcessSaveLoadSystem.PauseSubMenuSettingsPlayerPrefs,
 			PauseMenuController,
 			_viewModelPauseSubMenuSettingsSectionControls);
 
 		PauseSubMenuSettingsSectionGraphicsController.Initialize(
 			_localizationManager,
+			_bootstrapSubProcessSaveLoadSystem.PauseSubMenuSettingsPlayerPrefs,
 			_viewModelPauseSubMenuSettingsSectionGraphics);
 
 		PauseSubMenuSettingsSectionAudioController.Initialize(
 			_bootstrap,
 			_localizationManager,
+			_bootstrapSubProcessSaveLoadSystem.PauseSubMenuSettingsPlayerPrefs,
 			PauseMenuController,
 			ViewModelPauseSubMenuSettingsSectionAudio);
 

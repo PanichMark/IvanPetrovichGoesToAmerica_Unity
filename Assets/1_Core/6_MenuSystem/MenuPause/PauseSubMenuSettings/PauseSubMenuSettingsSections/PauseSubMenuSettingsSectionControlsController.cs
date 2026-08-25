@@ -42,12 +42,6 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	public event MouseSensitivityHandle OnMouseSensitivityXchanged;
 	public event MouseSensitivityHandle OnMouseSensitivityYchanged;
 
-	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
-	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsControlsData;
-
-	public delegate void ResetPlayerPrefsSettingsEventHandler();
-	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsControlsData;
-
 	private const float _STEP_VALUE_MOUSE_SENSITIVITY = 0.1f;
 	private char _lastValidChar;
 
@@ -55,13 +49,17 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 	private Scrollbar _scrollbarComponent;
 	private float _scrollbarHandleSize = 0.195f;
 
+	private PlayerPrefsSettingsController _playerPrefsSettingsController;
+
 	public void Initialize(
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
+		PlayerPrefsSettingsController playerPrefsSettingsController,
 		PauseMenuController pauseMenuController,
 		ViewModelPauseSubMenuSettingsSectionControls viewModelPauseSubMenuSettings)
 	{
 		_localizationManager = localizationManager;
+		_playerPrefsSettingsController = playerPrefsSettingsController;
 		_inputDevice = inputDevice;
 		_pauseMenuController = pauseMenuController;
 
@@ -152,6 +150,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		_sliderComponentMouseSensitivityY.value = 1;
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		_playerPrefsSettingsController.OnApplySettingsSectionControlsPlayerPrefs += ApplySystemLoadedSettings;
 
 		Debug.Log("SettingsSectionControlsController Initialized");
 	}
@@ -281,12 +280,12 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		currentData.MouseSensitivityY = _currentValueMouseSensitivityY;
 		currentData.KeyBindings = new Dictionary<InputControlsEnum, KeyCode>(_inputDevice.CurrentKeyboardKeyBindings);
 
-		OnSaveSettingsControlsData?.Invoke(currentData);
+		_playerPrefsSettingsController.SaveSettingsControls(currentData);
 	}
 
 	public void ResetSettingsControls()
 	{
-		OnResetSettingsControlsData?.Invoke();
+		_playerPrefsSettingsController.ResetSettingsControls();
 
 		var defaultBindingsSnapshot = _inputDevice.GetDefaultKeyBindings();
 
@@ -297,7 +296,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 			KeyBindings = defaultBindingsSnapshot.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
 		};
 
-		OnSaveSettingsControlsData?.Invoke(defaultData);
+		_playerPrefsSettingsController.SaveSettingsControls(defaultData);
 
 		SetMouseSensitivityX(1);
 		_sliderComponentMouseSensitivityX.value = 1;
@@ -438,6 +437,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		}
 	}
 
+	/*
 	private void OnInputFieldEditingFinished(TMP_InputField field, InputControlsEnum action, string enteredText)
 	{
 		Debug.Log($"[UI] Editing finished for {action}. Entered: '{enteredText}'");
@@ -486,6 +486,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 		// Принудительно снимаем выделение с поля, чтобы "выйти" из него
 		EventSystem.current.SetSelectedGameObject(null);
 	}
+	*/
 
 	// Вспомогательные методы для чистоты кода:
 	private void CancelRebinding(TMP_InputField field, string fallbackText)
@@ -519,6 +520,7 @@ public class PauseSubMenuSettingsSectionControlsController : MonoBehaviour
 				return false;
 		}
 	}
+
 	private void OnInputFieldFocusLost(TMP_InputField field, InputControlsEnum action, string enteredTextFromEvent)
 	{
 		Debug.Log($"[UI] Focus lost for {action}. Checking value...");

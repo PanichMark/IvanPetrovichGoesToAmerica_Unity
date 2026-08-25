@@ -96,17 +96,14 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	public delegate void SavePlayerPrefsCameraSettingsEventHandler();
 	public event SavePlayerPrefsCameraSettingsEventHandler OnSaveCameraSettingsData;
 
-	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
-	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGeneralData;
-
-	public delegate void ResetPlayerPrefsSettingsEventHandler();
-	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGeneralData;
+	private PlayerPrefsSettingsController _playerPrefsSettingsController;
 
 	public void Initialize(
 		Bootstrap bootstrap,
 		GameController gameController,
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,
+		PlayerPrefsSettingsController playerPrefsSettingsController,
 		MenuManager menuManager,
 		PauseMenuController pausedMenuController,
 		PauseSubMenuSettingsController pauseSubMenuSettingsController,
@@ -116,6 +113,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_gameController = gameController;
 		_inputDevice = inputDevice;
 		_localizationManager = localizationManager;
+		_playerPrefsSettingsController = playerPrefsSettingsController;
 		_menuManager = menuManager;
 		_pausedMenuController = pausedMenuController;
 		_pauseSubMenuSettingsController = pauseSubMenuSettingsController;
@@ -197,6 +195,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_gameController.OnOpenMainMenu += () => OnCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
 	
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		_playerPrefsSettingsController.OnApplySettingsSectionGeneralPlayerPrefs += ApplySystemLoadedSettings;
 
 		Debug.Log("SettingsSectionGeneralController Initialized");
 	}
@@ -221,7 +220,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		currentData.ShowBlood = _toggleComponentShowBlood.isOn;
 
 
-		OnSaveSettingsGeneralData?.Invoke(currentData);
+		_playerPrefsSettingsController.SaveSettingsGeneral(currentData);
 	}
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
@@ -237,7 +236,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 	public void ResetSettingsGeneral()
 	{
-		OnResetSettingsGeneralData?.Invoke();
+		_playerPrefsSettingsController.ResetSettingsGeneral();
 
 		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
@@ -247,7 +246,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 			ShowBlood = true,
 		};
 
-		OnSaveSettingsGeneralData?.Invoke(defaultData);
+		_playerPrefsSettingsController.SaveSettingsGeneral(defaultData);
 
 		SetFPSlimit(defaultData, 60);
 

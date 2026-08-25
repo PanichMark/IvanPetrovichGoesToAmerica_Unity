@@ -7,7 +7,7 @@ public class BootstrapSubProcessSaveLoadSystem
 	private Bootstrap _bootstrap;
 	private GameController _gameController;
 	private GameScenesManager _gameSceneManager;
-	private PlayerPrefsSettingsController _pauseSubMenuSettingsPlayerPrefs;
+	public PlayerPrefsSettingsController PauseSubMenuSettingsPlayerPrefs { get; private set; }
 	private IInputDevice _inputDevice;
 	public JsonSaveLoadController SaveLoadController { get; private set; }
 
@@ -29,14 +29,14 @@ public class BootstrapSubProcessSaveLoadSystem
 
 
 		SaveLoadController = _gameObjectBootstrapSaveLoadSystem.AddComponent<JsonSaveLoadController>();
-		_pauseSubMenuSettingsPlayerPrefs = _gameObjectBootstrapSaveLoadSystem.AddComponent<PlayerPrefsSettingsController>();
+		PauseSubMenuSettingsPlayerPrefs = _gameObjectBootstrapSaveLoadSystem.AddComponent<PlayerPrefsSettingsController>();
 
 		SaveLoadController.Initialize(
 			_bootstrap,
 			_gameSceneManager,
 			_gameController);
 
-		_pauseSubMenuSettingsPlayerPrefs.Initialize(
+		PauseSubMenuSettingsPlayerPrefs.Initialize(
 			_bootstrap,
 			_inputDevice);
 

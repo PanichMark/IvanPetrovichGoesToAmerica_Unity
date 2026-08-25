@@ -72,20 +72,18 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 	public event VolumeEventHandle OnVolumeMusicAmbienceChanged;
 	public event VolumeEventHandle OnVolumeMusicIngameChanged;
 
-	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
-	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsAudioData;
-
-	public delegate void ResetPlayerPrefsSettingsEventHandler();
-	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsAudioData;
+	private PlayerPrefsSettingsController _playerPrefsSettingsController;
 
 	public void Initialize(
 		Bootstrap bootstrap,
 		LocalizationManager localizationManager,
+		PlayerPrefsSettingsController playerPrefsSettingsController,
 		PauseMenuController pauseMenuController,
 		ViewModelPauseSubMenuSettingsSectionAudio viewModelPauseSubMenuSettingsAudio)
 	{
 		_bootstrap = bootstrap;
 		_localizationManager = localizationManager;
+		_playerPrefsSettingsController = playerPrefsSettingsController;
 		_pauseMenuController = pauseMenuController;
 
 		_buttonsChangeLanguage = new GameObject[viewModelPauseSubMenuSettingsAudio.ButtonsChangeLanguage.Length];
@@ -174,6 +172,7 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 		_sliderComponentVolumeMusicIngame.value = _MAX_VALUE_VOLUME;
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		//_playerPrefsSettingsController.OnApplySettingsSectionAudioPlayerPrefs +=
 
 		Debug.Log("SettingsSectionAudioController Initialized");
 	}
@@ -244,19 +243,19 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 
 		currentData.Language = _localizationManager.CurrentLanguage.ToString();
 
-		OnSaveSettingsAudioData?.Invoke(currentData);
+		_playerPrefsSettingsController.SaveSettingsAudio(currentData);
 	}
 
 	public void ResetSettingsAudio()
 	{
-		OnResetSettingsAudioData?.Invoke();
+		_playerPrefsSettingsController.ResetSettingsGeneral();
 
 		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
 			Language = _localizationManager.CurrentLanguage.ToString(),
 		};
 
-		OnSaveSettingsAudioData?.Invoke(defaultData);
+		_playerPrefsSettingsController.SaveSettingsAudio(defaultData);
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)

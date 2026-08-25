@@ -10,6 +10,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 	public delegate void PlayerPrefsSettingsHandler(PlayerPrefsData data);
 	public event PlayerPrefsSettingsHandler OnApplySettingsSectionGeneralPlayerPrefs;
 	public event PlayerPrefsSettingsHandler OnApplySettingsSectionControlsPlayerPrefs;
+	public event PlayerPrefsSettingsHandler OnApplySettingsSectionGraphicsPlayerPrefs;
 	public event PlayerPrefsSettingsHandler OnApplySettingsSectionAudioPlayerPrefs;
 
 	//General

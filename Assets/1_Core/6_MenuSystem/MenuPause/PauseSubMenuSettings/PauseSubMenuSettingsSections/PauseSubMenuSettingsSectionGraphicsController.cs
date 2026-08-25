@@ -14,16 +14,21 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 	public delegate void ResetPlayerPrefsSettingsEventHandler();
 	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGraphicsData;
 
+	private PlayerPrefsSettingsController _playerPrefsSettingsController;
+
 	public void Initialize(
 		LocalizationManager localizationManager,
+		PlayerPrefsSettingsController playerPrefsSettingsController,
 		ViewModelPauseSubMenuSettingsSectionGraphics viewModelPauseSubMenuSettingsSectionGraphics)
 	{
 		_localizationManager = localizationManager;
+		_playerPrefsSettingsController = playerPrefsSettingsController;
 
 		TEXT_NO_GRAPHICS_SETTINGS_YET = viewModelPauseSubMenuSettingsSectionGraphics.TEXT_NO_GRAPHICS_SETTINGS_YET;
 		TEXT_COMPONENT_NO_GRAPHICS_SETTINGS_YET = viewModelPauseSubMenuSettingsSectionGraphics.TEXT_NO_GRAPHICS_SETTINGS_YET.GetComponent<TextMeshProUGUI>();
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		_playerPrefsSettingsController.OnApplySettingsSectionGraphicsPlayerPrefs += ApplySystemLoadedSettings;
 
 		Debug.Log("SettingsSectionGraphicsController Initialized");
 	}
