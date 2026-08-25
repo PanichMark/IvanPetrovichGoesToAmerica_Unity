@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class InteractionObjectPickableNonThrowableDestructable : InteractionObjectPickableNonThrowableAbstract, IBreakable
 {
@@ -12,6 +13,11 @@ public class InteractionObjectPickableNonThrowableDestructable : InteractionObje
 
 	public bool CanObjectBeBroken => true;
 
+	public GameObject Normal3Dmodel => throw new System.NotImplementedException();
+
+	public GameObject Damaged3Dmodel => throw new System.NotImplementedException();
+
+	public GameObject Broken3Dmodel => throw new System.NotImplementedException();
 
 	public virtual void TakeBreakDamage(float amount)
 	{
@@ -34,5 +40,10 @@ public class InteractionObjectPickableNonThrowableDestructable : InteractionObje
 		_isObjectDestroyed = true;
 
 		gameObject.SetActive(false);
+	}
+
+	public IEnumerator ModelBreakingAnimation()
+	{
+		throw new System.NotImplementedException();
 	}
 }

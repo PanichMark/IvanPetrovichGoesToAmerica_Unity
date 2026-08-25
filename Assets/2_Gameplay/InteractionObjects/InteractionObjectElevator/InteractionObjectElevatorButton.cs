@@ -4,12 +4,6 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 {
 	public delegate void InteractionFailedDelegate();
 
-	[SerializeField] private InteractionObjectElevatorController _targetElevator;
-	[SerializeField] private bool _secondFloorButton;
-	[SerializeField] private bool _buttonUp;
-	public event IInteractable.InteractableObjectHandler OnInteract;
-	public event InteractionFailedDelegate OnInteractionFailed;
-
 	private LocalizationManager _localizationManager;
 
 	public string InteractionObjectNameSystem => null;
@@ -25,15 +19,25 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 
 	public string InteractionHintMessageAction => null;
 
-	private void Start()
+	private bool _secondFloorButton;
+	private bool _buttonUp;
+	private InteractionObjectElevatorController _targetElevator;
+
+	public event IInteractable.InteractableObjectHandler OnInteract;
+	public event InteractionFailedDelegate OnInteractionFailed;
+
+	public void Initialize(InteractionObjectElevatorController controller, bool secondFloorButton, bool buttonUp)
 	{
+		_targetElevator = controller;
+		_secondFloorButton = secondFloorButton;
+		_buttonUp = buttonUp;
+
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		ChangeLanguage(_localizationManager);
-
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
-	private void ChangeLanguage(LocalizationManager	localizationManager)
+	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		if (_secondFloorButton)
 		{
@@ -61,20 +65,13 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 		_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait")}";
 	}
 
-
 	public void Interact()
 	{
-		_isInteractionHintMessageFailActive = false; 
-
-		if (_targetElevator == null)
-			return;
-
+		_isInteractionHintMessageFailActive = false;
 		bool success = _targetElevator.MoveElevator(_buttonUp);
-
 		if (!success)
 		{
 			_isInteractionHintMessageFailActive = true;
-
 			OnInteractionFailed?.Invoke();
 		}
 	}
@@ -86,6 +83,5 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 
 	public void Electrify(float damage)
 	{
-		//throw new System.NotImplementedException();
 	}
 }

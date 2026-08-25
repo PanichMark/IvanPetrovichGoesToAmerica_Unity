@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7616017234239537943}
   - component: {fileID: 1297418150553836064}
-  - component: {fileID: 261907740489022486}
+  - component: {fileID: 3803367895132836533}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Interactable
@@ -143,7 +143,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1999998, y: 2.2, z: 0.13390237}
   m_Center: {x: 0.54999995, y: 1.1, z: 0.016186733}
---- !u!114 &261907740489022486
+--- !u!114 &3803367895132836533
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,23 +152,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 2994758742952416280}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0da23f0dac497b84c84a3a23da8f4b19, type: 3}
+  m_Script: {fileID: 11500000, guid: b8b36c928b6ebcb4c915a53b23d5f107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Openable_Door_DoorWooden
+  _isObjectOpened: 0
   _doorOpenAngle: 90
   _doorOpeningSpeed: 200
   _interactionObjectKeyData: {fileID: 0}
   _mechanicalLockController: {fileID: 0}
   _electronicLockController: {fileID: 0}
   _electronicElectricalPanel: {fileID: 0}
+  _isLockedForever: 0
+  _doorSibling: {fileID: 0}
   _maxDurability: 100
-  _damageThreshold: 0
-  _isDestructable: 1
+  _damageThreshold: 50
+  _isDestructable: 0
   _doorNormal: {fileID: 1088865337105805002}
   _doorDamaged: {fileID: 9209588940626167346}
   _doorBroken: {fileID: 3371254143651741788}
-  _isLockedForever: 1
 --- !u!1 &3371254143651741788
 GameObject:
   m_ObjectHideFlags: 0

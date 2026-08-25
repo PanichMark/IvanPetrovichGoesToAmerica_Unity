@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class InteractionObjectBreakable : GameplayObjectSaveLoad, IInteractable, IBreakable
 {
@@ -22,6 +23,12 @@ public class InteractionObjectBreakable : GameplayObjectSaveLoad, IInteractable,
 
 	public bool CanObjectBeBroken => throw new System.NotImplementedException();
 
+	public GameObject Normal3Dmodel => throw new System.NotImplementedException();
+
+	public GameObject Damaged3Dmodel => throw new System.NotImplementedException();
+
+	public GameObject Broken3Dmodel => throw new System.NotImplementedException();
+
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
 	public void Interact()
@@ -30,6 +37,11 @@ public class InteractionObjectBreakable : GameplayObjectSaveLoad, IInteractable,
 	}
 
 	public void InteractCutscene()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public IEnumerator ModelBreakingAnimation()
 	{
 		throw new System.NotImplementedException();
 	}

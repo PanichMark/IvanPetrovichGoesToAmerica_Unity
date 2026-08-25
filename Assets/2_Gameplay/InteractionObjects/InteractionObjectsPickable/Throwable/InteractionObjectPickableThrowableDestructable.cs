@@ -1,22 +1,28 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class InteractionObjectPickableThrowableDestructable : InteractionObjectPickableThrowableAbstract, IDamageable, IBreakable
 {
 	[Header("Object Health")]
 	[SerializeField] protected float _health;
 	[SerializeField] private bool _canBeDamaged;
-	[SerializeField] protected bool _canBeBroken;
 	[SerializeField] private float _breakingThreshold;
 
 	public float CurrentDurability => _health;
 
 	public float DuribilityThreshold => _breakingThreshold;
 
-	public bool CanObjectBeBroken => _canBeBroken;
+	public bool CanObjectBeBroken => true;
 
 	public float CurrentHealth => _health;
 
 	public bool CanObjectBeDamaged => _canBeDamaged;
+
+	public GameObject Normal3Dmodel => throw new System.NotImplementedException();
+
+	public GameObject Damaged3Dmodel => throw new System.NotImplementedException();
+
+	public GameObject Broken3Dmodel => throw new System.NotImplementedException();
 
 	public void TakeDamage(float amount)
 	{
@@ -54,5 +60,10 @@ public class InteractionObjectPickableThrowableDestructable : InteractionObjectP
 		_isObjectDestroyed = true;
 
 		gameObject.SetActive(false);
+	}
+
+	public IEnumerator ModelBreakingAnimation()
+	{
+		throw new System.NotImplementedException();
 	}
 }

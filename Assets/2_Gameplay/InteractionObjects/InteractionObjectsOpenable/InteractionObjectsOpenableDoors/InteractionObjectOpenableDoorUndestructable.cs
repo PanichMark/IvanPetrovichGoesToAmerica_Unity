@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, IBreakable
+public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpenableAbstract
 {
 	protected bool _isAdditionalInteractionHintActive;
-	private ObjectPoolWeaponController _bulletHoleManager;
 	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 	[SerializeField] private int _doorOpenAngle = 90;
 	protected string _interactionHintMessageMain;
@@ -15,53 +14,35 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 	[SerializeField] protected InteractionObjectLockMechanical _mechanicalLockController;
 	[SerializeField] protected InteractionObjectLockElectronic _electronicLockController;
 	[SerializeField] protected InteractionObjectElectricalPanel _electronicElectricalPanel;
-	[SerializeField] private float _maxDurability = 100f;
-	[SerializeField] private float _damageThreshold = 50f;
-	[SerializeField] private bool _isDestructable;
-	[SerializeField] private GameObject _doorNormal;
-	[SerializeField] private GameObject _doorDamaged;
-	[SerializeField] private GameObject _doorBroken;
 	[SerializeField] protected bool _isLockedForever;
-	private Collider _collider;
-	private SkinnedMeshRenderer _doorBrokenSkinnedMeshRenderer;
-
+	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
 	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 
 	private Coroutine _currentAnimation;
-
+	protected bool _isDoorDouble;
 	private Quaternion _openedRotation;
 	private Quaternion _closedRotation;
 
 	private string _interactionHintMessageFail;
 	public override string InteractionHintMessageFail => _interactionHintMessageFail;
 
-	public bool IsObjectDestroyed => CurrentDurability <= 0f;
-
-	public float CurrentDurability { get; private set; }
-
-	public float DuribilityThreshold => _damageThreshold;
-
-	public bool CanObjectBeBroken => true;
-
 	void Start()
 	{
-		_bulletHoleManager = ServiceLocator.Resolve<ObjectPoolWeaponController>("ObjectPoolWeaponController");
-
-		_collider = GetComponent<Collider>();
-
-		if (_isDestructable)
-		{
-			_doorBrokenSkinnedMeshRenderer = _doorBroken.GetComponent<SkinnedMeshRenderer>();
-		}
-
 		_keysManager = ServiceLocator.Resolve<KeysManager>("KeysManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
-		CurrentDurability = _maxDurability;
-
 		Vector3 openedEulerAngles = new Vector3(0, _doorOpenAngle, 0);
 		_openedRotation = Quaternion.Euler(openedEulerAngles);
+
+		if (_doorSibling == null)
+		{
+			_isDoorDouble = false;
+		}
+		else
+		{
+			_isDoorDouble = true;	
+		}
 
 		Vector3 closedEulerAngles = new Vector3(0, 0, 0);
 		_closedRotation = Quaternion.Euler(closedEulerAngles);
@@ -113,6 +94,13 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedForever")}!";
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 		}
+
+		InitializeDoor();
+	}
+
+	public virtual void InitializeDoor()
+	{
+
 	}
 
 	public override void Interact()
@@ -144,6 +132,11 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 				|| _electronicElectricalPanel != null && _electronicElectricalPanel.IsOutOfService == true))
 			{
 				PerformDoorInteraction();
+
+				if (_isDoorDouble == true)
+				{
+					_doorSibling.PerformDoorInteraction();
+				}
 			}
 		}
 		else
@@ -262,86 +255,5 @@ public class InteractionObjectOpenableDoor : InteractionObjectOpenableAbstract, 
 		}
 
 		_currentAnimation = null;
-	}
-
-	public void TakeBreakDamage(float amount)
-	{
-		if (_isDestructable)
-		{
-			// Проверка на порог урона
-			if (amount < _damageThreshold)
-			{
-				Debug.Log($"Недостаточно урона для break. Требуется: {_damageThreshold}, получено: {amount}");
-				return;
-			}
-
-			// Нанесение урона
-			CurrentDurability -= amount;
-			Debug.Log($"Нанесено урона: {amount}. Осталось прочности: {CurrentDurability}");
-
-			if (CurrentDurability <= _maxDurability / 2)
-			{
-				_doorNormal.SetActive(false);
-				_doorDamaged.SetActive(true);
-			}
-
-			// Проверка на разрушение
-			if (CurrentDurability <= 0f)
-			{
-				ObjectIsFullyBroken();
-			}
-		}
-	}
-
-	public void ObjectIsFullyBroken()
-	{
-		Debug.Log("Был broke!");
-		_collider.enabled = false;
-		_doorDamaged.SetActive(false);
-		_doorBroken.SetActive(true);
-
-		ReturnAttachedDecalsToPool();
-		StartCoroutine(BreakBlendShapeAnimation());
-	}
-
-	private void ReturnAttachedDecalsToPool()
-	{
-		List<SpriteRenderer> decalsToReturn = new List<SpriteRenderer>();
-
-		int childCount = transform.childCount;
-		for (int i = 0; i < childCount; i++)
-		{
-			Transform child = transform.GetChild(i);
-
-			if (child.name.StartsWith("Pooled_Decal"))
-			{
-				var sr = child.GetComponent<SpriteRenderer>();
-				if (sr != null)
-				{
-					decalsToReturn.Add(sr);
-				}
-			}
-		}
-
-		if (decalsToReturn.Count > 0)
-		{
-			_bulletHoleManager.ReturnSpecificDecalsToPool(decalsToReturn.ToArray());
-		}
-	}
-
-	IEnumerator BreakBlendShapeAnimation()
-	{
-		float duration = 0.5f;
-		float elapsed = 0f;
-		int index = 0;
-
-		while (elapsed < duration)
-		{
-			elapsed += Time.deltaTime;
-			_doorBrokenSkinnedMeshRenderer.SetBlendShapeWeight(index, Mathf.Lerp(0f, 100f, elapsed / duration));
-			yield return null;
-		}
-
-		_doorBrokenSkinnedMeshRenderer.SetBlendShapeWeight(index, 100f);
 	}
 }
