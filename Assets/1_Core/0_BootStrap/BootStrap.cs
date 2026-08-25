@@ -99,12 +99,24 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(BootstrapSystemsInitialization());
 
-		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration);
+		float duration = _initializationScreenDuration.InitializationScreenDuration;
+		float startTime = Time.realtimeSinceStartup;
+
+		yield return new WaitUntil(() =>
+			(Time.realtimeSinceStartup - startTime >= duration) || Input.anyKeyDown);
+
 		_viewModelBootstrapInitialization.BootstrapInitializationPart1.SetActive(false);
 		_viewModelBootstrapInitialization.BootstrapInitializationPart2.SetActive(true);
 
-		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration);
+		yield return null;
+
+		float secondStartTime = Time.realtimeSinceStartup;
+		yield return new WaitUntil(() =>
+			(Time.realtimeSinceStartup - secondStartTime >= duration) || Input.anyKeyDown);
+
 		_viewModelBootstrapInitialization.BootstrapInitializationPart2.SetActive(false);
+
+		yield return null;
 
 		Debug.Log("!!! GAME INITIALIZED !!!");
 
@@ -128,7 +140,9 @@ public class Bootstrap : MonoBehaviour
 		_viewModelBootstrapInitialization.BootstrapInitializationPart3.SetActive(true);
 		_viewModelBootstrapInitialization.TextSavingProcessIcon.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SavingProcess");
 
-		yield return new WaitForSecondsRealtime(_initializationScreenDuration.InitializationScreenDuration * 2);
+		float thirdStartTime = Time.realtimeSinceStartup;
+		yield return new WaitUntil(() =>
+			(Time.realtimeSinceStartup - secondStartTime >= duration * 2) || Input.anyKeyDown);
 
 		_canvasBootstrapInitialization.SetActive(false);
 		Destroy(_gameObjectBootstrapTemporaryCamera);
