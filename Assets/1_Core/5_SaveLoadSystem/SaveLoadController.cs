@@ -281,7 +281,8 @@ public class SaveLoadController : MonoBehaviour
 
 	private IEnumerator OnBeforeSceneUnloadedSaveGameplayObjects()
 	{
-		if (_WasSavedToTEMPbeforeLoadingNewScene == false)
+		// The lack of THIS --  && !_isLoadingFromSaveFile -- made it IMpossible to load savefile from 1st try after loading NewScene by ANY means!
+		if (_WasSavedToTEMPbeforeLoadingNewScene == false && !_isLoadingFromSaveFile)
 		{
 			yield return StartCoroutine(SaveGame(-1));
 		}

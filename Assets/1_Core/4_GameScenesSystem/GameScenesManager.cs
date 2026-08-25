@@ -73,22 +73,16 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 	public IEnumerator LoadGameplayScene(GameScenesSystemEnum scene)
 	{
+		Time.timeScale = 0f;
 		Debug.Log($"Loading scene {scene} Started Initial");
 
 		HasLoadedGameplayScene = false;
 		_gameController.GameplaySceneLoadBegan();
 
-		//if (_isInitialSceneLoad == false)
-		//{
-		
-		//}
-
 		OnBeginLoadingGameplayScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-		
-		Time.timeScale = 0f;
 
 		string sceneName = scene.ToString();
 		string missionName = null;
@@ -128,8 +122,6 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		{
 			descriptionTextAsset = _gameScenesList.GameScenes[currentSceneData].SceneDescription_EN;
 		}
-
-		//TextAsset descriptionTextAsset = Resources.Load<TextAsset>($"Texts/Texts_Descriptions/Texts_Descriptions_Scenes/{descriptionFileName}");
 
 		if (descriptionTextAsset != null)
 		{
@@ -191,7 +183,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 			yield return null;
 		}
-
+		Time.timeScale = 0f;
 		HasLoadedGameplayScene = true;
 		IsWaitingForNewGameplayDataToLoad = true;
 
@@ -200,29 +192,23 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		OnEndLoadingGameplayScene?.Invoke();
 
-		_gameController.GameplaySceneLoadEnded();
-
 		_gameController.BlockInput();
 
-		//if (_isInitialSceneLoad == false)
-		//{
 		yield return new WaitUntil(() => IsWaitingForNewGameplayDataToLoad == false);
-		//}
-
+		
 		_sliderComponentLoadingStatus.value = 1f;
 		_sliderLoadingStatus.SetActive(false);
 		_textLoadingReady.SetActive(true);
 		_textComponentLoadingReady.text = _localizationManager.GetLocalizedString("UI_LoadingScreen_LoadingIsReady");
 
 		yield return new WaitUntil(() => Input.anyKeyDown);
-
+		_gameController.GameplaySceneLoadEnded();
 		_canvasLoadingScreen.SetActive(false);
 
 		_gameController.UnblockInput();
 
 		Time.timeScale = 1f;
 
-		//_isInitialSceneLoad = false;
 		WasInitialGameplaySceneLoaded = true;
 		Debug.Log($"Loading scene {sceneName} Ended Initial");
 
@@ -298,23 +284,19 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 	public void ApplyGameplayDataLoadingFinished() 
 	{
-		//Debug.Log("LOADED GAMEPLAY AFTER LOAD!");
 		IsWaitingForNewGameplayDataToLoad = false;
 	}
 
 	public void SavedOldGameplayData()
 	{
-		//Debug.Log("LOADED GAMEPLAY AFTER LOAD!");
 		IsWaitingForOldGameplayDataToSave = false;
 	}
 
 	public void SkipWaitingDueToTEMPcopied()
 	{
-		//Debug.Log("LOADED GAMEPLAY AFTER LOAD!");
 		_wasPreviouslyCopiedToTEMP = true;
 	}
 
-	// Добавь этот публичный метод в класс GameScenesManager
 	public void SetLoadingSliderValue(float value)
 	{
 		_sliderComponentLoadingStatus.value = value;

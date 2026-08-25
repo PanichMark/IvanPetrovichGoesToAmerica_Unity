@@ -145,8 +145,8 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectSaveLoad, II
 		{
 			LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == GameplayObjectIndex);
 
-			Debug.Log($"{savedState.LootObjectNameSystem} {gameObject.name}");
-			Debug.Log(savedState.IsLootObjectCollected);
+			//Debug.Log($"{savedState.LootObjectNameSystem} {gameObject.name}");
+			//Debug.Log(savedState.IsLootObjectCollected);
 
 			if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
 			{
