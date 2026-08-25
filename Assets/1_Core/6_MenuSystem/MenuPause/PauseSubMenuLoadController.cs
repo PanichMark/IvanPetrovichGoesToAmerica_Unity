@@ -9,7 +9,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	public event Action<int> OnRequestLoadSaveFileConfirmation;
 
 	private LocalizationManager _localizationManager;
-	private SaveLoadController _saveLoadController;
+	private JsonSaveLoadController _saveLoadController;
 	private PauseMenuController _pauseMenuController;
 
 	private GameScenesList _gameScenesList;
@@ -40,7 +40,7 @@ public class PauseSubMenuLoadController : MonoBehaviour
 	public void Initialize(
 		Bootstrap bootstrap,
 		LocalizationManager localizationManager,
-		SaveLoadController saveLoadController,
+		JsonSaveLoadController saveLoadController,
 		PauseMenuController pauseMenuController,
 		GameScenesList gameScenesList,
 		GameObject canvasPauseSubMenuLoad,

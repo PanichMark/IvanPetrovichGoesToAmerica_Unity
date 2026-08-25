@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class InteractionObjectPhonograph : GameplayObjectSaveLoad, IInteractable
+public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteractable
 {
 	[SerializeField] private string _interactionObjectNameSystem;
 	private LocalizationManager _localizationManager;

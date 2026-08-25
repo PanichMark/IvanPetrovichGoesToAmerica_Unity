@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class InteractionObjectVendingMachine : GameplayObjectSaveLoad, IInteractable, IElectroShockable
+public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInteractable, IElectroShockable
 {
 	public delegate void OutOfServiceHandler();
 	public event OutOfServiceHandler OnWentOutOfService;

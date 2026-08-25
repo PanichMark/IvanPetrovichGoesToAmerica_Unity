@@ -7,15 +7,19 @@ public class BootstrapSubProcessSaveLoadSystem
 	private Bootstrap _bootstrap;
 	private GameController _gameController;
 	private GameScenesManager _gameSceneManager;
-	public SaveLoadController SaveLoadController { get; private set; }
+	private PlayerPrefsSettingsController _pauseSubMenuSettingsPlayerPrefs;
+	private IInputDevice _inputDevice;
+	public JsonSaveLoadController SaveLoadController { get; private set; }
 
 	public BootstrapSubProcessSaveLoadSystem(
 		Bootstrap bootstrap,
 		GameController gameController,
+		IInputDevice inputDevice,
 		BootstrapSubProcessScenesSystem bootstrapSubProcessSceneSystem)
 	{
 		_bootstrap = bootstrap;
 		_gameController = gameController;
+		_inputDevice = inputDevice;
 		_gameSceneManager = bootstrapSubProcessSceneSystem.GameSceneManager;
 	}
 
@@ -23,12 +27,18 @@ public class BootstrapSubProcessSaveLoadSystem
 	{
 		_gameObjectBootstrapSaveLoadSystem = new GameObject("Bootstrap_SaveLoadSystem");
 
-		SaveLoadController = _gameObjectBootstrapSaveLoadSystem.AddComponent<SaveLoadController>();
+
+		SaveLoadController = _gameObjectBootstrapSaveLoadSystem.AddComponent<JsonSaveLoadController>();
+		_pauseSubMenuSettingsPlayerPrefs = _gameObjectBootstrapSaveLoadSystem.AddComponent<PlayerPrefsSettingsController>();
 
 		SaveLoadController.Initialize(
 			_bootstrap,
 			_gameSceneManager,
 			_gameController);
+
+		_pauseSubMenuSettingsPlayerPrefs.Initialize(
+			_bootstrap,
+			_inputDevice);
 
 		ServiceLocator.Register("SaveLoadController", SaveLoadController);
 

@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(NPCdebugHUDcontroller))]
 
-public abstract class NPCabstract : GameplayObjectSaveLoad, IInteractable
+public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 {
 
 	//[SerializeField] private bool _isHuman;
@@ -194,7 +194,7 @@ public abstract class NPCabstract : GameplayObjectSaveLoad, IInteractable
 		//Destroy(this);
 	}
 
-	public override IEnumerator SaveData(GameData data)
+	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
@@ -235,7 +235,7 @@ public abstract class NPCabstract : GameplayObjectSaveLoad, IInteractable
 		yield return null;
 	}
 
-	public override IEnumerator LoadData(GameData data)
+	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 

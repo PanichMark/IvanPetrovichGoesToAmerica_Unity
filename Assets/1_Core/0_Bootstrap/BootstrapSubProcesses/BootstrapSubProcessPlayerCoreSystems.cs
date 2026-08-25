@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class BootstrapSubProcessPlayerCoreSystems
+public class BootstrapSubProcessPlayerSystems
 {
 	private Bootstrap _bootstrap;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
@@ -52,7 +52,7 @@ public class BootstrapSubProcessPlayerCoreSystems
 
 	private PlayerMoneyController _playerResourcesMoneyManager;
 
-	public BootstrapSubProcessPlayerCoreSystems(
+	public BootstrapSubProcessPlayerSystems(
 		Bootstrap bootstrap,
 		BootstrapSubProcessScenesSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,

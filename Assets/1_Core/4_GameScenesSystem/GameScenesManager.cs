@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameScenesManager : MonoBehaviour, ISaveLoad
+public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 {
 	public bool IsWaitingForNewGameplayDataToLoad {  get; private set; }
 	public bool IsWaitingForOldGameplayDataToSave { get; private set; }
@@ -271,13 +271,13 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		yield return null;
 	}
 
-	public IEnumerator SaveData(GameData data)
+	public IEnumerator SaveJsonData(JsonGameData data)
 	{
 		data.Scene = SceneManager.GetSceneAt(1).name;
 		yield return null;
 	}
 
-	public IEnumerator LoadData(GameData data)
+	public IEnumerator LoadJsonData(JsonGameData data)
 	{
 		yield return null;
 	}

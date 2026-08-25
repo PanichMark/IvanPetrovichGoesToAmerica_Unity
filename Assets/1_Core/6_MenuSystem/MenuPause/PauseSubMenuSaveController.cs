@@ -12,7 +12,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	private Bootstrap _bootstrap;
 	private GameScenesList _gameScenesList;
 	private LocalizationManager _localizationManager;
-	private SaveLoadController _saveLoadController;
+	private JsonSaveLoadController _saveLoadController;
 	private PauseMenuController _pauseMenuController;
 
 	private ViewModelPauseSubMenuSave _viewModelPauseSubMenuSave;
@@ -53,7 +53,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	public void Initialize(
 		Bootstrap bootstrap,
 		LocalizationManager localizationManager,
-		SaveLoadController saveLoadController,
+		JsonSaveLoadController saveLoadController,
 		PauseMenuController pauseMenuController,
 		GameScenesList gameScenesList,
 		GameObject canvasPauseSubMenuSave,

@@ -15,7 +15,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private Renderer _renderer;
 	private GameScenesManager _gameSceneManager;
 	private Collider _collider;
-	private SaveLoadController _saveLoadController;
+	private JsonSaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 	private KeyCode _keyPauseMenu;
@@ -46,7 +46,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_pauseMenuController = ServiceLocator.Resolve<PauseMenuController>("PauseMenuController");
 		_gameController = ServiceLocator.Resolve<GameController>("GameController");
-		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
+		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>("SaveLoadController");
 		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
 		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
 		_pauseSubMenuSettingsController = ServiceLocator.Resolve<PauseSubMenuSettingsController>("PauseSubMenuSettingsController");

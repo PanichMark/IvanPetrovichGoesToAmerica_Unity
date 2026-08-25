@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEngine.GraphicsBuffer;
 
-public class InteractionObjectElevatorController : GameplayObjectSaveLoad
+public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 {
 	[SerializeField] private string _elevatorName;
 
@@ -258,7 +258,7 @@ public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 		door.transform.localPosition = new Vector3(targetX, door.transform.localPosition.y, door.transform.localPosition.z);
 	}
 
-	public override IEnumerator SaveData(GameData data)
+	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
@@ -294,7 +294,7 @@ public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 		yield return null;
 	}
 
-	public override IEnumerator LoadData(GameData data)
+	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 

@@ -22,7 +22,7 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 		Debug.Log($"Added key: {_keyID}");
 	}
 
-	public override IEnumerator LoadData(GameData data)
+	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
 		_keysManager.RemoveKey(_keyID);
 

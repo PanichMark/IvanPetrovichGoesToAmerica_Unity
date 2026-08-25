@@ -2,12 +2,12 @@
 
 public class SavingProcessController : MonoBehaviour
 {
-	private SaveLoadController _saveLoadController;
+	private JsonSaveLoadController _saveLoadController;
 	private GameObject _canvasSavingProcess;
 	private GameObject _gear;
 
 	public void Initialize(
-		SaveLoadController saveLoadController,
+		JsonSaveLoadController saveLoadController,
 		GameObject canvasSavingProcess,
 		ViewModelSavingProcess viewModelSavingProcess)
 	{

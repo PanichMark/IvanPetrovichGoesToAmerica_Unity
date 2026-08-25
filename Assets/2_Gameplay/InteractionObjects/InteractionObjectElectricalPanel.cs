@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectElectricalPanel : GameplayObjectSaveLoad, IInteractable, IElectroShockable
+public class InteractionObjectElectricalPanel : GameplayObjectJsonSaveLoad, IInteractable, IElectroShockable
 {
 	public string InteractionObjectNameSystem => "InteractionObject_ElectricalPanel";
 

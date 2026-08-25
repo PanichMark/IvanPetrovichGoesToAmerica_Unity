@@ -9,7 +9,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private IInputDevice _inputDevice;
 	private GameController _gameController;
 	private GameScenesManager _gameSceneManager;
-	private SaveLoadController _saveLoadController;
+	private JsonSaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
 	private GameObject _textCutsceneDialogue;
 	private TextMeshProUGUI _textComponentCutsceneDialogue;
@@ -69,7 +69,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
 		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
-		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
+		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>("SaveLoadController");
 
 		_textCutsceneDialogue = ServiceLocator.Resolve<GameObject>("TextCutsceneDialogue");
 		_textComponentCutsceneDialogue = _textCutsceneDialogue.GetComponent<TextMeshProUGUI>();

@@ -32,7 +32,7 @@ public class BootstrapSubProcessInteractionSystem
 		Bootstrap bootstrap,
 		BootstrapSubProcessScenesSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
-		BootstrapSubProcessPlayerCoreSystems bootstrapSubProcessPlayerSystems,
+		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
 		GameController gameController,
 		IInputDevice inputDevice,
 		LocalizationManager localizationManager,

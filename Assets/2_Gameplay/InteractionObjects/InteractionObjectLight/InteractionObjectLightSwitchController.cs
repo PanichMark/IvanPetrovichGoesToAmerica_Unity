@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class InteractionObjectLightSwitchController : GameplayObjectSaveLoad
+public class InteractionObjectLightSwitchController : GameplayObjectJsonSaveLoad
 {
 	[SerializeField] protected List<GameObject> _lightObjectsList = new List<GameObject>();
 	[SerializeField] protected Color _lightEmissionColor = Color.white;
@@ -54,7 +54,7 @@ public class InteractionObjectLightSwitchController : GameplayObjectSaveLoad
 		}
 	}
 
-	public override IEnumerator SaveData(GameData data)
+	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
@@ -84,7 +84,7 @@ public class InteractionObjectLightSwitchController : GameplayObjectSaveLoad
 		yield return null;
 	}
 
-	public override IEnumerator LoadData(GameData data)
+	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 

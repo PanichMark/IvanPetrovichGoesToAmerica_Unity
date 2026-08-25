@@ -51,7 +51,7 @@ public class BootstrapSubProcessMenuSystem
 	private LocalizationManager _localizationManager;
 
 	private GameScenesManager _gameSceneManager;
-	private SaveLoadController _saveLoadController;
+	private JsonSaveLoadController _saveLoadController;
 
 	private GameObject _gameObjectBootstrapMenuSystem;
 	public MenuManager MenuManager { get; private set; }

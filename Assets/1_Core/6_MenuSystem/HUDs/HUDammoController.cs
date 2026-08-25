@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class HUDammoController : MonoBehaviour, ISaveLoad
+public class HUDammoController : MonoBehaviour, IJsonSaveLoad
 {
 	private MenuManager _menuManager;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
@@ -248,12 +248,12 @@ public class HUDammoController : MonoBehaviour, ISaveLoad
 		_leftWeaponAmmoBox.SetActive(false);
 	}
 
-	public IEnumerator SaveData(GameData data)
+	public IEnumerator SaveJsonData(JsonGameData data)
 	{
 		yield return null;
 	}
 
-	public IEnumerator LoadData(GameData data)
+	public IEnumerator LoadJsonData(JsonGameData data)
 	{
 		if (_playerWeaponController != null && _playerWeaponController.RightHandWeapon != null)
 		{

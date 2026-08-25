@@ -30,7 +30,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private GameObject[] _buttonsLockElectrical;
 	private MenuManager _menuManager;
 	private GameObject _canvasLockpickElectronicMenu;
-	private SaveLoadController _saveLoadController;
+	private JsonSaveLoadController _saveLoadController;
 	private GameScenesManager _gameSceneManager;
 	private Color _colorOriginal;
 	private List<int> _alarmIndices;
@@ -43,7 +43,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 		_canvasLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickElectronic");
 		_buttonExitLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("ButtonCloseLockpickElectronicMenu").GetComponent<Button>();
 		_textButtonExitLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("TextButtonCloseLockpickElectronicMenu").GetComponent<TextMeshProUGUI>();
-		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
+		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>("SaveLoadController");
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>("ButtonsLockElectronic");
 		_textButtonExitLockpickElectronicMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockElectronic_ButtonCloseMenuLockElectronic");

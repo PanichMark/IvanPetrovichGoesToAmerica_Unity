@@ -24,7 +24,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private ConfigBootstrapFirstSceneToLoad _firstSceneToLoad;
 
 	[Header("--- CONFIGS PLAYER  ---")]
-	[SerializeField] private bool _applyConfigsPLayer;
+	[SerializeField] private bool _applyConfigsPlayer;
 	[SerializeField] private ConfigPlayerTransform _playerTransform;
 	[SerializeField] private ConfigPlayerWeapons _playerWeapons;
 	[SerializeField] private ConfigPlayerResourcesAmmo _playerAmmo;
@@ -66,8 +66,7 @@ public class Bootstrap : MonoBehaviour
 	private BootstrapSubProcessScenesSystem _bootstrapSubProcessSceneSystem;
 	private BootstrapSubProcessSaveLoadSystem _bootstrapSubProcessSaveLoadSystem;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
-	private BootstrapSubProcessPlayerPrefsSystem _bootstrapSubProcessPlayerPrefsSystem;
-	private BootstrapSubProcessPlayerCoreSystems _bootstrapSubProcessPlayerSystems;
+	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
 	private BootstrapSubProcessWeaponSystem _bootstrapSubProcessWeaponSystem;
 	private BootstrapSubProcessMissionsSystem _bootstrapSubProcessMissionsSystem;
@@ -149,7 +148,7 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(LoadFirstGameplayScene());
 
-		if (_applyConfigsPLayer)
+		if (_applyConfigsPlayer)
 		{
 			ApplyBootstrapPlayerConfigs();
 		}
@@ -182,7 +181,6 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(InitializeSaveLoadSystem());
 		yield return StartCoroutine(InitializeMenuSystem());
 		yield return StartCoroutine(InitializePlayerSystems());
-		yield return StartCoroutine(InitializePlayerPrefsSystem());
 		yield return StartCoroutine(InitializeInteractionSystem());
 		yield return StartCoroutine(InitializeWeaponSystem());
 		yield return StartCoroutine(InitializeMissionsSystem());
@@ -267,6 +265,7 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(
 			this,
 			_gameController,
+			_inputDevice,
 			_bootstrapSubProcessSceneSystem);
 
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.Initialize());
@@ -313,25 +312,12 @@ public class Bootstrap : MonoBehaviour
 		Debug.Log("=== MENU SYSTEM INITIALIZED ===");
 	}
 
-	private IEnumerator InitializePlayerPrefsSystem()
-	{
-		_bootstrapSubProcessPlayerPrefsSystem = new BootstrapSubProcessPlayerPrefsSystem(
-			this,
-			_inputDevice,
-			_bootstrapSubProcessMenuSystem);
-
-		yield return StartCoroutine(_bootstrapSubProcessPlayerPrefsSystem.Initialize());
-
-		Debug.Log("=== PLAYERPREFS SYSTEM INITIALIZED ===");
-	}
-
-
 	private IEnumerator InitializePlayerSystems()
 	{
 		_gameObjectPlayer = Instantiate((GameObject)Resources.Load("1_Bootstrap/Player/Bootstrap_PlayerGameObject"));
 		GameObjectPlayerCamera = Instantiate((GameObject)Resources.Load("1_Bootstrap/Player/Bootstrap_PlayerCameraGameObject"));
 
-		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerCoreSystems(
+		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(
 			this,
 			_bootstrapSubProcessSceneSystem,
 			_bootstrapSubProcessMenuSystem,

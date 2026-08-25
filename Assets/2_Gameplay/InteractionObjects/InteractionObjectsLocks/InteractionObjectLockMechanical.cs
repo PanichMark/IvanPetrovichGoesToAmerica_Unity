@@ -19,7 +19,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	private Button _buttonMoveLockMechanismDown;
 	private Button _buttonMoveLockMechanismRight;
 	private Button _buttonMoveLockMechanismLeft;
-	private SaveLoadController _saveLoadController;
+	private JsonSaveLoadController _saveLoadController;
 	private LocalizationManager _localizationManager;
 	private GameObject _canvasLockpickMechanicalMenu;
 	public event IInteractable.InteractableObjectHandler OnInteract;
@@ -69,7 +69,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 		_canvasLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickMechanical");
 		_buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("ButtonCloseLockpickMechanicalMenu").GetComponent<Button>();
 		_textButtonExitLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("TextButtonCloseLockpickMechanicalMenu").GetComponent<TextMeshProUGUI>();
-		_saveLoadController = ServiceLocator.Resolve<SaveLoadController>("SaveLoadController");
+		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>("SaveLoadController");
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
 		_gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;

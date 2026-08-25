@@ -10,7 +10,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 
 	private LocalizationManager _localizationManager;
 	private GameScenesManager _gameSceneManager;
-	private SaveLoadController _saveLoadController;
+	private JsonSaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
 	private GameController _gameController;
 	private PauseMenuController _pauseMenuController;
@@ -63,7 +63,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		GameController gameController,
 		LocalizationManager localizationManager,
 		GameScenesManager gameSceneManager,
-		SaveLoadController saveLoadController,
+		JsonSaveLoadController saveLoadController,
 		MenuManager menuManager,
 		PauseMenuController pauseMenuController,
 		PauseSubMenuSaveController saveController,

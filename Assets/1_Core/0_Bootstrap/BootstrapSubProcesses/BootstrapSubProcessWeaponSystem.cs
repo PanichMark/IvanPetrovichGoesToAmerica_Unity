@@ -5,7 +5,7 @@ public class BootstrapSubProcessWeaponSystem
 {
 	private BootstrapSubProcessScenesSystem _bootstrapSubProcessSceneSystem;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
-	private BootstrapSubProcessPlayerCoreSystems _bootstrapSubProcessPlayerSystems;
+	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
 	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
 
 	private Bootstrap _bootstrap;
@@ -43,7 +43,7 @@ public class BootstrapSubProcessWeaponSystem
 		GameObject playerCamera,
 		BootstrapSubProcessScenesSystem bootstrapSubProcessSceneSystem,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
-		BootstrapSubProcessPlayerCoreSystems bootstrapSubProcessPlayerSystems,
+		BootstrapSubProcessPlayerSystems bootstrapSubProcessPlayerSystems,
 		BootstrapSubProcessInteractionSystem bootstrapSubSystemInteraction)
 	{
 		_bootstrap = bootstrap;
