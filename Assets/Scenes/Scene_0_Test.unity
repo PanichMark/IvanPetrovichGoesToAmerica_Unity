@@ -2459,7 +2459,7 @@ GameObject:
   - component: {fileID: 35838442}
   - component: {fileID: 35838444}
   m_Layer: 0
-  m_Name: Infrastructure_Elevator_Passenger_RevenueHouse_Door (1)
+  m_Name: UpDoorLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11924,7 +11924,7 @@ GameObject:
   - component: {fileID: 162332168}
   - component: {fileID: 162332170}
   m_Layer: 0
-  m_Name: Infrastructure_Elevator_Passenger_RevenueHouse_Door
+  m_Name: DownDoorRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19057,13 +19057,13 @@ Transform:
   m_GameObject: {fileID: 251644659}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.08715579, z: -0, w: 0.9961947}
-  m_LocalPosition: {x: -5.8646927, y: 5, z: -1.6306763}
+  m_LocalPosition: {x: -5.8646936, y: 5, z: -1.6306758}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1615676467}
   - {fileID: 35838441}
-  m_Father: {fileID: 290021349}
+  m_Father: {fileID: 1298959418}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!23 &251644661
 MeshRenderer:
@@ -22062,40 +22062,6 @@ Transform:
   m_Children:
   - {fileID: 101880836}
   m_Father: {fileID: 296866640}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &290021348
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 290021349}
-  m_Layer: 0
-  m_Name: ELEVATOR
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &290021349
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 290021348}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 786056286}
-  - {fileID: 251644660}
-  - {fileID: 721851894}
-  m_Father: {fileID: 1298959418}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &290457830 stripped
 Transform:
@@ -52342,7 +52308,7 @@ GameObject:
   - component: {fileID: 696869008}
   - component: {fileID: 696869010}
   m_Layer: 0
-  m_Name: Infrastructure_Elevator_Passenger_RevenueHouse_Door (1)
+  m_Name: DownDoorLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54665,13 +54631,13 @@ Transform:
   m_GameObject: {fileID: 721851893}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.08715579, z: -0, w: 0.9961947}
-  m_LocalPosition: {x: -5.8646927, y: 0, z: -1.6306763}
+  m_LocalPosition: {x: -5.8646936, y: 0, z: -1.6306758}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 162332167}
   - {fileID: 696869007}
-  m_Father: {fileID: 290021349}
+  m_Father: {fileID: 1298959418}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!23 &721851895
 MeshRenderer:
@@ -58758,7 +58724,7 @@ GameObject:
   - component: {fileID: 770324001}
   - component: {fileID: 770324003}
   m_Layer: 0
-  m_Name: Infrastructure_Elevator_Passenger_RevenueHouse_Door (2)
+  m_Name: CabinDoorLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60559,7 +60525,7 @@ Transform:
   - {fileID: 770324000}
   - {fileID: 8230881025622921645}
   - {fileID: 1223451688}
-  m_Father: {fileID: 290021349}
+  m_Father: {fileID: 1298959418}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!65 &786056287
 BoxCollider:
@@ -60752,19 +60718,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0257f5c94114474185270ce2666b0c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _elevatorHeightOffset: 5
   _elevatorSpeed: 2
-  _elevatorUpPosition: 5
-  _elevatorPositionTolerance: 0.1
   _downCallButton: {fileID: 6898613035109902246}
   _downSendButton: {fileID: 5112905982684499469}
   _upCallButton: {fileID: 4138935640067333957}
   _upSendButton: {fileID: 1223451689}
-  _doorSlidingPosition: 0
-  _doorSlidingSpeed: 0
+  _doorOpenPosition: 0.6
+  _doorSlidingSpeed: 0.5
   _cabinDoorRight: {fileID: 1130986772}
   _cabinDoorLeft: {fileID: 770323999}
-  _downDoorRight: {fileID: 696869006}
-  _downDoorLeft: {fileID: 162332166}
+  _downDoorRight: {fileID: 162332166}
+  _downDoorLeft: {fileID: 696869006}
   _upDoorRight: {fileID: 1615676466}
   _upDoorLeft: {fileID: 35838440}
 --- !u!1 &786653168
@@ -69360,7 +69325,7 @@ GameObject:
   - component: {fileID: 901875230}
   - component: {fileID: 901875229}
   m_Layer: 0
-  m_Name: Button2
+  m_Name: KitchenUpSend
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87482,7 +87447,7 @@ GameObject:
   - component: {fileID: 1130986774}
   - component: {fileID: 1130986776}
   m_Layer: 0
-  m_Name: Infrastructure_Elevator_Passenger_RevenueHouse_Door (1)
+  m_Name: CabinDoorRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93702,7 +93667,7 @@ GameObject:
   - component: {fileID: 1223451690}
   - component: {fileID: 1223451689}
   m_Layer: 0
-  m_Name: Button1 (1)
+  m_Name: ElevatorUpSend
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100098,7 +100063,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 290021349}
+  - {fileID: 786056286}
+  - {fileID: 251644660}
+  - {fileID: 721851894}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 100, z: 0}
 --- !u!1 &1299275062
@@ -122900,7 +122867,7 @@ GameObject:
   - component: {fileID: 1613248449}
   - component: {fileID: 1613248448}
   m_Layer: 0
-  m_Name: Button1
+  m_Name: KitchenUpCall
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123155,7 +123122,7 @@ GameObject:
   - component: {fileID: 1615676468}
   - component: {fileID: 1615676470}
   m_Layer: 0
-  m_Name: Infrastructure_Elevator_Passenger_RevenueHouse_Door
+  m_Name: UpDoorRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168189,14 +168156,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0257f5c94114474185270ce2666b0c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _elevatorSpeed: 2
-  _elevatorUpPosition: 4.9
-  _elevatorPositionTolerance: 0.1
+  _elevatorHeightOffset: 0
+  _elevatorSpeed: 5
   _downCallButton: {fileID: 5559970989955699857}
   _downSendButton: {fileID: 8182525905039922840}
   _upCallButton: {fileID: 1613248449}
   _upSendButton: {fileID: 901875230}
-  _doorSlidingPosition: 0
+  _doorOpenPosition: 0
   _doorSlidingSpeed: 0
   _cabinDoorRight: {fileID: 0}
   _cabinDoorLeft: {fileID: 0}
@@ -170825,7 +170791,7 @@ GameObject:
   - component: {fileID: 8182525905039922840}
   - component: {fileID: 8182525905039922839}
   m_Layer: 0
-  m_Name: Button1
+  m_Name: KitchenDownSend
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175789,7 +175755,7 @@ GameObject:
   - component: {fileID: 5955195764733348742}
   - component: {fileID: 4138935640067333957}
   m_Layer: 0
-  m_Name: Button2
+  m_Name: ElevatorUpCall
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189123,7 +189089,7 @@ GameObject:
   - component: {fileID: 4933616454687803638}
   - component: {fileID: 5112905982684499469}
   m_Layer: 0
-  m_Name: Button1
+  m_Name: ElevatorDownSend
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -204061,7 +204027,7 @@ GameObject:
   - component: {fileID: 5559970989955699857}
   - component: {fileID: 5559970989955699856}
   m_Layer: 0
-  m_Name: Button2
+  m_Name: KitchenDownCall
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -224147,7 +224113,7 @@ GameObject:
   - component: {fileID: 3776728942827254629}
   - component: {fileID: 6898613035109902246}
   m_Layer: 0
-  m_Name: Button2
+  m_Name: ElevatorDownCall
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
