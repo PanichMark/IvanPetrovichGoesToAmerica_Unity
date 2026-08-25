@@ -290,6 +290,8 @@ public struct ElevatorData
 {
 	public int ElevatorIndex;
 	public string ElevatorNameSystem;
+
+	public bool IsElevatorUp;
 }
 
 [System.Serializable]

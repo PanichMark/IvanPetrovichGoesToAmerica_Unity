@@ -1,8 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using static UnityEngine.GraphicsBuffer;
 
 public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 {
+	[SerializeField] private string _elevatorName;
+
 	[SerializeField] private float _elevatorHeightOffset;
 	[SerializeField] private float _elevatorSpeed;
 	private float _elevatorPositionTolerance = 0.01f;
@@ -41,26 +46,13 @@ public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 
 		_areDoorsPresent = (_cabinDoorRight != null && _cabinDoorLeft != null && _downDoorRight != null && _downDoorLeft != null && _upDoorRight != null && _upDoorLeft != null);
 
-		ImmediatelyOpenFloorDoors(false);
-	}
-
-	private void ImmediatelyOpenFloorDoors(bool isTopFloor)
-	{
 		if (_areDoorsPresent)
 		{
 			ImmediatelyOpenDoor(_cabinDoorRight, true);
 			ImmediatelyOpenDoor(_cabinDoorLeft, false);
 
-			if (!isTopFloor)
-			{
-				ImmediatelyOpenDoor(_downDoorRight, true);
-				ImmediatelyOpenDoor(_downDoorLeft, false);
-			}
-			else
-			{
-				ImmediatelyOpenDoor(_upDoorRight, true);
-				ImmediatelyOpenDoor(_upDoorLeft, false);
-			}
+			ImmediatelyOpenDoor(_downDoorRight, true);
+			ImmediatelyOpenDoor(_downDoorLeft, false);
 		}
 	}
 
@@ -91,9 +83,29 @@ public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 	public bool MoveElevator(bool moveUp)
 	{
 		if (_isElevatorMoving)
+		{
 			return false;
+		}
 
-		float targetY = moveUp ? _elevatorUpPosition : _elevatorDownPosition;
+		if (_isElevatorUp && moveUp == true)
+		{
+			return false;
+		}
+
+		if (!_isElevatorUp && moveUp == false)
+		{
+			return false;
+		}
+
+		float targetY;
+		if (moveUp)
+		{
+			targetY = _elevatorUpPosition;
+		}
+		else
+		{
+			targetY = _elevatorDownPosition;
+		}
 
 		if (Mathf.Abs(transform.position.y - targetY) < _elevatorPositionTolerance)
 			return false;
@@ -139,7 +151,7 @@ public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 			_isElevatorUp = false;
 		}
 
-			_isElevatorMoving = false;
+		_isElevatorMoving = false;
 	}
 
 	private IEnumerator SlowlyOpenFloorDoors(bool isDownFloor)
@@ -248,11 +260,70 @@ public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 
 	public override IEnumerator SaveData(GameData data)
 	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.ElevatorsData == null)
+		{
+			data.ElevatorsData = new Dictionary<GameScenesGameplayDataEnum, List<ElevatorData>>();
+		}
+
+		if (!data.ElevatorsData.ContainsKey(currentScene))
+		{
+			data.ElevatorsData[currentScene] = new List<ElevatorData>();
+		}
+
+		var targetList = data.ElevatorsData[currentScene];
+		int indexInList = targetList.FindIndex(item => item.ElevatorIndex == GameplayObjectIndex);
+
+		var updatedItem = new ElevatorData
+		{
+			ElevatorIndex = GameplayObjectIndex,
+			ElevatorNameSystem = _elevatorName,
+			IsElevatorUp = _isElevatorUp
+		};
+
+		if (indexInList != -1)
+		{
+			targetList[indexInList] = updatedItem;
+		}
+		else
+		{
+			targetList.Add(updatedItem);
+		}
+
 		yield return null;
 	}
 
 	public override IEnumerator LoadData(GameData data)
 	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.ElevatorsData == null || !data.ElevatorsData.TryGetValue(currentScene, out var sourceList)) yield break;
+
+		if (sourceList.Count > 0)
+		{
+			ElevatorData savedState = sourceList.Find(item => item.ElevatorIndex == GameplayObjectIndex);
+
+			if (savedState.ElevatorIndex != 0)
+			{
+				_isElevatorUp = savedState.IsElevatorUp;
+
+				if (_isElevatorUp == true)
+				{
+					gameObject.transform.position = new Vector3(transform.position.x, gameObject.transform.position.y + _elevatorUpPosition, transform.position.z);
+
+					if (_areDoorsPresent)
+					{
+						ImmediatelyCloseDoor(_downDoorRight, true);
+						ImmediatelyCloseDoor(_downDoorLeft, false);
+
+						ImmediatelyOpenDoor(_upDoorRight, true);
+						ImmediatelyOpenDoor(_upDoorLeft, false);
+					}
+				}
+			}
+		}
+
 		yield return null;
 	}
 }

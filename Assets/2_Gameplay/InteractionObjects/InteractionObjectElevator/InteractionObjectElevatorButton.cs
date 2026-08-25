@@ -69,6 +69,7 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 	{
 		_isInteractionHintMessageFailActive = false;
 		bool success = _targetElevator.MoveElevator(_buttonUp);
+
 		if (!success)
 		{
 			_isInteractionHintMessageFailActive = true;
