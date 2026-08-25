@@ -188,7 +188,7 @@ public class SaveLoadController : MonoBehaviour
 
 			StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), SceneNameToLoad)));
 
-			yield return new WaitWhile(() => _gameSceneManager.HasLoadedGameplayScene == false);
+			yield return new WaitUntil(() => _gameSceneManager.HasLoadedGameplayScene == true);
 		}
 
 		int totalObjects = _coreSaveLoadObjects.Count;
@@ -387,7 +387,7 @@ public class SaveLoadController : MonoBehaviour
 
 	private IEnumerator RunTask(Task task)
 	{
-		yield return new WaitWhile(() => !task.IsCompleted);
+		yield return new WaitUntil(() => task.IsCompleted);
 
 		try
 		{

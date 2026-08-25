@@ -155,7 +155,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 					if (!_wasPreviouslyCopiedToTEMP)
 					{
 						IsWaitingForOldGameplayDataToSave = true;
-						yield return new WaitWhile(() => IsWaitingForOldGameplayDataToSave == true);
+						yield return new WaitUntil(() => IsWaitingForOldGameplayDataToSave == false);
 					}
 					_wasPreviouslyCopiedToTEMP = false;
 				}
@@ -206,7 +206,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 
 		//if (_isInitialSceneLoad == false)
 		//{
-		yield return new WaitWhile(() => IsWaitingForNewGameplayDataToLoad == true);
+		yield return new WaitUntil(() => IsWaitingForNewGameplayDataToLoad == false);
 		//}
 
 		_sliderComponentLoadingStatus.value = 1f;
@@ -214,7 +214,7 @@ public class GameScenesManager : MonoBehaviour, ISaveLoad
 		_textLoadingReady.SetActive(true);
 		_textComponentLoadingReady.text = _localizationManager.GetLocalizedString("UI_LoadingScreen_LoadingIsReady");
 
-		yield return new WaitWhile(() => !Input.anyKeyDown);
+		yield return new WaitUntil(() => Input.anyKeyDown);
 
 		_canvasLoadingScreen.SetActive(false);
 
