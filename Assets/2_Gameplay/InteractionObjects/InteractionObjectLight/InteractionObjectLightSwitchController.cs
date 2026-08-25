@@ -54,7 +54,7 @@ public class InteractionObjectLightSwitchController : GameplayObjectSaveLoad
 		}
 	}
 
-	public IEnumerator SaveData(GameData data)
+	public override IEnumerator SaveData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
@@ -84,7 +84,7 @@ public class InteractionObjectLightSwitchController : GameplayObjectSaveLoad
 		yield return null;
 	}
 
-	public IEnumerator LoadData(GameData data)
+	public override IEnumerator LoadData(GameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 

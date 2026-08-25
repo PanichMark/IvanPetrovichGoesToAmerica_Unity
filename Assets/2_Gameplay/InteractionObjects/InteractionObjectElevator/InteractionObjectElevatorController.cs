@@ -24,7 +24,7 @@ public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 	private float _elevatorDownPosition;
 	private float _elevatorUpPosition;
 	private bool _isElevatorMoving;
-
+	private bool _isElevatorUp;
 	private bool _areDoorsPresent;
 
 	void Start()
@@ -98,15 +98,20 @@ public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 		if (Mathf.Abs(transform.position.y - targetY) < _elevatorPositionTolerance)
 			return false;
 
-		StartCoroutine(ElevatorAnimation(targetY));
+		StartCoroutine(ElevatorAnimation(targetY, moveUp));
 		return true;
 	}
 
-	private IEnumerator ElevatorAnimation(float targetY)
+	private IEnumerator ElevatorAnimation(float targetY, bool moveUp)
 	{
 		_isElevatorMoving = true;
 
-		yield return StartCoroutine(SlowlyCloseFloorDoors(false));
+		if (_areDoorsPresent)
+		{
+			yield return StartCoroutine(SlowlyCloseFloorDoors(moveUp));
+
+			yield return new WaitForSeconds(0.33f);
+		}
 
 		Vector3 targetPosition = new Vector3(transform.position.x, targetY, transform.position.z);
 
@@ -117,34 +122,53 @@ public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 		}
 
 		transform.position = targetPosition;
-		_isElevatorMoving = false;
-	}
 
-	private IEnumerator SlowlyCloseFloorDoors(bool isTopFloor)
-	{
 		if (_areDoorsPresent)
 		{
-			StartCoroutine(SlowlyCloseDoor(_cabinDoorRight, true));
-			StartCoroutine(SlowlyCloseDoor(_cabinDoorLeft, false));
+			yield return new WaitForSeconds(0.33f);
 
-			if (!isTopFloor)
-			{
-				StartCoroutine(SlowlyCloseDoor(_downDoorRight, true));
-				yield return StartCoroutine(SlowlyCloseDoor(_downDoorLeft, false));
-			}
-			else
-			{
-				StartCoroutine(SlowlyCloseDoor(_upDoorRight, true));
-				yield return StartCoroutine(SlowlyCloseDoor(_upDoorLeft, false));
-			}
+			yield return StartCoroutine(SlowlyOpenFloorDoors(moveUp));
+		}
+
+		if (moveUp)
+		{
+			_isElevatorUp = true;
 		}
 		else
 		{
-			yield return null;
+			_isElevatorUp = false;
 		}
+
+			_isElevatorMoving = false;
 	}
 
-	private IEnumerator SlowlyCloseDoor(GameObject door, bool isDoorRight)
+	private IEnumerator SlowlyOpenFloorDoors(bool isDownFloor)
+	{
+		Coroutine cabR = StartCoroutine(SlowlyOpenDoor(_cabinDoorRight, true));
+		Coroutine cabL = StartCoroutine(SlowlyOpenDoor(_cabinDoorLeft, false));
+
+		Coroutine floorR;
+		Coroutine floorL;
+
+		if (!isDownFloor)
+		{
+			floorR = StartCoroutine(SlowlyOpenDoor(_downDoorRight, true));
+			floorL = StartCoroutine(SlowlyOpenDoor(_downDoorLeft, false));
+		}
+		else
+		{
+			floorR = StartCoroutine(SlowlyOpenDoor(_upDoorRight, true));
+			floorL = StartCoroutine(SlowlyOpenDoor(_upDoorLeft, false));
+		}
+
+		// Ждем завершения всех запущенных процессов
+		yield return cabR;
+		yield return cabL;
+		yield return floorR;
+		yield return floorL;
+	}
+
+	private IEnumerator SlowlyOpenDoor(GameObject door, bool isDoorRight)
 	{
 		float startX = door.transform.localPosition.x;
 		float targetX;
@@ -167,5 +191,68 @@ public class InteractionObjectElevatorController : GameplayObjectSaveLoad
 		}
 
 		door.transform.localPosition = new Vector3(targetX, door.transform.localPosition.y, door.transform.localPosition.z);
+	}
+
+	private IEnumerator SlowlyCloseFloorDoors(bool isDownFloor)
+	{
+		if (!_areDoorsPresent) { yield break; }
+
+		Coroutine cabR = StartCoroutine(SlowlyCloseDoor(_cabinDoorRight, true));
+		Coroutine cabL = StartCoroutine(SlowlyCloseDoor(_cabinDoorLeft, false));
+
+		Coroutine floorR;
+		Coroutine floorL;
+
+		if (isDownFloor)
+		{
+			floorR = StartCoroutine(SlowlyCloseDoor(_downDoorRight, true));
+			floorL = StartCoroutine(SlowlyCloseDoor(_downDoorLeft, false));
+		}
+		else
+		{
+			floorR = StartCoroutine(SlowlyCloseDoor(_upDoorRight, true));
+			floorL = StartCoroutine(SlowlyCloseDoor(_upDoorLeft, false));
+		}
+
+		// Ждем завершения всех запущенных процессов
+		yield return cabR;
+		yield return cabL;
+		yield return floorR;
+		yield return floorL;
+	}
+
+	private IEnumerator SlowlyCloseDoor(GameObject door, bool isDoorRight)
+	{
+		float startX = door.transform.localPosition.x;
+		float targetX;
+
+		if (isDoorRight)
+		{
+			targetX = startX + _doorOpenPosition;
+		}
+		else
+		{
+			targetX = startX - _doorOpenPosition;
+		}
+
+		while (Mathf.Abs(door.transform.localPosition.x - targetX) > 0.01f)
+		{
+			float currentX = door.transform.localPosition.x;
+			float newX = Mathf.MoveTowards(currentX, targetX, _doorSlidingSpeed * Time.deltaTime);
+			door.transform.localPosition = new Vector3(newX, door.transform.localPosition.y, door.transform.localPosition.z);
+			yield return null;
+		}
+
+		door.transform.localPosition = new Vector3(targetX, door.transform.localPosition.y, door.transform.localPosition.z);
+	}
+
+	public override IEnumerator SaveData(GameData data)
+	{
+		yield return null;
+	}
+
+	public override IEnumerator LoadData(GameData data)
+	{
+		yield return null;
 	}
 }
