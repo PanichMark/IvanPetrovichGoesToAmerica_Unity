@@ -5,18 +5,23 @@ using System.Collections;
 
 public class InteractionObjectVendingMachine : GameplayObjectSaveLoad, IInteractable, IElectroShockable
 {
+	public delegate void OutOfServiceHandler();
+	public event OutOfServiceHandler OnWentOutOfService;
+
 	public delegate void InteractionDelegate();
 	private List<GameObject> _spawnedGoods = new List<GameObject>();
 	[Header("Object Info")]
 	[SerializeField] private string _vendingMachineName;
 	[SerializeField] private PlayerMoneyTypes _moneyType;
 
+
+
 	[Header("Goods Info")]
 	[SerializeField] protected GameObject _goodsForSale;
 	[SerializeField] protected int _goodsPrice;
 	protected string _goodsName;
 	protected float _vendingMachineElectroHealth;
-	protected bool _isOutOfService;
+	public bool IsOutOfService { get; private set; }
 	private InteractionObjectLootAbstract _goodsComponent;
 
 	private string _moneyForUI;
@@ -56,13 +61,15 @@ public class InteractionObjectVendingMachine : GameplayObjectSaveLoad, IInteract
 
 	public void ChangeLangauge(LocalizationManager localizationManager)
 	{
+		_localizationManager = localizationManager;
+
 		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
 		_moneyForUI = _localizationManager.GetLocalizedString($"Money_{_moneyType}");
 	}
 
 	public void Interact()
 	{
-		if (!_isOutOfService)
+		if (!IsOutOfService)
 		{
 			if (_playerResourcesMoneyManager.PlayerMoney >= _goodsPrice)
 			{
@@ -115,7 +122,7 @@ public class InteractionObjectVendingMachine : GameplayObjectSaveLoad, IInteract
 		rb.isKinematic = false;
 		rb.useGravity = true;
 
-		if (!_isOutOfService)
+		if (!IsOutOfService)
 		{
 			_spawnedGoods.Add(instantiatedObject);
 		}
@@ -128,13 +135,15 @@ public class InteractionObjectVendingMachine : GameplayObjectSaveLoad, IInteract
 
 	public void Electrify(float damage)
 	{
-		if (!_isOutOfService)
+		if (!IsOutOfService)
 		{
 			_vendingMachineElectroHealth -= damage;
 
 			if (_vendingMachineElectroHealth <= 0)
 			{
-				_isOutOfService = true;
+				IsOutOfService = true;
+
+				OnWentOutOfService?.Invoke();
 
 				StartCoroutine(BreakDownAndSpawnGoods());
 			}
