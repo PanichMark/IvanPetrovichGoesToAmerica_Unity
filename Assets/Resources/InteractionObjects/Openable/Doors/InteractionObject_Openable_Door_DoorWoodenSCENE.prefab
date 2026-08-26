@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 2723011800755186276}
   - component: {fileID: 4649416697700356917}
   - component: {fileID: 3922330212871865643}
-  - component: {fileID: 5993786303963112589}
+  - component: {fileID: 5868169061622413950}
   m_Layer: 0
   m_Name: 3Dmodel_Interior_Door_DoorWooden
   m_TagString: Interactable
@@ -196,7 +196,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1999998, y: 2.2, z: 0.16294765}
   m_Center: {x: 0.54999995, y: 1.1, z: -0.0038700104}
---- !u!114 &5993786303963112589
+--- !u!114 &5868169061622413950
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -205,14 +205,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 8105506052148768732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1d31cf25872a96429f591ac2c5bd5cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 0da23f0dac497b84c84a3a23da8f4b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Openable_Door_DoorWooden
-  _doorOpenAngle: 0
-  _doorOpeningSpeed: 0
+  _isObjectOpened: 0
+  _doorOpenAngle: 90
+  _doorOpeningSpeed: 200
+  _interactionObjectKeyData: {fileID: 0}
   _mechanicalLockController: {fileID: 0}
   _electronicLockController: {fileID: 0}
-  _targetScene: 3
-  _newPlayerPosition: {x: 0, y: 0, z: 0}
-  _newPlayerRotation: 0
+  _electronicElectricalPanel: {fileID: 0}
+  _changeScene: {fileID: 0}
+  _isLockedForever: 0
+  _doorSibling: {fileID: 0}

@@ -186,7 +186,7 @@ public class JsonSaveLoadController : MonoBehaviour
 		{
 			Debug.Log($"LoadGame_2 loading new scene");
 
-			StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), SceneNameToLoad)));
+			StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesGameplayDataEnum)Enum.Parse(typeof(GameScenesGameplayDataEnum), SceneNameToLoad)));
 
 			yield return new WaitUntil(() => _gameSceneManager.HasLoadedGameplayScene == true);
 		}

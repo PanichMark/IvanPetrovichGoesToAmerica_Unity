@@ -34,7 +34,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		ActiveMission = _gameMissions.MissionsInOrder[0];
 
 		CurrentStepIndex = 0;
-
+		Debug.Log(ActiveMission);
 		if (ActiveMission.Steps.Length > 0)
 		{
 			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);

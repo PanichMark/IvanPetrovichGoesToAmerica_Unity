@@ -260,7 +260,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}
 
-	public void HandleShowForChooseEpisode(GameScenesSystemEnum sceneToLoad, string episodeMessage)
+	public void HandleShowForChooseEpisode(GameScenesGameplayDataEnum sceneToLoad, string episodeMessage)
 	{
 		_textComponentActionMessage.text = $"{_textLoadEpisode} {episodeMessage}?";
 		_actionOnAccept = () =>

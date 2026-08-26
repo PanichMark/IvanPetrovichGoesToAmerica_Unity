@@ -15,21 +15,37 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	[SerializeField] protected InteractionObjectLockMechanical _mechanicalLockController;
 	[SerializeField] protected InteractionObjectLockElectronic _electronicLockController;
 	[SerializeField] protected InteractionObjectElectricalPanel _electronicElectricalPanel;
+	[SerializeField] private InteractionObjectChangeScene _changeScene;
 	[SerializeField] protected bool _isLockedForever;
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
 	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
-
+	private GameScenesManager _gameSceneManager;
 	private Coroutine _currentAnimation;
 	protected bool _isDoorDouble;
 	private Quaternion _openedRotation;
 	private Quaternion _closedRotation;
-
+	private PlayerMovementController _playerMovementController;
 	private string _interactionHintMessageFail;
 	public override string InteractionHintMessageFail => _interactionHintMessageFail;
 
+	private IEnumerator LoadGameplayScene()
+	{
+		gameObject.transform.SetParent(null);
+		DontDestroyOnLoad(gameObject);
+
+		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(_changeScene.SceneToLoad));
+
+		_playerMovementController.SetPlayerPosition(_changeScene.PlayerPosition);
+		_playerMovementController.SetPlayerRotationY(_changeScene.PlayerRotationY);
+		
+		Destroy(gameObject);
+	}
+
 	void Start()
 	{
+		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
 		_keysManager = ServiceLocator.Resolve<KeysManager>("KeysManager");
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
 
@@ -201,25 +217,32 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	{
 		_isAdditionalInteractionHintActive = false;
 
-		if (_currentAnimation != null)
+		if (_changeScene == null)
 		{
-			StopCoroutine(_currentAnimation);
-		}
+			if (_currentAnimation != null)
+			{
+				StopCoroutine(_currentAnimation);
+			}
 
-		if (!IsObjectOpened)
-		{
-			Debug.Log($"Opened {InteractionObjectNameUI}");
-			_isObjectOpened = true;
-			_currentAnimation = StartCoroutine(OpenDoor());
+			if (!IsObjectOpened)
+			{
+				Debug.Log($"Opened {InteractionObjectNameUI}");
+				_isObjectOpened = true;
+				_currentAnimation = StartCoroutine(OpenDoor());
+			}
+			else
+			{
+				Debug.Log($"Closed {InteractionObjectNameUI}");
+				_isObjectOpened = false;
+				_currentAnimation = StartCoroutine(CloseDoor());
+			}
+
+			SetUnlockedDoorHintMessageMain();
 		}
 		else
 		{
-			Debug.Log($"Closed {InteractionObjectNameUI}");
-			_isObjectOpened = false;
-			_currentAnimation = StartCoroutine(CloseDoor());
+			StartCoroutine(LoadGameplayScene());
 		}
-
-		SetUnlockedDoorHintMessageMain();
 	}
 
 	protected virtual void SetUnlockedDoorHintMessageMain()

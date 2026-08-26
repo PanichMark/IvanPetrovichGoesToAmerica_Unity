@@ -325,7 +325,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 
 		if (_shouldLoadScene)
 		{
-			_gameSceneManager.StartCoroutine(_gameSceneManager.LoadGameplayScene(_sceneToLoadAfterCutscene));
+			_gameSceneManager.StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesGameplayDataEnum)_sceneToLoadAfterCutscene));
 		}
 
 		if (_shouldInteractWithObjects)

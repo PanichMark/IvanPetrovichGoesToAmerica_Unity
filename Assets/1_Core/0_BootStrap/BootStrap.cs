@@ -435,7 +435,7 @@ public class Bootstrap : MonoBehaviour
 		}
 		else
 		{
-			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene(_firstSceneToLoad.FirstSceneToLoad));
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene((GameScenesGameplayDataEnum)((int)_firstSceneToLoad.FirstSceneToLoad - 1)));
 		}
 	}
 

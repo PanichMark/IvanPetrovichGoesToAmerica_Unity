@@ -246,7 +246,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		}
 	}
 
-	IEnumerator LoadTestScene()
+	private IEnumerator LoadTestScene()
 	{
 		gameObject.transform.SetParent(null);
 
@@ -254,12 +254,12 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 		//yield return StartCoroutine(_saveLoadController.NewGame());
 		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
-		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesSystemEnum.Scene_0_Test));
+		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesGameplayDataEnum.Scene_0_Test));
 	
 		Destroy(gameObject);
 	}
 
-	IEnumerator StartNewGame()
+	private IEnumerator StartNewGame()
 	{
 		yield return null;
 		//yield return StartCoroutine(_saveLoadController.NewGame());
