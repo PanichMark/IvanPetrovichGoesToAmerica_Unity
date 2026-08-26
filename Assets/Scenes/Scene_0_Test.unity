@@ -26634,7 +26634,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1348570349953599362, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: m_Name
-      value: InteractionObject_Safe_SafeSquare (1)
+      value: SAFE_2
       objectReference: {fileID: 0}
     - target: {fileID: 1610523851182026755, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: m_LocalScale.x
@@ -26695,6 +26695,10 @@ PrefabInstance:
     - target: {fileID: 5161013277708508123, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: _fallDurationLimit
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7015984648205224947, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
+      propertyPath: m_Name
+      value: SAFE_2_DOOR
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -64909,7 +64913,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1348570349953599362, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: m_Name
-      value: InteractionObject_Safe_SafeSquare
+      value: SAFE_1
       objectReference: {fileID: 0}
     - target: {fileID: 1610523851182026755, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: m_LocalScale.x
@@ -64929,7 +64933,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1610523851182026755, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.867
+      value: -0.007
       objectReference: {fileID: 0}
     - target: {fileID: 1610523851182026755, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -64966,6 +64970,10 @@ PrefabInstance:
     - target: {fileID: 1610523851182026755, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7015984648205224947, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
+      propertyPath: m_Name
+      value: SAFE_1_DOOR
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -145368,7 +145376,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1348570349953599362, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: m_Name
-      value: InteractionObject_Safe_SafeSquare (2)
+      value: SAFE_3
       objectReference: {fileID: 0}
     - target: {fileID: 1610523851182026755, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: m_LocalScale.x
@@ -145429,6 +145437,10 @@ PrefabInstance:
     - target: {fileID: 5161013277708508123, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
       propertyPath: _fallDurationLimit
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7015984648205224947, guid: 2bd278fe2088e6b45981878b21a5920b, type: 3}
+      propertyPath: m_Name
+      value: SAFE_3_DOOR
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -517,6 +517,7 @@ GameObject:
   - component: {fileID: 3798560883041035721}
   - component: {fileID: 5145851620262333165}
   - component: {fileID: 7105654390555470723}
+  - component: {fileID: 7402719774700565325}
   m_Layer: 0
   m_Name: SafeDoor
   m_TagString: Untagged
@@ -533,7 +534,7 @@ Transform:
   m_GameObject: {fileID: 7015984648205224947}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.27499998, y: 0.029, z: 0.4499998}
+  m_LocalPosition: {x: -0.27499998, y: 0.029, z: 0.5003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -617,6 +618,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.54999995, y: 0.75, z: 0.13972744}
   m_Center: {x: 0.27499998, y: 0.37520915, z: 0.01986368}
+--- !u!114 &7402719774700565325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7015984648205224947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d6995fa24cfba439227bb97b02d953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionObjectNameSystem: InteractionObject_Safe_Door
+  _interactionObjectPickableType: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
+  _isMovementRestricted: 1
+  _movementSpeedPenaltyMultiplier: 0.7
 --- !u!1 &8055399886074799410
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,4 +888,4 @@ MonoBehaviour:
   _safeRotatorySection3: {fileID: 3641484556880735531}
   _fallSpeedThreshold: 1
   _fallDurationLimit: 1
-  _impactForceMultiplier: 0.1
+  _impactForceMultiplier: 2

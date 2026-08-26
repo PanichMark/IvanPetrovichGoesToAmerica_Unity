@@ -52,7 +52,7 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 		_safeDoor = transform.parent.gameObject;
 		_safeDoorTransform = _safeDoor.GetComponent<Transform>();
 
-		_safeBody = transform.parent.parent.gameObject;
+		_safeBody = _safeDoor.transform.parent.gameObject;
 		_safeBodyRb = _safeBody.GetComponent<Rigidbody>();
 		_interactionObjectSafeFallSensor = _safeBody.GetComponent<InteractionObjectSafeFallSensor>();
 
@@ -125,9 +125,13 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 		_isSafeBroken = true;
 		_handleCollider.enabled = false;
 		_safeDoor.transform.SetParent(null);
+		_safeDoor.tag = "Interactable";
 		Rigidbody doorRigidbody = _safeDoor.AddComponent<Rigidbody>();
-		doorRigidbody.AddForce(transform.forward * 500f, ForceMode.Impulse);
-
+		doorRigidbody.AddForce(transform.forward * _impactForceMultiplier, ForceMode.Impulse);
+		_safeRotatorySection1.tag = "Untagged";
+		_safeRotatorySection2.tag = "Untagged";
+		_safeRotatorySection3.tag = "Untagged";
+		gameObject.tag = "Untagged";
 		Debug.Log("SAFE BROKEN!!!!");
 
 		enabled = false;
@@ -267,11 +271,26 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 			_safeRotatorySection1.tag = "Untagged";
 			_safeRotatorySection2.tag = "Untagged";
 			_safeRotatorySection3.tag = "Untagged";
-			_safeDoorTransform.localRotation = _safeDoorOpenedPosition;
+
+			if (!_isSafeBroken)
+			{
+				_safeDoorTransform.localRotation = _safeDoorOpenedPosition;
+			}
 		}
+
+		Debug.Log(GameplayObjectIndex);
+		Debug.Log(_isSafeBroken);
+
 		if (_isSafeBroken)
 		{
-			BreakSafeFromImpact();
+			_handleCollider.enabled = false;
+			_safeDoor.transform.SetParent(null);
+			_safeDoor.tag = "Interactable";
+			Rigidbody doorRigidbody = _safeDoor.AddComponent<Rigidbody>();
+			gameObject.tag = "Untagged";
+			_safeRotatorySection1.tag = "Untagged";
+			_safeRotatorySection2.tag = "Untagged";
+			_safeRotatorySection3.tag = "Untagged";
 		}
 
 		yield return null;
