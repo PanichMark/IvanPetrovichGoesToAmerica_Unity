@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpenableAbstract
 {
@@ -235,7 +236,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	}
 
-	IEnumerator OpenDoor()
+	private IEnumerator OpenDoor()
 	{
 		while (Quaternion.Angle(transform.localRotation, _openedRotation) > 0.1f)
 		{
@@ -246,7 +247,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 		_currentAnimation = null;
 	}
 
-	IEnumerator CloseDoor()
+	private IEnumerator CloseDoor()
 	{
 		while (Quaternion.Angle(transform.localRotation, _closedRotation) > 0.1f)
 		{
@@ -255,5 +256,62 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 		}
 
 		_currentAnimation = null;
+	}
+
+	public override IEnumerator SaveJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.OpenableUndestructableObjectsData == null)
+		{
+			data.OpenableUndestructableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<OpenableUndestructableObjectData>>();
+		}
+		if (!data.OpenableUndestructableObjectsData.ContainsKey(currentScene))
+		{
+			data.OpenableUndestructableObjectsData[currentScene] = new List<OpenableUndestructableObjectData>();
+		}
+
+		var targetList = data.OpenableUndestructableObjectsData[currentScene];
+
+		int indexInList = targetList.FindIndex(item => item.OpenableUndestructableObjectIndex == GameplayObjectIndex);
+
+		if (indexInList != -1)
+		{
+			var existingItem = targetList[indexInList];
+
+			existingItem.IsOpenableUndestructableObjectUnlocked = WasOpenableUnlocked;
+			existingItem.IsOpenableUndestructableObjectOpened = _isObjectOpened;
+			existingItem.OpenableUndestructableObjectNameSystem = InteractionObjectNameSystem;
+
+			targetList[indexInList] = existingItem;
+		}
+		else
+		{
+			targetList.Add(new OpenableUndestructableObjectData
+			{
+				OpenableUndestructableObjectIndex = GameplayObjectIndex,
+				OpenableUndestructableObjectNameSystem = InteractionObjectNameSystem,
+				IsOpenableUndestructableObjectUnlocked = WasOpenableUnlocked,
+				IsOpenableUndestructableObjectOpened = _isObjectOpened
+			});
+		}
+
+		yield return null;
+	}
+
+	public override IEnumerator LoadJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.OpenableUndestructableObjectsData == null || !data.OpenableUndestructableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
+
+		var savedState = sourceList.Find(item => item.OpenableUndestructableObjectIndex == GameplayObjectIndex);
+
+		if (savedState.Equals(default(OpenableUndestructableObjectData))) yield break;
+
+		WasOpenableUnlocked = savedState.IsOpenableUndestructableObjectUnlocked;
+		_isObjectOpened = savedState.IsOpenableUndestructableObjectOpened;
+
+		yield return null;
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInteractable
+public class InteractionObjectSafeUndestructableController : GameplayObjectJsonSaveLoad, IInteractable
 {
 	[SerializeField] private string _interactionObjectNameUI;
 
@@ -212,28 +212,28 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.SafesData == null)
+		if (data.SafesDestructableData == null)
 		{
-			data.SafesData = new Dictionary<GameScenesGameplayDataEnum, List<SafeData>>();
+			data.SafesDestructableData = new Dictionary<GameScenesGameplayDataEnum, List<SafeDestructableData>>();
 		}
-		if (!data.SafesData.ContainsKey(currentScene))
+		if (!data.SafesDestructableData.ContainsKey(currentScene))
 		{
-			data.SafesData[currentScene] = new List<SafeData>();
+			data.SafesDestructableData[currentScene] = new List<SafeDestructableData>();
 		}
 
-		var targetList = data.SafesData[currentScene];
+		var targetList = data.SafesDestructableData[currentScene];
 
-		int indexInList = targetList.FindIndex(item => item.SafeIndex == GameplayObjectIndex);
+		int indexInList = targetList.FindIndex(item => item.SafeDestructableIndex == GameplayObjectIndex);
 
-		var updatedItem = new SafeData
+		var updatedItem = new SafeDestructableData
 		{
-			SafeIndex = GameplayObjectIndex,
-			SafeNameSystem = InteractionObjectNameSystem,
-			IsSafeOpened = _isSafeOpened,
-			IsSafeBroken = _isSafeBroken,
-			SafeRotationSection_1_Position = _section1.currentSectionPosition,
-			SafeRotationSection_2_Position = _section2.currentSectionPosition,
-			SafeRotationSection_3_Position = _section3.currentSectionPosition
+			SafeDestructableIndex = GameplayObjectIndex,
+			SafeDestructableNameSystem = InteractionObjectNameSystem,
+			IsSafeDestructableOpened = _isSafeOpened,
+			IsSafeDestructableDestroyed = _isSafeBroken,
+			SafeDestructableRotationSection_1_Position = _section1.currentSectionPosition,
+			SafeDestructableRotationSection_2_Position = _section2.currentSectionPosition,
+			SafeDestructableRotationSection_3_Position = _section3.currentSectionPosition
 		};
 
 		if (indexInList != -1)
@@ -252,18 +252,18 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.SafesData == null || !data.SafesData.TryGetValue(currentScene, out var sourceList)) yield break;
+		if (data.SafesDestructableData == null || !data.SafesDestructableData.TryGetValue(currentScene, out var sourceList)) yield break;
 
-		var savedState = sourceList.Find(item => item.SafeIndex == GameplayObjectIndex);
+		var savedState = sourceList.Find(item => item.SafeDestructableIndex == GameplayObjectIndex);
 
-		if (savedState.Equals(default(SafeData))) yield break;
+		if (savedState.Equals(default(SafeDestructableData))) yield break;
 
-		_isSafeOpened = savedState.IsSafeOpened;
-		_isSafeBroken = savedState.IsSafeBroken;
+		_isSafeOpened = savedState.IsSafeDestructableOpened;
+		_isSafeBroken = savedState.IsSafeDestructableDestroyed;
 
-		_section1.SetLoadedPosition(savedState.SafeRotationSection_1_Position);
-		_section2.SetLoadedPosition(savedState.SafeRotationSection_2_Position);
-		_section3.SetLoadedPosition(savedState.SafeRotationSection_3_Position);
+		_section1.SetLoadedPosition(savedState.SafeDestructableRotationSection_1_Position);
+		_section2.SetLoadedPosition(savedState.SafeDestructableRotationSection_2_Position);
+		_section3.SetLoadedPosition(savedState.SafeDestructableRotationSection_3_Position);
 
 		if (_isSafeOpened)
 		{
@@ -277,9 +277,6 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 				_safeDoorTransform.localRotation = _safeDoorOpenedPosition;
 			}
 		}
-
-		//Debug.Log(GameplayObjectIndex);
-		//Debug.Log(_isSafeBroken);
 
 		if (_isSafeBroken)
 		{

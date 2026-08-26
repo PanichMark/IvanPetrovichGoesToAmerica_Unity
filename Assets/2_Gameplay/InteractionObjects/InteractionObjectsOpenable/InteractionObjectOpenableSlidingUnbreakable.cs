@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstract
+public class InteractionObjectOpenableSlidingUnbreakable : InteractionObjectOpenableAbstract
 {
 	[SerializeField] protected float _openingSpeed;
 	protected Coroutine _currentAnimation;

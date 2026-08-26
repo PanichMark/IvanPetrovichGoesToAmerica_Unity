@@ -50,11 +50,17 @@ public class JsonGameData
 	[JsonProperty("ThrowableDestructableObjects")]
 	public Dictionary<GameScenesGameplayDataEnum, List<ThrowableDestructableObjectData>> ThrowableDestructableObjectsData;
 
-	[JsonProperty("OpenableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<OpenableObjectData>> OpenableObjectsData;
+	[JsonProperty("OpenableUndestructableObjects")]
+	public Dictionary<GameScenesGameplayDataEnum, List<OpenableUndestructableObjectData>> OpenableUndestructableObjectsData;
 
-	[JsonProperty("Safes")]
-	public Dictionary<GameScenesGameplayDataEnum, List<SafeData>> SafesData;
+	[JsonProperty("OpenableDestructableObjects")]
+	public Dictionary<GameScenesGameplayDataEnum, List<OpenableDestructableObjectData>> OpenableDestructableObjectsData;
+
+	[JsonProperty("SafesUndestructable")]
+	public Dictionary<GameScenesGameplayDataEnum, List<SafeUndestructableData>> SafesUndestructableData;
+
+	[JsonProperty("SafesDestructable")]
+	public Dictionary<GameScenesGameplayDataEnum, List<SafeDestructableData>> SafesDestructableData;
 
 	[JsonProperty("VendingMachines")]
 	public Dictionary<GameScenesGameplayDataEnum, List<VendingMachineData>> VendingMachinesData;
@@ -145,6 +151,7 @@ public class JsonGameData
 	private void InitializeGameplayObjectsData()
 	{
 		NPCsData = CreateEmptyDictionary<NPCdata>();
+
 		LootObjectsData = CreateEmptyDictionary<LootObjectData>();
 
 		NonThrowableUndestructableObjectsData = CreateEmptyDictionary<NonThrowableUndestructableObjectData>();
@@ -152,8 +159,12 @@ public class JsonGameData
 		ThrowableUndestructableObjectsData = CreateEmptyDictionary<ThrowableUndestructableObjectData>();
 		ThrowableDestructableObjectsData = CreateEmptyDictionary<ThrowableDestructableObjectData>();
 
-		OpenableObjectsData = CreateEmptyDictionary<OpenableObjectData>();
-		SafesData = CreateEmptyDictionary<SafeData>();
+		OpenableUndestructableObjectsData = CreateEmptyDictionary<OpenableUndestructableObjectData>();
+		OpenableDestructableObjectsData = CreateEmptyDictionary<OpenableDestructableObjectData>();
+
+		SafesUndestructableData = CreateEmptyDictionary<SafeUndestructableData>();
+		SafesDestructableData = CreateEmptyDictionary<SafeDestructableData>();
+
 		VendingMachinesData = CreateEmptyDictionary<VendingMachineData>();
 		ElevatorsData = CreateEmptyDictionary<ElevatorData>();
 		LightsData = CreateEmptyDictionary<LightData>();
@@ -309,27 +320,49 @@ public struct ThrowableDestructableObjectData
 }
 
 [System.Serializable]
-public struct OpenableObjectData
+public struct OpenableUndestructableObjectData
 {
-	public int OpenableObjectIndex;
-	public string OpenableObjectNameSystem;
+	public int OpenableUndestructableObjectIndex;
+	public string OpenableUndestructableObjectNameSystem;
 
-	public bool IsOpenableObjectOpened;
-	public bool IsOpenableObjectUnlocked;
-	public bool IsOpenableObjectDestroyed;
+	public bool IsOpenableUndestructableObjectOpened;
+	public bool IsOpenableUndestructableObjectUnlocked;
 }
 
 [System.Serializable]
-public struct SafeData
+public struct OpenableDestructableObjectData
 {
-	public int SafeIndex;
-	public string SafeNameSystem;
+	public int OpenableDestructableObjectIndex;
+	public string OpenableDestructableObjectNameSystem;
 
-	public bool IsSafeOpened;
-	public bool IsSafeBroken;
-	public int SafeRotationSection_1_Position;
-	public int SafeRotationSection_2_Position;
-	public int SafeRotationSection_3_Position;
+	public bool IsOpenableDestructableObjectOpened;
+	public bool IsOpenableDestructableObjectUnlocked;
+	public float OpenableDestructableObjectHealth;
+}
+
+[System.Serializable]
+public struct SafeUndestructableData
+{
+	public int SafeUndestructableIndex;
+	public string SafeUndestructableNameSystem;
+
+	public bool IsSafeUndestructableOpened;
+	public int SafeUndestructableRotationSection_1_Position;
+	public int SafeUndestructableRotationSection_2_Position;
+	public int SafeUndestructableRotationSection_3_Position;
+}
+
+[System.Serializable]
+public struct SafeDestructableData
+{
+	public int SafeDestructableIndex;
+	public string SafeDestructableNameSystem;
+
+	public bool IsSafeDestructableOpened;
+	public bool IsSafeDestructableDestroyed;
+	public int SafeDestructableRotationSection_1_Position;
+	public int SafeDestructableRotationSection_2_Position;
+	public int SafeDestructableRotationSection_3_Position;
 }
 
 [System.Serializable]

@@ -33,34 +33,34 @@ public class InteractionObjectPickableThrowableUndestructable : InteractionObjec
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		var updatedItem = new ThrowableDestructableObjectData
+		var updatedItem = new ThrowableUndestructableObjectData
 		{
-			ThrowableDestructableObjectIndex = GameplayObjectIndex,
-			ThrowableDestructableObjectNameSystem = InteractionObjectNameSystem,
-			ThrowableDestructableObjectPosition = new Vector3(
+			ThrowableUndestructableObjectIndex = GameplayObjectIndex,
+			ThrowableUndestructableObjectNameSystem = InteractionObjectNameSystem,
+			ThrowableUndestructableObjectPosition = new Vector3(
 				Mathf.Round(gameObject.transform.position.x * 100f) / 100f,
 				Mathf.Round(gameObject.transform.position.y * 100f) / 100f,
 				Mathf.Round(gameObject.transform.position.z * 100f) / 100f),
-			ThrowableDestructableObjectRotation = new Quaternion(
+			ThrowableUndestructableObjectRotation = new Quaternion(
 				Mathf.Round(gameObject.transform.rotation.x * 100f) / 100f,
 				Mathf.Round(gameObject.transform.rotation.y * 100f) / 100f,
 				Mathf.Round(gameObject.transform.rotation.z * 100f) / 100f,
 				Mathf.Round(gameObject.transform.rotation.w * 100f) / 100f),
-			IsThrowableDestructableObjectPickedUp = IsObjectPickedUp,
-			WasThrowableDestructableObjectThrown = _wasThrown,
+			IsThrowableUndestructableObjectPickedUp = IsObjectPickedUp,
+			WasThrowableUndestructableObjectThrown = _wasThrown,
 		};
 
-		if (data.ThrowableDestructableObjectsData == null)
+		if (data.ThrowableUndestructableObjectsData == null)
 		{
-			data.ThrowableDestructableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<ThrowableDestructableObjectData>>();
+			data.ThrowableUndestructableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<ThrowableUndestructableObjectData>>();
 		}
-		if (!data.ThrowableDestructableObjectsData.ContainsKey(currentScene))
+		if (!data.ThrowableUndestructableObjectsData.ContainsKey(currentScene))
 		{
-			data.ThrowableDestructableObjectsData[currentScene] = new List<ThrowableDestructableObjectData>();
+			data.ThrowableUndestructableObjectsData[currentScene] = new List<ThrowableUndestructableObjectData>();
 		}
 
-		var targetList = data.ThrowableDestructableObjectsData[currentScene];
-		int indexInList = targetList.FindIndex(item => item.ThrowableDestructableObjectIndex == GameplayObjectIndex);
+		var targetList = data.ThrowableUndestructableObjectsData[currentScene];
+		int indexInList = targetList.FindIndex(item => item.ThrowableUndestructableObjectIndex == GameplayObjectIndex);
 
 		if (indexInList != -1)
 		{
@@ -78,13 +78,13 @@ public class InteractionObjectPickableThrowableUndestructable : InteractionObjec
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.ThrowableDestructableObjectsData == null || !data.ThrowableDestructableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
+		if (data.ThrowableUndestructableObjectsData == null || !data.ThrowableUndestructableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
-		var savedState = sourceList.Find(item => item.ThrowableDestructableObjectIndex == GameplayObjectIndex);
-		if (savedState.Equals(default(ThrowableDestructableObjectData))) yield break;
+		var savedState = sourceList.Find(item => item.ThrowableUndestructableObjectIndex == GameplayObjectIndex);
+		if (savedState.Equals(default(ThrowableUndestructableObjectData))) yield break;
 
-		IsObjectPickedUp = savedState.IsThrowableDestructableObjectPickedUp;
-		_wasThrown = savedState.WasThrowableDestructableObjectThrown;
+		IsObjectPickedUp = savedState.IsThrowableUndestructableObjectPickedUp;
+		_wasThrown = savedState.WasThrowableUndestructableObjectThrown;
 
 		if (IsObjectPickedUp)
 		{
@@ -94,8 +94,8 @@ public class InteractionObjectPickableThrowableUndestructable : InteractionObjec
 		}
 		else
 		{
-			transform.position = savedState.ThrowableDestructableObjectPosition;
-			transform.rotation = savedState.ThrowableDestructableObjectRotation;
+			transform.position = savedState.ThrowableUndestructableObjectPosition;
+			transform.rotation = savedState.ThrowableUndestructableObjectRotation;
 		}
 
 		yield return null;
