@@ -38,8 +38,17 @@ public class JsonGameData
 	[JsonProperty("LootObjects")]
 	public Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>> LootObjectsData;
 
-	[JsonProperty("PickableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<PickableObjectData>> PickableObjectsData;
+	[JsonProperty("NonThrowableUndestructableObjects")]
+	public Dictionary<GameScenesGameplayDataEnum, List<NonThrowableUndestructableObjectData>> NonThrowableUndestructableObjectsData;
+
+	[JsonProperty("NonThrowableDestructableObjects")]
+	public Dictionary<GameScenesGameplayDataEnum, List<NonThrowableDestructableObjectData>> NonThrowableDestructableObjectsData;
+
+	[JsonProperty("ThrowableUndestructableObjects")]
+	public Dictionary<GameScenesGameplayDataEnum, List<ThrowableUndestructableObjectData>> ThrowableUndestructableObjectsData;
+
+	[JsonProperty("ThrowableDestructableObjects")]
+	public Dictionary<GameScenesGameplayDataEnum, List<ThrowableDestructableObjectData>> ThrowableDestructableObjectsData;
 
 	[JsonProperty("OpenableObjects")]
 	public Dictionary<GameScenesGameplayDataEnum, List<OpenableObjectData>> OpenableObjectsData;
@@ -137,7 +146,12 @@ public class JsonGameData
 	{
 		NPCsData = CreateEmptyDictionary<NPCdata>();
 		LootObjectsData = CreateEmptyDictionary<LootObjectData>();
-		PickableObjectsData = CreateEmptyDictionary<PickableObjectData>();
+
+		NonThrowableUndestructableObjectsData = CreateEmptyDictionary<NonThrowableUndestructableObjectData>();
+		NonThrowableDestructableObjectsData = CreateEmptyDictionary<NonThrowableDestructableObjectData>();
+		ThrowableUndestructableObjectsData = CreateEmptyDictionary<ThrowableUndestructableObjectData>();
+		ThrowableDestructableObjectsData = CreateEmptyDictionary<ThrowableDestructableObjectData>();
+
 		OpenableObjectsData = CreateEmptyDictionary<OpenableObjectData>();
 		SafesData = CreateEmptyDictionary<SafeData>();
 		VendingMachinesData = CreateEmptyDictionary<VendingMachineData>();
@@ -239,17 +253,59 @@ public struct LootObjectData
 }
 
 [System.Serializable]
-public struct PickableObjectData
+public struct NonThrowableUndestructableObjectData
 {
-	public int PickableObjectIndex;
-	public string PickableObjectNameSystem;
+	public int NonThrowableUndestructableObjectIndex;
+	public string NonThrowableUndestructableObjectNameSystem;
 
 	[JsonConverter(typeof(JsonFileDataHandler.Vector3Converter))]
-	public Vector3 PickableObjectPosition;
+	public Vector3 NonThrowableUndestructableObjectPosition;
 	[JsonConverter(typeof(JsonFileDataHandler.QuaternionConverter))]
-	public Quaternion PickableObjectRotation;
-	public bool IsPickableObjectPickedUp;
-	public bool IsPickableObjectDestroyed;
+	public Quaternion NonThrowableUndestructableObjectRotation;
+	public bool IsNonThrowableUndestructableObjectPickedUp;
+}
+
+[System.Serializable]
+public struct NonThrowableDestructableObjectData
+{
+	public int NonThrowableDestructableObjectIndex;
+	public string NonThrowableDestructableObjectNameSystem;
+
+	[JsonConverter(typeof(JsonFileDataHandler.Vector3Converter))]
+	public Vector3 NonThrowableDestructableObjectPosition;
+	[JsonConverter(typeof(JsonFileDataHandler.QuaternionConverter))]
+	public Quaternion NonThrowableDestructableObjectRotation;
+	public bool IsNonThrowableDestructableObjectPickedUp;
+	public float NonThrowableDestructableObjectHealth;
+}
+
+[System.Serializable]
+public struct ThrowableUndestructableObjectData
+{
+	public int ThrowableUndestructableObjectIndex;
+	public string ThrowableUndestructableObjectNameSystem;
+
+	[JsonConverter(typeof(JsonFileDataHandler.Vector3Converter))]
+	public Vector3 ThrowableUndestructableObjectPosition;
+	[JsonConverter(typeof(JsonFileDataHandler.QuaternionConverter))]
+	public Quaternion ThrowableUndestructableObjectRotation;
+	public bool IsThrowableUndestructableObjectPickedUp;
+	public bool WasThrowableUndestructableObjectThrown;
+}
+
+[System.Serializable]
+public struct ThrowableDestructableObjectData
+{
+	public int ThrowableDestructableObjectIndex;
+	public string ThrowableDestructableObjectNameSystem;
+
+	[JsonConverter(typeof(JsonFileDataHandler.Vector3Converter))]
+	public Vector3 ThrowableDestructableObjectPosition;
+	[JsonConverter(typeof(JsonFileDataHandler.QuaternionConverter))]
+	public Quaternion ThrowableDestructableObjectRotation;
+	public bool IsThrowableDestructableObjectPickedUp;
+	public bool WasThrowableDestructableObjectThrown;
+	public float ThrowableDestructableObjectHealth;
 }
 
 [System.Serializable]

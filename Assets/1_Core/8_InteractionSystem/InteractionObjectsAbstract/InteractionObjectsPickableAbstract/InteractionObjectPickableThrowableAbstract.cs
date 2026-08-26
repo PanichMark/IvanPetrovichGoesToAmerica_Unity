@@ -3,18 +3,16 @@ using UnityEngine;
 
 public abstract class InteractionObjectPickableThrowableAbstract : InteractionObjectPickableAbstract, IThrowable
 {
-	private bool _canObjectBeDestroyedOnImpact;
+	protected bool _canObjectBeDestroyedOnImpact;
 	public float ObjectThrowPower => 10f;
 	private GameObject _firstPersonRightHandWeaponSlotGameObject;
 
-	[SerializeField] private bool IsDestroyedUponImpact;
-
 	[Header("Object Damage")]
-	[SerializeField] private float _damage;
-	[SerializeField] private bool _canDamageBreakable;
+	[SerializeField] protected float _damage;
+	[SerializeField] protected bool _canDamageBreakable;
 
 	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
-
+	protected bool _wasThrown;
 
 
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
@@ -99,7 +97,7 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 		}
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	protected virtual void OnCollisionEnter(Collision collision)
 	{
 		if (_canObjectBeDestroyedOnImpact)
 		{
@@ -117,17 +115,13 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 					breakable.TakeBreakDamage(_damage);
 				}
 			}
-
-			RigidBody.isKinematic = true;
-
-			_isObjectDestroyed = true;
-			gameObject.SetActive(false);
-			Debug.Log($"{InteractionObjectNameSystem} was destroyed on impact!");
 		}
 	}
 
 	public void ThrowObject()
 	{
+		gameObject.tag = "Untagged";
+
 		Debug.Log($"Throwed {InteractionObjectNameSystem}");
 
 		Physics.IgnoreCollision(Collider, _playerCollider, true);
@@ -136,12 +130,9 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 		RigidBody.isKinematic = false;
 		IsObjectPickedUp = false;
 		transform.parent = null;
+		_wasThrown = true;
 
-		if (IsDestroyedUponImpact)
-		{
-			_canObjectBeDestroyedOnImpact = true;
-			_isObjectDestroyed = true;
-		}
+		_canObjectBeDestroyedOnImpact = true;
 
 		Vector3 throwDirection = CachedPlayer.transform.forward - Camera.main.transform.up * Mathf.Tan(Camera.main.transform.eulerAngles.x * Mathf.Deg2Rad);
 		throwDirection.Normalize();
@@ -217,6 +208,4 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 			transform.rotation = Quaternion.Euler(0, _thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
 		}
 	}
-
-
 }

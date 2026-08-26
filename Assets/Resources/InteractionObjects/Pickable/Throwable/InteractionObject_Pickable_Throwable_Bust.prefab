@@ -149,8 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d1823dce665d1146802a1fbd8aa03b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: 
-  _interactionObjectPickableType: {fileID: 0}
-  IsDestroyedUponImpact: 0
+  _interactionObjectNameSystem: InteractionObject_Pickable_Throwable_Brick
+  _interactionObjectPickableType: {fileID: 11400000, guid: f06abb95f931bce43832101c38356be3, type: 2}
   _damage: 0
   _canDamageBreakable: 0

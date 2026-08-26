@@ -75,37 +75,4 @@ public abstract class InteractionObjectPickableNonThrowableAbstract : Interactio
 			_playerMovementController.OnMovementSpeedChangedByStateMachine -= DecreaseTheMovementSpeed;
 		}
 	}
-
-	public override IEnumerator LoadJsonData(JsonGameData data)
-	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
-
-		if (data.PickableObjectsData == null || !data.PickableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
-
-		var savedState = sourceList.Find(item => item.PickableObjectIndex == GameplayObjectIndex);
-
-		if (savedState.Equals(default(PickableObjectData))) yield break;
-
-		IsObjectPickedUp = savedState.IsPickableObjectPickedUp;
-
-		if (IsObjectPickedUp)
-		{
-			IsObjectPickedUp = false;
-
-			PickUpObject(true);
-			_playerInteractionController.PickUpObjectOnLoadData(gameObject);
-
-			if (_playerInteractionController.CurrentIThrowable == null && _isMovementRestricted)
-			{
-				_gameController.RestrictPlayerMovementWhileCarryingNonThrowable();
-			}
-		}
-		else
-		{
-			gameObject.transform.position = savedState.PickableObjectPosition;
-			gameObject.transform.rotation = savedState.PickableObjectRotation;
-		}
-
-		yield return null;
-	}
 }

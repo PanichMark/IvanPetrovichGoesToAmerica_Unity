@@ -19,4 +19,14 @@ public abstract class GameplayObjectJsonSaveLoad : MonoBehaviour, IJsonSaveLoad
 	{
 		yield return null;
 	}
+
+	public virtual void ChildClassSave(JsonGameData data)
+	{
+
+	}
+
+	public virtual void ChildClassLoad(JsonGameData data)
+	{
+
+	}
 }

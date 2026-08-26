@@ -278,8 +278,8 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 			}
 		}
 
-		Debug.Log(GameplayObjectIndex);
-		Debug.Log(_isSafeBroken);
+		//Debug.Log(GameplayObjectIndex);
+		//Debug.Log(_isSafeBroken);
 
 		if (_isSafeBroken)
 		{
