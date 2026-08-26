@@ -771,7 +771,7 @@ GameObject:
   - component: {fileID: 9081806467636257259}
   - component: {fileID: 6410694888272228411}
   - component: {fileID: 5308679638145347700}
-  - component: {fileID: 5161013277708508123}
+  - component: {fileID: 5310248147751150879}
   m_Layer: 0
   m_Name: Cylinder.005
   m_TagString: Interactable
@@ -868,7 +868,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2532885, y: 0.22378266, z: 0.106747076}
   m_Center: {x: 0.00000008195639, y: -0.028995901, z: 0.05337353}
---- !u!114 &5161013277708508123
+--- !u!114 &5310248147751150879
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -877,15 +877,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8873209071146824923}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26aab8041386daf449a7f13075f80ccd, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d96222aeaa859f45b8ba57c043d0ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameUI: InteractionObject_Safe_SafeMedium
-  _safeDoorOpeningSpeed: 50
+  _safeDoorOpeningSpeed: 10
   _safeDoorOpenedRotation: -90
   _safeRotatorySection1: {fileID: 8055399886074799410}
   _safeRotatorySection2: {fileID: 5059931937669228407}
   _safeRotatorySection3: {fileID: 3641484556880735531}
   _fallSpeedThreshold: 1
   _fallDurationLimit: 1
-  _impactForceMultiplier: 2
+  _impactForceMultiplier: 5

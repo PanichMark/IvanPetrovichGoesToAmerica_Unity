@@ -1,78 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
-public class InteractionObjectSafeUndestructableController : GameplayObjectJsonSaveLoad, IInteractable
+public class InteractionObjectSafeDestructableController : InteractionObjectSafeUndestructableController
 {
-	[SerializeField] private string _interactionObjectNameUI;
-
-	public virtual string InteractionObjectNameSystem => null;
-	public string InteractionHintMessageAction => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open")}";
-	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameUI)}";
-
-	private LocalizationManager _localizationManager;
-	private InteractionObjectSafeFallSensor _interactionObjectSafeFallSensor;
-	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-	public event IInteractable.InteractableObjectHandler OnInteract;
 	private bool _isSafeBroken;
-	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_WrongCombination")}!";
-	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
-
-	private bool _isAdditionalInteractionHintActive;
-	private bool _isSafeOpened;
-	private Collider _handleCollider;
-	private GameObject _safeDoor;
-	private Transform _safeDoorTransform;
-
-	[SerializeField] private float _safeDoorOpeningSpeed;
-	[SerializeField] private float _safeDoorOpenedRotation;
-	[SerializeField] private GameObject _safeRotatorySection1;
-	[SerializeField] private GameObject _safeRotatorySection2;
-	[SerializeField] private GameObject _safeRotatorySection3;
-	private InteractionObjectSafeRotationSection _section1;
-	private InteractionObjectSafeRotationSection _section2;
-	private InteractionObjectSafeRotationSection _section3;
-	private Quaternion _safeDoorOpenedPosition;
 
 	private GameObject _safeBody;
 	private Rigidbody _safeBodyRb;
 
-	public bool IsFalling {  get; private set; }
+	public bool IsFalling { get; private set; }
 	private float _fallStartTime;
 	[SerializeField] private float _fallSpeedThreshold;
 	[SerializeField] private float _fallDurationLimit;
 	[SerializeField] private float _impactForceMultiplier;
-
-	void Start()
+	private InteractionObjectSafeFallSensor _interactionObjectSafeFallSensor;
+	protected override void InitializeSafe()
 	{
-		_handleCollider = GetComponent<Collider>();
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		
-		_safeDoor = transform.parent.gameObject;
-		_safeDoorTransform = _safeDoor.GetComponent<Transform>();
-
 		_safeBody = _safeDoor.transform.parent.gameObject;
 		_safeBodyRb = _safeBody.GetComponent<Rigidbody>();
 		_interactionObjectSafeFallSensor = _safeBody.GetComponent<InteractionObjectSafeFallSensor>();
 
 		_interactionObjectSafeFallSensor.Initialize(this, _safeDoor);
-		_section1 = _safeRotatorySection1.GetComponent<InteractionObjectSafeRotationSection>();
-		_section2 = _safeRotatorySection2.GetComponent<InteractionObjectSafeRotationSection>();
-		_section3 = _safeRotatorySection3.GetComponent<InteractionObjectSafeRotationSection>();
-
-		Vector3 openedEulerAngles = new Vector3(0, _safeDoorOpenedRotation, 0);
-		_safeDoorOpenedPosition = Quaternion.Euler(openedEulerAngles);
-
-		if (_isSafeOpened)
-		{
-			_safeDoorTransform.localRotation = _safeDoorOpenedPosition;
-			_section1.SetSectionPositionToCorrect();
-			_section2.SetSectionPositionToCorrect();
-			_section3.SetSectionPositionToCorrect();
-		}
-
-		CheckRotatorySectionCorrection();
 	}
 
 	void Update()
@@ -135,77 +85,6 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 		Debug.Log("SAFE BROKEN!!!!");
 
 		enabled = false;
-	}
-
-	public void Interact()
-	{
-		if (!_isSafeOpened)
-		{
-			CheckRotatorySectionCorrection();
-		}
-	}
-
-	public void InteractCutscene()
-	{
-		Interact();
-	}
-
-	IEnumerator OpenSafeDoor()
-	{
-		gameObject.tag = "Untagged";
-
-		_safeRotatorySection1.tag = "Untagged";
-		_safeRotatorySection2.tag = "Untagged";
-		_safeRotatorySection3.tag = "Untagged";
-
-		while (Quaternion.Angle(_safeDoorTransform.localRotation, _safeDoorOpenedPosition) > 0.1f)
-		{
-			_safeDoorTransform.localRotation = Quaternion.RotateTowards(
-				_safeDoorTransform.localRotation,
-				_safeDoorOpenedPosition,
-				Time.deltaTime * _safeDoorOpeningSpeed);
-			yield return null;
-		}
-	}
-
-	private void CheckRotatorySectionCorrection()
-	{
-		if (_section1.currentSectionPosition == _section1.CorrectSectionPosition)
-			_section1.SetSectionPositionToCorrect();
-		if (_section2.currentSectionPosition == _section2.CorrectSectionPosition)
-			_section2.SetSectionPositionToCorrect();
-		if (_section3.currentSectionPosition == _section3.CorrectSectionPosition)
-			_section3.SetSectionPositionToCorrect();
-
-		if (_section1.IsSectionPositionCorrect && _section2.IsSectionPositionCorrect && _section3.IsSectionPositionCorrect)
-		{
-			_isAdditionalInteractionHintActive = false;
-			_isSafeOpened = true;
-
-			StartCoroutine(OpenSafeDoor());
-		}
-		else
-		{
-			_isAdditionalInteractionHintActive = true;
-		}
-
-		if (_isSafeOpened)
-		{
-			float yAngle = _section1.CorrectSectionPosition != 0 ? 360f / 10 * _section1.CorrectSectionPosition : 0f;
-			Vector3 openedEulerAngles = new Vector3(0, yAngle, 0);
-			var sectionCorrectPositionRotation = Quaternion.Euler(openedEulerAngles);
-			_section1.transform.localRotation = sectionCorrectPositionRotation;
-
-			yAngle = _section2.CorrectSectionPosition != 0 ? 360f / 10 * _section2.CorrectSectionPosition : 0f;
-			openedEulerAngles = new Vector3(0, yAngle, 0);
-			sectionCorrectPositionRotation = Quaternion.Euler(openedEulerAngles);
-			_section2.transform.localRotation = sectionCorrectPositionRotation;
-
-			yAngle = _section3.CorrectSectionPosition != 0 ? 360f / 10 * _section3.CorrectSectionPosition : 0f;
-			openedEulerAngles = new Vector3(0, yAngle, 0);
-			sectionCorrectPositionRotation = Quaternion.Euler(openedEulerAngles);
-			_section3.transform.localRotation = sectionCorrectPositionRotation;
-		}
 	}
 
 	public override IEnumerator SaveJsonData(JsonGameData data)

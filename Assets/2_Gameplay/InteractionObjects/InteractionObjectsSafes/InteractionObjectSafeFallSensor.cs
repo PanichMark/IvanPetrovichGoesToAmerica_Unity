@@ -3,11 +3,11 @@
 public class InteractionObjectSafeFallSensor : MonoBehaviour
 {
 	// Ссылка на ваш основной контроллер, который висит на двери
-	private InteractionObjectSafeUndestructableController _safeController;
+	private InteractionObjectSafeDestructableController _safeController;
 	private GameObject _safeDoor;
 
 	public void Initialize(
-		InteractionObjectSafeUndestructableController safeController,
+		InteractionObjectSafeDestructableController safeController,
 		 GameObject safeDoor)
 	{
 		_safeController = safeController;
