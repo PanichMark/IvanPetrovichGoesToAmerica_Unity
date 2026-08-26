@@ -135,10 +135,13 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 		Collider.enabled = true;
 		RigidBody.isKinematic = false;
 		IsObjectPickedUp = false;
-
-		_canObjectBeDestroyedOnImpact = true;
-
 		transform.parent = null;
+
+		if (IsDestroyedUponImpact)
+		{
+			_canObjectBeDestroyedOnImpact = true;
+			_isObjectDestroyed = true;
+		}
 
 		Vector3 throwDirection = CachedPlayer.transform.forward - Camera.main.transform.up * Mathf.Tan(Camera.main.transform.eulerAngles.x * Mathf.Deg2Rad);
 		throwDirection.Normalize();

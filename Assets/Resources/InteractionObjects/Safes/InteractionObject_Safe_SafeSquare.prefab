@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 3415144245846769399}
   - component: {fileID: 1213708961742934949}
   - component: {fileID: 5839836429865181148}
+  - component: {fileID: 4444944933949498570}
   m_Layer: 0
   m_Name: InteractionObject_Safe_SafeSquare
   m_TagString: Interactable
@@ -242,6 +243,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4444944933949498570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348570349953599362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 294035275729680468a85ef986004586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3641484556880735531
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,3 +864,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameUI: InteractionObject_Safe_SafeMedium
+  _safeDoorOpeningSpeed: 50
+  _safeDoorOpenedRotation: -90
+  _safeRotatorySection1: {fileID: 8055399886074799410}
+  _safeRotatorySection2: {fileID: 5059931937669228407}
+  _safeRotatorySection3: {fileID: 3641484556880735531}
+  _fallSpeedThreshold: 1
+  _fallDurationLimit: 1
+  _impactForceMultiplier: 0.1

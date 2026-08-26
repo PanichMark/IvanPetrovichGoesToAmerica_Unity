@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInteractable
 {
@@ -10,60 +12,125 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameUI)}";
 
 	private LocalizationManager _localizationManager;
+	private InteractionObjectSafeFallSensor _interactionObjectSafeFallSensor;
 	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	public event IInteractable.InteractableObjectHandler OnInteract;
-
+	private bool _isSafeBroken;
 	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_WrongCombination")}!";
 	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
 	private bool _isAdditionalInteractionHintActive;
 	private bool _isSafeOpened;
-	private bool _isInStartMethod;
-
-	private	GameObject _safeDoor;
+	private Collider _handleCollider;
+	private GameObject _safeDoor;
 	private Transform _safeDoorTransform;
 
-	private GameObject _safeRotatorySection1;
-	private GameObject _safeRotatorySection2;
-	private GameObject _safeRotatorySection3;
+	[SerializeField] private float _safeDoorOpeningSpeed;
+	[SerializeField] private float _safeDoorOpenedRotation;
+	[SerializeField] private GameObject _safeRotatorySection1;
+	[SerializeField] private GameObject _safeRotatorySection2;
+	[SerializeField] private GameObject _safeRotatorySection3;
 	private InteractionObjectSafeRotationSection _section1;
 	private InteractionObjectSafeRotationSection _section2;
 	private InteractionObjectSafeRotationSection _section3;
+	private Quaternion _safeDoorOpenedPosition;
 
-	private float _safeDoorOpeningSpeed = 100f;
-	private Quaternion _safeDoorOpenedRotation;
+	private GameObject _safeBody;
+	private Rigidbody _safeBodyRb;
+
+	public bool IsFalling {  get; private set; }
+	private float _fallStartTime;
+	[SerializeField] private float _fallSpeedThreshold;
+	[SerializeField] private float _fallDurationLimit;
+	[SerializeField] private float _impactForceMultiplier;
 
 	void Start()
 	{
-		_isInStartMethod = true;
-
+		_handleCollider = GetComponent<Collider>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-
+		
 		_safeDoor = transform.parent.gameObject;
 		_safeDoorTransform = _safeDoor.GetComponent<Transform>();
 
-		_safeRotatorySection1 = transform.parent.Find("SafeSection1").gameObject;
-		_safeRotatorySection2 = transform.parent.Find("SafeSection2").gameObject;
-		_safeRotatorySection3 = transform.parent.Find("SafeSection3").gameObject;
+		_safeBody = transform.parent.parent.gameObject;
+		_safeBodyRb = _safeBody.GetComponent<Rigidbody>();
+		_interactionObjectSafeFallSensor = _safeBody.GetComponent<InteractionObjectSafeFallSensor>();
 
+		_interactionObjectSafeFallSensor.Initialize(this, _safeDoor);
 		_section1 = _safeRotatorySection1.GetComponent<InteractionObjectSafeRotationSection>();
 		_section2 = _safeRotatorySection2.GetComponent<InteractionObjectSafeRotationSection>();
 		_section3 = _safeRotatorySection3.GetComponent<InteractionObjectSafeRotationSection>();
 
-		Vector3 openedEulerAngles = new Vector3(0, -90, 0);
-		_safeDoorOpenedRotation = Quaternion.Euler(openedEulerAngles);
+		Vector3 openedEulerAngles = new Vector3(0, _safeDoorOpenedRotation, 0);
+		_safeDoorOpenedPosition = Quaternion.Euler(openedEulerAngles);
 
 		if (_isSafeOpened)
 		{
-			_safeDoorTransform.localRotation = _safeDoorOpenedRotation;
+			_safeDoorTransform.localRotation = _safeDoorOpenedPosition;
 			_section1.SetSectionPositionToCorrect();
 			_section2.SetSectionPositionToCorrect();
 			_section3.SetSectionPositionToCorrect();
 		}
 
 		CheckRotatorySectionCorrection();
+	}
 
-		_isInStartMethod = false;
+	void Update()
+	{
+		if (!_isSafeBroken)
+		{
+			CheckForFall();
+		}
+	}
+
+	private void CheckForFall()
+	{
+		if (_safeBodyRb == null) return;
+
+		float verticalVelocity = _safeBodyRb.linearVelocity.y;
+
+		if (IsFalling)
+		{
+			// Сбрасываем флаг, если сейф остановился или подпрыгнул (ударился), но не сломался сразу
+			if (verticalVelocity >= -0.1f || verticalVelocity > 0f)
+			{
+				IsFalling = false;
+			}
+		}
+		// Начинаем отсчет времени ТОЛЬКО если скорость превысила порог вниз
+		else if (verticalVelocity < -_fallSpeedThreshold)
+		{
+			IsFalling = true;
+			_fallStartTime = Time.time;
+		}
+	}
+
+	// Добавьте этот НОВЫЙ МЕТОД в класс InteractionObjectSafeController
+	public void OnSafeBodyCollided(Collision collision)
+	{
+		//Debug.Log("SAFE BODY COLLIDED! " + collision.collider.name);
+
+		// Ваша логика проверки времени падения остается здесь
+		if (IsFalling && (Time.time - _fallStartTime) >= _fallDurationLimit)
+		{
+			BreakSafeFromImpact();
+		}
+
+		// Сбрасываем флаг в любом случае
+		IsFalling = false;
+	}
+
+	private void BreakSafeFromImpact()
+	{
+		_isSafeBroken = true;
+		_handleCollider.enabled = false;
+		_safeDoor.transform.SetParent(null);
+		Rigidbody doorRigidbody = _safeDoor.AddComponent<Rigidbody>();
+		doorRigidbody.AddForce(transform.forward * 500f, ForceMode.Impulse);
+
+		Debug.Log("SAFE BROKEN!!!!");
+
+		enabled = false;
 	}
 
 	public void Interact()
@@ -79,7 +146,6 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 		Interact();
 	}
 
-
 	IEnumerator OpenSafeDoor()
 	{
 		gameObject.tag = "Untagged";
@@ -88,11 +154,11 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 		_safeRotatorySection2.tag = "Untagged";
 		_safeRotatorySection3.tag = "Untagged";
 
-		while (Quaternion.Angle(_safeDoorTransform.localRotation, _safeDoorOpenedRotation) > 0.1f)
+		while (Quaternion.Angle(_safeDoorTransform.localRotation, _safeDoorOpenedPosition) > 0.1f)
 		{
 			_safeDoorTransform.localRotation = Quaternion.RotateTowards(
 				_safeDoorTransform.localRotation,
-				_safeDoorOpenedRotation,
+				_safeDoorOpenedPosition,
 				Time.deltaTime * _safeDoorOpeningSpeed);
 			yield return null;
 		}
@@ -109,9 +175,6 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 
 		if (_section1.IsSectionPositionCorrect && _section2.IsSectionPositionCorrect && _section3.IsSectionPositionCorrect)
 		{
-			if (!_isInStartMethod)
-				Debug.Log("SAFE CORRECT");
-
 			_isAdditionalInteractionHintActive = false;
 			_isSafeOpened = true;
 
@@ -119,11 +182,7 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 		}
 		else
 		{
-			if (!_isInStartMethod)
-			{
-				Debug.Log("SAFE FAILED");
-				_isAdditionalInteractionHintActive = true;
-			}
+			_isAdditionalInteractionHintActive = true;
 		}
 
 		if (_isSafeOpened)
@@ -143,5 +202,78 @@ public class InteractionObjectSafeController : GameplayObjectJsonSaveLoad, IInte
 			sectionCorrectPositionRotation = Quaternion.Euler(openedEulerAngles);
 			_section3.transform.localRotation = sectionCorrectPositionRotation;
 		}
+	}
+
+	public override IEnumerator SaveJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.SafesData == null)
+		{
+			data.SafesData = new Dictionary<GameScenesGameplayDataEnum, List<SafeData>>();
+		}
+		if (!data.SafesData.ContainsKey(currentScene))
+		{
+			data.SafesData[currentScene] = new List<SafeData>();
+		}
+
+		var targetList = data.SafesData[currentScene];
+
+		int indexInList = targetList.FindIndex(item => item.SafeIndex == GameplayObjectIndex);
+
+		var updatedItem = new SafeData
+		{
+			SafeIndex = GameplayObjectIndex,
+			SafeNameSystem = InteractionObjectNameSystem,
+			IsSafeOpened = _isSafeOpened,
+			IsSafeBroken = _isSafeBroken,
+			SafeRotationSection_1_Position = _section1.currentSectionPosition,
+			SafeRotationSection_2_Position = _section2.currentSectionPosition,
+			SafeRotationSection_3_Position = _section3.currentSectionPosition
+		};
+
+		if (indexInList != -1)
+		{
+			targetList[indexInList] = updatedItem;
+		}
+		else
+		{
+			targetList.Add(updatedItem);
+		}
+
+		yield return null;
+	}
+
+	public override IEnumerator LoadJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.SafesData == null || !data.SafesData.TryGetValue(currentScene, out var sourceList)) yield break;
+
+		var savedState = sourceList.Find(item => item.SafeIndex == GameplayObjectIndex);
+
+		if (savedState.Equals(default(SafeData))) yield break;
+
+		_isSafeOpened = savedState.IsSafeOpened;
+		_isSafeBroken = savedState.IsSafeBroken;
+
+		_section1.SetLoadedPosition(savedState.SafeRotationSection_1_Position);
+		_section2.SetLoadedPosition(savedState.SafeRotationSection_2_Position);
+		_section3.SetLoadedPosition(savedState.SafeRotationSection_3_Position);
+
+		if (_isSafeOpened)
+		{
+			gameObject.tag = "Untagged";
+			_safeRotatorySection1.tag = "Untagged";
+			_safeRotatorySection2.tag = "Untagged";
+			_safeRotatorySection3.tag = "Untagged";
+			_safeDoorTransform.localRotation = _safeDoorOpenedPosition;
+		}
+		if (_isSafeBroken)
+		{
+			BreakSafeFromImpact();
+		}
+
+		yield return null;
 	}
 }

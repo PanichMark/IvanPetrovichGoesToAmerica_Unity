@@ -270,6 +270,7 @@ public struct SafeData
 	public string SafeNameSystem;
 
 	public bool IsSafeOpened;
+	public bool IsSafeBroken;
 	public int SafeRotationSection_1_Position;
 	public int SafeRotationSection_2_Position;
 	public int SafeRotationSection_3_Position;
@@ -281,7 +282,7 @@ public struct VendingMachineData
 	public int VendingMachineIndex;
 	public string VendingMachineNameSystem;
 
-	public float VendingMachineElectroHealth;
+	public float VendingMachineHealth;
 	public int VendingMachineSpawnedGoods;
 }
 

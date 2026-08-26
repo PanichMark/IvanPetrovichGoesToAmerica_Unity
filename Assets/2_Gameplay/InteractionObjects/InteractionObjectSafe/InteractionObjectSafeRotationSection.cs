@@ -71,4 +71,13 @@ public class InteractionObjectSafeRotationSection : MonoBehaviour, IInteractable
 	{
 		IsSectionPositionCorrect = true;
 	}
+
+	public void SetLoadedPosition(int loadedPosition)
+	{
+		currentSectionPosition = loadedPosition;
+		IsSectionPositionCorrect = currentSectionPosition == _correctSectionPosition;
+
+		float yAngle = 36f * currentSectionPosition;
+		transform.localRotation = Quaternion.Euler(0, yAngle, 0);
+	}
 }
