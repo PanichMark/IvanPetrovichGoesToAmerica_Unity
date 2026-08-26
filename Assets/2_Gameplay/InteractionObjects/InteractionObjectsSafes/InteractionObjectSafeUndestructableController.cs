@@ -45,7 +45,7 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 	void Start()
 	{
 		_handleCollider = GetComponent<Collider>();
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		
 		_safeDoor = transform.parent.gameObject;
 		_safeDoorTransform = _safeDoor.GetComponent<Transform>();

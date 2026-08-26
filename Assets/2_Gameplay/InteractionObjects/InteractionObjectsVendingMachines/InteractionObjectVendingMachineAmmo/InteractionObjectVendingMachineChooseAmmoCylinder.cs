@@ -25,7 +25,7 @@ public class InteractionObjectVendingMachineChooseAmmoCylinder : MonoBehaviour, 
 	private void Start()
 	{
 		_vendingMachine = GetComponentInParent<InteractionObjectVendingMachineAmmo>();
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_localizationManager.OnLanguageChanged += ChangeLangauge;
 		_vendingMachine.OnWentOutOfService += WentOutOFService;
 

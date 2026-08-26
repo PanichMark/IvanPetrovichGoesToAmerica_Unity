@@ -67,27 +67,27 @@ public class NPCdialogueController : MonoBehaviour
 		_uLipSyncBlendShape = GetComponent<uLipSyncBlendShape>();
 		_audioSource = GetComponent<AudioSource>();
 		_NPCabstract = GetComponent<NPCabstract>();
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
-		_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
-		_animator = GetComponent<Animator>();
-		_animator.speed = 0.5f;
-		_interactionController = ServiceLocator.Resolve<PlayerInteractionController>("InteractionController");
-		_buttonDialogueYes = ServiceLocator.Resolve<GameObject>("ButtonDialogueYes").GetComponent<Button>();
-		_buttonDialogueNo = ServiceLocator.Resolve<GameObject>("ButtonDialogueNo").GetComponent<Button>();
-		_gameController = ServiceLocator.Resolve<GameController>("GameController");
-		_textDialogueYes = ServiceLocator.Resolve<GameObject>("TextDialogueYes");
-		_textDialogueNo = ServiceLocator.Resolve<GameObject>("TextDialogueNo");
+_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
+_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
+_animator = GetComponent<Animator>();
+_animator.speed = 0.5f;
+_interactionController = ServiceLocator.Resolve<PlayerInteractionController>();
+_buttonDialogueYes = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonDialogueYes);
+_buttonDialogueNo = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonDialogueNo);
+_gameController = ServiceLocator.Resolve<GameController>();
+_textDialogueYes = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.TextDialogueYes);
+_textDialogueNo = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.TextDialogueNo);
 
-		_playerEyesLookAt = ServiceLocator.Resolve<GameObject>("GameObjectPlayerEyesLookAt");
-	
-		_textComponentDialogueYes = _textDialogueYes.GetComponent<TextMeshProUGUI>();
-		_textComponentDialogueNo = _textDialogueNo.GetComponent<TextMeshProUGUI>();
+_playerEyesLookAt = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerEyesLookAt);
 
-		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_canvasDialogueMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuDialogue");
-		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
-		_NPCdialogueText = ServiceLocator.Resolve<GameObject>("TextDialogueLine").GetComponent<TextMeshProUGUI>();
+_textComponentDialogueYes = _textDialogueYes.GetComponent<TextMeshProUGUI>();
+_textComponentDialogueNo = _textDialogueNo.GetComponent<TextMeshProUGUI>();
+
+_menuManager = ServiceLocator.Resolve<MenuManager>();
+_canvasDialogueMenu = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMenuDialogue);
+_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+_NPCdialogueText = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextDialogueLine);
 
 		_NPCstateMachineController = NPCstateMachineController;
 

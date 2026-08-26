@@ -25,7 +25,7 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 	private void Start()
 	{
 		_audioSource = GetComponent<AudioSource>();
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		if(_isTurnedOn)

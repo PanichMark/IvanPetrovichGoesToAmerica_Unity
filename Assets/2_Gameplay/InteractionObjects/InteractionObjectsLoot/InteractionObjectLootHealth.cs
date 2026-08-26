@@ -46,7 +46,7 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 
 	protected override void InitializeLootObject()
 	{
-		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>("PlayerResourcesHealthManager");
+_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>();
 
 		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}

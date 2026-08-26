@@ -46,8 +46,8 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 
 		_goodsComponent = _goodsForSale.GetComponent<InteractionObjectLootAbstract>();
 
-		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerMoneyController>("PlayerResourcesMoneyManager");
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerMoneyController>();
+_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
 		_moneyForUI = _localizationManager.GetLocalizedString($"Money_{_moneyType}");
 

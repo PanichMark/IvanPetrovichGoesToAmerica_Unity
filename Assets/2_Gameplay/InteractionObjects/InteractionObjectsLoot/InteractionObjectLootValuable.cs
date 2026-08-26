@@ -26,6 +26,6 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 
 	protected override void InitializeLootObject()
 	{
-		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerMoneyController>("PlayerResourcesMoneyManager");
+_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerMoneyController>();
 	}
 }

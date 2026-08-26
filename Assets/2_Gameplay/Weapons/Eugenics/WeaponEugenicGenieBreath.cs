@@ -20,10 +20,9 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 	protected override void InitializeWeaponEugenic()
 	{
-		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
-		_playerGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
-
-		_playerCameraGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
+_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+_playerGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
+_playerCameraGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCamera);
 		//_playerWeaponController.OnAllWeaponsHidden += TurnEugenicVFXOff;
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)

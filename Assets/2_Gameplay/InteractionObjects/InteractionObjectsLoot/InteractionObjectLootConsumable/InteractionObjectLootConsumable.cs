@@ -8,7 +8,7 @@ public class InteractionObjectLootConsumable : InteractionObjectLootAbstract
 	private PlayerHealthController _playerHealthController;
 	protected override void InitializeLootObject()
 	{
-		_playerHealthController = ServiceLocator.Resolve<PlayerHealthController>("PlayerResourcesHealthManager");
+		_playerHealthController = ServiceLocator.Resolve<PlayerHealthController>();
 
 		if (_interactionObjectConsumableTypes == InteractionObjectLootConsumableTypes.Food)
 		{

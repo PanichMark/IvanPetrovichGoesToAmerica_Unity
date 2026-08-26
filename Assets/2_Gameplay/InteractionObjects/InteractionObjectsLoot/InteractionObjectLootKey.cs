@@ -10,7 +10,7 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 
 	protected override void InitializeLootObject()
 	{
-		_keysManager = ServiceLocator.Resolve<KeysManager>("KeysManager");
+		_keysManager = ServiceLocator.Resolve<KeysManager>();
 		_keyID = _keyData.keyID.ToString();
 	}
 

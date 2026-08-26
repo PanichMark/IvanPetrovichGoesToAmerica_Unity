@@ -7,7 +7,7 @@ public class TESTdealDamageToPlayer : MonoBehaviour
 
 	private void Start()
 	{
-		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>("PlayerResourcesHealthManager");
+	_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>();
 	}
 
 	void Update()

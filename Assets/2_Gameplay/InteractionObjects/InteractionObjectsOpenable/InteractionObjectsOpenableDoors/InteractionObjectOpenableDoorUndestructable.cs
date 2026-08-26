@@ -44,10 +44,10 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 
 	void Start()
 	{
-		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
-		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
-		_keysManager = ServiceLocator.Resolve<KeysManager>("KeysManager");
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
+_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+_keysManager = ServiceLocator.Resolve<KeysManager>();
+_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		Vector3 openedEulerAngles = new Vector3(0, _doorOpenAngle, 0);
 		_openedRotation = Quaternion.Euler(openedEulerAngles);

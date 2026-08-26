@@ -64,21 +64,21 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	private void Awake()
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_canvasLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickMechanical");
-		_buttonExitLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("ButtonCloseLockpickMechanicalMenu").GetComponent<Button>();
-		_textButtonExitLockpickMechanicalMenu = ServiceLocator.Resolve<GameObject>("TextButtonCloseLockpickMechanicalMenu").GetComponent<TextMeshProUGUI>();
-		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>("SaveLoadController");
-		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
-		_gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
-		_gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;
-		_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical");
+_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+_menuManager = ServiceLocator.Resolve<MenuManager>();
+_canvasLockpickMechanicalMenu = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMenuLockpickMechanical);
+_buttonExitLockpickMechanicalMenu = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonCloseLockpickMechanicalMenu);
+_textButtonExitLockpickMechanicalMenu = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextButtonCloseLockpickMechanicalMenu);
+_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
+_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+_gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
+_gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;
+_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical");
 
-		_buttonMoveLockMechanismUp = ServiceLocator.Resolve<GameObject>("MoveLockMechanicalUp").GetComponent<Button>();
-		_buttonMoveLockMechanismDown = ServiceLocator.Resolve<GameObject>("MoveLockMechanicalDown").GetComponent<Button>();
-		_buttonMoveLockMechanismRight = ServiceLocator.Resolve<GameObject>("MoveLockMechanicalRight").GetComponent<Button>();
-		_buttonMoveLockMechanismLeft = ServiceLocator.Resolve<GameObject>("MoveLockMechanicalLeft").GetComponent<Button>();
+_buttonMoveLockMechanismUp = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.MoveLockMechanicalUp);
+_buttonMoveLockMechanismDown = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.MoveLockMechanicalDown);
+_buttonMoveLockMechanismRight = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.MoveLockMechanicalRight);
+_buttonMoveLockMechanismLeft = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.MoveLockMechanicalLeft);
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");

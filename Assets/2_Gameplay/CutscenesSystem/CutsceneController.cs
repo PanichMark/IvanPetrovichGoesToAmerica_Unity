@@ -59,19 +59,19 @@ public class CutsceneController : MonoBehaviour, ICutscene
 
 	private void Start()
 	{
-		_playerProxy = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
-		_playerCameraProxy = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
-		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
-		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
-		_gameController = ServiceLocator.Resolve<GameController>("GameController");
-		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
-		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
-		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
-		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>("SaveLoadController");
+	_playerProxy = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
+_playerCameraProxy = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCamera);
+_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
+_gameController = ServiceLocator.Resolve<GameController>();
+_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+_menuManager = ServiceLocator.Resolve<MenuManager>();
+_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+_inputDevice = ServiceLocator.Resolve<IInputDevice>();
+_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>();
+_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
 
-		_textCutsceneDialogue = ServiceLocator.Resolve<GameObject>("TextCutsceneDialogue");
+_textCutsceneDialogue = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.TextCutsceneDialogue);
 		_textComponentCutsceneDialogue = _textCutsceneDialogue.GetComponent<TextMeshProUGUI>();
 
 		_director = GetComponent<PlayableDirector>();

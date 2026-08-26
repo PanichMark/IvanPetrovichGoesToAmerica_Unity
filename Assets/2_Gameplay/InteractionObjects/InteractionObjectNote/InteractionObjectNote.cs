@@ -39,24 +39,24 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	private void Start()
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
-		_textButtonExit = ServiceLocator.Resolve<GameObject>("TextButtonCloseReadNoteMenu").GetComponent<TextMeshProUGUI>();
+_textButtonExit = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextButtonCloseReadNoteMenu);
 
-		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
+_inputDevice = ServiceLocator.Resolve<IInputDevice>();
 
-		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_buttonExitNoteMenu = ServiceLocator.Resolve<GameObject>("ButtonCloseReadNoteMenu").GetComponent<Button>();
-		_imageComponent = ServiceLocator.Resolve<GameObject>("ImageNote").GetComponent<Image>();
+_menuManager = ServiceLocator.Resolve<MenuManager>();
+_buttonExitNoteMenu = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonCloseReadNoteMenu);
+_imageComponent = ServiceLocator.GetComponent<Image>(EnumServiceLocatorGameObjects.ImageNote);
 
-		_textBackground = ServiceLocator.Resolve<GameObject>("ImageNoteBlackBackground").GetComponent<Image>();
-		_canvasNoteMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuNote");
+_textBackground = ServiceLocator.GetComponent<Image>(EnumServiceLocatorGameObjects.ImageNoteBlackBackground);
+_canvasNoteMenu = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMenuNote);
 
-		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
-		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseAndDeactivate;
-		_gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
+_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+_gameSceneManager.OnBeginLoadingMainMenuScene += CloseAndDeactivate;
+_gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
 
-		_textComponent = ServiceLocator.Resolve<GameObject>("TextNote").GetComponent<TextMeshProUGUI>();
+_textComponent = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextNote);
 		_textRectTransform = _textComponent.gameObject.GetComponent<RectTransform>();
 		
 		_localizationManager.OnLanguageChanged += ChangeLanguage;

@@ -25,11 +25,11 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 	protected override void InitializeWeaponMelee()
 	{
-		_inputDevice = ServiceLocator.Resolve<IInputDevice>("InputDevice");
-		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>("PlayerMovementStateMachineController");
-		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
+	_inputDevice = ServiceLocator.Resolve<IInputDevice>();
+_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
+_weaponController = ServiceLocator.Resolve<PlayerWeaponController>();
 
-		_chokeNPCtext = ServiceLocator.Resolve<GameObject>("TextChokeNPC");
+_chokeNPCtext = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.TextChokeNPC);
 
 		if (_weaponController.RightHandWeaponComponent is WeaponMeleeBaton)
 		{

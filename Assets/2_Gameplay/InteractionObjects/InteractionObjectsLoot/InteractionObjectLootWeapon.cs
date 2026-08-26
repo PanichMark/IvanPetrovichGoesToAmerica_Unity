@@ -32,7 +32,7 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 
 	protected override void InitializeLootObject()
 	{
-		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>("WeaponController");
+		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>();
 
 		var weaponComponent = _weapon.GetComponent<WeaponAbstract>();
 		LootObjectIcon = weaponComponent.WeaponIconBig;

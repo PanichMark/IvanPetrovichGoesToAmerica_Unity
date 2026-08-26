@@ -38,14 +38,14 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 
 	void Awake()
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_canvasLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("CanvasMenuLockpickElectronic");
-		_buttonExitLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("ButtonCloseLockpickElectronicMenu").GetComponent<Button>();
-		_textButtonExitLockpickElectronicMenu = ServiceLocator.Resolve<GameObject>("TextButtonCloseLockpickElectronicMenu").GetComponent<TextMeshProUGUI>();
-		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>("SaveLoadController");
-		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
-		_buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>("ButtonsLockElectronic");
+_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+_menuManager = ServiceLocator.Resolve<MenuManager>();
+_canvasLockpickElectronicMenu = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMenuLockpickElectronic);
+_buttonExitLockpickElectronicMenu = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonCloseLockpickElectronicMenu);
+_textButtonExitLockpickElectronicMenu = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextButtonCloseLockpickElectronicMenu);
+_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
+_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+_buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>();
 		_textButtonExitLockpickElectronicMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockElectronic_ButtonCloseMenuLockElectronic");
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Hack");

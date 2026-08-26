@@ -24,6 +24,6 @@ public class InteractionObjectLootAmmo : InteractionObjectLootAbstract
 
 	protected override void InitializeLootObject()
 	{
-		_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>("PlayerResourcesAmmoManager");
+	_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>();
 	}
 }

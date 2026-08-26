@@ -57,9 +57,9 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 	private void Start()
 	{
-		_playerCameraGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
-		_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>("NPCdetectionSignFrames");
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+_playerCameraGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCamera);
+_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>();
+_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
 		_navMeshAgent = GetComponent<NavMeshAgent>();

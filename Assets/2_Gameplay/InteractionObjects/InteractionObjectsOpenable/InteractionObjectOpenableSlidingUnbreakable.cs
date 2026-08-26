@@ -25,7 +25,7 @@ public class InteractionObjectOpenableSlidingUnbreakable : InteractionObjectOpen
 	public void Start()
 	{
 		_isObjectOpened = false;
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";

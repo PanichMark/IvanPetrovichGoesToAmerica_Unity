@@ -17,7 +17,7 @@ public class InteractionObjectTVbuttonPower : MonoBehaviour, IInteractable
 
 	void Start()
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		// Находим контроллер (предполагается, что он на том же родителе)
 		_tvController = transform.parent.GetComponent<InteractionObjectTVcontroller>();

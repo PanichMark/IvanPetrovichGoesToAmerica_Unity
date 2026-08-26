@@ -14,7 +14,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 	protected override void InitializeWeaponEugenic()
 	{
-		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
+_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
 
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)

@@ -77,16 +77,16 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		_projectile3rdPersonRestPosition = _projectile3rdPerson.transform.localPosition;
 		_projectile3rdPersonRestDirection = _projectile3rdPerson.transform.localRotation;
 		//Debug.Log(_projectileRestPosition);
-		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
-		_playerCamera = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
-		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>("PlayerWeaponFirstPersonRenderer");
-		_player = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
-		_playerRigidbody = _player.GetComponent<Rigidbody>();
-		_gameController = ServiceLocator.Resolve<GameController>("GameController");
-		_playerCollider = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
-		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
-		//Debug.Log(_gameSceneManager);
-		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>("PlayerBehaviour");
+_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+_playerCamera = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCamera);
+_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
+_player = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
+_playerRigidbody = _player.GetComponent<Rigidbody>();
+_gameController = ServiceLocator.Resolve<GameController>();
+_playerCollider = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCollider);
+_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+//Debug.Log(_gameSceneManager);
+_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>();
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{

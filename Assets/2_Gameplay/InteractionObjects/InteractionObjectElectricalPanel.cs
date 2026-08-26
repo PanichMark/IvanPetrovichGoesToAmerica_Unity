@@ -22,8 +22,8 @@ public class InteractionObjectElectricalPanel : GameplayObjectJsonSaveLoad, IInt
 
 	private void Start()
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>("PlayerResourcesHealthManager");
+	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>();
 
 		if (IsOutOfService)
 		{
@@ -67,7 +67,7 @@ public class InteractionObjectElectricalPanel : GameplayObjectJsonSaveLoad, IInt
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		if (IsOutOfService)
 		{

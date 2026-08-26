@@ -24,7 +24,7 @@ public class InteractionObjectSafeRotationSection : MonoBehaviour, IInteractable
 
 	private void Start()
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 	}
 
 	public void Interact()

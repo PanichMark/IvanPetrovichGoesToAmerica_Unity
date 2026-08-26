@@ -48,7 +48,7 @@ public class NPCdetectionSignController : MonoBehaviour
 		//Debug.Log("[NPC Sign] Initialized. Frames count: " + _detectionSignFrames.Count);
 
 
-		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+		_menuManager = ServiceLocator.Resolve<MenuManager>();
 		_menuManager.OnOpenAnyMenu += HideCanvasNPC;
 		_menuManager.OnCloseAnyMenu += ShowCanvasNPC;
 

@@ -42,7 +42,7 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 
 	protected override void InitializeLootObject()
 	{
-		_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>("PlayerResourcesManaManager");
+	_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 	}
 }

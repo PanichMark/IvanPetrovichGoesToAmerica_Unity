@@ -28,7 +28,7 @@ public class InteractionObjectOpenableDoorDestructable : InteractionObjectOpenab
 	{
 		_doorBrokenSkinnedMeshRenderer = _doorBroken.GetComponent<SkinnedMeshRenderer>();
 		CurrentDurability = _maxDurability;
-		_bulletHoleManager = ServiceLocator.Resolve<ObjectPoolWeaponController>("ObjectPoolWeaponController");
+	_bulletHoleManager = ServiceLocator.Resolve<ObjectPoolWeaponController>();
 		_collider = GetComponent<Collider>();
 	}
 

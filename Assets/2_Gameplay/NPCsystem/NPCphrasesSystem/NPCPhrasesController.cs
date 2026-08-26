@@ -32,11 +32,11 @@ public class NPCphrasesController : MonoBehaviour
 	public void Initialize(NPCabstract NPCabstract)
 	{
 		_NPCabstract = NPCabstract;
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_NPCphrasesText = ServiceLocator.Resolve<GameObject>("TextPhraseLine");
-		_NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();
-		//Debug.Log(_NPCphrasesText);
-		_playerEyesLookAt = ServiceLocator.Resolve<GameObject>("GameObjectPlayerEyesLookAt");
+	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+_NPCphrasesText = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.TextPhraseLine);
+_NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();
+//Debug.Log(_NPCphrasesText);
+_playerEyesLookAt = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerEyesLookAt);
 		_audioSource = GetComponent<AudioSource>();
 		LoadPhrasesTextFiles();
 		LoadVoiceLineFiles();
