@@ -53,17 +53,17 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectJsonSave
 		//_pickableObjectTransform = GetComponent<Transform>();
 		_pickableLayer = LayerMask.NameToLayer("Pickable");
 		_playerLayer = LayerMask.NameToLayer("Player");
-		_playerColliderGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
-		_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
-		_gameController = ServiceLocator.Resolve<GameController>("GameController");
-		_playerInteractionController = ServiceLocator.Resolve<PlayerInteractionController>("InteractionController");
-		Collider = GetComponent<BoxCollider>();
+_playerColliderGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCollider);
+_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
+_gameController = ServiceLocator.Resolve<GameController>();
+_playerInteractionController = ServiceLocator.Resolve<PlayerInteractionController>();
+Collider = GetComponent<BoxCollider>();
 
-		RigidBody = GetComponent<Rigidbody>();
-		CachedPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
-		_gameObjectSpineSlot = ServiceLocator.Resolve<GameObject>("GameObjectSpineSlot");
+RigidBody = GetComponent<Rigidbody>();
+CachedPlayer = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
+_gameObjectSpineSlot = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectSpineSlot);
 
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
+_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		if (_interactionObjectNameSystem != null)
 		{

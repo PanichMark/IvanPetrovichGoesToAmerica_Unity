@@ -38,19 +38,18 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_renderer = GetComponent<Renderer>();
 		_defaultMaterial = _renderer.material;
 		_mainMenuCanvasController = GameObject.Find("MainMenuCanvasController").GetComponent<MainMenuCanvasController>();
-		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
-		_hoverMaterial = hoverMaterial;
-		//_cutsceneNewGame = GameObject.Find("CutsceneNewGame").GetComponent<ICutscene>();
-		_menuBackgroundController = ServiceLocator.Resolve<MenuBackgroundController>("MenuBackgroundController");
-		_keyPauseMenu = ServiceLocator.Resolve<KeyCode>("KeyPauseMenu");
-		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>("GameSceneManager");
-		_pauseMenuController = ServiceLocator.Resolve<PauseMenuController>("PauseMenuController");
-		_gameController = ServiceLocator.Resolve<GameController>("GameController");
-		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>("SaveLoadController");
-		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>("PlayerCameraBlurFilter");
-		_pauseSubMenuSettingsController = ServiceLocator.Resolve<PauseSubMenuSettingsController>("PauseSubMenuSettingsController");
-		_pauseSubMenuSettingsGameDifficultyController = ServiceLocator.Resolve<PauseSubMenuSettingsGameDifficultyController>("PauseSubMenuSettingsGameDifficultyController");
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+_hoverMaterial = hoverMaterial;
+_menuBackgroundController = ServiceLocator.Resolve<MenuBackgroundController>();
+_keyPauseMenu = ServiceLocator.Resolve<KeyCode>();
+_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+_pauseMenuController = ServiceLocator.Resolve<PauseMenuController>();
+_gameController = ServiceLocator.Resolve<GameController>();
+_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
+_menuManager = ServiceLocator.Resolve<MenuManager>();
+_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>();
+_pauseSubMenuSettingsController = ServiceLocator.Resolve<PauseSubMenuSettingsController>();
+_pauseSubMenuSettingsGameDifficultyController = ServiceLocator.Resolve<PauseSubMenuSettingsGameDifficultyController>();
 
 		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission)
 		{

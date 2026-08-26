@@ -12,7 +12,7 @@ public abstract class MissionStepConditionAbstract : ScriptableObject
 	public void RegisterOwner(GameObject owner)
 	{
 		OwnerObject = owner;
-		_missionsManager = ServiceLocator.Resolve<MissionsManager>("MissionsManager");
+_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 	}
 
 	// Метод, который вызывается, когда условие выполнено.

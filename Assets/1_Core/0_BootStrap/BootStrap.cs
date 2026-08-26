@@ -396,12 +396,12 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator RegisterBootstrapDependencies()
 	{
-		ServiceLocator.Register("LocalizationManager", LocalizationManager);
-		ServiceLocator.Register("GameController", _gameController);
-		ServiceLocator.Register("InputDevice", _inputDevice);
-		ServiceLocator.Register("KeyPauseMenu", _keyCodePauseMenu);
-		ServiceLocator.Register("GameScenesList", GameData.GameScenesList);
-		ServiceLocator.Register("NPCdetectionSignFrames", GameData.NPCdetectionSignFrames);
+ServiceLocator.Register<LocalizationManager>(LocalizationManager);
+ServiceLocator.Register<GameController>(_gameController);
+	ServiceLocator.Register<IInputDevice>(_inputDevice);
+ServiceLocator.Register<KeyCode>(_keyCodePauseMenu);
+ServiceLocator.Register<GameScenesList>(GameData.GameScenesList);
+ServiceLocator.Register<List<Sprite>>(GameData.NPCdetectionSignFrames);
 
 		Debug.Log("=== BOOTSTRAP SERVICES REGISTERED ===");
 
@@ -418,8 +418,11 @@ public class Bootstrap : MonoBehaviour
 	{
 		LocalizationManager.ChangeLanguage(newLanguage);
 
-		ServiceLocator.RemoveService("LocalizationManager");
-		ServiceLocator.Register("LocalizationManager", LocalizationManager);
+// Удаление конкретного сервиса
+ServiceLocator.Remove<LocalizationManager>();
+
+// Теперь можно регистрировать его заново
+ServiceLocator.Register<LocalizationManager>(LocalizationManager);
 	}
 
 	public void ChangeWeaponWheelType(WeaponWheelMenuTypes weaponWheelMenuTypes)

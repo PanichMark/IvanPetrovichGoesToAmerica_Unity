@@ -32,7 +32,7 @@ public class BootstrapSubProcessObjectPoolSystem
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController);
 
-		ServiceLocator.Register<IObjectPoolWeaponController>(_objectPoolWeaponController);
+		ServiceLocator.Register<ObjectPoolWeaponController>(_objectPoolWeaponController);
 
 		yield break;
 	}

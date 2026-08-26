@@ -37,7 +37,7 @@ public class BootstrapSubProcessScenesSystem
 			_canvasSceneLoadingScreen,
 			_viewModelSceneLoadingScreen);
 
-		ServiceLocator.Register<GameSceneManager>(GameSceneManager);
+		ServiceLocator.Register<GameScenesManager>(GameSceneManager);
 
 		yield break;
 	}

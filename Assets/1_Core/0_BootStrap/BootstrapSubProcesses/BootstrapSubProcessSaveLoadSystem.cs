@@ -40,7 +40,7 @@ public class BootstrapSubProcessSaveLoadSystem
 			_bootstrap,
 			_inputDevice);
 
-		ServiceLocator.Register<SaveLoadController>(SaveLoadController);
+		ServiceLocator.Register<JsonSaveLoadController>(SaveLoadController);
 
 		yield break;
 	}

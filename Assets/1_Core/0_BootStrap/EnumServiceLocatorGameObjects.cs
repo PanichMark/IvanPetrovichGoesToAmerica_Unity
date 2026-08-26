@@ -38,5 +38,6 @@ public enum EnumServiceLocatorGameObjects
     FirstPersonLeftHandWeaponSlotGameObject,
     FirstPersonRightHandWeaponSlotGameObject,
     ThirdPersonLeftHandWeaponSlotGameObject,
-    ThirdPersonRightHandWeaponSlotGameObject
+    ThirdPersonRightHandWeaponSlotGameObject,
+    GameObjectSpineSlot
 }

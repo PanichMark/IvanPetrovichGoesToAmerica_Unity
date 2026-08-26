@@ -19,8 +19,8 @@ public class MainMenuReadNewsController : MonoBehaviour
 
 	public void Initialize()
 	{
-		_viewModelMainMenuReadNews = ServiceLocator.Resolve<ViewModelMainMenuReadNews>("ViewModelMainMenuReadNews");
-		_canvasMainMenuReadNews = ServiceLocator.Resolve<GameObject>("CanvasMainMenuReadNews");
+_viewModelMainMenuReadNews = ServiceLocator.Resolve<ViewModelMainMenuReadNews>();
+_canvasMainMenuReadNews = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMainMenuReadNews);
 
 		_buttonCloseMainMenuReadNews = _viewModelMainMenuReadNews.ButtonCloseMainMenuReadNews.GetComponent<Button>();
 		_buttonYouTube = _viewModelMainMenuReadNews.ButtonYouTube.GetComponent<Button>();

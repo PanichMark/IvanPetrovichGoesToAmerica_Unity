@@ -20,7 +20,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	{
 		if (_isThisPlayerWeapon == true)
 		{
-			_attackPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
+			_attackPoint = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
 		}
 
 		InitializeWeaponMelee();

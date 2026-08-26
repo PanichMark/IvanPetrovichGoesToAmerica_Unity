@@ -12,7 +12,7 @@ public static class ServiceLocator
     {
         if (instance is GameObject || instance is Component)
         {
-            Debug.LogError($"[ServiceLocator] Attempt to register a scene/engine object ({instance.GetType().Name}) as contract {typeof(T).Name}. Use the enum overload instead.", instance as Object);
+            //Debug.LogError($"[ServiceLocator] Attempt to register a scene/engine object ({instance.GetType().Name}) as contract {typeof(T).Name}. Use the enum overload instead.", instance as Object);
             return;
         }
 
@@ -92,10 +92,16 @@ public static class ServiceLocator
         _audioSources.Clear();
     }
 
-    public static void ClearAll()
+    public static void ClearAllServices()
     {
         ClearServices();
         ClearGameObjects();
         ClearAudioSources();
     }
+
+    public static bool Remove<T>()
+{
+    var type = typeof(T);
+    return _services.Remove(type);
+}
 }

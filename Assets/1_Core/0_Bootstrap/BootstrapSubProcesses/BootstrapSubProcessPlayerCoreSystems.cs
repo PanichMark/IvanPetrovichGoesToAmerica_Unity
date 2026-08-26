@@ -185,16 +185,16 @@ public class BootstrapSubProcessPlayerSystems
 		_playerResourcesMoneyManager.Initialize(
 			_bootstrapSubProcessMenuSystem.ViewModelPauseMenu.TextCurrentPlayerMoneyDisplay);
 
-	ServiceLocator.Register<PlayerBehaviour>(PlayerBehaviour);
+	ServiceLocator.Register<PlayerBehaviourController>(PlayerBehaviour);
 ServiceLocator.Register<PlayerMovementController>(PlayerMovementController);
 ServiceLocator.Register<PlayerMovementStateMachineController>(PlayerMovementStateMachineController);
 ServiceLocator.Register<PlayerCameraController>(PlayerCameraController);
 ServiceLocator.Register<PlayerCameraStateMachineController>(PlayerCameraStateMachineController);
-ServiceLocator.Register<Volume>(_playerCameraBlurFilter);
+ServiceLocator.Register<PlayerCameraBlurFilter>(_playerCameraBlurFilter);
 
-ServiceLocator.Register<PlayerResourcesHealthManager>(_playerResourcesHealthManager);
-ServiceLocator.Register<PlayerResourcesManaManager>(_playerResourcesManaManager);
-ServiceLocator.Register<PlayerResourcesMoneyManager>(_playerResourcesMoneyManager);
+ServiceLocator.Register<PlayerHealthController>(_playerResourcesHealthManager);
+ServiceLocator.Register<PlayerManaController>(_playerResourcesManaManager);
+ServiceLocator.Register<PlayerMoneyController>(_playerResourcesMoneyManager);
 
 		ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioVoice, PlayerAudioVoice);
 ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioMovement, PlayerAudioMovement);

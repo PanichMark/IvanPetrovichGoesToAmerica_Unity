@@ -21,15 +21,15 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 	{
 		_pickableLayer = LayerMask.NameToLayer("Pickable");
 		_playerLayer = LayerMask.NameToLayer("Player");
-		_playerColliderGameObject = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCollider");
-		_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
-		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
-		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonRightHandWeaponSlotGameObject");
-		Collider = GetComponent<Collider>();
-		RigidBody = GetComponent<Rigidbody>();
-		CachedPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
+_playerColliderGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCollider);
+_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
+_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.FirstPersonRightHandWeaponSlotGameObject);
+_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.ThirdPersonRightHandWeaponSlotGameObject);
+Collider = GetComponent<Collider>();
+RigidBody = GetComponent<Rigidbody>();
+CachedPlayer = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
+_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Pickup");

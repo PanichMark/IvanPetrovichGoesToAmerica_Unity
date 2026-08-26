@@ -146,9 +146,9 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessMenuSystem.CanvasHUDammo,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo);
 
-ServiceLocator.Register<PlayerResourcesAmmoManager>(PlayerResourcesAmmoManager);
-ServiceLocator.Register<WeaponController>(WeaponController);
-ServiceLocator.Register<WeaponAnimationController>(_weaponAnimationController);
+ServiceLocator.Register<PlayerWeaponAmmoController>(PlayerResourcesAmmoManager);
+ServiceLocator.Register<PlayerWeaponController	>(WeaponController);
+ServiceLocator.Register<PlayerWeaponAnimationController>(_weaponAnimationController);
 ServiceLocator.Register<PlayerWeaponFirstPersonRenderer>(_weaponFirstPersonRender);
 
 	ServiceLocator.Register(EnumServiceLocatorGameObjects.FirstPersonLeftHandWeaponSlotGameObject, _gameObjectFirstPersonLeftHandWeaponSlot);

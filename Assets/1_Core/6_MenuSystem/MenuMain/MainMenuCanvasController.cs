@@ -14,12 +14,12 @@ public class MainMenuCanvasController : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	public void Initialize(MainMenuChooseMissionController mainMenuChooseMission, MainMenuReadNewsController mainMenuReadNews)
     {
-        _localizationManager = ServiceLocator.Resolve<LocalizationManager > ("LocalizationManager");
+      _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
        
 		_CanvasDiegeticText = GameObject.Find("CanvasMainMenu");
 		_mainMenuReadNews = mainMenuReadNews;
 		_mainMenuChooseMission = mainMenuChooseMission;
-		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
+	_menuManager = ServiceLocator.Resolve<MenuManager>();
 		_canvasGameVersion = GameObject.Find("CanvasMainMenu").transform.Find("CanvasGameVersion").gameObject;
 
 		_diegeticTextsList = new[]

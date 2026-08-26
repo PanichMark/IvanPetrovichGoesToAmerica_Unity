@@ -35,12 +35,12 @@ public class MainMenuChooseMissionController : MonoBehaviour
 
 	public void Initialize()
 	{
-		_pauseMenuConfirmActionController = ServiceLocator.Resolve<PauseMenuConfirmActionController>("PauseMenuConfirmActionController");
-		_menuManager = ServiceLocator.Resolve<MenuManager>("MenuManager");
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		_canvasMainMenuChooseMission = ServiceLocator.Resolve<GameObject>("CanvasMainMenuChooseMission");
-		_viewModelMainMenuChooseMission = ServiceLocator.Resolve<ViewModelMainMenuChooseMission>("ViewModelMainMenuChooseMission");
-		_gameScenesList = ServiceLocator.Resolve<GameScenesList>("GameScenesList");
+_pauseMenuConfirmActionController = ServiceLocator.Resolve<PauseMenuConfirmActionController>();
+_menuManager = ServiceLocator.Resolve<MenuManager>();
+_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+_canvasMainMenuChooseMission = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMainMenuChooseMission);
+_viewModelMainMenuChooseMission = ServiceLocator.Resolve<ViewModelMainMenuChooseMission>();
+_gameScenesList = ServiceLocator.Resolve<GameScenesList>();
 
 		_textComponentMainMenuChooseMission = _viewModelMainMenuChooseMission.TextMainMenuChooseMission.GetComponent<TextMeshProUGUI>();
 		_textComponentMainMenuChooseMission.text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextChooseDemoEpisode");

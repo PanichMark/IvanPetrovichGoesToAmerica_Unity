@@ -31,9 +31,9 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 
 	private void Start()
 	{
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>("LocalizationManager");
-		LootObjectCollider = GetComponent<Collider>();
-		GameObjectPlayer = ServiceLocator.Resolve<GameObject>("GameObjectPlayer");
+	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+LootObjectCollider = GetComponent<Collider>();
+GameObjectPlayer = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot");
 		InitializeLootObject();

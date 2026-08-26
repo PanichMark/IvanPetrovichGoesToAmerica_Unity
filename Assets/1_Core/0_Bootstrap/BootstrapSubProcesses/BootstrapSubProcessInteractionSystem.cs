@@ -94,7 +94,7 @@ public class BootstrapSubProcessInteractionSystem
 
 		_keysManager = new KeysManager();
 
-		ServiceLocator.Register<InteractionController>(InteractionController);
+		ServiceLocator.Register<PlayerInteractionController>(InteractionController);
 		ServiceLocator.Register<KeysManager>(_keysManager);
 
 		ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectSpineSlot, GameObjectSpineSlot);

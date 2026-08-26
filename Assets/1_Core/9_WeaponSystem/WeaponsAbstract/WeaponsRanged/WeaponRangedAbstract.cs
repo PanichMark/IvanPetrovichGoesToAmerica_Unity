@@ -34,10 +34,10 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		if (_isThisPlayerWeapon)
 		{
-			_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>("PlayerCameraStateMachineController");
-			WeaponRangedShootPoint = ServiceLocator.Resolve<GameObject>("GameObjectPlayerCamera");
-			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>("PlayerResourcesAmmoManager");
-			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>("PlayerCameraController");
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+WeaponRangedShootPoint = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCamera);
+_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>();
+_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 
 			InitializeWeaponRanged();
 		}
@@ -45,7 +45,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_VFXmuzzleFlashEffect1stPerson = FirstPersonWeaponModelInstance.transform.Find("VFX")?.gameObject;
 		_VFXmuzzleFlashEffect3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("VFX")?.gameObject;
 		
-		_bulletHoleManager = ServiceLocator.Resolve<ObjectPoolWeaponController>("ObjectPoolWeaponController");
+		_bulletHoleManager = ServiceLocator.Resolve<ObjectPoolWeaponController>();
 	}
 
 	public override void WeaponAttack()

@@ -54,14 +54,14 @@ public abstract class WeaponAbstract : MonoBehaviour
 		_isThisPlayerWeapon = true;
 		WeaponHandType = handType;
 
-		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonRightHandWeaponSlotGameObject");
-		_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
-		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonRightHandWeaponSlotGameObject");
-		_thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
-		
-		_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("FirstPersonLeftHandWeaponSlotGameObject");
-		_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
-		_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve<GameObject>("ThirdPersonLeftHandWeaponSlotGameObject");
+_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.FirstPersonRightHandWeaponSlotGameObject);
+_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
+_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.ThirdPersonRightHandWeaponSlotGameObject);
+_thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
+
+_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.FirstPersonLeftHandWeaponSlotGameObject);
+_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
+_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.ThirdPersonLeftHandWeaponSlotGameObject);
 		_thirdPersonLeftHandWeaponSlotTransform = _thirdPersonLeftHandWeaponSlotGameObject.transform;
 		
 		ThirdPersonWeaponModelInstance = gameObject;
@@ -88,16 +88,16 @@ public abstract class WeaponAbstract : MonoBehaviour
 		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
 
-		if (WeaponHandType == WeaponHandType.Right)
-		{
-			_weaponAudioSource = ServiceLocator.Resolve<AudioSource>("PlayerAudioWeaponRight");
-		}
-		else
-		{
-			_weaponAudioSource = ServiceLocator.Resolve<AudioSource>("PlayerAudioWeaponLeft");
-		}
+if (WeaponHandType == WeaponHandType.Right)
+{
+    _weaponAudioSource = ServiceLocator.Resolve(EnumServiceLocatorAudioSources.PlayerAudioWeaponRight);
+}
+else
+{
+    _weaponAudioSource = ServiceLocator.Resolve(EnumServiceLocatorAudioSources.PlayerAudioWeaponLeft);
+}
 
-		_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>("WeaponAnimationController");
+_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();
 
 		InitializeWeapon();
 

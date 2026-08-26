@@ -42,7 +42,7 @@ public abstract class InteractionObjectPickableNonThrowableAbstract : Interactio
 
 	protected override void InitializePickable()
 	{
-		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>("PlayerMovementController");
+	_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 
 		//_isCreatedAsBody = true;
 		//_isMovementRestricted = true;
