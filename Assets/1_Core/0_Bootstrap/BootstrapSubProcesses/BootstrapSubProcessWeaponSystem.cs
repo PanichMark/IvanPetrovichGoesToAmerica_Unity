@@ -146,15 +146,15 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessMenuSystem.CanvasHUDammo,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo);
 
-		ServiceLocator.Register("PlayerResourcesAmmoManager", PlayerResourcesAmmoManager);
-		ServiceLocator.Register("WeaponController", WeaponController);
-		ServiceLocator.Register("WeaponAnimationController", _weaponAnimationController);
-		ServiceLocator.Register("PlayerWeaponFirstPersonRenderer", _weaponFirstPersonRender);
+ServiceLocator.Register<PlayerResourcesAmmoManager>(PlayerResourcesAmmoManager);
+ServiceLocator.Register<WeaponController>(WeaponController);
+ServiceLocator.Register<WeaponAnimationController>(_weaponAnimationController);
+ServiceLocator.Register<PlayerWeaponFirstPersonRenderer>(_weaponFirstPersonRender);
 
-		ServiceLocator.Register("FirstPersonLeftHandWeaponSlotGameObject", _gameObjectFirstPersonLeftHandWeaponSlot);
-		ServiceLocator.Register("FirstPersonRightHandWeaponSlotGameObject", _gameObjectFirstPersonRightHandWeaponSlot);
-		ServiceLocator.Register("ThirdPersonLeftHandWeaponSlotGameObject", _gameObjectThirdPersonLeftHandWeaponSlot);
-		ServiceLocator.Register("ThirdPersonRightHandWeaponSlotGameObject", _gameObjectThirdPersonRightHandWeaponSlot);
+	ServiceLocator.Register(EnumServiceLocatorGameObjects.FirstPersonLeftHandWeaponSlotGameObject, _gameObjectFirstPersonLeftHandWeaponSlot);
+ServiceLocator.Register(EnumServiceLocatorGameObjects.FirstPersonRightHandWeaponSlotGameObject, _gameObjectFirstPersonRightHandWeaponSlot);
+ServiceLocator.Register(EnumServiceLocatorGameObjects.ThirdPersonLeftHandWeaponSlotGameObject, _gameObjectThirdPersonLeftHandWeaponSlot);
+ServiceLocator.Register(EnumServiceLocatorGameObjects.ThirdPersonRightHandWeaponSlotGameObject, _gameObjectThirdPersonRightHandWeaponSlot);
 
 		yield break;
 	}

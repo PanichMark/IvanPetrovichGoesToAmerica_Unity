@@ -185,27 +185,27 @@ public class BootstrapSubProcessPlayerSystems
 		_playerResourcesMoneyManager.Initialize(
 			_bootstrapSubProcessMenuSystem.ViewModelPauseMenu.TextCurrentPlayerMoneyDisplay);
 
-		ServiceLocator.Register("PlayerBehaviour", PlayerBehaviour);
-		ServiceLocator.Register("PlayerMovementController", PlayerMovementController);
-		ServiceLocator.Register("PlayerMovementStateMachineController", PlayerMovementStateMachineController);
-		ServiceLocator.Register("PlayerCameraController", PlayerCameraController);
-		ServiceLocator.Register("PlayerCameraStateMachineController", PlayerCameraStateMachineController);
-		ServiceLocator.Register("PlayerCameraBlurFilter", _playerCameraBlurFilter);
+	ServiceLocator.Register<PlayerBehaviour>(PlayerBehaviour);
+ServiceLocator.Register<PlayerMovementController>(PlayerMovementController);
+ServiceLocator.Register<PlayerMovementStateMachineController>(PlayerMovementStateMachineController);
+ServiceLocator.Register<PlayerCameraController>(PlayerCameraController);
+ServiceLocator.Register<PlayerCameraStateMachineController>(PlayerCameraStateMachineController);
+ServiceLocator.Register<Volume>(_playerCameraBlurFilter);
 
-		ServiceLocator.Register("GameObjectPlayer", _gameObjectPlayer);
-		ServiceLocator.Register("GameObjectPlayerEyesLookAt", _gameobjectPlayerEyesLookAt);
-		ServiceLocator.Register("GameObjectPlayerHead", _gameObjectPlayerHead);
-		ServiceLocator.Register("GameObjectPlayerCollider", _gameObjectPlayerCollider);
-		ServiceLocator.Register("GameObjectPlayerCamera", _gameObjectPlayerCamera);
+ServiceLocator.Register<PlayerResourcesHealthManager>(_playerResourcesHealthManager);
+ServiceLocator.Register<PlayerResourcesManaManager>(_playerResourcesManaManager);
+ServiceLocator.Register<PlayerResourcesMoneyManager>(_playerResourcesMoneyManager);
 
-		ServiceLocator.Register("PlayerResourcesHealthManager", _playerResourcesHealthManager);
-		ServiceLocator.Register("PlayerResourcesManaManager", _playerResourcesManaManager);
-		ServiceLocator.Register("PlayerResourcesMoneyManager", _playerResourcesMoneyManager);
+		ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioVoice, PlayerAudioVoice);
+ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioMovement, PlayerAudioMovement);
+ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioWeaponRight, PlayerAudioWeaponRight);
+ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioWeaponLeft, PlayerAudioWeaponLeft);
 
-		ServiceLocator.Register("PlayerAudioVoice", PlayerAudioVoice);
-		ServiceLocator.Register("PlayerAudioMovement", PlayerAudioMovement);
-		ServiceLocator.Register("PlayerAudioWeaponRight", PlayerAudioWeaponRight);
-		ServiceLocator.Register("PlayerAudioWeaponLeft", PlayerAudioWeaponLeft);
+	ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectPlayer, _gameObjectPlayer);
+	ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectPlayerEyesLookAt, _gameobjectPlayerEyesLookAt);
+	ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectPlayerHead, _gameObjectPlayerHead);
+	ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectPlayerCollider, _gameObjectPlayerCollider);
+	ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectPlayerCamera, _gameObjectPlayerCamera);
 
 		yield break;
 	}

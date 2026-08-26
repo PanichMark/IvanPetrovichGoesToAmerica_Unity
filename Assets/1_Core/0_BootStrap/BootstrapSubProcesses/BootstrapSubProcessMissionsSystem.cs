@@ -48,7 +48,7 @@ public class BootstrapSubProcessMissionsSystem
 			_playerCameraGameObject,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDMission.ImageMissionGoalMarker);
 
-		ServiceLocator.Register("MissionsManager", _missionsManager);
+		ServiceLocator.Register<MissionsManager>(_missionsManager);
 
 		yield break;
 	}
