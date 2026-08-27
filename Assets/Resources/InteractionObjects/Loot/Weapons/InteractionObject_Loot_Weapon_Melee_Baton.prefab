@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 1951249842840423559}
   - component: {fileID: 4592685040853342463}
   m_Layer: 0
-  m_Name: InteractionObject_Loot_Weapon_Melee_PoliceBaton
+  m_Name: InteractionObject_Loot_Weapon_Melee_Baton
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5fb92d919352d142bd32d533ff243cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: InteractionObject_Loot_Weapon_Melee_PoliceBaton
+  _interactionObjectNameSystem: Weapon_Melee_Baton
   _lootObjectIcon: {fileID: 21300000, guid: c6755365b57ff8a4897d259f9f164d60, type: 3}
   _weapon: {fileID: 4834892234495708273, guid: 49643d32c6595304f84297c5ab491994, type: 3}
+  _noteObject: {fileID: 0}

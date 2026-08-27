@@ -311,13 +311,13 @@ public class PauseMenuController : MonoBehaviour
 		}
 
 		_textComponentsButtonsPauseMenu[2].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonLoad");
-		_textComponentsButtonsPauseMenu[3].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonAppearance");
+		_textComponentsButtonsPauseMenu[3].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonAppearance_NO-APPEARANCE-MENU-IN-DEMO-VERSION");
 		_textComponentsButtonsPauseMenu[4].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonTutorial");
 		_textComponentsButtonsPauseMenu[5].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSettings");
 		_textComponentsButtonsPauseMenu[6].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonExitToMainMenu");
 
-		_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_TextCurrentMissionGoal");
-		_textComponentsCurrentPlayerMoney.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_TextCurrentPlayerMoney");
+		_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal");
+		_textComponentsCurrentPlayerMoney.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_PlayerMoney");
 
 		_textComponentDeathMessage.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_TextDeathMessage");
 	}

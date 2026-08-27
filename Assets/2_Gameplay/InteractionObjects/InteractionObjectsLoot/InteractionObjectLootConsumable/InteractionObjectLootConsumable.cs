@@ -12,11 +12,11 @@ public class InteractionObjectLootConsumable : InteractionObjectLootAbstract
 
 		if (_interactionObjectConsumableTypes == InteractionObjectLootConsumableTypes.Food)
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Eat", gameObject.name); 
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Eat", gameObject.name); 
 		}
 		else if (_interactionObjectConsumableTypes == InteractionObjectLootConsumableTypes.Drink) 
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Drink", gameObject.name); 
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Drink", gameObject.name); 
 		}
 	}
 
@@ -38,11 +38,11 @@ public class InteractionObjectLootConsumable : InteractionObjectLootAbstract
 
 		if (_interactionObjectConsumableTypes == InteractionObjectLootConsumableTypes.Food)
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Eat", gameObject.name);
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Eat", gameObject.name);
 		}
 		else if (_interactionObjectConsumableTypes == InteractionObjectLootConsumableTypes.Drink)
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Drink", gameObject.name);
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Drink", gameObject.name);
 		}
 	}
 }

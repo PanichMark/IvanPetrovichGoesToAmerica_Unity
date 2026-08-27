@@ -460,52 +460,52 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	{
 		_localizationManager = localizationManager;
 
-		_textComponentDropdownScreenResolution.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownScreenResolution");
+		_textComponentDropdownScreenResolution.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextDropdownScreenResolution");
 
 		List<string> dropdownWindowTypelocalizedOptions = new List<string>
 		{
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeFullscreen"),
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeBorderlessWindowed"),
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownWindowTypeWindowed"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownWindowTypeFullscreen"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownWindowTypeBorderlessWindowed"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownWindowTypeWindowed"),
 		};
 		_dropdownComponentWindowType.ClearOptions();
 		_dropdownComponentWindowType.AddOptions(dropdownWindowTypelocalizedOptions);
-		_textComponentDropdownWindowType.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownWindowType");
+		_textComponentDropdownWindowType.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextDropdownWindowType");
 
 		List<string> dropdownLimitFPSlocalizedOptions = new List<string>
 		{
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS30"),
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS60"),
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS90"),
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPS144"),
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownLimitFPSunlimited")
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownLimitFPS30"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownLimitFPS60"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownLimitFPS90"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownLimitFPS144"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownLimitFPSunlimited")
 		};
 		_dropdownComponentLimitFPS.ClearOptions();
 		_dropdownComponentLimitFPS.AddOptions(dropdownLimitFPSlocalizedOptions);
-		_textComponentDropdownLimitFPS.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownFPSlimit");
+		_textComponentDropdownLimitFPS.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextDropdownFPSlimit");
 
 		List<string> dropdownHUDTypelocalizedOptions = new List<string>
 		{
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeFull"),
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeDialoguesOnly"),
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeDialoguesTurnOff"),
-			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_DropdownHUDTypeTurnedOff")
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownHUDTypeFull"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownHUDTypeDialoguesOnly"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownHUDTypeDialoguesTurnOff"),
+			_localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownHUDTypeTurnedOff")
 		};
 		_dropdownComponentHUDType.ClearOptions();
 		_dropdownComponentHUDType.AddOptions(dropdownHUDTypelocalizedOptions);
-		_textComponentDropdownHUDType.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownHUDType");
+		_textComponentDropdownHUDType.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextDropdownHUDType");
 
-		_textComponentDropdownWeaponWheelType.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextDropdownWeaponWheelType");
+		_textComponentDropdownWeaponWheelType.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextDropdownWeaponWheelType");
 
-		_textComponentSliderCameraFOV.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderCameraFOV");
+		_textComponentSliderCameraFOV.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextSliderCameraFOV");
 
-		_textComponentSliderScreenBrightness.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextSliderScreenBrightness");
+		_textComponentSliderScreenBrightness.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextSliderScreenBrightness");
 
-		_textComponentButtonGameDifficulty.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextButtonShowIngameHints");
-		_textComponentButtonDifficultyNormal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_ButtonDifficultyNormal");
+		_textComponentButtonGameDifficulty.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextButtonShowIngameHints");
+		_textComponentButtonDifficultyNormal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_ButtonDifficultyNormal");
 
-		_textComponentToggleShowIngameHints.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextToggleShowIngameHints");
+		_textComponentToggleShowIngameHints.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextToggleShowIngameHints");
 
-		_textComponentToggleShowBlood.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGeneral_TextToggleShowBlood");
+		_textComponentToggleShowBlood.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextToggleShowBlood");
 	}
 }

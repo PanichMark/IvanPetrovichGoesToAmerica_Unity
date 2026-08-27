@@ -113,7 +113,7 @@ UI_HUD_Interaction_HintMessage_Action_Rotate,Повернуть,Rotate
 UI_HUD_Interaction_HintMessage_Action_SendElevatorDown,Отправить лифт вниз,Send elevator down
 UI_HUD_Interaction_HintMessage_Action_SendElevatorUp,Отправить лифт вверх,Send elevator up
 UI_HUD_Interaction_HintMessage_Action_Strangle,Задушить,Strangle
-UI_HUD_Interaction_HintMessage_Action_Talk,Поговорить с,Talk to
+UI_HUD_Interaction_HintMessage_Action_TalkTo,Поговорить с,Talk to
 UI_HUD_Interaction_HintMessage_Action_Throw,Кинуть,Throw
 UI_HUD_Interaction_HintMessage_Action_TurnOff,Выключить,Turn off
 UI_HUD_Interaction_HintMessage_Action_TurnOn,Включить,Turn on
@@ -127,14 +127,14 @@ UI_HUD_Interaction_HintMessage_Fail_LockedForever,Не поддается,Won't 
 UI_HUD_Interaction_HintMessage_Fail_NotEnoughMoney,Недостаточно денег,Not enough money
 UI_HUD_Interaction_HintMessage_Fail_OutOfService,Вышло из строя,Out of service
 UI_HUD_Interaction_HintMessage_Fail_PickUpBoughtGoodsFirst,Подберите уже купленные товары,Puck up already purchased goods
-UI_HUD_Interaction_HintMessage_Fail_PlayerWasElectroShock,Вас ударило током,You have been Electro Shocked
+UI_HUD_Interaction_HintMessage_Fail_PlayerWasElectroShocked,Вас ударило током,You have been Electro Shocked
 UI_HUD_Interaction_HintMessage_Fail_Wait,Подождите,Please wait
 UI_HUD_Interaction_HintMessage_Fail_WrongCombination,Неправильная комбинация,Wrong combination
 UI_HUD_Interaction_HintMessage_Main,Нажмите,Press
 UI_HUD_Interaction_HintMessage_PickableWeapon_MaximGun_AttackLeft,Опустить оружие,Lower the gun
 UI_HUD_Interaction_HintMessage_PickableWeapon_MaximGun_AttackRight,Стрелять,Shoot
 UI_LoadingScreen_LoadingIsReady,Нажмите любую клавишу,Press any key
-"UI_Menu_Bootstrap_SavingProcess,""Когда игра сохраняет свои данные то появляется значок шестеренки.\nПожалуйста не выключайте компьютер в это время."",""Whenever the game is saving its data the following gear icon is displayed.\nPlease do not turn the computer off during its display."""
+UI_Menu_Bootstrap_SavingProcess,""Когда игра сохраняет свои данные то появляется значок шестеренки.\nПожалуйста не выключайте компьютер в это время."",""Whenever the game is saving its data the following gear icon is displayed.\nPlease do not turn the computer off during its display."""
 UI_Menu_Bootstrap_SignTermsnAndConditions_ButtonRefuse,Отказаться,Refuse
 UI_Menu_Bootstrap_SignTermsnAndConditions_ButtonSign,Принять,Sign
 UI_Menu_Bootstrap_SignTermsnAndConditions_TextHeaderTermsAndConditions,Условия Пользования,Terms and Conditions
@@ -157,7 +157,7 @@ UI_Menu_PauseConfirmActionMenu_ButtonCancelAction,Отменить,Cancel
 UI_Menu_PauseConfirmActionMenu_ButtonConfirmAction,Подтвердить,Confirm
 UI_Menu_PauseConfirmActionMenu_TextConfirmCreateNewGameFile,Сохранить новую игру,Save new game
 UI_Menu_PauseConfirmActionMenu_TextConfirmDeleteGameFile,Удалить игру в слоте,Delete game in slot
-"UI_Menu_PauseConfirmActionMenu_TextConfirmExitToMainMenu,""Выйти в главное меню?\n(Данные не сохранятся)"",Exit to main menu?\n(Unsaved progress will be lost)"
+UI_Menu_PauseConfirmActionMenu_TextConfirmExitToMainMenu,""Выйти в главное меню?\n(Данные не сохранятся)"",Exit to main menu?\n(Unsaved progress will be lost)"
 UI_Menu_PauseConfirmActionMenu_TextConfirmLoadGameFile,Зарузить игру в слоте,Load game in slot
 UI_Menu_PauseConfirmActionMenu_TextConfirmRewriteGameFile,Перезаписать игру в слоте,Rewrite game in slot
 UI_Menu_PauseConfirmActionMenu_TextLoadEpisode,Загрузить эпизод,Load episode
@@ -172,7 +172,7 @@ UI_Menu_PauseMenu_ButtonExitToMainMenu,Выйти в главное меню,Exi
 UI_Menu_PauseMenu_ButtonLoad,Загрузить игру,Load game
 UI_Menu_PauseMenu_ButtonResume,Продолжить,Resume
 UI_Menu_PauseMenu_ButtonSave,Сохранить игру,Save game
-"UI_Menu_PauseMenu_ButtonSave_CANNOT-SAVE-GAME-RIGHT-NOW,""Сохранить игру\n(сейчас нельзя)"",""Save game\n(can't save right now)"""
+UI_Menu_PauseMenu_ButtonSave_CANNOT-SAVE-GAME-RIGHT-NOW,""Сохранить игру\n(сейчас нельзя)"",""Save game\n(can't save right now)"""
 UI_Menu_PauseMenu_ButtonSettings,Настройки игры,Game settings
 UI_Menu_PauseMenu_ButtonTutorial,Туториалы,Tutorials
 UI_Menu_PauseMenu_MissionGoal,Текущая цель:,Current goal:
@@ -229,11 +229,11 @@ UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownLimitFPSunlimited,Без о
 UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownWindowTypeBorderlessWindowed,Оконный без рамки,Borderless windowed
 UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownWindowTypeFullscreen,Полноэкранный,Fullscreen
 UI_Menu_PauseSubMenu_Settings_SectionGeneral_DropdownWindowTypeWindowed,Оконный,Windowed
-UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty_ButtonCloseGameDifficulty,Закрыть меню выбора сложности,Close game difficulty menu
-UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty_TextEasy,Легкая,Easy
-UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty_TextHard,Сложная,Hard
-UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty_TextImpossible,Невозможная,Impossible
-UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty_TextNormal,Обычная,Normal
+UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty_ButtonClose,Закрыть меню выбора сложности,Close game difficulty menu
+UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty1,Легкая,Easy
+UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty3,Сложная,Hard
+UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty4,Невозможная,Impossible
+UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty2,Обычная,Normal
 UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty_THIS-GAME-DIFFICULTY-IS-NOT-AVAILABLE-IN-DEMO,Сложность не доступна в демо версии,Difficulty not availble in demo version
 UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextButtonShowIngameHints,Выбрать сложность игры,Choose game difficulty
 UI_Menu_PauseSubMenu_Settings_SectionGeneral_TextDropdownFPSlimit,Ограничение кадров в секунду,Frames per second limit

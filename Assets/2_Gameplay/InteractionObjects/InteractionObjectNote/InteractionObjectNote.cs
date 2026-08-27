@@ -82,13 +82,13 @@ _textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();
 
 			if (!_noteData.IsNoteToGlanceAt)
 			{
-				_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Read", gameObject.name)}";
+				_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Read", gameObject.name)}";
 				_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_Text", gameObject.name)}";
 
 			}
 			else
 			{
-				_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GlanceAt", gameObject.name)}";
+				_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_GlanceAt", gameObject.name)}";
 				_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_NoText", gameObject.name)}";
 			}
 
@@ -130,12 +130,12 @@ _textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();
 
 		if (!_noteData.IsNoteToGlanceAt)
 		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Read", gameObject.name)}";
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Read", gameObject.name)}";
 			_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_Text", gameObject.name)}";
 		}
 		else
 		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_GlanceAt", gameObject.name)}";
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_GlanceAt", gameObject.name)}";
 			_textButtonExit.text = $"{_localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_Note_ButtonCloseNoteMenu_NoText", gameObject.name)}";
 		}
 

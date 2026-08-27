@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d6995fa24cfba439227bb97b02d953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: InteractionObject_Safe_SafeMedium
+  _interactionObjectNameSystem: InteractionObject_Safe
   _interactionObjectPickableType: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
   _isMovementRestricted: 1
   _movementSpeedPenaltyMultiplier: 0.5
@@ -630,7 +630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d6995fa24cfba439227bb97b02d953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: InteractionObject_Safe_Door
+  _interactionObjectNameSystem: InteractionObject_Pickable_NonThrowable_SafeDoor
   _interactionObjectPickableType: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
   _isMovementRestricted: 1
   _movementSpeedPenaltyMultiplier: 0.7
@@ -880,7 +880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d96222aeaa859f45b8ba57c043d0ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameUI: InteractionObject_Safe_SafeMedium
+  _interactionObjectNameUI: InteractionObject_Safe
   _safeDoorOpeningSpeed: 10
   _safeDoorOpenedRotation: -90
   _safeRotatorySection1: {fileID: 8055399886074799410}

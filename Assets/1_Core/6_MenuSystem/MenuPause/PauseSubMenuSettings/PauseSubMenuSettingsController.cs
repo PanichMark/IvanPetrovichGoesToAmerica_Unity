@@ -277,13 +277,13 @@ public class PauseSubMenuSettingsController : MonoBehaviour
 	{
 		_localizationManager = localizationManager;
 
-		_textComponentButtonSaveSettings.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettings_ButtonSaveSettings");
-		_textComponentButtonResetSettings.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettings_ButtonResetSettings");
-		_textComponentButtonClosePauseSubMenuSettings.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettings_ButtonClosePauseSubMenuSettings");
+		_textComponentButtonSaveSettings.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_ButtonSaveSettings");
+		_textComponentButtonResetSettings.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_ButtonResetSettings");
+		_textComponentButtonClosePauseSubMenuSettings.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_ButtonClosePauseSubMenuSettings");
 
-		_textComponentButtonSubSettingsSectionGeneral.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettings_ButtonSubSettingsSectionGeneral");
-		_textComponentButtonSubSettingsSectionControls.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettings_ButtonSubSettingsSectionControls");
-		_textComponentButtonSubSettingsSectionGraphics.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettings_ButtonSubSettingsSectionGraphics");
-		_textComponentButtonSubSettingsSectionAudio.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettings_ButtonSubSettingsSectionAudio");
+		_textComponentButtonSubSettingsSectionGeneral.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_ButtonSubSettingsSectionGeneral");
+		_textComponentButtonSubSettingsSectionControls.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_ButtonSubSettingsSectionControls");
+		_textComponentButtonSubSettingsSectionGraphics.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_ButtonSubSettingsSectionGraphics");
+		_textComponentButtonSubSettingsSectionAudio.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_ButtonSubSettingsSectionAudio");
 	}
 }

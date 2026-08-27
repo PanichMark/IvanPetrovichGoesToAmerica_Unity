@@ -262,13 +262,13 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 	{
 		_localizationManager = localizationManager;
 
-		_textComponentChangeLanguage.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionAudio_TextChangeLanguage");
+		_textComponentChangeLanguage.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionAudio_TextChangeLanguage");
 
-		_textComponentSliderVolumeGeneral.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionAudio_TextSliderVolumeGeneral");
-		_textComponentSliderVolumeEnvironment.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionAudio_TextSliderVolumeEnvironment");
-		_textComponentSliderVolumeEffects.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionAudio_TextSliderVolumeEffects");
-		_textComponentSliderVolumeVoices.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionAudio_TextSliderVolumeVoices");
-		_textComponentSliderVolumeMusicAmbience.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionAudio_TextSliderVolumeMusicAmbience");
-		_textComponentSliderVolumeMusicIngame.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionAudio_TextSliderVolumeMusicIngame");
+		_textComponentSliderVolumeGeneral.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionAudio_TextSliderVolumeGeneral");
+		_textComponentSliderVolumeEnvironment.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionAudio_TextSliderVolumeEnvironment");
+		_textComponentSliderVolumeEffects.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionAudio_TextSliderVolumeEffects");
+		_textComponentSliderVolumeVoices.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionAudio_TextSliderVolumeVoices");
+		_textComponentSliderVolumeMusicAmbience.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionAudio_TextSliderVolumeMusicAmbience");
+		_textComponentSliderVolumeMusicIngame.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionAudio_TextSliderVolumeMusicIngame");
 	}
 }

@@ -108,8 +108,8 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 		_mainInteractionText = viewModelHUDInteraction.TextInteractionMessageMain.GetComponent<TextMeshProUGUI>();
 		_failInteractionText = viewModelHUDInteraction.TextInteractionMessageFail.GetComponent<TextMeshProUGUI>();
 
-		_HUDInteractionDropText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Drop");
-		_HUDInteractionThrowText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Throw");
+		_HUDInteractionDropText = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Drop");
+		_HUDInteractionThrowText = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Throw");
 
 		_gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDInteraction;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDInteraction;
@@ -143,9 +143,9 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		_HUDInteractionMainTextInteract = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Main");
-		_HUDInteractionDropText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Drop");
-		_HUDInteractionThrowText = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Throw");
+		_HUDInteractionMainTextInteract = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Main");
+		_HUDInteractionDropText = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Drop");
+		_HUDInteractionThrowText = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Throw");
 	}
 
 	private void ShowCanvasHUDInteraction()

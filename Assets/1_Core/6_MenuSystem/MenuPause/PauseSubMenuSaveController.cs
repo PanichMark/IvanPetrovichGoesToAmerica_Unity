@@ -230,15 +230,15 @@ public class PauseSubMenuSaveController : MonoBehaviour
 	{
 		_localizationManager = localizationManager;
 
-		_textComponentPauseSubMenuSave.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSave_TextPauseSubMenuSave");
+		_textComponentPauseSubMenuSave.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Save_TextPauseSubMenuSave");
 
-		_textButtonComponentCreateNewGameFile.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSave_ButtonCreateNewGameFile");
+		_textButtonComponentCreateNewGameFile.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Save_ButtonCreateNewGameFile");
 
 		for (int i = 0; i < _viewModelPauseSubMenuSave.ButtonsRewriteGameFile.Length; i++)
 		{
-			_textButtonsComponentsDeleteGameFile[i].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSave_ButtonDeleteGameFile");
+			_textButtonsComponentsDeleteGameFile[i].text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Save_ButtonDeleteGameFile");
 		}
 
-		_textButtonComponentClosePauseSubMenuSave.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSave_ButtonClosePauseSubMenuSave");
+		_textButtonComponentClosePauseSubMenuSave.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Save_ButtonClosePauseSubMenuSave");
 	}
 }

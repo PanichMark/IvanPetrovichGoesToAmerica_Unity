@@ -45,7 +45,7 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 	public virtual Sprite LootObjectIcon { get; protected set; }
 
 	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Max", gameObject.name)} {InteractionObjectNameUI}!";
+	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_Max", gameObject.name)} {InteractionObjectNameUI}!";
 	public virtual bool IsInteractionHintMessageFailActive => false;
 
 	private void Start()
@@ -54,7 +54,7 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 LootObjectCollider = GetComponent<Collider>();
 GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot", gameObject.name);
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Loot", gameObject.name);
 		InitializeLootObject();
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
@@ -81,7 +81,7 @@ GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 	public virtual void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot", gameObject.name);
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Loot", gameObject.name);
 	}
 
 	protected virtual void InitializeLootObject()

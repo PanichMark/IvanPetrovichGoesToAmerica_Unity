@@ -135,7 +135,7 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 			_imageComponentGameDifficulty.color = Color.grey;
 		}
 
-		_textComponentGameDifficultyHeader.text = _localizationManager.GetLocalizedString($"UI_Menu_PauseSubMenuSettingsGameDifficultyController_GameDifficulty{_currentIndex}");
+		_textComponentGameDifficultyHeader.text = _localizationManager.GetLocalizedString($"UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty{_currentIndex + 1}");
 
 		InteractionObjectNoteData data = _difficultiesList.Notes[_currentIndex];
 		string textToShow = _localizationManager.GetNoteLanguageSuffix(data);
@@ -148,8 +148,8 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		_textComponentButtonCloseSettingsGameDifficulty.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsGameDifficultyController_ButtonClose");
-		_textComponentDifficultyNotAvailable.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsGameDifficultyController_GameDifficulty_NOT_AVAILABLE_IN_DEMO");
+		_textComponentButtonCloseSettingsGameDifficulty.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty_ButtonClose");
+		_textComponentDifficultyNotAvailable.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGeneral_GameDifficulty_THIS-GAME-DIFFICULTY-IS-NOT-AVAILABLE-IN-DEMO");
 
 		UpdateGameDifficultyUI();
 	}

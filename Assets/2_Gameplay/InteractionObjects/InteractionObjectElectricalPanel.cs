@@ -37,7 +37,7 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 		}
 		else
 		{
-			_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_ElectroShock", gameObject.name);
+			_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_PlayerWasElectroShocked", gameObject.name);
 		}
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -82,7 +82,7 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 		}
 		else
 		{
-			_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_ElectroShock", gameObject.name);
+			_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_PlayerWasElectroShocked", gameObject.name);
 		}
 	}
 

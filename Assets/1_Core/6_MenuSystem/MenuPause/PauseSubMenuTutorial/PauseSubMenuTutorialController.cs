@@ -186,6 +186,6 @@ public class PauseSubMenuTutorialController : MonoBehaviour
 	{
 		_localizationManager = localizationManager;
 
-		_textButtonComponentClosePauseSubMenuTutorial.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuTutorial_ButtonClosePauseSubMenuTutorial");
+		_textButtonComponentClosePauseSubMenuTutorial.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Tutorial_ButtonClosePauseSubMenuTutorial");
 	}
 }

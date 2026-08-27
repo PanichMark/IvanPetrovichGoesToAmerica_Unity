@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5003862712314708570}
   - component: {fileID: 6043928997760536339}
   m_Layer: 0
-  m_Name: InteractionObject_Loot_Weapon_Melee_FirefighterSaw
+  m_Name: InteractionObject_Loot_Weapon_Melee_CircularSaw
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,9 +133,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5fb92d919352d142bd32d533ff243cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: InteractionObject_Loot_Weapon_Melee_FirefighterSaw
+  _interactionObjectNameSystem: Weapon_Melee_CircularSaw
   _lootObjectIcon: {fileID: 21300000, guid: 26d9919d68093b540a0b82b14416d6dd, type: 3}
   _weapon: {fileID: 7702790595763287087, guid: e058f2d8ec2b79d48ae6844d4f7b2f4d, type: 3}
+  _noteObject: {fileID: 0}
 --- !u!65 &6043928997760536339
 BoxCollider:
   m_ObjectHideFlags: 0

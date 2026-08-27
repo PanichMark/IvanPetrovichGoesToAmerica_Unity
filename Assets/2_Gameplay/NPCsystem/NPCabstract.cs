@@ -61,7 +61,7 @@ _playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.P
 _detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>();
 _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
-		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
+		_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_CantTalkToPlayerRightNow");
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 
 		_canvasNPCstatus = transform.Find("CanvasNPCstatus").gameObject;
@@ -124,7 +124,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead)
 		{
-			_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Talk");
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_CantTalkToPlayerRightNow");
 		}
 		else
 		{
@@ -153,14 +153,14 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead)
 		{
-			_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Talk");
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
 		}
 		else
 		{
 			_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
 		}
 
-		_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_CantTalk");
+		_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_CantTalkToPlayerRightNow");
 	}
 
 	public void ConvertToPickableObject()

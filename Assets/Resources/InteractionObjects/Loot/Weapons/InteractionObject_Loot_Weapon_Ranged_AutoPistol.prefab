@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 117931862467050446}
   - component: {fileID: 8196175334552029833}
   m_Layer: 0
-  m_Name: InteractionObject_Loot_Weapon_Ranged_BergmannBayard
+  m_Name: InteractionObject_Loot_Weapon_Ranged_AutoPistol
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137,9 +137,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5fb92d919352d142bd32d533ff243cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: InteractionObject_Loot_Weapon_Ranged_BergmannBayard
+  _interactionObjectNameSystem: Weapon_Ranged_AutoPistol
   _lootObjectIcon: {fileID: 21300000, guid: 28e87fce7bcb5e44887b3b4f08fe8397, type: 3}
   _weapon: {fileID: 2744464085675770799, guid: 1808e87486243ad42a28e7bd20847d92, type: 3}
+  _noteObject: {fileID: 0}
 --- !u!65 &8196175334552029833
 BoxCollider:
   m_ObjectHideFlags: 0

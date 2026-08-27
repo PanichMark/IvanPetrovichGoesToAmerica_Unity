@@ -26,7 +26,7 @@ public class InteractionObjectTVbuttonPower : MonoBehaviour, IInteractable
 		_tvController.OnTVstateChanged += UpdateHintAndState;
 
 		// Устанавливаем начальную подсказку (ТВ по умолчанию выключен)
-		_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TVbutton_PowerON", gameObject.name);
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TV_PowerOn", gameObject.name);
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
@@ -47,7 +47,7 @@ public class InteractionObjectTVbuttonPower : MonoBehaviour, IInteractable
 	{
 		if (isOn)
 		{
-			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TV_PowerOf", gameObject.name);
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TV_PowerOff", gameObject.name);
 		}
 		else
 		{
@@ -59,11 +59,11 @@ public class InteractionObjectTVbuttonPower : MonoBehaviour, IInteractable
 	{
 		if (_tvController.IsTVturnedOn) // Предполагается, что вы добавите публичное свойство в контроллер
 		{
-			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TV_Off", gameObject.name);
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TV_PowerOff", gameObject.name);
 		}
 		else
 		{
-			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TV_PowerONn", gameObject.name);
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TV_PowerOn", gameObject.name);
 		}
 	}
 }

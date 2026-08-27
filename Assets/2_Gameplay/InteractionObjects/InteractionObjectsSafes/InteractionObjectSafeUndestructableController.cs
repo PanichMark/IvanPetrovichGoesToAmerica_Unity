@@ -8,7 +8,7 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 	[SerializeField] private string _interactionObjectNameUI;
 
 	public virtual string InteractionObjectNameSystem => null;
-	public string InteractionHintMessageAction => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open")}";
+	public string InteractionHintMessageAction => $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Open")}";
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameUI)}";
 
 	private LocalizationManager _localizationManager;
@@ -16,7 +16,7 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	
-	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_WrongCombination")}!";
+	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_WrongCombination")}!";
 	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
 	private bool _isAdditionalInteractionHintActive;

@@ -330,12 +330,12 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_textSettingsGraphics = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_TextSettingsGraphics");
 		_textSettingsAudio = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_TextSettingsAudio");
 
-		_textConfirmSaveSettings = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_TextSaveSettings");
-		_textConfirmResetSettings = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_TextResetSettings");
+		_textConfirmSaveSettings = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_TextSettingsSave");
+		_textConfirmResetSettings = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_TextSettingsReset");
 
 		_textButtonComponentConfirmAction.text = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_ButtonConfirmAction");
 		_textButtonComponentCancelAction.text = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_ButtonCancelAction");
 
-		_textLoadEpisode = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_LoadEpisode");
+		_textLoadEpisode = _localizationManager.GetLocalizedString("UI_Menu_PauseConfirmActionMenu_TextLoadEpisode");
 	}
 }

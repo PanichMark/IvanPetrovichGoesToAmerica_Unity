@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Drawing;
 using TMPro;
+using UnityEngine;
 
 public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 {
@@ -61,6 +63,6 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 	{
 		_localizationManager = localizationManager;
 
-		TEXT_COMPONENT_NO_GRAPHICS_SETTINGS_YET.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenuSettingsSectionGraphics_NO_GRAPHICS_SETTINGS");
+		TEXT_COMPONENT_NO_GRAPHICS_SETTINGS_YET.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGraphics_NO-GRAPHICS-SETTINGS-IN-DEMO-VERSION");
 	}
 }
