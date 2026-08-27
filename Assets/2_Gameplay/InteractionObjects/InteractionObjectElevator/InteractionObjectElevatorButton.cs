@@ -62,11 +62,24 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 			}
 		}
 
+		if (_targetElevator.IsPoweredOn == true)
+		{
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait")}";
+		}
+		else
+		{
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedElectricalPanel")}!";
+		}
+	}
+
+	public void OnPoweredOn()
+	{
 		_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait")}";
 	}
 
 	public void Interact()
 	{
+
 		_isInteractionHintMessageFailActive = false;
 		bool success = _targetElevator.MoveElevator(_buttonUp);
 

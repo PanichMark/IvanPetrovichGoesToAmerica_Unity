@@ -60801,6 +60801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _elevatorName: 
   _elevatorHeightOffset: 5
+  _poweredOffOffset: 2
   _elevatorSpeed: 2
   _downCallButton: {fileID: 6898613035109902246}
   _downSendButton: {fileID: 5112905982684499469}
@@ -60814,6 +60815,7 @@ MonoBehaviour:
   _downDoorLeft: {fileID: 696869006}
   _upDoorRight: {fileID: 1615676466}
   _upDoorLeft: {fileID: 35838440}
+  _electricalPanel: {fileID: 1665534402}
 --- !u!1 &786653168
 GameObject:
   m_ObjectHideFlags: 0
@@ -126540,6 +126542,17 @@ Transform:
   - {fileID: 753298822}
   m_Father: {fileID: 2047846667}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1665534402 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5334947822725336194, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+  m_PrefabInstance: {fileID: 1803664520}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5abe7ebb3494eba4a9f78ca2e2102654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1666216697
 GameObject:
   m_ObjectHideFlags: 0
@@ -136858,6 +136871,83 @@ Transform:
   - {fileID: 1668310348}
   m_Father: {fileID: 875118405}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1803664520
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.775
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.151
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.081
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759536868462179856, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: m_Name
+      value: 3Dmodel_ElectricalPanel (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5304111693172052208, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
+      propertyPath: _isDestructable
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
 --- !u!1 &1803784127
 GameObject:
   m_ObjectHideFlags: 0
@@ -168484,6 +168574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _elevatorName: 
   _elevatorHeightOffset: 4.2
+  _poweredOffOffset: 0
   _elevatorSpeed: 5
   _downCallButton: {fileID: 5559970989955699857}
   _downSendButton: {fileID: 8182525905039922840}
@@ -168497,6 +168588,7 @@ MonoBehaviour:
   _downDoorLeft: {fileID: 0}
   _upDoorRight: {fileID: 0}
   _upDoorLeft: {fileID: 0}
+  _electricalPanel: {fileID: 0}
 --- !u!1 &508917311841625963
 GameObject:
   m_ObjectHideFlags: 0
@@ -230860,6 +230952,7 @@ SceneRoots:
   - {fileID: 1114603238}
   - {fileID: 481641552}
   - {fileID: 1071961956}
+  - {fileID: 1803664520}
   - {fileID: 279148991}
   - {fileID: 202316952}
   - {fileID: 2022186970}

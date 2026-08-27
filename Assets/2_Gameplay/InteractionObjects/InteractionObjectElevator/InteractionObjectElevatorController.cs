@@ -7,8 +7,13 @@ using static UnityEngine.GraphicsBuffer;
 public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 {
 	[SerializeField] private string _elevatorName;
+	public bool IsPoweredOn {  get; private set; }
+
+	public delegate void ElevatorPowerHandler();
+	public event ElevatorPowerHandler OnElevatorPoweredOn;
 
 	[SerializeField] private float _elevatorHeightOffset;
+	[SerializeField] private float _poweredOffOffset;
 	[SerializeField] private float _elevatorSpeed;
 	private float _elevatorPositionTolerance = 0.01f;
 
@@ -26,6 +31,9 @@ public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 	[SerializeField] private GameObject _upDoorRight;
 	[SerializeField] private GameObject _upDoorLeft;
 
+	[SerializeField] private InteractionObjectElectricalPanel _electricalPanel;
+
+	private float _elevatorPoweredOffPosition;
 	private float _elevatorDownPosition;
 	private float _elevatorUpPosition;
 	private bool _isElevatorMoving;
@@ -34,17 +42,30 @@ public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 
 	void Start()
 	{
-		_elevatorDownPosition = transform.position.y;
+		if (_electricalPanel == null)
+		{
+			IsPoweredOn = true;
+		}
+		
 
-		_downCallButton.Initialize(this, false, false);
+
+
+			_downCallButton.Initialize(this, false, false);
 		_downSendButton.Initialize(this, false, true);
 		_upCallButton.Initialize(this, true, true);
 		_upSendButton.Initialize(this, true, false);
 
 		_elevatorDownPosition = transform.position.y;
+		_elevatorPoweredOffPosition = _elevatorDownPosition + _poweredOffOffset;
 		_elevatorUpPosition = _elevatorDownPosition + _elevatorHeightOffset;
 
 		_areDoorsPresent = (_cabinDoorRight != null && _cabinDoorLeft != null && _downDoorRight != null && _downDoorLeft != null && _upDoorRight != null && _upDoorLeft != null);
+
+		if (_electricalPanel != null)
+		{
+			ImmediatelyMoveElevatorToPoweredOffPosition();
+			_electricalPanel.OnWentOutOfService += PowerElevatorOn;
+		}
 
 		if (_areDoorsPresent)
 		{
@@ -54,6 +75,27 @@ public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 			ImmediatelyOpenDoor(_downDoorRight, true);
 			ImmediatelyOpenDoor(_downDoorLeft, false);
 		}
+	}
+
+	private void PowerElevatorOn()
+	{
+		IsPoweredOn = true;
+		ImmediatelyMoveElevatorToPoweredOnPosition();
+
+		_downCallButton.OnPoweredOn();
+		_downSendButton.OnPoweredOn();
+		_upCallButton.OnPoweredOn();
+		_upSendButton.OnPoweredOn();
+	}
+
+	private void ImmediatelyMoveElevatorToPoweredOffPosition()
+	{
+		transform.position = new Vector3(transform.position.x, _elevatorPoweredOffPosition, transform.position.z);
+	}
+
+	private void ImmediatelyMoveElevatorToPoweredOnPosition()
+	{
+		transform.position = new Vector3(transform.position.x, _elevatorDownPosition, transform.position.z);
 	}
 
 	private void ImmediatelyOpenDoor(GameObject door, bool isDoorRight)
@@ -279,7 +321,8 @@ public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 		{
 			ElevatorIndex = GameplayObjectIndex,
 			ElevatorNameSystem = _elevatorName,
-			IsElevatorUp = _isElevatorUp
+			IsElevatorUp = _isElevatorUp,
+			IsElevatorPoweredOn = IsPoweredOn
 		};
 
 		if (indexInList != -1)
@@ -307,6 +350,13 @@ public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 			if (savedState.ElevatorIndex != 0)
 			{
 				_isElevatorUp = savedState.IsElevatorUp;
+
+				IsPoweredOn = savedState.IsElevatorPoweredOn;
+
+				if (IsPoweredOn)
+				{
+					PowerElevatorOn();
+				}
 
 				if (_isElevatorUp == true)
 				{

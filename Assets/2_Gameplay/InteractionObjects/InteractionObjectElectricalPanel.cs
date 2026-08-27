@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class InteractionObjectElectricalPanel : GameplayObjectJsonSaveLoad, IInteractable, IElectroShockable
 {
+	public delegate void ElectricalPanelHandler();
+	public event ElectricalPanelHandler OnWentOutOfService;
+
 	public string InteractionObjectNameSystem => "InteractionObject_ElectricalPanel";
 
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
@@ -61,6 +67,7 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 				_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService");
 
 				IsOutOfService = true;
+				OnWentOutOfService?.Invoke();
 			}
 		}
 	}
@@ -77,5 +84,68 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 		{
 			_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_ElectroShock");
 		}
+	}
+
+	public override IEnumerator SaveJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.ElectricalPanelsData == null)
+		{
+			data.ElectricalPanelsData = new Dictionary<GameScenesGameplayDataEnum, List<ElectricalPanelData>>();
+		}
+		if (!data.ElectricalPanelsData.ContainsKey(currentScene))
+		{
+			data.ElectricalPanelsData[currentScene] = new List<ElectricalPanelData>();
+		}
+
+		var targetList = data.ElectricalPanelsData[currentScene];
+		int indexInList = targetList.FindIndex(item => item.ElectricalPanelIndex == GameplayObjectIndex);
+
+		var updatedItem = new ElectricalPanelData
+		{
+			ElectricalPanelIndex = GameplayObjectIndex,
+			ElectricalPanelSystem = InteractionObjectNameSystem,
+			IsElectricalPanelOutOfService = IsOutOfService
+		};
+
+		if (indexInList != -1)
+		{
+			targetList[indexInList] = updatedItem;
+		}
+		else
+		{
+			targetList.Add(updatedItem);
+		}
+
+		yield return null;
+	}
+
+	public override IEnumerator LoadJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.ElectricalPanelsData == null || !data.ElectricalPanelsData.TryGetValue(currentScene, out var sourceList)) yield break;
+
+		if (sourceList.Count > 0)
+		{
+			ElectricalPanelData savedState = sourceList.Find(item => item.ElectricalPanelIndex == GameplayObjectIndex);
+
+			if (savedState.ElectricalPanelIndex != 0)
+			{
+				IsOutOfService = savedState.IsElectricalPanelOutOfService;
+
+				if (IsOutOfService)
+				{
+					_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService");
+				}
+				else
+				{
+					_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_ElectroShock");
+				}
+			}
+		}
+
+		yield return null;
 	}
 }
