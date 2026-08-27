@@ -27,55 +27,20 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 		_forwardOffset = 0.5f;
 	}
 
+	/*
 	public override void WeaponAttack()
 	{
-		if (IsWeaponAuto)
-		{
-			_isAttacking = true;
-			StartAutoAttackingWeaponPlayer();
-		}
-		else
-		{
-			_isAttacking = true;
-			StartCoroutine(SingleMeleeWeaponAttack());
-		}
+		_isAttacking = true;
+		StartAutoAttackingWeaponPlayer();
 	}
-
-	public override void StartAutoAttackingWeaponPlayer()
-	{
-		if (IsWeaponPlayerAutoAttacking) return;
-		IsWeaponPlayerAutoAttacking = true;
-		if (_currentWeaponPlayerAutoAttackCourutine == null)
-		{
-			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
-		}
-	}
-
-	public override void StopAutoAttacking()
-	{
-		IsWeaponPlayerAutoAttacking = false;
-		if (_currentWeaponPlayerAutoAttackCourutine != null)
-		{
-			StopCoroutine(_currentWeaponPlayerAutoAttackCourutine);
-			_currentWeaponPlayerAutoAttackCourutine = null;
-		}
-	}
-
-	public override IEnumerator AutoAttackWeaponPlayerCourutine()
-	{
-		while (IsWeaponPlayerAutoAttacking)
-		{
-			StartCoroutine(SingleMeleeWeaponAttack());
-
-			yield return new WaitForSeconds(WeaponAttackSpeedRate);
-		}
-
-		_currentWeaponPlayerAutoAttackCourutine = null;
-	}
+	*/
 
 	protected override IEnumerator SingleMeleeWeaponAttack()
 	{
-		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
+		if (!_weaponAudioSource.isPlaying)
+		{
+			_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
+		}
 
 		StartCoroutine(RotateSawBlades());
 

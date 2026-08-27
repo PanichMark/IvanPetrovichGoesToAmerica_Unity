@@ -163,11 +163,11 @@ MonoBehaviour:
   _mechanicalLockController: {fileID: 0}
   _electronicLockController: {fileID: 0}
   _electronicElectricalPanel: {fileID: 0}
+  _changeScene: {fileID: 0}
   _isLockedForever: 0
   _doorSibling: {fileID: 0}
   _maxDurability: 100
-  _damageThreshold: 50
-  _isDestructable: 0
+  _damageThreshold: 0
   _doorNormal: {fileID: 1088865337105805002}
   _doorDamaged: {fileID: 9209588940626167346}
   _doorBroken: {fileID: 3371254143651741788}

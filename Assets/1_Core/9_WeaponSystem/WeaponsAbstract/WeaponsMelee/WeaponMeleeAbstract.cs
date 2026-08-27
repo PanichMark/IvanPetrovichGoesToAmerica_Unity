@@ -63,6 +63,8 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		IsWeaponPlayerAutoAttacking = false;
 		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
+			_weaponAudioSource.Stop();
+
 			StopCoroutine(_currentWeaponPlayerAutoAttackCourutine);
 			_currentWeaponPlayerAutoAttackCourutine = null;
 		}

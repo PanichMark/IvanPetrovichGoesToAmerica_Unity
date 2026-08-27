@@ -42,6 +42,8 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 	protected override IEnumerator SingleEugenicAttack()
 	{
+		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
+
 		_currentWeaponPlayerEugenicAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this));
 
 		_playerResourcesManaManager.UseMana(ManaCost);
@@ -49,8 +51,6 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 		if (_vfxInstance == null)
 		{
 			yield return new WaitForSeconds(0.52f);
-
-			_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
 
 			// Сохраняем данные для анимации ДО запуска корутины
 			_flightDirection = _playerCameraGameObject.transform.forward.normalized;
