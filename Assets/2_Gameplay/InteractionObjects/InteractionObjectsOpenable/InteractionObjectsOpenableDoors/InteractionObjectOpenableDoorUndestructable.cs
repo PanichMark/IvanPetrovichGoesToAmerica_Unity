@@ -82,6 +82,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 			{
 				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedElectricalPanel")}!";
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+				_electronicElectricalPanel.OnWentOutOfService += UnlockDoor;
 			}
 			if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null && _electronicElectricalPanel == null)
 				|| (_interactionObjectKeyData != null && IsOpenableUnlocked)
