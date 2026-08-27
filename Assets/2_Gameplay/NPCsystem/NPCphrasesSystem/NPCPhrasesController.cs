@@ -39,7 +39,7 @@ public class NPCphrasesController : MonoBehaviour
 _NPCphrasesText = _viewModelHUDInteraction.TextPhraseLine;
 _NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();
 //Debug.Log(_NPCphrasesText);
-_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerEyesLookAt);
+_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PLayerEyes);
 		_audioSource = GetComponent<AudioSource>();
 		LoadPhrasesTextFiles();
 		LoadVoiceLineFiles();

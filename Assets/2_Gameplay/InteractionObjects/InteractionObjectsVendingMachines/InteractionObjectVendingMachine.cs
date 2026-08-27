@@ -21,7 +21,7 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 	[SerializeField] protected int _goodsPrice;
 	protected string _goodsName;
 	protected float _vendingMachineElectroHealth;
-	public bool IsOutOfService { get; private set; }
+	public bool IsOutOfService { get; protected set; }
 	private InteractionObjectLootAbstract _goodsComponent;
 
 	private string _moneyForUI;
@@ -66,6 +66,10 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
 		_moneyForUI = _localizationManager.GetLocalizedString($"Money_{_moneyType}");
 	}
+	protected void InvokeOnWentOutOfService()
+	{
+		OnWentOutOfService?.Invoke();
+	}
 
 	public void Interact()
 	{
@@ -75,7 +79,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 			{
 				_spawnedGoods.RemoveAll(item => item == null || !item.activeInHierarchy);
 
-				if (_spawnedGoods.Count >= 10)
+				if (_spawnedGoods.Count >= 5)
 				{
 					//Debug.Log(_spawnedGoods.Count);
 					Debug.Log("Нельзя купить больше");
@@ -109,23 +113,26 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		}
 	}
 
-	private void SpawnGoods()
+	protected void SpawnGoods()
 	{
 		Vector3 spawnPosition = transform.localPosition + transform.TransformDirection(new Vector3(0, 0.5f, 1));
 		float yRotation = transform.eulerAngles.y;
 		Quaternion spawnRotation = Quaternion.Euler(0, yRotation, 0);
 
 		GameObject instantiatedObject = Instantiate(_goodsForSale, spawnPosition, spawnRotation);
+
+		InteractionObjectLootAbstract spawnedGoodComponent = instantiatedObject.GetComponent<InteractionObjectLootAbstract>();
+		spawnedGoodComponent.SetLootObjectAsVendingMachineGood();
+
 		SceneManager.MoveGameObjectToScene(instantiatedObject, SceneManager.GetSceneAt(1));
 
 		Rigidbody rb = instantiatedObject.AddComponent<Rigidbody>();
 		rb.isKinematic = false;
 		rb.useGravity = true;
 
-		if (!IsOutOfService)
-		{
-			_spawnedGoods.Add(instantiatedObject);
-		}
+
+		_spawnedGoods.Add(instantiatedObject);
+		
 	}
 
 	public void InteractCutscene()
@@ -157,5 +164,73 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 			SpawnGoods();
 			yield return new WaitForSeconds(0.15f);
 		}
+	}
+
+	public override IEnumerator SaveJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.VendingMachinesData == null)
+		{
+			data.VendingMachinesData = new Dictionary<GameScenesGameplayDataEnum, List<VendingMachineData>>();
+		}
+		if (!data.VendingMachinesData.ContainsKey(currentScene))
+		{
+			data.VendingMachinesData[currentScene] = new List<VendingMachineData>();
+		}
+
+		var targetList = data.VendingMachinesData[currentScene];
+		int indexInList = targetList.FindIndex(item => item.VendingMachineIndex == GameplayObjectIndex);
+
+		var updatedItem = new VendingMachineData
+		{
+			VendingMachineIndex = GameplayObjectIndex,
+			VendingMachineNameSystem = _vendingMachineName,
+			VendingMachineHealth = _vendingMachineElectroHealth,
+			VendingMachineSpawnedGoods = _spawnedGoods.Count
+		};
+
+		if (indexInList != -1)
+		{
+			targetList[indexInList] = updatedItem;
+		}
+		else
+		{
+			targetList.Add(updatedItem);
+		}
+
+		yield return null;
+	}
+
+	public override IEnumerator LoadJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.VendingMachinesData == null || !data.VendingMachinesData.TryGetValue(currentScene, out var sourceList)) yield break;
+
+		if (sourceList.Count > 0)
+		{
+			VendingMachineData savedState = sourceList.Find(item => item.VendingMachineIndex == GameplayObjectIndex);
+
+			if (savedState.VendingMachineIndex != 0)
+			{
+				_vendingMachineElectroHealth = savedState.VendingMachineHealth;
+
+				if (savedState.VendingMachineSpawnedGoods > 0)
+				{
+					for (int i = 0; i < savedState.VendingMachineSpawnedGoods; i++)
+					{
+						SpawnGoods();
+					}
+				}
+
+				if (_vendingMachineElectroHealth <= 0)
+				{
+					IsOutOfService = true;
+				}
+			}
+		}
+
+		yield return null;
 	}
 }

@@ -35,7 +35,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		if (_isThisPlayerWeapon)
 		{
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
-WeaponRangedShootPoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerCamera);
+WeaponRangedShootPoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
 _playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>();
 _playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 

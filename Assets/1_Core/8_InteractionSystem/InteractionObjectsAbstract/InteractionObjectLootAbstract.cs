@@ -8,6 +8,25 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 {
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	[SerializeField] protected string _interactionObjectNameSystem;
+
+	protected bool _isItVendingMachineGood;
+	public	void SetLootObjectAsVendingMachineGood()
+	{
+		_isItVendingMachineGood = true;
+	}
+
+	public override void AssignGameplayObjectIndex(int index)
+	{
+		if (!_isItVendingMachineGood)
+		{
+			GameplayObjectIndex = index;
+		}
+		else
+		{
+			//Vending Machine good is not saved on its own, its being spawned by vending machine on its LoadData
+		}
+	}
+
 	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
 	public GameObject GameObjectPlayer { get; protected set; }
@@ -33,7 +52,7 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 	{
 	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 LootObjectCollider = GetComponent<Collider>();
-GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayer);
+GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Loot");
 		InitializeLootObject();
@@ -102,34 +121,37 @@ GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObje
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!_isItVendingMachineGood)
+		{
+			if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-		if (data.LootObjectsData == null)
-		{
-			data.LootObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>>();
-		}
-		if (!data.LootObjectsData.ContainsKey(currentScene))
-		{
-			data.LootObjectsData[currentScene] = new List<LootObjectData>();
-		}
+			if (data.LootObjectsData == null)
+			{
+				data.LootObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>>();
+			}
+			if (!data.LootObjectsData.ContainsKey(currentScene))
+			{
+				data.LootObjectsData[currentScene] = new List<LootObjectData>();
+			}
 
-		var targetList = data.LootObjectsData[currentScene];
-		int indexInList = targetList.FindIndex(item => item.LootObjectIndex == GameplayObjectIndex);
+			var targetList = data.LootObjectsData[currentScene];
+			int indexInList = targetList.FindIndex(item => item.LootObjectIndex == GameplayObjectIndex);
 
-		var updatedItem = new LootObjectData
-		{
-			LootObjectIndex = GameplayObjectIndex,
-			LootObjectNameSystem = InteractionObjectNameSystem,
-			IsLootObjectCollected = WasLootItemCollected
-		};
+			var updatedItem = new LootObjectData
+			{
+				LootObjectIndex = GameplayObjectIndex,
+				LootObjectNameSystem = InteractionObjectNameSystem,
+				IsLootObjectCollected = WasLootItemCollected
+			};
 
-		if (indexInList != -1)
-		{
-			targetList[indexInList] = updatedItem;
-		}
-		else
-		{
-			targetList.Add(updatedItem);
+			if (indexInList != -1)
+			{
+				targetList[indexInList] = updatedItem;
+			}
+			else
+			{
+				targetList.Add(updatedItem);
+			}
 		}
 
 		yield return null;
@@ -137,21 +159,24 @@ GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObje
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
-
-		if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
-
-		if (sourceList.Count > 0)
+		if (!_isItVendingMachineGood)
 		{
-			LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == GameplayObjectIndex);
+			if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
 
-			//Debug.Log($"{savedState.LootObjectNameSystem} {gameObject.name}");
-			//Debug.Log(savedState.IsLootObjectCollected);
+			if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
-			if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
+			if (sourceList.Count > 0)
 			{
-				WasLootItemCollected = true;
-				gameObject.SetActive(false);
+				LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == GameplayObjectIndex);
+
+				//Debug.Log($"{savedState.LootObjectNameSystem} {gameObject.name}");
+				//Debug.Log(savedState.IsLootObjectCollected);
+
+				if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
+				{
+					WasLootItemCollected = true;
+					gameObject.SetActive(false);
+				}
 			}
 		}
 

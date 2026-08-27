@@ -1,13 +1,13 @@
 ﻿public enum ServiceLocatorGameObjectsEnum
 {
-    GameObjectPlayer,
-    GameObjectPlayerEyesLookAt,
-    GameObjectPlayerHead,
-    GameObjectPlayerCollider,
-    GameObjectPlayerCamera,
-    FirstPersonLeftHandWeaponSlotGameObject,
-    FirstPersonRightHandWeaponSlotGameObject,
-    ThirdPersonLeftHandWeaponSlotGameObject,
-    ThirdPersonRightHandWeaponSlotGameObject,
-    GameObjectSpineSlot
+    Player,
+    PLayerEyes,
+    PlayerHead,
+    PlayerCollider,
+    PlayerCamera,
+	PlayerSpineBone,
+	WeaponSlotFirstPersonLeftHand,
+    WeaponSlotFirstPersonRightHand,
+    WeaponSlotThirdPersonLeftHand,
+    WeaponSlotThirdPersonRightHand,
 }

@@ -78,12 +78,12 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		_projectile3rdPersonRestDirection = _projectile3rdPerson.transform.localRotation;
 		//Debug.Log(_projectileRestPosition);
 _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
-_playerCamera = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerCamera);
+_playerCamera = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
 _playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
-_player = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayer);
+_player = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 _playerRigidbody = _player.GetComponent<Rigidbody>();
 _gameController = ServiceLocator.Resolve<GameController>();
-_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerCollider);
+_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 //Debug.Log(_gameSceneManager);
 _playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>();

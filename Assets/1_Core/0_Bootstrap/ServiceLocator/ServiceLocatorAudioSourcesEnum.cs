@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public enum EnumServiceLocatorAudioSources
+public enum ServiceLocatorAudioSourcesEnum
 {
     PlayerAudioVoice,
     PlayerAudioMovement,

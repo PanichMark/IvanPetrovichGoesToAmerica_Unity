@@ -196,16 +196,16 @@ ServiceLocator.Register<PlayerHealthController>(_playerResourcesHealthManager);
 ServiceLocator.Register<PlayerManaController>(_playerResourcesManaManager);
 ServiceLocator.Register<PlayerMoneyController>(_playerResourcesMoneyManager);
 
-		ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioVoice, PlayerAudioVoice);
-ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioMovement, PlayerAudioMovement);
-ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioWeaponRight, PlayerAudioWeaponRight);
-ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioWeaponLeft, PlayerAudioWeaponLeft);
+		ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioVoice, PlayerAudioVoice);
+ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioMovement, PlayerAudioMovement);
+ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponRight, PlayerAudioWeaponRight);
+ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponLeft, PlayerAudioWeaponLeft);
 
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectPlayer, _gameObjectPlayer);
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectPlayerEyesLookAt, _gameobjectPlayerEyesLookAt);
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectPlayerHead, _gameObjectPlayerHead);
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectPlayerCollider, _gameObjectPlayerCollider);
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectPlayerCamera, _gameObjectPlayerCamera);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.Player, _gameObjectPlayer);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PLayerEyes, _gameobjectPlayerEyesLookAt);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerHead, _gameObjectPlayerHead);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerCollider, _gameObjectPlayerCollider);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerCamera, _gameObjectPlayerCamera);
 
 		yield break;
 	}

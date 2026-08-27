@@ -14,7 +14,7 @@ public class HintMessageController : GameplayObjectJsonSaveLoad
 	private void Awake()
 	{
 _pauseSubMenuSettingsSectionGeneralController = ServiceLocator.Resolve<PauseSubMenuSettingsSectionGeneralController>();
-_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerCollider);
+_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
 
 		_triggerZone = GetComponent<Collider>();
 

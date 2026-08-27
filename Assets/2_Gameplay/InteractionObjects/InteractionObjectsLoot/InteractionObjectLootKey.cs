@@ -24,21 +24,24 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		_keysManager.RemoveKey(_keyID);
-
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
-
-		if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
-
-		if (sourceList.Count > 0)
+		if (!_isItVendingMachineGood)
 		{
-			LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == GameplayObjectIndex);
+			_keysManager.RemoveKey(_keyID);
 
-			if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
+			if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+			if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
+
+			if (sourceList.Count > 0)
 			{
-				WasLootItemCollected = true;
-				_keysManager.AddKey(_keyID);
-				Destroy(gameObject);
+				LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == GameplayObjectIndex);
+
+				if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
+				{
+					WasLootItemCollected = true;
+					_keysManager.AddKey(_keyID);
+					Destroy(gameObject);
+				}
 			}
 		}
 

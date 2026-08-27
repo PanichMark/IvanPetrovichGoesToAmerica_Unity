@@ -86,7 +86,7 @@ _buttonDialogueNo = _viewModelMenuDialogue.ButtonDialogueNo.GetComponent<Button>
 _textDialogueYes = _viewModelMenuDialogue.TextDialogueYes;
 _textDialogueNo = _viewModelMenuDialogue.TextDialogueNo;
 
-_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerEyesLookAt);
+_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PLayerEyes);
 
 _textComponentDialogueYes = _textDialogueYes.GetComponent<TextMeshProUGUI>();
 _textComponentDialogueNo = _textDialogueNo.GetComponent<TextMeshProUGUI>();

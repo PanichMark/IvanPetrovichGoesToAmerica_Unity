@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class InteractionObjectVendingMachineAmmo : InteractionObjectVendingMachine
 {
@@ -31,5 +33,39 @@ public class InteractionObjectVendingMachineAmmo : InteractionObjectVendingMachi
 	public override void SetpUpVendingMachine()
 	{
 		UpdateGoods();
+	}
+
+	public override IEnumerator LoadJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.VendingMachinesData == null || !data.VendingMachinesData.TryGetValue(currentScene, out var sourceList)) yield break;
+
+		if (sourceList.Count > 0)
+		{
+			VendingMachineData savedState = sourceList.Find(item => item.VendingMachineIndex == GameplayObjectIndex);
+
+			if (savedState.VendingMachineIndex != 0)
+			{
+				_vendingMachineElectroHealth = savedState.VendingMachineHealth;
+
+				if (savedState.VendingMachineSpawnedGoods > 0)
+				{
+					for (int i = 0; i < savedState.VendingMachineSpawnedGoods; i++)
+					{
+						SpawnGoods();
+					}
+				}
+
+				if (_vendingMachineElectroHealth <= 0)
+				{
+					IsOutOfService = true;
+
+					InvokeOnWentOutOfService();
+				}
+			}
+		}
+
+		yield return null;
 	}
 }

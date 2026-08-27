@@ -6,7 +6,7 @@ public static class ServiceLocator
 {
     private static readonly Dictionary<Type, object> _services = new();
     private static readonly Dictionary<ServiceLocatorGameObjectsEnum, GameObject> _gameObjects = new();
-    private static readonly Dictionary<EnumServiceLocatorAudioSources, AudioSource> _audioSources = new();
+    private static readonly Dictionary<ServiceLocatorAudioSourcesEnum, AudioSource> _audioSources = new();
 
 	public static void Register<T>(object instance)
 	{
@@ -31,7 +31,7 @@ public static class ServiceLocator
         _gameObjects[tag] = go;
     }
 
-    public static void Register(EnumServiceLocatorAudioSources key, AudioSource source)
+    public static void Register(ServiceLocatorAudioSourcesEnum key, AudioSource source)
     {
         if (_audioSources.ContainsKey(key))
         {
@@ -59,7 +59,7 @@ public static class ServiceLocator
         return go;
     }
 
-    public static AudioSource Resolve(EnumServiceLocatorAudioSources key)
+    public static AudioSource Resolve(ServiceLocatorAudioSourcesEnum key)
     {
         if (!_audioSources.TryGetValue(key, out var source))
         {

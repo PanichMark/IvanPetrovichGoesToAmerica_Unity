@@ -382,6 +382,7 @@ public struct ElevatorData
 	public string ElevatorNameSystem;
 
 	public bool IsElevatorUp;
+	public bool IsElevatorPoweredOn;
 }
 
 [System.Serializable]

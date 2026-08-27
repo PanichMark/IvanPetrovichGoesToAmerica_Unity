@@ -54,14 +54,14 @@ public abstract class WeaponAbstract : MonoBehaviour
 		_isThisPlayerWeapon = true;
 		WeaponHandType = handType;
 
-_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.FirstPersonRightHandWeaponSlotGameObject);
+_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
 _firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
-_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.ThirdPersonRightHandWeaponSlotGameObject);
+_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand);
 _thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
 
-_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.FirstPersonLeftHandWeaponSlotGameObject);
+_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonLeftHand);
 _firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
-_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.ThirdPersonLeftHandWeaponSlotGameObject);
+_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonLeftHand);
 		_thirdPersonLeftHandWeaponSlotTransform = _thirdPersonLeftHandWeaponSlotGameObject.transform;
 		
 		ThirdPersonWeaponModelInstance = gameObject;
@@ -90,11 +90,11 @@ _thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocator
 
 if (WeaponHandType == WeaponHandType.Right)
 {
-    _weaponAudioSource = ServiceLocator.Resolve(EnumServiceLocatorAudioSources.PlayerAudioWeaponRight);
+    _weaponAudioSource = ServiceLocator.Resolve(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponRight);
 }
 else
 {
-    _weaponAudioSource = ServiceLocator.Resolve(EnumServiceLocatorAudioSources.PlayerAudioWeaponLeft);
+    _weaponAudioSource = ServiceLocator.Resolve(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponLeft);
 }
 
 _playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();

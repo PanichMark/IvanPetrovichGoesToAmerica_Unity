@@ -5,7 +5,7 @@ public abstract class GameplayObjectJsonSaveLoad : MonoBehaviour, IJsonSaveLoad
 {
 	public int GameplayObjectIndex { get; protected set; }
 
-	public void AssignGameplayObjectIndex(int index)
+	public virtual void AssignGameplayObjectIndex(int index)
 	{
 		GameplayObjectIndex = index;
 	}

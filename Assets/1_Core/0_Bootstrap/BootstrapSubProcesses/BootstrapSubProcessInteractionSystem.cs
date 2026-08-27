@@ -97,7 +97,7 @@ public class BootstrapSubProcessInteractionSystem
 		ServiceLocator.Register<PlayerInteractionController>(InteractionController);
 		ServiceLocator.Register<KeysManager>(_keysManager);
 
-		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectSpineSlot, GameObjectSpineSlot);
+		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerSpineBone, GameObjectSpineSlot);
 
 		yield break;
 	}
