@@ -8,6 +8,10 @@ public class NPCstateInterested : NPCstateAbstract
     }
 
 	/*
+	 *	Идем туда где видели или слышали игрока на моменте тревоги 50
+	 */
+
+	/*
 	 * Peaceful Neutral Aggresive
 	 * 1) если тревога упала до 0 и НЕ было AnchorPoints то StationaryAction
 	 * 

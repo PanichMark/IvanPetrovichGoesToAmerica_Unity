@@ -28,11 +28,15 @@ public class NPCstateStationaryAction : NPCstateAbstract
 	}
 
 	/*
+	 *	Стоим на месте и делаем анимацию.
+	 */
+
+	/*
 	 * Peaceful Neutral Aggresive
 	 * 2) если есть AnchorPoint и закончили стоять то Patrolling
 	 * 
 	 * Peaceful Neutral Aggresive
-	 * 3) если тревога дошла до 50  то Intereset
+	 * 3) если тревога дошла до 50 но не до 100 сразу то Intereset
 	 * 
 	 * Peaceful Neutral Aggresive
 	 * 4) если тревога дошла до 100 то Alarmed

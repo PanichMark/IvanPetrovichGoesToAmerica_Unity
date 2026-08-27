@@ -6,6 +6,11 @@ public class NPCstateAlarmed : NPCstateAbstract
     {
 
     }
+
+	/*
+	 *	анимация типо офигели и достаем оружие если есть
+	 */
+
 	/* Neutral Aggresive
 	 * 5)если игрок дальше XX метров то Chasing
 	 * XX в зависимости от Melee или Ranged weapons
