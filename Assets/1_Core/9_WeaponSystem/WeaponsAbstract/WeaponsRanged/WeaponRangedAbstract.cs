@@ -79,7 +79,9 @@ _playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 	public override void StartAutoAttackingWeaponPlayer()
 	{
 		if (IsWeaponPlayerAutoAttacking || PlayerMagazineAmmoCurrent <= 0)
+		{
 			return;
+		}
 
 		IsWeaponPlayerAutoAttacking = true;
 
@@ -104,6 +106,8 @@ _playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 	{
 		while (true)
 		{
+
+			//Debug.Log("RANGED AUYO!!!!");
 			if (!IsWeaponPlayerAutoAttacking)
 			{
 				break; 

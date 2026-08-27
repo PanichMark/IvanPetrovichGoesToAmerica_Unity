@@ -75,6 +75,8 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 	protected override IEnumerator SingleMeleeWeaponAttack()
 	{
+		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
+
 		StartCoroutine(RotateSawBlades());
 
 		_currentWeaponPlayerMeleeAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this));

@@ -23,9 +23,9 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 	protected override void InitializeWeaponEugenic()
 	{
-_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
-_playerGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
-_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+	_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+	_playerGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+	_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
 		//_playerWeaponController.OnAllWeaponsHidden += TurnEugenicVFXOff;
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
@@ -49,6 +49,8 @@ _playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.P
 		if (_vfxInstance == null)
 		{
 			yield return new WaitForSeconds(0.52f);
+
+			_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
 
 			// Сохраняем данные для анимации ДО запуска корутины
 			_flightDirection = _playerCameraGameObject.transform.forward.normalized;

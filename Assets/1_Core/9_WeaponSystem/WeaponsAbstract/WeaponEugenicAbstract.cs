@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UIElements;
 
 public abstract class WeaponEugenicAbstract : WeaponAbstract
 {
@@ -52,10 +53,15 @@ _playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 
 	public override void StartAutoAttackingWeaponPlayer()
 	{
+		//Debug.Log("SART!!!");
+
 		if (IsWeaponPlayerAutoAttacking) return;
 		IsWeaponPlayerAutoAttacking = true;
+
+		//Debug.Log(_currentWeaponPlayerAutoAttackCourutine);
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
+			//Debug.Log("SART!!!");
 			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
 		}
 	}
@@ -65,11 +71,19 @@ _playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 		IsWeaponPlayerAutoAttacking = false;
 		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
+			StartCoroutine(StopEugenucAudioWithDelay());
 			//TurnEugenicVFXOff();
 
 			StopCoroutine(_currentWeaponPlayerAutoAttackCourutine);
 			_currentWeaponPlayerAutoAttackCourutine = null;
 		}
+	}
+
+	private IEnumerator StopEugenucAudioWithDelay()
+	{
+		yield return new WaitForSeconds(0.3f);
+		_weaponAudioSource.Stop();
+		yield return null;
 	}
 
 	public abstract void TurnEugenicVFXOff();
@@ -78,6 +92,8 @@ _playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 	{
 		while (true)
 		{
+
+			//Debug.Log("sdverbesfrbegh");
 			if (!IsWeaponPlayerAutoAttacking)
 			{
 				break;

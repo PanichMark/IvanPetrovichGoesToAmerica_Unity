@@ -31,12 +31,17 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 		_playerCameraStateMachineController.OnCameraStateChanged += ChangeVFXSpawnPoint;
 	}
 
+
 	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
 		while (true)
 		{
+			//Debug.Log("scvwergerg");
+
 			if (!IsWeaponPlayerAutoAttacking)
 			{
+				
+				//Debug.Log("STOP!!!");
 				break;
 			}
 
@@ -47,17 +52,28 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
 			{
 				IsWeaponPlayerAutoAttacking = false;
+				//Debug.Log("STOP AMAN!!!!!!");
 				break;
 			}
 		}
 		_currentWeaponPlayerAutoAttackCourutine = null;
+
+		
 	}
 
 	protected override IEnumerator SingleEugenicAttack()
 	{
+	
+
+
 		//Debug.Log("SINGLE BRUH!");
 
 		_currentWeaponPlayerEugenicAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponPalmAttackAnimation(this));
+
+		if (!_weaponAudioSource.isPlaying)
+		{
+			_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
+		}
 
 		if (_vfxInstance == null)
 		{
@@ -89,7 +105,9 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 
 		yield return _currentWeaponPlayerEugenicAttackRoutine;
 
+
 		_isAttacking = false;
+		
 
 		_currentWeaponPlayerEugenicAttackRoutine = null;
 	}

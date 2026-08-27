@@ -82,6 +82,8 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	protected virtual IEnumerator SingleMeleeWeaponAttack()
 	{
+		StartCoroutine(DelayAttackSound());
+
 		_currentWeaponPlayerMeleeAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this));
 
 		Vector3 startPoint = _attackPoint.transform.position + _attackPoint.transform.forward * _forwardOffset;
@@ -109,8 +111,15 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	protected IEnumerator DelayMeleeAttackDamageable(IDamageable target, float delayTime)
 	{
+		Debug.Log("DELAY!");
 		yield return new WaitForSeconds(delayTime);
 		target.TakeDamage(WeaponDamage);
+
+	}
+
+	protected virtual IEnumerator DelayAttackSound()
+	{
+		yield return null;
 	}
 
 	protected IEnumerator DelayMeleeAttackBreakable(IBreakable target, float delayTime)

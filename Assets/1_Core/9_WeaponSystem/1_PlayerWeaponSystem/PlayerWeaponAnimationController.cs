@@ -485,7 +485,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 				}
 				
 			}
-		
+			
 			yield return new WaitForSeconds(weaponPalm.TimeBetweenAbilityToAttack);
 			Debug.Log("Check #2");
 			if (!weaponPalm.IsWeaponPlayerAutoAttacking)
