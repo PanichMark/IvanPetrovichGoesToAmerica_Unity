@@ -288,10 +288,6 @@ public class NPCstateMachineController : MonoBehaviour
 		{
 			newState = new NPCstateInterested();
 		}
-		else if (NPCstateType == NPCstateTypes.Searching)
-		{
-			newState = new NPCstateSearching();
-		}
 		else if (NPCstateType == NPCstateTypes.Alarmed)
 		{
 			newState = new NPCstateAlarmed();
@@ -307,6 +303,10 @@ public class NPCstateMachineController : MonoBehaviour
 		else if (NPCstateType == NPCstateTypes.Reloading)
 		{
 			newState = new NPCstateReloading();
+		}
+		else if (NPCstateType == NPCstateTypes.Searching)
+		{
+			newState = new NPCstateSearching();
 		}
 		else if (NPCstateType == NPCstateTypes.Huddled)
 		{
@@ -331,9 +331,9 @@ public class NPCstateMachineController : MonoBehaviour
 			newState = new NPCstateHooked(this);
 			CurrentNPCState = NPCstateTypes.Hooked;
 		}
-		else if (NPCstateType == NPCstateTypes.ElectroShocked)
+		else if (NPCstateType == NPCstateTypes.Staggered)
 		{
-			newState = new NPCstateElectroShocked();
+			newState = new NPCstateStaggered();
 		}
 		else if (NPCstateType == NPCstateTypes.KnockedOff)
 		{
@@ -343,6 +343,10 @@ public class NPCstateMachineController : MonoBehaviour
 		{
 			newState = new NPCstateBlownAway();
 		}
+		else if (NPCstateType == NPCstateTypes.ElectroShocked)
+		{
+			newState = new NPCstateElectroShocked();
+		}		
 		else if (NPCstateType == NPCstateTypes.Falling)
 		{
 			newState = new NPCstateFalling();
@@ -350,6 +354,14 @@ public class NPCstateMachineController : MonoBehaviour
 		else if (NPCstateType == NPCstateTypes.StandingUp)
 		{
 			newState = new NPCstateStandingUp();
+		}
+		else if (NPCstateType == NPCstateTypes.Dizzy)
+		{
+			newState = new NPCstateBlownAway();
+		}
+		else if (NPCstateType == NPCstateTypes.Carried)
+		{
+			newState = new NPCstateCarried();
 		}
 		else if (NPCstateType == NPCstateTypes.Unconscious)
 		{

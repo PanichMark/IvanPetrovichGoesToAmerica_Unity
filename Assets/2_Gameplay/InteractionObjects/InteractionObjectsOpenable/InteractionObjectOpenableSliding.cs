@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstract
 {
 	[SerializeField] protected float _openingSpeed;
-	protected Coroutine _currentAnimation;
 
 	[SerializeField] private Vector3 _intermediatePositionOffset;
 	[SerializeField] private Vector3 _openedPositionOffset;
@@ -40,6 +39,7 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 		_intermediatePosition = _closedPosition + _intermediatePositionOffset;
 		_openedPosition = _intermediatePosition + _openedPositionOffset;
 	}
+
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{

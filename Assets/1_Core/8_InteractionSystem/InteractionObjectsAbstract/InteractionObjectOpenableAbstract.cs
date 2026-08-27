@@ -7,7 +7,7 @@ public abstract class InteractionObjectOpenableAbstract : GameplayObjectJsonSave
 	protected LocalizationManager _localizationManager;
 
 	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
-	public virtual string InteractionObjectNameUI => null;
+	public virtual string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem, gameObject.name)}";
 	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	public virtual string InteractionHintMessageFail => null;
 	public bool IsOpenableUnlocked { get; protected set; }

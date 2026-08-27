@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Openable_Sliding_VentCover
+  _isObjectOpened: 0
   _openingSpeed: 3
   _intermediatePositionOffset: {x: 0, y: 0, z: 0}
-  _closedPositionOffset: {x: 0, y: 0, z: 0}
-  _electronicElectricalPanel: {fileID: 0}
+  _openedPositionOffset: {x: 0, y: 0, z: 0}

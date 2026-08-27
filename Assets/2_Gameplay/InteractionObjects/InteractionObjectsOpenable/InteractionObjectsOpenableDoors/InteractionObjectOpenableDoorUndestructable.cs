@@ -18,7 +18,6 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	[SerializeField] private InteractionObjectChangeScene _changeScene;
 	[SerializeField] protected bool _isLockedForever;
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
-	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem, gameObject.name)}";
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 	private GameScenesManager _gameSceneManager;
 	protected bool _isDoorDouble;
@@ -85,7 +84,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 				_electronicElectricalPanel.OnWentOutOfService += UnlockDoor;
 			}
 			if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null && _electronicElectricalPanel == null)
-				|| (_interactionObjectKeyData != null && IsOpenableUnlocked)
+				|| (_interactionObjectKeyData != null && (_keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString()) || IsOpenableUnlocked))
 				|| (_mechanicalLockController != null && IsOpenableUnlocked)
 				|| (_electronicLockController != null && IsOpenableUnlocked)
 				|| _electronicElectricalPanel != null && IsOpenableUnlocked)
@@ -145,7 +144,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 				_isAdditionalInteractionHintActive = true;
 			}
 			if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null && _electronicElectricalPanel == null)
-				|| (_interactionObjectKeyData != null && IsOpenableUnlocked)
+				|| (_interactionObjectKeyData != null && (_keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString()) || IsOpenableUnlocked))
 				|| (_mechanicalLockController != null && IsOpenableUnlocked)
 				|| (_electronicLockController != null && IsOpenableUnlocked)
 				|| _electronicElectricalPanel != null && IsOpenableUnlocked)
@@ -214,7 +213,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 			IsOpenableUnlocked = true;
 
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open", gameObject.name);
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Open", gameObject.name);
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 
 			if (_isDoorDouble == true)
