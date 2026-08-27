@@ -42,6 +42,20 @@ public class LocalizationManager
 		}
 	}
 
+	public string GetLocalizedString(string key, string requestingObjectName)
+	{
+		if (_localizations.TryGetValue(key, out var translations) &&
+			translations.TryGetValue(CurrentLanguage.ToString(), out var translation))
+		{
+			return translation;
+		}
+		else
+		{
+			Debug.LogError($"Key \"{key}\" not found in \"{requestingObjectName}\"!");
+			return null;
+		}
+	}
+
 	private void LoadFromLocalizationCSV()
 	{
 		TextAsset localizationMain = _bootstrap.GameData.LocalizationMain;

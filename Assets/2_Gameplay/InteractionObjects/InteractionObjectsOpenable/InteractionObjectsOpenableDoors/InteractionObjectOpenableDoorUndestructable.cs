@@ -18,7 +18,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	[SerializeField] private InteractionObjectChangeScene _changeScene;
 	[SerializeField] protected bool _isLockedForever;
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
-	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
+	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem, gameObject.name)}";
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 	private GameScenesManager _gameSceneManager;
 	protected bool _isDoorDouble;
@@ -56,7 +56,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		if (_isObjectOpened)
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close", gameObject.name);
 
 			transform.localRotation = _openedRotation;
 		}
@@ -65,7 +65,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		{
 			if (_interactionObjectKeyData != null && !IsOpenableUnlocked)
 			{
-				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedKey")}!";
+				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedKey", gameObject.name)}!";
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			}
 			if (_mechanicalLockController != null && !IsOpenableUnlocked)
@@ -80,7 +80,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 			}
 			if (_electronicElectricalPanel != null && !IsOpenableUnlocked)
 			{
-				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedElectricalPanel")}!";
+				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedElectricalPanel", gameObject.name)}!";
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 				_electronicElectricalPanel.OnWentOutOfService += UnlockDoor;
 			}
@@ -97,7 +97,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		}
 		else
 		{
-			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedForever")}!";
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedForever", gameObject.name)}!";
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 		}
 
@@ -172,13 +172,13 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 	public virtual void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open", gameObject.name);
 
 		if (!_isLockedForever)
 		{
 			if (_interactionObjectKeyData != null)
 			{
-				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedKey")}!";
+				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedKey", gameObject.name)}!";
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			}
 			if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
@@ -202,7 +202,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		}
 		else
 		{
-			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedForever")}!";
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedForever", gameObject.name)}!";
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 		}
 	}
@@ -214,7 +214,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 			IsOpenableUnlocked = true;
 
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open", gameObject.name);
 			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 
 			if (_isDoorDouble == true)
@@ -260,11 +260,11 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 	{
 		if (IsObjectOpened)
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close", gameObject.name);
 		}
 		else
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open", gameObject.name);
 		}
 
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";

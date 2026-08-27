@@ -27,11 +27,11 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 
 		if (_isThisTurnOnButton)
 		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn")}";
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn", gameObject.name)}";
 		}
 		else
 		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff")}";
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff", gameObject.name)}";
 		}
 	}
 
@@ -72,11 +72,11 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 
 		if (_isThisTurnOnButton)
 		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn")}";
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn", gameObject.name)}";
 		}
 		else
 		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff")}";
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff", gameObject.name)}";
 		}
 	}
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InteractionObjectVendingMachineChooseAmmoCylinder : MonoBehaviour, IInteractable
+public class InteractionObjectVendingMachineAmmoCylinder : MonoBehaviour, IInteractable
 {
 	private InteractionObjectVendingMachineAmmo _vendingMachine;
 	[SerializeField] private float _rotationDuration = 1f;
@@ -9,7 +9,7 @@ public class InteractionObjectVendingMachineChooseAmmoCylinder : MonoBehaviour, 
 	private bool _isOutOfService;
 	public string InteractionObjectNameSystem => null;
 	public string InteractionObjectNameUI => null;
-	public string InteractionHintMessageMain => $"{_localizationManager.GetLocalizedString("InteractionObject_VendingMachine_Ammo_Reel")}?";
+	public string InteractionHintMessageMain => $"{_localizationManager.GetLocalizedString("InteractionObject_VendingMachine_Ammo_Cylinder", gameObject.name)}?";
 	public string InteractionHintMessageAction => null;
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
@@ -31,11 +31,11 @@ public class InteractionObjectVendingMachineChooseAmmoCylinder : MonoBehaviour, 
 
 		if (!_isOutOfService)
 		{
-			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait")}!";
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_Wait", gameObject.name)}!";
 		}
 		else
 		{
-			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService")}!";
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_OutOfService", gameObject.name)}!";
 		}
 	}
 
@@ -45,11 +45,11 @@ public class InteractionObjectVendingMachineChooseAmmoCylinder : MonoBehaviour, 
 
 		if (!_isOutOfService)
 		{
-			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait")}!";
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_Wait", gameObject.name)}!";
 		}
 		else
 		{
-			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService")}!";
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_OutOfService", gameObject.name)}!";
 		}
 	}
 
@@ -57,7 +57,7 @@ public class InteractionObjectVendingMachineChooseAmmoCylinder : MonoBehaviour, 
 	{
 		_isInteractionHintMessageFailActive = true;
 		_isOutOfService = true;
-		_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService")}!";
+		_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_OutOfService", gameObject.name)}!";
 	}
 
 	private void OnDestroy()

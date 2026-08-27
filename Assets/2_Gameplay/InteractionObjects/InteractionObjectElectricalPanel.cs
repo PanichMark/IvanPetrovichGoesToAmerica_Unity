@@ -10,11 +10,11 @@ public class InteractionObjectElectricalPanel : GameplayObjectJsonSaveLoad, IInt
 
 	public string InteractionObjectNameSystem => "InteractionObject_ElectricalPanel";
 
-	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
+	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem, gameObject.name)}";
 
 	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	private LocalizationManager _localizationManager;
-	public string InteractionHintMessageAction => $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Interact")}";
+	public string InteractionHintMessageAction => $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Interact", gameObject.name)}";
 
 	public bool IsOutOfService {  get; private set; }
 	private string _interactionHintMessageFail;
@@ -33,11 +33,11 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 
 		if (IsOutOfService)
 		{
-			_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService");
+			_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_OutOfService", gameObject.name);
 		}
 		else
 		{
-			_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_ElectroShock");
+			_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_ElectroShock", gameObject.name);
 		}
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -64,7 +64,7 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 
 			if (_health <= 0)
 			{
-				_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService");
+				_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_OutOfService", gameObject.name);
 
 				IsOutOfService = true;
 				OnWentOutOfService?.Invoke();
@@ -78,11 +78,11 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 
 		if (IsOutOfService)
 		{
-			_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService");
+			_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_OutOfService", gameObject.name);
 		}
 		else
 		{
-			_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_ElectroShock");
+			_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_ElectroShock", gameObject.name);
 		}
 	}
 
@@ -137,11 +137,11 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 
 				if (IsOutOfService)
 				{
-					_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService");
+					_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_OutOfService", gameObject.name);
 				}
 				else
 				{
-					_interactionHintMessageFail = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_ElectroShock");
+					_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_ElectroShock", gameObject.name);
 				}
 			}
 		}

@@ -26,7 +26,7 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 		_isObjectOpened = false;
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open", gameObject.name);
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 
 		UpdatePositions();
@@ -47,11 +47,11 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 
 		if (!IsObjectOpened)
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open", gameObject.name);
 		}
 		else
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close", gameObject.name);
 		}
 
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
@@ -67,12 +67,12 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 
 		if (!IsObjectOpened)
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close", gameObject.name);
 			_currentAnimation = StartCoroutine(OpenSequence());
 		}
 		else
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open", gameObject.name);
 			_currentAnimation = StartCoroutine(CloseSequence());
 		}
 
@@ -84,12 +84,12 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 	{
 		if (!IsObjectOpened)
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close", gameObject.name);
 			transform.localPosition = Vector3.MoveTowards(transform.localPosition, _openedPosition, Time.deltaTime * _openingSpeed);
 		}
 		else
 		{
-			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open", gameObject.name);
 			transform.localPosition = Vector3.MoveTowards(transform.localPosition, _closedPosition, Time.deltaTime * _openingSpeed);
 		}
 

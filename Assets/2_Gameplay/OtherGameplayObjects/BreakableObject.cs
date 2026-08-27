@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class InteractionObjectBreakable : GameplayObjectJsonSaveLoad, IInteractable, IBreakable
+public class BreakableObject : GameplayObjectJsonSaveLoad, IInteractable, IBreakable
 {
 	public bool IsObjectDestroyed => throw new System.NotImplementedException();
 

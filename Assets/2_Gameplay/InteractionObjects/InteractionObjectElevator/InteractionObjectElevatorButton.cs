@@ -43,38 +43,38 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 		{
 			if (_buttonUp)
 			{
-				_interactionHintMessageMain = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_CallElevator")}?";
+				_interactionHintMessageMain = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_CallElevator", gameObject.name)}?";
 			}
 			else
 			{
-				_interactionHintMessageMain = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_SendElevatorDown")}?";
+				_interactionHintMessageMain = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_SendElevatorDown", gameObject.name)}?";
 			}
 		}
 		else
 		{
 			if (_buttonUp)
 			{
-				_interactionHintMessageMain = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_SendElevatorUp")}?";
+				_interactionHintMessageMain = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_SendElevatorUp", gameObject.name)}?";
 			}
 			else
 			{
-				_interactionHintMessageMain = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_CallElevator")}?";
+				_interactionHintMessageMain = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_CallElevator", gameObject.name)}?";
 			}
 		}
 
 		if (_targetElevator.IsPoweredOn == true)
 		{
-			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait")}";
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait", gameObject.name)}";
 		}
 		else
 		{
-			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedElectricalPanel")}!";
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedElectricalPanel", gameObject.name)}!";
 		}
 	}
 
 	public void OnPoweredOn()
 	{
-		_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait")}";
+		_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Wait", gameObject.name)}";
 	}
 
 	public void Interact()

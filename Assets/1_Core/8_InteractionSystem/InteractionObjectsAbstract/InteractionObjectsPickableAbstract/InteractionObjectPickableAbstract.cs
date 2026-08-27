@@ -70,7 +70,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 			InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		}
 
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Pickup");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Pickup", gameObject.name);
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		InitializePickable();
@@ -100,7 +100,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_localizationManager = localizationManager;
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Pickup");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Pickup", gameObject.name);
 	}
 
 	public void Interact()

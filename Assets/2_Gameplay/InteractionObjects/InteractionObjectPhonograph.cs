@@ -13,7 +13,7 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
-	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
+	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem, gameObject.name)}";
 
 	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	private bool _isTurnedOn;
@@ -33,11 +33,11 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 
 		if(_isTurnedOn)
 		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff")}";
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TurnOff", gameObject.name)}";
 		}
 		else
 		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn")}";
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TurnOn", gameObject.name)}";
 		}
 	}
 
@@ -45,11 +45,11 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 	{
 		if (_isTurnedOn)
 		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff")}";
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TurnOff", gameObject.name)}";
 		}
 		else
 		{
-			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn")}";
+			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TurnOn", gameObject.name)}";
 		}
 	}
 
@@ -70,7 +70,7 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 
 	private void TurnOn()
 	{
-		_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOff")}";
+		_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TurnOff", gameObject.name)}";
 		_isTurnedOn = true;
 
 
@@ -81,7 +81,7 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 
 	private void TurnOff()
 	{
-		_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_TurnOn")}";
+		_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TurnOn", gameObject.name)}";
 		_isTurnedOn = false;
 
 

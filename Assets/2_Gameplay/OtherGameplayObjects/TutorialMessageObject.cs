@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class HintMessageController : GameplayObjectJsonSaveLoad
+public class TutorialMessageObject : GameplayObjectJsonSaveLoad
 {
 	[SerializeField] private InteractionObjectNote _noteObject;
 	private Collider _triggerZone;

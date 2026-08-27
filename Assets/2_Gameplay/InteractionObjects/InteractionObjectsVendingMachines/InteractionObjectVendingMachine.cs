@@ -34,7 +34,7 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 	private string _interactionHintMessageFail;
 	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {_goodsName} {InteractionObjectNameUI} {_goodsPrice} {_moneyForUI}?";
 	public virtual string InteractionHintMessageFail => _interactionHintMessageFail;
-	public string InteractionHintMessageAction => _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Purchase");
+	public string InteractionHintMessageAction => _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Purchase", gameObject.name);
 	public string InteractionObjectNameSystem => _vendingMachineName;
 	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
@@ -48,8 +48,8 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 
 		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerMoneyController>();
 _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
-		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
-		_moneyForUI = _localizationManager.GetLocalizedString($"Money_{_moneyType}");
+		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem, gameObject.name);
+		_moneyForUI = _localizationManager.GetLocalizedString($"Money_{_moneyType}", gameObject.name);
 
 		_localizationManager.OnLanguageChanged += ChangeLangauge;
 	}
@@ -63,8 +63,8 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 	{
 		_localizationManager = localizationManager;
 
-		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem);
-		_moneyForUI = _localizationManager.GetLocalizedString($"Money_{_moneyType}");
+		_goodsName = _localizationManager.GetLocalizedString(_goodsComponent.InteractionObjectNameSystem, gameObject.name);
+		_moneyForUI = _localizationManager.GetLocalizedString($"Money_{_moneyType}", gameObject.name);
 	}
 	protected void InvokeOnWentOutOfService()
 	{
@@ -84,7 +84,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 					//Debug.Log(_spawnedGoods.Count);
 					Debug.Log("Нельзя купить больше");
 					_isAdditionalInteractionHintActive = true;
-					_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_PickUpBoughtGoods")}!";
+					_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_PickUpBoughtGoods", gameObject.name)}!";
 					return;
 				}
 
@@ -102,14 +102,14 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 				Debug.Log("Недостаточно денег");
 
 				_isAdditionalInteractionHintActive = true;
-				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_Money")}!";
+				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_Money", gameObject.name)}!";
 			}
 		}
 		else
 		{
 			Debug.Log("Out of service");
 			_isAdditionalInteractionHintActive = true;
-			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_OutOfService")}!";
+			_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_OutOfService", gameObject.name)}!";
 		}
 	}
 

@@ -77,7 +77,7 @@ _buttonExitLockpickMechanicalMenu = _viewModelMenuLockpickMechanical.ButtonClose
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 _gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
 _gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;
-_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical");
+_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical", gameObject.name);
 
 _buttonMoveLockMechanismUp = _viewModelMenuLockpickMechanical.ButtonMoveLockMechanismUp.GetComponent<Button>();
 _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMechanismDown.GetComponent<Button>();
@@ -85,7 +85,7 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 		_buttonMoveLockMechanismLeft = _viewModelMenuLockpickMechanical.ButtonMoveLockMechanismLeft.GetComponent<Button>();
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick", gameObject.name);
 		_cubeFollow = Resources.Load<GameObject>("InteractionObjects/Locks/Lock_Mechanical_PuzzleCube");
 
 		_buttonMoveLockMechanismUp.onClick.AddListener(RotateGearUp);
@@ -195,8 +195,8 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 	{
 		_localizationManager = localizationManager;
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
-		_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical");
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick", gameObject.name);
+		_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical", gameObject.name);
 		//	_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
 	
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
