@@ -1,7 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class InteractionObjectOpenableSlidingUnbreakable : InteractionObjectOpenableAbstract
+public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstract
 {
 	[SerializeField] protected float _openingSpeed;
 	protected Coroutine _currentAnimation;
@@ -13,11 +15,8 @@ public class InteractionObjectOpenableSlidingUnbreakable : InteractionObjectOpen
 	private Vector3 _intermediatePosition;
 	private Vector3 _openedPosition;
 
-	[SerializeField] protected InteractionObjectElectricalPanel _electronicElectricalPanel;
-	private bool _isAdditionalInteractionHintActive;
-	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
-	public override string InteractionHintMessageFail => _interactionHintMessageFail;
-	private string _interactionHintMessageFail;
+	public override bool IsInteractionHintMessageFailActive => false;
+	public override string InteractionHintMessageFail => null;
 
 	protected string _interactionHintMessageMain;
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
@@ -29,7 +28,6 @@ public class InteractionObjectOpenableSlidingUnbreakable : InteractionObjectOpen
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-		_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedElectricalPanel")}!";
 
 		UpdatePositions();
 
@@ -66,26 +64,20 @@ public class InteractionObjectOpenableSlidingUnbreakable : InteractionObjectOpen
 			StopCoroutine(_currentAnimation);
 		}
 
-		if ((_electronicElectricalPanel != null && _electronicElectricalPanel.IsOutOfService == true) || (_electronicElectricalPanel == null))
-		{
-			if (!IsObjectOpened)
-			{
-				InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
-				_currentAnimation = StartCoroutine(OpenSequence());
-			}
-			else
-			{
-				InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
-				_currentAnimation = StartCoroutine(CloseSequence());
-			}
 
-			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-			_isAdditionalInteractionHintActive = false;
+		if (!IsObjectOpened)
+		{
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Close");
+			_currentAnimation = StartCoroutine(OpenSequence());
 		}
 		else
 		{
-			_isAdditionalInteractionHintActive = true;
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+			_currentAnimation = StartCoroutine(CloseSequence());
 		}
+
+		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+
 	}
 
 	public override void InteractCutscene()
@@ -148,5 +140,62 @@ public class InteractionObjectOpenableSlidingUnbreakable : InteractionObjectOpen
 		}
 
 		_currentAnimation = null;
+	}
+
+	public override IEnumerator SaveJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.OpenableUndestructableObjectsData == null)
+		{
+			data.OpenableUndestructableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<OpenableUndestructableObjectData>>();
+		}
+		if (!data.OpenableUndestructableObjectsData.ContainsKey(currentScene))
+		{
+			data.OpenableUndestructableObjectsData[currentScene] = new List<OpenableUndestructableObjectData>();
+		}
+
+		var targetList = data.OpenableUndestructableObjectsData[currentScene];
+
+		int indexInList = targetList.FindIndex(item => item.OpenableUndestructableObjectIndex == GameplayObjectIndex);
+
+		if (indexInList != -1)
+		{
+			var existingItem = targetList[indexInList];
+
+			existingItem.IsOpenableUndestructableObjectUnlocked = IsOpenableUnlocked;
+			existingItem.IsOpenableUndestructableObjectOpened = _isObjectOpened;
+			existingItem.OpenableUndestructableObjectNameSystem = InteractionObjectNameSystem;
+
+			targetList[indexInList] = existingItem;
+		}
+		else
+		{
+			targetList.Add(new OpenableUndestructableObjectData
+			{
+				OpenableUndestructableObjectIndex = GameplayObjectIndex,
+				OpenableUndestructableObjectNameSystem = InteractionObjectNameSystem,
+				IsOpenableUndestructableObjectUnlocked = IsOpenableUnlocked,
+				IsOpenableUndestructableObjectOpened = _isObjectOpened
+			});
+		}
+
+		yield return null;
+	}
+
+	public override IEnumerator LoadJsonData(JsonGameData data)
+	{
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+
+		if (data.OpenableUndestructableObjectsData == null || !data.OpenableUndestructableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
+
+		var savedState = sourceList.Find(item => item.OpenableUndestructableObjectIndex == GameplayObjectIndex);
+
+		if (savedState.Equals(default(OpenableUndestructableObjectData))) yield break;
+
+		IsOpenableUnlocked = savedState.IsOpenableUndestructableObjectUnlocked;
+		_isObjectOpened = savedState.IsOpenableUndestructableObjectOpened;
+
+		yield return null;
 	}
 }

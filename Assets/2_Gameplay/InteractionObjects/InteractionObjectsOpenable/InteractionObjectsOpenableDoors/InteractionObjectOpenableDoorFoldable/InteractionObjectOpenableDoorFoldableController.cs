@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionObjectOpenableDoorFoldableController : InteractionObjectOpenableAbstract
+public class InteractionObjectOpenableDoorFoldableController : InteractionObjectOpenableDoorUndestructable
 {
-	[SerializeField] private float _openAngleParent = 106f;
-	[SerializeField] private float _openAngleChild = -164f;
-	[SerializeField] private float _doorOpeningSpeed = 200f; // Увеличил скорость для наглядности
-
-	private bool _isOpened;
 
 	// Ссылки на части двери, которые мы найдем сами
 	private Transform _partParent;
@@ -18,10 +13,12 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 	private Quaternion _closedRotationParent;
 	private Quaternion _closedRotationChild;
 
-	private Coroutine _activeCoroutine;
 
-	void Start()
+	public override void InitializeDoor()
 	{
+
+	
+
 		// Находим все компоненты-трансформы у себя в детях (на любом уровне вложенности)
 		Transform[] allChildren = GetComponentsInChildren<Transform>();
 
@@ -51,28 +48,28 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 		_closedRotationChild = _partChild.localRotation;
 	}
 
-	public override void Interact()
-	{
-		if (_activeCoroutine != null)
-		{
-			StopCoroutine(_activeCoroutine);
-			_activeCoroutine = null;
-		}
-
-		_activeCoroutine = !_isOpened ? StartCoroutine(OpenDoor()) : StartCoroutine(CloseDoor());
-	}
-
 	public override void InteractCutscene()
 	{
 		//throw new System.NotImplementedException();
 	}
 
-	private IEnumerator OpenDoor()
+	public override void SetDoorToOpenedPosition()
 	{
-		_isOpened = true;
+		//transform.localRotation = _openedRotation;
+	}
 
-		Quaternion targetRotationParent = _closedRotationParent * Quaternion.Euler(0, _openAngleParent, 0);
-		Quaternion targetRotationChild = _closedRotationChild * Quaternion.Euler(0, _openAngleChild, 0);
+	public override void SetDoorToClosedPosition()
+	{
+		//transform.localRotation = _closedRotation;
+	}
+
+
+	protected override IEnumerator OpenDoor()
+	{
+		_isObjectOpened = true;
+
+		Quaternion targetRotationParent = _closedRotationParent * Quaternion.Euler(0, _doorOpenAngle, 0);
+		Quaternion targetRotationChild = _closedRotationChild * Quaternion.Euler(0, -_doorOpenAngle, 0);
 
 		float angleToRotateParent = Quaternion.Angle(_partParent.localRotation, targetRotationParent);
 		float angleToRotateChild = Quaternion.Angle(_partChild.localRotation, targetRotationChild);
@@ -93,13 +90,14 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 		// Финальное присваивание для точности
 		_partParent.localRotation = targetRotationParent;
 		_partChild.localRotation = targetRotationChild;
+		SetDoorToOpenedPosition();
 
-		_activeCoroutine = null;
+		_currentAnimation = null;
 	}
 
-	private IEnumerator CloseDoor()
+	protected override IEnumerator CloseDoor()
 	{
-		_isOpened = false;
+		_isObjectOpened = false;
 
 		Quaternion targetRotationParent = _closedRotationParent;
 		Quaternion targetRotationChild = _closedRotationChild;
@@ -122,7 +120,8 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 
 		_partParent.localRotation = targetRotationParent;
 		_partChild.localRotation = targetRotationChild;
+		SetDoorToClosedPosition();
 
-		_activeCoroutine = null;
+		_currentAnimation = null;
 	}
 }

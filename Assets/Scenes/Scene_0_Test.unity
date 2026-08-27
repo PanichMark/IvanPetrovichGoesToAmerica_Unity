@@ -83078,94 +83078,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1453811989}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1071961956
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -11.54
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.151
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -12.478
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2822494917529800037, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3759536868462179856, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: m_Name
-      value: 3Dmodel_ElectricalPanel (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5304111693172052208, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-      propertyPath: _isDestructable
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
---- !u!114 &1071961957 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5334947822725336194, guid: c4e8050c785c15b4689be0c8a13dc599, type: 3}
-  m_PrefabInstance: {fileID: 1071961956}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5abe7ebb3494eba4a9f78ca2e2102654, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1072340385
 GameObject:
   m_ObjectHideFlags: 0
@@ -110107,9 +110019,17 @@ PrefabInstance:
       propertyPath: _isDestructable
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1290566492094162482, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}
+      propertyPath: _mechanicalLockController
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1677861204753882486, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}
       propertyPath: _isDestructable
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1677861204753882486, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}
+      propertyPath: _mechanicalLockController
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2517146186763100655, guid: 0325eefcaa43a6743910e5433b8fee02, type: 3}
       propertyPath: _intermediatePositionOffset.y
@@ -116020,7 +115940,7 @@ PrefabInstance:
     - target: {fileID: 2155103699817690890, guid: b152f15490bda884db8b14eac371e0bf, type: 3}
       propertyPath: _electronicElectricalPanel
       value: 
-      objectReference: {fileID: 1071961957}
+      objectReference: {fileID: 0}
     - target: {fileID: 2155103699817690890, guid: b152f15490bda884db8b14eac371e0bf, type: 3}
       propertyPath: _interactionObjectNameSystem
       value: InteractionObject_Openable_Sliding_Vent_VentCover
@@ -230951,7 +230871,6 @@ SceneRoots:
   - {fileID: 1504831015}
   - {fileID: 1114603238}
   - {fileID: 481641552}
-  - {fileID: 1071961956}
   - {fileID: 1803664520}
   - {fileID: 279148991}
   - {fileID: 202316952}

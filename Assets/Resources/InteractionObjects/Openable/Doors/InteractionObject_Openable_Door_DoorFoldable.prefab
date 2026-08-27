@@ -45,10 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283d95a0510f77640b05317149cbb786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: 
-  _openAngleParent: 106
-  _openAngleChild: -164
+  _interactionObjectNameSystem: InteractionObject_Openable_Door_DoorWooden
+  _isObjectOpened: 0
+  _doorOpenAngle: 90
   _doorOpeningSpeed: 200
+  _interactionObjectKeyData: {fileID: 0}
+  _mechanicalLockController: {fileID: 0}
+  _electronicLockController: {fileID: 0}
+  _electronicElectricalPanel: {fileID: 0}
+  _changeScene: {fileID: 0}
+  _isLockedForever: 0
+  _doorSibling: {fileID: 0}
 --- !u!1 &3066495104550722094
 GameObject:
   m_ObjectHideFlags: 0

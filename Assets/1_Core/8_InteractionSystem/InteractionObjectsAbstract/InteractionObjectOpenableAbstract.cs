@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Collections;
+﻿using UnityEngine;
 
 public abstract class InteractionObjectOpenableAbstract : GameplayObjectJsonSaveLoad, IInteractable
 {
@@ -13,13 +10,13 @@ public abstract class InteractionObjectOpenableAbstract : GameplayObjectJsonSave
 	public virtual string InteractionObjectNameUI => null;
 	public virtual string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	public virtual string InteractionHintMessageFail => null;
-	public bool WasOpenableUnlocked { get; protected set; }
+	public bool IsOpenableUnlocked { get; protected set; }
 	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction { get; protected set; }
 
 	[SerializeField] protected bool _isObjectOpened;
 	public virtual bool IsObjectOpened => _isObjectOpened;
-
+	protected Coroutine _currentAnimation;
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	public abstract void Interact();

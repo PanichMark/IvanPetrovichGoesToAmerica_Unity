@@ -7,10 +7,10 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 {
 	protected bool _isAdditionalInteractionHintActive;
 	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
-	[SerializeField] private int _doorOpenAngle = 90;
+	[SerializeField] protected int _doorOpenAngle = 90;
 	protected string _interactionHintMessageMain;
 	private KeysManager _keysManager;
-	[SerializeField] private float _doorOpeningSpeed = 200f;
+	[SerializeField] protected float _doorOpeningSpeed = 200f;
 	[SerializeField] protected InteractionObjectKeyData _interactionObjectKeyData;
 	[SerializeField] protected InteractionObjectLockMechanical _mechanicalLockController;
 	[SerializeField] protected InteractionObjectLockElectronic _electronicLockController;
@@ -21,26 +21,14 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	public override string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(InteractionObjectNameSystem)}";
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 	private GameScenesManager _gameSceneManager;
-	private Coroutine _currentAnimation;
 	protected bool _isDoorDouble;
-	private Quaternion _openedRotation;
-	private Quaternion _closedRotation;
+	protected Quaternion _openedRotation;
+	protected Quaternion _closedRotation;
 	private PlayerMovementController _playerMovementController;
 	private string _interactionHintMessageFail;
 	public override string InteractionHintMessageFail => _interactionHintMessageFail;
 
-	private IEnumerator LoadGameplayScene()
-	{
-		gameObject.transform.SetParent(null);
-		DontDestroyOnLoad(gameObject);
 
-		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(_changeScene.SceneToLoad));
-
-		_playerMovementController.SetPlayerPosition(_changeScene.PlayerPosition);
-		_playerMovementController.SetPlayerRotationY(_changeScene.PlayerRotationY);
-		
-		Destroy(gameObject);
-	}
 
 	void Start()
 	{
@@ -75,31 +63,31 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		if (!_isLockedForever)
 		{
-			if (_interactionObjectKeyData != null)
+			if (_interactionObjectKeyData != null && !IsOpenableUnlocked)
 			{
 				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedKey")}!";
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			}
-			if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
+			if (_mechanicalLockController != null && !IsOpenableUnlocked)
 			{
 				_interactionHintMessageMain = _mechanicalLockController.InteractionHintMessageMain;
 				_mechanicalLockController.OnUnlockLock += UnlockDoor;
 			}
-			if (_electronicLockController != null && !_electronicLockController.WasUnlocked)
+			if (_electronicLockController != null && !IsOpenableUnlocked)
 			{
 				_interactionHintMessageMain = _electronicLockController.InteractionHintMessageMain;
 				_electronicLockController.OnUnlockLock += UnlockDoor;
 			}
-			if (_electronicElectricalPanel != null)
+			if (_electronicElectricalPanel != null && !IsOpenableUnlocked)
 			{
 				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Fail_LockedElectricalPanel")}!";
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			}
 			if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null && _electronicElectricalPanel == null)
-				|| (_interactionObjectKeyData != null && _keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString())
-				|| (_mechanicalLockController != null && _mechanicalLockController.WasUnlocked)
-				|| (_electronicLockController != null && _electronicLockController.WasUnlocked)
-				|| _electronicElectricalPanel != null && _electronicElectricalPanel.IsOutOfService == true))
+				|| (_interactionObjectKeyData != null && IsOpenableUnlocked)
+				|| (_mechanicalLockController != null && IsOpenableUnlocked)
+				|| (_electronicLockController != null && IsOpenableUnlocked)
+				|| _electronicElectricalPanel != null && IsOpenableUnlocked)
 			{
 				SetUnlockedDoorHintMessageMain();
 
@@ -115,6 +103,19 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		InitializeDoor();
 	}
 
+	private IEnumerator LoadGameplayScene()
+	{
+		gameObject.transform.SetParent(null);
+		DontDestroyOnLoad(gameObject);
+
+		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(_changeScene.SceneToLoad));
+
+		_playerMovementController.SetPlayerPosition(_changeScene.PlayerPosition);
+		_playerMovementController.SetPlayerRotationY(_changeScene.PlayerRotationY);
+
+		Destroy(gameObject);
+	}
+
 	public virtual void InitializeDoor()
 	{
 
@@ -124,29 +125,29 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 	{
 		if (!_isLockedForever)
 		{
-			if (_interactionObjectKeyData != null)
+			if (_interactionObjectKeyData != null && !IsOpenableUnlocked)
 			{
 				_isAdditionalInteractionHintActive = true;
 			}
-			if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
+			if (_mechanicalLockController != null && !IsOpenableUnlocked)
 			{
 				Debug.Log("Attempting to unlock the lock...");
 				_mechanicalLockController.Interact();
 			}
-			if (_electronicLockController != null && !_electronicLockController.WasUnlocked)
+			if (_electronicLockController != null && !IsOpenableUnlocked)
 			{
 				Debug.Log("Attempting to unlock the lock...");
 				_electronicLockController.Interact();
 			}
-			if (_electronicElectricalPanel != null)
+			if (_electronicElectricalPanel != null && !IsOpenableUnlocked)
 			{
 				_isAdditionalInteractionHintActive = true;
 			}
 			if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null && _electronicElectricalPanel == null)
-				|| (_interactionObjectKeyData != null && _keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString())
-				|| (_mechanicalLockController != null && _mechanicalLockController.WasUnlocked)
-				|| (_electronicLockController != null && _electronicLockController.WasUnlocked)
-				|| _electronicElectricalPanel != null && _electronicElectricalPanel.IsOutOfService == true))
+				|| (_interactionObjectKeyData != null && IsOpenableUnlocked)
+				|| (_mechanicalLockController != null && IsOpenableUnlocked)
+				|| (_electronicLockController != null && IsOpenableUnlocked)
+				|| _electronicElectricalPanel != null && IsOpenableUnlocked)
 			{
 				PerformDoorInteraction();
 
@@ -189,7 +190,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 				_interactionHintMessageMain = _electronicLockController.InteractionHintMessageMain;
 				_electronicLockController.OnUnlockLock += UnlockDoor;
 			}
-			if (WasOpenableUnlocked ||
+			if (IsOpenableUnlocked ||
 				(_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null)
 				|| (_mechanicalLockController != null && _mechanicalLockController.WasUnlocked)
 				|| (_electronicLockController != null && _electronicLockController.WasUnlocked)
@@ -207,10 +208,19 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 	protected virtual void UnlockDoor()
 	{
-		WasOpenableUnlocked = true;
+		if (IsOpenableUnlocked == false)
+		{
 
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
-		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+			IsOpenableUnlocked = true;
+
+			InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Open");
+			_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+
+			if (_isDoorDouble == true)
+			{
+				_doorSibling.UnlockDoor();
+			}
+		}
 	}
 
 	protected virtual void PerformDoorInteraction()
@@ -259,7 +269,17 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	}
 
-	private IEnumerator OpenDoor()
+	public virtual void SetDoorToOpenedPosition()
+	{
+		transform.localRotation = _openedRotation;
+	}
+
+	public virtual void SetDoorToClosedPosition()
+	{
+		transform.localRotation = _closedRotation;
+	}
+
+	protected virtual IEnumerator OpenDoor()
 	{
 		while (Quaternion.Angle(transform.localRotation, _openedRotation) > 0.1f)
 		{
@@ -267,16 +287,20 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 			yield return null;
 		}
 
+		SetDoorToOpenedPosition();
+
 		_currentAnimation = null;
 	}
 
-	private IEnumerator CloseDoor()
+	protected virtual IEnumerator CloseDoor()
 	{
 		while (Quaternion.Angle(transform.localRotation, _closedRotation) > 0.1f)
 		{
 			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, _closedRotation, Time.deltaTime * _doorOpeningSpeed);
 			yield return null;
 		}
+
+		SetDoorToClosedPosition();
 
 		_currentAnimation = null;
 	}
@@ -302,7 +326,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		{
 			var existingItem = targetList[indexInList];
 
-			existingItem.IsOpenableUndestructableObjectUnlocked = WasOpenableUnlocked;
+			existingItem.IsOpenableUndestructableObjectUnlocked = IsOpenableUnlocked;
 			existingItem.IsOpenableUndestructableObjectOpened = _isObjectOpened;
 			existingItem.OpenableUndestructableObjectNameSystem = InteractionObjectNameSystem;
 
@@ -314,7 +338,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 			{
 				OpenableUndestructableObjectIndex = GameplayObjectIndex,
 				OpenableUndestructableObjectNameSystem = InteractionObjectNameSystem,
-				IsOpenableUndestructableObjectUnlocked = WasOpenableUnlocked,
+				IsOpenableUndestructableObjectUnlocked = IsOpenableUnlocked,
 				IsOpenableUndestructableObjectOpened = _isObjectOpened
 			});
 		}
@@ -332,9 +356,38 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		if (savedState.Equals(default(OpenableUndestructableObjectData))) yield break;
 
-		WasOpenableUnlocked = savedState.IsOpenableUndestructableObjectUnlocked;
+		IsOpenableUnlocked = savedState.IsOpenableUndestructableObjectUnlocked;
 		_isObjectOpened = savedState.IsOpenableUndestructableObjectOpened;
 
-		yield return null;
+		if (IsOpenableUnlocked == true)
+		{
+			UnlockDoor();
+
+			if (_isDoorDouble)
+			{
+				_doorSibling.UnlockDoor();
+			}
+		}
+
+		if (IsObjectOpened == true)
+		{
+			SetDoorToOpenedPosition();
+
+			if (_isDoorDouble)
+			{
+				_doorSibling.SetDoorToOpenedPosition();
+			}
+		}
+		else
+		{
+			SetDoorToClosedPosition();
+
+			if (_isDoorDouble)
+			{
+				_doorSibling.SetDoorToClosedPosition();
+			}
+		}
+
+			yield return null;
 	}
 }
