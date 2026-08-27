@@ -4,7 +4,6 @@ using System.Collections;
 public abstract class WeaponEugenicAbstract : WeaponAbstract
 {
 	public abstract int ManaCost {  get; }
-	protected bool _isAttacking;
 	protected GameObject _eugenicSourcePoint;
 	protected GameObject _eugenicAttackDirection;
 
@@ -39,6 +38,7 @@ _playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 
 			if (IsWeaponAuto)
 			{
+				_isAttacking = true;
 				StartAutoAttackingWeaponPlayer();
 			}
 			else
@@ -52,8 +52,8 @@ _playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 
 	public override void StartAutoAttackingWeaponPlayer()
 	{
-		if (_isWeaponPlayerAutoAttacking) return;
-		_isWeaponPlayerAutoAttacking = true;
+		if (IsWeaponPlayerAutoAttacking) return;
+		IsWeaponPlayerAutoAttacking = true;
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
 			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
@@ -62,7 +62,7 @@ _playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 
 	public override void StopAutoAttacking()
 	{
-		_isWeaponPlayerAutoAttacking = false;
+		IsWeaponPlayerAutoAttacking = false;
 		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
 			//TurnEugenicVFXOff();
@@ -78,7 +78,7 @@ _playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 	{
 		while (true)
 		{
-			if (!_isWeaponPlayerAutoAttacking)
+			if (!IsWeaponPlayerAutoAttacking)
 			{
 				break;
 			}
@@ -89,7 +89,7 @@ _playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 
 			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
 			{
-				_isWeaponPlayerAutoAttacking = false;
+				IsWeaponPlayerAutoAttacking = false;
 				break;
 			}
 		}

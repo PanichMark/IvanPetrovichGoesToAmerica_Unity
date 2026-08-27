@@ -5,8 +5,6 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 {
 	protected GameObject _attackPoint;
 
-	protected bool _isAttacking;
-
 	protected float _capsuleHeight;
 	protected float _capsuleRadius;
 	protected float _forwardOffset;
@@ -36,6 +34,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 		if (IsWeaponAuto)
 		{
+			_isAttacking = true;
 			StartAutoAttackingWeaponPlayer();
 		}
 		else
@@ -47,12 +46,12 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	public override void StartAutoAttackingWeaponPlayer()
 	{
-		if (_isWeaponPlayerAutoAttacking)
+		if (IsWeaponPlayerAutoAttacking)
 		{
 			return;
 		}
 
-		_isWeaponPlayerAutoAttacking = true;
+		IsWeaponPlayerAutoAttacking = true;
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
 			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
@@ -61,7 +60,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	public override void StopAutoAttacking()
 	{
-		_isWeaponPlayerAutoAttacking = false;
+		IsWeaponPlayerAutoAttacking = false;
 		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
 			StopCoroutine(_currentWeaponPlayerAutoAttackCourutine);
@@ -71,7 +70,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
-		while (_isWeaponPlayerAutoAttacking)
+		while (IsWeaponPlayerAutoAttacking)
 		{
 			StartCoroutine(SingleMeleeWeaponAttack());
 

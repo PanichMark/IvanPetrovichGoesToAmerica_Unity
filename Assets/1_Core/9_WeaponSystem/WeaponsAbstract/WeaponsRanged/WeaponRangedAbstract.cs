@@ -65,10 +65,12 @@ _playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 
 			if (IsWeaponAuto)
 			{
+				_isAttacking = true;
 				StartAutoAttackingWeaponPlayer();
 			}
 			else
 			{
+				_isAttacking = true;
 				StartCoroutine(ShootWeaponPlayer(WeaponDamage));
 			}
 		}
@@ -76,10 +78,10 @@ _playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 
 	public override void StartAutoAttackingWeaponPlayer()
 	{
-		if (_isWeaponPlayerAutoAttacking || PlayerMagazineAmmoCurrent <= 0)
+		if (IsWeaponPlayerAutoAttacking || PlayerMagazineAmmoCurrent <= 0)
 			return;
 
-		_isWeaponPlayerAutoAttacking = true;
+		IsWeaponPlayerAutoAttacking = true;
 
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
@@ -89,7 +91,7 @@ _playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 
 	public override void StopAutoAttacking()
 	{
-		_isWeaponPlayerAutoAttacking = false;
+		IsWeaponPlayerAutoAttacking = false;
 
 		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
@@ -102,7 +104,7 @@ _playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 	{
 		while (true)
 		{
-			if (!_isWeaponPlayerAutoAttacking)
+			if (!IsWeaponPlayerAutoAttacking)
 			{
 				break; 
 			}
@@ -115,7 +117,7 @@ _playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 
 			if (PlayerMagazineAmmoCurrent <= 0)
 			{
-				_isWeaponPlayerAutoAttacking = false;
+				IsWeaponPlayerAutoAttacking = false;
 				break;
 			}
 		}

@@ -13,6 +13,8 @@ public class WeaponSpecialSeethroughMonocular : WeaponAbstract
 
 	public override float WeaponAttackSpeedRate => throw new System.NotImplementedException();
 
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+
 	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
 		throw new System.NotImplementedException();

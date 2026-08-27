@@ -451,6 +451,60 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		yield return new WaitForSeconds(weaponPalm.WeaponAttackSpeedRate); // return until animation plays TODO;
 
+		if (weaponPalm is WeaponEugenicAbstract)
+		{
+			/* for future
+			 *the idea is that you CANNOT spam a weapon that can be spammed
+			 *(autoweapon that has quick attack speed rate)
+			 *like 
+			 *circular saw
+			 *tesla shock
+			 *
+			 *for onlu its only applied to tesla shock
+			 *
+			 *weaponPalm.TimeBetweenAbilityToAttack
+			 *this field is waiting in method *2 of it + 0.01f WaitForSeconds			 
+			 *
+			 *todo improve
+			*/
+
+			//yield return new WaitForSeconds(weaponPalm.TimeBetweenAbilityToAttack);
+			Debug.Log("Check #1");
+			if (!weaponPalm.IsWeaponPlayerAutoAttacking)
+				{ 
+
+				if (weaponPalm.WeaponHandType == WeaponHandType.Right)
+				{
+					_playerAnimator1stPerson.Play($"{weaponPalm.WeaponType}_{weaponPalm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weaponPalm.WeaponHandType}", _layer1stWeaponRightPalm);
+					_playerAnimator3rdPerson.Play($"{weaponPalm.WeaponType}_{weaponPalm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weaponPalm.WeaponHandType}", _layer3rdWeaponRightPalm);
+				}
+				else
+				{
+					_playerAnimator1stPerson.Play($"{weaponPalm.WeaponType}_{weaponPalm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weaponPalm.WeaponHandType}", _layer1stWeaponLeftPalm);
+					_playerAnimator3rdPerson.Play($"{weaponPalm.WeaponType}_{weaponPalm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weaponPalm.WeaponHandType}", _layer3rdWeaponLeftPalm);
+				}
+				
+			}
+		
+			yield return new WaitForSeconds(weaponPalm.TimeBetweenAbilityToAttack);
+			Debug.Log("Check #2");
+			if (!weaponPalm.IsWeaponPlayerAutoAttacking)
+			{
+
+				if (weaponPalm.WeaponHandType == WeaponHandType.Right)
+				{
+					_playerAnimator1stPerson.Play($"{weaponPalm.WeaponType}_{weaponPalm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weaponPalm.WeaponHandType}", _layer1stWeaponRightPalm);
+					_playerAnimator3rdPerson.Play($"{weaponPalm.WeaponType}_{weaponPalm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weaponPalm.WeaponHandType}", _layer3rdWeaponRightPalm);
+				}
+				else
+				{
+					_playerAnimator1stPerson.Play($"{weaponPalm.WeaponType}_{weaponPalm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weaponPalm.WeaponHandType}", _layer1stWeaponLeftPalm);
+					_playerAnimator3rdPerson.Play($"{weaponPalm.WeaponType}_{weaponPalm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weaponPalm.WeaponHandType}", _layer3rdWeaponLeftPalm);
+				}
+
+			}
+		}
+
 		Debug.Log("Courutine shoot ended");
 
 		yield return null;

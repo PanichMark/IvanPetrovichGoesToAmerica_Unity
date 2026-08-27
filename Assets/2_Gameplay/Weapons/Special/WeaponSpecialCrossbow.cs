@@ -55,6 +55,8 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	public override WeaponTypes WeaponType => WeaponTypes.Special;
 	public override float WeaponDamage => 0;
 
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+
 	public override void InitializeWeapon()
 	{
 		_projectile1stPerson = FirstPersonWeaponModelInstance.transform.Find("Projectile").gameObject;

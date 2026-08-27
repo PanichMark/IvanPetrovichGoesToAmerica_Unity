@@ -37,6 +37,8 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 
 	public override float WeaponRange => 50f;
 
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+
 	protected override void InitializeWeaponRanged()
 	{
 		_revolver1stPersonGunMesh = FirstPersonWeaponModelInstance.transform.Find("Gun").GetComponent<SkinnedMeshRenderer>();

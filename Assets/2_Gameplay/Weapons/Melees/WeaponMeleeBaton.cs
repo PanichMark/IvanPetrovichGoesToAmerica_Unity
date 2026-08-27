@@ -11,6 +11,8 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 	public override float MeleeAttackDelay => 0.840f;
 
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+
 	private IInputDevice _inputDevice;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerWeaponController _weaponController;
@@ -52,6 +54,7 @@ _chokeNPCtext = _viewModelHUDInteraction.TextChokeNPC;
 	{
 		if (_isAbleToChoke)
 		{
+			_isAttacking = true;
 			PerformChokeAttack();
 			return;
 		}

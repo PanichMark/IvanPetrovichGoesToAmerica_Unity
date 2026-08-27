@@ -15,6 +15,8 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 	public override bool LeavesBulletHole => true;
 	public override bool IsReloadingAnimationSingle => true;
 
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+
 	private SkinnedMeshRenderer _bergmann1stPersonGunMesh;
 	private SkinnedMeshRenderer _bergmann3rdPersonGunMesh;
 

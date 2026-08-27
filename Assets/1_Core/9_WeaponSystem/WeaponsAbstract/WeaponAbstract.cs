@@ -9,21 +9,21 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 	[SerializeField] protected Sprite _weaponIconBig;
 	[SerializeField] protected Sprite _weaponIconSmall;
-
+	public abstract float TimeBetweenAbilityToAttack { get; }
 	public Sprite WeaponIconBig => _weaponIconBig;
 	public Sprite WeaponIconSmall => _weaponIconSmall;
 	[SerializeField] protected AudioClip _weaponSoundAttack;
 	public abstract float WeaponDamage { get; }
 	public abstract bool IsWeaponAuto { get; }
 	public abstract float WeaponAttackSpeedRate { get; }
-	protected bool _isWeaponPlayerAutoAttacking;
+	public bool IsWeaponPlayerAutoAttacking { get; protected set; }
 	protected Coroutine _currentWeaponPlayerAutoAttackCourutine;
 	protected bool _isWeaponInitialized;
 	protected bool _isThisPlayerWeapon;
 	protected PlayerWeaponController _playerWeaponController;
 	protected PlayerWeaponAnimationController _playerWeaponAnimationController;
 	protected AudioSource _weaponAudioSource;
-
+	protected bool _isAttacking;
 
 	public WeaponHandType WeaponHandType { get; private set; }
 

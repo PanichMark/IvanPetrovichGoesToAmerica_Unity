@@ -11,6 +11,9 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	private Vector3 _flightDirection;
 	private Vector3 _targetPosition;
 	public override float WeaponAttackSpeedRate => 1.4f;
+
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+
 	private GameObject _playerGameObject;
 	private GameObject _playerCameraGameObject;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;

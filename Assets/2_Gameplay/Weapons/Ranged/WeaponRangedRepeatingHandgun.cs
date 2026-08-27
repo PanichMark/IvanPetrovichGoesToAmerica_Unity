@@ -20,6 +20,8 @@ public class WeaponRangedRepeatingHandgun : WeaponRangedAbstract
 
 	public override float WeaponAttackSpeedRate => throw new System.NotImplementedException();
 
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+
 	protected override float _waitForAmmoRefill => throw new System.NotImplementedException();
 
 	protected override void InitializeWeaponRanged()

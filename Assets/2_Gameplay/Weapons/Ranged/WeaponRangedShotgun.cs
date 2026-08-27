@@ -20,6 +20,8 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 
 	public override bool LeavesBulletHole => true;
 
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+
 	private GameObject _shellRight1stPerson;
 	private GameObject _shellLeft1stPerson;
 	private GameObject _shellRight3rdPerson;

@@ -12,6 +12,8 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 	public override float MeleeAttackDelay => 0.2f;
 
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+
 	private GameObject _sawBlade1stPerson;
 	private GameObject _sawBlade3rdPerson;
 
@@ -29,6 +31,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 	{
 		if (IsWeaponAuto)
 		{
+			_isAttacking = true;
 			StartAutoAttackingWeaponPlayer();
 		}
 		else
@@ -40,8 +43,8 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 	public override void StartAutoAttackingWeaponPlayer()
 	{
-		if (_isWeaponPlayerAutoAttacking) return;
-		_isWeaponPlayerAutoAttacking = true;
+		if (IsWeaponPlayerAutoAttacking) return;
+		IsWeaponPlayerAutoAttacking = true;
 		if (_currentWeaponPlayerAutoAttackCourutine == null)
 		{
 			_currentWeaponPlayerAutoAttackCourutine = StartCoroutine(AutoAttackWeaponPlayerCourutine());
@@ -50,7 +53,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 	public override void StopAutoAttacking()
 	{
-		_isWeaponPlayerAutoAttacking = false;
+		IsWeaponPlayerAutoAttacking = false;
 		if (_currentWeaponPlayerAutoAttackCourutine != null)
 		{
 			StopCoroutine(_currentWeaponPlayerAutoAttackCourutine);
@@ -60,7 +63,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
-		while (_isWeaponPlayerAutoAttacking)
+		while (IsWeaponPlayerAutoAttacking)
 		{
 			StartCoroutine(SingleMeleeWeaponAttack());
 

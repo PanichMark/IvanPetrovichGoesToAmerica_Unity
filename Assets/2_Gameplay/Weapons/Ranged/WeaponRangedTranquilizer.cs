@@ -15,6 +15,8 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 	public override bool LeavesBulletHole => false;
 	protected override float _waitForAmmoRefill => 3.15f;
 
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+
 	private GameObject _loadingGate1stPerson;
 	private GameObject _loadingGate3rdPerson;
 

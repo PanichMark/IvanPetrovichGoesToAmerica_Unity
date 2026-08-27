@@ -12,6 +12,8 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 	public override bool IsWeaponAuto => true;
 	public float AttackRange => 2f;
 
+	public override float TimeBetweenAbilityToAttack => 0.41f;
+
 	protected override void InitializeWeaponEugenic()
 	{
 _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
@@ -33,7 +35,7 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 	{
 		while (true)
 		{
-			if (!_isWeaponPlayerAutoAttacking)
+			if (!IsWeaponPlayerAutoAttacking)
 			{
 				break;
 			}
@@ -44,7 +46,7 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 
 			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
 			{
-				_isWeaponPlayerAutoAttacking = false;
+				IsWeaponPlayerAutoAttacking = false;
 				break;
 			}
 		}
@@ -110,7 +112,7 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 		_vfxInstance = Instantiate(
 			_VFXeffect,
 			_VFXspawnPoint.position,
-			_VFXspawnPoint.rotation * Quaternion.Euler(0, 0, 0),
+			_VFXspawnPoint.rotation * Quaternion.Euler(12, 45, 0),
 			_VFXspawnPoint.transform);
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
@@ -126,7 +128,7 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 
 			yield return new WaitUntil(() => Time.time >= endTime);
 
-			if (!_isWeaponPlayerAutoAttacking)
+			if (!IsWeaponPlayerAutoAttacking)
 			{
 				TurnEugenicVFXOff();
 				yield break;
