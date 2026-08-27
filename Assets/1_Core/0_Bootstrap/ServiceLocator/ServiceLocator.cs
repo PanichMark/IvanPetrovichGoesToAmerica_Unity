@@ -5,7 +5,7 @@ using UnityEngine;
 public static class ServiceLocator
 {
     private static readonly Dictionary<Type, object> _services = new();
-    private static readonly Dictionary<EnumServiceLocatorGameObjects, GameObject> _gameObjects = new();
+    private static readonly Dictionary<ServiceLocatorGameObjectsEnum, GameObject> _gameObjects = new();
     private static readonly Dictionary<EnumServiceLocatorAudioSources, AudioSource> _audioSources = new();
 
 	public static void Register<T>(object instance)
@@ -22,7 +22,7 @@ public static class ServiceLocator
 		_services[type] = instance;
 	}
 
-	public static void Register(EnumServiceLocatorGameObjects tag, GameObject go)
+	public static void Register(ServiceLocatorGameObjectsEnum tag, GameObject go)
     {
         if (_gameObjects.ContainsKey(tag))
         {
@@ -50,7 +50,7 @@ public static class ServiceLocator
         return (T)result;
     }
 
-    public static GameObject Resolve(EnumServiceLocatorGameObjects tag)
+    public static GameObject Resolve(ServiceLocatorGameObjectsEnum tag)
     {
         if (!_gameObjects.TryGetValue(tag, out var go))
         {
@@ -68,7 +68,7 @@ public static class ServiceLocator
         return source;
     }
 
-    public static T GetComponent<T>(EnumServiceLocatorGameObjects tag) where T : Component
+    public static T GetComponent<T>(ServiceLocatorGameObjectsEnum tag) where T : Component
     {
         var go = Resolve(tag);
         return go.GetComponent<T>();

@@ -201,11 +201,11 @@ ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioMovement, Play
 ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioWeaponRight, PlayerAudioWeaponRight);
 ServiceLocator.Register(EnumServiceLocatorAudioSources.PlayerAudioWeaponLeft, PlayerAudioWeaponLeft);
 
-	ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectPlayer, _gameObjectPlayer);
-	ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectPlayerEyesLookAt, _gameobjectPlayerEyesLookAt);
-	ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectPlayerHead, _gameObjectPlayerHead);
-	ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectPlayerCollider, _gameObjectPlayerCollider);
-	ServiceLocator.Register(EnumServiceLocatorGameObjects.GameObjectPlayerCamera, _gameObjectPlayerCamera);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectPlayer, _gameObjectPlayer);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectPlayerEyesLookAt, _gameobjectPlayerEyesLookAt);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectPlayerHead, _gameObjectPlayerHead);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectPlayerCollider, _gameObjectPlayerCollider);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.GameObjectPlayerCamera, _gameObjectPlayerCamera);
 
 		yield break;
 	}

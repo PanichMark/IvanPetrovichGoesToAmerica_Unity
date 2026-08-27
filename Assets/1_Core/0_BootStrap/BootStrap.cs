@@ -45,18 +45,18 @@ public class Bootstrap : MonoBehaviour
 	private GameObject _canvasPauseSubMenuSettings;
 	private GameObject _canvasPauseSubMenuSettingsGameDifficulty;
 	private GameObject _canvasPauseMenuConfirmAction;
-	private GameObject _canvasMainMenuChooseMission;
-	private GameObject _canvasMainMenuReadNews;
+	public GameObject _canvasMainMenuChooseMission {  get; private set; }
+	public GameObject _canvasMainMenuReadNews { get; private set; }
 	private GameObject _canvasHUDinteraction;
 	private GameObject _canvasHUDmission;
 	private GameObject _canvasHUDhealthAndMana;
 	private GameObject _canvasHUDammo;
 	private GameObject _canvasMenuWeaponWheel;
-	private GameObject _canvasMenuNote;
-	private GameObject _canvasMenuLockpickMechanical;
-	private GameObject _canvasMenuLockpickElectronic;
-	private GameObject _canvasMenuDialogue;
-	private GameObject _canvasMenuCutscene;
+	public GameObject _canvasMenuNote {  get; private set; }
+	public GameObject _canvasMenuLockpickMechanical {  get; private set; }
+	public GameObject _canvasMenuLockpickElectronic { get; private set; }
+	public GameObject _canvasMenuDialogue { get; private set; }
+	public GameObject _canvasMenuCutscene { get; private set; }
 
 	private GameController _gameController;
 	private IInputDevice _inputDevice;

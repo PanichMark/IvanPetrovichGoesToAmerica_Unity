@@ -35,11 +35,13 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private List<int> _alarmIndices;
 	private int _movesLeft = 5;
 
-	private CanvasesManager _canvasesManager;
+	private GameplayCanvases _gameCanvasesList;
+	private GameObject _canvasLockEletcronic;
 	private ViewModelMenuLockpickElectronic _viewModelMenuLockpickElectronic;
 	void Awake()
 	{
-		_canvasesManager = ServiceLocator.Resolve<CanvasesManager>();
+		_gameCanvasesList = ServiceLocator.Resolve<GameplayCanvases>();
+		_canvasLockEletcronic = _gameCanvasesList.CanvasLockElectronic;
 		_viewModelMenuLockpickElectronic = ServiceLocator.Resolve<ViewModelMenuLockpickElectronic>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 _menuManager = ServiceLocator.Resolve<MenuManager>();
@@ -47,7 +49,7 @@ _menuManager = ServiceLocator.Resolve<MenuManager>();
 		_textButtonExitLockpickElectronicMenu = _viewModelMenuLockpickElectronic.TextButtonCloseMenuLockpickElectronic.GetComponent<TextMeshProUGUI>();
 _saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
-_buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>();
+		_buttonsLockElectrical = _viewModelMenuLockpickElectronic.ButtonsLockElectronic;
 		_textButtonExitLockpickElectronicMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockElectronic_ButtonCloseMenuLockElectronic");
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Hack");
@@ -88,7 +90,7 @@ _buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>();
 	{
 		if (_isPuzzleActive)
 		{
-			_canvasesManager.ShowPuzzleCanvas();
+			_canvasLockEletcronic.SetActive(true);
 		}
 	}
 
@@ -96,7 +98,7 @@ _buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>();
 	{
 		if (_isPuzzleActive)
 		{
-			_canvasesManager.HidePuzzleCanvas();
+			_canvasLockEletcronic.SetActive(false);
 		}
 	}
 

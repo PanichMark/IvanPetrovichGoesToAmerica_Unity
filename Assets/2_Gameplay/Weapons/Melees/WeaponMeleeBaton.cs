@@ -23,13 +23,16 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 	private bool _npcDetected = false;
 	private bool _isItRightHand;
 
+	private ViewModelHUDInteraction _viewModelHUDInteraction;
+
 	protected override void InitializeWeaponMelee()
 	{
-	_inputDevice = ServiceLocator.Resolve<IInputDevice>();
+		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
+		_inputDevice = ServiceLocator.Resolve<IInputDevice>();
 _playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
 _weaponController = ServiceLocator.Resolve<PlayerWeaponController>();
 
-_chokeNPCtext = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.TextChokeNPC);
+_chokeNPCtext = _viewModelHUDInteraction.TextChokeNPC;
 
 		if (_weaponController.RightHandWeaponComponent is WeaponMeleeBaton)
 		{

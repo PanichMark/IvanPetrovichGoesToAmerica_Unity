@@ -10,6 +10,8 @@ public class ViewModelHUDInteraction
 	public GameObject HUDinteraction;
 	public GameObject HUDphraseLine;
 
+	public GameObject TextChokeNPC;
+
 	public ViewModelHUDInteraction(Bootstrap bootstrap, GameObject canvas)
 	{
 		TextInteractionMessageMain = bootstrap.FindDeepGameObject(canvas, "TextMainInteraction");
@@ -32,5 +34,7 @@ public class ViewModelHUDInteraction
 
 		HUDinteraction= bootstrap.FindDeepGameObject(canvas, "HUDinteraction");
 		HUDphraseLine = bootstrap.FindDeepGameObject(canvas, "HUDphraseLine");
+
+		TextChokeNPC = bootstrap.FindDeepGameObject(canvas, "TextChokeNPC");
 	}
 }

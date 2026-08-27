@@ -18,8 +18,8 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	{
 		if (_isThisPlayerWeapon == true)
 		{
-_eugenicAttackDirection = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
-_eugenicSourcePoint = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCamera);
+_eugenicAttackDirection = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayer);
+_eugenicSourcePoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerCamera);
 
 _playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 		}

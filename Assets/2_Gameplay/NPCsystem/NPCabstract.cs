@@ -57,7 +57,7 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 	private void Start()
 	{
-_playerCameraGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCamera);
+_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerCamera);
 _detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>();
 _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 

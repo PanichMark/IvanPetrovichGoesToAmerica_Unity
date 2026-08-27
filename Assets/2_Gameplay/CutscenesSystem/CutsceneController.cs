@@ -60,8 +60,8 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private void Start()
 	{
 		_viewModelMenuCutscene = ServiceLocator.Resolve<ViewModelMenuCutscene>();
-		_playerProxy = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
-		_playerCameraProxy = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCamera);
+		_playerProxy = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayer);
+		_playerCameraProxy = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerCamera);
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_gameController = ServiceLocator.Resolve<GameController>();

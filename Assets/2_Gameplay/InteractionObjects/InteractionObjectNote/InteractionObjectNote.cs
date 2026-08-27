@@ -32,14 +32,16 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	private Image _imageComponent;
 
 	[SerializeField] private InteractionObjectNote _noteToOpenAfter;
-	private CanvasesManager _canvasesManager;
+	private GameplayCanvases _gameCanvasesList;
+	private GameObject _canvasNote;
 	private ViewModelMenuNote _viewModelMenuNote;
 	public bool IsInteractionHintMessageFailActive => false;
 	private GameScenesManager _gameSceneManager;
 
 	private void Start()
 	{
-		_canvasesManager = ServiceLocator.Resolve<CanvasesManager>();
+		_gameCanvasesList = ServiceLocator.Resolve<GameplayCanvases>();
+		_canvasNote = _gameCanvasesList.CanvasNote;
 		_viewModelMenuNote = ServiceLocator.Resolve<ViewModelMenuNote>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
@@ -98,8 +100,9 @@ _textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();
 	{
 		if (_isReading)
 		{
-			_canvasesManager.HideNoteCanvas();
-			
+			_canvasNote.SetActive(false);
+
+
 		}
 	}
 
@@ -107,8 +110,9 @@ _textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();
 	{
 		if (_isReading)
 		{
-			_canvasesManager.ShowNoteCanvas();
-			
+			_canvasNote.SetActive(true);
+
+
 		}
 	}
 

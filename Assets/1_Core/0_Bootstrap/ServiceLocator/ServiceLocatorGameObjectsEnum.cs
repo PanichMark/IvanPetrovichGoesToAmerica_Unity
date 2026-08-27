@@ -1,4 +1,4 @@
-﻿public enum EnumServiceLocatorGameObjects
+﻿public enum ServiceLocatorGameObjectsEnum
 {
     GameObjectPlayer,
     GameObjectPlayerEyesLookAt,

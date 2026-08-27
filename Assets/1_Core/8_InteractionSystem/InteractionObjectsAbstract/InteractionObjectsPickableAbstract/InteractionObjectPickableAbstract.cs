@@ -53,15 +53,15 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectJsonSave
 		//_pickableObjectTransform = GetComponent<Transform>();
 		_pickableLayer = LayerMask.NameToLayer("Pickable");
 		_playerLayer = LayerMask.NameToLayer("Player");
-_playerColliderGameObject = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCollider);
+_playerColliderGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerCollider);
 _playerCollider = _playerColliderGameObject.GetComponent<Collider>();
 _gameController = ServiceLocator.Resolve<GameController>();
 _playerInteractionController = ServiceLocator.Resolve<PlayerInteractionController>();
 Collider = GetComponent<BoxCollider>();
 
 RigidBody = GetComponent<Rigidbody>();
-CachedPlayer = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
-_gameObjectSpineSlot = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectSpineSlot);
+CachedPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayer);
+_gameObjectSpineSlot = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectSpineSlot);
 
 _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 

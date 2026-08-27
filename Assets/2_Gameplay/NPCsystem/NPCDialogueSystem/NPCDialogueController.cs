@@ -55,15 +55,22 @@ public class NPCdialogueController : MonoBehaviour
 	private GameObject _playerEyesLookAt;
 	public Dictionary<LanguagesEnum, List<string>> LocalizedDialogue => _localizedDialogue;
 	private TextMeshProUGUI _NPCdialogueText;
-	private GameObject _canvasDialogueMenu;
+	
 	private GameScenesManager _gameSceneManager;
 	private int _currentDialogueStepIndex;
 	private bool _canSkip;
 	private NPCstateMachineController _NPCstateMachineController;
 	public bool IsDialogueActive { get; private set; }
 
+	private GameCanvasesList _canvasesList;
+	private GameObject _canvasDialogue;
+	private ViewModelMenuDialogue _viewModelMenuDialogue;
+
 	public void Initialize(NPCstateMachineController NPCstateMachineController)
 	{
+		_canvasesList = ServiceLocator.Resolve<GameCanvasesList>();
+		_canvasDialogue = _canvasesList.CanvasMenuDialogue;
+		_viewModelMenuDialogue = ServiceLocator.Resolve<ViewModelMenuDialogue>();
 		_uLipSyncBlendShape = GetComponent<uLipSyncBlendShape>();
 		_audioSource = GetComponent<AudioSource>();
 		_NPCabstract = GetComponent<NPCabstract>();
@@ -73,21 +80,21 @@ _playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 _animator = GetComponent<Animator>();
 _animator.speed = 0.5f;
 _interactionController = ServiceLocator.Resolve<PlayerInteractionController>();
-_buttonDialogueYes = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonDialogueYes);
-_buttonDialogueNo = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonDialogueNo);
-_gameController = ServiceLocator.Resolve<GameController>();
-_textDialogueYes = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.TextDialogueYes);
-_textDialogueNo = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.TextDialogueNo);
+_buttonDialogueYes = _viewModelMenuDialogue.ButtonDialogueYes.GetComponent<Button>();
+_buttonDialogueNo = _viewModelMenuDialogue.ButtonDialogueNo.GetComponent<Button>();
+		_gameController = ServiceLocator.Resolve<GameController>();
+_textDialogueYes = _viewModelMenuDialogue.TextDialogueYes;
+_textDialogueNo = _viewModelMenuDialogue.TextDialogueNo;
 
-_playerEyesLookAt = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerEyesLookAt);
+_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerEyesLookAt);
 
 _textComponentDialogueYes = _textDialogueYes.GetComponent<TextMeshProUGUI>();
 _textComponentDialogueNo = _textDialogueNo.GetComponent<TextMeshProUGUI>();
 
 _menuManager = ServiceLocator.Resolve<MenuManager>();
-_canvasDialogueMenu = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMenuDialogue);
+
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
-_NPCdialogueText = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextDialogueLine);
+_NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMeshProUGUI>();
 
 		_NPCstateMachineController = NPCstateMachineController;
 
@@ -240,7 +247,7 @@ _NPCdialogueText = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocat
 	{
 		if (IsDialogueActive)
 		{
-			_canvasDialogueMenu.SetActive(true);
+			_canvasDialogue.SetActive(true);
 		}
 	}
 
@@ -248,7 +255,7 @@ _NPCdialogueText = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocat
 	{
 		if (IsDialogueActive)
 		{
-			_canvasDialogueMenu.SetActive(false);
+			_canvasDialogue.SetActive(false);
 		}
 	}
 

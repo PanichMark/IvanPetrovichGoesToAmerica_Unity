@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class MainMenuChooseMissionController : MonoBehaviour
 {
 	private PauseMenuConfirmActionController _pauseMenuConfirmActionController;
-private CanvasesManager _canvasesManager;
 	public delegate void MainMenuChooseMissionHandler();
 	public event MainMenuChooseMissionHandler OnCloseMainMenuChooseMission;
 	private ViewModelMainMenuChooseMission _viewModelMainMenuChooseMission;
@@ -30,13 +29,13 @@ private CanvasesManager _canvasesManager;
 	private Button _buttonComponentCloseMainMenuChooseMission;
 	private GameObject _textButtonCloseMainMenuChooseMission;
 	private TextMeshProUGUI _textComponentButtonCloseMainMenuChooseMission;
-
+	private GameObject _canvasChooseMissionMenu;
 	public bool IsMainMenuChooseMissionOpened { get; private set; }
-
-	public void Initialize(
-		CanvasesManager canvasesManager)
+	private GameCanvasesList _canvasesList;
+	public void Initialize(GameCanvasesList canvasesList)
 	{
-		_canvasesManager = canvasesManager;
+		_canvasesList = canvasesList;
+		_canvasChooseMissionMenu = _canvasesList.CanvasMainMenuChooseMission;
 _pauseMenuConfirmActionController = ServiceLocator.Resolve<PauseMenuConfirmActionController>();
 _menuManager = ServiceLocator.Resolve<MenuManager>();
 _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
@@ -101,7 +100,7 @@ _gameScenesList = ServiceLocator.Resolve<GameScenesList>();
 	public void ShowCanvasMainMenuChooseMission()
 	{
 		IsMainMenuChooseMissionOpened = true;
-		_canvasesManager.ShowCanvasMainMenuChooseMission();
+		_canvasChooseMissionMenu.SetActive(true);
 
 		Debug.Log("Show ChooseMission");
 	}
@@ -110,7 +109,7 @@ _gameScenesList = ServiceLocator.Resolve<GameScenesList>();
 	{
 		IsMainMenuChooseMissionOpened = false;
 		OnCloseMainMenuChooseMission?.Invoke();
-		_canvasesManager.HideCanvasMainMenuChooseMission();
+		_canvasChooseMissionMenu.SetActive(false);
 
 		if (_menuManager.PauseMenuLevel.Count > 0)
 		{

@@ -8,7 +8,6 @@ public class ViewModelHUDAmmo
 	public GameObject TextLeftWeaponAmmoMagazineNumber;
 	public GameObject TextLeftWeaponAmmoReserveNumber;
 	public GameObject LeftWeaponAmmoBox;
-	public GameObject TextChokeNPC;
 	public GameObject HUDammo;
 
 	public ViewModelHUDAmmo(Bootstrap bootstrap, GameObject canvas)
@@ -19,7 +18,6 @@ public class ViewModelHUDAmmo
 		TextLeftWeaponAmmoMagazineNumber = bootstrap.FindDeepGameObject(canvas, "TextLeftWeaponAmmoMagazineNumber");
 		TextLeftWeaponAmmoReserveNumber = bootstrap.FindDeepGameObject(canvas, "TextLeftWeaponAmmoReserveNumber");
 		LeftWeaponAmmoBox = bootstrap.FindDeepGameObject(canvas, "LeftWeaponAmmoBox");
-		TextChokeNPC = bootstrap.FindDeepGameObject(canvas, "TextChokeNPC");
 
 		HUDammo = bootstrap.FindDeepGameObject(canvas, "HUDammo");
 	}

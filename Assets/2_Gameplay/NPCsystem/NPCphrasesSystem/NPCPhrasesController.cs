@@ -29,14 +29,17 @@ public class NPCphrasesController : MonoBehaviour
 	private GameObject _NPCphrasesText;
 	private TextMeshProUGUI _NPCphrasesTextComponent;
 
+	private ViewModelHUDInteraction _viewModelHUDInteraction;
+
 	public void Initialize(NPCabstract NPCabstract)
 	{
+		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
 		_NPCabstract = NPCabstract;
 	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
-_NPCphrasesText = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.TextPhraseLine);
+_NPCphrasesText = _viewModelHUDInteraction.TextPhraseLine;
 _NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();
 //Debug.Log(_NPCphrasesText);
-_playerEyesLookAt = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerEyesLookAt);
+_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.GameObjectPlayerEyesLookAt);
 		_audioSource = GetComponent<AudioSource>();
 		LoadPhrasesTextFiles();
 		LoadVoiceLineFiles();

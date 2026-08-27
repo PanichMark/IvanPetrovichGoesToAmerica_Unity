@@ -10,17 +10,18 @@ public class MainMenuReadNewsController : MonoBehaviour
 
 	private const string YOUTUBE_URL = "https://youtube.com/@panichmark";
 	private const string GITHUB_URL = "https://github.com/PanichMark/IvanPetrovichGoesToAmerica_Unity";
-	private CanvasesManager _canvasesManager;
 	public delegate void MainMenuReadNewsHandler();
 	public event MainMenuReadNewsHandler OnCloseMainMenuReadNews;
 	
 	public bool IsMainMenuReadNewsOpened {  get; private set; }
-
+	private GameCanvasesList _gameCanvasesList;
+	private GameObject _canvasReadNews;
 	public void Initialize(
-		CanvasesManager canvasesManager)
+		GameCanvasesList gameCanvasesList)
 	{
-		_canvasesManager = canvasesManager;
-_viewModelMainMenuReadNews = ServiceLocator.Resolve<ViewModelMainMenuReadNews>();
+		_gameCanvasesList = gameCanvasesList;
+		_canvasReadNews = gameCanvasesList.CanvasMainMenuReadNews;
+		_viewModelMainMenuReadNews = ServiceLocator.Resolve<ViewModelMainMenuReadNews>();
 
 		_buttonCloseMainMenuReadNews = _viewModelMainMenuReadNews.ButtonCloseMainMenuReadNews.GetComponent<Button>();
 		_buttonYouTube = _viewModelMainMenuReadNews.ButtonYouTube.GetComponent<Button>();
@@ -37,7 +38,7 @@ _viewModelMainMenuReadNews = ServiceLocator.Resolve<ViewModelMainMenuReadNews>()
 	public void ShowCanvasMainMenuReadNews()
 	{
 		IsMainMenuReadNewsOpened = true;
-		_canvasesManager.ShowCanvasMainMenuReadNews();
+		_canvasReadNews.SetActive(true);
 
 		Debug.Log("Show ReadNews");
 	}
@@ -46,7 +47,7 @@ _viewModelMainMenuReadNews = ServiceLocator.Resolve<ViewModelMainMenuReadNews>()
 	{
 		IsMainMenuReadNewsOpened = false;
 		OnCloseMainMenuReadNews?.Invoke();
-		_canvasesManager?.HideCanvasMainMenuReadNews();
+		_canvasReadNews.SetActive(false);
 
 		Debug.Log("Hide ReadNews");
 	}

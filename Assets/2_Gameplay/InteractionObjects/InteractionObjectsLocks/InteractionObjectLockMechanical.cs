@@ -58,29 +58,31 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	public string InteractionHintMessageFail => null;
 
 	public bool IsInteractionHintMessageFailActive => false;
-
+	private GameplayCanvases _gameCanvasesList;
+	private GameObject _canvasLockMechanical;
 	public string InteractionObjectNameUI { get; protected set; }
-	private CanvasesManager _canvasesManager;
+	
 	private ViewModelMenuLockpickMechanical _viewModelMenuLockpickMechanical;
 	private void Awake()
 	{
 		_viewModelMenuLockpickMechanical = ServiceLocator.Resolve<ViewModelMenuLockpickMechanical>();
-		_canvasesManager = ServiceLocator.Resolve<CanvasesManager>();
+	_gameCanvasesList = ServiceLocator.Resolve<GameplayCanvases>();
+		_canvasLockMechanical = _gameCanvasesList.CanvasLockMechanical;
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 _menuManager = ServiceLocator.Resolve<MenuManager>();
-_buttonExitLockpickMechanicalMenu = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonCloseLockpickMechanicalMenu);
-_textButtonExitLockpickMechanicalMenu = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextButtonCloseLockpickMechanicalMenu);
-_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
+_buttonExitLockpickMechanicalMenu = _viewModelMenuLockpickMechanical.ButtonCloseMenuLockpickMechanical.GetComponent<Button>();
+		_textButtonExitLockpickMechanicalMenu = _viewModelMenuLockpickMechanical.TextButtonCloseMenuLockpickMechanical.GetComponent<TextMeshProUGUI>();
+		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 _gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
 _gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;
 _textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical");
 
-_buttonMoveLockMechanismUp = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.MoveLockMechanicalUp);
-_buttonMoveLockMechanismDown = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.MoveLockMechanicalDown);
-_buttonMoveLockMechanismRight = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.MoveLockMechanicalRight);
-_buttonMoveLockMechanismLeft = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.MoveLockMechanicalLeft);
+_buttonMoveLockMechanismUp = _viewModelMenuLockpickMechanical.ButtonMoveLockMechanismUp.GetComponent<Button>();
+_buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMechanismDown.GetComponent<Button>();
+		_buttonMoveLockMechanismRight = _viewModelMenuLockpickMechanical.ButtonMoveLockMechanismRight.GetComponent<Button>();
+		_buttonMoveLockMechanismLeft = _viewModelMenuLockpickMechanical.ButtonMoveLockMechanismLeft.GetComponent<Button>();
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("HUD_Interaction_HintMessage_Action_Lockpick");
@@ -145,7 +147,7 @@ _buttonMoveLockMechanismLeft = ServiceLocator.GetComponent<Button>(EnumServiceLo
 			Debug.LogError("END object not found.");
 		}
 
-		ShowPuzzleCanvas();
+		
 		_buttonExitLockpickMechanicalMenu.onClick.RemoveAllListeners();
 		_buttonExitLockpickMechanicalMenu.onClick.AddListener(OnClosePuzzle);
 
@@ -155,6 +157,7 @@ _buttonMoveLockMechanismLeft = ServiceLocator.GetComponent<Button>(EnumServiceLo
 		_currentCubeFollow.transform.LookAt(Camera.main.transform);
 
 		Transform root = _currentCubeFollow.transform;
+		ShowPuzzleCanvas();
 		_centreZoneCollider = root.Find("CentreZone")?.GetComponent<MeshCollider>();
 		_upZoneCollider = root.Find("UpZone")?.GetComponent<MeshCollider>();
 		_downZoneCollider = root.Find("DownZone")?.GetComponent<MeshCollider>();
@@ -199,23 +202,23 @@ _buttonMoveLockMechanismLeft = ServiceLocator.GetComponent<Button>(EnumServiceLo
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 	}
 
-	private void HidePuzzleCanvas()
-	{
-		if (_isPuzzleActive)
-		{
-			_canvasLockpickMechanicalMenu.SetActive(false);
-			_currentGearInstance.SetActive(false);
-			_currentCubeFollow.SetActive(false);
-		}
-	}
-
 	private void ShowPuzzleCanvas()
 	{
 		if (_isPuzzleActive)
 		{
-			_canvasLockpickMechanicalMenu.SetActive(true);
+			_canvasLockMechanical.SetActive(true);
 			_currentGearInstance.SetActive(true);
 			_currentCubeFollow.SetActive(true);
+		}
+	}
+
+	private void HidePuzzleCanvas()
+	{
+		if (_isPuzzleActive)
+		{
+			_canvasLockMechanical.SetActive(false);
+			_currentGearInstance.SetActive(false);
+			_currentCubeFollow.SetActive(false);
 		}
 	}
 

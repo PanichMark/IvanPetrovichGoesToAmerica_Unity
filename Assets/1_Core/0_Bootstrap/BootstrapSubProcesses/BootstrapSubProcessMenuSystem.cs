@@ -12,7 +12,8 @@ public class BootstrapSubProcessMenuSystem
 	private GameTutorialsList _tutorialsList;
 	private GameObject _canvasMainMenuChooseMission;
 	private GameObject _canvasBootstrapSignTermsAndConditions;
-	private CanvasesManager _canvasesManager;
+
+	private GameplayCanvases _gameplayCanvases;
 	public ViewModelBootstrapSignTermsAndConditions ViewModelBootstrapSignTermsAndConditions { get; private set; }
 	public ViewModelSavingProcess ViewModelSavingProcess { get; private set; }
 	public ViewModelMainMenuChooseMission ViewModelMainMenuChooseMission { get; private set; }
@@ -124,6 +125,7 @@ public class BootstrapSubProcessMenuSystem
 
 	public GameObject CanvasMenuWeaponWheel {  get; private set; }
 
+
 	public BootstrapSubProcessMenuSystem(
 		Bootstrap bootstrap,
 		BootstrapSubProcessScenesSystem bootstrapSubProcessSceneSystem,
@@ -197,7 +199,6 @@ public class BootstrapSubProcessMenuSystem
 		_gameObjectBootstrapMenuSystem = new GameObject("Bootstrap_MenuSystem");
 
 		MenuManager = _gameObjectBootstrapMenuSystem.AddComponent<MenuManager>();
-		_canvasesManager = _gameObjectBootstrapMenuSystem.AddComponent<CanvasesManager>();
 		_menuBackgroundController = _gameObjectBootstrapMenuSystem.AddComponent<MenuBackgroundController>();
 		PauseMenuController = _gameObjectBootstrapMenuSystem.AddComponent<PauseMenuController>();
 		_pauseSubMenuSaveController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSaveController>();
@@ -216,6 +217,17 @@ public class BootstrapSubProcessMenuSystem
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
 		HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
 		_savingProcessController = _gameObjectBootstrapMenuSystem.AddComponent<SavingProcessController>();
+
+		// В методе Initialize() класса BootstrapSubProcessMenuSystem (после инициализации всех ViewModel)
+		_gameplayCanvases = new GameplayCanvases(
+			_canvasMenuLockpickMechanical,
+			_canvasMenuLockpickElectronic,
+			_canvasMenuNote,
+			_canvasMenuDialogue,
+			_canvasMainMenuChooseMission,
+			_canvasMainMenuReadNews,
+			_canvasMenuCutscene
+		);
 
 		ViewModelMenuChooseFirstLanguage = new ViewModelBootstrapChooseFirstLanguage(_bootstrap, _canvasMenuChooseFirstLanguage);
 
@@ -246,9 +258,6 @@ public class BootstrapSubProcessMenuSystem
 		_viewModelPauseSubMenuSettingsSectionControls = new ViewModelPauseSubMenuSettingsSectionControls(_bootstrap, _canvasPauseSubMenuSettings);
 		_viewModelPauseSubMenuSettingsSectionGraphics = new ViewModelPauseSubMenuSettingsSectionGraphics(_bootstrap, _canvasPauseSubMenuSettings);
 		ViewModelPauseSubMenuSettingsSectionAudio = new ViewModelPauseSubMenuSettingsSectionAudio(_bootstrap, _canvasPauseSubMenuSettings);
-
-		_canvasesManager.Initialize(
-			_bootstrap.GameData.GameCanvasesList);
 
 		MenuManager.Initialize(
 			_bootstrap,
@@ -395,27 +404,35 @@ public class BootstrapSubProcessMenuSystem
 
 ServiceLocator.Register<PauseSubMenuSettingsGameDifficultyController>(_pauseSubMenuSettingsGameDifficultyController);
 ServiceLocator.Register<PauseMenuConfirmActionController>(PauseMenuConfirmActionController);
-		ServiceLocator.Register<CanvasesManager>(_canvasesManager);
 		ServiceLocator.Register<MenuManager>(MenuManager);
 ServiceLocator.Register<PauseMenuController>(PauseMenuController);
 ServiceLocator.Register<PauseSubMenuSettingsController>(PauseSubMenuSettingsController);
 ServiceLocator.Register<PauseSubMenuSettingsSectionGeneralController>(PauseSubMenuSettingsSectionGeneralController);
 		ServiceLocator.Register<MenuBackgroundController>(_menuBackgroundController);
 
-	
-
-		
 
 
-		ServiceLocator.Register<ViewModelHUDAmmo>(ViewModelHUDAmmo);
-	
-ServiceLocator.Register<ViewModelMainMenuChooseMission>(ViewModelMainMenuChooseMission);
+
+
+
+
+		ServiceLocator.Register<GameplayCanvases>(_gameplayCanvases);
+
+
+
+
+
+
+
+
+		ServiceLocator.Register<ViewModelMainMenuChooseMission>(ViewModelMainMenuChooseMission);
 ServiceLocator.Register<ViewModelMainMenuReadNews>(_viewModelMainMenuReadNews);
 
 		ServiceLocator.Register<ViewModelMenuNote>(ViewModelMenuNote);
 		ServiceLocator.Register<ViewModelMenuLockpickMechanical>(ViewModelMenuLockpickMechanical);
+		ServiceLocator.Register<ViewModelMenuLockpickElectronic>(ViewModelMenuLockpickElectronic);
 		ServiceLocator.Register<ViewModelHUDAmmo>(ViewModelHUDAmmo);
-		ServiceLocator.Register<ViewModelHUDAmmo>(ViewModelHUDAmmo);
+		ServiceLocator.Register<ViewModelHUDInteraction>(ViewModelHUDInteraction);
 
 		yield break;
 	}
