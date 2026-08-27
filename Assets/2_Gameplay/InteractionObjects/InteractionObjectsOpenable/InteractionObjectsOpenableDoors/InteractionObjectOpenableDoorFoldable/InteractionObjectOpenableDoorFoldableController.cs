@@ -5,9 +5,12 @@ using UnityEngine;
 public class InteractionObjectOpenableDoorFoldableController : InteractionObjectOpenableDoorUndestructable
 {
 
-	// Ссылки на части двери, которые мы найдем сами
-	private Transform _partParent;
-	private Transform _partChild;
+
+	private InteractionObjectOpenableDoorFoldablePart _parentComponent;
+	private InteractionObjectOpenableDoorFoldablePart _childComponent;
+
+	private Transform _partParentTransform;
+	private Transform _partChildTransform;
 
 	// Сохраняем закрытые позиции
 	private Quaternion _closedRotationParent;
@@ -39,13 +42,20 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 			return;
 		}
 
+
+		_parentComponent = doorParts[0].gameObject.GetComponent<InteractionObjectOpenableDoorFoldablePart>();
+		_childComponent = doorParts[1].gameObject.GetComponent<InteractionObjectOpenableDoorFoldablePart>();
+
+		_parentComponent.Initialze();
+		_childComponent.Initialze();
+
 		// Присваиваем ссылки. Порядок может быть любым, главное - сохранить их для анимации.
-		_partParent = doorParts[0];
-		_partChild = doorParts[1];
+		_partParentTransform = doorParts[0];
+		_partChildTransform = doorParts[1];
 
 		// Запоминаем начальные вращения
-		_closedRotationParent = _partParent.localRotation;
-		_closedRotationChild = _partChild.localRotation;
+		_closedRotationParent = _partParentTransform.localRotation;
+		_closedRotationChild = _partChildTransform.localRotation;
 	}
 
 	public override void InteractCutscene()
@@ -57,18 +67,18 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 	{
 	
 			Quaternion targetParent = _closedRotationParent * Quaternion.Euler(0, _doorOpenAngle, 0);
-			Quaternion targetChild = _closedRotationChild * Quaternion.Euler(0, -_doorOpenAngle * 1.8f, 0);
+			Quaternion targetChild = _closedRotationChild * Quaternion.Euler(0, _doorOpenAngle * 1.8f, 0);
 
-			_partParent.localRotation = targetParent;
-			_partChild.localRotation = targetChild;
+			_partParentTransform.localRotation = targetParent;
+			_partChildTransform.localRotation = targetChild;
 		
 	}
 
 	public override void SetDoorToClosedPosition()
 	{
 
-			_partParent.localRotation = _closedRotationParent;
-			_partChild.localRotation = _closedRotationChild;
+			_partParentTransform.localRotation = _closedRotationParent;
+			_partChildTransform.localRotation = _closedRotationChild;
 		
 	}
 
@@ -79,7 +89,7 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 		Quaternion startChild = _closedRotationChild;
 
 		Quaternion targetParent = startParent * Quaternion.Euler(0, _doorOpenAngle, 0);
-		Quaternion targetChild = startChild * Quaternion.Euler(0, -_doorOpenAngle * 1.8f, 0);
+		Quaternion targetChild = startChild * Quaternion.Euler(0, _doorOpenAngle * 1.8f, 0);
 
 		float elapsedTime = 0f;
 		float duration = _doorOpenAngle / _doorOpeningSpeed;
@@ -88,8 +98,8 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 		{
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / duration;
-			_partParent.localRotation = Quaternion.LerpUnclamped(startParent, targetParent, t);
-			_partChild.localRotation = Quaternion.LerpUnclamped(startChild, targetChild, t);
+			_partParentTransform.localRotation = Quaternion.LerpUnclamped(startParent, targetParent, t);
+			_partChildTransform.localRotation = Quaternion.LerpUnclamped(startChild, targetChild, t);
 			yield return null;
 		}
 
@@ -101,8 +111,8 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 	{
 		_isObjectOpened = false;
 
-		Quaternion startParent = _partParent.localRotation;
-		Quaternion startChild = _partChild.localRotation;
+		Quaternion startParent = _partParentTransform.localRotation;
+		Quaternion startChild = _partChildTransform.localRotation;
 
 		Quaternion targetRotationParent = _closedRotationParent;
 		Quaternion targetRotationChild = _closedRotationChild;
@@ -114,8 +124,8 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 		{
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / duration;
-			_partParent.localRotation = Quaternion.LerpUnclamped(startParent, targetRotationParent, t);
-			_partChild.localRotation = Quaternion.LerpUnclamped(startChild, targetRotationChild, t);
+			_partParentTransform.localRotation = Quaternion.LerpUnclamped(startParent, targetRotationParent, t);
+			_partChildTransform.localRotation = Quaternion.LerpUnclamped(startChild, targetRotationChild, t);
 			yield return null;
 		}
 

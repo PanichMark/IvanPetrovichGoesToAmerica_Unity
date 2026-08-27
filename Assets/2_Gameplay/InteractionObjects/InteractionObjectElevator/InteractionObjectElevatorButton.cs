@@ -97,5 +97,6 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 
 	public void Electrify(float damage)
 	{
+		_targetElevator.MoveElevator(_buttonUp);
 	}
 }

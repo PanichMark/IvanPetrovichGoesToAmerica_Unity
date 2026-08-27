@@ -124,6 +124,11 @@ public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 
 	public bool MoveElevator(bool moveUp)
 	{
+		if (!IsPoweredOn)
+		{
+			return false;
+		}
+
 		if (_isElevatorMoving)
 		{
 			return false;

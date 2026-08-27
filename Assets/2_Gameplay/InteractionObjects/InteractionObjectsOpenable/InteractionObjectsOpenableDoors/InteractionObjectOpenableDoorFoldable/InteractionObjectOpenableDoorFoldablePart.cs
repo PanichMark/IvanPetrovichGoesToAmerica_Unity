@@ -6,19 +6,19 @@ public class InteractionObjectOpenableDoorFoldablePart : MonoBehaviour, IInterac
 	// Ставим TRUE на ParentDoor и FALSE на ChildDoor.
 	[SerializeField] private bool _isParent;
 
-	private InteractionObjectOpenableAbstract _controller;
+	private InteractionObjectOpenableDoorFoldableController _controller;
 
-	void Start()
+	public void Initialze()
 	{
 		if (_isParent)
 		{
 			// Для ParentDoor ищем контроллер у его родителя (Door_Root)
-			_controller = transform.parent.GetComponent<InteractionObjectOpenableAbstract>();
+			_controller = transform.parent.GetComponent<InteractionObjectOpenableDoorFoldableController>();
 		}
 		else
 		{
 			// Для ChildDoor ищем контроллер у родителя своего родителя (тоже Door_Root)
-			_controller = transform.parent.parent.GetComponent<InteractionObjectOpenableAbstract>();
+			_controller = transform.parent.parent.GetComponent<InteractionObjectOpenableDoorFoldableController>();
 		}
 
 		if (_controller == null)
@@ -30,17 +30,17 @@ public class InteractionObjectOpenableDoorFoldablePart : MonoBehaviour, IInterac
 	// --- Реализация интерфейса IInteractable ---
 	public string InteractionObjectNameSystem => null;
 	public string InteractionObjectNameUI => null;
-	public string InteractionHintMessageMain => null;
+	public string InteractionHintMessageMain => _controller.InteractionHintMessageMain;
 	public string InteractionHintMessageAction => null;
-	public string InteractionHintMessageFail => null;
-	public bool IsInteractionHintMessageFailActive => false;
+	public string InteractionHintMessageFail => _controller.InteractionHintMessageFail;
+	public bool IsInteractionHintMessageFailActive => _controller.IsInteractionHintMessageFailActive;
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
 	// При взаимодействии вызываем метод у найденного контроллера
 	public void Interact()
 	{
-		_controller?.Interact(); // Безопасный вызов через null-условный оператор
+		_controller.Interact(); // Безопасный вызов через null-условный оператор
 	}
 
 	public void InteractCutscene()
