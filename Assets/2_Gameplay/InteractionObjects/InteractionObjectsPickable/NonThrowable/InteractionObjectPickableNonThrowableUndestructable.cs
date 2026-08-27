@@ -22,9 +22,10 @@ public class InteractionObjectPickableNonThrowableUndestructable : InteractionOb
 	protected void SetUpPickableBody(string interactionObjectNameSystem, InteractionObjectPickableData pickableBodyData)
 	{
 		_interactionObjectPickableType = pickableBodyData;
-		InteractionObjectNameUI = _localizationManager.GetLocalizedString(interactionObjectNameSystem);
+		_interactionObjectNameSystem = interactionObjectNameSystem;
 
-
+		_isMovementRestricted = true;
+		_movementSpeedPenaltyMultiplier = 0.5f;
 		Collider = gameObject.AddComponent<BoxCollider>();
 
 		BoxCollider box = (BoxCollider)Collider;

@@ -433,13 +433,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _vendingMachineName: InteractionObject_VendingMachine_Ammo
+  _moneyType: 0
   _goodsForSale: {fileID: 0}
   _goodsPrice: 0
-  _moneyType: Money_Rubles
   _ammoTypes:
-  - AmmoName: 9mm
+  - AmmoName: InteractionObject_Loot_Ammo_9mm_Box
     AmmoPrefab: {fileID: 919677925058796491, guid: 999d033c8228db941a5a758dc60feff7, type: 3}
     Price: 15
-  - AmmoName: 12gauge
+  - AmmoName: InteractionObject_Loot_Ammo_12gauge_Box
     AmmoPrefab: {fileID: 4070691657063921009, guid: 6dfaa9beae9a57843bcbace056946cc1, type: 3}
     Price: 30

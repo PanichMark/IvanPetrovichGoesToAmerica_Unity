@@ -1,6 +1,6 @@
 ﻿Key,Russian,English
 InteractionObject_ElectricalPanel,Электрическая панель,Electrical panel
-InteractionObject_LightSwitch,Переключатель света,Light switch
+InteractionObject_Light,Свет,Light
 InteractionObject_Loot_Ammo_12gauge_Box,Коробка с зарядами дроби,Box with 12gauge shots
 InteractionObject_Loot_Ammo_9mm_Box,Коробка с патронами 9мм,Box with 9mm bullets
 InteractionObject_Loot_Consumable_Drink_SparklingWater,Газированная вода,Sarkling water
@@ -9,7 +9,7 @@ InteractionObject_Loot_Consumable_Food_RottenMeat,Гнилое мясо,Rotten m
 InteractionObject_Loot_HealthShawarma,Шаурма,Shawarma
 InteractionObject_Loot_Key_1_Scene_1_Church_ChurchQuartersDoor,Ключ от церковных комнат,Church quarters key
 InteractionObject_Loot_Key_2_Scene_1_Street_ChurchYardGate,Ключ от калитки церковного двора,Church yard gate key
-InteractionObject_Loot_ManaSyrup,Сироп от кашля Доктор Поппелс,Doctor Poppels cough syrup
+InteractionObject_Loot_ManaSyrup,Сироп от кашля,Cough syrup
 InteractionObject_Loot_Valuable_FinancialBond_RussoAmericanCO,Облигация Русско-Американской Компании,Russo-American CO bond
 InteractionObject_Loot_Valuable_FinancialStockShare_BranobelBank,Акция Бранобель Банка,Branobel Bank stocks
 InteractionObject_Loot_Valuable_GoldBar,Золотой слиток,Gold bar
@@ -46,10 +46,8 @@ InteractionObject_TV_NextChannel,Следующий канал,Next channel
 InteractionObject_TV_PowerOff,Выключить,Turn off
 InteractionObject_TV_PowerOn,Включить,Turn on
 InteractionObject_TV_PreviousChannel,Предыдущий канал,Previous channel
-InteractionObject_VendingMachine_Ammo,в торговом автомате Подручный Патронщик за,from Handy Ammoman vending machine for
-InteractionObject_VendingMachine_Ammo_Cyliner,Сменить тип патронов для покупки,Change ammo type for purchase
-InteractionObject_VendingMachine_Health,в торговом автомате Шаурмазин за,from Shaurmazin vending machine for
-InteractionObject_VendingMachine_Mana,в торговом автомате Доктор Поппелс за,from Doctor Poppels vending machine for
+InteractionObject_VendingMachine_Ammo_Cylinder,Сменить тип патронов для покупки,Change ammo type for purchase
+InteractionObject_VendingMachine_BuyFor,за,for
 Lock_Electronic,Электронный замок,Electronic lock
 Lock_Mechanical_Easy,Легкий механический замок,Easy mechanical lock
 Lock_Mechanical_Hard,Сложный механический замок,Hard mechanical lock

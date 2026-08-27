@@ -5,8 +5,8 @@ using System.Collections;
 public abstract class InteractionObjectPickableNonThrowableAbstract : InteractionObjectPickableAbstract
 {
 	[Header("NonThrowable Movement")]
-	[SerializeField] private bool _isMovementRestricted;
-	[SerializeField] private float _movementSpeedPenaltyMultiplier;
+	[SerializeField] protected bool _isMovementRestricted;
+	[SerializeField] protected float _movementSpeedPenaltyMultiplier;
 
 	private PlayerMovementController _playerMovementController;
 	private bool _isCreatedAsBody;

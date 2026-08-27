@@ -27,7 +27,10 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 
 	protected override void OnAfterLooted()
 	{
-		_noteObject.Interact();
+		if (_noteObject != null)
+		{
+			_noteObject.Interact();
+		}
 	}
 
 	protected override void InitializeLootObject()

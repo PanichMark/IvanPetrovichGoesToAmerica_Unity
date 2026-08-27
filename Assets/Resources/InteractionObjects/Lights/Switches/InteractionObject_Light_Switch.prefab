@@ -122,7 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lightSwitchController: {fileID: 1252365377597822907}
-  _interactionObjectNameSystem: InteractionObject_Light_Switch
+  _interactionObjectNameSystem: InteractionObject_Light
+  _isButtonSingle: 0
   _isThisTurnOnButton: 0
 --- !u!1 &1566630059902734192
 GameObject:
@@ -246,7 +247,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lightSwitchController: {fileID: 1252365377597822907}
-  _interactionObjectNameSystem: InteractionObject_Light_Switch
+  _interactionObjectNameSystem: InteractionObject_Light
+  _isButtonSingle: 0
   _isThisTurnOnButton: 1
 --- !u!1 &7456525375482299203
 GameObject:

@@ -124,7 +124,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead)
 		{
-			_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_CantTalkToPlayerRightNow");
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
 		}
 		else
 		{

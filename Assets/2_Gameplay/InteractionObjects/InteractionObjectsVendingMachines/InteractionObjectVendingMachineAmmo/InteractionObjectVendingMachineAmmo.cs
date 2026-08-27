@@ -27,7 +27,7 @@ public class InteractionObjectVendingMachineAmmo : InteractionObjectVendingMachi
 		var data = _ammoTypes[currentAmmoIndex];
 		_goodsForSale = data.AmmoPrefab;
 		_goodsPrice = data.Price;
-		_goodsName = data.AmmoName;
+		_goodsName = _localizationManager.GetLocalizedString(data.AmmoName, gameObject.name);
 	}
 
 	public override void SetpUpVendingMachine()
