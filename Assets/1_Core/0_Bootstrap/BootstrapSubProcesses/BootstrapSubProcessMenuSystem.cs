@@ -12,6 +12,7 @@ public class BootstrapSubProcessMenuSystem
 	private GameTutorialsList _tutorialsList;
 	private GameObject _canvasMainMenuChooseMission;
 	private GameObject _canvasBootstrapSignTermsAndConditions;
+	private CanvasesManager _canvasesManager;
 	public ViewModelBootstrapSignTermsAndConditions ViewModelBootstrapSignTermsAndConditions { get; private set; }
 	public ViewModelSavingProcess ViewModelSavingProcess { get; private set; }
 	public ViewModelMainMenuChooseMission ViewModelMainMenuChooseMission { get; private set; }
@@ -196,6 +197,7 @@ public class BootstrapSubProcessMenuSystem
 		_gameObjectBootstrapMenuSystem = new GameObject("Bootstrap_MenuSystem");
 
 		MenuManager = _gameObjectBootstrapMenuSystem.AddComponent<MenuManager>();
+		_canvasesManager = _gameObjectBootstrapMenuSystem.AddComponent<CanvasesManager>();
 		_menuBackgroundController = _gameObjectBootstrapMenuSystem.AddComponent<MenuBackgroundController>();
 		PauseMenuController = _gameObjectBootstrapMenuSystem.AddComponent<PauseMenuController>();
 		_pauseSubMenuSaveController = _gameObjectBootstrapMenuSystem.AddComponent<PauseSubMenuSaveController>();
@@ -244,6 +246,9 @@ public class BootstrapSubProcessMenuSystem
 		_viewModelPauseSubMenuSettingsSectionControls = new ViewModelPauseSubMenuSettingsSectionControls(_bootstrap, _canvasPauseSubMenuSettings);
 		_viewModelPauseSubMenuSettingsSectionGraphics = new ViewModelPauseSubMenuSettingsSectionGraphics(_bootstrap, _canvasPauseSubMenuSettings);
 		ViewModelPauseSubMenuSettingsSectionAudio = new ViewModelPauseSubMenuSettingsSectionAudio(_bootstrap, _canvasPauseSubMenuSettings);
+
+		_canvasesManager.Initialize(
+			_bootstrap.GameData.GameCanvasesList);
 
 		MenuManager.Initialize(
 			_bootstrap,
@@ -390,8 +395,8 @@ public class BootstrapSubProcessMenuSystem
 
 ServiceLocator.Register<PauseSubMenuSettingsGameDifficultyController>(_pauseSubMenuSettingsGameDifficultyController);
 ServiceLocator.Register<PauseMenuConfirmActionController>(PauseMenuConfirmActionController);
-
-ServiceLocator.Register<MenuManager>(MenuManager);
+		ServiceLocator.Register<CanvasesManager>(_canvasesManager);
+		ServiceLocator.Register<MenuManager>(MenuManager);
 ServiceLocator.Register<PauseMenuController>(PauseMenuController);
 ServiceLocator.Register<PauseSubMenuSettingsController>(PauseSubMenuSettingsController);
 ServiceLocator.Register<PauseSubMenuSettingsSectionGeneralController>(PauseSubMenuSettingsSectionGeneralController);
@@ -402,40 +407,15 @@ ServiceLocator.Register<PauseSubMenuSettingsSectionGeneralController>(PauseSubMe
 		
 
 
-
-		
-
-		ServiceLocator.Register(EnumServiceLocatorGameObjects.CanvasMenuDialogue, _canvasMenuDialogue);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.TextPhraseLine, ViewModelHUDInteraction.TextPhraseLine);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.TextDialogueLine, ViewModelMenuDialogue.TextDialogueLine);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.ButtonDialogueYes, ViewModelMenuDialogue.ButtonDialogueYes);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.ButtonDialogueNo, ViewModelMenuDialogue.ButtonDialogueNo);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.TextDialogueYes, ViewModelMenuDialogue.TextDialogueYes);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.TextDialogueNo, ViewModelMenuDialogue.TextDialogueNo);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.TextCutsceneDialogue, ViewModelMenuCutscene.TextCutsceneDialogue);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.CanvasMainMenuChooseMission, _canvasMainMenuChooseMission);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.CanvasMenuLockpickElectronic, _canvasMenuLockpickElectronic);
-ServiceLocator.Register<Transform[]>(ViewModelMenuLockpickElectronic.ButtonsLockElectronic);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.ButtonCloseLockpickElectronicMenu, ViewModelMenuLockpickElectronic.ButtonCloseMenuLockpickElectronic);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.TextButtonCloseLockpickElectronicMenu, ViewModelMenuLockpickElectronic.TextButtonCloseMenuLockpickElectronic);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.CanvasMenuLockpickMechanical, _canvasMenuLockpickMechanical);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.ButtonCloseLockpickMechanicalMenu, ViewModelMenuLockpickMechanical.ButtonCloseMenuLockpickMechanical);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.TextButtonCloseLockpickMechanicalMenu, ViewModelMenuLockpickMechanical.TextButtonCloseMenuLockpickMechanical);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.MoveLockMechanicalUp, ViewModelMenuLockpickMechanical.ButtonMoveLockMechanismUp);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.MoveLockMechanicalDown, ViewModelMenuLockpickMechanical.ButtonMoveLockMechanismDown);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.MoveLockMechanicalRight, ViewModelMenuLockpickMechanical.ButtonMoveLockMechanismRight);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.MoveLockMechanicalLeft, ViewModelMenuLockpickMechanical.ButtonMoveLockMechanismLeft);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.CanvasMenuNote, _canvasMenuNote);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.TextNote, ViewModelMenuNote.TextNote);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.ImageNote, ViewModelMenuNote.ImageNote);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.ImageNoteBlackBackground, ViewModelMenuNote.ImageNoteBlackBackground);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.ButtonCloseReadNoteMenu, ViewModelMenuNote.ButtonCloseMenuNote);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.TextButtonCloseReadNoteMenu, ViewModelMenuNote.TextButtonCloseMenuNote);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.TextChokeNPC, ViewModelHUDAmmo.TextChokeNPC);
+		ServiceLocator.Register<ViewModelHUDAmmo>(ViewModelHUDAmmo);
+	
 ServiceLocator.Register<ViewModelMainMenuChooseMission>(ViewModelMainMenuChooseMission);
 ServiceLocator.Register<ViewModelMainMenuReadNews>(_viewModelMainMenuReadNews);
-ServiceLocator.Register(EnumServiceLocatorGameObjects.CanvasMainMenuReadNews, _canvasMainMenuReadNews);
 
+		ServiceLocator.Register<ViewModelMenuNote>(ViewModelMenuNote);
+		ServiceLocator.Register<ViewModelMenuLockpickMechanical>(ViewModelMenuLockpickMechanical);
+		ServiceLocator.Register<ViewModelHUDAmmo>(ViewModelHUDAmmo);
+		ServiceLocator.Register<ViewModelHUDAmmo>(ViewModelHUDAmmo);
 
 		yield break;
 	}

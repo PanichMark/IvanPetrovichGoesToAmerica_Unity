@@ -8,24 +8,21 @@ public static class ServiceLocator
     private static readonly Dictionary<EnumServiceLocatorGameObjects, GameObject> _gameObjects = new();
     private static readonly Dictionary<EnumServiceLocatorAudioSources, AudioSource> _audioSources = new();
 
-    public static void Register<T>(object instance)
-    {
-        if (instance is GameObject || instance is Component)
-        {
-            //Debug.LogError($"[ServiceLocator] Attempt to register a scene/engine object ({instance.GetType().Name}) as contract {typeof(T).Name}. Use the enum overload instead.", instance as Object);
-            return;
-        }
+	public static void Register<T>(object instance)
+	{
+		var type = typeof(T);
 
-        var type = typeof(T);
-        if (_services.ContainsKey(type))
-        {
-            throw new InvalidOperationException($"Contract '{type.Name}' is already registered.");
-        }
-        
-        _services[type] = instance;
-    }
+		// ПРОВЕРКА: Не затираем ли мы старый сервис новым?
+		if (_services.ContainsKey(type))
+		{
+			//Debug.LogError($"[SL] OVERWRITING existing service '{type.Name}'. Old Instance ID: {_services[type].GetHashCode()}, New Instance ID: {instance.GetHashCode()}");
+		}
 
-    public static void Register(EnumServiceLocatorGameObjects tag, GameObject go)
+		//Debug.Log($"[SL] REGISTERED: '{type.Name}' | Hash: {instance.GetHashCode()}");
+		_services[type] = instance;
+	}
+
+	public static void Register(EnumServiceLocatorGameObjects tag, GameObject go)
     {
         if (_gameObjects.ContainsKey(tag))
         {

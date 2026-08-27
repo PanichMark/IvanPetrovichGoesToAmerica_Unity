@@ -23,7 +23,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private bool _isCutsceneDialogueActorPlayer;
 	private GameObject _playerProxy;
 	private GameObject _playerCameraProxy;
-
+	private ViewModelMenuCutscene _viewModelMenuCutscene;
 	public bool IsCutscenePlaying { get; private set; }
 	public bool WasCutscenePlaying { get; private set; }
 	private bool _wasCutsceneSkipped;
@@ -59,19 +59,20 @@ public class CutsceneController : MonoBehaviour, ICutscene
 
 	private void Start()
 	{
-	_playerProxy = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
-_playerCameraProxy = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCamera);
-_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
-_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
-_gameController = ServiceLocator.Resolve<GameController>();
-_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
-_menuManager = ServiceLocator.Resolve<MenuManager>();
-_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
-_inputDevice = ServiceLocator.Resolve<IInputDevice>();
-_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>();
-_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
+		_viewModelMenuCutscene = ServiceLocator.Resolve<ViewModelMenuCutscene>();
+		_playerProxy = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayer);
+		_playerCameraProxy = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.GameObjectPlayerCamera);
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
+		_gameController = ServiceLocator.Resolve<GameController>();
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+		_menuManager = ServiceLocator.Resolve<MenuManager>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		_inputDevice = ServiceLocator.Resolve<IInputDevice>();
+		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>();
+		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
 
-_textCutsceneDialogue = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.TextCutsceneDialogue);
+		_textCutsceneDialogue = _viewModelMenuCutscene.TextCutsceneDialogue;
 		_textComponentCutsceneDialogue = _textCutsceneDialogue.GetComponent<TextMeshProUGUI>();
 
 		_director = GetComponent<PlayableDirector>();

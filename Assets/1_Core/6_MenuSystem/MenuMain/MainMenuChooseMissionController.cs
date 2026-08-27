@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class MainMenuChooseMissionController : MonoBehaviour
 {
 	private PauseMenuConfirmActionController _pauseMenuConfirmActionController;
-	private GameObject _canvasMainMenuChooseMission;
+private CanvasesManager _canvasesManager;
 	public delegate void MainMenuChooseMissionHandler();
 	public event MainMenuChooseMissionHandler OnCloseMainMenuChooseMission;
 	private ViewModelMainMenuChooseMission _viewModelMainMenuChooseMission;
@@ -33,12 +33,13 @@ public class MainMenuChooseMissionController : MonoBehaviour
 
 	public bool IsMainMenuChooseMissionOpened { get; private set; }
 
-	public void Initialize()
+	public void Initialize(
+		CanvasesManager canvasesManager)
 	{
+		_canvasesManager = canvasesManager;
 _pauseMenuConfirmActionController = ServiceLocator.Resolve<PauseMenuConfirmActionController>();
 _menuManager = ServiceLocator.Resolve<MenuManager>();
 _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
-_canvasMainMenuChooseMission = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMainMenuChooseMission);
 _viewModelMainMenuChooseMission = ServiceLocator.Resolve<ViewModelMainMenuChooseMission>();
 _gameScenesList = ServiceLocator.Resolve<GameScenesList>();
 
@@ -100,7 +101,7 @@ _gameScenesList = ServiceLocator.Resolve<GameScenesList>();
 	public void ShowCanvasMainMenuChooseMission()
 	{
 		IsMainMenuChooseMissionOpened = true;
-		_canvasMainMenuChooseMission.SetActive(true);
+		_canvasesManager.ShowCanvasMainMenuChooseMission();
 
 		Debug.Log("Show ChooseMission");
 	}
@@ -109,7 +110,7 @@ _gameScenesList = ServiceLocator.Resolve<GameScenesList>();
 	{
 		IsMainMenuChooseMissionOpened = false;
 		OnCloseMainMenuChooseMission?.Invoke();
-		_canvasMainMenuChooseMission.SetActive(false);
+		_canvasesManager.HideCanvasMainMenuChooseMission();
 
 		if (_menuManager.PauseMenuLevel.Count > 0)
 		{

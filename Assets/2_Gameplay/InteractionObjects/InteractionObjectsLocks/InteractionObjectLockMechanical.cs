@@ -21,7 +21,6 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	private Button _buttonMoveLockMechanismLeft;
 	private JsonSaveLoadController _saveLoadController;
 	private LocalizationManager _localizationManager;
-	private GameObject _canvasLockpickMechanicalMenu;
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	private Button _buttonExitLockpickMechanicalMenu;
 	private TextMeshProUGUI _textButtonExitLockpickMechanicalMenu;
@@ -61,12 +60,15 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	public bool IsInteractionHintMessageFailActive => false;
 
 	public string InteractionObjectNameUI { get; protected set; }
-
+	private CanvasesManager _canvasesManager;
+	private ViewModelMenuLockpickMechanical _viewModelMenuLockpickMechanical;
 	private void Awake()
 	{
-_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		_viewModelMenuLockpickMechanical = ServiceLocator.Resolve<ViewModelMenuLockpickMechanical>();
+		_canvasesManager = ServiceLocator.Resolve<CanvasesManager>();
+
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 _menuManager = ServiceLocator.Resolve<MenuManager>();
-_canvasLockpickMechanicalMenu = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMenuLockpickMechanical);
 _buttonExitLockpickMechanicalMenu = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonCloseLockpickMechanicalMenu);
 _textButtonExitLockpickMechanicalMenu = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextButtonCloseLockpickMechanicalMenu);
 _saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
@@ -143,7 +145,7 @@ _buttonMoveLockMechanismLeft = ServiceLocator.GetComponent<Button>(EnumServiceLo
 			Debug.LogError("END object not found.");
 		}
 
-		_canvasLockpickMechanicalMenu.SetActive(true);
+		ShowPuzzleCanvas();
 		_buttonExitLockpickMechanicalMenu.onClick.RemoveAllListeners();
 		_buttonExitLockpickMechanicalMenu.onClick.AddListener(OnClosePuzzle);
 
@@ -221,8 +223,8 @@ _buttonMoveLockMechanismLeft = ServiceLocator.GetComponent<Button>(EnumServiceLo
 	{
 		if (_isPuzzleActive)
 		{
+			HidePuzzleCanvas();
 			_isPuzzleActive = false;
-			_canvasLockpickMechanicalMenu.SetActive(false);
 			Destroy(_currentGearInstance);
 			Destroy(_currentCubeFollow);
 			gameObject.tag = "Interactable";

@@ -4,23 +4,23 @@ using UnityEngine.UI;
 public class MainMenuReadNewsController : MonoBehaviour
 {
 	private Button _buttonCloseMainMenuReadNews;
-	private GameObject _canvasMainMenuReadNews;
 	private Button _buttonYouTube;
 	private Button _buttonGitHub;
 	private ViewModelMainMenuReadNews _viewModelMainMenuReadNews;
 
 	private const string YOUTUBE_URL = "https://youtube.com/@panichmark";
 	private const string GITHUB_URL = "https://github.com/PanichMark/IvanPetrovichGoesToAmerica_Unity";
-
+	private CanvasesManager _canvasesManager;
 	public delegate void MainMenuReadNewsHandler();
 	public event MainMenuReadNewsHandler OnCloseMainMenuReadNews;
 	
 	public bool IsMainMenuReadNewsOpened {  get; private set; }
 
-	public void Initialize()
+	public void Initialize(
+		CanvasesManager canvasesManager)
 	{
+		_canvasesManager = canvasesManager;
 _viewModelMainMenuReadNews = ServiceLocator.Resolve<ViewModelMainMenuReadNews>();
-_canvasMainMenuReadNews = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMainMenuReadNews);
 
 		_buttonCloseMainMenuReadNews = _viewModelMainMenuReadNews.ButtonCloseMainMenuReadNews.GetComponent<Button>();
 		_buttonYouTube = _viewModelMainMenuReadNews.ButtonYouTube.GetComponent<Button>();
@@ -37,7 +37,7 @@ _canvasMainMenuReadNews = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.C
 	public void ShowCanvasMainMenuReadNews()
 	{
 		IsMainMenuReadNewsOpened = true;
-		_canvasMainMenuReadNews.SetActive(true);
+		_canvasesManager.ShowCanvasMainMenuReadNews();
 
 		Debug.Log("Show ReadNews");
 	}
@@ -46,7 +46,7 @@ _canvasMainMenuReadNews = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.C
 	{
 		IsMainMenuReadNewsOpened = false;
 		OnCloseMainMenuReadNews?.Invoke();
-		_canvasMainMenuReadNews.SetActive(false);
+		_canvasesManager?.HideCanvasMainMenuReadNews();
 
 		Debug.Log("Hide ReadNews");
 	}

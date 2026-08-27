@@ -20,7 +20,6 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	public string InteractionHintMessageMain => $"{_interactionHintMessageAction} {InteractionObjectNameUI}?";
 	public string InteractionHintMessageFail => null;
 
-	private GameObject _canvasNoteMenu;
 	private Button _buttonExitNoteMenu;
 	private string _interactionHintMessageAction;
 	public string InteractionHintMessageAction => _interactionHintMessageAction;
@@ -33,30 +32,32 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	private Image _imageComponent;
 
 	[SerializeField] private InteractionObjectNote _noteToOpenAfter;
-
+	private CanvasesManager _canvasesManager;
+	private ViewModelMenuNote _viewModelMenuNote;
 	public bool IsInteractionHintMessageFailActive => false;
 	private GameScenesManager _gameSceneManager;
 
 	private void Start()
 	{
-	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		_canvasesManager = ServiceLocator.Resolve<CanvasesManager>();
+		_viewModelMenuNote = ServiceLocator.Resolve<ViewModelMenuNote>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
-_textButtonExit = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextButtonCloseReadNoteMenu);
+_textButtonExit = _viewModelMenuNote.TextButtonCloseMenuNote.GetComponent<TextMeshProUGUI>();
 
 _inputDevice = ServiceLocator.Resolve<IInputDevice>();
 
 _menuManager = ServiceLocator.Resolve<MenuManager>();
-_buttonExitNoteMenu = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonCloseReadNoteMenu);
-_imageComponent = ServiceLocator.GetComponent<Image>(EnumServiceLocatorGameObjects.ImageNote);
+_buttonExitNoteMenu = _viewModelMenuNote.ButtonCloseMenuNote.GetComponent<Button>();
+		_imageComponent = _viewModelMenuNote.ImageNote.GetComponent<Image>();
 
-_textBackground = ServiceLocator.GetComponent<Image>(EnumServiceLocatorGameObjects.ImageNoteBlackBackground);
-_canvasNoteMenu = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMenuNote);
+_textBackground = _viewModelMenuNote.ImageNoteBlackBackground.GetComponent<Image>();
 
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 _gameSceneManager.OnBeginLoadingMainMenuScene += CloseAndDeactivate;
 _gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
 
-_textComponent = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextNote);
+_textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();
 		_textRectTransform = _textComponent.gameObject.GetComponent<RectTransform>();
 		
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -97,7 +98,8 @@ _textComponent = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocator
 	{
 		if (_isReading)
 		{
-			_canvasNoteMenu.SetActive(false);
+			_canvasesManager.HideNoteCanvas();
+			
 		}
 	}
 
@@ -105,7 +107,8 @@ _textComponent = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocator
 	{
 		if (_isReading)
 		{
-			_canvasNoteMenu.SetActive(true);
+			_canvasesManager.ShowNoteCanvas();
+			
 		}
 	}
 
@@ -116,7 +119,7 @@ _textComponent = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocator
 		_menuManager.OpenInteractionMenu();
 		_isReading = true;
 
-		_canvasNoteMenu.SetActive(true);
+		ShowNoteCanvas();
 
 		_imageComponent.gameObject.SetActive(true);
 		_imageComponent.sprite = _noteData.NoteImage;
@@ -187,14 +190,16 @@ _textComponent = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocator
 	{
 		if (_isReading)
 		{
-			_isReading = false;
+		
 
 			_textComponent.text = string.Empty;
 				
 			_imageComponent.sprite = null;
-	
-			_canvasNoteMenu.SetActive(false);
-		
+
+			HideNoteCanvas();
+
+			_isReading = false;
+
 			_menuManager.CloseInteractionMenu();
 
 			gameObject.tag = "Interactable";

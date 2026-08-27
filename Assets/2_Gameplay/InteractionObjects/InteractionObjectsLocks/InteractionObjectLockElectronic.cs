@@ -29,20 +29,22 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private TextMeshProUGUI _textButtonExitLockpickElectronicMenu;
 	private GameObject[] _buttonsLockElectrical;
 	private MenuManager _menuManager;
-	private GameObject _canvasLockpickElectronicMenu;
 	private JsonSaveLoadController _saveLoadController;
 	private GameScenesManager _gameSceneManager;
 	private Color _colorOriginal;
 	private List<int> _alarmIndices;
 	private int _movesLeft = 5;
 
+	private CanvasesManager _canvasesManager;
+	private ViewModelMenuLockpickElectronic _viewModelMenuLockpickElectronic;
 	void Awake()
 	{
-_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		_canvasesManager = ServiceLocator.Resolve<CanvasesManager>();
+		_viewModelMenuLockpickElectronic = ServiceLocator.Resolve<ViewModelMenuLockpickElectronic>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 _menuManager = ServiceLocator.Resolve<MenuManager>();
-_canvasLockpickElectronicMenu = ServiceLocator.Resolve(EnumServiceLocatorGameObjects.CanvasMenuLockpickElectronic);
-_buttonExitLockpickElectronicMenu = ServiceLocator.GetComponent<Button>(EnumServiceLocatorGameObjects.ButtonCloseLockpickElectronicMenu);
-_textButtonExitLockpickElectronicMenu = ServiceLocator.GetComponent<TextMeshProUGUI>(EnumServiceLocatorGameObjects.TextButtonCloseLockpickElectronicMenu);
+		_buttonExitLockpickElectronicMenu = _viewModelMenuLockpickElectronic.ButtonCloseMenuLockpickElectronic.GetComponent<Button>();
+		_textButtonExitLockpickElectronicMenu = _viewModelMenuLockpickElectronic.TextButtonCloseMenuLockpickElectronic.GetComponent<TextMeshProUGUI>();
 _saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 _buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>();
@@ -74,8 +76,8 @@ _buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>();
 	{
 		if (_isPuzzleActive)
 		{
+			HidePuzzleCanvas();
 			_isPuzzleActive = false;
-			_canvasLockpickElectronicMenu.SetActive(false);
 			_menuManager.CloseInteractionMenu();
 			_movesLeft = 4;
 			Debug.Log("CLOSE PUZZLE");
@@ -85,13 +87,17 @@ _buttonsLockElectrical = ServiceLocator.Resolve<GameObject[]>();
 	private void ShowPuzzleCanvas()
 	{
 		if (_isPuzzleActive)
-			_canvasLockpickElectronicMenu.SetActive(true);
+		{
+			_canvasesManager.ShowPuzzleCanvas();
+		}
 	}
 
 	private void HidePuzzleCanvas()
 	{
 		if (_isPuzzleActive)
-			_canvasLockpickElectronicMenu.SetActive(false);
+		{
+			_canvasesManager.HidePuzzleCanvas();
+		}
 	}
 
 	public void Interact()
