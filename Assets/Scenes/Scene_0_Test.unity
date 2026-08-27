@@ -27729,6 +27729,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractionObject_Openable_Door_DoorFoldable
       objectReference: {fileID: 0}
+    - target: {fileID: 8637508023062622587, guid: bc8d2b0abf5f08649b738d02e04aef0c, type: 3}
+      propertyPath: _mechanicalLockController
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -26,7 +26,7 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 		List<Transform> doorParts = new List<Transform>();
 		foreach (var child in allChildren)
 		{
-			if (child != this.transform) // Пропускаем сам Door_Root
+			if (child != transform) // Пропускаем сам Door_Root
 			{
 				doorParts.Add(child);
 			}
@@ -55,43 +55,45 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 
 	public override void SetDoorToOpenedPosition()
 	{
-		//transform.localRotation = _openedRotation;
+	
+			Quaternion targetParent = _closedRotationParent * Quaternion.Euler(0, _doorOpenAngle, 0);
+			Quaternion targetChild = _closedRotationChild * Quaternion.Euler(0, -_doorOpenAngle * 1.8f, 0);
+
+			_partParent.localRotation = targetParent;
+			_partChild.localRotation = targetChild;
+		
 	}
 
 	public override void SetDoorToClosedPosition()
 	{
-		//transform.localRotation = _closedRotation;
+
+			_partParent.localRotation = _closedRotationParent;
+			_partChild.localRotation = _closedRotationChild;
+		
 	}
 
 
 	protected override IEnumerator OpenDoor()
 	{
-		_isObjectOpened = true;
+		Quaternion startParent = _closedRotationParent;
+		Quaternion startChild = _closedRotationChild;
 
-		Quaternion targetRotationParent = _closedRotationParent * Quaternion.Euler(0, _doorOpenAngle, 0);
-		Quaternion targetRotationChild = _closedRotationChild * Quaternion.Euler(0, -_doorOpenAngle, 0);
+		Quaternion targetParent = startParent * Quaternion.Euler(0, _doorOpenAngle, 0);
+		Quaternion targetChild = startChild * Quaternion.Euler(0, -_doorOpenAngle * 1.8f, 0);
 
-		float angleToRotateParent = Quaternion.Angle(_partParent.localRotation, targetRotationParent);
-		float angleToRotateChild = Quaternion.Angle(_partChild.localRotation, targetRotationChild);
-		float maxAngle = Mathf.Max(angleToRotateParent, angleToRotateChild);
-		float duration = maxAngle / _doorOpeningSpeed;
 		float elapsedTime = 0f;
+		float duration = _doorOpenAngle / _doorOpeningSpeed;
 
 		while (elapsedTime < duration)
 		{
 			elapsedTime += Time.deltaTime;
-
-			_partParent.localRotation = Quaternion.LerpUnclamped(_partParent.localRotation, targetRotationParent, elapsedTime / duration);
-			_partChild.localRotation = Quaternion.LerpUnclamped(_partChild.localRotation, targetRotationChild, elapsedTime / duration);
-
+			float t = elapsedTime / duration;
+			_partParent.localRotation = Quaternion.LerpUnclamped(startParent, targetParent, t);
+			_partChild.localRotation = Quaternion.LerpUnclamped(startChild, targetChild, t);
 			yield return null;
 		}
 
-		// Финальное присваивание для точности
-		_partParent.localRotation = targetRotationParent;
-		_partChild.localRotation = targetRotationChild;
 		SetDoorToOpenedPosition();
-
 		_currentAnimation = null;
 	}
 
@@ -99,29 +101,25 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 	{
 		_isObjectOpened = false;
 
+		Quaternion startParent = _partParent.localRotation;
+		Quaternion startChild = _partChild.localRotation;
+
 		Quaternion targetRotationParent = _closedRotationParent;
 		Quaternion targetRotationChild = _closedRotationChild;
 
-		float angleToRotateParent = Quaternion.Angle(_partParent.localRotation, targetRotationParent);
-		float angleToRotateChild = Quaternion.Angle(_partChild.localRotation, targetRotationChild);
-		float maxAngle = Mathf.Max(angleToRotateParent, angleToRotateChild);
-		float duration = maxAngle / _doorOpeningSpeed;
 		float elapsedTime = 0f;
+		float duration = _doorOpenAngle / _doorOpeningSpeed;
 
 		while (elapsedTime < duration)
 		{
 			elapsedTime += Time.deltaTime;
-
-			_partParent.localRotation = Quaternion.LerpUnclamped(_partParent.localRotation, targetRotationParent, elapsedTime / duration);
-			_partChild.localRotation = Quaternion.LerpUnclamped(_partChild.localRotation, targetRotationChild, elapsedTime / duration);
-
+			float t = elapsedTime / duration;
+			_partParent.localRotation = Quaternion.LerpUnclamped(startParent, targetRotationParent, t);
+			_partChild.localRotation = Quaternion.LerpUnclamped(startChild, targetRotationChild, t);
 			yield return null;
 		}
 
-		_partParent.localRotation = targetRotationParent;
-		_partChild.localRotation = targetRotationChild;
 		SetDoorToClosedPosition();
-
 		_currentAnimation = null;
 	}
 }
