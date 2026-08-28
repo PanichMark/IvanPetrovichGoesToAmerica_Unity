@@ -79,6 +79,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	{
 		string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
 
+
 		_HUDmissionsController.ShowNewMissionGoalHUDnotification(localizedGoalText);
 	}
 
