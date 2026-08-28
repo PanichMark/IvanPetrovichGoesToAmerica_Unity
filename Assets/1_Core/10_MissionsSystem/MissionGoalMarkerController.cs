@@ -49,7 +49,21 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 	private GameObject FindActiveTargetObject()
 	{
-		if (_currentMissionStepCache == null) return null;
+		if (_currentMissionStepCache == null)
+		{
+			_imageMissionGoalMarker.SetActive(false);
+			_gameObjectMissionGoal = null;
+			return null;
+		}
+
+		if (_currentMissionStepCache.ShowMissionMarker == false)
+		{
+			_imageMissionGoalMarker.SetActive(false);
+			_gameObjectMissionGoal = null;
+			return null;
+		}
+
+		_imageMissionGoalMarker.SetActive(true);
 
 		foreach (var condition in _currentMissionStepCache.Conditions)
 		{

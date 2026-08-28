@@ -7,6 +7,7 @@ public class MissionStep : MissionStepAbstract, IMissionStep
 {
 	[TextArea(3, 10)]
 	public string StepDescription;
+	[SerializeField] private bool showMissionMarker;
 	public List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
 
 	// --- ДОБАВЬТЕ ЭТО СВОЙСТВО ---
@@ -15,6 +16,9 @@ public class MissionStep : MissionStepAbstract, IMissionStep
 	{
 		get { return StepConditions.ConvertAll(c => (IMissionStepCondition)c); }
 	}
+
+	public bool ShowMissionMarker => showMissionMarker;
+
 	// ---------------------------------
 
 
