@@ -23,9 +23,9 @@ public class PauseSubMenuSettingsGameDifficultyController : MonoBehaviour
 	private GameObject _buttonCloseSettingsGameDifficulty;
 	private TextMeshProUGUI _textComponentButtonCloseSettingsGameDifficulty;
 
-	public GameObject _difficultyNotAvailavle;
-	public GameObject _textDifficultyNotAvailavle;
-	public TextMeshProUGUI _textComponentDifficultyNotAvailable;
+	private GameObject _difficultyNotAvailavle;
+	private GameObject _textDifficultyNotAvailavle;
+	private TextMeshProUGUI _textComponentDifficultyNotAvailable;
 
 	public bool IsChooseGameDifficultyMenuOpened { get; private set; }
 	private int _currentIndex = 0;
