@@ -1,10 +1,12 @@
 ﻿// Файл: MissionStepConditionOnInteraction.cs (в сборке Gameplay)
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "StepConditionOnInteraction", menuName = "Missions/MissionStepConditions/StepConditionOnInteraction")]
 public class MissionStepConditionInteractable : MissionStepConditionAbstract, IMissionStepCondition
 {
 	private bool _isCompleted;
+
 	// --- РЕАЛИЗАЦИЯ ИНТЕРФЕЙСА ---
 	public bool IsMet() => _isCompleted;
 	public GameObject Owner => OwnerObject;

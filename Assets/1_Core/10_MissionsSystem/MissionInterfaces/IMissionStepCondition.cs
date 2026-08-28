@@ -1,10 +1,12 @@
 ﻿// Файл: ICurrentMissionCondition.cs
 // Поместите этот файл в папку внутри сборки Core
 
+using System;
 using UnityEngine;
 
 public interface IMissionStepCondition
 {
+
 	// Проверяет, выполнено ли условие
 	bool IsMet();
 

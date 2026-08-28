@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "StepConditionObjectsInZone", menuName = "Missions/MissionStepConditions/StepConditionObjectsInsideZone")]
-public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstract, IMissionStepCondition
+public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstract, IMissionStepConditionWithProgress
 {
 	// Основной список: кто должен быть внутри (заполняется Required-скриптами только если пуст)
 	private readonly List<GameObject> _registeredObjects = new();
@@ -12,6 +13,8 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 
 	private bool _isCompleted;
 	private GameObject _zoneOwner;
+
+	public event Action<int, int> OnProgressUpdated;
 
 	public bool IsMet() => _isCompleted;
 	public GameObject Owner => _zoneOwner;
@@ -29,6 +32,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 
 		// ВАЖНО: Не очищаем _registeredObjects здесь насовсем, иначе потеряем данные дизайнера.
 		// Но очищаем текущее состояние для теста.
+		_registeredObjects.Clear();
 		_objectsCurrentlyInside.Clear();
 	}
 
@@ -59,6 +63,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 			_objectsCurrentlyInside.Add(obj);
 
 			int remaining = _registeredObjects.Count - _objectsCurrentlyInside.Count;
+			OnProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
 			Debug.Log($"[Условие][Вход] Объект: {obj.name}. Внутри: {_objectsCurrentlyInside.Count}/{_registeredObjects.Count}. Осталось: {remaining}");
 
 			if (remaining == 0 && _registeredObjects.Count > 0)
@@ -77,6 +82,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 			_objectsCurrentlyInside.Remove(obj);
 
 			int remaining = _registeredObjects.Count - _objectsCurrentlyInside.Count;
+			OnProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
 			Debug.Log($"[Условие][Выход] Объект: {obj.name}. Внутри: {_objectsCurrentlyInside.Count}/{_registeredObjects.Count}. Осталось: {remaining}");
 		}
 	}
