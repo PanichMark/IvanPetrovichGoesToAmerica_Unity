@@ -24,7 +24,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 		return _isCompleted;
 	}
 
-	public void ResetStepConditionMetStateInEditMode()
+	public void ResetStepCondition()
 	{
 		Debug.Log($"[Условие][RESET] Сброс шага. Очистка временных списков.");
 
@@ -50,6 +50,8 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 
 	internal void InitializeWithZone(GameObject zoneObj)
 	{
+	
+
 		_zoneOwner = zoneObj;
 		Debug.Log($"[Условие][Init] Владелец (ZoneMain) зафиксирован: {_zoneOwner.name}");
 	}

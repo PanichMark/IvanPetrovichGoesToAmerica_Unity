@@ -30,7 +30,7 @@ public class MissionStepConditionInteractable : MissionStepConditionAbstract, IM
 		}
 	}
 
-	public void ResetStepConditionMetStateInEditMode()
+	public void ResetStepCondition()
 	{
 		_isCompleted = false;
 	}

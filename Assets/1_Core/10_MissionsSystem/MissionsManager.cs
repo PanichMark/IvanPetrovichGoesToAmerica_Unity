@@ -46,24 +46,31 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_gameSceneManager.OnEndLoadingGameplayScene += ShowMissionGoalHUDonSceneLoad;
 
+		ResetAllStepConditions();
+
 		Debug.Log("MissionsManager Initialized");
 	}
 
-	private void ResetStepConditionMetStateInEditMode()
+	private void ResetAllStepConditions()
 	{
-		if (ActiveMission == null || CurrentStepIndex < 0 || CurrentStepIndex >= ActiveMission.Steps.Length)
+		if (_gameMissions == null || _gameMissions.MissionsInOrder == null)
 			return;
 
-		var currentStep = ActiveMission.Steps[CurrentStepIndex];
-
-		// Приводим шаг к интерфейсу, чтобы получить доступ к списку условий
-		if (currentStep is IMissionStep typedStep)
+		foreach (var mission in _gameMissions.MissionsInOrder)
 		{
-			foreach (var condition in typedStep.Conditions)
+			if (mission == null || mission.Steps == null) continue;
+
+			foreach (var step in mission.Steps)
 			{
-				if (condition is IMissionStepCondition resettableCondition)
+				if (step is IMissionStep typedStep)
 				{
-					resettableCondition.ResetStepConditionMetStateInEditMode();
+					foreach (var condition in typedStep.Conditions)
+					{
+						if (condition is IMissionStepCondition resettableCondition)
+						{
+							resettableCondition.ResetStepCondition();
+						}
+					}
 				}
 			}
 		}
@@ -92,8 +99,6 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 			CurrentStepIndex++;
 		}
 
-		ResetStepConditionMetStateInEditMode();
-
 		if (CurrentStepIndex < ActiveMission.Steps.Length)
 		{
 			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
@@ -110,9 +115,16 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		Debug.Log(CurrentStepIndex);
 		Debug.Log(ActiveMission.Steps[CurrentStepIndex].Conditions[0].GetType());
-		if (ActiveMission.Steps[CurrentStepIndex].Conditions[0] is IMissionStepConditionWithProgress stepWithProgress)
+
+		if (ActiveMission.Steps[CurrentStepIndex].Conditions[0] is IMissionStepConditionWithProgress)
 		{
-			SubscribeToStepProgress(stepWithProgress);
+			_missionStepConditionWithProgress = ActiveMission.Steps[CurrentStepIndex].Conditions[0] as IMissionStepConditionWithProgress;
+
+			_missionStepConditionWithProgress.OnProgressUpdated += HandleStepProgress;
+		}
+		else if (_missionStepConditionWithProgress != null)
+		{
+			_missionStepConditionWithProgress.OnProgressUpdated -= HandleStepProgress;
 		}
 
 
@@ -122,25 +134,20 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		}
 	}
 
-	private void SubscribeToStepProgress(IMissionStepConditionWithProgress condition)
+	private void OnDestroy()
 	{
-		if (condition == null) return;
-
-		// Отписываемся от предыдущего (на случай, если это повторный вызов), 
-		// хотя лучше делать полную отписку при смене шага.
-		condition.OnProgressUpdated -= HandleStepProgress;
-
-		// Подписываемся на новое событие
-		condition.OnProgressUpdated += HandleStepProgress;
-
-		// Сразу рисуем UI текущими данными из этого объекта
-		//HandleStepProgress(condition.CurrentProgress, condition.MaxProgress);
+		if (_missionStepConditionWithProgress != null)
+		{
+			_missionStepConditionWithProgress.OnProgressUpdated -= HandleStepProgress;
+		}
 	}
 
 	private void HandleStepProgress(int currentAmount, int requiredAmount)
 	{
-		Debug.Log(currentAmount);
-		Debug.Log(requiredAmount);
+		//Debug.Log(currentAmount);
+		//Debug.Log(requiredAmount);
+
+		Debug.Log(CurrentStepIndex);
 
 		string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
 
@@ -198,7 +205,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	public IEnumerator LoadJsonData(JsonGameData data)
 	{
-		CurrentStepIndex = data.MissionData.MissionStep + 2;
+		CurrentStepIndex = data.MissionData.MissionStep;
 		CompleteCurrentStep(true);
 
 		//Debug.Log(CurrentStepIndex);

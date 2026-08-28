@@ -72,6 +72,8 @@ public class HUDmissionsController : MonoBehaviour
 
 	public void ShowNewMissionGoalHUDnotification(string textGoal)
 	{
+		StopAllCoroutines();
+
 		StartCoroutine(ShowNewMissionGoalHUDnotificationCoroutine(textGoal));
 	}
 
