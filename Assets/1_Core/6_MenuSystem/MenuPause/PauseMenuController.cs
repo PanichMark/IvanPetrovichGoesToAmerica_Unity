@@ -316,7 +316,7 @@ public class PauseMenuController : MonoBehaviour
 		_textComponentsButtonsPauseMenu[5].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSettings");
 		_textComponentsButtonsPauseMenu[6].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonExitToMainMenu");
 
-		_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal");
+		_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
 		_textComponentsCurrentPlayerMoney.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_PlayerMoney");
 
 		_textComponentDeathMessage.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_TextDeathMessage");

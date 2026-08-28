@@ -388,6 +388,7 @@ public class BootstrapSubProcessMenuSystem
 
 		HUDmissionsController.Initialize(
 			_gameController,
+			_localizationManager,
 			_gameSceneManager,
 			MenuManager,
 			PauseSubMenuSettingsSectionGeneralController,

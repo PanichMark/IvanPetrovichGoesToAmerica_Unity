@@ -10,7 +10,7 @@ public class HUDmissionsController : MonoBehaviour
 	private GameController _gameController;
 	private GameObject _HUDmission;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
-
+	private LocalizationManager _localizationManager;
 	private GameObject _textNewMissionGoal;
 	private TextMeshProUGUI _textComponentNewMissionGoal;
 	private GameObject _textNewMissionGoalDisplay;
@@ -21,6 +21,7 @@ public class HUDmissionsController : MonoBehaviour
 
 	public void Initialize(
 		GameController gameController,
+		LocalizationManager localizationManager,
 		GameScenesManager gameSceneManager,
 		MenuManager menuManager,
 		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
@@ -29,6 +30,7 @@ public class HUDmissionsController : MonoBehaviour
 		ViewModelHUDMission viewModelHUDMission)
 	{
 		_gameController = gameController;
+		_localizationManager = localizationManager;
 		_gameSceneManager = gameSceneManager;
 		_menuManager = menuManager;
 		_pauseSubMenuSettingsSectionGeneralController = pauseSubMenuSettingsSectionGeneralController;
@@ -70,17 +72,31 @@ public class HUDmissionsController : MonoBehaviour
 		_textComponentCurrentMissionGoal.text = textGoal;
 	}
 
-	public void ShowNewMissionGoalHUDnotification(string textGoal)
+	public void ShowNewMissionGoalHUDnotification(string textGoal, bool isNewGoal)
 	{
 		StopAllCoroutines();
 
-		StartCoroutine(ShowNewMissionGoalHUDnotificationCoroutine(textGoal));
+		StartCoroutine(ShowNewMissionGoalHUDnotificationCoroutine(textGoal, isNewGoal));
 	}
 
-	private IEnumerator ShowNewMissionGoalHUDnotificationCoroutine(string textGoal)
+	private void ChangeLanguge(LocalizationManager localizationManager)
+	{
+		_localizationManager = localizationManager;
+	}
+
+	private IEnumerator ShowNewMissionGoalHUDnotificationCoroutine(string textGoal, bool isNewGoal)
 	{
 		_textNewMissionGoal.SetActive(true);
 		_textNewMissionGoalDisplay.SetActive(true);
+
+		if (isNewGoal)
+		{
+			_textComponentNewMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_New");
+		}
+		else
+		{
+			_textComponentNewMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+		}
 
 		_textComponentNewMissionGoalDisplay.text = textGoal;
 

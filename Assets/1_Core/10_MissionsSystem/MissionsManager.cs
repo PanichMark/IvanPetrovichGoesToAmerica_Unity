@@ -89,7 +89,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
 
 
-		_HUDmissionsController.ShowNewMissionGoalHUDnotification(localizedGoalText);
+		_HUDmissionsController.ShowNewMissionGoalHUDnotification(localizedGoalText, false);
 	}
 
 	public void CompleteCurrentStep(bool isCalledByLoadSafeFile)
@@ -103,7 +103,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		{
 			string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
 
-			_HUDmissionsController.ShowNewMissionGoalHUDnotification(localizedGoalText);
+			_HUDmissionsController.ShowNewMissionGoalHUDnotification(localizedGoalText, true);
 			_HUDmissionsController.SetCurrentMissionGoalText(localizedGoalText);
 		}
 		else
@@ -151,7 +151,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
 
-		_HUDmissionsController.ShowNewMissionGoalHUDnotification($"{localizedGoalText}: {currentAmount}/{requiredAmount}");
+		_HUDmissionsController.ShowNewMissionGoalHUDnotification($"{localizedGoalText}: {currentAmount}/{requiredAmount}", false);
 	}
 
 	private void StartNextMission()
