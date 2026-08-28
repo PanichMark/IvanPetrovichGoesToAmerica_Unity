@@ -8,14 +8,11 @@ public class MissionStep : MissionStepAbstract, IMissionStep
 	[TextArea(3, 10)]
 	public string StepDescription;
 	[SerializeField] private bool showMissionMarker;
-	public List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
+
 
 	// --- ДОБАВЬТЕ ЭТО СВОЙСТВО ---
 	// Оно преобразует список конкретных условий в список общих интерфейсов
-	public IReadOnlyList<IMissionStepCondition> Conditions
-	{
-		get { return StepConditions.ConvertAll(c => (IMissionStepCondition)c); }
-	}
+
 
 	public bool ShowMissionMarker => showMissionMarker;
 

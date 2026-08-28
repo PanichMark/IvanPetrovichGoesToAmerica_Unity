@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 {
+	private IMissionStepConditionWithProgress _missionStepConditionWithProgress;
+
 	private GameMissionsList _gameMissions;
 	public MissionAbstract ActiveMission { get; private set; }
 	public int CurrentStepIndex { get; private set; }
@@ -106,10 +108,43 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		OnCurrentStepChanged?.Invoke();
 
+		Debug.Log(CurrentStepIndex);
+		Debug.Log(ActiveMission.Steps[CurrentStepIndex].Conditions[0].GetType());
+		if (ActiveMission.Steps[CurrentStepIndex].Conditions[0] is IMissionStepConditionWithProgress stepWithProgress)
+		{
+			SubscribeToStepProgress(stepWithProgress);
+		}
+
+
 		if (CurrentStepIndex >= ActiveMission.Steps.Length)
 		{
 			EndMission();
 		}
+	}
+
+	private void SubscribeToStepProgress(IMissionStepConditionWithProgress condition)
+	{
+		if (condition == null) return;
+
+		// Отписываемся от предыдущего (на случай, если это повторный вызов), 
+		// хотя лучше делать полную отписку при смене шага.
+		condition.OnProgressUpdated -= HandleStepProgress;
+
+		// Подписываемся на новое событие
+		condition.OnProgressUpdated += HandleStepProgress;
+
+		// Сразу рисуем UI текущими данными из этого объекта
+		//HandleStepProgress(condition.CurrentProgress, condition.MaxProgress);
+	}
+
+	private void HandleStepProgress(int currentAmount, int requiredAmount)
+	{
+		Debug.Log(currentAmount);
+		Debug.Log(requiredAmount);
+
+		string localizedGoalText = GetLocalizedGoalText(ActiveMission.Steps[CurrentStepIndex]);
+
+		_HUDmissionsController.ShowNewMissionGoalHUDnotification($"{localizedGoalText}: {currentAmount}/{requiredAmount}");
 	}
 
 	private void StartNextMission()
