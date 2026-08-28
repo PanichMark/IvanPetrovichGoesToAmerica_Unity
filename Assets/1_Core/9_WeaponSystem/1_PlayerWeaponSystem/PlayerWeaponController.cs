@@ -575,6 +575,8 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		{
 			if (RightHandWeaponComponent != null)
 			{
+				RightHandWeaponComponent.OnHideWeapon();
+
 				if (RightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
 					RightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
 
@@ -588,6 +590,8 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		{
 			if (LeftHandWeaponComponent != null)
 			{
+				LeftHandWeaponComponent.OnHideWeapon();
+
 				if (LeftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
 					LeftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
 

@@ -42,6 +42,12 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 		_shellLeft3rdPerson = _shotgunBarrel3rdPerson.transform.Find("ShellLeft").gameObject;
 	}
 
+	public override void OnHideWeapon()
+	{
+		_shotgunBarrel1stPerson.transform.localRotation = Quaternion.identity;
+		_shotgunBarrel3rdPerson.transform.localRotation = Quaternion.identity;
+	}
+
 	protected override IEnumerator OnSpecificShootMechanics()
 	{
 		for (int i = 0; i < _pelletCount; i++)

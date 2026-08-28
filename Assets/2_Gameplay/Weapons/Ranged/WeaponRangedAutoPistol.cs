@@ -46,6 +46,23 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 		_magazine3rdPersonOld = ThirdPersonWeaponModelInstance.transform.Find("Magazine").gameObject;
 	}
 
+	public override void OnHideWeapon()
+	{
+		_magazine1stPersonOld.SetActive(true);
+		_magazine3rdPersonOld.SetActive(true);
+
+		if (_magazine1stPersonNew != null)
+		{
+			Destroy(_magazine1stPersonNew);
+		}
+
+		if (_magazine3rdPersonNew != null)
+		{
+			Destroy(_magazine3rdPersonNew);
+		}
+	}
+
+
 	protected override void ApplyWeaponRecoil()
 	{
 		_playerCameraController.ApplyWeaponRecoilAuto();

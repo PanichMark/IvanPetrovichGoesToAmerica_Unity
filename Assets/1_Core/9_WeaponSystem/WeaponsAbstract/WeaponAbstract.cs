@@ -45,6 +45,12 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract void WeaponAttack();
 	public abstract void StartAutoAttackingWeaponPlayer();
 	public abstract void StopAutoAttacking();
+
+	public virtual void OnHideWeapon()
+	{
+
+	}
+
 	public abstract IEnumerator AutoAttackWeaponPlayerCourutine();
 
 	public void InstantiateWeaponPlayer(PlayerWeaponController playerWeaponController, WeaponHandType handType)

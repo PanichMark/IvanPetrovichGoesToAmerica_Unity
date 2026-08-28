@@ -8,4 +8,8 @@ public class NPCstateHooked : NPCstateAbstract
 		_NPCStateMachineController.StopAnchorMove();
 		_NPCStateMachineController.TurnNavmeshOff();
 	}
+
+	/* 
+* НЕПОНЯТНО!
+*/
 }

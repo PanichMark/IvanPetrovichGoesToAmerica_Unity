@@ -58,6 +58,15 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 		ReapplyCartridgePosition();
 	}
 
+	public override void OnHideWeapon()
+	{
+		if (PlayerMagazineAmmoCurrent > 0)
+		{
+			_cartridge1stPerson.SetActive(true);
+			_cartridge3rdPerson.SetActive(true);
+		}
+	}
+
 	protected override void ApplyWeaponRecoil()
 	{
 		_playerCameraController.ApplyWeaponRecoilSingle(2, 0.02f, 0.08f);
