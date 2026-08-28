@@ -163,7 +163,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	public IEnumerator LoadJsonData(JsonGameData data)
 	{
-		CurrentStepIndex = data.MissionData.MissionStep;
+		CurrentStepIndex = data.MissionData.MissionStep + 2;
 		CompleteCurrentStep(true);
 
 		//Debug.Log(CurrentStepIndex);
