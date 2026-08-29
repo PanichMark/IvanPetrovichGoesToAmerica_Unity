@@ -50,10 +50,12 @@ public class NPCdetectionSignController : MonoBehaviour
 
 		_menuManager = ServiceLocator.Resolve<MenuManager>();
 		_menuManager.OnOpenAnyMenu += HideCanvasNPC;
-		_menuManager.OnCloseAnyMenu += ShowCanvasNPC;
+		//_menuManager.OnCloseAnyMenu += ShowCanvasNPC;
 
 		UpdateSpriteByMeter(0f);
 		_npcDetectionManager.OnMeterChanged += UpdateSpriteByMeter;
+
+		HideCanvasNPC();
 	}
 
 	private void ShowCanvasNPC()

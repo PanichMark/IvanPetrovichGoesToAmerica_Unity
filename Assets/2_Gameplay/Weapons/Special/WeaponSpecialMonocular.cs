@@ -6,7 +6,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Monocular;
 	private Coroutine _monocularScopeCoroutine;
 	public override WeaponTypes WeaponType => WeaponTypes.Special;
-
+	private int _layersSeethroughToIgnore;
 	public override float WeaponDamage => 0;
 	private SeethroughSceneObjectsRegistrator _seethroughSceneObjectsRegistrator;
 	public override bool IsWeaponAuto => true;
@@ -27,6 +27,8 @@ public class WeaponSpecialMonocular : WeaponAbstract
 		_canvasHUDmonocular = _gameCanvasesList.CanvasHUDmonocular;
 
 		_seethroughSceneObjectsRegistrator = FindObjectOfType<SeethroughSceneObjectsRegistrator>();
+
+		_layersSeethroughToIgnore = LayerMask.GetMask("HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
 	}
 
 	public override void StartAutoAttackingWeaponPlayer()
@@ -62,7 +64,13 @@ public class WeaponSpecialMonocular : WeaponAbstract
 			{
 				if (obj != null)
 				{
-					obj.layer = LayerMask.NameToLayer("Seethrough");
+					foreach (Transform child in obj.GetComponentsInChildren<Transform>(true))
+					{
+						if ((1 << child.gameObject.layer & _layersSeethroughToIgnore) == 0)
+						{
+							child.gameObject.layer = LayerMask.NameToLayer("Seethrough");
+						}
+					}
 				}
 			}
 		}
@@ -82,7 +90,13 @@ public class WeaponSpecialMonocular : WeaponAbstract
 			{
 				if (obj != null)
 				{
-					obj.layer = LayerMask.NameToLayer("Default");
+					foreach (Transform child in obj.GetComponentsInChildren<Transform>(true))
+					{
+						if ((1 << child.gameObject.layer & _layersSeethroughToIgnore) == 0)
+						{
+							child.gameObject.layer = LayerMask.NameToLayer("Default");
+						}
+					}
 				}
 			}
 		}
