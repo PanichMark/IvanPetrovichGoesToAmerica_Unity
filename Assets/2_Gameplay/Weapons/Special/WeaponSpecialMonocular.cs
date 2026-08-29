@@ -8,7 +8,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 	public override WeaponTypes WeaponType => WeaponTypes.Special;
 
 	public override float WeaponDamage => 0;
-
+	private SeethroughSceneObjectsRegistrator _seethroughSceneObjectsRegistrator;
 	public override bool IsWeaponAuto => true;
 	private GameObject _canvasHUDmonocular;
 	private GameplayCanvases _gameCanvasesList;
@@ -25,6 +25,8 @@ public class WeaponSpecialMonocular : WeaponAbstract
 	{
 		_gameCanvasesList = ServiceLocator.Resolve<GameplayCanvases>();
 		_canvasHUDmonocular = _gameCanvasesList.CanvasHUDmonocular;
+
+		_seethroughSceneObjectsRegistrator = FindObjectOfType<SeethroughSceneObjectsRegistrator>();
 	}
 
 	public override void StartAutoAttackingWeaponPlayer()
@@ -54,6 +56,17 @@ public class WeaponSpecialMonocular : WeaponAbstract
 
 		_isAttacking = true;
 
+		if (_seethroughSceneObjectsRegistrator.SeethroughSceneObject.Count > 0)
+		{
+			foreach (GameObject obj in _seethroughSceneObjectsRegistrator.SeethroughSceneObject)
+			{
+				if (obj != null)
+				{
+					obj.layer = LayerMask.NameToLayer("Seethrough");
+				}
+			}
+		}
+
 		if (!_weaponAudioSource.isPlaying)
 		{
 			//_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
@@ -62,6 +75,18 @@ public class WeaponSpecialMonocular : WeaponAbstract
 		_monocularScopeCoroutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this, false));
 
 		yield return _monocularScopeCoroutine;
+
+		if (_seethroughSceneObjectsRegistrator.SeethroughSceneObject.Count > 0)
+		{
+			foreach (GameObject obj in _seethroughSceneObjectsRegistrator.SeethroughSceneObject)
+			{
+				if (obj != null)
+				{
+					obj.layer = LayerMask.NameToLayer("Default");
+				}
+			}
+		}
+
 		_canvasHUDmonocular.SetActive(false);
 		_isAttacking = false;
 
