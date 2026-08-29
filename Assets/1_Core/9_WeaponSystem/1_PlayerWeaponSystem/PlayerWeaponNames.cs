@@ -14,5 +14,5 @@
 	OgnivaRage,
 	MisterMorozko,
 	Crossbow,
-	SeethroughMonocular
+	Monocular
 }
