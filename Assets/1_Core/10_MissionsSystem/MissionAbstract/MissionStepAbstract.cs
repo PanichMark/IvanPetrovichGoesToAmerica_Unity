@@ -5,8 +5,8 @@ public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
 {
 	public string MissionStepGoal_RU;
 	public string MissionStepGoal_EN;
-
-	public bool ShowMissionMarker => throw new System.NotImplementedException();
+	private MissionsManager _missionsManager;
+	public bool ShowMissionMarker => true;
 
 	public IReadOnlyList<IMissionStepCondition> Conditions
 	{
@@ -15,6 +15,18 @@ public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
 
 	public List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
 
-	public abstract void OnStepCompleted();
+	public void OnStepCompleted(bool goToNextStep)
+	{
+		_missionsManager.CompleteCurrentStep(false, goToNextStep);
+	}
 
+	public void Initialize(MissionsManager missionsManager)
+	{
+		_missionsManager = missionsManager;
+
+		foreach (var condition in StepConditions)
+		{
+			condition.Initialize(this);
+		}
+	}
 }

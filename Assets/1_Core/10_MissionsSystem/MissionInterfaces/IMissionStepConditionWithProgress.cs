@@ -2,5 +2,5 @@
 
 public interface IMissionStepConditionWithProgress : IMissionStepCondition
 {
-	event Action<int, int> OnProgressUpdated;
+	event Action<int, int> OnStepConditionProgressUpdated;
 }

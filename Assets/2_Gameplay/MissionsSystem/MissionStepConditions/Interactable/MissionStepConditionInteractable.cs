@@ -3,35 +3,34 @@ using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "StepConditionOnInteraction", menuName = "Missions/MissionStepConditions/StepConditionOnInteraction")]
-public class MissionStepConditionInteractable : MissionStepConditionAbstract, IMissionStepCondition
+public class MissionStepConditionInteractable : MissionStepConditionAbstract
 {
-	private bool _isCompleted;
 
 	// --- РЕАЛИЗАЦИЯ ИНТЕРФЕЙСА ---
-	public bool IsMet() => _isCompleted;
-	public GameObject Owner => OwnerObject;
+	
 	// ---------------------------
 
 	// ... остальной код класса остается БЕЗ ИЗМЕНЕНИЙ ...
-	public override bool IsConditionMet()
-	{
-		return _isCompleted;
-	}
+	//public override bool IsConditionMet()
+	//{
+		//return _isConditionMet;
+	//}
 
 	// Этот метод будет вызываться из скрипта на объекте (например, DoorScript)
 	public void OnPlayerInteracted(GameObject interactedObject)
 	{
 		// Проверяем, что у нас есть владелец и что взаимодействовали именно с ним
-		if (OwnerObject != null && interactedObject == OwnerObject && !_isCompleted)
+		if (_stepConditionOwner != null && interactedObject == _stepConditionOwner && !_isConditionMet)
 		{
-			_isCompleted = true;
-			Debug.Log($"[Условие] Взаимодействие с {OwnerObject.name} засчитано.");
-			NotifyMissionManager(); // Сообщаем менеджеру о завершении шага
+			_isConditionMet = true;
+			_missionStepAbstract.OnStepCompleted(GoToNextStep);
+			Debug.Log($"[Условие] Взаимодействие с {_stepConditionOwner.name} засчитано.");
+			//NotifyMissionManagerOnStepCompletion(); // Сообщаем менеджеру о завершении шага
 		}
 	}
 
-	public void ResetStepCondition()
+	public override void ResetStepCondition()
 	{
-		_isCompleted = false;
+		_isConditionMet = false;
 	}
 }

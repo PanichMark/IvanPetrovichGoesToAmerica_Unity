@@ -67,19 +67,19 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 		foreach (var condition in _currentMissionStepCache.Conditions)
 		{
-			string ownerName = condition.Owner ? condition.Owner.name : "NULL";
-			bool conditionMet = condition.IsMet();
+			string ownerName = condition.StepConditionOwner ? condition.StepConditionOwner.name : "NULL";
+			bool conditionMet = condition.IsConditionMet;
 
 			//Debug.Log($"[MissionMarker] Условие: '{condition.GetType().Name}'. Владелец: {ownerName}. Выполнено: {conditionMet}");
 
 			//Debug.Log(condition.Owner);
 			//Debug.Log(conditionMet);
 
-			if (condition.Owner != null && !conditionMet)
+			if (condition.StepConditionOwner != null && !conditionMet)
 			{
 				//Debug.Log($"[MissionMarker] Найдена активная цель: {condition.Owner.name}");
-				_gameObjectMissionGoal = condition.Owner;
-				return condition.Owner;
+				_gameObjectMissionGoal = condition.StepConditionOwner;
+				return condition.StepConditionOwner;
 			}
 		}
 		//Debug.Log("[MissionMarker] Активных целей для отслеживания не найдено.");
@@ -180,7 +180,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 		try
 		{
-			_currentMissionStepCache = _missionsManager.ActiveMission.Steps[_missionsManager.CurrentStepIndex] as IMissionStep;
+			_currentMissionStepCache = _missionsManager.ActiveMission.MissionSteps[_missionsManager.CurrentStepIndex] as IMissionStep;
 		}
 		catch (System.IndexOutOfRangeException)
 		{

@@ -11,24 +11,21 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 	// Временный список: кто сейчас физически внутри (сбрасывается всегда)
 	private readonly List<GameObject> _objectsCurrentlyInside = new();
 
-	private bool _isCompleted;
-	private GameObject _zoneOwner;
 
-	public event Action<int, int> OnProgressUpdated;
+	public event Action<int, int> OnStepConditionProgressUpdated;
 
-	public bool IsMet() => _isCompleted;
-	public GameObject Owner => _zoneOwner;
-
+	/*
 	public override bool IsConditionMet()
 	{
-		return _isCompleted;
+		return _isConditionMet;
 	}
+	*/
 
-	public void ResetStepCondition()
+	public override void ResetStepCondition()
 	{
 		Debug.Log($"[Условие][RESET] Сброс шага. Очистка временных списков.");
 
-		_isCompleted = false;
+		_isConditionMet = false;
 
 		// ВАЖНО: Не очищаем _registeredObjects здесь насовсем, иначе потеряем данные дизайнера.
 		// Но очищаем текущее состояние для теста.
@@ -38,7 +35,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 
 	internal void RegisterTrackedObject(GameObject obj)
 	{
-		if (_isCompleted) return;
+		if (_isConditionMet) return;
 
 		// Защита от дубликатов при многократных стартах в редакторе
 		if (!_registeredObjects.Contains(obj))
@@ -52,20 +49,20 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 	{
 	
 
-		_zoneOwner = zoneObj;
-		Debug.Log($"[Условие][Init] Владелец (ZoneMain) зафиксирован: {_zoneOwner.name}");
+		_stepConditionOwner = zoneObj;
+		Debug.Log($"[Условие][Init] Владелец (ZoneMain) зафиксирован: {_stepConditionOwner.name}");
 	}
 
 	internal void ReportObjectEntered(GameObject obj)
 	{
-		if (_isCompleted) return;
+		if (_isConditionMet) return;
 
 		if (_registeredObjects.Contains(obj) && !_objectsCurrentlyInside.Contains(obj))
 		{
 			_objectsCurrentlyInside.Add(obj);
 
 			int remaining = _registeredObjects.Count - _objectsCurrentlyInside.Count;
-			OnProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
+			OnStepConditionProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
 			Debug.Log($"[Условие][Вход] Объект: {obj.name}. Внутри: {_objectsCurrentlyInside.Count}/{_registeredObjects.Count}. Осталось: {remaining}");
 
 			if (remaining == 0 && _registeredObjects.Count > 0)
@@ -77,22 +74,23 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 
 	internal void ReportObjectExited(GameObject obj)
 	{
-		if (_isCompleted) return;
+		if (_isConditionMet) return;
 
 		if (_objectsCurrentlyInside.Contains(obj))
 		{
 			_objectsCurrentlyInside.Remove(obj);
 
 			int remaining = _registeredObjects.Count - _objectsCurrentlyInside.Count;
-			OnProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
+			OnStepConditionProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
 			Debug.Log($"[Условие][Выход] Объект: {obj.name}. Внутри: {_objectsCurrentlyInside.Count}/{_registeredObjects.Count}. Осталось: {remaining}");
 		}
 	}
 
 	private void CompleteMission()
 	{
-		_isCompleted = true;
-		Debug.Log($"[Условие] УСПЕХ! Все объекты внутри {_zoneOwner.name}. Шаг выполнен.");
-		NotifyMissionManager();
+		_isConditionMet = true;
+		_missionStepAbstract.OnStepCompleted(GoToNextStep);
+		Debug.Log($"[Условие] УСПЕХ! Все объекты внутри {_stepConditionOwner.name}. Шаг выполнен.");
+		//NotifyMissionManagerOnStepCompletion();
 	}
 }

@@ -1,34 +1,25 @@
-﻿// Файл: MissionStepConditionAbstract.cs (в сборке Core)
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class MissionStepConditionAbstract : ScriptableObject
+public abstract class MissionStepConditionAbstract : ScriptableObject, IMissionStepCondition
 {
-	// Ссылка на объект, которому принадлежит это условие (например, на Дверь)
-	// Мы не будем перетаскивать её вручную.
-	public GameObject OwnerObject { get; private set; }
-	protected MissionsManager _missionsManager;
+	[SerializeField] protected bool GoToNextStep = true;
+	protected GameObject _stepConditionOwner;
+	protected bool _isConditionMet;
+	public GameObject StepConditionOwner => _stepConditionOwner;
+	public bool IsConditionMet => _isConditionMet;
 
-	// Метод для регистрации владельца. Его будет вызывать скрипт на объекте.
+	protected MissionsManager _missionsManager;
+	protected MissionStepAbstract _missionStepAbstract;
 	public void RegisterOwner(GameObject owner)
 	{
-		OwnerObject = owner;
-_missionsManager = ServiceLocator.Resolve<MissionsManager>();
+		_stepConditionOwner = owner;
+		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 	}
 
-	// Метод, который вызывается, когда условие выполнено.
-	// Он найдет MissionsManager и сообщит ему о завершении.
-	protected void NotifyMissionManager()
+	public abstract void ResetStepCondition();
+
+	public void Initialize(MissionStepAbstract missionStepAbstract)
 	{
-		var manager = FindObjectOfType<MissionsManager>();
-		if (manager != null)
-		{
-			manager.CheckAndCompleteCurrentStep();
-		}
-		else
-		{
-			Debug.LogError("MissionsManager не найден в сцене!");
-		}
+		_missionStepAbstract = missionStepAbstract;
 	}
-
-	public abstract bool IsConditionMet();
 }

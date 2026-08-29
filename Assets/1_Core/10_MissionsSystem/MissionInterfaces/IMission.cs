@@ -2,5 +2,6 @@
 
 public interface IMission
 {
-	MissionStepAbstract[] Steps { get; }
+	public string MissionName { get; }
+	MissionStepAbstract[] MissionSteps { get; }
 }

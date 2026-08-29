@@ -6,10 +6,12 @@ public class MissionStepConditionObjectDestroyed : MissionStepConditionAbstract
 	public GameObject TargetDamageableObject;
 	private bool _isCompleted = false;
 
+	/*
 	public override bool IsConditionMet()
 	{
 		return _isCompleted;
 	}
+	*/
 
 	private void OnEnable()
 	{
@@ -26,7 +28,12 @@ public class MissionStepConditionObjectDestroyed : MissionStepConditionAbstract
 		if (destroyedObject == TargetDamageableObject && !_isCompleted)
 		{
 			_isCompleted = true;
-			FindObjectOfType<MissionsManager>().CheckAndCompleteCurrentStep();
+			//FindObjectOfType<MissionsManager>().CheckAndCompleteCurrentStep();
 		}
+	}
+
+	public override void ResetStepCondition()
+	{
+		throw new System.NotImplementedException();
 	}
 }

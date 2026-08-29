@@ -7,5 +7,5 @@ public class Mission : MissionAbstract
 
 	public MissionStep[] MissionStepsArray;
 
-	public override MissionStepAbstract[] Steps => MissionStepsArray;
+	public override MissionStepAbstract[] MissionSteps => MissionStepsArray;
 }

@@ -167,11 +167,11 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 			WeaponAbstract leftWeapon = LeftHandWeapon?.GetComponent<WeaponAbstract>();
 			WeaponAbstract rightWeapon = RightHandWeapon?.GetComponent<WeaponAbstract>();
 
-			if (LeftHandWeaponComponent != null && leftWeapon is WeaponRangedAbstract)
+			if (LeftHandWeaponComponent != null && leftWeapon is WeaponRangedAbstract && _interactionController.CurrentIThrowable == null)
 			{
 				(leftWeapon as WeaponRangedAbstract).Reload();
 			}
-			if (RightHandWeaponComponent != null && rightWeapon is WeaponRangedAbstract)
+			if (RightHandWeaponComponent != null && rightWeapon is WeaponRangedAbstract && _interactionController.CurrentIThrowable == null)
 			{
 				(rightWeapon as WeaponRangedAbstract).Reload();
 			}

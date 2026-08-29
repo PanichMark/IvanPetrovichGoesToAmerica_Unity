@@ -8,4 +8,6 @@ public interface IMissionStep
 	// Возвращает список условий текущего шага
 	bool ShowMissionMarker { get; }
 	IReadOnlyList<IMissionStepCondition> Conditions { get; }
+
+	void Initialize(MissionsManager missionsManager);
 }

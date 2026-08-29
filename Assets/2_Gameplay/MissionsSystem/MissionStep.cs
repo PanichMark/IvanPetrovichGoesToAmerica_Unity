@@ -18,7 +18,7 @@ public class MissionStep : MissionStepAbstract, IMissionStep
 
 	// ---------------------------------
 
-
+	/*
 	public override void OnStepCompleted()
 	{
 		if (AreAllConditionsMet())
@@ -27,9 +27,9 @@ public class MissionStep : MissionStepAbstract, IMissionStep
 			FindObjectOfType<MissionsManager>().CompleteCurrentStep(false);
 		}
 	}
-
-	private bool AreAllConditionsMet()
-	{
-		return StepConditions.All(cond => cond.IsConditionMet());
-	}
+	*/
+	//private bool AreAllConditionsMet()
+	//{
+		//return StepConditions.All(cond => cond.IsConditionMet());
+	//}
 }

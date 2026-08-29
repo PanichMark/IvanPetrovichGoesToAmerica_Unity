@@ -32290,6 +32290,29 @@ Transform:
   - {fileID: 1264272278}
   m_Father: {fileID: 405551625}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &435831682 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2549510235587133749, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+  m_PrefabInstance: {fileID: 1710444062}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &435831683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+  m_PrefabInstance: {fileID: 1710444062}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &435831684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435831682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d57da4d8cbea72043bfcf0a4089cf6ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkedMissionCondition: {fileID: 11400000, guid: d87002d2384233d41af42b2d1b2355f9, type: 2}
 --- !u!1 &435923749
 GameObject:
   m_ObjectHideFlags: 0
@@ -80174,6 +80197,7 @@ Transform:
   m_Children:
   - {fileID: 914566951}
   - {fileID: 1694801411}
+  - {fileID: 435831683}
   - {fileID: 1824351112}
   - {fileID: 648392213}
   - {fileID: 1612239981}
@@ -130032,6 +130056,66 @@ Transform:
   m_Children: []
   m_Father: {fileID: 743254182}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1710444062
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1038715069}
+    m_Modifications:
+    - target: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.622
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.737
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.6599984
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240245639778405981, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2549510235587133749, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      propertyPath: m_Name
+      value: InteractionObject_Loot_HealthShawarma (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2549510235587133749, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 435831684}
+  m_SourcePrefab: {fileID: 100100000, guid: e442654cff28db84f80ba7d647b84e3b, type: 3}
 --- !u!1 &1710603916
 GameObject:
   m_ObjectHideFlags: 0
