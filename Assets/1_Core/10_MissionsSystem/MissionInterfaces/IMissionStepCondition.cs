@@ -9,4 +9,6 @@ public interface IMissionStepCondition
 	void ResetStepCondition();
 
 	void Initialize(MissionStepAbstract missionStepAbstract);
+
+
 }

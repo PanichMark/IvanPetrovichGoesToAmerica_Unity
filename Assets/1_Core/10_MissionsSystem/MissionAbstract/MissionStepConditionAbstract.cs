@@ -1,8 +1,15 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework;
+using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class MissionStepConditionAbstract : ScriptableObject, IMissionStepCondition
 {
 	[SerializeField] protected int GoToNextStep;
+
+
+
+
+
 	protected GameObject _stepConditionOwner;
 	protected bool _isConditionMet;
 	public GameObject StepConditionOwner => _stepConditionOwner;

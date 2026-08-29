@@ -96,14 +96,17 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		_HUDmissionsController.ShowNewMissionGoalHUDnotification(localizedGoalText, false);
 	}
 
-	public void CompleteCurrentStep(int goToNextStep)
+	public void GoToNextStep(int goToNextStep)
 	{
-	
 		CurrentStepIndex = goToNextStep;
+
+		
 
 
 		if (CurrentStepIndex < ActiveMission.MissionSteps.Length)
 		{
+			ActiveMission.MissionSteps[CurrentStepIndex].OnMissionStepStartDoSomwthing();
+
 			string localizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 
 			_HUDmissionsController.ShowNewMissionGoalHUDnotification(localizedGoalText, true);
@@ -209,7 +212,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	public IEnumerator LoadJsonData(JsonGameData data)
 	{
 		CurrentStepIndex = data.MissionData.MissionStep;
-		CompleteCurrentStep(CurrentStepIndex);
+		GoToNextStep(CurrentStepIndex);
 
 		//Debug.Log(CurrentStepIndex);
 

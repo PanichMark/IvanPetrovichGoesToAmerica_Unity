@@ -10,4 +10,5 @@ public interface IMissionStep
 	IReadOnlyList<IMissionStepCondition> Conditions { get; }
 
 	void Initialize(MissionsManager missionsManager);
+	void OnMissionStepStartDoSomwthing();
 }
