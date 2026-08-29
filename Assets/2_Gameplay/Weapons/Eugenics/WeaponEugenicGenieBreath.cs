@@ -44,7 +44,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 	{
 		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
 
-		_currentWeaponPlayerEugenicAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this));
+		_currentWeaponPlayerEugenicAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this, true));
 
 		_playerResourcesManaManager.UseMana(ManaCost);
 

@@ -6,7 +6,7 @@ public class GameplayCanvases
 	public GameObject CanvasLockElectronic { get; private set; }
 	public GameObject CanvasNote { get; private set; }
 	public GameObject CanvasDialogue { get; private set; }
-
+	public GameObject CanvasHUDmonocular {  get; private set; }
 	public GameObject CanvasMainMenuChooseMission { get; private set; }
 	public GameObject CanvasMainMenuReadNews { get; private set; }
 	public GameObject CanvasCutscene { get; private set; } // Новое поле
@@ -17,7 +17,8 @@ public class GameplayCanvases
 							GameObject canvasDialogue,
 							GameObject canvasMainMenuChooseMission,
 							GameObject canvasMainMenuReadNews,
-							GameObject canvasCutscene) // Новый аргумент
+							GameObject canvasCutscene,
+							GameObject canvasHUDmonocular) // Новый аргумент
 	{
 		CanvasLockMechanical = canvasLockMechanical;
 		CanvasLockElectronic = canvasLockElectronic;
@@ -27,5 +28,6 @@ public class GameplayCanvases
 		CanvasMainMenuChooseMission = canvasMainMenuChooseMission;
 		CanvasMainMenuReadNews = canvasMainMenuReadNews;
 		CanvasCutscene = canvasCutscene;
+		CanvasHUDmonocular = canvasHUDmonocular;
 	}
 }

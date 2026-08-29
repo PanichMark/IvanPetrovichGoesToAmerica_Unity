@@ -80,7 +80,7 @@ public class BootstrapSubProcessMenuSystem
 	private PauseSubMenuAppearanceController _pauseSubMenuAppearanceController;
 	private GameObject _canvasPauseSubMenuAppearance;
 
-
+	private GameObject _canvasHUDmonocular;
 	private PauseSubMenuTutorialController _pauseSubMenuTutorialController;
 	private GameObject _canvasPauseSubMenuTutorial;
 
@@ -156,8 +156,10 @@ public class BootstrapSubProcessMenuSystem
 		GameObject canvasMenuLockpickElectronic,
 		GameObject canvasMenuDialogue,
 		GameObject canvasMainMenuChooseMission,
-		GameObject canvasBootstrapSignTermsAndConditions)
+		GameObject canvasBootstrapSignTermsAndConditions,
+		GameObject canvasHUDmonocular)
 	{
+		_canvasHUDmonocular = canvasHUDmonocular;
 		_canvasSavingProcess = canvasSavingProcess;
 		_bootstrapSubProcessSaveLoadSystem = bootstrapSubProcessSaveLoadSystem;
 		_canvasBootstrapSignTermsAndConditions = canvasBootstrapSignTermsAndConditions;
@@ -226,8 +228,8 @@ public class BootstrapSubProcessMenuSystem
 			_canvasMenuDialogue,
 			_canvasMainMenuChooseMission,
 			_canvasMainMenuReadNews,
-			_canvasMenuCutscene
-		);
+			_canvasMenuCutscene,
+			_canvasHUDmonocular);
 
 		ViewModelMenuChooseFirstLanguage = new ViewModelBootstrapChooseFirstLanguage(_bootstrap, _canvasMenuChooseFirstLanguage);
 

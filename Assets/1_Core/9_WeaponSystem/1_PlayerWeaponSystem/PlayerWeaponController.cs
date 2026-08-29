@@ -20,8 +20,8 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 	public event WeaponVisibilityHandler OnShowWeapon;
 	public event WeaponVisibilityHandler OnHideWeapon;
 
-	private bool _wasRightButtonPressedLastFrame;
-	private bool _wasLeftButtonPressedLastFrame;
+	public bool WasRightButtonPressedLastFrame { get; private set; }
+	public bool WasLeftButtonPressedLastFrame { get; private set; }
 	public int LayersToDamage => _layersToDamage;
 	private int _layersToDamage;
 	public int LayersOrganisms => _layersOrganisms;
@@ -121,20 +121,20 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		if (_inputDevice.GetKeyRightHandWeaponAttackReleased())
 		{
 			StopAutoShootingRightWeaponPlayer();
-			_wasRightButtonPressedLastFrame = false;
+			WasRightButtonPressedLastFrame = false;
 		}
-		if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened)
+		if (_inputDevice.GetKeyRightHandWeaponAttack() && !WasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened)
 		{
 			RightWeaponAttack();
 
 			if (RightHandWeapon != null && RightHandWeapon.activeInHierarchy)
 			{
-				_wasRightButtonPressedLastFrame = true;
+				WasRightButtonPressedLastFrame = true;
 			}
 		}
 		if (RightHandWeapon != null && !RightHandWeapon.activeInHierarchy)
 		{
-			if (_inputDevice.GetKeyRightHandWeaponAttack() && !_wasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
+			if (_inputDevice.GetKeyRightHandWeaponAttack() && !WasRightButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseRightWeapon)
 			{
 				_playerBehaviour.ArmPlayer();
 			}
@@ -143,20 +143,20 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		if (_inputDevice.GetKeyLeftHandWeaponAttackReleased())
 		{
 			StopAutoShootingLeftWeaponPlayer();
-			_wasLeftButtonPressedLastFrame = false;
+			WasLeftButtonPressedLastFrame = false;
 		}
-		if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened)
+		if (_inputDevice.GetKeyLeftHandWeaponAttack() && !WasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened)
 		{
 			LeftWeaponAttack();
 
 			if (LeftHandWeapon != null && LeftHandWeapon.activeInHierarchy)
 			{
-				_wasLeftButtonPressedLastFrame = true;
+				WasLeftButtonPressedLastFrame = true;
 			}
 		}
 		if (LeftHandWeapon != null && !LeftHandWeapon.activeInHierarchy)
 		{
-			if (_inputDevice.GetKeyLeftHandWeaponAttack() && !_wasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
+			if (_inputDevice.GetKeyLeftHandWeaponAttack() && !WasLeftButtonPressedLastFrame && !_menuManager.IsAnyMenuOpened && IsAbleToUseLeftWeapon)
 			{
 				_playerBehaviour.ArmPlayer();
 			}
@@ -176,6 +176,8 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 				(rightWeapon as WeaponRangedAbstract).Reload();
 			}
 		}
+
+		//Debug.Log(WasLeftButtonPressedLastFrame);
 	}
 
 	private void LateUpdate()

@@ -326,7 +326,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 	}
 
-	public IEnumerator WeaponFullArmAttackAnimation(WeaponAbstract weaponFullArm)
+	public IEnumerator WeaponFullArmAttackAnimation(WeaponAbstract weaponFullArm, bool switchLayersImmediately)
 	{
 		if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
 		{
@@ -337,7 +337,14 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			IsLeftFullArmAttacking = true;
 		}
 
-		TurnOnFullArmLayer(weaponFullArm.WeaponHandType);
+		if (switchLayersImmediately)
+		{
+			TurnOnFullArmLayerImmediately(weaponFullArm.WeaponHandType);
+		}
+		else
+		{
+			StartCoroutine(TurnOnFullArmLayerSlowly(weaponFullArm.WeaponHandType, 1.5f));
+		}
 
 		if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
 		{
@@ -351,20 +358,47 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
 			_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
 		}
-			
-		yield return new WaitForSeconds(weaponFullArm.WeaponAttackSpeedRate); // return until animation plays TODO;
 
-		TurnOffFullArmLayer(weaponFullArm.WeaponHandType);
-		
-		//Debug.Log(weaponMelee.WeaponHandType);
-
-		if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
+		if (switchLayersImmediately)
 		{
-			IsRightFullArmAttacking = false;
+			yield return new WaitForSeconds(weaponFullArm.WeaponAttackSpeedRate); // return until animation plays TODO;
+
+			TurnOffFullArmLayerImmediately(weaponFullArm.WeaponHandType);
+
+			if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
+			{
+				IsRightFullArmAttacking = false;
+			}
+			else
+			{
+				IsLeftFullArmAttacking = false;
+			}
 		}
 		else
 		{
-			IsLeftFullArmAttacking = false;
+			yield return null;
+
+			if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
+			{
+				yield return new WaitUntil(() => _playerWeaponController.WasRightButtonPressedLastFrame == false);
+				Debug.Log("WaitUntul right OK");
+			}
+			else
+			{
+				yield return new WaitUntil(() => _playerWeaponController.WasLeftButtonPressedLastFrame == false);
+				Debug.Log("WaitUntul left OK");
+			}
+
+			StartCoroutine(TurnOffFullArmLayerSlowly(weaponFullArm.WeaponHandType, 1.5f));
+
+			if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
+			{
+				IsRightFullArmAttacking = false;
+			}
+			else
+			{
+				IsLeftFullArmAttacking = false;
+			}
 		}
 
 		Debug.Log("Courutine MeleeAttack ended");
@@ -372,7 +406,122 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		yield return null;
 	}
 
-	private void TurnOnFullArmLayer(WeaponHandType handType)
+	private IEnumerator TurnOnFullArmLayerSlowly(WeaponHandType handType, float duration)
+	{
+		// Определяем целевые индексы слоев сразу в условии для обеих рук
+		if (handType == WeaponHandType.Right)
+		{
+			float timer = 0f;
+			while (timer < duration)
+			{
+				timer += Time.deltaTime;
+				float t = Mathf.Clamp01(timer / duration);
+
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponRightEquip), 0f, t));
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightArm, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponRightArm), 1f, t));
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponRightPalm), 0f, t));
+
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponRightEquip), 0f, t));
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightArm, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponRightArm), 1f, t));
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponRightPalm), 0f, t));
+
+				yield return null;
+			}
+
+			// Фиксируем финал
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, 0f);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightArm, 1f);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, 0f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 0f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightArm, 1f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, 0f);
+		}
+		else
+		{
+			float timer = 0f;
+			while (timer < duration)
+			{
+				timer += Time.deltaTime;
+				float t = Mathf.Clamp01(timer / duration);
+
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponLeftEquip), 0f, t));
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponLeftArm), 1f, t));
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponLeftPalm), 0f, t));
+
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponLeftEquip), 0f, t));
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftArm, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponLeftArm), 1f, t));
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponLeftPalm), 0f, t));
+
+				yield return null;
+			}
+
+			// Фиксируем финал
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 0f);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, 1f);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 0f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 0f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftArm, 1f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 0f);
+		}
+	}
+
+	private IEnumerator TurnOffFullArmLayerSlowly(WeaponHandType handType, float duration)
+	{
+		if (handType == WeaponHandType.Right)
+		{
+			float timer = 0f;
+			while (timer < duration)
+			{
+				timer += Time.deltaTime;
+				float t = Mathf.Clamp01(timer / duration);
+
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponRightEquip), 1f, t));
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightArm, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponRightArm), 0f, t));
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponRightPalm), 1f, t));
+
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponRightEquip), 1f, t));
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightArm, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponRightArm), 0f, t));
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponRightPalm), 1f, t));
+
+				yield return null;
+			}
+
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightEquip, 1f);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightArm, 0f);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, 1f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 1f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightArm, 0f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, 1f);
+		}
+		else
+		{
+			float timer = 0f;
+			while (timer < duration)
+			{
+				timer += Time.deltaTime;
+				float t = Mathf.Clamp01(timer / duration);
+
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponLeftEquip), 1f, t));
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponLeftArm), 0f, t));
+				_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, Mathf.Lerp(_playerAnimator1stPerson.GetLayerWeight(_layer1stWeaponLeftPalm), 1f, t));
+
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponLeftEquip), 1f, t));
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftArm, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponLeftArm), 0f, t));
+				_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, Mathf.Lerp(_playerAnimator3rdPerson.GetLayerWeight(_layer3rdWeaponLeftPalm), 1f, t));
+
+				yield return null;
+			}
+
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 1f);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, 0f);
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 1f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 1f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftArm, 0f);
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 1f);
+		}
+	}
+
+	private void TurnOnFullArmLayerImmediately(WeaponHandType handType)
 	{
 		Debug.Log($"turn ON melee layer {handType}");
 
@@ -398,7 +547,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 	}
 
-	private void TurnOffFullArmLayer(WeaponHandType handType)
+	private void TurnOffFullArmLayerImmediately(WeaponHandType handType)
 	{
 		Debug.Log($"turn OFF melee layer {handType}");
 
@@ -779,7 +928,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 				IsRightFullArmAttacking = false;
 
-				TurnOffFullArmLayer(handType);
+				TurnOffFullArmLayerImmediately(handType);
 			}
 		}
 		else
@@ -790,7 +939,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 				IsLeftFullArmAttacking = false;
 
-				TurnOffFullArmLayer(handType);
+				TurnOffFullArmLayerImmediately(handType);
 			}
 		}
 

@@ -51,6 +51,7 @@ public class Bootstrap : MonoBehaviour
 	private GameObject _canvasHUDmission;
 	private GameObject _canvasHUDhealthAndMana;
 	private GameObject _canvasHUDammo;
+	private GameObject _canvasHUDmonocular;
 	private GameObject _canvasMenuWeaponWheel;
 	public GameObject _canvasMenuNote {  get; private set; }
 	public GameObject _canvasMenuLockpickMechanical {  get; private set; }
@@ -237,6 +238,7 @@ public class Bootstrap : MonoBehaviour
 		_canvasHUDammo = Instantiate(_gameData.GameCanvasesList.CanvasHUDammo);
 		_canvasHUDinteraction = Instantiate(_gameData.GameCanvasesList.CanvasHUDinteraction);
 		_canvasHUDmission = Instantiate(_gameData.GameCanvasesList.CanvasHUDmission);
+		_canvasHUDmonocular = Instantiate(_gameData.GameCanvasesList.CanvasHUDmonocular);
 
 		_canvasMenuNote = Instantiate(_gameData.GameCanvasesList.CanvasMenuNote);
 		_canvasMenuLockpickElectronic = Instantiate(_gameData.GameCanvasesList.CanvasMenuLockpickElectronic);
@@ -305,7 +307,8 @@ public class Bootstrap : MonoBehaviour
 			_canvasMenuLockpickElectronic,
 			_canvasMenuDialogue,
 			_canvasMainMenuChooseMission,
-			_canvasBootstrapSignTermsAndConditions);
+			_canvasBootstrapSignTermsAndConditions,
+			_canvasHUDmonocular);
 
 		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.Initialize());
 
