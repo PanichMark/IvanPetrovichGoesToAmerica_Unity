@@ -2,7 +2,7 @@
 
 public abstract class MissionStepConditionAbstract : ScriptableObject, IMissionStepCondition
 {
-	[SerializeField] protected bool GoToNextStep = true;
+	[SerializeField] protected int GoToNextStep;
 	protected GameObject _stepConditionOwner;
 	protected bool _isConditionMet;
 	public GameObject StepConditionOwner => _stepConditionOwner;

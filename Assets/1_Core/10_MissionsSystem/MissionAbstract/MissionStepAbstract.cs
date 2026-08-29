@@ -15,9 +15,9 @@ public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
 
 	public List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
 
-	public void OnStepCompleted(bool goToNextStep)
+	public void OnStepCompleted(int goToNextStep)
 	{
-		_missionsManager.CompleteCurrentStep(false, goToNextStep);
+		_missionsManager.CompleteCurrentStep(goToNextStep);
 	}
 
 	public void Initialize(MissionsManager missionsManager)
