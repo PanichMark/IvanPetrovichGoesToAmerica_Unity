@@ -13,7 +13,7 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 	public override bool IsReloadingAnimationSingle => true;
 	public override float WeaponRange => 100;
 	public override bool LeavesBulletHole => false;
-	protected override float _waitForAmmoRefill => 3.15f;
+	protected override float _waitForAmmoRefill => 1.875f;
 
 	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
 
@@ -62,16 +62,16 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 		_dart1stPerson.SetActive(false);
 		_dart3rdPerson.SetActive(false);
 
-		yield return new WaitForSeconds(0.875f);
+		yield return new WaitForSeconds(0.83f);
 
 		float elapsed = 0f;
 		Quaternion startRotation1st = _loadingGate1stPerson.transform.localRotation;
 		Quaternion startRotation3rd = _loadingGate3rdPerson.transform.localRotation;
 		Quaternion targetRotation1st = startRotation1st * Quaternion.Euler(0, 30, 0);
 		Quaternion targetRotation3rd = startRotation3rd * Quaternion.Euler(0, 30, 0);
-		while (elapsed < 0.417f)
+		while (elapsed < 0.525f)
 		{
-			float t = elapsed / 0.417f;
+			float t = elapsed / 0.525f;
 			_loadingGate1stPerson.transform.localRotation = Quaternion.Slerp(startRotation1st, targetRotation1st, t);
 			_loadingGate3rdPerson.transform.localRotation = Quaternion.Slerp(startRotation3rd, targetRotation3rd, t);
 			elapsed += Time.deltaTime;
@@ -80,7 +80,7 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 		_loadingGate1stPerson.transform.localRotation = targetRotation1st;
 		_loadingGate3rdPerson.transform.localRotation = targetRotation3rd;
 
-		yield return new WaitForSeconds(2.583f);
+		yield return new WaitForSeconds(0.93f);
 
 		elapsed = 0f;
 		Quaternion backTargetRotation1st = startRotation1st;
@@ -102,7 +102,7 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 		_dart1stPerson.SetActive(false);
 		_dart3rdPerson.SetActive(false);
 
-		yield return new WaitForSeconds(3.15f);
+		yield return new WaitForSeconds(3.33f);
 
 		_dart1stPerson.SetActive(true);
 		_dart3rdPerson.SetActive(true);
