@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class WeaponRangedAbstract : WeaponAbstract
 {
@@ -34,15 +35,15 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	{
 		if (_isThisPlayerWeapon)
 		{
-		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
-WeaponRangedShootPoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
-_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>();
-_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
-
+			_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+			WeaponRangedShootPoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>();
+			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
+			_VFXmuzzleFlashEffect1stPerson = FirstPersonWeaponModelInstance.transform.Find("VFX")?.gameObject;
 			InitializeWeaponRanged();
 		}
 
-		_VFXmuzzleFlashEffect1stPerson = FirstPersonWeaponModelInstance.transform.Find("VFX")?.gameObject;
+
 		_VFXmuzzleFlashEffect3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("VFX")?.gameObject;
 		
 		_bulletHoleManager = ServiceLocator.Resolve<ObjectPoolWeaponController>();
@@ -141,14 +142,31 @@ _playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
 
 		if (WeaponName != PlayerWeaponNames.Shotgun)
-		{
+		{ 
 			RaycastHit[] hits = Physics.RaycastAll(WeaponRangedShootPoint.transform.position, WeaponRangedShootPoint.transform.forward, WeaponRange);
 			System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-
+		
 			if (hits.Length > 0)
 			{
-				SpawnBulletHoleDecal(hits);
-				ProcessDamage(hits, weaponDamage, 3);
+				// Создаем временный список для фильтрации
+				List<RaycastHit> filteredHits = new List<RaycastHit>();
+
+				foreach (var hit in hits)
+				{
+					// Если на объекте нет NavMeshAgent — добавляем его в список попаданий
+					if (hit.collider.GetComponent<NavMeshAgent>() == null)
+					{
+						filteredHits.Add(hit);
+					}
+				}
+
+				// Если после пропуска агентов остались валидные цели
+				if (filteredHits.Count > 0)
+				{
+					SpawnBulletHoleDecal(filteredHits.ToArray());
+					ProcessDamage(filteredHits.ToArray(), weaponDamage, 3);
+
+				}
 			}
 		}
 

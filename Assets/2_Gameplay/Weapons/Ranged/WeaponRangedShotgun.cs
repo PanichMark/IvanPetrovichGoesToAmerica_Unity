@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class WeaponRangedShotgun : WeaponRangedAbstract
@@ -61,13 +63,29 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 
 			if (hits.Length > 0)
 			{
-				SpawnBulletHoleDecal(hits);
-				ProcessDamage(hits, WeaponDamage, 10);
+				// Создаем временный список для фильтрации (точно так же, как в первом примере)
+				List<RaycastHit> filteredHits = new List<RaycastHit>();
 
-				IBreakable breakable = hits[0].transform.GetComponent<IBreakable>();
-				if (breakable != null)
+				foreach (var hit in hits)
 				{
-					breakable.TakeBreakDamage(WeaponDamage);
+					if (hit.collider.GetComponent<NavMeshAgent>() == null)
+					{
+						filteredHits.Add(hit);
+					}
+				}
+
+				// Если после пропуска агентов остались валидные цели
+				if (filteredHits.Count > 0)
+				{
+					// Теперь работаем ТОЛЬКО с очищенным списком
+					SpawnBulletHoleDecal(filteredHits.ToArray());
+					ProcessDamage(filteredHits.ToArray(), WeaponDamage, 10);
+
+					IBreakable breakable = filteredHits[0].transform.GetComponent<IBreakable>();
+					if (breakable != null)
+					{
+						breakable.TakeBreakDamage(WeaponDamage);
+					}
 				}
 			}
 		}
