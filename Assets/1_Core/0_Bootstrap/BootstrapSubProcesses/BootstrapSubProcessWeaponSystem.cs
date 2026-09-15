@@ -156,6 +156,8 @@ ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRight
 ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonLeftHand, _gameObjectThirdPersonLeftHandWeaponSlot);
 ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand, _gameObjectThirdPersonRightHandWeaponSlot);
 
+		ChangeWeaponWheelType(WeaponWheelMenuTypes._3D);
+
 		yield break;
 	}
 

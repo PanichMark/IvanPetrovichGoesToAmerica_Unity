@@ -324,6 +324,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 			ShowWeaponName();
 			ShowWeaponPrefabs();
 			ShowWeaponAmmo();
+			SetEachWeaponTransformRotation();
 			WeaponWheelName.text = _weaponWheelHandRight;
 
 			if (_playerInteractionController.CurrentPickableObject != null)
@@ -340,6 +341,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 			ShowWeaponName();
 			ShowWeaponPrefabs();
 			ShowWeaponAmmo();
+			SetEachWeaponTransformRotation();
 			WeaponWheelName.text = _weaponWheelHandLeft;
 
 			if (_playerInteractionController.CurrentPickableObject != null && _playerInteractionController.CurrentIThrowable == null)
@@ -355,6 +357,24 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 			UnrestrictWeaponWheelWhilePickable();
 		}
 	}
+
+	private void SetEachWeaponTransformRotation()
+	{
+		List<GameObject> activeWeapons = _weaponController.CollectActiveWeapons();
+
+		foreach (Transform weaponModel in _weaponModelsContainer.transform)
+		{
+			weaponModel.localRotation = Quaternion.Euler(-60, -60, 0);
+
+			Vector3 currentAngles = weaponModel.localEulerAngles;
+
+			if (_CurrentShowWeaponIndex != 0)
+			{
+				weaponModel.localEulerAngles = new Vector3(currentAngles.x, currentAngles.x + ((360 / activeWeapons.Count) * _CurrentShowWeaponIndex), currentAngles.z);
+			}
+		}
+	}
+
 
 	private void SetWheelLayerToIgnorePostProcessing()
 	{
@@ -427,16 +447,9 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 			modelInstance.transform.localRotation = Quaternion.identity;
 
 			_weaponModels3D.Add(modelInstance);
-
-			/*
-			foreach (Transform weaponModel in _weaponModelsContainer.transform)
-			{
-				weaponModel.rotation = Quaternion.Euler(-60, -60, 0);
-			}
-			*/
 		}
 
-		_weaponModelsContainer.transform.rotation = _playerCamera.transform.rotation * Quaternion.Euler(30, 180, 0);
+		_weaponModelsContainer.transform.localRotation = _playerCamera.transform.localRotation * Quaternion.Euler(0, 180, 0);
 
 		HideWeaponPrefabs();
 	}
@@ -788,7 +801,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 		_weaponWheelHandRight = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandRight")}";
 		_weaponWheelHandLeft = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandLeft")}";
 
-		_textComponentWeaponWheelUnavailable.text = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_Unavailable")}";
+		_textComponentWeaponWheelUnavailable.text = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_CannotChangeWeapon")}";
 
 		ShowWeaponName();
 	}
