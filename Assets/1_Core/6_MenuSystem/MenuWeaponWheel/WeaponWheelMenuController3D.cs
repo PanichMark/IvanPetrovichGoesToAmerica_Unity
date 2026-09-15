@@ -97,7 +97,7 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
 		_weaponWheelHandRight = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandRight")}";
 		_weaponWheelHandLeft = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_HandLeft")}";
-		_textComponentWeaponWheelUnavailable.text = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_Unavailable")}";
+		_textComponentWeaponWheelUnavailable.text = $"{_localizationManager.GetLocalizedString("UI_Menu_WeaponWheelMenu_CannotChangeWeapon")}";
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_weaponController.OnAnyWeaponUnlocked += OnWeaponUnlocked;
 
@@ -405,6 +405,12 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 		{
 			GameObject modelInstance = Instantiate(activeWeapons[i], _weaponModelsContainer.transform);
 
+			var eugenicComponent = modelInstance.GetComponent<WeaponEugenicAbstract>();
+			if (eugenicComponent != null)
+			{
+				ShowOnlyEugenicWeaponBottle(modelInstance);
+			}
+
 			SetWheelLayerToIgnorePostProcessing();
 
 			float angleStep = 360f / activeWeapons.Count;
@@ -422,10 +428,12 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 
 			_weaponModels3D.Add(modelInstance);
 
+			/*
 			foreach (Transform weaponModel in _weaponModelsContainer.transform)
 			{
 				weaponModel.rotation = Quaternion.Euler(-60, -60, 0);
 			}
+			*/
 		}
 
 		_weaponModelsContainer.transform.rotation = _playerCamera.transform.rotation * Quaternion.Euler(30, 180, 0);
@@ -759,6 +767,18 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 				WeaponText.text = _localizationManager.GetLocalizedString(_weaponToSelectComponent.WeaponNameSystem);
 			}
 		}
+	}
+
+	private void ShowOnlyEugenicWeaponBottle(GameObject target)
+	{
+		Transform rightChild = target.transform.Find("Eugenic.R");
+		Transform leftChild = target.transform.Find("Eugenic.L");
+		Transform eugenicBottle = target.transform.Find("EugenicBottle");
+
+		rightChild.gameObject.SetActive(false);
+		leftChild.gameObject.SetActive(false);
+
+		eugenicBottle.gameObject.SetActive(true);
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
