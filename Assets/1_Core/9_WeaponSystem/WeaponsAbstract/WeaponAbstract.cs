@@ -60,14 +60,14 @@ public abstract class WeaponAbstract : MonoBehaviour
 		_isThisPlayerWeapon = true;
 		WeaponHandType = handType;
 
-_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
-_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
-_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand);
-_thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
+		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
+		_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
+		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand);
+		_thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
 
-_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonLeftHand);
-_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
-_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonLeftHand);
+		_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonLeftHand);
+		_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
+		_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonLeftHand);
 		_thirdPersonLeftHandWeaponSlotTransform = _thirdPersonLeftHandWeaponSlotGameObject.transform;
 		
 		ThirdPersonWeaponModelInstance = gameObject;
@@ -94,16 +94,16 @@ _thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocator
 		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
 		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
 
-if (WeaponHandType == WeaponHandType.Right)
-{
-    _weaponAudioSource = ServiceLocator.Resolve(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponRight);
-}
-else
-{
-    _weaponAudioSource = ServiceLocator.Resolve(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponLeft);
-}
+		if (WeaponHandType == WeaponHandType.Right)
+		{
+			_weaponAudioSource = ServiceLocator.Resolve(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponRight);
+		}
+		else
+		{
+			_weaponAudioSource = ServiceLocator.Resolve(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponLeft);
+		}
 
-_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();
+		_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();
 
 		InitializeWeapon();
 
@@ -176,5 +176,39 @@ _playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationC
 			tpScale.x *= -1;
 			ThirdPersonWeaponModelInstance.transform.localScale = tpScale;
 		}
+	}
+
+	public void InstantiateWeaponInspect()
+	{
+		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
+		_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
+
+		FirstPersonWeaponModelInstance = Instantiate(gameObject);
+
+		FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
+
+		SetLayerRecursively(FirstPersonWeaponModelInstance.transform, LayerMask.NameToLayer("FirstPerson"));
+
+		if (WeaponType != WeaponTypes.Eugenic)
+		{
+			FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, true);
+		}
+
+		if (WeaponType == WeaponTypes.Eugenic)
+		{
+			ShowOnlyEugenicWeaponBottle(FirstPersonWeaponModelInstance);
+		}
+	}
+
+	private void ShowOnlyEugenicWeaponBottle(GameObject target)
+	{
+		Transform eugenicEffect = target.transform.Find("Eugenic.R");
+		Transform eugenicBottle = target.transform.Find("Armature.R/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R/EugenicBottle");
+
+		eugenicEffect.gameObject.SetActive(false);
+		
+		eugenicBottle.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, false);
+
+		eugenicBottle.gameObject.SetActive(true);
 	}
 }

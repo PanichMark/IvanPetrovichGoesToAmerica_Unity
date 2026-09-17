@@ -36,6 +36,8 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private bool _wasCutsceneSkipped;
 	private bool _wasCutsceneCanceled;
 
+	private GameObject _currentInspectedWeaponModel;
+
 	private bool _shouldChangeNPCState;
 	private bool _shouldInteractWithObjects;
 	private bool _isInitialized;
@@ -398,10 +400,13 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		}
 		else
 		{
+			inspectedWeapon.InstantiateWeaponInspect();
+
 			_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 
 			_playerWeaponFirstPersonRenderer.ShowBothHandsForWeaponInspectionCutscene();
 			_playerWeaponAnimationController.AnimationInspectWeapon(inspectedWeapon);
+		
 		}
 
 		_menuManager.OpenCutsceneMenu();

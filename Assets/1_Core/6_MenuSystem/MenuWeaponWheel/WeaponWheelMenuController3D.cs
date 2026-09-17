@@ -786,7 +786,8 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 	{
 		Transform rightChild = target.transform.Find("Eugenic.R");
 		Transform leftChild = target.transform.Find("Eugenic.L");
-		Transform eugenicBottle = target.transform.Find("EugenicBottle");
+
+		Transform eugenicBottle = target.transform.Find("Armature.R/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R/EugenicBottle");
 
 		rightChild.gameObject.SetActive(false);
 		leftChild.gameObject.SetActive(false);
