@@ -1,4 +1,6 @@
-﻿public interface ICutscene
+﻿using UnityEngine;
+
+public interface ICutscene
 {
-	void TriggerCutscene(WeaponAbstract inspectedWeapon);
+	void TriggerCutscene(GameObject inspectedWeapon);
 }

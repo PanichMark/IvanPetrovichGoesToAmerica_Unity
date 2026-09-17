@@ -302,13 +302,13 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 		else
 		{
-			eugenicArmatureFirstPerson = inspectedEugenic.FirstPersonWeaponModelInstance.transform.Find("Armature.R").gameObject;
-			eugenicSkinnedMeshFirstPerson = inspectedEugenic.FirstPersonWeaponModelInstance.transform.Find("Eugenic.R").GetComponent<SkinnedMeshRenderer>();
+			eugenicArmatureFirstPerson = inspectedEugenic.transform.Find("Armature.R").gameObject;
+			eugenicSkinnedMeshFirstPerson = inspectedEugenic.transform.Find("Eugenic.R").GetComponent<SkinnedMeshRenderer>();
 
 			_transferBonesFirstPerson.TransferWeaponEugenicBones(eugenicArmatureFirstPerson, eugenicSkinnedMeshFirstPerson, WeaponHandType.Right);
 
-			eugenicArmatureFirstPerson = inspectedEugenic.FirstPersonWeaponModelInstance.transform.Find("Armature.L").gameObject;
-			eugenicSkinnedMeshFirstPerson = inspectedEugenic.FirstPersonWeaponModelInstance.transform.Find("Eugenic.L").GetComponent<SkinnedMeshRenderer>();
+			eugenicArmatureFirstPerson = inspectedEugenic.transform.Find("Armature.L").gameObject;
+			eugenicSkinnedMeshFirstPerson = inspectedEugenic.transform.Find("Eugenic.L").GetComponent<SkinnedMeshRenderer>();
 
 			_transferBonesFirstPerson.TransferWeaponEugenicBones(eugenicArmatureFirstPerson, eugenicSkinnedMeshFirstPerson, WeaponHandType.Left);
 		}
@@ -1004,26 +1004,15 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponReload, 0);
 	}
 
-	public IEnumerator AnimationInspectWeapon(WeaponAbstract inspectedWeapon)
+	public void AnimationInspectWeapon(WeaponAbstract inspectedWeapon)
 	{
 		if (inspectedWeapon is WeaponEugenicAbstract)
 		{
 			TransferWeaponEugenicBones(WeaponHandType.Right, inspectedWeapon);
-			//Debug.Log("BRUH!!!");
 		}
 
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stInspectWeapon, 1);
 
 		_playerAnimator1stPerson.Play($"Inspect_Weapon_{inspectedWeapon.WeaponType}_{inspectedWeapon.WeaponName}", _layer1stInspectWeapon, 0f);
-
-		yield return new WaitForSecondsRealtime(3.33f);
-
-		inspectedWeapon.HideEugenicBottleCap();
-
-		yield return new WaitForSecondsRealtime(4.58f);
-
-		inspectedWeapon.ShowEugenicEffectBothHands();
-
-		yield return null;
 	}
 }

@@ -307,4 +307,9 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 		yield return new WaitForSeconds(0.1f);
 		obj.AddComponent<BoxCollider>();
 	}
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		throw new System.NotImplementedException();
+	}
 }

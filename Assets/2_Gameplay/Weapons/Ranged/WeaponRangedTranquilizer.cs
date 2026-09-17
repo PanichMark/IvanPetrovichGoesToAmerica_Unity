@@ -107,4 +107,9 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 		_dart1stPerson.SetActive(true);
 		_dart3rdPerson.SetActive(true);
 	}
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		throw new System.NotImplementedException();
+	}
 }

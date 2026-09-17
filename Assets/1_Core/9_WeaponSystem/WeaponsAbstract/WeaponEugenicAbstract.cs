@@ -11,6 +11,11 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	protected PlayerManaController _playerResourcesManaManager;
 	protected Coroutine _currentWeaponPlayerEugenicAttackRoutine;
 
+	private GameObject _eugenicEffectRightHand;
+	private GameObject _eugenicEffectLeftHand;
+	private GameObject _eugenicBottle;
+	private GameObject _eugenicBottleCap;
+
 	[SerializeField] protected GameObject _VFXeffect;
 	protected Transform _VFXspawnPoint;
 	protected GameObject _vfxInstance;
@@ -18,10 +23,10 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	{
 		if (_isThisPlayerWeapon == true)
 		{
-_eugenicAttackDirection = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
-_eugenicSourcePoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+			_eugenicAttackDirection = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+			_eugenicSourcePoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
 
-_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
+			_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 		}
 
 		InitializeWeaponEugenic();
@@ -123,4 +128,69 @@ _playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 	{
 		//TurnEugenicVFXOff();
 	}
+
+	public virtual void HideEugenicBottleCap()
+	{
+		_eugenicBottleCap.SetActive(false);
+	
+	}
+
+	public virtual void ShowEugenicEffectBothHands()
+	{
+		_eugenicEffectRightHand.SetActive(true);
+		_eugenicEffectLeftHand.SetActive(true);
+
+		_eugenicBottle.SetActive(false);
+	}
+
+	public void ShowOnlyEugenicWeaponBottle()
+	{
+		_eugenicEffectRightHand = transform.Find("Eugenic.R").gameObject;
+		_eugenicEffectLeftHand = transform.Find("Eugenic.L").gameObject;
+		_eugenicBottle = transform.Find("Armature.R/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R/EugenicBottle").gameObject;
+		_eugenicBottleCap = transform.Find("Armature.R/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R/EugenicBottle/EugenicBottleCap").gameObject;
+
+		_eugenicEffectRightHand.SetActive(false);
+		_eugenicEffectLeftHand.SetActive(false);
+
+		_eugenicBottle.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, false);
+		_eugenicBottle.gameObject.SetActive(true);
+	}
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		//Destroy(gameObject);
+		//Destroy(gameObject);
+		_playerWeaponAnimationController.AnimationInspectWeapon(this);
+
+		Debug.Log("BEFORE WAIT: " + _eugenicEffectRightHand.name + " Instance ID: " + _eugenicEffectRightHand.GetInstanceID());
+
+		yield return new WaitForSecondsRealtime(3.33f);
+	
+		HideEugenicBottleCap();
+		
+		yield return new WaitForSecondsRealtime(4.58f);
+
+		ShowEugenicEffectBothHands();
+
+		yield return new WaitForSecondsRealtime(4.16f);
+
+		// Смотрим, тот ли это вообще объект по ID
+		//Debug.Log("BEFORE DESTROY: " + _eugenicEffectRightHand.name + " Instance ID: " + _eugenicEffectRightHand.GetInstanceID());
+
+	
+
+
+		Destroy(_eugenicEffectRightHand);
+		Destroy(_eugenicEffectLeftHand);
+		Destroy(_eugenicBottle);
+		Destroy(_eugenicBottleCap);
+		Destroy(gameObject);
+
+
+		//Destroy(FirstPersonWeaponModelInstance);
+
+		yield return null;
+	}
+
 }

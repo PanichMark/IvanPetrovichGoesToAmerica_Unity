@@ -383,7 +383,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		}	
 	}
 
-	public void TriggerCutscene(WeaponAbstract inspectedWeapon)
+	public void TriggerCutscene(GameObject inspectedWeapon)
 	{
 		Debug.Log("CUTSCENE!!!");
 		_director.Play();
@@ -408,17 +408,21 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		{
 			_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
 
-			inspectedWeapon.InstantiateWeaponInspect();
+			var inspectedWeaponModel = Instantiate(inspectedWeapon);
+			WeaponAbstract inspectedWeaponComponent = inspectedWeaponModel.GetComponent<WeaponAbstract>();
+			//inspectedWeapon.InstantiateWeaponInspect();
 
 			_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 
+
+			inspectedWeaponComponent.SetUpWeaponInspect();
+
+
 			_playerWeaponFirstPersonRenderer.ShowBothHandsForWeaponInspectionCutscene();
-			StartCoroutine(_playerWeaponAnimationController.AnimationInspectWeapon(inspectedWeapon));
-		
+			StartCoroutine(inspectedWeaponComponent.InspectWeaponAnimation());
 		}
 
 		_menuManager.OpenCutsceneMenu();
-
 
 		IsCutscenePlaying = true;
 		WasCutscenePlaying = true;

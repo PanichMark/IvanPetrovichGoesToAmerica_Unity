@@ -104,4 +104,9 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 		_sawBlade1stPerson.transform.localEulerAngles = Vector3.zero;
 		_sawBlade3rdPerson.transform.localEulerAngles = Vector3.zero;
 	}
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		throw new System.NotImplementedException();
+	}
 }

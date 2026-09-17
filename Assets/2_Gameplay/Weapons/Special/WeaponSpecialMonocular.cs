@@ -106,5 +106,9 @@ public class WeaponSpecialMonocular : WeaponAbstract
 
 		//_currentWeaponPlayerMeleeAttackRoutine = null;
 	}
-	
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		throw new System.NotImplementedException();
+	}
 }

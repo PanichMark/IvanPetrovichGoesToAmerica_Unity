@@ -242,4 +242,9 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 
 		yield return null;
 	}
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		throw new System.NotImplementedException();
+	}
 }

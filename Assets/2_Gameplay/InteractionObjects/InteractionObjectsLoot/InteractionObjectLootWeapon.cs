@@ -34,7 +34,7 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 
 		if (_cutsceneController != null)
 		{
-			_cutsceneController.TriggerCutscene(_weapon.GetComponent<WeaponAbstract>());
+			_cutsceneController.TriggerCutscene(_weapon);
 		}
 	}
 

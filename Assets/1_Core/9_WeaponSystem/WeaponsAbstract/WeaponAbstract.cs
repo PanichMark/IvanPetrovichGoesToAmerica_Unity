@@ -25,11 +25,6 @@ public abstract class WeaponAbstract : MonoBehaviour
 	protected AudioSource _weaponAudioSource;
 	protected bool _isAttacking;
 
-	private GameObject _eugenicEffectRightHand;
-	private GameObject _eugenicEffectLeftHand;
-	private GameObject _eugenicBottle;
-	private GameObject _eugenicBottleCap;
-
 	public WeaponHandType WeaponHandType { get; private set; }
 
 	public GameObject FirstPersonWeaponModelInstance { get; protected set; }
@@ -57,6 +52,8 @@ public abstract class WeaponAbstract : MonoBehaviour
 	}
 
 	public abstract IEnumerator AutoAttackWeaponPlayerCourutine();
+
+	public abstract IEnumerator InspectWeaponAnimation();
 
 	public void InstantiateWeaponPlayer(PlayerWeaponController playerWeaponController, WeaponHandType handType)
 	{
@@ -183,64 +180,36 @@ public abstract class WeaponAbstract : MonoBehaviour
 		}
 	}
 
-	public void InstantiateWeaponInspect()
+	public void SetUpWeaponInspect()
 	{
 		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
 		_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
 
-		FirstPersonWeaponModelInstance = Instantiate(gameObject);
+		//Destroy(ThirdPersonWeaponModelInstance);
 
-		FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
+		_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();
 
-		SetLayerRecursively(FirstPersonWeaponModelInstance.transform, LayerMask.NameToLayer("FirstPerson"));
+		//FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer("FirstPerson");
 
-		if (WeaponType != WeaponTypes.Eugenic)
+		SetLayerRecursively(gameObject.transform, LayerMask.NameToLayer("FirstPerson"));
+
+		// Пытаемся преобразовать текущий объект в WeaponEugenicAbstract
+		WeaponEugenicAbstract eugenicWeapon = this as WeaponEugenicAbstract;
+
+		if (eugenicWeapon == null)
 		{
-			FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, true);
+			//FirstPersonWeaponModelInstance.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, true);
+		}
+		else
+		{
+			// Вызываем метод у полученного объекта
+			eugenicWeapon.ShowOnlyEugenicWeaponBottle();
 		}
 
-		if (WeaponType == WeaponTypes.Eugenic)
-		{
-			ShowOnlyEugenicWeaponBottle(FirstPersonWeaponModelInstance);
-		}
+		//Destroy(gameObject);
 	}
 
-	private void ShowOnlyEugenicWeaponBottle(GameObject target)
+	public virtual void DetroyInspectedWeapon()
 	{
-		Transform eugenicEffectRight = target.transform.Find("Eugenic.R");
-		Transform eugenicEffectLeft = target.transform.Find("Eugenic.L");
-		Transform eugenicBottle = target.transform.Find("Armature.R/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R/EugenicBottle");
-		Transform eugenicBottleCap = target.transform.Find("Armature.R/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R/EugenicBottle/EugenicBottleCap");
-
-		_eugenicEffectRightHand = eugenicEffectRight.gameObject;
-		_eugenicEffectLeftHand = eugenicEffectLeft.gameObject;
-
-		_eugenicBottle = eugenicBottle.gameObject;
-		_eugenicBottleCap = eugenicBottleCap.gameObject;
-
-		_eugenicEffectRightHand.SetActive(false);
-		_eugenicEffectLeftHand.SetActive(false);
-
-		_eugenicBottle.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, false);
-
-		_eugenicBottle.gameObject.SetActive(true);
-	}
-
-	public void HideEugenicBottleCap()
-	{
-		_eugenicBottleCap.gameObject.SetActive(false);
-	}
-
-	public void ShowEugenicEffectBothHands()
-	{
-		_eugenicEffectRightHand.SetActive(true);
-		_eugenicEffectLeftHand.SetActive(true);
-
-		_eugenicBottle.gameObject.SetActive(false);
-	}
-
-	public void DetroyInspectedWeapon()
-	{
-
 	}
 }

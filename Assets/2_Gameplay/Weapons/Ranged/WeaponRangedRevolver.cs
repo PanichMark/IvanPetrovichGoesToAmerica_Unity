@@ -277,4 +277,11 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 		_revolver1stPersonGunMesh.SetBlendShapeWeight(shapeIndex, 0f);
 		_revolver3rdPersonGunMesh.SetBlendShapeWeight(shapeIndex, 0f);
 	}
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		throw new System.NotImplementedException();
+
+		// revolver isnt inspected but given straigth away after Bistro fight tutorial
+	}
 }

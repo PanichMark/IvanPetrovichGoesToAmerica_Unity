@@ -469,4 +469,9 @@ _playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>();
 		_Crossbow1stPersonSkinnedMesh.SetBlendShapeWeight(0, 100f);
 		_Crossbow3rdPersonSkinnedMesh.SetBlendShapeWeight(0, 100f);
 	}
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		throw new System.NotImplementedException();
+	}
 }

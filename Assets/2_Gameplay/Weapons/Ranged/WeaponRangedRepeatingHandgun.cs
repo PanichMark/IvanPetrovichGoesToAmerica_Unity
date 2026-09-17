@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class WeaponRangedRepeatingHandgun : WeaponRangedAbstract
 {
@@ -23,6 +24,11 @@ public class WeaponRangedRepeatingHandgun : WeaponRangedAbstract
 	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
 
 	protected override float _waitForAmmoRefill => throw new System.NotImplementedException();
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		throw new System.NotImplementedException();
+	}
 
 	protected override void InitializeWeaponRanged()
 	{

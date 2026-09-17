@@ -183,4 +183,11 @@ _chokeNPCtext = _viewModelHUDInteraction.TextChokeNPC;
 		Debug.Log("Choke SUCCESS!!!");
 		currentChokeCoroutine = null;
 	}
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		throw new System.NotImplementedException();
+
+		// baton isnt inspected but given straigth away during Bistro fight tutorial
+	}
 }
