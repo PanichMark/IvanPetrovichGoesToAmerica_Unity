@@ -430,7 +430,7 @@ ServiceLocator.Register<PauseSubMenuSettingsSectionGeneralController>(PauseSubMe
 
 		ServiceLocator.Register<ViewModelMainMenuChooseMission>(ViewModelMainMenuChooseMission);
 ServiceLocator.Register<ViewModelMainMenuReadNews>(_viewModelMainMenuReadNews);
-
+		ServiceLocator.Register<ViewModelMenuCutscene>(ViewModelMenuCutscene);
 		ServiceLocator.Register<ViewModelMenuNote>(ViewModelMenuNote);
 		ServiceLocator.Register<ViewModelMenuLockpickMechanical>(ViewModelMenuLockpickMechanical);
 		ServiceLocator.Register<ViewModelMenuLockpickElectronic>(ViewModelMenuLockpickElectronic);

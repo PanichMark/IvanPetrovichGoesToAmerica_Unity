@@ -159,7 +159,7 @@ public class PauseMenuController : MonoBehaviour
 	private void DisableSaveButton()
 	{
 		_buttonsComponentsPauseMenu[1].interactable = false;
-		_textComponentsButtonsPauseMenu[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSave_UNAVAILABLE");
+		_textComponentsButtonsPauseMenu[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSave_CANNOT-SAVE-GAME-RIGHT-NOW");
 	}
 
 	public void OpenPauseConfirmMenu()
@@ -307,7 +307,7 @@ public class PauseMenuController : MonoBehaviour
 		}
 		else
 		{
-			_textComponentsButtonsPauseMenu[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSave_UNAVAILABLE");
+			_textComponentsButtonsPauseMenu[1].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSave_CANNOT-SAVE-GAME-RIGHT-NOW");
 		}
 
 		_textComponentsButtonsPauseMenu[2].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonLoad");

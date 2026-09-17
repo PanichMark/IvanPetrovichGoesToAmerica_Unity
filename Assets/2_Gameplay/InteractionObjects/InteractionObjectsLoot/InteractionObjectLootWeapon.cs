@@ -9,7 +9,7 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 	[SerializeField] private InteractionObjectNote _noteObject;
 
 	private PlayerWeaponController _playerWeaponController;
-
+	[SerializeField] private CutsceneController _cutsceneController;
 
 	public override void Interact()
 	{
@@ -31,6 +31,11 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 		{
 			_noteObject.Interact();
 		}
+
+		if (_cutsceneController != null)
+		{
+			_cutsceneController.TriggerCutscene();
+		}
 	}
 
 	protected override void InitializeLootObject()
@@ -39,5 +44,6 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 
 		var weaponComponent = _weapon.GetComponent<WeaponAbstract>();
 		LootObjectIcon = weaponComponent.WeaponIconBig;
+
 	}
 }

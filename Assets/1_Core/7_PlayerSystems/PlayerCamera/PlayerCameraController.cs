@@ -35,8 +35,7 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 
 	private float _MouseRotationLimit = 70f;
 
-	private string _currentPlayerCameraType;
-	private string _previousPlayerCameraType;
+	public PlayerCameraStateTypes PreviousPlayerCameraGameplayType { get; private set; }
 
 	private bool _isCameraShoulderRight= true;
 
@@ -178,11 +177,15 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 	public void SetCameraToFirstPerson()
 	{
 		_isCameraFirstPerson = true;
+
+		PreviousPlayerCameraGameplayType = PlayerCameraStateTypes.FirstPerson;
 	}
 
 	public void SetCameraToThirdPerson()
 	{
 		_isCameraFirstPerson = false;
+
+		PreviousPlayerCameraGameplayType = PlayerCameraStateTypes.ThirdPerson;
 	}
 
 	private void FixedUpdate()
@@ -233,16 +236,6 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 	public void SetCameraRotationY(float rotationY)
 	{
 		_mouseRotation.x += rotationY;
-	}
-
-	public string GetCurrentPlayerCameraType()
-	{
-		return _currentPlayerCameraType.ToString();
-	}
-
-	public string GetPreviousPlayerCameraType()
-	{
-		return _previousPlayerCameraType.ToString();
 	}
 
 	private void ChangeMouseSensitivityMultiplierX(float newMouseSensitivityX)

@@ -4,10 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 
+[RequireComponent(typeof(PlayableDirector))]
+//[RequireComponent(typeof(Sign))]
+
 public class CutsceneController : MonoBehaviour, ICutscene
 {
 	private IInputDevice _inputDevice;
 	private GameController _gameController;
+	private PlayerCameraController _playerCameraController;
 	private GameScenesManager _gameSceneManager;
 	private JsonSaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
@@ -71,7 +75,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		_inputDevice = ServiceLocator.Resolve<IInputDevice>();
 		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>();
 		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
-
+		_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 		_textCutsceneDialogue = _viewModelMenuCutscene.TextCutsceneDialogue;
 		_textComponentCutsceneDialogue = _textCutsceneDialogue.GetComponent<TextMeshProUGUI>();
 
@@ -144,42 +148,45 @@ public class CutsceneController : MonoBehaviour, ICutscene
 
 	private void LoadCutsceneDialoguesTextFiles()
 	{
-		if (_cutsceneDialogueData.CutsceneDialogueFileRussian != null)
+		if (_cutsceneDialogueData != null)
 		{
-			using (var reader = new StringReader(_cutsceneDialogueData.CutsceneDialogueFileRussian.text))
+			if (_cutsceneDialogueData.CutsceneDialogueFileRussian != null)
 			{
-				string line;
-				while ((line = reader.ReadLine()) != null)
+				using (var reader = new StringReader(_cutsceneDialogueData.CutsceneDialogueFileRussian.text))
 				{
-					if (!string.IsNullOrWhiteSpace(line))
+					string line;
+					while ((line = reader.ReadLine()) != null)
 					{
-						_localizedCutsceneDialogues[LanguagesEnum.Russian].Add(line.Trim());
+						if (!string.IsNullOrWhiteSpace(line))
+						{
+							_localizedCutsceneDialogues[LanguagesEnum.Russian].Add(line.Trim());
+						}
 					}
 				}
 			}
-		}
-		else
-		{
-			Debug.LogWarning("Russian phrase file is not assigned!");
-		}
+			else
+			{
+				Debug.LogWarning("Russian phrase file is not assigned!");
+			}
 
-		if (_cutsceneDialogueData.CutsceneDialogueFileEnglish != null)
-		{
-			using (var reader = new StringReader(_cutsceneDialogueData.CutsceneDialogueFileEnglish.text))
+			if (_cutsceneDialogueData.CutsceneDialogueFileEnglish != null)
 			{
-				string line;
-				while ((line = reader.ReadLine()) != null)
+				using (var reader = new StringReader(_cutsceneDialogueData.CutsceneDialogueFileEnglish.text))
 				{
-					if (!string.IsNullOrWhiteSpace(line))
+					string line;
+					while ((line = reader.ReadLine()) != null)
 					{
-						_localizedCutsceneDialogues[LanguagesEnum.English].Add(line.Trim());
+						if (!string.IsNullOrWhiteSpace(line))
+						{
+							_localizedCutsceneDialogues[LanguagesEnum.English].Add(line.Trim());
+						}
 					}
 				}
 			}
-		}
-		else
-		{
-			Debug.LogWarning("English phrase file is not assigned!");
+			else
+			{
+				Debug.LogWarning("English phrase file is not assigned!");
+			}
 		}
 	}
 
@@ -301,7 +308,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		_gameController.MakePlayerControllable();
 		_gameController.MakeGameSavable();
 
-		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
+		_playerCameraStateMachineController.SetPlayerCameraState(_playerCameraController.PreviousPlayerCameraGameplayType);
 		
 		if (_shouldChangeNPCState)
 		{

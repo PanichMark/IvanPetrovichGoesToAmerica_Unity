@@ -14,7 +14,6 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerCameraController _cameraController;
 
-
 	public PlayerCameraStateTypes CurrentPlayerCameraStateType { get; private set; }
 
 	public delegate void CameraStateHandler();
