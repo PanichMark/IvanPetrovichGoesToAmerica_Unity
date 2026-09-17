@@ -1233,7 +1233,7 @@ GameObject:
   - component: {fileID: 1368994822140928993}
   - component: {fileID: 7677608100900260415}
   m_Layer: 0
-  m_Name: Weapon_Eugenic_TeslaShock_Cap
+  m_Name: EugenicBottleCap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1247,12 +1247,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2623151911685891068}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.000000015890691, y: 0.000000009720679, z: 0.000000029866044, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 199645531581790652}
+  m_Father: {fileID: 911638773377631406}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1368994822140928993
 MeshFilter:
@@ -2287,7 +2287,7 @@ Transform:
   m_LocalScale: {x: 1.0000011, y: 1.0000014, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 199645531581790652}
+  - {fileID: 911638773377631406}
   m_Father: {fileID: 811966565835615575}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4822873979600636629
@@ -3799,7 +3799,7 @@ GameObject:
   - component: {fileID: 2582546869654478186}
   - component: {fileID: 5534309708484192868}
   m_Layer: 0
-  m_Name: Weapon_Eugenic_TeslaShock
+  m_Name: EugenicBottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3813,12 +3813,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6936894536229913559}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.00047941928, y: -0.00069288193, z: 0.00084406143, w: -0.9999993}
+  m_LocalPosition: {x: 0.00056318904, y: -0.00054149335, z: 0.00048021466}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 199645531581790652}
+  m_Children:
+  - {fileID: 2762919420708634964}
+  m_Father: {fileID: 2759756841607066776}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2582546869654478186
 MeshFilter:
@@ -4385,39 +4386,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2880697249219180995}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7988210976454006654
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 199645531581790652}
-  m_Layer: 0
-  m_Name: EugenicBottle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &199645531581790652
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7988210976454006654}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.0004793983, y: -0.0006928735, z: 0.000844121, w: -0.99999934}
-  m_LocalPosition: {x: 0.000563228, y: -0.0005415073, z: 0.00047990627}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 911638773377631406}
-  - {fileID: 2762919420708634964}
-  m_Father: {fileID: 2759756841607066776}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7999467009625609000
 GameObject:

@@ -70,7 +70,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	{
 		_bootstrap = bootstrap;
 		_gameController = gameController;
-		_playerAnimator1stPerson =playerCamera.GetComponent<Animator>();
+		_playerAnimator1stPerson = playerCamera.GetComponent<Animator>();
 		_playerAnimator3rdPerson = player.GetComponent<Animator>();
 		_playerBehaviour = playerBehaviour;
 		_playerCameraStateMachineController = playerCameraStateMachineController;
@@ -294,65 +294,54 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 				eugenicSkinnedMeshThirdPerson = _playerWeaponController.LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Eugenic.L").GetComponent<SkinnedMeshRenderer>();
 			}
 		}
+
+		if (inspectedEugenic == null)
+		{
+			_transferBonesFirstPerson.TransferWeaponEugenicBones(eugenicArmatureFirstPerson, eugenicSkinnedMeshFirstPerson, weaponHand);
+			_transferBonesThirdPerson.TransferWeaponEugenicBones(eugenicArmatureThirdPerson, eugenicSkinnedMeshThirdPerson, weaponHand);
+		}
 		else
 		{
 			eugenicArmatureFirstPerson = inspectedEugenic.FirstPersonWeaponModelInstance.transform.Find("Armature.R").gameObject;
 			eugenicSkinnedMeshFirstPerson = inspectedEugenic.FirstPersonWeaponModelInstance.transform.Find("Eugenic.R").GetComponent<SkinnedMeshRenderer>();
+
+			_transferBonesFirstPerson.TransferWeaponEugenicBones(eugenicArmatureFirstPerson, eugenicSkinnedMeshFirstPerson, WeaponHandType.Right);
+
+			eugenicArmatureFirstPerson = inspectedEugenic.FirstPersonWeaponModelInstance.transform.Find("Armature.L").gameObject;
+			eugenicSkinnedMeshFirstPerson = inspectedEugenic.FirstPersonWeaponModelInstance.transform.Find("Eugenic.L").GetComponent<SkinnedMeshRenderer>();
+
+			_transferBonesFirstPerson.TransferWeaponEugenicBones(eugenicArmatureFirstPerson, eugenicSkinnedMeshFirstPerson, WeaponHandType.Left);
 		}
 
-		if (eugenicArmatureFirstPerson != null)
+		if (inspectedEugenic == null)
 		{
-			if (inspectedEugenic == null)
+			if (weaponHand == WeaponHandType.Right)
 			{
-				_transferBonesFirstPerson.TransferWeaponEugenicBones(eugenicArmatureFirstPerson, eugenicSkinnedMeshFirstPerson, weaponHand);
-				_transferBonesThirdPerson.TransferWeaponEugenicBones(eugenicArmatureThirdPerson, eugenicSkinnedMeshThirdPerson, weaponHand);
-			}
-			else
-			{
-				_transferBonesFirstPerson.TransferWeaponEugenicBones(eugenicArmatureFirstPerson, eugenicSkinnedMeshFirstPerson, WeaponHandType.Right);
-				Debug.Log("TRANSFER RIGHT");
-			}
-
-			if (inspectedEugenic == null)
-			{
-				if (weaponHand == WeaponHandType.Right)
-				{
-					deleteOtherHandEugenic = _playerWeaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Armature.L").gameObject;
-					deleteOtherHandArmature = _playerWeaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Eugenic.L").gameObject;
-
-					Destroy(deleteOtherHandArmature);
-					Destroy(deleteOtherHandEugenic);
-
-					deleteOtherHandEugenic = _playerWeaponController.RightHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Armature.L").gameObject;
-					deleteOtherHandArmature = _playerWeaponController.RightHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Eugenic.L").gameObject;
-
-					Destroy(deleteOtherHandArmature);
-					Destroy(deleteOtherHandEugenic);
-				}
-				else
-				{
-					deleteOtherHandEugenic = _playerWeaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Armature.R").gameObject;
-					deleteOtherHandArmature = _playerWeaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Eugenic.R").gameObject;
-
-					Destroy(deleteOtherHandArmature);
-					Destroy(deleteOtherHandEugenic);
-
-					deleteOtherHandEugenic = _playerWeaponController.LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Armature.R").gameObject;
-					deleteOtherHandArmature = _playerWeaponController.LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Eugenic.R").gameObject;
-
-					Destroy(deleteOtherHandArmature);
-					Destroy(deleteOtherHandEugenic);
-				}
-			}
-			else
-			{
-				deleteOtherHandEugenic = inspectedEugenic.FirstPersonWeaponModelInstance.transform.Find("Armature.L").gameObject;
-				deleteOtherHandArmature = inspectedEugenic.FirstPersonWeaponModelInstance.transform.Find("Eugenic.L").gameObject;
+				deleteOtherHandEugenic = _playerWeaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Armature.L").gameObject;
+				deleteOtherHandArmature = _playerWeaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Eugenic.L").gameObject;
 
 				Destroy(deleteOtherHandArmature);
 				Destroy(deleteOtherHandEugenic);
 
-				Debug.Log("DELETE LEFT");
+				deleteOtherHandEugenic = _playerWeaponController.RightHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Armature.L").gameObject;
+				deleteOtherHandArmature = _playerWeaponController.RightHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Eugenic.L").gameObject;
+
+				Destroy(deleteOtherHandArmature);
+				Destroy(deleteOtherHandEugenic);
+			}
+			else
+			{
+				deleteOtherHandEugenic = _playerWeaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Armature.R").gameObject;
+				deleteOtherHandArmature = _playerWeaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance.transform.Find("Eugenic.R").gameObject;
+
+				Destroy(deleteOtherHandArmature);
+				Destroy(deleteOtherHandEugenic);
+
+				deleteOtherHandEugenic = _playerWeaponController.LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Armature.R").gameObject;
+				deleteOtherHandArmature = _playerWeaponController.LeftHandWeaponComponent.ThirdPersonWeaponModelInstance.transform.Find("Eugenic.R").gameObject;
+
+				Destroy(deleteOtherHandArmature);
+				Destroy(deleteOtherHandEugenic);
 			}
 		}
 	}
@@ -1015,7 +1004,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponReload, 0);
 	}
 
-	public void AnimationInspectWeapon(WeaponAbstract inspectedWeapon)
+	public IEnumerator AnimationInspectWeapon(WeaponAbstract inspectedWeapon)
 	{
 		if (inspectedWeapon is WeaponEugenicAbstract)
 		{
@@ -1023,10 +1012,18 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			//Debug.Log("BRUH!!!");
 		}
 
-		_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
-
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stInspectWeapon, 1);
 
 		_playerAnimator1stPerson.Play($"Inspect_Weapon_{inspectedWeapon.WeaponType}_{inspectedWeapon.WeaponName}", _layer1stInspectWeapon, 0f);
+
+		yield return new WaitForSecondsRealtime(3.33f);
+
+		inspectedWeapon.HideEugenicBottleCap();
+
+		yield return new WaitForSecondsRealtime(4.58f);
+
+		inspectedWeapon.ShowEugenicEffectBothHands();
+
+		yield return null;
 	}
 }

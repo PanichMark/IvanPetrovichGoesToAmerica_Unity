@@ -2135,7 +2135,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4534360251419904229, guid: 0474e6785325db844a877690ed105c4f, type: 3}
   m_Bones:
@@ -2619,7 +2619,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3143926519443048370}
-  - component: {fileID: 9025587863452425672}
   m_Layer: 0
   m_Name: Armature_Humanoid_Male_Normal
   m_TagString: Untagged
@@ -2643,28 +2642,6 @@ Transform:
   - {fileID: 4858053011425668727}
   m_Father: {fileID: 540833119038886878}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &9025587863452425672
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2371893075827301640}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: eabc6cfb9e5dfc34599a448a430f7105, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2392976606124681291
 GameObject:
   m_ObjectHideFlags: 0
@@ -3421,7 +3398,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 3840805194466937140, guid: 9c751ebcd173be744a4fc8d2ad373bf9, type: 3}
   m_Bones:
@@ -7551,7 +7528,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 7969903543319968083, guid: 10d5395e0328c6d45bca31a3ad76e032, type: 3}
   m_Bones:

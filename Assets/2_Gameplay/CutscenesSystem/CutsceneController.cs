@@ -9,6 +9,7 @@ using UnityEngine.Playables;
 
 public class CutsceneController : MonoBehaviour, ICutscene
 {
+	private Animator _playerAnimator1stPerson;
 	private PlayerWeaponFirstPersonRenderer _playerWeaponFirstPersonRenderer;
 	private IInputDevice _inputDevice;
 	private PlayerBehaviourController _playerBehaviourController;
@@ -31,6 +32,8 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private GameObject _playerProxy;
 	private GameObject _playerCameraProxy;
 	private ViewModelMenuCutscene _viewModelMenuCutscene;
+
+
 	public bool IsCutscenePlaying { get; private set; }
 	public bool WasCutscenePlaying { get; private set; }
 	private bool _wasCutsceneSkipped;
@@ -89,7 +92,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 		_textCutsceneDialogue = _viewModelMenuCutscene.TextCutsceneDialogue;
 		_textComponentCutsceneDialogue = _textCutsceneDialogue.GetComponent<TextMeshProUGUI>();
-
+		_playerAnimator1stPerson = _playerCameraProxy.GetComponent<Animator>();
 		_director = GetComponent<PlayableDirector>();
 
 		LoadCutsceneDialoguesTextFiles();
@@ -317,6 +320,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 			_playerBehaviourController.ArmPlayer();
 		}
 
+		_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
 		WasCutscenePlaying = false;	
 		IsCutscenePlaying = false;
 		CutsceneResumeTime();
@@ -374,6 +378,8 @@ public class CutsceneController : MonoBehaviour, ICutscene
 			IsCutscenePlaying = false;
 			_director.Pause();
 			Debug.Log($"Cutscene {gameObject.name} paused");
+
+			_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
 		}	
 	}
 
@@ -400,12 +406,14 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		}
 		else
 		{
+			_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
+
 			inspectedWeapon.InstantiateWeaponInspect();
 
 			_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 
 			_playerWeaponFirstPersonRenderer.ShowBothHandsForWeaponInspectionCutscene();
-			_playerWeaponAnimationController.AnimationInspectWeapon(inspectedWeapon);
+			StartCoroutine(_playerWeaponAnimationController.AnimationInspectWeapon(inspectedWeapon));
 		
 		}
 
@@ -428,6 +436,8 @@ public class CutsceneController : MonoBehaviour, ICutscene
 				_director.Resume();
 				IsCutscenePlaying = true;
 				_gameController.MakePlayerNonControllable();
+
+				_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
 
 				Debug.Log($"Cutscene {gameObject.name} resumed");
 			}
