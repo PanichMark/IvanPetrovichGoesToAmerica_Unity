@@ -184,7 +184,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 				}
 				if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>() != null)
 				{
-					_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>().TriggerCutscene();
+					_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>().TriggerCutscene(null);
 				}
 				_PerformActionOnYesFinal = false;
 			}

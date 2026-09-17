@@ -35,6 +35,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	private TransferSkinnedMeshRendererArmatureBones _transferBonesFirstPerson;
 	private TransferSkinnedMeshRendererArmatureBones _transferBonesThirdPerson;
 
+	private int _layer1stInspectWeapon;
 	private int _layer1stWeaponRightEquip;
 	private int _layer1stWeaponRightArm;
 	private int _layer1stWeaponRightPalm;
@@ -80,6 +81,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_transferBonesFirstPerson = transferBonesFirstPerson;
 		_transferBonesThirdPerson = transferBonesThirdPerson;
 
+		_layer1stInspectWeapon = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerInspectWeapon.ToString());
 		_layer1stWeaponRightEquip = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
 		_layer1stWeaponRightArm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightFullArm.ToString());
 		_layer1stWeaponRightPalm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightPalm.ToString());
@@ -982,5 +984,14 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftArm, 0);
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 0);
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponReload, 0);
+	}
+
+	public void AnimationInspectWeapon(WeaponAbstract inspectedWeapon)
+	{
+		_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
+
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stInspectWeapon, 1);
+
+		_playerAnimator1stPerson.Play($"Inspect_Weapon_{inspectedWeapon.WeaponType}_{inspectedWeapon.WeaponName}", _layer1stInspectWeapon, 0f);
 	}
 }

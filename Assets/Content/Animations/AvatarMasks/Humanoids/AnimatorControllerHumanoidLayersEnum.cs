@@ -3,6 +3,7 @@
 	LayerMovement,
 	LayerLookUpDown,
 	LayerPickableBothArms,
+	LayerInspectWeapon,
 	LayerPickableRightArm,
 	LayerWeaponRightEquip,
 	LayerWeaponRightFullArm,

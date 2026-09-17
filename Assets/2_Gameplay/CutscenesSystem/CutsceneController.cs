@@ -9,7 +9,9 @@ using UnityEngine.Playables;
 
 public class CutsceneController : MonoBehaviour, ICutscene
 {
+	private PlayerWeaponFirstPersonRenderer _playerWeaponFirstPersonRenderer;
 	private IInputDevice _inputDevice;
+	private PlayerBehaviourController _playerBehaviourController;
 	private GameController _gameController;
 	private PlayerCameraController _playerCameraController;
 	private GameScenesManager _gameSceneManager;
@@ -20,6 +22,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 	private PlayerMovementController _playerMovementController;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private PlayerWeaponController _playerWeaponController;
+	private PlayerWeaponAnimationController _playerWeaponAnimationController;
 	private LocalizationManager _localizationManager;
 	private NPCstateMachineController _NPCcontroller;
 	private AudioSource _audioSource;
@@ -39,6 +42,9 @@ public class CutsceneController : MonoBehaviour, ICutscene
 
 	[Header("Cutscene dialogue data")]
 	[SerializeField] private CutsceneDialogueData _cutsceneDialogueData;
+
+	[Header("Disarm Player")]
+	[SerializeField] private bool _ShouldDisarmPlayer;
 
 	[Header("Dialogue actors mapping")]
 	[SerializeField] private List<CutsceneDialogueLinesRoles> _dialogueActorsMapping = new List<CutsceneDialogueLinesRoles>();
@@ -63,8 +69,11 @@ public class CutsceneController : MonoBehaviour, ICutscene
 
 	private void Start()
 	{
+		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
+		_playerBehaviourController = ServiceLocator.Resolve<PlayerBehaviourController>();
 		_viewModelMenuCutscene = ServiceLocator.Resolve<ViewModelMenuCutscene>();
 		_playerProxy = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();
 		_playerCameraProxy = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
@@ -301,6 +310,11 @@ public class CutsceneController : MonoBehaviour, ICutscene
 
 	private void ExecutePostCutsceneActions()
 	{
+		if (_playerBehaviourController.WasPlayerArmed)
+		{
+			_playerBehaviourController.ArmPlayer();
+		}
+
 		WasCutscenePlaying = false;	
 		IsCutscenePlaying = false;
 		CutsceneResumeTime();
@@ -361,7 +375,7 @@ public class CutsceneController : MonoBehaviour, ICutscene
 		}	
 	}
 
-	public void TriggerCutscene()
+	public void TriggerCutscene(WeaponAbstract inspectedWeapon)
 	{
 		Debug.Log("CUTSCENE!!!");
 		_director.Play();
@@ -373,8 +387,25 @@ public class CutsceneController : MonoBehaviour, ICutscene
 
 		RebindProxyObjects();
 
-		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
+		if (_ShouldDisarmPlayer)
+		{
+			_playerBehaviourController.DisarmPlayer();
+		}
+
+		if (inspectedWeapon == null)
+		{
+			_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
+		}
+		else
+		{
+			_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
+
+			_playerWeaponFirstPersonRenderer.ShowBothHandsForWeaponInspectionCutscene();
+			_playerWeaponAnimationController.AnimationInspectWeapon(inspectedWeapon);
+		}
+
 		_menuManager.OpenCutsceneMenu();
+
 
 		IsCutscenePlaying = true;
 		WasCutscenePlaying = true;

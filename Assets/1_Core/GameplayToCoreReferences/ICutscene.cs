@@ -1,4 +1,4 @@
 ﻿public interface ICutscene
 {
-	void TriggerCutscene();
+	void TriggerCutscene(WeaponAbstract inspectedWeapon);
 }

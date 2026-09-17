@@ -8,7 +8,7 @@ public class TESTactivateCutscene : MonoBehaviour
     {
 		if (Input.GetKeyDown(KeyCode.M) && !_CutsceneController.IsCutscenePlaying)
         {
-            _CutsceneController.TriggerCutscene();
+            _CutsceneController.TriggerCutscene(null);
         }
 	}
 }

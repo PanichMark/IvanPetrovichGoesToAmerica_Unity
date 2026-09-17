@@ -331,4 +331,13 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 			}
 		}
 	}
+
+	public void ShowBothHandsForWeaponInspectionCutscene()
+	{
+		HideBodyPart(_playerThirdPersonHandRight);
+		ShowFirstPersonHand(_playerFirstPersonHandRight);
+
+		HideBodyPart(_playerThirdPersonHandLeft);
+		ShowFirstPersonHand(_playerFirstPersonHandLeft);
+	}
 }

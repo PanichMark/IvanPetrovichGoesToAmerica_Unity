@@ -169,7 +169,7 @@ _pauseSubMenuSettingsGameDifficultyController = ServiceLocator.Resolve<PauseSubM
 			Cursor.lockState = CursorLockMode.Locked;
 			_mainMenuCanvasController.HideGameVersionCanvas();
 			StartCoroutine(StartNewGame());
-			_cutsceneNewGame.TriggerCutscene();
+			_cutsceneNewGame.TriggerCutscene(null);
 			IsCutsceneNewGamePlaying = true;
 		}
 		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.TestScene)
