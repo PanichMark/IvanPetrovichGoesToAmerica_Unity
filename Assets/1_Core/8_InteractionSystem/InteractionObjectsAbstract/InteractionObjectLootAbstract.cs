@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad, IInteractable, IGainedItem
+public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad, IInteractable
 {
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	[SerializeField] protected string _interactionObjectNameSystem;
@@ -28,6 +28,9 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 	}
 
 	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
+
+	public abstract bool ShowGainedItem {  get; }
+
 
 	public GameObject GameObjectPlayer { get; protected set; }
 	protected LocalizationManager _localizationManager;

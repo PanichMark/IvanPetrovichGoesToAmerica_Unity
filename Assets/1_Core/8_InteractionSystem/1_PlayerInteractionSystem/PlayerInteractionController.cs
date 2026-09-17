@@ -50,7 +50,7 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 	private IPickable _lookedAtIPickable;
 	private IThrowable _lookedAtIThrowableObject;
 
-	private IGainedItem _lookedAtIGainedItem;
+	private InteractionObjectLootAbstract _lookedAtIGainedItem;
 
 	private IPickable _currentIPickable;
 	public IThrowable CurrentIThrowable {  get; private set; }
@@ -381,7 +381,7 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 			_lookedAtIInteractable = _hitObject.collider.GetComponent<IInteractable>();
 			_lookedAtIThrowableObject = _hitObject.collider.GetComponent<IThrowable>();
 			_lookedAtIPickable = _hitObject.collider.GetComponent<IPickable>();
-			_lookedAtIGainedItem = _hitObject.collider.GetComponent<IGainedItem>();
+			_lookedAtIGainedItem = _hitObject.collider.GetComponent<InteractionObjectLootAbstract>();
 
 			if (_lookedAtIInteractable != null)
 			{
@@ -426,7 +426,7 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 							StopCoroutine(_showAdditionalHintCoroutine);
 						}
 
-						if (_lookedAtIGainedItem != null)
+						if (_lookedAtIGainedItem != null && _lookedAtIGainedItem.ShowGainedItem == true)
 						{
 							ShowGainedItems();
 

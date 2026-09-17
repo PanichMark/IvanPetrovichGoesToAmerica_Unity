@@ -75,7 +75,7 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 			_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
 		}
 
-		if (_vfxInstance == null)
+		if (_vfxInstanceAttack == null)
 		{
 			StartCoroutine(ShowVFX());
 		}
@@ -127,7 +127,7 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 	
 	private IEnumerator ShowVFX()
 	{
-		_vfxInstance = Instantiate(
+		_vfxInstanceAttack = Instantiate(
 			_VFXeffect,
 			_VFXspawnPoint.position,
 			_VFXspawnPoint.rotation * Quaternion.Euler(12, 45, 0),
@@ -135,10 +135,10 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
-			_vfxInstance.layer = LayerMask.NameToLayer("FirstPerson");
+			_vfxInstanceAttack.layer = LayerMask.NameToLayer("FirstPerson");
 		}
 
-		_vfxInstance.transform.localScale = Vector3.one;
+		_vfxInstanceAttack.transform.localScale = Vector3.one;
 
 		while (true)
 		{ 
@@ -165,7 +165,7 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 			_VFXspawnPoint = ThirdPersonWeaponModelInstance.transform;
 		}
 
-		if (_vfxInstance != null)
+		if (_vfxInstanceAttack != null)
 		{
 			TurnEugenicVFXOff();
 			StartCoroutine(ShowVFX());
@@ -175,6 +175,15 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 	public override void TurnEugenicVFXOff()
 	{
 		//Debug.Log("TURN OFF!");
-		Destroy(_vfxInstance);
+		Destroy(_vfxInstanceAttack);
+	}
+
+	protected override void ChangeInspectVFXStransform()
+	{
+		_vfxInstanceInspectRight.transform.localScale *= 0.3f;
+		_vfxInstanceInspectLeft.transform.localScale *= 0.3f;
+
+		_vfxInstanceInspectRight.transform.localRotation *= Quaternion.Euler(0f, -90f, 0f);
+		_vfxInstanceInspectLeft.transform.localRotation *= Quaternion.Euler(0f, 90f, 0f);
 	}
 }

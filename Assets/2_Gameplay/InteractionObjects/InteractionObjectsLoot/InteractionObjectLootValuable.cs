@@ -8,6 +8,9 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 	private PlayerMoneyController _playerResourcesMoneyManager;
 
 	public override Sprite LootObjectIcon => _lootObjectIcon;
+
+	public override bool ShowGainedItem => true;
+
 	public override void Interact()
 	{
 		base.Interact();

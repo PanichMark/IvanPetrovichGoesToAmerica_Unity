@@ -48,7 +48,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 		_playerResourcesManaManager.UseMana(ManaCost);
 
-		if (_vfxInstance == null)
+		if (_vfxInstanceAttack == null)
 		{
 			yield return new WaitForSeconds(0.52f);
 
@@ -57,7 +57,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
-				_vfxInstance = Instantiate(
+				_vfxInstanceAttack = Instantiate(
 				_VFXeffect,
 				_VFXspawnPoint.position,
 				_VFXspawnPoint.rotation * Quaternion.Euler(0, 0, 0),
@@ -65,16 +65,16 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 			}
 			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 			{
-				_vfxInstance = Instantiate(
+				_vfxInstanceAttack = Instantiate(
 					_VFXeffect,
 					_VFXspawnPoint.position + Vector3.up * 1.2f,
 					_playerCameraGameObject.transform.rotation * Quaternion.Euler(0, 0, 0),
 					_VFXspawnPoint.transform);
 			}
 
-			_vfxInstance.transform.parent = null;
+			_vfxInstanceAttack.transform.parent = null;
 
-			Vector3 startPosition = _vfxInstance.transform.position;
+			Vector3 startPosition = _vfxInstanceAttack.transform.position;
 			_targetPosition = startPosition + _flightDirection * _eugenicAttackRange;
 
 
@@ -117,12 +117,12 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 		float duration = 0.4f;
 		float elapsedTime = 0f;
 
-		Vector3 startScale = _vfxInstance.transform.localScale;
+		Vector3 startScale = _vfxInstanceAttack.transform.localScale;
 		// Возвращаем логику из вашего исходного кода для масштаба
 		Vector3 targetScale = startScale * _eugenicAttackRange * 5;
 
 		// Сохраняем стартовую позицию один раз здесь
-		Vector3 startPosition = _vfxInstance.transform.position;
+		Vector3 startPosition = _vfxInstanceAttack.transform.position;
 
 		while (elapsedTime < duration)
 		{
@@ -137,23 +137,23 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 			// Позиция теперь вычисляется строго между двумя зафиксированными точками,
 			// а коэффициент времени делает движение плавным.
-			_vfxInstance.transform.position = Vector3.Lerp(
+			_vfxInstanceAttack.transform.position = Vector3.Lerp(
 				startPosition,
 				_targetPosition,
 				smoothT
 			);
 
-			_vfxInstance.transform.localScale = Vector3.Lerp(startScale, targetScale, smoothT);
+			_vfxInstanceAttack.transform.localScale = Vector3.Lerp(startScale, targetScale, smoothT);
 
 			yield return null;
 		}
 
 		// Фиксация финальных значений на случай микро-ошибок точности
-		_vfxInstance.transform.position = _targetPosition;
-		_vfxInstance.transform.localScale = targetScale;
+		_vfxInstanceAttack.transform.position = _targetPosition;
+		_vfxInstanceAttack.transform.localScale = targetScale;
 
-		Destroy(_vfxInstance);
-		_vfxInstance = null;
+		Destroy(_vfxInstanceAttack);
+		_vfxInstanceAttack = null;
 	}
 
 	private void ChangeVFXSpawnPoint()
@@ -184,10 +184,19 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 	public override void TurnEugenicVFXOff()
 	{
-		if (_vfxInstance != null)
+		if (_vfxInstanceAttack != null)
 		{
-			Destroy(_vfxInstance);
-			_vfxInstance = null;
+			Destroy(_vfxInstanceAttack);
+			_vfxInstanceAttack = null;
 		}
+	}
+
+	protected override void ChangeInspectVFXStransform()
+	{
+		_vfxInstanceInspectRight.transform.localScale *= 1.5f;
+		_vfxInstanceInspectLeft.transform.localScale *= 1.5f;
+
+		_vfxInstanceInspectRight.transform.localPosition += new Vector3(0f, 0, -0.185f);
+		_vfxInstanceInspectLeft.transform.localPosition += new Vector3(0f, 0, -0.185f);
 	}
 }

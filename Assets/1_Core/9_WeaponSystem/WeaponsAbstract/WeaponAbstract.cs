@@ -185,6 +185,9 @@ public abstract class WeaponAbstract : MonoBehaviour
 		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
 		_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
 
+		_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonLeftHand);
+		_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
+
 		//Destroy(ThirdPersonWeaponModelInstance);
 
 		_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();

@@ -11,6 +11,8 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 	private PlayerWeaponController _playerWeaponController;
 	[SerializeField] private CutsceneController _cutsceneController;
 
+	public override bool ShowGainedItem => false;
+
 	public override void Interact()
 	{
 		base.Interact();

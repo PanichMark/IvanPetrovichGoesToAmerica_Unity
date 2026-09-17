@@ -8,6 +8,8 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 	private KeysManager _keysManager;
 	private string _keyID;
 
+	public override bool ShowGainedItem => true;
+
 	protected override void InitializeLootObject()
 	{
 		_keysManager = ServiceLocator.Resolve<KeysManager>();

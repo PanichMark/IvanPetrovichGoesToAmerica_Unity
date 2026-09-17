@@ -8,6 +8,8 @@ public class InteractionObjectLootAmmo : InteractionObjectLootAbstract
 	[SerializeField] private AmmoTypes _ammoTypes;
 	[SerializeField] private int _ammoCapacity;
 
+	public override bool ShowGainedItem => true;
+
 	public override void Interact()
 	{
 		base.Interact();

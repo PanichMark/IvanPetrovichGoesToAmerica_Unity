@@ -11,14 +11,18 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	protected PlayerManaController _playerResourcesManaManager;
 	protected Coroutine _currentWeaponPlayerEugenicAttackRoutine;
 
-	private GameObject _eugenicEffectRightHand;
-	private GameObject _eugenicEffectLeftHand;
-	private GameObject _eugenicBottle;
-	private GameObject _eugenicBottleCap;
+	protected GameObject _eugenicEffectRightHand;
+	protected GameObject _eugenicEffectLeftHand;
+	protected GameObject _eugenicBottle;
+	protected GameObject _eugenicBottleCap;
 
 	[SerializeField] protected GameObject _VFXeffect;
 	protected Transform _VFXspawnPoint;
-	protected GameObject _vfxInstance;
+	protected GameObject _vfxInstanceAttack;
+
+	protected GameObject _vfxInstanceInspectRight;
+	protected GameObject _vfxInstanceInspectLeft;
+
 	public override void InitializeWeapon()
 	{
 		if (_isThisPlayerWeapon == true)
@@ -163,22 +167,30 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		//Destroy(gameObject);
 		_playerWeaponAnimationController.AnimationInspectWeapon(this);
 
-		Debug.Log("BEFORE WAIT: " + _eugenicEffectRightHand.name + " Instance ID: " + _eugenicEffectRightHand.GetInstanceID());
+		//Debug.Log("BEFORE WAIT: " + _eugenicEffectRightHand.name + " Instance ID: " + _eugenicEffectRightHand.GetInstanceID());
 
 		yield return new WaitForSecondsRealtime(3.33f);
-	
+
 		HideEugenicBottleCap();
-		
+
 		yield return new WaitForSecondsRealtime(4.58f);
 
 		ShowEugenicEffectBothHands();
 
-		yield return new WaitForSecondsRealtime(4.16f);
+		ShowWeaponInspectVFXs();
+
+		ChangeInspectVFXStransform();
+
+		yield return new WaitForSecondsRealtime(3.2f);
+
+		HideWeaponInspectVFXs();
+
+		yield return new WaitForSecondsRealtime(0.8f);
 
 		// Смотрим, тот ли это вообще объект по ID
 		//Debug.Log("BEFORE DESTROY: " + _eugenicEffectRightHand.name + " Instance ID: " + _eugenicEffectRightHand.GetInstanceID());
 
-	
+
 
 
 		Destroy(_eugenicEffectRightHand);
@@ -193,4 +205,25 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		yield return null;
 	}
 
+	private void ShowWeaponInspectVFXs()
+	{
+		_vfxInstanceInspectRight = Instantiate(_VFXeffect);
+		_vfxInstanceInspectRight.transform.SetParent(_firstPersonRightHandWeaponSlotTransform, false);
+		_vfxInstanceInspectRight.layer = LayerMask.NameToLayer("FirstPerson");
+
+		_vfxInstanceInspectLeft = Instantiate(_VFXeffect);
+		_vfxInstanceInspectLeft.transform.SetParent(_firstPersonLeftHandWeaponSlotTransform, false);
+		_vfxInstanceInspectLeft.layer = LayerMask.NameToLayer("FirstPerson");
+	}
+
+	private void HideWeaponInspectVFXs()
+	{
+		Destroy(_vfxInstanceInspectRight);
+		Destroy(_vfxInstanceInspectLeft);
+	}
+
+	protected virtual void ChangeInspectVFXStransform()
+	{
+
+	}
 }
