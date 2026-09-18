@@ -172,11 +172,11 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.VendingMachinesData == null)
 		{
-			data.VendingMachinesData = new Dictionary<GameScenesGameplayDataEnum, List<VendingMachineData>>();
+			data.VendingMachinesData = new Dictionary<GameScenesGameplayEnum, List<VendingMachineData>>();
 		}
 		if (!data.VendingMachinesData.ContainsKey(currentScene))
 		{
@@ -208,7 +208,7 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.VendingMachinesData == null || !data.VendingMachinesData.TryGetValue(currentScene, out var sourceList)) yield break;
 

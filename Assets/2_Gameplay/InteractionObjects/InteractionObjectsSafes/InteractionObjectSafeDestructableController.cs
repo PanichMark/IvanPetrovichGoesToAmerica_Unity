@@ -89,11 +89,11 @@ public class InteractionObjectSafeDestructableController : InteractionObjectSafe
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.SafesDestructableData == null)
 		{
-			data.SafesDestructableData = new Dictionary<GameScenesGameplayDataEnum, List<SafeDestructableData>>();
+			data.SafesDestructableData = new Dictionary<GameScenesGameplayEnum, List<SafeDestructableData>>();
 		}
 		if (!data.SafesDestructableData.ContainsKey(currentScene))
 		{
@@ -129,7 +129,7 @@ public class InteractionObjectSafeDestructableController : InteractionObjectSafe
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.SafesDestructableData == null || !data.SafesDestructableData.TryGetValue(currentScene, out var sourceList)) yield break;
 

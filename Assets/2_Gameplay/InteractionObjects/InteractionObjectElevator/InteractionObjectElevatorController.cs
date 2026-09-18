@@ -307,11 +307,11 @@ public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.ElevatorsData == null)
 		{
-			data.ElevatorsData = new Dictionary<GameScenesGameplayDataEnum, List<ElevatorData>>();
+			data.ElevatorsData = new Dictionary<GameScenesGameplayEnum, List<ElevatorData>>();
 		}
 
 		if (!data.ElevatorsData.ContainsKey(currentScene))
@@ -344,7 +344,7 @@ public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.ElevatorsData == null || !data.ElevatorsData.TryGetValue(currentScene, out var sourceList)) yield break;
 

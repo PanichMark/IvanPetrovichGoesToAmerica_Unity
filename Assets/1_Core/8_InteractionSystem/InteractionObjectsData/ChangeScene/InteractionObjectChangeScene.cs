@@ -3,7 +3,7 @@
 [CreateAssetMenu(fileName = "InteractionObjectChangeScene", menuName = "InteractionObjects/ChangeScene/")]
 public class InteractionObjectChangeScene : ScriptableObject
 {
-	public GameScenesGameplayDataEnum SceneToLoad;
+	public GameScenesGameplayEnum SceneToLoad;
 	public Vector3 PlayerPosition;
 	public int PlayerRotationY;
 }

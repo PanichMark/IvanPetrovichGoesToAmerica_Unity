@@ -31,7 +31,7 @@ public class InteractionObjectPickableThrowableUndestructable : InteractionObjec
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		var updatedItem = new ThrowableUndestructableObjectData
 		{
@@ -52,7 +52,7 @@ public class InteractionObjectPickableThrowableUndestructable : InteractionObjec
 
 		if (data.ThrowableUndestructableObjectsData == null)
 		{
-			data.ThrowableUndestructableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<ThrowableUndestructableObjectData>>();
+			data.ThrowableUndestructableObjectsData = new Dictionary<GameScenesGameplayEnum, List<ThrowableUndestructableObjectData>>();
 		}
 		if (!data.ThrowableUndestructableObjectsData.ContainsKey(currentScene))
 		{
@@ -76,7 +76,7 @@ public class InteractionObjectPickableThrowableUndestructable : InteractionObjec
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.ThrowableUndestructableObjectsData == null || !data.ThrowableUndestructableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 

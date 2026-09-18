@@ -88,11 +88,11 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.ElectricalPanelsData == null)
 		{
-			data.ElectricalPanelsData = new Dictionary<GameScenesGameplayDataEnum, List<ElectricalPanelData>>();
+			data.ElectricalPanelsData = new Dictionary<GameScenesGameplayEnum, List<ElectricalPanelData>>();
 		}
 		if (!data.ElectricalPanelsData.ContainsKey(currentScene))
 		{
@@ -123,7 +123,7 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.ElectricalPanelsData == null || !data.ElectricalPanelsData.TryGetValue(currentScene, out var sourceList)) yield break;
 

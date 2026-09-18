@@ -42,11 +42,11 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.HintMessagesData == null)
 		{
-			data.HintMessagesData = new Dictionary<GameScenesGameplayDataEnum, List<HintMessageData>>();
+			data.HintMessagesData = new Dictionary<GameScenesGameplayEnum, List<HintMessageData>>();
 		}
 		if (!data.HintMessagesData.ContainsKey(currentScene))
 		{
@@ -78,7 +78,7 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.HintMessagesData == null || !data.HintMessagesData.TryGetValue(currentScene, out var sourceList)) yield break;
 

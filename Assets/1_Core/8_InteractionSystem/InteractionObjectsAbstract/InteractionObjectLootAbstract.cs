@@ -126,11 +126,11 @@ GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 	{
 		if (!_isItVendingMachineGood)
 		{
-			if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+			if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 			if (data.LootObjectsData == null)
 			{
-				data.LootObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>>();
+				data.LootObjectsData = new Dictionary<GameScenesGameplayEnum, List<LootObjectData>>();
 			}
 			if (!data.LootObjectsData.ContainsKey(currentScene))
 			{
@@ -164,7 +164,7 @@ GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 	{
 		if (!_isItVendingMachineGood)
 		{
-			if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+			if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 			if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 

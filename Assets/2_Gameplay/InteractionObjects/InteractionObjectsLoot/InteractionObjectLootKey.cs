@@ -30,7 +30,7 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 		{
 			_keysManager.RemoveKey(_keyID);
 
-			if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+			if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 			if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 

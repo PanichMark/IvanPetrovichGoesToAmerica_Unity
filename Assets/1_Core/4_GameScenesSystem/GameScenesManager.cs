@@ -71,7 +71,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		_localizationManager = localizationManager;
 	}
 
-	public IEnumerator LoadGameplayScene(GameScenesGameplayDataEnum scene)
+	public IEnumerator LoadGameplayScene(GameScenesGameplayEnum scene)
 	{
 		Time.timeScale = 0f;
 		Debug.Log($"Loading scene {scene} Started Initial");

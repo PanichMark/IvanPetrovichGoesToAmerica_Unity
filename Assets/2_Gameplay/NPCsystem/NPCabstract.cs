@@ -199,7 +199,7 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.NPCsData == null || !data.NPCsData.ContainsKey(currentScene))
 			yield break;
@@ -240,7 +240,7 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.NPCsData == null || !data.NPCsData.TryGetValue(currentScene, out var sourceList)) yield break;
 

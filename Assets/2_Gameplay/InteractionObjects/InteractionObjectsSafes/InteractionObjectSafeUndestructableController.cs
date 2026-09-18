@@ -150,11 +150,11 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.SafesUndestructableData == null)
 		{
-			data.SafesUndestructableData = new Dictionary<GameScenesGameplayDataEnum, List<SafeUndestructableData>>();
+			data.SafesUndestructableData = new Dictionary<GameScenesGameplayEnum, List<SafeUndestructableData>>();
 		}
 		if (!data.SafesUndestructableData.ContainsKey(currentScene))
 		{
@@ -189,7 +189,7 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.SafesUndestructableData == null || !data.SafesUndestructableData.TryGetValue(currentScene, out var sourceList)) yield break;
 

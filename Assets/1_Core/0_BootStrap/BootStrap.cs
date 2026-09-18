@@ -441,7 +441,7 @@ ServiceLocator.Register<LocalizationManager>(LocalizationManager);
 		}
 		else
 		{
-			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene((GameScenesGameplayDataEnum)((int)_firstSceneToLoad.FirstSceneToLoad - 1)));
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene((GameScenesGameplayEnum)((int)_firstSceneToLoad.FirstSceneToLoad - 1)));
 		}
 	}
 

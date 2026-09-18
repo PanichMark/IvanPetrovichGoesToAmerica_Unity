@@ -1,4 +1,4 @@
-﻿public enum GameScenesGameplayDataEnum
+﻿public enum GameScenesGameplayEnum
 {
 	Scene_0_Test,
 	Scene_1_Church,

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 {
@@ -204,8 +205,17 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	public IEnumerator SaveJsonData(JsonGameData data)
 	{
-		data.MissionData.Mission = ActiveMission.MissionName;
-		data.MissionData.MissionStep = CurrentStepIndex;
+		if (SceneManager.GetSceneAt(1).name != GameScenesGameplayEnum.Scene_0_Test.ToString())
+		{
+			data.MissionData.Mission = ActiveMission.MissionName;
+			data.MissionData.MissionStep = CurrentStepIndex;
+		}
+		else
+		{
+			data.MissionData.Mission = GameMissionsNamesEnum.Mission_Test.ToString();
+			data.MissionData.MissionStep = 0;
+		}
+
 		yield return null;
 	}
 

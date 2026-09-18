@@ -95,11 +95,11 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.PhonographsData == null)
 		{
-			data.PhonographsData = new Dictionary<GameScenesGameplayDataEnum, List<PhonographData>>();
+			data.PhonographsData = new Dictionary<GameScenesGameplayEnum, List<PhonographData>>();
 		}
 		if (!data.PhonographsData.ContainsKey(currentScene))
 		{
@@ -130,7 +130,7 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.PhonographsData == null || !data.PhonographsData.TryGetValue(currentScene, out var sourceList)) yield break;
 

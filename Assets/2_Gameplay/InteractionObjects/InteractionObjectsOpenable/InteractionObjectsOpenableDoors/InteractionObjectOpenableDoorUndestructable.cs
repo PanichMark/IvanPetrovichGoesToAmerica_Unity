@@ -307,11 +307,11 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.OpenableUndestructableObjectsData == null)
 		{
-			data.OpenableUndestructableObjectsData = new Dictionary<GameScenesGameplayDataEnum, List<OpenableUndestructableObjectData>>();
+			data.OpenableUndestructableObjectsData = new Dictionary<GameScenesGameplayEnum, List<OpenableUndestructableObjectData>>();
 		}
 		if (!data.OpenableUndestructableObjectsData.ContainsKey(currentScene))
 		{
@@ -348,7 +348,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.OpenableUndestructableObjectsData == null || !data.OpenableUndestructableObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
 

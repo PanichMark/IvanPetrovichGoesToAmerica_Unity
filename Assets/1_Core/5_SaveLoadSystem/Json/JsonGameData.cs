@@ -33,58 +33,58 @@ public class JsonGameData
 
 	//GameplayObjects
 	[JsonProperty("NPCs")]
-	public Dictionary<GameScenesGameplayDataEnum, List<NPCdata>> NPCsData;
+	public Dictionary<GameScenesGameplayEnum, List<NPCdata>> NPCsData;
 
 	[JsonProperty("LootObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<LootObjectData>> LootObjectsData;
+	public Dictionary<GameScenesGameplayEnum, List<LootObjectData>> LootObjectsData;
 
 	[JsonProperty("NonThrowableUndestructableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<NonThrowableUndestructableObjectData>> NonThrowableUndestructableObjectsData;
+	public Dictionary<GameScenesGameplayEnum, List<NonThrowableUndestructableObjectData>> NonThrowableUndestructableObjectsData;
 
 	[JsonProperty("NonThrowableDestructableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<NonThrowableDestructableObjectData>> NonThrowableDestructableObjectsData;
+	public Dictionary<GameScenesGameplayEnum, List<NonThrowableDestructableObjectData>> NonThrowableDestructableObjectsData;
 
 	[JsonProperty("ThrowableUndestructableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<ThrowableUndestructableObjectData>> ThrowableUndestructableObjectsData;
+	public Dictionary<GameScenesGameplayEnum, List<ThrowableUndestructableObjectData>> ThrowableUndestructableObjectsData;
 
 	[JsonProperty("ThrowableDestructableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<ThrowableDestructableObjectData>> ThrowableDestructableObjectsData;
+	public Dictionary<GameScenesGameplayEnum, List<ThrowableDestructableObjectData>> ThrowableDestructableObjectsData;
 
 	[JsonProperty("OpenableUndestructableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<OpenableUndestructableObjectData>> OpenableUndestructableObjectsData;
+	public Dictionary<GameScenesGameplayEnum, List<OpenableUndestructableObjectData>> OpenableUndestructableObjectsData;
 
 	[JsonProperty("OpenableDestructableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<OpenableDestructableObjectData>> OpenableDestructableObjectsData;
+	public Dictionary<GameScenesGameplayEnum, List<OpenableDestructableObjectData>> OpenableDestructableObjectsData;
 
 	[JsonProperty("SafesUndestructable")]
-	public Dictionary<GameScenesGameplayDataEnum, List<SafeUndestructableData>> SafesUndestructableData;
+	public Dictionary<GameScenesGameplayEnum, List<SafeUndestructableData>> SafesUndestructableData;
 
 	[JsonProperty("SafesDestructable")]
-	public Dictionary<GameScenesGameplayDataEnum, List<SafeDestructableData>> SafesDestructableData;
+	public Dictionary<GameScenesGameplayEnum, List<SafeDestructableData>> SafesDestructableData;
 
 	[JsonProperty("VendingMachines")]
-	public Dictionary<GameScenesGameplayDataEnum, List<VendingMachineData>> VendingMachinesData;
+	public Dictionary<GameScenesGameplayEnum, List<VendingMachineData>> VendingMachinesData;
 
 	[JsonProperty("Elevators")]
-	public Dictionary<GameScenesGameplayDataEnum, List<ElevatorData>> ElevatorsData;
+	public Dictionary<GameScenesGameplayEnum, List<ElevatorData>> ElevatorsData;
 
 	[JsonProperty("Lights")]
-	public Dictionary<GameScenesGameplayDataEnum, List<LightData>> LightsData;
+	public Dictionary<GameScenesGameplayEnum, List<LightData>> LightsData;
 
 	[JsonProperty("TVs")]
-	public Dictionary<GameScenesGameplayDataEnum, List<TVdata>> TVsData;
+	public Dictionary<GameScenesGameplayEnum, List<TVdata>> TVsData;
 
 	[JsonProperty("Phonographs")]
-	public Dictionary<GameScenesGameplayDataEnum, List<PhonographData>> PhonographsData;
+	public Dictionary<GameScenesGameplayEnum, List<PhonographData>> PhonographsData;
 
 	[JsonProperty("BreakableObjects")]
-	public Dictionary<GameScenesGameplayDataEnum, List<BreakableObjectData>> BreakableObjectsData;
+	public Dictionary<GameScenesGameplayEnum, List<BreakableObjectData>> BreakableObjectsData;
 
 	[JsonProperty("ElectricalPanels")]
-	public Dictionary<GameScenesGameplayDataEnum, List<ElectricalPanelData>> ElectricalPanelsData;
+	public Dictionary<GameScenesGameplayEnum, List<ElectricalPanelData>> ElectricalPanelsData;
 
 	[JsonProperty("HintMessages")]
-	public Dictionary<GameScenesGameplayDataEnum, List<HintMessageData>> HintMessagesData;
+	public Dictionary<GameScenesGameplayEnum, List<HintMessageData>> HintMessagesData;
 
 	public JsonGameData()
 	{
@@ -175,10 +175,10 @@ public class JsonGameData
 		HintMessagesData = CreateEmptyDictionary<HintMessageData>();
 	}
 
-	private Dictionary<GameScenesGameplayDataEnum, List<T>> CreateEmptyDictionary<T>()
+	private Dictionary<GameScenesGameplayEnum, List<T>> CreateEmptyDictionary<T>()
 	{
-		var dict = new Dictionary<GameScenesGameplayDataEnum, List<T>>();
-		foreach (GameScenesGameplayDataEnum scene in Enum.GetValues(typeof(GameScenesGameplayDataEnum)))
+		var dict = new Dictionary<GameScenesGameplayEnum, List<T>>();
+		foreach (GameScenesGameplayEnum scene in Enum.GetValues(typeof(GameScenesGameplayEnum)))
 		{
 			dict[scene] = new List<T>();
 		}

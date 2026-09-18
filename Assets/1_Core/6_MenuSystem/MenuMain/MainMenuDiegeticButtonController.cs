@@ -253,7 +253,7 @@ _pauseSubMenuSettingsGameDifficultyController = ServiceLocator.Resolve<PauseSubM
 
 		//yield return StartCoroutine(_saveLoadController.NewGame());
 		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
-		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesGameplayDataEnum.Scene_0_Test));
+		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesGameplayEnum.Scene_0_Test));
 	
 		Destroy(gameObject);
 	}

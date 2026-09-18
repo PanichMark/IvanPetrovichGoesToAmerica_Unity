@@ -56,7 +56,7 @@ public class InteractionObjectLightSwitchController : GameplayObjectJsonSaveLoad
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.LightsData == null || !data.LightsData.ContainsKey(currentScene))
 			yield break;
@@ -86,7 +86,7 @@ public class InteractionObjectLightSwitchController : GameplayObjectJsonSaveLoad
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayDataEnum currentScene)) yield break;
+		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.LightsData == null || !data.LightsData.TryGetValue(currentScene, out var sourceList)) yield break;
 
