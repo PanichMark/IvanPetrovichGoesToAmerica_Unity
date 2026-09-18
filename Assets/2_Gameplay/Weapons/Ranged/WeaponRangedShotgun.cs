@@ -9,7 +9,6 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Shotgun;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo12gauge;
-	public override float WeaponDamage => 20f;
 	protected override float _waitForAmmoRefill => 3.125f;
 	public override bool IsWeaponAuto => false;
 	public override bool IsReloadingAnimationSingle => true;
@@ -79,12 +78,12 @@ public class WeaponRangedShotgun : WeaponRangedAbstract
 				{
 					// Теперь работаем ТОЛЬКО с очищенным списком
 					SpawnBulletHoleDecal(filteredHits.ToArray());
-					ProcessDamage(filteredHits.ToArray(), WeaponDamage, 10);
+					ProcessDamage(filteredHits.ToArray(), _weaponDamage, 3);
 
 					IBreakable breakable = filteredHits[0].transform.GetComponent<IBreakable>();
 					if (breakable != null)
 					{
-						breakable.TakeBreakDamage(WeaponDamage);
+						breakable.TakeBreakDamage(_weaponDamage);
 					}
 				}
 			}

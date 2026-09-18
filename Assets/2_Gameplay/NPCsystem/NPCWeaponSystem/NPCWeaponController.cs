@@ -4,8 +4,8 @@ public class NPCweaponController : MonoBehaviour
 {
 	[SerializeField] private GameObject _NPCweapon;
 	public Vector3 NPCWeaponSlotTransform { get; private set; }
-	[SerializeField] private Transform _weaponHand;
-	[SerializeField] private Transform _weaponRestingSlot;
+	[SerializeField] private NPCweaponSlotTypes _weaponRestingSlotType;
+	private GameObject _weaponRestingSlot;
 
 	public void Initialize()
 	{
@@ -18,11 +18,19 @@ public class NPCweaponController : MonoBehaviour
 			return;
 		}
 
-		weaponComponent.InstantiateWeaponNPC(_weaponHand);
-	}
+		if (_weaponRestingSlotType== NPCweaponSlotTypes.Belt)
+		{
+			_weaponRestingSlot = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/WeaponSlot_Belt").gameObject;
+		}
+		if (_weaponRestingSlotType == NPCweaponSlotTypes.Chest)
+		{
+			_weaponRestingSlot = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine/WeaponSlot_Chest").gameObject;
+		}
+		if (_weaponRestingSlotType == NPCweaponSlotTypes.Hand)
+		{
+			_weaponRestingSlot = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R").gameObject;
+		}
 
-	private void Update()
-	{
-		
+		weaponComponent.InstantiateWeaponNPC(_weaponRestingSlot.transform);
 	}
 }

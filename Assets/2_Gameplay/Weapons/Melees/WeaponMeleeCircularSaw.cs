@@ -5,7 +5,6 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 {
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.CircularSaw;
 	public override WeaponTypes WeaponType => WeaponTypes.Melee;
-	public override float WeaponDamage => 15f;
 	public override bool IsWeaponAuto => true;
 
 	public override float WeaponAttackSpeedRate => 0.36f;

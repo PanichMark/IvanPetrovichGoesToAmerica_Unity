@@ -9,7 +9,6 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
 	protected override float _waitForAmmoRefill => 3.25f;
 	public override float WeaponAttackSpeedRate => 0.133f;
-	public override float WeaponDamage => 20f;
 	public override bool IsWeaponAuto => true;
 	public override float WeaponRange => 30f;
 	public override bool LeavesBulletHole => true;

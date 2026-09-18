@@ -6,14 +6,14 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public abstract PlayerWeaponNames WeaponName { get; }
 	public string WeaponNameSystem => $"Weapon_{WeaponType}_{WeaponName}";
 	public abstract WeaponTypes WeaponType { get; }
-
+	[SerializeField] protected int _weaponDamage;
 	[SerializeField] protected Sprite _weaponIconBig;
 	[SerializeField] protected Sprite _weaponIconSmall;
 	public abstract float TimeBetweenAbilityToAttack { get; }
 	public Sprite WeaponIconBig => _weaponIconBig;
 	public Sprite WeaponIconSmall => _weaponIconSmall;
 	[SerializeField] protected AudioClip _weaponSoundAttack;
-	public abstract float WeaponDamage { get; }
+	
 	public abstract bool IsWeaponAuto { get; }
 	public abstract float WeaponAttackSpeedRate { get; }
 	public bool IsWeaponPlayerAutoAttacking { get; protected set; }

@@ -7,7 +7,6 @@ public class WeaponSpecialMonocular : WeaponAbstract
 	private Coroutine _monocularScopeCoroutine;
 	public override WeaponTypes WeaponType => WeaponTypes.Special;
 	private int _layersSeethroughToIgnore;
-	public override float WeaponDamage => 0;
 	private SeethroughSceneObjectsRegistrator _seethroughSceneObjectsRegistrator;
 	public override bool IsWeaponAuto => true;
 	private GameObject _canvasHUDmonocular;

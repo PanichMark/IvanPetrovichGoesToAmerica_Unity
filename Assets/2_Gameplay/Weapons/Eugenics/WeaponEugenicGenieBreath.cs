@@ -5,7 +5,6 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 {
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.GenieBreath;
 	public override WeaponTypes WeaponType => WeaponTypes.Eugenic;
-	public override float WeaponDamage => 100;
 	public override int ManaCost => 0;
 	public override bool IsWeaponAuto => false;
 	private Vector3 _flightDirection;
@@ -90,13 +89,13 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 			IDamageable damageable = hit.GetComponent<IDamageable>();
 			if (damageable != null)
 			{
-				damageable.TakeDamage(WeaponDamage);
+				damageable.TakeDamage(_weaponDamage);
 			}
 
 			IBreakable breakable = hit.GetComponent<IBreakable>();
 			if (breakable != null)
 			{
-				breakable.TakeBreakDamage(WeaponDamage);
+				breakable.TakeBreakDamage(_weaponDamage);
 			}
 
 			Rigidbody rb = hit.GetComponent<Rigidbody>();

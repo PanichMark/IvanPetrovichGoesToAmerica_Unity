@@ -6,7 +6,6 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Tranquilizer;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.AmmoTranquilizerDart;
-	public override float WeaponDamage => 0;
 	public override bool IsWeaponAuto => false;
 	public override float WeaponAttackSpeedRate => 0.3f;
 

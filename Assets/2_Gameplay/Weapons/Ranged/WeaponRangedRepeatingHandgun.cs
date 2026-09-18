@@ -15,7 +15,6 @@ public class WeaponRangedRepeatingHandgun : WeaponRangedAbstract
 
 	public override WeaponTypes WeaponType => throw new System.NotImplementedException();
 
-	public override float WeaponDamage => throw new System.NotImplementedException();
 
 	public override bool IsWeaponAuto => throw new System.NotImplementedException();
 

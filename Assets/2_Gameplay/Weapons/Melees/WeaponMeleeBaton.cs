@@ -5,7 +5,6 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 {
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Baton;
 	public override WeaponTypes WeaponType => WeaponTypes.Melee;
-	public override float WeaponDamage => 45f;
 	public override bool IsWeaponAuto => false;
 	public override float WeaponAttackSpeedRate => 1.560f;
 	[SerializeField] private AudioClip _weaponSoundSwing;

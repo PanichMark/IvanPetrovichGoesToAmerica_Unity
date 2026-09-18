@@ -73,7 +73,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			else
 			{
 				_isAttacking = true;
-				StartCoroutine(ShootWeaponPlayer(WeaponDamage));
+				StartCoroutine(ShootWeaponPlayer(_weaponDamage));
 			}
 		}
 	}
@@ -115,7 +115,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 				break; 
 			}
 
-			Coroutine shootingCoroutine = StartCoroutine(ShootWeaponPlayer(WeaponDamage));
+			Coroutine shootingCoroutine = StartCoroutine(ShootWeaponPlayer(_weaponDamage));
 
 			ApplyWeaponRecoil();
 

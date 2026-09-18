@@ -5,7 +5,6 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 {
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.TeslaShock;
 	public override WeaponTypes WeaponType => WeaponTypes.Eugenic;
-	public override float WeaponDamage => 5;
 	public override int ManaCost => 0;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	public override float WeaponAttackSpeedRate => 0.4f;
@@ -91,14 +90,14 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 			IDamageable damageable = hit.GetComponent<IDamageable>();
 			if (damageable != null)
 			{
-				damageable.TakeDamage(WeaponDamage);
-				Debug.Log($"[{WeaponName}] Нанесено {WeaponDamage} урона объекту: {hit.name}");
+				damageable.TakeDamage(_weaponDamage);
+				Debug.Log($"[{WeaponName}] Нанесено {_weaponDamage} урона объекту: {hit.name}");
 			}
 
 			IElectroShockable electroShokable = hit.GetComponent<IElectroShockable>();
 			if (electroShokable != null)
 			{
-				electroShokable.Electrify(WeaponDamage);
+				electroShokable.Electrify(_weaponDamage);
 				Debug.Log($"[{WeaponName}] Электроударил {hit.name}");
 			}
 		}

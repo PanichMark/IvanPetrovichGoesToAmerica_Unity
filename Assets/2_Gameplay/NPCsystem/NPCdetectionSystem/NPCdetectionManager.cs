@@ -86,7 +86,7 @@ public class NPCdetectionManager : MonoBehaviour
 	{
 		if (amount == 0) return;
 
-		Debug.Log($"METER INCREASED BY: {NPCdetectionMeter}");
+		//Debug.Log($"METER INCREASED BY: {NPCdetectionMeter}");
 
 		if (_meterRoutine != null)
 		{
@@ -107,7 +107,7 @@ public class NPCdetectionManager : MonoBehaviour
 	{
 		if (amount == 0) return;
 
-		Debug.Log($"METER DECREASED BY: {NPCdetectionMeter}");
+		//Debug.Log($"METER DECREASED BY: {NPCdetectionMeter}");
 
 		if (_meterRoutine != null)
 		{

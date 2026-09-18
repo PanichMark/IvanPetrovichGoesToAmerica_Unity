@@ -276,13 +276,21 @@ public class NPCstateMachineController : MonoBehaviour
 		{
 			newState = new NPCstateStationaryAction(this, _animationDuration);
 			CurrentNPCState = NPCstateTypes.StationaryAction;
-			_NPCabstract.gameObject.tag = "Interactable";
+
+			if (_NPCabstract is not NPCaggressive)
+			{
+				_NPCabstract.gameObject.tag = "Interactable";
+			}
 		}
 		else if (NPCstateType == NPCstateTypes.Patrolling)
 		{
 			newState = new NPCstatePatrolling(this);
 			CurrentNPCState = NPCstateTypes.Patrolling;
-			_NPCabstract.gameObject.tag = "Interactable";
+
+			if (_NPCabstract is not NPCaggressive)
+			{
+				_NPCabstract.gameObject.tag = "Interactable";
+			}
 		}
 		else if (NPCstateType == NPCstateTypes.Interested)
 		{

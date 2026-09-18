@@ -7,7 +7,6 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Revolver;
 	public override WeaponTypes WeaponType => WeaponTypes.Ranged;
 	public override AmmoTypes PlayerWeaponAmmoType => AmmoTypes.Ammo9mm;
-	public override float WeaponDamage => 34f;
 	public override bool IsWeaponAuto => false;
 	public override float WeaponAttackSpeedRate => 0.167f;
 	public override bool LeavesBulletHole => true;
