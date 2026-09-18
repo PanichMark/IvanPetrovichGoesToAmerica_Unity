@@ -50,7 +50,7 @@ public class Bootstrap : MonoBehaviour
 	private GameObject _canvasHUDinteraction;
 	private GameObject _canvasHUDmission;
 	private GameObject _canvasHUDhealthAndMana;
-	private GameObject _canvasHUDammo;
+	private GameObject _canvasHUDweapons;
 	private GameObject _canvasHUDmonocular;
 	private GameObject _canvasMenuWeaponWheel;
 	public GameObject _canvasMenuNote {  get; private set; }
@@ -235,7 +235,7 @@ public class Bootstrap : MonoBehaviour
 		_canvasMenuCutscene = Instantiate(_gameData.GameCanvasesList.CanvasMenuCutscene);
 
 		_canvasHUDhealthAndMana = Instantiate(_gameData.GameCanvasesList.CanvasHUDhealthAndMana);
-		_canvasHUDammo = Instantiate(_gameData.GameCanvasesList.CanvasHUDammo);
+		_canvasHUDweapons = Instantiate(_gameData.GameCanvasesList.CanvasHUDweapons);
 		_canvasHUDinteraction = Instantiate(_gameData.GameCanvasesList.CanvasHUDinteraction);
 		_canvasHUDmission = Instantiate(_gameData.GameCanvasesList.CanvasHUDmission);
 		_canvasHUDmonocular = Instantiate(_gameData.GameCanvasesList.CanvasHUDmonocular);
@@ -299,7 +299,7 @@ public class Bootstrap : MonoBehaviour
 			_canvasMenuWeaponWheel,
 			_canvasMenuCutscene,
 			_canvasHUDhealthAndMana,
-			_canvasHUDammo,
+			_canvasHUDweapons,
 			_canvasHUDinteraction,
 			_canvasHUDmission,
 			_canvasMenuNote,

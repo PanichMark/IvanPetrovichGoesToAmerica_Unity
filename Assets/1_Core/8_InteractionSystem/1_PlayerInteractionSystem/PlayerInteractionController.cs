@@ -64,6 +64,8 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 	private GameScenesManager _gameSceneManager;
 	private GameController _gameController;
 
+	private GameObject _dotInteraction;
+
 	public void Initialize(
 		Bootstrap bootstrap,
 		GameController gameController,
@@ -92,6 +94,8 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 		_viewModelHUDInteraction = viewModelHUDInteraction;
 		_HUDinteraction = viewModelHUDInteraction.HUDinteraction;
 		_HUDphraseLine = viewModelHUDInteraction.HUDphraseLine;
+
+		_dotInteraction = viewModelHUDInteraction.DotInteraction;
 
 		_itemsTexts = new TextMeshProUGUI[viewModelHUDInteraction.TextsGainedItems.Length];
 		for (int i = 0; i < viewModelHUDInteraction.TextsGainedItems.Length; i++)
@@ -134,6 +138,9 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 		_menuManager.OnOpenCutsceneMenu += ChangeInteractionRange;
 		_menuManager.OnCloseCutsceneMenu += ChangeInteractionRange;
 		_playerCameraStateMachineController.OnCameraStateChanged += ChangeInteractionRange;
+
+		_playerBehaviour.OnPlayerArmed += () => { _dotInteraction.SetActive(false); };
+		_playerBehaviour.OnPlayerDisarmed += () => { _dotInteraction.SetActive(true); };
 
 		_layersInteractionToIgnore = LayerMask.GetMask("HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
 

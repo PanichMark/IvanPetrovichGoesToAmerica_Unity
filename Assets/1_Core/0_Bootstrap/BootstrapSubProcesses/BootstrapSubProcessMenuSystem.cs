@@ -32,7 +32,7 @@ public class BootstrapSubProcessMenuSystem
 	public ViewModelHUDMission ViewModelHUDMission { get; private set; }
 	public ViewModelMenuWeaponWheel ViewModelWeaponWheel { get; private set; }
 	public ViewModelHUDHealthAndMana ViewModelHUDhealthAndMana {  get; private set; }
-	public ViewModelHUDAmmo ViewModelHUDAmmo {  get; private set; }
+	public ViewModelHUDWeapons ViewModelHUDAmmo {  get; private set; }
 	public ViewModelHUDInteraction ViewModelHUDInteraction { get; private set; }
 	public ViewModelMenuNote ViewModelMenuNote { get; private set; }
 	public ViewModelMenuLockpickMechanical ViewModelMenuLockpickMechanical { get; private set; }
@@ -119,7 +119,7 @@ public class BootstrapSubProcessMenuSystem
 	private GameObject _canvasHUDhealthAndMana;
 
 	public PlayerWeaponAmmoController PlayerResourcesAmmoManager { get; private set; }
-	public HUDammoController HUDammoController { get; private set; }
+	public HUDweaponsController HUDammoController { get; private set; }
 
 	public GameObject CanvasHUDammo {  get; private set; }
 
@@ -216,7 +216,7 @@ public class BootstrapSubProcessMenuSystem
 		PauseMenuConfirmActionController = _gameObjectBootstrapMenuSystem.AddComponent<PauseMenuConfirmActionController>();
 		_cutsceneMenuController = _gameObjectBootstrapMenuSystem.AddComponent<CutsceneMenuController>();
 		HUDhealthAndManaController = _gameObjectBootstrapMenuSystem.AddComponent<HUDhealthAndManaController>();
-		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDammoController>();
+		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDweaponsController>();
 		HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
 		_savingProcessController = _gameObjectBootstrapMenuSystem.AddComponent<SavingProcessController>();
 
@@ -243,7 +243,7 @@ public class BootstrapSubProcessMenuSystem
 		_viewModelPauseMenuConfirmAction = new ViewModelPauseMenuConfirmAction(_bootstrap, _canvasMenuConfirmAction);
 		_viewModelMainMenuReadNews = new ViewModelMainMenuReadNews(_bootstrap, _canvasMainMenuReadNews);
 		ViewModelHUDhealthAndMana = new ViewModelHUDHealthAndMana(_bootstrap, _canvasHUDhealthAndMana);
-		ViewModelHUDAmmo = new ViewModelHUDAmmo(_bootstrap, CanvasHUDammo);
+		ViewModelHUDAmmo = new ViewModelHUDWeapons(_bootstrap, CanvasHUDammo);
 		ViewModelWeaponWheel = new ViewModelMenuWeaponWheel(_bootstrap, CanvasMenuWeaponWheel);
 		ViewModelHUDMission = new ViewModelHUDMission(_bootstrap, _canvasHUDmission);
 		ViewModelSavingProcess = new ViewModelSavingProcess(_bootstrap, _canvasSavingProcess);
@@ -434,7 +434,7 @@ ServiceLocator.Register<ViewModelMainMenuReadNews>(_viewModelMainMenuReadNews);
 		ServiceLocator.Register<ViewModelMenuNote>(ViewModelMenuNote);
 		ServiceLocator.Register<ViewModelMenuLockpickMechanical>(ViewModelMenuLockpickMechanical);
 		ServiceLocator.Register<ViewModelMenuLockpickElectronic>(ViewModelMenuLockpickElectronic);
-		ServiceLocator.Register<ViewModelHUDAmmo>(ViewModelHUDAmmo);
+		ServiceLocator.Register<ViewModelHUDWeapons>(ViewModelHUDAmmo);
 		ServiceLocator.Register<ViewModelHUDInteraction>(ViewModelHUDInteraction);
 
 		yield break;

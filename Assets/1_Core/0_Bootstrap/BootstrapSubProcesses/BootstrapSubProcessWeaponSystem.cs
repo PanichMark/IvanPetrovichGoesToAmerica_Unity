@@ -32,7 +32,7 @@ public class BootstrapSubProcessWeaponSystem
 	private PlayerLegKickAttackController _legKickAttackController;
 	private GameObject _gameObjectPlayer;
 
-	private HUDammoController _HUDammoController;
+	private HUDweaponsController _HUDweaponController;
 
 	public BootstrapSubProcessWeaponSystem(
 		Bootstrap bootstrap,
@@ -70,7 +70,7 @@ public class BootstrapSubProcessWeaponSystem
 		_weaponAnimationController = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponAnimationController>();
 		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponFirstPersonRenderer>();
 		_legKickAttackController = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerLegKickAttackController>();
-		_HUDammoController = _GameObjectBootstrapWeaponSystem.AddComponent<HUDammoController>();
+		_HUDweaponController = _GameObjectBootstrapWeaponSystem.AddComponent<HUDweaponsController>();
 
 		_gameObjectFirstPersonRightHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlot_Hand.R");
 		_gameObjectFirstPersonLeftHandWeaponSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "WeaponSlot_Hand.L");
@@ -134,7 +134,7 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessPlayerSystems.GameObjectPlayerThirdPersonHandRight,
 			_bootstrapSubProcessPlayerSystems.GameObjectPlayerThirdPersonHandLeft);
 
-		_HUDammoController.Initialize(
+		_HUDweaponController.Initialize(
 			_gameController,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
 			_bootstrapSubProcessMenuSystem.MenuManager,
@@ -146,17 +146,18 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrapSubProcessMenuSystem.CanvasHUDammo,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDAmmo);
 
-ServiceLocator.Register<PlayerWeaponAmmoController>(PlayerResourcesAmmoManager);
-ServiceLocator.Register<PlayerWeaponController	>(WeaponController);
-ServiceLocator.Register<PlayerWeaponAnimationController>(_weaponAnimationController);
-ServiceLocator.Register<PlayerWeaponFirstPersonRenderer>(_weaponFirstPersonRender);
+		ServiceLocator.Register<PlayerWeaponAmmoController>(PlayerResourcesAmmoManager);
+		ServiceLocator.Register<PlayerWeaponController>(WeaponController);
+		ServiceLocator.Register<PlayerWeaponAnimationController>(_weaponAnimationController);
+		ServiceLocator.Register<PlayerWeaponFirstPersonRenderer>(_weaponFirstPersonRender);
+		//ServiceLocator.Register<HUDweaponsController>(_HUDweaponController);
 
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonLeftHand, _gameObjectFirstPersonLeftHandWeaponSlot);
-ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand, _gameObjectFirstPersonRightHandWeaponSlot);
-ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonLeftHand, _gameObjectThirdPersonLeftHandWeaponSlot);
-ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand, _gameObjectThirdPersonRightHandWeaponSlot);
+		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonLeftHand, _gameObjectFirstPersonLeftHandWeaponSlot);
+		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand, _gameObjectFirstPersonRightHandWeaponSlot);
+		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonLeftHand, _gameObjectThirdPersonLeftHandWeaponSlot);
+		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand, _gameObjectThirdPersonRightHandWeaponSlot);
 
-		ChangeWeaponWheelType(WeaponWheelMenuTypes._3D);
+		//ChangeWeaponWheelType(WeaponWheelMenuTypes._3D);
 
 		yield break;
 	}

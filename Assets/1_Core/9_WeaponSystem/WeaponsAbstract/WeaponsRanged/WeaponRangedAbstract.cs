@@ -12,7 +12,6 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected Coroutine _currentWeaponPlayerShootRoutine;
 
 	public abstract float WeaponRange { get; }
-
 	protected abstract float _waitForAmmoRefill { get; }
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
 

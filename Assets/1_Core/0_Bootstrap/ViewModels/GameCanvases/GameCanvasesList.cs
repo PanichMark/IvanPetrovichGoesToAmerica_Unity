@@ -35,7 +35,7 @@ public class GameCanvasesList : ScriptableObject
 	public GameObject CanvasHUDinteraction;
 	public GameObject CanvasHUDmission;
 	public GameObject CanvasHUDhealthAndMana;
-	public GameObject CanvasHUDammo;
+	public GameObject CanvasHUDweapons;
 	public GameObject CanvasHUDmonocular;
 
 	[Header("Weapon Wheel Menu")]

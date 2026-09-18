@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class HUDammoController : MonoBehaviour, IJsonSaveLoad
+public class HUDweaponsController : MonoBehaviour, IJsonSaveLoad
 {
 	private MenuManager _menuManager;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
@@ -13,6 +13,8 @@ public class HUDammoController : MonoBehaviour, IJsonSaveLoad
 	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
 	private PlayerBehaviourController _playerBehaviour;
 	private PlayerInteractionController _interactionController;
+
+	private GameObject _HUDammo;
 
 	private GameObject _rightWeaponAmmoMagazine;
 	private GameObject _rightWeaponAmmoReserve;
@@ -26,7 +28,17 @@ public class HUDammoController : MonoBehaviour, IJsonSaveLoad
 	private TMP_Text _leftWeaponAmmoMagazineText;
 	private TMP_Text _leftWeaponAmmoReserveText;
 
-	private GameObject _HUDammo;
+	private GameObject _HUDcrosshairs;
+
+	private GameObject _crosshairRevolver;
+
+	private GameObject _crosshairAutoPistol;
+	private GameObject[] _listCrosshairPartsAutoPistol = new GameObject[4];
+
+	private GameObject _crosshairShotgun;
+	private GameObject[] _listCrosshairPartsShotgun = new GameObject[4];
+
+	private GameObject _crosshairTranquilizer;
 
 	public void Initialize(
 		GameController gameController,
@@ -38,7 +50,7 @@ public class HUDammoController : MonoBehaviour, IJsonSaveLoad
 		PlayerWeaponAmmoController playerResourcesAmmoManager,
 		PlayerInteractionController interactionController,
 		GameObject canvasHUDammo,
-		ViewModelHUDAmmo viewModelHUDAmmo)
+		ViewModelHUDWeapons viewModelHUDWeapons)
 	{
 		_gameSceneManager = gameSceneManager;
 		_menuManager = menuManager;
@@ -50,19 +62,31 @@ public class HUDammoController : MonoBehaviour, IJsonSaveLoad
 		_playerBehaviour = playerBehaviour;
 		_interactionController = interactionController;
 
-		_rightWeaponAmmoMagazine = viewModelHUDAmmo.TextRightWeaponAmmoMagazineNumber;
-		_rightWeaponAmmoReserve = viewModelHUDAmmo.TextRightWeaponAmmoReserveNumber;
-		_rightWeaponAmmoBox = viewModelHUDAmmo.RightWeaponAmmoBox;
-		_leftWeaponAmmoMagazine = viewModelHUDAmmo.TextLeftWeaponAmmoMagazineNumber;
-		_leftWeaponAmmoReserve = viewModelHUDAmmo.TextLeftWeaponAmmoReserveNumber;
-		_leftWeaponAmmoBox = viewModelHUDAmmo.LeftWeaponAmmoBox;
+		_HUDammo = viewModelHUDWeapons.HUDammo;
+
+		_rightWeaponAmmoMagazine = viewModelHUDWeapons.TextRightWeaponAmmoMagazineNumber;
+		_rightWeaponAmmoReserve = viewModelHUDWeapons.TextRightWeaponAmmoReserveNumber;
+		_rightWeaponAmmoBox = viewModelHUDWeapons.RightWeaponAmmoBox;
+		_leftWeaponAmmoMagazine = viewModelHUDWeapons.TextLeftWeaponAmmoMagazineNumber;
+		_leftWeaponAmmoReserve = viewModelHUDWeapons.TextLeftWeaponAmmoReserveNumber;
+		_leftWeaponAmmoBox = viewModelHUDWeapons.LeftWeaponAmmoBox;
 
 		_rightWeaponAmmoMagazineText = _rightWeaponAmmoMagazine.GetComponent<TMP_Text>();
 		_rightWeaponAmmoReserveText = _rightWeaponAmmoReserve.GetComponent<TMP_Text>();
 		_leftWeaponAmmoMagazineText = _leftWeaponAmmoMagazine.GetComponent<TMP_Text>();
 		_leftWeaponAmmoReserveText = _leftWeaponAmmoReserve.GetComponent<TMP_Text>();
 
-		_HUDammo = viewModelHUDAmmo.HUDammo;
+		_HUDcrosshairs = viewModelHUDWeapons.HUDcrosshiars;
+
+		_crosshairRevolver = viewModelHUDWeapons.CrosshairRevolver;
+
+		_crosshairAutoPistol = viewModelHUDWeapons.CrosshairAutoPistol;
+		_listCrosshairPartsAutoPistol = viewModelHUDWeapons.ListCrosshairPartsAutoPistol;
+
+		_crosshairShotgun = viewModelHUDWeapons.CrosshairShotgun;
+		_listCrosshairPartsShotgun = viewModelHUDWeapons.ListCrosshairPartsShotgun;
+
+		_crosshairTranquilizer = viewModelHUDWeapons.CrosshairTranquilizer;
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDammo;
 		_menuManager.OnClosePauseMenu += ShowCanvasHUDammo;
@@ -71,10 +95,10 @@ public class HUDammoController : MonoBehaviour, IJsonSaveLoad
 		_menuManager.OnOpenDialogueMenu += HideCanvasHUDammo;
 		_menuManager.OnCloseDialogueMenu += ShowCanvasHUDammo;
 
-		_pauseSubMenuSettingsSectionGeneralController.OnHUDfull += ShowAmmoDisplay;
-		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesOnly += HideAmmoDisplay;
-		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesHide += ShowAmmoDisplay;
-		_pauseSubMenuSettingsSectionGeneralController.OnHUDturnOff += HideAmmoDisplay;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDfull += ShowHUDWeaponDisplay;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesOnly += HideHUDWeaponDisplay;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesHide += ShowHUDWeaponDisplay;
+		_pauseSubMenuSettingsSectionGeneralController.OnHUDturnOff += HideHUDWeaponDisplay;
 
 		_playerBehaviour.OnPlayerArmed += ShowCanvasHUDammo;
 		_playerBehaviour.OnPlayerDisarmed += HideCanvasHUDammo;
@@ -99,6 +123,9 @@ public class HUDammoController : MonoBehaviour, IJsonSaveLoad
 			}
 		};
 
+		_playerWeaponController.OnShowWeapon += ShowWeaponCrosshair;
+		_playerWeaponController.OnHideWeapon += HideWeaponCrosshair;
+
 		HideRightWeaponAmmo();
 		HideLeftWeaponAmmo();
 
@@ -122,14 +149,16 @@ public class HUDammoController : MonoBehaviour, IJsonSaveLoad
 		Debug.Log("Hide canvasAmmo");
 	}
 
-	private void ShowAmmoDisplay()
+	private void ShowHUDWeaponDisplay()
 	{
 		_HUDammo.SetActive(true);
+		_HUDcrosshairs.SetActive(true);
 	}
 
-	private void HideAmmoDisplay()
+	private void HideHUDWeaponDisplay()
 	{
 		_HUDammo.SetActive(false);
+		_HUDcrosshairs.SetActive(false);
 	}
 
 	private void UpdateAmmoDisplayForActiveWeapon(WeaponHandType activeHand)
@@ -246,6 +275,55 @@ public class HUDammoController : MonoBehaviour, IJsonSaveLoad
 	public void HideLeftWeaponAmmo()
 	{
 		_leftWeaponAmmoBox.SetActive(false);
+	}
+
+	public void ShowWeaponCrosshair(WeaponAbstract RangedWeaponName)
+	{
+		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Revolver)
+		{
+			_crosshairRevolver.SetActive(true);
+		}
+		if (RangedWeaponName.WeaponName == PlayerWeaponNames.AutoPistol)
+		{
+			_crosshairAutoPistol.SetActive(true);
+		}
+		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Shotgun)
+		{
+			_crosshairShotgun.SetActive(true);
+		}
+		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Tranquilizer)
+		{
+			_crosshairTranquilizer.SetActive(true);
+		}
+		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Crossbow)
+		{
+
+		}
+	}
+
+	public void HideWeaponCrosshair(WeaponAbstract RangedWeaponName)
+	{
+		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Revolver)
+		{
+			_crosshairRevolver.SetActive(false);
+		}
+		if (RangedWeaponName.WeaponName == PlayerWeaponNames.AutoPistol)
+		{
+			Debug.Log("HIDE AUTOPISTOL");
+			_crosshairAutoPistol.SetActive(false);
+		}
+		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Shotgun)
+		{
+			_crosshairShotgun.SetActive(false);
+		}
+		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Tranquilizer)
+		{
+			_crosshairTranquilizer.SetActive(false);
+		}
+		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Crossbow)
+		{
+
+		}
 	}
 
 	public IEnumerator SaveJsonData(JsonGameData data)
