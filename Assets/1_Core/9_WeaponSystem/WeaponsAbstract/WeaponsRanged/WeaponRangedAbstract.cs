@@ -12,6 +12,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	protected Coroutine _currentWeaponPlayerShootRoutine;
 
 	public abstract float WeaponRange { get; }
+	protected HUDweaponsController _HUDweaponsController;
 	protected abstract float _waitForAmmoRefill { get; }
 	public abstract AmmoTypes PlayerWeaponAmmoType { get; }
 
@@ -39,6 +40,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>();
 			_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 			_VFXmuzzleFlashEffect1stPerson = FirstPersonWeaponModelInstance.transform.Find("VFX")?.gameObject;
+			_HUDweaponsController = ServiceLocator.Resolve<HUDweaponsController>();
 			InitializeWeaponRanged();
 		}
 
@@ -140,8 +142,12 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
 
+		_HUDweaponsController.AnimateWeaponCrosshairOnShoot(this);
+
 		if (WeaponName != PlayerWeaponNames.Shotgun)
-		{ 
+		{
+			
+
 			RaycastHit[] hits = Physics.RaycastAll(WeaponRangedShootPoint.transform.position, WeaponRangedShootPoint.transform.forward, WeaponRange);
 			System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 		

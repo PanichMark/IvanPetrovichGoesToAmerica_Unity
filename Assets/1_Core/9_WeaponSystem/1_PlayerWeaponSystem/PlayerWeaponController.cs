@@ -389,6 +389,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		{
 			if (LeftHandWeapon != null)
 			{
+				HideWeapon(WeaponHandType.Left);
 				Destroy(LeftHandWeapon);
 				LeftHandWeaponComponent.DestroyWeaponModel();
 			}
@@ -415,6 +416,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		{
 			if (RightHandWeapon != null)
 			{
+				HideWeapon(WeaponHandType.Right);
 				Destroy(RightHandWeapon);
 				RightHandWeaponComponent.DestroyWeaponModel();
 			}

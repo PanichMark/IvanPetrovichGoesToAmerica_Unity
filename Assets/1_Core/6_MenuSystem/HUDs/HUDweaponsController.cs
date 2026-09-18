@@ -277,52 +277,117 @@ public class HUDweaponsController : MonoBehaviour, IJsonSaveLoad
 		_leftWeaponAmmoBox.SetActive(false);
 	}
 
-	public void ShowWeaponCrosshair(WeaponAbstract RangedWeaponName)
+	public void ShowWeaponCrosshair(WeaponAbstract WeaponName)
 	{
-		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Revolver)
+		if (WeaponName.WeaponName == PlayerWeaponNames.Revolver)
 		{
 			_crosshairRevolver.SetActive(true);
 		}
-		if (RangedWeaponName.WeaponName == PlayerWeaponNames.AutoPistol)
+		if (WeaponName.WeaponName == PlayerWeaponNames.AutoPistol)
 		{
 			_crosshairAutoPistol.SetActive(true);
 		}
-		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Shotgun)
+		if (WeaponName.WeaponName == PlayerWeaponNames.Shotgun)
 		{
 			_crosshairShotgun.SetActive(true);
 		}
-		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Tranquilizer)
+		if (WeaponName.WeaponName == PlayerWeaponNames.Tranquilizer)
 		{
 			_crosshairTranquilizer.SetActive(true);
 		}
-		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Crossbow)
+		if (WeaponName.WeaponName == PlayerWeaponNames.Crossbow)
 		{
 
 		}
 	}
 
-	public void HideWeaponCrosshair(WeaponAbstract RangedWeaponName)
+	public void HideWeaponCrosshair(WeaponAbstract WeaponName)
 	{
-		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Revolver)
+		if (WeaponName.WeaponName == PlayerWeaponNames.Revolver)
 		{
 			_crosshairRevolver.SetActive(false);
 		}
-		if (RangedWeaponName.WeaponName == PlayerWeaponNames.AutoPistol)
+		if (WeaponName.WeaponName == PlayerWeaponNames.AutoPistol)
 		{
-			Debug.Log("HIDE AUTOPISTOL");
 			_crosshairAutoPistol.SetActive(false);
 		}
-		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Shotgun)
+		if (WeaponName.WeaponName == PlayerWeaponNames.Shotgun)
 		{
 			_crosshairShotgun.SetActive(false);
 		}
-		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Tranquilizer)
+		if (WeaponName.WeaponName == PlayerWeaponNames.Tranquilizer)
 		{
 			_crosshairTranquilizer.SetActive(false);
 		}
-		if (RangedWeaponName.WeaponName == PlayerWeaponNames.Crossbow)
+		if (WeaponName.WeaponName == PlayerWeaponNames.Crossbow)
 		{
 
+		}
+	}
+
+	public void AnimateWeaponCrosshairOnShoot(WeaponAbstract WeaponName)
+	{
+		if (WeaponName.WeaponName == PlayerWeaponNames.AutoPistol)
+		{
+			StartCoroutine(AnimateAutoPistolCrosshair());
+		}
+		else if (WeaponName.WeaponName == PlayerWeaponNames.Shotgun)
+		{
+			StartCoroutine(AnimateShotgunCrosshair());
+		}
+	}
+
+	private IEnumerator AnimateAutoPistolCrosshair()
+	{
+		var offsets = new Vector2[4]
+		{
+			new Vector2(25f, -25f),
+			new Vector2(-25f, -25f),
+			new Vector2(-25f, 25f),
+			new Vector2(25f, 25f)
+		};
+
+		for (int i = 0; i < _listCrosshairPartsAutoPistol.Length; i++)
+		{
+			var part = _listCrosshairPartsAutoPistol[i];
+			var startPos = part.transform.localPosition;
+			part.transform.localPosition = new Vector3(startPos.x + offsets[i].x, startPos.y + offsets[i].y, startPos.z);
+		}
+
+		yield return new WaitForSeconds(0.1f);
+
+		for (int i = 0; i < _listCrosshairPartsAutoPistol.Length; i++)
+		{
+			var part = _listCrosshairPartsAutoPistol[i];
+			var startPos = part.transform.localPosition;
+			part.transform.localPosition = new Vector3(startPos.x - offsets[i].x, startPos.y - offsets[i].y, startPos.z);
+		}
+	}
+
+	private IEnumerator AnimateShotgunCrosshair()
+	{
+		var offsets = new Vector2[4]
+		{
+			new Vector2(100f, 0f),
+			new Vector2(0f, -100f),
+			new Vector2(-100f, 0f),
+			new Vector2(0f, 100f)
+		};
+
+		for (int i = 0; i < _listCrosshairPartsShotgun.Length; i++)
+		{
+			var part = _listCrosshairPartsShotgun[i];
+			var startPos = part.transform.localPosition;
+			part.transform.localPosition = new Vector3(startPos.x + offsets[i].x, startPos.y + offsets[i].y, startPos.z);
+		}
+
+		yield return new WaitForSeconds(0.1f);
+
+		for (int i = 0; i < _listCrosshairPartsShotgun.Length; i++)
+		{
+			var part = _listCrosshairPartsShotgun[i];
+			var startPos = part.transform.localPosition;
+			part.transform.localPosition = new Vector3(startPos.x - offsets[i].x, startPos.y - offsets[i].y, startPos.z);
 		}
 	}
 

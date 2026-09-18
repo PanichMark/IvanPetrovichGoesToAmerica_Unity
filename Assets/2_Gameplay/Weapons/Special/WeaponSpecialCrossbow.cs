@@ -9,7 +9,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	private GameScenesManager _gameSceneManager;
 	private PlayerBehaviourController _playerBehaviour;
 	public override float WeaponAttackSpeedRate => 0f;
-
+	private HUDweaponsController _HUDweaponsController;
 	private GameObject _projectile1stPerson;
 	private Transform _projectileParent1stPerson;
 	private GameObject _projectileStringStartPoint1stPerson;
@@ -72,23 +72,23 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		_projectileStringEndPoint3rdPerson = _projectile3rdPerson.transform.Find("ProjectileStringEndPoint").gameObject;
 		_lineRenderer3rdPerson = ThirdPersonWeaponModelInstance.GetComponent<LineRenderer>();
 		_Crossbow3rdPersonSkinnedMesh = ThirdPersonWeaponModelInstance.transform.Find("Crossbow").GetComponent<SkinnedMeshRenderer>();
-
+		_HUDweaponsController = ServiceLocator.Resolve<HUDweaponsController>();
 		_projectile1stPersonRestPosition = _projectile1stPerson.transform.localPosition;
 		_projectile1stPersonRestDirection = _projectile1stPerson.transform.localRotation;
 
 		_projectile3rdPersonRestPosition = _projectile3rdPerson.transform.localPosition;
 		_projectile3rdPersonRestDirection = _projectile3rdPerson.transform.localRotation;
 		//Debug.Log(_projectileRestPosition);
-_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
-_playerCamera = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
-_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
-_player = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
-_playerRigidbody = _player.GetComponent<Rigidbody>();
-_gameController = ServiceLocator.Resolve<GameController>();
-_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
-_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
-//Debug.Log(_gameSceneManager);
-_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>();
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+		_playerCamera = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
+		_player = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_playerRigidbody = _player.GetComponent<Rigidbody>();
+		_gameController = ServiceLocator.Resolve<GameController>();
+		_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+		//Debug.Log(_gameSceneManager);
+		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>();
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 		{
