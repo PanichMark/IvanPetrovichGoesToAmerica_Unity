@@ -10,6 +10,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	private PlayerBehaviourController _playerBehaviour;
 	public override float WeaponAttackSpeedRate => 0f;
 	private HUDweaponsController _HUDweaponsController;
+	private MenuManager _menuManager;
 	private GameObject _projectile1stPerson;
 	private Transform _projectileParent1stPerson;
 	private GameObject _projectileStringStartPoint1stPerson;
@@ -33,12 +34,12 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	private Quaternion _projectile1stPersonRestDirection;
 	private Vector3 _projectile3rdPersonRestPosition;
 	private Quaternion _projectile3rdPersonRestDirection;
-
+	private bool _isHoldingDown;
 	private SkinnedMeshRenderer _Crossbow1stPersonSkinnedMesh;
 	private SkinnedMeshRenderer _Crossbow3rdPersonSkinnedMesh;
 
 	private Quaternion _projectileFlyingDirection;
-	public override bool IsWeaponAuto => false;
+	public override bool IsWeaponAuto => true;
 	private GameObject _hookedObject;
 	private Rigidbody _hookedObjectRigidbody;
 	private Collider _hookedObjectCollider;
@@ -65,7 +66,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		_projectileStringEndPoint1stPerson = _projectile1stPerson.transform.Find("ProjectileStringEndPoint").gameObject;
 		_lineRenderer1stPerson = FirstPersonWeaponModelInstance.GetComponent<LineRenderer>();
 		_Crossbow1stPersonSkinnedMesh = FirstPersonWeaponModelInstance.transform.Find("Crossbow").GetComponent<SkinnedMeshRenderer>();
-
+		_menuManager = ServiceLocator.Resolve<MenuManager>();
 		_projectile3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("Projectile").gameObject;
 		_projectileParent3rdPerson = _projectile3rdPerson.transform.parent;
 		_projectileStringStartPoint3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("ProjectileStringStartPoint").gameObject;
@@ -124,6 +125,31 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	{
 		if (_isCrossbowAttacking) return;
 
+		if (_menuManager.IsAnyMenuOpened) return;
+
+		if (gameObject.activeInHierarchy == false) return;
+
+		_isHoldingDown = true;
+
+	}
+
+	public override void StartAutoAttackingWeaponPlayer()
+	{
+	
+	}
+
+	public override void StopAutoAttacking()
+	{
+		//Debug.Log("LAUNCH CROSSBOW");
+
+		if (_isCrossbowAttacking) return;
+
+		if (_menuManager.IsAnyMenuOpened) return;
+
+		if (gameObject.activeInHierarchy == false) return;
+
+		_isHoldingDown = false;
+
 		Ray ray = new Ray(_playerCamera.transform.position, _playerCamera.transform.forward);
 		RaycastHit hit;
 
@@ -132,6 +158,14 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 			_hookPoint = hit.point;
 			_isCrossbowAttacking = true;
 			StartCoroutine(PerformCrossbowShoot(_hookPoint, hit));
+		}
+	}
+
+	private void Update()
+	{
+		if (_isHoldingDown)
+		{
+			//Debug.Log("HOLDING DOWN");
 		}
 	}
 
@@ -433,15 +467,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		StopCrossbowAttack();
 	}
 
-	public override void StopAutoAttacking()
-	{
-		//throw new System.NotImplementedException();
-	}
-
-	public override void StartAutoAttackingWeaponPlayer()
-	{
-		//throw new System.NotImplementedException();
-	}
+	
 
 	public override IEnumerator AutoAttackWeaponPlayerCourutine()
 	{
