@@ -39,7 +39,7 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 	private List<Sprite> _detectionSignFrames;
 	private LocalizationManager _localizationManager;
 	protected NPCstateMachineController _NPCstateMachineController;
-
+	protected NPCdetectionVisualController _NPCdetectionVisualController;
 	public string InteractionObjectNameSystem => _NPCname;
 	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_NPCname);
 	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
@@ -57,14 +57,14 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 	private void Start()
 	{
-_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
-_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>();
-_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+		_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_CantTalkToPlayerRightNow");
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 
-		_canvasNPCstatus = transform.Find("CanvasNPCstatus").gameObject;
+		_canvasNPCstatus = transform.Find("NPC_Canvas").gameObject;
 		_textNPCcurrentState = _canvasNPCstatus.transform.Find("TextNPCcurrentState").gameObject;
 		_textNPCcurrentHealth = _canvasNPCstatus.transform.Find("TextNPCcurrentHealth").gameObject;
 		_imageDetectionSign = _canvasNPCstatus.transform.Find("DetectionSign").gameObject;
@@ -74,7 +74,8 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_NPCphrasesController = GetComponent<NPCphrasesController>();
 		_NPCdialogueController = GetComponent<NPCdialogueController>();
 		_NPCweaponController = GetComponent<NPCweaponController>();
-		_NPCdetectionManager = GetComponent<NPCdetectionManager>();	
+		_NPCdetectionManager = GetComponent<NPCdetectionManager>();
+		_NPCdetectionVisualController = GetComponent<NPCdetectionVisualController>();
 		_NPCdetectionSignController = GetComponent<NPCdetectionSignController>();
 		_NPCdebugHUDcontroller = GetComponent<NPCdebugHUDcontroller>();
 		
@@ -104,6 +105,8 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		}
 
 		_NPCdetectionManager.Initialize();
+
+		_NPCdetectionVisualController.Initialize(_NPCdetectionManager);
 
 		_NPCdetectionSignController.Initialize(
 			_NPCdetectionManager,

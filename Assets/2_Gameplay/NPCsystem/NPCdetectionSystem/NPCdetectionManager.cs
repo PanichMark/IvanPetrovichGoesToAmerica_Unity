@@ -3,20 +3,48 @@ using System.Collections;
 
 public class NPCdetectionManager : MonoBehaviour
 {
-	public delegate void DetectionMeterHandler(float currentValue);
+	// Делегат и событие теперь принимают int
+	public delegate void DetectionMeterHandler(int currentValue);
 	public event DetectionMeterHandler OnMeterChanged;
-	public float NPCdetectionMeter { get; private set; }
+
+	//private float _floatBuffer; // Буфер для точного дробного значения
+
+	// Публичное свойство возвращает только целое число
+	public int NPCdetectionMeter { get; private set; }
+
 	private Coroutine _meterRoutine;
 
 	public void Initialize()
 	{
-		NPCdetectionMeter = 0f;
-		OnMeterChanged?.Invoke(NPCdetectionMeter);
+		//_floatBuffer = 0f;
+		UpdateDetectionMeter(0f); // Инициализируем через общий метод
+
 		if (_meterRoutine != null)
 		{
 			StopCoroutine(_meterRoutine);
 		}
-		_meterRoutine = StartCoroutine(MeterPulse());
+		//_meterRoutine = StartCoroutine(MeterPulse());
+	}
+
+	// Новый метод-обработчик, отвечающий за логику округления
+	private void UpdateDetectionMeter(float rawValue)
+	{
+		// Mathf.CeilToInt всегда округляет к большему (потолок). 
+		// Например: 45.1 -> 46, 45.9 -> 46, 46.0 -> 46.
+		int newRoundedValue = Mathf.CeilToInt(rawValue);
+
+		// Ограничиваем диапазон строго от 0 до 100
+		newRoundedValue = Mathf.Clamp(newRoundedValue, 0, 100);
+
+		// Вызываем событие только если целое число действительно изменилось
+		if (newRoundedValue != NPCdetectionMeter)
+		{
+			NPCdetectionMeter = newRoundedValue;
+			OnMeterChanged?.Invoke(NPCdetectionMeter);
+		}
+
+		// Сохраняем точное значение в буфер (на случай, если оно понадобится внутри менеджера)
+		//_floatBuffer = rawValue;
 	}
 
 	private IEnumerator MeterPulse()
@@ -33,10 +61,16 @@ public class NPCdetectionManager : MonoBehaviour
 			{
 				elapsed += Time.deltaTime;
 				float t = Mathf.Clamp01(elapsed / duration);
-				float currentValue = Mathf.Lerp(startValue, endValue, forward ? t : 1f - t);
-				NPCdetectionMeter = currentValue;
-				OnMeterChanged?.Invoke(NPCdetectionMeter);
+
+				// Считаем плавающее значение
+				float currentFloatValue = Mathf.Lerp(startValue, endValue, forward ? t : 1f - t);
+
+				// Передаем его в обработчик округления
+				UpdateDetectionMeter(currentFloatValue);
+
 				yield return null;
+
+				//Debug.Log(NPCdetectionMeter);
 			}
 
 			forward = false;
@@ -48,11 +82,30 @@ public class NPCdetectionManager : MonoBehaviour
 			{
 				elapsed += Time.deltaTime;
 				float t = Mathf.Clamp01(elapsed / duration);
-				float currentValue = Mathf.Lerp(startValue, endValue, t);
-				NPCdetectionMeter = currentValue;
-				OnMeterChanged?.Invoke(NPCdetectionMeter);
+				float currentFloatValue = Mathf.Lerp(startValue, endValue, t);
+				UpdateDetectionMeter(currentFloatValue);
 				yield return null;
+
+				//Debug.Log(NPCdetectionMeter);
 			}
+		}
+	}
+
+	public void IncreaseMeter(int amount)
+	{
+		if (amount == 0) return;
+
+		if (_meterRoutine != null)
+		{
+			StopCoroutine(_meterRoutine);
+			_meterRoutine = null;
+		}
+
+		int newValue = Mathf.Clamp(NPCdetectionMeter + amount, 0, 100);
+
+		if (newValue != NPCdetectionMeter)
+		{
+			UpdateDetectionMeter(newValue);
 		}
 	}
 }

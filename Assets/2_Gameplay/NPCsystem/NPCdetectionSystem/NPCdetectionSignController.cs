@@ -50,12 +50,12 @@ public class NPCdetectionSignController : MonoBehaviour
 
 		_menuManager = ServiceLocator.Resolve<MenuManager>();
 		_menuManager.OnOpenAnyMenu += HideCanvasNPC;
-		//_menuManager.OnCloseAnyMenu += ShowCanvasNPC;
+		_menuManager.OnCloseAnyMenu += ShowCanvasNPC;
 
-		UpdateSpriteByMeter(0f);
+		UpdateSpriteByMeter(0);
 		_npcDetectionManager.OnMeterChanged += UpdateSpriteByMeter;
 
-		HideCanvasNPC();
+		//HideCanvasNPC();
 	}
 
 	private void ShowCanvasNPC()
@@ -66,6 +66,16 @@ public class NPCdetectionSignController : MonoBehaviour
 	private void HideCanvasNPC()
 	{
 		_canvasNpcStatus.SetActive(false);
+	}
+
+	private void ShowDetectionSign()
+	{
+		_imageDetectionSign.SetActive(true);
+	}
+
+	private void HideDetectionSign()
+	{
+		_imageDetectionSign.SetActive(false);
 	}
 
 	private void OnDestroy()
@@ -157,21 +167,22 @@ public class NPCdetectionSignController : MonoBehaviour
 		UpdateScaleByDistance();
 	}
 
-	private void UpdateSpriteByMeter(float meterValue)
+	private void UpdateSpriteByMeter(int meterValue) // Меняем аргумент на int
 	{
-		bool shouldShow = meterValue > 0f;
-		_imageComponentDetectionSign.gameObject.SetActive(shouldShow); // Используем gameObject от Image
+		bool shouldShow = meterValue > 0;
+		_imageComponentDetectionSign.gameObject.SetActive(shouldShow);
 
 		if (!shouldShow || _detectionSignFrames.Count == 0)
 		{
-			//Debug.LogWarning("[NPC Sign] Tried to update sprite, but frames are missing or value is 0.");
 			return;
 		}
 
-		float normalizedValue = Mathf.Clamp01(meterValue / 100f);
+		// Нормализация работает так же, но уже с целым числом
+		float normalizedValue = meterValue / 100f;
 		int frameIndex = Mathf.RoundToInt(normalizedValue * (_detectionSignFrames.Count - 1));
 
-		//Debug.Log($"[NPC Sign] Meter: {meterValue:F1} -> Frame Index: {frameIndex}/{_detectionSignFrames.Count - 1} ({_detectionSignFrames[frameIndex].name})");
+		// Дополнительная защита индекса массива после смены типов
+		frameIndex = Mathf.Clamp(frameIndex, 0, _detectionSignFrames.Count - 1);
 
 		_imageComponentDetectionSign.sprite = _detectionSignFrames[frameIndex];
 	}
