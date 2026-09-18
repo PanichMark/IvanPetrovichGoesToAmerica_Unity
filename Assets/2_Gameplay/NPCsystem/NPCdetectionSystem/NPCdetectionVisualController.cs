@@ -123,28 +123,28 @@ public class NPCdetectionVisualController : MonoBehaviour
 
 				if (_currentSpeed > 0)
 				{
-					// Если растем: проверяем, набралось ли целое число
+					// Если растем: проверяем, набралось ли целое число для передачи
 					if (_meterBuffer >= 1f)
 					{
-						amountToSend = Mathf.FloorToInt(_meterBuffer); // Округляем вниз до целого (сколько целых единиц накопили)
-						_meterBuffer -= amountToSend; // Убираем отданное из буфера
+						amountToSend = Mathf.FloorToInt(_meterBuffer);
+						_meterBuffer -= amountToSend;
+
+						// Используем новый метод Increase
+						_npcDetectionManager.IncreaseMeter(amountToSend);
 					}
 				}
 				else
 				{
-					// Если падаем: используем CeilToInt как просили (округление к большему по модулю), 
-					// либо просто FloorToInt для отрицательных чисел. 
-					// Чтобы Loss было таким же "плавным" визуально, лучше использовать RoundToInt или проверку <= -1f.
+					// Если падаем: используем CeilToInt для отрицательных чисел (-1.7 станет -1)
 					if (_meterBuffer <= -1f)
 					{
-						amountToSend = Mathf.CeilToInt(_meterBuffer); // Округляет к большему (-1.1 станет -1)
-						_meterBuffer -= amountToSend;
-					}
-				}
+						// Берем модуль, так как Decrease принимает положительное число "сколько убрать"
+						amountToSend = Mathf.CeilToInt(-_meterBuffer);
+						_meterBuffer += amountToSend; // Прибавляем, так как buffer отрицательный
 
-				if (amountToSend != 0)
-				{
-					_npcDetectionManager.IncreaseMeter(amountToSend);
+						// Используем новый метод Decrease
+						_npcDetectionManager.DecreaseMeter(amountToSend);
+					}
 				}
 			}
 			else
