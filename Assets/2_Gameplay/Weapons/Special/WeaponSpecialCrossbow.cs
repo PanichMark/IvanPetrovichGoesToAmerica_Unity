@@ -161,12 +161,52 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		}
 	}
 
+	private int _lastCrosshairState = -1;
+
 	private void Update()
 	{
 		if (_isHoldingDown)
 		{
-			//Debug.Log("HOLDING DOWN");
+			Ray ray = new Ray(_playerCamera.transform.position, _playerCamera.transform.forward);
+
+			if (Physics.Raycast(ray, out RaycastHit hit, _maxHookDistance, ~LayerMask.GetMask("InvisibleWall")))
+			{
+				if (hit.collider.gameObject.TryGetComponent<NPCabstract>(out _) || hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _))
+				{
+					if (_lastCrosshairState != 2)
+					{
+						_HUDweaponsController.HandleCrossbowCrosshair(2);
+						_lastCrosshairState = 2;
+					}
+				}
+				else
+				{
+					if (_lastCrosshairState != 1)
+					{
+						_HUDweaponsController.HandleCrossbowCrosshair(1);
+						_lastCrosshairState = 1;
+					}
+				}
+			}
+			else
+			{
+				if (_lastCrosshairState != 3)
+				{
+					_HUDweaponsController.HandleCrossbowCrosshair(3);
+					_lastCrosshairState = 3;
+				}
+			}
 		}
+		else
+		{
+			if (_lastCrosshairState != 0)
+			{
+				_HUDweaponsController.HandleCrossbowCrosshair(0);
+				_lastCrosshairState = 0;
+			}
+		}
+
+
 	}
 
 	private IEnumerator PerformCrossbowShoot(Vector3 point, RaycastHit hit)

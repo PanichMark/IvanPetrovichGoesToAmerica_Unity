@@ -22,6 +22,9 @@ public class ViewModelHUDWeapons
 
 	public GameObject CrosshairTranquilizer;
 
+	public GameObject CrosshairCrossbow;
+	public GameObject[] ListCrosshairTypesCrossbow = new GameObject[4];
+
 	public ViewModelHUDWeapons(Bootstrap bootstrap, GameObject canvas)
 	{
 		HUDammo = bootstrap.FindDeepGameObject(canvas, "HUDammo");
@@ -49,5 +52,11 @@ public class ViewModelHUDWeapons
 		}
 
 		CrosshairTranquilizer = bootstrap.FindDeepGameObject(HUDcrosshiars, "CrosshairTranquilizer");
+
+		CrosshairCrossbow = bootstrap.FindDeepGameObject(HUDcrosshiars, "CrosshairCrossbow");
+		ListCrosshairTypesCrossbow[0] = bootstrap.FindDeepGameObject(CrosshairCrossbow, "CrosshairCrossbowDefault");
+		ListCrosshairTypesCrossbow[1] = bootstrap.FindDeepGameObject(CrosshairCrossbow, "CrosshairCrossbowPlungingAvailable");
+		ListCrosshairTypesCrossbow[2] = bootstrap.FindDeepGameObject(CrosshairCrossbow, "CrosshairCrossbowHookingObjectAvailable");
+		ListCrosshairTypesCrossbow[3] = bootstrap.FindDeepGameObject(CrosshairCrossbow, "CrosshairCrossbowFail");
 	}
 }

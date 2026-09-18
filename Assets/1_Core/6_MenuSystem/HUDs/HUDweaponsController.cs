@@ -40,6 +40,9 @@ public class HUDweaponsController : MonoBehaviour, IJsonSaveLoad
 
 	private GameObject _crosshairTranquilizer;
 
+	private GameObject _crosshairCrossbow;
+	private GameObject[] _listCrosshairTypesCrossbow = new GameObject[4];
+
 	public void Initialize(
 		GameController gameController,
 		GameScenesManager gameSceneManager,
@@ -87,6 +90,9 @@ public class HUDweaponsController : MonoBehaviour, IJsonSaveLoad
 		_listCrosshairPartsShotgun = viewModelHUDWeapons.ListCrosshairPartsShotgun;
 
 		_crosshairTranquilizer = viewModelHUDWeapons.CrosshairTranquilizer;
+
+		_crosshairCrossbow = viewModelHUDWeapons.CrosshairCrossbow;
+		_listCrosshairTypesCrossbow = viewModelHUDWeapons.ListCrosshairTypesCrossbow;
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDammo;
 		_menuManager.OnClosePauseMenu += ShowCanvasHUDammo;
@@ -297,7 +303,7 @@ public class HUDweaponsController : MonoBehaviour, IJsonSaveLoad
 		}
 		if (WeaponName.WeaponName == PlayerWeaponNames.Crossbow)
 		{
-
+			_crosshairCrossbow.SetActive(true);
 		}
 	}
 
@@ -321,7 +327,7 @@ public class HUDweaponsController : MonoBehaviour, IJsonSaveLoad
 		}
 		if (WeaponName.WeaponName == PlayerWeaponNames.Crossbow)
 		{
-
+			_crosshairCrossbow.SetActive(false);
 		}
 	}
 
@@ -388,6 +394,38 @@ public class HUDweaponsController : MonoBehaviour, IJsonSaveLoad
 			var part = _listCrosshairPartsShotgun[i];
 			var startPos = part.transform.localPosition;
 			part.transform.localPosition = new Vector3(startPos.x - offsets[i].x, startPos.y - offsets[i].y, startPos.z);
+		}
+	}
+
+	public void HandleCrossbowCrosshair(int crossbowCrosshairType)
+	{
+		if (crossbowCrosshairType == 0)
+		{
+			_listCrosshairTypesCrossbow[0].SetActive(true);
+			_listCrosshairTypesCrossbow[1].SetActive(false);
+			_listCrosshairTypesCrossbow[2].SetActive(false);
+			_listCrosshairTypesCrossbow[3].SetActive(false);
+		}
+		if (crossbowCrosshairType == 1)
+		{
+			_listCrosshairTypesCrossbow[0].SetActive(false);
+			_listCrosshairTypesCrossbow[1].SetActive(true);
+			_listCrosshairTypesCrossbow[2].SetActive(false);
+			_listCrosshairTypesCrossbow[3].SetActive(false);
+		}
+		if (crossbowCrosshairType == 2)
+		{
+			_listCrosshairTypesCrossbow[0].SetActive(false);
+			_listCrosshairTypesCrossbow[1].SetActive(false);
+			_listCrosshairTypesCrossbow[2].SetActive(true);
+			_listCrosshairTypesCrossbow[3].SetActive(false);
+		}
+		if (crossbowCrosshairType == 3)
+		{
+			_listCrosshairTypesCrossbow[0].SetActive(false);
+			_listCrosshairTypesCrossbow[1].SetActive(false);
+			_listCrosshairTypesCrossbow[2].SetActive(false);
+			_listCrosshairTypesCrossbow[3].SetActive(true);
 		}
 	}
 
