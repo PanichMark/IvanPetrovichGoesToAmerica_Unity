@@ -114,6 +114,7 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 		if (_NPCweaponController != null)
 		{
 			_NPCweaponController.Initialize(
+				_NPCstateMachineController,
 				_NPCdetectionManager);
 		}
 

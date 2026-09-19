@@ -164,7 +164,7 @@ public class NPCdetectionSignController : MonoBehaviour
 
 		_imageDetectionSignRectTransform.anchoredPosition = new Vector2(xPos  - Screen.width / 2, yPos - Screen.height / 2);
 
-		UpdateScaleByDistance();
+		//UpdateScaleByDistance();
 	}
 
 	private void UpdateSpriteByMeter(int meterValue) // Меняем аргумент на int
