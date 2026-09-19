@@ -18,7 +18,7 @@ public class NPCstateMachineController : MonoBehaviour
 
 	private NPCstateAbstract _NPCstate;
 	private NPCstateTypes _NPCstateType;
-	private NPCabstract _NPCabstract;
+	private NPClivingBeing _NPClivingBeing;
 	private NavMeshAgent _navMeshAgent;
 	private int _nextIndex = 0;
 	private GameObject _lastVisitedStopPoint;
@@ -31,10 +31,10 @@ public class NPCstateMachineController : MonoBehaviour
 	public Coroutine currentRotationCoroutine { get; private set; }
 
 	public void Initialize(
-		NPCabstract NPCabstract,
+		NPClivingBeing NPClivingBeing,
 		NavMeshAgent navMeshAgent)
 	{
-		_NPCabstract = NPCabstract;
+		_NPClivingBeing = NPClivingBeing;
 		_initialRotationY = transform.eulerAngles.y;
 	_cachedPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 		_navMeshAgent = navMeshAgent;
@@ -277,9 +277,9 @@ public class NPCstateMachineController : MonoBehaviour
 			newState = new NPCstateStationaryAction(this, _animationDuration);
 			CurrentNPCState = NPCstateTypes.StationaryAction;
 
-			if (_NPCabstract is not NPCaggressive)
+			if (_NPClivingBeing is not NPCaggressive)
 			{
-				_NPCabstract.gameObject.tag = "Interactable";
+				_NPClivingBeing.gameObject.tag = "Interactable";
 			}
 		}
 		else if (NPCstateType == NPCstateTypes.Patrolling)
@@ -287,9 +287,9 @@ public class NPCstateMachineController : MonoBehaviour
 			newState = new NPCstatePatrolling(this);
 			CurrentNPCState = NPCstateTypes.Patrolling;
 
-			if (_NPCabstract is not NPCaggressive)
+			if (_NPClivingBeing is not NPCaggressive)
 			{
-				_NPCabstract.gameObject.tag = "Interactable";
+				_NPClivingBeing.gameObject.tag = "Interactable";
 			}
 		}
 		else if (NPCstateType == NPCstateTypes.Interested)
@@ -320,7 +320,7 @@ public class NPCstateMachineController : MonoBehaviour
 		{
 			newState = new NPCstateHuddled();
 			//CurrentNPCState = "Scared";
-			_NPCabstract.gameObject.tag = "Untagged";
+			_NPClivingBeing.gameObject.tag = "Untagged";
 		}
 		else if (NPCstateType == NPCstateTypes.Hysteric)
 		{
@@ -383,7 +383,7 @@ public class NPCstateMachineController : MonoBehaviour
 		{
 			newState = new NPCstateDead(this);
 
-			_NPCabstract.ConvertToPickableObject();
+			_NPClivingBeing.ConvertToPickableObject();
 
 			CurrentNPCState = NPCstateTypes.Dead;
 		}

@@ -1,11 +1,11 @@
-﻿public class NPCneutral : NPCabstract
+﻿public class NPCneutral : NPClivingBeing
 {
 	protected NPCdialogueController _NPCdialogueController;
 
 	private NPCweaponController _NPCweaponController;
 	private NPCweaponAnimationController _NPCweaponAnimationController;
 
-	protected override void InitializeNPC()
+	protected override void InitializeNPClivingBeing()
 	{
 		_NPCweaponController = GetComponent<NPCweaponController>();
 		_NPCweaponAnimationController = GetComponent<NPCweaponAnimationController>();
@@ -43,10 +43,8 @@
 		}
 	}
 
-	protected override void DisableInteractiveNPCscripts()
+	protected override void DisableialogueController()
 	{
-		_NPCphrasesController.enabled = false;
-
 		if (_NPCdialogueController != null)
 		{
 			_NPCdialogueController.enabled = false;

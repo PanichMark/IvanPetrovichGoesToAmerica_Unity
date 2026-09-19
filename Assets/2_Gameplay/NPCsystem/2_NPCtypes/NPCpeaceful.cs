@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
 
-public class NPCpeaceful : NPCabstract
+public class NPCpeaceful : NPClivingBeing
 {
 	protected NPCdialogueController _NPCdialogueController;
 
-	protected override void InitializeNPC()
+	protected override void InitializeNPClivingBeing()
 	{
 		_NPChealthController = GetComponent<NPChealthController>();
 		_NPCdialogueController = GetComponent<NPCdialogueController>();
@@ -46,10 +46,8 @@ public class NPCpeaceful : NPCabstract
 		}
 	}
 
-	protected override void DisableInteractiveNPCscripts()
+	protected override void DisableialogueController()
 	{
-		_NPCphrasesController.enabled = false;
-		
 		if (_NPCdialogueController != null)
 		{
 			_NPCdialogueController.enabled = false;

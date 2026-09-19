@@ -1,9 +1,9 @@
-﻿public class NPCaggressive : NPCabstract
+﻿public class NPCaggressive : NPClivingBeing
 {
 	private NPCweaponController _NPCweaponController;
 	private NPCweaponAnimationController _NPCweaponAnimationController;
 
-	protected override void InitializeNPC()
+	protected override void InitializeNPClivingBeing()
 	{
 		_NPChealthController = GetComponent<NPChealthController>();
 		_NPCweaponController = GetComponent<NPCweaponController>();
