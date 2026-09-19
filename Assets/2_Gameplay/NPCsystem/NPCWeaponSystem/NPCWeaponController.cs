@@ -6,9 +6,14 @@ public class NPCweaponController : MonoBehaviour
 	public Vector3 NPCWeaponSlotTransform { get; private set; }
 	[SerializeField] private NPCweaponSlotTypes _weaponRestingSlotType;
 	private GameObject _weaponRestingSlot;
+	private NPCdetectionManager _NPCdetectionManager;
 
-	public void Initialize()
+	private GameObject _weaponHandSlot;
+
+	public void Initialize(NPCdetectionManager NPCdetectionManager)
 	{
+		_NPCdetectionManager = NPCdetectionManager;
+
 		GameObject weaponInstance = Instantiate(_NPCweapon);
 		WeaponAbstract weaponComponent = weaponInstance.GetComponent<WeaponAbstract>();
 
@@ -17,6 +22,8 @@ public class NPCweaponController : MonoBehaviour
 			Debug.LogError("WeaponAbstract component not found on weapon instance!");
 			return;
 		}
+
+		_weaponHandSlot = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R").gameObject;
 
 		if (_weaponRestingSlotType== NPCweaponSlotTypes.Belt)
 		{
@@ -28,9 +35,15 @@ public class NPCweaponController : MonoBehaviour
 		}
 		if (_weaponRestingSlotType == NPCweaponSlotTypes.Hand)
 		{
-			_weaponRestingSlot = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R").gameObject;
+			_weaponRestingSlot = _weaponHandSlot;
 		}
 
+
 		weaponComponent.InstantiateWeaponNPC(_weaponRestingSlot.transform);
+	}
+
+	private void EqiupWeapon()
+	{
+
 	}
 }

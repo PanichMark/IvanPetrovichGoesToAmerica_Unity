@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Diagnostics;
 
 public class NPCdetectionManager : MonoBehaviour
 {
@@ -8,12 +9,16 @@ public class NPCdetectionManager : MonoBehaviour
 	public event DetectionMeterHandler OnMeterChanged;
 
 	// Публичное свойство возвращает только целое число
-	public int NPCdetectionMeter { get; private set; }
+	private int _NPCdetectionMeter;
 
 	private Coroutine _meterRoutine;
 
-	public void Initialize()
+	private NPCstateMachineController _NPCstateMachineController;
+
+	public void Initialize(NPCstateMachineController NPCstateMachineController)
 	{
+		_NPCstateMachineController = NPCstateMachineController;
+
 		UpdateDetectionMeter(0f);
 
 		if (_meterRoutine != null)
@@ -34,10 +39,64 @@ public class NPCdetectionManager : MonoBehaviour
 		newRoundedValue = Mathf.Clamp(newRoundedValue, 0, 100);
 
 		// Вызываем событие только если целое число действительно изменилось
-		if (newRoundedValue != NPCdetectionMeter)
+		if (newRoundedValue != _NPCdetectionMeter)
 		{
-			NPCdetectionMeter = newRoundedValue;
-			OnMeterChanged?.Invoke(NPCdetectionMeter);
+			_NPCdetectionMeter = newRoundedValue;
+
+			ProcessDetectionMeter();
+
+			OnMeterChanged?.Invoke(_NPCdetectionMeter);
+		}
+	}
+
+	private void ProcessDetectionMeter()
+	{
+		if (_NPCdetectionMeter >= 50)
+		{
+			_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
+		}
+	}
+
+	// Отдельный метод для увеличения значения
+	public void IncreaseMeter(int amount)
+	{
+		if (amount == 0) return;
+
+		//Debug.Log($"METER INCREASED BY: {NPCdetectionMeter}");
+
+		if (_meterRoutine != null)
+		{
+			StopCoroutine(_meterRoutine);
+			_meterRoutine = null;
+		}
+
+		int newValue = Mathf.Clamp(_NPCdetectionMeter + amount, 0, 100);
+
+		if (newValue != _NPCdetectionMeter)
+		{
+			UpdateDetectionMeter(newValue);
+		}
+	}
+
+	// Отдельный метод для уменьшения значения
+	public void DecreaseMeter(int amount)
+	{
+		if (amount == 0) return;
+
+		//Debug.Log($"METER DECREASED BY: {NPCdetectionMeter}");
+
+		if (_meterRoutine != null)
+		{
+			StopCoroutine(_meterRoutine);
+			_meterRoutine = null;
+		}
+
+		// Уменьшаем, но Clamp следит, чтобы не уйти ниже 0
+		int newValue = Mathf.Clamp(_NPCdetectionMeter - amount, 0, 100);
+
+		if (newValue != _NPCdetectionMeter)
+		{
+			UpdateDetectionMeter(newValue);
 		}
 	}
 
@@ -78,49 +137,6 @@ public class NPCdetectionManager : MonoBehaviour
 				UpdateDetectionMeter(currentFloatValue);
 				yield return null;
 			}
-		}
-	}
-
-	// Отдельный метод для увеличения значения
-	public void IncreaseMeter(int amount)
-	{
-		if (amount == 0) return;
-
-		//Debug.Log($"METER INCREASED BY: {NPCdetectionMeter}");
-
-		if (_meterRoutine != null)
-		{
-			StopCoroutine(_meterRoutine);
-			_meterRoutine = null;
-		}
-
-		int newValue = Mathf.Clamp(NPCdetectionMeter + amount, 0, 100);
-
-		if (newValue != NPCdetectionMeter)
-		{
-			UpdateDetectionMeter(newValue);
-		}
-	}
-
-	// Отдельный метод для уменьшения значения
-	public void DecreaseMeter(int amount)
-	{
-		if (amount == 0) return;
-
-		//Debug.Log($"METER DECREASED BY: {NPCdetectionMeter}");
-
-		if (_meterRoutine != null)
-		{
-			StopCoroutine(_meterRoutine);
-			_meterRoutine = null;
-		}
-
-		// Уменьшаем, но Clamp следит, чтобы не уйти ниже 0
-		int newValue = Mathf.Clamp(NPCdetectionMeter - amount, 0, 100);
-
-		if (newValue != NPCdetectionMeter)
-		{
-			UpdateDetectionMeter(newValue);
 		}
 	}
 }

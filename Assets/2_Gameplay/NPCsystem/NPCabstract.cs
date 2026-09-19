@@ -65,9 +65,10 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 
 		_canvasNPCstatus = transform.Find("NPC_Canvas").gameObject;
-		_textNPCcurrentState = _canvasNPCstatus.transform.Find("TextNPCcurrentState").gameObject;
-		_textNPCcurrentHealth = _canvasNPCstatus.transform.Find("TextNPCcurrentHealth").gameObject;
 		_imageDetectionSign = _canvasNPCstatus.transform.Find("DetectionSign").gameObject;
+		_textNPCcurrentState = _canvasNPCstatus.transform.Find("DebugNPCcurrentState").gameObject;
+		_textNPCcurrentHealth = _canvasNPCstatus.transform.Find("DebugNPCcurrentHealth").gameObject;
+		
 
 		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
 		_NPChealthController = GetComponent<NPChealthController>();
@@ -99,12 +100,7 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 				_NPCstateMachineController);
 		}
 
-		if (_NPCweaponController != null)
-		{
-			_NPCweaponController.Initialize();
-		}
-
-		_NPCdetectionManager.Initialize();
+		_NPCdetectionManager.Initialize(_NPCstateMachineController);
 
 		_NPCdetectionVisualController.Initialize(_NPCdetectionManager);
 
@@ -115,9 +111,16 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 			_detectionSignFrames,
 			_playerCameraGameObject);
 
+		if (_NPCweaponController != null)
+		{
+			_NPCweaponController.Initialize(
+				_NPCdetectionManager);
+		}
+
 		if (_NPCdebugHUDcontroller != null)
 		{
 			_NPCdebugHUDcontroller.Initialize(
+				_playerCameraGameObject,
 				_NPChealthController,
 				_NPCstateMachineController,
 				_canvasNPCstatus,
