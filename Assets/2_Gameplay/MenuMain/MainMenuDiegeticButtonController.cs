@@ -19,7 +19,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private MenuManager _menuManager;
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 	private KeyCode _keyPauseMenu;
-	private ICutscene _cutsceneNewGame;
+	private CutsceneController _cutsceneNewGame;
 	[SerializeField] private MainMenuDiegeticButtonsEnum _mainMenuDiegeticButtonsEnum;
 	private MainMenuChooseMissionController _mainMenuChooseMissionController;
 	public bool IsCutsceneNewGamePlaying { get; private set; }

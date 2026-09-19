@@ -7,7 +7,7 @@ using UnityEngine.Playables;
 [RequireComponent(typeof(PlayableDirector))]
 //[RequireComponent(typeof(Sign))]
 
-public class CutsceneController : MonoBehaviour, ICutscene
+public class CutsceneController : MonoBehaviour
 {
 	private Animator _playerAnimator1stPerson;
 	private PlayerWeaponFirstPersonRenderer _playerWeaponFirstPersonRenderer;

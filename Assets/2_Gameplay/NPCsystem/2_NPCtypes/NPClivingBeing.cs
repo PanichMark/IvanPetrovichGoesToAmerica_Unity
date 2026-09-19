@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
-public class NPClivingBeing : NPCabstract
+public abstract class NPClivingBeing : NPCabstract
 {
 	[SerializeField] private ConfigNPCBodyType _NPCconfigBodyType;
 	[SerializeField] private InteractionObjectPickableData _pickableBodyData;
@@ -172,7 +173,7 @@ public class NPClivingBeing : NPCabstract
 				Mathf.Round(gameObject.transform.rotation.z * 100f) / 100f,
 				Mathf.Round(gameObject.transform.rotation.w * 100f) / 100f),
 			NPCnextAnchorPoint = _NPCstateMachineController.AnchorData.Count,
-			NPCstate = _NPCstateMachineController.CurrentNPCState,
+			NPCstate = _NPCstateMachineController.CurrentNPCState.ToString(),
 			NPChealth = Mathf.Round(_NPChealthController.CurrentHealth * 100f) / 100f
 		};
 
@@ -204,7 +205,7 @@ public class NPClivingBeing : NPCabstract
 		_NPChealthController.SetCurrentHealthFromLoad(savedState.NPChealth);
 
 		int safeAnchorIndex = Mathf.Clamp(savedState.NPCnextAnchorPoint, 0, _NPCstateMachineController.AnchorData.Count > 0 ? _NPCstateMachineController.AnchorData.Count - 1 : 0);
-		_NPCstateMachineController.SetNPCState(savedState.NPCstate);
+		_NPCstateMachineController.SetNPCState((NPCstateTypes)Enum.Parse(typeof(NPCstateTypes), savedState.NPCstate));
 
 		yield return null;
 	}
