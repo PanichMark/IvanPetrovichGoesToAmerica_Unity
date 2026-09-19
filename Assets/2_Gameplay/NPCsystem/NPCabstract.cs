@@ -4,12 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(NPChealthController))]
-[RequireComponent(typeof(NPCstateMachineController))]
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(NPCdebugHUDcontroller))]
-
 public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 {
 
@@ -27,14 +21,18 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
-	protected NPCphrasesController _NPCphrasesController;
+
 	protected NPChealthController _NPChealthController;
 	protected NPCdebugHUDcontroller _NPCdebugHUDcontroller;
-	protected NPCdialogueController _NPCdialogueController;
-	protected NPCweaponController _NPCweaponController;
+
+
+
 	protected NPCdetectionManager _NPCdetectionManager;
+
 	protected NPCdetectionSignController _NPCdetectionSignController;
+
 	protected InteractionObjectPickableNonThrowableAbstract _pickable;
+
 	private NavMeshAgent _navMeshAgent;
 	private List<Sprite> _detectionSignFrames;
 	private LocalizationManager _localizationManager;
@@ -72,9 +70,8 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
 		_NPChealthController = GetComponent<NPChealthController>();
-		_NPCphrasesController = GetComponent<NPCphrasesController>();
-		_NPCdialogueController = GetComponent<NPCdialogueController>();
-		_NPCweaponController = GetComponent<NPCweaponController>();
+
+	
 		_NPCdetectionManager = GetComponent<NPCdetectionManager>();
 		_NPCdetectionVisualController = GetComponent<NPCdetectionVisualController>();
 		_NPCdetectionSignController = GetComponent<NPCdetectionSignController>();
@@ -88,18 +85,6 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 			this,
 			_NPCstateMachineController);
 
-		if (_NPCphrasesController != null)
-		{
-			_NPCphrasesController.Initialize(
-				this);
-		}
-
-		if (_NPCdialogueController != null)
-		{
-			_NPCdialogueController.Initialize(
-				_NPCstateMachineController);
-		}
-
 		_NPCdetectionManager.Initialize(_NPCstateMachineController);
 
 		_NPCdetectionVisualController.Initialize(_NPCdetectionManager);
@@ -111,24 +96,14 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 			_detectionSignFrames,
 			_playerCameraGameObject);
 
-		if (_NPCweaponController != null)
-		{
-			_NPCweaponController.Initialize(
-				_NPCstateMachineController,
-				_NPCdetectionManager);
-		}
-
-		if (_NPCdebugHUDcontroller != null)
-		{
-			_NPCdebugHUDcontroller.Initialize(
-				_playerCameraGameObject,
-				_NPChealthController,
-				_NPCstateMachineController,
-				_canvasNPCstatus,
-				_textNPCcurrentState,
-				_textNPCcurrentHealth);
-		}
-
+		_NPCdebugHUDcontroller.Initialize(
+			_playerCameraGameObject,
+			_NPChealthController,
+			_NPCstateMachineController,
+			_canvasNPCstatus,
+			_textNPCcurrentState,
+			_textNPCcurrentHealth);
+		
 		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead)
 		{
 			_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
@@ -170,6 +145,11 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_CantTalkToPlayerRightNow");
 	}
 
+	protected virtual void DisableInteractiveNPCscripts()
+	{
+
+	}
+
 	public void ConvertToPickableObject()
 	{
 		//Debug.Log("CONVERT!!!");
@@ -178,14 +158,7 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 		enabled = false;
 		_NPChealthController.enabled = false;
 
-		if (_NPCphrasesController != null)
-		{
-			_NPCphrasesController.enabled = false;
-		}
-		if (_NPCdialogueController != null)
-		{
-			_NPCdialogueController.enabled = false;
-		}
+		DisableInteractiveNPCscripts();
 
 		var capsuleCollider = GetComponent<CapsuleCollider>();
 		if (capsuleCollider != null)

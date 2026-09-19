@@ -1,6 +1,16 @@
 ﻿public class NPCaggressive : NPCabstract
 {
-	public override bool IsInteractionHintMessageFailActive => false;
+	private NPCweaponController _NPCweaponController;
+
+	protected override void InitializeNPC()
+	{
+		_NPCweaponController = GetComponent<NPCweaponController>();
+
+		_NPCweaponController.Initialize(
+			_NPCstateMachineController,
+			_NPCdetectionManager);
+		
+	}
 
 	override public void Interact()
 	{

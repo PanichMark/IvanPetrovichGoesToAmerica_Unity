@@ -19,8 +19,9 @@
 	ElectroShocked,
 	Falling,
 	StandingUp,
-	Dizzy,
 	Carried,
+	Dizzy,
 	Unconscious,
+	Dying,
 	Dead
 }

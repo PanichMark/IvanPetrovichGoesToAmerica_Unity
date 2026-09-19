@@ -1,14 +1,29 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(NPCphrasesController))]
 
 public class NPCpeaceful : NPCabstract
 {
+	protected NPCdialogueController _NPCdialogueController;
+	protected NPCphrasesController _NPCphrasesController;
+
+	protected override void InitializeNPC()
+	{
+		_NPCphrasesController = GetComponent<NPCphrasesController>();
+		_NPCdialogueController = GetComponent<NPCdialogueController>();
+
+		_NPCphrasesController.Initialize(this);
+
+		if (_NPCdialogueController != null)
+		{
+			_NPCdialogueController.Initialize(_NPCstateMachineController);
+		}
+	}
+
 	public override void Interact()
 	{
 		//Debug.Log("NPC interact");
 
-		if (_NPCstateMachineController.CurrentNPCState == NPCstateTypes.Dead)
+		if (_NPCstateMachineController.CurrentNPCState == NPCstateTypes.Dead || _NPCstateMachineController.CurrentNPCState == NPCstateTypes.Unconscious)
 		{
 			_pickable.Interact();
 			return;
@@ -26,6 +41,16 @@ public class NPCpeaceful : NPCabstract
 		{
 			StopAllCoroutines();
 			_NPCphrasesController.TemporaryShowPhrases();
+		}
+	}
+
+	protected override void DisableInteractiveNPCscripts()
+	{
+		_NPCphrasesController.enabled = false;
+		
+		if (_NPCdialogueController != null)
+		{
+			_NPCdialogueController.enabled = false;
 		}
 	}
 }

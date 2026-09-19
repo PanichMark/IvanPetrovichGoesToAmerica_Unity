@@ -77,6 +77,9 @@ public class NPCweaponController : MonoBehaviour
 		_isWeaponEquipped = true;
 
 		_NPCweaponInstance.transform.SetParent(_weaponHandSlot.transform, false);
+
+		_NPCweaponInstance.transform.localRotation = Quaternion.identity;
+
 	}
 
 	private void UnequipWeapon()

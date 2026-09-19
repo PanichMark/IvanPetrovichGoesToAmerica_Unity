@@ -140,13 +140,19 @@ public abstract class WeaponAbstract : MonoBehaviour
 	{
 		_isThisPlayerWeapon = false;
 
-		ThirdPersonWeaponModelInstance = gameObject;
+		//_thirdPersonRightHandWeaponSlotTransform = NPCweaponSlotTransform;
+		gameObject.transform.SetParent(NPCweaponSlotTransform, false);
 
-		_thirdPersonRightHandWeaponSlotTransform = NPCweaponSlotTransform;
-		ThirdPersonWeaponModelInstance.transform.SetParent(_thirdPersonRightHandWeaponSlotTransform, true);
+		//ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
 
-		ThirdPersonWeaponModelInstance.transform.localPosition = Vector3.zero;
-		ThirdPersonWeaponModelInstance.transform.localRotation = Quaternion.identity;
+		if (this is WeaponRangedAbstract)
+		{
+			gameObject.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+		}
+		else
+		{
+			gameObject.transform.localRotation = Quaternion.identity;
+		}
 	}
 
 	public void DestroyWeaponModel()

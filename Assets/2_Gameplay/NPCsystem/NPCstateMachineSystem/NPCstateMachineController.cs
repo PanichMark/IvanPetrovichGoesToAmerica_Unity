@@ -363,17 +363,21 @@ public class NPCstateMachineController : MonoBehaviour
 		{
 			newState = new NPCstateStandingUp();
 		}
-		else if (NPCstateType == NPCstateTypes.Dizzy)
-		{
-			newState = new NPCstateBlownAway();
-		}
 		else if (NPCstateType == NPCstateTypes.Carried)
 		{
 			newState = new NPCstateCarried();
 		}
+		else if (NPCstateType == NPCstateTypes.Dizzy)
+		{
+			newState = new NPCstateBlownAway();
+		}
 		else if (NPCstateType == NPCstateTypes.Unconscious)
 		{
 			newState = new NPCstateUnconscious();
+		}
+		else if (NPCstateType == NPCstateTypes.Dying)
+		{
+			newState = new NPCstateDying();
 		}
 		else if (NPCstateType == NPCstateTypes.Dead)
 		{
