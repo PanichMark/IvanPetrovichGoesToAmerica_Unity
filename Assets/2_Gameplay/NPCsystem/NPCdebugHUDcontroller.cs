@@ -50,12 +50,16 @@ public class NPCdebugHUDcontroller : MonoBehaviour
 		//_textNPCcurrentState.SetActive(false);
 		//_textNPCcurrentHealth.SetActive(false);
 
-		_textComponentNPCcurrentHealth.text = _NPChealthController.NPCconfigHealth.NPCcurrentHealth.ToString();
+		if (_NPChealthController != null)
+		{
+			_textComponentNPCcurrentHealth.text = _NPChealthController.NPCconfigHealth.NPCcurrentHealth.ToString();
+			_NPChealthController.OnNPChealthChanged += ShowNewNPChealth;
+		}
 
 		ShowNewNPCstate(_NPCstateMachineController.CurrentNPCState);
 
 		_NPCstateMachineController.OnNewNPCstate += ShowNewNPCstate;
-		_NPChealthController.OnNPChealthChanged += ShowNewNPChealth;
+	
 	}
 
 	public void ShowNewNPCstate(NPCstateTypes newState)

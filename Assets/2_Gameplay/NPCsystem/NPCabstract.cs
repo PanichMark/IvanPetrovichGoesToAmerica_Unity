@@ -4,40 +4,47 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
+//[RequireComponent(typeof(NPCstateMachineController))]
+
+//[RequireComponent(typeof(NPCdetectionManager))]
+//[RequireComponent(typeof(NPCdetectionVisualController))]
+//[RequireComponent(typeof(NPCstateMachineController))]
+//[RequireComponent(typeof(NPCstateMachineController))]
+
 public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 {
-
-	//[SerializeField] private bool _isHuman;
 	[SerializeField] protected string _NPCname;
-
 	[SerializeField] private ConfigNPCBodyType _NPCconfigBodyType;
-
 	[SerializeField] private InteractionObjectPickableData _pickableBodyData;
-	private GameObject _playerCameraGameObject;
+
 	private GameObject _canvasNPCstatus;
 	private GameObject _imageDetectionSign;
+	private List<Sprite> _detectionSignFrames;
 	private GameObject _textNPCcurrentState;
 	private GameObject _textNPCcurrentHealth;
+	private GameObject _playerCameraGameObject;
 
-	public event IInteractable.InteractableObjectHandler OnInteract;
+	private LocalizationManager _localizationManager;
 
+	private NavMeshAgent _navMeshAgent;
 
-	protected NPChealthController _NPChealthController;
-	protected NPCdebugHUDcontroller _NPCdebugHUDcontroller;
+	protected NPCstateMachineController _NPCstateMachineController;
 
-
+	protected NPCphrasesController _NPCphrasesController;
 
 	protected NPCdetectionManager _NPCdetectionManager;
-
+	protected NPCdetectionVisualController _NPCdetectionVisualController;
+	protected NPCdetectionAudioController _NPCdetectionAudioController;
 	protected NPCdetectionSignController _NPCdetectionSignController;
+
+	protected NPChealthController _NPChealthController;
+
+	protected NPCdebugHUDcontroller _NPCdebugHUDcontroller;
 
 	protected InteractionObjectPickableNonThrowableAbstract _pickable;
 
-	private NavMeshAgent _navMeshAgent;
-	private List<Sprite> _detectionSignFrames;
-	private LocalizationManager _localizationManager;
-	protected NPCstateMachineController _NPCstateMachineController;
-	protected NPCdetectionVisualController _NPCdetectionVisualController;
+	public event IInteractable.InteractableObjectHandler OnInteract;
+
 	public string InteractionObjectNameSystem => _NPCname;
 	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_NPCname);
 	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
@@ -47,11 +54,6 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionHintMessageAction => _interactionHintMessageAction;
 	private string _interactionHintMessageAction;
-
-	protected virtual void InitializeNPC()
-	{
-
-	}
 
 	private void Start()
 	{
@@ -67,13 +69,13 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 		_textNPCcurrentState = _canvasNPCstatus.transform.Find("DebugNPCcurrentState").gameObject;
 		_textNPCcurrentHealth = _canvasNPCstatus.transform.Find("DebugNPCcurrentHealth").gameObject;
 		
-
 		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
-		_NPChealthController = GetComponent<NPChealthController>();
 
-	
+		_NPCphrasesController = GetComponent<NPCphrasesController>();
+
 		_NPCdetectionManager = GetComponent<NPCdetectionManager>();
 		_NPCdetectionVisualController = GetComponent<NPCdetectionVisualController>();
+		_NPCdetectionAudioController = GetComponent<NPCdetectionAudioController>();
 		_NPCdetectionSignController = GetComponent<NPCdetectionSignController>();
 		_NPCdebugHUDcontroller = GetComponent<NPCdebugHUDcontroller>();
 		
@@ -81,13 +83,13 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 			this,
 			_navMeshAgent);
 
-		_NPChealthController.Initialize(
-			this,
-			_NPCstateMachineController);
+		_NPCphrasesController.Initialize(this);
 
 		_NPCdetectionManager.Initialize(_NPCstateMachineController);
 
 		_NPCdetectionVisualController.Initialize(_NPCdetectionManager);
+
+		_NPCdetectionAudioController.Initialize();
 
 		_NPCdetectionSignController.Initialize(
 			_NPCdetectionManager,
@@ -96,14 +98,6 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 			_detectionSignFrames,
 			_playerCameraGameObject);
 
-		_NPCdebugHUDcontroller.Initialize(
-			_playerCameraGameObject,
-			_NPChealthController,
-			_NPCstateMachineController,
-			_canvasNPCstatus,
-			_textNPCcurrentState,
-			_textNPCcurrentHealth);
-		
 		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead)
 		{
 			_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
@@ -115,7 +109,20 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 		InitializeNPC();
 
+		_NPCdebugHUDcontroller.Initialize(
+			_playerCameraGameObject,
+			_NPChealthController,
+			_NPCstateMachineController,
+			_canvasNPCstatus,
+			_textNPCcurrentState,
+			_textNPCcurrentHealth);
+
 		_localizationManager.OnLanguageChanged += ChangeLangauge;
+	}
+
+	protected virtual void InitializeNPC()
+	{
+
 	}
 
 	public virtual void Interact()
@@ -145,11 +152,6 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_CantTalkToPlayerRightNow");
 	}
 
-	protected virtual void DisableInteractiveNPCscripts()
-	{
-
-	}
-
 	public void ConvertToPickableObject()
 	{
 		//Debug.Log("CONVERT!!!");
@@ -172,6 +174,11 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 		_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
 		//Destroy(this);
+	}
+
+	protected virtual void DisableInteractiveNPCscripts()
+	{
+
 	}
 
 	public override IEnumerator SaveJsonData(JsonGameData data)

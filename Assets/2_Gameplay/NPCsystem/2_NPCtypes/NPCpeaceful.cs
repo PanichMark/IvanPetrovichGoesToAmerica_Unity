@@ -4,14 +4,16 @@
 public class NPCpeaceful : NPCabstract
 {
 	protected NPCdialogueController _NPCdialogueController;
-	protected NPCphrasesController _NPCphrasesController;
 
 	protected override void InitializeNPC()
 	{
-		_NPCphrasesController = GetComponent<NPCphrasesController>();
+		_NPChealthController = GetComponent<NPChealthController>();
 		_NPCdialogueController = GetComponent<NPCdialogueController>();
 
-		_NPCphrasesController.Initialize(this);
+		
+		_NPChealthController.Initialize(
+			this,
+			_NPCstateMachineController);
 
 		if (_NPCdialogueController != null)
 		{

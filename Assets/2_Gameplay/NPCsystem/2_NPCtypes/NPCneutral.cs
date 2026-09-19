@@ -1,16 +1,27 @@
-﻿using UnityEngine;
-
-public class NPCneutral : NPCabstract
+﻿public class NPCneutral : NPCabstract
 {
 	protected NPCdialogueController _NPCdialogueController;
-	protected NPCphrasesController _NPCphrasesController;
+
+	private NPCweaponController _NPCweaponController;
+	private NPCweaponAnimationController _NPCweaponAnimationController;
 
 	protected override void InitializeNPC()
 	{
-		_NPCphrasesController = GetComponent<NPCphrasesController>();
+		_NPCweaponController = GetComponent<NPCweaponController>();
+		_NPCweaponAnimationController = GetComponent<NPCweaponAnimationController>();
+
+		_NPChealthController = GetComponent<NPChealthController>();
 		_NPCdialogueController = GetComponent<NPCdialogueController>();
 
-		_NPCphrasesController.Initialize(this);
+		_NPChealthController.Initialize(
+			this,
+			_NPCstateMachineController);
+
+		_NPCweaponController.Initialize(
+			_NPCstateMachineController,
+			_NPCdetectionManager);
+
+		_NPCweaponAnimationController.Initialize();
 
 		_NPCdialogueController.Initialize(_NPCstateMachineController);
 	}
