@@ -70,7 +70,7 @@ public class JsonSaveLoadController : MonoBehaviour
 			}
 		};
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => StartCoroutine(NewGame());
+		//_gameSceneManager.OnBeginLoadingMainMenuScene += () => StartCoroutine(NewGame());
 		
 		Debug.Log("SaveLoadController Initialized");
 	}
@@ -118,11 +118,12 @@ public class JsonSaveLoadController : MonoBehaviour
 		{
 			yield return saveLoadObj.SaveJsonData(_gameData);
 		}
-	
+
 		foreach (IJsonSaveLoad saveLoadObj in _gameplaySaveLoadObjects)
 		{
 			yield return saveLoadObj.SaveJsonData(_gameData);
 		}
+		
 
 		_fileDataHandler.Save(_gameData);
 
@@ -284,7 +285,10 @@ public class JsonSaveLoadController : MonoBehaviour
 		// The lack of THIS --  && !_isLoadingFromSaveFile -- made it IMpossible to load savefile from 1st try after loading NewScene by ANY means!
 		if (_WasSavedToTEMPbeforeLoadingNewScene == false && !_isLoadingFromSaveFile)
 		{
-			yield return StartCoroutine(SaveGame(-1));
+			//if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_0_MainMenu.ToString())
+			//{
+				yield return StartCoroutine(SaveGame(-1));
+			//}
 		}
 		else
 		{ 

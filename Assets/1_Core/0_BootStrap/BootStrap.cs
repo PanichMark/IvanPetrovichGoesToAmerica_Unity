@@ -399,12 +399,13 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator RegisterBootstrapDependencies()
 	{
-ServiceLocator.Register<LocalizationManager>(LocalizationManager);
-ServiceLocator.Register<GameController>(_gameController);
-	ServiceLocator.Register<IInputDevice>(_inputDevice);
-ServiceLocator.Register<KeyCode>(_keyCodePauseMenu);
-ServiceLocator.Register<GameScenesList>(GameData.GameScenesList);
-ServiceLocator.Register<List<Sprite>>(GameData.NPCdetectionSignFrames);
+		ServiceLocator.Register<LocalizationManager>(LocalizationManager);
+		ServiceLocator.Register<GameController>(_gameController);
+		ServiceLocator.Register<IInputDevice>(_inputDevice);
+		ServiceLocator.Register<KeyCode>(_keyCodePauseMenu);
+		ServiceLocator.Register<GameScenesList>(GameData.GameScenesList);
+		ServiceLocator.Register<GameCanvasesList>(GameData.GameCanvasesList);
+		ServiceLocator.Register<List<Sprite>>(GameData.NPCdetectionSignFrames);
 
 		Debug.Log("=== BOOTSTRAP SERVICES REGISTERED ===");
 
@@ -421,11 +422,11 @@ ServiceLocator.Register<List<Sprite>>(GameData.NPCdetectionSignFrames);
 	{
 		LocalizationManager.ChangeLanguage(newLanguage);
 
-// Удаление конкретного сервиса
-ServiceLocator.Remove<LocalizationManager>();
+		// Удаление конкретного сервиса
+		ServiceLocator.Remove<LocalizationManager>();
 
-// Теперь можно регистрировать его заново
-ServiceLocator.Register<LocalizationManager>(LocalizationManager);
+		// Теперь можно регистрировать его заново
+		ServiceLocator.Register<LocalizationManager>(LocalizationManager);
 	}
 
 	public void ChangeWeaponWheelType(WeaponWheelMenuTypes weaponWheelMenuTypes)
@@ -500,10 +501,10 @@ ServiceLocator.Register<LocalizationManager>(LocalizationManager);
 
 		buttonSignComponent.interactable = false;
 
-		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextHeaderTermsAndConditions.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_BootstrapSignTermsnAndConditions_TextHeaderTermsAndConditions");
-		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextButtonSign.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_BootstrapSignTermsnAndConditions_ButtonSign");
-		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextButtonRefuse.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_BootstrapSignTermsnAndConditions_ButtonRefuse");
-		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextToggleAgreeWithTerms.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_BootstrapSignTermsnAndConditions_ToggleAcceptWithTerms");
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextHeaderTermsAndConditions.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SignTermsnAndConditions_TextHeaderTermsAndConditions");
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextButtonSign.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SignTermsnAndConditions_ButtonSign");
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextButtonRefuse.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SignTermsnAndConditions_ButtonRefuse");
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextToggleAgreeWithTerms.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SignTermsnAndConditions_ToggleAcceptWithTerms");
 
 		if (LocalizationManager.CurrentLanguage == LanguagesEnum.Russian)
 		{
