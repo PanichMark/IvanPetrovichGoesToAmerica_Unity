@@ -27,6 +27,11 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private PlayerLegKickAttackController _legKickAttack;
 
+	private WeaponAbstract _previouslyShownRightWeaponType;
+	private WeaponAbstract _previouslyShownLeftWeaponType;
+	private bool _isNewRightWeaponShown;
+	private bool _isNewLeftWeaponShown;
+
 	public bool IsRightFullArmAttacking { get; private set; }
 	public bool IsLeftFullArmAttacking { get; private set; }
 	public bool IsReloading { get; private set; }
@@ -155,7 +160,17 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private void ShowWeaponRight(WeaponAbstract weapon)
 	{
-		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponRightEquip, WeaponHandType.Right, true));
+		if (_previouslyShownRightWeaponType != weapon)
+		{
+			_previouslyShownRightWeaponType = weapon;
+			_isNewRightWeaponShown = true;
+		}
+		else
+		{
+			_isNewRightWeaponShown = false;
+		}
+
+			StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponRightEquip, WeaponHandType.Right, true));
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, 1);
 		_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer1stWeaponRightPalm);
 
@@ -163,7 +178,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, 1);
 		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponRightPalm);
 
-		if (weapon is WeaponEugenicAbstract)
+		if (weapon is WeaponEugenicAbstract && _isNewRightWeaponShown == true)
 		{
 			TransferWeaponEugenicBones(WeaponHandType.Right, null);
 		}
@@ -171,6 +186,16 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private void ShowWeaponLeft(WeaponAbstract weapon)
 	{
+		if ( _previouslyShownLeftWeaponType != weapon)
+		{
+			_previouslyShownLeftWeaponType = weapon;
+			_isNewLeftWeaponShown = true;
+		}
+		else
+		{
+			_isNewLeftWeaponShown = false;
+		}
+
 		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponLeftEquip, WeaponHandType.Left, true));
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 1);
 		_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer1stWeaponLeftPalm);
@@ -179,7 +204,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 1);
 		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponLeftPalm);
 
-		if (weapon is WeaponEugenicAbstract)
+		if (weapon is WeaponEugenicAbstract && _isNewLeftWeaponShown == true)
 		{
 			TransferWeaponEugenicBones(WeaponHandType.Left, null);
 		}

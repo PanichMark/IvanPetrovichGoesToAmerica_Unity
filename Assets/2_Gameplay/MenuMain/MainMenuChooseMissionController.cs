@@ -30,17 +30,16 @@ public class MainMenuChooseMissionController : MonoBehaviour
 	private GameObject _textButtonCloseMainMenuChooseMission;
 	private TextMeshProUGUI _textComponentButtonCloseMainMenuChooseMission;
 	private GameObject _canvasChooseMissionMenu;
+	
 	public bool IsMainMenuChooseMissionOpened { get; private set; }
-	private GameCanvasesList _canvasesList;
-	public void Initialize(GameCanvasesList canvasesList)
+	public void Initialize(Bootstrap bootstrap)
 	{
-		_canvasesList = canvasesList;
-		_canvasChooseMissionMenu = _canvasesList.CanvasMainMenuChooseMission;
-_pauseMenuConfirmActionController = ServiceLocator.Resolve<PauseMenuConfirmActionController>();
-_menuManager = ServiceLocator.Resolve<MenuManager>();
-_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
-_viewModelMainMenuChooseMission = ServiceLocator.Resolve<ViewModelMainMenuChooseMission>();
-_gameScenesList = ServiceLocator.Resolve<GameScenesList>();
+		_canvasChooseMissionMenu = bootstrap._canvasMainMenuChooseMission;
+		_pauseMenuConfirmActionController = ServiceLocator.Resolve<PauseMenuConfirmActionController>();
+		_menuManager = ServiceLocator.Resolve<MenuManager>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		_viewModelMainMenuChooseMission = ServiceLocator.Resolve<ViewModelMainMenuChooseMission>();
+		_gameScenesList = ServiceLocator.Resolve<GameScenesList>();
 
 		_textComponentMainMenuChooseMission = _viewModelMainMenuChooseMission.TextMainMenuChooseMission.GetComponent<TextMeshProUGUI>();
 		_textComponentMainMenuChooseMission.text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextChooseDemoEpisode");

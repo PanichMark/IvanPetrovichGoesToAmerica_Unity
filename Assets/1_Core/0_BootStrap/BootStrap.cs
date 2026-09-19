@@ -404,9 +404,8 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register<IInputDevice>(_inputDevice);
 		ServiceLocator.Register<KeyCode>(_keyCodePauseMenu);
 		ServiceLocator.Register<GameScenesList>(GameData.GameScenesList);
-		ServiceLocator.Register<GameCanvasesList>(GameData.GameCanvasesList);
 		ServiceLocator.Register<List<Sprite>>(GameData.NPCdetectionSignFrames);
-
+		ServiceLocator.Register<Bootstrap>(this);
 		Debug.Log("=== BOOTSTRAP SERVICES REGISTERED ===");
 
 		yield break;

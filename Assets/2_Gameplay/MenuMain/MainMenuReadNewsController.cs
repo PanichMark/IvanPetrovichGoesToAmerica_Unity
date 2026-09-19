@@ -14,13 +14,10 @@ public class MainMenuReadNewsController : MonoBehaviour
 	public event MainMenuReadNewsHandler OnCloseMainMenuReadNews;
 	
 	public bool IsMainMenuReadNewsOpened {  get; private set; }
-	private GameCanvasesList _gameCanvasesList;
 	private GameObject _canvasReadNews;
-	public void Initialize(
-		GameCanvasesList gameCanvasesList)
+	public void Initialize(Bootstrap bootstrapt)
 	{
-		_gameCanvasesList = gameCanvasesList;
-		_canvasReadNews = gameCanvasesList.CanvasMainMenuReadNews;
+		_canvasReadNews = Instantiate(bootstrapt._canvasMainMenuReadNews);
 		_viewModelMainMenuReadNews = ServiceLocator.Resolve<ViewModelMainMenuReadNews>();
 
 		_buttonCloseMainMenuReadNews = _viewModelMainMenuReadNews.ButtonCloseMainMenuReadNews.GetComponent<Button>();
