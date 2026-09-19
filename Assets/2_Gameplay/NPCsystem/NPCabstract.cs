@@ -1,15 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
-//[RequireComponent(typeof(NPCstateMachineController))]
-
-//[RequireComponent(typeof(NPCdetectionManager))]
-//[RequireComponent(typeof(NPCdetectionVisualController))]
-//[RequireComponent(typeof(NPCstateMachineController))]
-//[RequireComponent(typeof(NPCstateMachineController))]
 
 public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 {

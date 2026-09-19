@@ -3,17 +3,11 @@
 
 public class NPCpeaceful : NPClivingBeing
 {
-	protected NPCdialogueController _NPCdialogueController;
+	private NPCdialogueController _NPCdialogueController;
 
 	protected override void InitializeNPClivingBeing()
 	{
-		_NPChealthController = GetComponent<NPChealthController>();
 		_NPCdialogueController = GetComponent<NPCdialogueController>();
-
-		
-		_NPChealthController.Initialize(
-			this,
-			_NPCstateMachineController);
 
 		if (_NPCdialogueController != null)
 		{
@@ -46,7 +40,7 @@ public class NPCpeaceful : NPClivingBeing
 		}
 	}
 
-	protected override void DisableialogueController()
+	protected override void DisableDialogueController()
 	{
 		if (_NPCdialogueController != null)
 		{

@@ -23,6 +23,7 @@ public class NPCweaponController : MonoBehaviour
 		_NPCdetectionManager = NPCdetectionManager;
 
 		_NPCweaponInstance = Instantiate(_NPCweaponGive);
+		
 		_NPCweaponConponent = _NPCweaponInstance.GetComponent<WeaponAbstract>();
 
 		if (_NPCweaponConponent == null)

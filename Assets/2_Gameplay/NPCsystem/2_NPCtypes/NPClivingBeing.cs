@@ -45,7 +45,8 @@ public class NPClivingBeing : NPCabstract
 
 		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
 
-
+		_NPChealthController = GetComponent<NPChealthController>();
+		
 
 		_NPCdetectionManager = GetComponent<NPCdetectionManager>();
 		_NPCdetectionVisualController = GetComponent<NPCdetectionVisualController>();
@@ -57,7 +58,9 @@ public class NPClivingBeing : NPCabstract
 			this,
 			_navMeshAgent);
 
-
+		_NPChealthController.Initialize(
+			this,
+			_NPCstateMachineController);
 
 		_NPCdetectionManager.Initialize(_NPCstateMachineController);
 
@@ -80,7 +83,7 @@ public class NPClivingBeing : NPCabstract
 			_textNPCcurrentState,
 			_textNPCcurrentHealth);
 
-		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead)
+		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead && _NPCstateMachineController.CurrentNPCState != NPCstateTypes.Unconscious)
 		{
 			_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
 		}
@@ -89,7 +92,7 @@ public class NPClivingBeing : NPCabstract
 			_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
 		}
 
-
+		InitializeNPClivingBeing();
 	}
 
 	protected virtual void InitializeNPClivingBeing()
@@ -107,7 +110,7 @@ public class NPClivingBeing : NPCabstract
 
 		_NPCphrasesController.enabled = false;
 
-		DisableialogueController();
+		DisableDialogueController();
 
 		var capsuleCollider = GetComponent<CapsuleCollider>();
 		if (capsuleCollider != null)
@@ -123,7 +126,7 @@ public class NPClivingBeing : NPCabstract
 		//Destroy(this);
 	}
 
-	protected virtual void DisableialogueController()
+	protected virtual void DisableDialogueController()
 	{
 
 	}
