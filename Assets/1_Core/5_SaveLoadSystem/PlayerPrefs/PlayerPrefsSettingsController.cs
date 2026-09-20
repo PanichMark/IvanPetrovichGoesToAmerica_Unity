@@ -64,7 +64,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 	{
 		PlayerPrefs.SetInt(FPSlimit, data.FPSlimit);
 		PlayerPrefs.SetFloat(CameraFOV, data.CameraFOV);
-		PlayerPrefs.SetString(WeaponWheelType, data.WeaponWheelType);
+		PlayerPrefs.SetString(WeaponWheelType, data.WeaponWheelType.ToString());
 		PlayerPrefs.SetInt(ShowIngameTutorials, data.ShowIngameTutorials ? 1 : 0);
 		PlayerPrefs.SetInt(ShowBlood, data.ShowBlood ? 1 : 0);
 
@@ -110,7 +110,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 
 		data.FPSlimit = PlayerPrefs.GetInt(FPSlimit, 60);
 		data.CameraFOV = PlayerPrefs.GetFloat(CameraFOV, 60);
-		data.WeaponWheelType = PlayerPrefs.GetString(WeaponWheelType, "2D");
+		data.WeaponWheelType = PlayerPrefs.GetString(WeaponWheelType, WeaponWheelMenuTypes._2D.ToString());
 		data.ShowIngameTutorials = PlayerPrefs.GetInt(ShowIngameTutorials, 1) == 1;
 		data.ShowBlood = PlayerPrefs.GetInt(ShowBlood, 1) == 1;
 
@@ -155,6 +155,8 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 
 	public void ResetSettingsGeneral()
 	{
+		PlayerPrefs.DeleteKey(FPSlimit);
+		PlayerPrefs.DeleteKey(WeaponWheelType);
 		PlayerPrefs.DeleteKey(CameraFOV);
 		PlayerPrefs.DeleteKey(ShowIngameTutorials); 
 		PlayerPrefs.DeleteKey(ShowBlood);

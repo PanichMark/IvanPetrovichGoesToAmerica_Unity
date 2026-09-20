@@ -65,7 +65,7 @@ public class BootstrapSubProcessWeaponSystem
 		WeaponController = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponController>();
 
 		PlayerResourcesAmmoManager = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponAmmoController>();
-		_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
+		//_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
 
 		_weaponAnimationController = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponAnimationController>();
 		_weaponFirstPersonRender = _GameObjectBootstrapWeaponSystem.AddComponent<PlayerWeaponFirstPersonRenderer>();
@@ -97,6 +97,7 @@ public class BootstrapSubProcessWeaponSystem
 		_gameObjectPlayer,
 		WeaponController);
 
+		/*
 		_weaponWheelMenuController.Initialize(
 		_bootstrap,
 		_inputDevice,
@@ -109,6 +110,7 @@ public class BootstrapSubProcessWeaponSystem
 		_bootstrapSubProcessMenuSystem.CanvasMenuWeaponWheel,
 		_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel,
 		_bootstrap.GameObjectPlayerCamera);
+		*/
 		
 		_weaponAnimationController.Initialize(
 			_bootstrap,
@@ -157,8 +159,6 @@ public class BootstrapSubProcessWeaponSystem
 		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonLeftHand, _gameObjectThirdPersonLeftHandWeaponSlot);
 		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand, _gameObjectThirdPersonRightHandWeaponSlot);
 
-		//ChangeWeaponWheelType(WeaponWheelMenuTypes._3D);
-
 		yield break;
 	}
 
@@ -166,7 +166,10 @@ public class BootstrapSubProcessWeaponSystem
 	{
 		if ((weaponWheelMenuTypes == WeaponWheelMenuTypes._2D) && !(_weaponWheelMenuController is WeaponWheelMenuController2D))
 		{
-			Object.Destroy(_weaponWheelMenuController as Component);
+			if (_weaponWheelMenuController != null)
+			{
+				Object.Destroy(_weaponWheelMenuController as Component);
+			}
 
 			_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController2D>();
 
@@ -186,7 +189,10 @@ public class BootstrapSubProcessWeaponSystem
 		}
 		if ((weaponWheelMenuTypes == WeaponWheelMenuTypes._3D) && !(_weaponWheelMenuController is WeaponWheelMenuController3D))
 		{
-			Object.Destroy(_weaponWheelMenuController as Component);
+			if (_weaponWheelMenuController != null)
+			{
+				Object.Destroy(_weaponWheelMenuController as Component);
+			}
 
 			_weaponWheelMenuController = _GameObjectBootstrapWeaponSystem.AddComponent<WeaponWheelMenuController3D>();
 

@@ -447,6 +447,9 @@ public class WeaponWheelMenuController3D : MonoBehaviour, IWeaponWheelMenuContro
 			modelInstance.transform.localRotation = Quaternion.identity;
 
 			_weaponModels3D.Add(modelInstance);
+
+			WeaponAbstract component = modelInstance.GetComponent<WeaponAbstract>();
+			Destroy(component);
 		}
 
 		_weaponModelsContainer.transform.localRotation = _playerCamera.transform.localRotation * Quaternion.Euler(0, 180, 0);

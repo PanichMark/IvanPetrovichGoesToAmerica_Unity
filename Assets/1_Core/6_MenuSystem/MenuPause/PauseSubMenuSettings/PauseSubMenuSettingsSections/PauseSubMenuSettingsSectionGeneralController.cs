@@ -43,6 +43,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private TMP_Dropdown _dropdownComponentWeaponWheelType;
 	private GameObject _textDropdownWeaponWheelType;
 	private TextMeshProUGUI _textComponentDropdownWeaponWheelType;
+	private WeaponWheelMenuTypes _currentWeaponWheelMenuType;
 
 	private GameObject _sliderCameraFOV;
 	private Slider _sliderComponentCameraFOV;
@@ -216,9 +217,9 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		currentData.CameraFOV = CurrentValueCameraFOV;
 		currentData.FPSlimit = _currentFPSlimit;
+		currentData.WeaponWheelType = _currentWeaponWheelMenuType.ToString();
 		currentData.ShowIngameTutorials = _toggleComponentShowIngameHints.isOn;
 		currentData.ShowBlood = _toggleComponentShowBlood.isOn;
-
 
 		_playerPrefsSettingsController.SaveSettingsGeneral(currentData);
 	}
@@ -226,6 +227,17 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
 		SetFPSlimit(data, data.FPSlimit);
+
+		//Debug.Log(data.WeaponWheelType.ToString());
+
+		if (data.WeaponWheelType == WeaponWheelMenuTypes._2D.ToString())
+		{
+			SetWeaponWheelType(0);
+		}
+		else
+		{
+			SetWeaponWheelType(1);
+		}
 
 		SetCameraFOV(data.CameraFOV);
 		_sliderComponentCameraFOV.value = data.CameraFOV;
@@ -241,6 +253,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
 			FPSlimit = 60,
+			WeaponWheelType = WeaponWheelMenuTypes._2D.ToString(),
 			CameraFOV = _MIN_VALUE_CAMERA_FOV,
 			ShowIngameTutorials = true,
 			ShowBlood = true,
@@ -249,6 +262,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_playerPrefsSettingsController.SaveSettingsGeneral(defaultData);
 
 		SetFPSlimit(defaultData, 60);
+
+		SetWeaponWheelType(0);
 
 		SetCameraFOV(_MIN_VALUE_CAMERA_FOV);
 		_sliderComponentCameraFOV.value = _MIN_VALUE_CAMERA_FOV;
@@ -377,10 +392,18 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		if (dropdownWeaponWheelTypeSlot == 0)
 		{
 			_bootstrap.ChangeWeaponWheelType(WeaponWheelMenuTypes._2D);
+
+			_currentWeaponWheelMenuType = WeaponWheelMenuTypes._2D;
+
+			_dropdownComponentWeaponWheelType.value = 0;
 		}
 		else if (dropdownWeaponWheelTypeSlot == 1)
 		{
 			_bootstrap.ChangeWeaponWheelType(WeaponWheelMenuTypes._3D);
+
+			_currentWeaponWheelMenuType = WeaponWheelMenuTypes._3D;
+
+			_dropdownComponentWeaponWheelType.value = 1;
 		}
 	}
 
