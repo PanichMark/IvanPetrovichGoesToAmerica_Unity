@@ -2,11 +2,12 @@
 
 public class NPCstateHooked : NPCstateAbstract
 {
-	public NPCstateHooked(NPCstateMachineController npcStateMachineController)
+	public NPCstateHooked(NPCstateMachineController npcStateMachineController, NPCmovementController NPCmovementController)
 	{
 		_NPCStateMachineController = npcStateMachineController;
-		_NPCStateMachineController.StopAnchorMove();
-		_NPCStateMachineController.TurnNavmeshOff();
+		_NPCmovementController = NPCmovementController;
+		_NPCmovementController.StopAnchorMove();
+		_NPCmovementController.TurnNavmeshOff();
 	}
 
 	/* 

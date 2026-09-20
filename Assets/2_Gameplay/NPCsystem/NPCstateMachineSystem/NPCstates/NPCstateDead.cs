@@ -1,9 +1,9 @@
 ﻿public class NPCstateDead : NPCstateAbstract
 {
-	public NPCstateDead(NPCstateMachineController npcStateMachineController)
+	public NPCstateDead(NPCmovementController NPCmovementController)
 	{
-		_NPCStateMachineController = npcStateMachineController;
-		_NPCStateMachineController.StopAnchorMove();
-		_NPCStateMachineController.TurnNavmeshOff();
+		_NPCmovementController = NPCmovementController;
+		_NPCmovementController.StopAnchorMove();
+		_NPCmovementController.TurnNavmeshOff();
 	}
 }

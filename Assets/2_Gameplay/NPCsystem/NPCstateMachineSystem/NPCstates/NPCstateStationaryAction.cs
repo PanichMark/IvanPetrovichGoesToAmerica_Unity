@@ -3,27 +3,28 @@
 public class NPCstateStationaryAction : NPCstateAbstract
 {
 	private float timer;
-	private float animationDuration;
+	//private float animationDuration;
 
-	public NPCstateStationaryAction(NPCstateMachineController npcStateMachineController, float animationDuration)
+	public NPCstateStationaryAction(NPCstateMachineController npcStateMachineController, NPCmovementController NPCmovementController)
 	{
-		this._NPCStateMachineController = npcStateMachineController;
-		this.animationDuration = animationDuration;
+		_NPCStateMachineController = npcStateMachineController;
+		//this.animationDuration = animationDuration;
 		timer = 0f;
+		_NPCmovementController = NPCmovementController;
 
-		_NPCStateMachineController.StopAnchorMove(); 
+		_NPCmovementController.StopAnchorMove(); 
 	}
 
 	public override void Update()
 	{
-		if (_NPCStateMachineController.AnchorData.Count != 0)
+		if (_NPCmovementController.AnchorData.Count != 0)
 		{
 			timer += Time.deltaTime;
 
-			if (timer >= animationDuration)
-			{
+			//if (timer >= animationDuration)
+			//{
 				_NPCStateMachineController.SetNPCState(NPCstateTypes.Patrolling);
-			}
+			//}
 		}
 	}
 

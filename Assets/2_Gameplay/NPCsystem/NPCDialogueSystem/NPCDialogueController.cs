@@ -15,7 +15,7 @@ public class NPCdialogueController : MonoBehaviour
 	private PlayerCameraController _playerCameraController;
 	public delegate void BlendShapesFacialExpressionsHandler(string newFacialExpression);
 	public event BlendShapesFacialExpressionsHandler OnChangeBlendShapeFacialExpression;
-
+	private NPCmovementController _NPCMovementController;
 	public delegate void HeadIKHandler(GameObject objectToLookAt);
 	public event HeadIKHandler OnStartLookingAtObject;
 	public event HeadIKHandler OnStopLookingAtObject;
@@ -66,22 +66,25 @@ public class NPCdialogueController : MonoBehaviour
 	private GameObject _canvasDialogue;
 	private ViewModelMenuDialogue _viewModelMenuDialogue;
 
-	public void Initialize(NPCstateMachineController NPCstateMachineController)
+	public void Initialize(
+		NPCmovementController NPCMovementController,
+		NPCstateMachineController NPCstateMachineController)
 	{
+		_NPCMovementController = NPCMovementController;
 		_canvasesList = ServiceLocator.Resolve<GameCanvasesList>();
 		_canvasDialogue = _canvasesList.CanvasMenuDialogue;
 		_viewModelMenuDialogue = ServiceLocator.Resolve<ViewModelMenuDialogue>();
 		_uLipSyncBlendShape = GetComponent<uLipSyncBlendShape>();
 		_audioSource = GetComponent<AudioSource>();
 		_NPCabstract = GetComponent<NPCabstract>();
-_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
-_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
-_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
-_animator = GetComponent<Animator>();
-_animator.speed = 0.5f;
-_interactionController = ServiceLocator.Resolve<PlayerInteractionController>();
-_buttonDialogueYes = _viewModelMenuDialogue.ButtonDialogueYes.GetComponent<Button>();
-_buttonDialogueNo = _viewModelMenuDialogue.ButtonDialogueNo.GetComponent<Button>();
+	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+	_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
+	_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
+	_animator = GetComponent<Animator>();
+	_animator.speed = 0.5f;
+	_interactionController = ServiceLocator.Resolve<PlayerInteractionController>();
+	_buttonDialogueYes = _viewModelMenuDialogue.ButtonDialogueYes.GetComponent<Button>();
+	_buttonDialogueNo = _viewModelMenuDialogue.ButtonDialogueNo.GetComponent<Button>();
 		_gameController = ServiceLocator.Resolve<GameController>();
 _textDialogueYes = _viewModelMenuDialogue.TextDialogueYes;
 _textDialogueNo = _viewModelMenuDialogue.TextDialogueNo;
@@ -155,7 +158,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 		_gameController.MakeGameUnsavable();
 		ShowNPCDialogueCanvas();
 		DisplayNextDialogueLine();
-		_NPCstateMachineController.RotateTowardsPlayer();
+		_NPCMovementController.RotateTowardsPlayer();
 		_playerMovementController.RotatePlayerTowardsNPC(gameObject);
 		_playerCameraController.RotateCameraTowardsNPC(gameObject);
 		OnStartLookingAtObject?.Invoke(_playerEyesLookAt);
@@ -267,7 +270,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 		if (_currentDialogueStepIndex >= _localizedDialogue[currentLanguage].Count)
 		{
 			ExitNPCDialogue();
-			_NPCstateMachineController.RotateTowardsInitialRotation();
+			_NPCMovementController.RotateTowardsInitialRotation();
 			return;
 		}
 

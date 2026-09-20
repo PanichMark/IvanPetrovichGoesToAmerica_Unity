@@ -1,28 +1,26 @@
 ﻿public class NPCstatePatrolling : NPCstateAbstract
 {
-	public NPCstatePatrolling(NPCstateMachineController npcStateMachineController)
+	public NPCstatePatrolling(NPCstateMachineController npcStateMachineController, NPCmovementController NPCmovementController)
 	{
+		_NPCmovementController = NPCmovementController;
 		_NPCStateMachineController = npcStateMachineController;
-		_NPCStateMachineController.TurnNavmeshOn();
-		_NPCStateMachineController.StartAnchorMove();
+		_NPCmovementController.TurnNavmeshOn();
+		_NPCmovementController.StartAnchorMove();
 	}
 
 	public override void Update()
 	{
-		foreach (var config in _NPCStateMachineController.AnchorData)
+		foreach (var config in _NPCmovementController.AnchorData)
 		{
 			var triggerPoint = config.NPCanchorPoint;
 
-			if (_NPCStateMachineController.GetLastVisitedStopPoint() == triggerPoint)
+			if (_NPCmovementController.GetLastVisitedStopPoint() == triggerPoint)
 				continue;
 
-			if (_NPCStateMachineController.IsAtPosition(triggerPoint.transform.position))
+			if (_NPCmovementController.IsAtPosition(triggerPoint.transform.position))
 			{
-				_NPCStateMachineController.SetLastVisitedStopPoint(triggerPoint);
-				_NPCStateMachineController.SetNPCState(
-					NPCstateTypes.StationaryAction,
-					config.NPCwaitDuration
-				);
+				_NPCmovementController.SetLastVisitedStopPoint(triggerPoint);
+				_NPCStateMachineController.SetNPCState(NPCstateTypes.StationaryAction);
 			}
 		}
 	}

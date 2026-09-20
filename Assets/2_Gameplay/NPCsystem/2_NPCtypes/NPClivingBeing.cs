@@ -18,11 +18,11 @@ public abstract class NPClivingBeing : NPCabstract
 	private GameObject _playerCameraGameObject;
 
 	private NavMeshAgent _navMeshAgent;
-
+	protected NPCmovementController _NPCmovementController;
 	protected NPChealthController _NPChealthController;
 
 	protected InteractionObjectPickableNonThrowableAbstract _pickable;
-
+	protected NPCmovementAnimationController _NPCmovementAnimationController;
 	protected NPCstateMachineController _NPCstateMachineController;
 
 	protected NPCdetectionManager _NPCdetectionManager;
@@ -43,21 +43,25 @@ public abstract class NPClivingBeing : NPCabstract
 		_imageDetectionSign = _canvasNPCstatus.transform.Find("DetectionSign").gameObject;
 		_textNPCcurrentState = _canvasNPCstatus.transform.Find("DebugNPCcurrentState").gameObject;
 		_textNPCcurrentHealth = _canvasNPCstatus.transform.Find("DebugNPCcurrentHealth").gameObject;
-
+		_NPCmovementAnimationController = GetComponent<NPCmovementAnimationController>();
 		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
 
 		_NPChealthController = GetComponent<NPChealthController>();
-		
 
+		_NPCmovementController = GetComponent<NPCmovementController>();
 		_NPCdetectionManager = GetComponent<NPCdetectionManager>();
 		_NPCdetectionVisualController = GetComponent<NPCdetectionVisualController>();
 		_NPCdetectionAudioController = GetComponent<NPCdetectionAudioController>();
 		_NPCdetectionSignController = GetComponent<NPCdetectionSignController>();
 		_NPCdebugHUDcontroller = GetComponent<NPCdebugHUDcontroller>();
 
+		_NPCmovementController.Initialize(_navMeshAgent);
+
+		_NPCmovementAnimationController.Initialize(_NPCmovementController);
+
 		_NPCstateMachineController.Initialize(
 			this,
-			_navMeshAgent);
+			_NPCmovementController);
 
 		_NPChealthController.Initialize(
 			this,
@@ -172,7 +176,7 @@ public abstract class NPClivingBeing : NPCabstract
 				Mathf.Round(gameObject.transform.rotation.y * 100f) / 100f,
 				Mathf.Round(gameObject.transform.rotation.z * 100f) / 100f,
 				Mathf.Round(gameObject.transform.rotation.w * 100f) / 100f),
-			NPCnextAnchorPoint = _NPCstateMachineController.AnchorData.Count,
+			NPCnextAnchorPoint = _NPCmovementController.AnchorData.Count,
 			NPCstate = _NPCstateMachineController.CurrentNPCState.ToString(),
 			NPChealth = Mathf.Round(_NPChealthController.CurrentHealth * 100f) / 100f
 		};
@@ -204,7 +208,7 @@ public abstract class NPClivingBeing : NPCabstract
 
 		_NPChealthController.SetCurrentHealthFromLoad(savedState.NPChealth);
 
-		int safeAnchorIndex = Mathf.Clamp(savedState.NPCnextAnchorPoint, 0, _NPCstateMachineController.AnchorData.Count > 0 ? _NPCstateMachineController.AnchorData.Count - 1 : 0);
+		int safeAnchorIndex = Mathf.Clamp(savedState.NPCnextAnchorPoint, 0, _NPCmovementController.AnchorData.Count > 0 ? _NPCmovementController.AnchorData.Count - 1 : 0);
 		_NPCstateMachineController.SetNPCState((NPCstateTypes)Enum.Parse(typeof(NPCstateTypes), savedState.NPCstate));
 
 		yield return null;

@@ -1,16 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class NPCmovementAnimationController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+	private NPCmovementController _NPCmovementController;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public void Initialize(NPCmovementController NPCmovementController)
+	{
+		_NPCmovementController = NPCmovementController;
+	}
 }

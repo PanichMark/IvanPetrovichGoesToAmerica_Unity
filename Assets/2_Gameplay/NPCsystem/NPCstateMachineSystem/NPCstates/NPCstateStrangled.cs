@@ -1,10 +1,11 @@
 ﻿public class NPCstateStrangled : NPCstateAbstract
 {
-	public NPCstateStrangled(NPCstateMachineController npcStateMachineController)
+	public NPCstateStrangled(NPCstateMachineController npcStateMachineController, NPCmovementController NPCmovementController)
 	{
+		_NPCmovementController = NPCmovementController;
 		_NPCStateMachineController = npcStateMachineController;
-		_NPCStateMachineController.StopAnchorMove();
-		_NPCStateMachineController.TurnNavmeshOff();
+		_NPCmovementController.StopAnchorMove();
+		_NPCmovementController.TurnNavmeshOff();
 	}
 
 	/*

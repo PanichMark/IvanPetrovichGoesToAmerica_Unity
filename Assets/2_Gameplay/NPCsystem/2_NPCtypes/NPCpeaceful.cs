@@ -11,7 +11,9 @@ public class NPCpeaceful : NPClivingBeing
 
 		if (_NPCdialogueController != null)
 		{
-			_NPCdialogueController.Initialize(_NPCstateMachineController);
+			_NPCdialogueController.Initialize(
+				_NPCmovementController,
+				_NPCstateMachineController);
 		}
 	}
 
