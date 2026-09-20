@@ -7,7 +7,8 @@ public class InteractionObjectLootConsumable : InteractionObjectLootAbstract
 	[SerializeField] private bool _isRotten;
 	private PlayerHealthController _playerHealthController;
 
-	public override bool ShowGainedItem => false;
+	protected override bool _shouldShowGainedItem => true;
+
 	protected override void InitializeLootObject()
 	{
 		_playerHealthController = ServiceLocator.Resolve<PlayerHealthController>();

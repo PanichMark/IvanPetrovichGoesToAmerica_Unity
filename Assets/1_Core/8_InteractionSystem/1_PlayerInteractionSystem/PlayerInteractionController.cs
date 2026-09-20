@@ -37,7 +37,6 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 	private MenuManager _menuManager;
 	private GameObject _HUDinteraction;
 	private GameObject _HUDphraseLine;
-	private Sprite _ImageMissing;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	private PlayerCameraController _playerCameraController;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
@@ -50,7 +49,7 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 	private IPickable _lookedAtIPickable;
 	private IThrowable _lookedAtIThrowableObject;
 
-	private InteractionObjectLootAbstract _lookedAtIGainedItem;
+	//private InteractionObjectLootAbstract _lookedAtIGainedItem;
 
 	private IPickable _currentIPickable;
 	public IThrowable CurrentIThrowable {  get; private set; }
@@ -388,7 +387,7 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 			_lookedAtIInteractable = _hitObject.collider.GetComponent<IInteractable>();
 			_lookedAtIThrowableObject = _hitObject.collider.GetComponent<IThrowable>();
 			_lookedAtIPickable = _hitObject.collider.GetComponent<IPickable>();
-			_lookedAtIGainedItem = _hitObject.collider.GetComponent<InteractionObjectLootAbstract>();
+			//_lookedAtIGainedItem = _hitObject.collider.GetComponent<InteractionObjectLootAbstract>();
 
 			if (_lookedAtIInteractable != null)
 			{
@@ -431,13 +430,6 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 						if (_showAdditionalHintCoroutine != null)
 						{
 							StopCoroutine(_showAdditionalHintCoroutine);
-						}
-
-						if (_lookedAtIGainedItem != null && _lookedAtIGainedItem.ShowGainedItem == true)
-						{
-							ShowGainedItems();
-
-							StartCoroutine(HideGainedItems());
 						}
 					}
 
@@ -486,58 +478,42 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 		_failInteractionText.text = null;
 	}
 
-	private void ShowGainedItems()
+	public void ShowGainedItems(string gainedItemName, Sprite gainedItemIcon)
 	{
+		Debug.Log("SHOW!!!!!");
+
 		if (!_itemsTexts[0].gameObject.activeInHierarchy)
 		{
 			_itemsTexts[0].gameObject.SetActive(true);
-			_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+			_itemsTexts[0].text = gainedItemName;
 
 			_itemsImages[0].gameObject.SetActive(true);
-			if (_lookedAtIGainedItem.IconGainedItem != null)
-			{
-				_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
-			}
-			else
-			{
-				_itemsImages[0].sprite = _ImageMissing;
-			}
+
+			_itemsImages[0].sprite = gainedItemIcon;
 		}
 		else if (_itemsTexts[0].gameObject.activeInHierarchy && !_itemsTexts[1].gameObject.activeInHierarchy)
 		{
 			_itemsTexts[1].gameObject.SetActive(true);
 			_itemsTexts[1].text = _itemsTexts[0].text;
-			_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+			_itemsTexts[0].text = gainedItemName;
 
 			_itemsImages[1].gameObject.SetActive(true);
 			_itemsImages[1].sprite = _itemsImages[0].sprite;
-			if (_lookedAtIGainedItem.IconGainedItem != null)
-			{
-				_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
-			}
-			else
-			{
-				_itemsImages[0].sprite = _ImageMissing;
-			}
+
+			_itemsImages[0].sprite = gainedItemIcon;
 		}
 		else if (_itemsTexts[1].gameObject.activeInHierarchy && _itemsTexts[0].gameObject.activeInHierarchy)
 		{
 			_itemsTexts[2].gameObject.SetActive(true);
 			_itemsTexts[2].text = _itemsTexts[1].text;
 			_itemsTexts[1].text = _itemsTexts[0].text;
-			_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+			_itemsTexts[0].text = gainedItemName;
 
 			_itemsImages[2].gameObject.SetActive(true);
 			_itemsImages[2].sprite = _itemsImages[1].sprite;
 			_itemsImages[1].sprite = _itemsImages[0].sprite;
-			if (_lookedAtIGainedItem.IconGainedItem != null)
-			{
-				_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
-			}
-			else
-			{
-				_itemsImages[0].sprite = _ImageMissing;
-			}
+
+			_itemsImages[0].sprite = gainedItemIcon;
 		}
 		else if (_itemsTexts[2].gameObject.activeInHierarchy &&
 				 _itemsTexts[0].gameObject.activeInHierarchy &&
@@ -545,22 +521,18 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 		{
 			_itemsTexts[2].text = _itemsTexts[1].text;
 			_itemsTexts[1].text = _itemsTexts[0].text;
-			_itemsTexts[0].text = _lookedAtIInteractable.InteractionObjectNameUI;
+			_itemsTexts[0].text = gainedItemName;
 
 			_itemsImages[2].sprite = _itemsImages[1].sprite;
 			_itemsImages[1].sprite = _itemsImages[0].sprite;
-			if (_lookedAtIGainedItem.IconGainedItem != null)
-			{
-				_itemsImages[0].sprite = _lookedAtIGainedItem.IconGainedItem;
-			}
-			else
-			{
-				_itemsImages[0].sprite = _ImageMissing;
-			}
+
+			_itemsImages[0].sprite = gainedItemIcon;
 		}
+
+		StartCoroutine(HideGainedItems());
 	}
 
-	IEnumerator HideGainedItems()
+	private IEnumerator HideGainedItems()
 	{
 		yield return new WaitForSeconds(2f);
 

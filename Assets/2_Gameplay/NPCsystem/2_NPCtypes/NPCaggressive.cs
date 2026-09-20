@@ -24,5 +24,11 @@
 			_pickable.Interact();
 			return;
 		}
+
+		if (_canNPCbeRobbed)
+		{
+			_NPClootObjectComponent.Interact();
+			NPCwasRobbed();
+		}
 	}
 }

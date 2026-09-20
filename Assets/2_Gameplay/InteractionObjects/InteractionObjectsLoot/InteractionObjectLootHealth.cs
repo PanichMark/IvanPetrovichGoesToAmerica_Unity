@@ -7,7 +7,8 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 
 	public override bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
 
-	public override bool ShowGainedItem => true;
+	protected override bool _shouldShowGainedItem => true;
+
 	[SerializeField] Sprite _lootObjectIcon;
 	public override Sprite LootObjectIcon => _lootObjectIcon;
 

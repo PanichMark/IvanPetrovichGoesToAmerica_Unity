@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 {
 	public delegate void MovementStateHandler(PlayerMovementStateTypes playerMovementStateType);
-	public event MovementStateHandler OnChangeMovementState;
+	public event MovementStateHandler OnSendSignalToPlayerMovementStateMachine;
 
 	private Bootstrap _bootstrap;
 	private PlayerBehaviourController _playerBehaviour;
@@ -304,7 +304,7 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 		PlayerRigidBody.angularVelocity = Vector3.zero;
 		PlayerRigidBody.MovePosition(PlayerRigidBody.transform.position);
 
-		OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerIdleCrouhcing);
+		OnSendSignalToPlayerMovementStateMachine?.Invoke(PlayerMovementStateTypes.PlayerIdleCrouhcing);
 		IsPlayerSliding = false;
 	}
 
@@ -345,11 +345,11 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 		if (Big == true)
 		{
 			ChangePlayerRayPosition(1.9f);
-			OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerIdleStanding);
+			OnSendSignalToPlayerMovementStateMachine?.Invoke(PlayerMovementStateTypes.PlayerIdleStanding);
 		}
 		else
 		{
-			OnChangeMovementState?.Invoke(PlayerMovementStateTypes.PlayerIdleCrouhcing);
+			OnSendSignalToPlayerMovementStateMachine?.Invoke(PlayerMovementStateTypes.PlayerIdleCrouhcing);
 		}
 
 		IsPlayerLedgeClimbing = false;

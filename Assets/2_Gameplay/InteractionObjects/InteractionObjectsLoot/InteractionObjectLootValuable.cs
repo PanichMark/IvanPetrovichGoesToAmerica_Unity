@@ -9,7 +9,7 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 
 	public override Sprite LootObjectIcon => _lootObjectIcon;
 
-	public override bool ShowGainedItem => true;
+	protected override bool _shouldShowGainedItem => true;
 
 	public override void Interact()
 	{

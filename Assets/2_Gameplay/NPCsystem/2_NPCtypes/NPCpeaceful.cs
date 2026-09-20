@@ -31,14 +31,22 @@ public class NPCpeaceful : NPClivingBeing
 			_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Patrolling)
 			return;
 
-		if (_NPCdialogueController != null)
+		if (!_canNPCbeRobbed)
 		{
-			_NPCdialogueController.Interact();
+			if (_NPCdialogueController != null)
+			{
+				_NPCdialogueController.Interact();
+			}
+			else
+			{
+				StopAllCoroutines();
+				_NPCphrasesController.TemporaryShowPhrases();
+			}
 		}
 		else
 		{
-			StopAllCoroutines();
-			_NPCphrasesController.TemporaryShowPhrases();
+			_NPClootObjectComponent.Interact();
+			NPCwasRobbed();
 		}
 	}
 

@@ -10,6 +10,14 @@ public abstract class NPClivingBeing : NPCabstract
 	[SerializeField] private ConfigNPCBodyType _NPCconfigBodyType;
 	[SerializeField] private InteractionObjectPickableData _pickableBodyData;
 
+	[SerializeField] protected GameObject _NPClootObject;
+	protected InteractionObjectLootAbstract _NPClootObjectComponent;
+
+	protected bool _canNPCbeRobbed;
+	protected bool _wasNPCrobbed;
+
+
+	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private GameObject _canvasNPCstatus;
 	private GameObject _imageDetectionSign;
 	private List<Sprite> _detectionSignFrames;
@@ -39,7 +47,8 @@ public abstract class NPClivingBeing : NPCabstract
 	{
 		_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
 		_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>();
-
+		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
+		
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 
 		_canvasNPCstatus = transform.Find("NPC_Canvas").gameObject;
@@ -110,6 +119,14 @@ public abstract class NPClivingBeing : NPCabstract
 		{
 			_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
 		}
+		
+		if (_NPClootObject != null)
+		{
+			_NPClootObjectComponent = _NPClootObject.GetComponent<InteractionObjectLootAbstract>();
+			_NPClootObjectComponent.MakeLootObjectNPC();
+
+			_playerMovementStateMachineController.OnChangeMovementState += HandleNPClooteableState;
+		}
 
 		InitializeNPClivingBeing();
 	}
@@ -145,6 +162,44 @@ public abstract class NPClivingBeing : NPCabstract
 		//Destroy(this);
 	}
 
+	private void HandleNPClooteableState(PlayerMovementStateTypes playerStateType)
+	{
+		//Debug.Log("BRUH!!!!");
+		if (!_wasNPCrobbed)
+		{
+			if (playerStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing || playerStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
+			{
+				MakeNPCrobbable();
+			}
+			else
+			{
+				MakeNPCunreobbable();
+			}
+		}
+	}
+
+	private void MakeNPCrobbable()
+	{ 
+		_canNPCbeRobbed = true;
+
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Rob");
+	}
+
+	private void MakeNPCunreobbable()
+	{
+		_canNPCbeRobbed = false;
+
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
+	}
+
+	protected void NPCwasRobbed()
+	{
+		_canNPCbeRobbed = false;
+		_wasNPCrobbed = true;
+
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
+	}
+
 	protected virtual void DisableDialogueController()
 	{
 
@@ -153,6 +208,7 @@ public abstract class NPClivingBeing : NPCabstract
 	protected override void ChangeLangauge(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
+
 
 		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead)
 		{

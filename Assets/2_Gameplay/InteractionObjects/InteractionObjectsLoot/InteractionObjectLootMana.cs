@@ -6,7 +6,8 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 	public override bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
 	private PlayerManaController _playerResourcesManaManager;
 
-	public override bool ShowGainedItem => true;
+	protected override bool _shouldShowGainedItem => true;
+
 
 	[SerializeField] Sprite _lootObjectIcon;
 	public override Sprite LootObjectIcon => _lootObjectIcon;

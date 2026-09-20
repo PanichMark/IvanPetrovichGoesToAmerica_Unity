@@ -8,6 +8,7 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 {
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	[SerializeField] protected string _interactionObjectNameSystem;
+	private PlayerInteractionController _playerInteractionController;
 
 	protected bool _isItVendingMachineGood;
 	public	void SetLootObjectAsVendingMachineGood()
@@ -29,7 +30,7 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 
 	public virtual string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
-	public abstract bool ShowGainedItem {  get; }
+	protected abstract bool _shouldShowGainedItem { get; }
 
 
 	public GameObject GameObjectPlayer { get; protected set; }
@@ -53,13 +54,22 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 
 	private void Start()
 	{
-	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
-LootObjectCollider = GetComponent<Collider>();
-GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_playerInteractionController = ServiceLocator.Resolve<PlayerInteractionController>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		LootObjectCollider = GetComponent<Collider>();
+		GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Loot", gameObject.name);
 		InitializeLootObject();
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+	}
+
+	public void SendGainedItemInfoToInteractionController()
+	{
+		if (_shouldShowGainedItem)
+		{
+			_playerInteractionController.ShowGainedItems(InteractionObjectNameUI, IconGainedItem);
+		}
 	}
 
 	public virtual void Interact()
@@ -70,6 +80,7 @@ GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 			Destroy(rb);
 		}
 
+		SendGainedItemInfoToInteractionController();
 		LootObjectCollider.enabled = false;
 		gameObject.tag = "Untagged";
 		StartCoroutine(MoveTowardsPlayer());
@@ -120,6 +131,12 @@ GameObjectPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 	protected virtual void OnAfterLooted()
 	{
 
+	}
+
+	public void MakeLootObjectNPC()
+	{
+		gameObject.tag = "Untagged";
+		LootObjectCollider.enabled = false;
 	}
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
