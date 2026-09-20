@@ -150,7 +150,7 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		_HUDInteractionMainTextInteract = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Main");
+		_HUDInteractionMainTextInteract = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_MainPress");
 		_HUDInteractionDropText = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Drop");
 		_HUDInteractionThrowText = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Throw");
 	}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class WeaponMeleeBaton : WeaponMeleeAbstract
 {
@@ -9,7 +10,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 	public override float WeaponAttackSpeedRate => 1.560f;
 	[SerializeField] private AudioClip _weaponSoundSwing;
 	public override float MeleeAttackDelay => 0.840f;
-
+	private LocalizationManager	_localizationManager;
 	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
 
 	private IInputDevice _inputDevice;
@@ -19,34 +20,31 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 	private Coroutine currentChokeCoroutine = null;
 
 	private GameObject _chokeNPCtext;
+	private TextMeshProUGUI _chokeNPCtextComponent;
 
 	private bool _isAbleToChoke = false;
 	private bool _npcDetected = false;
-	private bool _isItRightHand;
 
 	private ViewModelHUDInteraction _viewModelHUDInteraction;
 
 	protected override void InitializeWeaponMelee()
 	{
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
 		_inputDevice = ServiceLocator.Resolve<IInputDevice>();
-_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
-_weaponController = ServiceLocator.Resolve<PlayerWeaponController>();
+		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
+		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>();
 
-_chokeNPCtext = _viewModelHUDInteraction.TextChokeNPC;
-
-		if (_weaponController.RightHandWeaponComponent is WeaponMeleeBaton)
-		{
-			_isItRightHand = true;
-		}
-		if (_weaponController.LeftHandWeaponComponent is WeaponMeleeBaton)
-		{
-			_isItRightHand = false;	
-		}
+		_chokeNPCtext = _viewModelHUDInteraction.TextChokeNPC;
+		_chokeNPCtextComponent = _chokeNPCtext.GetComponent<TextMeshProUGUI>();
 
 		_capsuleHeight = 1.8f;
 		_capsuleRadius = 0.3f;
 		_forwardOffset = 0.5f;
+
+		ChangeLanguage(_localizationManager);
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
 	public override void WeaponAttack()
@@ -133,7 +131,7 @@ _chokeNPCtext = _viewModelHUDInteraction.TextChokeNPC;
 		foreach (var hit in hitColliders)
 		{
 			if (hit.gameObject == _attackPoint) continue;
-			if (hit.GetComponent<NPCabstract>() != null)
+			if (hit.GetComponent<NPClivingBeing>() != null)
 			{
 				newDetection = true;
 				break;
@@ -141,10 +139,12 @@ _chokeNPCtext = _viewModelHUDInteraction.TextChokeNPC;
 		}
 		_npcDetected = newDetection;
 
-		bool isCrouching = _playerMovementStateMachineController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingIdle") ||
-						   _playerMovementStateMachineController.CurrentPlayerMovementStateType.Equals("PlayerCrouchingWalking");
+		bool isCrouching = !_isAttacking && (_playerMovementStateMachineController.CurrentPlayerMovementStateType ==  PlayerMovementStateTypes.PlayerIdleCrouhcing ||
+						   _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching);
 
 		_isAbleToChoke = _npcDetected && isCrouching;
+
+		//Debug.Log(_isAbleToChoke);
 
 		_chokeNPCtext.SetActive(_isAbleToChoke);
 	}
@@ -167,8 +167,8 @@ _chokeNPCtext = _viewModelHUDInteraction.TextChokeNPC;
 
 		while (elapsed < chokeDuration)
 		{
-			if ((_isItRightHand && _inputDevice.GetKeyRightHandWeaponAttackReleased()) ||
-				(!_isItRightHand && _inputDevice.GetKeyLeftHandWeaponAttackReleased()))
+			if ((WeaponHandType == WeaponHandType.Right && _inputDevice.GetKeyRightHandWeaponAttackReleased()) ||
+				(WeaponHandType == WeaponHandType.Left && _inputDevice.GetKeyLeftHandWeaponAttackReleased()))
 			{
 				Debug.Log("Failed to choke!!!");
 				currentChokeCoroutine = null;
@@ -188,5 +188,19 @@ _chokeNPCtext = _viewModelHUDInteraction.TextChokeNPC;
 		throw new System.NotImplementedException();
 
 		// baton isnt inspected but given straigth away during Bistro fight tutorial
+	}
+
+	public void ChangeLanguage(LocalizationManager localizationManager)
+	{
+		_localizationManager = localizationManager;
+
+		if (WeaponHandType == WeaponHandType.Right)
+		{
+			_chokeNPCtextComponent.text = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_MainHold")} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackRightHand)} {_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Choke")}";
+		}
+		else
+		{
+			_chokeNPCtextComponent.text = _chokeNPCtextComponent.text = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_MainHold")} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackLeftHand)} {_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Choke")}";
+		}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Diagnostics;
 
 public class NPCdetectionManager : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class NPCdetectionManager : MonoBehaviour
 	public event DetectionMeterHandler OnMeterChanged;
 
 	// Публичное свойство возвращает только целое число
-	private int _NPCdetectionMeter;
+	public int NPCdetectionMeter {  get; private set; }
 
 	private Coroutine _meterRoutine;
 
@@ -39,19 +38,19 @@ public class NPCdetectionManager : MonoBehaviour
 		newRoundedValue = Mathf.Clamp(newRoundedValue, 0, 100);
 
 		// Вызываем событие только если целое число действительно изменилось
-		if (newRoundedValue != _NPCdetectionMeter)
+		if (newRoundedValue != NPCdetectionMeter)
 		{
-			_NPCdetectionMeter = newRoundedValue;
+			NPCdetectionMeter = newRoundedValue;
 
 			ProcessDetectionMeter();
 
-			OnMeterChanged?.Invoke(_NPCdetectionMeter);
+			OnMeterChanged?.Invoke(NPCdetectionMeter);
 		}
 	}
 
 	private void ProcessDetectionMeter()
 	{
-		if (_NPCdetectionMeter >= 50)
+		if (NPCdetectionMeter >= 50)
 		{
 			_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
 		}
@@ -70,9 +69,9 @@ public class NPCdetectionManager : MonoBehaviour
 			_meterRoutine = null;
 		}
 
-		int newValue = Mathf.Clamp(_NPCdetectionMeter + amount, 0, 100);
+		int newValue = Mathf.Clamp(NPCdetectionMeter + amount, 0, 100);
 
-		if (newValue != _NPCdetectionMeter)
+		if (newValue != NPCdetectionMeter)
 		{
 			UpdateDetectionMeter(newValue);
 		}
@@ -92,9 +91,9 @@ public class NPCdetectionManager : MonoBehaviour
 		}
 
 		// Уменьшаем, но Clamp следит, чтобы не уйти ниже 0
-		int newValue = Mathf.Clamp(_NPCdetectionMeter - amount, 0, 100);
+		int newValue = Mathf.Clamp(NPCdetectionMeter - amount, 0, 100);
 
-		if (newValue != _NPCdetectionMeter)
+		if (newValue != NPCdetectionMeter)
 		{
 			UpdateDetectionMeter(newValue);
 		}
