@@ -20,7 +20,9 @@
 		_NPCweaponController.Initialize(
 			_NPCstateMachineController,
 			_NPCdetectionManager);
-		_NPCweaponAnimationController.Initialize();
+		_NPCweaponAnimationController.Initialize(
+			_NPCweaponController,
+			_NPCanimator);
 	}
 
 	public override void Interact()

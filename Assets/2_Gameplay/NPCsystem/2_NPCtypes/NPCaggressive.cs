@@ -12,7 +12,9 @@
 			_NPCstateMachineController,
 			_NPCdetectionManager);
 
-		_NPCweaponAnimationController.Initialize();
+		_NPCweaponAnimationController.Initialize(
+			_NPCweaponController,
+			_NPCanimator);
 	}
 
 	override public void Interact()
