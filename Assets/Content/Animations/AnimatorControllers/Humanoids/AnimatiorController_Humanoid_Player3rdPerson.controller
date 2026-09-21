@@ -608,6 +608,21 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!206 &-4844470894786461910
+BlendTree:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BlendTree
+  m_Childs: []
+  m_BlendParameter: UpDown
+  m_BlendParameterY: Blend
+  m_MinThreshold: 0
+  m_MaxThreshold: 1
+  m_UseAutomaticThresholds: 1
+  m_NormalizedBlendValues: 0
+  m_BlendType: 0
 --- !u!1107 &-4816199193949651861
 AnimatorStateMachine:
   serializedVersion: 6
@@ -1794,7 +1809,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 5514984546509162325, guid: 11004e041c3f4bf47a01b97619fc8b09, type: 3}
+    m_Motion: {fileID: -2667208586317317052, guid: a163c6c7c3818414c97ccba84821ab0b, type: 3}
     m_Threshold: -1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1802,7 +1817,7 @@ BlendTree:
     m_DirectBlendParameter: UpDown
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 5514984546509162325, guid: 11004e041c3f4bf47a01b97619fc8b09, type: 3}
+    m_Motion: {fileID: 7441754330521689954, guid: a163c6c7c3818414c97ccba84821ab0b, type: 3}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1813,7 +1828,7 @@ BlendTree:
   m_BlendParameterY: Blend
   m_MinThreshold: -1
   m_MaxThreshold: 1
-  m_UseAutomaticThresholds: 1
+  m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
   m_BlendType: 0
 --- !u!1102 &3179307273675246693
@@ -2681,13 +2696,13 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Blend Tree
-  m_Speed: 0
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
+  m_WriteDefaultValues: 0
   m_Mirror: 0
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
@@ -2695,7 +2710,7 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 2919367132853709852}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: UpDown
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 

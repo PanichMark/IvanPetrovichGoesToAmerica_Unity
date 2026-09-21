@@ -22,7 +22,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	public delegate void ShowThirdPersonHandHandler(WeaponHandType handType);
 	public event ShowThirdPersonHandHandler OnShowThirdPersonHand;
-
+	private PlayerCameraController _playerCameraController;
 	private Coroutine _currentPlayerReloadingCoroutine;
 
 	private PlayerLegKickAttackController _legKickAttack;
@@ -60,10 +60,13 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private float _adjustedCameraAngle;
 
+	private float _upDownParameter;
+
 	public void Initialize(
 		Bootstrap bootstrap,
 		GameController gameController,
 		PlayerBehaviourController playerBehaviour,
+		PlayerCameraController playerCameraController,
 		PlayerCameraStateMachineController playerCameraStateMachineController,
 		PlayerInteractionController interactionController,
 		PlayerWeaponController weaponController,
@@ -78,6 +81,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator1stPerson = playerCamera.GetComponent<Animator>();
 		_playerAnimator3rdPerson = player.GetComponent<Animator>();
 		_playerBehaviour = playerBehaviour;
+		_playerCameraController = playerCameraController;
 		_playerCameraStateMachineController = playerCameraStateMachineController;
 		_interactionController = interactionController;
 		_playerWeaponController = weaponController;
@@ -85,6 +89,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		_transferBonesFirstPerson = transferBonesFirstPerson;
 		_transferBonesThirdPerson = transferBonesThirdPerson;
+
+		_upDownParameter = _playerAnimator3rdPerson.GetFloat("UpDown");
 
 		_layer1stInspectWeapon = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerInspectWeapon.ToString());
 		_layer1stWeaponRightEquip = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
@@ -127,23 +133,37 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		float cameraRotationX = _playerCameraStateMachineController.transform.rotation.eulerAngles.x;
 		_adjustedCameraAngle = (cameraRotationX >= 0 && cameraRotationX < 180) ? cameraRotationX : cameraRotationX - 360;
 
-		float startValue = _playerAnimator3rdPerson.GetFloat("UpDown");
 		float endValue = 0f;
+
+		//Debug.Log(_adjustedCameraAngle);
 
 		if (_playerBehaviour.IsPlayerArmed)
 		{
 			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 			{
-				endValue = _adjustedCameraAngle * 0.0153846f;
+				endValue = _adjustedCameraAngle * (1 / _playerCameraController.CameraRotationLimit);
 			}
 			else if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
 			{
 				endValue = 0f;
+
+				_playerAnimator3rdPerson.SetFloat("UpDown", 0f);
+
+				return;
 			}
 		}
 
-		float newValue = Mathf.Lerp(startValue, endValue, Time.deltaTime * 6);
-		_playerAnimator3rdPerson.SetFloat("UpDown", newValue);
+		//Debug.Log(endValue);
+
+		float rawLerp = Mathf.Lerp(_upDownParameter, endValue, Time.deltaTime * 6f);
+		_upDownParameter = rawLerp;
+
+		if (Mathf.Abs(rawLerp - endValue) < 0.001f)
+		{
+			_upDownParameter = endValue;
+		}
+
+		_playerAnimator3rdPerson.SetFloat("UpDown", _upDownParameter);
 	}
 
 	private void ShowWeapon(WeaponAbstract weapon)

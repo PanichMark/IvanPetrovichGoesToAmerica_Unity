@@ -116,6 +116,7 @@ public class BootstrapSubProcessWeaponSystem
 			_bootstrap,
 			_gameController,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+			_bootstrapSubProcessPlayerSystems.PlayerCameraController,
 			_bootstrapSubProcessPlayerSystems.PlayerCameraStateMachineController,
 			_bootstrapSubProcessInteractionSystem.InteractionController,
 			WeaponController,

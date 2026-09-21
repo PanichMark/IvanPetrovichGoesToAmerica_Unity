@@ -33,7 +33,7 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 	public float PlayerCameraDistanceY { get; private set; }
 	public float PlayerCameraDistanceZ { get; private set; }
 
-	private float _MouseRotationLimit = 70f;
+	public float CameraRotationLimit { get; private set; } = 70f;
 
 	public PlayerCameraStateTypes PreviousPlayerCameraGameplayType { get; private set; }
 
@@ -264,7 +264,7 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 				_mouseRotation.x -= 360f;
 			}
 
-			_mouseRotation.y = Mathf.Clamp(_mouseRotation.y, _MouseRotationLimit * -1, _MouseRotationLimit);
+			_mouseRotation.y = Mathf.Clamp(_mouseRotation.y, CameraRotationLimit * -1, CameraRotationLimit);
 			_mouseScrollWheel = _inputDevice.CameraScroll();
 
 			transform.rotation = Quaternion.Euler(-_mouseRotation.y, _mouseRotation.x, 0);
