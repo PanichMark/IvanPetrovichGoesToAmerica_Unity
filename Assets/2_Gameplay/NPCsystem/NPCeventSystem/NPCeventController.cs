@@ -7,8 +7,14 @@ public class NPCeventController : MonoBehaviour
 	public bool NPCeventWasDisrupted { get; private set; }
 
 	[SerializeField] private bool _NPCeventChangeResponePhrases;
-	[SerializeField] private bool _NPCconversation;
-	[SerializeField] private bool _NPCanimationSeries;
+
+	[SerializeField] private GameObject _eventTriggersList;
+
+	[SerializeField] private bool _includeNPCconversation;
+	[SerializeField] private NPCeventConversationData _NPCconversationData;
+
+	[SerializeField] private bool _includeNPCanimationSeries;
+	[SerializeField] private NPCeventAnimationSeriesData _NPCeventAnimationSeriesData;
 
 	public void Initialize()
 	{

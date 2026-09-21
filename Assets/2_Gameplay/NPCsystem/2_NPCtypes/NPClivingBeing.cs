@@ -16,6 +16,7 @@ public abstract class NPClivingBeing : NPCabstract
 	protected bool _canNPCbeRobbed;
 	protected bool _wasNPCrobbed;
 
+	protected TransferSkinnedMeshRendererArmatureBones _transferArmatureBones;
 
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private GameObject _canvasNPCstatus;
@@ -48,7 +49,9 @@ public abstract class NPClivingBeing : NPCabstract
 		_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
 		_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>();
 		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
-		
+
+		_transferArmatureBones = gameObject.transform.Find("NPC_3Dmodel").GetComponent<TransferSkinnedMeshRendererArmatureBones>();
+
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 
 		_canvasNPCstatus = transform.Find("NPC_Canvas").gameObject;

@@ -14,7 +14,7 @@ public class TransferSkinnedMeshRendererArmatureBones : MonoBehaviour
 	private Transform[] _baseArmatureBonesTransform;
 	private Dictionary<string, Transform> _baseArmatureBoneNames ;
 
-	private void Start()
+	private void Awake()
 	{
 		_baseArmatureBonesTransform = _baseArmatureRootBone.GetComponentsInChildren<Transform>();
 		_baseArmatureBoneNames = new Dictionary<string, Transform>();

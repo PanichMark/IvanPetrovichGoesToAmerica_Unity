@@ -21,7 +21,9 @@
 
 		_NPCweaponController.Initialize(
 			_NPCstateMachineController,
-			_NPCdetectionManager);
+			_NPCdetectionManager,
+			_transferArmatureBones);
+
 		_NPCweaponAnimationController.Initialize(
 			_NPCweaponController,
 			_NPCanimator);
