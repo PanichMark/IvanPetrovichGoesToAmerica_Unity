@@ -1,11 +1,11 @@
 ﻿public enum MainMenuDiegeticButtonsEnum
 {
 	NewGame,
-	TestScene,
-	EndGameTitles,
 	LoadGame,
-	Settings,
 	ChooseMission,
 	ReadNews,
+	EndGameTitles,
+	TestScene,
+	Settings,
 	ExitGame
 }

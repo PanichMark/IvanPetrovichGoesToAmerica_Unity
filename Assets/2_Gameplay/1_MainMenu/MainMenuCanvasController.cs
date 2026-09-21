@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 
 public class MainMenuCanvasController : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class MainMenuCanvasController : MonoBehaviour
 	private GameObject _canvasGameVersion;
 
 	private TextMeshProUGUI[] _diegeticTextsList;
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	
 	public void Initialize(MainMenuChooseMissionController mainMenuChooseMission, MainMenuReadNewsController mainMenuReadNews)
     {
       _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
@@ -19,27 +20,31 @@ public class MainMenuCanvasController : MonoBehaviour
 		_CanvasDiegeticText = GameObject.Find("CanvasMainMenu");
 		_mainMenuReadNews = mainMenuReadNews;
 		_mainMenuChooseMission = mainMenuChooseMission;
-	_menuManager = ServiceLocator.Resolve<MenuManager>();
+		_menuManager = ServiceLocator.Resolve<MenuManager>();
 		_canvasGameVersion = GameObject.Find("CanvasMainMenu").transform.Find("CanvasGameVersion").gameObject;
 
 		_diegeticTextsList = new[]
 		{
 			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextNewGame").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextTestScene").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextLoadGame1").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextLoadGame2").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextSettings").GetComponent<TextMeshProUGUI>(),
+			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextLoadGamePart1").GetComponent<TextMeshProUGUI>(),
+			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextLoadGamePart2").GetComponent<TextMeshProUGUI>(),
+			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextChooseMission").GetComponent<TextMeshProUGUI>(),
 			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextReadNews").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextExitGame").GetComponent<TextMeshProUGUI>(),
+			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextEndGameTitles").GetComponent<TextMeshProUGUI>(),
+			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextTestScene").GetComponent<TextMeshProUGUI>(),
+			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextSettings").GetComponent<TextMeshProUGUI>(),
+			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextExitGame").GetComponent<TextMeshProUGUI>()
 		};
 
 		_diegeticTextsList[0].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextNewGame");
-		_diegeticTextsList[1].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextTestScene");
-		_diegeticTextsList[2].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextLoadGamePart1");
-		_diegeticTextsList[3].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextLoadGamePart2");
-		_diegeticTextsList[4].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextSettings");
-		_diegeticTextsList[5].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextReadNews");
-		_diegeticTextsList[6].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextExitGame");
+		_diegeticTextsList[1].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextLoadGamePart1");
+		_diegeticTextsList[2].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextLoadGamePart2");
+		_diegeticTextsList[3].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextChooseMission");
+		_diegeticTextsList[4].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextReadNews");
+		_diegeticTextsList[5].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextEndGameTitles");
+		_diegeticTextsList[6].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextTestScene");
+		_diegeticTextsList[7].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextSettings");
+		_diegeticTextsList[8].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextExitGame");
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_mainMenuReadNews.OnCloseMainMenuReadNews += ShowMainMenuCanvas;
@@ -77,11 +82,13 @@ public class MainMenuCanvasController : MonoBehaviour
         _localizationManager = localizationManager;
 
 		_diegeticTextsList[0].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextNewGame");
-		_diegeticTextsList[1].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextTestScene");
-		_diegeticTextsList[2].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextLoadGame1");
-		_diegeticTextsList[3].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextLoadGame2");
-		_diegeticTextsList[4].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextSettings");
-		_diegeticTextsList[5].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextReadNews");
-		_diegeticTextsList[6].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextExitGame");
+		_diegeticTextsList[1].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextLoadGamePart1");
+		_diegeticTextsList[2].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextLoadGamePart2");
+		_diegeticTextsList[3].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextChooseMission");
+		_diegeticTextsList[4].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextReadNews");
+		_diegeticTextsList[5].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextEndGameTitles");
+		_diegeticTextsList[6].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextTestScene");
+		_diegeticTextsList[7].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextSettings");
+		_diegeticTextsList[8].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextExitGame");
 	}
 }
