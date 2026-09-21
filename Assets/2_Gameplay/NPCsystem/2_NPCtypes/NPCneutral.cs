@@ -25,6 +25,7 @@
 			_transferArmatureBones);
 
 		_NPCweaponAnimationController.Initialize(
+			_NPCdetectionVisualController,
 			_NPCweaponController,
 			_NPCanimator);
 	}

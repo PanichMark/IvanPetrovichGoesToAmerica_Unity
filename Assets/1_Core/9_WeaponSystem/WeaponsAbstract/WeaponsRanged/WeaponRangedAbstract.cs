@@ -202,13 +202,13 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			{
 				hits = Physics.RaycastAll(WeaponRangedShootPoint.transform.position, WeaponRangedShootPoint.transform.forward, WeaponRange);
 				
-				Debug.DrawRay(WeaponRangedShootPoint.transform.position, WeaponRangedShootPoint.transform.forward * WeaponRange, Color.red, 2f);
+				//Debug.DrawRay(WeaponRangedShootPoint.transform.position, WeaponRangedShootPoint.transform.forward * WeaponRange, Color.red, 2f);
 			}
 			else
 			{
 				hits = Physics.RaycastAll(WeaponRangedShootPoint.transform.position, -WeaponRangedShootPoint.transform.right, WeaponRange);
 
-				Debug.DrawRay(WeaponRangedShootPoint.transform.position, -WeaponRangedShootPoint.transform.right * WeaponRange, Color.red, 2f);
+				//Debug.DrawRay(WeaponRangedShootPoint.transform.position, -WeaponRangedShootPoint.transform.right * WeaponRange, Color.red, 2f);
 			}
 
 			System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));

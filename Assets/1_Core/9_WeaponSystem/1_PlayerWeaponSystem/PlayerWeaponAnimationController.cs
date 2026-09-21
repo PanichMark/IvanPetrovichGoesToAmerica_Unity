@@ -60,7 +60,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 	private float _adjustedCameraAngle;
 
-	private float _upDownParameter;
+	private float _aimUpDownParameter;
 
 	public void Initialize(
 		Bootstrap bootstrap,
@@ -90,7 +90,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_transferBonesFirstPerson = transferBonesFirstPerson;
 		_transferBonesThirdPerson = transferBonesThirdPerson;
 
-		_upDownParameter = _playerAnimator3rdPerson.GetFloat("UpDown");
+		_aimUpDownParameter = _playerAnimator3rdPerson.GetFloat("UpDown");
 
 		_layer1stInspectWeapon = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerInspectWeapon.ToString());
 		_layer1stWeaponRightEquip = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
@@ -125,10 +125,10 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		HandleLookUpDown();
+		ProcessAimUpDown();
 	}
 
-	private void HandleLookUpDown()
+	private void ProcessAimUpDown()
 	{
 		float cameraRotationX = _playerCameraStateMachineController.transform.rotation.eulerAngles.x;
 		_adjustedCameraAngle = (cameraRotationX >= 0 && cameraRotationX < 180) ? cameraRotationX : cameraRotationX - 360;
@@ -155,15 +155,15 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		//Debug.Log(endValue);
 
-		float rawLerp = Mathf.Lerp(_upDownParameter, endValue, Time.deltaTime * 6f);
-		_upDownParameter = rawLerp;
+		float rawLerp = Mathf.Lerp(_aimUpDownParameter, endValue, Time.deltaTime * 6f);
+		_aimUpDownParameter = rawLerp;
 
 		if (Mathf.Abs(rawLerp - endValue) < 0.001f)
 		{
-			_upDownParameter = endValue;
+			_aimUpDownParameter = endValue;
 		}
 
-		_playerAnimator3rdPerson.SetFloat("UpDown", _upDownParameter);
+		_playerAnimator3rdPerson.SetFloat("UpDown", _aimUpDownParameter);
 	}
 
 	private void ShowWeapon(WeaponAbstract weapon)

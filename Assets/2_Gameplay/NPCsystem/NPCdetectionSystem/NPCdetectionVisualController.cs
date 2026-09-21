@@ -14,16 +14,18 @@ public class NPCdetectionVisualController : MonoBehaviour
 	[Range(0, 360)]
 	public float viewAngle = 90f;
 
-	public LayerMask targetMask;
-	public LayerMask obstacleMask;
+	public bool RaycastHitPlayerInsideViewZone { get; private set; }
 
+	private LayerMask _targetMask;
+	private LayerMask _obstacleMask;
+	public float RaycastAngleFromXAxis {  get; private set; }
 	// --- Ссылки на другие системы ---
 	private NPCdetectionManager _npcDetectionManager;
-	private Transform _myTransform;
+	private Transform _raycastStartPosition;
 
 	// --- Корутины управления счетом ---
 	private Coroutine _scanRoutine;
-
+	private Transform _NPCeyesPosition;
 	// --- Скорости изменения meter ---
 	[Space]
 	[Header("Detection Speed Settings")]
@@ -38,13 +40,17 @@ public class NPCdetectionVisualController : MonoBehaviour
 
 	private float HalfHeight => viewHeightTotal / 2f;
 
-	/// <summary>
-	/// Инициализация через DI. Заменяет OnEnable для игровой логики.
-	/// </summary>
 	public void Initialize(NPCdetectionManager detectionManager)
 	{
 		_npcDetectionManager = detectionManager;
-		_myTransform = transform;
+
+		_targetMask = LayerMask.GetMask("Player");
+		//_obstacleMask = LayerMask.GetMask("Default", "Outline", "HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
+		_obstacleMask = LayerMask.GetMask("Default");
+
+		_NPCeyesPosition = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine/Neck/Head");
+
+		_raycastStartPosition = _NPCeyesPosition;
 
 		// Логика поиска запускается ТОЛЬКО во время игры
 		if (Application.isPlaying)
@@ -71,31 +77,47 @@ public class NPCdetectionVisualController : MonoBehaviour
 		bool wasSeeingPlayer = (_visibleTarget != null);
 		_visibleTarget = null;
 
-		Collider[] targetsInRadius = Physics.OverlapSphere(_myTransform.position, viewRadius, targetMask);
+		Collider[] targetsInRadius = Physics.OverlapSphere(_raycastStartPosition.position, viewRadius, _targetMask);
 
 		for (int i = 0; i < targetsInRadius.Length; i++)
 		{
 			Transform target = targetsInRadius[i].transform;
 
 			// ПРОВЕРКА ПО ВЫСОТЕ (CYLINDER HEIGHT)
-			float heightDifference = Mathf.Abs(target.position.y - _myTransform.position.y);
+			float heightDifference = Mathf.Abs(target.position.y - _raycastStartPosition.position.y);
 			if (heightDifference > HalfHeight)
 			{
 				continue;
 			}
 
-			Vector3 dirToTarget = (target.position - _myTransform.position).normalized;
+			Vector3 dirToTarget = (target.position - _raycastStartPosition.position).normalized;
+
+			RaycastAngleFromXAxis = Vector3.SignedAngle(
+				new Vector3(dirToTarget.x, 0f, dirToTarget.z), // Горизонтальное направление к цели
+				dirToTarget,                                   // Реальное направление к цели (вверх или вниз)
+				_raycastStartPosition.right                             // Ось наклона: вбок
+);
+
 			Vector3 flatDirection = new Vector3(dirToTarget.x, 0, dirToTarget.z);
-			Vector3 flatForward = new Vector3(_myTransform.forward.x, 0, _myTransform.forward.z);
+			Vector3 flatForward = new Vector3(_raycastStartPosition.forward.x, 0, _raycastStartPosition.forward.z);
 
 			if (Vector3.Angle(flatForward, flatDirection) < viewAngle / 2)
 			{
-				float dstToTarget = Vector3.Distance(_myTransform.position, target.position);
-				if (!Physics.Raycast(_myTransform.position, dirToTarget, dstToTarget, obstacleMask))
+				float dstToTarget = Vector3.Distance(_raycastStartPosition.position, target.position);
+
+				if (!Physics.Raycast(_raycastStartPosition.position, dirToTarget, dstToTarget, _obstacleMask))
 				{
 					_visibleTarget = target;
-					break;
+					RaycastHitPlayerInsideViewZone = true;
+
+					//Debug.Log(RaycastAngleFromXAxis);
 				}
+				else
+				{
+					RaycastHitPlayerInsideViewZone = false;
+				}
+
+				break;
 			}
 		}
 
@@ -164,24 +186,24 @@ public class NPCdetectionVisualController : MonoBehaviour
 
 	// --- GIZMOS & DEBUG (ОТРИСОВКА БЕЗ UNITYEDITOR DEFINE) ---
 
-	private void OnDrawGizmosSelected()
+	private void OnDrawGizmos()
 	{
 		// Обновляем ссылку на трансформ для работы в Edit Mode
-		if (_myTransform == null) _myTransform = transform;
+		if (_raycastStartPosition == null) _raycastStartPosition = transform;
 
 		Color oldColor = Gizmos.color;
 
 		// Рисуем ЦИЛИНДР белыми линиями
-		DrawWireCylinder(_myTransform.position, viewRadius, viewHeightTotal);
+		//DrawWireCylinder(_myTransform.position, viewRadius, viewHeightTotal);
 
 		// Рисуем УГОЛ ОБЗОРА желтым
-		DrawViewAngleLines();
+		//DrawViewAngleLines();
 
 		// Если игрок найден — рисуем линию КРАСНЫМ (только если есть ссылка)
 		if (_visibleTarget != null)
 		{
 			Gizmos.color = Color.red;
-			Gizmos.DrawLine(_myTransform.position, _visibleTarget.position);
+			Gizmos.DrawLine(_raycastStartPosition.position, _visibleTarget.position);
 		}
 
 		Gizmos.color = oldColor;
@@ -219,14 +241,14 @@ public class NPCdetectionVisualController : MonoBehaviour
 	{
 		Gizmos.color = Color.yellow;
 
-		Vector3 forwardFlat = new Vector3(_myTransform.forward.x, 0, _myTransform.forward.z).normalized;
+		Vector3 forwardFlat = new Vector3(_raycastStartPosition.forward.x, 0, _raycastStartPosition.forward.z).normalized;
 		Quaternion rotation = Quaternion.LookRotation(forwardFlat);
 
 		Vector3 viewAngleA = rotation * DirFromAngle(-viewAngle / 2, false) * viewRadius;
 		Vector3 viewAngleB = rotation * DirFromAngle(viewAngle / 2, false) * viewRadius;
 
-		Vector3 startPointTop = _myTransform.position + Vector3.up * HalfHeight;
-		Vector3 startPointBottom = _myTransform.position - Vector3.up * HalfHeight;
+		Vector3 startPointTop = _raycastStartPosition.position + Vector3.up * HalfHeight;
+		Vector3 startPointBottom = _raycastStartPosition.position - Vector3.up * HalfHeight;
 
 		Gizmos.DrawLine(startPointTop, startPointTop + viewAngleA);
 		Gizmos.DrawLine(startPointTop, startPointTop + viewAngleB);
@@ -242,7 +264,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 	{
 		if (!angleIsGlobal)
 		{
-			angleInDegrees += _myTransform.eulerAngles.y;
+			angleInDegrees += _raycastStartPosition.eulerAngles.y;
 		}
 		return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
 	}
