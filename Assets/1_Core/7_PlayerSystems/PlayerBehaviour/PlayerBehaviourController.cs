@@ -12,15 +12,20 @@ public class PlayerBehaviourController : MonoBehaviour, IJsonSaveLoad
 	public delegate void OnPlayerEventHandler();
 	public event OnPlayerEventHandler OnPlayerArmed;
 	public event OnPlayerEventHandler OnPlayerDisarmed;
+	private GameScenesManager _scenesManager;
 
 	public void Initialize(
 		Bootstrap bootstrap,
-		IInputDevice inputDevice)
+		IInputDevice inputDevice,
+		GameScenesManager scenesManager)
 	{
 		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
+		_scenesManager = scenesManager;
 
 		Debug.Log("PlayerBehaviourController Initialized");
+
+		_scenesManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => { if (IsPlayerArmed) DisarmPlayer(); };
 	}
 
 	void Update()

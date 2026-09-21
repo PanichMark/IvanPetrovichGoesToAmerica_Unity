@@ -10,6 +10,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private static List<MainMenuDiegeticButtonController> _instances = new List<MainMenuDiegeticButtonController>();
 	private PlayerCameraBlurFilter _playerCameraBlurFilter;
 	private MainMenuReadNewsController _mainMenuReadNews;
+	private PlayerMovementController _playerMovementController;
 	private PauseMenuController _pauseMenuController;
 	private GameController _gameController;
 	private Renderer _renderer;
@@ -33,7 +34,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		Material hoverMaterial)
 	{
 		_instances.Add(this);
-
+		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_collider = GetComponent<Collider>();
 		_renderer = GetComponent<Renderer>();
 		_defaultMaterial = _renderer.material;
@@ -254,9 +255,14 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 
 		//yield return StartCoroutine(_saveLoadController.NewGame());
-		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
-		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesGameplayEnum.Scene_0_Test));
 	
+
+		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesGameplayEnum.Scene_0_Test));
+
+		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
+		_playerMovementController.SetPlayerPosition(new Vector3(0, 0, 0));
+		_playerMovementController.SetPlayerRotationY(0);
+
 		Destroy(gameObject);
 	}
 

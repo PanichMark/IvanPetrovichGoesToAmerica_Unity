@@ -15,7 +15,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	[SerializeField] protected InteractionObjectLockMechanical _mechanicalLockController;
 	[SerializeField] protected InteractionObjectLockElectronic _electronicLockController;
 	[SerializeField] protected InteractionObjectElectricalPanel _electronicElectricalPanel;
-	[SerializeField] private InteractionObjectChangeScene _changeScene;
+	[SerializeField] private InteractionObjectChangeSceneData _changeScene;
 	[SerializeField] protected bool _isLockedForever;
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;

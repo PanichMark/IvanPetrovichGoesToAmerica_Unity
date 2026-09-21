@@ -78,6 +78,8 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 		_pauseSubMenuSettingsSectionControlsController.OnMouseSensitivityXchanged += ChangeMouseSensitivityMultiplierX;
 		_pauseSubMenuSettingsSectionControlsController.OnMouseSensitivityYchanged += ChangeMouseSensitivityMultiplierY;
 
+		_movementController.OnSetPlayerCameraRotationY += SetCameraRotationY;
+
 		_gameController.OnDeactivateMainMenuEndGameTitlesActive += () =>
 		{
 			SendCameraFOV();
@@ -231,11 +233,13 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 	public void SetCameraMainMenuRotation(Quaternion rotation)
 	{
 		transform.rotation = rotation;
+		//Debug.Log(transform.rotation);
 	}
 
 	public void SetCameraRotationY(float rotationY)
 	{
-		_mouseRotation.x += rotationY;
+		_mouseRotation.x = rotationY;
+		_mouseRotation.y = 0;
 	}
 
 	private void ChangeMouseSensitivityMultiplierX(float newMouseSensitivityX)

@@ -27,9 +27,12 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 	private Image _imageComponentLoadingScreen;
 	private GameScenesList _gameScenesList;
 	public delegate void LoadSceneHandler();
+	public event LoadSceneHandler OnBeginLoadingMainMenuScene;
+
 	public event LoadSceneHandler OnBeginLoadingMainMenuOrEndGameTitlesScene;
 	public event LoadSceneHandler OnEndLoadingMainMenuOrEndGameTitlesScene;
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
+
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
 
 	public GameScenesSystemEnum PreviousScene {  get; private set; }
@@ -223,6 +226,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 	public IEnumerator LoadMainMenuScene()
 	{
 		_gameController.MainMenuOrEndGameTitlesSceneLoadBegan();
+		OnBeginLoadingMainMenuScene?.Invoke();
 		OnBeginLoadingMainMenuOrEndGameTitlesScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
 

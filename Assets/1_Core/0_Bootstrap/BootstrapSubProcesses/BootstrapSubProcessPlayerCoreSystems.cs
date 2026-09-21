@@ -117,7 +117,8 @@ public class BootstrapSubProcessPlayerSystems
 
 		PlayerBehaviour.Initialize(
 			_bootstrap,
-			_inputDevice);
+			_inputDevice,
+			_gameSceneManager);
 
 		PlayerMovementController.Initialize(_bootstrap,
 			_gameSceneManager,
@@ -149,7 +150,7 @@ public class BootstrapSubProcessPlayerSystems
 			_bootstrap,
 			_inputDevice,
 			_gameSceneManager,
-			_bootstrapSubProcessMenuSystem.PauseMenuConfirmActionController,
+			//_bootstrapSubProcessMenuSystem.PauseMenuConfirmActionController,
 			PlayerMovementController,
 			PlayerMovementStateMachineController,
 			PlayerCameraController);

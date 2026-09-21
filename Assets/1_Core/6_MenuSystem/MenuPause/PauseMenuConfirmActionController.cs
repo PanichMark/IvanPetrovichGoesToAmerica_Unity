@@ -5,8 +5,8 @@ using TMPro;
 
 public class PauseMenuConfirmActionController : MonoBehaviour
 {
-	public delegate void PlayerCameraStateMenuEventHandler();
-	public event PlayerCameraStateMenuEventHandler OnSetPlayerCameraToFirstPerson;
+	//public delegate void PlayerCameraStateMenuEventHandler();
+	//public event PlayerCameraStateMenuEventHandler OnSetPlayerCameraToFirstPerson;
 
 	private LocalizationManager _localizationManager;
 	private GameScenesManager _gameSceneManager;
@@ -267,7 +267,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		{
 			_gameController.DeactivateMainMenuOrEndGameTitlesActive();
 			StartCoroutine(_gameSceneManager.LoadGameplayScene(sceneToLoad));
-			OnSetPlayerCameraToFirstPerson?.Invoke();
+			//OnSetPlayerCameraToFirstPerson?.Invoke();
 		};
 		_pauseMenuController.OpenPauseConfirmMenu();
 	}

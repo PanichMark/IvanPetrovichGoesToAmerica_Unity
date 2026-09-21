@@ -16,6 +16,9 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 	public delegate void MovementSpeedPickableHandler(float speed);
 	public event MovementSpeedPickableHandler OnChangePlayerMovementSpeedChangedByPickable;
 
+	public delegate void PlayerCameraRotationHandler(float rotationY); 
+	public event PlayerCameraRotationHandler OnSetPlayerCameraRotationY;
+
 	private Camera _playerCamera;
 
 	private Vector3 _playerWorldMovement;
@@ -392,7 +395,8 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 
 	public void SetPlayerRotationY(float rotationY)
 	{
-		//transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+		transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+		OnSetPlayerCameraRotationY?.Invoke(rotationY);
 	}
 
 	public void GiveCurrentPlayerCameraType(PlayerCameraStateTypes cameraType)

@@ -1149,8 +1149,8 @@ Transform:
   m_GameObject: {fileID: 823720082}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -0.19999988, z: -1.9999986}
+  m_LocalScale: {x: 1, y: 1, z: 1.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1193472271}
@@ -3507,7 +3507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53184a1acd29b4945b28fdb19e42a4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainMenuDiegeticButtonsEnum: 3
+  _mainMenuDiegeticButtonsEnum: 1
 --- !u!1 &3615552159872211542
 GameObject:
   m_ObjectHideFlags: 0

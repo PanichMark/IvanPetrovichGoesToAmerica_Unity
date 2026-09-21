@@ -9,7 +9,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 	private GameScenesManager _gameSceneManager;
 
 	private PlayerCameraStateAbstract _playerCameraState;
-	private PauseMenuConfirmActionController _pauseMenuConfirmActionController;
+	//private PauseMenuConfirmActionController _pauseMenuConfirmActionController;
 	private PlayerMovementController _movementController;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerCameraController _cameraController;
@@ -25,12 +25,12 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 		Bootstrap bootstrap,
 		IInputDevice inputDevice,
 		GameScenesManager gameSceneManager,
-		PauseMenuConfirmActionController pauseMenuConfirmActionController,
+		//PauseMenuConfirmActionController pauseMenuConfirmActionController,
 		PlayerMovementController playerMovementController,
 		PlayerMovementStateMachineController playerMovementStateMachineController,
 		PlayerCameraController playerCameraController)
 	{
-		_pauseMenuConfirmActionController = pauseMenuConfirmActionController;
+		//_pauseMenuConfirmActionController = pauseMenuConfirmActionController;
 		_bootstrap = bootstrap;
 		_inputDevice = inputDevice;
 		_gameSceneManager = gameSceneManager;
@@ -40,7 +40,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
 
-		_pauseMenuConfirmActionController.OnSetPlayerCameraToFirstPerson += () => SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
+		_gameSceneManager.OnBeginLoadingGameplayScene += () => SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 
 		SetPlayerCameraState(PlayerCameraStateTypes.ThirdPerson);
 
@@ -77,13 +77,13 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 			OnThirdPersonCameraState?.Invoke();
 			_cameraController.SetCameraToThirdPerson();
 		}
-		else if (newPlayerCameraStateType == PlayerCameraStateTypes.Cutscene)
-		{
-			newState = new PlayerCameraStateCutscene();
-		}
 		else if (newPlayerCameraStateType == PlayerCameraStateTypes.MainMenu)
 		{
 			newState = new PlayerCameraStateMainMenu(_cameraController, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(20, -12, 0));
+		}
+		else if (newPlayerCameraStateType == PlayerCameraStateTypes.Cutscene)
+		{
+			newState = new PlayerCameraStateCutscene();
 		}
 		else
 		{
