@@ -45,7 +45,7 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 		_magazine3rdPersonOld = ThirdPersonWeaponModelInstance.transform.Find("Magazine").gameObject;
 	}
 
-	public override void OnHideWeapon()
+	public override void OnHideWeaponPlayer()
 	{
 		_magazine1stPersonOld.SetActive(true);
 		_magazine3rdPersonOld.SetActive(true);

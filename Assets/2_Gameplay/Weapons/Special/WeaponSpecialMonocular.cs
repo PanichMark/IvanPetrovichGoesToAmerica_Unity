@@ -20,7 +20,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 		throw new System.NotImplementedException();
 	}
 
-	public override void InitializeWeapon()
+	public override void InitializeWeaponPlayer()
 	{
 		_gameCanvasesList = ServiceLocator.Resolve<GameplayCanvases>();
 		_canvasHUDmonocular = _gameCanvasesList.CanvasHUDmonocular;
@@ -35,12 +35,12 @@ public class WeaponSpecialMonocular : WeaponAbstract
 		//throw new System.NotImplementedException();
 	}
 
-	public override void StopAutoAttacking()
+	public override void StopAutoAttackingWeaponPlayer()
 	{
 		//throw new System.NotImplementedException();
 	}
 
-	public override void WeaponAttack()
+	public override void WeaponPlayerAttack()
 	{
 		if (_isAttacking)
 		{

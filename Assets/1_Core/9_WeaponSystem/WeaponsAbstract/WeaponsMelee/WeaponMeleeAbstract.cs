@@ -14,17 +14,18 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	public WeaponsMeleeTypes WeaponMeleeType => _weaponMeleeType;
 
-	public override void InitializeWeapon()
+	public override void InitializeWeaponPlayer()
 	{
-		if (_isThisPlayerWeapon == true)
-		{
-			_attackPoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
-		}
-
+		_attackPoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		
 		InitializeWeaponMelee();
 	}
 
-	public override void WeaponAttack()
+	public override void InitializeWeaponNPC(Transform NPCweaponSlotTransform)
+	{
+	}
+
+	public override void WeaponPlayerAttack()
 	{
 		if (_isAttacking)
 		{
@@ -58,7 +59,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 		}
 	}
 
-	public override void StopAutoAttacking()
+	public override void StopAutoAttackingWeaponPlayer()
 	{
 		IsWeaponPlayerAutoAttacking = false;
 		if (_currentWeaponPlayerAutoAttackCourutine != null)

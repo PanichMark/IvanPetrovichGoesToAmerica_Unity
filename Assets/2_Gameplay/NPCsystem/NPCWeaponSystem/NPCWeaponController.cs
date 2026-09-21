@@ -7,11 +7,12 @@ public class NPCweaponController : MonoBehaviour
 	private WeaponAbstract _NPCweaponConponent;
 	public Vector3 NPCWeaponSlotTransform { get; private set; }
 	[SerializeField] private NPCweaponSlotTypes _weaponRestingSlotType;
+	[SerializeField] private WeaponHandType _weaponHandType;
 	private GameObject _weaponRestingSlot;
 	private NPCdetectionManager _NPCdetectionManager;
 	private NPCstateMachineController _NPCstateMachineController;
 	private GameObject _weaponHandSlot;
-
+	private Transform _NPCweaponAttackPoint;
 	private bool _isWeaponEquipped;
 	private bool _wasWeaponDropped;
 
@@ -49,7 +50,10 @@ public class NPCweaponController : MonoBehaviour
 			_weaponRestingSlot = _weaponHandSlot;
 		}
 
-		_NPCweaponConponent.InstantiateWeaponNPC(_weaponRestingSlot.transform);
+		_NPCweaponAttackPoint = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine");
+		_NPCweaponAttackPoint.rotation = Quaternion.Euler(0f, 90f, 0f);
+
+		_NPCweaponConponent.InstantiateWeaponNPC(_weaponRestingSlot.transform, _NPCweaponAttackPoint);
 
 		_NPCstateMachineController.OnNewNPCstate += ChangeWeaponState;
 	}
@@ -89,8 +93,21 @@ public class NPCweaponController : MonoBehaviour
 	}
 
 	private void AttackWeapon()
-	{ 
+	{
+		_NPCweaponConponent.WeaponNPCattack();
+	}
 
+	private float _timer;
+
+	private void Update()
+	{
+		_timer += Time.deltaTime;
+
+		if (_timer >= 1f)
+		{
+			_timer = 0f;
+			_NPCweaponConponent.WeaponNPCattack();
+		}
 	}
 
 	private void ReloadRangedWeapon()

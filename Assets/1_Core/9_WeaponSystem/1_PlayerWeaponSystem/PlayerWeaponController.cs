@@ -22,15 +22,6 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 
 	public bool WasRightButtonPressedLastFrame { get; private set; }
 	public bool WasLeftButtonPressedLastFrame { get; private set; }
-	public int LayersToDamage => _layersToDamage;
-	private int _layersToDamage;
-	public int LayersOrganisms => _layersOrganisms;
-	private int _layersOrganisms;
-	public int LayersHeads => _layersHeads;
-	private int _layersHeads;
-
-	public int LayerNPC => _layerNPC;
-	private int _layerNPC;
 
 	public delegate void WeaponShootHandler(WeaponHandType weaponHandType);
 	public event WeaponShootHandler OnWeaponShoot;
@@ -71,11 +62,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		_interactionController = interactionController;
 		_HUDhealthAndManaController = HUDhealthAndManaController;
 
-		_layersToDamage = LayerMask.GetMask("Default", "Outline", "HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
-		_layersOrganisms = LayerMask.GetMask("HitboxBody_Organism", "HitboxHead_Organism");
-		_layersHeads = LayerMask.GetMask("HitboxHead_Organism", "HitboxHead_Robot");
-
-		_layerNPC = LayerMask.GetMask("NPC");
+	
 
 		IsAbleToUseRightWeapon = true;
 		IsAbleToUseLeftWeapon = true;
@@ -391,7 +378,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 			{
 				HideWeapon(WeaponHandType.Left);
 				Destroy(LeftHandWeapon);
-				LeftHandWeaponComponent.DestroyWeaponModel();
+				LeftHandWeaponComponent.DestroyWeaponPlayerModels();
 			}
 
 			LeftHandWeapon = weaponInstance;
@@ -418,7 +405,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 			{
 				HideWeapon(WeaponHandType.Right);
 				Destroy(RightHandWeapon);
-				RightHandWeaponComponent.DestroyWeaponModel();
+				RightHandWeaponComponent.DestroyWeaponPlayerModels();
 			}
 
 			RightHandWeapon = weaponInstance;
@@ -443,7 +430,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 
 		if (RightHandWeapon != null && _playerBehaviour.IsPlayerArmed && IsAbleToUseRightWeapon)
 		{
-			RightHandWeaponComponent.WeaponAttack();
+			RightHandWeaponComponent.WeaponPlayerAttack();
 		}
 		if (_interactionController.CurrentPickableObject != null)
 		{
@@ -460,7 +447,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 	{
 		if (RightHandWeapon != null)
 		{
-			RightHandWeaponComponent.StopAutoAttacking();
+			RightHandWeaponComponent.StopAutoAttackingWeaponPlayer();
 		}
 	}
 
@@ -468,7 +455,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 	{
 		if (LeftHandWeapon != null && _playerBehaviour.IsPlayerArmed && IsAbleToUseLeftWeapon)
 		{
-			LeftHandWeaponComponent.WeaponAttack();
+			LeftHandWeaponComponent.WeaponPlayerAttack();
 		}
 		if (_interactionController.CurrentPickableObject != null)
 		{
@@ -485,7 +472,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 	{
 		if (LeftHandWeapon != null)
 		{
-			LeftHandWeaponComponent.StopAutoAttacking();
+			LeftHandWeaponComponent.StopAutoAttackingWeaponPlayer();
 		}
 	}
 
@@ -506,7 +493,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 			if (RightHandWeapon != null)
 			{
 				Destroy(RightHandWeapon);
-				RightHandWeaponComponent.DestroyWeaponModel();
+				RightHandWeaponComponent.DestroyWeaponPlayerModels();
 
 				RightHandWeapon = null;
 				RightHandWeaponComponent = null;
@@ -527,7 +514,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 			if (LeftHandWeapon != null)
 			{
 				Destroy(LeftHandWeapon);
-				LeftHandWeaponComponent.DestroyWeaponModel();
+				LeftHandWeaponComponent.DestroyWeaponPlayerModels();
 
 				LeftHandWeapon = null;
 				LeftHandWeaponComponent = null;
@@ -579,7 +566,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		{
 			if (RightHandWeaponComponent != null)
 			{
-				RightHandWeaponComponent.OnHideWeapon();
+				RightHandWeaponComponent.OnHideWeaponPlayer();
 
 				if (RightHandWeaponComponent.FirstPersonWeaponModelInstance != null)
 					RightHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);
@@ -594,7 +581,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		{
 			if (LeftHandWeaponComponent != null)
 			{
-				LeftHandWeaponComponent.OnHideWeapon();
+				LeftHandWeaponComponent.OnHideWeaponPlayer();
 
 				if (LeftHandWeaponComponent.FirstPersonWeaponModelInstance != null)
 					LeftHandWeaponComponent.FirstPersonWeaponModelInstance.SetActive(false);

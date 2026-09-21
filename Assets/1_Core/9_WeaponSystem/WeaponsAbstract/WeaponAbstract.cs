@@ -13,13 +13,20 @@ public abstract class WeaponAbstract : MonoBehaviour
 	public Sprite WeaponIconBig => _weaponIconBig;
 	public Sprite WeaponIconSmall => _weaponIconSmall;
 	[SerializeField] protected AudioClip _weaponSoundAttack;
+
+	protected int _layersToDamage;
+
+	protected int _layersOrganisms;
+
+	protected int _layersHeads;
 	
+	protected int _layerNPC;
+
 	public abstract bool IsWeaponAuto { get; }
 	public abstract float WeaponAttackSpeedRate { get; }
 	public bool IsWeaponPlayerAutoAttacking { get; protected set; }
 	protected Coroutine _currentWeaponPlayerAutoAttackCourutine;
 	protected bool _isWeaponInitialized;
-	protected bool _isThisPlayerWeapon;
 	protected PlayerWeaponController _playerWeaponController;
 	protected PlayerWeaponAnimationController _playerWeaponAnimationController;
 	protected AudioSource _weaponAudioSource;
@@ -42,11 +49,16 @@ public abstract class WeaponAbstract : MonoBehaviour
 	protected GameObject _thirdPersonRightHandWeaponSlotGameObject;
 	protected Transform _thirdPersonRightHandWeaponSlotTransform;
 
-	public abstract void WeaponAttack();
+	public abstract void WeaponPlayerAttack();
 	public abstract void StartAutoAttackingWeaponPlayer();
-	public abstract void StopAutoAttacking();
+	public abstract void StopAutoAttackingWeaponPlayer();
 
-	public virtual void OnHideWeapon()
+	public virtual void WeaponNPCattack()
+	{
+
+	}
+
+	public virtual void OnHideWeaponPlayer()
 	{
 
 	}
@@ -57,9 +69,13 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 	public void InstantiateWeaponPlayer(PlayerWeaponController playerWeaponController, WeaponHandType handType)
 	{
+		_layersToDamage = LayerMask.GetMask("Default", "Outline", "HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
+		_layersOrganisms = LayerMask.GetMask("HitboxBody_Organism", "HitboxHead_Organism");
+		_layersHeads = LayerMask.GetMask("HitboxHead_Organism", "HitboxHead_Robot");
+		_layerNPC = LayerMask.GetMask("NPC");
+
 		_playerWeaponController = playerWeaponController;
 
-		_isThisPlayerWeapon = true;
 		WeaponHandType = handType;
 
 		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
@@ -107,7 +123,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();
 
-		InitializeWeapon();
+		InitializeWeaponPlayer();
 
 		_isWeaponInitialized = true;
 	}
@@ -129,16 +145,19 @@ public abstract class WeaponAbstract : MonoBehaviour
 		//FirstPersonWeaponModelInstanceComponent.Make1stPersonWeaponModelOwnerPlayer();
 	}
 
-	public void Make1stPersonWeaponModelOwnerPlayer()
+	public abstract void InitializeWeaponPlayer();
+
+	public virtual void InitializeWeaponNPC(Transform NPCweaponAttackPoint)
 	{
-		_isThisPlayerWeapon = true;
+
 	}
 
-	public abstract void InitializeWeapon();
-
-	public void InstantiateWeaponNPC(Transform NPCweaponSlotTransform)
+	public void InstantiateWeaponNPC(Transform NPCweaponSlotTransform, Transform NPCweaponAttackPoint)
 	{
-		_isThisPlayerWeapon = false;
+		_layersToDamage = LayerMask.GetMask("Player", "Default", "Outline", "HitboxBody_Organism", "HitboxBody_Robot", "HitboxHead_Organism", "HitboxHead_Robot");
+		_layersOrganisms = LayerMask.GetMask("HitboxBody_Organism", "HitboxHead_Organism");
+		_layersHeads = LayerMask.GetMask("HitboxHead_Organism", "HitboxHead_Robot");
+		_layerNPC = LayerMask.GetMask("NPC");
 
 		//_thirdPersonRightHandWeaponSlotTransform = NPCweaponSlotTransform;
 		gameObject.transform.SetParent(NPCweaponSlotTransform, false);
@@ -153,20 +172,17 @@ public abstract class WeaponAbstract : MonoBehaviour
 		{
 			gameObject.transform.localRotation = Quaternion.identity;
 		}
+
+		InitializeWeaponNPC(NPCweaponAttackPoint);
 	}
 
-	public void DestroyWeaponModel()
+	public void DestroyWeaponPlayerModels()
 	{
-		if (ThirdPersonWeaponModelInstance != null)
-		{
-			Destroy(ThirdPersonWeaponModelInstance);
-			ThirdPersonWeaponModelInstance = null;
-		}
-		if (FirstPersonWeaponModelInstance != null)
-		{
-			Destroy(FirstPersonWeaponModelInstance);
-			FirstPersonWeaponModelInstance = null;
-		}
+		Destroy(ThirdPersonWeaponModelInstance);
+		ThirdPersonWeaponModelInstance = null;
+		
+		Destroy(FirstPersonWeaponModelInstance);
+		FirstPersonWeaponModelInstance = null;
 	}
 
 	public void MirrorWeaponPlayerModel()

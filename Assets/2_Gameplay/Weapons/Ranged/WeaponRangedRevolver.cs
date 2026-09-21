@@ -57,7 +57,7 @@ public class WeaponRangedRevolver : WeaponRangedAbstract
 		ReapplyCartridgePosition();
 	}
 
-	public override void OnHideWeapon()
+	public override void OnHideWeaponPlayer()
 	{
 		if (PlayerMagazineAmmoCurrent > 0)
 		{

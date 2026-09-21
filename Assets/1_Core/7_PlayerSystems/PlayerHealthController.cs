@@ -104,6 +104,8 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 
 	public void TakeDamage(float amount)
 	{
+		Debug.Log($"Player is damaged by: {amount}");
+
 		CurrentPlayerHealth -= amount;
 
 		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;

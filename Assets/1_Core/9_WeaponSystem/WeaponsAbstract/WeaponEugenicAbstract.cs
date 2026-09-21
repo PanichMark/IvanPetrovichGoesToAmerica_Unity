@@ -23,20 +23,22 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	protected GameObject _vfxInstanceInspectRight;
 	protected GameObject _vfxInstanceInspectLeft;
 
-	public override void InitializeWeapon()
+	public override void InitializeWeaponPlayer()
 	{
-		if (_isThisPlayerWeapon == true)
-		{
-			_eugenicAttackDirection = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
-			_eugenicSourcePoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+		_eugenicAttackDirection = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_eugenicSourcePoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
 
-			_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
-		}
-
+		_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
+		
 		InitializeWeaponEugenic();
 	}
 
-	public override void WeaponAttack()
+	public override void InitializeWeaponNPC(Transform NPCweaponSlotTransform)
+	{
+	}
+
+
+	public override void WeaponPlayerAttack()
 	{
 		if (_playerResourcesManaManager.CurrentPlayerMana >= ManaCost)
 		{
@@ -75,7 +77,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		}
 	}
 
-	public override void StopAutoAttacking()
+	public override void StopAutoAttackingWeaponPlayer()
 	{
 		IsWeaponPlayerAutoAttacking = false;
 		if (_currentWeaponPlayerAutoAttackCourutine != null)

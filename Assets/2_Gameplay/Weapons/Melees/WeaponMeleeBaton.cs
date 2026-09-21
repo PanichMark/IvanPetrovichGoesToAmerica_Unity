@@ -47,7 +47,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
-	public override void WeaponAttack()
+	public override void WeaponPlayerAttack()
 	{
 		
 		if (_isAttacking)

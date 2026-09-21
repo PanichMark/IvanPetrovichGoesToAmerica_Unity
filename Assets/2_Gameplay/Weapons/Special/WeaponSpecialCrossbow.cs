@@ -57,7 +57,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
 
-	public override void InitializeWeapon()
+	public override void InitializeWeaponPlayer()
 	{
 		_projectile1stPerson = FirstPersonWeaponModelInstance.transform.Find("Projectile").gameObject;
 		_projectileParent1stPerson = _projectile1stPerson.transform.parent;
@@ -120,7 +120,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		_lineRenderer3rdPerson.enabled = true;
 	}
 
-	public override void WeaponAttack()
+	public override void WeaponPlayerAttack()
 	{
 		if (_isCrossbowAttacking) return;
 
@@ -137,7 +137,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	
 	}
 
-	public override void StopAutoAttacking()
+	public override void StopAutoAttackingWeaponPlayer()
 	{
 		//Debug.Log("LAUNCH CROSSBOW");
 
