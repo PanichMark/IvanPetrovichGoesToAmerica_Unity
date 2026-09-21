@@ -193,7 +193,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		SetScreenBrightness(100);
 		_sliderComponentScreenBrightness.value = 100;
 
-		_gameController.OnOpenMainMenu += () => OnCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
+		_gameController.OnActivateMainMenuEndGameTitlesActive += () => OnCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
 	
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_playerPrefsSettingsController.OnApplySettingsSectionGeneralPlayerPrefs += ApplySystemLoadedSettings;
@@ -413,7 +413,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		_textComponentNumberSliderCameraFOV.text = ((int)newCameraFOV).ToString();
 
-		if (!_gameController.IsMainMenuOpen)
+		if (!_gameController.IsMainMenuOrEndGameTitlesActive)
 		{
 			OnCameraFOVchanged?.Invoke(newCameraFOV, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
 		}

@@ -99,7 +99,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 			ChangeCrossbow3rdPerson();
 		}
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += FullStopPlunging;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += FullStopPlunging;
 		_gameSceneManager.OnBeginLoadingGameplayScene += FullStopPlunging;
 		_playerBehaviour.OnPlayerDisarmed += StopCrossbowAttack;
 		_playerCameraStateMachineController.OnFirstPersonCameraState += ChangeCrossbow1stPerson;
@@ -399,7 +399,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 		if (_gameSceneManager != null)
 		{
-			_gameSceneManager.OnBeginLoadingMainMenuScene -= FullStopPlunging;
+			_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene -= FullStopPlunging;
 			_gameSceneManager.OnBeginLoadingGameplayScene -= FullStopPlunging;
 		}
 

@@ -124,7 +124,7 @@ public class PauseMenuController : MonoBehaviour
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += ClosePauseSubMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += ClosePauseSubMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseSubMenu;
 
 		_menuManager.OnOpenPauseMenu += ShowPauseMenu;
@@ -140,7 +140,7 @@ public class PauseMenuController : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		if (_inputDevice.GetKeyPauseMenu() && _menuManager.PauseMenuLevel.Count == 2 && !_gameController.IsMainMenuOpen && !IsPauseConfirmMenuOpened)
+		if (_inputDevice.GetKeyPauseMenu() && _menuManager.PauseMenuLevel.Count == 2 && !_gameController.IsMainMenuOrEndGameTitlesActive && !IsPauseConfirmMenuOpened)
 		{
 			ClosePauseSubMenu();
 		}
@@ -226,13 +226,13 @@ public class PauseMenuController : MonoBehaviour
 			_menuManager.PopPauseMenuLevel();
 		}
 
-		if (_gameController.IsMainMenuOpen)
+		if (_gameController.IsMainMenuOrEndGameTitlesActive)
 		{
 			_menuManager.CloseAnyMenu();
 			_menuBackgroundController.HideCanvasMenuBackground();
 		}
 
-		if (!_gameController.IsMainMenuOpen)
+		if (!_gameController.IsMainMenuOrEndGameTitlesActive)
 		{
 			if (_gameController.IsPauseMenuAvailable || _gameController.IsPlayerDead)
 			{

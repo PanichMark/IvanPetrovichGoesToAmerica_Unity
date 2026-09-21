@@ -56,7 +56,7 @@ _buttonExitNoteMenu = _viewModelMenuNote.ButtonCloseMenuNote.GetComponent<Button
 _textBackground = _viewModelMenuNote.ImageNoteBlackBackground.GetComponent<Image>();
 
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
-_gameSceneManager.OnBeginLoadingMainMenuScene += CloseAndDeactivate;
+_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseAndDeactivate;
 _gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
 
 _textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();

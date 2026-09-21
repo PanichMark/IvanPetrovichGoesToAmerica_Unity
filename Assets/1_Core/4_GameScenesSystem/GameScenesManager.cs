@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,14 +27,16 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 	private Image _imageComponentLoadingScreen;
 	private GameScenesList _gameScenesList;
 	public delegate void LoadSceneHandler();
-	public event LoadSceneHandler OnBeginLoadingMainMenuScene;
-	public event LoadSceneHandler OnEndLoadingMainMenuScene;
+	public event LoadSceneHandler OnBeginLoadingMainMenuOrEndGameTitlesScene;
+	public event LoadSceneHandler OnEndLoadingMainMenuOrEndGameTitlesScene;
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
 
+	public GameScenesSystemEnum PreviousScene {  get; private set; }
+
 	private bool _wasPreviouslyCopiedToTEMP;
 
-	public bool WasInitialGameplaySceneLoaded {  get; private set; }
+	public bool WasInitialSceneLoaded {  get; private set; }
 
 	public void Initialize(
 		GameController gameController,
@@ -137,12 +140,14 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		{
 			Scene loadedScene = SceneManager.GetSceneAt(1);
 
+			PreviousScene = (GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), loadedScene.name);
+
 			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
 			{
 				float unloadProgress = 0f;
 				float unloadTarget = 0.25f;
 
-				if (WasInitialGameplaySceneLoaded)
+				if (WasInitialSceneLoaded)
 				{
 					if (!_wasPreviouslyCopiedToTEMP)
 					{
@@ -209,7 +214,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 
 		Time.timeScale = 1f;
 
-		WasInitialGameplaySceneLoaded = true;
+		WasInitialSceneLoaded = true;
 		Debug.Log($"Loading scene {sceneName} Ended Initial");
 
 		yield return null;
@@ -217,8 +222,8 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 
 	public IEnumerator LoadMainMenuScene()
 	{
-		_gameController.MainMenuSceneLoadBegan();
-		OnBeginLoadingMainMenuScene?.Invoke();
+		_gameController.MainMenuOrEndGameTitlesSceneLoadBegan();
+		OnBeginLoadingMainMenuOrEndGameTitlesScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
 
 		Cursor.lockState = CursorLockMode.Locked;
@@ -235,7 +240,9 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 
 		if (SceneManager.sceneCount > 1)
 		{
-			Scene loadedScene = SceneManager.GetSceneAt(1); 
+			Scene loadedScene = SceneManager.GetSceneAt(1);
+
+			PreviousScene = (GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), loadedScene.name);
 
 			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
 			{
@@ -248,7 +255,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 			}
 		}
 		Debug.Log("Scene_MainMenu loading started");
-		AsyncOperation operation = SceneManager.LoadSceneAsync("Scene_0_MainMenu", LoadSceneMode.Additive);
+		AsyncOperation operation = SceneManager.LoadSceneAsync(GameScenesSystemEnum.Scene_0_MainMenu.ToString(), LoadSceneMode.Additive);
 
 		while (!operation.isDone)
 		{
@@ -261,13 +268,70 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		Time.timeScale = 1f; 
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
-		OnEndLoadingMainMenuScene?.Invoke();
-		_gameController.MainMenuSceneLoadEnded();
+		OnEndLoadingMainMenuOrEndGameTitlesScene?.Invoke();
+		_gameController.MainMenuOrEndGameTitlesSceneLoadEnded();
 		Debug.Log("Scene_MainMenu loading ended");
 	
 		_canvasLoadingScreen.SetActive(false);
 
-		WasInitialGameplaySceneLoaded = true;
+		WasInitialSceneLoaded = true;
+		yield return null;
+	}
+
+	public IEnumerator LoadEndGameTitlesScene()
+	{
+		_gameController.MainMenuOrEndGameTitlesSceneLoadBegan();
+		OnBeginLoadingMainMenuOrEndGameTitlesScene?.Invoke();
+		_canvasLoadingScreen.SetActive(true);
+
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+		Time.timeScale = 0f;
+
+		_sliderLoadingStatus.SetActive(false);
+		_textSceneName.SetActive(false);
+		_textSceneDescription.SetActive(false);
+		_textLoadingReady.SetActive(false);
+
+		Sprite spriteToUse = null;
+		//Sprite spriteToUse = Resources.Load<Sprite>("Sprites/Sprites_LoadingScreens/Scene_0_EndGameTitles");
+		_imageComponentLoadingScreen.sprite = spriteToUse;
+
+		if (SceneManager.sceneCount > 1)
+		{
+			Scene loadedScene = SceneManager.GetSceneAt(1);
+
+			PreviousScene = (GameScenesSystemEnum)Enum.Parse(typeof(GameScenesSystemEnum), loadedScene.name);
+
+			if (loadedScene.isLoaded && loadedScene.buildIndex != SceneManager.GetActiveScene().buildIndex)
+			{
+				Debug.Log("Начало выгрузки сцены: " + loadedScene.name);
+
+				SceneManager.UnloadSceneAsync(loadedScene);
+				yield return new WaitUntil(() => !loadedScene.isLoaded);
+
+				Debug.Log("Завершение выгрузки сцены: " + loadedScene.name);
+			}
+		}
+		Debug.Log("Scene_MainMenu loading started");
+		AsyncOperation operation = SceneManager.LoadSceneAsync(GameScenesSystemEnum.Scene_0_EndGameTitles.ToString(), LoadSceneMode.Additive);
+
+		while (!operation.isDone)
+		{
+			yield return null;
+		}
+
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
+		Time.timeScale = 1f;
+
+		OnEndLoadingMainMenuOrEndGameTitlesScene?.Invoke();
+		_gameController.MainMenuOrEndGameTitlesSceneLoadEnded();
+
+		_canvasLoadingScreen.SetActive(false);
+
+		WasInitialSceneLoaded = true;
 		yield return null;
 	}
 

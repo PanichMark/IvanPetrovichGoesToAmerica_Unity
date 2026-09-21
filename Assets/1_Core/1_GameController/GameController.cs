@@ -7,7 +7,7 @@ public class GameController
 	public bool IsPlayerMovementRestrictedByCarryingNonThrowable { get; private set; }
 	public bool IsPlayerDead { get; private set; }
 	public bool IsPlayerPlunging { get; private set; }
-	public bool IsMainMenuOpen {  get; private set; }
+	public bool IsMainMenuOrEndGameTitlesActive {  get; private set; }
 	public bool IsPauseMenuAvailable { get; private set; }
 	public bool IsGameAbleToSave { get; private set; }
 
@@ -21,8 +21,8 @@ public class GameController
 	public event PlayerDeathHandler OnPlayerRevive;
 
 	public delegate void MainMenuEventHandler();
-	public event MainMenuEventHandler OnOpenMainMenu;
-	public event MainMenuEventHandler OnCloseMainMenu;
+	public event MainMenuEventHandler OnActivateMainMenuEndGameTitlesActive;
+	public event MainMenuEventHandler OnDeactivateMainMenuEndGameTitlesActive;
 
 	public GameController()
 	{
@@ -67,18 +67,18 @@ public class GameController
 		IsPlayerPlunging = false;
 	}
 
-	private void OpenMainMenu()
+	private void ActivateMainMenuOrEndGameTitlesActive()
 	{
-		IsMainMenuOpen = true;
-		OnOpenMainMenu?.Invoke();
+		IsMainMenuOrEndGameTitlesActive = true;
+		OnActivateMainMenuEndGameTitlesActive?.Invoke();
 		MakePlayerNonControllable();
 		Debug.Log("MainMenu opened");
 	}
 
-	public void CloseMainMenu()
+	public void DeactivateMainMenuOrEndGameTitlesActive()
 	{
-		IsMainMenuOpen = false;
-		OnCloseMainMenu?.Invoke();
+		IsMainMenuOrEndGameTitlesActive = false;
+		OnDeactivateMainMenuEndGameTitlesActive?.Invoke();
 		Debug.Log("MainMenu closed");
 	}
 
@@ -100,7 +100,7 @@ public class GameController
 		MakePlayerControllable();
 	}
 
-	public void MainMenuSceneLoadBegan()
+	public void MainMenuOrEndGameTitlesSceneLoadBegan()
 	{
 		if (IsPlayerDead)
 		{
@@ -112,9 +112,9 @@ public class GameController
 		MakePlayerNonControllable();
 	}
 
-	public void MainMenuSceneLoadEnded()
+	public void MainMenuOrEndGameTitlesSceneLoadEnded()
 	{
-		OpenMainMenu();
+		ActivateMainMenuOrEndGameTitlesActive();
 		IsPauseMenuAvailable = true;
 	}
 

@@ -122,7 +122,7 @@ public class CutsceneController : MonoBehaviour
 		}
 
 		_gameSceneManager.OnBeginLoadingGameplayScene += CancelCutsceneOnLoad;
-		_gameSceneManager.OnBeginLoadingMainMenuScene += CancelCutsceneOnLoad;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CancelCutsceneOnLoad;
 		_director.stopped += OnTimelineStopped;
 		_menuManager.OnOpenPauseMenu += PauseCutscene;
 		_menuManager.OnClosePauseMenu += ResumeCutscene;
@@ -142,7 +142,7 @@ public class CutsceneController : MonoBehaviour
 		_menuManager.OnClosePauseMenu -= ResumeCutscene;
 
 		_gameSceneManager.OnBeginLoadingGameplayScene -= CancelCutsceneOnLoad;
-		_gameSceneManager.OnBeginLoadingMainMenuScene -= CancelCutsceneOnLoad;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene -= CancelCutsceneOnLoad;
 	}
 
 

@@ -109,7 +109,7 @@ public class HUDweaponsController : MonoBehaviour, IJsonSaveLoad
 		_playerBehaviour.OnPlayerArmed += ShowCanvasHUDammo;
 		_playerBehaviour.OnPlayerDisarmed += HideCanvasHUDammo;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDammo;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += HideCanvasHUDammo;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDammo;
 
 		_menuManager.OnOpenWeaponWheelMenu += HideCanvasHUDammo;
@@ -140,7 +140,7 @@ public class HUDweaponsController : MonoBehaviour, IJsonSaveLoad
 
 	private void ShowCanvasHUDammo()
 	{
-		if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_gameController.IsMainMenuOpen && !_menuManager.IsWeaponWheelMenuOpened && !_menuManager.IsMainMenuBeingLoaded && _playerBehaviour.IsPlayerArmed)
+		if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_gameController.IsMainMenuOrEndGameTitlesActive && !_menuManager.IsWeaponWheelMenuOpened && !_menuManager.IsMainMenuBeingLoaded && _playerBehaviour.IsPlayerArmed)
 		{
 			_canvasHUDammo.SetActive(true);
 

@@ -75,7 +75,7 @@ _buttonExitLockpickMechanicalMenu = _viewModelMenuLockpickMechanical.ButtonClose
 		_textButtonExitLockpickMechanicalMenu = _viewModelMenuLockpickMechanical.TextButtonCloseMenuLockpickMechanical.GetComponent<TextMeshProUGUI>();
 		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
-_gameSceneManager.OnBeginLoadingMainMenuScene += OnClosePuzzle;
+_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += OnClosePuzzle;
 _gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;
 _textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical", gameObject.name);
 

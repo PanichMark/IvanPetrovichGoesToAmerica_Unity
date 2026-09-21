@@ -32,7 +32,7 @@ public class ObjectPoolWeaponController : MonoBehaviour
 		RecreatePool();
 
 		_gameSceneManager.OnBeginLoadingGameplayScene += RecreatePool;
-		_gameSceneManager.OnBeginLoadingMainMenuScene += RecreatePool;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += RecreatePool;
 
 		_pauseSubMenuSettingsSectionGeneralController.OnShowBlood += ShowBloodDecals;
 		_pauseSubMenuSettingsSectionGeneralController.OnHideBlood += HideBloodDecals;

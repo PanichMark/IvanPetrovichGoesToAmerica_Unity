@@ -61,7 +61,7 @@ _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 		_menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
 		_menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
-		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseElectronicLockPuzzle;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseElectronicLockPuzzle;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseElectronicLockPuzzle;
 	}
 

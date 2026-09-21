@@ -26,7 +26,7 @@ public class PlayerMovementStateMachineController : MonoBehaviour, IJsonSaveLoad
 		_gameSceneManager = gameSceneManager;
 		_playerMovementController = playerMovementController;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdleStanding);
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdleStanding);
 
 		_playerMovementController.OnSendSignalToPlayerMovementStateMachine += SetPlayerMovementState;
 

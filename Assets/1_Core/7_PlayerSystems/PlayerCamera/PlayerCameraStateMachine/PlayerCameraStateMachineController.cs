@@ -38,7 +38,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_cameraController = playerCameraController;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
 
 		_pauseMenuConfirmActionController.OnSetPlayerCameraToFirstPerson += () => SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 

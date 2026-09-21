@@ -114,7 +114,7 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 		_HUDInteractionDropText = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Drop");
 		_HUDInteractionThrowText = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Throw");
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDInteraction;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += HideCanvasHUDInteraction;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDInteraction;
 
 		_pauseSubMenuSettingsSectionGeneralController.OnHUDfull += ShowHUDinteraction;
@@ -156,7 +156,7 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 
 	private void ShowCanvasHUDInteraction()
 	{
-		if (!_gameController.IsMainMenuOpen)
+		if (!_gameController.IsMainMenuOrEndGameTitlesActive)
 		{
 			_canvasHUDinteraction.gameObject.SetActive(true);
 		}

@@ -78,13 +78,13 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 		_pauseSubMenuSettingsSectionControlsController.OnMouseSensitivityXchanged += ChangeMouseSensitivityMultiplierX;
 		_pauseSubMenuSettingsSectionControlsController.OnMouseSensitivityYchanged += ChangeMouseSensitivityMultiplierY;
 
-		_gameController.OnCloseMainMenu += () =>
+		_gameController.OnDeactivateMainMenuEndGameTitlesActive += () =>
 		{
 			SendCameraFOV();
 			//Debug.Log(_currentFOV);
 			_pauseSubMenuSettingsSectionGeneralController.SetCameraFOV(_currentFOV);
 		};
-		_gameController.OnOpenMainMenu += SendCameraFOV;
+		_gameController.OnActivateMainMenuEndGameTitlesActive += SendCameraFOV;
 
 		Debug.Log("PlayerCameraController Initialized");
 	}

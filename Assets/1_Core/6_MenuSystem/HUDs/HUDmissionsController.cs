@@ -61,7 +61,7 @@ public class HUDmissionsController : MonoBehaviour
 		_pauseSubMenuSettingsSectionGeneralController.OnHUDdialoguesHide += ShowHUDmission;
 		_pauseSubMenuSettingsSectionGeneralController.OnHUDturnOff += HideHUDmission;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasHUDmissions;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += HideCanvasHUDmissions;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDmissions;
 
 		_gameController.OnPlayerEarlyDeath += HideCanvasHUDmissions;
@@ -113,7 +113,7 @@ public class HUDmissionsController : MonoBehaviour
 
 	private void ShowCanvasHUDmissions()
 	{
-		if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_gameController.IsMainMenuOpen && !_menuManager.IsWeaponWheelMenuOpened && !_menuManager.IsMainMenuBeingLoaded)
+		if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_gameController.IsMainMenuOrEndGameTitlesActive && !_menuManager.IsWeaponWheelMenuOpened && !_menuManager.IsMainMenuBeingLoaded)
 		{
 			_canvasHUDmissions.SetActive(true);
 

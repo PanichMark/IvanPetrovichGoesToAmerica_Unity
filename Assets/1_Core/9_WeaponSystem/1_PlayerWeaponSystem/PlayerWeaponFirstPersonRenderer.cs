@@ -38,8 +38,8 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		_playerThirdPersonHandRight = playerThirdPersonHandRight;
 		_playerThirdPersonHandLeft = playerThirdPersonHandLeft;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(_playerFirstPersonHandRight);
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => HideFirstPersonHand(_playerFirstPersonHandLeft);
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => HideFirstPersonHand(_playerFirstPersonHandRight);
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => HideFirstPersonHand(_playerFirstPersonHandLeft);
 		_weaponController.OnWeaponChanged += RegisterWeapons;
 
 		_weaponController.OnShowWeapon += UpdateWeaponVisibility;

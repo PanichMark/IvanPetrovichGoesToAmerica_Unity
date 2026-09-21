@@ -20,7 +20,7 @@ public class CutsceneMenuController : MonoBehaviour
 		_menuManager.OnClosePauseMenu += ShowCanvasCutscene;
 
 		_gameSceneManager.OnBeginLoadingGameplayScene += HideCanvasCutscene;
-		_gameSceneManager.OnBeginLoadingMainMenuScene += HideCanvasCutscene;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += HideCanvasCutscene;
 
 		Debug.Log("CutsceneMenuController Initialized");
 	}

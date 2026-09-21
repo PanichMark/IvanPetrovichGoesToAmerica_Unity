@@ -265,7 +265,7 @@ public class PauseMenuConfirmActionController : MonoBehaviour
 		_textComponentActionMessage.text = $"{_textLoadEpisode} {episodeMessage}?";
 		_actionOnAccept = () =>
 		{
-			_gameController.CloseMainMenu();
+			_gameController.DeactivateMainMenuOrEndGameTitlesActive();
 			StartCoroutine(_gameSceneManager.LoadGameplayScene(sceneToLoad));
 			OnSetPlayerCameraToFirstPerson?.Invoke();
 		};

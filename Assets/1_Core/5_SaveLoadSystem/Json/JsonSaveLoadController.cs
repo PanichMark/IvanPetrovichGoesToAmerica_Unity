@@ -56,7 +56,8 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		_gameSceneManager.OnBeginLoadingGameplayScene += () =>
 		{
-			if (_gameSceneManager.WasInitialGameplaySceneLoaded)
+			//Debug.Log(_gameSceneManager.PreviousScene);
+			if (_gameSceneManager.WasInitialSceneLoaded)
 			{
 				StartCoroutine(OnBeforeSceneUnloadedSaveGameplayObjects());
 			}
@@ -119,10 +120,12 @@ public class JsonSaveLoadController : MonoBehaviour
 			yield return saveLoadObj.SaveJsonData(_gameData);
 		}
 
+
 		foreach (IJsonSaveLoad saveLoadObj in _gameplaySaveLoadObjects)
 		{
 			yield return saveLoadObj.SaveJsonData(_gameData);
 		}
+		
 		
 
 		_fileDataHandler.Save(_gameData);
@@ -134,7 +137,7 @@ public class JsonSaveLoadController : MonoBehaviour
 			Debug.Log("Data saved to slot " + saveSlotNumber);
 		}
 
-		if (_gameSceneManager.WasInitialGameplaySceneLoaded)
+		if (_gameSceneManager.WasInitialSceneLoaded)
 		{
 			_gameSceneManager.SavedOldGameplayData();
 		}
@@ -156,9 +159,9 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		OnSafeFileLoad?.Invoke();
 
-		if (_gameController.IsMainMenuOpen)
+		if (_gameController.IsMainMenuOrEndGameTitlesActive)
 		{
-			_gameController.CloseMainMenu();
+			_gameController.DeactivateMainMenuOrEndGameTitlesActive();
 		}
 
 		if (loadSlotNumber == -1)
@@ -285,10 +288,17 @@ public class JsonSaveLoadController : MonoBehaviour
 		// The lack of THIS --  && !_isLoadingFromSaveFile -- made it IMpossible to load savefile from 1st try after loading NewScene by ANY means!
 		if (_WasSavedToTEMPbeforeLoadingNewScene == false && !_isLoadingFromSaveFile)
 		{
-			//if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_0_MainMenu.ToString())
-			//{
+			if (_gameSceneManager.PreviousScene != GameScenesSystemEnum.Scene_0_MainMenu && _gameSceneManager.PreviousScene != GameScenesSystemEnum.Scene_0_EndGameTitles)
+			{
 				yield return StartCoroutine(SaveGame(-1));
-			//}
+			}
+			else
+			{
+				_gameSceneManager.SkipWaitingDueToTEMPcopied();
+				_WasSavedToTEMPbeforeLoadingNewScene = false;
+
+				yield return null;
+			}
 		}
 		else
 		{ 

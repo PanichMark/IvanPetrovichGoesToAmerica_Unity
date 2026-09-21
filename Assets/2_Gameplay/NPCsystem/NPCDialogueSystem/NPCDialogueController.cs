@@ -104,7 +104,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 		_menuManager.OnOpenPauseMenu += HideNPCDialogueCanvas;
 		_menuManager.OnClosePauseMenu += ShowNPCDialogueCanvas;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += ExitNPCDialogue;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += ExitNPCDialogue;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ExitNPCDialogue;
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;

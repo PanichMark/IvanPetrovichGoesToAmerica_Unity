@@ -73,15 +73,15 @@ public class MenuManager : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseDialogueMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseCutsceneMenu;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += ClosePauseMenu;
-		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseWeaponWheelMenu;
-		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseInteractionHUD;
-		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseInteractionMenu;
-		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseDialogueMenu;
-		_gameSceneManager.OnBeginLoadingMainMenuScene += CloseCutsceneMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += ClosePauseMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseWeaponWheelMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseInteractionHUD;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseInteractionMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseDialogueMenu;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseCutsceneMenu;
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => IsMainMenuBeingLoaded = true;
-		_gameSceneManager.OnEndLoadingMainMenuScene += () => IsMainMenuBeingLoaded = false;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => IsMainMenuBeingLoaded = true;
+		_gameSceneManager.OnEndLoadingMainMenuOrEndGameTitlesScene += () => IsMainMenuBeingLoaded = false;
 
 		Debug.Log("MenuManager Initialized");
 	}
@@ -108,7 +108,7 @@ public class MenuManager : MonoBehaviour
 		//Debug.Log(_gameController.IsPlayerAbleToMove);
 		//Debug.Log(_gameController.IsGameAbleToSave);
 
-		if (_inputDevice.GetKeyPauseMenu() && !_gameController.IsMainMenuOpen)
+		if (_inputDevice.GetKeyPauseMenu() && !_gameController.IsMainMenuOrEndGameTitlesActive)
 		{
 			if (_pauseMenuLevel.Count == 0)
 			{
@@ -116,7 +116,7 @@ public class MenuManager : MonoBehaviour
 			}
 			else if (_pauseMenuLevel.Count == 1)
 			{
-				if (_gameController.IsPlayerDead || _gameController.IsMainMenuOpen)
+				if (_gameController.IsPlayerDead || _gameController.IsMainMenuOrEndGameTitlesActive)
 				{
 					
 				}
@@ -256,7 +256,7 @@ public class MenuManager : MonoBehaviour
 			OnOpenAnyMenu?.Invoke();
 		}
 
-		if (!_gameController.IsMainMenuOpen)
+		if (!_gameController.IsMainMenuOrEndGameTitlesActive)
 		{
 			CloseInteractionHUD();
 
@@ -279,7 +279,7 @@ public class MenuManager : MonoBehaviour
 		IsAnyMenuOpened = false;
 	
 		OnCloseAnyMenu?.Invoke();
-		if (!_gameController.IsMainMenuOpen)
+		if (!_gameController.IsMainMenuOrEndGameTitlesActive)
 		{
 			if (!IsMainMenuBeingLoaded)
 			{
