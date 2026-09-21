@@ -111,15 +111,15 @@ public class JsonGameData
 		PlayerCamera.PLayerCameraDistanceY = -1.75f;
 		PlayerCamera.PlayerCameraDistanceZ = 3.25f;
 		PlayerCamera.PlayerCameraRotation = new Quaternion(0, 0, 0, 0);
-		PlayerCamera.PlayerCameraStateType = PlayerCameraStateTypes.FirstPerson.ToString();
+		PlayerCamera.PlayerCameraStateType = PlayerCameraStateTypes.MainMenu.ToString();
 		PlayerCamera.IsPlayerCameraShoulderRight = true;
 
 		//PlayerResources
-		PlayerResources.PlayerHealth = 50;
-		PlayerResources.PlayerHealingItemsNumber = 1;
-		PlayerResources.PlayerMana = 50;
-		PlayerResources.PlayerManaReplenishItemsNumber = 1;
-		PlayerResources.PlayerMoney = 200;
+		PlayerResources.PlayerHealth = 80;
+		PlayerResources.PlayerHealingItemsNumber = 0;
+		PlayerResources.PlayerMana = 80;
+		PlayerResources.PlayerManaReplenishItemsNumber = 0;
+		PlayerResources.PlayerMoney = 0;
 
 		//PlayerWeapons
 		PlayerWeapons.UnlockedPlayerWeapons = new List<string>();

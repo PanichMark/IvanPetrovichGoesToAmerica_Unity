@@ -38,7 +38,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 		_playerMovementStateMachineController = playerMovementStateMachineController;
 		_cameraController = playerCameraController;
 
-		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
+		_gameSceneManager.OnEndLoadingMainMenuOrEndGameTitlesScene += () => SetPlayerCameraState(PlayerCameraStateTypes.MainMenu);
 
 		_gameSceneManager.OnBeginLoadingGameplayScene += () => SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 
@@ -80,6 +80,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 		else if (newPlayerCameraStateType == PlayerCameraStateTypes.MainMenu)
 		{
 			newState = new PlayerCameraStateMainMenu(_cameraController, new Vector3(0.2f, 1.35f, -0.9f), new Vector3(20, -12, 0));
+			Debug.Log("CAMERA MAIN MENU");
 		}
 		else if (newPlayerCameraStateType == PlayerCameraStateTypes.Cutscene)
 		{

@@ -38,6 +38,8 @@ public class JsonSaveLoadController : MonoBehaviour
 	public event GameSafeFileHandler OnSafeFileSaved;
 	private bool _isLoadingFromSaveFile;
 
+	private bool _allCoreSaveLoadWereFound;
+
 	public void Initialize(
 		Bootstrap bootstrap,
 		GameScenesManager gameSceneManager,
@@ -63,6 +65,7 @@ public class JsonSaveLoadController : MonoBehaviour
 			}
 		};
 		
+
 		_gameSceneManager.OnEndLoadingGameplayScene += () =>
 		{
 			if (!_isLoadingFromSaveFile)
@@ -71,14 +74,18 @@ public class JsonSaveLoadController : MonoBehaviour
 			}
 		};
 
-		//_gameSceneManager.OnBeginLoadingMainMenuScene += () => StartCoroutine(NewGame());
-		
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () => StartCoroutine(NewGame());
+
 		Debug.Log("SaveLoadController Initialized");
 	}
 
 	public IEnumerator NewGame()
 	{
-		_coreSaveLoadObjects = FindAllCoreSaveLoadObjects();
+		if (!_allCoreSaveLoadWereFound)
+		{
+			_coreSaveLoadObjects = FindAllCoreSaveLoadObjects();
+			_allCoreSaveLoadWereFound = true;
+		}
 		
 		_gameData = new JsonGameData();
 		
@@ -87,6 +94,7 @@ public class JsonSaveLoadController : MonoBehaviour
 		
 		foreach (IJsonSaveLoad saveLoadObj in _coreSaveLoadObjects)
 		{
+			//Debug.Log(saveLoadObj);
 			yield return saveLoadObj.LoadJsonData(_gameData);
 		}
 		
@@ -335,6 +343,7 @@ public class JsonSaveLoadController : MonoBehaviour
 			gameplayObjectsSaveLoad[index].AssignGameplayObjectIndex(index);
 		}
 	}
+
 	private List<IJsonSaveLoad> FindAllCoreSaveLoadObjects()
 	{
 		IEnumerable<IJsonSaveLoad> saveLoadObjects = FindObjectsOfType<MonoBehaviour>().OfType<IJsonSaveLoad>();
