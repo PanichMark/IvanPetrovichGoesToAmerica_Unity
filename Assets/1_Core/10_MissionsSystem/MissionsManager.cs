@@ -206,7 +206,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	public IEnumerator SaveJsonData(JsonGameData data)
 	{
 		int currentMissionIndex = System.Array.IndexOf(_gameMissions.MissionsInOrder, ActiveMission);
-		data.MissionData.Mission = _gameMissions.MissionsInOrder[currentMissionIndex];
+		//data.MissionData.Mission = _gameMissions.MissionsInOrder[currentMissionIndex];
 		data.MissionData.MissionStep = CurrentStepIndex;
 
 		yield return null;

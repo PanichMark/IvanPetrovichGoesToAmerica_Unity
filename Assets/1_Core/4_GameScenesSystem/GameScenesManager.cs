@@ -349,7 +349,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 
 	public IEnumerator SaveJsonData(JsonGameData data)
 	{
-		data.Scene = SceneManager.GetSceneAt(1).name;
+		data.Scene = (GameScenesGameplayEnum)System.Enum.Parse(typeof(GameScenesGameplayEnum), SceneManager.GetSceneAt(1).name);
 		yield return null;
 	}
 

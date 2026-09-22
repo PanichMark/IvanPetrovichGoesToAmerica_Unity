@@ -130,26 +130,27 @@ public class PauseSubMenuLoadController : MonoBehaviour
 		for (int safeFileIndex = 0; safeFileIndex < extendedSaveInfos.Length; safeFileIndex++)
 		{
 			string currentDateAndTime = extendedSaveInfos[safeFileIndex].SavefileDateAndTime;
-			string currentMissionNameSystem = extendedSaveInfos[safeFileIndex].SafeFileMissionNameSystem;
-			string currentSceneNameSystem = extendedSaveInfos[safeFileIndex].SafefileSceneNameSystem;
+			GameScenesGameplayEnum currentSceneNameSystem = extendedSaveInfos[safeFileIndex].SafefileSceneNameSystem;
 
-			if (!string.IsNullOrEmpty(currentSceneNameSystem))
+			if (!string.IsNullOrEmpty(currentDateAndTime))
 			{
 				_buttonsLoadGameFile[safeFileIndex].SetActive(true);
 
 				activeLoadButtonsCount++;
 
 				_textComponentsGameFileDateAndTime[safeFileIndex].text = currentDateAndTime;
-				_textComponentsGameFileMissionName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentMissionNameSystem);
-				_textComponentsGameFileSceneName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentSceneNameSystem);
+				_textComponentsGameFileSceneName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentSceneNameSystem.ToString());
 
-				for (int sceneDataIndex = 0; sceneDataIndex < _gameScenesList.GameScenes.Count; sceneDataIndex++)
+				if (_gameScenesList.GameScenes[(int)currentSceneNameSystem].SceneGameMission != null)
 				{
-					if (_gameScenesList.GameScenes[sceneDataIndex].GameScene.ToString() == currentSceneNameSystem)
-					{
-						_imagesComponentsSceneGameFile[safeFileIndex].sprite = _gameScenesList.GameScenes[sceneDataIndex].SceneLoadingScreenImage;
-					}
+					_textComponentsGameFileMissionName[safeFileIndex].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[(int)currentSceneNameSystem].SceneGameMission.MissionName.ToString());
 				}
+				else
+				{
+					_textComponentsGameFileMissionName[safeFileIndex].text = _localizationManager.GetLocalizedString(GameMissionsNamesEnum.Mission_Test.ToString());
+				}
+
+				_imagesComponentsSceneGameFile[safeFileIndex].sprite = _gameScenesList.GameScenes[(int)currentSceneNameSystem + 2].SceneLoadingScreenImage;
 			}
 			else
 			{

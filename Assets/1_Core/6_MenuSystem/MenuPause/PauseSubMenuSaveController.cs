@@ -148,7 +148,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 		for (int i = 0; i < extendedSaveInfos.Length; i++)
 		{
-			if (string.IsNullOrEmpty(extendedSaveInfos[i].SafefileSceneNameSystem)) 
+			if (string.IsNullOrEmpty(extendedSaveInfos[i].SavefileDateAndTime)) 
 				return i + 1;
 		}
 		return -1;
@@ -175,26 +175,28 @@ public class PauseSubMenuSaveController : MonoBehaviour
 		for (int safeFileIndex = 0; safeFileIndex < extendedSaveInfos.Length; safeFileIndex++)
 		{
 			string currentDateAndTime = extendedSaveInfos[safeFileIndex].SavefileDateAndTime;
-			string currentMissionNameSystem = extendedSaveInfos[safeFileIndex].SafeFileMissionNameSystem;
-			string currentSceneNameSystem = extendedSaveInfos[safeFileIndex].SafefileSceneNameSystem;
+			GameScenesGameplayEnum currentSceneNameSystem = extendedSaveInfos[safeFileIndex].SafefileSceneNameSystem;
 
-			if (!string.IsNullOrEmpty(currentSceneNameSystem))
+			if (!string.IsNullOrEmpty(currentDateAndTime))
 			{
 				_containersSaveGameFile[safeFileIndex].SetActive(true);
 
 				activeSaveButtonsCount++;
 
 				_textComponentsGameFileDateAndTime[safeFileIndex].text = currentDateAndTime;
-				_textComponentsGameFileMissionName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentMissionNameSystem);
-				_textComponentsGameFileSceneName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentSceneNameSystem);
 
-				for (int sceneDataIndex = 0; sceneDataIndex < _gameScenesList.GameScenes.Count; sceneDataIndex++)
+				_textComponentsGameFileSceneName[safeFileIndex].text = _localizationManager.GetLocalizedString(currentSceneNameSystem.ToString());
+
+				if (_gameScenesList.GameScenes[(int)currentSceneNameSystem].SceneGameMission != null)
 				{
-					if (_gameScenesList.GameScenes[sceneDataIndex].GameScene.ToString() == currentSceneNameSystem)
-					{
-						_imagesComponentsSceneGameFile[safeFileIndex].sprite = _gameScenesList.GameScenes[sceneDataIndex].SceneLoadingScreenImage;
-					}
+					_textComponentsGameFileMissionName[safeFileIndex].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[(int)currentSceneNameSystem].SceneGameMission.MissionName.ToString());
 				}
+				else
+				{
+					_textComponentsGameFileMissionName[safeFileIndex].text = _localizationManager.GetLocalizedString(GameMissionsNamesEnum.Mission_Test.ToString());
+				}
+				
+				_imagesComponentsSceneGameFile[safeFileIndex].sprite = _gameScenesList.GameScenes[(int)currentSceneNameSystem + 2].SceneLoadingScreenImage;
 			}
 			else
 			{

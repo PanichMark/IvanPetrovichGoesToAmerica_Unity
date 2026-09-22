@@ -192,7 +192,7 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		_gameData = _fileDataHandler.Load();
 
-		SceneNameToLoad = _gameData.Scene;
+		SceneNameToLoad = _gameData.Scene.ToString();
 
 		if (loadSlotNumber != -1)
 		{
@@ -372,9 +372,9 @@ public class JsonSaveLoadController : MonoBehaviour
 		yield break;
 	}
 
-	public (string SavefileDateAndTime, string SafeFileMissionNameSystem, string SafefileSceneNameSystem)[] GetExtendedSaveInfo()
+	public (string SavefileDateAndTime, GameScenesGameplayEnum SafefileSceneNameSystem)[] GetExtendedSaveInfo()
 	{
-		var extendedInfo = new List<(string DateAndTime, string MissionNAmeSystem, string SceneNameSystem)>();
+		var extendedInfo = new List<(string DateAndTime, GameScenesGameplayEnum SceneNameSystem)>();
 
 		for (int i = 0; i < _saveFilePaths.Length; i++)
 		{
@@ -384,7 +384,7 @@ public class JsonSaveLoadController : MonoBehaviour
 		return extendedInfo.ToArray();
 	}
 
-	private (string SavefileDateAndTime, string SafeFileMissionNameSystem, string SafefileSceneNameSystem) GetExtendedSaveDataForFile(string fileName)
+	private (string SavefileDateAndTime,  GameScenesGameplayEnum SafefileSceneNameSystem) GetExtendedSaveDataForFile(string fileName)
 	{
 		try
 		{
@@ -393,19 +393,18 @@ public class JsonSaveLoadController : MonoBehaviour
 			{
 				return (
 					gameData.SafeFileDateAndTime,
-					gameData.MissionData.Mission,
 					gameData.Scene
 				);
 			}
 			else
 			{
-				return (null, null, null);
+				return (null, 0);
 			}
 		}
 		catch (Exception e)
 		{
 			Debug.LogWarning($"Ошибка при чтении файла '{fileName}'\n{e.Message}");
-			return (null, null, null);
+			return (null, 0);
 		}
 	}
 

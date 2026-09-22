@@ -10,7 +10,7 @@ public class JsonGameData
 	public string SafeFileDateAndTime;
 
 	//Scene
-	public string Scene;
+	public GameScenesGameplayEnum Scene;
 
 	//CoreObjects
 	[JsonProperty("MissionData")]
@@ -92,7 +92,7 @@ public class JsonGameData
 		SafeFileDateAndTime = DateTime.Now.ToString();
 
 		//Scene
-		Scene = GameScenesSystemEnum.Scene_0_Test.ToString();
+		Scene = GameScenesGameplayEnum.Scene_0_Test;
 
 		//Mission
 		MissionData.Mission = 0;
