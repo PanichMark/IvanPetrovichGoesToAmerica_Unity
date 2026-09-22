@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040016aa360614f4cb4822ccf67c84c8, type: 3}
+  m_Name: MissionResourcesData_RevenueHouse
+  m_EditorClassIdentifier: 
+  PlayerTransform: {fileID: 11400000, guid: 5436cf3debe7f394d9ccbdfd1165b0f4, type: 2}
+  PlayerHealth: 70
+  PlayerHealingItems: 0
+  PlayerMana: 0
+  PlayerManaReplenishItems: 0
+  PlayerMoney: 100
+  WeaponsToUnlock:
+  - WeaponPrefab: {fileID: 4834892234495708273, guid: 49643d32c6595304f84297c5ab491994, type: 3}
+    IsWeaponUnlocked: 1
+  - WeaponPrefab: {fileID: 2151144761444843108, guid: 6226550dd22049a4c99bce4bd2cf49ff, type: 3}
+    IsWeaponUnlocked: 1
+  Ammo:
+  - AmmoType: 0
+    StartAmount: 10

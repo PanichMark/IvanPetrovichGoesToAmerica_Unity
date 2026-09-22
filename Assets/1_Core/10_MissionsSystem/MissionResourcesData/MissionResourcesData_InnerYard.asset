@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040016aa360614f4cb4822ccf67c84c8, type: 3}
+  m_Name: MissionResourcesData_InnerYard
+  m_EditorClassIdentifier: 
+  PlayerTransform: {fileID: 0}
+  PlayerHealth: 100
+  PlayerHealingItems: 3
+  PlayerMana: 100
+  PlayerManaReplenishItems: 3
+  PlayerMoney: 250
+  WeaponsToUnlock:
+  - WeaponPrefab: {fileID: 4834892234495708273, guid: 49643d32c6595304f84297c5ab491994, type: 3}
+    IsWeaponUnlocked: 0
+  - WeaponPrefab: {fileID: 4834892234495708273, guid: a37b306fc0c06d04caaf0c9d04ffb7c1, type: 3}
+    IsWeaponUnlocked: 0
+  - WeaponPrefab: {fileID: 2151144761444843108, guid: 6226550dd22049a4c99bce4bd2cf49ff, type: 3}
+    IsWeaponUnlocked: 0
+  - WeaponPrefab: {fileID: 2744464085675770799, guid: 1808e87486243ad42a28e7bd20847d92, type: 3}
+    IsWeaponUnlocked: 0
+  - WeaponPrefab: {fileID: 3614424653599792698, guid: 00d204e59c0c08946b745986cb93a646, type: 3}
+    IsWeaponUnlocked: 0
+  - WeaponPrefab: {fileID: 1117245339830430382, guid: 2ffdfc52c1c437d4c94f08d21e193aab, type: 3}
+    IsWeaponUnlocked: 0
+  - WeaponPrefab: {fileID: 6141407380874793440, guid: 8c327820676d5d2459974b0f29cfade5, type: 3}
+    IsWeaponUnlocked: 0
+  - WeaponPrefab: {fileID: 7702790595763287087, guid: e058f2d8ec2b79d48ae6844d4f7b2f4d, type: 3}
+    IsWeaponUnlocked: 0
+  Ammo:
+  - AmmoType: 0
+    StartAmount: 60
+  - AmmoType: 3
+    StartAmount: 5

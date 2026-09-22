@@ -28,7 +28,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private ConfigPlayerTransform _playerTransform;
 	[SerializeField, Range(1, 100)] private int _playerHealth;
 	[SerializeField, Range(0, 9)] private int _playerHealingItems;
-	[SerializeField, Range(1, 100)] private int _playerMana;
+	[SerializeField, Range(0, 100)] private int _playerMana;
 	[SerializeField, Range(0, 9)] private int _playerManaReplenishItems;
 	[SerializeField, Range(0, 999999)] private int _playerMoney;
 	[SerializeField] private ConfigPlayerWeapons _playerWeapons;
@@ -418,6 +418,7 @@ public class Bootstrap : MonoBehaviour
 		ServiceLocator.Register<IInputDevice>(_inputDevice);
 		ServiceLocator.Register<KeyCode>(_keyCodePauseMenu);
 		ServiceLocator.Register<GameScenesList>(GameData.GameScenesList);
+		ServiceLocator.Register<GameMissionsList>(GameData.GameMissionsList);
 		ServiceLocator.Register<List<Sprite>>(GameData.NPCdetectionSignFrames);
 		ServiceLocator.Register<Bootstrap>(this);
 		Debug.Log("=== BOOTSTRAP SERVICES REGISTERED ===");

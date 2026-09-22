@@ -12,6 +12,7 @@ public class MainMenuChooseMissionController : MonoBehaviour
 
 	private LocalizationManager _localizationManager;
 	private GameScenesList _gameScenesList;
+	private GameMissionsList _gameMissionsList;
 
 	private GameObject _textMainMenuChooseMission;
 	private TextMeshProUGUI _textComponentMainMenuChooseMission;
@@ -40,6 +41,7 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_viewModelMainMenuChooseMission = ServiceLocator.Resolve<ViewModelMainMenuChooseMission>();
 		_gameScenesList = ServiceLocator.Resolve<GameScenesList>();
+		_gameMissionsList = ServiceLocator.Resolve<GameMissionsList>();
 
 		_textComponentMainMenuChooseMission = _viewModelMainMenuChooseMission.TextMainMenuChooseMission.GetComponent<TextMeshProUGUI>();
 		_textComponentMainMenuChooseMission.text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextChooseDemoEpisode");
@@ -86,6 +88,8 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		_textComponentButtonCloseMainMenuChooseMission = _viewModelMainMenuChooseMission.TextButtonCloseMainMenuChooseMission.GetComponent<TextMeshProUGUI>();
 		_textComponentButtonCloseMainMenuChooseMission.text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextButtonClose");
 
+		_pauseMenuConfirmActionController.OnChooseMission += ApplyMissionResourcesData;
+
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		Debug.Log("MainMenuChooseMissionController Initialized");
@@ -116,6 +120,40 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		}
 
 		Debug.Log("Hide ChooseMission");
+	}
+
+	private void ApplyMissionResourcesData(GameScenesGameplayEnum missionScene)
+	{
+		for (int i = 3; i < _gameScenesList.GameScenes.Count; i++)
+		{
+			var sceneData = _gameScenesList.GameScenes[i];
+
+			if (sceneData.GameScene == (GameScenesSystemEnum)((int)missionScene + 2))
+			{
+				var resources = sceneData.GameMissionSection.MissionResources;
+
+				Debug.Log($"PlayerTransform: Exists");
+				Debug.Log($"PlayerHealth: {resources.PlayerHealth}");
+				Debug.Log($"PlayerHealingItems: {resources.PlayerHealingItems}");
+				Debug.Log($"PlayerMana: {resources.PlayerMana}");
+				Debug.Log($"PlayerManaReplenishItems: {resources.PlayerManaReplenishItems}");
+				Debug.Log($"PlayerMoney: {resources.PlayerMoney}");
+
+				var weapons = resources.WeaponsToUnlock;
+				for (int j = 0; j < weapons.Length; j++)
+				{
+					Debug.Log($"Weapon_{j}: {weapons[j].WeaponPrefab.name}");
+				}
+
+				var ammo = resources.Ammo;
+				for (int j = 0; j < ammo.Length; j++)
+				{
+					Debug.Log($"Ammo_{j}: {ammo[j].AmmoType} x{ammo[j].StartAmount}");
+				}
+
+				break;
+			}
+		}
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)

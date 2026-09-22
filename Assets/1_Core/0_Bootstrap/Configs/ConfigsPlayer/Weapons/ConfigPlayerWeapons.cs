@@ -10,13 +10,6 @@ public class ConfigPlayerWeapons : ScriptableObject
 
 	public WeaponPrefabEntry[] AvailableWeapons;
 
-	[Serializable]
-	public struct WeaponPrefabEntry
-	{
-		public GameObject WeaponPrefab; 
-		public bool IsWeaponUnlocked;       
-	}
-
 	public GameObject[] GetAvailableWeapons()
 	{
 		List<GameObject> result = new List<GameObject>();

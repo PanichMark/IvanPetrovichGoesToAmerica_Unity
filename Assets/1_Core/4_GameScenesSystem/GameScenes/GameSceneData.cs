@@ -8,4 +8,5 @@ public class GameSceneData : ScriptableObject
 	public TextAsset SceneDescription_EN;
 	public Sprite SceneLoadingScreenImage;
 	public GameMissionsNamesEnum GameMissionName;
+	public MissionAbstract GameMissionSection;
 }
