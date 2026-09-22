@@ -5,7 +5,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 {
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.TeslaShock;
 	public override WeaponTypes WeaponType => WeaponTypes.Eugenic;
-	public override int ManaCost => 0;
+	public override int ManaCost => 5;
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	public override float WeaponAttackSpeedRate => 0.4f;
 	public override bool IsWeaponAuto => true;
@@ -15,7 +15,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 	protected override void InitializeWeaponEugenic()
 	{
-_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
 
 
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)

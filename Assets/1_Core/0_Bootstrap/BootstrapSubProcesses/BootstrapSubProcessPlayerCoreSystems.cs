@@ -46,11 +46,11 @@ public class BootstrapSubProcessPlayerSystems
 
 	private PlayerMovementAnimationController _playerMovementAnimationController;
 
-	private PlayerHealthController _playerResourcesHealthManager;
+	public PlayerHealthController PlayerResourcesHealthManager {  get; private set; }
 
-	private PlayerManaController _playerResourcesManaManager;
+	public PlayerManaController PlayerResourcesManaManager { get; private set; }
 
-	private PlayerMoneyController _playerResourcesMoneyManager;
+	public PlayerMoneyController PlayerResourcesMoneyManager { get; private set; }
 
 	public BootstrapSubProcessPlayerSystems(
 		Bootstrap bootstrap,
@@ -89,9 +89,9 @@ public class BootstrapSubProcessPlayerSystems
 		_playerCameraBlurFilter = _gameObjectPlayerCamera.GetComponent<PlayerCameraBlurFilter>();
 		_playerCameraFirstPersonRender = _gameObjectPlayerCamera.GetComponent<PlayerCameraFirstPersonRenderer>();
 
-		_playerResourcesHealthManager = _gameObjectPlayer.GetComponent<PlayerHealthController>();
-		_playerResourcesManaManager = _gameObjectPlayer.GetComponent<PlayerManaController>();
-		_playerResourcesMoneyManager = _gameObjectPlayer.GetComponent<PlayerMoneyController>();
+		PlayerResourcesHealthManager = _gameObjectPlayer.GetComponent<PlayerHealthController>();
+		PlayerResourcesManaManager = _gameObjectPlayer.GetComponent<PlayerManaController>();
+		PlayerResourcesMoneyManager = _gameObjectPlayer.GetComponent<PlayerMoneyController>();
 
 		_gameObjectPlayerHead = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerHead");
 		_gameobjectPlayerEyesLookAt = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "EyesLookAt");
@@ -172,18 +172,18 @@ public class BootstrapSubProcessPlayerSystems
 			PlayerCameraStateMachineController,
 			_gameObjectPlayer);
 
-		_playerResourcesHealthManager.Initialize(
+		PlayerResourcesHealthManager.Initialize(
 			_bootstrap,
 			_gameController,
 			PlayerMovementStateMachineController,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana,
 			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
 
-		_playerResourcesManaManager.Initialize(
+		PlayerResourcesManaManager.Initialize(
 			_bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana,
 			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
 
-		_playerResourcesMoneyManager.Initialize(
+		PlayerResourcesMoneyManager.Initialize(
 			_bootstrapSubProcessMenuSystem.ViewModelPauseMenu.TextCurrentPlayerMoneyDisplay);
 
 	ServiceLocator.Register<PlayerBehaviourController>(PlayerBehaviour);
@@ -193,9 +193,9 @@ ServiceLocator.Register<PlayerCameraController>(PlayerCameraController);
 ServiceLocator.Register<PlayerCameraStateMachineController>(PlayerCameraStateMachineController);
 ServiceLocator.Register<PlayerCameraBlurFilter>(_playerCameraBlurFilter);
 
-ServiceLocator.Register<PlayerHealthController>(_playerResourcesHealthManager);
-ServiceLocator.Register<PlayerManaController>(_playerResourcesManaManager);
-ServiceLocator.Register<PlayerMoneyController>(_playerResourcesMoneyManager);
+ServiceLocator.Register<PlayerHealthController>(PlayerResourcesHealthManager);
+ServiceLocator.Register<PlayerManaController>(PlayerResourcesManaManager);
+ServiceLocator.Register<PlayerMoneyController>(PlayerResourcesMoneyManager);
 
 		ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioVoice, PlayerAudioVoice);
 ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioMovement, PlayerAudioMovement);

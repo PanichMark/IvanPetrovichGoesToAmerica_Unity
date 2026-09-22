@@ -16,6 +16,13 @@ public class PlayerMoneyController : MonoBehaviour, IJsonSaveLoad
 		Debug.Log("PlayerResourcesMoneyManager Initialized");
 	}
 
+	public void BootstrapConfigPLayerMoney(int setMoney)
+	{
+		PlayerMoney = setMoney;
+
+		_playerComponentMoneyText.text = PlayerMoney.ToString();
+	}
+
 	public void AddMoney(int moneyAmmount)
     {
         if (moneyAmmount < 0)

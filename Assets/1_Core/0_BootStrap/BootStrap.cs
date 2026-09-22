@@ -26,6 +26,11 @@ public class Bootstrap : MonoBehaviour
 	[Header("--- CONFIGS PLAYER  ---")]
 	[SerializeField] private bool _applyConfigsPlayer;
 	[SerializeField] private ConfigPlayerTransform _playerTransform;
+	[SerializeField, Range(1, 100)] private int _playerHealth;
+	[SerializeField, Range(0, 9)] private int _playerHealingItems;
+	[SerializeField, Range(1, 100)] private int _playerMana;
+	[SerializeField, Range(0, 9)] private int _playerManaReplenishItems;
+	[SerializeField, Range(0, 999999)] private int _playerMoney;
 	[SerializeField] private ConfigPlayerWeapons _playerWeapons;
 	[SerializeField] private ConfigPlayerResourcesAmmo _playerAmmo;
 
@@ -196,7 +201,14 @@ public class Bootstrap : MonoBehaviour
 	{
 		_gameController = new GameController();
 
-		_keyCodePauseMenu = _keyPauseMenu.KeyPauseMenu;
+		if (_keyPauseMenu == ConfigBootstrapKeyPauseMenu.DEFAULT_Escape)
+		{
+			_keyCodePauseMenu = KeyCode.Escape;
+		}
+		else
+		{
+			_keyCodePauseMenu = KeyCode.Alpha1;
+		}
 
 		_inputDevice = new InputKeyboard(_gameController, _keyCodePauseMenu);
 
@@ -549,6 +561,14 @@ public class Bootstrap : MonoBehaviour
 
 	private void ApplyBootstrapPlayerConfigs()
 	{
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesHealthManager.BootstrapConfigPLayerHealth(_playerHealth);
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesHealthManager.BootstrapConfigPLayerHealingItems(_playerHealingItems);
+
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesManaManager.BootstrapConfigPLayerMana(_playerMana);
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesManaManager.BootstrapConfigPLayerManaReplenishItems(_playerManaReplenishItems);
+
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesMoneyManager.BootstrapConfigPLayerMoney(_playerMoney);
+
 		GameObject[] availableWeapons = _playerWeapons.GetAvailableWeapons();
 		if (availableWeapons != null)
 		{

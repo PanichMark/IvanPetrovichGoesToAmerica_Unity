@@ -31,6 +31,20 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 		Debug.Log("PlayerResourcesManaManager Initialized");
 	}
 
+	public void BootstrapConfigPLayerMana(int setMana)
+	{
+		CurrentPlayerMana = setMana;
+
+		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
+	}
+
+	public void BootstrapConfigPLayerManaReplenishItems(int setManaReplenishItems)
+	{
+		CurrentManaReplenishItemsNumber = setManaReplenishItems;
+
+		_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+	}
+
 	private void UseManaReplenishItem()
 	{
 		if (CurrentManaReplenishItemsNumber > 0)
@@ -39,12 +53,12 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 			{
 				CurrentManaReplenishItemsNumber--;
 
-				ReplenishMana(_manaItemEffect);
-
 				if (CurrentPlayerMana >= MaxPlayerMana)
 				{
 					CurrentPlayerMana = MaxPlayerMana;
 				}
+
+				ReplenishMana(_manaItemEffect);
 
 				_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
 
@@ -71,6 +85,11 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 	public void ReplenishMana(int Mana)
 	{
 		CurrentPlayerMana += Mana;
+
+		if (CurrentPlayerMana >= MaxPlayerMana)
+		{
+			CurrentPlayerMana = MaxPlayerMana;
+		}
 
 		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
 

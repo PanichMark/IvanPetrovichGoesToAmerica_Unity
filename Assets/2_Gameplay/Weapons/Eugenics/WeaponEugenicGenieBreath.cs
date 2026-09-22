@@ -5,7 +5,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 {
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.GenieBreath;
 	public override WeaponTypes WeaponType => WeaponTypes.Eugenic;
-	public override int ManaCost => 0;
+	public override int ManaCost => 40;
 	public override bool IsWeaponAuto => false;
 	private Vector3 _flightDirection;
 	private Vector3 _targetPosition;
