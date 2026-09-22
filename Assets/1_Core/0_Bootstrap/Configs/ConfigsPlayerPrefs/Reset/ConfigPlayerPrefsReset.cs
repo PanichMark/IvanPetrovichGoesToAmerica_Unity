@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-
-[CreateAssetMenu(fileName = "ConfigPlayerPrefsReset", menuName = "Configs/PlayerPrefs/Reset")]
-public class ConfigPlayerPrefsReset : ScriptableObject
+﻿public enum ConfigPlayerPrefsReset
 {
-    public bool ResetPlayerPrefs;
+	Yes,
+	DEFAULT_No
 }

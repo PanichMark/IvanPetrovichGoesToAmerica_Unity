@@ -21,7 +21,7 @@ public class Bootstrap : MonoBehaviour
 	[Header("---  CONFIGS BOOTSTRAP ---")]
 	[SerializeField] private ConfigBootstrapInitializationScreenDuration _initializationScreenDuration;
 	[SerializeField] private ConfigBootstrapKeyPauseMenu _keyPauseMenu;
-	[SerializeField] private ConfigBootstrapFirstSceneToLoad _firstSceneToLoad;
+	[SerializeField] private GameScenesSystemEnum _firstSceneToLoad;
 
 	[Header("--- CONFIGS PLAYER  ---")]
 	[SerializeField] private bool _applyConfigsPlayer;
@@ -99,11 +99,15 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(BootstrapSystemsInitialization());
 
-		float duration = _initializationScreenDuration.InitializationScreenDuration;
+		float duration = 5;
+		if (_initializationScreenDuration == ConfigBootstrapInitializationScreenDuration.Instant)
+		{
+			duration = 0;
+		}
+
 		float startTime = Time.realtimeSinceStartup;
 
-		yield return new WaitUntil(() =>
-			(Time.realtimeSinceStartup - startTime >= duration) || Input.anyKeyDown);
+		yield return new WaitUntil(() => (Time.realtimeSinceStartup - startTime >= duration) || Input.anyKeyDown);
 
 		_viewModelBootstrapInitialization.BootstrapInitializationPart1.SetActive(false);
 		_viewModelBootstrapInitialization.BootstrapInitializationPart2.SetActive(true);
@@ -111,8 +115,7 @@ public class Bootstrap : MonoBehaviour
 		yield return null;
 
 		float secondStartTime = Time.realtimeSinceStartup;
-		yield return new WaitUntil(() =>
-			(Time.realtimeSinceStartup - secondStartTime >= duration) || Input.anyKeyDown);
+		yield return new WaitUntil(() => (Time.realtimeSinceStartup - secondStartTime >= duration) || Input.anyKeyDown);
 
 		_viewModelBootstrapInitialization.BootstrapInitializationPart2.SetActive(false);
 
@@ -122,12 +125,12 @@ public class Bootstrap : MonoBehaviour
 
 		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.SaveLoadController.NewGame());
 
-		if (_playerPrefsReset.ResetPlayerPrefs == true)
+		if (_playerPrefsReset == ConfigPlayerPrefsReset.Yes)
 		{
 			PlayerPrefs.DeleteAll();
 		}
 
-		if (_playerPrefsData.BootstrapArePrerequisitesMet == false || _playerPrefsPresequisites.ArePrerequisitesMet == false)
+		if (_playerPrefsData.BootstrapArePrerequisitesMet == false || _playerPrefsPresequisites == ConfigPlayerPrefsPresequisites.No)
 		{
 			yield return StartCoroutine(BootstrapPrerequisites());
 		}
@@ -141,8 +144,7 @@ public class Bootstrap : MonoBehaviour
 		_viewModelBootstrapInitialization.TextSavingProcessIcon.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SavingProcess");
 
 		float thirdStartTime = Time.realtimeSinceStartup;
-		yield return new WaitUntil(() =>
-			(Time.realtimeSinceStartup - secondStartTime >= duration * 2) || Input.anyKeyDown);
+		yield return new WaitUntil(() => (Time.realtimeSinceStartup - secondStartTime >= duration * 1.5f) || Input.anyKeyDown);
 
 		_canvasBootstrapInitialization.SetActive(false);
 		Destroy(_gameObjectBootstrapTemporaryCamera);
@@ -435,13 +437,17 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator LoadFirstGameplayScene()
 	{
-		if (_firstSceneToLoad.FirstSceneToLoad == GameScenesSystemEnum.Scene_0_MainMenu)
+		if (_firstSceneToLoad == GameScenesSystemEnum.Scene_0_MainMenu)
 		{
 			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadMainMenuScene());
 		}
+		else if (_firstSceneToLoad == GameScenesSystemEnum.Scene_0_EndGameTitles)
+		{
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadEndGameTitlesScene());
+		}
 		else
 		{
-			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene((GameScenesGameplayEnum)((int)_firstSceneToLoad.FirstSceneToLoad - 1)));
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene((GameScenesGameplayEnum)((int)_firstSceneToLoad - 2)));
 		}
 	}
 
@@ -564,7 +570,7 @@ public class Bootstrap : MonoBehaviour
 			}
 		}
 
-		if (_firstSceneToLoad.FirstSceneToLoad != GameScenesSystemEnum.Scene_0_MainMenu && _firstSceneToLoad.FirstSceneToLoad != GameScenesSystemEnum.Scene_0_EndGameTitles)
+		if (_firstSceneToLoad != GameScenesSystemEnum.Scene_0_MainMenu && _firstSceneToLoad != GameScenesSystemEnum.Scene_0_EndGameTitles)
 		{
 			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerTransform.PlayerPosition);
 			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerRotationY(_playerTransform.PlayerRotationY);

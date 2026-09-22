@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-
-[CreateAssetMenu(fileName = "ConfigPlayerPrefsPresequisites", menuName = "Configs/PlayerPrefs/Presequisites", order = 1)]
-public class ConfigPlayerPrefsPresequisites : ScriptableObject
+﻿public enum ConfigPlayerPrefsPresequisites
 {
-	public bool ArePrerequisitesMet = false;
+	DEFAULT_Yes,
+	No
 }

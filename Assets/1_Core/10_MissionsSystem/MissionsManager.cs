@@ -205,7 +205,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	public IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (SceneManager.GetSceneAt(1).name != GameScenesGameplayEnum.Scene_0_Test.ToString())
+		if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_0_Test.ToString())
 		{
 			data.MissionData.Mission = ActiveMission.MissionName;
 			data.MissionData.MissionStep = CurrentStepIndex;
