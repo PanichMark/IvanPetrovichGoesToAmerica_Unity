@@ -85,6 +85,7 @@ public class BootstrapSubProcessWeaponSystem
 			_inputDevice,
 			_bootstrapSubProcessMenuSystem.MenuManager,
 			_bootstrapSubProcessPlayerSystems.PlayerBehaviour,
+			_bootstrapSubProcessPlayerSystems.PlayerResourcesManaManager,
 			_bootstrapSubProcessMenuSystem.HUDhealthAndManaController,
 			PlayerResourcesAmmoManager,
 			_bootstrapSubProcessInteractionSystem.InteractionController);

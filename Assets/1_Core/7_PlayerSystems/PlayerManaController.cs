@@ -122,6 +122,16 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 		_sliderManaBarFillArea.SetActive(false);
 	}
 
+	public void ShowButtonUseManaReplenishItem()
+	{
+		_buttonManaReplenishtem.gameObject.SetActive(true);
+	}
+
+	public void HideButtonUseManaReplenishItem()
+	{
+		_buttonManaReplenishtem.gameObject.SetActive(false);
+	}
+
 	public IEnumerator SaveJsonData(JsonGameData data)
 	{
 		data.PlayerResources.PlayerMana = CurrentPlayerMana;

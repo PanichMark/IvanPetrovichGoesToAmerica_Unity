@@ -39,7 +39,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 	public bool HasAnyWeapon { get; private set; }
 	public GameObject LeftHandWeapon { get; private set; }
 	public GameObject RightHandWeapon { get; private set; }
-
+	private PlayerManaController _playerManaController;
 	public WeaponAbstract LeftHandWeaponComponent { get; private set; }
 	public WeaponAbstract RightHandWeaponComponent { get; private set; }
 
@@ -49,10 +49,12 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		IInputDevice inputDevice,
 		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour,
+		PlayerManaController playerManaController,
 		HUDhealthAndManaController HUDhealthAndManaController,
 		PlayerWeaponAmmoController ammoManager,
 		PlayerInteractionController interactionController)
 	{
+		_playerManaController = playerManaController;
 		_bootstrap = bootstrap;
 		_gameController = gameController;
 		_inputDevice = inputDevice;
@@ -301,6 +303,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 	private void EugenicWeaponIsUnlocked()
 	{
 		_HUDhealthAndManaController.ShowManaBar();
+		_playerManaController.ShowButtonUseManaReplenishItem();
 	}
 
 	public void ResetAllWeapons()
@@ -309,6 +312,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		HasAnyWeapon = false;
 		_HUDhealthAndManaController.HideHealthBar();
 		_HUDhealthAndManaController.HideManaBar();
+		_playerManaController.HideButtonUseManaReplenishItem();
 	}
 
 	public void SelectWeapon(GameObject weaponPrefab)
