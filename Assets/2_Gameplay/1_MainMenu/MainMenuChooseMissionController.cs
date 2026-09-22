@@ -69,9 +69,9 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		{
 			_textsComponentsMissionsNames[i] = _viewModelMainMenuChooseMission.TextsMissionsNames[i].GetComponent<TextMeshProUGUI>();
 		}
-		_textsComponentsMissionsNames[0].text =  _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[3].GameMissionName.ToString());
-		_textsComponentsMissionsNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameMissionName.ToString());
-		_textsComponentsMissionsNames[2].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameMissionName.ToString());
+		_textsComponentsMissionsNames[0].text =  _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[3].SceneGameMission.MissionName.ToString());
+		_textsComponentsMissionsNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].SceneGameMission.MissionName.ToString());
+		_textsComponentsMissionsNames[2].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].SceneGameMission.MissionName.ToString());
 
 		_textsComponentsScenesNames = new TextMeshProUGUI[_viewModelMainMenuChooseMission.TextsScenesNames.Length];
 		for (int i = 0; i < _viewModelMainMenuChooseMission.TextsScenesNames.Length; i++)
@@ -130,7 +130,7 @@ public class MainMenuChooseMissionController : MonoBehaviour
 
 			if (sceneData.GameScene == (GameScenesSystemEnum)((int)missionScene + 2))
 			{
-				var resources = sceneData.GameMissionSection.MissionResources;
+				var resources = sceneData.SceneGameMission.MissionResources;
 
 				Debug.Log($"PlayerTransform: Exists");
 				Debug.Log($"PlayerHealth: {resources.PlayerHealth}");
@@ -162,9 +162,9 @@ public class MainMenuChooseMissionController : MonoBehaviour
 
 		_textComponentMainMenuChooseMission.text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextChooseDemoEpisode");
 
-		_textsComponentsMissionsNames[0].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[3].GameMissionName.ToString());
-		_textsComponentsMissionsNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameMissionName.ToString());
-		_textsComponentsMissionsNames[2].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameMissionName.ToString());
+		_textsComponentsMissionsNames[0].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[3].SceneGameMission.MissionName.ToString());
+		_textsComponentsMissionsNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].SceneGameMission.MissionName.ToString());
+		_textsComponentsMissionsNames[2].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].SceneGameMission.MissionName.ToString());
 
 		_textsComponentsScenesNames[0].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextPrologue");
 		_textsComponentsScenesNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameScene.ToString());

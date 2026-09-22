@@ -205,16 +205,9 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	public IEnumerator SaveJsonData(JsonGameData data)
 	{
-		if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_0_Test.ToString())
-		{
-			data.MissionData.Mission = ActiveMission.MissionName;
-			data.MissionData.MissionStep = CurrentStepIndex;
-		}
-		else
-		{
-			data.MissionData.Mission = GameMissionsNamesEnum.Mission_Test.ToString();
-			data.MissionData.MissionStep = 0;
-		}
+		int currentMissionIndex = System.Array.IndexOf(_gameMissions.MissionsInOrder, ActiveMission);
+		data.MissionData.Mission = _gameMissions.MissionsInOrder[currentMissionIndex];
+		data.MissionData.MissionStep = CurrentStepIndex;
 
 		yield return null;
 	}

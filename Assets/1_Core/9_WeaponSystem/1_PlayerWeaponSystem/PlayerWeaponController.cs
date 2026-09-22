@@ -646,9 +646,10 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		HideWeapon(WeaponHandType.Left);
 		DestroyWeapon(WeaponHandType.Left);
 
+		ResetAllWeapons();
+
 		if (data.PlayerWeapons.UnlockedPlayerWeapons != null)
 		{
-			ResetAllWeapons();
 			foreach (string weaponKey in data.PlayerWeapons.UnlockedPlayerWeapons)
 			{
 				GameObject weaponPrefab = Resources.Load<GameObject>("WeaponSystem/WeaponsPlayer/" + weaponKey);

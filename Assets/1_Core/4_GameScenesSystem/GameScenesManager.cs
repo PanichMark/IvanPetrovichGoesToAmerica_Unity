@@ -102,7 +102,15 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 			if (_gameScenesList.GameScenes[currentSceneData].GameScene.ToString() == sceneName)
 			{
 				spriteToUse = _gameScenesList.GameScenes[currentSceneData].SceneLoadingScreenImage;
-				missionName = _gameScenesList.GameScenes[currentSceneData].GameMissionName.ToString();
+
+				if (_gameScenesList.GameScenes[currentSceneData].GameScene != GameScenesSystemEnum.Scene_0_Test)
+				{
+					missionName = _gameScenesList.GameScenes[currentSceneData].SceneGameMission.MissionName.ToString();
+				}
+				else
+				{
+					missionName = GameMissionsNamesEnum.Mission_Test.ToString();
+				}
 				break;
 			}
 		}

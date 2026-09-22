@@ -95,7 +95,7 @@ public class JsonGameData
 		Scene = GameScenesSystemEnum.Scene_0_Test.ToString();
 
 		//Mission
-		MissionData.Mission = GameMissionsNamesEnum.Mission_0_NothingEverHappensInThisCountry.ToString();
+		MissionData.Mission = 0;
 		MissionData.MissionStep = 0;
 
 		//PlayerBehaviour
@@ -189,7 +189,7 @@ public class JsonGameData
 [System.Serializable]
 public class MissionData
 {
-	public string Mission;
+	public int Mission;
 	public int MissionStep;
 }
 

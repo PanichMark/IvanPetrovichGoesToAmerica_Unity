@@ -94,7 +94,7 @@ public class JsonSaveLoadController : MonoBehaviour
 		
 		foreach (IJsonSaveLoad saveLoadObj in _coreSaveLoadObjects)
 		{
-			//Debug.Log(saveLoadObj);
+			Debug.Log(saveLoadObj);
 			yield return saveLoadObj.LoadJsonData(_gameData);
 		}
 		
