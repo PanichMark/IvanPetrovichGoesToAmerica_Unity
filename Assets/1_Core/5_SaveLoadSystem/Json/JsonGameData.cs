@@ -95,7 +95,7 @@ public class JsonGameData
 		Scene = GameScenesGameplayEnum.Scene_0_Test;
 
 		//Mission
-		MissionData.Mission = 0;
+		MissionData.Mission = 0.1f;
 		MissionData.MissionStep = 0;
 
 		//PlayerBehaviour
@@ -189,7 +189,7 @@ public class JsonGameData
 [System.Serializable]
 public class MissionData
 {
-	public int Mission;
+	public float Mission;
 	public int MissionStep;
 }
 
