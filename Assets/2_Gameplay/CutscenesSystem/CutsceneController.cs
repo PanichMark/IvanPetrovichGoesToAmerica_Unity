@@ -3,13 +3,14 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(PlayableDirector))]
+//[RequireComponent(typeof(PlayableDirector))]
 //[RequireComponent(typeof(Sign))]
 
 public class CutsceneController : MonoBehaviour
 {
-	private Animator _playerAnimator1stPerson;
+	//private Animator _playerAnimator1stPerson;
 	private PlayerWeaponFirstPersonRenderer _playerWeaponFirstPersonRenderer;
 	private IInputDevice _inputDevice;
 	private PlayerBehaviourController _playerBehaviourController;
@@ -29,9 +30,15 @@ public class CutsceneController : MonoBehaviour
 	private AudioSource _audioSource;
 	private PlayableDirector _director;
 	private bool _isCutsceneDialogueActorPlayer;
-	private GameObject _playerProxy;
-	private GameObject _playerCameraProxy;
+	[Header("Cutscene settings")]
+	
+	[SerializeField] private GameObject _cutscenePlayerProxy;
+	[SerializeField] private GameObject _cutscenePlayerCameraProxy;
+	[SerializeField] private bool _showBlackLines = true;
 	private ViewModelMenuCutscene _viewModelMenuCutscene;
+
+	private GameObject _player;
+	private GameObject _playerCamera;
 
 	private GameObject _blackLineUp;
 	private GameObject _blackLineDown;
@@ -47,8 +54,7 @@ public class CutsceneController : MonoBehaviour
 	private bool _shouldInteractWithObjects;
 	private bool _isInitialized;
 
-	[Header("Cutscene settings")]
-	[SerializeField] private bool _showBlackLines = true;
+	
 
 	[Header("Cutscene dialogue data")]
 	[SerializeField] private CutsceneDialogueData _cutsceneDialogueData;
@@ -82,9 +88,10 @@ public class CutsceneController : MonoBehaviour
 		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
 		_playerBehaviourController = ServiceLocator.Resolve<PlayerBehaviourController>();
 		_viewModelMenuCutscene = ServiceLocator.Resolve<ViewModelMenuCutscene>();
-		_playerProxy = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_cutscenePlayerProxy = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 		_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();
-		_playerCameraProxy = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+		_playerCamera = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+		_player = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_gameController = ServiceLocator.Resolve<GameController>();
@@ -97,7 +104,7 @@ public class CutsceneController : MonoBehaviour
 		_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 		_textCutsceneDialogue = _viewModelMenuCutscene.TextCutsceneDialogue;
 		_textComponentCutsceneDialogue = _textCutsceneDialogue.GetComponent<TextMeshProUGUI>();
-		_playerAnimator1stPerson = _playerCameraProxy.GetComponent<Animator>();
+		//_playerAnimator1stPerson = _playerCameraProxy.GetComponent<Animator>();
 		_director = GetComponent<PlayableDirector>();
 
 		_blackLineUp = _viewModelMenuCutscene.BlackLineUp;
@@ -135,7 +142,7 @@ public class CutsceneController : MonoBehaviour
 		_menuManager.OnOpenPauseMenu += PauseCutscene;
 		_menuManager.OnClosePauseMenu += ResumeCutscene;
 
-		RebindProxyObjects();
+		//BindProxyObjects();
 
 		_isInitialized = true;
 
@@ -268,7 +275,8 @@ public class CutsceneController : MonoBehaviour
 		_textComponentCutsceneDialogue.text = string.Empty;
 	}
 
-	public void RebindProxyObjects()
+	/*
+	public void BindProxyObjects()
 	{
 		var playerProxy = transform.Find("Player_Proxy")?.gameObject;
 		var cameraProxy = transform.Find("MainCamera_Proxy")?.gameObject;
@@ -276,6 +284,7 @@ public class CutsceneController : MonoBehaviour
 		_director.SetGenericBinding(playerProxy, _playerProxy.transform);
 		_director.SetGenericBinding(cameraProxy, _playerCameraProxy.transform);
 	}
+	*/
 
 	private void OnTimelineStopped(PlayableDirector aDirector)
 	{
@@ -323,12 +332,20 @@ public class CutsceneController : MonoBehaviour
 
 	private void ExecutePostCutsceneActions()
 	{
+		_player.transform.SetParent(null);
+		SceneManager.MoveGameObjectToScene(_player, SceneManager.GetSceneAt(0));
+		
+
+		_playerCamera.transform.SetParent(null);
+		SceneManager.MoveGameObjectToScene(_playerCamera, SceneManager.GetSceneAt(0));
+		
+
 		if (_playerBehaviourController.WasPlayerArmed)
 		{
 			_playerBehaviourController.ArmPlayer();
 		}
 
-		_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
+		//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
 		WasCutscenePlaying = false;	
 		IsCutscenePlaying = false;
 		CutsceneResumeTime();
@@ -387,7 +404,7 @@ public class CutsceneController : MonoBehaviour
 			_director.Pause();
 			Debug.Log($"Cutscene {gameObject.name} paused");
 
-			_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
+			//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
 		}	
 	}
 
@@ -401,7 +418,9 @@ public class CutsceneController : MonoBehaviour
 
 		CutsceneStopTime();
 
-		RebindProxyObjects();
+	
+
+		//RebindProxyObjects();
 
 		if (_showBlackLines)
 		{
@@ -421,11 +440,23 @@ public class CutsceneController : MonoBehaviour
 
 		if (inspectedWeapon == null)
 		{
+			SceneManager.MoveGameObjectToScene(_player, SceneManager.GetSceneAt(1));
+			_player.transform.position = Vector3.zero;
+			_player.transform.rotation = Quaternion.identity;
+			_player.transform.SetParent(_cutscenePlayerProxy.transform);
+
+			SceneManager.MoveGameObjectToScene(_playerCamera, SceneManager.GetSceneAt(1));
+			_playerCamera.transform.position = Vector3.zero;
+			_playerCamera.transform.rotation = Quaternion.identity;
+			_playerCamera.transform.SetParent(_cutscenePlayerCameraProxy.transform);
+
 			_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
+
+
 		}
 		else
 		{
-			_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
+			//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
 
 			var inspectedWeaponModel = Instantiate(inspectedWeapon);
 			WeaponAbstract inspectedWeaponComponent = inspectedWeaponModel.GetComponent<WeaponAbstract>();
@@ -460,7 +491,7 @@ public class CutsceneController : MonoBehaviour
 				IsCutscenePlaying = true;
 				_gameController.MakePlayerNonControllable();
 
-				_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
+				//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
 
 				Debug.Log($"Cutscene {gameObject.name} resumed");
 			}

@@ -171,7 +171,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			Time.timeScale = 0f;
 			Cursor.lockState = CursorLockMode.Locked;
 			_mainMenuCanvasController.HideGameVersionCanvas();
-			StartCoroutine(StartNewGame());
+			//StartCoroutine(StartNewGame());
 			_cutsceneNewGame.TriggerCutscene(null);
 			IsCutsceneNewGamePlaying = true;
 		}
