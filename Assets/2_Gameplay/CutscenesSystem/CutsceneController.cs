@@ -37,8 +37,8 @@ public class CutsceneController : MonoBehaviour
 	[SerializeField] private bool _showBlackLines = true;
 	private ViewModelMenuCutscene _viewModelMenuCutscene;
 
-	private GameObject _player;
-	private GameObject _playerCamera;
+	private GameObject _playerBootstrap;
+	private GameObject _playerCameraBootstrap;
 
 	private GameObject _blackLineUp;
 	private GameObject _blackLineDown;
@@ -88,10 +88,9 @@ public class CutsceneController : MonoBehaviour
 		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
 		_playerBehaviourController = ServiceLocator.Resolve<PlayerBehaviourController>();
 		_viewModelMenuCutscene = ServiceLocator.Resolve<ViewModelMenuCutscene>();
-		_cutscenePlayerProxy = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 		_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();
-		_playerCamera = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
-		_player = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_playerCameraBootstrap = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+		_playerBootstrap = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_gameController = ServiceLocator.Resolve<GameController>();
@@ -332,12 +331,12 @@ public class CutsceneController : MonoBehaviour
 
 	private void ExecutePostCutsceneActions()
 	{
-		_player.transform.SetParent(null);
-		SceneManager.MoveGameObjectToScene(_player, SceneManager.GetSceneAt(0));
+		_playerBootstrap.transform.SetParent(null);
+		SceneManager.MoveGameObjectToScene(_playerBootstrap, SceneManager.GetSceneAt(0));
 		
 
-		_playerCamera.transform.SetParent(null);
-		SceneManager.MoveGameObjectToScene(_playerCamera, SceneManager.GetSceneAt(0));
+		_playerCameraBootstrap.transform.SetParent(null);
+		SceneManager.MoveGameObjectToScene(_playerCameraBootstrap, SceneManager.GetSceneAt(0));
 		
 
 		if (_playerBehaviourController.WasPlayerArmed)
@@ -440,15 +439,16 @@ public class CutsceneController : MonoBehaviour
 
 		if (inspectedWeapon == null)
 		{
-			SceneManager.MoveGameObjectToScene(_player, SceneManager.GetSceneAt(1));
-			_player.transform.position = Vector3.zero;
-			_player.transform.rotation = Quaternion.identity;
-			_player.transform.SetParent(_cutscenePlayerProxy.transform);
+			SceneManager.MoveGameObjectToScene(_playerBootstrap, SceneManager.GetSceneAt(1));
+			_playerBootstrap.transform.SetParent(_cutscenePlayerProxy.transform);
+			_playerBootstrap.transform.localPosition = Vector3.zero;
+			_playerBootstrap.transform.localRotation = Quaternion.identity;
 
-			SceneManager.MoveGameObjectToScene(_playerCamera, SceneManager.GetSceneAt(1));
-			_playerCamera.transform.position = Vector3.zero;
-			_playerCamera.transform.rotation = Quaternion.identity;
-			_playerCamera.transform.SetParent(_cutscenePlayerCameraProxy.transform);
+			SceneManager.MoveGameObjectToScene(_playerCameraBootstrap, SceneManager.GetSceneAt(1));
+		
+			_playerCameraBootstrap.transform.SetParent(_cutscenePlayerCameraProxy.transform);
+			_playerCameraBootstrap.transform.localPosition = Vector3.zero;
+			_playerCameraBootstrap.transform.localRotation = Quaternion.identity;
 
 			_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
 
@@ -471,6 +471,8 @@ public class CutsceneController : MonoBehaviour
 			_playerWeaponFirstPersonRenderer.ShowBothHandsForWeaponInspectionCutscene();
 			StartCoroutine(inspectedWeaponComponent.InspectWeaponAnimation());
 		}
+
+		//Debug.Log(_playerBootstrap.transform.localPosition);
 
 		_menuManager.OpenCutsceneMenu();
 
