@@ -2147,7 +2147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1023867282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2160,13 +2160,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7599f708eb5d337479fe1be1ea788468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _showBlackLines: 0
   _cutsceneDialogueData: {fileID: 0}
   _ShouldDisarmPlayer: 0
   _dialogueActorsMapping: []
-  _shouldMovePlayer: 1
+  _shouldMovePlayer: 0
   _newPlayerPosition: {x: 11, y: 6, z: 2.3}
   _shouldLoadScene: 1
-  _sceneToLoadAfterCutscene: 3
+  _sceneToLoadAfterCutscene: 0
   _NPCstateChanges: []
   _interactionObjects: []
 --- !u!4 &1023867283
@@ -2277,6 +2278,7 @@ MonoBehaviour:
   - {fileID: 627007119}
   - {fileID: 4136227658761765101}
   - {fileID: 1771432269}
+  _cutsceneNewGame: {fileID: 1023867282}
   _diegeticButtonMaterial: {fileID: 2100000, guid: db02f26ad31fea6479294797dd62bee9, type: 2}
 --- !u!4 &1128389436
 Transform:
@@ -4001,7 +4003,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30

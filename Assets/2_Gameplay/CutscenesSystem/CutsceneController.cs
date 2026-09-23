@@ -33,6 +33,8 @@ public class CutsceneController : MonoBehaviour
 	private GameObject _playerCameraProxy;
 	private ViewModelMenuCutscene _viewModelMenuCutscene;
 
+	private GameObject _blackLineUp;
+	private GameObject _blackLineDown;
 
 	public bool IsCutscenePlaying { get; private set; }
 	public bool WasCutscenePlaying { get; private set; }
@@ -44,6 +46,9 @@ public class CutsceneController : MonoBehaviour
 	private bool _shouldChangeNPCState;
 	private bool _shouldInteractWithObjects;
 	private bool _isInitialized;
+
+	[Header("Cutscene settings")]
+	[SerializeField] private bool _showBlackLines = true;
 
 	[Header("Cutscene dialogue data")]
 	[SerializeField] private CutsceneDialogueData _cutsceneDialogueData;
@@ -66,7 +71,7 @@ public class CutsceneController : MonoBehaviour
 	[SerializeField] private Vector3 _newPlayerPosition;
 
 	[Header("Load scene")] [SerializeField] bool _shouldLoadScene;
-	[SerializeField] private GameScenesSystemEnum _sceneToLoadAfterCutscene;
+	[SerializeField] private GameScenesGameplayEnum _sceneToLoadAfterCutscene;
 
 	[Header("NPC state")] [SerializeField] private List<CutsceneDataNPC> _NPCstateChanges = new List<CutsceneDataNPC>();
 
@@ -94,6 +99,9 @@ public class CutsceneController : MonoBehaviour
 		_textComponentCutsceneDialogue = _textCutsceneDialogue.GetComponent<TextMeshProUGUI>();
 		_playerAnimator1stPerson = _playerCameraProxy.GetComponent<Animator>();
 		_director = GetComponent<PlayableDirector>();
+
+		_blackLineUp = _viewModelMenuCutscene.BlackLineUp;
+		_blackLineDown = _viewModelMenuCutscene.BlackLineDown;
 
 		LoadCutsceneDialoguesTextFiles();
 
@@ -394,6 +402,17 @@ public class CutsceneController : MonoBehaviour
 		CutsceneStopTime();
 
 		RebindProxyObjects();
+
+		if (_showBlackLines)
+		{
+			_blackLineUp.SetActive(true);
+			_blackLineDown.SetActive(true);
+		}
+		else
+		{
+			_blackLineUp.SetActive(false);
+			_blackLineDown.SetActive(false);
+		}
 
 		if (_ShouldDisarmPlayer)
 		{

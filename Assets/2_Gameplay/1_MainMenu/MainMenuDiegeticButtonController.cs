@@ -31,8 +31,10 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	public void Initialize(
 		MainMenuChooseMissionController mainMenuChooseMissionController,
 		MainMenuReadNewsController mainMenuReadNews,
+		CutsceneController cutsceneNewGame,
 		Material hoverMaterial)
 	{
+		_cutsceneNewGame = cutsceneNewGame;
 		_instances.Add(this);
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_collider = GetComponent<Collider>();
