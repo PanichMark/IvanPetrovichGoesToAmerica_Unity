@@ -19,6 +19,9 @@ public class JsonGameData
 	[JsonProperty("PlayerBehaviour")]
 	public PlayerBehaviourData PlayerBehaviour = new PlayerBehaviourData();
 
+	[JsonProperty("PlayerMisdeedsInScenes")]
+	public Dictionary<GameScenesGameplayEnum, List<PlayerMisdeedsInScene>> PlayerMisdeedsInSceneData;
+
 	[JsonProperty("PlayerMovement")]
 	public PlayerMovementData PlayerMovement = new PlayerMovementData();
 
@@ -198,6 +201,17 @@ public class PlayerBehaviourData
 {
 	public bool IsPlayerArmed;
 	public bool WasPlayerArmed;
+
+	public int TimesPlayerSpottedGameTotal;
+	public int PeopleKilledGameTotal;
+	public GameCityState CityState;
+}
+
+[System.Serializable]
+public struct PlayerMisdeedsInScene
+{
+	public bool WasPlayerSpottedInThisScene;
+	public bool WerePeopleKilledInThisScene;
 }
 
 [System.Serializable]

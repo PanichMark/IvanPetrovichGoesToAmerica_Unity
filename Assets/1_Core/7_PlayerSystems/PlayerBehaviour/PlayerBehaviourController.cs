@@ -6,13 +6,26 @@ public class PlayerBehaviourController : MonoBehaviour, IJsonSaveLoad
 	private Bootstrap _bootstrap;
 	private IInputDevice _inputDevice;
 
-	public bool WasPlayerArmed { get; private set; }
-	public bool IsPlayerArmed { get; private set; } = false;
-
 	public delegate void OnPlayerEventHandler();
 	public event OnPlayerEventHandler OnPlayerArmed;
 	public event OnPlayerEventHandler OnPlayerDisarmed;
 	private GameScenesManager _scenesManager;
+
+	public bool WasPlayerArmed { get; private set; }
+	public bool IsPlayerArmed { get; private set; }
+
+	private bool _wasPlayerSpottedInThisScene;
+	private bool _wasPlayerSpottedOnMission;
+	private int _timesPlayerSpottedGameTotal;
+
+	private bool _werePeopleKilledInThisScene;
+	private bool _werePeopleKilledOnMission;
+	private int _peopleKilledGameTotal;
+
+	private GameCityState _cityState;
+
+	private const int _thresholdKilledPeopleForCityStateAgitatated = 10;
+	private const int _thresholdKilledPeopleForCityStateCurfew = 30;
 
 	public void Initialize(
 		Bootstrap bootstrap,
@@ -26,6 +39,8 @@ public class PlayerBehaviourController : MonoBehaviour, IJsonSaveLoad
 		Debug.Log("PlayerBehaviourController Initialized");
 
 		_scenesManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => { if (IsPlayerArmed) DisarmPlayer(); };
+
+		_cityState = GameCityState.Normal;
 	}
 
 	void Update()
@@ -46,6 +61,25 @@ public class PlayerBehaviourController : MonoBehaviour, IJsonSaveLoad
 		*/
 
 		//Debug.Log(IsPlayerArmed);
+	}
+
+	public void OnPlayerSpotted()
+	{
+		_timesPlayerSpottedGameTotal++;
+	}
+
+	public void OnHumanNPCkilled()
+	{
+		_peopleKilledGameTotal++;
+
+		if (_peopleKilledGameTotal >= _thresholdKilledPeopleForCityStateAgitatated)
+		{
+			_cityState = GameCityState.Agitatated;
+		}
+		if (_peopleKilledGameTotal >= _thresholdKilledPeopleForCityStateCurfew)
+		{
+			_cityState = GameCityState.Curfew;
+		}
 	}
 
 	public void ArmPlayer()
