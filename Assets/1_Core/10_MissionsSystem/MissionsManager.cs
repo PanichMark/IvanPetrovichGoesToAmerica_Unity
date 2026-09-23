@@ -54,6 +54,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		}
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+
 		_gameSceneManager.OnEndLoadingGameplayScene += ShowMissionGoalHUDonSceneLoad;
 
 		_gameSceneManager.OnBeginLoadingGameplayScene += () => ResetAllStepTurnOnOffLists();
@@ -122,8 +123,10 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	{
 		LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 
-
-		_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
+		if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
+		{
+			_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
+		}
 	}
 
 	public void GoToNextStep(int goToNextStep)

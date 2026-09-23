@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
 using TMPro;
-using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HUDmissionsController : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class HUDmissionsController : MonoBehaviour
 
 	private GameObject _textCurrentMissionGoal;
 	private TextMeshProUGUI _textComponentCurrentMissionGoal;
+
+	private string _textGoal;
 
 	public void Initialize(
 		GameController gameController,
@@ -64,12 +67,30 @@ public class HUDmissionsController : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += HideCanvasHUDmissions;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDmissions;
 
+		_gameSceneManager.OnEndLoadingGameplayScene += () =>
+		{
+			if (SceneManager.sceneCount > 1)
+			{
+				if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
+				{
+					_textComponentCurrentMissionGoal.text = _textGoal;
+				}
+				else
+				{
+					//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+					_textComponentCurrentMissionGoal.text = null;
+				}
+			}
+		};
+
 		_gameController.OnPlayerEarlyDeath += HideCanvasHUDmissions;
 	}
 
 	public void SetCurrentMissionGoalText(string textGoal)
 	{
-		_textComponentCurrentMissionGoal.text = textGoal;
+		_textGoal = textGoal;
+
+		_textComponentCurrentMissionGoal.text = _textGoal;
 	}
 
 	public void ShowNewMissionGoalHUDnotification(string textGoal, bool isNewGoal)
@@ -77,11 +98,6 @@ public class HUDmissionsController : MonoBehaviour
 		StopAllCoroutines();
 
 		StartCoroutine(ShowNewMissionGoalHUDnotificationCoroutine(textGoal, isNewGoal));
-	}
-
-	private void ChangeLanguge(LocalizationManager localizationManager)
-	{
-		_localizationManager = localizationManager;
 	}
 
 	private IEnumerator ShowNewMissionGoalHUDnotificationCoroutine(string textGoal, bool isNewGoal)

@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
@@ -126,6 +127,25 @@ public class PauseMenuController : MonoBehaviour
 
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += ClosePauseSubMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseSubMenu;
+		_gameSceneManager.OnEndLoadingGameplayScene += () =>
+		{
+			if (SceneManager.sceneCount > 1)
+			{
+				if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
+				{
+					_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+				}
+				else
+				{
+					//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+					_textComponentsCurrentMissionGoal.text = null;
+				}
+			}
+			else
+			{
+				_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+			}
+		};
 
 		_menuManager.OnOpenPauseMenu += ShowPauseMenu;
 		_menuManager.OnClosePauseMenu += HidePauseMenu;
@@ -316,8 +336,24 @@ public class PauseMenuController : MonoBehaviour
 		_textComponentsButtonsPauseMenu[5].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSettings");
 		_textComponentsButtonsPauseMenu[6].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonExitToMainMenu");
 
-		_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-		_textComponentsCurrentPlayerMoney.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_PlayerMoney");
+		if (SceneManager.sceneCount > 1)
+		{
+			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
+			{
+				_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+			}
+			else
+			{
+				//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+				_textComponentsCurrentMissionGoal.text = null;
+			}
+		}
+		else
+		{
+			_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+		}
+
+			_textComponentsCurrentPlayerMoney.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_PlayerMoney");
 
 		_textComponentDeathMessage.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_TextDeathMessage");
 	}

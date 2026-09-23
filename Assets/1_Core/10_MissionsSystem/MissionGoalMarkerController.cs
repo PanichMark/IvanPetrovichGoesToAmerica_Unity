@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MissionGoalMarkerController : MonoBehaviour
 {
@@ -64,6 +65,14 @@ public class MissionGoalMarkerController : MonoBehaviour
 		}
 
 		_imageMissionGoalMarker.SetActive(true);
+
+		if (SceneManager.sceneCount > 1)
+		{
+			if (SceneManager.GetSceneAt(1).name == GameScenesSystemEnum.Scene_System_Test.ToString())
+			{
+				_imageMissionGoalMarker.SetActive(false);
+			}
+		}
 
 		foreach (var condition in _currentMissionStepCache.Conditions)
 		{
