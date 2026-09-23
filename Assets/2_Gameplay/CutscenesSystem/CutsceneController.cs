@@ -31,10 +31,12 @@ public class CutsceneController : MonoBehaviour
 	private PlayableDirector _director;
 	private bool _isCutsceneDialogueActorPlayer;
 	[Header("Cutscene settings")]
-	
+	[SerializeField] private bool _playCutsceneOnStart;
+	[SerializeField] private bool _showBlackLines = true;
 	[SerializeField] private GameObject _cutscenePlayerProxy;
 	[SerializeField] private GameObject _cutscenePlayerCameraProxy;
-	[SerializeField] private bool _showBlackLines = true;
+
+
 	private ViewModelMenuCutscene _viewModelMenuCutscene;
 
 	private GameObject _playerBootstrap;
@@ -144,6 +146,11 @@ public class CutsceneController : MonoBehaviour
 		//BindProxyObjects();
 
 		_isInitialized = true;
+
+		if (_playCutsceneOnStart)
+		{
+			TriggerCutscene(null);
+		}
 
 		//Debug.Log($"Cutscene {gameObject.name} initialized");
 	}
@@ -439,20 +446,17 @@ public class CutsceneController : MonoBehaviour
 
 		if (inspectedWeapon == null)
 		{
+			_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
+
 			SceneManager.MoveGameObjectToScene(_playerBootstrap, SceneManager.GetSceneAt(1));
 			_playerBootstrap.transform.SetParent(_cutscenePlayerProxy.transform);
 			_playerBootstrap.transform.localPosition = Vector3.zero;
 			_playerBootstrap.transform.localRotation = Quaternion.identity;
 
 			SceneManager.MoveGameObjectToScene(_playerCameraBootstrap, SceneManager.GetSceneAt(1));
-		
 			_playerCameraBootstrap.transform.SetParent(_cutscenePlayerCameraProxy.transform);
 			_playerCameraBootstrap.transform.localPosition = Vector3.zero;
 			_playerCameraBootstrap.transform.localRotation = Quaternion.identity;
-
-			_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.Cutscene);
-
-
 		}
 		else
 		{

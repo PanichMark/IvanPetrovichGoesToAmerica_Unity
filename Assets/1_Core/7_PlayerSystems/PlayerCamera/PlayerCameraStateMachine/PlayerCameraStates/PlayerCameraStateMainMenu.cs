@@ -10,13 +10,8 @@ public class PlayerCameraStateMainMenu : PlayerCameraStateAbstract
 		_playerCamera = playerCam;
 		_position = position;
 		_eulerAngles = eulerAngles;
-		_playerCamera.SetCameraMainMenuPosition(this._position);
+		_playerCamera.SetCameraMainMenuPosition(_position);
 		var quaternionRotation = Quaternion.Euler(_eulerAngles);
 		_playerCamera.SetCameraMainMenuRotation(quaternionRotation);
-	}
-
-	public override void Update()
-	{
-
 	}
 }
