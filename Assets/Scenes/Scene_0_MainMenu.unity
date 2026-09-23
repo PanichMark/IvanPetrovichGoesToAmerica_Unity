@@ -2214,16 +2214,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7599f708eb5d337479fe1be1ea788468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playCutsceneOnStart: 0
+  _showBlackLines: 0
   _cutscenePlayerProxy: {fileID: 1580316157}
   _cutscenePlayerCameraProxy: {fileID: 537340853}
-  _showBlackLines: 0
   _cutsceneDialogueData: {fileID: 0}
   _ShouldDisarmPlayer: 0
   _dialogueActorsMapping: []
-  _shouldMovePlayer: 0
-  _newPlayerPosition: {x: 0, y: 4, z: 0}
+  _shouldMovePlayer: 1
+  _newPlayerTransform: {fileID: 11400000, guid: c777dafbfd9f2a84a8fefc4a92475f38, type: 2}
   _shouldLoadScene: 1
-  _sceneToLoadAfterCutscene: 0
+  _sceneToLoadAfterCutscene: 1
   _NPCstateChanges: []
   _interactionObjects: []
 --- !u!4 &1023867283

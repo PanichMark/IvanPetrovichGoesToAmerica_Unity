@@ -420,6 +420,7 @@ ServiceLocator.Register<PauseSubMenuSettingsSectionGeneralController>(PauseSubMe
 
 
 		ServiceLocator.Register<GameplayCanvases>(_gameplayCanvases);
+		ServiceLocator.Register<HUDmissionsController>(HUDmissionsController);
 
 
 

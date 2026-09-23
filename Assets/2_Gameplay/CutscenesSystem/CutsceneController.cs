@@ -33,10 +33,12 @@ public class CutsceneController : MonoBehaviour
 	[Header("Cutscene settings")]
 	[SerializeField] private bool _playCutsceneOnStart;
 	[SerializeField] private bool _showBlackLines = true;
+	[SerializeField] private bool _showMissionGoalHint;
 	[SerializeField] private GameObject _cutscenePlayerProxy;
 	[SerializeField] private GameObject _cutscenePlayerCameraProxy;
 
-
+	private HUDmissionsController _HUDmissionsController;
+	private MissionsManager _missionsManager;
 	private ViewModelMenuCutscene _viewModelMenuCutscene;
 
 	private GameObject _playerBootstrap;
@@ -76,7 +78,7 @@ public class CutsceneController : MonoBehaviour
 	private int _currentCutsceneDialogueLineIndex;
 
 	[Header("Move player")] [SerializeField] private bool _shouldMovePlayer;
-	[SerializeField] private Vector3 _newPlayerPosition;
+	[SerializeField] private CutsceneMovePlayerData _newPlayerTransform;
 
 	[Header("Load scene")] [SerializeField] bool _shouldLoadScene;
 	[SerializeField] private GameScenesGameplayEnum _sceneToLoadAfterCutscene;
@@ -87,6 +89,8 @@ public class CutsceneController : MonoBehaviour
 
 	private void Start()
 	{
+		_HUDmissionsController = ServiceLocator.Resolve<HUDmissionsController>();
+		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
 		_playerBehaviourController = ServiceLocator.Resolve<PlayerBehaviourController>();
 		_viewModelMenuCutscene = ServiceLocator.Resolve<ViewModelMenuCutscene>();
@@ -351,6 +355,11 @@ public class CutsceneController : MonoBehaviour
 			_playerBehaviourController.ArmPlayer();
 		}
 
+		if (_showMissionGoalHint)
+		{
+			_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedGoalText, true);
+		}
+
 		//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
 		WasCutscenePlaying = false;	
 		IsCutscenePlaying = false;
@@ -379,7 +388,8 @@ public class CutsceneController : MonoBehaviour
 		
 		if (_shouldMovePlayer)
 		{
-			_playerMovementController.SetPlayerPosition(_newPlayerPosition);
+			_playerMovementController.SetPlayerPosition(_newPlayerTransform.PlayerPosition);
+			_playerCameraController.SetCameraRotationY(_newPlayerTransform.PlayerRotationY);
 		}
 
 		if (_shouldLoadScene)

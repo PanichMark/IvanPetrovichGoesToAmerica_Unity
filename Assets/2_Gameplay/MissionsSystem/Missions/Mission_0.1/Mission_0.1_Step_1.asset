@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63e07aaa1abd1f4db5a0b24a3adc23f, type: 3}
   m_Name: Mission_0.1_Step_1
   m_EditorClassIdentifier: 
-  MissionStepGoal_RU: "\u0432\u0437\u044F\u0442\u044C \u0437\u043E\u043B\u043E\u0442\u043E\u0439
-    \u0441\u043B\u0438\u0442\u043E\u043A"
-  MissionStepGoal_EN: take golden bar
-  StepDescription: 
-  showMissionMarker: 1
+  MissionStepGoal_RU: "\u0412\u044B\u0439\u0442\u0438 \u0438\u0437 \u0446\u0435\u0440\u043A\u0432\u0438"
+  MissionStepGoal_EN: Exit the church
+  GameObjectTurnOn: []
+  GameObjectTurnOff: []
   StepConditions:
   - {fileID: 11400000, guid: d9ada3130dc747d4396422619caf4850, type: 2}
+  StepDescription: Exit the church using keys collected in previous step
+  showMissionMarker: 1
