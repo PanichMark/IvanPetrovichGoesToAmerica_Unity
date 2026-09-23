@@ -460,11 +460,11 @@ public class Bootstrap : MonoBehaviour
 
 	private IEnumerator LoadFirstGameplayScene()
 	{
-		if (_firstSceneToLoad == GameScenesSystemEnum.Scene_0_MainMenu)
+		if (_firstSceneToLoad == GameScenesSystemEnum.Scene_System_MainMenu)
 		{
 			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadMainMenuScene());
 		}
-		else if (_firstSceneToLoad == GameScenesSystemEnum.Scene_0_EndGameTitles)
+		else if (_firstSceneToLoad == GameScenesSystemEnum.Scene_System_EndGameTitles)
 		{
 			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadEndGameTitlesScene());
 		}
@@ -601,7 +601,7 @@ public class Bootstrap : MonoBehaviour
 			}
 		}
 
-		if (_firstSceneToLoad != GameScenesSystemEnum.Scene_0_MainMenu && _firstSceneToLoad != GameScenesSystemEnum.Scene_0_EndGameTitles)
+		if (_firstSceneToLoad != GameScenesSystemEnum.Scene_System_MainMenu && _firstSceneToLoad != GameScenesSystemEnum.Scene_System_EndGameTitles)
 		{
 			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerTransform.PlayerPosition);
 			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerRotationY(_playerTransform.PlayerRotationY);

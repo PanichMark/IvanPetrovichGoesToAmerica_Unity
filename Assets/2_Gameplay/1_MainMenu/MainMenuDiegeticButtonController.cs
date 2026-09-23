@@ -259,7 +259,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		//yield return StartCoroutine(_saveLoadController.NewGame());
 	
 
-		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesGameplayEnum.Scene_0_Test));
+		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesGameplayEnum.Scene_System_Test));
 
 		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 		_playerMovementController.SetPlayerPosition(new Vector3(0, 0, 0));

@@ -103,7 +103,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 			{
 				spriteToUse = _gameScenesList.GameScenes[currentSceneData].SceneLoadingScreenImage;
 
-				if (_gameScenesList.GameScenes[currentSceneData].GameScene != GameScenesSystemEnum.Scene_0_Test)
+				if (_gameScenesList.GameScenes[currentSceneData].GameScene != GameScenesSystemEnum.Scene_System_Test)
 				{
 					missionName = _gameScenesList.GameScenes[currentSceneData].SceneGameMission.MissionName.ToString();
 				}
@@ -267,7 +267,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 			}
 		}
 		Debug.Log("Scene_MainMenu loading started");
-		AsyncOperation operation = SceneManager.LoadSceneAsync(GameScenesSystemEnum.Scene_0_MainMenu.ToString(), LoadSceneMode.Additive);
+		AsyncOperation operation = SceneManager.LoadSceneAsync(GameScenesSystemEnum.Scene_System_MainMenu.ToString(), LoadSceneMode.Additive);
 
 		while (!operation.isDone)
 		{
@@ -326,7 +326,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 			}
 		}
 		Debug.Log("Scene_MainMenu loading started");
-		AsyncOperation operation = SceneManager.LoadSceneAsync(GameScenesSystemEnum.Scene_0_EndGameTitles.ToString(), LoadSceneMode.Additive);
+		AsyncOperation operation = SceneManager.LoadSceneAsync(GameScenesSystemEnum.Scene_System_EndGameTitles.ToString(), LoadSceneMode.Additive);
 
 		while (!operation.isDone)
 		{

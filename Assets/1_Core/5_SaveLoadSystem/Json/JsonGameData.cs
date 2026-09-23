@@ -86,8 +86,8 @@ public class JsonGameData
 	[JsonProperty("ElectricalPanels")]
 	public Dictionary<GameScenesGameplayEnum, List<ElectricalPanelData>> ElectricalPanelsData;
 
-	[JsonProperty("HintMessages")]
-	public Dictionary<GameScenesGameplayEnum, List<HintMessageData>> HintMessagesData;
+	[JsonProperty("TriggerZones")]
+	public Dictionary<GameScenesGameplayEnum, List<TriggerZoneData>> TriggerZonesData;
 
 	public JsonGameData()
 	{
@@ -95,7 +95,7 @@ public class JsonGameData
 		SafeFileDateAndTime = DateTime.Now.ToString();
 
 		//Scene
-		Scene = GameScenesGameplayEnum.Scene_0_Test;
+		Scene = GameScenesGameplayEnum.Scene_System_Test;
 
 		//Mission
 		MissionData.Mission = 0.1f;
@@ -175,7 +175,7 @@ public class JsonGameData
 		PhonographsData = CreateEmptyDictionary<PhonographData>();
 		BreakableObjectsData = CreateEmptyDictionary<BreakableObjectData>();
 		ElectricalPanelsData = CreateEmptyDictionary<ElectricalPanelData>();
-		HintMessagesData = CreateEmptyDictionary<HintMessageData>();
+		TriggerZonesData = CreateEmptyDictionary<TriggerZoneData>();
 	}
 
 	private Dictionary<GameScenesGameplayEnum, List<T>> CreateEmptyDictionary<T>()
@@ -446,10 +446,10 @@ public struct ElectricalPanelData
 }
 
 [System.Serializable]
-public struct HintMessageData
+public struct TriggerZoneData
 {
-	public int HintMessageIndex;
-	public string HintMessageSystem;
+	public int TriggerZoneIndex;
+	public string TriggerZoneNameSystem;
 
-	public bool WasHintMessageShown;
+	public bool WasZoneTriggered;
 }

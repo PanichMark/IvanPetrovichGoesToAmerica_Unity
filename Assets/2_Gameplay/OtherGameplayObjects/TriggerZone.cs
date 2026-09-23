@@ -27,11 +27,12 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 	
 		
 
-			if (_cutscene != null)
-			{
-				Debug.Log("CUTSCENE!!!!");
-				_cutscene.TriggerCutscene(null);
-			}
+		if (_cutscene != null)
+		{
+			Debug.Log("CUTSCENE!!!!");
+			_cutscene.TriggerCutscene(null);
+		}
+
 		if (_pauseSubMenuSettingsSectionGeneralController.AreIngameTutorialsEnabled)
 		{
 			if (_noteObject != null)
@@ -56,26 +57,26 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
-		if (data.HintMessagesData == null)
+		if (data.TriggerZonesData == null)
 		{
-			data.HintMessagesData = new Dictionary<GameScenesGameplayEnum, List<HintMessageData>>();
+			data.TriggerZonesData = new Dictionary<GameScenesGameplayEnum, List<TriggerZoneData>>();
 		}
-		if (!data.HintMessagesData.ContainsKey(currentScene))
+		if (!data.TriggerZonesData.ContainsKey(currentScene))
 		{
-			data.HintMessagesData[currentScene] = new List<HintMessageData>();
+			data.TriggerZonesData[currentScene] = new List<TriggerZoneData>();
 		}
 
-		var targetList = data.HintMessagesData[currentScene];
+		var targetList = data.TriggerZonesData[currentScene];
 
-		int indexInList = targetList.FindIndex(item => item.HintMessageIndex == GameplayObjectIndex);
+		int indexInList = targetList.FindIndex(item => item.TriggerZoneIndex == GameplayObjectIndex);
 		//Debug.Log(GameplayObjectIndex);
 		//Debug.Log(_noteObject.name);
 		//Debug.Log(_wasHintMessageShown);
-		var updatedItem = new HintMessageData
+		var updatedItem = new TriggerZoneData
 		{
-			HintMessageIndex = GameplayObjectIndex,
-			HintMessageSystem = gameObject.name,
-			WasHintMessageShown = _wasHintMessageShown
+			TriggerZoneIndex = GameplayObjectIndex,
+			TriggerZoneNameSystem = gameObject.name,
+			WasZoneTriggered = _wasHintMessageShown
 		};
 
 		if (indexInList != -1)
@@ -92,16 +93,18 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
+		//Debug.Log("BRUH!!!!");
+
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
-		if (data.HintMessagesData == null || !data.HintMessagesData.TryGetValue(currentScene, out var sourceList)) yield break;
+		if (data.TriggerZonesData == null || !data.TriggerZonesData.TryGetValue(currentScene, out var sourceList)) yield break;
 
-		var savedState = sourceList.Find(item => item.HintMessageIndex == GameplayObjectIndex);
+		var savedState = sourceList.Find(item => item.TriggerZoneIndex == GameplayObjectIndex);
 
-		if (savedState.Equals(default(HintMessageData))) yield break;
-
-		_wasHintMessageShown = savedState.WasHintMessageShown;
-
+		if (savedState.Equals(default(TriggerZoneData))) yield break;
+		
+		_wasHintMessageShown = savedState.WasZoneTriggered;
+		Debug.Log(_wasHintMessageShown);
 		yield return null;
 	}
 }

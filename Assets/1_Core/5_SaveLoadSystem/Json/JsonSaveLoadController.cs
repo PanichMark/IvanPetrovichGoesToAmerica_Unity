@@ -296,8 +296,8 @@ public class JsonSaveLoadController : MonoBehaviour
 		// The lack of THIS --  && !_isLoadingFromSaveFile -- made it IMpossible to load savefile from 1st try after loading NewScene by ANY means!
 		if (_WasSavedToTEMPbeforeLoadingNewScene == false && !_isLoadingFromSaveFile)
 		{
-			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_0_MainMenu.ToString() && SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_0_EndGameTitles.ToString() &&
-				_gameSceneManager.PreviousScene != GameScenesSystemEnum.Scene_0_MainMenu && _gameSceneManager.PreviousScene != GameScenesSystemEnum.Scene_0_EndGameTitles)
+			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_MainMenu.ToString() && SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_EndGameTitles.ToString() &&
+				_gameSceneManager.PreviousScene != GameScenesSystemEnum.Scene_System_MainMenu && _gameSceneManager.PreviousScene != GameScenesSystemEnum.Scene_System_EndGameTitles)
 			{
 				yield return StartCoroutine(SaveGame(-1));
 			}

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cb99255c3deed249a202273e9777eb8, type: 3}
-  m_Name: GameScene_0_EndGameTitles
+  m_Name: GameScene_0_Church
   m_EditorClassIdentifier: 
-  GameScene: 1
-  SceneDescription_RU: {fileID: 0}
+  GameScene: 3
+  SceneDescription_RU: {fileID: 4900000, guid: 835db29e1c806d84aa193e1eb2e44e5c, type: 3}
   SceneDescription_EN: {fileID: 0}
-  SceneLoadingScreenImage: {fileID: 21300000, guid: 69f193d520b2e604cb0ead64a634c1bd, type: 3}
-  GameMissionName: 0
+  SceneLoadingScreenImage: {fileID: 21300000, guid: 39f0dd0ac7d32c64e8438da2934ca969, type: 3}
+  SceneGameMission: {fileID: 11400000, guid: 3e12f522c0bdf7d4ba4b70092e6c1080, type: 2}

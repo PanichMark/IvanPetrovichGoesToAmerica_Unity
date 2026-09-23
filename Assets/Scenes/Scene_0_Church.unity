@@ -1988,8 +1988,6 @@ GameObject:
   - component: {fileID: 910055204}
   - component: {fileID: 910055203}
   - component: {fileID: 910055202}
-  - component: {fileID: 910055201}
-  - component: {fileID: 910055200}
   m_Layer: 0
   m_Name: NoteTriggerZone
   m_TagString: Untagged
@@ -1997,32 +1995,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &910055200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 910055199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc5fee0d718dc0047b9ef121bbc71073, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _linkedMissionStep: {fileID: 11400000, guid: 474a198d1986e5747aa1d176137a4fda, type: 2}
---- !u!114 &910055201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 910055199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74392adaa05fecd4ea7c6d2bdb346a08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _linkedMissionStep: {fileID: 11400000, guid: e1b907ecb4ea6774aac6f422acef379e, type: 2}
 --- !u!114 &910055202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4059,7 +4031,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565190857}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
