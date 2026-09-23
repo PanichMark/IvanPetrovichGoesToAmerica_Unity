@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -153,9 +154,9 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		OnCurrentStepChanged?.Invoke();
 
-		Debug.Log(CurrentStepIndex);
-		Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex]);
-		Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0]);
+		//Debug.Log(CurrentStepIndex);
+		//Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex]);
+		//Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0]);
 		
 		//Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0].GetType());
 
@@ -169,9 +170,9 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		{
 			_missionStepConditionWithProgress.OnStepConditionProgressUpdated -= HandleStepProgress;
 		}
-		Debug.Log(CurrentStepIndex);
-		Debug.Log(ActiveMission.MissionSteps.Length);
-		Debug.Log(ActiveMission);
+		//Debug.Log(CurrentStepIndex);
+		//Debug.Log(ActiveMission.MissionSteps.Length);
+		//Debug.Log(ActiveMission);
 	}
 
 	private void OnDestroy()
@@ -254,10 +255,30 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	public IEnumerator LoadJsonData(JsonGameData data)
 	{
+		string targetString = data.MissionData.Mission.ToString("F1", System.Globalization.CultureInfo.InvariantCulture);
+		bool isFound = false;
+
+		for (int i = 0; i < _gameMissions.MissionsInOrder.Length; i++)
+		{
+			// Убираем префикс "Mission_" и сравниваем остаток строки
+			string fileNameWithoutPrefix = _gameMissions.MissionsInOrder[i].name.Replace("Mission_", "");
+
+			Debug.Log(fileNameWithoutPrefix); // Выводим название без префикса
+			Debug.Log(targetString);
+
+			if (fileNameWithoutPrefix == targetString)
+			{
+				ActiveMissionIndex = i;
+				ActiveMission = _gameMissions.MissionsInOrder[ActiveMissionIndex];
+				isFound = true;
+
+				Debug.Log(ActiveMission);
+				break;
+			}
+		}
+
 		CurrentStepIndex = data.MissionData.MissionStep;
 		GoToNextStep(CurrentStepIndex);
-
-		//Debug.Log(CurrentStepIndex);
 
 		yield return null;
 	}

@@ -4023,7 +4023,6 @@ GameObject:
   - component: {fileID: 1565190859}
   - component: {fileID: 1565190858}
   - component: {fileID: 1565190862}
-  - component: {fileID: 1565190863}
   - component: {fileID: 1565190864}
   m_Layer: 0
   m_Name: CutsceneTriggerZone
@@ -4135,19 +4134,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _noteObject: {fileID: 0}
   _cutscene: {fileID: 1491632945}
---- !u!114 &1565190863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565190857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74392adaa05fecd4ea7c6d2bdb346a08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _linkedMissionStep: {fileID: 11400000, guid: 474a198d1986e5747aa1d176137a4fda, type: 2}
 --- !u!114 &1565190864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4160,7 +4146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc5fee0d718dc0047b9ef121bbc71073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _linkedMissionStep: {fileID: 11400000, guid: e1b907ecb4ea6774aac6f422acef379e, type: 2}
+  _linkedMissionStep: {fileID: 11400000, guid: 474a198d1986e5747aa1d176137a4fda, type: 2}
 --- !u!1 &1585560974
 GameObject:
   m_ObjectHideFlags: 0
