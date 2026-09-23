@@ -90,7 +90,18 @@ public class HUDmissionsController : MonoBehaviour
 	{
 		_textGoal = textGoal;
 
-		_textComponentCurrentMissionGoal.text = _textGoal;
+		if (SceneManager.sceneCount > 1)
+		{
+			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
+			{
+				_textComponentCurrentMissionGoal.text = _textGoal;
+			}
+			else
+			{
+				//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+				_textComponentCurrentMissionGoal.text = null;
+			}
+		}
 	}
 
 	public void ShowNewMissionGoalHUDnotification(string textGoal, bool isNewGoal)

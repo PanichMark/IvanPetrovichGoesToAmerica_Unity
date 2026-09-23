@@ -137,8 +137,7 @@ public class PauseMenuController : MonoBehaviour
 				}
 				else
 				{
-					//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-					_textComponentsCurrentMissionGoal.text = null;
+					_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
 				}
 			}
 			else
@@ -344,8 +343,7 @@ public class PauseMenuController : MonoBehaviour
 			}
 			else
 			{
-				//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-				_textComponentsCurrentMissionGoal.text = null;
+				_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
 			}
 		}
 		else
@@ -353,7 +351,7 @@ public class PauseMenuController : MonoBehaviour
 			_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
 		}
 
-			_textComponentsCurrentPlayerMoney.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_PlayerMoney");
+		_textComponentsCurrentPlayerMoney.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_PlayerMoney");
 
 		_textComponentDeathMessage.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_TextDeathMessage");
 	}
