@@ -330,7 +330,7 @@ public class CutsceneController : MonoBehaviour
 		_director.Stop();
 		_director.stopped -= OnTimelineStopped;
 		_menuManager.CloseCutsceneMenu();
-		Destroy(gameObject);
+		//Destroy(gameObject);
 	}
 
 	private void SkipCutscene()
@@ -408,7 +408,7 @@ public class CutsceneController : MonoBehaviour
 			}
 		}
 
-		Destroy(gameObject);
+		//Destroy(gameObject);
 		Debug.Log($"Post-cutscene {gameObject.name} actions executed.");
 	}
 

@@ -21,5 +21,10 @@ public abstract class InteractionObjectOpenableAbstract : GameplayObjectJsonSave
 	public event IInteractable.InteractableObjectHandler OnInteract;
 	public abstract void Interact();
 
+	protected virtual void PerformOpenableInteraction()
+	{
+		OnInteract?.Invoke();
+	}
+
 	public abstract void InteractCutscene();
 }

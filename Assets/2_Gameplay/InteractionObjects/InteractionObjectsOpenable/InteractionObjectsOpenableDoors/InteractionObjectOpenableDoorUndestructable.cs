@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static IInteractable;
 
 public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpenableAbstract
 {
@@ -149,11 +150,11 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 				|| (_electronicLockController != null && IsOpenableUnlocked)
 				|| _electronicElectricalPanel != null && IsOpenableUnlocked)
 			{
-				PerformDoorInteraction();
+				PerformOpenableInteraction();
 
 				if (_isDoorDouble == true)
 				{
-					_doorSibling.PerformDoorInteraction();
+					_doorSibling.PerformOpenableInteraction();
 				}
 			}
 		}
@@ -222,10 +223,14 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 			}
 		}
 	}
-
-	protected virtual void PerformDoorInteraction()
+	//public event IInteractable.InteractableObjectHandler OnInteract;
+	protected override void PerformOpenableInteraction()
 	{
+		base.PerformOpenableInteraction();
+
 		_isAdditionalInteractionHintActive = false;
+
+		
 
 		if (_changeScene == null)
 		{

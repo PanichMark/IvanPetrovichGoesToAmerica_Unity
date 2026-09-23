@@ -8,6 +8,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	private GameMissionsList _gameMissions;
 	public MissionAbstract ActiveMission { get; private set; }
+	public int ActiveMissionIndex { get; private set; }
 	public int CurrentStepIndex { get; private set; }
 	private LocalizationManager _localizationManager;
 	private HUDmissionsController _HUDmissionsController;
@@ -35,14 +36,20 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		_gameMissions = gameMissions;
 
-		ActiveMission = _gameMissions.MissionsInOrder[0];
+		
 
+		ActiveMissionIndex = 0;
 		CurrentStepIndex = 0;
+
+		ActiveMission = _gameMissions.MissionsInOrder[ActiveMissionIndex];
+
 		Debug.Log(ActiveMission);
 		if (ActiveMission.MissionSteps.Length > 0)
 		{
 			LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 			_HUDmissionsController.SetCurrentMissionGoalText(LocalizedGoalText);
+
+			//ActiveMission.MissionSteps[CurrentStepIndex].OnStepStarted();
 		}
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -102,9 +109,25 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	{
 		CurrentStepIndex = goToNextStep;
 
+		if (goToNextStep == -1)
+		{
+			RetunToPreviousMission();
+			//return;
+		}
+
+		if (goToNextStep > -1)
+		{
+			if (CurrentStepIndex >= ActiveMission.MissionSteps.Length)
+			{
+				StartNextMission();
+			}
+		}
+
 		if (CurrentStepIndex < ActiveMission.MissionSteps.Length)
 		{
-			ActiveMission.MissionSteps[CurrentStepIndex].OnMissionStepStartDoSomwthing();
+			//ActiveMission.MissionSteps[CurrentStepIndex].OnMissionStepStartDoSomwthing();
+
+			ActiveMission.MissionSteps[CurrentStepIndex].OnStepStarted();
 
 			LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 
@@ -119,7 +142,10 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		OnCurrentStepChanged?.Invoke();
 
 		Debug.Log(CurrentStepIndex);
-		Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0].GetType());
+		Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex]);
+		Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0]);
+		
+		//Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0].GetType());
 
 		if (ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0] is IMissionStepConditionWithProgress)
 		{
@@ -131,12 +157,9 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		{
 			_missionStepConditionWithProgress.OnStepConditionProgressUpdated -= HandleStepProgress;
 		}
-
-
-		if (CurrentStepIndex >= ActiveMission.MissionSteps.Length)
-		{
-			EndMission();
-		}
+		Debug.Log(CurrentStepIndex);
+		Debug.Log(ActiveMission.MissionSteps.Length);
+		Debug.Log(ActiveMission);
 	}
 
 	private void OnDestroy()
@@ -161,18 +184,32 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	private void StartNextMission()
 	{
-		int currentMissionIndex = System.Array.IndexOf(_gameMissions.MissionsInOrder, ActiveMission);
+		//int currentMissionIndex = System.Array.IndexOf(_gameMissions.MissionsInOrder, ActiveMission);
 
-		if (currentMissionIndex < _gameMissions.MissionsInOrder.Length)
+		Debug.Log("NEXT MISSION!");
+
+		if (ActiveMissionIndex <= _gameMissions.MissionsInOrder.Length)
 		{
-			ActiveMission = _gameMissions.MissionsInOrder[currentMissionIndex];
+			ActiveMissionIndex++;
+
+			ActiveMission = _gameMissions.MissionsInOrder[ActiveMissionIndex];
+			Debug.Log(ActiveMission);
 			CurrentStepIndex = 0;
+			GoToNextStep(CurrentStepIndex);
 		}
 	}
 
-	private void EndMission()
+	private void RetunToPreviousMission()
 	{
-		StartNextMission();
+		//int currentMissionIndex = System.Array.IndexOf(_gameMissions.MissionsInOrder, ActiveMission);
+		Debug.Log("RETURN!!");
+		if (ActiveMissionIndex > 0)
+		{
+			ActiveMissionIndex--;
+
+			ActiveMission = _gameMissions.MissionsInOrder[ActiveMissionIndex];
+			CurrentStepIndex = Mathf.Max(0, ActiveMission.MissionSteps.Length - 1);
+		}
 	}
 
 	private string GetLocalizedGoalText(MissionStepAbstract step)

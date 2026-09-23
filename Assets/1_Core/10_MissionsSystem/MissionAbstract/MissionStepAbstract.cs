@@ -8,8 +8,8 @@ public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
 	private MissionsManager _missionsManager;
 	public bool ShowMissionMarker => true;
 
-	[SerializeField] private List<GameObject> GameObjectTurnOn;
-	[SerializeField] private List<GameObject> GameObjectTurnOff;
+	private List<GameObject> GameObjectTurnOn;
+	private List<GameObject> GameObjectTurnOff;
 
 
 	public IReadOnlyList<IMissionStepCondition> Conditions
@@ -18,6 +18,30 @@ public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
 	}
 
 	public List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
+
+	public void OnStepStarted()
+	{
+		if (GameObjectTurnOn.Count > 0)
+		{
+			foreach (var obj in GameObjectTurnOn)
+			{
+				Debug.Log("TurnON");
+				Debug.Log(obj.name);
+				obj.SetActive(true);
+			}
+		}
+
+		if (GameObjectTurnOff.Count > 0)
+		{
+			
+			foreach (var obj in GameObjectTurnOff)
+			{
+				Debug.Log("TurnOFF");
+				Debug.Log(obj.name);
+				obj.SetActive(false);
+			}
+		}
+	}
 
 	public void OnStepCompleted(int goToNextStep)
 	{
@@ -28,14 +52,22 @@ public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
 	{
 		_missionsManager = missionsManager;
 
+		GameObjectTurnOn.Clear();
+		GameObjectTurnOff.Clear();
+
 		foreach (var condition in StepConditions)
 		{
 			condition.Initialize(this);
 		}
 	}
 
-	public void OnMissionStepStartDoSomwthing()
+	public void RegisterObjectsTurnOn(GameObject objectTurnOn)
 	{
-		Debug.Log($"Do Somthing on Step {_missionsManager.CurrentStepIndex}");
+		GameObjectTurnOn.Add(objectTurnOn);
+	}
+
+	public void RegisterObjectsTurnOff(GameObject objectTurnOff)
+	{
+		GameObjectTurnOff.Add(objectTurnOff);
 	}
 }

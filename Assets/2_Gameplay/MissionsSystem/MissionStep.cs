@@ -7,7 +7,7 @@ public class MissionStep : MissionStepAbstract, IMissionStep
 {
 	[TextArea(3, 10)]
 	public string StepDescription;
-	[SerializeField] private bool showMissionMarker;
+	[SerializeField] private bool showMissionMarker = true;
 
 
 	// --- ДОБАВЬТЕ ЭТО СВОЙСТВО ---
