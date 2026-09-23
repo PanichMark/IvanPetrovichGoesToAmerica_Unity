@@ -34,6 +34,6 @@ public class MissionStepConditionObjectDestroyed : MissionStepConditionAbstract
 
 	public override void ResetStepCondition()
 	{
-		throw new System.NotImplementedException();
+		//throw new System.NotImplementedException();
 	}
 }

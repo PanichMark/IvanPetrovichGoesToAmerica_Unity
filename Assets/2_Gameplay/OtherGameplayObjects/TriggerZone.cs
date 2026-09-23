@@ -3,15 +3,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class TutorialMessageObject : GameplayObjectJsonSaveLoad
+public class TriggerZone : GameplayObjectJsonSaveLoad
 {
 	[SerializeField] private InteractionObjectNote _noteObject;
+	[SerializeField] private CutsceneController _cutscene;
 	private Collider _triggerZone;
 	private bool _wasHintMessageShown;
 	private GameObject _playerCollider;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController; 
 
-	private void Awake()
+	private void Start()
 	{
 _pauseSubMenuSettingsSectionGeneralController = ServiceLocator.Resolve<PauseSubMenuSettingsSectionGeneralController>();
 _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
@@ -23,15 +24,26 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 
 	private void OnTriggerEnter(Collider other)
 	{
+	
+		
+
+			if (_cutscene != null)
+			{
+				Debug.Log("CUTSCENE!!!!");
+				_cutscene.TriggerCutscene(null);
+			}
 		if (_pauseSubMenuSettingsSectionGeneralController.AreIngameTutorialsEnabled)
 		{
-			if (_wasHintMessageShown == false)
+			if (_noteObject != null)
 			{
-				if (other.gameObject == _playerCollider)
+				if (_wasHintMessageShown == false)
 				{
-					Debug.Log("SHOW HINT!");
+					if (other.gameObject == _playerCollider)
+					{
+						//Debug.Log("SHOW HINT!");
 
-					_noteObject.Interact();
+						_noteObject.Interact();
+					}
 				}
 			}
 		}
@@ -56,11 +68,13 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 		var targetList = data.HintMessagesData[currentScene];
 
 		int indexInList = targetList.FindIndex(item => item.HintMessageIndex == GameplayObjectIndex);
-
+		//Debug.Log(GameplayObjectIndex);
+		//Debug.Log(_noteObject.name);
+		//Debug.Log(_wasHintMessageShown);
 		var updatedItem = new HintMessageData
 		{
 			HintMessageIndex = GameplayObjectIndex,
-			HintMessageSystem = _noteObject.name,
+			HintMessageSystem = gameObject.name,
 			WasHintMessageShown = _wasHintMessageShown
 		};
 

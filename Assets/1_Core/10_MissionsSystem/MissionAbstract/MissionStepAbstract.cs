@@ -52,13 +52,18 @@ public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
 	{
 		_missionsManager = missionsManager;
 
-		GameObjectTurnOn.Clear();
-		GameObjectTurnOff.Clear();
+		ClearTurnOnOffLists();
 
 		foreach (var condition in StepConditions)
 		{
 			condition.Initialize(this);
 		}
+	}
+
+	public void ClearTurnOnOffLists()
+	{
+		GameObjectTurnOn.Clear();
+		GameObjectTurnOff.Clear();
 	}
 
 	public void RegisterObjectsTurnOn(GameObject objectTurnOn)

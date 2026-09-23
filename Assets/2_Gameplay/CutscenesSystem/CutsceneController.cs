@@ -31,7 +31,6 @@ public class CutsceneController : MonoBehaviour
 	private PlayableDirector _director;
 	private bool _isCutsceneDialogueActorPlayer;
 	[Header("Cutscene settings")]
-	[SerializeField] private bool _playCutsceneOnStart;
 	[SerializeField] private bool _showBlackLines = true;
 	[SerializeField] private bool _showMissionGoalHint;
 	[SerializeField] private GameObject _cutscenePlayerProxy;
@@ -150,11 +149,6 @@ public class CutsceneController : MonoBehaviour
 		//BindProxyObjects();
 
 		_isInitialized = true;
-
-		if (_playCutsceneOnStart)
-		{
-			TriggerCutscene(null);
-		}
 
 		//Debug.Log($"Cutscene {gameObject.name} initialized");
 	}
@@ -324,6 +318,14 @@ public class CutsceneController : MonoBehaviour
 	private void CancelCutsceneOnLoad()
 	{
 		Debug.Log($"Cutscene {gameObject.name} Cancelled");
+
+		_playerBootstrap.transform.SetParent(null);
+		SceneManager.MoveGameObjectToScene(_playerBootstrap, SceneManager.GetSceneAt(0));
+
+
+		_playerCameraBootstrap.transform.SetParent(null);
+		SceneManager.MoveGameObjectToScene(_playerCameraBootstrap, SceneManager.GetSceneAt(0));
+
 		_gameController.MakeGameSavable();
 		_wasCutsceneCanceled = true;
 		IsCutscenePlaying = false;

@@ -55,6 +55,8 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_gameSceneManager.OnEndLoadingGameplayScene += ShowMissionGoalHUDonSceneLoad;
 
+		_gameSceneManager.OnBeginLoadingGameplayScene += () => ResetAllStepTurnOnOffLists();
+
 		ResetAllStepConditions();
 
 		Debug.Log("MissionsManager Initialized");
@@ -87,6 +89,24 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		}
 	}
 
+	private void ResetAllStepTurnOnOffLists()
+	{
+		if (_gameMissions == null || _gameMissions.MissionsInOrder == null)
+			return;
+
+		foreach (var mission in _gameMissions.MissionsInOrder)
+		{
+			if (mission == null || mission.MissionSteps == null) continue;
+
+			foreach (var step in mission.MissionSteps)
+			{
+				step.ClearTurnOnOffLists();
+			}
+		}
+	}
+
+
+
 	/*
 	public void CheckAndCompleteCurrentStep()
 	{
@@ -108,20 +128,12 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	public void GoToNextStep(int goToNextStep)
 	{
 		CurrentStepIndex = goToNextStep;
-
-		if (goToNextStep == -1)
+	
+		if (CurrentStepIndex >= ActiveMission.MissionSteps.Length)
 		{
-			RetunToPreviousMission();
-			//return;
+			StartNextMission();
 		}
-
-		if (goToNextStep > -1)
-		{
-			if (CurrentStepIndex >= ActiveMission.MissionSteps.Length)
-			{
-				StartNextMission();
-			}
-		}
+		
 
 		if (CurrentStepIndex < ActiveMission.MissionSteps.Length)
 		{
@@ -196,19 +208,6 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 			Debug.Log(ActiveMission);
 			CurrentStepIndex = 0;
 			GoToNextStep(CurrentStepIndex);
-		}
-	}
-
-	private void RetunToPreviousMission()
-	{
-		//int currentMissionIndex = System.Array.IndexOf(_gameMissions.MissionsInOrder, ActiveMission);
-		Debug.Log("RETURN!!");
-		if (ActiveMissionIndex > 0)
-		{
-			ActiveMissionIndex--;
-
-			ActiveMission = _gameMissions.MissionsInOrder[ActiveMissionIndex];
-			CurrentStepIndex = Mathf.Max(0, ActiveMission.MissionSteps.Length - 1);
 		}
 	}
 
