@@ -14,14 +14,14 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private BootstrapGameDataList _gameData;
 	public BootstrapGameDataList GameData => _gameData;
 
-	[Header("---  CONFIGS PLAYERPREFS ---")]
-	[SerializeField] private ConfigPlayerPrefsPresequisites _playerPrefsPresequisites;
-	[SerializeField] private ConfigPlayerPrefsReset _playerPrefsReset;
-
 	[Header("---  CONFIGS BOOTSTRAP ---")]
 	[SerializeField] private ConfigBootstrapInitializationScreenDuration _initializationScreenDuration;
 	[SerializeField] private ConfigBootstrapKeyPauseMenu _keyPauseMenu;
 	[SerializeField] private GameScenesSystemEnum _firstSceneToLoad;
+
+	[Header("---  CONFIGS PLAYERPREFS ---")]
+	[SerializeField] private ConfigPlayerPrefsPresequisites _playerPrefsPresequisites;
+	[SerializeField] private ConfigPlayerPrefsReset _playerPrefsReset;
 
 	[Header("--- CONFIGS PLAYER  ---")]
 	[SerializeField] private bool _applyConfigsPlayer;
@@ -33,6 +33,11 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField, Range(0, 999999)] private int _playerMoney;
 	[SerializeField] private ConfigPlayerWeapons _playerWeapons;
 	[SerializeField] private ConfigPlayerResourcesAmmo _playerAmmo;
+
+	[Header("--- CONFIGS MISSION  ---")]
+	[SerializeField] private bool _applyConfigsMission;
+	[SerializeField] private MissionAbstract _mission;
+	[SerializeField] private int _missionStep;
 
 	private ViewModelBootstrapInitialization _viewModelBootstrapInitialization;
 
@@ -159,6 +164,11 @@ public class Bootstrap : MonoBehaviour
 		if (_applyConfigsPlayer)
 		{
 			ApplyBootstrapPlayerConfigs();
+		}
+
+		if (_applyConfigsMission)
+		{
+			ApplyBootstrapMissionConfigs();
 		}
 
 		OnLoadSettingsData?.Invoke();
@@ -597,6 +607,11 @@ public class Bootstrap : MonoBehaviour
 			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerRotationY(_playerTransform.PlayerRotationY);
 			_bootstrapSubProcessPlayerSystems.PlayerCameraController.SetCameraRotationY(_playerTransform.PlayerRotationY);
 		}
+	}
+
+	private void ApplyBootstrapMissionConfigs()
+	{
+		_bootstrapSubProcessMissionsSystem.MissionsManager.ApplyBootstrapMissionConfigs(_mission, _missionStep);
 	}
 
 	public GameObject FindDeepGameObject(GameObject root, string targetName)

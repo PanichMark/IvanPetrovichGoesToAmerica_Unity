@@ -101,9 +101,6 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	{
 		CurrentStepIndex = goToNextStep;
 
-		
-
-
 		if (CurrentStepIndex < ActiveMission.MissionSteps.Length)
 		{
 			ActiveMission.MissionSteps[CurrentStepIndex].OnMissionStepStartDoSomwthing();
@@ -189,6 +186,12 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		{
 			return step.MissionStepGoal_EN;
 		}
+	}
+
+	public void ApplyBootstrapMissionConfigs(MissionAbstract setMission, int setMissionStep)
+	{
+		ActiveMission = setMission;
+		GoToNextStep(setMissionStep);
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
