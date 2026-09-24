@@ -13,7 +13,7 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	private bool _isPlayerInside;
 	private bool _finishedLoadingData;
-
+	private bool _isEndTitlesScene;
 	private void Start()
 	{
 _pauseSubMenuSettingsSectionGeneralController = ServiceLocator.Resolve<PauseSubMenuSettingsSectionGeneralController>();
@@ -22,18 +22,30 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 		_triggerZone = GetComponent<Collider>();
 
 		_triggerZone.isTrigger = true;
+
+		if (SceneManager.GetSceneAt(1).name == GameScenesSystemEnum.Scene_System_EndGameTitles.ToString())
+		{
+			_isEndTitlesScene = true;
+		}
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject == _playerCollider)
 		{
-			if (_finishedLoadingData)
+			if (!_isEndTitlesScene)
+			{
+				if (_finishedLoadingData)
+				{
+					TriggerZoneInteraction();
+				}
+			}
+			else
 			{
 				TriggerZoneInteraction();
 			}
 
-			_isPlayerInside = true;
+				_isPlayerInside = true;
 			_wasZoneTriggered = true;
 			//_triggerZone.enabled = false;
 		}
@@ -74,6 +86,8 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 
 				}
 			}
+
+			_triggerZone.enabled = false;
 		}
 	}
 
@@ -117,16 +131,29 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		//Debug.Log("BRUH!!!!");
+		Debug.Log("BRUH!!!!");
 
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.TriggerZonesData == null || !data.TriggerZonesData.TryGetValue(currentScene, out var sourceList)) yield break;
 
 		var savedState = sourceList.Find(item => item.TriggerZoneIndex == GameplayObjectIndex);
-
-		if (savedState.Equals(default(TriggerZoneData))) yield break;
-		
+		Debug.Log("BRUH22222222!!!!");
+		if (savedState.Equals(default(TriggerZoneData)))
+		{
+			Debug.Log("BRUH333333!!!!");
+			_finishedLoadingData = true;
+			_wasZoneTriggered = false;
+			if (_isPlayerInside)
+			{
+				TriggerZoneInteraction();
+			}
+			Debug.Log("was triggered");
+			Debug.Log(_wasZoneTriggered);
+			yield break;
+		}
+			
+	
 		_wasZoneTriggered = savedState.WasZoneTriggered;
 
 		if (_wasZoneTriggered)
@@ -140,8 +167,7 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 				TriggerZoneInteraction();
 			}
 		}
-			Debug.Log("was triggered");
-		Debug.Log(_wasZoneTriggered);
+
 		yield return null;
 	}
 }
