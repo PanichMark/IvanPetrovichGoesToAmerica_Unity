@@ -298,12 +298,14 @@ public class JsonSaveLoadController : MonoBehaviour
 		if (_WasSavedToTEMPbeforeLoadingNewScene == false && !_isLoadingFromSaveFile)
 		{
 			Debug.Log(SceneManager.GetSceneAt(1).name);
-			//Debug.Log(_gameSceneManager.PreviousScene);
+			Debug.Log(_gameSceneManager.PreviousScene);
 			/*
 			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_MainMenu.ToString() && SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_EndGameTitles.ToString() &&
 				_gameSceneManager.PreviousScene != GameScenesSystemEnum.Scene_System_MainMenu && _gameSceneManager.PreviousScene != GameScenesSystemEnum.Scene_System_EndGameTitles)
 			*/
+			
 			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_MainMenu.ToString() && SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_EndGameTitles.ToString())
+			
 			{
 				Debug.Log("SAVE TO -1");
 				yield return StartCoroutine(SaveGame(-1));
@@ -342,25 +344,13 @@ public class JsonSaveLoadController : MonoBehaviour
 		yield return null;
 	}
 
-	/*
 	private void AssignGameplayObjectsSaveLoadIndexes()
 	{
 		GameplayObjectJsonSaveLoad[] gameplayObjectsSaveLoad = FindObjectsOfType<GameplayObjectJsonSaveLoad>();
 
-		Array.Sort(gameplayObjectsSaveLoad, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
-
-		for (int index = 0; index < gameplayObjectsSaveLoad.Length; index++)
-		{
-			gameplayObjectsSaveLoad[index].AssignGameplayObjectIndex(index);
-		}
-	}
-	*/
-
-	private void AssignGameplayObjectsSaveLoadIndexes()
-	{
-		GameplayObjectJsonSaveLoad[] gameplayObjectsSaveLoad = FindObjectsOfType<GameplayObjectJsonSaveLoad>();
-
-		Array.Sort(gameplayObjectsSaveLoad, (a, b) => a.GetInstanceID().CompareTo(b.GetInstanceID()));
+		// Сортировка строго по имени объекта
+		Array.Sort(gameplayObjectsSaveLoad, (a, b) =>
+			string.Compare(a.gameObject.name, b.gameObject.name, StringComparison.Ordinal));
 
 		for (int index = 0; index < gameplayObjectsSaveLoad.Length; index++)
 		{
@@ -375,12 +365,25 @@ public class JsonSaveLoadController : MonoBehaviour
 		return new List<IJsonSaveLoad>(saveLoadObjects);
 	}
 
-	private List<IJsonSaveLoad> FindAllGameplaySaveLoadObjects()
+	/*private List<IJsonSaveLoad> FindAllGameplaySaveLoadObjects()
 	{
 		IEnumerable<IJsonSaveLoad> gameplaySceneObjects = SceneManager.GetSceneAt(1).GetRootGameObjects().SelectMany(go => go.GetComponentsInChildren<MonoBehaviour>()).OfType<IJsonSaveLoad>();
 
 		return new List<IJsonSaveLoad>(gameplaySceneObjects);
 	}
+	*/
+	private List<IJsonSaveLoad> FindAllGameplaySaveLoadObjects()
+	{
+		// Явно указываем пространство имен UnityEngine, чтобы убрать неоднозначность
+		InteractionObjectLootAbstract[] allLoot = UnityEngine.Object.FindObjectsOfType<InteractionObjectLootAbstract>(includeInactive: true);
+
+		Array.Sort(allLoot, (a, b) =>
+			string.Compare(a.gameObject.name, b.gameObject.name, StringComparison.Ordinal));
+
+		return new List<IJsonSaveLoad>(allLoot);
+	}
+
+
 
 	public IEnumerator UpdateAndLoadGameplaySaveLoadObjects()
 	{
