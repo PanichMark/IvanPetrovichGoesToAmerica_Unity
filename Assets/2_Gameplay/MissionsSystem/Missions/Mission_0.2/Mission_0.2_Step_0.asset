@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63e07aaa1abd1f4db5a0b24a3adc23f, type: 3}
   m_Name: Mission_0.2_Step_0
   m_EditorClassIdentifier: 
-  MissionStepGoal_RU: "\u041F\u043E\u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C
-    \u0441\u043E \u0441\u0432\u044F\u0449\u0435\u043D\u043D\u0438\u043A\u043E\u043C"
-  MissionStepGoal_EN: Talk to the priest
+  MissionStepGoal_RU: 
+  MissionStepGoal_EN: 
   StepConditions:
-  - {fileID: 11400000, guid: a5464aa4078ec5a4492f26bdb5f642ea, type: 2}
-  StepDescription: Player has to talk to the priest to recieve the key from the church
-    gates
-  showMissionMarker: 1
+  - {fileID: 11400000, guid: 63389108c57cec643a041b711b6acfed, type: 2}
+  StepDescription: 
+  showMissionMarker: 0

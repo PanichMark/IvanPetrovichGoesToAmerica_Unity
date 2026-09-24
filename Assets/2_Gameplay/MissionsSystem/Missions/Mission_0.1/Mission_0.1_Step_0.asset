@@ -15,8 +15,6 @@ MonoBehaviour:
   MissionStepGoal_RU: "\u0412\u0437\u044F\u0442\u044C \u043A\u043B\u044E\u0447\u0438
     \u043E\u0442 \u0446\u0435\u0440\u043A\u0432\u0438"
   MissionStepGoal_EN: Take church keys
-  GameObjectTurnOn: []
-  GameObjectTurnOff: []
   StepConditions:
   - {fileID: 11400000, guid: b93a992c3bb62e8479c35eb96ccc5110, type: 2}
   StepDescription: Player need to pick up church keys (and some money which collder
