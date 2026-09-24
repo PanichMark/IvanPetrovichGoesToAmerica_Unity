@@ -6,13 +6,17 @@ using UnityEngine.XR;
 
 public class InteractionObjectNote : MonoBehaviour, IInteractable
 {
+	private HUDmissionsController _HUDmissionsController;
+	private MissionsManager _missionsManager;
+
 	public string InteractionObjectNameSystem => null;
 	[SerializeField] private string _interactionObjectNameUI;
 	private IInputDevice _inputDevice;
 	public string InteractionObjectNameUI => $"{_localizationManager.GetLocalizedString(_interactionObjectNameUI)}";
 	private TextMeshProUGUI _textButtonExit;
 	[SerializeField] private InteractionObjectNoteData _noteData;
-
+	[SerializeField] private InteractionObjectNote _noteToOpenAfter;
+	[SerializeField] private bool _showMissionGoalOnClose;
 	private MenuManager _menuManager;
 	private bool _isReading;
 	private LocalizationManager _localizationManager;
@@ -31,7 +35,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 	private TextMeshProUGUI _textComponent;
 	private Image _imageComponent;
 
-	[SerializeField] private InteractionObjectNote _noteToOpenAfter;
+	
 	private GameplayCanvases _gameCanvasesList;
 	private GameObject _canvasNote;
 	private ViewModelMenuNote _viewModelMenuNote;
@@ -40,6 +44,8 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	private void Start()
 	{
+		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
+		_HUDmissionsController = ServiceLocator.Resolve<HUDmissionsController>();
 		_gameCanvasesList = ServiceLocator.Resolve<GameplayCanvases>();
 		_canvasNote = _gameCanvasesList.CanvasNote;
 		_viewModelMenuNote = ServiceLocator.Resolve<ViewModelMenuNote>();
@@ -211,6 +217,11 @@ _textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();
 			if (_noteToOpenAfter != null)
 			{
 				StartCoroutine(DelayedOpenNextNote());
+			}
+
+			if (_showMissionGoalOnClose)
+			{
+				_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedGoalText, true);
 			}
 		}
 	}

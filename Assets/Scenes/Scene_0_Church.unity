@@ -1708,7 +1708,7 @@ Transform:
   m_GameObject: {fileID: 742130911}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.48, y: 0.8689, z: 3.06}
+  m_LocalPosition: {x: -18.48, y: 0.8689, z: 1}
   m_LocalScale: {x: 1, y: 2.7379, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3562,6 +3562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionObjectNameUI: 
   _noteData: {fileID: 11400000, guid: 351fa7e859557f840be771836cc474d9, type: 2}
+  _showMissionGoalOnClose: 1
   _noteToOpenAfter: {fileID: 0}
 --- !u!4 &1311430169
 Transform:
@@ -5152,6 +5153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionObjectNameUI: 
   _noteData: {fileID: 11400000, guid: 949ff944121be57458bda93c3f51087c, type: 2}
+  _showMissionGoalOnClose: 0
   _noteToOpenAfter: {fileID: 1311430168}
 --- !u!4 &2120078213
 Transform:
