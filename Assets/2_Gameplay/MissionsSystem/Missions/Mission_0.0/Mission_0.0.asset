@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6fa89c9425f39947a489325c1b71cb6, type: 3}
-  m_Name: Mission_0.3
+  m_Name: Mission_0.0
   m_EditorClassIdentifier: 
   _missionName: 1
-  _missionResources: {fileID: 11400000, guid: 097fd49ed1e75a945a8b10cde3ae7a7f, type: 2}
+  _missionResources: {fileID: 11400000, guid: 70ac0049a00e4e648b51ec46b072df58, type: 2}
   MissionDiscription: 
   MissionStepsArray:
-  - {fileID: 11400000, guid: 52ba99a81ed6dd249b69d6ded749aae3, type: 2}
+  - {fileID: 11400000, guid: 474a198d1986e5747aa1d176137a4fda, type: 2}
+  - {fileID: 11400000, guid: e1b907ecb4ea6774aac6f422acef379e, type: 2}
+  - {fileID: 11400000, guid: ed5c704e1f25acc498c8c2040e56617d, type: 2}

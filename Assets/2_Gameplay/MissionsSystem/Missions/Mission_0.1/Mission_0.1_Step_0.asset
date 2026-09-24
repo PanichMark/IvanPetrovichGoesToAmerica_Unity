@@ -12,12 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d63e07aaa1abd1f4db5a0b24a3adc23f, type: 3}
   m_Name: Mission_0.1_Step_0
   m_EditorClassIdentifier: 
-  MissionStepGoal_RU: "\u0412\u0437\u044F\u0442\u044C \u043A\u043B\u044E\u0447\u0438
-    \u043E\u0442 \u0446\u0435\u0440\u043A\u0432\u0438"
-  MissionStepGoal_EN: Take church keys
+  MissionStepGoal_RU: 
+  MissionStepGoal_EN: 
   StepConditions:
-  - {fileID: 11400000, guid: b93a992c3bb62e8479c35eb96ccc5110, type: 2}
-  StepDescription: Player need to pick up church keys (and some money which collder
-    blocks the keys, so it has to be picked up before accessing keys collider) in
-    order to leave church
-  showMissionMarker: 1
+  - {fileID: 11400000, guid: 63389108c57cec643a041b711b6acfed, type: 2}
+  StepDescription: 
+  showMissionMarker: 0

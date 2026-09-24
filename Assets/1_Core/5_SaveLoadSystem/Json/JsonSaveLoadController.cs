@@ -293,16 +293,24 @@ public class JsonSaveLoadController : MonoBehaviour
 
 	private IEnumerator OnBeforeSceneUnloadedSaveGameplayObjects()
 	{
+		Debug.Log("TRYING TO SAVE TO -1");
 		// The lack of THIS --  && !_isLoadingFromSaveFile -- made it IMpossible to load savefile from 1st try after loading NewScene by ANY means!
 		if (_WasSavedToTEMPbeforeLoadingNewScene == false && !_isLoadingFromSaveFile)
 		{
+			Debug.Log(SceneManager.GetSceneAt(1).name);
+			//Debug.Log(_gameSceneManager.PreviousScene);
+			/*
 			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_MainMenu.ToString() && SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_EndGameTitles.ToString() &&
 				_gameSceneManager.PreviousScene != GameScenesSystemEnum.Scene_System_MainMenu && _gameSceneManager.PreviousScene != GameScenesSystemEnum.Scene_System_EndGameTitles)
+			*/
+			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_MainMenu.ToString() && SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_EndGameTitles.ToString())
 			{
+				Debug.Log("SAVE TO -1");
 				yield return StartCoroutine(SaveGame(-1));
 			}
 			else
 			{
+				Debug.Log("SKIP SAVING TO -1 TRY 1");
 				_gameSceneManager.SkipWaitingDueToTEMPcopied();
 				_WasSavedToTEMPbeforeLoadingNewScene = false;
 
@@ -310,7 +318,8 @@ public class JsonSaveLoadController : MonoBehaviour
 			}
 		}
 		else
-		{ 
+		{
+			Debug.Log("SKIP SAVING TO -1 TRY 2");
 			_gameSceneManager.SkipWaitingDueToTEMPcopied();
 			_WasSavedToTEMPbeforeLoadingNewScene = false;
 		}
@@ -332,12 +341,26 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		yield return null;
 	}
-	
+
+	/*
 	private void AssignGameplayObjectsSaveLoadIndexes()
 	{
 		GameplayObjectJsonSaveLoad[] gameplayObjectsSaveLoad = FindObjectsOfType<GameplayObjectJsonSaveLoad>();
 
 		Array.Sort(gameplayObjectsSaveLoad, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
+
+		for (int index = 0; index < gameplayObjectsSaveLoad.Length; index++)
+		{
+			gameplayObjectsSaveLoad[index].AssignGameplayObjectIndex(index);
+		}
+	}
+	*/
+
+	private void AssignGameplayObjectsSaveLoadIndexes()
+	{
+		GameplayObjectJsonSaveLoad[] gameplayObjectsSaveLoad = FindObjectsOfType<GameplayObjectJsonSaveLoad>();
+
+		Array.Sort(gameplayObjectsSaveLoad, (a, b) => a.GetInstanceID().CompareTo(b.GetInstanceID()));
 
 		for (int index = 0; index < gameplayObjectsSaveLoad.Length; index++)
 		{
