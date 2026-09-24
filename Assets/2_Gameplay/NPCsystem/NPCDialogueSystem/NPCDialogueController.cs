@@ -65,14 +65,16 @@ public class NPCdialogueController : MonoBehaviour
 	private GameCanvasesList _canvasesList;
 	private GameObject _canvasDialogue;
 	private ViewModelMenuDialogue _viewModelMenuDialogue;
+	private Bootstrap _bootstrap;
 
 	public void Initialize(
 		NPCmovementController NPCMovementController,
 		NPCstateMachineController NPCstateMachineController)
 	{
 		_NPCMovementController = NPCMovementController;
-		_canvasesList = ServiceLocator.Resolve<GameCanvasesList>();
-		_canvasDialogue = _canvasesList.CanvasMenuDialogue;
+		_bootstrap = ServiceLocator.Resolve < Bootstrap>();
+		//_canvasesList = ServiceLocator.Resolve<GameCanvasesList>();
+		_canvasDialogue = _bootstrap._canvasMenuDialogue;
 		_viewModelMenuDialogue = ServiceLocator.Resolve<ViewModelMenuDialogue>();
 		_uLipSyncBlendShape = GetComponent<uLipSyncBlendShape>();
 		_audioSource = GetComponent<AudioSource>();
@@ -297,7 +299,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 				if ((_currentDialogueStepIndex == _dialogueBranchStructsList[i].DialogueBranchLine) || ((_currentDialogueStepIndex + 1) == _dialogueBranchStructsList[i].GoToNoOptionLine))
 				{
-					_NPCdialogueText.text = $"{_localizationManager.GetLocalizedString("IvanPetrovich")}: {_localizedDialogue[currentLanguage][_currentDialogueStepIndex]}";
+					_NPCdialogueText.text = $"{_localizationManager.GetLocalizedString("NPC_MainCharacter_IvanPetrovich")}: {_localizedDialogue[currentLanguage][_currentDialogueStepIndex]}";
 
 					_isIvanPetrovichSpeaking = true;
 

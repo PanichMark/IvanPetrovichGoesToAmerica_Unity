@@ -426,7 +426,7 @@ ServiceLocator.Register<PauseSubMenuSettingsSectionGeneralController>(PauseSubMe
 
 
 
-
+		ServiceLocator.Register<ViewModelMenuDialogue>(ViewModelMenuDialogue);
 
 
 		ServiceLocator.Register<ViewModelMainMenuChooseMission>(ViewModelMainMenuChooseMission);
