@@ -275,9 +275,10 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 
 		//yield return StartCoroutine(_saveLoadController.NewGame());
-		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
+		
 		yield return StartCoroutine(_gameSceneManager.LoadEndGameTitlesScene());
-
+		_playerMovementController.SetPlayerPosition(new Vector3(0, 0, -20));
+		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
 		Destroy(gameObject);
 	}
 

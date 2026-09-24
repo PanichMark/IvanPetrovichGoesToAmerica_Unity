@@ -8,9 +8,11 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 	[SerializeField] private InteractionObjectNote _noteObject;
 	[SerializeField] private CutsceneController _cutscene;
 	private Collider _triggerZone;
-	private bool _wasHintMessageShown;
+	private bool _wasZoneTriggered;
 	private GameObject _playerCollider;
-	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController; 
+	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
+	private bool _isPlayerInside;
+	private bool _finishedLoadingData;
 
 	private void Start()
 	{
@@ -24,33 +26,55 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 
 	private void OnTriggerEnter(Collider other)
 	{
-	
-		
-
-		if (_cutscene != null)
+		if (other.gameObject == _playerCollider)
 		{
-			Debug.Log("CUTSCENE!!!!");
-			_cutscene.TriggerCutscene(null);
+			if (_finishedLoadingData)
+			{
+				TriggerZoneInteraction();
+			}
+
+			_isPlayerInside = true;
+			_wasZoneTriggered = true;
+			//_triggerZone.enabled = false;
 		}
 
-		if (_pauseSubMenuSettingsSectionGeneralController.AreIngameTutorialsEnabled)
-		{
-			if (_noteObject != null)
-			{
-				if (_wasHintMessageShown == false)
-				{
-					if (other.gameObject == _playerCollider)
-					{
-						//Debug.Log("SHOW HINT!");
+	}
 
-						_noteObject.Interact();
-					}
+	private void OnTriggerExit(Collider other)
+	{
+		if (other.gameObject == _playerCollider)
+		{
+
+			_isPlayerInside = false;
+			//_wasZoneTriggered = true;
+			//_triggerZone.enabled = false;
+		}
+	}
+
+	private void TriggerZoneInteraction()
+	{
+		if (_wasZoneTriggered == false)
+		{
+			Debug.Log($"was off?? {gameObject.name} {_wasZoneTriggered}");
+			if (_cutscene != null)
+			{
+				Debug.Log("CUTSCENE!!!!");
+				_cutscene.TriggerCutscene(null);
+			}
+
+			if (_pauseSubMenuSettingsSectionGeneralController.AreIngameTutorialsEnabled)
+			{
+				if (_noteObject != null)
+				{
+
+
+					//Debug.Log("SHOW HINT!");
+
+					_noteObject.Interact();
+
 				}
 			}
 		}
-
-		_wasHintMessageShown = true;
-		_triggerZone.enabled = false;
 	}
 
 	public override IEnumerator SaveJsonData(JsonGameData data)
@@ -76,7 +100,7 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 		{
 			TriggerZoneIndex = GameplayObjectIndex,
 			TriggerZoneNameSystem = gameObject.name,
-			WasZoneTriggered = _wasHintMessageShown
+			WasZoneTriggered = _wasZoneTriggered
 		};
 
 		if (indexInList != -1)
@@ -103,8 +127,21 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 
 		if (savedState.Equals(default(TriggerZoneData))) yield break;
 		
-		_wasHintMessageShown = savedState.WasZoneTriggered;
-		Debug.Log(_wasHintMessageShown);
+		_wasZoneTriggered = savedState.WasZoneTriggered;
+
+		if (_wasZoneTriggered)
+		{
+			_triggerZone.enabled = false;
+		}
+		else
+		{
+			if (_isPlayerInside)
+			{
+				TriggerZoneInteraction();
+			}
+		}
+			Debug.Log("was triggered");
+		Debug.Log(_wasZoneTriggered);
 		yield return null;
 	}
 }

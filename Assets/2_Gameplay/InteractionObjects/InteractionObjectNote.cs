@@ -118,7 +118,7 @@ _textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();
 
 	public void Interact()
 	{
-		Debug.Log("BRUH!");
+		Debug.Log("NOT IS SHOWING");
 
 		_menuManager.OpenInteractionMenu();
 		_isReading = true;

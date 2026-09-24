@@ -62,8 +62,14 @@ public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
 
 	public void ClearTurnOnOffLists()
 	{
-		GameObjectTurnOn.Clear();
-		GameObjectTurnOff.Clear();
+		if (GameObjectTurnOn.Count > 0)
+		{
+			GameObjectTurnOn.Clear();
+		}
+		if (GameObjectTurnOff.Count > 0)
+		{
+			GameObjectTurnOff.Clear();
+		}
 	}
 
 	public void RegisterObjectsTurnOn(GameObject objectTurnOn)
