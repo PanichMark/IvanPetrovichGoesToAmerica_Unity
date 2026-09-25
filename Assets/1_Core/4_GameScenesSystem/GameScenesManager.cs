@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 {
-	public bool IsWaitingForNewGameplayDataToLoad {  get; private set; }
+	public bool IsWaitingForNewGameplayDataToLoad { get; private set; }
 	public bool IsWaitingForOldGameplayDataToSave { get; private set; }
 	public bool HasLoadedGameplayScene { get; private set; }
 	private GameController _gameController;
@@ -35,11 +35,11 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
 
-	public GameScenesSystemEnum PreviousScene {  get; private set; }
+	public GameScenesSystemEnum PreviousScene { get; private set; }
 
 	private bool _wasPreviouslyCopiedToTEMP;
 
-	public bool WasInitialSceneLoaded {  get; private set; }
+	public bool WasInitialSceneLoaded { get; private set; }
 
 	public void Initialize(
 		GameController gameController,
@@ -211,7 +211,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		_gameController.BlockInput();
 
 		yield return new WaitUntil(() => IsWaitingForNewGameplayDataToLoad == false);
-		
+
 		_sliderComponentLoadingStatus.value = 1f;
 		_sliderLoadingStatus.SetActive(false);
 		_textLoadingReady.SetActive(true);
@@ -271,19 +271,19 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 
 		while (!operation.isDone)
 		{
-			yield return null; 
+			yield return null;
 		}
 
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
-		Time.timeScale = 1f; 
+		Time.timeScale = 1f;
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 		OnEndLoadingMainMenuOrEndGameTitlesScene?.Invoke();
 		_gameController.MainMenuOrEndGameTitlesSceneLoadEnded();
 		Debug.Log("Scene_MainMenu loading ended");
-	
+
 		_canvasLoadingScreen.SetActive(false);
 
 		WasInitialSceneLoaded = true;
@@ -358,7 +358,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		yield return null;
 	}
 
-	public void ApplyGameplayDataLoadingFinished() 
+	public void ApplyGameplayDataLoadingFinished()
 	{
 		IsWaitingForNewGameplayDataToLoad = false;
 	}

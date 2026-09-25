@@ -197,6 +197,8 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 					WasLootItemCollected = true;
 					gameObject.SetActive(false);
 				}
+
+				
 			}
 		}
 
