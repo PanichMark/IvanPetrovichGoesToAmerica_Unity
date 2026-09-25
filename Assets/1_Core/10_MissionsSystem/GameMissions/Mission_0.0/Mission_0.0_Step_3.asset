@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28666d33d6042314285cfa8314a08d3f, type: 3}
-  m_Name: Mission_0.0_Step_2
+  m_Name: Mission_0.0_Step_3
   m_EditorClassIdentifier: 
   MissionStepGoal_RU: "\u043F\u043E\u0434\u043D\u044F\u0442\u044C \u0448\u0442\u0443\u043A\u0443
-    1"
-  MissionStepGoal_EN: Pick up thing 1
+    2"
+  MissionStepGoal_EN: Pick up thing 2
   StepDescription: 
   showMissionMarker: 1
   StepConditions:
-  - {fileID: 11400000, guid: a5464aa4078ec5a4492f26bdb5f642ea, type: 2}
+  - {fileID: 11400000, guid: 3b313b5b615e8c44c89920c2fa99f261, type: 2}
   - {fileID: 11400000, guid: 97dff45bf9d6168438dde19f566b717c, type: 2}

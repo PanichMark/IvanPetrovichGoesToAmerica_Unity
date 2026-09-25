@@ -19,7 +19,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	private GameScenesManager _gameSceneManager;
 	public delegate void InteractionEventHandler(GameObject interactedObject);
 	public event InteractionEventHandler OnAnyObjectInteracted;
-
+	private int _previousMissionStepIndex;
 	public delegate void DestructionEventHandler(GameObject destroyedObject, bool wasLethal);
 	public event DestructionEventHandler OnAnyObjectDestroyed;
 
@@ -57,7 +57,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
-		_gameSceneManager.OnEndLoadingGameplayScene += ShowMissionGoalHUDonSceneLoad;
+		_gameSceneManager.OnEndLoadingGameplayScene += ShowMissionGoalHUD;
 
 		_gameSceneManager.OnBeginLoadingGameplayScene += () => ResetAllStepTurnOnOffLists();
 
@@ -65,6 +65,13 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		Debug.Log("MissionsManager Initialized");
 	}
+
+	private void Update()
+	{
+		//Debug.Log(CurrentStepIndex);
+	}
+
+
 
 	private void ResetAllStepConditions()
 	{
@@ -121,32 +128,67 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	}
 	*/
 
-	private void ShowMissionGoalHUDonSceneLoad()
+	private void ShowMissionGoalHUD()
 	{
 		LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 
-		if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
+		if (SceneManager.sceneCount > 1)
 		{
-			if (_jsonSaveLoadController.IsLoadingFromSaveFile)
+			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 			{
-				_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
-			}
-			else
-			{
-				_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, true);
+				if (_jsonSaveLoadController.IsLoadingFromSaveFile)
+				{
+					Debug.Log("IsLoadingFromSaveFile");
+					_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
+				}
+				else
+				{
+					//Debug.Log(_previousMissionStepIndex);
+					//Debug.Log(CurrentStepIndex);
 
+					if (_previousMissionStepIndex == -1)
+					{
+						Debug.Log("_previousMissionStep !=");
+						
+						_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
+					}
+					else
+					{
+						Debug.Log("Else");
+						_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, true);
+					}
+				}
 			}
 		}
 	}
 
 	public void GoToNextStep(int goToNextStep)
 	{
+		if ((ActiveMission != null && CurrentStepIndex >= 0 && CurrentStepIndex < ActiveMission.MissionSteps.Length))
+		{
+			if (goToNextStep == -1)
+			{
+				_previousMissionStepIndex = -1;
 
+				return;
+			}
+		}
+
+		if (ActiveMission != null && CurrentStepIndex >= 0 && CurrentStepIndex < ActiveMission.MissionSteps.Length)
+		{
+			_previousMissionStepIndex = CurrentStepIndex;
+		}
 		CurrentStepIndex = goToNextStep;
-	
+
+		Debug.Log("PREVIOUS");
+		Debug.Log(_previousMissionStepIndex);
+		Debug.Log("CURRENT");
+		Debug.Log(CurrentStepIndex);
+
 		if (CurrentStepIndex >= ActiveMission.MissionSteps.Length)
 		{
 			StartNextMission();
+			//return;
 		}
 		
 
@@ -158,7 +200,9 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 			LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 
-			_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, true);
+
+
+			ShowMissionGoalHUD();
 			_HUDmissionsController.SetCurrentMissionGoalText(LocalizedGoalText);
 		}
 		else
@@ -171,7 +215,8 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		//Debug.Log(CurrentStepIndex);
 		//Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex]);
 		//Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0]);
-		
+	
+
 		//Debug.Log(ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0].GetType());
 
 		if (ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0] is IMissionStepConditionWithProgress)

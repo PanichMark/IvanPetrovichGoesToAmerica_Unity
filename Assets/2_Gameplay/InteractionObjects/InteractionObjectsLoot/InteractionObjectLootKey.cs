@@ -24,30 +24,4 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 		_keysManager.AddKey(_keyID);
 		Debug.Log($"Added key: {_keyID}");
 	}
-
-	public override IEnumerator LoadJsonData(JsonGameData data)
-	{
-		if (!_isItVendingMachineGood)
-		{
-			_keysManager.RemoveKey(_keyID);
-
-			if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
-
-			if (data.LootObjectsData == null || !data.LootObjectsData.TryGetValue(currentScene, out var sourceList)) yield break;
-
-			if (sourceList.Count > 0)
-			{
-				LootObjectData savedState = sourceList.Find(item => item.LootObjectIndex == GameplayObjectIndex);
-
-				if (savedState.LootObjectIndex != 0 && savedState.IsLootObjectCollected)
-				{
-					WasLootItemCollected = true;
-					_keysManager.AddKey(_keyID);
-					Destroy(gameObject);
-				}
-			}
-		}
-
-		yield return null;
-	}
 }

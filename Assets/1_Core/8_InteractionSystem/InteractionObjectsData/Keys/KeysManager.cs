@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class KeysManager
+public class KeysManager: MonoBehaviour, IJsonSaveLoad
 { 
 	private List<string> _collectedKeys = new List<string>();
 
@@ -9,7 +10,7 @@ public class KeysManager
 
 	public bool HasKey(string keyId) => _collectedKeys.Contains(keyId);
 
-	public KeysManager()
+	public void Initialize()
 	{
 		Debug.Log("KeysManager Initialized");
 	}
@@ -27,5 +28,21 @@ public class KeysManager
 	public void RemoveKey(string keyId)
 	{
 		_collectedKeys.Remove(keyId);
+	}
+
+	public IEnumerator SaveJsonData(JsonGameData data)
+	{
+		data.PlayerKeys = _collectedKeys;
+
+		yield return null;
+	}
+
+	public IEnumerator LoadJsonData(JsonGameData data)
+	{
+		_collectedKeys.Clear();
+
+		_collectedKeys = data.PlayerKeys;
+
+		yield return null;
 	}
 }

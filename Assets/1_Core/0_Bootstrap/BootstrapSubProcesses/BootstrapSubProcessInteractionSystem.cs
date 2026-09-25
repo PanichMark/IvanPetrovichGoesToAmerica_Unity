@@ -63,6 +63,7 @@ public class BootstrapSubProcessInteractionSystem
 		InteractionController = _gameObjectBootstrapInteractionSystem.AddComponent<PlayerInteractionController>();
 		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<PlayerInteractionAnimationController>();
 		_interactionFirstPersonRenderer = _gameObjectBootstrapInteractionSystem.AddComponent<PlayerInteractionFirstPersonRenderer>();
+		_keysManager = _gameObjectBootstrapInteractionSystem.AddComponent<KeysManager>();
 
 		GameObjectSpineSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Spine");
 
@@ -92,7 +93,7 @@ public class BootstrapSubProcessInteractionSystem
 			_playerFirstPersonHandRight,
 			_playerThirdPersonHandRight);
 
-		_keysManager = new KeysManager();
+		_keysManager.Initialize();
 
 		ServiceLocator.Register<PlayerInteractionController>(InteractionController);
 		ServiceLocator.Register<KeysManager>(_keysManager);
