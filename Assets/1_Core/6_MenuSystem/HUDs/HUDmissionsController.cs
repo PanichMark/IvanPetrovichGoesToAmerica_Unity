@@ -69,16 +69,22 @@ public class HUDmissionsController : MonoBehaviour
 
 		_gameSceneManager.OnEndLoadingGameplayScene += () =>
 		{
+
 			if (SceneManager.sceneCount > 1)
 			{
+				//Debug.Log("MISSIONBREUH");
+				//Debug.Log(SceneManager.GetSceneAt(1).name);
+
 				if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 				{
 					_textComponentCurrentMissionGoal.text = _textGoal;
+					//Debug.Log("SHOW");
 				}
 				else
 				{
 					//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
 					_textComponentCurrentMissionGoal.text = null;
+					//Debug.Log("DONT SHOW");
 				}
 			}
 		};
@@ -108,7 +114,14 @@ public class HUDmissionsController : MonoBehaviour
 	{
 		StopAllCoroutines();
 
-		StartCoroutine(ShowNewMissionGoalHUDnotificationCoroutine(textGoal, isNewGoal));
+		if (SceneManager.sceneCount > 1)
+		{
+			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
+			{
+				StartCoroutine(ShowNewMissionGoalHUDnotificationCoroutine(textGoal, isNewGoal));
+				//Debug.Log("SHOW");
+			}
+		}
 	}
 
 	private IEnumerator ShowNewMissionGoalHUDnotificationCoroutine(string textGoal, bool isNewGoal)
