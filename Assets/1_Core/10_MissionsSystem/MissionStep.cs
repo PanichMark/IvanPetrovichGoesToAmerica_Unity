@@ -7,7 +7,7 @@ public class MissionStep : ScriptableObject
 	public string MissionStepGoal_RU;
 	public string MissionStepGoal_EN;
 	private MissionsManager _missionsManager;
-	public bool ShowMissionMarker => true;
+	public bool ShowMissionMarker => showMissionMarker;
 
 	private List<GameObject> GameObjectTurnOn;
 	private List<GameObject> GameObjectTurnOff;
