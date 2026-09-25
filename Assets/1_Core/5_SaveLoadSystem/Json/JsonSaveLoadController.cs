@@ -74,8 +74,13 @@ public class JsonSaveLoadController : MonoBehaviour
 			}
 		};
 
-		_gameSceneManager.OnBeginLoadingMainMenuScene += () => StartCoroutine(NewGame());
-
+		_gameSceneManager.OnBeginLoadingMainMenuScene += () =>
+		{
+			if (_gameSceneManager.WasInitialSceneLoaded)
+			{
+				StartCoroutine(NewGame());
+			}
+		};
 		Debug.Log("SaveLoadController Initialized");
 	}
 
@@ -223,7 +228,7 @@ public class JsonSaveLoadController : MonoBehaviour
 
 			Debug.Log($"LoadGame_5 Started update and load GameplayObjects");
 
-			yield return UpdateAndLoadGameplaySaveLoadObjects();
+			yield return UpdateGameplaySaveLoadObjectsIndexes();
 			Debug.Log($"LoadGame_6 Ended update and load GameplayObjects");
 		}
 
@@ -323,25 +328,13 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		OnStartGameDataProcessForUI?.Invoke();
 
-		yield return StartCoroutine(UpdateAndLoadGameplaySaveLoadObjects());
+		yield return StartCoroutine(UpdateGameplaySaveLoadObjectsIndexes());
 
 		yield return StartCoroutine(LoadGame(-1));
 
 		Debug.Log("OnSceneLoadUpdateGameplayObjects Ended");
 
 		yield return null;
-	}
-
-	private void AssignGameplayObjectsSaveLoadIndexes()
-	{
-		GameplayObjectJsonSaveLoad[] gameplayObjectsSaveLoad = FindObjectsOfType<GameplayObjectJsonSaveLoad>();
-
-		Array.Sort(gameplayObjectsSaveLoad, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
-
-		for (int index = 0; index < gameplayObjectsSaveLoad.Length; index++)
-		{
-			gameplayObjectsSaveLoad[index].AssignGameplayObjectIndex(index);
-		}
 	}
 
 	private List<IJsonSaveLoad> FindAllCoreSaveLoadObjects()
@@ -351,24 +344,32 @@ public class JsonSaveLoadController : MonoBehaviour
 		return new List<IJsonSaveLoad>(saveLoadObjects);
 	}
 
-	private List<IJsonSaveLoad> FindAllGameplaySaveLoadObjects()
+	public IEnumerator UpdateGameplaySaveLoadObjectsIndexes()
 	{
-		IEnumerable<IJsonSaveLoad> gameplaySceneObjects = SceneManager.GetSceneAt(1).GetRootGameObjects().SelectMany(go => go.GetComponentsInChildren<MonoBehaviour>()).OfType<IJsonSaveLoad>();
+		Debug.Log("Rebuilding Gameplay Save/Load list...");
 
-		return new List<IJsonSaveLoad>(gameplaySceneObjects);
-	}
-
-	public IEnumerator UpdateAndLoadGameplaySaveLoadObjects()
-	{
 		if (_gameplaySaveLoadObjects != null)
 		{
 			_gameplaySaveLoadObjects.Clear();
 		}
 
-		AssignGameplayObjectsSaveLoadIndexes();
+		// Ищем объекты ТОЛЬКО ОДИН РАЗ тем способом, который используется для финального списка
+		IEnumerable<IJsonSaveLoad> gameplaySceneObjects = SceneManager.GetSceneAt(1).GetRootGameObjects().SelectMany(go => go.GetComponentsInChildren<MonoBehaviour>()).OfType<IJsonSaveLoad>();
 
-		_gameplaySaveLoadObjects = FindAllGameplaySaveLoadObjects();
+		// Сразу кладем результат в финальный список контроллера
+		_gameplaySaveLoadObjects = new List<IJsonSaveLoad>(gameplaySceneObjects);
 
+		// Теперь сортируем ЭТОТ ЖЕ СПИСОК и назначаем индексы
+		var sortableList = _gameplaySaveLoadObjects.Cast<GameplayObjectJsonSaveLoad>().ToArray();
+
+		Array.Sort(sortableList, (a, b) => a.gameObject.name.CompareTo(b.gameObject.name));
+
+		for (int index = 0; index < sortableList.Length; index++)
+		{
+			sortableList[index].AssignGameplayObjectIndex(index);
+		}
+
+		Debug.Log($"Indexed {_gameplaySaveLoadObjects.Count} objects.");
 		yield break;
 	}
 
