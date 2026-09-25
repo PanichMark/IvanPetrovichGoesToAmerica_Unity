@@ -17,6 +17,8 @@ MonoBehaviour:
   MissionStepGoal_EN: Pick up thing 1
   StepDescription: 
   showMissionMarker: 1
+  _minStepIndexIgnore: 2
+  _maxStepIndexIgnore: 3
   StepConditions:
   - {fileID: 11400000, guid: a5464aa4078ec5a4492f26bdb5f642ea, type: 2}
   - {fileID: 11400000, guid: 97dff45bf9d6168438dde19f566b717c, type: 2}

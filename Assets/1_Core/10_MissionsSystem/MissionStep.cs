@@ -21,6 +21,9 @@ public class MissionStep : ScriptableObject
 		get { return StepConditions.ConvertAll(c => (MissionStepConditionAbstract)c); }
 	}
 
+	[SerializeField] private int _minStepIndexIgnore;
+	[SerializeField] private int _maxStepIndexIgnore;
+
 	public List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
 
 	public void OnStepStarted()
@@ -49,7 +52,11 @@ public class MissionStep : ScriptableObject
 
 	public void OnStepCompleted(int goToNextStep)
 	{
-		_missionsManager.GoToNextStep(goToNextStep);
+		if (_missionsManager.CurrentStepIndex <= _maxStepIndexIgnore && _missionsManager.CurrentStepIndex >= _minStepIndexIgnore)
+		{
+			_missionsManager.GoToNextStep(goToNextStep);
+		}
+	
 	}
 
 	public void Initialize(MissionsManager missionsManager)

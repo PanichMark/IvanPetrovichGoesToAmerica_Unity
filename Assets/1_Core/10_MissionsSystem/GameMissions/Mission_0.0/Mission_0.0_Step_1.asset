@@ -16,5 +16,7 @@ MonoBehaviour:
   MissionStepGoal_EN: Exit the church
   StepDescription: 
   showMissionMarker: 0
+  _minStepIndexIgnore: 0
+  _maxStepIndexIgnore: 1
   StepConditions:
   - {fileID: 11400000, guid: d9ada3130dc747d4396422619caf4850, type: 2}
