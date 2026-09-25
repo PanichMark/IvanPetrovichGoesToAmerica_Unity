@@ -13,7 +13,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	public int CurrentStepIndex { get; private set; }
 	private LocalizationManager _localizationManager;
 	private HUDmissionsController _HUDmissionsController;
-	
+	private JsonSaveLoadController _jsonSaveLoadController;
 	public delegate void OnStepChangedDelegate();
 	public event OnStepChangedDelegate OnCurrentStepChanged;
 	private GameScenesManager _gameSceneManager;
@@ -28,9 +28,11 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	public void Initialize(
 		LocalizationManager localizationManager,
 		GameScenesManager gameSceneManager,
+		JsonSaveLoadController jsonSaveLoadController,
 		HUDmissionsController HUDmissionsController,
 		GameMissionsList gameMissions)
 	{
+		_jsonSaveLoadController = jsonSaveLoadController;
 		_localizationManager = localizationManager;
 		_gameSceneManager = gameSceneManager;
 		_HUDmissionsController = HUDmissionsController;
@@ -125,7 +127,15 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 		{
-			_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
+			if (_jsonSaveLoadController.IsLoadingFromSaveFile)
+			{
+				_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
+			}
+			else
+			{
+				_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, true);
+
+			}
 		}
 	}
 

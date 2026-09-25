@@ -69,7 +69,7 @@ public class HUDmissionsController : MonoBehaviour
 
 		_gameSceneManager.OnEndLoadingGameplayScene += () =>
 		{
-
+			/*
 			if (SceneManager.sceneCount > 1)
 			{
 				//Debug.Log("MISSIONBREUH");
@@ -87,6 +87,7 @@ public class HUDmissionsController : MonoBehaviour
 					//Debug.Log("DONT SHOW");
 				}
 			}
+			*/
 		};
 
 		_gameController.OnPlayerEarlyDeath += HideCanvasHUDmissions;
@@ -112,10 +113,12 @@ public class HUDmissionsController : MonoBehaviour
 
 	public void ShowNewMissionGoalHUDnotification(string textGoal, bool isNewGoal)
 	{
-		StopAllCoroutines();
-
 		if (SceneManager.sceneCount > 1)
 		{
+			Debug.Log("NEW MISSION NOTIFICATION!");
+		StopAllCoroutines();
+
+		
 			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 			{
 				StartCoroutine(ShowNewMissionGoalHUDnotificationCoroutine(textGoal, isNewGoal));

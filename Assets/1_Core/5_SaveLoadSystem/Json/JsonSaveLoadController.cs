@@ -36,7 +36,7 @@ public class JsonSaveLoadController : MonoBehaviour
 	public event GameSafeFileHandler OnSafeFileDelete;
 	public event GameSafeFileHandler OnSafeFileLoad;
 	public event GameSafeFileHandler OnSafeFileSaved;
-	private bool _isLoadingFromSaveFile;
+	public bool IsLoadingFromSaveFile {  get; private set; }
 
 	private bool _allCoreSaveLoadWereFound;
 
@@ -68,7 +68,7 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		_gameSceneManager.OnEndLoadingGameplayScene += () =>
 		{
-			if (!_isLoadingFromSaveFile)
+			if (!IsLoadingFromSaveFile)
 			{
 				StartCoroutine(OnAfterSceneLoadedUpdateAndLoadUpdateGameplayObjects());
 			}
@@ -189,7 +189,7 @@ public class JsonSaveLoadController : MonoBehaviour
 		}
 		else
 		{
-			_isLoadingFromSaveFile = true;
+			IsLoadingFromSaveFile = true;
 
 			_fileDataHandler = new JsonFileDataHandler(Application.persistentDataPath, _saveFilePaths[loadSlotNumber - 1]);
 			Debug.Log($"LoadGame is {loadSlotNumber} slot");
@@ -249,7 +249,7 @@ public class JsonSaveLoadController : MonoBehaviour
 		Debug.Log("LOADING 888888888888");
 
 		_gameSceneManager.ApplyGameplayDataLoadingFinished();
-		_isLoadingFromSaveFile = false;
+		IsLoadingFromSaveFile = false;
 
 		if (loadSlotNumber != -1)
 		{
@@ -299,7 +299,7 @@ public class JsonSaveLoadController : MonoBehaviour
 	private IEnumerator OnBeforeSceneUnloadedSaveGameplayObjects()
 	{
 		// The lack of THIS --  && !_isLoadingFromSaveFile -- made it IMpossible to load savefile from 1st try after loading NewScene by ANY means!
-		if (_WasSavedToTEMPbeforeLoadingNewScene == false && !_isLoadingFromSaveFile)
+		if (_WasSavedToTEMPbeforeLoadingNewScene == false && !IsLoadingFromSaveFile)
 		{
 			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_MainMenu.ToString() && SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_EndGameTitles.ToString())
 			{

@@ -6,6 +6,7 @@ public class BootstrapSubProcessMissionsSystem
 	private Bootstrap _bootstrap;
 	private GameObject _gameObjectBootstrapMissionsSystem;
 	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
+	private BootstrapSubProcessSaveLoadSystem _bootstrapSubProcessSaveLoadSystem;
 	private GameObject _playerCameraGameObject;
 	private MissionGoalMarkerController _missionGoalMarkerManager;
 	private LocalizationManager _localizationManager;
@@ -16,9 +17,11 @@ public class BootstrapSubProcessMissionsSystem
 	public BootstrapSubProcessMissionsSystem(
 		Bootstrap bootstrap,
 		BootstrapSubProcessScenesSystem bootstrapSubProcessSceneSystem,
+		BootstrapSubProcessSaveLoadSystem bootstrapSubProcessSaveLoad,
 		BootstrapSubProcessMenuSystem bootstrapSubProcessMenuSystem,
 		GameObject playerCameraGameObject)
 	{
+		_bootstrapSubProcessSaveLoadSystem = bootstrapSubProcessSaveLoad;
 		_bootstrap = bootstrap;
 		_localizationManager = _bootstrap.LocalizationManager;
 		_bootstrapSubProcessMenuSystem = bootstrapSubProcessMenuSystem;
@@ -38,6 +41,7 @@ public class BootstrapSubProcessMissionsSystem
 		MissionsManager.Initialize(
 			_localizationManager,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
+				_bootstrapSubProcessSaveLoadSystem.SaveLoadController,
 			_bootstrapSubProcessMenuSystem.HUDmissionsController,
 			_gameMissions);
 

@@ -34,7 +34,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
 
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
-
+	
 	public GameScenesSystemEnum PreviousScene { get; private set; }
 
 	private bool _wasPreviouslyCopiedToTEMP;

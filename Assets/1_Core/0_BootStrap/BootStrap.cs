@@ -401,6 +401,7 @@ public class Bootstrap : MonoBehaviour
 		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(
 			this,
 			_bootstrapSubProcessSceneSystem,
+			_bootstrapSubProcessSaveLoadSystem,
 			_bootstrapSubProcessMenuSystem,
 			GameObjectPlayerCamera);
 
