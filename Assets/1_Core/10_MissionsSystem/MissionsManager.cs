@@ -8,7 +8,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	private IMissionStepConditionWithProgress _missionStepConditionWithProgress;
 
 	private GameMissionsList _gameMissions;
-	public MissionAbstract ActiveMission { get; private set; }
+	public Mission ActiveMission { get; private set; }
 	public int ActiveMissionIndex { get; private set; }
 	public int CurrentStepIndex { get; private set; }
 	private LocalizationManager _localizationManager;
@@ -77,11 +77,11 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 			{
 				step.Initialize(this);
 
-				if (step is IMissionStep typedStep)
+				if (step is MissionStep typedStep)
 				{
 					foreach (var condition in typedStep.Conditions)
 					{
-						if (condition is IMissionStepCondition resettableCondition)
+						if (condition is MissionStepConditionAbstract resettableCondition)
 						{
 							resettableCondition.ResetStepCondition();
 						}
@@ -131,6 +131,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	public void GoToNextStep(int goToNextStep)
 	{
+
 		CurrentStepIndex = goToNextStep;
 	
 		if (CurrentStepIndex >= ActiveMission.MissionSteps.Length)
@@ -215,7 +216,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		}
 	}
 
-	private string GetLocalizedGoalText(MissionStepAbstract step)
+	private string GetLocalizedGoalText(MissionStep step)
 	{
 		if (step == null || _localizationManager == null) return string.Empty;
 
@@ -229,7 +230,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		}
 	}
 
-	public void ApplyBootstrapMissionConfigs(MissionAbstract setMission, int setMissionStep)
+	public void ApplyBootstrapMissionConfigs(Mission setMission, int setMissionStep)
 	{
 		ActiveMission = setMission;
 		GoToNextStep(setMissionStep);

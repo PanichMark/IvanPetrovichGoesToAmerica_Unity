@@ -2,7 +2,7 @@
 
 public class MissionStepObjectRegistractionTurnOn : MonoBehaviour
 {
-	[SerializeField] private MissionStepAbstract _linkedMissionStep;
+	[SerializeField] private MissionStep _linkedMissionStep;
 
 	private void Start()
 	{

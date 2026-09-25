@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
+[CreateAssetMenu(fileName = "MissionStep", menuName = "Missions/MissionStep")]
+public class MissionStep : ScriptableObject
 {
 	public string MissionStepGoal_RU;
 	public string MissionStepGoal_EN;
@@ -11,10 +12,13 @@ public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
 	private List<GameObject> GameObjectTurnOn;
 	private List<GameObject> GameObjectTurnOff;
 
+	[TextArea(3, 10)]
+	public string StepDescription;
+	[SerializeField] private bool showMissionMarker = true;
 
-	public IReadOnlyList<IMissionStepCondition> Conditions
+	public IReadOnlyList<MissionStepConditionAbstract> Conditions
 	{
-		get { return StepConditions.ConvertAll(c => (IMissionStepCondition)c); }
+		get { return StepConditions.ConvertAll(c => (MissionStepConditionAbstract)c); }
 	}
 
 	public List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
@@ -51,6 +55,7 @@ public abstract class MissionStepAbstract : ScriptableObject, IMissionStep
 	public void Initialize(MissionsManager missionsManager)
 	{
 		_missionsManager = missionsManager;
+
 
 		ClearTurnOnOffLists();
 

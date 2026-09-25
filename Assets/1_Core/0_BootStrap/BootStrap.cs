@@ -36,7 +36,7 @@ public class Bootstrap : MonoBehaviour
 
 	[Header("--- CONFIGS MISSION  ---")]
 	[SerializeField] private bool _applyConfigsMission;
-	[SerializeField] private MissionAbstract _mission;
+	[SerializeField] private Mission _mission;
 	[SerializeField] private int _missionStep;
 
 	private ViewModelBootstrapInitialization _viewModelBootstrapInitialization;

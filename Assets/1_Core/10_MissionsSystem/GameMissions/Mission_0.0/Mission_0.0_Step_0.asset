@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d63e07aaa1abd1f4db5a0b24a3adc23f, type: 3}
-  m_Name: Mission_0.2_Step_0
+  m_Script: {fileID: 11500000, guid: 28666d33d6042314285cfa8314a08d3f, type: 3}
+  m_Name: Mission_0.0_Step_0
   m_EditorClassIdentifier: 
-  MissionStepGoal_RU: 
-  MissionStepGoal_EN: 
-  StepConditions:
-  - {fileID: 11400000, guid: 63a993a9ebca97248a52162984e32f69, type: 2}
+  MissionStepGoal_RU: "\u0412\u0437\u044F\u0442\u044C \u043A\u043B\u044E\u0447"
+  MissionStepGoal_EN: Take a key
   StepDescription: 
   showMissionMarker: 1
+  StepConditions:
+  - {fileID: 11400000, guid: b93a992c3bb62e8479c35eb96ccc5110, type: 2}

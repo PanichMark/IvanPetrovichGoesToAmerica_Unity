@@ -1,6 +1,6 @@
 ﻿using System;
 
-public interface IMissionStepConditionWithProgress : IMissionStepCondition
+public interface IMissionStepConditionWithProgress
 {
 	event Action<int, int> OnStepConditionProgressUpdated;
 }

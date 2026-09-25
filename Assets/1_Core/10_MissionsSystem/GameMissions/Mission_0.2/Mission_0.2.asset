@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fa89c9425f39947a489325c1b71cb6, type: 3}
+  m_Script: {fileID: 11500000, guid: a43a6572bb9ce5a4a95a82780e47ce38, type: 3}
   m_Name: Mission_0.2
   m_EditorClassIdentifier: 
   _missionName: 1
-  _missionResources: {fileID: 11400000, guid: 097fd49ed1e75a945a8b10cde3ae7a7f, type: 2}
-  MissionDiscription: 
-  MissionStepsArray:
+  _missionResources: {fileID: 0}
+  MissionSteps:
   - {fileID: 11400000, guid: 52ba99a81ed6dd249b69d6ded749aae3, type: 2}

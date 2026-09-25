@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class MissionStepConditionAbstract : ScriptableObject, IMissionStepCondition
+public abstract class MissionStepConditionAbstract : ScriptableObject
 {
 	[SerializeField] protected int GoToNextStep;
-
-
-
 
 
 	protected GameObject _stepConditionOwner;
@@ -16,7 +13,7 @@ public abstract class MissionStepConditionAbstract : ScriptableObject, IMissionS
 	public bool IsConditionMet => _isConditionMet;
 
 	protected MissionsManager _missionsManager;
-	protected MissionStepAbstract _missionStepAbstract;
+	protected MissionStep _missionStepAbstract;
 	public void RegisterOwner(GameObject owner)
 	{
 		_stepConditionOwner = owner;
@@ -25,7 +22,7 @@ public abstract class MissionStepConditionAbstract : ScriptableObject, IMissionS
 
 	public abstract void ResetStepCondition();
 
-	public void Initialize(MissionStepAbstract missionStepAbstract)
+	public void Initialize(MissionStep missionStepAbstract)
 	{
 		_missionStepAbstract = missionStepAbstract;
 	}
