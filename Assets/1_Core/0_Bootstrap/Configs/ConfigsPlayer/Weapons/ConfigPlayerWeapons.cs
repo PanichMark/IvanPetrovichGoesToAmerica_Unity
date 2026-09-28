@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ConfigPlayerWeapons", menuName = "Configs/Player/Weapons")]
+[CreateAssetMenu(fileName = "ConfigPlayerWeapons", menuName = "Bootstrap/PlayerConfigs/Weapons")]
 public class ConfigPlayerWeapons : ScriptableObject
 {
 	[Header("Доступные виды оружия")]

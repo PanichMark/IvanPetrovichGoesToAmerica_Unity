@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MissionStepObjectRegistrationObjectZoneRequired : MonoBehaviour
+public class MissionStepConditionObjectsInsideZoneRegistrationObject : MonoBehaviour
 {
 	[SerializeField] private MissionStepConditionAbstract _linkedMissionCondition;
 

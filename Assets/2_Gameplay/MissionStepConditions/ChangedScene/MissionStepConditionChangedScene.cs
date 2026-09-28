@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "MissionStepConditionChangedScene", menuName = "Scriptable Objects/MissionStepConditionChangedScene")]
+[CreateAssetMenu(fileName = "ChangedScene", menuName = "Missions/StepConditions/ChangedScene")]
 public class MissionStepConditionChangedScene : ScriptableObject
 {
     

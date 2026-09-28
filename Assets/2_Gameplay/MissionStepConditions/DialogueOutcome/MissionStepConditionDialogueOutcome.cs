@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "MissionStepConditionDialogueOutcome", menuName = "Scriptable Objects/MissionStepConditionDialogueOutcome")]
+[CreateAssetMenu(fileName = "DialogueOutcome", menuName = "Missions/StepConditions/DialogueOutcome")]
 public class MissionStepConditionDialogueOutcome : ScriptableObject
 {
     

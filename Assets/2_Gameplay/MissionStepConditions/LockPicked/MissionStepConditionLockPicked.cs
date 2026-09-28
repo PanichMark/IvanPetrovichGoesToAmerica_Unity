@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "MissionStepConditionLockPicked", menuName = "Scriptable Objects/MissionStepConditionLockPicked")]
+[CreateAssetMenu(fileName = "LockPicked", menuName = "Missions/StepConditions/LockPicked")]
 public class MissionStepConditionLockPicked : ScriptableObject
 {
     

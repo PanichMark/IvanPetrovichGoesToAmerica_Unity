@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "MissionStepConditionCountdown", menuName = "Scriptable Objects/MissionStepConditionCountdown")]
+[CreateAssetMenu(fileName = "TimeCountdown", menuName = "Missions/StepConditions/TimeCountdown")]
 public class MissionStepConditionTimeCountdown : ScriptableObject
 {
     

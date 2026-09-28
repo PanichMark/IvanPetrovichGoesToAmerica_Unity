@@ -16,5 +16,7 @@ MonoBehaviour:
   MissionStepGoal_EN: 
   StepDescription: 
   showMissionMarker: 1
+  _minStepIndexIgnore: 0
+  _maxStepIndexIgnore: 0
   StepConditions:
   - {fileID: 11400000, guid: 63389108c57cec643a041b711b6acfed, type: 2}

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-[CreateAssetMenu(fileName = "BootstrapGameDataList", menuName = "Configs/GameData/BootstrapGameDataList")]
+[CreateAssetMenu(fileName = "BootstrapGameDataList", menuName = "Bootstrap/GameData/BootstrapGameDataList")]
 public class BootstrapGameDataList : ScriptableObject
 {
 	public int NumberOfSafeFileSlots { get; private set; } = 20;

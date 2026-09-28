@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameCanvasesList", menuName = "Configs/GameData/GameCanvasesList")]
+[CreateAssetMenu(fileName = "GameCanvasesList", menuName = "Bootstrap/GameData/GameCanvasesList")]
 public class GameCanvasesList : ScriptableObject
 {
 	[Header("Bootstrap")]

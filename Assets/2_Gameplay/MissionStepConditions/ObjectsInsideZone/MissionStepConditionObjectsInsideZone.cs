@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "StepConditionObjectsInZone", menuName = "Missions/MissionStepConditions/StepConditionObjectsInsideZone")]
+[CreateAssetMenu(fileName = "ObjectsInZone", menuName = "Missions/StepConditions/ObjectsInZone")]
 public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstract, IMissionStepConditionWithProgress
 {
 	// Основной список: кто должен быть внутри (заполняется Required-скриптами только если пуст)

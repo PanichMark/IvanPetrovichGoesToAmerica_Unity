@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "ConfigPlayerTransform", menuName = "Configs/Player/Transform")]
+[CreateAssetMenu(fileName = "ConfigPlayerTransform", menuName = "Bootstrap/PlayerConfigs/Transform")]
 public class ConfigPlayerTransform : ScriptableObject
 {
 	public Vector3 PlayerPosition;

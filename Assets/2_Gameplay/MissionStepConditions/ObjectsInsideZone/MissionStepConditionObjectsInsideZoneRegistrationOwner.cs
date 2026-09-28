@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
-public class MissionStepObjectRegistrationObjectZoneMain : MonoBehaviour
+public class MissionStepConditionObjectsInsideZoneRegistrationOwner : MonoBehaviour
 {
 	[SerializeField] private MissionStepConditionAbstract _linkedMissionCondition;
 	private GameObject _playerSpine;
@@ -57,7 +57,7 @@ public class MissionStepObjectRegistrationObjectZoneMain : MonoBehaviour
 	private GameObject HasRequiredComponent(GameObject obj)
 	{
 		// 1. Проверяем сам объект, который пересек границу (например, ящик в руках игрока)
-		if (obj.TryGetComponent<MissionStepObjectRegistrationObjectZoneRequired>(out _))
+		if (obj.TryGetComponent<MissionStepConditionObjectsInsideZoneRegistrationObject>(out _))
 		{
 			//Debug.Log($"[ZoneMain] Found on self: {obj.name}");
 			return obj;
@@ -67,7 +67,7 @@ public class MissionStepObjectRegistrationObjectZoneMain : MonoBehaviour
 		var parent = obj.transform.parent;
 		if (parent != null)
 		{
-			if (parent.TryGetComponent<MissionStepObjectRegistrationObjectZoneRequired>(out _))
+			if (parent.TryGetComponent<MissionStepConditionObjectsInsideZoneRegistrationObject>(out _))
 			{
 				//Debug.Log($"[ZoneMain] Found on direct parent: {parent.name}");
 				return parent.gameObject;
@@ -83,7 +83,7 @@ public class MissionStepObjectRegistrationObjectZoneMain : MonoBehaviour
 		{
 			//Debug.Log($"[ZoneMain] Checking child of Spine: {child.name}"); // Закомментировано для чистоты лога
 
-			if (child.TryGetComponent<MissionStepObjectRegistrationObjectZoneRequired>(out _))
+			if (child.TryGetComponent<MissionStepConditionObjectsInsideZoneRegistrationObject>(out _))
 			{
 				//Debug.Log($"[ZoneMain] SUCCESS! Found required component on Player's child: {child.name}");
 				return child.gameObject;

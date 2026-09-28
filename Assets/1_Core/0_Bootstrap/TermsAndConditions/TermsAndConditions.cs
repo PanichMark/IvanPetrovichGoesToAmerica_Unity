@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "TermsAndConditions", menuName = "TermsAndConditions/TermsAndConditions")]
+[CreateAssetMenu(fileName = "TermsAndConditions", menuName = "Bootstrap/TermsAndConditions")]
 public class TermsAndConditions : ScriptableObject
 {
     public TextAsset TermsAndConditions_RU;

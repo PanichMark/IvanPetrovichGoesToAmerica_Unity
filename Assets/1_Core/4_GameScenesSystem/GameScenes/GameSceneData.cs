@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameSceneData", menuName = "GameScenes/GameSceneData")]
+[CreateAssetMenu(fileName = "GameSceneData", menuName = "Bootstrap/GameData/GameScenes/GameSceneData")]
 public class GameSceneData : ScriptableObject
 {
 	public GameScenesSystemEnum GameScene;

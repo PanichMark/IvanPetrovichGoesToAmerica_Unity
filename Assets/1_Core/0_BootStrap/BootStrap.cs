@@ -32,7 +32,7 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField, Range(0, 9)] private int _playerManaReplenishItems;
 	[SerializeField, Range(0, 999999)] private int _playerMoney;
 	[SerializeField] private ConfigPlayerWeapons _playerWeapons;
-	[SerializeField] private ConfigPlayerResourcesAmmo _playerAmmo;
+	[SerializeField] private ConfigPlayerAmmo _playerAmmo;
 
 	[Header("--- CONFIGS MISSION  ---")]
 	[SerializeField] private bool _applyConfigsMission;

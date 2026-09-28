@@ -9,7 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e81de415062f8e4f8a4f0d0fcd8ce5b, type: 3}
-  m_Name: ConditionInteractable_BackTrack
+  m_Script: {fileID: 11500000, guid: aa1e9ee001747954a8443ba86eb5cf04, type: 3}
+  m_Name: ConfigPlayerAmmo_Max
   m_EditorClassIdentifier: 
-  GoToNextStep: -1
+  AmmoEntries:
+  - AmmoType: 0
+    StartAmount: 999
+  - AmmoType: 1
+    StartAmount: 999
+  - AmmoType: 3
+    StartAmount: 999

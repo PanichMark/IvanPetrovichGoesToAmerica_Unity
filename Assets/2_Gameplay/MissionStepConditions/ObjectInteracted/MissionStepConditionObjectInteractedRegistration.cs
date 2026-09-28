@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MissionStepObjectRegistrationInteractable : MonoBehaviour
+public class MissionStepConditionObjectInteractedRegistration : MonoBehaviour
 {
 	private IInteractable _interactable;
 
@@ -19,7 +19,7 @@ public class MissionStepObjectRegistrationInteractable : MonoBehaviour
 	{
 		//Debug.Log("INTERACTED!!!!!");
 
-		if (_linkedMissionCondition is MissionStepConditionInteractable interactionCondition)
+		if (_linkedMissionCondition is MissionStepConditionObjectInteracted interactionCondition)
 		{
 			interactionCondition.OnPlayerInteracted(gameObject);
 		}
