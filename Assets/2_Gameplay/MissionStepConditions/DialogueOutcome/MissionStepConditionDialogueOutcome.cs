@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "DialogueOutcome", menuName = "Missions/StepConditions/DialogueOutcome")]
-public class MissionStepConditionDialogueOutcome : ScriptableObject
+public class MissionStepConditionDialogueOutcome : MissionStepConditionAbstract
 {
-    
+	public override void ResetStepCondition()
+	{
+		
+	}
 }

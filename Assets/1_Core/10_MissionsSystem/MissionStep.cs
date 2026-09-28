@@ -66,6 +66,7 @@ public class MissionStep : ScriptableObject
 
 		ClearTurnOnOffLists();
 
+
 		foreach (var condition in StepConditions)
 		{
 			condition.Initialize(this);
