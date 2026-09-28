@@ -96,6 +96,10 @@ public class NPCstateMachineController : MonoBehaviour
 				_NPClivingBeing.gameObject.tag = "Interactable";
 			}
 		}
+		else if (NPCstateType == NPCstateTypes.ReturningToStationaryAction)
+		{
+			newState = new NPCstateReturningToStationaryAction();
+		}
 		else if (NPCstateType == NPCstateTypes.Interested)
 		{
 			newState = new NPCstateInterested();

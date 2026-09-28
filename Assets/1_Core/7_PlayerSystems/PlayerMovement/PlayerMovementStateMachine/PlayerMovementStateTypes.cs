@@ -7,9 +7,10 @@
 	PlayerRunning,
     PlayerJumping,
     PlayerFalling,
-    PlayerSliding,
-    PlayerLedgeClimbingStanding,
+	PlayerVaulting,
+	PlayerLedgeClimbingStanding,
 	PlayerLedgeClimbingCrouching,
+	PlayerSliding,
 	PlayerStranglingNPC,
 	PlayerPlunging,
     PlayerDying

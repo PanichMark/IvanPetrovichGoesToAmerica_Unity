@@ -2,6 +2,7 @@
 {
 	StationaryAction,
 	Patrolling,
+	ReturningToStationaryAction,
 	Interested,
 	Alarmed,
 	Chasing,
