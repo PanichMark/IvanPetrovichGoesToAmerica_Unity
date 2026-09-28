@@ -193,9 +193,6 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textToggleShowBlood = viewModelPauseSubMenuSettings.TextToggleShowBlood;
 		_textComponentToggleShowBlood = viewModelPauseSubMenuSettings.TextToggleShowBlood.GetComponent<TextMeshProUGUI>();
 
-		SetScreenBrightness(50);
-		_sliderComponentScreenBrightness.value = 50;
-
 		_gameController.OnActivateMainMenuEndGameTitlesActive += () => OnCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
 	
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -219,6 +216,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		OnSaveCameraSettingsData?.Invoke();
 
 		currentData.CameraFOV = CurrentValueCameraFOV;
+		currentData.ScreenBrightness = _currentValueScreenBrightness;
 		currentData.FPSlimit = _currentFPSlimit;
 		currentData.WeaponWheelType = _currentWeaponWheelMenuType.ToString();
 		currentData.ShowIngameTutorials = _toggleComponentShowIngameHints.isOn;
@@ -245,6 +243,9 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		SetCameraFOV(data.CameraFOV);
 		_sliderComponentCameraFOV.value = data.CameraFOV;
 		CurrentValueCameraFOV = data.CameraFOV;
+		SetScreenBrightness(data.ScreenBrightness);
+		_sliderComponentScreenBrightness.value = data.ScreenBrightness;
+		_currentValueScreenBrightness = data.ScreenBrightness;
 		SetShowIngameTutorials(data.ShowIngameTutorials);
 		SetShowBlood(data.ShowBlood);
 	}
@@ -258,6 +259,7 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 			FPSlimit = 60,
 			WeaponWheelType = WeaponWheelMenuTypes._2D.ToString(),
 			CameraFOV = _MIN_VALUE_CAMERA_FOV,
+			ScreenBrightness = _DEFAULT_VALUE_SCREEN_BRIGHTNESS,
 			ShowIngameTutorials = true,
 			ShowBlood = true,
 		};
@@ -270,6 +272,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 
 		SetCameraFOV(_MIN_VALUE_CAMERA_FOV);
 		_sliderComponentCameraFOV.value = _MIN_VALUE_CAMERA_FOV;
+		SetScreenBrightness(_DEFAULT_VALUE_SCREEN_BRIGHTNESS);
+		_sliderComponentScreenBrightness.value = _DEFAULT_VALUE_SCREEN_BRIGHTNESS;
 		SetShowIngameTutorials(true);
 		SetShowBlood(true);
 	}
