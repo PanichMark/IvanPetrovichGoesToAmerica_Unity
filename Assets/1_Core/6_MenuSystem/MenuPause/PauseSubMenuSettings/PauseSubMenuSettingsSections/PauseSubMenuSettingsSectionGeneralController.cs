@@ -64,10 +64,13 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	private float _currentValueScreenBrightness;
 	private const float _MIN_VALUE_SCREEN_BRIGHTNESS = 0f;
 	private const float _MAX_VALUE_SCREEN_BRIGHTNESS = 100f;
+	private const float _DEFAULT_VALUE_SCREEN_BRIGHTNESS = 50f;
 	private GameObject _textNumberSliderScreenBrightness;
 	private TextMeshProUGUI _textComponentNumberSliderScreenBrightness;
 	private GameObject _textSliderScreenBrightness;
 	private TextMeshProUGUI _textComponentSliderScreenBrightness;
+	public delegate void ScreenBrightnessHandler(int brightnessValue);
+	public event ScreenBrightnessHandler OnScreenBrightnessChanged;
 
 	private GameObject _buttonGameDifficulty;
 	private Button _buttonComponentGameDifficulty;
@@ -190,8 +193,8 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 		_textToggleShowBlood = viewModelPauseSubMenuSettings.TextToggleShowBlood;
 		_textComponentToggleShowBlood = viewModelPauseSubMenuSettings.TextToggleShowBlood.GetComponent<TextMeshProUGUI>();
 
-		SetScreenBrightness(100);
-		_sliderComponentScreenBrightness.value = 100;
+		SetScreenBrightness(50);
+		_sliderComponentScreenBrightness.value = 50;
 
 		_gameController.OnActivateMainMenuEndGameTitlesActive += () => OnCameraFOVchanged?.Invoke(60, _MIN_VALUE_CAMERA_FOV, _MAX_VALUE_CAMERA_FOV);
 	
@@ -431,8 +434,9 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	public void SetScreenBrightness(float newScreenBrightness)
 	{
 		_currentValueScreenBrightness = newScreenBrightness;
-
 		_textComponentNumberSliderScreenBrightness.text = ((int)newScreenBrightness).ToString();
+
+		OnScreenBrightnessChanged?.Invoke((int)newScreenBrightness);
 	}
 
 	private void OpenSubMenuChooseGameDifficulty()

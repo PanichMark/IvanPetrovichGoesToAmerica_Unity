@@ -41,7 +41,7 @@ public class BootstrapSubProcessPlayerSystems
 	
 	public PlayerCameraController PlayerCameraController { get; private set; }
 	public PlayerCameraStateMachineController PlayerCameraStateMachineController { get; private set; }
-	private PlayerCameraBlurFilter _playerCameraBlurFilter;
+	private PlayerCameraVolumeController _playerCameraBlurFilter;
 	private PlayerCameraFirstPersonRenderer _playerCameraFirstPersonRender;
 
 	private PlayerMovementAnimationController _playerMovementAnimationController;
@@ -86,7 +86,7 @@ public class BootstrapSubProcessPlayerSystems
 
 		PlayerCameraController = _gameObjectPlayerCamera.GetComponent<PlayerCameraController>();
 		PlayerCameraStateMachineController = _gameObjectPlayerCamera.GetComponent<PlayerCameraStateMachineController>();
-		_playerCameraBlurFilter = _gameObjectPlayerCamera.GetComponent<PlayerCameraBlurFilter>();
+		_playerCameraBlurFilter = _gameObjectPlayerCamera.GetComponent<PlayerCameraVolumeController>();
 		_playerCameraFirstPersonRender = _gameObjectPlayerCamera.GetComponent<PlayerCameraFirstPersonRenderer>();
 
 		PlayerResourcesHealthManager = _gameObjectPlayer.GetComponent<PlayerHealthController>();
@@ -157,6 +157,7 @@ public class BootstrapSubProcessPlayerSystems
 
 		_playerCameraBlurFilter.Initialize(
 			_bootstrapSubProcessMenuSystem.MenuManager,
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionGeneralController,
 			PlayerCameraFirstPerson);
 
 		_playerCameraFirstPersonRender.Initialize(
@@ -191,7 +192,7 @@ ServiceLocator.Register<PlayerMovementController>(PlayerMovementController);
 ServiceLocator.Register<PlayerMovementStateMachineController>(PlayerMovementStateMachineController);
 ServiceLocator.Register<PlayerCameraController>(PlayerCameraController);
 ServiceLocator.Register<PlayerCameraStateMachineController>(PlayerCameraStateMachineController);
-ServiceLocator.Register<PlayerCameraBlurFilter>(_playerCameraBlurFilter);
+ServiceLocator.Register<PlayerCameraVolumeController>(_playerCameraBlurFilter);
 
 ServiceLocator.Register<PlayerHealthController>(PlayerResourcesHealthManager);
 ServiceLocator.Register<PlayerManaController>(PlayerResourcesManaManager);

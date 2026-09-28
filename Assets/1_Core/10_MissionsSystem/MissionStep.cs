@@ -74,6 +74,7 @@ public class MissionStep : ScriptableObject
 
 	public void ClearTurnOnOffLists()
 	{
+
 		//Debug.Log(GameObjectTurnOn.Count);
 		if (GameObjectTurnOn.Count > 0)
 		{

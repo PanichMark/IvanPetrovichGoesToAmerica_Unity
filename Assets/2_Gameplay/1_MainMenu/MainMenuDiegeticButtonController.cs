@@ -8,7 +8,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private Material _hoverMaterial;
 	private MenuBackgroundController _menuBackgroundController;
 	private static List<MainMenuDiegeticButtonController> _instances = new List<MainMenuDiegeticButtonController>();
-	private PlayerCameraBlurFilter _playerCameraBlurFilter;
+	private PlayerCameraVolumeController _playerCameraBlurFilter;
 	private MainMenuReadNewsController _mainMenuReadNews;
 	private PlayerMovementController _playerMovementController;
 	private PauseMenuController _pauseMenuController;
@@ -50,7 +50,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_gameController = ServiceLocator.Resolve<GameController>();
 		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
 		_menuManager = ServiceLocator.Resolve<MenuManager>();
-		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraBlurFilter>();
+		_playerCameraBlurFilter = ServiceLocator.Resolve<PlayerCameraVolumeController>();
 		_pauseSubMenuSettingsController = ServiceLocator.Resolve<PauseSubMenuSettingsController>();
 		_pauseSubMenuSettingsGameDifficultyController = ServiceLocator.Resolve<PauseSubMenuSettingsGameDifficultyController>();
 

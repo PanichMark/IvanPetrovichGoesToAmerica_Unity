@@ -680,6 +680,7 @@ GameObject:
   - component: {fileID: 3689587259579891430}
   - component: {fileID: 2656271641104808906}
   - component: {fileID: 8735081162938914822}
+  - component: {fileID: 3055630679493692410}
   m_Layer: 0
   m_Name: CameraFirstPerson
   m_TagString: Untagged
@@ -814,6 +815,23 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: aa5d277152445a44fa221278ffb0dced, type: 2}
+--- !u!114 &3055630679493692410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578800544215249924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 135301fa811a62c40bf18468e3ad13b5, type: 2}
 --- !u!1 &631479480801882230
 GameObject:
   m_ObjectHideFlags: 0
@@ -3911,6 +3929,7 @@ GameObject:
   - component: {fileID: 3889866415961953382}
   - component: {fileID: 5390742714037677161}
   - component: {fileID: 7333861142204535226}
+  - component: {fileID: 2824900226849718963}
   m_Layer: 9
   m_Name: Bootstrap_PlayerCameraGameObject
   m_TagString: MainCamera
@@ -4113,7 +4132,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3834870033131635256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 600eb760b4c1e4942aae0a2f36a1659f, type: 3}
+  m_Script: {fileID: 11500000, guid: ddcb03202212eef41982a1a1bf7aeed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &5390742714037677161
@@ -4148,6 +4167,23 @@ MonoBehaviour:
   - {fileID: 6960034031799164454}
   - {fileID: 3212884675096539060}
   - {fileID: 1977919802805881498}
+--- !u!114 &2824900226849718963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3834870033131635256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 135301fa811a62c40bf18468e3ad13b5, type: 2}
 --- !u!1 &3852057920557730000
 GameObject:
   m_ObjectHideFlags: 0
