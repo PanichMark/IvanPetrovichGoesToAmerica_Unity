@@ -62,14 +62,14 @@ public class NPCdetectionVisualController : MonoBehaviour
 	private void FindVisibleTargets()
 	{
 		_visibleTarget = null;
+		bool isVisibleByCenter = false;
+		bool isVisibleByEyes = false;
 
 		Collider[] targetsInRadius = Physics.OverlapSphere(_raycastStartPosition.position, viewRadius, _targetMask);
 
-		// Предварительно считаем направление "переда" NPC в 2D плоскости
-		Vector3 flatForward = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
+		// Направление "переда" NPC (с учетом вашего "костыля" с минусом)
+		Vector3 flatForward = new Vector3(transform.TransformDirection(Vector3.forward).x, 0, transform.TransformDirection(Vector3.forward).z).normalized;
 
-		// Вычисляем косинус половины угла обзора. 
-		// Это нужно для быстрой проверки через Dot Product.
 		float viewHalfAngleRad = (viewAngle * 0.5f) * Mathf.Deg2Rad;
 		float minDot = Mathf.Cos(viewHalfAngleRad);
 
@@ -80,36 +80,58 @@ public class NPCdetectionVisualController : MonoBehaviour
 			float heightDifference = Mathf.Abs(target.position.y - transform.position.y);
 			if (heightDifference > HalfHeight) continue;
 
-			Vector3 dirToTarget = (target.position - _raycastStartPosition.position).normalized;
+			// Вектор к центру коллайдера (для анимации UpDown и первой проверки)
+			Vector3 dirToTargetCenter = (target.position - _raycastStartPosition.position).normalized;
+			Vector3 flatDirectionCenter = new Vector3(dirToTargetCenter.x, 0, dirToTargetCenter.z);
 
-			RaycastAngleFromXAxis = Vector3.SignedAngle(
-				new Vector3(dirToTarget.x, 0f, dirToTarget.z),
-				dirToTarget,
-				_raycastStartPosition.right);
+			// Вектор к глазам игрока (для второй проверки)
+			Vector3 dirToTargetEyes = (_playerEyes.position - _raycastStartPosition.position).normalized;
+			Vector3 flatDirectionEyes = new Vector3(dirToTargetEyes.x, 0, dirToTargetEyes.z);
 
-			Vector3 flatDirection = new Vector3(dirToTarget.x, 0, dirToTarget.z);
-
-			// === ГЛАВНОЕ ИСПРАВЛЕНИЕ ===
-			// Скалярное произведение между "передом" NPC и направлением на цель.
-			// Если результат меньше 0 — цель находится ЗА спиной (угол > 90 градусов).
-			// Если результат больше minDot — цель находится внутри конуса.
-			float dot = Vector3.Dot(flatForward, flatDirection);
-
+			// Проверяем, находится ли цель в конусе (по центру, так как это стабильнее для угла)
+			float dot = Vector3.Dot(flatForward, flatDirectionCenter);
 			if (dot > minDot)
 			{
-				float dstToTarget = Vector3.Distance(_raycastStartPosition.position, target.position);
+				float dstToTargetCenter = Vector3.Distance(_raycastStartPosition.position, target.position);
+				float dstToTargetEyes = Vector3.Distance(_raycastStartPosition.position, _playerEyes.position);
 
-				if (!Physics.Raycast(_raycastStartPosition.position, dirToTarget, dstToTarget, _obstacleMask))
+				// === ПРОВЕРКА 1: Луч в центр игрока ===
+				if (!Physics.Raycast(_raycastStartPosition.position, dirToTargetCenter, dstToTargetCenter, _obstacleMask))
+				{
+					isVisibleByCenter = true;
+				}
+
+				// === ПРОВЕРКА 2: Луч в глаза игрока ===
+				if (!Physics.Raycast(_raycastStartPosition.position, dirToTargetEyes, dstToTargetEyes, _obstacleMask))
+				{
+					isVisibleByEyes = true;
+				}
+
+				// Если хоть один луч прошел — игрок виден
+				if (isVisibleByCenter || isVisibleByEyes)
 				{
 					_visibleTarget = target;
 					RaycastHitPlayerInsideViewZone = true;
+
+					// Для параметра аниматора наклона головы считаем угол до глаз
+					RaycastAngleFromXAxis = -Vector3.SignedAngle(
+						new Vector3(dirToTargetEyes.x, 0f, dirToTargetEyes.z),
+						dirToTargetEyes,
+						_raycastStartPosition.right);
+
+					break;
 				}
 				else
 				{
 					RaycastHitPlayerInsideViewZone = false;
 				}
-				break;
 			}
+		}
+
+		// Если цикл закончился, а цели в радиусе не было
+		if (_visibleTarget == null)
+		{
+			RaycastHitPlayerInsideViewZone = false;
 		}
 
 		UpdateDetectionFlow();
@@ -178,6 +200,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 		if (_raycastStartPosition == null) _raycastStartPosition = transform;
+		if (_playerEyes == null) return;
 		Color oldColor = Gizmos.color;
 
 		DrawWireCylinder(transform.position, viewRadius, viewHeightTotal);
@@ -186,7 +209,11 @@ public class NPCdetectionVisualController : MonoBehaviour
 		if (_visibleTarget != null)
 		{
 			Gizmos.color = Color.red;
+			// Рисуем первый луч (в центр игрока)
 			Gizmos.DrawLine(_raycastStartPosition.position, _visibleTarget.position);
+
+			// Рисуем второй луч (в глаза игрока)
+			Gizmos.DrawLine(_raycastStartPosition.position, _playerEyes.position);
 		}
 
 		Gizmos.color = oldColor;
@@ -217,16 +244,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 	private void DrawViewAngleLines()
 	{
 		Gizmos.color = Color.yellow;
-
-		// БЕРЕМ НАПРАВЛЕНИЕ ИЗ ЛОКАЛЬНОГО ПРОСТРАНСТВА ОБЪЕКТА
-		// Vector3.forward — это всегда (0, 0, 1) в локальных координатах.
-		// transform.TransformDirection превращает его в мировое направление, 
-		// учитывая поворот объекта в редакторе.
 		Vector3 forwardFlat = -new Vector3(transform.TransformDirection(Vector3.forward).x, 0, transform.TransformDirection(Vector3.forward).z).normalized;
-
-		// Если модель совсем кривая и даже это смотрит назад, используйте Vector3.back:
-		// Vector3 forwardFlat = new Vector3(transform.TransformDirection(Vector3.back).x, 0, transform.TransformDirection(Vector3.back).z).normalized;
-
 		Quaternion rotation = Quaternion.LookRotation(forwardFlat);
 
 		Vector3 viewAngleA = rotation * DirFromAngle(-viewAngle / 2, false) * viewRadius;

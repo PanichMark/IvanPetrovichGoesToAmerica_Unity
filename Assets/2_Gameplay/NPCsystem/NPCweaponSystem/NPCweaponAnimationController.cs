@@ -51,19 +51,27 @@ public class NPCweaponAnimationController : MonoBehaviour
 
 	private void ProcessAimUpDown()
 	{
-		if (!_NPCdetectionVisualController.RaycastHitPlayerInsideViewZone) return;
+		float endValue;
 
-		float angle = _NPCdetectionVisualController.RaycastAngleFromXAxis;
+		// Проверяем, видит ли NPC игрока
+		if (_NPCdetectionVisualController.RaycastHitPlayerInsideViewZone)
+		{
+			// Игрок ВИДЕН: вычисляем целевой угол
+			float angle = _NPCdetectionVisualController.RaycastAngleFromXAxis;
+			float clampedAngle = Mathf.Clamp(angle, -70f, 70f);
+			endValue = clampedAngle / 70f;
+		}
+		else
+		{
+			// Игрок НЕ ВИДЕН: целевое значение — 0 (нейтральное положение)
+			endValue = 0f;
+		}
 
-		// Ограничиваем угол, чтобы не сломать IK при экстремальных наклонах (по аналогии с лимитом камеры игрока)
-		float clampedAngle = Mathf.Clamp(angle, -70f, 70f);
-
-		// Нормализуем в диапазон от -1 до 1 для плавающего параметра аниматора
-		float endValue = clampedAngle / 70f;
-
+		// Плавно интерполируем текущее значение к целевому (endValue)
 		float rawLerp = Mathf.Lerp(_aimUpDownParameter, endValue, Time.deltaTime * 6f);
 		_aimUpDownParameter = rawLerp;
 
+		// Фиксируем значение, если мы почти достигли цели (чтобы не было микро-вибраций)
 		if (Mathf.Abs(rawLerp - endValue) < 0.001f)
 		{
 			_aimUpDownParameter = endValue;
