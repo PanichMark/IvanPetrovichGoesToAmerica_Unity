@@ -16,7 +16,12 @@ public abstract class NPClivingBeing : NPCabstract
 	protected bool _canNPCbeRobbed;
 	protected bool _wasNPCrobbed;
 
+
+	private MeshRenderer[] _NPCvfxEffectMeshRenderers;
+	private Transform _NPCarmatureTransform;
+
 	protected TransferSkinnedMeshRendererArmatureBones _transferArmatureBones;
+	private NPCvfxController _npcvfxController;
 
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private GameObject _canvasNPCstatus;
@@ -54,6 +59,11 @@ public abstract class NPClivingBeing : NPCabstract
 
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 
+		_NPCarmatureTransform = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid");
+
+		_NPCvfxEffectMeshRenderers = _NPCarmatureTransform.GetComponentsInChildren<MeshRenderer>(true);
+		//Debug.Log($"НАШЛОСЬ {_NPCeffectMeshRenderers.Length} MeshRenderer компонентов.");
+
 		_canvasNPCstatus = transform.Find("NPC_Canvas").gameObject;
 		_imageDetectionSign = _canvasNPCstatus.transform.Find("DetectionSign").gameObject;
 		_textNPCcurrentState = _canvasNPCstatus.transform.Find("DebugNPCcurrentState").gameObject;
@@ -69,6 +79,7 @@ public abstract class NPClivingBeing : NPCabstract
 		_NPCdetectionVisualController = GetComponent<NPCdetectionVisualController>();
 		_NPCdetectionAudioController = GetComponent<NPCdetectionAudioController>();
 		_NPCdetectionSignController = GetComponent<NPCdetectionSignController>();
+		_npcvfxController = GetComponent<NPCvfxController>();
 		_NPCdebugHUDcontroller = GetComponent<NPCdebugHUDcontroller>();
 
 		_NPCmovementController.Initialize(_navMeshAgent);
@@ -122,7 +133,10 @@ public abstract class NPClivingBeing : NPCabstract
 		{
 			_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
 		}
-		
+
+		_npcvfxController.Initialize(_NPCvfxEffectMeshRenderers);
+
+
 		if (_NPClootObject != null)
 		{
 			_NPClootObjectComponent = _NPClootObject.GetComponent<InteractionObjectLootAbstract>();

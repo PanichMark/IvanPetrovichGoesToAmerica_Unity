@@ -100,6 +100,12 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 				electroShokable.Electrify(_weaponDamage);
 				Debug.Log($"[{WeaponName}] Электроударил {hit.name}");
 			}
+
+			NPCvfxController vfxController = hit.GetComponent<NPCvfxController>();
+			if (vfxController != null)
+			{
+				vfxController.ShowElectifiedVFX();
+			}
 		}
 
 		yield return _currentWeaponPlayerEugenicAttackRoutine;

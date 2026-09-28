@@ -11,6 +11,7 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
+
 	public string InteractionObjectNameSystem => _NPCname;
 	public string InteractionObjectNameUI => _localizationManager.GetLocalizedString(_NPCname);
 	public string InteractionHintMessageMain => $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
