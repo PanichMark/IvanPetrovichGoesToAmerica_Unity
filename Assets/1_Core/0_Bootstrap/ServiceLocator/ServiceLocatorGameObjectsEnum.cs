@@ -1,7 +1,7 @@
 ﻿public enum ServiceLocatorGameObjectsEnum
 {
     Player,
-    PLayerEyes,
+    PlayerEyes,
     PlayerHead,
     PlayerCollider,
     PlayerCamera,

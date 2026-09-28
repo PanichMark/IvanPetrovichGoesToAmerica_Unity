@@ -203,7 +203,7 @@ ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponRight, P
 ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponLeft, PlayerAudioWeaponLeft);
 
 	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.Player, _gameObjectPlayer);
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PLayerEyes, _gameobjectPlayerEyesLookAt);
+	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerEyes, _gameobjectPlayerEyesLookAt);
 	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerHead, _gameObjectPlayerHead);
 	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerCollider, _gameObjectPlayerCollider);
 	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerCamera, _gameObjectPlayerCamera);

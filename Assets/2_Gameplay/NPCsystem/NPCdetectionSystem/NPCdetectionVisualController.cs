@@ -15,7 +15,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 	public float viewAngle = 90f;
 
 	public bool RaycastHitPlayerInsideViewZone { get; private set; }
-
+	private Transform _playerEyes;
 	private LayerMask _targetMask;
 	private LayerMask _obstacleMask;
 	public float RaycastAngleFromXAxis {  get; private set; }
@@ -42,6 +42,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 
 	public void Initialize(NPCdetectionManager detectionManager)
 	{
+		_playerEyes = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes).transform;
 		_npcDetectionManager = detectionManager;
 
 		_targetMask = LayerMask.GetMask("Player");
@@ -194,10 +195,10 @@ public class NPCdetectionVisualController : MonoBehaviour
 		Color oldColor = Gizmos.color;
 
 		// Рисуем ЦИЛИНДР белыми линиями
-		//DrawWireCylinder(_myTransform.position, viewRadius, viewHeightTotal);
+		DrawWireCylinder(_raycastStartPosition.position, viewRadius, viewHeightTotal);
 
 		// Рисуем УГОЛ ОБЗОРА желтым
-		//DrawViewAngleLines();
+		DrawViewAngleLines();
 
 		// Если игрок найден — рисуем линию КРАСНЫМ (только если есть ссылка)
 		if (_visibleTarget != null)
