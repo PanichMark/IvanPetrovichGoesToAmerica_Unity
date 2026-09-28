@@ -99,6 +99,12 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 	public void SaveSettingsAudio(PlayerPrefsData data)
 	{
 		PlayerPrefs.SetString(Language, data.Language);
+		PlayerPrefs.SetInt(VolumeGeneral, data.VolumeGeneral);
+		PlayerPrefs.SetInt(VolumeEnvironment, data.VolumeEnvironment);
+		PlayerPrefs.SetInt(VolumeEffects, data.VolumeEffects);
+		PlayerPrefs.SetInt(VolumeVoices, data.VolumeVoices);
+		PlayerPrefs.SetInt(VolumeMusicAmbience, data.VolumeMusicAmbience);
+		PlayerPrefs.SetInt(VolumeMusicIngame, data.VolumeMusicIngame);
 
 		PlayerPrefs.Save();
 
@@ -150,6 +156,13 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 		}
 
 		data.Language = PlayerPrefs.GetString(Language);
+		data.VolumeGeneral = PlayerPrefs.GetInt(VolumeGeneral, 50);
+		data.VolumeEnvironment = PlayerPrefs.GetInt(VolumeEnvironment, 50);
+		data.VolumeEffects = PlayerPrefs.GetInt(VolumeEffects, 50);
+		data.VolumeVoices = PlayerPrefs.GetInt(VolumeVoices, 50);
+		data.VolumeMusicAmbience = PlayerPrefs.GetInt(VolumeMusicAmbience, 50);
+		data.VolumeMusicIngame = PlayerPrefs.GetInt(VolumeMusicIngame, 50);
+
 		OnApplySettingsSectionGeneralPlayerPrefs?.Invoke(data);
 		OnApplySettingsSectionControlsPlayerPrefs?.Invoke(data);
 		OnApplySettingsSectionAudioPlayerPrefs?.Invoke(data);
@@ -202,6 +215,13 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 		string currentLanguage = PlayerPrefs.GetString(Language);
 
 		PlayerPrefs.SetString(Language, currentLanguage);
+
+		PlayerPrefs.DeleteKey(VolumeGeneral);
+		PlayerPrefs.DeleteKey(VolumeEnvironment);
+		PlayerPrefs.DeleteKey(VolumeEffects);
+		PlayerPrefs.DeleteKey(VolumeVoices);
+		PlayerPrefs.DeleteKey(VolumeMusicAmbience);
+		PlayerPrefs.DeleteKey(VolumeMusicIngame);
 
 		PlayerPrefs.Save();
 

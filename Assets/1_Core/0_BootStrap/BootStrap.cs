@@ -204,6 +204,7 @@ public class Bootstrap : MonoBehaviour
 		yield return StartCoroutine(InitializeMissionsSystem());
 		yield return StartCoroutine(InitializeObjectPoolSystem());
 
+
 		yield return StartCoroutine(RegisterBootstrapDependencies());
 	}
 

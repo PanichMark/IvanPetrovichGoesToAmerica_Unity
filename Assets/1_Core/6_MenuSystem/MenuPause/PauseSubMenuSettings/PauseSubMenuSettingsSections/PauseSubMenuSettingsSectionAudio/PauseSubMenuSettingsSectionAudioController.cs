@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Audio;
 
 public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 {
 	private Bootstrap _bootstrap;
 	private LocalizationManager _localizationManager;
 	private PauseMenuController _pauseMenuController;
+	private AudioMixer _audioMixer;
 
 	private GameObject[] _buttonsChangeLanguage;
 	private Button[] _buttonsComponentsChangeLanguage;
@@ -63,7 +65,9 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 
 	private const float _MIN_VALUE_VOLUME = 0f;
 	private const float _MAX_VALUE_VOLUME = 100f;
+	private const float _DEFAULT_VALUE_VOLUME = 50f;
 
+	/*
 	public delegate void VolumeEventHandle(float newVolumeValue, float MIN_VALUE_VOLUME, float MAX_VALUE_VOLUME);
 	public event VolumeEventHandle OnVolumeGeneralChanged;
 	public event VolumeEventHandle OnVolumeEnvironmentChanged;
@@ -71,6 +75,7 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 	public event VolumeEventHandle OnVolumeVoicesChanged;
 	public event VolumeEventHandle OnVolumeMusicAmbienceChanged;
 	public event VolumeEventHandle OnVolumeMusicIngameChanged;
+	*/
 
 	private PlayerPrefsSettingsController _playerPrefsSettingsController;
 
@@ -79,12 +84,14 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 		LocalizationManager localizationManager,
 		PlayerPrefsSettingsController playerPrefsSettingsController,
 		PauseMenuController pauseMenuController,
-		ViewModelPauseSubMenuSettingsSectionAudio viewModelPauseSubMenuSettingsAudio)
+		ViewModelPauseSubMenuSettingsSectionAudio viewModelPauseSubMenuSettingsAudio,
+		AudioMixer audioMixer)
 	{
 		_bootstrap = bootstrap;
 		_localizationManager = localizationManager;
 		_playerPrefsSettingsController = playerPrefsSettingsController;
 		_pauseMenuController = pauseMenuController;
+		_audioMixer = audioMixer;
 
 		_buttonsChangeLanguage = new GameObject[viewModelPauseSubMenuSettingsAudio.ButtonsChangeLanguage.Length];
 		_buttonsComponentsChangeLanguage = new Button[viewModelPauseSubMenuSettingsAudio.ButtonsChangeLanguage.Length];
@@ -157,24 +164,31 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 		_textSliderVolumeMusicIngame = viewModelPauseSubMenuSettingsAudio.TextSliderVolumeMusicIngame;
 		_textComponentSliderVolumeMusicIngame = viewModelPauseSubMenuSettingsAudio.TextSliderVolumeMusicIngame.GetComponent<TextMeshProUGUI>();
 
-		SetVolumeGeneral(_MAX_VALUE_VOLUME);
-		SetVolumeEnvironment(_MAX_VALUE_VOLUME);
-		SetVolumeEffects(_MAX_VALUE_VOLUME);
-		SetVolumeVoices(_MAX_VALUE_VOLUME);
-		SetVolumeMusicAmbience(_MAX_VALUE_VOLUME);
-		SetVolumeMusicIngame(_MAX_VALUE_VOLUME);
-
-		_sliderComponentVolumeGeneral.value = _MAX_VALUE_VOLUME;
-		_sliderComponentVolumeEnvironment.value = _MAX_VALUE_VOLUME;
-		_sliderComponentVolumeEffects.value = _MAX_VALUE_VOLUME;
-		_sliderComponentVolumeVoices.value = _MAX_VALUE_VOLUME;
-		_sliderComponentVolumeMusicAmbience.value = _MAX_VALUE_VOLUME;
-		_sliderComponentVolumeMusicIngame.value = _MAX_VALUE_VOLUME;
-
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
-		//_playerPrefsSettingsController.OnApplySettingsSectionAudioPlayerPrefs +=
+		_playerPrefsSettingsController.OnApplySettingsSectionGeneralPlayerPrefs += ApplySystemLoadedSettings;
 
 		Debug.Log("SettingsSectionAudioController Initialized");
+	}
+
+	public void ApplySystemLoadedSettings(PlayerPrefsData data)
+	{
+		SetVolumeGeneral(data.VolumeGeneral);
+		_sliderComponentVolumeGeneral.value = data.VolumeGeneral;
+
+		SetVolumeEnvironment(data.VolumeEnvironment);
+		_sliderComponentVolumeEnvironment.value = data.VolumeEnvironment;
+
+		SetVolumeEffects(data.VolumeEffects);
+		_sliderComponentVolumeEffects.value = data.VolumeEffects;
+
+		SetVolumeVoices(data.VolumeVoices);
+		_sliderComponentVolumeVoices.value = data.VolumeVoices;
+
+		SetVolumeMusicAmbience(data.VolumeMusicAmbience);
+		_sliderComponentVolumeMusicAmbience.value = data.VolumeMusicAmbience;
+
+		SetVolumeMusicIngame(data.VolumeMusicIngame);
+		_sliderComponentVolumeMusicIngame.value = data.VolumeMusicIngame;
 	}
 
 	private void ChangeLanguage(LanguagesEnum language)
@@ -186,55 +200,49 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 	public void SetVolumeGeneral(float newVolumeGeneral)
 	{
 		_currentValueVolumeGeneral = newVolumeGeneral;
-
 		_textComponentNumberSliderVolumeGeneral.text = ((int)newVolumeGeneral).ToString();
-
-		OnVolumeGeneralChanged?.Invoke(newVolumeGeneral, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
+		ApplyMixerVolume(AudioMixerGroupsEnum.Master, newVolumeGeneral);
+		//OnVolumeGeneralChanged?.Invoke(newVolumeGeneral, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
 	}
 
 	public void SetVolumeEnvironment(float newVolumeEnvironment)
 	{
 		_currentValueVolumeEnvironment = newVolumeEnvironment;
-
 		_textComponentNumberSliderVolumeEnvironment.text = ((int)newVolumeEnvironment).ToString();
-
-		OnVolumeEnvironmentChanged?.Invoke(newVolumeEnvironment, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
+		ApplyMixerVolume(AudioMixerGroupsEnum.VolumeEnvironment, newVolumeEnvironment);
+		//OnVolumeEnvironmentChanged?.Invoke(newVolumeEnvironment, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
 	}
 
 	public void SetVolumeEffects(float newVolumeEffects)
 	{
 		_currentValueVolumeEffects = newVolumeEffects;
-
 		_textComponentNumberSliderVolumeEffects.text = ((int)newVolumeEffects).ToString();
-
-		OnVolumeEffectsChanged?.Invoke(newVolumeEffects, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
+		ApplyMixerVolume(AudioMixerGroupsEnum.VolumeEffects, newVolumeEffects);
+		//OnVolumeEffectsChanged?.Invoke(newVolumeEffects, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
 	}
 
 	public void SetVolumeVoices(float newVolumeVoices)
 	{
 		_currentValueVolumeVoices = newVolumeVoices;
-
 		_textComponentNumberSliderVolumeVoices.text = ((int)newVolumeVoices).ToString();
-
-		OnVolumeVoicesChanged?.Invoke(newVolumeVoices, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
+		ApplyMixerVolume(AudioMixerGroupsEnum.VolumeVoices, newVolumeVoices);
+		//OnVolumeVoicesChanged?.Invoke(newVolumeVoices, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
 	}
 
 	public void SetVolumeMusicAmbience(float newVolumeMusicAmbience)
 	{
 		_currentValueVolumeMusicAmbience = newVolumeMusicAmbience;
-
 		_textComponentNumberSliderVolumeMusicAmbience.text = ((int)newVolumeMusicAmbience).ToString();
-
-		OnVolumeMusicAmbienceChanged?.Invoke(newVolumeMusicAmbience, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
+		ApplyMixerVolume(AudioMixerGroupsEnum.VolumeMusicAmbience, newVolumeMusicAmbience);
+		//OnVolumeMusicAmbienceChanged?.Invoke(newVolumeMusicAmbience, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
 	}
 
 	public void SetVolumeMusicIngame(float newVolumeMusicIngame)
 	{
 		_currentValueVolumeMusicIngame = newVolumeMusicIngame;
-
 		_textComponentNumberSliderVolumeMusicIngame.text = ((int)newVolumeMusicIngame).ToString();
-
-		OnVolumeMusicIngameChanged?.Invoke(newVolumeMusicIngame, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
+		ApplyMixerVolume(AudioMixerGroupsEnum.VolumeMusicIngame, newVolumeMusicIngame);
+		//OnVolumeMusicIngameChanged?.Invoke(newVolumeMusicIngame, _MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME);
 	}
 
 	public void SaveSettingsAudio()
@@ -242,20 +250,53 @@ public class PauseSubMenuSettingsSectionAudioController : MonoBehaviour
 		var currentData = new PlayerPrefsData();
 
 		currentData.Language = _localizationManager.CurrentLanguage.ToString();
+		currentData.VolumeGeneral = (int)_currentValueVolumeGeneral;
+		currentData.VolumeEnvironment = (int)_currentValueVolumeEnvironment;
+		currentData.VolumeEffects = (int)_currentValueVolumeEffects;
+		currentData.VolumeVoices = (int)_currentValueVolumeVoices;
+		currentData.VolumeMusicAmbience = (int)_currentValueVolumeMusicAmbience;
+		currentData.VolumeMusicIngame = (int)_currentValueVolumeMusicIngame;
 
 		_playerPrefsSettingsController.SaveSettingsAudio(currentData);
 	}
 
 	public void ResetSettingsAudio()
 	{
-		_playerPrefsSettingsController.ResetSettingsGeneral();
+		_playerPrefsSettingsController.ResetSettingsAudio();
 
 		PlayerPrefsData defaultData = new PlayerPrefsData
 		{
 			Language = _localizationManager.CurrentLanguage.ToString(),
+			VolumeGeneral = (int)_DEFAULT_VALUE_VOLUME,
+			VolumeEnvironment = (int)_DEFAULT_VALUE_VOLUME,
+			VolumeEffects = (int)_DEFAULT_VALUE_VOLUME,
+			VolumeVoices = (int)_DEFAULT_VALUE_VOLUME,
+			VolumeMusicAmbience = (int)_DEFAULT_VALUE_VOLUME,
+			VolumeMusicIngame = (int)_DEFAULT_VALUE_VOLUME,
 		};
 
 		_playerPrefsSettingsController.SaveSettingsAudio(defaultData);
+
+		_sliderComponentVolumeGeneral.value = _DEFAULT_VALUE_VOLUME;
+		_sliderComponentVolumeEnvironment.value = _DEFAULT_VALUE_VOLUME;
+		_sliderComponentVolumeEffects.value = _DEFAULT_VALUE_VOLUME;
+		_sliderComponentVolumeVoices.value = _DEFAULT_VALUE_VOLUME;
+		_sliderComponentVolumeMusicAmbience.value = _DEFAULT_VALUE_VOLUME;
+		_sliderComponentVolumeMusicIngame.value = _DEFAULT_VALUE_VOLUME;
+
+		SetVolumeGeneral(_DEFAULT_VALUE_VOLUME);
+		SetVolumeEnvironment(_DEFAULT_VALUE_VOLUME);
+		SetVolumeEffects(_DEFAULT_VALUE_VOLUME);
+		SetVolumeVoices(_DEFAULT_VALUE_VOLUME);
+		SetVolumeMusicAmbience(_DEFAULT_VALUE_VOLUME);
+		SetVolumeMusicIngame(_DEFAULT_VALUE_VOLUME);
+	}
+
+	private void ApplyMixerVolume(AudioMixerGroupsEnum group, float value)
+	{
+		float normalized = Mathf.InverseLerp(_MIN_VALUE_VOLUME, _MAX_VALUE_VOLUME, value);
+		float db = (normalized > Mathf.Epsilon) ? Mathf.Log10(normalized) * 20f : -80f;
+		_audioMixer.SetFloat(group.ToString(), db);
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
