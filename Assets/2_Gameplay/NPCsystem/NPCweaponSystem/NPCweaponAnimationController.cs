@@ -54,7 +54,7 @@ public class NPCweaponAnimationController : MonoBehaviour
 		float endValue;
 
 		// Проверяем, видит ли NPC игрока
-		if (_NPCdetectionVisualController.RaycastHitPlayerInsideViewZone)
+		if (_NPCdetectionVisualController.IsPlayerVisible)
 		{
 			// Игрок ВИДЕН: вычисляем целевой угол
 			float angle = _NPCdetectionVisualController.RaycastAngleFromXAxis;

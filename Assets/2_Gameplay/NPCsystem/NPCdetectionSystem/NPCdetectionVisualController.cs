@@ -9,7 +9,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 	[SerializeField] private float viewHeightTotal = 4f;
 	[Range(0, 360)] public float viewAngle = 90f;
 
-	public bool RaycastHitPlayerInsideViewZone { get; private set; }
+	public bool IsPlayerVisible { get; private set; }
 	private Transform _playerEyes;
 	private LayerMask _targetMask;
 	private LayerMask _obstacleMask;
@@ -111,7 +111,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 				if (isVisibleByCenter || isVisibleByEyes)
 				{
 					_visibleTarget = target;
-					RaycastHitPlayerInsideViewZone = true;
+					IsPlayerVisible = true;
 
 					// Для параметра аниматора наклона головы считаем угол до глаз
 					RaycastAngleFromXAxis = Vector3.SignedAngle(
@@ -123,7 +123,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 				}
 				else
 				{
-					RaycastHitPlayerInsideViewZone = false;
+					IsPlayerVisible = false;
 				}
 			}
 		}
@@ -131,7 +131,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 		// Если цикл закончился, а цели в радиусе не было
 		if (_visibleTarget == null)
 		{
-			RaycastHitPlayerInsideViewZone = false;
+			IsPlayerVisible = false;
 		}
 
 		UpdateDetectionFlow();

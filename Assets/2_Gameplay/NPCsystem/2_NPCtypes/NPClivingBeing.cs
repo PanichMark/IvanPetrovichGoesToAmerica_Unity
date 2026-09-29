@@ -21,7 +21,7 @@ public abstract class NPClivingBeing : NPCabstract
 	private Transform _NPCarmatureTransform;
 
 	protected TransferSkinnedMeshRendererArmatureBones _transferArmatureBones;
-	private NPCvfxController _npcvfxController;
+	private NPCvfxEffectsController _npcvfxController;
 
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private GameObject _canvasNPCstatus;
@@ -79,7 +79,7 @@ public abstract class NPClivingBeing : NPCabstract
 		_NPCdetectionVisualController = GetComponent<NPCdetectionVisualController>();
 		_NPCdetectionAudioController = GetComponent<NPCdetectionAudioController>();
 		_NPCdetectionSignController = GetComponent<NPCdetectionSignController>();
-		_npcvfxController = GetComponent<NPCvfxController>();
+		_npcvfxController = GetComponent<NPCvfxEffectsController>();
 		_NPCdebugHUDcontroller = GetComponent<NPCdebugHUDcontroller>();
 
 		_NPCmovementController.Initialize(_navMeshAgent);
@@ -184,7 +184,7 @@ public abstract class NPClivingBeing : NPCabstract
 		//Debug.Log("BRUH!!!!");
 		if (!_wasNPCrobbed)
 		{
-			if (playerStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing || playerStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
+			if (!_NPCdetectionVisualController.IsPlayerVisible && (playerStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing || playerStateType == PlayerMovementStateTypes.PlayerWalkingCrouching))
 			{
 				MakeNPCrobbable();
 			}
@@ -213,7 +213,10 @@ public abstract class NPClivingBeing : NPCabstract
 	{
 		_canNPCbeRobbed = false;
 		_wasNPCrobbed = true;
+		_NPClootObject = null;
+		_NPClootObjectComponent = null;
 
+		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead && _NPCstateMachineController.CurrentNPCState != NPCstateTypes.Unconscious)
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
 	}
 

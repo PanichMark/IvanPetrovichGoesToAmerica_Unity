@@ -35,6 +35,16 @@
 		if (_NPCstateMachineController.CurrentNPCState == NPCstateTypes.Dead || _NPCstateMachineController.CurrentNPCState == NPCstateTypes.Unconscious)
 		{
 			_pickable.Interact();
+
+			if (!_wasNPCrobbed)
+			{
+				if (_NPClootObject != null)
+				{
+					_NPClootObjectComponent.Interact();
+					NPCwasRobbed();
+				}
+			}
+
 			return;
 		}
 

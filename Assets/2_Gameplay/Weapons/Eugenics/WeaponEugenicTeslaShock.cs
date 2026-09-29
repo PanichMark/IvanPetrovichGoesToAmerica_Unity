@@ -109,7 +109,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 				Debug.Log($"[{WeaponName}] Электроударил {hit.name}");
 			}
 
-			NPCvfxController vfxController = hit.GetComponent<NPCvfxController>();
+			NPCvfxEffectsController vfxController = hit.GetComponent<NPCvfxEffectsController>();
 			if (vfxController != null)
 			{
 				vfxController.ShowElectifiedVFX();
