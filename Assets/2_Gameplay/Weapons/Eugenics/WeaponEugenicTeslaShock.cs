@@ -95,6 +95,12 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 
 		foreach (Collider hit in hitColliders)
 		{
+			NPCstateMachineController NPCstateMachineController = hit.GetComponent<NPCstateMachineController>();
+			if (NPCstateMachineController != null)
+			{
+				NPCstateMachineController.SetNPCState(NPCstateTypes.ElectroShocked);
+			}
+
 			IDamageable damageable = hit.GetComponent<IDamageable>();
 			if (damageable != null)
 			{
@@ -109,11 +115,7 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 				Debug.Log($"[{WeaponName}] Электроударил {hit.name}");
 			}
 
-			NPCstateMachineController NPCstateMachineController = hit.GetComponent<NPCstateMachineController>();
-			if (NPCstateMachineController != null)
-			{
-				NPCstateMachineController.SetNPCState(NPCstateTypes.ElectroShocked);
-			}
+		
 		}
 
 		yield return _currentWeaponPlayerEugenicAttackRoutine;

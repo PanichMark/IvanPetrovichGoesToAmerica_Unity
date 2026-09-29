@@ -172,7 +172,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 			if (Physics.Raycast(ray, out RaycastHit hit, _maxHookDistance, ~LayerMask.GetMask("InvisibleWall")))
 			{
-				if (hit.collider.gameObject.TryGetComponent<NPCabstract>(out _) || hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _))
+				if (hit.collider.gameObject.TryGetComponent<NPClivingBeing>(out _) || hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _))
 				{
 					if (_lastCrosshairState != 2)
 					{
@@ -224,7 +224,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 		yield return StartCoroutine(ShootProjectile(point));
 
-		if ((hit.collider.gameObject.TryGetComponent<NPCabstract>(out _) ||
+		if ((hit.collider.gameObject.TryGetComponent<NPClivingBeing>(out _) ||
 			hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _)))
 		{
 			Debug.Log("Крюк зацепил предмет/NPC");
@@ -497,6 +497,24 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 			_Crossbow3rdPersonSkinnedMesh.SetBlendShapeWeight(0, 0);
 
 			_weaponAudioSource.Stop();
+
+			if (_NPCstateMachineController != null)
+			{
+				if (_NPCstateMachineController.PreviousNPCState == NPCstateTypes.Dying || _NPCstateMachineController.PreviousNPCState == NPCstateTypes.Dead)
+				{
+					_NPCstateMachineController.SetNPCState(NPCstateTypes.Dead);
+				}
+				else if (_NPCstateMachineController.PreviousNPCState == NPCstateTypes.Dizzy || _NPCstateMachineController.PreviousNPCState == NPCstateTypes.Unconscious)
+				{
+					_NPCstateMachineController.SetNPCState(NPCstateTypes.Unconscious);
+				}
+				else
+				{
+					_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
+				}
+
+				_NPCstateMachineController = null;
+			}
 		}
 	}
 

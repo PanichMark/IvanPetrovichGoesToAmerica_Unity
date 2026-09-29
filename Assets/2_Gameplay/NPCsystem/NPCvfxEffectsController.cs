@@ -4,16 +4,25 @@ using System.Collections;
 public class NPCvfxEffectsController : MonoBehaviour
 {
 	private MeshRenderer[] _NPCvfxEffectMeshRenderers;
+	private NPCstateMachineController _NPCstateMachineController;
 
-	public void Initialize(MeshRenderer[] NPCvfxEffectMeshRenderers)
+	public void Initialize(
+		NPCstateMachineController npcstateMachineController,
+		MeshRenderer[] NPCvfxEffectMeshRenderers)
 	{
+		_NPCstateMachineController = npcstateMachineController;
 		_NPCvfxEffectMeshRenderers = NPCvfxEffectMeshRenderers;
+
+		_NPCstateMachineController.OnNewNPCstate += ShowElectifiedVFX;
 	}
 
-	public void ShowElectifiedVFX()
+	public void ShowElectifiedVFX(NPCstateTypes newNPCstate)
 	{
-		StopAllCoroutines();
-		StartCoroutine(ElectrifyRoutine());
+		if (newNPCstate == NPCstateTypes.ElectroShocked)
+		{
+			StopAllCoroutines();
+			StartCoroutine(ElectrifyRoutine());
+		}
 	}
 
 	private IEnumerator ElectrifyRoutine()

@@ -134,7 +134,9 @@ public abstract class NPClivingBeing : NPCabstract
 			_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
 		}
 
-		_npcvfxController.Initialize(_NPCvfxEffectMeshRenderers);
+		_npcvfxController.Initialize(
+			_NPCstateMachineController,
+			_NPCvfxEffectMeshRenderers);
 
 
 		if (_NPClootObject != null)
@@ -199,12 +201,19 @@ public abstract class NPClivingBeing : NPCabstract
 	{ 
 		_canNPCbeRobbed = true;
 
+		gameObject.tag = "Interactable";
+
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Rob");
 	}
 
 	private void MakeNPCunreobbable()
 	{
 		_canNPCbeRobbed = false;
+
+		if (this is NPCaggressive)
+		{
+			gameObject.tag = "Untagged";
+		}
 
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
 	}
@@ -216,8 +225,15 @@ public abstract class NPClivingBeing : NPCabstract
 		_NPClootObject = null;
 		_NPClootObjectComponent = null;
 
+		if (this is NPCaggressive)
+		{
+			gameObject.tag = "Untagged";
+		}
+
 		if (_NPCstateMachineController.CurrentNPCState != NPCstateTypes.Dead && _NPCstateMachineController.CurrentNPCState != NPCstateTypes.Unconscious)
-		_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
+		{
+			_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TalkTo");
+		}
 	}
 
 	protected virtual void DisableDialogueController()

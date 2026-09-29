@@ -22,10 +22,11 @@ public class NPCstateMachineController : MonoBehaviour
 
 
 	public NPCstateTypes CurrentNPCState { get; private set; }
+	public NPCstateTypes PreviousNPCState { get; private set; }
 
 	//public List<GameObject> AnchorPoints => _anchorPoints;
-	
-	
+
+
 
 	public void Initialize(
 		NPClivingBeing NPClivingBeing,
@@ -75,11 +76,15 @@ public class NPCstateMachineController : MonoBehaviour
 	{
 		NPCstateAbstract newState;
 
+		PreviousNPCState = CurrentNPCState;		
+
+		CurrentNPCState = NPCstateType;
+
 		if (NPCstateType == NPCstateTypes.StationaryAction)
 		{
 			//newState = new NPCstateStationaryAction(this, _animationDuration);
 			newState = new NPCstateStationaryAction(this, _NPCmovementController);
-			CurrentNPCState = NPCstateTypes.StationaryAction;
+			//CurrentNPCState = NPCstateTypes.StationaryAction;
 
 			if (_NPClivingBeing is not NPCaggressive)
 			{
@@ -89,7 +94,7 @@ public class NPCstateMachineController : MonoBehaviour
 		else if (NPCstateType == NPCstateTypes.Patrolling)
 		{
 			newState = new NPCstatePatrolling(this, _NPCmovementController);
-			CurrentNPCState = NPCstateTypes.Patrolling;
+			//CurrentNPCState = NPCstateTypes.Patrolling;
 
 			if (_NPClivingBeing is not NPCaggressive)
 			{
@@ -145,7 +150,7 @@ public class NPCstateMachineController : MonoBehaviour
 		else if (NPCstateType == NPCstateTypes.Hooked)
 		{
 			newState = new NPCstateHooked(this, _NPCmovementController);
-			CurrentNPCState = NPCstateTypes.Hooked;
+			//CurrentNPCState = NPCstateTypes.Hooked;
 		}
 		else if (NPCstateType == NPCstateTypes.Staggered)
 		{
@@ -193,7 +198,7 @@ public class NPCstateMachineController : MonoBehaviour
 
 			_NPClivingBeing.ConvertToPickableObject();
 
-			CurrentNPCState = NPCstateTypes.Dead;
+			//CurrentNPCState = NPCstateTypes.Dead;
 		}
 		else
 		{
