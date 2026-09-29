@@ -38,6 +38,8 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	private SkinnedMeshRenderer _Crossbow1stPersonSkinnedMesh;
 	private SkinnedMeshRenderer _Crossbow3rdPersonSkinnedMesh;
 
+
+
 	private Quaternion _projectileFlyingDirection;
 	public override bool IsWeaponAuto => true;
 	private GameObject _hookedObject;
@@ -357,14 +359,10 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		{
 			_hookedObjectNavMeshAgent.enabled = false;
 		}
-		_NPCabstract = _hookedObject?.GetComponent<NPCabstract>();
 		_NPCstateMachineController = _hookedObject?.GetComponent<NPCstateMachineController>();
-		if (_NPCstateMachineController != null && _NPCabstract != null)
+		if (_NPCstateMachineController != null)
 		{
-			//////
-			//ПОТОМ ПОМЕНЯТЬ НА BEING HOOKED !!!
-			//////
-			_NPCstateMachineController.SetNPCState(NPCstateTypes.Dead);
+			_NPCstateMachineController.SetNPCState(NPCstateTypes.Hooked);
 		}
 
 		_hookedObjectCollider.enabled = false;

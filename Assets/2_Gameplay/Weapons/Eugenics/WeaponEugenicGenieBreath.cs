@@ -107,6 +107,12 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 				Vector3 knockbackDirection = _eugenicSourcePoint.transform.forward.normalized;
 				rb.AddForce(knockbackDirection * _eugenicGenieBreathKnockbackForce, ForceMode.Impulse);
 			}
+
+			NPCstateMachineController NPCstateMachineController = hit.GetComponent<NPCstateMachineController>();
+			if (NPCstateMachineController != null)
+			{
+				NPCstateMachineController.SetNPCState(NPCstateTypes.BlownAway);
+			}
 		}
 
 		yield return _currentWeaponPlayerEugenicAttackRoutine;

@@ -166,6 +166,7 @@ public class BootstrapSubProcessPlayerSystems
 			GameObjectPlayerHatSlot);
 
 		_playerMovementAnimationController.Initialize(
+			_gameController,
 			_inputDevice,
 			PlayerBehaviour,
 			PlayerMovementController,
@@ -176,6 +177,7 @@ public class BootstrapSubProcessPlayerSystems
 		PlayerResourcesHealthManager.Initialize(
 			_bootstrap,
 			_gameController,
+			_playerMovementAnimationController,
 			PlayerMovementStateMachineController,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana,
 			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);

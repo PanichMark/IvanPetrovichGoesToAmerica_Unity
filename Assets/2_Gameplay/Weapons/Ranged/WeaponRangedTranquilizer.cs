@@ -116,6 +116,25 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 		throw new System.NotImplementedException();
 	}
 
+	protected override IEnumerator OnSpecificShootMechanics()
+	{
+		RaycastHit[] hits = Physics.RaycastAll(WeaponRangedShootPoint.transform.position, WeaponRangedShootPoint.transform.forward, WeaponRange);
+		System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+		foreach (var hit in hits)
+		{
+			NPCstateMachineController NPCstateMachineController = hit.collider.GetComponent<NPCstateMachineController>();
+			if (NPCstateMachineController != null)
+			{
+				NPCstateMachineController.SetNPCState(NPCstateTypes.Dizzy);
+				//break; // Раскомментируйте, если нужно усыпить только первую цель в луче
+			}
+		}
+
+		yield return null;
+	}
+
+
 	public override void OnHideWeaponPlayer()
 	{
 		_loadingGate1stPerson.transform.localRotation = _loadingGateOriginalRotation;

@@ -6,6 +6,7 @@ using System.Collections;
 public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 {
 	private Bootstrap _bootstrap;
+	private PlayerMovementAnimationController _playerMovementAnimationController;
 	private GameController _gameController;
 	private Slider _sliderHealthBar;
 	private Button _buttonHealingItem;
@@ -32,10 +33,12 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 	public void Initialize(
 		Bootstrap bootstrap,
 		GameController gameController,
+		PlayerMovementAnimationController playerMovementController,
 		PlayerMovementStateMachineController playerMovementStateMachineController,
 		ViewModelHUDHealthAndMana viewModelHUDHealthAndMana,
 		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
 	{
+		_playerMovementAnimationController = playerMovementController;
 		_bootstrap = bootstrap;
 		_sliderHealthBar = viewModelHUDHealthAndMana.SliderHealthBar.GetComponent<Slider>();
 		_buttonHealingItem = viewModelMenuWeaponWheel.ButtonUseHealingItem.GetComponent<Button>();
@@ -171,7 +174,9 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 	public void ObjectIsFullyDamaged()
 	{
 		CurrentPlayerHealth = 0;
+		_playerMovementAnimationController.PlayerDeathAnimation();
 		StartCoroutine(_gameController.PlayerHasDied());
+		
 	}
 
 	public IEnumerator SaveJsonData(JsonGameData data)
