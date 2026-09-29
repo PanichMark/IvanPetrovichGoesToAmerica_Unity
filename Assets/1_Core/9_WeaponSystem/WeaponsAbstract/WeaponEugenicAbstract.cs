@@ -42,7 +42,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 	{
 		if (_playerResourcesManaManager.CurrentPlayerMana >= ManaCost)
 		{
-			if (_isAttacking)
+			if (isPlayerWeaponAttacking)
 			{
 				Debug.Log("Already attacking eugenic");
 				return;
@@ -50,12 +50,12 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 
 			if (IsWeaponAuto)
 			{
-				_isAttacking = true;
+				isPlayerWeaponAttacking = true;
 				StartAutoAttackingWeaponPlayer();
 			}
 			else
 			{
-				_isAttacking = true;
+				isPlayerWeaponAttacking = true;
 				StartCoroutine(SingleEugenicAttack());
 			}
 		}
@@ -121,6 +121,11 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 			}
 		}
 		_currentWeaponPlayerAutoAttackCourutine = null;
+
+		if (IsWeaponAuto == true)
+		{
+			isPlayerWeaponAttacking = false;
+		}
 	}
 
 	protected virtual IEnumerator SingleEugenicAttack()

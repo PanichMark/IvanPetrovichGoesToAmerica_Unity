@@ -30,7 +30,7 @@ public abstract class WeaponAbstract : MonoBehaviour
 	protected PlayerWeaponController _playerWeaponController;
 	protected PlayerWeaponAnimationController _playerWeaponAnimationController;
 	protected AudioSource _weaponAudioSource;
-	protected bool _isAttacking;
+	public bool isPlayerWeaponAttacking { get; protected set; }
 
 	public WeaponHandType WeaponHandType { get; private set; }
 

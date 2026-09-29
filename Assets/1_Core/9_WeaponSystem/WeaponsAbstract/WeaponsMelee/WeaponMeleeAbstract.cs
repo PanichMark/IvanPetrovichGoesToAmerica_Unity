@@ -27,7 +27,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	public override void WeaponPlayerAttack()
 	{
-		if (_isAttacking)
+		if (isPlayerWeaponAttacking)
 		{
 			Debug.Log("Already attacking melee");
 			return;
@@ -35,12 +35,12 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 		if (IsWeaponAuto)
 		{
-			_isAttacking = true;
+			isPlayerWeaponAttacking = true;
 			StartAutoAttackingWeaponPlayer();
 		}
 		else
 		{
-			_isAttacking = true;
+			isPlayerWeaponAttacking = true;
 			StartCoroutine(SingleMeleeWeaponAttack());
 		}
 	}
@@ -80,6 +80,11 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 			yield return new WaitForSeconds(WeaponAttackSpeedRate);
 		}
 
+		if (IsWeaponAuto == true)
+		{
+			isPlayerWeaponAttacking = false;
+		}
+
 		_currentWeaponPlayerAutoAttackCourutine = null;
 	}
 
@@ -107,7 +112,10 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 		yield return _currentWeaponPlayerMeleeAttackRoutine;
 
-		_isAttacking = false;
+		if (IsWeaponAuto == false)
+		{
+			isPlayerWeaponAttacking = false;
+		}
 
 		_currentWeaponPlayerMeleeAttackRoutine = null;
 	}

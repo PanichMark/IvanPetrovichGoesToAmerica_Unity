@@ -42,7 +42,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 
 	public override void WeaponPlayerAttack()
 	{
-		if (_isAttacking)
+		if (isPlayerWeaponAttacking)
 		{
 			return;
 		}
@@ -55,7 +55,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 	{
 		_canvasHUDmonocular.SetActive(true);
 
-		_isAttacking = true;
+		isPlayerWeaponAttacking = true;
 
 		if (_seethroughSceneObjectsRegistrator.SeethroughSceneObject.Count > 0)
 		{
@@ -101,7 +101,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 		}
 
 		_canvasHUDmonocular.SetActive(false);
-		_isAttacking = false;
+		isPlayerWeaponAttacking = false;
 
 		//_currentWeaponPlayerMeleeAttackRoutine = null;
 	}
@@ -109,5 +109,27 @@ public class WeaponSpecialMonocular : WeaponAbstract
 	public override IEnumerator InspectWeaponAnimation()
 	{
 		throw new System.NotImplementedException();
+	}
+
+	public override void OnHideWeaponPlayer()
+	{
+		if (_seethroughSceneObjectsRegistrator.SeethroughSceneObject.Count > 0)
+		{
+			foreach (GameObject obj in _seethroughSceneObjectsRegistrator.SeethroughSceneObject)
+			{
+				if (obj != null)
+				{
+					foreach (Transform child in obj.GetComponentsInChildren<Transform>(true))
+					{
+						if ((1 << child.gameObject.layer & _layersSeethroughToIgnore) == 0)
+						{
+							child.gameObject.layer = LayerMask.NameToLayer("Default");
+						}
+					}
+				}
+			}
+		}
+
+		_canvasHUDmonocular.SetActive(false);
 	}
 }

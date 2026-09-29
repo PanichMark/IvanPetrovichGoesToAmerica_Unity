@@ -19,6 +19,8 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 	private GameObject _loadingGate1stPerson;
 	private GameObject _loadingGate3rdPerson;
 
+	private Quaternion _loadingGateOriginalRotation;
+
 	private GameObject _dart1stPerson;
 	private GameObject _dart3rdPerson;
 
@@ -26,6 +28,8 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 	{
 		_loadingGate1stPerson = FirstPersonWeaponModelInstance.transform.Find("LoadingGate").gameObject;
 		_loadingGate3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("LoadingGate").gameObject;
+
+		_loadingGateOriginalRotation = _loadingGate1stPerson.transform.localRotation;
 
 		_dart1stPerson = _loadingGate1stPerson.transform.Find("Dart").gameObject;
 		_dart3rdPerson = _loadingGate3rdPerson.transform.Find("Dart").gameObject;
@@ -110,5 +114,11 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 	public override IEnumerator InspectWeaponAnimation()
 	{
 		throw new System.NotImplementedException();
+	}
+
+	public override void OnHideWeaponPlayer()
+	{
+		_loadingGate1stPerson.transform.localRotation = _loadingGateOriginalRotation;
+		_loadingGate1stPerson.transform.localRotation = _loadingGateOriginalRotation;
 	}
 }

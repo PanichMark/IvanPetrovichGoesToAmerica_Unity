@@ -50,7 +50,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 	public override void WeaponPlayerAttack()
 	{
 		
-		if (_isAttacking)
+		if (isPlayerWeaponAttacking)
 		{
 			Debug.Log("Already attacking melee");
 			return;
@@ -58,12 +58,12 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 		if (_isAbleToChoke)
 		{
-			_isAttacking = true;
+			isPlayerWeaponAttacking = true;
 			PerformChokeAttack();
 			return;
 		}
 
-		_isAttacking = true;
+		isPlayerWeaponAttacking = true;
 		StartCoroutine(SingleMeleeWeaponAttack());
 		
 	}
@@ -97,7 +97,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 		yield return _currentWeaponPlayerMeleeAttackRoutine;
 
-		_isAttacking = false;
+		isPlayerWeaponAttacking = false;
 
 		_currentWeaponPlayerMeleeAttackRoutine = null;
 	}
@@ -139,7 +139,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		}
 		_npcDetected = newDetection;
 
-		bool isCrouching = !_isAttacking && (_playerMovementStateMachineController.CurrentPlayerMovementStateType ==  PlayerMovementStateTypes.PlayerIdleCrouhcing ||
+		bool isCrouching = !isPlayerWeaponAttacking && (_playerMovementStateMachineController.CurrentPlayerMovementStateType ==  PlayerMovementStateTypes.PlayerIdleCrouhcing ||
 						   _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching);
 
 		_isAbleToChoke = _npcDetected && isCrouching;

@@ -76,12 +76,12 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 
 		if (IsWeaponAuto)
 		{
-			_isAttacking = true;
+			isPlayerWeaponAttacking = true;
 			StartAutoAttackingWeaponPlayer();
 		}
 		else
 		{
-			_isAttacking = true;
+			isPlayerWeaponAttacking = true;
 			StartCoroutine(ShootRangedWeaponPlayer(_weaponDamage));
 		}
 	}
@@ -136,6 +136,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 			}
 		}
 
+		if (IsWeaponAuto == true)
+		{
+			isPlayerWeaponAttacking = false;
+		}
+
 		_currentWeaponPlayerAutoAttackCourutine = null;
 	}
 
@@ -188,6 +193,11 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		_currentWeaponPlayerShootRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponPalmAttackAnimation(this));
 		yield return _currentWeaponPlayerShootRoutine;
 		_currentWeaponPlayerShootRoutine = null;
+
+		if (IsWeaponAuto == false)
+		{
+			isPlayerWeaponAttacking = false;
+		}
 	}
 
 	private void ShootRaycasts(float weaponDamage, bool isPlayerRayCast)
@@ -394,6 +404,22 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 		{
 			Debug.Log("Can't reload during shooting");
 			return;
+		}
+		if (WeaponHandType == WeaponHandType.Right && _playerWeaponController.LeftHandWeapon != null)
+		{
+			if (_playerWeaponController.LeftHandWeaponComponent.isPlayerWeaponAttacking)
+			{
+				Debug.Log("Can't reload during another weapon attacking");
+				return;
+			}
+		}
+		if (WeaponHandType == WeaponHandType.Left && _playerWeaponController.RightHandWeapon != null)
+		{
+			if (_playerWeaponController.RightHandWeaponComponent.isPlayerWeaponAttacking)
+			{
+				Debug.Log("Can't reload during another weapon attacking");
+				return;
+			}
 		}
 		if (_playerWeaponAnimationController.IsReloading)
 		{

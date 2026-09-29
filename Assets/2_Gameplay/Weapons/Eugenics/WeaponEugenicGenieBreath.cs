@@ -76,7 +76,10 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 			Vector3 startPosition = _vfxInstanceAttack.transform.position;
 			_targetPosition = startPosition + _flightDirection * _eugenicAttackRange;
 
-
+			if (IsWeaponAuto == false)
+			{
+				isPlayerWeaponAttacking = false;
+			}
 
 			StartCoroutine(AnimateAndDestroyVFX());
 		}
@@ -108,7 +111,7 @@ public class WeaponEugenicGenieBreath : WeaponEugenicAbstract
 
 		yield return _currentWeaponPlayerEugenicAttackRoutine;
 
-		_isAttacking = false;
+		isPlayerWeaponAttacking = false;
 	}
 
 	private IEnumerator AnimateAndDestroyVFX()

@@ -57,7 +57,10 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 		}
 		_currentWeaponPlayerAutoAttackCourutine = null;
 
-		
+		if (IsWeaponAuto == true)
+		{
+			isPlayerWeaponAttacking = false;
+		}
 	}
 
 	protected override IEnumerator SingleEugenicAttack()
@@ -111,8 +114,11 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 		yield return _currentWeaponPlayerEugenicAttackRoutine;
 
 
-		_isAttacking = false;
-		
+		if (IsWeaponAuto == false)
+		{
+			isPlayerWeaponAttacking = false;
+		}
+
 
 		_currentWeaponPlayerEugenicAttackRoutine = null;
 	}
