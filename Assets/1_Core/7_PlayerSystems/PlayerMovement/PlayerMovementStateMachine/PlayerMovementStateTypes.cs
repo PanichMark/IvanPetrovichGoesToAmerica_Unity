@@ -13,5 +13,4 @@
 	PlayerSliding,
 	PlayerStranglingNPC,
 	PlayerPlunging,
-    PlayerDying
 }

@@ -103,10 +103,6 @@ public class PlayerMovementStateMachineController : MonoBehaviour, IJsonSaveLoad
 			{
 				newState = new PlayerMovementStatePlunging();
 			}
-			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerDying)
-			{
-				newState = new PlayerMovementStateDying();
-			}
 			else
 			{
 				newState = null;

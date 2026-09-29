@@ -27,7 +27,7 @@ public class PlayerMovementAnimationController : MonoBehaviour
 
 		_playerMovementStateMachineController.OnChangeMovementState += HandleMovementStateChanged;
 
-		ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing_Type1.ToString());
+		ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing.ToString());
 
 		_playerMovementController.OnChangePlayerMovementSpeedChangedByPickable += ChangeMovementAnimationsSpeed;
 
@@ -41,7 +41,7 @@ public class PlayerMovementAnimationController : MonoBehaviour
 	{
 		if (newStateType == PlayerMovementStateTypes.PlayerIdleStanding)
 		{
-			ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing_Type1.ToString());
+			ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing.ToString());
 		}
 		else if (newStateType == PlayerMovementStateTypes.PlayerWalkingStanding)
 		{
@@ -84,7 +84,7 @@ public class PlayerMovementAnimationController : MonoBehaviour
 		}
 		else if (newStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing)
 		{
-			ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Crouching_Type1.ToString());
+			ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Crouching.ToString());
 		}
 		else if (newStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
 		{
