@@ -84,7 +84,7 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 		{
 			StartCoroutine(StopEugenucAudioWithDelay());
 			//TurnEugenicVFXOff();
-
+			isPlayerWeaponAttacking = false;
 			StopCoroutine(_currentWeaponPlayerAutoAttackCourutine);
 			_currentWeaponPlayerAutoAttackCourutine = null;
 		}
@@ -107,6 +107,10 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 			//Debug.Log("sdverbesfrbegh");
 			if (!IsWeaponPlayerAutoAttacking)
 			{
+
+				//isPlayerWeaponAttacking = false;
+				
+
 				break;
 			}
 
@@ -117,15 +121,16 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
 			{
 				IsWeaponPlayerAutoAttacking = false;
+
+				//isPlayerWeaponAttacking = false;
+				
+
 				break;
 			}
 		}
 		_currentWeaponPlayerAutoAttackCourutine = null;
 
-		if (IsWeaponAuto == true)
-		{
-			isPlayerWeaponAttacking = false;
-		}
+	
 	}
 
 	protected virtual IEnumerator SingleEugenicAttack()

@@ -68,7 +68,7 @@ public class WeaponMeleeCircularSaw : WeaponMeleeAbstract
 
 		yield return _currentWeaponPlayerMeleeAttackRoutine;
 
-		isPlayerWeaponAttacking = false;
+		
 
 		_currentWeaponPlayerMeleeAttackRoutine = null;
 	}

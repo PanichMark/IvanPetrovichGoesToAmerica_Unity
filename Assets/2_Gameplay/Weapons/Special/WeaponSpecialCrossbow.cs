@@ -210,6 +210,8 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 	private IEnumerator PerformCrossbowShoot(Vector3 point, RaycastHit hit)
 	{
+		isPlayerWeaponAttacking = true;
+
 		_weaponAudioSource.PlayOneShot(_weaponSoundReelRope);
 
 		_gameController.PlayerStartedPlunging();
@@ -458,6 +460,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	{
 		if (_isCrossbowAttacking)
 		{
+			isPlayerWeaponAttacking = false;
 			Debug.Log("STOP ATTACKING");
 			// Возвращаем физические объекты к их родителям
 			_projectile1stPerson.transform.SetParent(_projectileParent1stPerson);

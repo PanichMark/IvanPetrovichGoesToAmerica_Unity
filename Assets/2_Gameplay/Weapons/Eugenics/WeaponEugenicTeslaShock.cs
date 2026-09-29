@@ -40,6 +40,9 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 			if (!IsWeaponPlayerAutoAttacking)
 			{
 				
+				isPlayerWeaponAttacking = false;
+				
+
 				//Debug.Log("STOP!!!");
 				break;
 			}
@@ -51,16 +54,18 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
 			{
 				IsWeaponPlayerAutoAttacking = false;
+
+
+				isPlayerWeaponAttacking = false;
+				
+
 				//Debug.Log("STOP AMAN!!!!!!");
 				break;
 			}
 		}
 		_currentWeaponPlayerAutoAttackCourutine = null;
 
-		if (IsWeaponAuto == true)
-		{
-			isPlayerWeaponAttacking = false;
-		}
+	
 	}
 
 	protected override IEnumerator SingleEugenicAttack()
@@ -112,12 +117,6 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 		}
 
 		yield return _currentWeaponPlayerEugenicAttackRoutine;
-
-
-		if (IsWeaponAuto == false)
-		{
-			isPlayerWeaponAttacking = false;
-		}
 
 
 		_currentWeaponPlayerEugenicAttackRoutine = null;
