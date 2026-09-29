@@ -114,10 +114,10 @@ public class NPCdetectionVisualController : MonoBehaviour
 					RaycastHitPlayerInsideViewZone = true;
 
 					// Для параметра аниматора наклона головы считаем угол до глаз
-					RaycastAngleFromXAxis = -Vector3.SignedAngle(
+					RaycastAngleFromXAxis = Vector3.SignedAngle(
 						new Vector3(dirToTargetEyes.x, 0f, dirToTargetEyes.z),
 						dirToTargetEyes,
-						_raycastStartPosition.right);
+						_raycastStartPosition.up);
 
 					break;
 				}

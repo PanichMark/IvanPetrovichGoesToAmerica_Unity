@@ -9,8 +9,8 @@ public class MissionStep : ScriptableObject
 	private MissionsManager _missionsManager;
 	public bool ShowMissionMarker => showMissionMarker;
 
-	private List<GameObject> GameObjectTurnOn;
-	private List<GameObject> GameObjectTurnOff;
+	private List<GameObject> GameObjectTurnOn = new List<GameObject>();
+	private List<GameObject> GameObjectTurnOff = new List<GameObject>();
 
 	[TextArea(3, 10)]
 	public string StepDescription;
