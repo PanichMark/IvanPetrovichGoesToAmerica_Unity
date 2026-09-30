@@ -278,7 +278,19 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 
 	public void SetPlayerFloorDetectionRayCastLengthToZero()
 	{
-		_playerFloorDetectionRayCastLength = 0;
+		_playerFloorDetectionRayCastLength = 0.1f;
+
+		StartCoroutine(SetPlayerFloorDetectionRayCastLengthToZeroCoroutine());
+	}
+
+	private IEnumerator SetPlayerFloorDetectionRayCastLengthToZeroCoroutine()
+	{
+		_playerFloorDetectionRayCastLength = 0.0f;
+		yield return new WaitForSeconds(0.15f);
+
+		_playerFloorDetectionRayCastLength = 0.3f;
+
+		yield return null;
 	}
 
 	IEnumerator PlayerSlidingCourutine()
