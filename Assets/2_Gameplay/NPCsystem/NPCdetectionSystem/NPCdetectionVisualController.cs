@@ -64,7 +64,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 		if (newMovementState == PlayerMovementStateTypes.PlayerIdleStanding ||
 			newMovementState == PlayerMovementStateTypes.PlayerWalkingStanding ||
 			newMovementState == PlayerMovementStateTypes.PlayerFalling ||
-			newMovementState == PlayerMovementStateTypes.PlayerVaulting ||
+			newMovementState == PlayerMovementStateTypes.PlayerVaultingStanding ||
 			newMovementState == PlayerMovementStateTypes.PlayerStranglingNPC)
 		{
 			_currentVisibilityMeterMultiplicator = _defaultVisibilityMeterMultiplicator;

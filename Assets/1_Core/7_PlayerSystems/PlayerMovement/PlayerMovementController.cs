@@ -370,6 +370,11 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 		IsPlayerLedgeClimbing = false;
 	}
 
+	public void StartPlayerVaulting()
+	{
+
+	}
+
 	public void StartPlayerLedgeClimbing()
 	{
 		StartCoroutine(PlayerLedgeClimbingCourutine());

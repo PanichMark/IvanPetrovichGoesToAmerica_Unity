@@ -79,9 +79,13 @@ public class PlayerMovementStateMachineController : MonoBehaviour, IJsonSaveLoad
 			{
 				newState = new PlayerMovementStateFalling(this, _playerMovementController, _inputDevice);
 			}
-			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerVaulting)
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerVaultingStanding)
 			{
-				newState = new PlayerMovementStateVaulting();
+				newState = new PlayerMovementStateVaultingStanding(_playerMovementController);
+			}
+			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerVaultingCrouching)
+			{
+				newState = new PlayerMovementStateVaultingCrouching(_playerMovementController);
 			}
 			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbingStanding)
 			{
