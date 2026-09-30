@@ -31,7 +31,7 @@ public class PlayerMovementAnimationController : MonoBehaviour
 
 		_playerMovementStateMachineController.OnChangeMovementState += HandleMovementStateChanged;
 
-		ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing.ToString());
+		ChangePlayerMovementAnimation(AnimationsHumanoidStationaryActionsEnum.StationaryAction_IdleStanding.ToString());
 
 		_playerMovementController.OnChangePlayerMovementSpeedChangedByPickable += ChangeMovementAnimationsSpeed;
 
@@ -47,7 +47,7 @@ public class PlayerMovementAnimationController : MonoBehaviour
 		{
 			if (newStateType == PlayerMovementStateTypes.PlayerIdleStanding)
 			{
-				ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing.ToString());
+				ChangePlayerMovementAnimation(AnimationsHumanoidStationaryActionsEnum.StationaryAction_IdleStanding.ToString());
 			}
 			else if (newStateType == PlayerMovementStateTypes.PlayerWalkingStanding)
 			{
@@ -55,25 +55,25 @@ public class PlayerMovementAnimationController : MonoBehaviour
 				{
 					if (_inputDevice.GetKeyUp())
 					{
-						ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingForward.ToString());
+						ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingStandingForward.ToString());
 					}
 					else if (_inputDevice.GetKeyDown())
 					{
-						ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingBackward.ToString());
+						ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingStandingBackward.ToString());
 					}
 
 					if (_inputDevice.GetKeyRight())
 					{
-						ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingRight.ToString());
+						ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingStandingRight.ToString());
 					}
 					else if (_inputDevice.GetKeyLeft())
 					{
-						ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingLeft.ToString());
+						ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingStandingLeft.ToString());
 					}
 				}
 				else
 				{
-					ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingForward.ToString());
+					ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingStandingForward.ToString());
 				}
 			}
 			else if (newStateType == PlayerMovementStateTypes.PlayerRunning)
@@ -90,11 +90,11 @@ public class PlayerMovementAnimationController : MonoBehaviour
 			}
 			else if (newStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing)
 			{
-				ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Crouching.ToString());
+				ChangePlayerMovementAnimation(AnimationsHumanoidStationaryActionsEnum.StationaryAction_IdleCrouching.ToString());
 			}
 			else if (newStateType == PlayerMovementStateTypes.PlayerWalkingCrouching)
 			{
-				ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_Crouching.ToString());
+				ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_WalkingCrouchingForward.ToString());
 			}
 			else if (newStateType == PlayerMovementStateTypes.PlayerSliding)
 			{
@@ -102,11 +102,11 @@ public class PlayerMovementAnimationController : MonoBehaviour
 			}
 			else if (newStateType == PlayerMovementStateTypes.PlayerLedgeClimbingStanding)
 			{
-				ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_LedgeClimbing.ToString());
+				ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_LedgeClimbingStanding.ToString());
 			}
 			else if (newStateType == PlayerMovementStateTypes.PlayerStranglingNPC)
 			{
-				ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing.ToString());
+				ChangePlayerMovementAnimation(AnimationsHumanoidStationaryActionsEnum.StationaryAction_IdleStanding.ToString());
 			}
 		}
 	}
@@ -127,6 +127,6 @@ public class PlayerMovementAnimationController : MonoBehaviour
 
 	public void PlayerDeathAnimation()
 	{
-		ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Dying.ToString());
+		ChangePlayerMovementAnimation(AnimationsHumanoidStationaryActionsEnum.StationaryAction_Dying.ToString());
 	}
 }

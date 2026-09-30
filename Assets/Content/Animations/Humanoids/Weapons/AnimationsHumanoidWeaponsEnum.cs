@@ -4,7 +4,6 @@
 	Attack,
 	Reload,
 	LegKick,
-
 	Strangle,
 
 	Ranged_Revolver_ReloadInsert_Right,
