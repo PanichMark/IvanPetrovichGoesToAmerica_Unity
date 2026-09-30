@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28666d33d6042314285cfa8314a08d3f, type: 3}
   m_Name: Mission_0.0_Step_0
   m_EditorClassIdentifier: 
-  MissionStepGoal_RU: "\u0412\u0437\u044F\u0442\u044C \u043A\u043B\u044E\u0447"
-  MissionStepGoal_EN: Take a key
-  StepDescription: 
+  MissionStepGoal_RU: "\u0412\u0437\u044F\u0442\u044C \u043A\u043B\u044E\u0447 \u043E\u0442
+    \u0446\u0435\u0440\u043A\u0432\u0438"
+  MissionStepGoal_EN: Take a church key
+  StepDescription: "\u0412\u0437\u044F\u0442\u044C \u043A\u043B\u044E\u0447 \u043E\u0442
+    \u0446\u0435\u0440\u043A\u0432\u0438 \u0441\u043E \u0441\u0442\u043E\u043B\u0430"
   showMissionMarker: 1
   _minStepIndexIgnore: 0
   _maxStepIndexIgnore: 1
