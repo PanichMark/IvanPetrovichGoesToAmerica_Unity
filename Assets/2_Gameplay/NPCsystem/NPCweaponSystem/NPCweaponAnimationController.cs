@@ -35,7 +35,7 @@ public class NPCweaponAnimationController : MonoBehaviour
 		LayerWeaponLeftEquip = _NPCweaponAnimator.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftEquip.ToString());
 		LayerWeaponLeftPalm = _NPCweaponAnimator.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftPalm.ToString());
 		LayerWeaponLeftArm = _NPCweaponAnimator.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftFullArm.ToString());
-		LayerWeaponReload = _NPCweaponAnimator.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponReload.ToString());
+		LayerWeaponReload = _NPCweaponAnimator.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponBothArms.ToString());
 
 		_aimUpDownParameter = _NPCweaponAnimator.GetFloat("UpDown");
 

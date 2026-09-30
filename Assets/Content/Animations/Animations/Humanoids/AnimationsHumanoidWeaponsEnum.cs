@@ -5,6 +5,8 @@
 	Reload,
 	LegKick,
 
+	Strangle,
+
 	Ranged_Revolver_ReloadInsert_Right,
 	Ranged_Revolver_ReloadPush_Right,
 	Ranged_Revolver_ReloadInsert_Left,

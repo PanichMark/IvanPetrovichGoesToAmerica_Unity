@@ -11,6 +11,6 @@
 	LayerWeaponLeftEquip,
 	LayerWeaponLeftFullArm,
 	LayerWeaponLeftPalm,
-	LayerWeaponReload,
+	LayerWeaponBothArms,
 	LayerLegKick
 }

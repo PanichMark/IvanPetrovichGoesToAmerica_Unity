@@ -48,7 +48,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	private int _layer1stWeaponLeftEquip;
 	private int _layer1stWeaponLeftArm;
 	private int _layer1stWeaponLeftPalm;
-	private int _layer1stWeaponReload;
+	private int _layer1stWeaponBothArms;
 
 	private int _layer3rdWeaponRightEquip;
 	private int _layer3rdWeaponRightArm;
@@ -56,7 +56,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	private int _layer3rdWeaponLeftEquip;
 	private int _layer3rdWeaponLeftArm;
 	private int _layer3rdWeaponLeftPalm;
-	private int _layer3rdWeaponReload;
+	private int _layer3rdWeaponBothArms;
 	private int _layer3rdLegKick;
 
 	private float _adjustedCameraAngle;
@@ -100,7 +100,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_layer1stWeaponLeftEquip = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftEquip.ToString());
 		_layer1stWeaponLeftArm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftFullArm.ToString());
 		_layer1stWeaponLeftPalm = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftPalm.ToString());
-		_layer1stWeaponReload = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponReload.ToString());
+		_layer1stWeaponBothArms = _playerAnimator1stPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponBothArms.ToString());
 
 		_layer3rdWeaponRightEquip = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightEquip.ToString());
 		_layer3rdWeaponRightArm = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponRightFullArm.ToString());
@@ -108,7 +108,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_layer3rdWeaponLeftEquip = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftEquip.ToString());
 		_layer3rdWeaponLeftArm = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftFullArm.ToString());
 		_layer3rdWeaponLeftPalm =_playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponLeftPalm.ToString());
-		_layer3rdWeaponReload = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponReload.ToString());
+		_layer3rdWeaponBothArms = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerWeaponBothArms.ToString());
 		_layer3rdLegKick = _playerAnimator3rdPerson.GetLayerIndex(AnimatorControllerHumanoidLayersEnum.LayerLegKick.ToString());
 
 		_gameController.OnPlayerEarlyDeath += CancelAllWeaponsAnimation;
@@ -773,19 +773,19 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	{
 		float startTime = Time.time;
 
-		TurnOnReloadLayers();
+		TurnOnBothArmsLayers();
 		IsReloading = true;
 
 		CurrentPlayerReloadingHelpingHand = weapon.WeaponHandType ^ (WeaponHandType)1; //Helping hand is Alternative to weaponHandType
 
 		OnPlayerStartedReloading?.Invoke();
 
-		_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Reload}_{weapon.WeaponHandType}", _layer1stWeaponReload, 0f);
-		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Reload}_{weapon.WeaponHandType}", _layer3rdWeaponReload, 0f);
+		_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Reload}_{weapon.WeaponHandType}", _layer1stWeaponBothArms, 0f);
+		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Reload}_{weapon.WeaponHandType}", _layer3rdWeaponBothArms, 0f);
 
 		yield return null; // Make Unity wait to load Anim into RAM, else if not, Animator returns default Anim length = 1f sec 
 
-		yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponReload).length);
+		yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponBothArms).length);
 
 		// Вычисляем разницу во времени
 		float elapsedTime = Time.time - startTime;
@@ -793,7 +793,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		// Выводим результат в консоль
 		Debug.Log($"Корутина завершена за {elapsedTime:F2} секунд");
 
-		TurnOffReloadLayers();
+		TurnOffBothArmsLayers();
 
 		OnPlayerEndedReloading?.Invoke();
 		IsReloading = false;
@@ -806,7 +806,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		float startTime = Time.time;
 
 		//Debug.Log("DOUBEL RELOAD");
-		TurnOnReloadLayers();
+		TurnOnBothArmsLayers();
 		IsReloading = true;
 
 		CurrentPlayerReloadingHelpingHand = weaponRanged.WeaponHandType ^ (WeaponHandType)1; //Helping hand is Alternative to weaponHandType
@@ -819,22 +819,22 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			{
 				if (weaponRanged.PlayerMagazineAmmoCurrent == 0)
 				{
-					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Right.ToString(), _layer1stWeaponReload, 0f);
-					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Right.ToString(), _layer3rdWeaponReload, 0f);
+					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Right.ToString(), _layer1stWeaponBothArms, 0f);
+					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Right.ToString(), _layer3rdWeaponBothArms, 0f);
 
 					yield return null; // Make Unity wait to load Anim into RAM, else if not, Animator returns default Anim length = 1f sec 
 				}
 				else
 				{
-					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadPush_Right.ToString(), _layer1stWeaponReload, 0f);
-					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadPush_Right.ToString(), _layer3rdWeaponReload, 0f);
+					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadPush_Right.ToString(), _layer1stWeaponBothArms, 0f);
+					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadPush_Right.ToString(), _layer3rdWeaponBothArms, 0f);
 
 					yield return null; // Make Unity wait to load Anim into RAM, else if not, Animator returns default Anim length = 1f sec 
 
-					yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponReload).length);
+					yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponBothArms).length);
 
-					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Right.ToString(), _layer1stWeaponReload, 0f);
-					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Right.ToString(), _layer3rdWeaponReload, 0f);
+					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Right.ToString(), _layer1stWeaponBothArms, 0f);
+					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Right.ToString(), _layer3rdWeaponBothArms, 0f);
 
 					yield return null; // Make Unity wait to load Anim into RAM, else if not, Animator returns default Anim length = 1f sec 
 				}
@@ -843,31 +843,31 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			{
 				if (weaponRanged.PlayerMagazineAmmoCurrent == 0)
 				{
-					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Left.ToString(), _layer1stWeaponReload, 0f);
-					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Left.ToString(), _layer3rdWeaponReload, 0f);
+					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Left.ToString(), _layer1stWeaponBothArms, 0f);
+					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Left.ToString(), _layer3rdWeaponBothArms, 0f);
 
 					yield return null; // Make Unity wait to load Anim into RAM, else if not, Animator returns default Anim length = 1f sec 
 				}
 				else
 				{
-					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadPush_Left.ToString(), _layer1stWeaponReload, 0f);
-					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadPush_Left.ToString(), _layer3rdWeaponReload, 0f);
+					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadPush_Left.ToString(), _layer1stWeaponBothArms, 0f);
+					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadPush_Left.ToString(), _layer3rdWeaponBothArms, 0f);
 
 					yield return null; // Make Unity wait to load Anim into RAM, else if not, Animator returns default Anim length = 1f sec 
 
-					yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponReload).length);
+					yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponBothArms).length);
 
-					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Left.ToString(), _layer1stWeaponReload, 0f);
-					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Left.ToString(), _layer3rdWeaponReload, 0f);
+					_playerAnimator1stPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Left.ToString(), _layer1stWeaponBothArms, 0f);
+					_playerAnimator3rdPerson.Play(AnimationsHumanoidWeaponsEnum.Ranged_Revolver_ReloadInsert_Left.ToString(), _layer3rdWeaponBothArms, 0f);
 
 					yield return null; // Make Unity wait to load Anim into RAM, else if not, Animator returns default Anim length = 1f sec 
 				}
 			}
 
-			yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponReload).length);
+			yield return new WaitForSeconds(_playerAnimator1stPerson.GetCurrentAnimatorStateInfo(_layer1stWeaponBothArms).length);
 		}
 
-		TurnOffReloadLayers();
+		TurnOffBothArmsLayers();
 		OnPlayerEndedReloading?.Invoke();
 		IsReloading = false;
 
@@ -920,7 +920,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 	}
 
-	private void TurnOnReloadLayers()
+	private void TurnOnBothArmsLayers()
 	{
 		Debug.Log($"turn ON reload layers");
 
@@ -930,7 +930,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 0);
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, 0);
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 0);
-		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponReload, 1);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponBothArms, 1);
 
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 0);
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightArm, 0);
@@ -938,10 +938,10 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 0);
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftArm, 0);
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 0);
-		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponReload, 1);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponBothArms, 1);
 	}
 
-	private void TurnOffReloadLayers()
+	private void TurnOffBothArmsLayers()
 	{
 		Debug.Log($"turn OFF reload layers");
 
@@ -956,7 +956,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 1);
 		}
 
-		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponReload, 0);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponBothArms, 0);
 
 		if (_playerWeaponController.RightHandWeapon != null)
 		{
@@ -969,7 +969,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 1);
 		}
 
-		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponReload, 0);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponBothArms, 0);
 	}
 
 	private void HandleLegKickStateChange(bool isKicking)
@@ -1014,7 +1014,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		{
 			StopCoroutine(_currentPlayerReloadingCoroutine);
 
-			TurnOffReloadLayers();
+			TurnOffBothArmsLayers();
 
 			_currentPlayerReloadingCoroutine = null;
 
@@ -1040,7 +1040,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftEquip, 0);
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, 0);
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 0);
-		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponReload, 0);
+		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponBothArms, 0);
 
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightEquip, 0);
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightArm, 0);
@@ -1048,7 +1048,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftEquip, 0);
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftArm, 0);
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 0);
-		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponReload, 0);
+		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponBothArms, 0);
 	}
 
 	public void AnimationInspectWeapon(WeaponAbstract inspectedWeapon)
@@ -1061,5 +1061,31 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stInspectWeapon, 1);
 
 		_playerAnimator1stPerson.Play($"Inspect_Weapon_{inspectedWeapon.WeaponType}_{inspectedWeapon.WeaponName}", _layer1stInspectWeapon, 0f);
+	}
+
+	public IEnumerator AnimationBatonStrangle(WeaponAbstract batonWeapon)
+	{
+		Debug.Log("STRANGLE anim 1");
+		TurnOnBothArmsLayers();
+		_playerAnimator1stPerson.Play($"Melee_Baton_{AnimationsHumanoidWeaponsEnum.Strangle.ToString()}_{batonWeapon.WeaponHandType}", _layer1stWeaponBothArms, 0f);
+		_playerAnimator3rdPerson.Play($"Melee_Baton_{AnimationsHumanoidWeaponsEnum.Strangle.ToString()}_{batonWeapon.WeaponHandType}", _layer3rdWeaponBothArms, 0f);
+
+		if (batonWeapon.WeaponHandType == WeaponHandType.Right)
+		{
+			//yield return new WaitUntil(() => _playerWeaponController.WasRightButtonPressedLastFrame == false || !batonWeapon.isPlayerWeaponAttacking);
+			yield return new WaitUntil(() => _playerWeaponController.WasRightButtonPressedLastFrame == false);
+			Debug.Log("STRANGLE anim 1 RIGHT");
+		}
+		else
+		{
+			//yield return new WaitUntil(() => _playerWeaponController.WasLeftButtonPressedLastFrame == false || !batonWeapon.isPlayerWeaponAttacking);
+			yield return new WaitUntil(() => _playerWeaponController.WasLeftButtonPressedLastFrame == false);
+			Debug.Log("STRANGLE anim 1 LEFT");
+		}
+		Debug.Log("STRANGLE anim 2");
+
+		TurnOffBothArmsLayers();
+
+		yield return null;
 	}
 }

@@ -17,12 +17,12 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerWeaponController _weaponController;
 	private PlayerWeaponFirstPersonRenderer _playerWeaponFirstPersonRenderer;
-	private Coroutine currentChokeCoroutine = null;
+	private Coroutine currentStranglingCoroutine = null;
 
-	private GameObject _chokeNPCtext;
-	private TextMeshProUGUI _chokeNPCtextComponent;
+	private GameObject _strangleHintNPCtext;
+	private TextMeshProUGUI _strangleHintNPCtextComponent;
 
-	private bool _isAbleToChoke = false;
+	private bool _isAbleToStrangle = false;
 	private bool _npcDetected = false;
 	private NPCstateMachineController _NPCstateMachineController;
 	private ViewModelHUDInteraction _viewModelHUDInteraction;
@@ -36,8 +36,8 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
 		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>();
 
-		_chokeNPCtext = _viewModelHUDInteraction.TextChokeNPC;
-		_chokeNPCtextComponent = _chokeNPCtext.GetComponent<TextMeshProUGUI>();
+		_strangleHintNPCtext = _viewModelHUDInteraction.TextStrangleHintNPC;
+		_strangleHintNPCtextComponent = _strangleHintNPCtext.GetComponent<TextMeshProUGUI>();
 
 		_capsuleHeight = 1.8f;
 		_capsuleRadius = 0.3f;
@@ -57,10 +57,10 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 			return;
 		}
 
-		if (_isAbleToChoke)
+		if (_isAbleToStrangle)
 		{
 			
-			PerformChokeAttack();
+			PerformStrangleAttack();
 			return;
 		}
 
@@ -121,7 +121,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		if (!_isWeaponInitialized)
 			return;
 
-		if (currentChokeCoroutine != null)
+		if (currentStranglingCoroutine != null)
 			return;
 
 		Vector3 playerPosition = _attackPoint.transform.position;
@@ -149,40 +149,42 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		bool isCrouching = (_playerMovementStateMachineController.CurrentPlayerMovementStateType ==  PlayerMovementStateTypes.PlayerIdleCrouhcing ||
 						   _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching);
 
-		_isAbleToChoke = _npcDetected && isCrouching && !isPlayerWeaponAttacking;
+		_isAbleToStrangle = _npcDetected && isCrouching && !isPlayerWeaponAttacking;
 
-		//Debug.Log(_isAbleToChoke);
+		
 
-		_chokeNPCtext.SetActive(_isAbleToChoke);
+		_strangleHintNPCtext.SetActive(_isAbleToStrangle);
 	}
 
-	private void PerformChokeAttack()
+	private void PerformStrangleAttack()
 	{
-		if (currentChokeCoroutine != null)
+		if (currentStranglingCoroutine != null)
 		{
-			StopCoroutine(currentChokeCoroutine);
+			StopCoroutine(currentStranglingCoroutine);
 		}
 
-		currentChokeCoroutine = StartCoroutine(ChokeCoroutine());
+		currentStranglingCoroutine = StartCoroutine(StranglingCoroutine());
 	}
 
-	private IEnumerator ChokeCoroutine()
+	private IEnumerator StranglingCoroutine()
 	{
-		_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("Default", WeaponHandType);
 		isPlayerWeaponAttacking = true;
-		_chokeNPCtext.SetActive(false);
-		Debug.Log("START choke!");
+		StartCoroutine(_playerWeaponAnimationController.AnimationBatonStrangle(this));
+		_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("Default", WeaponHandType);
+		
+		_strangleHintNPCtext.SetActive(false);
+		Debug.Log("START strangle!");
 		_NPCstateMachineController.SetNPCState(NPCstateTypes.Strangled);
-		float chokeDuration = 2f;
+		float strangleDuration = 2f;
 		float elapsed = 0f;
 
-		while (elapsed < chokeDuration)
+		while (elapsed < strangleDuration)
 		{
 			if ((WeaponHandType == WeaponHandType.Right && _inputDevice.GetKeyRightHandWeaponAttackReleased()) ||
 				(WeaponHandType == WeaponHandType.Left && _inputDevice.GetKeyLeftHandWeaponAttackReleased()))
 			{
-				Debug.Log("Failed to choke!!!");
-				currentChokeCoroutine = null;
+				Debug.Log("Failed to strangle!!!");
+				currentStranglingCoroutine = null;
 				isPlayerWeaponAttacking = false;
 				_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("FirstPerson", WeaponHandType);
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
@@ -193,11 +195,11 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 			yield return null; 
 		}
 
-		Debug.Log("Choke SUCCESS!!!");
+		Debug.Log("strangle SUCCESS!!!");
 		_NPCstateMachineController.SetNPCState(NPCstateTypes.Unconscious);
 		isPlayerWeaponAttacking = false;
 		_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("FirstPerson", WeaponHandType);
-		currentChokeCoroutine = null;
+		currentStranglingCoroutine = null;
 	}
 
 	public override IEnumerator InspectWeaponAnimation()
@@ -213,11 +215,11 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 		if (WeaponHandType == WeaponHandType.Right)
 		{
-			_chokeNPCtextComponent.text = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_MainHold")} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackRightHand)} {_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Choke")}";
+			_strangleHintNPCtextComponent.text = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_MainHold")} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackRightHand)} {_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Choke")}";
 		}
 		else
 		{
-			_chokeNPCtextComponent.text = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_MainHold")} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackLeftHand)} {_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Choke")}";
+			_strangleHintNPCtextComponent.text = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_MainHold")} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackLeftHand)} {_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Choke")}";
 		}
 	}
 
