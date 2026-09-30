@@ -18,7 +18,7 @@ public class PlayerWeaponAmmoController : MonoBehaviour, IJsonSaveLoad
 	private Dictionary<PlayerWeaponNames, WeaponRangedData> _weaponsRangedDictionary = new Dictionary<PlayerWeaponNames, WeaponRangedData>();
 	public Dictionary<PlayerWeaponNames, WeaponRangedData> WeaponsRangedDictionary => _weaponsRangedDictionary;
 
-	public void SetNewInitialAmmo(AmmoTypes type, int newAmount)
+	public void ConfigApplyPlayerAmmo(AmmoTypes type, int newAmount)
 	{
 		if (_ammoDictionary.TryGetValue(type, out var data))
 		{

@@ -574,13 +574,13 @@ public class Bootstrap : MonoBehaviour
 
 	private void ApplyBootstrapPlayerConfigs()
 	{
-		_bootstrapSubProcessPlayerSystems.PlayerResourcesHealthManager.BootstrapConfigPLayerHealth(_playerHealth);
-		_bootstrapSubProcessPlayerSystems.PlayerResourcesHealthManager.BootstrapConfigPLayerHealingItems(_playerHealingItems);
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesHealthManager.ConfigApplyPlayerHealth(_playerHealth);
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesHealthManager.ConfigApplyPlayerHealingItems(_playerHealingItems);
 
-		_bootstrapSubProcessPlayerSystems.PlayerResourcesManaManager.BootstrapConfigPLayerMana(_playerMana);
-		_bootstrapSubProcessPlayerSystems.PlayerResourcesManaManager.BootstrapConfigPLayerManaReplenishItems(_playerManaReplenishItems);
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesManaManager.ConfigApplyPlayerMana(_playerMana);
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesManaManager.ConfigApplyPlayerManaReplenishItems(_playerManaReplenishItems);
 
-		_bootstrapSubProcessPlayerSystems.PlayerResourcesMoneyManager.BootstrapConfigPLayerMoney(_playerMoney);
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesMoneyManager.ConfigApplyPlayerMoney(_playerMoney);
 
 		GameObject[] availableWeapons = _playerWeapons.GetAvailableWeapons();
 		if (availableWeapons != null)
@@ -596,7 +596,7 @@ public class Bootstrap : MonoBehaviour
 		{
 			foreach (var ammoEntry in startAmmoEntries)
 			{
-				_bootstrapSubProcessWeaponSystem.PlayerResourcesAmmoManager.SetNewInitialAmmo(
+				_bootstrapSubProcessWeaponSystem.PlayerResourcesAmmoManager.ConfigApplyPlayerAmmo(
 					ammoEntry.AmmoType,
 					ammoEntry.StartAmount
 				);

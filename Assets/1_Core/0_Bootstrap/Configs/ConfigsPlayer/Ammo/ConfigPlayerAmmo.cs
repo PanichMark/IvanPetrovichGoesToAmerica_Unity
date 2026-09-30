@@ -4,9 +4,9 @@ using System;
 [CreateAssetMenu(fileName = "ConfigPlayerAmmo", menuName = "Bootstrap/PlayerConfigs/Ammo")]
 public class ConfigPlayerAmmo : ScriptableObject
 {
-	public AmmoEntry[] AmmoEntries;
+	public AmmoGive[] AmmoEntries;
 
-	public AmmoEntry[] GetStartAmmoEntries()
+	public AmmoGive[] GetStartAmmoEntries()
 	{
 		return AmmoEntries;
 	}

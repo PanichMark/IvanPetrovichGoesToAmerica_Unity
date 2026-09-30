@@ -13,6 +13,6 @@ public class MissionResourcesData : ScriptableObject
 
 	[Range(0, 999999)] public int PlayerMoney;
 
-	public WeaponPrefabEntry[] WeaponsToUnlock;
-	public AmmoEntry[] Ammo;
+	public PlayerWeaponGive[] WeaponsToUnlock;
+	public AmmoGive[] Ammo;
 }

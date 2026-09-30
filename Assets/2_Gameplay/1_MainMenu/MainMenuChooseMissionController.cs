@@ -10,6 +10,15 @@ public class MainMenuChooseMissionController : MonoBehaviour
 	private ViewModelMainMenuChooseMission _viewModelMainMenuChooseMission;
 	private MenuManager _menuManager;
 
+	private PlayerMovementController _playerMovementController;
+	private PlayerCameraController _playerCameraController;
+	private PlayerHealthController _playerResourcesHealthManager;
+	private PlayerManaController _playerResourcesManaManager;
+	private PlayerMoneyController _playerResourcesMoneyManager;
+	private PlayerWeaponController _weaponController;
+	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
+
+
 	private LocalizationManager _localizationManager;
 	private GameScenesList _gameScenesList;
 	private GameMissionsList _gameMissionsList;
@@ -132,23 +141,40 @@ public class MainMenuChooseMissionController : MonoBehaviour
 			{
 				var resources = sceneData.SceneGameMission.MissionResources;
 
-				Debug.Log($"PlayerTransform: Exists");
+				Debug.Log($"PlayerPosition: {resources.PlayerTransform.PlayerPosition}");
+				_playerMovementController.SetPlayerPosition(resources.PlayerTransform.PlayerPosition);
+
+				Debug.Log($"PlayerRotationY: {resources.PlayerTransform.PlayerRotationY}");
+				_playerMovementController.SetPlayerRotationY(resources.PlayerTransform.PlayerRotationY);
+				_playerCameraController.SetCameraRotationY(resources.PlayerTransform.PlayerRotationY);
+
 				Debug.Log($"PlayerHealth: {resources.PlayerHealth}");
+				_playerResourcesHealthManager.ConfigApplyPlayerHealth(resources.PlayerHealth);
+
 				Debug.Log($"PlayerHealingItems: {resources.PlayerHealingItems}");
+				_playerResourcesHealthManager.ConfigApplyPlayerHealingItems(resources.PlayerHealingItems);
+
 				Debug.Log($"PlayerMana: {resources.PlayerMana}");
+				_playerResourcesManaManager.ConfigApplyPlayerMana(resources.PlayerMana);
+
 				Debug.Log($"PlayerManaReplenishItems: {resources.PlayerManaReplenishItems}");
+				_playerResourcesManaManager.ConfigApplyPlayerManaReplenishItems(resources.PlayerManaReplenishItems);
+
 				Debug.Log($"PlayerMoney: {resources.PlayerMoney}");
+				_playerResourcesMoneyManager.ConfigApplyPlayerMoney(resources.PlayerMoney);
 
 				var weapons = resources.WeaponsToUnlock;
 				for (int j = 0; j < weapons.Length; j++)
 				{
 					Debug.Log($"Weapon_{j}: {weapons[j].WeaponPrefab.name}");
+					_weaponController.UnlockWeapon(weapons[j].WeaponPrefab);
 				}
 
 				var ammo = resources.Ammo;
 				for (int j = 0; j < ammo.Length; j++)
 				{
 					Debug.Log($"Ammo_{j}: {ammo[j].AmmoType} x{ammo[j].StartAmount}");
+					_playerResourcesAmmoManager.ConfigApplyPlayerAmmo(ammo[j].AmmoType, ammo[j].StartAmount);
 				}
 
 				break;

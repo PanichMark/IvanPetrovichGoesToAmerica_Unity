@@ -53,14 +53,14 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 		Debug.Log("PlayerResourcesHealthManager Initialized");
 	}
 
-	public void BootstrapConfigPLayerHealth(int setHealth)
+	public void ConfigApplyPlayerHealth(int setHealth)
 	{
 		CurrentPlayerHealth = setHealth;
 
 		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
 	}
 
-	public void BootstrapConfigPLayerHealingItems(int setHealingItems)
+	public void ConfigApplyPlayerHealingItems(int setHealingItems)
 	{
 		CurrentHealingItemsNumber = setHealingItems;
 

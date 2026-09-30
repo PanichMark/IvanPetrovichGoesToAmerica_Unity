@@ -1,7 +1,7 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 {
@@ -31,14 +31,14 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 		Debug.Log("PlayerResourcesManaManager Initialized");
 	}
 
-	public void BootstrapConfigPLayerMana(int setMana)
+	public void ConfigApplyPlayerMana(int setMana)
 	{
 		CurrentPlayerMana = setMana;
 
 		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
 	}
 
-	public void BootstrapConfigPLayerManaReplenishItems(int setManaReplenishItems)
+	public void ConfigApplyPlayerManaReplenishItems(int setManaReplenishItems)
 	{
 		CurrentManaReplenishItemsNumber = setManaReplenishItems;
 

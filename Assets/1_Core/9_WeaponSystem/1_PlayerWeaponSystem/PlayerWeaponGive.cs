@@ -2,8 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public struct WeaponPrefabEntry
+public struct PlayerWeaponGive
 {
 	public GameObject WeaponPrefab;
-	public bool IsWeaponUnlocked;
 }
