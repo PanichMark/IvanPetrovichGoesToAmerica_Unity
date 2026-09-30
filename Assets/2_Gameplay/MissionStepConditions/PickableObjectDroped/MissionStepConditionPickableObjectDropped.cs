@@ -5,6 +5,6 @@ public class MissionStepConditionPickableObjectDropped : MissionStepConditionAbs
 {
 	public override void ResetStepCondition()
 	{
-		throw new System.NotImplementedException();
+
 	}
 }

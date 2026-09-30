@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28666d33d6042314285cfa8314a08d3f, type: 3}
-  m_Name: Mission_0.2_Step_0
+  m_Name: Mission_0.2_Step_5
   m_EditorClassIdentifier: 
   MissionStepGoal_RU: "\u041F\u043E\u043A\u0438\u043D\u044C\u0442\u0435 \u0434\u043E\u0445\u043E\u0434\u043D\u044B\u0439
     \u0434\u043E\u043C"
   MissionStepGoal_EN: Leave the revenue house
   StepDescription: "\u0414\u043E\u0431\u0440\u0430\u0442\u044C\u0441\u044F \u0434\u043E
-    \u0441\u0433\u043E\u0440\u0435\u0432\u0448\u0435\u0439 \u043A\u0432\u0430\u0440\u0442\u0438\u0440\u044B
-    \u0433\u0434\u0435 \u0431\u0443\u0434\u0435\u0442 \u043A\u0430\u0442\u0441\u0446\u0435\u043D\u0430"
+    \u0431\u0430\u043B\u043A\u043E\u043D\u0430"
   showMissionMarker: 1
   _minStepIndexIgnore: 0
   _maxStepIndexIgnore: 0
   StepConditions:
-  - {fileID: 11400000, guid: 63a993a9ebca97248a52162984e32f69, type: 2}
+  - {fileID: 11400000, guid: dc28c471d45e3c8469fcb3f27e6ad408, type: 2}
