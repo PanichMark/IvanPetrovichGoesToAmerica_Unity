@@ -112,22 +112,29 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		{
 			if (!_isCrossbowAttacking)
 			{
-				_wasCrossbowJustEquiped = true;
+				if (_isHoldingDown)
+				{
+					_wasCrossbowJustEquiped = true;
 
-				_isHoldingDown = false;
+					_isHoldingDown = false;
+				}
 
 				_HUDweaponsController.HandleCrossbowCrosshair(0);
 				_lastCrosshairState = 0;
 			}
 		};
 
+
 		_menuManager.OnCloseAnyMenu += () =>
 		{
 			if (!_isCrossbowAttacking)
 			{
-				_wasCrossbowJustEquiped = true;
+				if (_isHoldingDown)
+				{
+					_wasCrossbowJustEquiped = true;
 
-				_isHoldingDown = false;
+					_isHoldingDown = false;
+				}
 
 				_HUDweaponsController.HandleCrossbowCrosshair(0);
 				_lastCrosshairState = 0;
