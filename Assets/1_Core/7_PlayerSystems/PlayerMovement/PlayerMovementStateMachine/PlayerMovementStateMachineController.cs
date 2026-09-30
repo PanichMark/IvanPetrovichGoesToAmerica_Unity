@@ -97,7 +97,7 @@ public class PlayerMovementStateMachineController : MonoBehaviour, IJsonSaveLoad
 			}
 			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerStranglingNPC)
 			{
-				newState = new PlayerMovementStateStranglingNPC();
+				newState = new PlayerMovementStateStranglingNPC(this, _playerMovementController);
 			}
 			else if (newPlayerMovementStateType == PlayerMovementStateTypes.PlayerPlunging)
 			{

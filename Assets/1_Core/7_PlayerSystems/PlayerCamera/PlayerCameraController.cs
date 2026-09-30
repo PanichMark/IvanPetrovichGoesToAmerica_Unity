@@ -257,7 +257,11 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 		if (!_menuManager.IsAnyMenuOpened)
 		{
 			_mouseRotation.y += _inputDevice.CameraAxisY() * _mouseSensitivityMultiplierY;
-			_mouseRotation.x += _inputDevice.CameraAxisX() * _mouseSensitivityMultiplierX;
+
+			if (_gameController.IsPlayerAbleToRotate)
+			{
+				_mouseRotation.x += _inputDevice.CameraAxisX() * _mouseSensitivityMultiplierX;
+			}
 
 			while (_mouseRotation.x < 0f)
 			{

@@ -15,7 +15,7 @@ public class PlayerMovementStateIdleStanding : PlayerMovementStateAbstract
 		_playerRigidBody = _playerMovementController.PlayerRigidBody;
 
 		_playerMovementController.ChangePlayerRayPosition(1.9f);
-		_playerMovementController.StopPlayerRigidBpdyVelocity();
+		_playerMovementController.StopPlayerRigidBodyVelocity();
 		_playerMovementController.SetPlayerFloorDetectionRayCastLengthToDefault();
 	}
 

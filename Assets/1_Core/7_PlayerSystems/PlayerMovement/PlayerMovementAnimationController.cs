@@ -104,6 +104,10 @@ public class PlayerMovementAnimationController : MonoBehaviour
 			{
 				ChangePlayerMovementAnimation(AnimationsHumanoidMovementEnum.Movement_LedgeClimbing.ToString());
 			}
+			else if (newStateType == PlayerMovementStateTypes.PlayerStranglingNPC)
+			{
+				ChangePlayerMovementAnimation(AnimationsHumanoidIdleEnum.Idle_Standing.ToString());
+			}
 		}
 	}
 

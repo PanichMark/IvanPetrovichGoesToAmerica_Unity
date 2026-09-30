@@ -16,7 +16,7 @@ public class PlayerMovementStateIdleCrouching : PlayerMovementStateAbstract
 
 		_playerMovementController.ChangePlayerRayPosition(1.2f);
 		_playerMovementController.ChangePlayerRotationSpeed(300f);
-		_playerMovementController.StopPlayerRigidBpdyVelocity();
+		_playerMovementController.StopPlayerRigidBodyVelocity();
 	}
 
 	public override void Update()

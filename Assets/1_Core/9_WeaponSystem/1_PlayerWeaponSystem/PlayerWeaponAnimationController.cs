@@ -138,7 +138,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		//Debug.Log(_adjustedCameraAngle);
 
-		if (_playerBehaviour.IsPlayerArmed)
+		if (_playerBehaviour.IsPlayerArmed && _gameController.IsPlayerAbleToRotate)
 		{
 			if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
 			{
@@ -1069,6 +1069,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		TurnOnBothArmsLayers();
 		_playerAnimator1stPerson.Play($"Melee_Baton_{AnimationsHumanoidWeaponsEnum.Strangle.ToString()}_{batonWeapon.WeaponHandType}", _layer1stWeaponBothArms, 0f);
 		_playerAnimator3rdPerson.Play($"Melee_Baton_{AnimationsHumanoidWeaponsEnum.Strangle.ToString()}_{batonWeapon.WeaponHandType}", _layer3rdWeaponBothArms, 0f);
+
+		yield return null;
 
 		if (batonWeapon.WeaponHandType == WeaponHandType.Right)
 		{

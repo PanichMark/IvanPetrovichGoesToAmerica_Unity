@@ -266,7 +266,7 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 		PlayerRotationSpeed = speed;
 	}
 
-	public void StopPlayerRigidBpdyVelocity()
+	public void StopPlayerRigidBodyVelocity()
 	{
 		PlayerRigidBody.angularVelocity = Vector3.zero;
 	}

@@ -7,8 +7,10 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Baton;
 	public override WeaponTypes WeaponType => WeaponTypes.Melee;
 	public override bool IsWeaponAuto => false;
+	private GameController _gameController;
 	public override float WeaponAttackSpeedRate => 1.560f;
 	[SerializeField] private AudioClip _weaponSoundSwing;
+	private float _strangleDuration =3.292f;
 	public override float MeleeAttackDelay => 0.840f;
 	private LocalizationManager	_localizationManager;
 	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
@@ -29,6 +31,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 	protected override void InitializeWeaponMelee()
 	{
+		_gameController = ServiceLocator.Resolve<GameController>();
 		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
@@ -168,6 +171,8 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 	private IEnumerator StranglingCoroutine()
 	{
+		_gameController.MakePlayerStartStranglingNPC();
+		_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerStranglingNPC);
 		isPlayerWeaponAttacking = true;
 		StartCoroutine(_playerWeaponAnimationController.AnimationBatonStrangle(this));
 		_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("Default", WeaponHandType);
@@ -175,19 +180,17 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		_strangleHintNPCtext.SetActive(false);
 		Debug.Log("START strangle!");
 		_NPCstateMachineController.SetNPCState(NPCstateTypes.Strangled);
-		float strangleDuration = 2f;
 		float elapsed = 0f;
 
-		while (elapsed < strangleDuration)
+		while (elapsed < _strangleDuration)
 		{
 			if ((WeaponHandType == WeaponHandType.Right && _inputDevice.GetKeyRightHandWeaponAttackReleased()) ||
 				(WeaponHandType == WeaponHandType.Left && _inputDevice.GetKeyLeftHandWeaponAttackReleased()))
 			{
 				Debug.Log("Failed to strangle!!!");
-				currentStranglingCoroutine = null;
-				isPlayerWeaponAttacking = false;
-				_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("FirstPerson", WeaponHandType);
+
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
+				StopStrangling();
 				yield break; 
 			}
 
@@ -197,9 +200,16 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 		Debug.Log("strangle SUCCESS!!!");
 		_NPCstateMachineController.SetNPCState(NPCstateTypes.Unconscious);
+		StopStrangling();
+	}
+
+	private void StopStrangling()
+	{
+		_gameController.MakePlayerStopStranglingNPC();
+		currentStranglingCoroutine = null;
 		isPlayerWeaponAttacking = false;
 		_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("FirstPerson", WeaponHandType);
-		currentStranglingCoroutine = null;
+		_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdleStanding);
 	}
 
 	public override IEnumerator InspectWeaponAnimation()

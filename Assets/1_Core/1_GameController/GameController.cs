@@ -4,6 +4,7 @@ public class GameController
 {
 	public bool IsPlayerControllable { get; private set; }
 	public bool IsPlayerAbleToMove { get; private set; }
+	public bool IsPlayerAbleToRotate { get; private set; }
 	public bool IsPlayerMovementRestrictedByCarryingNonThrowable { get; private set; }
 	public bool IsPlayerDead { get; private set; }
 	public bool IsPlayerPlunging { get; private set; }
@@ -27,9 +28,22 @@ public class GameController
 	public GameController()
 	{
 		IsPlayerAbleToMove = true;
+		IsPlayerAbleToRotate = true;
 		IsGameAbleToSave = true;
 
 		Debug.Log("GameController Initialized");
+	}
+
+	public void MakePlayerStartStranglingNPC()
+	{
+		IsPlayerAbleToMove = false;
+		IsPlayerAbleToRotate = false;
+	}
+
+	public void MakePlayerStopStranglingNPC()
+	{
+		IsPlayerAbleToMove = true;
+		IsPlayerAbleToRotate = true;
 	}
 
 	public void MakePlayerControllable()
