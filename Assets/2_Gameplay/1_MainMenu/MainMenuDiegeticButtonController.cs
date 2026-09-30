@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class MainMenuDiegeticButtonController : MonoBehaviour
 {
+	private PlayerMovementController _playerMovementController;
+	private PlayerCameraController _playerCameraController;
+	private PlayerHealthController _playerResourcesHealthManager;
+	private PlayerManaController _playerResourcesManaManager;
+	private PlayerMoneyController _playerResourcesMoneyManager;
+	private PlayerWeaponController _weaponController;
+	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
 	private Material _defaultMaterial;     
 	private Material _hoverMaterial;
 	private MenuBackgroundController _menuBackgroundController;
 	private static List<MainMenuDiegeticButtonController> _instances = new List<MainMenuDiegeticButtonController>();
 	private PlayerCameraVolumeController _playerCameraBlurFilter;
 	private MainMenuReadNewsController _mainMenuReadNews;
-	private PlayerMovementController _playerMovementController;
 	private PauseMenuController _pauseMenuController;
 	private GameController _gameController;
 	private Renderer _renderer;
@@ -32,8 +38,23 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		MainMenuChooseMissionController mainMenuChooseMissionController,
 		MainMenuReadNewsController mainMenuReadNews,
 		CutsceneController cutsceneNewGame,
-		Material hoverMaterial)
+		Material hoverMaterial,
+		PlayerMovementController playerMovementController,
+		PlayerCameraController playerCameraController,
+		PlayerHealthController playerResourcesHealthManager,
+		PlayerManaController playerResourcesManaManager,
+		PlayerMoneyController playerResourcesMoneyManager,
+		PlayerWeaponController weaponController,
+		PlayerWeaponAmmoController playerResourcesAmmoManager)
 	{
+		_playerMovementController = playerMovementController;
+		_playerCameraController = playerCameraController;
+		_playerResourcesHealthManager = playerResourcesHealthManager;
+		_playerResourcesManaManager = playerResourcesManaManager;
+		_playerResourcesMoneyManager = playerResourcesMoneyManager;
+		_weaponController = weaponController;
+		_playerResourcesAmmoManager = playerResourcesAmmoManager;
+
 		_cutsceneNewGame = cutsceneNewGame;
 		_instances.Add(this);
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
@@ -171,7 +192,6 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			Time.timeScale = 0f;
 			Cursor.lockState = CursorLockMode.Locked;
 			_mainMenuCanvasController.HideGameVersionCanvas();
-			//StartCoroutine(StartNewGame());
 			_cutsceneNewGame.TriggerCutscene(null);
 			IsCutsceneNewGamePlaying = true;
 		}
@@ -186,7 +206,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		{
 			Debug.Log("END GAME TITLES SCENE");
 			_gameController.DeactivateMainMenuOrEndGameTitlesActive();
-			StartCoroutine(LoadEndGAmeTitlesScene());
+			StartCoroutine(LoadEndGameTitlesScene());
 		}
 		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.LoadGame)
 		{
@@ -268,7 +288,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		Destroy(gameObject);
 	}
 
-	private IEnumerator LoadEndGAmeTitlesScene()
+	private IEnumerator LoadEndGameTitlesScene()
 	{
 		gameObject.transform.SetParent(null);
 
@@ -282,9 +302,44 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		Destroy(gameObject);
 	}
 
-	private IEnumerator StartNewGame()
+	private void ApplyTestSceneResourcesConfig()
 	{
-		yield return null;
-		//yield return StartCoroutine(_saveLoadController.NewGame());
+		var resources = sceneData.SceneGameMission.MissionResources;
+
+		Debug.Log($"PlayerPosition: {resources.PlayerTransform.PlayerPosition}");
+		_playerMovementController.SetPlayerPosition(resources.PlayerTransform.PlayerPosition);
+
+		Debug.Log($"PlayerRotationY: {resources.PlayerTransform.PlayerRotationY}");
+		_playerMovementController.SetPlayerRotationY(resources.PlayerTransform.PlayerRotationY);
+		_playerCameraController.SetCameraRotationY(resources.PlayerTransform.PlayerRotationY);
+
+		Debug.Log($"PlayerHealth: {resources.PlayerHealth}");
+		_playerResourcesHealthManager.ConfigApplyPlayerHealth(resources.PlayerHealth);
+
+		Debug.Log($"PlayerHealingItems: {resources.PlayerHealingItems}");
+		_playerResourcesHealthManager.ConfigApplyPlayerHealingItems(resources.PlayerHealingItems);
+
+		Debug.Log($"PlayerMana: {resources.PlayerMana}");
+		_playerResourcesManaManager.ConfigApplyPlayerMana(resources.PlayerMana);
+
+		Debug.Log($"PlayerManaReplenishItems: {resources.PlayerManaReplenishItems}");
+		_playerResourcesManaManager.ConfigApplyPlayerManaReplenishItems(resources.PlayerManaReplenishItems);
+
+		Debug.Log($"PlayerMoney: {resources.PlayerMoney}");
+		_playerResourcesMoneyManager.ConfigApplyPlayerMoney(resources.PlayerMoney);
+
+		var weapons = resources.WeaponsToUnlock;
+		for (int j = 0; j < weapons.Length; j++)
+		{
+			Debug.Log($"Weapon_{j}: {weapons[j].WeaponPrefab.name}");
+			_weaponController.UnlockWeapon(weapons[j].WeaponPrefab);
+		}
+
+		var ammo = resources.Ammo;
+		for (int j = 0; j < ammo.Length; j++)
+		{
+			Debug.Log($"Ammo_{j}: {ammo[j].AmmoType} x{ammo[j].StartAmount}");
+			_playerResourcesAmmoManager.ConfigApplyPlayerAmmo(ammo[j].AmmoType, ammo[j].StartAmount);
+		}
 	}
 }

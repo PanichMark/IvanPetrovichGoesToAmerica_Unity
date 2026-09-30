@@ -42,8 +42,23 @@ public class MainMenuChooseMissionController : MonoBehaviour
 	private GameObject _canvasChooseMissionMenu;
 	
 	public bool IsMainMenuChooseMissionOpened { get; private set; }
-	public void Initialize(Bootstrap bootstrap)
+	public void Initialize(Bootstrap bootstrap,
+		PlayerMovementController playerMovementController,
+		PlayerCameraController playerCameraController,
+		PlayerHealthController playerResourcesHealthManager,
+		PlayerManaController playerResourcesManaManager,
+		PlayerMoneyController playerResourcesMoneyManager,
+		PlayerWeaponController weaponController,
+		PlayerWeaponAmmoController playerResourcesAmmoManager)
 	{
+		_playerMovementController = playerMovementController;
+		_playerCameraController = playerCameraController;
+		_playerResourcesHealthManager = playerResourcesHealthManager;
+		_playerResourcesManaManager = playerResourcesManaManager;
+		_playerResourcesMoneyManager = playerResourcesMoneyManager;
+		_weaponController = weaponController;
+		_playerResourcesAmmoManager = playerResourcesAmmoManager;
+
 		_canvasChooseMissionMenu = bootstrap._canvasMainMenuChooseMission;
 		_pauseMenuConfirmActionController = ServiceLocator.Resolve<PauseMenuConfirmActionController>();
 		_menuManager = ServiceLocator.Resolve<MenuManager>();
