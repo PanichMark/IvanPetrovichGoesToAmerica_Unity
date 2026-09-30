@@ -13,6 +13,13 @@ public class NPCdetectionVisualController : MonoBehaviour
 	private Transform _playerEyes;
 	private LayerMask _targetMask;
 	private LayerMask _obstacleMask;
+
+	private float _currentVisibilityMeterMultiplicator;
+
+	private float _defaultVisibilityMeterMultiplicator = 1;
+	private float _highVisibilityMeterMultiplicator = 2;
+	private float _lowVisibilityMeterMultiplicator = 0.5f;
+
 	public float RaycastAngleFromXAxis { get; private set; }
 
 	private NPCdetectionManager _npcDetectionManager;
@@ -29,11 +36,12 @@ public class NPCdetectionVisualController : MonoBehaviour
 	private float _currentSpeed;
 	private float _meterBuffer;
 	private Transform _visibleTarget;
-
+	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private float HalfHeight => viewHeightTotal / 2f;
 
 	public void Initialize(NPCdetectionManager detectionManager)
 	{
+		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
 		_playerEyes = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes).transform;
 		_npcDetectionManager = detectionManager;
 
@@ -46,6 +54,34 @@ public class NPCdetectionVisualController : MonoBehaviour
 		if (Application.isPlaying)
 		{
 			StartCoroutine(FindTargetsWithDelay(0.1f));
+		}
+		_currentVisibilityMeterMultiplicator = _defaultVisibilityMeterMultiplicator;
+		_playerMovementStateMachineController.OnChangeMovementState += ChangeVisibilityMeterMultiplicator;
+	}
+
+	private void ChangeVisibilityMeterMultiplicator(PlayerMovementStateTypes newMovementState)
+	{
+		if (newMovementState == PlayerMovementStateTypes.PlayerIdleStanding ||
+			newMovementState == PlayerMovementStateTypes.PlayerWalkingStanding ||
+			newMovementState == PlayerMovementStateTypes.PlayerFalling ||
+			newMovementState == PlayerMovementStateTypes.PlayerVaulting ||
+			newMovementState == PlayerMovementStateTypes.PlayerStranglingNPC)
+		{
+			_currentVisibilityMeterMultiplicator = _defaultVisibilityMeterMultiplicator;
+		}
+		if (newMovementState == PlayerMovementStateTypes.PlayerRunning ||
+			newMovementState == PlayerMovementStateTypes.PlayerJumping ||
+			newMovementState == PlayerMovementStateTypes.PlayerSliding ||
+			newMovementState == PlayerMovementStateTypes.PlayerLedgeClimbingStanding ||
+			newMovementState == PlayerMovementStateTypes.PlayerLedgeClimbingCrouching ||
+			newMovementState == PlayerMovementStateTypes.PlayerPlunging)
+		{
+			_currentVisibilityMeterMultiplicator = _highVisibilityMeterMultiplicator;
+		}
+		if (newMovementState == PlayerMovementStateTypes.PlayerIdleCrouhcing ||
+			newMovementState == PlayerMovementStateTypes.PlayerWalkingCrouching)
+		{
+			_currentVisibilityMeterMultiplicator = _lowVisibilityMeterMultiplicator;
 		}
 	}
 
@@ -147,7 +183,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 
 		if (_visibleTarget != null)
 		{
-			_currentSpeed = BaseGainPerSecond;
+			_currentSpeed = BaseGainPerSecond * _currentVisibilityMeterMultiplicator;
 		}
 		else
 		{

@@ -24,7 +24,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 	private bool _isAbleToChoke = false;
 	private bool _npcDetected = false;
-
+	private NPCstateMachineController _NPCstateMachineController;
 	private ViewModelHUDInteraction _viewModelHUDInteraction;
 
 	protected override void InitializeWeaponMelee()
@@ -58,18 +58,19 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 		if (_isAbleToChoke)
 		{
-			isPlayerWeaponAttacking = true;
+			
 			PerformChokeAttack();
 			return;
 		}
 
-		isPlayerWeaponAttacking = true;
 		StartCoroutine(SingleMeleeWeaponAttack());
 		
 	}
 
 	protected override IEnumerator SingleMeleeWeaponAttack()
 	{
+		isPlayerWeaponAttacking = true;
+
 		StartCoroutine(DelayAttackSound());
 
 		_currentWeaponPlayerMeleeAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this, true));
@@ -119,6 +120,9 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		if (!_isWeaponInitialized)
 			return;
 
+		if (currentChokeCoroutine != null)
+			return;
+
 		Vector3 playerPosition = _attackPoint.transform.position;
 		Vector3 playerForward = _attackPoint.transform.forward;
 
@@ -134,15 +138,17 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 			if (hit.GetComponent<NPClivingBeing>() != null)
 			{
 				newDetection = true;
+				_NPCstateMachineController = hit.GetComponent<NPCstateMachineController>();
 				break;
 			}
 		}
+
 		_npcDetected = newDetection;
 
-		bool isCrouching = !isPlayerWeaponAttacking && (_playerMovementStateMachineController.CurrentPlayerMovementStateType ==  PlayerMovementStateTypes.PlayerIdleCrouhcing ||
+		bool isCrouching = (_playerMovementStateMachineController.CurrentPlayerMovementStateType ==  PlayerMovementStateTypes.PlayerIdleCrouhcing ||
 						   _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching);
 
-		_isAbleToChoke = _npcDetected && isCrouching;
+		_isAbleToChoke = _npcDetected && isCrouching && !isPlayerWeaponAttacking;
 
 		//Debug.Log(_isAbleToChoke);
 
@@ -161,7 +167,10 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 	private IEnumerator ChokeCoroutine()
 	{
+		isPlayerWeaponAttacking = true;
+		_chokeNPCtext.SetActive(false);
 		Debug.Log("START choke!");
+		_NPCstateMachineController.SetNPCState(NPCstateTypes.Strangled);
 		float chokeDuration = 2f;
 		float elapsed = 0f;
 
@@ -172,6 +181,8 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 			{
 				Debug.Log("Failed to choke!!!");
 				currentChokeCoroutine = null;
+				isPlayerWeaponAttacking = false;
+				_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
 				yield break; 
 			}
 
@@ -180,6 +191,8 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		}
 
 		Debug.Log("Choke SUCCESS!!!");
+		_NPCstateMachineController.SetNPCState(NPCstateTypes.Unconscious);
+		isPlayerWeaponAttacking = false;	
 		currentChokeCoroutine = null;
 	}
 
@@ -200,7 +213,9 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		}
 		else
 		{
-			_chokeNPCtextComponent.text = _chokeNPCtextComponent.text = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_MainHold")} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackLeftHand)} {_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Choke")}";
+			_chokeNPCtextComponent.text = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_MainHold")} {_inputDevice.GetNameOfKey(InputControlsEnum.WeaponAttackLeftHand)} {_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Choke")}";
 		}
 	}
+
+
 }

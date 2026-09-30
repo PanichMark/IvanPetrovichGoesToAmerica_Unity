@@ -107,6 +107,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		_playerCameraStateMachineController.OnFirstPersonCameraState += ChangeCrossbow1stPerson;
 		_playerCameraStateMachineController.OnThirdPersonCameraState += ChangeCrossbow3rdPerson;
 
+
 		_menuManager.OnOpenAnyMenu += () =>
 		{
 			if (!_isCrossbowAttacking)
@@ -166,13 +167,15 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 		if (gameObject.activeInHierarchy == false) return;
 
+		if (_wasCrossbowJustEquiped) return;
+
 		_isHoldingDown = true;
 
 	}
 
 	public override void StartAutoAttackingWeaponPlayer()
 	{
-	
+		
 	}
 
 	public override void StopAutoAttackingWeaponPlayer()
@@ -208,7 +211,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 	private void Update()
 	{
-		if (_isHoldingDown)
+		if (_isHoldingDown && !_wasCrossbowJustEquiped)
 		{
 			Ray ray = new Ray(_playerCamera.transform.position, _playerCamera.transform.forward);
 
