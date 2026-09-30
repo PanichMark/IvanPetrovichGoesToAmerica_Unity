@@ -375,4 +375,36 @@ public class PlayerWeaponFirstPersonRenderer : MonoBehaviour
 		HideBodyPart(_playerThirdPersonHandLeft);
 		ShowFirstPersonHand(_playerFirstPersonHandLeft);
 	}
+
+	public void Set1stPersonStranglingObjectsToLayer(string layer, WeaponHandType weaponHand)
+	{
+		_playerFirstPersonHandRight.layer = LayerMask.NameToLayer(layer);
+		foreach (Transform child in _playerFirstPersonHandRight.GetComponentsInChildren<Transform>(true))
+		{
+			child.gameObject.layer = LayerMask.NameToLayer(layer);
+		}
+
+		_playerFirstPersonHandLeft.layer = LayerMask.NameToLayer(layer);
+		foreach (Transform child in _playerFirstPersonHandLeft.GetComponentsInChildren<Transform>(true))
+		{
+			child.gameObject.layer = LayerMask.NameToLayer(layer);
+		}
+
+		if (weaponHand == WeaponHandType.Right)
+		{
+			_weaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer(layer);
+			foreach (Transform child in _weaponController.RightHandWeaponComponent.FirstPersonWeaponModelInstance.GetComponentsInChildren<Transform>(true))
+			{
+				child.gameObject.layer = LayerMask.NameToLayer(layer);
+			}
+		}
+		else
+		{
+			_weaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance.layer = LayerMask.NameToLayer(layer);
+			foreach (Transform child in _weaponController.LeftHandWeaponComponent.FirstPersonWeaponModelInstance.GetComponentsInChildren<Transform>(true))
+			{
+				child.gameObject.layer = LayerMask.NameToLayer(layer);
+			}
+		}
+	}
 }

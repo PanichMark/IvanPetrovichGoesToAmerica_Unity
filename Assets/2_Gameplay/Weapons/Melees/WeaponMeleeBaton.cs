@@ -16,7 +16,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 	private IInputDevice _inputDevice;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerWeaponController _weaponController;
-
+	private PlayerWeaponFirstPersonRenderer _playerWeaponFirstPersonRenderer;
 	private Coroutine currentChokeCoroutine = null;
 
 	private GameObject _chokeNPCtext;
@@ -29,6 +29,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 	protected override void InitializeWeaponMelee()
 	{
+		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
 		_inputDevice = ServiceLocator.Resolve<IInputDevice>();
@@ -167,6 +168,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 	private IEnumerator ChokeCoroutine()
 	{
+		_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("Default", WeaponHandType);
 		isPlayerWeaponAttacking = true;
 		_chokeNPCtext.SetActive(false);
 		Debug.Log("START choke!");
@@ -182,6 +184,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 				Debug.Log("Failed to choke!!!");
 				currentChokeCoroutine = null;
 				isPlayerWeaponAttacking = false;
+				_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("FirstPerson", WeaponHandType);
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
 				yield break; 
 			}
@@ -192,7 +195,8 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 		Debug.Log("Choke SUCCESS!!!");
 		_NPCstateMachineController.SetNPCState(NPCstateTypes.Unconscious);
-		isPlayerWeaponAttacking = false;	
+		isPlayerWeaponAttacking = false;
+		_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("FirstPerson", WeaponHandType);
 		currentChokeCoroutine = null;
 	}
 
