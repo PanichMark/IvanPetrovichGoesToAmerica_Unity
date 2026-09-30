@@ -43,6 +43,33 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 
 		_magazine1stPersonOld = FirstPersonWeaponModelInstance.transform.Find("Magazine").gameObject;
 		_magazine3rdPersonOld = ThirdPersonWeaponModelInstance.transform.Find("Magazine").gameObject;
+
+		_playerCameraStateMachineController.OnFirstPersonCameraState += ShowMagazine1stPersonNewVisibility;
+		_playerCameraStateMachineController.OnThirdPersonCameraState += HideMagazine1stPersonNewVisibility;
+	}
+
+	private void ShowMagazine1stPersonNewVisibility()
+	{
+		if (_magazine1stPersonNew != null)
+		{
+			_magazine1stPersonNew.SetActive(true);
+		}
+		if (_magazine3rdPersonNew != null)
+		{
+			_magazine1stPersonNew.SetActive(false);
+		}
+	}
+
+	private void HideMagazine1stPersonNewVisibility()
+	{
+		if (_magazine1stPersonNew != null)
+		{
+			_magazine1stPersonNew.SetActive(false);
+		}
+		if (_magazine3rdPersonNew != null)
+		{
+			_magazine1stPersonNew.SetActive(true);
+		}
 	}
 
 	public override void OnHideWeaponPlayer()
@@ -213,8 +240,14 @@ public class WeaponRangedAutoPistol : WeaponRangedAbstract
 		_magazine1stPersonOld.SetActive(false);
 		_magazine3rdPersonOld.SetActive(false);
 
-		_magazine1stPersonNew.SetActive(true);
-		_magazine3rdPersonNew.SetActive(true);
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+		{
+			_magazine1stPersonNew.SetActive(true);
+		}
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.ThirdPerson)
+		{
+			_magazine3rdPersonNew.SetActive(true);
+		}
 
 		yield return new WaitForSeconds(0.7f);
 
