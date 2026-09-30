@@ -64,7 +64,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		_interactionController = interactionController;
 		_HUDhealthAndManaController = HUDhealthAndManaController;
 
-	
+
 
 		IsAbleToUseRightWeapon = true;
 		IsAbleToUseLeftWeapon = true;
@@ -97,9 +97,18 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 		_interactionController.OnGetRidOfNonThrowable += OnGetRidOfPickableNonThrowableHandler;
 		_gameController.OnPlayerEarlyDeath += DisarmPlayerOnDeath;
 
-		ResetAllWeapons(); 
+		ResetAllWeapons();
 
 		Debug.Log("PlayerWeaponController");
+
+		_menuManager.OnOpenAnyMenu += () =>
+		{
+			StopAutoShootingRightWeaponPlayer();
+			WasRightButtonPressedLastFrame = false;
+
+			StopAutoShootingLeftWeaponPlayer();
+			WasLeftButtonPressedLastFrame = false;
+		};
 	}
 
 	private void Update()

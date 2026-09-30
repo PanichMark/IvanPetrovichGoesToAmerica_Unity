@@ -56,9 +56,9 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Crossbow;
 	public override WeaponTypes WeaponType => WeaponTypes.Special;
-
+	private bool _wasCrossbowJustEquiped;
 	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
-
+	
 	public override void InitializeWeaponPlayer()
 	{
 		_projectile1stPerson = FirstPersonWeaponModelInstance.transform.Find("Projectile").gameObject;
@@ -106,6 +106,42 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		_playerBehaviour.OnPlayerDisarmed += StopCrossbowAttack;
 		_playerCameraStateMachineController.OnFirstPersonCameraState += ChangeCrossbow1stPerson;
 		_playerCameraStateMachineController.OnThirdPersonCameraState += ChangeCrossbow3rdPerson;
+
+		_menuManager.OnOpenAnyMenu += () =>
+		{
+			if (!_isCrossbowAttacking)
+			{
+				_wasCrossbowJustEquiped = true;
+
+				_isHoldingDown = false;
+
+				_HUDweaponsController.HandleCrossbowCrosshair(0);
+				_lastCrosshairState = 0;
+			}
+		};
+
+		_menuManager.OnCloseAnyMenu += () =>
+		{
+			if (!_isCrossbowAttacking)
+			{
+				_wasCrossbowJustEquiped = true;
+
+				_isHoldingDown = false;
+
+				_HUDweaponsController.HandleCrossbowCrosshair(0);
+				_lastCrosshairState = 0;
+			}
+		};
+
+		_playerWeaponController.OnShowWeapon += (WeaponAbstract) =>
+		{
+			_wasCrossbowJustEquiped = true;
+
+			_isHoldingDown = false;
+
+			_HUDweaponsController.HandleCrossbowCrosshair(0);
+			_lastCrosshairState = 0;
+		};
 	}
 
 	private void ChangeCrossbow1stPerson()
@@ -142,6 +178,12 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	public override void StopAutoAttackingWeaponPlayer()
 	{
 		//Debug.Log("LAUNCH CROSSBOW");
+
+		if (_wasCrossbowJustEquiped)
+		{
+			_wasCrossbowJustEquiped = false;
+			return;
+		}
 
 		if (_isCrossbowAttacking) return;
 

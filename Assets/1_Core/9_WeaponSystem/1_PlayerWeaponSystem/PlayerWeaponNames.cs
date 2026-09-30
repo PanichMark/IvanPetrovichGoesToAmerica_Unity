@@ -14,5 +14,6 @@
 	OgnivaRage,
 	MisterMorozko,
 	Crossbow,
-	Monocular
+	Monocular,
+	PocketWatch
 }
