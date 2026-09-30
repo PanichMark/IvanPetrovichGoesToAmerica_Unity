@@ -43,6 +43,7 @@ public class MainMenuInitialize : MonoBehaviour
 		for (int i = 0; i < _diegeticButtonController.Length; i++)
 		{
 			_diegeticButtonController[i].Initialize(
+				_bootstrap,
 				_mainMenuChooseMissionController,
 				_readNewsController,
 				_cutsceneNewGame,

@@ -24,6 +24,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private Collider _collider;
 	private JsonSaveLoadController _saveLoadController;
 	private MenuManager _menuManager;
+	private Bootstrap _bootstrap;
 	private PauseSubMenuSettingsController _pauseSubMenuSettingsController;
 	private KeyCode _keyPauseMenu;
 	private CutsceneController _cutsceneNewGame;
@@ -35,6 +36,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private PauseSubMenuSettingsGameDifficultyController _pauseSubMenuSettingsGameDifficultyController;
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		MainMenuChooseMissionController mainMenuChooseMissionController,
 		MainMenuReadNewsController mainMenuReadNews,
 		CutsceneController cutsceneNewGame,
@@ -47,6 +49,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		PlayerWeaponController weaponController,
 		PlayerWeaponAmmoController playerResourcesAmmoManager)
 	{
+		_bootstrap = bootstrap;
 		_playerMovementController = playerMovementController;
 		_playerCameraController = playerCameraController;
 		_playerResourcesHealthManager = playerResourcesHealthManager;
@@ -282,8 +285,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		yield return StartCoroutine(_gameSceneManager.LoadGameplayScene(GameScenesGameplayEnum.Scene_System_Test));
 
 		_playerCameraStateMachineController.SetPlayerCameraState(PlayerCameraStateTypes.FirstPerson);
-		_playerMovementController.SetPlayerPosition(new Vector3(0, 0, 0));
-		_playerMovementController.SetPlayerRotationY(0);
+		ApplyTestSceneResourcesConfig();
 
 		Destroy(gameObject);
 	}
@@ -304,7 +306,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	private void ApplyTestSceneResourcesConfig()
 	{
-		var resources = sceneData.SceneGameMission.MissionResources;
+		var resources = _bootstrap.GameData.GameMissionsList.MissionTest.MissionResources;
 
 		Debug.Log($"PlayerPosition: {resources.PlayerTransform.PlayerPosition}");
 		_playerMovementController.SetPlayerPosition(resources.PlayerTransform.PlayerPosition);
