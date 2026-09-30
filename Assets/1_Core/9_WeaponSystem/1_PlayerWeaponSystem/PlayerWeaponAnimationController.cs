@@ -14,7 +14,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	private Animator _playerAnimator3rdPerson;
 
 	public delegate void ReloadHandler();
-	public event ReloadHandler OnPlayerReload;
+	public event ReloadHandler OnPlayerStartedReloading;
+	public event ReloadHandler OnPlayerEndedReloading;
 
 	public delegate void WeaponVisibilityHandler(GameObject weaponRoot, bool castShadows);
 	public event WeaponVisibilityHandler OnShowWeapon;
@@ -777,7 +778,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		CurrentPlayerReloadingHelpingHand = weapon.WeaponHandType ^ (WeaponHandType)1; //Helping hand is Alternative to weaponHandType
 
-		OnPlayerReload?.Invoke();
+		OnPlayerStartedReloading?.Invoke();
 
 		_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Reload}_{weapon.WeaponHandType}", _layer1stWeaponReload, 0f);
 		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Reload}_{weapon.WeaponHandType}", _layer3rdWeaponReload, 0f);
@@ -794,6 +795,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		TurnOffReloadLayers();
 
+		OnPlayerEndedReloading?.Invoke();
 		IsReloading = false;
 
 		yield return null;
@@ -809,7 +811,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		CurrentPlayerReloadingHelpingHand = weaponRanged.WeaponHandType ^ (WeaponHandType)1; //Helping hand is Alternative to weaponHandType
 
-		OnPlayerReload?.Invoke();
+		OnPlayerStartedReloading?.Invoke();
 
 		if (weaponRanged.WeaponName == PlayerWeaponNames.Revolver)
 		{
@@ -866,7 +868,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 
 		TurnOffReloadLayers();
-
+		OnPlayerEndedReloading?.Invoke();
 		IsReloading = false;
 
 		// Вычисляем разницу во времени
