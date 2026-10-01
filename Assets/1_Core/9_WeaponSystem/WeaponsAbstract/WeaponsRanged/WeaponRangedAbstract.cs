@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -276,7 +277,17 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 							//Debug.Log($"{WeaponName} Damaged {damageable} by {finalDamage}");
 							damageable.TakeDamage(finalDamage);
 						}
+						//Debug.Log("DAMAGE");
+
 						break;
+					}
+					else
+					{
+						if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Default" || LayerMask.LayerToName(hit.transform.gameObject.layer) == "Outline")
+						{
+							//Debug.Log("IGNORE");
+							return;
+						}
 					}
 
 					if (checkTarget.gameObject.layer == _layerNPC && checkTarget != hit.transform)

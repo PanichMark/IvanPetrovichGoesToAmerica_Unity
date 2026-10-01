@@ -123,11 +123,21 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 
 		foreach (var hit in hits)
 		{
-			NPCstateMachineController NPCstateMachineController = hit.collider.GetComponent<NPCstateMachineController>();
-			if (NPCstateMachineController != null)
+			Debug.Log(LayerMask.LayerToName(hit.transform.gameObject.layer));
+
+			if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Default" || LayerMask.LayerToName(hit.transform.gameObject.layer) == "Outline")
 			{
-				NPCstateMachineController.SetNPCState(NPCstateTypes.Dizzy);
-				//break; // Раскомментируйте, если нужно усыпить только первую цель в луче
+				//Debug.Log("IGNORE");
+				yield break;
+			}
+			else
+			{
+				NPCstateMachineController NPCstateMachineController = hit.collider.GetComponent<NPCstateMachineController>();
+				if (NPCstateMachineController != null)
+				{
+					NPCstateMachineController.SetNPCState(NPCstateTypes.Dizzy);
+					//break; // Раскомментируйте, если нужно усыпить только первую цель в луче
+				}
 			}
 		}
 

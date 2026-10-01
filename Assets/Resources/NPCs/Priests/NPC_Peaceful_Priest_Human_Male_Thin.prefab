@@ -1645,7 +1645,7 @@ GameObject:
   - component: {fileID: 6303984182237966213}
   - component: {fileID: 1677572004018763879}
   - component: {fileID: 5576928261483929882}
-  - component: {fileID: 1611528212503344388}
+  - component: {fileID: -6508502209766522565}
   m_Layer: 0
   m_Name: NPC_Peaceful_Priest_Human_Male_Thin
   m_TagString: Interactable
@@ -1937,6 +1937,7 @@ MonoBehaviour:
   _NPCconfigBodyType: {fileID: 11400000, guid: f8b66002306ba8b4b8a9850f1834e50d, type: 2}
   _pickableBodyData: {fileID: 11400000, guid: f06abb95f931bce43832101c38356be3, type: 2}
   _NPClootObject: {fileID: 0}
+  _NPCpeacefulReactionType: 0
 --- !u!114 &3894139429634139229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2000,7 +2001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCphrasesData: {fileID: 11400000, guid: 6d71daf159e23c64d83203d383962f65, type: 2}
+  _NPCphrasesData: {fileID: 11400000, guid: 63cf64af5ae0b7d459f0112651dfb630, type: 2}
 --- !u!114 &1548208886602730704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2066,7 +2067,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11816908c46ca704fb92502c6aec76eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1611528212503344388
+--- !u!114 &-6508502209766522565
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2075,30 +2076,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1481117503091058726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30c01eafdaa357a439d6f5079893587d, type: 3}
+  m_Script: {fileID: 11500000, guid: ef250d1ea41aaba4f87e54917430c351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCdialogueData: {fileID: 11400000, guid: 987e7abb250df40419ed9a81431fd037, type: 2}
-  _dialogueBranchStructsList:
-  - DialogueBranchLine: 2
-    GoToNoOptionLine: 5
-    FinalYesLine: 4
-    GoToYesFinalLine: 9
-    YesOptionAnswer: UI_DialogueAnswer_PriestIntro_Branch1_Yes
-    NoOptionAnswer: UI_DialogueAnswer_PriestIntro_Branch1_No
-    ActionOnYesAnswer: {fileID: 0}
-    ActionOnNoAnswer: {fileID: 0}
-  - DialogueBranchLine: 7
-    GoToNoOptionLine: 9
-    FinalYesLine: 8
-    GoToYesFinalLine: 9
-    YesOptionAnswer: UI_DialogueAnswer_PriestIntro_Branch1_Yes
-    NoOptionAnswer: UI_DialogueAnswer_PriestIntro_Branch1_No
-    ActionOnYesAnswer: {fileID: 0}
-    ActionOnNoAnswer: {fileID: 0}
-  _dialogueDefaultAnimationStateName: {fileID: 3091315475550263998, guid: 3df9367abff42f945a89f114be95b4c6, type: 3}
-  _dialogueGesturesDataList: []
-  _dialogueFacialExpressionsDataList: []
 --- !u!1 &1565097557303321074
 GameObject:
   m_ObjectHideFlags: 0
