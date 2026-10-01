@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponRangedTranquilizer : WeaponRangedAbstract
@@ -118,25 +119,37 @@ public class WeaponRangedTranquilizer : WeaponRangedAbstract
 
 	protected override IEnumerator OnSpecificShootMechanics()
 	{
+		HashSet<NPCstateMachineController> dizziedTargets = new HashSet<NPCstateMachineController>();
+
 		RaycastHit[] hits = Physics.RaycastAll(WeaponRangedShootPoint.transform.position, WeaponRangedShootPoint.transform.forward, WeaponRange);
 		System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
 		foreach (var hit in hits)
 		{
-			Debug.Log(LayerMask.LayerToName(hit.transform.gameObject.layer));
+			// 1. Сначала проверяем слой через маску (как в ProcessDamage)
+			if (((1 << hit.collider.gameObject.layer) & _layersToDamage) != 0)
+			{
+				// 2. Ищем контроллер ВВЕРХ по иерархии (как в ProcessDamage)
+				NPCstateMachineController NPCstateMachineController = hit.transform.GetComponentInParent<NPCstateMachineController>();
 
-			if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Default" || LayerMask.LayerToName(hit.transform.gameObject.layer) == "Outline")
-			{
-				//Debug.Log("IGNORE");
-				yield break;
-			}
-			else
-			{
-				NPCstateMachineController NPCstateMachineController = hit.collider.GetComponent<NPCstateMachineController>();
 				if (NPCstateMachineController != null)
 				{
-					NPCstateMachineController.SetNPCState(NPCstateTypes.Dizzy);
-					//break; // Раскомментируйте, если нужно усыпить только первую цель в луче
+					if (!dizziedTargets.Contains(NPCstateMachineController))
+					{
+						dizziedTargets.Add(NPCstateMachineController);
+						NPCstateMachineController.SetNPCState(NPCstateTypes.Dizzy);
+						// break; // Раскомментируй, если нужно усыплять только первого NPC
+					}
+				}
+				else
+				{
+					// 3. Если контроллера нет, проверяем имена слоев (стены)
+					string layerName = LayerMask.LayerToName(hit.transform.gameObject.layer);
+
+					if (layerName == "Default" || layerName == "Outline")
+					{
+						yield break;
+					}
 				}
 			}
 		}
