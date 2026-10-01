@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 8567781571092907418}
   - component: {fileID: 5980785550300928891}
   - component: {fileID: 2318650097070631597}
-  - component: {fileID: 3271212326929213756}
+  - component: {fileID: 3420844713745024363}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Foot.L
   m_TagString: Untagged
@@ -119,7 +119,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3271212326929213756
+--- !u!64 &3420844713745024363
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,7 +132,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -140,7 +140,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 6410732658150883600, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: -6584942929751445162, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &186759035979036579
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 3763255300806461995}
   - component: {fileID: 3761591071948357440}
   - component: {fileID: 2491635035333011066}
-  - component: {fileID: 8993588800800580761}
+  - component: {fileID: 849673553513750217}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Thigh.R
   m_TagString: Untagged
@@ -228,7 +228,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8993588800800580761
+--- !u!64 &849673553513750217
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -241,7 +241,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -249,7 +249,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 1011708850509964540, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: -828505966199010119, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &196302305360756746
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 875663547267488927}
   - component: {fileID: 1220589821604051589}
   - component: {fileID: 3153934189937401208}
-  - component: {fileID: 7908833284637590688}
+  - component: {fileID: 3740705915172258022}
   m_Layer: 14
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Head
   m_TagString: Untagged
@@ -692,7 +692,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7908833284637590688
+--- !u!64 &3740705915172258022
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -705,7 +705,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -713,7 +713,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -4161172064319667249, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: -2116107621855870942, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &1199627107533151272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,7 +1045,7 @@ GameObject:
   - component: {fileID: 739504621957355354}
   - component: {fileID: 3903779692320471305}
   - component: {fileID: 3832359530185519885}
-  - component: {fileID: 3496500327855651040}
+  - component: {fileID: 6714078722680112405}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Thigh.L
   m_TagString: Untagged
@@ -1121,7 +1121,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3496500327855651040
+--- !u!64 &6714078722680112405
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1134,7 +1134,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1142,7 +1142,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 6012768850255741422, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: -2399166501536731756, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &2582182847398915256
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,7 +1248,7 @@ GameObject:
   - component: {fileID: 5966818108776587967}
   - component: {fileID: 3826828939200109031}
   - component: {fileID: 6009599847939629899}
-  - component: {fileID: 7895928684866643573}
+  - component: {fileID: 3605276551770646958}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Pelvis
   m_TagString: Untagged
@@ -1324,7 +1324,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7895928684866643573
+--- !u!64 &3605276551770646958
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1337,7 +1337,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1345,7 +1345,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -7780852412888493684, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: -3851037159822751977, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &3056770843237080870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1514,7 +1514,7 @@ GameObject:
   - component: {fileID: 4173772825248059831}
   - component: {fileID: 4050644456451803325}
   - component: {fileID: 3894431307693689875}
-  - component: {fileID: 2429722678467133428}
+  - component: {fileID: 2816664828198759027}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Forearm.L
   m_TagString: Untagged
@@ -1590,7 +1590,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2429722678467133428
+--- !u!64 &2816664828198759027
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1603,7 +1603,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1611,7 +1611,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 7083278216649061410, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: -136706040689109647, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &3766915304480573197
 GameObject:
   m_ObjectHideFlags: 0
@@ -2011,7 +2011,7 @@ GameObject:
   - component: {fileID: 2996225066313879100}
   - component: {fileID: 4804133100482059039}
   - component: {fileID: 1477941932883371714}
-  - component: {fileID: 497495891562889192}
+  - component: {fileID: 6438501014888413103}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Neck
   m_TagString: Untagged
@@ -2087,7 +2087,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &497495891562889192
+--- !u!64 &6438501014888413103
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2100,7 +2100,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -2108,7 +2108,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -5444875215564791526, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: 806076190704457861, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &5288187687387238130
 GameObject:
   m_ObjectHideFlags: 0
@@ -2477,7 +2477,7 @@ GameObject:
   - component: {fileID: 571340000180998252}
   - component: {fileID: 1585089933903605918}
   - component: {fileID: 2305288164512584598}
-  - component: {fileID: 5079836884877738448}
+  - component: {fileID: 629608222321241110}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Chest
   m_TagString: Untagged
@@ -2553,7 +2553,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5079836884877738448
+--- !u!64 &629608222321241110
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2566,7 +2566,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -2574,7 +2574,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -9174889357549749453, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: 4177789045349663083, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &6401919959569816945
 GameObject:
   m_ObjectHideFlags: 0
@@ -2619,7 +2619,7 @@ GameObject:
   - component: {fileID: 6007968820495824006}
   - component: {fileID: 785702417347669474}
   - component: {fileID: 6178998947897482494}
-  - component: {fileID: 1540155811498304546}
+  - component: {fileID: 8425634057937802287}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Palm.L
   m_TagString: Untagged
@@ -2695,7 +2695,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1540155811498304546
+--- !u!64 &8425634057937802287
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2708,7 +2708,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -2716,7 +2716,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -1040864916646335113, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: -1851155264295792953, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &6848792225176759953
 GameObject:
   m_ObjectHideFlags: 0
@@ -2795,7 +2795,7 @@ GameObject:
   - component: {fileID: 4293788522033705274}
   - component: {fileID: 5534627831324744746}
   - component: {fileID: 20834765447949224}
-  - component: {fileID: 2764282817340455977}
+  - component: {fileID: 8190557410583358628}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Foot.R
   m_TagString: Untagged
@@ -2871,7 +2871,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2764282817340455977
+--- !u!64 &8190557410583358628
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2884,7 +2884,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -2892,7 +2892,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -5359762582057937194, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: 4059528816715745424, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &7195597637871526521
 GameObject:
   m_ObjectHideFlags: 0
@@ -3030,7 +3030,7 @@ GameObject:
   - component: {fileID: 283777043078425377}
   - component: {fileID: 5250984353170483446}
   - component: {fileID: 5518708600927510064}
-  - component: {fileID: 1251754741926674094}
+  - component: {fileID: 4983810205399063714}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Forearm.R
   m_TagString: Untagged
@@ -3106,7 +3106,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1251754741926674094
+--- !u!64 &4983810205399063714
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3119,7 +3119,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -3127,7 +3127,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -4891205406728782402, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: -1390866555608130330, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &7500416303224520773
 GameObject:
   m_ObjectHideFlags: 0
@@ -3180,7 +3180,7 @@ GameObject:
   - component: {fileID: 3678249022326468013}
   - component: {fileID: 9162605645743015941}
   - component: {fileID: 5238052895239258468}
-  - component: {fileID: 1930097955309909532}
+  - component: {fileID: 9133867296473776841}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Leg.R
   m_TagString: Untagged
@@ -3256,7 +3256,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1930097955309909532
+--- !u!64 &9133867296473776841
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3269,7 +3269,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -3277,7 +3277,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 3722112504807660867, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: 1160032694337512252, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &7915948905773826067
 GameObject:
   m_ObjectHideFlags: 0
@@ -3573,7 +3573,7 @@ GameObject:
   - component: {fileID: 6156212655001720219}
   - component: {fileID: 9160451946907975568}
   - component: {fileID: 1202121792655077921}
-  - component: {fileID: 2550285476270896487}
+  - component: {fileID: 288138520066183755}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Palm.R
   m_TagString: Untagged
@@ -3649,7 +3649,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2550285476270896487
+--- !u!64 &288138520066183755
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3662,7 +3662,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -3670,7 +3670,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -6735898657215499737, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: 5246447180198124776, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &8763290099906508756
 GameObject:
   m_ObjectHideFlags: 0
@@ -3682,7 +3682,7 @@ GameObject:
   - component: {fileID: 1570131181566872059}
   - component: {fileID: 3053859285569328395}
   - component: {fileID: 393096967654186407}
-  - component: {fileID: 5212111400866030504}
+  - component: {fileID: 8251768130353100982}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Arm.L
   m_TagString: Untagged
@@ -3758,7 +3758,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5212111400866030504
+--- !u!64 &8251768130353100982
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3771,7 +3771,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -3779,7 +3779,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -7543842321560508628, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: -1059521245292596737, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &8880885341582948192
 GameObject:
   m_ObjectHideFlags: 0
@@ -3856,7 +3856,7 @@ GameObject:
   - component: {fileID: 7218552031060498101}
   - component: {fileID: 7474291776460775790}
   - component: {fileID: 7835043684853339372}
-  - component: {fileID: 2601827159350810454}
+  - component: {fileID: 7229345045846975556}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Leg.L
   m_TagString: Untagged
@@ -3932,7 +3932,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2601827159350810454
+--- !u!64 &7229345045846975556
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3945,7 +3945,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -3953,7 +3953,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -9170362952381564942, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: -1697706816595637149, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
 --- !u!1 &8999696983134584248
 GameObject:
   m_ObjectHideFlags: 0
@@ -3965,7 +3965,7 @@ GameObject:
   - component: {fileID: 67021329202280370}
   - component: {fileID: 7391022536139737673}
   - component: {fileID: 8258567312001266272}
-  - component: {fileID: 4786838972442926152}
+  - component: {fileID: 478960232214635998}
   m_Layer: 12
   m_Name: ArmatureHitbox_Humanoid_Male_Normal_Arm.R
   m_TagString: Untagged
@@ -4041,7 +4041,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4786838972442926152
+--- !u!64 &478960232214635998
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4054,7 +4054,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -4062,4 +4062,4 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -4322912801024146867, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
+  m_Mesh: {fileID: 2464467559217978193, guid: 4b0a74f1f4576884aa16ccba7d0e59d9, type: 3}
