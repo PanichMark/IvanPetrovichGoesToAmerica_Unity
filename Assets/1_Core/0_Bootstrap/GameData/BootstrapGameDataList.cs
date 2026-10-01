@@ -10,6 +10,7 @@ public class BootstrapGameDataList : ScriptableObject
 	public AudioMixer AudioMixer;
 	public TextAsset LocalizationMain;
 	public TermsAndConditions TermsAndConditions;
+	public GameNews GameNews;
     public GameCanvasesList GameCanvasesList;
 	public GameScenesList GameScenesList;
 	public GameMissionsList GameMissionsList;
