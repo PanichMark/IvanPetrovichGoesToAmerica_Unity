@@ -11,6 +11,7 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 	private TextMeshProUGUI _manaReplenishItemNumber;
 	public float MaxPlayerMana { get; private set; } = 100f;
 	public float CurrentPlayerMana { get; private set; }
+	private Coroutine _autoRefillRoutine;
 
 	private int _manaItemEffect = 34;
 	public int MaxManaReplenishItemsNumber { get; private set; } = 9;
@@ -26,7 +27,7 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 		_buttonManaReplenishtem.onClick.AddListener(() => UseManaReplenishItem());
 
 		_sliderComponentManaBar.maxValue = MaxPlayerMana;
-
+		_autoRefillRoutine = StartCoroutine(AutoRefillMana());
 
 		Debug.Log("PlayerResourcesManaManager Initialized");
 	}
@@ -93,7 +94,13 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 
 		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
 
-		ShowSliderManaBarFillArea();
+		//ShowSliderManaBarFillArea();
+
+		if (CurrentPlayerMana >= 5f && _autoRefillRoutine != null)
+		{
+			StopCoroutine(_autoRefillRoutine);
+			_autoRefillRoutine = null;
+		}
 
 		Debug.Log($"replenished: {Mana} mana");
 	}
@@ -106,7 +113,12 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 
 		if (CurrentPlayerMana <= 0)
 		{
-			HideSliderManaBarFillArea();
+			//HideSliderManaBarFillArea();
+		}
+
+		if (CurrentPlayerMana < 5f && _autoRefillRoutine == null)
+		{
+			_autoRefillRoutine = StartCoroutine(AutoRefillMana());
 		}
 
 		Debug.Log($"used: {ManaCost} mana");
@@ -130,6 +142,20 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 	public void HideButtonUseManaReplenishItem()
 	{
 		_buttonManaReplenishtem.gameObject.SetActive(false);
+	}
+
+	private IEnumerator AutoRefillMana()
+	{
+		yield return new WaitForSeconds(1f);
+
+		while (CurrentPlayerMana < 5f)
+		{
+			CurrentPlayerMana = Mathf.Min(CurrentPlayerMana + 1f, 5f);
+			_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
+			yield return new WaitForSeconds(1f);
+		}
+
+		_autoRefillRoutine = null;
 	}
 
 	public IEnumerator SaveJsonData(JsonGameData data)

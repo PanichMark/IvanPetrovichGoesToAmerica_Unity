@@ -47,11 +47,9 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 				break;
 			}
 
-			StartCoroutine(SingleEugenicAttack());
+		
 
-			yield return new WaitForSeconds(0.8f);
-
-			if (_playerResourcesManaManager.CurrentPlayerMana <= 0)
+			if (_playerResourcesManaManager.CurrentPlayerMana < ManaCost)
 			{
 				IsWeaponPlayerAutoAttacking = false;
 
@@ -62,6 +60,10 @@ public class WeaponEugenicTeslaShock : WeaponEugenicAbstract
 				//Debug.Log("STOP AMAN!!!!!!");
 				break;
 			}
+
+			StartCoroutine(SingleEugenicAttack());
+
+			yield return new WaitForSeconds(0.8f);
 		}
 		_currentWeaponPlayerAutoAttackCourutine = null;
 
