@@ -117,7 +117,6 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	}
 
 
-
 	/*
 	public void CheckAndCompleteCurrentStep()
 	{
@@ -285,7 +284,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		}
 	}
 
-	public void ApplyBootstrapMissionConfigs(Mission setMission, int setMissionStep)
+	public void ApplyMissionConfig(Mission setMission, int setMissionStep)
 	{
 		ActiveMission = setMission;
 		GoToNextStep(setMissionStep);

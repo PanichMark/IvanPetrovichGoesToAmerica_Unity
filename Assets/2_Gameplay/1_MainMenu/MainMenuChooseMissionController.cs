@@ -17,7 +17,7 @@ public class MainMenuChooseMissionController : MonoBehaviour
 	private PlayerMoneyController _playerResourcesMoneyManager;
 	private PlayerWeaponController _weaponController;
 	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
-
+	private MissionsManager _missionsManager;
 
 	private LocalizationManager _localizationManager;
 	private GameScenesList _gameScenesList;
@@ -49,8 +49,11 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		PlayerManaController playerResourcesManaManager,
 		PlayerMoneyController playerResourcesMoneyManager,
 		PlayerWeaponController weaponController,
-		PlayerWeaponAmmoController playerResourcesAmmoManager)
+		PlayerWeaponAmmoController playerResourcesAmmoManager,
+		MissionsManager missionsManager)
 	{
+
+		_missionsManager = missionsManager;
 		_playerMovementController = playerMovementController;
 		_playerCameraController = playerCameraController;
 		_playerResourcesHealthManager = playerResourcesHealthManager;
@@ -154,6 +157,8 @@ public class MainMenuChooseMissionController : MonoBehaviour
 
 			if (sceneData.GameScene == (GameScenesSystemEnum)((int)missionScene + 2))
 			{
+				_missionsManager.ApplyMissionConfig(sceneData.SceneGameMission, 0);
+
 				var resources = sceneData.SceneGameMission.MissionResources;
 
 				Debug.Log($"PlayerPosition: {resources.PlayerTransform.PlayerPosition}");

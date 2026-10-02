@@ -17,10 +17,12 @@ public class MainMenuInitialize : MonoBehaviour
 	private PlayerWeaponController _weaponController;
 	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
 	private LocalizationManager _localizationManager;
+	private MissionsManager _missionsManager;
 
 	private Bootstrap _bootstrap;
     void Start()
     {
+		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_bootstrap = ServiceLocator.Resolve<Bootstrap>();
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
@@ -38,7 +40,8 @@ public class MainMenuInitialize : MonoBehaviour
 			_playerResourcesManaManager,
 			_playerResourcesMoneyManager,
 			_weaponController,
-			_playerResourcesAmmoManager);
+			_playerResourcesAmmoManager,
+			_missionsManager);
 
 		_readNewsController.Initialize(
 			_bootstrap,

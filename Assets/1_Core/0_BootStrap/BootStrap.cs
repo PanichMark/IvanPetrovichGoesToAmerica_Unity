@@ -613,7 +613,7 @@ public class Bootstrap : MonoBehaviour
 
 	private void ApplyBootstrapMissionConfigs()
 	{
-		_bootstrapSubProcessMissionsSystem.MissionsManager.ApplyBootstrapMissionConfigs(_mission, _missionStep);
+		_bootstrapSubProcessMissionsSystem.MissionsManager.ApplyMissionConfig(_mission, _missionStep);
 	}
 
 	public GameObject FindDeepGameObject(GameObject root, string targetName)
