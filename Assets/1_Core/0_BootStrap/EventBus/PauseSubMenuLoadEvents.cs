@@ -1,0 +1,4 @@
+public enum PauseSubMenuLoadEvents
+{
+	RequestLoadSaveFileConfirmation
+}
