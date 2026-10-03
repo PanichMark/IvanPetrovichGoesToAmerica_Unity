@@ -10,5 +10,8 @@ public enum WeaponSystemEvents
 	PlayerEndedReloading,
 	WeaponAnimationShowWeapon,
 	WeaponAnimationHideWeapon,
-	ShowThirdPersonHand
+	ShowThirdPersonHand,
+	AmmoChanged,
+	ReserveAmmoChanged,
+	MagazineAmmoChanged
 }
