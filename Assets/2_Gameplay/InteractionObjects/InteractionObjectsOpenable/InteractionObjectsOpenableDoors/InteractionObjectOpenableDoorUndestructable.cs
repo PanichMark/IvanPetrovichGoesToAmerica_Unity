@@ -49,7 +49,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 			_isDoorDouble = true;	
 		}
 
-		Vector3 closedEulerAngles = new Vector3(0, 0, 0);
+		Vector3 closedEulerAngles = transform.localRotation.eulerAngles;
 		_closedRotation = Quaternion.Euler(closedEulerAngles);
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -276,37 +276,45 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 	public virtual void SetDoorToOpenedPosition()
 	{
-		transform.localRotation = _openedRotation;
+		//Quaternion startRotation = transform.localRotation;
+		//transform.localRotation = startRotation * _openedRotation;
 	}
 
 	public virtual void SetDoorToClosedPosition()
 	{
-		transform.localRotation = _closedRotation;
+		//Quaternion startRotation = transform.localRotation;
+		//transform.localRotation = startRotation * _closedRotation;
 	}
 
 	protected virtual IEnumerator OpenDoor()
 	{
-		while (Quaternion.Angle(transform.localRotation, _openedRotation) > 0.1f)
+		Quaternion startRotation = _closedRotation;
+		Quaternion targetRotation = _closedRotation * _openedRotation;
+
+		while (Quaternion.Angle(transform.localRotation, targetRotation) > 0.1f)
 		{
-			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, _openedRotation, Time.deltaTime * _doorOpeningSpeed);
+			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, Time.deltaTime * _doorOpeningSpeed);
 			yield return null;
 		}
 
+		transform.localRotation = targetRotation;
 		SetDoorToOpenedPosition();
-
 		_currentAnimation = null;
 	}
 
 	protected virtual IEnumerator CloseDoor()
 	{
-		while (Quaternion.Angle(transform.localRotation, _closedRotation) > 0.1f)
+		Quaternion startRotation = _closedRotation;
+		Quaternion targetRotation = _closedRotation;
+
+		while (Quaternion.Angle(transform.localRotation, targetRotation) > 0.1f)
 		{
-			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, _closedRotation, Time.deltaTime * _doorOpeningSpeed);
+			transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation, Time.deltaTime * _doorOpeningSpeed);
 			yield return null;
 		}
 
+		transform.localRotation = targetRotation;
 		SetDoorToClosedPosition();
-
 		_currentAnimation = null;
 	}
 
