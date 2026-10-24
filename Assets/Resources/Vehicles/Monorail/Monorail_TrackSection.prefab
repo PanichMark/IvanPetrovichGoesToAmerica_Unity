@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7604883713445040569}
   - component: {fileID: 2913000699022016977}
   m_Layer: 0
-  m_Name: Infrastructure_Monorail_Track_Section
+  m_Name: Monorail_TrackSection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8dba6297be0f0ac4297a7f216f3bbe87, type: 2}
+  - {fileID: 2100000, guid: c8f17708f43b77b4c81ce06abb9ae151, type: 2}
   - {fileID: 2100000, guid: 81407afffaab69948bcb7b0c90bb65ed, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
