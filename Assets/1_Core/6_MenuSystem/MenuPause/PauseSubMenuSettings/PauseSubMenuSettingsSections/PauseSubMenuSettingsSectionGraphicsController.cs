@@ -1,6 +1,7 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.Rendering.Universal;
 
 public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 	private GameObject _toggleTurnOnSSAO;
 	private TextMeshProUGUI _textTurnOnSSAO;
 
+	private UniversalRendererData _rendererFirstPerson;
+	private UniversalRendererData _rendererMain;
+
 	private Toggle _toggleComponentTurnOnShadows;
 	private Toggle _toggleComponentTurnOnSSAO;
 
@@ -25,11 +29,16 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 
 	private PlayerPrefsSettingsController _playerPrefsSettingsController;
 
+	private Bootstrap _bootstrap;
+
 	public void Initialize(
+		Bootstrap bootstrap,
 		LocalizationManager localizationManager,
 		PlayerPrefsSettingsController playerPrefsSettingsController,
 		ViewModelPauseSubMenuSettingsSectionGraphics viewModelPauseSubMenuSettingsSectionGraphics)
 	{
+		_bootstrap = bootstrap;
+		_rendererMain = _bootstrap.GameData.RendererMain;
 		_localizationManager = localizationManager;
 		_playerPrefsSettingsController = playerPrefsSettingsController;
 
@@ -47,6 +56,9 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 		ChangeLanguage(_localizationManager);
 
 		_playerPrefsSettingsController.OnApplySettingsSectionGraphicsPlayerPrefs += ApplySystemLoadedSettings;
+
+		_toggleComponentTurnOnShadows.onValueChanged.AddListener(OnShadowsToggleChanged);
+		_toggleComponentTurnOnSSAO.onValueChanged.AddListener(OnSSAOToggleChanged);
 
 		Debug.Log("SettingsSectionGraphicsController Initialized");
 	}
@@ -73,6 +85,17 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
 
+	}
+
+	private void OnShadowsToggleChanged(bool isOn)
+	{
+
+	}
+
+	private void OnSSAOToggleChanged(bool isOn)
+	{
+		_rendererMain.rendererFeatures[0].SetActive(isOn);
+		//_rendererFirstPerson.SetActive(isOn);
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)

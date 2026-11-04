@@ -347,6 +347,7 @@ public class BootstrapSubProcessMenuSystem
 			_viewModelPauseSubMenuSettingsSectionControls);
 
 		PauseSubMenuSettingsSectionGraphicsController.Initialize(
+			_bootstrap,
 			_localizationManager,
 			_bootstrapSubProcessSaveLoadSystem.PauseSubMenuSettingsPlayerPrefs,
 			_viewModelPauseSubMenuSettingsSectionGraphics);

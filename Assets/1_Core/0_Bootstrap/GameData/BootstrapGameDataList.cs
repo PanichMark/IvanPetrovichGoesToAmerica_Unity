@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering.Universal;
 
 [CreateAssetMenu(fileName = "BootstrapGameDataList", menuName = "Bootstrap/GameData/BootstrapGameDataList")]
 public class BootstrapGameDataList : ScriptableObject
@@ -11,7 +12,8 @@ public class BootstrapGameDataList : ScriptableObject
 	public TextAsset LocalizationMain;
 	public TermsAndConditions TermsAndConditions;
 	public GameNews GameNews;
-    public GameCanvasesList GameCanvasesList;
+	public UniversalRendererData RendererMain;
+	public GameCanvasesList GameCanvasesList;
 	public GameScenesList GameScenesList;
 	public GameMissionsList GameMissionsList;
 	public GameObjectPoolsList GameObjectPoolsList;
