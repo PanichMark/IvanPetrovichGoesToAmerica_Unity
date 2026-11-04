@@ -2,10 +2,20 @@
 
 public class ViewModelPauseSubMenuSettingsSectionGraphics
 {
-	public GameObject TEXT_NO_GRAPHICS_SETTINGS_YET;
+	public GameObject TextSectionGraphicsMessage;
+
+	public GameObject ToggleTurnOnShadows;
+	public GameObject TextToggleTurnOnShadows;
+	public GameObject ToggleTurnOnSSAO;
+	public GameObject TextToggleTurnOnSSAO;
 
 	public ViewModelPauseSubMenuSettingsSectionGraphics(Bootstrap bootstrap, GameObject canvas)
 	{
-		TEXT_NO_GRAPHICS_SETTINGS_YET = bootstrap.FindDeepGameObject(canvas, "TEXT_NO_GRAPHICS_SETTINGS_YET");
+		TextSectionGraphicsMessage = bootstrap.FindDeepGameObject(canvas, "TextSectionGraphicsMessage");
+
+		ToggleTurnOnShadows = bootstrap.FindDeepGameObject(canvas, "ToggleTurnOnShadows");
+		TextToggleTurnOnShadows = bootstrap.FindDeepGameObject(canvas, "TextToggleTurnOnShadows");
+		ToggleTurnOnSSAO = bootstrap.FindDeepGameObject(canvas, "ToggleTurnOnSSAO");
+		TextToggleTurnOnSSAO = bootstrap.FindDeepGameObject(canvas, "TextToggleTurnOnSSAO");
 	}
 }
