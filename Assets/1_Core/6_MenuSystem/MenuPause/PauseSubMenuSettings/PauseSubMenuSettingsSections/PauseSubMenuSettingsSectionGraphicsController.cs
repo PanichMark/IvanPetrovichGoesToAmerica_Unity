@@ -10,11 +10,13 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 	private GameObject _textSectionGraphicsMessage;
 	private TextMeshProUGUI _textComponentSectionGraphicsMessage;
 
+	private GameScenesManager _gameScenesManager;
+
 	private GameObject _toggleTurnOnShadows;
 	private TextMeshProUGUI _textToggleTurnOnShadows;
 	private GameObject _toggleTurnOnSSAO;
 	private TextMeshProUGUI _textTurnOnSSAO;
-
+	private Light _gameplayDirectionalLight;
 	private UniversalRendererData _rendererFirstPerson;
 	private UniversalRendererData _rendererMain;
 
@@ -35,10 +37,13 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 		Bootstrap bootstrap,
 		LocalizationManager localizationManager,
 		PlayerPrefsSettingsController playerPrefsSettingsController,
+		GameScenesManager gameScenesManager,
 		ViewModelPauseSubMenuSettingsSectionGraphics viewModelPauseSubMenuSettingsSectionGraphics)
 	{
 		_bootstrap = bootstrap;
+		_gameScenesManager = gameScenesManager;
 		_rendererMain = _bootstrap.GameData.RendererMain;
+		_rendererFirstPerson = bootstrap.GameData.RendererFirstPerson;
 		_localizationManager = localizationManager;
 		_playerPrefsSettingsController = playerPrefsSettingsController;
 
@@ -54,6 +59,8 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		ChangeLanguage(_localizationManager);
+
+		_gameScenesManager.OnEndLoadingGameplayScene += SetNewGameplaySceneLightComponent;
 
 		_playerPrefsSettingsController.OnApplySettingsSectionGraphicsPlayerPrefs += ApplySystemLoadedSettings;
 
@@ -87,15 +94,30 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 
 	}
 
+	private void SetNewGameplaySceneLightComponent()
+	{
+		_gameplayDirectionalLight = GameObject.Find("### SCENE IMPORTANT ###/Directional Light").GetComponent<Light>();
+	}
+
 	private void OnShadowsToggleChanged(bool isOn)
 	{
-
+		if (_gameplayDirectionalLight != null)
+		{
+			if (isOn)
+			{
+				_gameplayDirectionalLight.shadows = LightShadows.Soft;
+			}
+			else
+			{
+				_gameplayDirectionalLight.shadows = LightShadows.None;
+			}
+		}
 	}
 
 	private void OnSSAOToggleChanged(bool isOn)
 	{
 		_rendererMain.rendererFeatures[0].SetActive(isOn);
-		//_rendererFirstPerson.SetActive(isOn);
+		_rendererFirstPerson.rendererFeatures[0].SetActive(isOn);
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)

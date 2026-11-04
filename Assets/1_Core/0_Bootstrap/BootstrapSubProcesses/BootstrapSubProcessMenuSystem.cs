@@ -350,6 +350,7 @@ public class BootstrapSubProcessMenuSystem
 			_bootstrap,
 			_localizationManager,
 			_bootstrapSubProcessSaveLoadSystem.PauseSubMenuSettingsPlayerPrefs,
+			_gameSceneManager,
 			_viewModelPauseSubMenuSettingsSectionGraphics);
 
 		PauseSubMenuSettingsSectionAudioController.Initialize(

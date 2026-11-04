@@ -13,6 +13,7 @@ public class BootstrapGameDataList : ScriptableObject
 	public TermsAndConditions TermsAndConditions;
 	public GameNews GameNews;
 	public UniversalRendererData RendererMain;
+	public UniversalRendererData RendererFirstPerson;
 	public GameCanvasesList GameCanvasesList;
 	public GameScenesList GameScenesList;
 	public GameMissionsList GameMissionsList;
