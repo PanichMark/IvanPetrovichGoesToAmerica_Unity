@@ -51,21 +51,21 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		_viewModelMenuNote = ServiceLocator.Resolve<ViewModelMenuNote>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
-_textButtonExit = _viewModelMenuNote.TextButtonCloseMenuNote.GetComponent<TextMeshProUGUI>();
+		_textButtonExit = _viewModelMenuNote.TextButtonCloseMenuNote.GetComponent<TextMeshProUGUI>();
 
-_inputDevice = ServiceLocator.Resolve<IInputDevice>();
+		_inputDevice = ServiceLocator.Resolve<IInputDevice>();
 
-_menuManager = ServiceLocator.Resolve<MenuManager>();
-_buttonExitNoteMenu = _viewModelMenuNote.ButtonCloseMenuNote.GetComponent<Button>();
+		_menuManager = ServiceLocator.Resolve<MenuManager>();
+		_buttonExitNoteMenu = _viewModelMenuNote.ButtonCloseMenuNote.GetComponent<Button>();
 		_imageComponent = _viewModelMenuNote.ImageNote.GetComponent<Image>();
 
-_textBackground = _viewModelMenuNote.ImageNoteBlackBackground.GetComponent<Image>();
+		_textBackground = _viewModelMenuNote.ImageNoteBlackBackground.GetComponent<Image>();
 
-_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
-_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseAndDeactivate;
-_gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseAndDeactivate;
+		_gameSceneManager.OnBeginLoadingGameplayScene += CloseAndDeactivate;
 
-_textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();
+		_textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();
 		_textRectTransform = _textComponent.gameObject.GetComponent<RectTransform>();
 		
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -74,10 +74,11 @@ _textComponent = _viewModelMenuNote.TextNote.GetComponent<TextMeshProUGUI>();
 		_textBackgroundTransform = _textBackground.gameObject.GetComponent<RectTransform>();
 
 		_buttonExitNoteMenu.onClick.AddListener(CloseAndDeactivate);
-	
 
-		_menuManager.OnOpenPauseMenu += HideNoteCanvas;
-		_menuManager.OnClosePauseMenu += ShowNoteCanvas;
+
+		//_menuManager.OnOpenPauseMenu += HideNoteCanvas;
+		//_menuManager.OnClosePauseMenu += ShowNoteCanvas;
+		_menuManager.OnCloseInteractionMenu += CloseAndDeactivate;
 	}
 
 	public void ChangeLanguage(LocalizationManager localizationManager)

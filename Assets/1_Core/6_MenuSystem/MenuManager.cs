@@ -69,14 +69,14 @@ public class MenuManager : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseWeaponWheelMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseInteractionHUD;
-		_gameSceneManager.OnBeginLoadingGameplayScene += CloseInteractionMenu;
+		//_gameSceneManager.OnBeginLoadingGameplayScene += CloseInteractionMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseDialogueMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += CloseCutsceneMenu;
 
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += ClosePauseMenu;
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseWeaponWheelMenu;
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseInteractionHUD;
-		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseInteractionMenu;
+		//_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseInteractionMenu;
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseDialogueMenu;
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseCutsceneMenu;
 
@@ -112,7 +112,14 @@ public class MenuManager : MonoBehaviour
 		{
 			if (_pauseMenuLevel.Count == 0)
 			{
-				OpenPauseMenu();
+				if (!IsInteractionMenuOpened)
+				{
+					OpenPauseMenu();
+				}
+				else
+				{
+					CloseInteractionMenu();
+				}
 			}
 			else if (_pauseMenuLevel.Count == 1)
 			{
@@ -332,6 +339,7 @@ public class MenuManager : MonoBehaviour
 		
 		Debug.Log("InteractionMenu opened");
 	}
+
 	public void CloseInteractionMenu()
 	{
 		IsInteractionMenuOpened = false;
@@ -342,6 +350,7 @@ public class MenuManager : MonoBehaviour
 		CloseAnyMenu();
 		Debug.Log("InteractionMenu closed");
 	}
+
 	public void OpenDialogueMenu()
 	{
 		IsDialogueMenuOpened = true;

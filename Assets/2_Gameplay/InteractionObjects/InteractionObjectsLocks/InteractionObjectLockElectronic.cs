@@ -58,11 +58,12 @@ _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 
 		_buttonExitLockpickElectronicMenu.onClick.AddListener(CloseElectronicLockPuzzle);
 
-		_menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
-		_menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
+		//_menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
+		//_menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
+		_menuManager.OnCloseInteractionMenu += CloseElectronicLockPuzzle;
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
-		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseElectronicLockPuzzle;
-		_gameSceneManager.OnBeginLoadingGameplayScene += CloseElectronicLockPuzzle;
+		//_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseElectronicLockPuzzle;
+		//_gameSceneManager.OnBeginLoadingGameplayScene += CloseElectronicLockPuzzle;
 	}
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
@@ -258,7 +259,7 @@ _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 	private void EndPuzzle()
 	{
 		WasUnlocked = true;
-		_menuManager.CloseInteractionMenu();
+		//_menuManager.CloseInteractionMenu();
 		CloseElectronicLockPuzzle();
 	}
 

@@ -98,8 +98,9 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
-		_menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
-		_menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
+		//_menuManager.OnOpenPauseMenu += HidePuzzleCanvas;
+		//_menuManager.OnClosePauseMenu += ShowPuzzleCanvas;
+		_menuManager.OnCloseInteractionMenu += OnClosePuzzle;
 	}
 
 	private void Update()
