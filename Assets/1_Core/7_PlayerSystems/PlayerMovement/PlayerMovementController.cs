@@ -101,7 +101,7 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 		PlayerRigidBody = GetComponent<Rigidbody>();
 
 		_playerPreviousFramePosition = transform.position;
-		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => SetPlayerPosition(new Vector3(0, 0, -5));
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += () => SetPlayerPosition(new Vector3(102, -8, -111));
 
 		IsAbleToChangeMovementType = true;
 
