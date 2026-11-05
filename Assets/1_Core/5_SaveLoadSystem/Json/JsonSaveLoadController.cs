@@ -136,7 +136,12 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		foreach (IJsonSaveLoad saveLoadObj in _gameplaySaveLoadObjects)
 		{
-			yield return saveLoadObj.SaveJsonData(_gameData);
+			// Проверяем, что сам объект скрипта существует и его GameObject активен в сцене
+			if (((MonoBehaviour)saveLoadObj).gameObject.activeInHierarchy)
+			{
+				yield return saveLoadObj.SaveJsonData(_gameData);
+			}
+			// Если объект неактивен, цикл просто перейдет к следующему элементу
 		}
 
 
@@ -236,13 +241,17 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		for (int i = _gameplaySaveLoadObjects.Count - 1; i >= 0; i--)
 		{
-			yield return _gameplaySaveLoadObjects[i].LoadJsonData(_gameData);
+			var obj = _gameplaySaveLoadObjects[i];
+
+			if (((MonoBehaviour)obj).gameObject.activeInHierarchy)
+			{
+				yield return obj.LoadJsonData(_gameData);
+			}
 
 			LoadedObjectsCount++;
 			float progress = Mathf.Lerp(0.75f, 1f, (float)LoadedObjectsCount / totalObjects);
 
 			_gameSceneManager.SetLoadingSliderValue(progress);
-
 		}
 		Debug.Log("LOADING 777777777777");
 

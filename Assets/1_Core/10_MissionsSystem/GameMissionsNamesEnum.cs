@@ -6,5 +6,6 @@
 	Mission_2_MeansOfProductionDispute,
 	Mission_3_OnceGlorifiedEvent,
 	Mission_4_BureaucraticRedTape,
-	Mission_5_CorrectionalCascade
+	Mission_5_CorrectionalCascade,
+	Mission_6_FarewellPushoverCountry
 }

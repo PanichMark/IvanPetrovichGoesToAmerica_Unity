@@ -30,6 +30,7 @@ public class PlayerPrefsData
 
 	//Not available in Demo
 	//public string GameDifficulty { get; set; }
+
 	public bool ShowIngameTutorials { get; set; }
 	public bool ShowBlood { get; set; }
 
@@ -38,8 +39,9 @@ public class PlayerPrefsData
 	public float MouseSensitivityX { get; set; }
 	public float MouseSensitivityY { get; set; }
 
-	//Not available in Demo
 	//Settings Graphics
+	public bool TurnOnShadows { get; set; }
+	public bool TurnOnSSAO { get; set; }
 
 	//Settings Audio
 	public string Language { get; set; }

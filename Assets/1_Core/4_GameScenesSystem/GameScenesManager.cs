@@ -31,6 +31,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 
 	public event LoadSceneHandler OnBeginLoadingMainMenuOrEndGameTitlesScene;
 	public event LoadSceneHandler OnEndLoadingMainMenuOrEndGameTitlesScene;
+	public event LoadSceneHandler OnEndLoadingMainMenuScene;
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
 
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
@@ -281,6 +282,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 		OnEndLoadingMainMenuOrEndGameTitlesScene?.Invoke();
+		OnEndLoadingMainMenuScene?.Invoke();
 		_gameController.MainMenuOrEndGameTitlesSceneLoadEnded();
 		Debug.Log("Scene_MainMenu loading ended");
 

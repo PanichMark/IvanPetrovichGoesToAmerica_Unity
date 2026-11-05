@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Drawing;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 {
@@ -23,15 +24,19 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 	private Toggle _toggleComponentTurnOnShadows;
 	private Toggle _toggleComponentTurnOnSSAO;
 
-	public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
-	public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGraphicsData;
+	private bool _turnOnShadows;
+	private bool _turnOnSSAO;
 
-	public delegate void ResetPlayerPrefsSettingsEventHandler();
-	public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGraphicsData;
+	//public delegate void SavePlayerPrefsSettingsEventHandler(PlayerPrefsData data);
+	//public event SavePlayerPrefsSettingsEventHandler OnSaveSettingsGraphicsData;
+
+	//public delegate void ResetPlayerPrefsSettingsEventHandler();
+	//public event ResetPlayerPrefsSettingsEventHandler OnResetSettingsGraphicsData;
 
 	private PlayerPrefsSettingsController _playerPrefsSettingsController;
 
 	private Bootstrap _bootstrap;
+
 
 	public void Initialize(
 		Bootstrap bootstrap,
@@ -61,6 +66,7 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 		ChangeLanguage(_localizationManager);
 
 		_gameScenesManager.OnEndLoadingGameplayScene += SetNewGameplaySceneLightComponent;
+		_gameScenesManager.OnEndLoadingMainMenuScene += SetNewGameplaySceneLightComponent;
 
 		_playerPrefsSettingsController.OnApplySettingsSectionGraphicsPlayerPrefs += ApplySystemLoadedSettings;
 
@@ -74,24 +80,30 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 	{
 		var currentData = new PlayerPrefsData();
 
-		OnSaveSettingsGraphicsData?.Invoke(currentData);
-	}
+		currentData.TurnOnShadows = _turnOnShadows;
+		currentData.TurnOnSSAO = _turnOnSSAO;
 
-	public void ResetSettingsGraphics()
-	{
-		OnResetSettingsGraphicsData?.Invoke();
-
-		PlayerPrefsData defaultData = new PlayerPrefsData
-		{
-
-		};
-
-		OnSaveSettingsGraphicsData?.Invoke(defaultData);
+		_playerPrefsSettingsController.SaveSettingsGraphics(currentData);
 	}
 
 	public void ApplySystemLoadedSettings(PlayerPrefsData data)
 	{
+		OnShadowsToggleChanged(data.TurnOnShadows);
+		OnSSAOToggleChanged(data.TurnOnSSAO);
+	}
 
+	public void ResetSettingsGraphics()
+	{
+		PlayerPrefsData defaultData = new PlayerPrefsData
+		{
+			TurnOnShadows = true,
+			TurnOnSSAO = true,
+		};
+
+		_playerPrefsSettingsController.SaveSettingsGraphics(defaultData);
+
+		OnShadowsToggleChanged(true);
+		OnSSAOToggleChanged(true);
 	}
 
 	private void SetNewGameplaySceneLightComponent()
@@ -101,23 +113,28 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 
 	private void OnShadowsToggleChanged(bool isOn)
 	{
-		if (_gameplayDirectionalLight != null)
+		_turnOnShadows = isOn;
+
+		if (isOn)
 		{
-			if (isOn)
-			{
-				_gameplayDirectionalLight.shadows = LightShadows.Soft;
-			}
-			else
-			{
-				_gameplayDirectionalLight.shadows = LightShadows.None;
-			}
+			_gameplayDirectionalLight.shadows = LightShadows.Soft;
 		}
+		else
+		{
+			_gameplayDirectionalLight.shadows = LightShadows.None;
+		}
+
+		_toggleComponentTurnOnShadows.isOn = isOn;
 	}
 
 	private void OnSSAOToggleChanged(bool isOn)
 	{
+		_turnOnSSAO = isOn;
+
 		_rendererMain.rendererFeatures[0].SetActive(isOn);
 		_rendererFirstPerson.rendererFeatures[0].SetActive(isOn);
+
+		_toggleComponentTurnOnSSAO.isOn = isOn;
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
@@ -128,5 +145,13 @@ public class PauseSubMenuSettingsSectionGraphicsController : MonoBehaviour
 
 		_textToggleTurnOnShadows.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGraphics_TextToggleTurnOnShadows");
 		_textTurnOnSSAO.text = _localizationManager.GetLocalizedString("UI_Menu_PauseSubMenu_Settings_SectionGraphics_TextToggleTurnOnSSAO");
+	}
+
+	private void OnApplicationQuit()
+	{
+		//this is so in Edit mode SSAO is always ON
+
+		_rendererMain.rendererFeatures[0].SetActive(true);
+		_rendererFirstPerson.rendererFeatures[0].SetActive(true);
 	}
 }

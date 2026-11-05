@@ -32,9 +32,9 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 	public string MouseSensitivityX { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.MouseSensitivityX.ToString();
 	public string MouseSensitivityY { get; private set; } = PlayerPrefsSettingsSectionControlsEnum.MouseSensitivityY.ToString();
 
-	//Not available in Demo
-	//But its empty logic remains to avoid NULL
 	//Graphics
+	public string TurnOnShadows { get; set; } = PlayerPrefsSettingsSectionGraphicsEnum.TurnOnShadows.ToString();
+	public string TurnOnSSAO { get; set; } = PlayerPrefsSettingsSectionGraphicsEnum.TurnOnSSAO.ToString();
 
 	//Audio
 	public string Language { get; private set; } = PlayerPrefsSettingsSectionAudioEnum.Language.ToString();
@@ -91,6 +91,9 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 
 	public void SaveSettingsGraphics(PlayerPrefsData data)
 	{
+		PlayerPrefs.SetInt(TurnOnShadows, data.TurnOnShadows ? 1 : 0);
+		PlayerPrefs.SetInt(TurnOnSSAO, data.TurnOnSSAO ? 1 : 0);
+
 		PlayerPrefs.Save();
 
 		Debug.Log("Saved Settings Graphics");
@@ -115,6 +118,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 	{
 		var data = new PlayerPrefsData();
 
+		//General
 		data.FPSlimit = PlayerPrefs.GetInt(FPSlimit, 60);
 		data.CameraFOV = PlayerPrefs.GetFloat(CameraFOV, 60);
 		data.ScreenBrightness = PlayerPrefs.GetFloat(ScreenBrightness, 50);
@@ -122,6 +126,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 		data.ShowIngameTutorials = PlayerPrefs.GetInt(ShowIngameTutorials, 1) == 1;
 		data.ShowBlood = PlayerPrefs.GetInt(ShowBlood, 1) == 1;
 
+		//Controls
 		data.MouseSensitivityX = PlayerPrefs.GetFloat(MouseSensitivityX, 1);
 		data.MouseSensitivityY = PlayerPrefs.GetFloat(MouseSensitivityY, 1);
 
@@ -155,6 +160,11 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 			}
 		}
 
+		//Graphics
+		data.TurnOnShadows = PlayerPrefs.GetInt(TurnOnShadows, 1) == 1;
+		data.TurnOnShadows = PlayerPrefs.GetInt(TurnOnSSAO, 1) == 1;
+
+		//Audio
 		data.Language = PlayerPrefs.GetString(Language);
 		data.VolumeGeneral = PlayerPrefs.GetInt(VolumeGeneral, 50);
 		data.VolumeEnvironment = PlayerPrefs.GetInt(VolumeEnvironment, 50);
