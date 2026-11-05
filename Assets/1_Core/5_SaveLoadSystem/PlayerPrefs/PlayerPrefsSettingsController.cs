@@ -94,6 +94,9 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 		PlayerPrefs.SetInt(TurnOnShadows, data.TurnOnShadows ? 1 : 0);
 		PlayerPrefs.SetInt(TurnOnSSAO, data.TurnOnSSAO ? 1 : 0);
 
+		//Debug.Log(data.TurnOnShadows);
+		//Debug.Log(data.TurnOnSSAO);
+
 		PlayerPrefs.Save();
 
 		Debug.Log("Saved Settings Graphics");
@@ -162,7 +165,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 
 		//Graphics
 		data.TurnOnShadows = PlayerPrefs.GetInt(TurnOnShadows, 1) == 1;
-		data.TurnOnShadows = PlayerPrefs.GetInt(TurnOnSSAO, 1) == 1;
+		data.TurnOnSSAO= PlayerPrefs.GetInt(TurnOnSSAO, 1) == 1;
 
 		//Audio
 		data.Language = PlayerPrefs.GetString(Language);
@@ -175,6 +178,7 @@ public class PlayerPrefsSettingsController: MonoBehaviour
 
 		OnApplySettingsSectionGeneralPlayerPrefs?.Invoke(data);
 		OnApplySettingsSectionControlsPlayerPrefs?.Invoke(data);
+		OnApplySettingsSectionGraphicsPlayerPrefs?.Invoke(data);
 		OnApplySettingsSectionAudioPlayerPrefs?.Invoke(data);
 	}
 
