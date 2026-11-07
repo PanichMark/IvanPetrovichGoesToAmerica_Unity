@@ -415,6 +415,7 @@ public class BootstrapSubProcessMenuSystem
 			ViewModelSavingProcess);
 
 		_journalMenuController.Initialize(
+			MenuManager,
 			_canvasJournalMenu,
 			_viewModelJournalMenu);
 

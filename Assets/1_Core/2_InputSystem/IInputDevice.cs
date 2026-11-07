@@ -7,6 +7,7 @@ public interface IInputDevice
 	float CameraAxisY();
 	float CameraScroll();
 	bool GetKeyPauseMenu();
+	bool GetKeyJournalMenu();
 	bool GetKeyUp();
 	bool GetKeyDown();
 	bool GetKeyRight();

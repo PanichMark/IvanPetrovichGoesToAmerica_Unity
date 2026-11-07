@@ -34,7 +34,6 @@
 	LeftBracket,   
 	RightBracket,
 
-	Tab,
 	Space,
 
 	RightShift,

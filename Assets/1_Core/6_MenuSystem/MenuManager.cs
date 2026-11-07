@@ -8,6 +8,8 @@ public class MenuManager : MonoBehaviour
 	public delegate void MenuEventHandler();
 	public event MenuEventHandler OnOpenPauseMenu;
 	public event MenuEventHandler OnClosePauseMenu;
+	public event MenuEventHandler OnOpenJournalMenu;
+	public event MenuEventHandler OnCloseJournalMenu;
 	public event MenuEventHandler OnOpenWeaponWheelMenu;
 	public event MenuEventHandler OnCloseWeaponWheelMenu;
 	public event MenuEventHandler OnOpenInteractionHUD;
@@ -29,6 +31,7 @@ public class MenuManager : MonoBehaviour
 
 	public bool IsConfirmationOnExitToMainMenuOpened { get; private set; }
 	public bool IsPauseMenuOpened { get; private set; }
+	public bool IsJournalMenuOpened { get; private set; }
 	public bool IsWeaponWheelMenuOpened { get; private set; }
 	public bool IsAnyMenuOpened { get; private set; }
 	public bool IsDialogueMenuOpened { get; private set; }
@@ -110,42 +113,68 @@ public class MenuManager : MonoBehaviour
 
 		if (_inputDevice.GetKeyPauseMenu() && !_gameController.IsMainMenuOrEndGameTitlesActive)
 		{
-			if (_pauseMenuLevel.Count == 0)
+			if (IsJournalMenuOpened == false)
 			{
-				if (!IsInteractionMenuOpened)
+				if (_pauseMenuLevel.Count == 0)
 				{
-					OpenPauseMenu();
+					if (!IsInteractionMenuOpened)
+					{
+						OpenPauseMenu();
+					}
+					else
+					{
+						CloseInteractionMenu();
+					}
 				}
-				else
+				else if (_pauseMenuLevel.Count == 1)
 				{
-					CloseInteractionMenu();
-				}
-			}
-			else if (_pauseMenuLevel.Count == 1)
-			{
-				if (_gameController.IsPlayerDead || _gameController.IsMainMenuOrEndGameTitlesActive)
-				{
-					
-				}
-				else
-				{
-					ClosePauseMenu();
-				}
+					if (_gameController.IsPlayerDead || _gameController.IsMainMenuOrEndGameTitlesActive)
+					{
 
-				if (IsDialogueMenuOpened)
-				{
-					OnCloseMenuBackground?.Invoke();
-					OnClosePauseMenuDuringOpenedDialogueMenu?.Invoke();
+					}
+					else
+					{
+						ClosePauseMenu();
+					}
+
+					if (IsDialogueMenuOpened)
+					{
+						OnCloseMenuBackground?.Invoke();
+						OnClosePauseMenuDuringOpenedDialogueMenu?.Invoke();
+					}
+					if (IsCutsceneMenuOpened)
+					{
+						OnCloseMenuBackground?.Invoke();
+						OnClosePauseMenuDuringOpenedCutsceneMenu?.Invoke();
+					}
 				}
-				if (IsCutsceneMenuOpened)
+				else if (_pauseMenuLevel.Count == 2 && IsConfirmationOnExitToMainMenuOpened == true)
 				{
-					OnCloseMenuBackground?.Invoke();
-					OnClosePauseMenuDuringOpenedCutsceneMenu?.Invoke();
+					CloseConfirmationOnExitToMainMenu();
 				}
 			}
-			else if (_pauseMenuLevel.Count == 2 && IsConfirmationOnExitToMainMenuOpened == true)
+			else
 			{
-				CloseConfirmationOnExitToMainMenu();
+				CloseJournalMenu();
+			}
+		}
+
+		if (_inputDevice.GetKeyJournalMenu() && !_gameController.IsMainMenuOrEndGameTitlesActive)
+		{
+			if (IsPauseMenuOpened || IsInteractionMenuOpened || IsDialogueMenuOpened || IsCutsceneMenuOpened)
+			{
+
+			}
+			else
+			{
+				if (_pauseMenuLevel.Count == 0)
+				{
+					OpenJournalMenu();
+				}
+				else if (_pauseMenuLevel.Count == 1)
+				{
+					CloseJournalMenu();
+				}
 			}
 		}
 
@@ -209,6 +238,40 @@ public class MenuManager : MonoBehaviour
 		}
 
 		Debug.Log("PauseMenu closed");
+	}
+
+	public void OpenJournalMenu()
+	{
+		if (IsWeaponWheelMenuOpened)
+		{
+			CloseWeaponWheelMenu();
+		}
+		OnOpenMenuBackground?.Invoke();
+		PushPauseMenuLevel();
+		OnOpenJournalMenu?.Invoke();
+		IsJournalMenuOpened = true;
+		OpenAnyMenu();
+		_gameController.MakePlayerNonControllable();
+
+		Time.timeScale = 0f;
+
+		Debug.Log("JournalMenu opened");
+	}
+
+	public void CloseJournalMenu()
+	{
+		OnCloseJournalMenu?.Invoke();
+		IsJournalMenuOpened = false;
+
+		PopPauseMenuLevel();
+
+		CloseAnyMenu();
+		OnCloseMenuBackground?.Invoke();
+
+		Time.timeScale = 1f;
+		_gameController.MakePlayerControllable();
+
+		Debug.Log("JournalMenu Closed");
 	}
 
 	public void OpenCutsceneMenu()

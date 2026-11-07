@@ -255,6 +255,8 @@ public class Bootstrap : MonoBehaviour
 		_canvasMainMenuChooseMission = Instantiate(_gameData.GameCanvasesList.CanvasMainMenuChooseMission);
 		_canvasMainMenuReadNews = Instantiate(_gameData.GameCanvasesList.CanvasMainMenuReadNews);
 
+		_canvasJournalMenu = Instantiate(_gameData.GameCanvasesList.CanvasJournalMenu);
+
 		_canvasMenuWeaponWheel = Instantiate(_gameData.GameCanvasesList.CanvasMenuWeaponWheel);
 
 		_canvasMenuWeaponWheel = Instantiate(_gameData.GameCanvasesList.CanvasMenuWeaponWheel);

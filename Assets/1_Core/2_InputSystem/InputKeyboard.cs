@@ -22,6 +22,7 @@ public class InputKeyboard : IInputDevice
 	private bool _isLeftHandWeaponWheelOpened;
 
 	private KeyCode _keyPauseMenu;
+	private KeyCode _keyJournalMenu = KeyCode.Tab;
 
 	public InputKeyboard(GameController gameController, KeyCode keyPauseMenu)
 	{
@@ -84,6 +85,16 @@ public class InputKeyboard : IInputDevice
 		if (Input.GetKeyDown(_keyPauseMenu) && _gameController.IsPauseMenuAvailable)
 		{
 			return true;
+		}
+		else return false;
+	}
+
+	public bool GetKeyJournalMenu()
+	{
+		//if (Input.GetKeyDown(_keyJournalMenu) && _gameController.IsPauseMenuAvailable)
+		if (Input.GetKeyDown(_keyJournalMenu))
+		{
+		return true;
 		}
 		else return false;
 	}
