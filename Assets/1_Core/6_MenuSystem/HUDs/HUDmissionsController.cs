@@ -50,6 +50,8 @@ public class HUDmissionsController : MonoBehaviour
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDmissions;
 		_menuManager.OnClosePauseMenu += ShowCanvasHUDmissions;
+		_menuManager.OnOpenJournalMenu += HideCanvasHUDmissions;
+		_menuManager.OnCloseJournalMenu += ShowCanvasHUDmissions;
 		_menuManager.OnOpenWeaponWheelMenu += HideCanvasHUDmissions;
 		_menuManager.OnCloseWeaponWheelMenu += ShowCanvasHUDmissions;
 		_menuManager.OnOpenInteractionMenu += HideCanvasHUDmissions;

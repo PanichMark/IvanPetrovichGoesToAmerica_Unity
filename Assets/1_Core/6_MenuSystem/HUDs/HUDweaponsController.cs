@@ -96,6 +96,8 @@ public class HUDweaponsController : MonoBehaviour, IJsonSaveLoad
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDammo;
 		_menuManager.OnClosePauseMenu += ShowCanvasHUDammo;
+		_menuManager.OnOpenJournalMenu += HideCanvasHUDammo;
+		_menuManager.OnCloseJournalMenu += ShowCanvasHUDammo;
 		_menuManager.OnOpenInteractionMenu += HideCanvasHUDammo;
 		_menuManager.OnCloseInteractionMenu += ShowCanvasHUDammo;
 		_menuManager.OnOpenDialogueMenu += HideCanvasHUDammo;

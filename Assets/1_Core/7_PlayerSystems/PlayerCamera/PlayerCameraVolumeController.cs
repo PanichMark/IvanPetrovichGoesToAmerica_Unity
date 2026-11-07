@@ -33,7 +33,10 @@ public class PlayerCameraVolumeController : MonoBehaviour
 
 		_menuManager.OnOpenAnyMenu += ActivateCameraBlur;
 		_menuManager.OnCloseAnyMenu += DeactivateCameraBlur;
-		_menuManager.OnOpenPauseMenu += ActivateCameraBlur;
+
+		//_menuManager.OnOpenPauseMenu += ActivateCameraBlur;
+		//Why????
+
 		_menuManager.OnClosePauseMenuDuringOpenedDialogueMenu += DeactivateCameraBlur;
 		_menuManager.OnClosePauseMenuDuringOpenedCutsceneMenu += DeactivateCameraBlur;
 

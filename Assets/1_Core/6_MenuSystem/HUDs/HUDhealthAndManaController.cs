@@ -33,6 +33,8 @@ public class HUDhealthAndManaController : MonoBehaviour
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDhealthAndMana;
 		_menuManager.OnClosePauseMenu += ShowCanvasHUDhealthAndMana;
+		_menuManager.OnOpenJournalMenu += HideCanvasHUDhealthAndMana;
+		_menuManager.OnCloseJournalMenu += ShowCanvasHUDhealthAndMana;
 		_menuManager.OnOpenInteractionMenu += HideCanvasHUDhealthAndMana;
 		_menuManager.OnCloseInteractionMenu += ShowCanvasHUDhealthAndMana;
 		_menuManager.OnOpenDialogueMenu += HideCanvasHUDhealthAndMana;

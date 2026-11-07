@@ -371,7 +371,11 @@ public class WeaponWheelMenuController2D : MonoBehaviour, IWeaponWheelMenuContro
 	private void HideWeaponWheelMenuCanvas()
 	{
 		_weaponWheelMenuCanvas.gameObject.SetActive(false);
-		if (!_menuManager.IsPauseMenuOpened)
+		if (_menuManager.IsPauseMenuOpened || _menuManager.IsJournalMenuOpened)
+		{
+			
+		}
+		else
 		{
 			_menuManager.CloseWeaponWheelMenu();
 		}
