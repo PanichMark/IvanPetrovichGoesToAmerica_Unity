@@ -55,6 +55,7 @@ public class Bootstrap : MonoBehaviour
 	private GameObject _canvasPauseSubMenuSettings;
 	private GameObject _canvasPauseSubMenuSettingsGameDifficulty;
 	private GameObject _canvasPauseMenuConfirmAction;
+	private GameObject _canvasJournalMenu;
 	public GameObject _canvasMainMenuChooseMission {  get; private set; }
 	public GameObject _canvasMainMenuReadNews { get; private set; }
 	private GameObject _canvasHUDinteraction;
@@ -321,6 +322,7 @@ public class Bootstrap : MonoBehaviour
 			_canvasPauseSubMenuSettingsGameDifficulty,
 			_canvasPauseMenuConfirmAction,
 			_canvasMainMenuReadNews,
+			_canvasJournalMenu,
 			_canvasMenuWeaponWheel,
 			_canvasMenuCutscene,
 			_canvasHUDhealthAndMana,

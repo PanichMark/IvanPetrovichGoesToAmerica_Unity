@@ -12,7 +12,9 @@ public class BootstrapSubProcessMenuSystem
 	private GameTutorialsList _tutorialsList;
 	private GameObject _canvasMainMenuChooseMission;
 	private GameObject _canvasBootstrapSignTermsAndConditions;
-
+	private GameObject _canvasJournalMenu;
+	private JournalMenuController _journalMenuController;
+	private ViewModelJournalMenu _viewModelJournalMenu;
 	private GameplayCanvases _gameplayCanvases;
 	public ViewModelBootstrapSignTermsAndConditions ViewModelBootstrapSignTermsAndConditions { get; private set; }
 	public ViewModelSavingProcess ViewModelSavingProcess { get; private set; }
@@ -145,6 +147,7 @@ public class BootstrapSubProcessMenuSystem
 		GameObject canvasPauseSubMenuSettingsGameDifficultyController,
 		GameObject canvasMenuConfirmAction,
 		GameObject canvasMainMenuReadNews,
+		GameObject canvasJournalMenu,
 		GameObject canvasMenuWeaponWheel,
 		GameObject canvasMenuCutscene,
 		GameObject canvasHUDhealthAndMana,
@@ -159,6 +162,7 @@ public class BootstrapSubProcessMenuSystem
 		GameObject canvasBootstrapSignTermsAndConditions,
 		GameObject canvasHUDmonocular)
 	{
+		_canvasJournalMenu = canvasJournalMenu;
 		_canvasHUDmonocular = canvasHUDmonocular;
 		_canvasSavingProcess = canvasSavingProcess;
 		_bootstrapSubProcessSaveLoadSystem = bootstrapSubProcessSaveLoadSystem;
@@ -220,6 +224,8 @@ public class BootstrapSubProcessMenuSystem
 		HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
 		_savingProcessController = _gameObjectBootstrapMenuSystem.AddComponent<SavingProcessController>();
 
+		_journalMenuController = _gameObjectBootstrapMenuSystem.AddComponent<JournalMenuController>();
+
 		// В методе Initialize() класса BootstrapSubProcessMenuSystem (после инициализации всех ViewModel)
 		_gameplayCanvases = new GameplayCanvases(
 			_canvasMenuLockpickMechanical,
@@ -260,6 +266,8 @@ public class BootstrapSubProcessMenuSystem
 		_viewModelPauseSubMenuSettingsSectionControls = new ViewModelPauseSubMenuSettingsSectionControls(_bootstrap, _canvasPauseSubMenuSettings);
 		_viewModelPauseSubMenuSettingsSectionGraphics = new ViewModelPauseSubMenuSettingsSectionGraphics(_bootstrap, _canvasPauseSubMenuSettings);
 		ViewModelPauseSubMenuSettingsSectionAudio = new ViewModelPauseSubMenuSettingsSectionAudio(_bootstrap, _canvasPauseSubMenuSettings);
+
+		_viewModelJournalMenu = new ViewModelJournalMenu(_bootstrap, _canvasJournalMenu);
 
 		MenuManager.Initialize(
 			_bootstrap,
@@ -405,6 +413,10 @@ public class BootstrapSubProcessMenuSystem
 			_saveLoadController,
 			_canvasSavingProcess,
 			ViewModelSavingProcess);
+
+		_journalMenuController.Initialize(
+			_canvasJournalMenu,
+			_viewModelJournalMenu);
 
 
 

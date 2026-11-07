@@ -9,16 +9,17 @@ public class GameplayCanvases
 	public GameObject CanvasHUDmonocular {  get; private set; }
 	public GameObject CanvasMainMenuChooseMission { get; private set; }
 	public GameObject CanvasMainMenuReadNews { get; private set; }
-	public GameObject CanvasCutscene { get; private set; } // Новое поле
+	public GameObject CanvasCutscene { get; private set; }
 
-	public GameplayCanvases(GameObject canvasLockMechanical,
-							GameObject canvasLockElectronic,
-							GameObject canvasNote,
-							GameObject canvasDialogue,
-							GameObject canvasMainMenuChooseMission,
-							GameObject canvasMainMenuReadNews,
-							GameObject canvasCutscene,
-							GameObject canvasHUDmonocular) // Новый аргумент
+	public GameplayCanvases(
+		GameObject canvasLockMechanical,
+		GameObject canvasLockElectronic,
+		GameObject canvasNote,
+		GameObject canvasDialogue,
+		GameObject canvasMainMenuChooseMission,
+		GameObject canvasMainMenuReadNews,
+		GameObject canvasCutscene,
+		GameObject canvasHUDmonocular)
 	{
 		CanvasLockMechanical = canvasLockMechanical;
 		CanvasLockElectronic = canvasLockElectronic;

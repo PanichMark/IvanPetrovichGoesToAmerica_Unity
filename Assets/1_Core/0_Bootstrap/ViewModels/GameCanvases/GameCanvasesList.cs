@@ -31,6 +31,9 @@ public class GameCanvasesList : ScriptableObject
 	public GameObject CanvasMainMenuChooseMission;
 	public GameObject CanvasMainMenuReadNews;
 
+	[Header("Journal Menu")]
+	public GameObject CanvasJournalMenu;
+
 	[Header("HUDs")]
 	public GameObject CanvasHUDinteraction;
 	public GameObject CanvasHUDmission;
