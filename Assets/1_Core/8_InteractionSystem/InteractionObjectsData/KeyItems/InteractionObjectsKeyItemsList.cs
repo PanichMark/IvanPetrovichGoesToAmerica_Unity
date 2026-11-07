@@ -1,0 +1,7 @@
+﻿public enum InteractionObjectsKeyItemList
+{
+	KeyItem_Scene_1_Church_Key_Quarters,
+	KeyItem_Scene_1_Street_Key_ChurchGate,
+
+	Key_ItemScene_1_RevenueHouse_SafeCode_SemyonSomovSafe
+}

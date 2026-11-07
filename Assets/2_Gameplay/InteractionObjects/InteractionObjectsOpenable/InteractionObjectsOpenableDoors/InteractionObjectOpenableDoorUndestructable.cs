@@ -10,9 +10,9 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	public override bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 	[SerializeField] protected int _doorOpenAngle = 90;
 	protected string _interactionHintMessageMain;
-	private KeysManager _keysManager;
+	private KeyItemsManager _keysManager;
 	[SerializeField] protected float _doorOpeningSpeed = 200f;
-	[SerializeField] protected InteractionObjectKeyData _interactionObjectKeyData;
+	[SerializeField] protected InteractionObjectKeyItemData _interactionObjectKeyData;
 	[SerializeField] protected InteractionObjectLockMechanical _mechanicalLockController;
 	[SerializeField] protected InteractionObjectLockElectronic _electronicLockController;
 	[SerializeField] protected InteractionObjectElectricalPanel _electronicElectricalPanel;
@@ -34,7 +34,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	{
 _playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
-_keysManager = ServiceLocator.Resolve<KeysManager>();
+_keysManager = ServiceLocator.Resolve<KeyItemsManager>();
 _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		Vector3 openedEulerAngles = new Vector3(0, _doorOpenAngle, 0);
@@ -85,7 +85,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 				_electronicElectricalPanel.OnWentOutOfService += UnlockDoor;
 			}
 			if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null && _electronicElectricalPanel == null)
-				|| (_interactionObjectKeyData != null && (_keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString()) || IsOpenableUnlocked))
+				|| (_interactionObjectKeyData != null && (_keysManager.CollectedKeyItems.Contains(_interactionObjectKeyData.KeyItemID.ToString()) || IsOpenableUnlocked))
 				|| (_mechanicalLockController != null && IsOpenableUnlocked)
 				|| (_electronicLockController != null && IsOpenableUnlocked)
 				|| _electronicElectricalPanel != null && IsOpenableUnlocked)
@@ -145,7 +145,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 				_isAdditionalInteractionHintActive = true;
 			}
 			if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null && _electronicElectricalPanel == null)
-				|| (_interactionObjectKeyData != null && (_keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString()) || IsOpenableUnlocked))
+				|| (_interactionObjectKeyData != null && (_keysManager.CollectedKeyItems.Contains(_interactionObjectKeyData.KeyItemID.ToString()) || IsOpenableUnlocked))
 				|| (_mechanicalLockController != null && IsOpenableUnlocked)
 				|| (_electronicLockController != null && IsOpenableUnlocked)
 				|| _electronicElectricalPanel != null && IsOpenableUnlocked)
@@ -195,7 +195,7 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 				(_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null)
 				|| (_mechanicalLockController != null && _mechanicalLockController.WasUnlocked)
 				|| (_electronicLockController != null && _electronicLockController.WasUnlocked)
-				|| (_interactionObjectKeyData != null && _keysManager.CollectedKeys.Contains(_interactionObjectKeyData.keyID.ToString())))
+				|| (_interactionObjectKeyData != null && _keysManager.CollectedKeyItems.Contains(_interactionObjectKeyData.KeyItemID.ToString())))
 			{
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			}

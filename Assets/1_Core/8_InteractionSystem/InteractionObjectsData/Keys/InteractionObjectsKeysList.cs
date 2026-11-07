@@ -1,6 +1,0 @@
-﻿public enum InteractionObjectsKeysList
-{
-	Key_1_Scene_1_Church_ChurchQuartersDoor,
-	Key_2_Scene_1_Street_ChurchYardGate,
-	Key_3_Scene_1_RevenueHouse_RevenueHouseAttic
-}

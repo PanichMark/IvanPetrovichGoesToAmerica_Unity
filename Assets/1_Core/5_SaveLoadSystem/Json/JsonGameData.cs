@@ -31,8 +31,8 @@ public class JsonGameData
 	[JsonProperty("PlayerResources")]
 	public PlayerResourcesData PlayerResources = new PlayerResourcesData();
 
-	[JsonProperty("PlayerKeys")]
-	public List<string> PlayerKeys;
+	[JsonProperty("PlayerKeyItems")]
+	public List<string> PlayerKeyItems;
 
 	[JsonProperty("PlayerWeapons")]
 	public PlayerWeaponsData PlayerWeapons = new PlayerWeaponsData();
@@ -127,8 +127,8 @@ public class JsonGameData
 		PlayerResources.PlayerManaReplenishItemsNumber = 0;
 		PlayerResources.PlayerMoney = 0;
 
-		//PlayerKeys
-		PlayerKeys = new List<string>();
+		//PlayerKeyItems
+		PlayerKeyItems = new List<string>();
 
 		//PlayerWeapons
 		PlayerWeapons.UnlockedPlayerWeapons = new List<string>();

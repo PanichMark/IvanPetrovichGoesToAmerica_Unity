@@ -26,7 +26,7 @@ public class BootstrapSubProcessInteractionSystem
 	private GameObject _gameObjectPlayer;
 	private GameObject _gameObjectPlayerCamera;
 
-	private KeysManager _keysManager;
+	private KeyItemsManager _keysManager;
 
 	public BootstrapSubProcessInteractionSystem(
 		Bootstrap bootstrap,
@@ -63,7 +63,7 @@ public class BootstrapSubProcessInteractionSystem
 		InteractionController = _gameObjectBootstrapInteractionSystem.AddComponent<PlayerInteractionController>();
 		_interactionAnimationController = _gameObjectBootstrapInteractionSystem.AddComponent<PlayerInteractionAnimationController>();
 		_interactionFirstPersonRenderer = _gameObjectBootstrapInteractionSystem.AddComponent<PlayerInteractionFirstPersonRenderer>();
-		_keysManager = _gameObjectBootstrapInteractionSystem.AddComponent<KeysManager>();
+		_keysManager = _gameObjectBootstrapInteractionSystem.AddComponent<KeyItemsManager>();
 
 		GameObjectSpineSlot = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "Spine");
 
@@ -96,7 +96,7 @@ public class BootstrapSubProcessInteractionSystem
 		_keysManager.Initialize();
 
 		ServiceLocator.Register<PlayerInteractionController>(InteractionController);
-		ServiceLocator.Register<KeysManager>(_keysManager);
+		ServiceLocator.Register<KeyItemsManager>(_keysManager);
 
 		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerSpineBone, GameObjectSpineSlot);
 

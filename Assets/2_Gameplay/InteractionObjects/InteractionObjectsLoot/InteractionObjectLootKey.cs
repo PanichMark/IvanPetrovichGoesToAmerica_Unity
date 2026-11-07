@@ -4,8 +4,8 @@ using System.Collections;
 
 public class InteractionObjectLootKey : InteractionObjectLootAbstract
 {
-	[SerializeField] private InteractionObjectKeyData _keyData;
-	private KeysManager _keysManager;
+	[SerializeField] private InteractionObjectKeyItemData _keyData;
+	private KeyItemsManager _keysManager;
 	private string _keyID;
 
 	protected override bool _shouldShowGainedItem => true;
@@ -13,15 +13,15 @@ public class InteractionObjectLootKey : InteractionObjectLootAbstract
 
 	protected override void InitializeLootObject()
 	{
-		_keysManager = ServiceLocator.Resolve<KeysManager>();
-		_keyID = _keyData.keyID.ToString();
+		_keysManager = ServiceLocator.Resolve<KeyItemsManager>();
+		_keyID = _keyData.KeyItemID.ToString();
 	}
 
 	public override void Interact()
 	{
 		base.Interact();
 
-		_keysManager.AddKey(_keyID);
+		_keysManager.AddKeyItemToCollected(_keyID);
 		Debug.Log($"Added key: {_keyID}");
 	}
 }
