@@ -415,38 +415,26 @@ public class BootstrapSubProcessMenuSystem
 			ViewModelSavingProcess);
 
 		_journalMenuController.Initialize(
+			_localizationManager,
 			MenuManager,
 			_canvasJournalMenu,
 			_viewModelJournalMenu);
 
-
-
-ServiceLocator.Register<PauseSubMenuSettingsGameDifficultyController>(_pauseSubMenuSettingsGameDifficultyController);
-ServiceLocator.Register<PauseMenuConfirmActionController>(PauseMenuConfirmActionController);
+		ServiceLocator.Register<PauseSubMenuSettingsGameDifficultyController>(_pauseSubMenuSettingsGameDifficultyController);
+		ServiceLocator.Register<PauseMenuConfirmActionController>(PauseMenuConfirmActionController);
 		ServiceLocator.Register<MenuManager>(MenuManager);
-ServiceLocator.Register<PauseMenuController>(PauseMenuController);
-ServiceLocator.Register<PauseSubMenuSettingsController>(PauseSubMenuSettingsController);
-ServiceLocator.Register<PauseSubMenuSettingsSectionGeneralController>(PauseSubMenuSettingsSectionGeneralController);
+		ServiceLocator.Register<PauseMenuController>(PauseMenuController);
+		ServiceLocator.Register<PauseSubMenuSettingsController>(PauseSubMenuSettingsController);
+		ServiceLocator.Register<PauseSubMenuSettingsSectionGeneralController>(PauseSubMenuSettingsSectionGeneralController);
 		ServiceLocator.Register<MenuBackgroundController>(_menuBackgroundController);
-
-
-
-
-
-
 
 		ServiceLocator.Register<GameplayCanvases>(_gameplayCanvases);
 		ServiceLocator.Register<HUDmissionsController>(HUDmissionsController);
 
-
-
-
-
 		ServiceLocator.Register<ViewModelMenuDialogue>(ViewModelMenuDialogue);
 
-
 		ServiceLocator.Register<ViewModelMainMenuChooseMission>(ViewModelMainMenuChooseMission);
-ServiceLocator.Register<ViewModelMainMenuReadNews>(_viewModelMainMenuReadNews);
+		ServiceLocator.Register<ViewModelMainMenuReadNews>(_viewModelMainMenuReadNews);
 		ServiceLocator.Register<ViewModelMenuCutscene>(ViewModelMenuCutscene);
 		ServiceLocator.Register<ViewModelMenuNote>(ViewModelMenuNote);
 		ServiceLocator.Register<ViewModelMenuLockpickMechanical>(ViewModelMenuLockpickMechanical);
