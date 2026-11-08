@@ -95,6 +95,8 @@ public class JournalMenuController : MonoBehaviour
 		_textButtonJournalSectionStatistics = viewModelJournalMenu.TextButtonJournalSectionStatistics;
 		_textComponentButtonJournalSectionStatistics = viewModelJournalMenu.TextButtonJournalSectionStatistics.GetComponent<TextMeshProUGUI>();
 
+		_menuManager.OnOpenJournalMenu += () => OpenJournalSubSection(_journalSectionMissionInfo);
+
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_menuManager.OnOpenJournalMenu += ShowJournalMenu;
@@ -159,7 +161,7 @@ public class JournalMenuController : MonoBehaviour
 		}
 		if (subSettingsSection == _journalSectionAbilities)
 		{
-			_buttonComponentJournalSectionAbilities.interactable = true;
+			//_buttonComponentJournalSectionAbilities.interactable = true;
 		}
 		if (subSettingsSection == _journalSectionInventory)
 		{
