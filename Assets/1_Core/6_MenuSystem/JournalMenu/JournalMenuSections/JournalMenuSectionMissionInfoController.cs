@@ -22,6 +22,8 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 
 	private string _textGoal;
 
+	private Mission _currentMission;
+
 	public void Initialize(
 		LocalizationManager localizationManager,
 		GameScenesManager gameSceneManager,
@@ -80,6 +82,24 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 		}
 	}
 
+	public void SetMissionInfo(Mission missionData)
+	{
+		_currentMission = missionData;
+
+		if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+		{
+			_textComponentMissionDescription.text = _currentMission.MissionDescription_RU.text;
+		}
+		if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
+		{
+			_textComponentMissionDescription.text = _currentMission.MissionDescription_EN.text;
+		}
+
+		_textComponentMissionName.text = _localizationManager.GetLocalizedString(_currentMission.MissionName.ToString());
+
+		_imageComponentMissionTarget.sprite = _currentMission.MissionTargetSprite;
+	}
+
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
@@ -89,6 +109,17 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 			{
 				_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current") + " " + _textGoal;
+
+				if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+				{
+					_textComponentMissionDescription.text = _currentMission.MissionDescription_RU.text;
+				}
+				if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
+				{
+					_textComponentMissionDescription.text = _currentMission.MissionDescription_EN.text;
+				}
+
+				_textComponentMissionName.text = _localizationManager.GetLocalizedString(_currentMission.MissionName.ToString());
 			}
 			else
 			{
@@ -99,5 +130,7 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 		{
 			_textComponentMissionStep.text = null;
 		}
+
+
 	}
 }

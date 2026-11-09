@@ -47,6 +47,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		CurrentStepIndex = 0;
 
 		ActiveMission = _gameMissions.MissionsInOrder[ActiveMissionIndex];
+		_journalMenuSectionMissionInfoController.SetMissionInfo(ActiveMission);
 
 		Debug.Log(ActiveMission);
 		if (ActiveMission.MissionSteps.Length > 0)
@@ -269,6 +270,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 			Debug.Log(ActiveMission);
 			CurrentStepIndex = 0;
 			GoToNextStep(CurrentStepIndex);
+			_journalMenuSectionMissionInfoController.SetMissionInfo(ActiveMission);
 		}
 	}
 
@@ -289,6 +291,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	public void ApplyMissionConfig(Mission setMission, int setMissionStep)
 	{
 		ActiveMission = setMission;
+		_journalMenuSectionMissionInfoController.SetMissionInfo(ActiveMission);
 		GoToNextStep(setMissionStep);
 	}
 
