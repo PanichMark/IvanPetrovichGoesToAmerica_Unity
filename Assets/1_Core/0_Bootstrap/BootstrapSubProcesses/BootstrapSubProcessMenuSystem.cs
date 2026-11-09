@@ -416,7 +416,7 @@ public class BootstrapSubProcessMenuSystem
 			MenuManager,
 			PauseSubMenuSettingsSectionGeneralController,
 			_canvasHUDmission,
-			ViewModelPauseMenu,
+			_viewModelJournalMenuSectionMissionInfo,
 			ViewModelHUDMission);
 
 		_savingProcessController.Initialize(

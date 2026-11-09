@@ -17,8 +17,8 @@ public class HUDmissionsController : MonoBehaviour
 	private GameObject _textNewMissionGoalDisplay;
 	private TextMeshProUGUI _textComponentNewMissionGoalDisplay;
 
-	private GameObject _textCurrentMissionGoal;
-	private TextMeshProUGUI _textComponentCurrentMissionGoal;
+	private GameObject _textCurrentMissionStep;
+	private TextMeshProUGUI _textComponentCurrentMissionStep;
 
 	private string _textGoal;
 
@@ -29,7 +29,7 @@ public class HUDmissionsController : MonoBehaviour
 		MenuManager menuManager,
 		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
 		GameObject canvasHUDmissions,
-		ViewModelPauseMenu viewModelPauseMenu,
+		ViewModelJournalMenuSectionMissionInfo viewModelJournalMenuSectionMissionInfo,
 		ViewModelHUDMission viewModelHUDMission)
 	{
 		_gameController = gameController;
@@ -45,8 +45,8 @@ public class HUDmissionsController : MonoBehaviour
 		_textNewMissionGoalDisplay = viewModelHUDMission.TextNewMissionGoalDisplay;
 		_textComponentNewMissionGoalDisplay = viewModelHUDMission.TextNewMissionGoalDisplay.GetComponent<TextMeshProUGUI>();
 
-		_textCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoalDisplay;
-		_textComponentCurrentMissionGoal = _textCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
+		_textCurrentMissionStep = viewModelJournalMenuSectionMissionInfo.TextCurrentMissionStep;
+		_textComponentCurrentMissionStep = _textCurrentMissionStep.GetComponent<TextMeshProUGUI>();
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDmissions;
 		_menuManager.OnClosePauseMenu += ShowCanvasHUDmissions;
@@ -103,12 +103,12 @@ public class HUDmissionsController : MonoBehaviour
 		{
 			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 			{
-				_textComponentCurrentMissionGoal.text = _textGoal;
+				_textComponentCurrentMissionStep.text = _textGoal;
 			}
 			else
 			{
 				//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-				_textComponentCurrentMissionGoal.text = null;
+				_textComponentCurrentMissionStep.text = null;
 			}
 		}
 	}

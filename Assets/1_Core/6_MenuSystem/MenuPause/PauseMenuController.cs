@@ -26,12 +26,6 @@ public class PauseMenuController : MonoBehaviour
 	private Button[] _buttonsComponentsPauseMenu;
 	private TextMeshProUGUI[] _textComponentsButtonsPauseMenu;
 
-	private GameObject _currentMission;
-	private TextMeshProUGUI _textComponentsCurrentMissionGoal;
-
-	private GameObject _playerMoney;
-	private TextMeshProUGUI _textComponentsCurrentPlayerMoney;
-
 	private GameObject _textDeathMessage;
 	private TextMeshProUGUI _textComponentDeathMessage;
 
@@ -109,12 +103,6 @@ public class PauseMenuController : MonoBehaviour
 			_textComponentsButtonsPauseMenu[i] = viewModelPauseMenu.TextButtonsPauseMenu[i].GetComponent<TextMeshProUGUI>();
 		}
 
-		_currentMission = viewModelPauseMenu.CurrentMission;
-		_textComponentsCurrentMissionGoal = viewModelPauseMenu.TextCurrentMissionGoal.GetComponent<TextMeshProUGUI>();
-
-		_playerMoney = viewModelPauseMenu.PlayerMoney;
-		_textComponentsCurrentPlayerMoney = viewModelPauseMenu.TextCurrentPlayerMoney.GetComponent<TextMeshProUGUI>();
-
 		_textDeathMessage = viewModelPauseMenu.TextDeathMessage;
 		_textComponentDeathMessage = viewModelPauseMenu.TextDeathMessage.GetComponent<TextMeshProUGUI>();
 
@@ -127,24 +115,6 @@ public class PauseMenuController : MonoBehaviour
 
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += ClosePauseSubMenu;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ClosePauseSubMenu;
-		_gameSceneManager.OnEndLoadingGameplayScene += () =>
-		{
-			if (SceneManager.sceneCount > 1)
-			{
-				if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
-				{
-					_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-				}
-				else
-				{
-					_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
-				}
-			}
-			else
-			{
-				_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-			}
-		};
 
 		_menuManager.OnOpenPauseMenu += ShowPauseMenu;
 		_menuManager.OnClosePauseMenu += HidePauseMenu;
@@ -215,9 +185,6 @@ public class PauseMenuController : MonoBehaviour
 		_loadButtonRect.anchoredPosition = new Vector2(_loadButtonDefaultAnchoredPos.x, -38);
 		_settingsButtonRect.anchoredPosition = new Vector2(_settingsButtonDefaultAnchoredPos.x, -153.5f);
 		_exitToMainMenuButtonRect.anchoredPosition = new Vector2(_exitToMainMenuButtonDefaultAnchoredPos.x, -269.5f);
-
-		_playerMoney.SetActive(false);
-		_currentMission.SetActive(false);
 	}
 
 	private void PauseMenuOnRevive()
@@ -232,9 +199,6 @@ public class PauseMenuController : MonoBehaviour
 		_loadButtonRect.anchoredPosition = _loadButtonDefaultAnchoredPos;
 		_settingsButtonRect.anchoredPosition = _settingsButtonDefaultAnchoredPos;
 		_exitToMainMenuButtonRect.anchoredPosition = _exitToMainMenuButtonDefaultAnchoredPos;
-
-		_playerMoney.SetActive(true);
-		_currentMission.SetActive(true);
 	}
 
 	public void ClosePauseSubMenu()
@@ -334,24 +298,6 @@ public class PauseMenuController : MonoBehaviour
 		_textComponentsButtonsPauseMenu[4].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonTutorial");
 		_textComponentsButtonsPauseMenu[5].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonSettings");
 		_textComponentsButtonsPauseMenu[6].text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_ButtonExitToMainMenu");
-
-		if (SceneManager.sceneCount > 1)
-		{
-			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
-			{
-				_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-			}
-			else
-			{
-				_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
-			}
-		}
-		else
-		{
-			_textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-		}
-
-		_textComponentsCurrentPlayerMoney.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_PlayerMoney");
 
 		_textComponentDeathMessage.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_TextDeathMessage");
 	}
