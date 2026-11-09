@@ -30,11 +30,11 @@ public class JournalMenuController : MonoBehaviour
 	private GameObject _textButtonJournalSectionMissionInfo;
 	private TextMeshProUGUI _textComponentButtonJournalSectionMissionInfo;
 
-	private GameObject _journalSectionAbilities;
-	private GameObject _buttonJournalSectionAbilities;
-	private Button _buttonComponentJournalSectionAbilities;
-	private GameObject _textButtonJournalSectionAbilities;
-	private TextMeshProUGUI _textComponentButtonJournalSectionAbilities;
+	private GameObject _journalSectionSkillTree;
+	private GameObject _buttonJournalSectionSkillTree;
+	private Button _buttonComponentJournalSectionSkillTree;
+	private GameObject _textButtonJournalSectionSkillTree;
+	private TextMeshProUGUI _textComponentButtonJournalSectionSkillTree;
 
 	private GameObject _journalSectionInventory;
 	private GameObject _buttonJournalSectionInventory;
@@ -74,12 +74,12 @@ public class JournalMenuController : MonoBehaviour
 		_textButtonJournalSectionMissionInfo = viewModelJournalMenu.TextButtonJournalSectionMissionInfo;
 		_textComponentButtonJournalSectionMissionInfo = viewModelJournalMenu.TextButtonJournalSectionMissionInfo.GetComponent<TextMeshProUGUI>();
 
-		_journalSectionAbilities = viewModelJournalMenu.JournalSectionAbilities;
-		_buttonJournalSectionAbilities = viewModelJournalMenu.ButtonJournalSectionAbilities;
-		_buttonComponentJournalSectionAbilities = viewModelJournalMenu.ButtonJournalSectionAbilities.GetComponent<Button>();
-		_buttonComponentJournalSectionAbilities.onClick.AddListener(() => OpenJournalSubSection(_journalSectionAbilities));
-		_textButtonJournalSectionAbilities = viewModelJournalMenu.TextButtonJournalSectionAbilities;
-		_textComponentButtonJournalSectionAbilities = viewModelJournalMenu.TextButtonJournalSectionAbilities.GetComponent<TextMeshProUGUI>();
+		_journalSectionSkillTree = viewModelJournalMenu.JournalSectionSkillTree;
+		_buttonJournalSectionSkillTree = viewModelJournalMenu.ButtonJournalSectionSkillTree;
+		_buttonComponentJournalSectionSkillTree = viewModelJournalMenu.ButtonJournalSectionSkillTree.GetComponent<Button>();
+		_buttonComponentJournalSectionSkillTree.onClick.AddListener(() => OpenJournalSubSection(_journalSectionSkillTree));
+		_textButtonJournalSectionSkillTree = viewModelJournalMenu.TextButtonJournalSectionSkillTree;
+		_textComponentButtonJournalSectionSkillTree = viewModelJournalMenu.TextButtonJournalSectionSkillTree.GetComponent<TextMeshProUGUI>();
 
 		_journalSectionInventory = viewModelJournalMenu.JournalSectionInventory;
 		_buttonJournalSectionInventory = viewModelJournalMenu.ButtonJournalSectionInventory;
@@ -111,7 +111,7 @@ public class JournalMenuController : MonoBehaviour
 
 		if (subSettingsSection == _journalSectionMissionInfo)
 		{
-			CloseJournalSubSection(_journalSectionAbilities);
+			CloseJournalSubSection(_journalSectionSkillTree);
 			CloseJournalSubSection(_journalSectionInventory);
 			CloseJournalSubSection(_journalSectionStatistics);
 
@@ -119,20 +119,20 @@ public class JournalMenuController : MonoBehaviour
 
 			_currentOpenedJournalSubSection = JournalMenuSectionTypes.MissionInfo.ToString();
 		}
-		if (subSettingsSection == _journalSectionAbilities)
+		if (subSettingsSection == _journalSectionSkillTree)
 		{
 			CloseJournalSubSection(_journalSectionMissionInfo);
 			CloseJournalSubSection(_journalSectionInventory);
 			CloseJournalSubSection(_journalSectionStatistics);
 
-			_buttonComponentJournalSectionAbilities.interactable = false;
+			_buttonComponentJournalSectionSkillTree.interactable = false;
 
-			_currentOpenedJournalSubSection = JournalMenuSectionTypes.Abilities.ToString();
+			_currentOpenedJournalSubSection = JournalMenuSectionTypes.SkillTree.ToString();
 		}
 		if (subSettingsSection == _journalSectionInventory)
 		{
 			CloseJournalSubSection(_journalSectionMissionInfo);
-			CloseJournalSubSection(_journalSectionAbilities);
+			CloseJournalSubSection(_journalSectionSkillTree);
 			CloseJournalSubSection(_journalSectionStatistics);
 
 			_buttonComponentJournalSectionInventory.interactable = false;
@@ -142,7 +142,7 @@ public class JournalMenuController : MonoBehaviour
 		if (subSettingsSection == _journalSectionStatistics)
 		{
 			CloseJournalSubSection(_journalSectionMissionInfo);
-			CloseJournalSubSection(_journalSectionAbilities);
+			CloseJournalSubSection(_journalSectionSkillTree);
 			CloseJournalSubSection(_journalSectionInventory);
 
 			_buttonComponentJournalSectionStatistics.interactable = false;
@@ -159,7 +159,7 @@ public class JournalMenuController : MonoBehaviour
 		{
 			_buttonComponentJournalSectionMissionInfo.interactable = true;
 		}
-		if (subSettingsSection == _journalSectionAbilities)
+		if (subSettingsSection == _journalSectionSkillTree)
 		{
 			//_buttonComponentJournalSectionAbilities.interactable = true;
 		}
@@ -176,14 +176,12 @@ public class JournalMenuController : MonoBehaviour
 	private void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		_localizationManager = localizationManager;
-		/*
 
 		_textComponentButtonCloseJournalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_ButtonCloseJournalMenu");
 
 		_textComponentButtonJournalSectionMissionInfo.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_ButtonJournalSectionMissionInfo");
-		_textComponentButtonJournalSectionAbilities.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_ButtonJournalSectionMissionAbilities");
-		_textComponentButtonJournalSectionInventory.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_ButtonJournalSectionMissionInventory");
-		_textComponentButtonJournalSectionStatistics.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_ButtonJournalSectionMissionStatistics");
-		*/
+		_textComponentButtonJournalSectionSkillTree.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_ButtonJournalSectionSkillTree");
+		_textComponentButtonJournalSectionInventory.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_ButtonJournalSectionInventory");
+		_textComponentButtonJournalSectionStatistics.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_ButtonJournalSectionStatistics");
 	}
 }

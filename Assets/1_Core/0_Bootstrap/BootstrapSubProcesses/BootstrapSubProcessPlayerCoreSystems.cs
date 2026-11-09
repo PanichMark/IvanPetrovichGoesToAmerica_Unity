@@ -187,7 +187,7 @@ public class BootstrapSubProcessPlayerSystems
 			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
 
 		PlayerResourcesMoneyManager.Initialize(
-			_bootstrapSubProcessMenuSystem.ViewModelPauseMenu.TextCurrentPlayerMoneyDisplay);
+			_bootstrapSubProcessMenuSystem.ViewModelJournalMenuSectionInventory.TextCurrentPlayerMoneyDisplay);
 
 	ServiceLocator.Register<PlayerBehaviourController>(PlayerBehaviour);
 ServiceLocator.Register<PlayerMovementController>(PlayerMovementController);

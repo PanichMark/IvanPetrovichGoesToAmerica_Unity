@@ -9,9 +9,9 @@ public class ViewModelJournalMenu
 	public GameObject ButtonJournalSectionMissionInfo;
 	public GameObject TextButtonJournalSectionMissionInfo;
 
-	public GameObject JournalSectionAbilities;
-	public GameObject ButtonJournalSectionAbilities;
-	public GameObject TextButtonJournalSectionAbilities;
+	public GameObject JournalSectionSkillTree;
+	public GameObject ButtonJournalSectionSkillTree;
+	public GameObject TextButtonJournalSectionSkillTree;
 
 	public GameObject JournalSectionInventory;
 	public GameObject ButtonJournalSectionInventory;
@@ -30,9 +30,9 @@ public class ViewModelJournalMenu
 		ButtonJournalSectionMissionInfo = bootstrap.FindDeepGameObject(canvas, "ButtonJournalSubSectionMissionInfo");
 		TextButtonJournalSectionMissionInfo = bootstrap.FindDeepGameObject(canvas, "TextButtonJournalSubSectionMissionInfo");
 
-		JournalSectionAbilities = bootstrap.FindDeepGameObject(canvas, "JournalSubSectionMissionAbilities");
-		ButtonJournalSectionAbilities = bootstrap.FindDeepGameObject(canvas, "ButtonJournalSubSectionMissionAbilities");
-		TextButtonJournalSectionAbilities = bootstrap.FindDeepGameObject(canvas, "TextButtonJournalSubSectionMissionAbilities");
+		JournalSectionSkillTree = bootstrap.FindDeepGameObject(canvas, "JournalSubSectionMissionSkillTree");
+		ButtonJournalSectionSkillTree = bootstrap.FindDeepGameObject(canvas, "ButtonJournalSubSectionMissionSkillTree");
+		TextButtonJournalSectionSkillTree = bootstrap.FindDeepGameObject(canvas, "TextButtonJournalSubSectionMissionSkillTree");
 
 		JournalSectionInventory = bootstrap.FindDeepGameObject(canvas, "JournalSubSectionMissionInventory");
 		ButtonJournalSectionInventory = bootstrap.FindDeepGameObject(canvas, "ButtonJournalSubSectionMissionInventory");

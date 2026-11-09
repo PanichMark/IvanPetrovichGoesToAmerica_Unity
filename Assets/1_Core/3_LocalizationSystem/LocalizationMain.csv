@@ -164,7 +164,7 @@ UI_Menu_PauseConfirmActionMenu_ButtonCancelAction,Отменить,Cancel
 UI_Menu_PauseConfirmActionMenu_ButtonConfirmAction,Подтвердить,Confirm
 UI_Menu_PauseConfirmActionMenu_TextConfirmCreateNewGameFile,Сохранить новую игру,Save new game
 UI_Menu_PauseConfirmActionMenu_TextConfirmDeleteGameFile,Удалить игру в слоте,Delete game in slot
-UI_Menu_PauseConfirmActionMenu_TextConfirmExitToMainMenu,""Выйти в главное меню?\n(Данные не сохранятся)"",Exit to main menu?\n(Unsaved progress will be lost)"
+UI_Menu_PauseConfirmActionMenu_TextConfirmExitToMainMenu,Выйти в главное меню?\n(Данные не сохранятся)"",Exit to main menu?\n(Unsaved progress will be lost)"
 UI_Menu_PauseConfirmActionMenu_TextConfirmLoadGameFile,Зарузить игру в слоте,Load game in slot
 UI_Menu_PauseConfirmActionMenu_TextConfirmRewriteGameFile,Перезаписать игру в слоте,Rewrite game in slot
 UI_Menu_PauseConfirmActionMenu_TextLoadEpisode,Загрузить эпизод,Load episode
@@ -174,7 +174,7 @@ UI_Menu_PauseConfirmActionMenu_TextSettingsGeneral,Общие настройки
 UI_Menu_PauseConfirmActionMenu_TextSettingsGraphics,Настройки графики,Graphics settings
 UI_Menu_PauseConfirmActionMenu_TextSettingsReset,Сбросить,Reset
 UI_Menu_PauseConfirmActionMenu_TextSettingsSave,Сохранить,Save
-UI_Menu_PauseMenu_ButtonAppearance_NO-APPEARANCE-MENU-IN-DEMO-VERSION,Поменять внешность (недоступно в демо),Change appearance (unavailable in demo)
+UI_Menu_PauseMenu_ButtonAppearance_NO-APPEARANCE-MENU-IN-DEMO-VERSION,""Поменять внешность\n(недоступно в демо)"",""Change appearance\n(unavailable in demo)""
 UI_Menu_PauseMenu_ButtonExitToMainMenu,Выйти в главное меню,Exit to Main Menu
 UI_Menu_PauseMenu_ButtonLoad,Загрузить игру,Load game
 UI_Menu_PauseMenu_ButtonResume,Продолжить,Resume
@@ -182,6 +182,11 @@ UI_Menu_PauseMenu_ButtonSave,Сохранить игру,Save game
 UI_Menu_PauseMenu_ButtonSave_CANNOT-SAVE-GAME-RIGHT-NOW,""Сохранить игру\n(сейчас нельзя)"",""Save game\n(can't save right now)"""
 UI_Menu_PauseMenu_ButtonSettings,Настройки игры,Game settings
 UI_Menu_PauseMenu_ButtonTutorial,Туториалы,Tutorials
+UI_Menu_Journal_ButtonCloseJournalMenu,Закрыть журнал,Close journal
+UI_Menu_Journal_ButtonJournalSectionMissionInfo,Информация о Миссии,Mission info
+UI_Menu_Journal_ButtonJournalSectionSkillTree,""Древо навыков\n(Недоступно в Демо)"",""Skill Tree\n(unavailable in demo)""
+UI_Menu_Journal_ButtonJournalSectionInventory,Инвентарь,Inventory
+UI_Menu_Journal_ButtonJournalSectionStatistics,Статистика,Statistics
 UI_Menu_PauseMenu_MissionGoal_Current,Текущая цель:,Current goal:
 UI_Menu_PauseMenu_MissionGoal_New,Новая цель:,New goal:
 UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE,В тестовой сцене нет целей, There are no goals in test scene

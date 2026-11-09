@@ -1,7 +1,7 @@
 ﻿public enum JournalMenuSectionTypes
 {
 	MissionInfo,
-	Abilities,
+	SkillTree,
 	Inventory,
 	Statistics
 }

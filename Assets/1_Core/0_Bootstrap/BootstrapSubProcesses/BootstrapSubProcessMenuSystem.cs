@@ -16,6 +16,12 @@ public class BootstrapSubProcessMenuSystem
 	private JournalMenuController _journalMenuController;
 	private ViewModelJournalMenu _viewModelJournalMenu;
 	private GameplayCanvases _gameplayCanvases;
+
+	public ViewModelJournalMenuSectionInventory ViewModelJournalMenuSectionInventory { get; private set; }
+	private ViewModelJournalMenuSectionMissionInfo _viewModelJournalMenuSectionMissionInfo;
+	private ViewModelJournalMenuSectionStatistics _viewModelJournalMenuSectionStatistics;
+	//private ViewModelJournalMenuSectionSkillTree _viewModelJournalMenuSectionSkillTree;
+
 	public ViewModelBootstrapSignTermsAndConditions ViewModelBootstrapSignTermsAndConditions { get; private set; }
 	public ViewModelSavingProcess ViewModelSavingProcess { get; private set; }
 	public ViewModelMainMenuChooseMission ViewModelMainMenuChooseMission { get; private set; }
@@ -268,6 +274,10 @@ public class BootstrapSubProcessMenuSystem
 		ViewModelPauseSubMenuSettingsSectionAudio = new ViewModelPauseSubMenuSettingsSectionAudio(_bootstrap, _canvasPauseSubMenuSettings);
 
 		_viewModelJournalMenu = new ViewModelJournalMenu(_bootstrap, _canvasJournalMenu);
+		ViewModelJournalMenuSectionInventory  = new ViewModelJournalMenuSectionInventory(_bootstrap, _canvasJournalMenu);
+		_viewModelJournalMenuSectionMissionInfo = new ViewModelJournalMenuSectionMissionInfo(_bootstrap, _canvasJournalMenu);
+		_viewModelJournalMenuSectionStatistics = new ViewModelJournalMenuSectionStatistics(_bootstrap, _canvasJournalMenu);
+
 
 		MenuManager.Initialize(
 			_bootstrap,
