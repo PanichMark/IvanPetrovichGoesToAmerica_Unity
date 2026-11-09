@@ -22,7 +22,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	private int _previousMissionStepIndex;
 	public delegate void DestructionEventHandler(GameObject destroyedObject, bool wasLethal);
 	public event DestructionEventHandler OnAnyObjectDestroyed;
-
+	private JournalMenuSectionMissionInfoController _journalMenuSectionMissionInfoController;
 	public string LocalizedGoalText { get; private set; }
 
 	public void Initialize(
@@ -30,8 +30,10 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		GameScenesManager gameSceneManager,
 		JsonSaveLoadController jsonSaveLoadController,
 		HUDmissionsController HUDmissionsController,
+		JournalMenuSectionMissionInfoController journalMenuSectionMissionInfoController,
 		GameMissionsList gameMissions)
 	{
+		_journalMenuSectionMissionInfoController = journalMenuSectionMissionInfoController;
 		_jsonSaveLoadController = jsonSaveLoadController;
 		_localizationManager = localizationManager;
 		_gameSceneManager = gameSceneManager;
@@ -50,7 +52,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		if (ActiveMission.MissionSteps.Length > 0)
 		{
 			LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
-			_HUDmissionsController.SetCurrentMissionGoalText(LocalizedGoalText);
+			_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedGoalText);
 
 			//ActiveMission.MissionSteps[CurrentStepIndex].OnStepStarted();
 		}
@@ -202,11 +204,11 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 
 			ShowMissionGoalHUD();
-			_HUDmissionsController.SetCurrentMissionGoalText(LocalizedGoalText);
+			_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedGoalText);
 		}
 		else
 		{
-			_HUDmissionsController.SetCurrentMissionGoalText("");
+			_journalMenuSectionMissionInfoController.SetMissionStep("");
 		}
 
 		OnCurrentStepChanged?.Invoke();
@@ -298,7 +300,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		{
 			//Debug.Log(CurrentStepIndex);
 			LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
-			_HUDmissionsController.SetCurrentMissionGoalText(LocalizedGoalText);
+			_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedGoalText);
 		}
 	}
 

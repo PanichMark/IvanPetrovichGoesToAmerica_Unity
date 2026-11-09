@@ -20,11 +20,25 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 	private GameScenesManager _gameSceneManager;
 	private LocalizationManager _localizationManager;
 
+	private string _textGoal;
+
 	public void Initialize(
 		LocalizationManager localizationManager,
-		GameScenesManager gameSceneManager)
+		GameScenesManager gameSceneManager,
+		ViewModelJournalMenuSectionMissionInfo viewModelJournalMenuSectionMissionInfo)
 	{
 		_gameSceneManager = gameSceneManager;
+		_localizationManager = localizationManager;
+
+		_textMissionStep = viewModelJournalMenuSectionMissionInfo.TextMissionStep;
+		_imageMissionTarget = viewModelJournalMenuSectionMissionInfo.ImageMissionTarget;
+		_textMissionDescription = viewModelJournalMenuSectionMissionInfo.TextMissionDescription;
+		_textMissionName = viewModelJournalMenuSectionMissionInfo.TextMissionName;
+
+		_textComponentMissionStep = _textMissionStep.GetComponent<TextMeshProUGUI>();
+		_imageComponentMissionTarget = _imageMissionTarget.GetComponent<Image>();
+		_textComponentMissionDescription = _textMissionDescription.GetComponent<TextMeshProUGUI>();
+		_textComponentMissionName = _textMissionName.GetComponent<TextMeshProUGUI>();
 
 		_gameSceneManager.OnEndLoadingGameplayScene += () =>
 		{
@@ -32,7 +46,7 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 			{
 				if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 				{
-					_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+					_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current") + " " + _textGoal;
 				}
 				else
 				{
@@ -41,11 +55,29 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 			}
 			else
 			{
-				_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+				_textComponentMissionStep.text = null;
 			}
 		};
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+	}
+
+	public void SetMissionStep(string textGoal)
+	{
+		_textGoal = textGoal;
+
+		if (SceneManager.sceneCount > 1)
+		{
+			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
+			{
+				_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current") + " " + _textGoal;
+			}
+			else
+			{
+				//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+				_textComponentMissionStep.text = null;
+			}
+		}
 	}
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
@@ -56,7 +88,7 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 		{
 			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 			{
-				_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+				_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current") + " " + _textGoal;
 			}
 			else
 			{
@@ -65,7 +97,7 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 		}
 		else
 		{
-			_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+			_textComponentMissionStep.text = null;
 		}
 	}
 }

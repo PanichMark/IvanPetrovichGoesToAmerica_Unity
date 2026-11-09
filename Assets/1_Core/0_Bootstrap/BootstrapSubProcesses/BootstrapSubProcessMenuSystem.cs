@@ -21,7 +21,8 @@ public class BootstrapSubProcessMenuSystem
 	private ViewModelJournalMenuSectionMissionInfo _viewModelJournalMenuSectionMissionInfo;
 	private ViewModelJournalMenuSectionStatistics _viewModelJournalMenuSectionStatistics;
 	//private ViewModelJournalMenuSectionSkillTree _viewModelJournalMenuSectionSkillTree;
-
+	public JournalMenuSectionMissionInfoController JournalMenuSectionMissionInfoController { get; private set; }
+	public JournalMenuSectionInventoryController JournalMenuSectionInventoryController { get; private set; }
 	public ViewModelBootstrapSignTermsAndConditions ViewModelBootstrapSignTermsAndConditions { get; private set; }
 	public ViewModelSavingProcess ViewModelSavingProcess { get; private set; }
 	public ViewModelMainMenuChooseMission ViewModelMainMenuChooseMission { get; private set; }
@@ -229,7 +230,7 @@ public class BootstrapSubProcessMenuSystem
 		HUDammoController = _gameObjectBootstrapMenuSystem.AddComponent<HUDweaponsController>();
 		HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
 		_savingProcessController = _gameObjectBootstrapMenuSystem.AddComponent<SavingProcessController>();
-
+		JournalMenuSectionMissionInfoController = _gameObjectBootstrapMenuSystem.AddComponent<JournalMenuSectionMissionInfoController>();
 		_journalMenuController = _gameObjectBootstrapMenuSystem.AddComponent<JournalMenuController>();
 
 		// В методе Initialize() класса BootstrapSubProcessMenuSystem (после инициализации всех ViewModel)
@@ -416,7 +417,6 @@ public class BootstrapSubProcessMenuSystem
 			MenuManager,
 			PauseSubMenuSettingsSectionGeneralController,
 			_canvasHUDmission,
-			_viewModelJournalMenuSectionMissionInfo,
 			ViewModelHUDMission);
 
 		_savingProcessController.Initialize(
@@ -429,6 +429,11 @@ public class BootstrapSubProcessMenuSystem
 			MenuManager,
 			_canvasJournalMenu,
 			_viewModelJournalMenu);
+
+		JournalMenuSectionMissionInfoController.Initialize(
+			_localizationManager,
+			_gameSceneManager,
+			_viewModelJournalMenuSectionMissionInfo);
 
 		ServiceLocator.Register<PauseSubMenuSettingsGameDifficultyController>(_pauseSubMenuSettingsGameDifficultyController);
 		ServiceLocator.Register<PauseMenuConfirmActionController>(PauseMenuConfirmActionController);

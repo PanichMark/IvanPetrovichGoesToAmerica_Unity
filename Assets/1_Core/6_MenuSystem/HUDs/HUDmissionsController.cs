@@ -17,10 +17,10 @@ public class HUDmissionsController : MonoBehaviour
 	private GameObject _textNewMissionGoalDisplay;
 	private TextMeshProUGUI _textComponentNewMissionGoalDisplay;
 
-	private GameObject _textCurrentMissionStep;
-	private TextMeshProUGUI _textComponentCurrentMissionStep;
+	//private GameObject _textCurrentMissionStep;
+	//private TextMeshProUGUI _textComponentCurrentMissionStep;
 
-	private string _textGoal;
+
 
 	public void Initialize(
 		GameController gameController,
@@ -29,7 +29,6 @@ public class HUDmissionsController : MonoBehaviour
 		MenuManager menuManager,
 		PauseSubMenuSettingsSectionGeneralController pauseSubMenuSettingsSectionGeneralController,
 		GameObject canvasHUDmissions,
-		ViewModelJournalMenuSectionMissionInfo viewModelJournalMenuSectionMissionInfo,
 		ViewModelHUDMission viewModelHUDMission)
 	{
 		_gameController = gameController;
@@ -45,8 +44,8 @@ public class HUDmissionsController : MonoBehaviour
 		_textNewMissionGoalDisplay = viewModelHUDMission.TextNewMissionGoalDisplay;
 		_textComponentNewMissionGoalDisplay = viewModelHUDMission.TextNewMissionGoalDisplay.GetComponent<TextMeshProUGUI>();
 
-		_textCurrentMissionStep = viewModelJournalMenuSectionMissionInfo.TextMissionStep;
-		_textComponentCurrentMissionStep = _textCurrentMissionStep.GetComponent<TextMeshProUGUI>();
+		//_textCurrentMissionStep = viewModelJournalMenuSectionMissionInfo.TextMissionStep;
+		//_textComponentCurrentMissionStep = _textCurrentMissionStep.GetComponent<TextMeshProUGUI>();
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDmissions;
 		_menuManager.OnClosePauseMenu += ShowCanvasHUDmissions;
@@ -93,24 +92,6 @@ public class HUDmissionsController : MonoBehaviour
 		};
 
 		_gameController.OnPlayerEarlyDeath += HideCanvasHUDmissions;
-	}
-
-	public void SetCurrentMissionGoalText(string textGoal)
-	{
-		_textGoal = textGoal;
-
-		if (SceneManager.sceneCount > 1)
-		{
-			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
-			{
-				_textComponentCurrentMissionStep.text = _textGoal;
-			}
-			else
-			{
-				//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-				_textComponentCurrentMissionStep.text = null;
-			}
-		}
 	}
 
 	public void ShowNewMissionGoalHUDnotification(string textGoal, bool isNewGoal)

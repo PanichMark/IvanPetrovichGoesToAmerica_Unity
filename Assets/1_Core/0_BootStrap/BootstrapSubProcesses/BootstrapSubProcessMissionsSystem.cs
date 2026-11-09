@@ -41,8 +41,9 @@ public class BootstrapSubProcessMissionsSystem
 		MissionsManager.Initialize(
 			_localizationManager,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
-				_bootstrapSubProcessSaveLoadSystem.SaveLoadController,
+			_bootstrapSubProcessSaveLoadSystem.SaveLoadController,
 			_bootstrapSubProcessMenuSystem.HUDmissionsController,
+			_bootstrapSubProcessMenuSystem.JournalMenuSectionMissionInfoController,
 			_gameMissions);
 
 		_missionGoalMarkerManager.Initialize(
