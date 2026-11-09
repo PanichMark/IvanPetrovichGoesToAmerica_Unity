@@ -208,9 +208,13 @@ public class PlayerBehaviourData
 	public bool IsPlayerArmed;
 	public bool WasPlayerArmed;
 
+
+	//TODO!
+	/*
 	public int TimesPlayerSpottedGameTotal;
 	public int PeopleKilledGameTotal;
 	public GameCityState CityState;
+	*/
 }
 
 [System.Serializable]

@@ -169,7 +169,7 @@ public class JournalMenuController : MonoBehaviour
 		}
 		if (subSettingsSection == _journalSectionStatistics)
 		{
-			_buttonComponentJournalSectionStatistics.interactable = true;
+			//_buttonComponentJournalSectionStatistics.interactable = true;
 		}
 	}
 

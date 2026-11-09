@@ -45,7 +45,7 @@ public class HUDmissionsController : MonoBehaviour
 		_textNewMissionGoalDisplay = viewModelHUDMission.TextNewMissionGoalDisplay;
 		_textComponentNewMissionGoalDisplay = viewModelHUDMission.TextNewMissionGoalDisplay.GetComponent<TextMeshProUGUI>();
 
-		_textCurrentMissionStep = viewModelJournalMenuSectionMissionInfo.TextCurrentMissionStep;
+		_textCurrentMissionStep = viewModelJournalMenuSectionMissionInfo.TextMissionStep;
 		_textComponentCurrentMissionStep = _textCurrentMissionStep.GetComponent<TextMeshProUGUI>();
 
 		_menuManager.OnOpenPauseMenu += HideCanvasHUDmissions;

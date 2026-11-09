@@ -1,11 +1,21 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class JournalMenuSectionMissionInfoController : MonoBehaviour
 {
-	private GameObject _textCurrentMissionStep;
-	private TextMeshProUGUI _textComponentCurrentMissionStep;
+	private GameObject _textMissionStep;
+	private TextMeshProUGUI _textComponentMissionStep;
+
+	private GameObject _imageMissionTarget;
+	private Image _imageComponentMissionTarget;
+
+	private GameObject _textMissionDescription;
+	private TextMeshProUGUI _textComponentMissionDescription;
+
+	private GameObject _textMissionName;
+	private TextMeshProUGUI _textComponentMissionName;
 
 	private GameScenesManager _gameSceneManager;
 	private LocalizationManager _localizationManager;
@@ -22,16 +32,16 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 			{
 				if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 				{
-					_textComponentCurrentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+					_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
 				}
 				else
 				{
-					_textComponentCurrentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
+					_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
 				}
 			}
 			else
 			{
-				_textComponentCurrentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+				_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
 			}
 		};
 
@@ -46,16 +56,16 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 		{
 			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 			{
-				_textComponentCurrentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+				_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
 			}
 			else
 			{
-				_textComponentCurrentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
+				_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
 			}
 		}
 		else
 		{
-			_textComponentCurrentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
+			_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
 		}
 	}
 }

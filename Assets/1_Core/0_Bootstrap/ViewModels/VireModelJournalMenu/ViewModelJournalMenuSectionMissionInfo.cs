@@ -2,10 +2,16 @@
 
 public class ViewModelJournalMenuSectionMissionInfo
 {
-	public GameObject TextCurrentMissionStep;
+	public GameObject TextMissionStep;
+	public GameObject ImageMissionTarget;
+	public GameObject TextMissionDescription;
+	public GameObject TextMissionName;
 
 	public ViewModelJournalMenuSectionMissionInfo(Bootstrap bootstrap, GameObject canvas)
 	{
-		TextCurrentMissionStep = bootstrap.FindDeepGameObject(canvas, "TextCurrentMissionStep");
+		TextMissionStep = bootstrap.FindDeepGameObject(canvas, "TextMissionStep");
+		ImageMissionTarget = bootstrap.FindDeepGameObject(canvas, "ImageMissionTarget");
+		TextMissionDescription = bootstrap.FindDeepGameObject(canvas, "TextMissionDescription");
+		TextMissionName = bootstrap.FindDeepGameObject(canvas, "TextMissionName");
 	}
 }

@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _missionName: 1
   _missionResources: {fileID: 11400000, guid: 70ac0049a00e4e648b51ec46b072df58, type: 2}
+  _missionTargetSprite: {fileID: 21300000, guid: e39a307162a7d694682fc42a929feb71, type: 3}
+  _missionDescription_RU: {fileID: 4900000, guid: d86ddada12f0ddc468566ca797f668eb, type: 3}
+  _missionDescription_EN: {fileID: 4900000, guid: e50e8cc79dbfdba4d8790517ffa2598e, type: 3}
+  _missionMaps:
+  - {fileID: 11400000, guid: 86ccd081493c31340b1217da977ed76c, type: 2}
   MissionDescription: "\u0422\u0443\u0442\u043E\u0440\u0438\u0430\u043B \u043E\u0431\u0443\u0447\u0435\u043D\u0438\u0435"
   MissionSteps:
   - {fileID: 11400000, guid: 474a198d1986e5747aa1d176137a4fda, type: 2}
