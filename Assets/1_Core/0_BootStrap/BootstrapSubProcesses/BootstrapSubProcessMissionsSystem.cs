@@ -57,6 +57,7 @@ public class BootstrapSubProcessMissionsSystem
 			_bootstrapSubProcessMenuSystem.ViewModelHUDMission.ImageMissionGoalMarker);
 
 		_missionMapsController.Initialize(
+			_bootstrap,
 			_bootstrapSubProcessMenuSystem.JournalMenuController,
 			_bootstrapSubProcessMenuSystem.JournalMenuSectionMissionInfoController,
 			MissionsManager);

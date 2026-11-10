@@ -102,27 +102,17 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
-	public void ReceiveMissionMapsData(List<MissionMap> collectedMissionMaps)
+	public void ApplyMissionMapsData(List<MissionMapData> collectedMissionMapsData)
 	{
-		if (collectedMissionMaps == null)
+		if (collectedMissionMapsData.Count > 0)
 		{
-			Debug.Log("MissionMaps data is null.");
-			return;
+			MissionMapData currentMap = collectedMissionMapsData[0];
+			_imageComponentMissionMap.sprite = currentMap.MissionMapNoteData.NoteImage;
+			_textComponentMissionMapName.text = _localizationManager.GetLocalizedString(currentMap.MissionMapID.ToString());
+			_textComponentMissionMapDescription.text = _localizationManager.GetNoteLanguageSuffix(currentMap.MissionMapNoteData);
+			//_buttonComponentNextMissionMap.interactable = collectedMissionMapsData.Count > 1;
+			//_buttonComponentPreviousMissionMap.interactable = collectedMissionMapsData.Count > 1;
 		}
-
-		Debug.Log("--- MISSION MAPS DEBUG START ---");
-
-		if (collectedMissionMaps.Count > 0)
-		{
-			string mapIDs = string.Join(", ", collectedMissionMaps.Select(m => m.MissionMapID));
-			Debug.Log($"Count: {collectedMissionMaps.Count} | IDs: [{mapIDs}]");
-		}
-		else
-		{
-			Debug.Log("Count: 0 | (List is empty)");
-		}
-
-		Debug.Log("--- MISSION MAPS DEBUG END ---");
 	}
 
 	public void SetMissionStep(string textGoal)

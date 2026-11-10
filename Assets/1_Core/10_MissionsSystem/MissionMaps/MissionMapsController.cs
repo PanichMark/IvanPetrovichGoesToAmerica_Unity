@@ -8,12 +8,17 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 	private MissionsManager _missionsManager;
 	private JournalMenuController _journalMenuController;
 	private JournalMenuSectionMissionInfoController _journalMenuSectionMissionInfoController;
+	private Bootstrap _bootstrap;
+	private MissionMapsList _missionMapsList;
 
 	public void Initialize(
+		Bootstrap bootstrap,
 		JournalMenuController journalMenuController,
 		JournalMenuSectionMissionInfoController journalMenuSectionMissionInfoController,
 		MissionsManager missionsManager)
 	{
+		_bootstrap = bootstrap;
+		_missionMapsList = _bootstrap.GameData.MissionMapsList;
 		_journalMenuController = journalMenuController;
 		_journalMenuSectionMissionInfoController = journalMenuSectionMissionInfoController;	
 		_missionsManager = missionsManager;
@@ -25,16 +30,15 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 	private void SendMissionMapsDataToJournal()
 	{
 		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
+		List<MissionMapData> resolvedMaps = new List<MissionMapData>();
 
-		if (_collectedMissionMaps.TryGetValue(currentMissionKey, out var currentMissionMapsList))
+		foreach (var map in _collectedMissionMaps[currentMissionKey])
 		{
-			_journalMenuSectionMissionInfoController.ReceiveMissionMapsData(currentMissionMapsList);
+			MissionMapData foundMap = System.Array.Find(_missionMapsList.MissionMapsInOrder, x => x.MissionMapID.ToString() == map.MissionMapID);
+			resolvedMaps.Add(foundMap);
 		}
-		else
-		{
-			// Если данных по текущей миссии нет, отправляем пустой список, чтобы UI не упал
-			_journalMenuSectionMissionInfoController.ReceiveMissionMapsData(new List<MissionMap>());
-		}
+
+		_journalMenuSectionMissionInfoController.ApplyMissionMapsData(resolvedMaps);
 	}
 
 	// Метод для геймплея: добавляет ID в список текущей активной миссии

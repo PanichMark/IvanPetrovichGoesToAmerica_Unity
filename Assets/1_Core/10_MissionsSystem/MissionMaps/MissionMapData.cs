@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "MissionMapData", menuName = "Missions/MissionMapData")]
+[CreateAssetMenu(fileName = "MissionMapData", menuName = "Missions/MissionMaps/MissionMapData")]
 public class MissionMapData : ScriptableObject
 {
-	public MissionMapsList MissionMapID;
+	public MissionMapsNamesEnum MissionMapID;
 	public InteractionObjectNoteData MissionMapNoteData;
 }
