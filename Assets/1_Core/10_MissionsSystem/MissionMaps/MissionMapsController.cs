@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 {
-	private Dictionary<GameMissionsNamesEnum, List<MissionMap>> _collectedMissionMaps = new Dictionary<GameMissionsNamesEnum, List<MissionMap>>();
+	private Dictionary<GameMissionsNamesEnum, List<string>> _collectedMissionMaps = new Dictionary<GameMissionsNamesEnum, List<string>>();
 	private MissionsManager _missionsManager;
 	private JournalMenuController _journalMenuController;
 	private JournalMenuSectionMissionInfoController _journalMenuSectionMissionInfoController;
@@ -20,7 +20,7 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 		_bootstrap = bootstrap;
 		_missionMapsList = _bootstrap.GameData.MissionMapsList;
 		_journalMenuController = journalMenuController;
-		_journalMenuSectionMissionInfoController = journalMenuSectionMissionInfoController;	
+		_journalMenuSectionMissionInfoController = journalMenuSectionMissionInfoController;
 		_missionsManager = missionsManager;
 		_journalMenuController.OnOpenJournaMenuSectionMissionInfo += SendMissionMapsDataToJournal;
 
@@ -32,10 +32,16 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
 		List<MissionMapData> resolvedMaps = new List<MissionMapData>();
 
-		foreach (var map in _collectedMissionMaps[currentMissionKey])
+		if (_collectedMissionMaps.TryGetValue(currentMissionKey, out var stringList))
 		{
-			MissionMapData foundMap = System.Array.Find(_missionMapsList.MissionMapsInOrder, x => x.MissionMapID.ToString() == map.MissionMapID);
-			resolvedMaps.Add(foundMap);
+			foreach (var mapID in stringList)
+			{
+				MissionMapData foundMap = System.Array.Find(_missionMapsList.MissionMapsInOrder, x => x.MissionMapID.ToString() == mapID);
+				if (foundMap != null)
+				{
+					resolvedMaps.Add(foundMap);
+				}
+			}
 		}
 
 		_journalMenuSectionMissionInfoController.ApplyMissionMapsData(resolvedMaps);
@@ -50,12 +56,12 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 
 		if (!_collectedMissionMaps.ContainsKey(currentMissionKey))
 		{
-			_collectedMissionMaps[currentMissionKey] = new List<MissionMap>();
+			_collectedMissionMaps[currentMissionKey] = new List<string>();
 		}
 
-		if (!_collectedMissionMaps[currentMissionKey].Exists(x => x.MissionMapID == mapID))
+		if (!_collectedMissionMaps[currentMissionKey].Contains(mapID))
 		{
-			_collectedMissionMaps[currentMissionKey].Add(new MissionMap { MissionMapID = mapID });
+			_collectedMissionMaps[currentMissionKey].Add(mapID);
 		}
 	}
 
@@ -68,7 +74,7 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 
 		if (_collectedMissionMaps.ContainsKey(currentMissionKey))
 		{
-			_collectedMissionMaps[currentMissionKey].RemoveAll(x => x.MissionMapID == mapID);
+			_collectedMissionMaps[currentMissionKey].Remove(mapID);
 		}
 	}
 
@@ -78,7 +84,7 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 
 		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
 
-		return _collectedMissionMaps.ContainsKey(currentMissionKey) && _collectedMissionMaps[currentMissionKey].Exists(x => x.MissionMapID == mapID);
+		return _collectedMissionMaps.ContainsKey(currentMissionKey) && _collectedMissionMaps[currentMissionKey].Contains(mapID);
 	}
 
 	public IEnumerator SaveJsonData(JsonGameData data)
@@ -87,17 +93,27 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 
 		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
 
-		if (data.MissionData.MissionMaps == null)
+		// Если текущая миссия тестовая — просто пропускаем блок с картами
+		if (currentMissionKey == GameMissionsNamesEnum.Mission_Test)
 		{
-			data.MissionData.MissionMaps = new Dictionary<GameMissionsNamesEnum, List<MissionMap>>();
+			yield return null;
 		}
-		if (!data.MissionData.MissionMaps.ContainsKey(currentMissionKey))
+		else
 		{
-			data.MissionData.MissionMaps[currentMissionKey] = new List<MissionMap>();
-		}
+			if (data.MissionData.MissionMaps == null)
+			{
+				data.MissionData.MissionMaps = new Dictionary<GameMissionsNamesEnum, List<string>>();
+			}
+			if (!data.MissionData.MissionMaps.ContainsKey(currentMissionKey))
+			{
+				data.MissionData.MissionMaps[currentMissionKey] = new List<string>();
+			}
 
-		// Сохраняем только данные по текущей активной миссии
-		data.MissionData.MissionMaps[currentMissionKey] = new List<MissionMap>(_collectedMissionMaps[currentMissionKey]);
+			if (_collectedMissionMaps.ContainsKey(currentMissionKey))
+			{
+				data.MissionData.MissionMaps[currentMissionKey] = new List<string>(_collectedMissionMaps[currentMissionKey]);
+			}
+		}
 
 		yield return null;
 	}
@@ -110,9 +126,17 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 
 		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
 
-		if (data.MissionData.MissionMaps != null && data.MissionData.MissionMaps.TryGetValue(currentMissionKey, out var sourceList))
+		// Если текущая миссия тестовая — не пытаемся читать для неё данные
+		if (currentMissionKey == GameMissionsNamesEnum.Mission_Test)
 		{
-			_collectedMissionMaps[currentMissionKey] = new List<MissionMap>(sourceList);
+			yield return null;
+		}
+		else
+		{
+			if (data.MissionData.MissionMaps != null && data.MissionData.MissionMaps.TryGetValue(currentMissionKey, out var sourceList))
+			{
+				_collectedMissionMaps[currentMissionKey] = new List<string>(sourceList);
+			}
 		}
 
 		yield return null;

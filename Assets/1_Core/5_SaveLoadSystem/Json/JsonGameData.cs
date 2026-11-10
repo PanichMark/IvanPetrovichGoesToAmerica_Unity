@@ -199,24 +199,22 @@ public class MissionData
 	public int MissionStep;
 
 	[JsonProperty("MissionMaps")]
-	public Dictionary<GameMissionsNamesEnum, List<MissionMap>> MissionMaps;
+	public Dictionary<GameMissionsNamesEnum, List<string>> MissionMaps;
 
 	public MissionData()
 	{
 		Mission = 0.0f;
 		MissionStep = 0;
-		MissionMaps = new Dictionary<GameMissionsNamesEnum, List<MissionMap>>();
+		MissionMaps = new Dictionary<GameMissionsNamesEnum, List<string>>();
+
 		foreach (GameMissionsNamesEnum mission in Enum.GetValues(typeof(GameMissionsNamesEnum)))
 		{
-			MissionMaps[mission] = new List<MissionMap>();
+			if (mission != GameMissionsNamesEnum.Mission_Test)
+			{
+				MissionMaps[mission] = new List<string>();
+			}
 		}
 	}
-}
-
-[System.Serializable]
-public struct MissionMap
-{
-	public string MissionMapID;
 }
 
 [System.Serializable]
