@@ -25,6 +25,11 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 
 	private string _textGoal;
 
+	private GameObject _missionMaps;
+
+	private GameObject _textNoMapFound;
+	private TextMeshProUGUI _textComponentNoMapFound;
+
 	private Mission _currentMission;
 
 	private GameObject _textMissionMapName;
@@ -43,13 +48,15 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 	private Button _buttonComponentPreviousMissionMap;
 
 	//private JournalMenuController _journalMenuController;
-
+	private Bootstrap _bootstrap;
 	public void Initialize(
+		Bootstrap bootstrap,
 		LocalizationManager localizationManager,
 		GameScenesManager gameSceneManager,
 		//JournalMenuController journalMenuController,
 		ViewModelJournalMenuSectionMissionInfo viewModel)
 	{
+		_bootstrap = bootstrap;
 		_gameSceneManager = gameSceneManager;
 		_localizationManager = localizationManager;
 		//_journalMenuController = journalMenuController;
@@ -77,6 +84,10 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 		_buttonComponentNextMissionMap = _buttonNextMissionMap.GetComponent<Button>();
 		_buttonComponentPreviousMissionMap = _buttonPreviousMissionMap.GetComponent<Button>();
 
+		_missionMaps = viewModel.MissionMaps;
+		_textNoMapFound = viewModel.TextNoMapFound;
+		_textComponentNoMapFound = _textNoMapFound.GetComponent<TextMeshProUGUI>();
+
 		// --- СУЩЕСТВУЮЩАЯ ЛОГИКА ПОДПИСОК ---
 		_gameSceneManager.OnEndLoadingGameplayScene += () =>
 		{
@@ -89,6 +100,8 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 				else
 				{
 					_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
+
+					_textComponentMissionName.text = _localizationManager.GetLocalizedString("Mission_Test");
 				}
 			}
 			else
@@ -141,6 +154,16 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 			_imageComponentMissionMap.sprite = currentMap.MissionMapNoteData.NoteImage;
 			_textComponentMissionMapName.text = _localizationManager.GetLocalizedString(currentMap.MissionMapID.ToString());
 			_textComponentMissionMapDescription.text = _localizationManager.GetNoteLanguageSuffix(currentMap.MissionMapNoteData);
+
+			_missionMaps.SetActive(true);
+			_textNoMapFound.SetActive(false);
+		}
+		else
+		{
+			_missionMaps.SetActive(false);
+			_textNoMapFound.SetActive(true);
+
+			_textComponentNoMapFound.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_SectionMissionInfo_NoMapFound");
 		}
 	}
 
@@ -166,18 +189,40 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 	{
 		_currentMission = missionData;
 
-		if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+		if (SceneManager.sceneCount > 1)
 		{
-			_textComponentMissionDescription.text = _currentMission.MissionDescription_RU.text;
-		}
-		if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
-		{
-			_textComponentMissionDescription.text = _currentMission.MissionDescription_EN.text;
-		}
+			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
+			{
+				if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+				{
+					_textComponentMissionDescription.text = _currentMission.MissionDescription_RU.text;
+				}
+				if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
+				{
+					_textComponentMissionDescription.text = _currentMission.MissionDescription_EN.text;
+				}
 
-		_textComponentMissionName.text = _localizationManager.GetLocalizedString(_currentMission.MissionName.ToString());
+				_textComponentMissionName.text = _localizationManager.GetLocalizedString(_currentMission.MissionName.ToString());
 
-		_imageComponentMissionTarget.sprite = _currentMission.MissionTargetSprite;
+				_imageComponentMissionTarget.sprite = _currentMission.MissionTargetSprite;
+			}
+			else
+			{
+				if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+				{
+					_textComponentMissionDescription.text = _bootstrap.GameData.GameMissionsList.MissionTest.MissionDescription_RU.text;
+				}
+				if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
+				{
+					_textComponentMissionDescription.text = _bootstrap.GameData.GameMissionsList.MissionTest.MissionDescription_EN.text;
+				}
+
+				_textComponentMissionName.text = _localizationManager.GetLocalizedString(_bootstrap.GameData.GameMissionsList.MissionTest.MissionName.ToString());
+
+				_imageComponentMissionTarget.sprite = _bootstrap.GameData.GameMissionsList.MissionTest.MissionTargetSprite;
+			}
+		}
+	
 	}
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
@@ -204,13 +249,20 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 			else
 			{
 				_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
+
+				_textComponentMissionName.text = _localizationManager.GetLocalizedString("Mission_Test");
+
+				if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+				{
+					_textComponentMissionDescription.text = _bootstrap.GameData.GameMissionsList.MissionTest.MissionDescription_RU.text;
+				}
+				if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
+				{
+					_textComponentMissionDescription.text = _bootstrap.GameData.GameMissionsList.MissionTest.MissionDescription_EN.text;
+				}
 			}
 		}
-		else
-		{
-			_textComponentMissionStep.text = null;
-		}
 
-
+		_textComponentNoMapFound.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_SectionMissionInfo_NoMapFound");
 	}
 }

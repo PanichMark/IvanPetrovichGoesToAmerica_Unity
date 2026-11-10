@@ -271,6 +271,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 			CurrentStepIndex = 0;
 			GoToNextStep(CurrentStepIndex);
 			_journalMenuSectionMissionInfoController.SetMissionInfo(ActiveMission);
+			_journalMenuSectionMissionInfoController.SetMissionInfo(ActiveMission);
 		}
 	}
 
@@ -301,9 +302,11 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		if (ActiveMission != null && ActiveMission.MissionSteps.Length > 0)
 		{
-			//Debug.Log(CurrentStepIndex);
-			LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
-			_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedGoalText);
+			if (SceneManager.sceneCount > 1 && (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString()))
+			{
+				LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
+				_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedGoalText);
+			}
 		}
 	}
 

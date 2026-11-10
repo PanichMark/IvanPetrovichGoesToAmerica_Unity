@@ -431,6 +431,7 @@ public class BootstrapSubProcessMenuSystem
 			_viewModelJournalMenu);
 
 		JournalMenuSectionMissionInfoController.Initialize(
+			_bootstrap,
 			_localizationManager,
 			_gameSceneManager,
 			//_journalMenuController,

@@ -7,11 +7,15 @@ public class ViewModelJournalMenuSectionMissionInfo
 	public GameObject TextMissionDescription;
 	public GameObject TextMissionName;
 
+	public GameObject MissionMaps;
+
 	public GameObject TextMissionMapName;
 	public GameObject ImageMissionMap;
 	public GameObject TextMissionMapDescription;
 	public GameObject ButtonNextMissionMap;
 	public GameObject ButtonPreviousMissionMap;
+
+	public GameObject TextNoMapFound;
 
 	public ViewModelJournalMenuSectionMissionInfo(Bootstrap bootstrap, GameObject canvas)
 	{
@@ -20,10 +24,14 @@ public class ViewModelJournalMenuSectionMissionInfo
 		TextMissionDescription = bootstrap.FindDeepGameObject(canvas, "TextMissionDescription");
 		TextMissionName = bootstrap.FindDeepGameObject(canvas, "TextMissionName");
 
+		MissionMaps = bootstrap.FindDeepGameObject(canvas, "MissionMaps");
+
 		TextMissionMapName = bootstrap.FindDeepGameObject(canvas, "TextMissionMapName");
 		ImageMissionMap = bootstrap.FindDeepGameObject(canvas, "ImageMissionMap");
 		TextMissionMapDescription = bootstrap.FindDeepGameObject(canvas, "TextMissionMapDescription");
 		ButtonNextMissionMap = bootstrap.FindDeepGameObject(canvas, "ButtonNextMissionMap");
 		ButtonPreviousMissionMap = bootstrap.FindDeepGameObject(canvas, "ButtonPreviousMissionMap");
+
+		TextNoMapFound = bootstrap.FindDeepGameObject(canvas, "TextNoMapFound");
 	}
 }
