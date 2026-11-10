@@ -97,21 +97,50 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 			}
 		};
 
+		_buttonComponentNextMissionMap.onClick.AddListener(ShowNextMap);
+		_buttonComponentPreviousMissionMap.onClick.AddListener(ShowPreviousMap);
+
 		//_journalMenuController.OnOpenJournaMenuSectionMissionInfo += OnSectionOpen;
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
+	private int _currentMissionMapIndex;
+	private List<MissionMapData> _currentMissionMapData;
+
 	public void ApplyMissionMapsData(List<MissionMapData> collectedMissionMapsData)
 	{
-		if (collectedMissionMapsData.Count > 0)
+		_currentMissionMapData = collectedMissionMapsData;
+		_currentMissionMapIndex = 0;
+		RenderCurrentMap();
+		_buttonComponentPreviousMissionMap.interactable = false;
+		_buttonComponentNextMissionMap.interactable = _currentMissionMapData.Count > 1;
+	}
+
+	public void ShowNextMap()
+	{
+		_currentMissionMapIndex++;
+		RenderCurrentMap();
+		_buttonComponentPreviousMissionMap.interactable = true;
+		_buttonComponentNextMissionMap.interactable = _currentMissionMapIndex < _currentMissionMapData.Count - 1;
+	}
+
+	public void ShowPreviousMap()
+	{
+		_currentMissionMapIndex--;
+		RenderCurrentMap();
+		_buttonComponentNextMissionMap.interactable = true;
+		_buttonComponentPreviousMissionMap.interactable = _currentMissionMapIndex > 0;
+	}
+
+	private void RenderCurrentMap()
+	{
+		if (_currentMissionMapData.Count > 0)
 		{
-			MissionMapData currentMap = collectedMissionMapsData[0];
+			MissionMapData currentMap = _currentMissionMapData[_currentMissionMapIndex];
 			_imageComponentMissionMap.sprite = currentMap.MissionMapNoteData.NoteImage;
 			_textComponentMissionMapName.text = _localizationManager.GetLocalizedString(currentMap.MissionMapID.ToString());
 			_textComponentMissionMapDescription.text = _localizationManager.GetNoteLanguageSuffix(currentMap.MissionMapNoteData);
-			//_buttonComponentNextMissionMap.interactable = collectedMissionMapsData.Count > 1;
-			//_buttonComponentPreviousMissionMap.interactable = collectedMissionMapsData.Count > 1;
 		}
 	}
 
