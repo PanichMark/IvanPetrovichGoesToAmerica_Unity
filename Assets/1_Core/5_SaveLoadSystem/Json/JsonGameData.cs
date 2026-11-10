@@ -19,9 +19,6 @@ public class JsonGameData
 	[JsonProperty("PlayerBehaviour")]
 	public PlayerBehaviourData PlayerBehaviour = new PlayerBehaviourData();
 
-	[JsonProperty("PlayerMisdeedsInScenes")]
-	public Dictionary<GameScenesGameplayEnum, List<PlayerMisdeedsInScene>> PlayerMisdeedsInSceneData;
-
 	[JsonProperty("PlayerMovement")]
 	public PlayerMovementData PlayerMovement = new PlayerMovementData();
 
@@ -159,37 +156,37 @@ public class JsonGameData
 
 	private void InitializeGameplayObjectsData()
 	{
-		NPCsData = CreateEmptyDictionary<NPCdata>();
+		NPCsData = CreateGameplayObjectsEmptyDictionaryData<NPCdata>();
 
-		LootObjectsData = CreateEmptyDictionary<LootObjectData>();
+		LootObjectsData = CreateGameplayObjectsEmptyDictionaryData<LootObjectData>();
 
-		NonThrowableUndestructableObjectsData = CreateEmptyDictionary<NonThrowableUndestructableObjectData>();
-		NonThrowableDestructableObjectsData = CreateEmptyDictionary<NonThrowableDestructableObjectData>();
-		ThrowableUndestructableObjectsData = CreateEmptyDictionary<ThrowableUndestructableObjectData>();
-		ThrowableDestructableObjectsData = CreateEmptyDictionary<ThrowableDestructableObjectData>();
+		NonThrowableUndestructableObjectsData = CreateGameplayObjectsEmptyDictionaryData<NonThrowableUndestructableObjectData>();
+		NonThrowableDestructableObjectsData = CreateGameplayObjectsEmptyDictionaryData<NonThrowableDestructableObjectData>();
+		ThrowableUndestructableObjectsData = CreateGameplayObjectsEmptyDictionaryData<ThrowableUndestructableObjectData>();
+		ThrowableDestructableObjectsData = CreateGameplayObjectsEmptyDictionaryData<ThrowableDestructableObjectData>();
 
-		OpenableUndestructableObjectsData = CreateEmptyDictionary<OpenableUndestructableObjectData>();
-		OpenableDestructableObjectsData = CreateEmptyDictionary<OpenableDestructableObjectData>();
+		OpenableUndestructableObjectsData = CreateGameplayObjectsEmptyDictionaryData<OpenableUndestructableObjectData>();
+		OpenableDestructableObjectsData = CreateGameplayObjectsEmptyDictionaryData<OpenableDestructableObjectData>();
 
-		SafesUndestructableData = CreateEmptyDictionary<SafeUndestructableData>();
-		SafesDestructableData = CreateEmptyDictionary<SafeDestructableData>();
+		SafesUndestructableData = CreateGameplayObjectsEmptyDictionaryData<SafeUndestructableData>();
+		SafesDestructableData = CreateGameplayObjectsEmptyDictionaryData<SafeDestructableData>();
 
-		VendingMachinesData = CreateEmptyDictionary<VendingMachineData>();
-		ElevatorsData = CreateEmptyDictionary<ElevatorData>();
-		LightsData = CreateEmptyDictionary<LightData>();
-		TVsData = CreateEmptyDictionary<TVdata>();
-		PhonographsData = CreateEmptyDictionary<PhonographData>();
-		BreakableObjectsData = CreateEmptyDictionary<BreakableObjectData>();
-		ElectricalPanelsData = CreateEmptyDictionary<ElectricalPanelData>();
-		TriggerZonesData = CreateEmptyDictionary<TriggerZoneData>();
+		VendingMachinesData = CreateGameplayObjectsEmptyDictionaryData<VendingMachineData>();
+		ElevatorsData = CreateGameplayObjectsEmptyDictionaryData<ElevatorData>();
+		LightsData = CreateGameplayObjectsEmptyDictionaryData<LightData>();
+		TVsData = CreateGameplayObjectsEmptyDictionaryData<TVdata>();
+		PhonographsData = CreateGameplayObjectsEmptyDictionaryData<PhonographData>();
+		BreakableObjectsData = CreateGameplayObjectsEmptyDictionaryData<BreakableObjectData>();
+		ElectricalPanelsData = CreateGameplayObjectsEmptyDictionaryData<ElectricalPanelData>();
+		TriggerZonesData = CreateGameplayObjectsEmptyDictionaryData<TriggerZoneData>();
 	}
 
-	private Dictionary<GameScenesGameplayEnum, List<T>> CreateEmptyDictionary<T>()
+	private Dictionary<GameScenesGameplayEnum, List<T>> CreateGameplayObjectsEmptyDictionaryData<T>()
 	{
 		var dict = new Dictionary<GameScenesGameplayEnum, List<T>>();
-		foreach (GameScenesGameplayEnum scene in Enum.GetValues(typeof(GameScenesGameplayEnum)))
+		foreach (GameScenesGameplayEnum gameplayScene in Enum.GetValues(typeof(GameScenesGameplayEnum)))
 		{
-			dict[scene] = new List<T>();
+			dict[gameplayScene] = new List<T>();
 		}
 		return dict;
 	}
@@ -200,6 +197,26 @@ public class MissionData
 {
 	public float Mission;
 	public int MissionStep;
+
+	[JsonProperty("MissionMaps")]
+	public Dictionary<GameMissionsNamesEnum, List<MissionMap>> MissionMaps;
+
+	public MissionData()
+	{
+		Mission = 0.0f;
+		MissionStep = 0;
+		MissionMaps = new Dictionary<GameMissionsNamesEnum, List<MissionMap>>();
+		foreach (GameMissionsNamesEnum mission in Enum.GetValues(typeof(GameMissionsNamesEnum)))
+		{
+			MissionMaps[mission] = new List<MissionMap>();
+		}
+	}
+}
+
+[System.Serializable]
+public struct MissionMap
+{
+
 }
 
 [System.Serializable]
@@ -215,13 +232,6 @@ public class PlayerBehaviourData
 	public int PeopleKilledGameTotal;
 	public GameCityState CityState;
 	*/
-}
-
-[System.Serializable]
-public struct PlayerMisdeedsInScene
-{
-	public bool WasPlayerSpottedInThisScene;
-	public bool WerePeopleKilledInThisScene;
 }
 
 [System.Serializable]

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InteractionObjectUseless : MonoBehaviour, IInteractable
+public class InteractionObjectExamine : MonoBehaviour, IInteractable
 {
 	public string InteractionObjectNameSystem => throw new System.NotImplementedException();
 

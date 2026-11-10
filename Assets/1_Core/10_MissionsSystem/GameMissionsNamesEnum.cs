@@ -2,10 +2,12 @@
 {
 	Mission_Test,
 	Mission_0_NothingEverHappensInThisCountry,
+	/*
 	Mission_1_VictimOfArtDecomposition,
 	Mission_2_MeansOfProductionDispute,
 	Mission_3_OnceGlorifiedEvent,
 	Mission_4_BureaucraticRedTape,
 	Mission_5_CorrectionalCascade,
 	Mission_6_FarewellPushoverCountry
+	*/
 }
