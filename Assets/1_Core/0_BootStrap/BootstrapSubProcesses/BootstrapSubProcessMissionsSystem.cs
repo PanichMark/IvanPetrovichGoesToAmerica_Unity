@@ -56,7 +56,8 @@ public class BootstrapSubProcessMissionsSystem
 			_playerCameraGameObject,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDMission.ImageMissionGoalMarker);
 
-		_missionMapsController.Initialize();
+		_missionMapsController.Initialize(
+			MissionsManager);
 
 		ServiceLocator.Register<MissionsManager>(MissionsManager);
 		ServiceLocator.Register<MissionMapsController>(_missionMapsController);

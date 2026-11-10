@@ -4,35 +4,62 @@ using UnityEngine;
 
 public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 {
-	private List<MissionMap> _collectedMissionMaps = new List<MissionMap>();
+	private Dictionary<GameMissionsNamesEnum, List<MissionMap>> _collectedMissionMaps = new Dictionary<GameMissionsNamesEnum, List<MissionMap>>();
+	private MissionsManager _missionsManager;
 
-	public List<MissionMap> CollectedMissionMaps => _collectedMissionMaps;
+	public Dictionary<GameMissionsNamesEnum, List<MissionMap>> CollectedMissionMaps => _collectedMissionMaps;
 
-	public void Initialize()
+	public void Initialize(MissionsManager missionsManager)
 	{
+		_missionsManager = missionsManager;
 		Debug.Log("MissionMapsController Initialized");
 	}
 
-	// Метод для геймплея: просто передаете ID
+	// Метод для геймплея: добавляет ID в список текущей активной миссии
 	public void AddMissionMapToCollected(string mapID)
 	{
-		if (string.IsNullOrEmpty(mapID)) return;
-		if (_collectedMissionMaps.Exists(x => x.MissionMapID == mapID)) return;
+		if (string.IsNullOrEmpty(mapID) || _missionsManager == null || _missionsManager.ActiveMission == null) return;
 
-		_collectedMissionMaps.Add(new MissionMap { MissionMapID = mapID });
+		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
+
+		if (!_collectedMissionMaps.ContainsKey(currentMissionKey))
+		{
+			_collectedMissionMaps[currentMissionKey] = new List<MissionMap>();
+		}
+
+		if (!_collectedMissionMaps[currentMissionKey].Exists(x => x.MissionMapID == mapID))
+		{
+			_collectedMissionMaps[currentMissionKey].Add(new MissionMap { MissionMapID = mapID });
+		}
 	}
 
+	// Метод для геймплея: удаляет ID из списка текущей активной миссии
 	public void RemoveMissionMapFromCollected(string mapID)
 	{
-		_collectedMissionMaps.RemoveAll(x => x.MissionMapID == mapID);
+		if (string.IsNullOrEmpty(mapID) || _missionsManager == null || _missionsManager.ActiveMission == null) return;
+
+		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
+
+		if (_collectedMissionMaps.ContainsKey(currentMissionKey))
+		{
+			_collectedMissionMaps[currentMissionKey].RemoveAll(x => x.MissionMapID == mapID);
+		}
 	}
 
-	public bool HasMissionMap(string mapID) => _collectedMissionMaps.Exists(x => x.MissionMapID == mapID);
+	public bool HasMissionMap(string mapID)
+	{
+		if (_missionsManager == null || _missionsManager.ActiveMission == null) return false;
+
+		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
+
+		return _collectedMissionMaps.ContainsKey(currentMissionKey) && _collectedMissionMaps[currentMissionKey].Exists(x => x.MissionMapID == mapID);
+	}
 
 	public IEnumerator SaveJsonData(JsonGameData data)
 	{
-		// Определяем, в какую миссию (из вашего enum) мы сохраняем карты
-		GameMissionsNamesEnum currentMissionKey = GameMissionsNamesEnum.Mission_Test;
+		if (_missionsManager == null || _missionsManager.ActiveMission == null) yield break;
+
+		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
 
 		if (data.MissionData.MissionMaps == null)
 		{
@@ -43,8 +70,8 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 			data.MissionData.MissionMaps[currentMissionKey] = new List<MissionMap>();
 		}
 
-		// Присваиваем наш список объектов напрямую в словарь
-		data.MissionData.MissionMaps[currentMissionKey] = new List<MissionMap>(_collectedMissionMaps);
+		// Сохраняем только данные по текущей активной миссии
+		data.MissionData.MissionMaps[currentMissionKey] = new List<MissionMap>(_collectedMissionMaps[currentMissionKey]);
 
 		yield return null;
 	}
@@ -53,11 +80,13 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 	{
 		_collectedMissionMaps.Clear();
 
-		GameMissionsNamesEnum currentMissionKey = GameMissionsNamesEnum.Mission_Test;
+		if (_missionsManager == null || _missionsManager.ActiveMission == null) yield break;
+
+		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
 
 		if (data.MissionData.MissionMaps != null && data.MissionData.MissionMaps.TryGetValue(currentMissionKey, out var sourceList))
 		{
-			_collectedMissionMaps = new List<MissionMap>(sourceList);
+			_collectedMissionMaps[currentMissionKey] = new List<MissionMap>(sourceList);
 		}
 
 		yield return null;

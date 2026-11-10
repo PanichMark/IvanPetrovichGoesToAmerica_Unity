@@ -11,9 +11,7 @@ public class Mission : ScriptableObject
 	[SerializeField] private TextAsset _missionDescription_RU;
 	[SerializeField] private TextAsset _missionDescription_EN;
 
-	[SerializeField] private List<InteractionObjectNoteData> _missionMaps;
-
-	public string MissionName => _missionName.ToString();
+	public GameMissionsNamesEnum MissionName => _missionName;
 
 	[TextArea(3, 10)]
 	public string MissionDescription;
@@ -24,6 +22,4 @@ public class Mission : ScriptableObject
 	public Sprite MissionTargetSprite => _missionTargetSprite;
 	public TextAsset MissionDescription_RU => _missionDescription_RU;
 	public TextAsset MissionDescription_EN => _missionDescription_EN;
-
-	public List<InteractionObjectNoteData> MissionMaps => _missionMaps;
 }
