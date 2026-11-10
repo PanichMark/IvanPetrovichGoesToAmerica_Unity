@@ -2,12 +2,42 @@
 
 public class ViewModelJournalMenuSectionInventory
 {
-	public GameObject TextPlayerMoney;
-	public GameObject TextCurrentPlayerMoneyDisplay;
+	private int _inventorySlots = 20;
+
+	public GameObject TextPlayerMoneyRubles;
+	public GameObject TextHealingItems;
+	public GameObject TextManaReplenishItems;
+
+	public GameObject[] ButtonsInventorySlots;
+	public GameObject[] ImagesInventorySlotItems;
+
+	public GameObject Scrollbar;
+	public GameObject ScrollbarHandle;
+
+	public GameObject TextCurrentInventoryItemName;
+	public GameObject ImageCurrentInventoryItem;
+	public GameObject TextCurrentInventoryItemDescription;
 
 	public ViewModelJournalMenuSectionInventory(Bootstrap bootstrap, GameObject canvas)
 	{
-		TextPlayerMoney = bootstrap.FindDeepGameObject(canvas, "TextPlayerMoney");
-		TextCurrentPlayerMoneyDisplay = bootstrap.FindDeepGameObject(canvas, "TextCurrentPlayerMoneyDisplay");
+		TextPlayerMoneyRubles = bootstrap.FindDeepGameObject(canvas, "TextPlayerMoneyRubles");
+		TextHealingItems = bootstrap.FindDeepGameObject(canvas, "TextHealingItems");
+		TextManaReplenishItems = bootstrap.FindDeepGameObject(canvas, "TextHealingItems");
+
+		Scrollbar = bootstrap.FindDeepGameObject(canvas, "Scrollbar");
+		ScrollbarHandle = bootstrap.FindDeepGameObject(canvas, "ScrollbarHandle");
+
+		TextCurrentInventoryItemName = bootstrap.FindDeepGameObject(canvas, "TextCurrentInventoryItemName");
+		ImageCurrentInventoryItem = bootstrap.FindDeepGameObject(canvas, "ImageCurrentInventoryItem");
+		TextCurrentInventoryItemDescription = bootstrap.FindDeepGameObject(canvas, "TextCurrentInventoryItemDescription");
+
+		for (int i = 0; i < _inventorySlots; i++)
+		{
+			string inventoryItemSlot = "InventoryItemSlot" + (i + 1);
+			string inventoryItemSlotImage = "InventoryItemSlotImage" + (i + 1);
+
+			ButtonsInventorySlots[i] = bootstrap.FindDeepGameObject(canvas, inventoryItemSlot);
+			ImagesInventorySlotItems[i] = bootstrap.FindDeepGameObject(canvas, inventoryItemSlotImage);
+		}
 	}
 }

@@ -4,13 +4,16 @@ using System.Collections;
 
 public class PlayerMoneyController : MonoBehaviour, IJsonSaveLoad
 {
-	private TMP_Text _playerComponentMoneyText;
+	private TMP_Text _playerComponentMoneyRublesText;
 
-    public int PlayerMoney { get; private set; }
-	
+    public int PlayerMoneyRubles { get; private set; }
+	public int PlayerMoneyDollars { get; private set; }
+	public int PlayerMoneyGoldmark { get; private set; }
+	public int PlayerMoneyWeaponLicense { get; private set; }
+
 	public void Initialize(GameObject playerMoneyText)
 	{
-		_playerComponentMoneyText = playerMoneyText.GetComponent<TMP_Text>();
+		_playerComponentMoneyRublesText = playerMoneyText.GetComponent<TMP_Text>();
 		
 		UpdateMoneyDisplay();
 		Debug.Log("PlayerResourcesMoneyManager Initialized");
@@ -18,9 +21,12 @@ public class PlayerMoneyController : MonoBehaviour, IJsonSaveLoad
 
 	public void ConfigApplyPlayerMoney(int setMoney)
 	{
-		PlayerMoney = setMoney;
+		PlayerMoneyRubles = setMoney;
+		//PlayerMoneyDollars = setMoney;
+		//PlayerMoneyGoldmark = setMoney;
+		//PlayerMoneyWeaponLicense = setMoney;
 
-		_playerComponentMoneyText.text = PlayerMoney.ToString();
+		_playerComponentMoneyRublesText.text = PlayerMoneyRubles.ToString();
 	}
 
 	public void AddMoney(int moneyAmmount)
@@ -31,7 +37,7 @@ public class PlayerMoneyController : MonoBehaviour, IJsonSaveLoad
         }
         else
         {
-            PlayerMoney += moneyAmmount;
+            PlayerMoneyRubles += moneyAmmount;
 			UpdateMoneyDisplay(); 
 		}
     }
@@ -42,30 +48,30 @@ public class PlayerMoneyController : MonoBehaviour, IJsonSaveLoad
 		{
 			Debug.Log("Can't deduct positive Money!");
 		}
-		else if (moneyAmmount < -PlayerMoney)
+		else if (moneyAmmount < -PlayerMoneyRubles)
 		{
 			Debug.Log("Not enought Money!");
 		}
 		else
 		{
-			PlayerMoney += moneyAmmount;
+			PlayerMoneyRubles += moneyAmmount;
 			UpdateMoneyDisplay(); 
 		}
 	}
 	private void UpdateMoneyDisplay()
 	{
-		_playerComponentMoneyText.text = PlayerMoney.ToString();
+		_playerComponentMoneyRublesText.text = PlayerMoneyRubles.ToString();
 	}
 
 	public IEnumerator SaveJsonData(JsonGameData data)
 	{
-		data.PlayerResources.PlayerMoney = PlayerMoney;
+		data.PlayerResources.PlayerMoneyRubles = PlayerMoneyRubles;
 		yield return null;
 	}
 
 	public IEnumerator LoadJsonData(JsonGameData data)
 	{
-		PlayerMoney = data.PlayerResources.PlayerMoney;
+		PlayerMoneyRubles = data.PlayerResources.PlayerMoneyRubles;
 		UpdateMoneyDisplay();
 
 		yield return null;

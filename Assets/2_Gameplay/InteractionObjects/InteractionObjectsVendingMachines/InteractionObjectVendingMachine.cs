@@ -79,7 +79,7 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 	{
 		if (!IsOutOfService)
 		{
-			if (_playerResourcesMoneyManager.PlayerMoney >= _goodsPrice)
+			if (_playerResourcesMoneyManager.PlayerMoneyRubles >= _goodsPrice)
 			{
 				_spawnedGoods.RemoveAll(item => item == null || !item.activeInHierarchy);
 

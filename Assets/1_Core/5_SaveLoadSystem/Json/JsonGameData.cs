@@ -122,7 +122,7 @@ public class JsonGameData
 		PlayerResources.PlayerHealingItemsNumber = 0;
 		PlayerResources.PlayerMana = 80;
 		PlayerResources.PlayerManaReplenishItemsNumber = 0;
-		PlayerResources.PlayerMoney = 0;
+		PlayerResources.PlayerMoneyRubles = 0;
 
 		//PlayerKeyItems
 		PlayerKeyItems = new List<string>();
@@ -258,7 +258,10 @@ public class PlayerResourcesData
 	public int PlayerHealingItemsNumber;
 	public float PlayerMana;
 	public int PlayerManaReplenishItemsNumber;
-	public int PlayerMoney;
+	public int PlayerMoneyRubles;
+	//public int PlayerMoneyDollars;
+	//public int PlayerMoneyGoldmarks;
+	//public int PlayerMoneyWeaponLicense;
 }
 
 [System.Serializable]
