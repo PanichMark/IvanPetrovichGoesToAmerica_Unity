@@ -6,13 +6,35 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 {
 	private Dictionary<GameMissionsNamesEnum, List<MissionMap>> _collectedMissionMaps = new Dictionary<GameMissionsNamesEnum, List<MissionMap>>();
 	private MissionsManager _missionsManager;
+	private JournalMenuController _journalMenuController;
+	private JournalMenuSectionMissionInfoController _journalMenuSectionMissionInfoController;
 
-	public Dictionary<GameMissionsNamesEnum, List<MissionMap>> CollectedMissionMaps => _collectedMissionMaps;
-
-	public void Initialize(MissionsManager missionsManager)
+	public void Initialize(
+		JournalMenuController journalMenuController,
+		JournalMenuSectionMissionInfoController journalMenuSectionMissionInfoController,
+		MissionsManager missionsManager)
 	{
+		_journalMenuController = journalMenuController;
+		_journalMenuSectionMissionInfoController = journalMenuSectionMissionInfoController;	
 		_missionsManager = missionsManager;
+		_journalMenuController.OnOpenJournaMenuSectionMissionInfo += SendMissionMapsDataToJournal;
+
 		Debug.Log("MissionMapsController Initialized");
+	}
+
+	private void SendMissionMapsDataToJournal()
+	{
+		GameMissionsNamesEnum currentMissionKey = _missionsManager.ActiveMission.MissionName;
+
+		if (_collectedMissionMaps.TryGetValue(currentMissionKey, out var currentMissionMapsList))
+		{
+			_journalMenuSectionMissionInfoController.ReceiveMissionMapsData(currentMissionMapsList);
+		}
+		else
+		{
+			// Если данных по текущей миссии нет, отправляем пустой список, чтобы UI не упал
+			_journalMenuSectionMissionInfoController.ReceiveMissionMapsData(new List<MissionMap>());
+		}
 	}
 
 	// Метод для геймплея: добавляет ID в список текущей активной миссии

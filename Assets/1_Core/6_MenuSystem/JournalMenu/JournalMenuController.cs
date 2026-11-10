@@ -52,15 +52,12 @@ public class JournalMenuController : MonoBehaviour
 	private TextMeshProUGUI _textComponentButtonJournalSectionStatistics;
 
 	private string _currentOpenedJournalSubSection;
-	private JsonSaveLoadController _jsonSaveLoadController;
 	public void Initialize(
 		LocalizationManager localizationManager,
-		JsonSaveLoadController jsonSaveLoadController,
 		MenuManager menuManager,
 		GameObject canvasJournalMenu,
 		ViewModelJournalMenu viewModelJournalMenu)
 	{
-		_jsonSaveLoadController = jsonSaveLoadController;
 		_localizationManager = localizationManager;
 		_menuManager = menuManager;
 		_canvasJournalMenu = canvasJournalMenu;

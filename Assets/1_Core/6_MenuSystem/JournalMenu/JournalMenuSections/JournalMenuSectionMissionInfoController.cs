@@ -1,4 +1,7 @@
-﻿using TMPro;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -39,17 +42,17 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 	private GameObject _buttonPreviousMissionMap;
 	private Button _buttonComponentPreviousMissionMap;
 
-	private JournalMenuController _journalMenuController;
+	//private JournalMenuController _journalMenuController;
 
 	public void Initialize(
 		LocalizationManager localizationManager,
 		GameScenesManager gameSceneManager,
-		JournalMenuController journalMenuController,
+		//JournalMenuController journalMenuController,
 		ViewModelJournalMenuSectionMissionInfo viewModel)
 	{
 		_gameSceneManager = gameSceneManager;
 		_localizationManager = localizationManager;
-		_journalMenuController = journalMenuController;
+		//_journalMenuController = journalMenuController;
 		// --- СУЩЕСТВУЮЩИЕ ПОЛЯ (Миссия, Шаг, Описание, Цель) ---
 		_textMissionStep = viewModel.TextMissionStep;
 		_imageMissionTarget = viewModel.ImageMissionTarget;
@@ -94,14 +97,32 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 			}
 		};
 
-		_journalMenuController.OnOpenJournaMenuSectionMissionInfo += OnSectionOpen;
+		//_journalMenuController.OnOpenJournaMenuSectionMissionInfo += OnSectionOpen;
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
-	private void OnSectionOpen()
+	public void ReceiveMissionMapsData(List<MissionMap> collectedMissionMaps)
 	{
+		if (collectedMissionMaps == null)
+		{
+			Debug.Log("MissionMaps data is null.");
+			return;
+		}
 
+		Debug.Log("--- MISSION MAPS DEBUG START ---");
+
+		if (collectedMissionMaps.Count > 0)
+		{
+			string mapIDs = string.Join(", ", collectedMissionMaps.Select(m => m.MissionMapID));
+			Debug.Log($"Count: {collectedMissionMaps.Count} | IDs: [{mapIDs}]");
+		}
+		else
+		{
+			Debug.Log("Count: 0 | (List is empty)");
+		}
+
+		Debug.Log("--- MISSION MAPS DEBUG END ---");
 	}
 
 	public void SetMissionStep(string textGoal)

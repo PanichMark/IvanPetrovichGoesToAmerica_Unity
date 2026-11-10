@@ -388,13 +388,13 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		for (int i = 0; i < _saveFilePaths.Length; i++)
 		{
-			extendedInfo.Add(GetExtendedSaveDataForFile(_saveFilePaths[i]));
+			extendedInfo.Add(GetExtendedSaveDataForSafeFile(_saveFilePaths[i]));
 		}
 
 		return extendedInfo.ToArray();
 	}
 
-	private (string SavefileDateAndTime, GameScenesGameplayEnum SafefileSceneNameSystem) GetExtendedSaveDataForFile(string fileName)
+	private (string SavefileDateAndTime, GameScenesGameplayEnum SafefileSceneNameSystem) GetExtendedSaveDataForSafeFile(string fileName)
 	{
 		try
 		{

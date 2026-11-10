@@ -13,7 +13,7 @@ public class BootstrapSubProcessMenuSystem
 	private GameObject _canvasMainMenuChooseMission;
 	private GameObject _canvasBootstrapSignTermsAndConditions;
 	private GameObject _canvasJournalMenu;
-	private JournalMenuController _journalMenuController;
+	public JournalMenuController JournalMenuController { get; private set; }
 	private ViewModelJournalMenu _viewModelJournalMenu;
 	private GameplayCanvases _gameplayCanvases;
 
@@ -231,7 +231,7 @@ public class BootstrapSubProcessMenuSystem
 		HUDmissionsController = _gameObjectBootstrapMenuSystem.AddComponent<HUDmissionsController>();
 		_savingProcessController = _gameObjectBootstrapMenuSystem.AddComponent<SavingProcessController>();
 		JournalMenuSectionMissionInfoController = _gameObjectBootstrapMenuSystem.AddComponent<JournalMenuSectionMissionInfoController>();
-		_journalMenuController = _gameObjectBootstrapMenuSystem.AddComponent<JournalMenuController>();
+		JournalMenuController = _gameObjectBootstrapMenuSystem.AddComponent<JournalMenuController>();
 
 		// В методе Initialize() класса BootstrapSubProcessMenuSystem (после инициализации всех ViewModel)
 		_gameplayCanvases = new GameplayCanvases(
@@ -424,9 +424,8 @@ public class BootstrapSubProcessMenuSystem
 			_canvasSavingProcess,
 			ViewModelSavingProcess);
 
-		_journalMenuController.Initialize(
+		JournalMenuController.Initialize(
 			_localizationManager,
-			_saveLoadController,
 			MenuManager,
 			_canvasJournalMenu,
 			_viewModelJournalMenu);
@@ -434,7 +433,7 @@ public class BootstrapSubProcessMenuSystem
 		JournalMenuSectionMissionInfoController.Initialize(
 			_localizationManager,
 			_gameSceneManager,
-			_journalMenuController,
+			//_journalMenuController,
 			_viewModelJournalMenuSectionMissionInfo);
 
 		ServiceLocator.Register<PauseSubMenuSettingsGameDifficultyController>(_pauseSubMenuSettingsGameDifficultyController);
