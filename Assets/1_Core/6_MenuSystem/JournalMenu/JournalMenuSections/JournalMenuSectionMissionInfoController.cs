@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -24,24 +24,57 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 
 	private Mission _currentMission;
 
+	private GameObject _textMissionMapName;
+	private TextMeshProUGUI _textComponentMissionMapName;
+
+	private GameObject _imageMissionMap;
+	private Image _imageComponentMissionMap;
+
+	private GameObject _textMissionMapDescription;
+	private TextMeshProUGUI _textComponentMissionMapDescription;
+
+	private GameObject _buttonNextMissionMap;
+	private Button _buttonComponentNextMissionMap;
+
+	private GameObject _buttonPreviousMissionMap;
+	private Button _buttonComponentPreviousMissionMap;
+
+	private JournalMenuController _journalMenuController;
+
 	public void Initialize(
 		LocalizationManager localizationManager,
 		GameScenesManager gameSceneManager,
-		ViewModelJournalMenuSectionMissionInfo viewModelJournalMenuSectionMissionInfo)
+		JournalMenuController journalMenuController,
+		ViewModelJournalMenuSectionMissionInfo viewModel)
 	{
 		_gameSceneManager = gameSceneManager;
 		_localizationManager = localizationManager;
-
-		_textMissionStep = viewModelJournalMenuSectionMissionInfo.TextMissionStep;
-		_imageMissionTarget = viewModelJournalMenuSectionMissionInfo.ImageMissionTarget;
-		_textMissionDescription = viewModelJournalMenuSectionMissionInfo.TextMissionDescription;
-		_textMissionName = viewModelJournalMenuSectionMissionInfo.TextMissionName;
+		_journalMenuController = journalMenuController;
+		// --- СУЩЕСТВУЮЩИЕ ПОЛЯ (Миссия, Шаг, Описание, Цель) ---
+		_textMissionStep = viewModel.TextMissionStep;
+		_imageMissionTarget = viewModel.ImageMissionTarget;
+		_textMissionDescription = viewModel.TextMissionDescription;
+		_textMissionName = viewModel.TextMissionName;
 
 		_textComponentMissionStep = _textMissionStep.GetComponent<TextMeshProUGUI>();
 		_imageComponentMissionTarget = _imageMissionTarget.GetComponent<Image>();
 		_textComponentMissionDescription = _textMissionDescription.GetComponent<TextMeshProUGUI>();
 		_textComponentMissionName = _textMissionName.GetComponent<TextMeshProUGUI>();
 
+		// --- НОВЫЕ ПОЛЯ (Карты миссий) ---
+		_textMissionMapName = viewModel.TextMissionMapName;
+		_imageMissionMap = viewModel.ImageMissionMap;
+		_textMissionMapDescription = viewModel.TextMissionMapDescription;
+		_buttonNextMissionMap = viewModel.ButtonNextMissionMap;
+		_buttonPreviousMissionMap = viewModel.ButtonPreviousMissionMap;
+
+		_textComponentMissionMapName = _textMissionMapName.GetComponent<TextMeshProUGUI>();
+		_imageComponentMissionMap = _imageMissionMap.GetComponent<Image>();
+		_textComponentMissionMapDescription = _textMissionMapDescription.GetComponent<TextMeshProUGUI>();
+		_buttonComponentNextMissionMap = _buttonNextMissionMap.GetComponent<Button>();
+		_buttonComponentPreviousMissionMap = _buttonPreviousMissionMap.GetComponent<Button>();
+
+		// --- СУЩЕСТВУЮЩАЯ ЛОГИКА ПОДПИСОК ---
 		_gameSceneManager.OnEndLoadingGameplayScene += () =>
 		{
 			if (SceneManager.sceneCount > 1)
@@ -61,7 +94,14 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 			}
 		};
 
+		_journalMenuController.OnOpenJournaMenuSectionMissionInfo += OnSectionOpen;
+
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
+	}
+
+	private void OnSectionOpen()
+	{
+
 	}
 
 	public void SetMissionStep(string textGoal)

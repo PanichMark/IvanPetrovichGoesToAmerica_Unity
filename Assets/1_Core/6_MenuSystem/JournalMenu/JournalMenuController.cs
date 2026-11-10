@@ -8,6 +8,9 @@ public class JournalMenuController : MonoBehaviour
 	private ViewModelJournalMenu _viewModelJournalMenu;
 	private MenuManager _menuManager;
 
+	public delegate void JournalMenuSectionEventHandler();
+	public event JournalMenuSectionEventHandler OnOpenJournaMenuSectionMissionInfo;
+	
 	public void ShowJournalMenu()
 	{
 		_canvasJournalMenu.gameObject.SetActive(true);
@@ -49,13 +52,15 @@ public class JournalMenuController : MonoBehaviour
 	private TextMeshProUGUI _textComponentButtonJournalSectionStatistics;
 
 	private string _currentOpenedJournalSubSection;
-
+	private JsonSaveLoadController _jsonSaveLoadController;
 	public void Initialize(
 		LocalizationManager localizationManager,
+		JsonSaveLoadController jsonSaveLoadController,
 		MenuManager menuManager,
 		GameObject canvasJournalMenu,
 		ViewModelJournalMenu viewModelJournalMenu)
 	{
+		_jsonSaveLoadController = jsonSaveLoadController;
 		_localizationManager = localizationManager;
 		_menuManager = menuManager;
 		_canvasJournalMenu = canvasJournalMenu;
@@ -111,6 +116,8 @@ public class JournalMenuController : MonoBehaviour
 
 		if (subSettingsSection == _journalSectionMissionInfo)
 		{
+			OnOpenJournaMenuSectionMissionInfo?.Invoke();
+
 			CloseJournalSubSection(_journalSectionSkillTree);
 			CloseJournalSubSection(_journalSectionInventory);
 			CloseJournalSubSection(_journalSectionStatistics);
