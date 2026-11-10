@@ -5,6 +5,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 {
 	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Monocular;
 	private Coroutine _monocularScopeCoroutine;
+	private Coroutine _monocularAttackScopeCoroutine;
 	public override WeaponTypes WeaponType => WeaponTypes.Special;
 	private int _layersSeethroughToIgnore;
 	private SeethroughSceneObjectsRegistrator _seethroughSceneObjectsRegistrator;
@@ -47,7 +48,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 			return;
 		}
 
-		StartCoroutine(ScopeMonocular());
+		_monocularAttackScopeCoroutine = StartCoroutine(ScopeMonocular());
 	}
 
 	
@@ -132,8 +133,18 @@ public class WeaponSpecialMonocular : WeaponAbstract
 
 		//StopCoroutine(ScopeMonocular());
 		//StopCoroutine(_monocularScopeCoroutine);
-		_playerWeaponAnimationController.TurnOffFullArmLayerImmediately(WeaponHandType);
+		if (_monocularScopeCoroutine != null)
+		{
+			StopCoroutine(_monocularScopeCoroutine);
+		}
+
+		if (_monocularAttackScopeCoroutine != null)
+		{
+			StopCoroutine(_monocularAttackScopeCoroutine);
+		}
+
 		isPlayerWeaponAttacking = false;
+		_playerWeaponAnimationController.OnHideMonocular(WeaponHandType);
 		_canvasHUDmonocular.SetActive(false);
 	}
 }

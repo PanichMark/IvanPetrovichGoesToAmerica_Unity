@@ -17,6 +17,9 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 	public event ReloadHandler OnPlayerStartedReloading;
 	public event ReloadHandler OnPlayerEndedReloading;
 
+	private Coroutine _turnOnSlowly;
+	private Coroutine _turnOffSlowly;
+
 	public delegate void WeaponVisibilityHandler(GameObject weaponRoot, bool castShadows);
 	public event WeaponVisibilityHandler OnShowWeapon;
 	public event WeaponVisibilityHandler OnHideWeapon;
@@ -411,7 +414,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 		else
 		{
-			StartCoroutine(TurnOnFullArmLayerSlowly(weaponFullArm.WeaponHandType, 1.5f));
+			_turnOnSlowly =  StartCoroutine(TurnOnFullArmLayerSlowly(weaponFullArm.WeaponHandType, 1.5f));
 		}
 
 		if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
@@ -457,7 +460,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 				Debug.Log("WaitUntul left OK");
 			}
 
-			StartCoroutine(TurnOffFullArmLayerSlowly(weaponFullArm.WeaponHandType, 1.5f));
+			_turnOffSlowly = StartCoroutine(TurnOffFullArmLayerSlowly(weaponFullArm.WeaponHandType, 1.5f));
 
 			if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
 			{
@@ -1091,5 +1094,31 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		TurnOffBothArmsLayers();
 
 		yield return null;
+	}
+
+	public void OnHideMonocular(WeaponHandType handType)
+	{
+		if (_turnOnSlowly != null)
+		{
+			StopCoroutine(_turnOnSlowly);
+		}
+
+		if (_turnOffSlowly != null)
+		{
+			StopCoroutine(_turnOffSlowly);
+		}
+
+		if (handType == WeaponHandType.Right)
+		{
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightArm, 0);
+
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightArm, 0);
+		}
+		else
+		{
+			_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftArm, 0);
+
+			_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftArm, 0);
+		}
 	}
 }
