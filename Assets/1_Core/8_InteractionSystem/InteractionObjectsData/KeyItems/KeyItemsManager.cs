@@ -25,7 +25,7 @@ public class KeyItemsManager: MonoBehaviour, IJsonSaveLoad
 		//Debug.Log(_collectedKeys.Count);
 	}
 
-	public void RemoveKeyItemToCollected(string keyItemID)
+	public void RemoveKeyItemFromCollected(string keyItemID)
 	{
 		_collectedKeyItems.Remove(keyItemID);
 	}

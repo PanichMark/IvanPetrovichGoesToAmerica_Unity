@@ -13,6 +13,7 @@ public class BootstrapSubProcessMissionsSystem
 	public MissionsManager MissionsManager { get; private set; }
 	private BootstrapSubProcessScenesSystem _bootstrapSubProcessSceneSystem;
 	private GameMissionsList _gameMissions;
+	private MissionMapsController _missionMapsController;
 
 	public BootstrapSubProcessMissionsSystem(
 		Bootstrap bootstrap,
@@ -38,6 +39,8 @@ public class BootstrapSubProcessMissionsSystem
 
 		_missionGoalMarkerManager = _gameObjectBootstrapMissionsSystem.AddComponent<MissionGoalMarkerController>();
 
+		_missionMapsController = _gameObjectBootstrapMissionsSystem.AddComponent<MissionMapsController>();
+
 		MissionsManager.Initialize(
 			_localizationManager,
 			_bootstrapSubProcessSceneSystem.GameSceneManager,
@@ -53,7 +56,10 @@ public class BootstrapSubProcessMissionsSystem
 			_playerCameraGameObject,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDMission.ImageMissionGoalMarker);
 
+		_missionMapsController.Initialize();
+
 		ServiceLocator.Register<MissionsManager>(MissionsManager);
+		ServiceLocator.Register<MissionMapsController>(_missionMapsController);
 
 		yield break;
 	}

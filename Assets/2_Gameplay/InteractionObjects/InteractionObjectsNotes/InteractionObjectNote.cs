@@ -79,6 +79,13 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		//_menuManager.OnOpenPauseMenu += HideNoteCanvas;
 		//_menuManager.OnClosePauseMenu += ShowNoteCanvas;
 		_menuManager.OnCloseInteractionMenu += CloseAndDeactivate;
+
+		InitializeNote();
+	}
+
+	protected virtual void InitializeNote()
+	{
+
 	}
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
@@ -123,7 +130,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		}
 	}
 
-	public void Interact()
+	public virtual void Interact()
 	{
 		Debug.Log("NOT IS SHOWING");
 

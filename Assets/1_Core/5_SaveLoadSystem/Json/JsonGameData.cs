@@ -216,7 +216,7 @@ public class MissionData
 [System.Serializable]
 public struct MissionMap
 {
-
+	public string MissionMapID;
 }
 
 [System.Serializable]
