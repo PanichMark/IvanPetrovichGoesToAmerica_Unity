@@ -193,6 +193,11 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 		SetPickableObjectTransformAtPlayerArms();
 	}
 
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
+
 	protected override void SetPickableObjectTransformAtPlayerArms()
 	{
 		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)

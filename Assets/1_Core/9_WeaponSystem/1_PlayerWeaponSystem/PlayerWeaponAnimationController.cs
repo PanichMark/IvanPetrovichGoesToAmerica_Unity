@@ -126,6 +126,8 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
+		//Debug.Log(IsLeftFullArmAttacking);
+
 		ProcessAimUpDown();
 	}
 
@@ -613,7 +615,7 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 		}
 	}
 
-	private void TurnOffFullArmLayerImmediately(WeaponHandType handType)
+	public void TurnOffFullArmLayerImmediately(WeaponHandType handType)
 	{
 		Debug.Log($"turn OFF melee layer {handType}");
 

@@ -249,6 +249,11 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		SetPickableObjectTransformAtPlayerArms();
 	}
 
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
+
 	protected virtual void SetPickableObjectTransformAtPlayerArms()
 	{
 		transform.parent = _gameObjectSpineSlot.transform;

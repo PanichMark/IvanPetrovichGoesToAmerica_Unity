@@ -57,7 +57,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 
 		isPlayerWeaponAttacking = true;
 
-		if (_seethroughSceneObjectsRegistrator.SeethroughSceneObject.Count > 0)
+		if (_seethroughSceneObjectsRegistrator != null && _seethroughSceneObjectsRegistrator.SeethroughSceneObject.Count > 0)
 		{
 			foreach (GameObject obj in _seethroughSceneObjectsRegistrator.SeethroughSceneObject)
 			{
@@ -83,7 +83,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 
 		yield return _monocularScopeCoroutine;
 
-		if (_seethroughSceneObjectsRegistrator.SeethroughSceneObject.Count > 0)
+		if (_seethroughSceneObjectsRegistrator != null && _seethroughSceneObjectsRegistrator.SeethroughSceneObject.Count > 0)
 		{
 			foreach (GameObject obj in _seethroughSceneObjectsRegistrator.SeethroughSceneObject)
 			{
@@ -113,7 +113,7 @@ public class WeaponSpecialMonocular : WeaponAbstract
 
 	public override void OnHideWeaponPlayer()
 	{
-		if (_seethroughSceneObjectsRegistrator.SeethroughSceneObject.Count > 0)
+		if (_seethroughSceneObjectsRegistrator != null && _seethroughSceneObjectsRegistrator.SeethroughSceneObject.Count > 0)
 		{
 			foreach (GameObject obj in _seethroughSceneObjectsRegistrator.SeethroughSceneObject)
 			{
@@ -130,6 +130,10 @@ public class WeaponSpecialMonocular : WeaponAbstract
 			}
 		}
 
+		//StopCoroutine(ScopeMonocular());
+		//StopCoroutine(_monocularScopeCoroutine);
+		_playerWeaponAnimationController.TurnOffFullArmLayerImmediately(WeaponHandType);
+		isPlayerWeaponAttacking = false;
 		_canvasHUDmonocular.SetActive(false);
 	}
 }
