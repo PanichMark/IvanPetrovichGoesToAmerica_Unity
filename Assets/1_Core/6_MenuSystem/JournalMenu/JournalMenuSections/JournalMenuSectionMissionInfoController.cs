@@ -40,7 +40,8 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 
 	private GameObject _textMissionMapDescription;
 	private TextMeshProUGUI _textComponentMissionMapDescription;
-
+	private int _currentMissionMapIndex;
+	private List<MissionMapData> _currentMissionMapData;
 	private GameObject _buttonNextMissionMap;
 	private Button _buttonComponentNextMissionMap;
 
@@ -88,38 +89,24 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 		_textNoMapFound = viewModel.TextNoMapFound;
 		_textComponentNoMapFound = _textNoMapFound.GetComponent<TextMeshProUGUI>();
 
-		// --- СУЩЕСТВУЮЩАЯ ЛОГИКА ПОДПИСОК ---
-		_gameSceneManager.OnEndLoadingGameplayScene += () =>
-		{
-			if (SceneManager.sceneCount > 1)
-			{
-				if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
-				{
-					_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current") + " " + _textGoal;
-				}
-				else
-				{
-					_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
-
-					_textComponentMissionName.text = _localizationManager.GetLocalizedString("Mission_Test");
-				}
-			}
-			else
-			{
-				_textComponentMissionStep.text = null;
-			}
-		};
-
 		_buttonComponentNextMissionMap.onClick.AddListener(ShowNextMap);
 		_buttonComponentPreviousMissionMap.onClick.AddListener(ShowPreviousMap);
 
-		//_journalMenuController.OnOpenJournaMenuSectionMissionInfo += OnSectionOpen;
+		// --- СУЩЕСТВУЮЩАЯ ЛОГИКА ПОДПИСОК ---
+		_gameSceneManager.OnEndLoadingGameplayScene += () =>
+		{
+
+			SetMissionInfo(_currentMission);
+			SetMissionStep(_textGoal);
+
+
+			//_journalMenuController.OnOpenJournaMenuSectionMissionInfo += OnSectionOpen;
+
+
+		};
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
-
-	private int _currentMissionMapIndex;
-	private List<MissionMapData> _currentMissionMapData;
 
 	public void ApplyMissionMapsData(List<MissionMapData> collectedMissionMapsData)
 	{
@@ -179,8 +166,7 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 			}
 			else
 			{
-				//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-				_textComponentMissionStep.text = null;
+				_textComponentMissionStep.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_THERE-IS-NO-MISSION-GOAL-IN-TEST-SCENE");
 			}
 		}
 	}
@@ -222,7 +208,6 @@ public class JournalMenuSectionMissionInfoController : MonoBehaviour
 				_imageComponentMissionTarget.sprite = _bootstrap.GameData.GameMissionsList.MissionTest.MissionTargetSprite;
 			}
 		}
-	
 	}
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
