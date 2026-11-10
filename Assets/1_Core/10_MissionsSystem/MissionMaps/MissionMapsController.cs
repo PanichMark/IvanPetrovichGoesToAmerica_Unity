@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
@@ -34,7 +35,18 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 
 		if (_collectedMissionMaps.TryGetValue(currentMissionKey, out var stringList))
 		{
-			foreach (var mapID in stringList)
+			// 1. Сортируем сырые строки по порядку их следования в MissionMapsNamesEnum
+			var sortedList = stringList.OrderBy(id =>
+			{
+				if (System.Enum.TryParse<MissionMapsNamesEnum>(id, out var parsedEnum))
+				{
+					return (int)parsedEnum;
+				}
+				return int.MaxValue; // Если ID не найден в Enum, кидаем в конец
+			}).ToList();
+
+			// 2. Ищем ScriptableObject уже в отсортированном списке
+			foreach (var mapID in sortedList)
 			{
 				MissionMapData foundMap = System.Array.Find(_missionMapsList.MissionMapsInOrder, x => x.MissionMapID.ToString() == mapID);
 				if (foundMap != null)
@@ -46,6 +58,8 @@ public class MissionMapsController : MonoBehaviour, IJsonSaveLoad
 
 		_journalMenuSectionMissionInfoController.ApplyMissionMapsData(resolvedMaps);
 	}
+
+
 
 	// Метод для геймплея: добавляет ID в список текущей активной миссии
 	public void AddMissionMapToCollected(string mapID)
