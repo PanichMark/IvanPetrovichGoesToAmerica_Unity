@@ -277,7 +277,7 @@ public class BootstrapSubProcessMenuSystem
 		_viewModelJournalMenu = new ViewModelJournalMenu(_bootstrap, _canvasJournalMenu);
 		ViewModelJournalMenuSectionInventory  = new ViewModelJournalMenuSectionInventory(_bootstrap, _canvasJournalMenu);
 		_viewModelJournalMenuSectionMissionInfo = new ViewModelJournalMenuSectionMissionInfo(_bootstrap, _canvasJournalMenu);
-		_viewModelJournalMenuSectionStatistics = new ViewModelJournalMenuSectionStatistics(_bootstrap, _canvasJournalMenu);
+		//_viewModelJournalMenuSectionStatistics = new ViewModelJournalMenuSectionStatistics(_bootstrap, _canvasJournalMenu);
 
 
 		MenuManager.Initialize(

@@ -1,9 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Runtime.InteropServices;
+using UnityEngine;
 
 public class ViewModelJournalMenuSectionInventory
 {
-	private int _inventorySlots = 20;
-
 	public GameObject TextPlayerMoneyRubles;
 	public GameObject TextHealingItems;
 	public GameObject TextManaReplenishItems;
@@ -20,6 +19,9 @@ public class ViewModelJournalMenuSectionInventory
 
 	public ViewModelJournalMenuSectionInventory(Bootstrap bootstrap, GameObject canvas)
 	{
+		ButtonsInventorySlots = new GameObject[bootstrap.GameData.NumberFoInventorySlots];
+		ImagesInventorySlotItems = new GameObject[bootstrap.GameData.NumberFoInventorySlots];
+
 		TextPlayerMoneyRubles = bootstrap.FindDeepGameObject(canvas, "TextPlayerMoneyRubles");
 		TextHealingItems = bootstrap.FindDeepGameObject(canvas, "TextHealingItems");
 		TextManaReplenishItems = bootstrap.FindDeepGameObject(canvas, "TextHealingItems");
@@ -31,7 +33,7 @@ public class ViewModelJournalMenuSectionInventory
 		ImageCurrentInventoryItem = bootstrap.FindDeepGameObject(canvas, "ImageCurrentInventoryItem");
 		TextCurrentInventoryItemDescription = bootstrap.FindDeepGameObject(canvas, "TextCurrentInventoryItemDescription");
 
-		for (int i = 0; i < _inventorySlots; i++)
+		for (int i = 0; i < bootstrap.GameData.NumberFoInventorySlots; i++)
 		{
 			string inventoryItemSlot = "InventoryItemSlot" + (i + 1);
 			string inventoryItemSlotImage = "InventoryItemSlotImage" + (i + 1);

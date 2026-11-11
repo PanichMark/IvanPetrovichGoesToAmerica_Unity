@@ -58,6 +58,7 @@ public class PlayerMoneyController : MonoBehaviour, IJsonSaveLoad
 			UpdateMoneyDisplay(); 
 		}
 	}
+
 	private void UpdateMoneyDisplay()
 	{
 		_playerComponentMoneyRublesText.text = PlayerMoneyRubles.ToString();
