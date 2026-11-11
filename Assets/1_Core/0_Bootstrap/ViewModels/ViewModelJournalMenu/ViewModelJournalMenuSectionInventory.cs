@@ -19,8 +19,8 @@ public class ViewModelJournalMenuSectionInventory
 
 	public ViewModelJournalMenuSectionInventory(Bootstrap bootstrap, GameObject canvas)
 	{
-		ButtonsInventorySlots = new GameObject[bootstrap.GameData.NumberFoInventorySlots];
-		ImagesInventorySlotItems = new GameObject[bootstrap.GameData.NumberFoInventorySlots];
+		ButtonsInventorySlots = new GameObject[bootstrap.GameData.NumberOfInventorySlots];
+		ImagesInventorySlotItems = new GameObject[bootstrap.GameData.NumberOfInventorySlots];
 
 		TextPlayerMoneyRubles = bootstrap.FindDeepGameObject(canvas, "TextPlayerMoneyRubles");
 		TextHealingItems = bootstrap.FindDeepGameObject(canvas, "TextHealingItems");
@@ -33,7 +33,7 @@ public class ViewModelJournalMenuSectionInventory
 		ImageCurrentInventoryItem = bootstrap.FindDeepGameObject(canvas, "ImageCurrentInventoryItem");
 		TextCurrentInventoryItemDescription = bootstrap.FindDeepGameObject(canvas, "TextCurrentInventoryItemDescription");
 
-		for (int i = 0; i < bootstrap.GameData.NumberFoInventorySlots; i++)
+		for (int i = 0; i < bootstrap.GameData.NumberOfInventorySlots; i++)
 		{
 			string inventoryItemSlot = "InventoryItemSlot" + (i + 1);
 			string inventoryItemSlotImage = "InventoryItemSlotImage" + (i + 1);
