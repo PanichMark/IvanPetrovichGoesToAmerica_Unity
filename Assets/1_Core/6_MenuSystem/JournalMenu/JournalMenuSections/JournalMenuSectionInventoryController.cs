@@ -2,6 +2,7 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class JournalMenuSectionInventoryController : MonoBehaviour
@@ -48,6 +49,7 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 	private int _manaReplenishItems;
 
 	private LocalizationManager _localizationManager;
+	private List<string> _currentKeyItemIDs;
 
 	public void Initialize(
 		Bootstrap bootstrap,
@@ -85,6 +87,15 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 			_buttonComponentsInventorySlots[i] = _buttonsInventorySlots[i].GetComponent<Button>();
 			_imagesInventorySlotItems[i] = _viewModelJournalMenuSectionInventory.ImagesInventorySlotItems[i];
 			_imageComponentsInventorySlotItems[i] = _imagesInventorySlotItems[i].GetComponent<Image>();
+
+			int closureIndex = i;
+			EventTrigger trigger = _buttonsInventorySlots[i].GetComponent<EventTrigger>();
+			if (trigger == null) trigger = _buttonsInventorySlots[i].AddComponent<EventTrigger>();
+
+			EventTrigger.Entry entryEnter = new EventTrigger.Entry();
+			entryEnter.eventID = EventTriggerType.PointerEnter;
+			entryEnter.callback.AddListener((data) => { OnInventorySlotHoverEnter(closureIndex); });
+			trigger.triggers.Add(entryEnter);
 		}
 
 		_scrollbar = _viewModelJournalMenuSectionInventory.Scrollbar;
@@ -130,8 +141,35 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 		_textComponentManaReplenishItems.text = $": {_manaReplenishItems.ToString()} {_textManaReplenishItemName}";
 	}
 
+	private void OnInventorySlotHoverEnter(int slotIndex)
+	{
+		if (slotIndex >= _currentKeyItemIDs.Count) return;
+
+		string keyItemID = _currentKeyItemIDs[slotIndex];
+		InteractionObjectKeyItemData itemData = _bootstrap.GameData.KeyItemsList.KeyItemsInOrder
+			.FirstOrDefault(x => x.KeyItemID.ToString() == keyItemID);
+
+		if (_localizationManager.CurrentLanguage == LanguagesEnum.Russian)
+		{
+			_textComponentCurrentInventoryItemDescription.text = itemData.KeyItemDescription_RU.text;
+		}
+		if (_localizationManager.CurrentLanguage == LanguagesEnum.English)
+		{
+			_textComponentCurrentInventoryItemDescription.text = itemData.KeyItemDescription_EN.text;
+		}
+		_imageCurrentInventoryItem.SetActive(true);
+		_imageComponentCurrentInventoryItem.sprite = itemData.KeyItemSprite;
+		_textComponentCurrentInventoryItemName.text = _localizationManager.GetLocalizedString(itemData.KeyItemName);
+	}
+
 	public void ReceiveKeyItemsData(List<string> keyItemIDs)
 	{
+		_textComponentCurrentInventoryItemName.text = string.Empty;
+		_textComponentCurrentInventoryItemDescription.text = string.Empty;
+		_imageCurrentInventoryItem.SetActive(false);
+
+		_currentKeyItemIDs = keyItemIDs;
+
 		if (keyItemIDs.Count <= 12)
 		{
 			_scrollbarHandle.SetActive(false);
@@ -149,26 +187,23 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 			_inventoryRows[i].SetActive(i < fullRowsCount);
 		}
 
-		// Очищаем слоты перед заполнением
 		for (int i = 0; i < _buttonsInventorySlots.Length; i++)
 		{
-			if (_buttonsInventorySlots[i] != null) _buttonsInventorySlots[i].SetActive(false);
-			if (_imagesInventorySlotItems[i] != null) _imageComponentsInventorySlotItems[i].sprite = null;
+			_buttonsInventorySlots[i].SetActive(false);
+			_imageComponentsInventorySlotItems[i].sprite = null;
 		}
 
-		// Заполняем слоты по порядку
 		for (int i = 0; i < keyItemIDs.Count && i < _buttonsInventorySlots.Length; i++)
 		{
-			if (_buttonsInventorySlots[i] == null || _imagesInventorySlotItems[i] == null) continue;
+			_buttonsInventorySlots[i].SetActive(true);
 
-			// Используем Вариант 1 (Linq) или Вариант 2 (Array.Find)
 			InteractionObjectKeyItemData itemData = _bootstrap.GameData.KeyItemsList.KeyItemsInOrder
 				.FirstOrDefault(x => x.KeyItemID.ToString() == keyItemIDs[i]);
 
-			if (itemData == null) continue;
-
-			_buttonsInventorySlots[i].SetActive(true);
-			_imageComponentsInventorySlotItems[i].sprite = itemData.KeyItemSprite;
+			if (itemData != null)
+			{
+				_imageComponentsInventorySlotItems[i].sprite = itemData.KeyItemSprite;
+			}
 		}
 	}
 
