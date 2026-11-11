@@ -180,14 +180,16 @@ public class BootstrapSubProcessPlayerSystems
 			_playerMovementAnimationController,
 			PlayerMovementStateMachineController,
 			_bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana,
-			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
+			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel,
+			_bootstrapSubProcessMenuSystem.JournalMenuSectionInventoryController);
 
 		PlayerResourcesManaManager.Initialize(
 			_bootstrapSubProcessMenuSystem.ViewModelHUDhealthAndMana,
-			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel);
+			_bootstrapSubProcessMenuSystem.ViewModelWeaponWheel,
+			_bootstrapSubProcessMenuSystem.JournalMenuSectionInventoryController);
 
 		PlayerResourcesMoneyManager.Initialize(
-			_bootstrapSubProcessMenuSystem.ViewModelJournalMenuSectionInventory.TextPlayerMoneyRubles);
+			_bootstrapSubProcessMenuSystem.JournalMenuSectionInventoryController);
 
 	ServiceLocator.Register<PlayerBehaviourController>(PlayerBehaviour);
 ServiceLocator.Register<PlayerMovementController>(PlayerMovementController);

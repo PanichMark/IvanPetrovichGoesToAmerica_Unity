@@ -32,13 +32,26 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 
 	public GameObject _textCurrentInventoryItemDescription;
 	public TextMeshProUGUI _textComponentCurrentInventoryItemDescription;
-
+	private float _scrollbarHandleSize = 0.11f;
 	private ViewModelJournalMenuSectionInventory _viewModelJournalMenuSectionInventory;
 	private Bootstrap _bootstrap;
+
+	private string _textMoneyRublesName;
+	private string _textHealingItemName;
+	private string _textManaReplenishItemName;
+
+	private int _rubles;
+	private int _healingItems;
+	private int _manaReplenishItems;
+
+	private LocalizationManager _localizationManager;
+
 	public void Initialize(
 		Bootstrap bootstrap,
+		LocalizationManager localizationManager,
 		ViewModelJournalMenuSectionInventory viewModelJournalMenuSectionInventory)
 	{
+		_localizationManager = localizationManager;
 		_viewModelJournalMenuSectionInventory = viewModelJournalMenuSectionInventory;
 		_bootstrap = bootstrap;
 
@@ -79,5 +92,45 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 
 		_textCurrentInventoryItemDescription = _viewModelJournalMenuSectionInventory.TextCurrentInventoryItemDescription;
 		_textComponentCurrentInventoryItemDescription = _textCurrentInventoryItemDescription.GetComponent<TextMeshProUGUI>();
+
+		Canvas.willRenderCanvases += EnforceFixedHandleSize;
+
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
+	}
+
+	private void EnforceFixedHandleSize()
+	{
+		_scrollbarComponent.size = Mathf.Clamp(_scrollbarHandleSize, 0f, 1f);
+	}
+
+	public void UpdateInventoryMoneyRubles(int newNumber)
+	{
+		_rubles = newNumber;
+		_textComponentPlayerMoneyRubles.text = $": {_rubles.ToString()} {_textMoneyRublesName}";
+	}
+
+	public void UpdateInventoryHealingItems(int newNumber)
+	{
+		_healingItems = newNumber;
+		_textComponentHealingItems.text = $": {_healingItems.ToString()} {_textHealingItemName}";
+	}
+
+	public void UpdateInventoryManaReplenishItems(int newNumber)
+	{
+		_manaReplenishItems = newNumber;
+		_textComponentManaReplenishItems.text = $": {_manaReplenishItems.ToString()} {_textManaReplenishItemName}";
+	}
+
+	private void ChangeLanguage(LocalizationManager localizationManager)
+	{
+		_localizationManager = localizationManager;
+
+		_textMoneyRublesName = _localizationManager.GetLocalizedString("Money_Ruble");
+		_textHealingItemName = _localizationManager.GetLocalizedString("HealingItem");
+		_textManaReplenishItemName = _localizationManager.GetLocalizedString("ManaReplenishItem");
+
+		UpdateInventoryMoneyRubles(_rubles);
+		UpdateInventoryHealingItems(_healingItems);
+		UpdateInventoryManaReplenishItems(_manaReplenishItems);
 	}
 }

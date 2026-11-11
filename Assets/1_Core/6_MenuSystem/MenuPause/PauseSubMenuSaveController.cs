@@ -45,7 +45,7 @@ public class PauseSubMenuSaveController : MonoBehaviour
 
 	private GameObject _scrollbar;
 	private Scrollbar _scrollbarComponent;
-	private float _scrollbarHandleSize = 0.11f;
+	private float _scrollbarHandleSize = 0.15f;
 	private GameObject _scrollbarHandle;
 
 	private bool _isPauseSubMenuSaveOpened;

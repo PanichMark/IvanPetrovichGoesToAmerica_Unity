@@ -17,9 +17,13 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 	public int MaxManaReplenishItemsNumber { get; private set; } = 9;
 
 	public int CurrentManaReplenishItemsNumber { get; private set; }
-
-	public void Initialize(ViewModelHUDHealthAndMana viewModelHUDHealthAndMana, ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
+	private JournalMenuSectionInventoryController _journalMenuSectionInventoryController;
+	public void Initialize(
+		ViewModelHUDHealthAndMana viewModelHUDHealthAndMana,
+		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel,
+		JournalMenuSectionInventoryController journalMenuSectionInventoryController)
 	{
+		_journalMenuSectionInventoryController = journalMenuSectionInventoryController;
 		_sliderComponentManaBar = viewModelHUDHealthAndMana.SliderManaBar.GetComponent<Slider>();
 		_buttonManaReplenishtem = viewModelMenuWeaponWheel.ButtonUseManaReplenishItem.GetComponent<Button>();
 		_manaReplenishItemNumber = viewModelMenuWeaponWheel.TextManaReplenishItemNumber.GetComponent<TextMeshProUGUI>();
@@ -44,6 +48,7 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 		CurrentManaReplenishItemsNumber = setManaReplenishItems;
 
 		_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+		_journalMenuSectionInventoryController.UpdateInventoryManaReplenishItems(CurrentManaReplenishItemsNumber);
 	}
 
 	private void UseManaReplenishItem()
@@ -62,6 +67,7 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 				ReplenishMana(_manaItemEffect);
 
 				_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+				_journalMenuSectionInventoryController.UpdateInventoryManaReplenishItems(CurrentManaReplenishItemsNumber);
 
 				Debug.Log("Used ManaReplenish Item");
 			}
@@ -77,6 +83,7 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 			CurrentManaReplenishItemsNumber++;
 
 			_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+			_journalMenuSectionInventoryController.UpdateInventoryManaReplenishItems(CurrentManaReplenishItemsNumber);
 
 			Debug.Log("Added ManaReplenish Item");
 		}
@@ -124,6 +131,7 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 		Debug.Log($"used: {ManaCost} mana");
 	}
 
+	/*
 	private void ShowSliderManaBarFillArea()
 	{
 		_sliderManaBarFillArea.SetActive(true);
@@ -133,6 +141,7 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 	{
 		_sliderManaBarFillArea.SetActive(false);
 	}
+	*/
 
 	public void ShowButtonUseManaReplenishItem()
 	{
@@ -173,6 +182,7 @@ public class PlayerManaController : MonoBehaviour, IJsonSaveLoad
 		_sliderComponentManaBar.value = CurrentPlayerMana * 0.24f;
 
 		_manaReplenishItemNumber.text = CurrentManaReplenishItemsNumber.ToString();
+		_journalMenuSectionInventoryController.UpdateInventoryManaReplenishItems(CurrentManaReplenishItemsNumber);
 
 		yield return null;
 	}

@@ -439,6 +439,7 @@ public class BootstrapSubProcessMenuSystem
 
 		JournalMenuSectionInventoryController.Initialize(
 			_bootstrap,
+			_localizationManager,
 			ViewModelJournalMenuSectionInventory);
 
 		ServiceLocator.Register<PauseSubMenuSettingsGameDifficultyController>(_pauseSubMenuSettingsGameDifficultyController);

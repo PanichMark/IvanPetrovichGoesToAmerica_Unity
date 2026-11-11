@@ -4,17 +4,18 @@ using System.Collections;
 
 public class PlayerMoneyController : MonoBehaviour, IJsonSaveLoad
 {
-	private TMP_Text _playerComponentMoneyRublesText;
-
     public int PlayerMoneyRubles { get; private set; }
 	public int PlayerMoneyDollars { get; private set; }
 	public int PlayerMoneyGoldmark { get; private set; }
 	public int PlayerMoneyWeaponLicense { get; private set; }
 
-	public void Initialize(GameObject playerMoneyText)
+	private JournalMenuSectionInventoryController _journalMenuSectionInventoryController;
+
+	public void Initialize(
+		JournalMenuSectionInventoryController journalMenuSectionInventoryController)
 	{
-		_playerComponentMoneyRublesText = playerMoneyText.GetComponent<TMP_Text>();
-		
+		_journalMenuSectionInventoryController = journalMenuSectionInventoryController;
+
 		UpdateMoneyDisplay();
 		Debug.Log("PlayerResourcesMoneyManager Initialized");
 	}
@@ -26,7 +27,7 @@ public class PlayerMoneyController : MonoBehaviour, IJsonSaveLoad
 		//PlayerMoneyGoldmark = setMoney;
 		//PlayerMoneyWeaponLicense = setMoney;
 
-		_playerComponentMoneyRublesText.text = PlayerMoneyRubles.ToString();
+		UpdateMoneyDisplay();
 	}
 
 	public void AddMoney(int moneyAmmount)
@@ -61,7 +62,7 @@ public class PlayerMoneyController : MonoBehaviour, IJsonSaveLoad
 
 	private void UpdateMoneyDisplay()
 	{
-		_playerComponentMoneyRublesText.text = PlayerMoneyRubles.ToString();
+		_journalMenuSectionInventoryController.UpdateInventoryMoneyRubles(PlayerMoneyRubles);
 	}
 
 	public IEnumerator SaveJsonData(JsonGameData data)

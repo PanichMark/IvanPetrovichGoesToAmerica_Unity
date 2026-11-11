@@ -29,15 +29,17 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 	public float CurrentHealth => CurrentPlayerHealth;
 
 	public bool CanObjectBeDamaged => true;
-
+	private JournalMenuSectionInventoryController _journalMenuSectionInventoryController;
 	public void Initialize(
 		Bootstrap bootstrap,
 		GameController gameController,
 		PlayerMovementAnimationController playerMovementController,
 		PlayerMovementStateMachineController playerMovementStateMachineController,
 		ViewModelHUDHealthAndMana viewModelHUDHealthAndMana,
-		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel)
+		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel,
+		JournalMenuSectionInventoryController journalMenuSectionInventoryController)
 	{
+		_journalMenuSectionInventoryController = journalMenuSectionInventoryController;
 		_playerMovementAnimationController = playerMovementController;
 		_bootstrap = bootstrap;
 		_sliderHealthBar = viewModelHUDHealthAndMana.SliderHealthBar.GetComponent<Slider>();
@@ -65,6 +67,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 		CurrentHealingItemsNumber = setHealingItems;
 
 		_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+		_journalMenuSectionInventoryController.UpdateInventoryHealingItems(CurrentHealingItemsNumber);
 	}
 
 	private void UseHealingItem()
@@ -86,6 +89,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 				_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
 
 				_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+				_journalMenuSectionInventoryController.UpdateInventoryHealingItems(CurrentHealingItemsNumber);
 
 				Debug.Log("Used Healing Item");
 			}
@@ -101,6 +105,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 			CurrentHealingItemsNumber++;
 
 			_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+			_journalMenuSectionInventoryController.UpdateInventoryHealingItems(CurrentHealingItemsNumber);
 
 			Debug.Log("Added Healing Item");
 		}
@@ -197,6 +202,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
 
 		_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+		_journalMenuSectionInventoryController.UpdateInventoryHealingItems(CurrentHealingItemsNumber);
 
 		yield return null;
 	}
