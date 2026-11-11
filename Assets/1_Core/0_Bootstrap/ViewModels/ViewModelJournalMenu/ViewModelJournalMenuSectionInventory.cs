@@ -7,6 +7,7 @@ public class ViewModelJournalMenuSectionInventory
 	public GameObject TextHealingItems;
 	public GameObject TextManaReplenishItems;
 
+	public GameObject[] InventoryRows;
 	public GameObject[] ButtonsInventorySlots;
 	public GameObject[] ImagesInventorySlotItems;
 
@@ -19,6 +20,7 @@ public class ViewModelJournalMenuSectionInventory
 
 	public ViewModelJournalMenuSectionInventory(Bootstrap bootstrap, GameObject canvas)
 	{
+		InventoryRows = new GameObject[bootstrap.GameData.NumberOfInventoryRows];
 		ButtonsInventorySlots = new GameObject[bootstrap.GameData.NumberOfInventorySlots];
 		ImagesInventorySlotItems = new GameObject[bootstrap.GameData.NumberOfInventorySlots];
 
@@ -33,11 +35,19 @@ public class ViewModelJournalMenuSectionInventory
 		ImageCurrentInventoryItem = bootstrap.FindDeepGameObject(canvas, "ImageCurrentInventoryItem");
 		TextCurrentInventoryItemDescription = bootstrap.FindDeepGameObject(canvas, "TextCurrentInventoryItemDescription");
 
+		for (int i = 0; i < bootstrap.GameData.NumberOfInventoryRows; i++)
+		{
+			string inventoryRow = "InventoryRow" + (i + 1);
+			InventoryRows[i] = bootstrap.FindDeepGameObject(canvas, inventoryRow);
+		}
+
 		for (int i = 0; i < bootstrap.GameData.NumberOfInventorySlots; i++)
 		{
+			
 			string inventoryItemSlot = "InventoryItemSlot" + (i + 1);
 			string inventoryItemSlotImage = "InventoryItemSlotImage" + (i + 1);
 
+			
 			ButtonsInventorySlots[i] = bootstrap.FindDeepGameObject(canvas, inventoryItemSlot);
 			ImagesInventorySlotItems[i] = bootstrap.FindDeepGameObject(canvas, inventoryItemSlotImage);
 		}

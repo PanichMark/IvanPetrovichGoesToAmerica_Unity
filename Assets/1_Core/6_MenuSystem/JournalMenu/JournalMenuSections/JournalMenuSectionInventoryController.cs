@@ -1,37 +1,40 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class JournalMenuSectionInventoryController : MonoBehaviour
 {
-	public GameObject _textPlayerMoneyRubles;
-	public TextMeshProUGUI _textComponentPlayerMoneyRubles;
+	private GameObject _textPlayerMoneyRubles;
+	private TextMeshProUGUI _textComponentPlayerMoneyRubles;
 
-	public GameObject _textHealingItems;
-	public TextMeshProUGUI _textComponentHealingItems;
+	private GameObject _textHealingItems;
+	private TextMeshProUGUI _textComponentHealingItems;
 
-	public GameObject _textManaReplenishItems;
-	public TextMeshProUGUI _textComponentManaReplenishItems;
+	private GameObject _textManaReplenishItems;
+	private TextMeshProUGUI _textComponentManaReplenishItems;
 
-	public GameObject[] _buttonsInventorySlots;
-	public Button[] _buttonComponentsInventorySlots;
-	public GameObject[] _imagesInventorySlotItems;
-	public Image[] _imageComponentsInventorySlotItems;
+	private GameObject[] _inventoryRows;
+	private GameObject[] _buttonsInventorySlots;
+	private Button[] _buttonComponentsInventorySlots;
+	private GameObject[] _imagesInventorySlotItems;
+	private Image[] _imageComponentsInventorySlotItems;
 
-	public GameObject _scrollbar;
-	public Scrollbar _scrollbarComponent;
+	private GameObject _scrollbar;
+	private Scrollbar _scrollbarComponent;
 
-	public GameObject _scrollbarHandle;
-	public RectTransform _scrollbarComponentHandle;
+	private GameObject _scrollbarHandle;
+	private RectTransform _scrollbarComponentHandle;
 
-	public GameObject _textCurrentInventoryItemName;
-	public TextMeshProUGUI _textComponentCurrentInventoryItemName;
+	private GameObject _textCurrentInventoryItemName;
+	private TextMeshProUGUI _textComponentCurrentInventoryItemName;
 
-	public GameObject _imageCurrentInventoryItem;
-	public Image _imageComponentCurrentInventoryItem;
+	private GameObject _imageCurrentInventoryItem;
+	private Image _imageComponentCurrentInventoryItem;
 
-	public GameObject _textCurrentInventoryItemDescription;
-	public TextMeshProUGUI _textComponentCurrentInventoryItemDescription;
+	private GameObject _textCurrentInventoryItemDescription;
+	private TextMeshProUGUI _textComponentCurrentInventoryItemDescription;
 	private float _scrollbarHandleSize = 0.11f;
 	private ViewModelJournalMenuSectionInventory _viewModelJournalMenuSectionInventory;
 	private Bootstrap _bootstrap;
@@ -69,6 +72,12 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 
 		_imagesInventorySlotItems = new GameObject[_bootstrap.GameData.NumberOfSafeFileSlots];
 		_imageComponentsInventorySlotItems = new Image[_bootstrap.GameData.NumberOfSafeFileSlots];
+		_inventoryRows = new GameObject[_bootstrap.GameData.NumberOfInventoryRows];
+
+		for (int i = 0; i < bootstrap.GameData.NumberOfInventoryRows; i++)
+		{
+			_inventoryRows[i] = _viewModelJournalMenuSectionInventory.InventoryRows[i];
+		}
 
 		for (int i = 0; i < bootstrap.GameData.NumberOfInventorySlots; i++)
 		{
@@ -119,6 +128,48 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 	{
 		_manaReplenishItems = newNumber;
 		_textComponentManaReplenishItems.text = $": {_manaReplenishItems.ToString()} {_textManaReplenishItemName}";
+	}
+
+	public void ReceiveKeyItemsData(List<string> keyItemIDs)
+	{
+		if (keyItemIDs.Count <= 12)
+		{
+			_scrollbarHandle.SetActive(false);
+		}
+		else
+		{
+			_scrollbarHandle.SetActive(true);
+		}
+
+		int fullRowsCount = (keyItemIDs.Count + 3) / 4;
+		Debug.Log("Количество полных строк: " + fullRowsCount);
+
+		for (int i = 0; i < _inventoryRows.Length; i++)
+		{
+			_inventoryRows[i].SetActive(i < fullRowsCount);
+		}
+
+		// Очищаем слоты перед заполнением
+		for (int i = 0; i < _buttonsInventorySlots.Length; i++)
+		{
+			if (_buttonsInventorySlots[i] != null) _buttonsInventorySlots[i].SetActive(false);
+			if (_imagesInventorySlotItems[i] != null) _imageComponentsInventorySlotItems[i].sprite = null;
+		}
+
+		// Заполняем слоты по порядку
+		for (int i = 0; i < keyItemIDs.Count && i < _buttonsInventorySlots.Length; i++)
+		{
+			if (_buttonsInventorySlots[i] == null || _imagesInventorySlotItems[i] == null) continue;
+
+			// Используем Вариант 1 (Linq) или Вариант 2 (Array.Find)
+			InteractionObjectKeyItemData itemData = _bootstrap.GameData.KeyItemsList.KeyItemsInOrder
+				.FirstOrDefault(x => x.KeyItemID.ToString() == keyItemIDs[i]);
+
+			if (itemData == null) continue;
+
+			_buttonsInventorySlots[i].SetActive(true);
+			_imageComponentsInventorySlotItems[i].sprite = itemData.KeyItemSprite;
+		}
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)

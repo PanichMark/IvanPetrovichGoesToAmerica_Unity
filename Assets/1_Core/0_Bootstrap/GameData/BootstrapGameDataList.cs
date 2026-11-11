@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 public class BootstrapGameDataList : ScriptableObject
 {
 	public int NumberOfSafeFileSlots { get; private set; } = 20;
+	public int NumberOfInventoryRows { get; private set; } = 5;
 	public int NumberOfInventorySlots { get; private set; } = 20;
 	public List<Sprite> NPCdetectionSignFrames;
 	public AudioMixer AudioMixer;

@@ -93,7 +93,9 @@ public class BootstrapSubProcessInteractionSystem
 			_playerFirstPersonHandRight,
 			_playerThirdPersonHandRight);
 
-		_keysManager.Initialize();
+		_keysManager.Initialize(
+			_bootstrapSubProcessMenuSystem.JournalMenuController,
+			_bootstrapSubProcessMenuSystem.JournalMenuSectionInventoryController);
 
 		ServiceLocator.Register<PlayerInteractionController>(InteractionController);
 		ServiceLocator.Register<KeyItemsManager>(_keysManager);

@@ -10,7 +10,8 @@ public class JournalMenuController : MonoBehaviour
 
 	public delegate void JournalMenuSectionEventHandler();
 	public event JournalMenuSectionEventHandler OnOpenJournaMenuSectionMissionInfo;
-	
+	public event JournalMenuSectionEventHandler OnOpenJournaMenuSectionInventory;
+
 	public void ShowJournalMenu()
 	{
 		_canvasJournalMenu.gameObject.SetActive(true);
@@ -135,6 +136,8 @@ public class JournalMenuController : MonoBehaviour
 		}
 		if (subSettingsSection == _journalSectionInventory)
 		{
+			OnOpenJournaMenuSectionInventory?.Invoke();
+
 			CloseJournalSubSection(_journalSectionMissionInfo);
 			CloseJournalSubSection(_journalSectionSkillTree);
 			CloseJournalSubSection(_journalSectionStatistics);
