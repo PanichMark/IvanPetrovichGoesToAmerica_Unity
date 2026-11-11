@@ -21,5 +21,6 @@ public class BootstrapGameDataList : ScriptableObject
 	public MissionMapsList MissionMapsList;
 	public GameObjectPoolsList GameObjectPoolsList;
 	public GameTutorialsList GameTutorialsList;
-    public GameDifficultiesList GameDifficultiesList;
+	public GameDifficultiesList GameDifficultiesList;
+	public InteractionObjectsKeyItemsList KeyItemsList;
 }

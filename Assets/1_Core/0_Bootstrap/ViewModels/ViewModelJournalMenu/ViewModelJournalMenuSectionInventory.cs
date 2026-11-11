@@ -24,7 +24,7 @@ public class ViewModelJournalMenuSectionInventory
 
 		TextPlayerMoneyRubles = bootstrap.FindDeepGameObject(canvas, "TextPlayerMoneyRubles");
 		TextHealingItems = bootstrap.FindDeepGameObject(canvas, "TextHealingItems");
-		TextManaReplenishItems = bootstrap.FindDeepGameObject(canvas, "TextHealingItems");
+		TextManaReplenishItems = bootstrap.FindDeepGameObject(canvas, "TextManaReplenishItems");
 
 		Scrollbar = bootstrap.FindDeepGameObject(canvas, "Scrollbar");
 		ScrollbarHandle = bootstrap.FindDeepGameObject(canvas, "ScrollbarHandle");

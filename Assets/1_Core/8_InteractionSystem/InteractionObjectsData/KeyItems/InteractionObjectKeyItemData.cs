@@ -3,7 +3,7 @@
 [CreateAssetMenu(fileName = "KeyItemData", menuName = "InteractionObjects/KeyItems/KeyItemData")]
 public class InteractionObjectKeyItemData : ScriptableObject
 {
-	public InteractionObjectsKeyItemList KeyItemID;
+	public InteractionObjectsKeyItemsNamesEnum KeyItemID;
 
 	public Sprite KeyItemSprite;
 	public string KeyItemName;

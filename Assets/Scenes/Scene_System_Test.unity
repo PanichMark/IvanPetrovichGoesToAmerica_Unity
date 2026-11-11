@@ -494,6 +494,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1520621836}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &8311143
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1924960421275062703, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_Name
+      value: InteractionObject_Loot_KeyItem_Scene_0_Street_ChurchGate
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.6469426
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.226599
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
 --- !u!1 &10093489
 GameObject:
   m_ObjectHideFlags: 0
@@ -30744,6 +30801,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 171186553}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &901721224
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.121989
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.721
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.111279
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7649574513822551222, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_Name
+      value: InteractionObject_Loot_KeyItem_Scene_0_Church_Quarters
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
 --- !u!1 &901875225
 GameObject:
   m_ObjectHideFlags: 0
@@ -34653,7 +34767,7 @@ PrefabInstance:
     - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
       propertyPath: _interactionObjectKeyData
       value: 
-      objectReference: {fileID: 11400000, guid: 80dc3d61e4c2b5448999285b6cca6f22, type: 2}
+      objectReference: {fileID: 11400000, guid: d2b9311664ae4ae42b72f51e6471b4f4, type: 2}
     - target: {fileID: 5018545827671430844, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
       propertyPath: m_Name
       value: InteractionObject_Openable_Door_DoorWooden (4)
@@ -42076,7 +42190,7 @@ PrefabInstance:
     - target: {fileID: 4464720551082366019, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
       propertyPath: _interactionObjectKeyData
       value: 
-      objectReference: {fileID: 11400000, guid: e874fb73608903c4096559c868ad69b2, type: 2}
+      objectReference: {fileID: 11400000, guid: 3f18782af4bcb8748ac1edef412270fe, type: 2}
     - target: {fileID: 5018545827671430844, guid: 844e1f04e0d338342925d02f89d167c3, type: 3}
       propertyPath: m_Name
       value: InteractionObject_Openable_Door_DoorWooden (3)
@@ -145434,3 +145548,5 @@ SceneRoots:
   - {fileID: 1728671091}
   - {fileID: 1507503367}
   - {fileID: 1983863762}
+  - {fileID: 901721224}
+  - {fileID: 8311143}

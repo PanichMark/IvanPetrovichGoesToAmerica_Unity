@@ -1,7 +1,7 @@
-﻿public enum InteractionObjectsKeyItemList
-{
-	KeyItem_Scene_1_Church_Key_Quarters,
-	KeyItem_Scene_1_Street_Key_ChurchGate,
+﻿using UnityEngine;
 
-	Key_ItemScene_1_RevenueHouse_SafeCode_SemyonSomovSafe
+[CreateAssetMenu(fileName = "KeyItemsList", menuName = "InteractionObjects/KeyItems/KeyItemsList")]
+public class InteractionObjectsKeyItemsList : ScriptableObject
+{
+	public InteractionObjectKeyItemData[] KeyItemsInOrder;
 }

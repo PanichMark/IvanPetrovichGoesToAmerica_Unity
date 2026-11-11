@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 685598d60da9fcc4fbe79ed7b4d6e6ab, type: 3}
-  m_Name: KeyItem_Scene_1_Church_Key_Quarters
+  m_Script: {fileID: 11500000, guid: 857e959330f9bd540a8acb2dd65b9f0e, type: 3}
+  m_Name: KeyItemsList
   m_EditorClassIdentifier: 
-  KeyItemID: 0
+  KeyItemsInOrder:
+  - {fileID: 11400000, guid: 3f18782af4bcb8748ac1edef412270fe, type: 2}
+  - {fileID: 11400000, guid: d2b9311664ae4ae42b72f51e6471b4f4, type: 2}
