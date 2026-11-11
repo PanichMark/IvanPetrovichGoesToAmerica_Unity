@@ -1,7 +1,8 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections;
 
 public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 {
@@ -140,17 +141,31 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 
 	private void FallDamage(PlayerMovementStateTypes playerMovementStateType)
 	{
-		if (playerMovementStateType == PlayerMovementStateTypes.PlayerFalling)
+	
+
+		if (_gameController.IsPauseMenuAvailable) // this is so player cant die on load while falling in previous scene because itll SOFTLOCK!
 		{
-			if (!_isFalling)
+			if (SceneManager.sceneCount > 1)
 			{
-				_isFalling = true;
-				_fallStartTime = Time.time;
+				Debug.Log(SceneManager.GetSceneAt(1).name);
+			}
+
+			if (playerMovementStateType == PlayerMovementStateTypes.PlayerFalling)
+			{
+				if (!_isFalling)
+				{
+					_isFalling = true;
+					_fallStartTime = Time.time;
+				}
+			}
+			else if (_isFalling)
+			{
+				CalculateAndApplyFallDamage();
+				_isFalling = false;
 			}
 		}
-		else if (_isFalling)
+		else
 		{
-			CalculateAndApplyFallDamage();
 			_isFalling = false;
 		}
 	}
