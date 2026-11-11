@@ -18,6 +18,11 @@ public class ViewModelJournalMenuSectionInventory
 	public GameObject ImageCurrentInventoryItem;
 	public GameObject TextCurrentInventoryItemDescription;
 
+	public GameObject TextNoItemsFound;
+	public GameObject TextChooseItem;
+
+	public GameObject Inventory;
+
 	public ViewModelJournalMenuSectionInventory(Bootstrap bootstrap, GameObject canvas)
 	{
 		InventoryRows = new GameObject[bootstrap.GameData.NumberOfInventoryRows];
@@ -51,5 +56,10 @@ public class ViewModelJournalMenuSectionInventory
 			ButtonsInventorySlots[i] = bootstrap.FindDeepGameObject(canvas, inventoryItemSlot);
 			ImagesInventorySlotItems[i] = bootstrap.FindDeepGameObject(canvas, inventoryItemSlotImage);
 		}
+
+		TextNoItemsFound = bootstrap.FindDeepGameObject(canvas, "TextNoItemsFound");
+		TextChooseItem = bootstrap.FindDeepGameObject(canvas, "TextChooseItem");
+
+		Inventory = bootstrap.FindDeepGameObject(canvas, "Inventory");
 	}
 }

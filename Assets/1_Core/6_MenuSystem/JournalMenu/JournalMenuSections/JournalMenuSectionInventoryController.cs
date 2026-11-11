@@ -25,6 +25,8 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 	private GameObject _scrollbar;
 	private Scrollbar _scrollbarComponent;
 
+	private GameObject _inventory;
+
 	private GameObject _scrollbarHandle;
 	private RectTransform _scrollbarComponentHandle;
 
@@ -47,6 +49,12 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 	private int _rubles;
 	private int _healingItems;
 	private int _manaReplenishItems;
+
+	private GameObject _textNoItemsFound;
+	private TextMeshProUGUI _textComponentNoItemsFound;
+
+	private GameObject _textChooseItem;
+	private TextMeshProUGUI _textComponentChooseItem;
 
 	private LocalizationManager _localizationManager;
 	private List<string> _currentKeyItemIDs;
@@ -75,6 +83,12 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 		_imagesInventorySlotItems = new GameObject[_bootstrap.GameData.NumberOfSafeFileSlots];
 		_imageComponentsInventorySlotItems = new Image[_bootstrap.GameData.NumberOfSafeFileSlots];
 		_inventoryRows = new GameObject[_bootstrap.GameData.NumberOfInventoryRows];
+
+		_textNoItemsFound = viewModelJournalMenuSectionInventory.TextNoItemsFound;
+		_textComponentNoItemsFound = _textNoItemsFound.GetComponent<TextMeshProUGUI>();
+
+		_textChooseItem = viewModelJournalMenuSectionInventory.TextChooseItem;
+		_textComponentChooseItem = _textChooseItem.GetComponent<TextMeshProUGUI>();
 
 		for (int i = 0; i < bootstrap.GameData.NumberOfInventoryRows; i++)
 		{
@@ -113,6 +127,8 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 		_textCurrentInventoryItemDescription = _viewModelJournalMenuSectionInventory.TextCurrentInventoryItemDescription;
 		_textComponentCurrentInventoryItemDescription = _textCurrentInventoryItemDescription.GetComponent<TextMeshProUGUI>();
 
+		_inventory = _viewModelJournalMenuSectionInventory.Inventory;
+
 		Canvas.willRenderCanvases += EnforceFixedHandleSize;
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
@@ -145,6 +161,8 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 	{
 		if (slotIndex >= _currentKeyItemIDs.Count) return;
 
+		_textChooseItem.SetActive(false);
+
 		string keyItemID = _currentKeyItemIDs[slotIndex];
 		InteractionObjectKeyItemData itemData = _bootstrap.GameData.KeyItemsList.KeyItemsInOrder
 			.FirstOrDefault(x => x.KeyItemID.ToString() == keyItemID);
@@ -164,6 +182,24 @@ public class JournalMenuSectionInventoryController : MonoBehaviour
 
 	public void ReceiveKeyItemsData(List<string> keyItemIDs)
 	{
+		_textChooseItem.SetActive(true);
+
+		if (keyItemIDs.Count == 0)
+		{
+			_textNoItemsFound.SetActive(true);
+			_inventory.SetActive(false);
+
+			_textComponentNoItemsFound.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_SectionInventory_NoItemsFound");
+			_textComponentChooseItem.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_SectionInventory_NoItemsFound");
+		}
+		else
+		{
+			_textNoItemsFound.SetActive(false);
+			_inventory.SetActive(true);
+		
+			_textComponentChooseItem.text = _localizationManager.GetLocalizedString("UI_Menu_Journal_SectionInventory_ChoseItem");
+		}
+
 		_textComponentCurrentInventoryItemName.text = string.Empty;
 		_textComponentCurrentInventoryItemDescription.text = string.Empty;
 		_imageCurrentInventoryItem.SetActive(false);

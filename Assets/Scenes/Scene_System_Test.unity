@@ -507,6 +507,18 @@ PrefabInstance:
       value: InteractionObject_Loot_KeyItem_Scene_0_Street_ChurchGate
       objectReference: {fileID: 0}
     - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.6469426
       objectReference: {fileID: 0}
@@ -546,6 +558,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3470558030802527195, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6620327019201463045, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 12d5da889aeb7174e8131ac3975304e1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -30810,6 +30830,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.121989
       objectReference: {fileID: 0}
@@ -30849,6 +30881,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 550521679918071278, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3099147329073360656, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c034007ddfd3a754093eb24df6968bda, type: 2}
     - target: {fileID: 7649574513822551222, guid: a6435c1769e084843bb60a9975dc3eac, type: 3}
       propertyPath: m_Name
       value: InteractionObject_Loot_KeyItem_Scene_0_Church_Quarters
