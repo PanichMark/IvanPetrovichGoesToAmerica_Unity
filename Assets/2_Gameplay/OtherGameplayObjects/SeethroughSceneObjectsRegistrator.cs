@@ -12,7 +12,7 @@ public class SeethroughSceneObjectsRegistrator : MonoBehaviour
 	{
 		RegisterSceneSeethoughObjects();
 
-		Debug.Log(_seethroughSceneObject.Count);
+		//Debug.Log(_seethroughSceneObject.Count);
 	}
 
 	private void RegisterSceneSeethoughObjects()

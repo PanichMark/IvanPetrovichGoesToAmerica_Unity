@@ -23,7 +23,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 
 	public override void ResetStepCondition()
 	{
-		Debug.Log($"[Условие][RESET] Сброс шага. Очистка временных списков.");
+		//Debug.Log($"[Условие][RESET] Сброс шага. Очистка временных списков.");
 
 		_isConditionMet = false;
 

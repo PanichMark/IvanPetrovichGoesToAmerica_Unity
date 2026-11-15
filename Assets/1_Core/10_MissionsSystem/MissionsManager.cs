@@ -49,7 +49,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		ActiveMission = _gameMissions.MissionsInOrder[ActiveMissionIndex];
 		_journalMenuSectionMissionInfoController.SetMissionInfo(ActiveMission);
 
-		Debug.Log(ActiveMission);
+		//Debug.Log(ActiveMission);
 		if (ActiveMission.MissionSteps.Length > 0)
 		{
 			LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
@@ -182,10 +182,10 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		}
 		CurrentStepIndex = goToNextStep;
 
-		Debug.Log("PREVIOUS");
-		Debug.Log(_previousMissionStepIndex);
-		Debug.Log("CURRENT");
-		Debug.Log(CurrentStepIndex);
+		//Debug.Log("PREVIOUS");
+		//Debug.Log(_previousMissionStepIndex);
+		//Debug.Log("CURRENT");
+		//Debug.Log(CurrentStepIndex);
 
 		if (CurrentStepIndex >= ActiveMission.MissionSteps.Length)
 		{
@@ -329,8 +329,8 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 			// Убираем префикс "Mission_" и сравниваем остаток строки
 			string fileNameWithoutPrefix = _gameMissions.MissionsInOrder[i].name.Replace("Mission_", "");
 
-			Debug.Log(fileNameWithoutPrefix); // Выводим название без префикса
-			Debug.Log(targetString);
+			//Debug.Log(fileNameWithoutPrefix); // Выводим название без префикса
+			//Debug.Log(targetString);
 
 			if (fileNameWithoutPrefix == targetString)
 			{
@@ -338,7 +338,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 				ActiveMission = _gameMissions.MissionsInOrder[ActiveMissionIndex];
 				isFound = true;
 
-				Debug.Log(ActiveMission);
+				//Debug.Log(ActiveMission);
 				break;
 			}
 		}

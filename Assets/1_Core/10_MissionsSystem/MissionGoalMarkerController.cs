@@ -40,7 +40,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 	private void HandleStepChanged()
 	{
-		Debug.Log("STEP CHANGED");
+		//Debug.Log("STEP CHANGED");
 		UpdateCurrentStepCache();
 
 		FindActiveTargetObject();
@@ -51,24 +51,24 @@ public class MissionGoalMarkerController : MonoBehaviour
 
 	private GameObject FindActiveTargetObject()
 	{
-		Debug.Log("FIND 1111");
+		//Debug.Log("FIND 1111");
 		if (_currentMissionStepCache == null)
 		{
-			Debug.Log("NULL EMPTY");
+			//Debug.Log("NULL EMPTY");
 			_imageMissionGoalMarker.SetActive(false);
 			_gameObjectMissionGoal = null;
 			return null;
 		}
-		Debug.Log("FIND 222222");
+		//Debug.Log("FIND 222222");
 		if (_currentMissionStepCache.ShowMissionMarker == false)
 		{
-			Debug.Log("DONT SHOW NULL!");
-			Debug.Log(_currentMissionStepCache.ShowMissionMarker);
+			//Debug.Log("DONT SHOW NULL!");
+			//Debug.Log(_currentMissionStepCache.ShowMissionMarker);
 			_imageMissionGoalMarker.SetActive(false);
 			_gameObjectMissionGoal = null;
 			return null;
 		}
-		Debug.Log("FIND 3333333");
+		//Debug.Log("FIND 3333333");
 		_imageMissionGoalMarker.SetActive(true);
 
 		if (SceneManager.sceneCount > 1)
@@ -78,7 +78,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 				_imageMissionGoalMarker.SetActive(false);
 			}
 		}
-		Debug.Log("FIND 444444");
+		//Debug.Log("FIND 444444");
 		foreach (var condition in _currentMissionStepCache.Conditions)
 		{
 			string ownerName = condition.StepConditionOwner ? condition.StepConditionOwner.name : "NULL";
@@ -195,7 +195,7 @@ public class MissionGoalMarkerController : MonoBehaviour
 		try
 		{
 			_currentMissionStepCache = _missionsManager.ActiveMission.MissionSteps[_missionsManager.CurrentStepIndex];
-			Debug.Log(_currentMissionStepCache);
+			//Debug.Log(_currentMissionStepCache);
 		}
 		catch (System.IndexOutOfRangeException)
 		{

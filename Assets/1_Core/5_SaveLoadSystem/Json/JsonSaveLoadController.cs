@@ -99,11 +99,11 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		foreach (IJsonSaveLoad saveLoadObj in _coreSaveLoadObjects)
 		{
-			Debug.Log(saveLoadObj);
+			//Debug.Log(saveLoadObj);
 			yield return saveLoadObj.LoadJsonData(_gameData);
 		}
 
-		Debug.Log("### New Game Started ###");
+		//Debug.Log("### New Game Started ###");
 		yield break;
 	}
 
@@ -117,7 +117,7 @@ public class JsonSaveLoadController : MonoBehaviour
 
 			if (_gameData == null)
 			{
-				Debug.Log("NO GAMEDATA TO SAVE");
+				//Debug.Log("NO GAMEDATA TO SAVE");
 				yield break;
 			}
 		}
@@ -152,7 +152,7 @@ public class JsonSaveLoadController : MonoBehaviour
 		{
 			OnSafeFileSaved?.Invoke();
 
-			Debug.Log("Data saved to slot " + saveSlotNumber);
+			//Debug.Log("Data saved to slot " + saveSlotNumber);
 		}
 
 		if (_gameSceneManager.WasInitialSceneLoaded)
@@ -168,10 +168,10 @@ public class JsonSaveLoadController : MonoBehaviour
 
 	public IEnumerator LoadGame(int loadSlotNumber)
 	{
-		Debug.Log($"LoadGame_1 Started loading Slot {loadSlotNumber}");
+		//Debug.Log($"LoadGame_1 Started loading Slot {loadSlotNumber}");
 		if (_gameData == null)
 		{
-			Debug.Log("NO GAMEDATA TO LOAD");
+			//Debug.Log("NO GAMEDATA TO LOAD");
 			yield break;
 		}
 
@@ -185,10 +185,10 @@ public class JsonSaveLoadController : MonoBehaviour
 		if (loadSlotNumber == -1)
 		{
 			_fileDataHandler = new JsonFileDataHandler(Application.persistentDataPath, _SAFE_FILE_DATA_TEMP);
-			Debug.Log($"LoadGame is TEMPslot");
+			//Debug.Log($"LoadGame is TEMPslot");
 			if (_gameData == null)
 			{
-				Debug.Log("NO GAMEDATA TO SAVE");
+				//Debug.Log("NO GAMEDATA TO SAVE");
 				yield break;
 			}
 		}
@@ -197,7 +197,7 @@ public class JsonSaveLoadController : MonoBehaviour
 			IsLoadingFromSaveFile = true;
 
 			_fileDataHandler = new JsonFileDataHandler(Application.persistentDataPath, _saveFilePaths[loadSlotNumber - 1]);
-			Debug.Log($"LoadGame is {loadSlotNumber} slot");
+			//Debug.Log($"LoadGame is {loadSlotNumber} slot");
 		}
 
 		_gameData = _fileDataHandler.Load();
@@ -206,7 +206,7 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		if (loadSlotNumber != -1)
 		{
-			Debug.Log($"LoadGame_2 loading new scene");
+			//Debug.Log($"LoadGame_2 loading new scene");
 
 			StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesGameplayEnum)Enum.Parse(typeof(GameScenesGameplayEnum), SceneNameToLoad)));
 
@@ -218,7 +218,7 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		if (loadSlotNumber != -1)
 		{
-			Debug.Log($"LoadGame_3 Started loading CoreObjects");
+			//Debug.Log($"LoadGame_3 Started loading CoreObjects");
 
 			foreach (IJsonSaveLoad coreLoadObj in _coreSaveLoadObjects)
 			{
@@ -229,12 +229,12 @@ public class JsonSaveLoadController : MonoBehaviour
 
 				_gameSceneManager.SetLoadingSliderValue(progress);
 			}
-			Debug.Log($"LoadGame_4 Ended loading CoreObjects");
+			//Debug.Log($"LoadGame_4 Ended loading CoreObjects");
 
-			Debug.Log($"LoadGame_5 Started update and load GameplayObjects");
+			//Debug.Log($"LoadGame_5 Started update and load GameplayObjects");
 
 			yield return UpdateGameplaySaveLoadObjectsIndexes();
-			Debug.Log($"LoadGame_6 Ended update and load GameplayObjects");
+			//Debug.Log($"LoadGame_6 Ended update and load GameplayObjects");
 		}
 
 		totalObjects += _gameplaySaveLoadObjects.Count;
@@ -253,16 +253,16 @@ public class JsonSaveLoadController : MonoBehaviour
 
 			_gameSceneManager.SetLoadingSliderValue(progress);
 		}
-		Debug.Log("LOADING 777777777777");
+		//Debug.Log("LOADING 777777777777");
 
-		Debug.Log("LOADING 888888888888");
+		//Debug.Log("LOADING 888888888888");
 
 		_gameSceneManager.ApplyGameplayDataLoadingFinished();
 		IsLoadingFromSaveFile = false;
 
 		if (loadSlotNumber != -1)
 		{
-			Debug.Log($"Starting copy of slot {loadSlotNumber} to TEMP...");
+			//Debug.Log($"Starting copy of slot {loadSlotNumber} to TEMP...");
 
 			StartCoroutine(CopyCurrentSlotToTempAsync(loadSlotNumber));
 		}
@@ -271,14 +271,14 @@ public class JsonSaveLoadController : MonoBehaviour
 			OnEndGameDataProcessForUI?.Invoke();
 		}
 
-		Debug.Log("LOADING 999999999999");
+		//Debug.Log("LOADING 999999999999");
 	}
 
 	public void DeleteGame(int deleteSlotNumber)
 	{
 		if (deleteSlotNumber <= 0)
 		{
-			Debug.LogError("Invalid slot number for deletion.");
+			//Debug.LogError("Invalid slot number for deletion.");
 			return;
 		}
 
@@ -292,16 +292,16 @@ public class JsonSaveLoadController : MonoBehaviour
 			{
 				File.Delete(fullPath);
 				OnSafeFileDelete?.Invoke();
-				Debug.Log("Deleted game from slot " + deleteSlotNumber);
+				//Debug.Log("Deleted game from slot " + deleteSlotNumber);
 			}
 			else
 			{
-				Debug.LogWarning("No save file exists at slot " + deleteSlotNumber);
+				//Debug.LogWarning("No save file exists at slot " + deleteSlotNumber);
 			}
 		}
 		catch (Exception ex)
 		{
-			Debug.LogError("Error deleting the save file: " + ex.Message);
+			//Debug.LogError("Error deleting the save file: " + ex.Message);
 		}
 	}
 
@@ -333,7 +333,7 @@ public class JsonSaveLoadController : MonoBehaviour
 
 	private IEnumerator OnAfterSceneLoadedUpdateAndLoadUpdateGameplayObjects()
 	{
-		Debug.Log("OnSceneLoadUpdateGameplayObjects Started");
+		//Debug.Log("OnSceneLoadUpdateGameplayObjects Started");
 
 		OnStartGameDataProcessForUI?.Invoke();
 
@@ -341,7 +341,7 @@ public class JsonSaveLoadController : MonoBehaviour
 
 		yield return StartCoroutine(LoadGame(-1));
 
-		Debug.Log("OnSceneLoadUpdateGameplayObjects Ended");
+		//Debug.Log("OnSceneLoadUpdateGameplayObjects Ended");
 
 		yield return null;
 	}
@@ -355,7 +355,7 @@ public class JsonSaveLoadController : MonoBehaviour
 
 	public IEnumerator UpdateGameplaySaveLoadObjectsIndexes()
 	{
-		Debug.Log("Rebuilding Gameplay Save/Load list...");
+		//Debug.Log("Rebuilding Gameplay Save/Load list...");
 
 		if (_gameplaySaveLoadObjects != null)
 		{
@@ -378,7 +378,7 @@ public class JsonSaveLoadController : MonoBehaviour
 			sortableList[index].AssignGameplayObjectIndex(index);
 		}
 
-		Debug.Log($"Indexed {_gameplaySaveLoadObjects.Count} objects.");
+		//Debug.Log($"Indexed {_gameplaySaveLoadObjects.Count} objects.");
 		yield break;
 	}
 

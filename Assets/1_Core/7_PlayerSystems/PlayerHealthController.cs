@@ -147,7 +147,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 		{
 			if (SceneManager.sceneCount > 1)
 			{
-				Debug.Log(SceneManager.GetSceneAt(1).name);
+				//Debug.Log(SceneManager.GetSceneAt(1).name);
 			}
 
 			if (playerMovementStateType == PlayerMovementStateTypes.PlayerFalling)

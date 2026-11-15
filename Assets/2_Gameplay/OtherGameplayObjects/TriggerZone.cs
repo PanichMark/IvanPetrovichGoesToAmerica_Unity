@@ -131,25 +131,25 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 
 	public override IEnumerator LoadJsonData(JsonGameData data)
 	{
-		Debug.Log("BRUH!!!!");
+		//Debug.Log("BRUH!!!!");
 
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;
 
 		if (data.TriggerZonesData == null || !data.TriggerZonesData.TryGetValue(currentScene, out var sourceList)) yield break;
 
 		var savedState = sourceList.Find(item => item.TriggerZoneIndex == GameplayObjectIndex);
-		Debug.Log("BRUH22222222!!!!");
+		//Debug.Log("BRUH22222222!!!!");
 		if (savedState.Equals(default(TriggerZoneData)))
 		{
-			Debug.Log("BRUH333333!!!!");
+			//Debug.Log("BRUH333333!!!!");
 			_finishedLoadingData = true;
 			_wasZoneTriggered = false;
 			if (_isPlayerInside)
 			{
 				TriggerZoneInteraction();
 			}
-			Debug.Log("was triggered");
-			Debug.Log(_wasZoneTriggered);
+			//Debug.Log("was triggered");
+			//Debug.Log(_wasZoneTriggered);
 			yield break;
 		}
 			

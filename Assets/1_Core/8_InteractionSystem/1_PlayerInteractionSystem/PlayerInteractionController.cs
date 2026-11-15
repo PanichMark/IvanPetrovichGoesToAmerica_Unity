@@ -410,7 +410,7 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 
 				if (_currentInteractableObject != null)
 				{
-					_mainInteractionText.text = $"{_lookedAtIInteractable.InteractionHintMessageMain}\n{_HUDInteractionMainTextInteract} {_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}";
+					_mainInteractionText.text = $"{_lookedAtIInteractable.InteractionHintMessageMain}\n{_HUDInteractionMainTextInteract} [{_inputDevice.GetNameOfKey(InputControlsEnum.Interact)}]";
 				}
 
 				if (_inputDevice.GetKeyInteract())
