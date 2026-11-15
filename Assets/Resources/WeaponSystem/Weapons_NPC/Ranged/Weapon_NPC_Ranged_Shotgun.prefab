@@ -442,9 +442,9 @@ MonoBehaviour:
   _weaponDamage: 1
   _weaponIconBig: {fileID: 21300000, guid: f95ff62ef9fc85d4eae334c2cd02e921, type: 3}
   _weaponIconSmall: {fileID: 21300000, guid: e7ace6b6d9e3fb847a49cbe07fc64d1a, type: 3}
-  _weaponSoundAttack: {fileID: 8300000, guid: a2fe6c08a08e0d84b811252e99c3aab9, type: 3}
-  _weaponSoundBreakAction: {fileID: 8300000, guid: 2d2deb3d981701943a24a3d5d2a7e427, type: 3}
-  _weaponSoundInsertShell: {fileID: 8300000, guid: afcbff0814f0ba7478643544496162b2, type: 3}
+  _weaponSoundAttack: {fileID: 0}
+  _weaponSoundBreakAction: {fileID: 0}
+  _weaponSoundInsertShell: {fileID: 0}
 --- !u!1001 &2107710881070540104
 PrefabInstance:
   m_ObjectHideFlags: 0

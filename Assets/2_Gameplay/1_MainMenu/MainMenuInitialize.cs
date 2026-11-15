@@ -7,7 +7,6 @@ public class MainMenuInitialize : MonoBehaviour
     [SerializeField] private MainMenuCanvasController _canvasController;
     [SerializeField] private MainMenuDiegeticButtonController[] _diegeticButtonController;
 	[SerializeField] private CutsceneController _cutsceneNewGame;
-	[SerializeField] private Material _diegeticButtonMaterial;
 
 	private PlayerMovementController _playerMovementController;
 	private PlayerCameraController _playerCameraController;
@@ -54,7 +53,6 @@ public class MainMenuInitialize : MonoBehaviour
 				_mainMenuChooseMissionController,
 				_readNewsController,
 				_cutsceneNewGame,
-				_diegeticButtonMaterial,
 				_playerMovementController,
 				_playerCameraController,
 				_playerResourcesHealthManager,

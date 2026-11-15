@@ -11,8 +11,6 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private PlayerMoneyController _playerResourcesMoneyManager;
 	private PlayerWeaponController _weaponController;
 	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
-	private Material _defaultMaterial;     
-	private Material _hoverMaterial;
 	private MenuBackgroundController _menuBackgroundController;
 	private static List<MainMenuDiegeticButtonController> _instances = new List<MainMenuDiegeticButtonController>();
 	private PlayerCameraVolumeController _playerCameraBlurFilter;
@@ -40,7 +38,6 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		MainMenuChooseMissionController mainMenuChooseMissionController,
 		MainMenuReadNewsController mainMenuReadNews,
 		CutsceneController cutsceneNewGame,
-		Material hoverMaterial,
 		PlayerMovementController playerMovementController,
 		PlayerCameraController playerCameraController,
 		PlayerHealthController playerResourcesHealthManager,
@@ -63,10 +60,8 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_collider = GetComponent<Collider>();
 		_renderer = GetComponent<Renderer>();
-		_defaultMaterial = _renderer.material;
 		_mainMenuCanvasController = GameObject.Find("MainMenuCanvasController").GetComponent<MainMenuCanvasController>();
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
-		_hoverMaterial = hoverMaterial;
 		_menuBackgroundController = ServiceLocator.Resolve<MenuBackgroundController>();
 		_keyPauseMenu = ServiceLocator.Resolve<KeyCode>();
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
@@ -178,12 +173,12 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	void OnMouseEnter()
 	{
-		_renderer.material = _hoverMaterial;
+		ChangeLayerRecursively(gameObject, LayerMask.NameToLayer("Outline"));
 	}
 
 	void OnMouseExit()
 	{
-		_renderer.material = _defaultMaterial;
+		ChangeLayerRecursively(gameObject, LayerMask.NameToLayer("Default"));
 	}
 
 	void OnMouseDown()
@@ -342,6 +337,18 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		{
 			Debug.Log($"Ammo_{j}: {ammo[j].AmmoType} x{ammo[j].StartAmount}");
 			_playerResourcesAmmoManager.ConfigApplyPlayerAmmo(ammo[j].AmmoType, ammo[j].StartAmount);
+		}
+	}
+
+	public void ChangeLayerRecursively(GameObject obj, int layerIndex)
+	{
+		//Debug.Log(obj);
+		obj.layer = layerIndex;
+
+		// Рекурсия по детям работает всегда, независимо от того, был ли покрашен родитель
+		foreach (Transform child in obj.transform)
+		{
+			ChangeLayerRecursively(child.gameObject, layerIndex);
 		}
 	}
 }
