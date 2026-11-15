@@ -39,6 +39,8 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private Mission _mission;
 	[SerializeField] private int _missionStep;
 
+	public OperationSystemsEnum OperationSystem { get; private set; }
+
 	private ViewModelBootstrapInitialization _viewModelBootstrapInitialization;
 
 	private GameObject _canvasBootstrapInitialization;
@@ -192,8 +194,27 @@ public class Bootstrap : MonoBehaviour
 		_viewModelBootstrapInitialization.Gear.transform.localEulerAngles = currentRotation;
 	}
 
+	private IEnumerator SetUpOpeationSystem()
+	{
+		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+		{
+			OperationSystem = OperationSystemsEnum.Windows;
+		}
+		if (Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor)
+		{
+			OperationSystem = OperationSystemsEnum.MacOS;
+		}
+		if (Application.platform == RuntimePlatform.LinuxPlayer || Application.platform == RuntimePlatform.LinuxEditor)
+		{
+			OperationSystem = OperationSystemsEnum.Linux;
+		}
+
+		yield return null;
+	}
+
 	private IEnumerator BootstrapSystemsInitialization()
 	{
+		yield return StartCoroutine(SetUpOpeationSystem());
 		yield return StartCoroutine(InitializeInterfaces());
 		yield return StartCoroutine(InitializeCanvases());
 		yield return StartCoroutine(InitializeSceneSystem());

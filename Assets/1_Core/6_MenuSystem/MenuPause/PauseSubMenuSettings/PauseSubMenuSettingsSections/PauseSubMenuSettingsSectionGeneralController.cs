@@ -282,23 +282,44 @@ public class PauseSubMenuSettingsSectionGeneralController : MonoBehaviour
 	{
 		if (dropdownScreenResolutionSlot == 0)
 		{
-			Screen.SetResolution(1920, 1080, Screen.fullScreen);
+			if (_bootstrap.OperationSystem == OperationSystemsEnum.Windows || _bootstrap.OperationSystem == OperationSystemsEnum.Linux)
+			{
+				Screen.SetResolution(3840, 2160, Screen.fullScreen);
+			}
+			if (_bootstrap.OperationSystem == OperationSystemsEnum.Windows)
+			{
+				Screen.SetResolution(3456, 2234, Screen.fullScreen); // 16 inches
+			}
 		}
 		else if (dropdownScreenResolutionSlot == 1)
 		{
-			Screen.SetResolution(2560, 1440, Screen.fullScreen);
+			if (_bootstrap.OperationSystem == OperationSystemsEnum.Windows || _bootstrap.OperationSystem == OperationSystemsEnum.Linux)
+			{
+				Screen.SetResolution(2560, 1440, Screen.fullScreen);
+			}
+			if (_bootstrap.OperationSystem == OperationSystemsEnum.Windows)
+			{
+				Screen.SetResolution(3024, 1964, Screen.fullScreen); // 14 inches
+			}
 		}
 		else if (dropdownScreenResolutionSlot == 2)
 		{
-			Screen.SetResolution(3840, 2160, Screen.fullScreen);
+			if (_bootstrap.OperationSystem == OperationSystemsEnum.Windows || _bootstrap.OperationSystem == OperationSystemsEnum.Linux)
+			{
+				Screen.SetResolution(1920, 1080, Screen.fullScreen);
+			}
+			if (_bootstrap.OperationSystem == OperationSystemsEnum.Windows)
+			{
+				Screen.SetResolution(2560, 1664, Screen.fullScreen); // 13 inches
+			}
 		}
 		else if (dropdownScreenResolutionSlot == 3)
 		{
-			Screen.SetResolution(1920, 1200, Screen.fullScreen);
+			Screen.SetResolution(1920, 1080, Screen.fullScreen);
 		}
 		else if (dropdownScreenResolutionSlot == 4)
 		{
-			Screen.SetResolution(1080, 1440, Screen.fullScreen);
+			Screen.SetResolution(1920, 1200, Screen.fullScreen);
 		}
 	}
 
