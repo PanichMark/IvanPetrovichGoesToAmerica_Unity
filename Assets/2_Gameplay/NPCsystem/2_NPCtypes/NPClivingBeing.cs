@@ -31,8 +31,8 @@ public abstract class NPClivingBeing : NPCabstract
 	private GameObject _textNPCcurrentHealth;
 	private GameObject _playerCameraGameObject;
 
-	protected NPCeventController _NPCeventController;
-	protected NPCeventAnimationController _NPCeventAnimationController;
+	protected EventController _NPCeventController;
+	protected EventNPCanimationController _NPCeventAnimationController;
 
 	private NavMeshAgent _navMeshAgent;
 	protected NPCmovementController _NPCmovementController;
@@ -70,8 +70,8 @@ public abstract class NPClivingBeing : NPCabstract
 		_textNPCcurrentHealth = _canvasNPCstatus.transform.Find("DebugNPCcurrentHealth").gameObject;
 		_NPCmovementAnimationController = GetComponent<NPCmovementAnimationController>();
 		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
-		_NPCeventController = GetComponent<NPCeventController>();
-		_NPCeventAnimationController = GetComponent<NPCeventAnimationController>();
+		_NPCeventController = GetComponent<EventController>();
+		_NPCeventAnimationController = GetComponent<EventNPCanimationController>();
 		_NPChealthController = GetComponent<NPChealthController>();
 
 		_NPCmovementController = GetComponent<NPCmovementController>();
