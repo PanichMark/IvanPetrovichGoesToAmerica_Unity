@@ -79,7 +79,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 		}
 		else if (newPlayerCameraStateType == PlayerCameraStateTypes.MainMenu)
 		{
-			newState = new PlayerCameraStateMainMenu(_cameraController, new Vector3(101.364f, -5.454f, -114.475f), new Vector3(17.8f, 169, 0));
+			newState = new PlayerCameraStateMainMenu(_cameraController, new Vector3(101.364f, -5.454f, -114.475f), new Vector3(18f, 169, 0));
 			//Debug.Log("CAMERA MAIN MENU");
 		}
 		else if (newPlayerCameraStateType == PlayerCameraStateTypes.Cutscene)
