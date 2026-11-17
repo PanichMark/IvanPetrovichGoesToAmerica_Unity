@@ -7,7 +7,8 @@ public class MainMenuInitialize : MonoBehaviour
     [SerializeField] private MainMenuCanvasController _canvasController;
     [SerializeField] private MainMenuDiegeticButtonController[] _diegeticButtonController;
 	[SerializeField] private CutsceneController _cutsceneNewGame;
-	[SerializeField] private GameObject _canvasGameVersion;
+	[SerializeField] private GameObject _canvasMainMenu;
+	[SerializeField] private GameObject _canvasNewGameCutscene;
 
 	private PlayerMovementController _playerMovementController;
 	private PlayerCameraController _playerCameraController;
@@ -18,8 +19,8 @@ public class MainMenuInitialize : MonoBehaviour
 	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
 	private LocalizationManager _localizationManager;
 	private MissionsManager _missionsManager;
-
 	private Bootstrap _bootstrap;
+
     void Start()
     {
 		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
@@ -33,7 +34,8 @@ public class MainMenuInitialize : MonoBehaviour
 		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>();
 		_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>();
 
-		_mainMenuChooseMissionController.Initialize(_bootstrap,
+		_mainMenuChooseMissionController.Initialize(
+			_bootstrap,
 			_playerMovementController,
 			_playerCameraController,
 			_playerResourcesHealthManager,
@@ -66,6 +68,7 @@ public class MainMenuInitialize : MonoBehaviour
 		_canvasController.Initialize(
 			_mainMenuChooseMissionController,
 			_readNewsController,
-			_canvasGameVersion);
+			_canvasMainMenu,
+			_canvasNewGameCutscene);
 	}
 }

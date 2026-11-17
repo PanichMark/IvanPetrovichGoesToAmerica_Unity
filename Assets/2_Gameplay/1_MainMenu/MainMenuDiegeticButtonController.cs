@@ -132,7 +132,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 				if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 1)
 				{
 					_menuManager.CloseAnyMenu();
-					_mainMenuCanvasController.ShowMainMenuCanvas();
+					_mainMenuCanvasController.ShowCanvasMainMenu();
 					_pauseMenuController.ClosePauseSubMenu();
 				}
 				if (Input.GetKeyDown(_keyPauseMenu) && _menuManager.PauseMenuLevel.Count == 2)
@@ -189,7 +189,8 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			DisableAllColliders();
 			Time.timeScale = 0f;
 			Cursor.lockState = CursorLockMode.Locked;
-			_mainMenuCanvasController.HideGameVersionCanvas();
+			_mainMenuCanvasController.HideCanvasMainMenu();
+			_mainMenuCanvasController.ShowCanvasNewGameCutscene();
 			_cutsceneNewGame.TriggerCutscene(null);
 			IsCutsceneNewGamePlaying = true;
 		}
@@ -210,7 +211,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		{
 			Debug.Log("OPEN LOAD GAME");
 			_menuBackgroundController.ShowCanvasMenuBackground();
-			_mainMenuCanvasController.HideMainMenuCanvas();
+			_mainMenuCanvasController.HideCanvasMainMenu();
 			DisableAllColliders();
 			_menuManager.OpenAnyMenu();
 			_pauseMenuController.OpenLoadSubMenu();
@@ -219,7 +220,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		{
 			Debug.Log("OPEN SETTINGS");
 			_menuBackgroundController.ShowCanvasMenuBackground();
-			_mainMenuCanvasController.HideMainMenuCanvas();
+			_mainMenuCanvasController.HideCanvasMainMenu();
 			DisableAllColliders();
 			_menuManager.OpenAnyMenu();
 			_pauseMenuController.OpenSettingsSubMenu();
@@ -228,7 +229,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		{
 			Debug.Log("CHOOSE MISSION");
 			_menuBackgroundController.ShowCanvasMenuBackground();
-			_mainMenuCanvasController.HideMainMenuCanvas();
+			_mainMenuCanvasController.HideCanvasMainMenu();
 			_mainMenuChooseMissionController.ShowCanvasMainMenuChooseMission();
 			DisableAllColliders();
 			_menuManager.PushPauseMenuLevel();
@@ -238,7 +239,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		{
 			Debug.Log("OPEN NEWS");
 			_menuBackgroundController.ShowCanvasMenuBackground();
-			_mainMenuCanvasController.HideMainMenuCanvas();
+			_mainMenuCanvasController.HideCanvasMainMenu();
 			_mainMenuReadNews.ShowCanvasMainMenuReadNews();
 			DisableAllColliders();
 			_playerCameraBlurFilter.ActivateCameraBlur();

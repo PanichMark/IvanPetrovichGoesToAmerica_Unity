@@ -4,39 +4,43 @@ using UnityEngine;
 public class MainMenuCanvasController : MonoBehaviour
 {
     private LocalizationManager _localizationManager;
-	private GameObject _CanvasDiegeticText;
+	private GameObject _canvasMainMenu;
 	private MainMenuReadNewsController _mainMenuReadNews;
 	private MainMenuChooseMissionController _mainMenuChooseMission;
 	private MenuManager _menuManager;
-	private GameObject _canvasGameVersion;
+	private GameObject _canvasNewGameCutscene;
+
+	private GameObject _gameVersion;
 
 	private TextMeshProUGUI[] _diegeticTextsList;
 	
 	public void Initialize(
 		MainMenuChooseMissionController mainMenuChooseMission,
 		MainMenuReadNewsController mainMenuReadNews,
-		GameObject canvasGameVersion)
+		GameObject canvasMainMenu,
+		GameObject canvasNewGameCutscene)
     {
       _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
-       
-		_CanvasDiegeticText = GameObject.Find("CanvasMainMenu");
+
+		_canvasMainMenu = canvasMainMenu;
 		_mainMenuReadNews = mainMenuReadNews;
 		_mainMenuChooseMission = mainMenuChooseMission;
 		_menuManager = ServiceLocator.Resolve<MenuManager>();
-		_canvasGameVersion = canvasGameVersion;
+		_canvasNewGameCutscene = canvasNewGameCutscene;
 
-		_diegeticTextsList = new[]
-		{
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextNewGame").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextLoadGamePart1").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextLoadGamePart2").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextChooseMission").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextReadNews").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextEndGameTitles").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextTestScene").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextSettings").GetComponent<TextMeshProUGUI>(),
-			GameObject.Find("CanvasMainMenu").transform.Find("CanvasDiegeticTexts").transform.Find("TextExitGame").GetComponent<TextMeshProUGUI>()
-		};
+		_gameVersion = _canvasMainMenu.transform.Find("GameVersion").gameObject;
+
+		_diegeticTextsList = new TextMeshProUGUI[9];
+
+		_diegeticTextsList[0] = _canvasMainMenu.transform.Find("TextNewGame").GetComponent<TextMeshProUGUI>();
+		_diegeticTextsList[1] = _canvasMainMenu.transform.Find("TextLoadGamePart1").GetComponent<TextMeshProUGUI>();
+		_diegeticTextsList[2] = _canvasMainMenu.transform.Find("TextLoadGamePart2").GetComponent<TextMeshProUGUI>();
+		_diegeticTextsList[3] = _canvasMainMenu.transform.Find("TextChooseMission").GetComponent<TextMeshProUGUI>();
+		_diegeticTextsList[4] = _canvasMainMenu.transform.Find("TextReadNews").GetComponent<TextMeshProUGUI>();
+		_diegeticTextsList[5] = _canvasMainMenu.transform.Find("TextEndGameTitles").GetComponent<TextMeshProUGUI>();
+		_diegeticTextsList[6] = _canvasMainMenu.transform.Find("TextTestScene").GetComponent<TextMeshProUGUI>();
+		_diegeticTextsList[7] = _canvasMainMenu.transform.Find("TextSettings").GetComponent<TextMeshProUGUI>();
+		_diegeticTextsList[8] = _canvasMainMenu.transform.Find("TextExitGame").GetComponent<TextMeshProUGUI>();
 
 		_diegeticTextsList[0].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextNewGame");
 		_diegeticTextsList[1].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextLoadGamePart1");
@@ -49,33 +53,33 @@ public class MainMenuCanvasController : MonoBehaviour
 		_diegeticTextsList[8].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_TextExitGame");
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
-		_mainMenuReadNews.OnCloseMainMenuReadNews += ShowMainMenuCanvas;
-		_mainMenuChooseMission.OnCloseMainMenuChooseMission += ShowMainMenuCanvas;
-		_menuManager.OnCloseAnyMenu += ShowMainMenuCanvas;
+		_mainMenuReadNews.OnCloseMainMenuReadNews += ShowCanvasMainMenu;
+		_mainMenuChooseMission.OnCloseMainMenuChooseMission += ShowCanvasMainMenu;
+		_menuManager.OnCloseAnyMenu += ShowCanvasMainMenu;
 
 		Debug.Log("MainMenuCanvasController Initialized");
 	}
 
-	public void HideGameVersionCanvas()
-	{
-		_canvasGameVersion.SetActive(false);
-	}
-
-    public void ShowMainMenuCanvas()
+    public void ShowCanvasMainMenu()
     {
-		_CanvasDiegeticText.SetActive(true);
+		_canvasMainMenu.SetActive(true);
 	}
 
-	public void HideMainMenuCanvas()
+	public void HideCanvasMainMenu()
 	{
-		_CanvasDiegeticText.SetActive(false);
+		_canvasMainMenu.SetActive(false);
+	}
+
+	public void ShowCanvasNewGameCutscene()
+	{
+
 	}
 
 	private void OnDestroy()
 	{
-		_mainMenuReadNews.OnCloseMainMenuReadNews -= ShowMainMenuCanvas;
-		_mainMenuChooseMission.OnCloseMainMenuChooseMission -= ShowMainMenuCanvas;
-		_menuManager.OnCloseAnyMenu -= ShowMainMenuCanvas;
+		_mainMenuReadNews.OnCloseMainMenuReadNews -= ShowCanvasMainMenu;
+		_mainMenuChooseMission.OnCloseMainMenuChooseMission -= ShowCanvasMainMenu;
+		_menuManager.OnCloseAnyMenu -= ShowCanvasMainMenu;
 		_localizationManager.OnLanguageChanged -= ChangeLanguage;
 	}
 
