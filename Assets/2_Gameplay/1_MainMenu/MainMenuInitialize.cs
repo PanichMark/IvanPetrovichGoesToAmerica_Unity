@@ -7,6 +7,7 @@ public class MainMenuInitialize : MonoBehaviour
     [SerializeField] private MainMenuCanvasController _canvasController;
     [SerializeField] private MainMenuDiegeticButtonController[] _diegeticButtonController;
 	[SerializeField] private CutsceneController _cutsceneNewGame;
+	[SerializeField] private GameObject _canvasGameVersion;
 
 	private PlayerMovementController _playerMovementController;
 	private PlayerCameraController _playerCameraController;
@@ -62,6 +63,9 @@ public class MainMenuInitialize : MonoBehaviour
 				_playerResourcesAmmoManager);
 		}
 
-		_canvasController.Initialize(_mainMenuChooseMissionController, _readNewsController);
+		_canvasController.Initialize(
+			_mainMenuChooseMissionController,
+			_readNewsController,
+			_canvasGameVersion);
 	}
 }

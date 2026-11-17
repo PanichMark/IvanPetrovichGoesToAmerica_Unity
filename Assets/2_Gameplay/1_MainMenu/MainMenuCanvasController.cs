@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public class MainMenuCanvasController : MonoBehaviour
@@ -13,7 +12,10 @@ public class MainMenuCanvasController : MonoBehaviour
 
 	private TextMeshProUGUI[] _diegeticTextsList;
 	
-	public void Initialize(MainMenuChooseMissionController mainMenuChooseMission, MainMenuReadNewsController mainMenuReadNews)
+	public void Initialize(
+		MainMenuChooseMissionController mainMenuChooseMission,
+		MainMenuReadNewsController mainMenuReadNews,
+		GameObject canvasGameVersion)
     {
       _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
        
@@ -21,7 +23,7 @@ public class MainMenuCanvasController : MonoBehaviour
 		_mainMenuReadNews = mainMenuReadNews;
 		_mainMenuChooseMission = mainMenuChooseMission;
 		_menuManager = ServiceLocator.Resolve<MenuManager>();
-		_canvasGameVersion = GameObject.Find("CanvasMainMenu").transform.Find("CanvasGameVersion").gameObject;
+		_canvasGameVersion = canvasGameVersion;
 
 		_diegeticTextsList = new[]
 		{
