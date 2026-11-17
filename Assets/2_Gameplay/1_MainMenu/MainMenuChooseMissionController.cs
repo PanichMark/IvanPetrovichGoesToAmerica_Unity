@@ -78,36 +78,32 @@ public class MainMenuChooseMissionController : MonoBehaviour
 		{
 			_buttonsComponentsMissions[i] = _viewModelMainMenuChooseMission.Missions[i].GetComponent<Button>();
 		}
-		_buttonsComponentsMissions[0].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesGameplayEnum.Scene_0_Church, _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextPrologue")));
-		_buttonsComponentsMissions[1].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesGameplayEnum.Scene_0_RevenueHouse, _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameScene.ToString())));
-		_buttonsComponentsMissions[2].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesGameplayEnum.Scene_0_InnerYard, _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameScene.ToString())));
+		_buttonsComponentsMissions[0].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesGameplayEnum.Scene_0_RevenueHouse, _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameScene.ToString())));
+		_buttonsComponentsMissions[1].onClick.AddListener(() => _pauseMenuConfirmActionController.HandleShowForChooseEpisode(GameScenesGameplayEnum.Scene_0_InnerYard, _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameScene.ToString())));
 
 		_imagesComponentsMissions = new Image[_viewModelMainMenuChooseMission.Missions.Length];
 		for (int i = 0; i < _viewModelMainMenuChooseMission.Missions.Length; i++)
 		{
 			_imagesComponentsMissions[i] = _viewModelMainMenuChooseMission.Missions[i].GetComponent<Image>();
 		}
-		_imagesComponentsMissions[0].sprite = _gameScenesList.GameScenes[3].SceneLoadingScreenImage;
-		_imagesComponentsMissions[1].sprite = _gameScenesList.GameScenes[5].SceneLoadingScreenImage;
-		_imagesComponentsMissions[2].sprite = _gameScenesList.GameScenes[6].SceneLoadingScreenImage;
+		_imagesComponentsMissions[0].sprite = _gameScenesList.GameScenes[5].SceneLoadingScreenImage;
+		_imagesComponentsMissions[1].sprite = _gameScenesList.GameScenes[6].SceneLoadingScreenImage;
 
 		_textsComponentsMissionsNames = new TextMeshProUGUI[_viewModelMainMenuChooseMission.TextsMissionsNames.Length];
 		for (int i = 0; i < _viewModelMainMenuChooseMission.TextsMissionsNames.Length; i++)
 		{
 			_textsComponentsMissionsNames[i] = _viewModelMainMenuChooseMission.TextsMissionsNames[i].GetComponent<TextMeshProUGUI>();
 		}
-		_textsComponentsMissionsNames[0].text =  _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[3].SceneGameMission.MissionName.ToString());
-		_textsComponentsMissionsNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].SceneGameMission.MissionName.ToString());
-		_textsComponentsMissionsNames[2].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].SceneGameMission.MissionName.ToString());
+		_textsComponentsMissionsNames[0].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].SceneGameMission.MissionName.ToString());
+		_textsComponentsMissionsNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].SceneGameMission.MissionName.ToString());
 
 		_textsComponentsScenesNames = new TextMeshProUGUI[_viewModelMainMenuChooseMission.TextsScenesNames.Length];
 		for (int i = 0; i < _viewModelMainMenuChooseMission.TextsScenesNames.Length; i++)
 		{
 			_textsComponentsScenesNames[i] = _viewModelMainMenuChooseMission.TextsScenesNames[i].GetComponent<TextMeshProUGUI>();
 		}
-		_textsComponentsScenesNames[0].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextPrologue");
-		_textsComponentsScenesNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameScene.ToString());
-		_textsComponentsScenesNames[2].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameScene.ToString());
+		_textsComponentsScenesNames[0].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameScene.ToString());
+		_textsComponentsScenesNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameScene.ToString());
 
 		_buttonComponentCloseMainMenuChooseMission = _viewModelMainMenuChooseMission.ButtonCloseMainMenuChooseMission.GetComponent<Button>();
 		_buttonComponentCloseMainMenuChooseMission.onClick.AddListener(() => HideCanvasMainMenuChooseMission());
@@ -208,13 +204,11 @@ public class MainMenuChooseMissionController : MonoBehaviour
 
 		_textComponentMainMenuChooseMission.text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextChooseDemoEpisode");
 
-		_textsComponentsMissionsNames[0].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[3].SceneGameMission.MissionName.ToString());
-		_textsComponentsMissionsNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].SceneGameMission.MissionName.ToString());
-		_textsComponentsMissionsNames[2].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].SceneGameMission.MissionName.ToString());
+		_textsComponentsMissionsNames[0].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].SceneGameMission.MissionName.ToString());
+		_textsComponentsMissionsNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].SceneGameMission.MissionName.ToString());
 
-		_textsComponentsScenesNames[0].text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextPrologue");
-		_textsComponentsScenesNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameScene.ToString());
-		_textsComponentsScenesNames[2].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameScene.ToString());
+		_textsComponentsScenesNames[0].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[5].GameScene.ToString());
+		_textsComponentsScenesNames[1].text = _localizationManager.GetLocalizedString(_gameScenesList.GameScenes[6].GameScene.ToString());
 
 		_textComponentButtonCloseMainMenuChooseMission.text = _localizationManager.GetLocalizedString("UI_Menu_MainMenu_ChooseMission_TextButtonClose");
 	}

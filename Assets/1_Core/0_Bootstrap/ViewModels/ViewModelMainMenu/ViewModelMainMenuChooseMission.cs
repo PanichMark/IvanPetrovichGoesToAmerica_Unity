@@ -4,9 +4,9 @@ public class ViewModelMainMenuChooseMission
 {
 	public GameObject TextMainMenuChooseMission;
 
-	public GameObject[] Missions = new GameObject[3];
-	public GameObject[] TextsMissionsNames = new GameObject[3];
-	public GameObject[] TextsScenesNames = new GameObject[3];
+	public GameObject[] Missions = new GameObject[2];
+	public GameObject[] TextsMissionsNames = new GameObject[2];
+	public GameObject[] TextsScenesNames = new GameObject[2];
 
 	public GameObject ButtonCloseMainMenuChooseMission;
 	public GameObject TextButtonCloseMainMenuChooseMission;
@@ -17,7 +17,7 @@ public class ViewModelMainMenuChooseMission
 
 		for (int i = 0; i < Missions.Length; i++)
 		{
-			string missions = "Mission0." + (i + 1);
+			string missions = "Mission0." + (i + 2);
 			string textsMissionsNames = "TextMissionName";
 			string textsScenesNames = "TextSceneName";
 

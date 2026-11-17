@@ -159,7 +159,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			((_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission) ||
 			 (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ReadNews)))
 			{
-				if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission && _mainMenuChooseMissionController.IsMainMenuChooseMissionOpened && _menuManager.PauseMenuLevel.Count == 1)
+				if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.ChooseMission && _mainMenuChooseMissionController.IsMainMenuChooseMissionOpened && _menuManager.PauseMenuLevel.Count == 0)
 				{
 					_mainMenuChooseMissionController.HideCanvasMainMenuChooseMission();
 				}
