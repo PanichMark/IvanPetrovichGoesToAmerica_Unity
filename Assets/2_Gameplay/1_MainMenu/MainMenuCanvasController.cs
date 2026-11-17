@@ -23,7 +23,7 @@ public class MainMenuCanvasController : MonoBehaviour
     {
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_canvasNewGameCutscene = canvasNewGameCutscene;
-		_canvasNewGameCutscene.SetActive(false);
+	
 		_canvasMainMenu = canvasMainMenu;
 		_mainMenuReadNews = mainMenuReadNews;
 		_mainMenuChooseMission = mainMenuChooseMission;
@@ -54,18 +54,18 @@ public class MainMenuCanvasController : MonoBehaviour
 
 		_newGameCutsceneObjects = new GameObject[12];
 
-		_newGameCutsceneObjects[0] = _canvasNewGameCutscene.transform.Find("Quote").gameObject;
-		_newGameCutsceneObjects[1] = _canvasNewGameCutscene.transform.Find("GameBy").gameObject;
-		_newGameCutsceneObjects[2] = _canvasNewGameCutscene.transform.Find("ThanksToB&D").gameObject;
-		_newGameCutsceneObjects[3] = _canvasNewGameCutscene.transform.Find("Professor1").gameObject;
-		_newGameCutsceneObjects[4] = _canvasNewGameCutscene.transform.Find("Professor2").gameObject;
-		_newGameCutsceneObjects[5] = _canvasNewGameCutscene.transform.Find("Professor3").gameObject;
-		_newGameCutsceneObjects[6] = _canvasNewGameCutscene.transform.Find("Professor4").gameObject;
-		_newGameCutsceneObjects[7] = _canvasNewGameCutscene.transform.Find("Professor5").gameObject;
-		_newGameCutsceneObjects[8] = _canvasNewGameCutscene.transform.Find("Professor6").gameObject;
-		_newGameCutsceneObjects[9] = _canvasNewGameCutscene.transform.Find("Professor7").gameObject;
-		_newGameCutsceneObjects[10] = _canvasNewGameCutscene.transform.Find("Professor8").gameObject;
-		_newGameCutsceneObjects[11] = _canvasNewGameCutscene.transform.Find("GameLogo").gameObject;
+		_newGameCutsceneObjects[0] = _canvasNewGameCutscene.transform.Find("Quote ForSignal").transform.Find("Quote").gameObject;
+		_newGameCutsceneObjects[1] = _canvasNewGameCutscene.transform.Find("GameBy ForSignal").transform.Find("GameBy").gameObject;
+		_newGameCutsceneObjects[2] = _canvasNewGameCutscene.transform.Find("ThanksToB&D ForSignal").transform.Find("ThanksToB&D").gameObject;
+		_newGameCutsceneObjects[3] = _canvasNewGameCutscene.transform.Find("Professor1 ForSignal").transform.Find("Professor1").gameObject;
+		_newGameCutsceneObjects[4] = _canvasNewGameCutscene.transform.Find("Professor2 ForSignal").transform.Find("Professor2").gameObject;
+		_newGameCutsceneObjects[5] = _canvasNewGameCutscene.transform.Find("Professor3 ForSignal").transform.Find("Professor3").gameObject;
+		_newGameCutsceneObjects[6] = _canvasNewGameCutscene.transform.Find("Professor4 ForSignal").transform.Find("Professor4").gameObject;
+		_newGameCutsceneObjects[7] = _canvasNewGameCutscene.transform.Find("Professor5 ForSignal").transform.Find("Professor5").gameObject;
+		_newGameCutsceneObjects[8] = _canvasNewGameCutscene.transform.Find("Professor6 ForSignal").transform.Find("Professor6").gameObject;
+		_newGameCutsceneObjects[9] = _canvasNewGameCutscene.transform.Find("Professor7 ForSignal").transform.Find("Professor7").gameObject;
+		_newGameCutsceneObjects[10] = _canvasNewGameCutscene.transform.Find("Professor8 ForSignal").transform.Find("Professor8").gameObject;
+		_newGameCutsceneObjects[11] = _canvasNewGameCutscene.transform.Find("GameLogo ForSignal").transform.Find("GameLogo").gameObject;
 
 		_newGameCutsceneObjectsTexts = new TextMeshProUGUI[11];
 
@@ -92,6 +92,13 @@ public class MainMenuCanvasController : MonoBehaviour
 		_newGameCutsceneObjectsTexts[8].text = _localizationManager.GetLocalizedString("UI_Cutscene_NewGame_Professor6");
 		_newGameCutsceneObjectsTexts[9].text = _localizationManager.GetLocalizedString("UI_Cutscene_NewGame_Professor7");
 		_newGameCutsceneObjectsTexts[10].text = _localizationManager.GetLocalizedString("UI_Cutscene_NewGame_Professor8");
+
+		for (int i = 0; i < _newGameCutsceneObjects.Length; i++)
+		{
+			//Debug.Log(_newGameCutsceneObjects[i].name);
+			_newGameCutsceneObjects[i].SetActive(false);
+		}
+		_canvasNewGameCutscene.SetActive(false);
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		_mainMenuReadNews.OnCloseMainMenuReadNews += ShowCanvasMainMenu;
