@@ -193,6 +193,9 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			_mainMenuCanvasController.ShowCanvasNewGameCutscene();
 			_cutsceneNewGame.TriggerCutscene(null);
 			IsCutsceneNewGamePlaying = true;
+
+			// this is so Cutscene Splines and stuff in NewGame plays OK
+			Time.timeScale = 1f;
 		}
 		if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.TestScene)
 		{
