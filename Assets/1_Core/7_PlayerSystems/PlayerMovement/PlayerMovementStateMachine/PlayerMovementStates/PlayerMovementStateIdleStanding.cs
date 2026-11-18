@@ -34,8 +34,11 @@ public class PlayerMovementStateIdleStanding : PlayerMovementStateAbstract
 
 		if (_inputDevice.GetKeyJump() && _playerMovementController.IsPlayerGrounded && _playerMovementController.IsPlayerAbleToStandUp)
 		{
-			_playerRigidBody.AddForce(_playerTransform.up * 5f, ForceMode.Impulse);
-			_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerJumping);
+			if (_playerMovementController.IsAbleToChangeMovementType)
+			{
+				_playerRigidBody.AddForce(_playerTransform.up * 5f, ForceMode.Impulse);
+				_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerJumping);
+			}
 		}
 
 		if (_playerMovementController.IsPlayerFalling)

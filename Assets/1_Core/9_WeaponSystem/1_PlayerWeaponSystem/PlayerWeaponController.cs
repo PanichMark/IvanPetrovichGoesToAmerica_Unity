@@ -306,6 +306,7 @@ public class PlayerWeaponController : MonoBehaviour, IJsonSaveLoad
 	private void AnyWeaponIsUnlocked()
 	{
 		HasAnyWeapon = true;
+		_gameController.AllowToRunAndJump();
 		_HUDhealthAndManaController.ShowHealthBar();
 	}
 

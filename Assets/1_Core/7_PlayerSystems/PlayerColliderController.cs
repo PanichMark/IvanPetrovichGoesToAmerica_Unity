@@ -26,15 +26,15 @@ public class PlayerColliderController : MonoBehaviour
 
 		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing
 			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching
-			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerSliding
-			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
+			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerSliding)
+			//|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
 		{
-            transform.position = transform.parent.position+new Vector3(0f, 0.5f, 0f);
+            transform.position = transform.parent.position + new Vector3(0f, 0.45f, 0f);
             transform.localScale = new Vector3(1f,  0.5f, 1f);
         }
 		else 
 		{
-			transform.position = transform.parent.position+new Vector3(0f, 1f, 0f);
+			transform.position = transform.parent.position + new Vector3(0f, 0.9f, 0f);
 			transform.localScale = new Vector3(1f, 1f, 1f);
 		}
 

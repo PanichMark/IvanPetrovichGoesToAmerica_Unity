@@ -4,6 +4,8 @@ public class GameController
 {
 	public bool IsPlayerControllable { get; private set; }
 	public bool IsPlayerAbleToMove { get; private set; }
+	public bool IsPlayerAbleToRunAndJump { get; private set; }
+
 	public bool IsPlayerAbleToRotate { get; private set; }
 	public bool IsPlayerMovementRestrictedByCarryingNonThrowable { get; private set; }
 	public bool IsPlayerDead { get; private set; }
@@ -32,6 +34,11 @@ public class GameController
 		IsGameAbleToSave = true;
 
 		Debug.Log("GameController Initialized");
+	}
+
+	public void AllowToRunAndJump()
+	{
+		IsPlayerAbleToRunAndJump = true;
 	}
 
 	public void MakePlayerStartStranglingNPC()

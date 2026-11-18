@@ -217,7 +217,7 @@ public class InputKeyboard : IInputDevice
 
 	public bool GetKeyJump()
 	{
-		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.Jump]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove && !_gameController.IsPlayerMovementRestrictedByCarryingNonThrowable)
+		if (Input.GetKeyDown(_keyboardKeyBindings[InputControlsEnum.Jump]) && _gameController.IsPlayerControllable && _gameController.IsPlayerAbleToMove && !_gameController.IsPlayerMovementRestrictedByCarryingNonThrowable && _gameController.IsPlayerAbleToRunAndJump)
 		{
 			return true;
 		}
