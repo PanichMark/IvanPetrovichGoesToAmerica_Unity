@@ -25,8 +25,7 @@ public class InteractionObjectElectricalPanel : GameplayObjectJsonSaveLoad, IInt
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
 	private PlayerHealthController _playerResourcesHealthManager;
-
-	private void Start()
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
 	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>();
@@ -42,6 +41,7 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
+
 
 	public void Interact()
 	{

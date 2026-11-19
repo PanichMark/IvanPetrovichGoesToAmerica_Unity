@@ -137,10 +137,10 @@ public class JsonSaveLoadController : MonoBehaviour
 		foreach (IJsonSaveLoad saveLoadObj in _gameplaySaveLoadObjects)
 		{
 			// Проверяем, что сам объект скрипта существует и его GameObject активен в сцене
-			if (((MonoBehaviour)saveLoadObj).gameObject.activeInHierarchy)
-			{
+			//if (((MonoBehaviour)saveLoadObj).gameObject.activeInHierarchy)
+			//{
 				yield return saveLoadObj.SaveJsonData(_gameData);
-			}
+			//}
 			// Если объект неактивен, цикл просто перейдет к следующему элементу
 		}
 

@@ -27,4 +27,9 @@ public abstract class InteractionObjectOpenableAbstract : GameplayObjectJsonSave
 	}
 
 	public abstract void InteractCutscene();
+
+	protected override void InitializeGameplayObjectJsonSaveLoad()
+	{
+
+	}
 }

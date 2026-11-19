@@ -103,7 +103,7 @@ public class InteractionObjectSafeDestructableController : InteractionObjectSafe
 		var targetList = data.SafesDestructableData[currentScene];
 
 		int indexInList = targetList.FindIndex(item => item.SafeDestructableIndex == GameplayObjectIndex);
-
+		//Debug.Log(_section1);
 		var updatedItem = new SafeDestructableData
 		{
 			SafeDestructableIndex = GameplayObjectIndex,

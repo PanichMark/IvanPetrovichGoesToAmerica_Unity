@@ -22,7 +22,7 @@ public class InteractionObjectSafeRotationSection : MonoBehaviour, IInteractable
 	public virtual bool IsInteractionHintMessageFailActive => false;
 	public string InteractionObjectNameSystem => null;
 
-	private void Start()
+	public void Initialize()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 	}

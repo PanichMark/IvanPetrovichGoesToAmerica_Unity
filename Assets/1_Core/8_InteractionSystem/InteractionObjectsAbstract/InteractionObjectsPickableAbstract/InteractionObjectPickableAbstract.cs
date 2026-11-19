@@ -48,10 +48,9 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectJsonSave
 
 	}
 
-	void Awake()
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
-		//_pickableObjectTransform = GetComponent<Transform>();
-		_pickableLayer = LayerMask.NameToLayer("Pickable");
+_pickableLayer = LayerMask.NameToLayer("Pickable");
 		_playerLayer = LayerMask.NameToLayer("Player");
 		_playerColliderGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
 		_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
@@ -75,6 +74,7 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectJsonSave
 
 		InitializePickable();
 	}
+
 
 	void OnTriggerEnter(Collider other)
 	{

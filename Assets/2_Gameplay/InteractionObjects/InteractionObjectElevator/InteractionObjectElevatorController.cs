@@ -40,9 +40,9 @@ public class InteractionObjectElevatorController : GameplayObjectJsonSaveLoad
 	private bool _isElevatorUp;
 	private bool _areDoorsPresent;
 
-	void Start()
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
-		if (_electricalPanel == null)
+	if (_electricalPanel == null)
 		{
 			IsPoweredOn = true;
 		}

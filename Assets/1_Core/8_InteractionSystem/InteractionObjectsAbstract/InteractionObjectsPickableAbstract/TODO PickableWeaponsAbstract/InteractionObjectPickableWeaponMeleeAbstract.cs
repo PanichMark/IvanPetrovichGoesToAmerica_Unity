@@ -28,4 +28,9 @@ public class InteractionObjectPickableWeaponMeleeAbstract : InteractionObjectPic
 	{
 		throw new System.NotImplementedException();
 	}
+
+	protected override void InitializeGameplayObjectJsonSaveLoad()
+	{
+		
+	}
 }

@@ -22,7 +22,7 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 	public string InteractionHintMessageAction => _interactionHintMessageAction;
 	protected string _interactionHintMessageAction;
 
-	private void Start()
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_NPCanimator = GetComponent<Animator>();
@@ -35,6 +35,8 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 		_localizationManager.OnLanguageChanged += ChangeLangauge;
 	}
+
+
 
 	protected virtual void InitializeNPCabstract()
 	{

@@ -52,7 +52,7 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 	public virtual string InteractionHintMessageFail => $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_Max", gameObject.name)} {InteractionObjectNameUI}!";
 	public virtual bool IsInteractionHintMessageFailActive => false;
 
-	private void Start()
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
 		_playerInteractionController = ServiceLocator.Resolve<PlayerInteractionController>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();

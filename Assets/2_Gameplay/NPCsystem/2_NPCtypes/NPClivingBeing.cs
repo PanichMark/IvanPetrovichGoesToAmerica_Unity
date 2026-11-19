@@ -11,6 +11,50 @@ public abstract class NPClivingBeing : NPCabstract
 	[SerializeField] private InteractionObjectPickableData _pickableBodyData;
 
 	[SerializeField] protected GameObject _NPClootObject;
+
+	// ... (ваши существующие поля) ...
+
+	private NPCmovementController _npcMovementController_cached;
+	protected NPCmovementController _NPCmovementController
+	{
+		get
+		{
+			if (_npcMovementController_cached == null || !_npcMovementController_cached)
+			{
+				_npcMovementController_cached = GetComponent<NPCmovementController>();
+			}
+			return _npcMovementController_cached;
+		}
+		private set { _npcMovementController_cached = value; }
+	}
+
+	private NPCstateMachineController _npcStateMachineController_cached;
+	protected NPCstateMachineController _NPCstateMachineController
+	{
+		get
+		{
+			if (_npcStateMachineController_cached == null || !_npcStateMachineController_cached)
+			{
+				_npcStateMachineController_cached = GetComponent<NPCstateMachineController>();
+			}
+			return _npcStateMachineController_cached;
+		}
+		private set { _npcStateMachineController_cached = value; }
+	}
+
+	private NPChealthController _npcHealthController_cached;
+	protected NPChealthController _NPChealthController
+	{
+		get
+		{
+			if (_npcHealthController_cached == null || !_npcHealthController_cached)
+			{
+				_npcHealthController_cached = GetComponent<NPChealthController>();
+			}
+			return _npcHealthController_cached;
+		}
+		private set { _npcHealthController_cached = value; }
+	}
 	protected InteractionObjectLootAbstract _NPClootObjectComponent;
 
 	protected bool _canNPCbeRobbed;
@@ -35,12 +79,9 @@ public abstract class NPClivingBeing : NPCabstract
 	protected EventNPCanimationController _NPCeventAnimationController;
 
 	private NavMeshAgent _navMeshAgent;
-	protected NPCmovementController _NPCmovementController;
-	protected NPChealthController _NPChealthController;
 
 	protected InteractionObjectPickableNonThrowableAbstract _pickable;
 	protected NPCmovementAnimationController _NPCmovementAnimationController;
-	protected NPCstateMachineController _NPCstateMachineController;
 
 	protected NPCdetectionManager _NPCdetectionManager;
 	protected NPCdetectionVisualController _NPCdetectionVisualController;
@@ -268,6 +309,9 @@ public abstract class NPClivingBeing : NPCabstract
 		var targetList = data.NPCsData[currentScene];
 
 		int indexInList = targetList.FindIndex(item => item.NPCindex == GameplayObjectIndex);
+
+		Debug.Log(GameplayObjectIndex);
+		Debug.Log(_NPCmovementController);
 
 		var updatedItem = new NPCdata
 		{

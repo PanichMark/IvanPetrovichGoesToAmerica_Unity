@@ -24,8 +24,7 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 	public string InteractionHintMessageFail => null;
 
 	public bool IsInteractionHintMessageFailActive => false;
-
-	private void Start()
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
 	_audioSource = GetComponent<AudioSource>();
 	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
@@ -40,6 +39,7 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 			_interactionHintMessageAction = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_TurnOn", gameObject.name)}";
 		}
 	}
+
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
 	{

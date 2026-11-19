@@ -30,9 +30,49 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 	[SerializeField] protected GameObject _safeRotatorySection1;
 	[SerializeField] protected GameObject _safeRotatorySection2;
 	[SerializeField] protected GameObject _safeRotatorySection3;
-	protected InteractionObjectSafeRotationSection _section1;
-	protected InteractionObjectSafeRotationSection _section2;
-	protected InteractionObjectSafeRotationSection _section3;
+
+	private InteractionObjectSafeRotationSection _section1_cached;
+	protected InteractionObjectSafeRotationSection _section1
+	{
+		get
+		{
+			if (_section1_cached == null || !_section1_cached)
+			{
+				_section1_cached = _safeRotatorySection1.GetComponent<InteractionObjectSafeRotationSection>();
+			}
+			return _section1_cached;
+		}
+		private set { _section1_cached = value; } // Добавили приватный сеттер
+	}
+
+	private InteractionObjectSafeRotationSection _section2_cached;
+	protected InteractionObjectSafeRotationSection _section2
+	{
+		get
+		{
+			if (_section2_cached == null || !_section2_cached)
+			{
+				_section2_cached = _safeRotatorySection2.GetComponent<InteractionObjectSafeRotationSection>();
+			}
+			return _section2_cached;
+		}
+		private set { _section2_cached = value; }
+	}
+
+	private InteractionObjectSafeRotationSection _section3_cached;
+	protected InteractionObjectSafeRotationSection _section3
+	{
+		get
+		{
+			if (_section3_cached == null || !_section3_cached)
+			{
+				_section3_cached = _safeRotatorySection3.GetComponent<InteractionObjectSafeRotationSection>();
+			}
+			return _section3_cached;
+		}
+		private set { _section3_cached = value; }
+	}
+
 	protected Quaternion _safeDoorOpenedPosition;
 
 
@@ -41,10 +81,9 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 	{
 
 	}
-
-	void Start()
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
-		_handleCollider = GetComponent<Collider>();
+	_handleCollider = GetComponent<Collider>();
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		
 		_safeDoor = transform.parent.gameObject;
@@ -56,6 +95,13 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 		_section1 = _safeRotatorySection1.GetComponent<InteractionObjectSafeRotationSection>();
 		_section2 = _safeRotatorySection2.GetComponent<InteractionObjectSafeRotationSection>();
 		_section3 = _safeRotatorySection3.GetComponent<InteractionObjectSafeRotationSection>();
+
+		_section1.Initialize();
+		_section2.Initialize();
+		_section3.Initialize();
+
+		Debug.Log("BRUH!");
+		Debug.Log(_section1);
 
 		Vector3 openedEulerAngles = new Vector3(0, _safeDoorOpenedRotation, 0);
 		_safeDoorOpenedPosition = Quaternion.Euler(openedEulerAngles);
@@ -74,6 +120,7 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 
 		InitializeSafe();
 	}
+
 
 	
 

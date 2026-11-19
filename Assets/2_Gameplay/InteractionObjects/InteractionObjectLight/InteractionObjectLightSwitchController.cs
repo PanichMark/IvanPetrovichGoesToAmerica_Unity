@@ -11,9 +11,10 @@ public class InteractionObjectLightSwitchController : GameplayObjectJsonSaveLoad
 	public bool IsLightTurnedOn { get; protected set; }
 
 	private readonly List<Material> _cachedMaterials = new List<Material>();
-	protected virtual void Start()
+
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
-		CacheMaterials();
+CacheMaterials();
 	}
 
 	protected void CacheMaterials()

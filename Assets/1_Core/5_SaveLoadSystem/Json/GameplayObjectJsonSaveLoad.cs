@@ -20,13 +20,22 @@ public abstract class GameplayObjectJsonSaveLoad : MonoBehaviour, IJsonSaveLoad
 		yield return null;
 	}
 
-	public virtual void ChildClassSave(JsonGameData data)
+	private void Awake()
 	{
+		bool wasActive = gameObject.activeSelf;
 
+		if (!wasActive)
+		{
+			gameObject.SetActive(true);
+		}
+
+		InitializeGameplayObjectJsonSaveLoad();
+
+		if (!wasActive)
+		{
+			gameObject.SetActive(false);
+		}
 	}
 
-	public virtual void ChildClassLoad(JsonGameData data)
-	{
-
-	}
+	protected abstract void InitializeGameplayObjectJsonSaveLoad();
 }

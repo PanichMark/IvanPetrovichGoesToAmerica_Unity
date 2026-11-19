@@ -40,8 +40,7 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 	public virtual bool IsInteractionHintMessageFailActive => _isAdditionalInteractionHintActive;
 
 	public virtual string InteractionObjectNameUI => null;
-
-	protected void Start()
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		SetpUpVendingMachine();
@@ -56,6 +55,7 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 
 		_localizationManager.OnLanguageChanged += ChangeLangauge;
 	}
+
 
 	public virtual void SetpUpVendingMachine()
 	{

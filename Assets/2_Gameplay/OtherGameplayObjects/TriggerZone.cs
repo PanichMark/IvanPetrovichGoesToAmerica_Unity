@@ -14,7 +14,8 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 	private bool _isPlayerInside;
 	private bool _finishedLoadingData;
 	private bool _isEndTitlesScene;
-	private void Start()
+
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
 _pauseSubMenuSettingsSectionGeneralController = ServiceLocator.Resolve<PauseSubMenuSettingsSectionGeneralController>();
 _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
@@ -28,6 +29,8 @@ _playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCol
 			_isEndTitlesScene = true;
 		}
 	}
+
+
 
 	private void OnTriggerEnter(Collider other)
 	{
