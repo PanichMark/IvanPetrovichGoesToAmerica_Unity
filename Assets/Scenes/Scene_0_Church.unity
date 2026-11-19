@@ -87062,6 +87062,10 @@ PrefabInstance:
       propertyPath: _doorOpenAngle
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 8056446637061148164, guid: a80a37514c7425b4faa489ec03ef6c19, type: 3}
+      propertyPath: _interactionObjectKeyData
+      value: 
+      objectReference: {fileID: 11400000, guid: 3f18782af4bcb8748ac1edef412270fe, type: 2}
     - target: {fileID: 9009970414150149954, guid: a80a37514c7425b4faa489ec03ef6c19, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -110138,7 +110142,7 @@ MonoBehaviour:
   _isObjectOpened: 0
   _doorOpenAngle: 90
   _doorOpeningSpeed: 200
-  _interactionObjectKeyData: {fileID: 0}
+  _interactionObjectKeyData: {fileID: 11400000, guid: 3f18782af4bcb8748ac1edef412270fe, type: 2}
   _mechanicalLockController: {fileID: 0}
   _electronicLockController: {fileID: 0}
   _electronicElectricalPanel: {fileID: 0}
@@ -110773,6 +110777,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8056446637061148164, guid: a80a37514c7425b4faa489ec03ef6c19, type: 3}
+      propertyPath: _interactionObjectKeyData
+      value: 
+      objectReference: {fileID: 11400000, guid: 3f18782af4bcb8748ac1edef412270fe, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -126703,12 +126711,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618772009}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2059737134}
   - {fileID: 522561046}
   - {fileID: 729238767}
   - {fileID: 675048473}
@@ -153945,7 +153952,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2059737133}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -153956,7 +153963,7 @@ Transform:
   - {fileID: 1544573824}
   - {fileID: 557379999}
   - {fileID: 1682593567}
-  m_Father: {fileID: 1618772010}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2060472571
 GameObject:
@@ -160143,3 +160150,4 @@ SceneRoots:
   - {fileID: 16742342}
   - {fileID: 172263630}
   - {fileID: 508285364}
+  - {fileID: 2059737134}

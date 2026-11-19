@@ -15,6 +15,7 @@ public class InteractionObjectLootKeyItem : InteractionObjectLootAbstract
 	{
 		_keysItemsManager = ServiceLocator.Resolve<KeyItemsManager>();
 		_keyItemID = _keyItemData.KeyItemID.ToString();
+		LootObjectIcon = _keyItemData.KeyItemSprite;
 	}
 
 	public override void Interact()
