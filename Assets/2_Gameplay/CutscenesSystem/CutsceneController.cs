@@ -397,8 +397,7 @@ public class CutsceneController : MonoBehaviour
 		IsCutscenePlaying = false;
 		CutsceneResumeTime();
 		_menuManager.CloseCutsceneMenu();
-		_gameController.MakePlayerControllable();
-		_gameController.MakeGameSavable();
+
 
 		_playerCameraStateMachineController.SetPlayerCameraState(_playerCameraController.PreviousPlayerCameraGameplayType);
 		
@@ -439,7 +438,8 @@ public class CutsceneController : MonoBehaviour
 				}
 			}
 		}
-
+		_gameController.MakePlayerControllable();
+		_gameController.MakeGameSavable();
 		//Destroy(gameObject);
 		Debug.Log($"Post-cutscene {gameObject.name} actions executed.");
 	}
