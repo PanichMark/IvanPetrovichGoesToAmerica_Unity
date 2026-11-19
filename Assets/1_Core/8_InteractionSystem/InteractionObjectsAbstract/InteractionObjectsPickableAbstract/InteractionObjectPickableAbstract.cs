@@ -70,7 +70,7 @@ _pickableLayer = LayerMask.NameToLayer("Pickable");
 		}
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_PickUp", gameObject.name);
-		//_localizationManager.OnLanguageChanged += ChangeLanguage;
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		InitializePickable();
 	}

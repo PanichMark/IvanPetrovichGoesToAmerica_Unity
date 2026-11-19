@@ -9,7 +9,7 @@ public abstract class InteractionObjectPickableNonThrowableAbstract : Interactio
 	[SerializeField] protected float _movementSpeedPenaltyMultiplier;
 
 	private PlayerMovementController _playerMovementController;
-	private bool _isCreatedAsBody;
+
 	public override void PickUpObject(bool isPickedUpByLoadSafeFile)
 	{
 		base.PickUpObject(isPickedUpByLoadSafeFile);
@@ -70,6 +70,8 @@ public abstract class InteractionObjectPickableNonThrowableAbstract : Interactio
 
 	protected virtual void OnDestroy()
 	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+
 		if (_isMovementRestricted)
 		{
 			_playerMovementController.OnMovementSpeedChangedByStateMachine -= DecreaseTheMovementSpeed;
