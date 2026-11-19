@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //[RequireComponent(typeof(PlayableDirector))]
 //[RequireComponent(typeof(Sign))]
@@ -57,7 +58,12 @@ public class CutsceneController : MonoBehaviour
 	private bool _shouldInteractWithObjects;
 	private bool _isInitialized;
 
-	
+	private GameObject _textSkipCutscene;
+	private TextMeshProUGUI _textComponentSkipCutscene;
+	private GameObject _circleSkipCutscene;
+	private float _holdDuration;
+	private bool _isSkipRequested;
+	private Image _imageCircleSkipCutscene;
 
 	[Header("Cutscene dialogue data")]
 	[SerializeField] private CutsceneDialogueData _cutsceneDialogueData;
@@ -113,6 +119,13 @@ public class CutsceneController : MonoBehaviour
 
 		_blackLineUp = _viewModelMenuCutscene.BlackLineUp;
 		_blackLineDown = _viewModelMenuCutscene.BlackLineDown;
+		_textSkipCutscene = _viewModelMenuCutscene.TextSkipCutscene;
+		_circleSkipCutscene = _viewModelMenuCutscene.CircleSkipCutscene;
+		_imageCircleSkipCutscene = _circleSkipCutscene.GetComponent<Image>();
+		_imageCircleSkipCutscene.fillAmount = 0f;
+		_circleSkipCutscene.SetActive(false);
+		_textSkipCutscene.SetActive(false);
+
 
 		LoadCutsceneDialoguesTextFiles();
 
@@ -167,16 +180,33 @@ public class CutsceneController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!_isInitialized)
-			return;
+		if (!_isInitialized) return;
 
-		if (IsCutscenePlaying && _inputDevice.GetKeySkipCutscene())
+		ProcessCutsceneSkipping();
+
+		if (IsCutscenePlaying && _isSkipRequested)
 		{
 			SkipCutscene();
 		}
+	}
 
-		//Debug.Log($"Was: {WasCutscenePlaying}");
-		//Debug.Log($"Is:     {IsCutscenePlaying}");
+	private void ProcessCutsceneSkipping()
+	{
+		_isSkipRequested = _inputDevice.GetKeySkipCutscene();
+		_holdDuration = _inputDevice.GetCurrentSkipCutsceneHoldDuration();
+
+		if (_holdDuration > 0f)
+		{
+			_textSkipCutscene.SetActive(true);
+			_circleSkipCutscene.SetActive(true);
+			_imageCircleSkipCutscene.fillAmount = Mathf.Clamp01(_holdDuration / _inputDevice.TimeToHoldKeySkipCutscene);
+		}
+		else
+		{
+			_textSkipCutscene.SetActive(false);
+			_circleSkipCutscene.SetActive(false);
+			_imageCircleSkipCutscene.fillAmount = 0f;
+		}
 	}
 
 	private void LoadCutsceneDialoguesTextFiles()
@@ -416,7 +446,7 @@ public class CutsceneController : MonoBehaviour
 
 	private void PauseCutscene()
 	{
-		if (!_wasCutsceneSkipped)
+		if (!_wasCutsceneSkipped && IsCutscenePlaying)
 		{
 			IsCutscenePlaying = false;
 			_director.Pause();

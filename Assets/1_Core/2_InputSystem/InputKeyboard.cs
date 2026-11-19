@@ -13,7 +13,7 @@ public class InputKeyboard : IInputDevice
 	private float _lastTimeSinceKeySkipCutsceneWasHeld;
 
 	private float _timeToHoldKeyHideWeapon = 0.5f;
-	private float _timeToHoldKeySkipCutscene = 1;
+	public float TimeToHoldKeySkipCutscene { get; private set; } = 1;
 
 	private bool _isKeyInteractBeingHeld;
 	private bool _isKeySkipCutsceneBeingHeld;
@@ -350,13 +350,23 @@ public class InputKeyboard : IInputDevice
 			_isKeySkipCutsceneBeingHeld = false;
 			
 		}
-		else if (_isKeySkipCutsceneBeingHeld && Time.unscaledTime >= _lastTimeSinceKeySkipCutsceneWasHeld + _timeToHoldKeySkipCutscene)
+		else if (_isKeySkipCutsceneBeingHeld && Time.unscaledTime >= _lastTimeSinceKeySkipCutsceneWasHeld + TimeToHoldKeySkipCutscene)
 		{
 			_isKeySkipCutsceneBeingHeld = false;
 		
 			return true;
 		}
 		return false;
+	}
+
+	public float GetCurrentSkipCutsceneHoldDuration()
+	{
+		if (!_isKeySkipCutsceneBeingHeld)
+		{
+			return 0f;
+		}
+
+		return Time.unscaledTime - _lastTimeSinceKeySkipCutsceneWasHeld;
 	}
 
 	public string GetNameOfKey(InputControlsEnum actionName)

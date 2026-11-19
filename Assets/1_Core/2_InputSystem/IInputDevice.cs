@@ -3,6 +3,7 @@ using UnityEngine;
 
 public interface IInputDevice
 {
+	float TimeToHoldKeySkipCutscene {  get; }
 	float CameraAxisX();
 	float CameraAxisY();
 	float CameraScroll();
@@ -23,6 +24,7 @@ public interface IInputDevice
 	bool GetKeyLegKick();
 	bool GetKeyInteract();
 	bool GetKeySkipCutscene();
+	float GetCurrentSkipCutsceneHoldDuration();
 	bool GetKeyRightHandWeaponWheel();
 	bool GetKeyLeftHandWeaponWheel();
 	bool GetKeyRightHandWeaponAttack();
