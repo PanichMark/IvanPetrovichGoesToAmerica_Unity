@@ -17,8 +17,8 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 
 	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
-_pauseSubMenuSettingsSectionGeneralController = ServiceLocator.Resolve<PauseSubMenuSettingsSectionGeneralController>();
-_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
+		_pauseSubMenuSettingsSectionGeneralController = ServiceLocator.Resolve<PauseSubMenuSettingsSectionGeneralController>();
+		_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
 
 		_triggerZone = GetComponent<Collider>();
 

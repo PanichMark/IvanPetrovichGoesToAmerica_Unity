@@ -106,6 +106,8 @@ public class MenuManager : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
+		Debug.Log(Time.deltaTime);
+
 		//Debug.Log(_gameController.IsMainMenuOpen);
 		//Debug.Log(_gameController.IsPauseMenuAvailable);
 		//Debug.Log(_gameController.IsPlayerAbleToMove);
@@ -288,6 +290,7 @@ public class MenuManager : MonoBehaviour
 		CloseAnyMenu();
 		
 		OnCloseCutsceneMenu?.Invoke();
+		OnCloseMenuBackground?.Invoke();
 		IsCutsceneMenuOpened = false;
 		Debug.Log("CutsceneMenu closed");
 	}

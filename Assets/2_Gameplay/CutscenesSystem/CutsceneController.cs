@@ -347,6 +347,8 @@ public class CutsceneController : MonoBehaviour
 
 	private void CancelCutsceneOnLoad()
 	{
+		//_menuManager.OnCloseMenuBackground();
+
 		Debug.Log($"Cutscene {gameObject.name} Cancelled");
 
 		_playerBootstrap.transform.SetParent(null);
