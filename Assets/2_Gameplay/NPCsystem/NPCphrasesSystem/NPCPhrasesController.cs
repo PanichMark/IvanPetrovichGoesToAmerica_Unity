@@ -25,14 +25,17 @@ public class NPCphrasesController : MonoBehaviour
 		{LanguagesEnum.English, new List<AudioClip>() }
 	};
 
-	[SerializeField] private NPCphrasesData _NPCphrasesData;
+	private NPCphrasesData _NPCphrasesDefaultData;
 	private GameObject _NPCphrasesText;
 	private TextMeshProUGUI _NPCphrasesTextComponent;
 
 	private ViewModelHUDInteraction _viewModelHUDInteraction;
 
-	public void Initialize(NPCabstract NPCabstract)
+	public void Initialize(
+		NPCabstract NPCabstract,
+		NPCphrasesData NPCphrasesDefaultData)
 	{
+		_NPCphrasesDefaultData = NPCphrasesDefaultData;
 		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
 		_NPCabstract = NPCabstract;
 	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
@@ -47,9 +50,9 @@ _playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerE
 
 	private void LoadVoiceLineFiles()
 	{
-		if (_NPCphrasesData.PhrasesVoicelinesRussian != null && _NPCphrasesData.PhrasesVoicelinesRussian.Length > 0)
+		if (_NPCphrasesDefaultData.PhrasesVoicelinesRussian != null && _NPCphrasesDefaultData.PhrasesVoicelinesRussian.Length > 0)
 		{
-			foreach (var clip in _NPCphrasesData.PhrasesVoicelinesRussian)
+			foreach (var clip in _NPCphrasesDefaultData.PhrasesVoicelinesRussian)
 			{
 				if (clip != null)
 				{
@@ -57,14 +60,14 @@ _playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerE
 				}
 			}
 		}
-		else if (_NPCphrasesData.PhrasesVoicelinesEnglish != null && _NPCphrasesData.PhrasesVoicelinesEnglish.Length > 0)
+		else if (_NPCphrasesDefaultData.PhrasesVoicelinesEnglish != null && _NPCphrasesDefaultData.PhrasesVoicelinesEnglish.Length > 0)
 		{
 			Debug.LogWarning("Russian voice lines array is not assigned!");
 		}
 
-		if (_NPCphrasesData.PhrasesVoicelinesEnglish != null && _NPCphrasesData.PhrasesVoicelinesEnglish.Length > 0)
+		if (_NPCphrasesDefaultData.PhrasesVoicelinesEnglish != null && _NPCphrasesDefaultData.PhrasesVoicelinesEnglish.Length > 0)
 		{
-			foreach (var clip in _NPCphrasesData.PhrasesVoicelinesEnglish)
+			foreach (var clip in _NPCphrasesDefaultData.PhrasesVoicelinesEnglish)
 			{
 				if (clip != null)
 				{
@@ -72,7 +75,7 @@ _playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerE
 				}
 			}
 		}
-		else if (_NPCphrasesData.PhrasesVoicelinesRussian != null && _NPCphrasesData.PhrasesVoicelinesRussian.Length > 0)
+		else if (_NPCphrasesDefaultData.PhrasesVoicelinesRussian != null && _NPCphrasesDefaultData.PhrasesVoicelinesRussian.Length > 0)
 		{
 			Debug.LogWarning("English voice lines array is not assigned!");
 		}
@@ -80,9 +83,9 @@ _playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerE
 
 	private void LoadPhrasesTextFiles()
 	{
-		if (_NPCphrasesData.PhrasesFileRussian != null)
+		if (_NPCphrasesDefaultData.PhrasesFileRussian != null)
 		{
-			using (var reader = new StringReader(_NPCphrasesData.PhrasesFileRussian.text))
+			using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileRussian.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
@@ -99,9 +102,9 @@ _playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerE
 			Debug.LogWarning("Russian phrase file is not assigned!");
 		}
 
-		if (_NPCphrasesData.PhrasesFileEnglish != null)
+		if (_NPCphrasesDefaultData.PhrasesFileEnglish != null)
 		{
-			using (var reader = new StringReader(_NPCphrasesData.PhrasesFileEnglish.text))
+			using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileEnglish.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)

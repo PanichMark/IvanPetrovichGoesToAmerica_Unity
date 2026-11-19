@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 7271838222949213480}
   - component: {fileID: 1944270714934039901}
   m_Layer: 0
-  m_Name: NPC_Peaceful_Template
+  m_Name: NPC_Peaceful_Template_Human_Male_Normal
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -314,10 +314,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCname: 
-  _NPCconfigBodyType: {fileID: 0}
-  _pickableBodyData: {fileID: 0}
+  _NPCName: 
+  _NPCPhrasesDefault: {fileID: 0}
+  _NPCBodyType: {fileID: 0}
+  _pickableBodyData: {fileID: 11400000, guid: f7e174cf3e7bed04498ef2b9fba0c72c, type: 2}
   _NPClootObject: {fileID: 0}
+  _NPCpeacefulReactionType: 0
 --- !u!114 &6553842799769070374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,7 +383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCphrasesData: {fileID: 0}
 --- !u!114 &8372375373486267861
 MonoBehaviour:
   m_ObjectHideFlags: 0

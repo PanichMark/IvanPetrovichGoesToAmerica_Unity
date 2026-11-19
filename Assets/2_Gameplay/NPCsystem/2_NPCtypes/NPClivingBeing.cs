@@ -7,10 +7,13 @@ using UnityEngine.SceneManagement;
 
 public abstract class NPClivingBeing : NPCabstract
 {
-	[SerializeField] private ConfigNPCBodyType _NPCconfigBodyType;
-	[SerializeField] private InteractionObjectPickableData _pickableBodyData;
+	[SerializeField] private ConfigNPCBodyType _NPCBodyType;
+	[SerializeField] private InteractionObjectPickableData _NPCPickableBodyType;
 
-	[SerializeField] protected GameObject _NPClootObject;
+	[SerializeField] protected GameObject _NPCLootObject;
+	[SerializeField] private NPCphrasesData _NPCPhrasesInterested;
+	[SerializeField] private NPCphrasesData _NPCPhrasesAlarmed;
+	[SerializeField] private NPCphrasesData _NPCPhrasesDefeated;
 
 	// ... (ваши существующие поля) ...
 
@@ -180,9 +183,9 @@ public abstract class NPClivingBeing : NPCabstract
 			_NPCvfxEffectMeshRenderers);
 
 
-		if (_NPClootObject != null)
+		if (_NPCLootObject != null)
 		{
-			_NPClootObjectComponent = _NPClootObject.GetComponent<InteractionObjectLootAbstract>();
+			_NPClootObjectComponent = _NPCLootObject.GetComponent<InteractionObjectLootAbstract>();
 			_NPClootObjectComponent.MakeLootObjectNPC();
 
 			_playerMovementStateMachineController.OnChangeMovementState += HandleNPClooteableState;
@@ -216,7 +219,7 @@ public abstract class NPClivingBeing : NPCabstract
 
 		gameObject.AddComponent<Rigidbody>();
 
-		_pickable = InteractionObjectPickableNonThrowableUndestructable.CreateWithName(gameObject, _NPCname, _pickableBodyData);
+		_pickable = InteractionObjectPickableNonThrowableUndestructable.CreateWithName(gameObject, _NPCName, _NPCPickableBodyType);
 
 		_interactionHintMessageAction = _pickable.InteractionHintMessageAction;
 		//Destroy(this);
@@ -263,7 +266,7 @@ public abstract class NPClivingBeing : NPCabstract
 	{
 		_canNPCbeRobbed = false;
 		_wasNPCrobbed = true;
-		_NPClootObject = null;
+		_NPCLootObject = null;
 		_NPClootObjectComponent = null;
 
 		if (this is NPCaggressive)

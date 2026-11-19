@@ -1,9 +1,13 @@
-﻿public class NPCneutral : NPClivingBeing
+﻿using UnityEngine;
+
+public class NPCneutral : NPClivingBeing
 {
 	private NPCdialogueController _NPCdialogueController;
 
 	private NPCweaponController _NPCweaponController;
 	private NPCweaponAnimationController _NPCweaponAnimationController;
+	[SerializeField] private NPCphrasesData _NPCPhrasesFight;
+	[SerializeField] private NPCphrasesData _NPCPhrasesSearching;
 
 	protected override void InitializeNPClivingBeing()
 	{
@@ -38,7 +42,7 @@
 
 			if (!_wasNPCrobbed)
 			{
-				if (_NPClootObject != null)
+				if (_NPCLootObject != null)
 				{
 					_NPClootObjectComponent.Interact();
 					NPCwasRobbed();

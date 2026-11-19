@@ -4,7 +4,8 @@
 public class NPCpeaceful : NPClivingBeing
 {
 	private NPCdialogueController _NPCdialogueController;
-	[SerializeField] private NPCpeacefulReactionType _NPCpeacefulReactionType;
+	[SerializeField] private NPCpeacefulReactionType _NPCPeacefulReactionType;
+	[SerializeField] private NPCphrasesData _NPCPhrasesAfraid;
 	protected override void InitializeNPClivingBeing()
 	{
 		_NPCdialogueController = GetComponent<NPCdialogueController>();
@@ -27,7 +28,7 @@ public class NPCpeaceful : NPClivingBeing
 
 			if (!_wasNPCrobbed)
 			{
-				if (_NPClootObject != null)
+				if (_NPCLootObject != null)
 				{
 					_NPClootObjectComponent.Interact();
 					NPCwasRobbed();

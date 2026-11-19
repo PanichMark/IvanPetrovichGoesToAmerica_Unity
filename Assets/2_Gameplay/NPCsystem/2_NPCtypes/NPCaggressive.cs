@@ -1,8 +1,11 @@
-﻿public class NPCaggressive : NPClivingBeing
+﻿using UnityEngine;
+
+public class NPCaggressive : NPClivingBeing
 {
 	private NPCweaponController _NPCweaponController;
 	private NPCweaponAnimationController _NPCweaponAnimationController;
-
+	[SerializeField] private NPCphrasesData _NPCPhrasesFight;
+	[SerializeField] private NPCphrasesData _NPCPhrasesSearching;
 	protected override void InitializeNPClivingBeing()
 	{
 		_NPCweaponController = GetComponent<NPCweaponController>();
@@ -27,7 +30,7 @@
 
 			if (!_wasNPCrobbed)
 			{
-				if (_NPClootObject != null)
+				if (_NPCLootObject != null)
 				{
 					_NPClootObjectComponent.Interact();
 					NPCwasRobbed();
