@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MissionGoalMarkerController : MonoBehaviour
+public class MissionStepGoalMarkerController : MonoBehaviour
 {
 	private MissionsManager _missionsManager;
 	private GameObject _imageMissionGoalMarker;
@@ -79,23 +79,16 @@ public class MissionGoalMarkerController : MonoBehaviour
 			}
 		}
 		//Debug.Log("FIND 444444");
-		foreach (var condition in _currentMissionStepCache.Conditions)
+		if (_currentMissionStepCache.MissionStepGoalMarkerObject != null)
 		{
-			string ownerName = condition.StepConditionOwner ? condition.StepConditionOwner.name : "NULL";
-			bool conditionMet = condition.IsConditionMet;
-
-			//Debug.Log($"[MissionMarker] Условие: '{condition.GetType().Name}'. Владелец: {ownerName}. Выполнено: {conditionMet}");
-
-			//Debug.Log(condition.Owner);
-			//Debug.Log(conditionMet);
-
-			if (condition.StepConditionOwner != null && !conditionMet)
-			{
-				//Debug.Log($"[MissionMarker] Найдена активная цель: {condition.Owner.name}");
-				_gameObjectMissionGoal = condition.StepConditionOwner;
-				return condition.StepConditionOwner;
-			}
+			_gameObjectMissionGoal = _currentMissionStepCache.MissionStepGoalMarkerObject;
+			return _currentMissionStepCache.MissionStepGoalMarkerObject;
 		}
+		else
+		{
+			Debug.Log($"NO MARKER GAMEOBJECT IN {_currentMissionStepCache}");
+		}
+
 		//Debug.Log("[MissionMarker] Активных целей для отслеживания не найдено.");
 		return null;
 	}

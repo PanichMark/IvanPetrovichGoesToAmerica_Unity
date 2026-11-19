@@ -12,6 +12,8 @@ public class MissionStep : ScriptableObject
 	private List<GameObject> GameObjectTurnOn = new List<GameObject>();
 	private List<GameObject> GameObjectTurnOff = new List<GameObject>();
 
+	public GameObject MissionStepGoalMarkerObject {  get; private set; }
+
 	[TextArea(3, 10)]
 	public string StepDescription;
 	[SerializeField] private bool showMissionMarker = true;
@@ -95,5 +97,10 @@ public class MissionStep : ScriptableObject
 	public void RegisterObjectsTurnOff(GameObject objectTurnOff)
 	{
 		GameObjectTurnOff.Add(objectTurnOff);
+	}
+
+	public void RegisterMissionStepGoalMarkerObject(GameObject markerObject)
+	{
+		MissionStepGoalMarkerObject = markerObject;
 	}
 }
