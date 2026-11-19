@@ -10,6 +10,7 @@ public class ViewModelSceneLoadingScreen
 	public GameObject TextSceneName;
 	public GameObject TextSceneDescription;
 	public GameObject TextLoadingIsReady;
+	public GameObject BackgroundLoadingIsReady;
 
 	public GameObject SliderSceneLoadingStatus;
 
@@ -23,6 +24,7 @@ public class ViewModelSceneLoadingScreen
 		TextSceneName = bootstrap.FindDeepGameObject(canvas, "TextSceneName");
 		TextSceneDescription = bootstrap.FindDeepGameObject(canvas, "TextSceneDescription");
 		TextLoadingIsReady = bootstrap.FindDeepGameObject(canvas, "TextLoadingIsReady");
+		BackgroundLoadingIsReady = bootstrap.FindDeepGameObject(canvas, "BackgroundLoadingIsReady");
 
 		SliderSceneLoadingStatus = bootstrap.FindDeepGameObject(canvas, "SliderSceneLoadingStatus");
 	}

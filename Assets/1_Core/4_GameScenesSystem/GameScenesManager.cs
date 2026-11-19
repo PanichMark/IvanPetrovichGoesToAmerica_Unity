@@ -16,6 +16,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 	private TMP_Text _textComponentLoadingReady;
 	private GameObject _textLoadingReady;
 	private GameObject _textMissionName;
+	private GameObject _backgroundLoadingIsReady;
 	private TMP_Text _textComponentMissionName;
 	private GameObject _textSceneName;
 	private TMP_Text _textComponentSceneName;
@@ -68,7 +69,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		_loadingScreenInfo = viewModelSceneLoadingScreen.LoadingScreenInfo;
 		_textMissionName = viewModelSceneLoadingScreen.TextMissionName;
 		_textComponentMissionName = viewModelSceneLoadingScreen.TextMissionName.GetComponent<TMP_Text>();
-
+		_backgroundLoadingIsReady = viewModelSceneLoadingScreen.BackgroundLoadingIsReady;
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		//_isInitialSceneLoad = true;
@@ -129,6 +130,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		_sliderComponentLoadingStatus.value = 0f;
 		_textLoadingReady.SetActive(false);
 		_textSceneName.SetActive(true);
+		_backgroundLoadingIsReady.SetActive(false);
 		_textSceneDescription.SetActive(true);
 
 		TextAsset descriptionTextAsset = null;
@@ -220,6 +222,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		_sliderComponentLoadingStatus.value = 1f;
 		_sliderLoadingStatus.SetActive(false);
 		_textLoadingReady.SetActive(true);
+		_backgroundLoadingIsReady.SetActive(true);
 		_textComponentLoadingReady.text = _localizationManager.GetLocalizedString("UI_LoadingScreen_LoadingIsReady");
 
 		yield return new WaitUntil(() => Input.anyKeyDown);
@@ -250,6 +253,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		Time.timeScale = 0f;
 
 		_sliderLoadingStatus.SetActive(false);
+		_backgroundLoadingIsReady.SetActive(false);
 		_textSceneName.SetActive(false);
 		_textSceneDescription.SetActive(false);
 		_textLoadingReady.SetActive(false);
@@ -305,6 +309,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		_gameController.MainMenuOrEndGameTitlesSceneLoadBegan();
 		OnBeginLoadingMainMenuOrEndGameTitlesScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);
+		_backgroundLoadingIsReady.SetActive(false);
 
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
