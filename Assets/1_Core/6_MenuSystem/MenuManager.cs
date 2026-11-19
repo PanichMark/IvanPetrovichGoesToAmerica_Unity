@@ -106,7 +106,7 @@ public class MenuManager : MonoBehaviour
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
-		Debug.Log(Time.deltaTime);
+		//Debug.Log(Time.deltaTime);
 
 		//Debug.Log(_gameController.IsMainMenuOpen);
 		//Debug.Log(_gameController.IsPauseMenuAvailable);

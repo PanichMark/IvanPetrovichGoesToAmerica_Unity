@@ -35,6 +35,8 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 	public event LoadSceneHandler OnBeginLoadingGameplayScene;
 
 	public event LoadSceneHandler OnEndLoadingGameplayScene;
+
+	public event LoadSceneHandler OnGameplaySceneReady;
 	
 	public GameScenesSystemEnum PreviousScene { get; private set; }
 
@@ -228,7 +230,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 
 		WasInitialSceneLoaded = true;
 		Debug.Log($"Loading scene {sceneName} Ended Initial");
-
+		OnGameplaySceneReady?.Invoke();
 		yield return null;
 	}
 

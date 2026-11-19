@@ -7,6 +7,7 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 {
 	[SerializeField] private InteractionObjectNote _noteObject;
 	[SerializeField] private CutsceneController _cutscene;
+	[SerializeField] private bool _triggerOnSceneLoad;
 	private Collider _triggerZone;
 	private bool _wasZoneTriggered;
 	private GameObject _playerCollider;
@@ -14,12 +15,13 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 	private bool _isPlayerInside;
 	private bool _finishedLoadingData;
 	private bool _isEndTitlesScene;
+	private GameScenesManager _gameScenesManager;
 
 	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
 		_pauseSubMenuSettingsSectionGeneralController = ServiceLocator.Resolve<PauseSubMenuSettingsSectionGeneralController>();
 		_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
-
+		_gameScenesManager = ServiceLocator.Resolve<GameScenesManager>();
 		_triggerZone = GetComponent<Collider>();
 
 		_triggerZone.isTrigger = true;
@@ -28,9 +30,22 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 		{
 			_isEndTitlesScene = true;
 		}
+
+		_gameScenesManager.OnGameplaySceneReady += TriggerOnSceneLoad;
 	}
 
+	private void OnDestroy()
+	{
+		_gameScenesManager.OnGameplaySceneReady -= TriggerOnSceneLoad;
+	}
 
+	private void TriggerOnSceneLoad()
+	{
+		if (_triggerOnSceneLoad)
+		{
+			TriggerZoneInteraction();
+		}
+	}
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -48,8 +63,7 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 				TriggerZoneInteraction();
 			}
 
-				_isPlayerInside = true;
-			_wasZoneTriggered = true;
+			_isPlayerInside = true;
 			//_triggerZone.enabled = false;
 		}
 
@@ -70,6 +84,8 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 	{
 		if (_wasZoneTriggered == false)
 		{
+			_wasZoneTriggered = true;
+
 			Debug.Log($"was off?? {gameObject.name} {_wasZoneTriggered}");
 			if (_cutscene != null)
 			{
@@ -149,25 +165,26 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 			_wasZoneTriggered = false;
 			if (_isPlayerInside)
 			{
-				TriggerZoneInteraction();
+				//TriggerZoneInteraction();
 			}
 			//Debug.Log("was triggered");
 			//Debug.Log(_wasZoneTriggered);
 			yield break;
 		}
-			
-	
-		_wasZoneTriggered = savedState.WasZoneTriggered;
-
-		if (_wasZoneTriggered)
-		{
-			_triggerZone.enabled = false;
-		}
 		else
 		{
-			if (_isPlayerInside)
+			_wasZoneTriggered = savedState.WasZoneTriggered;
+
+			if (_wasZoneTriggered)
 			{
-				TriggerZoneInteraction();
+				_triggerZone.enabled = false;
+			}
+			else
+			{
+				if (_isPlayerInside)
+				{
+					TriggerZoneInteraction();
+				}
 			}
 		}
 
