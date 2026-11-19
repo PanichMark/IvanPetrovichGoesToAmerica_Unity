@@ -86,6 +86,11 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 		}
 	}
 
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
+
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
 		if (!System.Enum.TryParse(SceneManager.GetSceneAt(1).name, out GameScenesGameplayEnum currentScene)) yield break;

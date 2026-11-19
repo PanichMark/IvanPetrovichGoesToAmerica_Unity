@@ -20,7 +20,7 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 	protected string _interactionHintMessageMain;
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 
-	public void Start()
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
 		_isObjectOpened = false;
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
@@ -32,6 +32,7 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
+
 
 	private void UpdatePositions()
 	{
@@ -55,6 +56,11 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 		}
 
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
+	}
+
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
 	}
 
 	public override void Interact()

@@ -3435,7 +3435,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCphrasesData: {fileID: 11400000, guid: e401fa1796a731b45895d4ccdc63a211, type: 2}
 --- !u!114 &88182324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3592,10 +3591,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194f481d0a4c92140bd5c952d711c607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCname: NPC_Aggressive_Policeman
-  _NPCconfigBodyType: {fileID: 11400000, guid: b4e69516c60984240b24b27e7a1065bb, type: 2}
-  _pickableBodyData: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
-  _NPClootObject: {fileID: 0}
+  _NPCName: 
+  _NPCPhrasesDefault: {fileID: 0}
+  _NPCBodyType: {fileID: 0}
+  _NPCPickableBodyType: {fileID: 0}
+  _NPCLootObject: {fileID: 0}
+  _NPCPhrasesInterested: {fileID: 0}
+  _NPCPhrasesAlarmed: {fileID: 0}
+  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPhrasesFight: {fileID: 0}
+  _NPCPhrasesSearching: {fileID: 0}
 --- !u!114 &88182336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11228,7 +11233,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCphrasesData: {fileID: 11400000, guid: e401fa1796a731b45895d4ccdc63a211, type: 2}
 --- !u!114 &304654810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11385,10 +11389,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194f481d0a4c92140bd5c952d711c607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCname: NPC_Aggressive_Policeman
-  _NPCconfigBodyType: {fileID: 11400000, guid: b4e69516c60984240b24b27e7a1065bb, type: 2}
-  _pickableBodyData: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
-  _NPClootObject: {fileID: 0}
+  _NPCName: 
+  _NPCPhrasesDefault: {fileID: 0}
+  _NPCBodyType: {fileID: 0}
+  _NPCPickableBodyType: {fileID: 0}
+  _NPCLootObject: {fileID: 0}
+  _NPCPhrasesInterested: {fileID: 0}
+  _NPCPhrasesAlarmed: {fileID: 0}
+  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPhrasesFight: {fileID: 0}
+  _NPCPhrasesSearching: {fileID: 0}
 --- !u!114 &304654822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28577,7 +28587,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCphrasesData: {fileID: 11400000, guid: 63cf64af5ae0b7d459f0112651dfb630, type: 2}
 --- !u!114 &840462189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28898,10 +28907,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194f481d0a4c92140bd5c952d711c607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCname: NPC_Aggressive_Policeman
-  _NPCconfigBodyType: {fileID: 11400000, guid: b4e69516c60984240b24b27e7a1065bb, type: 2}
-  _pickableBodyData: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
-  _NPClootObject: {fileID: 0}
+  _NPCName: 
+  _NPCPhrasesDefault: {fileID: 0}
+  _NPCBodyType: {fileID: 0}
+  _NPCPickableBodyType: {fileID: 0}
+  _NPCLootObject: {fileID: 0}
+  _NPCPhrasesInterested: {fileID: 0}
+  _NPCPhrasesAlarmed: {fileID: 0}
+  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPhrasesFight: {fileID: 0}
+  _NPCPhrasesSearching: {fileID: 0}
 --- !u!114 &840462203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31115,10 +31130,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f68370d733ada4587d0bf029dc595d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCname: NPC_Neutral_Bandit
-  _NPCconfigBodyType: {fileID: 0}
-  _pickableBodyData: {fileID: 0}
-  _NPClootObject: {fileID: 0}
+  _NPCName: 
+  _NPCPhrasesDefault: {fileID: 0}
+  _NPCBodyType: {fileID: 0}
+  _NPCPickableBodyType: {fileID: 0}
+  _NPCLootObject: {fileID: 0}
+  _NPCPhrasesInterested: {fileID: 0}
+  _NPCPhrasesAlarmed: {fileID: 0}
+  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPhrasesFight: {fileID: 0}
+  _NPCPhrasesSearching: {fileID: 0}
 --- !u!195 &904153500
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -33120,11 +33141,6 @@ PrefabInstance:
 --- !u!4 &954748253 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2529858555011583504, guid: 0fca05fd0dad45448b5107f7da5af047, type: 3}
-  m_PrefabInstance: {fileID: 954748252}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &954748254 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8439967179676448508, guid: 0fca05fd0dad45448b5107f7da5af047, type: 3}
   m_PrefabInstance: {fileID: 954748252}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &955216334
@@ -40047,11 +40063,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCname: 
-  _NPCconfigBodyType: {fileID: 0}
-  _pickableBodyData: {fileID: 0}
-  _NPClootObject: {fileID: 0}
-  _NPCpeacefulReactionType: 0
+  _NPCName: 
+  _NPCPhrasesDefault: {fileID: 0}
+  _NPCBodyType: {fileID: 0}
+  _NPCPickableBodyType: {fileID: 0}
+  _NPCLootObject: {fileID: 0}
+  _NPCPhrasesInterested: {fileID: 0}
+  _NPCPhrasesAlarmed: {fileID: 0}
+  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPeacefulReactionType: 0
+  _NPCPhrasesAfraid: {fileID: 0}
 --- !u!195 &1172950684
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -40178,7 +40199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCphrasesData: {fileID: 0}
 --- !u!82 &1172950690
 AudioSource:
   m_ObjectHideFlags: 0
@@ -50006,7 +50026,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1449224991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64363,7 +64383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCphrasesData: {fileID: 11400000, guid: 63cf64af5ae0b7d459f0112651dfb630, type: 2}
 --- !u!114 &1892999729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64492,11 +64511,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCname: NPC_Peaceful_CitizenMale
-  _NPCconfigBodyType: {fileID: 11400000, guid: 53bbf6df5170355449c676fdcacce758, type: 2}
-  _pickableBodyData: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
-  _NPClootObject: {fileID: 954748254}
-  _NPCpeacefulReactionType: 0
+  _NPCName: 
+  _NPCPhrasesDefault: {fileID: 0}
+  _NPCBodyType: {fileID: 0}
+  _NPCPickableBodyType: {fileID: 0}
+  _NPCLootObject: {fileID: 0}
+  _NPCPhrasesInterested: {fileID: 0}
+  _NPCPhrasesAlarmed: {fileID: 0}
+  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPeacefulReactionType: 0
+  _NPCPhrasesAfraid: {fileID: 0}
 --- !u!114 &1892999739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67711,7 +67735,6 @@ GameObject:
   - component: {fileID: 2008686259}
   - component: {fileID: 2008686258}
   - component: {fileID: 2008686257}
-  - component: {fileID: 2008686260}
   m_Layer: 0
   m_Name: LightSwitch (1)
   m_TagString: Untagged
@@ -67789,18 +67812,6 @@ Transform:
   - {fileID: 901875226}
   m_Father: {fileID: 113588964}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &2008686260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2008686256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 478bb28c037830e43922005b26bdc952, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2009531702
 GameObject:
   m_ObjectHideFlags: 0
@@ -79458,11 +79469,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcebc8df69205041890438f1afa31db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCname: NPC_Peaceful_CitizenMale
-  _NPCconfigBodyType: {fileID: 11400000, guid: 53bbf6df5170355449c676fdcacce758, type: 2}
-  _pickableBodyData: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
-  _NPClootObject: {fileID: 0}
-  _NPCpeacefulReactionType: 0
+  _NPCName: 
+  _NPCPhrasesDefault: {fileID: 0}
+  _NPCBodyType: {fileID: 0}
+  _NPCPickableBodyType: {fileID: 0}
+  _NPCLootObject: {fileID: 0}
+  _NPCPhrasesInterested: {fileID: 0}
+  _NPCPhrasesAlarmed: {fileID: 0}
+  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPeacefulReactionType: 0
+  _NPCPhrasesAfraid: {fileID: 0}
 --- !u!1 &906560015039859404
 GameObject:
   m_ObjectHideFlags: 0
@@ -145232,7 +145248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCphrasesData: {fileID: 11400000, guid: e401fa1796a731b45895d4ccdc63a211, type: 2}
 --- !u!1 &9184139686579652370
 GameObject:
   m_ObjectHideFlags: 0

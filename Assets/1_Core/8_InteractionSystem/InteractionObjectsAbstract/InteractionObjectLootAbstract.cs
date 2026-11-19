@@ -139,6 +139,11 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 		LootObjectCollider.enabled = false;
 	}
 
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
+
 	public override IEnumerator SaveJsonData(JsonGameData data)
 	{
 		if (!_isItVendingMachineGood)

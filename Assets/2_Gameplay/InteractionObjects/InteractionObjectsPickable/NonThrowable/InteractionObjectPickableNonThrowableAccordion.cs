@@ -23,10 +23,6 @@ public class InteractionObjectPickableNonThrowableAccordion : InteractionObjectP
 		base.DropOffObject();
 	}
 
-	protected override void OnDestroy()
-	{
-		base.OnDestroy(); // Затем вызовется логика родителя
-	}
 
 	private IEnumerator PlayAccordionBlendShapeAnimation()
 	{

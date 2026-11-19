@@ -66,4 +66,11 @@ public class InteractionObjectTVbuttonPower : MonoBehaviour, IInteractable
 			_interactionHintMessageAction = _localizationManager.GetLocalizedString("InteractionObject_TV_PowerOn", gameObject.name);
 		}
 	}
+
+	private void OnDestroy()
+	{
+		_tvController.OnTVstateChanged -= UpdateHintAndState;
+
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
 }

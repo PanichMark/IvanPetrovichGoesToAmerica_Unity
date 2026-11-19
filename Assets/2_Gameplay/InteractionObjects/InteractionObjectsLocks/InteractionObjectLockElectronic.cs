@@ -75,6 +75,12 @@ _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 	}
 
+	private void OnDestroy()
+	{
+		_menuManager.OnCloseInteractionMenu -= CloseElectronicLockPuzzle;
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
+
 	private void CloseElectronicLockPuzzle()
 	{
 		if (_isPuzzleActive)

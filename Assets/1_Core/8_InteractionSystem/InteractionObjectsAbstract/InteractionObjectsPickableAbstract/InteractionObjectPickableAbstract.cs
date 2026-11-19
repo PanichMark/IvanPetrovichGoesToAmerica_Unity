@@ -70,7 +70,7 @@ _pickableLayer = LayerMask.NameToLayer("Pickable");
 		}
 
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_PickUp", gameObject.name);
-		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		//_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		InitializePickable();
 	}
@@ -106,6 +106,11 @@ _pickableLayer = LayerMask.NameToLayer("Pickable");
 	public void Interact()
 	{
 		PickUpObject(false);
+	}
+
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
 	}
 
 	public virtual void PickUpObject(bool isPickedUpByLoadSafeFile)
@@ -249,10 +254,7 @@ _pickableLayer = LayerMask.NameToLayer("Pickable");
 		SetPickableObjectTransformAtPlayerArms();
 	}
 
-	private void OnDestroy()
-	{
-		_localizationManager.OnLanguageChanged -= ChangeLanguage;
-	}
+
 
 	protected virtual void SetPickableObjectTransformAtPlayerArms()
 	{

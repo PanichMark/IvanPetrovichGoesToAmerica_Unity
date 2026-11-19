@@ -63,6 +63,8 @@ public class InteractionObjectVendingMachineAmmoCylinder : MonoBehaviour, IInter
 	private void OnDestroy()
 	{
 		_vendingMachine.OnWentOutOfService -= WentOutOFService;
+
+		_localizationManager.OnLanguageChanged -= ChangeLangauge;
 	}
 
 	public void Interact()

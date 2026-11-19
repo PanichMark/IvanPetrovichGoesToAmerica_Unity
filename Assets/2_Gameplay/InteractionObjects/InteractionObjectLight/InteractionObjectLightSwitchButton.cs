@@ -80,6 +80,11 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 		}
 	}
 
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
+
 	public void Electrify(float damage)
 	{
 		if (!_lightSwitchController.IsLightTurnedOn)

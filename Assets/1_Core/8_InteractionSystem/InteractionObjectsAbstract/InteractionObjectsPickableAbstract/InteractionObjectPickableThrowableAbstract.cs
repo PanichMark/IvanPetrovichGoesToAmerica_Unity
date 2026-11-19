@@ -17,23 +17,23 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 
-	private void Start()
+	protected override void InitializePickable()
 	{
 		_pickableLayer = LayerMask.NameToLayer("Pickable");
 		_playerLayer = LayerMask.NameToLayer("Player");
-_playerColliderGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
-_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
-_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
-_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand);
-Collider = GetComponent<Collider>();
-RigidBody = GetComponent<Rigidbody>();
-CachedPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
-_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
-_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+		_playerColliderGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
+		_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
+		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
+		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand);
+		Collider = GetComponent<Collider>();
+		RigidBody = GetComponent<Rigidbody>();
+		CachedPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_PickUp", gameObject.name);
-		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		//_localizationManager.OnLanguageChanged += ChangeLanguage;
 
 		_playerCameraStateMachineController.OnFirstPersonCameraState += ChangeThrowableCameraStateFirst;
 		_playerCameraStateMachineController.OnThirdPersonCameraState += ChangeThrowableCameraStateThird;
@@ -191,11 +191,6 @@ _playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMa
 		}
 
 		SetPickableObjectTransformAtPlayerArms();
-	}
-
-	private void OnDestroy()
-	{
-		_localizationManager.OnLanguageChanged -= ChangeLanguage;
 	}
 
 	protected override void SetPickableObjectTransformAtPlayerArms()

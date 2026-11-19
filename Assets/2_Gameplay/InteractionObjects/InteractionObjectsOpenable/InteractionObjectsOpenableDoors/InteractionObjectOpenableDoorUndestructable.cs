@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static IInteractable;
 
 public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpenableAbstract
 {
@@ -28,14 +27,12 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	private string _interactionHintMessageFail;
 	public override string InteractionHintMessageFail => _interactionHintMessageFail;
 
-
-
-	void Start()
+	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
-_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
-_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
-_keysManager = ServiceLocator.Resolve<KeyItemsManager>();
-_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+		_keysManager = ServiceLocator.Resolve<KeyItemsManager>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
 		Vector3 openedEulerAngles = new Vector3(0, _doorOpenAngle, 0);
 		_openedRotation = Quaternion.Euler(openedEulerAngles);
@@ -167,6 +164,11 @@ _localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 	public override void InteractCutscene()
 	{
 		Interact();
+	}
+
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
 	}
 
 	public virtual void ChangeLanguage(LocalizationManager localizationManager)

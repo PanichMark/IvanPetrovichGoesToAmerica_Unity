@@ -72,6 +72,12 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 		}
 	}
 
+	private void OnDestroy()
+	{
+		//Debug.Log(gameObject.name);
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
+
 	public void OnPoweredOn()
 	{
 		_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_Wait", gameObject.name)}";

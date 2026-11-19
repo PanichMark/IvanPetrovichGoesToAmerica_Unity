@@ -53,6 +53,11 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 		}
 	}
 
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
+
 	public void Interact()
 	{
 		if (_isTurnedOn)

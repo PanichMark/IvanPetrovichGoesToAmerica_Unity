@@ -203,6 +203,13 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 		_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}";
 	}
 
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+
+		_menuManager.OnCloseInteractionMenu -= OnClosePuzzle;
+	}
+
 	private void ShowPuzzleCanvas()
 	{
 		if (_isPuzzleActive)

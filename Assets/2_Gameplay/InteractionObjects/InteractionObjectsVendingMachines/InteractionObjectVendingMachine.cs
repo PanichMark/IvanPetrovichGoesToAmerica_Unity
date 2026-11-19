@@ -75,6 +75,11 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 		OnWentOutOfService?.Invoke();
 	}
 
+	private void OnDestroy()
+	{
+		_localizationManager.OnLanguageChanged -= ChangeLangauge;
+	}
+
 	public void Interact()
 	{
 		if (!IsOutOfService)
