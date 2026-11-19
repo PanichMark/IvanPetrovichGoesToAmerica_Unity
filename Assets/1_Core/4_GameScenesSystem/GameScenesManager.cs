@@ -28,7 +28,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 	private GameScenesList _gameScenesList;
 	public delegate void LoadSceneHandler();
 	public event LoadSceneHandler OnBeginLoadingMainMenuScene;
-
+	private GameObject _loadingScreenInfo;
 	public event LoadSceneHandler OnBeginLoadingMainMenuOrEndGameTitlesScene;
 	public event LoadSceneHandler OnEndLoadingMainMenuOrEndGameTitlesScene;
 	public event LoadSceneHandler OnEndLoadingMainMenuScene;
@@ -65,7 +65,7 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 		_sliderComponentLoadingStatus = _sliderLoadingStatus.GetComponent<Slider>();
 		_imageLoadingScreen = viewModelSceneLoadingScreen.ImageScene;
 		_imageComponentLoadingScreen = viewModelSceneLoadingScreen.ImageScene.GetComponent<Image>();
-
+		_loadingScreenInfo = viewModelSceneLoadingScreen.LoadingScreenInfo;
 		_textMissionName = viewModelSceneLoadingScreen.TextMissionName;
 		_textComponentMissionName = viewModelSceneLoadingScreen.TextMissionName.GetComponent<TMP_Text>();
 
@@ -83,6 +83,8 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 	public IEnumerator LoadGameplayScene(GameScenesGameplayEnum scene)
 	{
 		Time.timeScale = 0f;
+		_imageComponentLoadingScreen.color = Color.white;
+		_loadingScreenInfo.SetActive(true);
 		Debug.Log($"Loading scene {scene} Started Initial");
 
 		HasLoadedGameplayScene = false;
@@ -236,6 +238,8 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 
 	public IEnumerator LoadMainMenuScene()
 	{
+		_imageComponentLoadingScreen.color = Color.black;
+		_loadingScreenInfo.SetActive(false);
 		_gameController.MainMenuOrEndGameTitlesSceneLoadBegan();
 		OnBeginLoadingMainMenuScene?.Invoke();
 		OnBeginLoadingMainMenuOrEndGameTitlesScene?.Invoke();
@@ -296,6 +300,8 @@ public class GameScenesManager : MonoBehaviour, IJsonSaveLoad
 
 	public IEnumerator LoadEndGameTitlesScene()
 	{
+		_imageComponentLoadingScreen.color = Color.black;
+		_loadingScreenInfo.SetActive(false);
 		_gameController.MainMenuOrEndGameTitlesSceneLoadBegan();
 		OnBeginLoadingMainMenuOrEndGameTitlesScene?.Invoke();
 		_canvasLoadingScreen.SetActive(true);

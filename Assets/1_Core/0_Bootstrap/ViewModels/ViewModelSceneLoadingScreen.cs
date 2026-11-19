@@ -4,6 +4,8 @@ public class ViewModelSceneLoadingScreen
 {
 	public GameObject ImageScene;
 
+	public GameObject LoadingScreenInfo;
+
 	public GameObject TextMissionName;
 	public GameObject TextSceneName;
 	public GameObject TextSceneDescription;
@@ -13,6 +15,8 @@ public class ViewModelSceneLoadingScreen
 
 	public ViewModelSceneLoadingScreen(Bootstrap bootstrap, GameObject canvas)
 	{
+		LoadingScreenInfo = bootstrap.FindDeepGameObject(canvas, "LoadingScreenInfo");
+
 		ImageScene = bootstrap.FindDeepGameObject(canvas, "ImageScene");
 
 		TextMissionName = bootstrap.FindDeepGameObject(canvas, "TextMissionName");
