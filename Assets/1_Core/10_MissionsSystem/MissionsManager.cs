@@ -136,7 +136,9 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		if (SceneManager.sceneCount > 1)
 		{
-			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
+			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString() &&
+				SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_MainMenu.ToString() &&
+				SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_EndGameTitles.ToString())
 			{
 				if (_jsonSaveLoadController.IsLoadingFromSaveFile)
 				{

@@ -9,7 +9,7 @@ public class MainMenuInitialize : MonoBehaviour
 	[SerializeField] private CutsceneController _cutsceneNewGame;
 	[SerializeField] private GameObject _canvasMainMenu;
 	[SerializeField] private GameObject _canvasNewGameCutscene;
-
+	public bool IsCutsceneNewGamePlaying { get; private set; }
 	private PlayerMovementController _playerMovementController;
 	private PlayerCameraController _playerCameraController;
 	private PlayerHealthController _playerResourcesHealthManager;
@@ -53,6 +53,7 @@ public class MainMenuInitialize : MonoBehaviour
 		{
 			_diegeticButtonController[i].Initialize(
 				_bootstrap,
+				this,
 				_mainMenuChooseMissionController,
 				_readNewsController,
 				_cutsceneNewGame,
@@ -66,9 +67,15 @@ public class MainMenuInitialize : MonoBehaviour
 		}
 
 		_canvasController.Initialize(
+			this,
 			_mainMenuChooseMissionController,
 			_readNewsController,
 			_canvasMainMenu,
 			_canvasNewGameCutscene);
+	}
+
+	public void PlayNewGameCutscene()
+	{
+		IsCutsceneNewGamePlaying = true;
 	}
 }

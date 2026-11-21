@@ -28,13 +28,15 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	private CutsceneController _cutsceneNewGame;
 	[SerializeField] private MainMenuDiegeticButtonsEnum _mainMenuDiegeticButtonsEnum;
 	private MainMenuChooseMissionController _mainMenuChooseMissionController;
-	public bool IsCutsceneNewGamePlaying { get; private set; }
+
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private MainMenuCanvasController _mainMenuCanvasController;
 	private PauseSubMenuSettingsGameDifficultyController _pauseSubMenuSettingsGameDifficultyController;
+	private MainMenuInitialize _mainMenuInitialize;
 
 	public void Initialize(
 		Bootstrap bootstrap,
+		MainMenuInitialize mainMenuInitialize,
 		MainMenuChooseMissionController mainMenuChooseMissionController,
 		MainMenuReadNewsController mainMenuReadNews,
 		CutsceneController cutsceneNewGame,
@@ -46,6 +48,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		PlayerWeaponController weaponController,
 		PlayerWeaponAmmoController playerResourcesAmmoManager)
 	{
+		_mainMenuInitialize = mainMenuInitialize;
 		_bootstrap = bootstrap;
 		_playerMovementController = playerMovementController;
 		_playerCameraController = playerCameraController;
@@ -92,7 +95,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 		}
 
 		_pauseMenuController.OnCloseAnyPauseSubMenu += EnableAllColliders;
-
+		_menuManager.CloseInteractionHUD();
 		Debug.Log($"MainMenu DiegeticButon-{_mainMenuDiegeticButtonsEnum} Initialized");
 	}
 
@@ -116,7 +119,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 		_pauseMenuController.OnCloseAnyPauseSubMenu -= EnableAllColliders;
 
-		if (IsCutsceneNewGamePlaying)
+		if (_mainMenuInitialize.IsCutsceneNewGamePlaying)
 		{
 			_gameController.DeactivateMainMenuOrEndGameTitlesActive();
 			_menuManager.OpenInteractionHUD();
@@ -125,7 +128,7 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!IsCutsceneNewGamePlaying)
+		if (!_mainMenuInitialize.IsCutsceneNewGamePlaying)
 		{
 			if (_mainMenuDiegeticButtonsEnum == MainMenuDiegeticButtonsEnum.NewGame)
 			{
@@ -192,8 +195,8 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 			_mainMenuCanvasController.HideCanvasMainMenu();
 			_mainMenuCanvasController.ShowCanvasNewGameCutscene();
 			_cutsceneNewGame.TriggerCutscene(null);
-			IsCutsceneNewGamePlaying = true;
-
+			_mainMenuInitialize.PlayNewGameCutscene();
+			//_gameController.DeactivateMainMenuOrEndGameTitlesActive();
 			// this is so Cutscene Splines and stuff in NewGame plays OK
 			Time.timeScale = 1f;
 		}
@@ -256,10 +259,16 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 
 	public void EnableAllColliders()
 	{
-		foreach (var instance in _instances)
+		if (!_mainMenuInitialize.IsCutsceneNewGamePlaying)
 		{
-			var colliderInstance = instance._collider;
-			colliderInstance.enabled = true;
+			Debug.Log(_mainMenuInitialize.IsCutsceneNewGamePlaying);
+			foreach (var instance in _instances)
+			{
+				var colliderInstance = instance._collider;
+				colliderInstance.enabled = true;
+			}
+
+			Debug.Log("ENABLE");
 		}
 	}
 

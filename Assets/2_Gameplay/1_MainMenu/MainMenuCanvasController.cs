@@ -14,8 +14,10 @@ public class MainMenuCanvasController : MonoBehaviour
 
 	private GameObject[] _newGameCutsceneObjects;
 	private TextMeshProUGUI[] _newGameCutsceneObjectsTexts;
+	private MainMenuInitialize _mainMenuInitialize;
 
 	public void Initialize(
+		MainMenuInitialize mainMenuInitialize,
 		MainMenuChooseMissionController mainMenuChooseMission,
 		MainMenuReadNewsController mainMenuReadNews,
 		GameObject canvasMainMenu,
@@ -23,7 +25,7 @@ public class MainMenuCanvasController : MonoBehaviour
     {
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_canvasNewGameCutscene = canvasNewGameCutscene;
-	
+		_mainMenuInitialize = mainMenuInitialize;
 		_canvasMainMenu = canvasMainMenu;
 		_mainMenuReadNews = mainMenuReadNews;
 		_mainMenuChooseMission = mainMenuChooseMission;
@@ -104,7 +106,8 @@ public class MainMenuCanvasController : MonoBehaviour
 		_mainMenuReadNews.OnCloseMainMenuReadNews += ShowCanvasMainMenu;
 		_mainMenuChooseMission.OnCloseMainMenuChooseMission += ShowCanvasMainMenu;
 		_menuManager.OnCloseAnyMenu += ShowCanvasMainMenu;
-
+		_menuManager.OnOpenPauseMenu += HideCanvasNewGameCutscene;
+		_menuManager.OnClosePauseMenu += ShowCanvasNewGameCutscene;
 		Debug.Log("MainMenuCanvasController Initialized");
 	}
 
@@ -123,12 +126,19 @@ public class MainMenuCanvasController : MonoBehaviour
 		_canvasNewGameCutscene.SetActive(true);
 	}
 
+	public void HideCanvasNewGameCutscene()
+	{
+		_canvasNewGameCutscene.SetActive(false);
+	}
+
 	private void OnDestroy()
 	{
 		_mainMenuReadNews.OnCloseMainMenuReadNews -= ShowCanvasMainMenu;
 		_mainMenuChooseMission.OnCloseMainMenuChooseMission -= ShowCanvasMainMenu;
 		_menuManager.OnCloseAnyMenu -= ShowCanvasMainMenu;
 		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+		_menuManager.OnOpenPauseMenu -= HideCanvasNewGameCutscene;
+		_menuManager.OnClosePauseMenu -= ShowCanvasNewGameCutscene;
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
