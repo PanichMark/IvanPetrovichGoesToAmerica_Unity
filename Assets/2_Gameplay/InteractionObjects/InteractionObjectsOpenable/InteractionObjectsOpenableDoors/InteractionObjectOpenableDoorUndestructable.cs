@@ -321,14 +321,20 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	{
 		//Quaternion startRotation = transform.localRotation;
 		//transform.localRotation = startRotation * _openedRotation;
-		_navMeshObstacle.enabled = false;
+		if (_changeScene == null && _isLockedForever == false)
+		{
+			_navMeshObstacle.enabled = false;
+		}
 	}
 
 	public virtual void SetDoorToClosedPosition()
 	{
 		//Quaternion startRotation = transform.localRotation;
 		//transform.localRotation = startRotation * _closedRotation;
-		_navMeshObstacle.enabled = true;
+		if (_changeScene == null && _isLockedForever == false)
+		{
+			_navMeshObstacle.enabled = true;
+		}
 	}
 
 	protected virtual IEnumerator OpenDoor()

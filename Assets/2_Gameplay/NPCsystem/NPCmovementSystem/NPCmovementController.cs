@@ -42,7 +42,12 @@ public class NPCmovementController : MonoBehaviour
 	{
 		_currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCoroutine());
 
-		Debug.Log(CurrentGoalAnchorPointIndex);
+		//Debug.Log(CurrentGoalAnchorPointIndex);
+	}
+
+	public void SetLoadedCurrentAnchorPoint(int newPoint)
+	{
+		CurrentGoalAnchorPointIndex = newPoint;
 	}
 
 	public void StopAnchorMove()
@@ -53,7 +58,7 @@ public class NPCmovementController : MonoBehaviour
 			_currentMovementCoroutine = null;
 		}
 
-		Debug.Log(CurrentGoalAnchorPointIndex);
+		//Debug.Log(CurrentGoalAnchorPointIndex);
 	}
 
 	private void Update()
@@ -89,8 +94,8 @@ public class NPCmovementController : MonoBehaviour
 			//}
 
 			
-			Debug.Log(gameObject.name);
-			Debug.Log(CurrentGoalAnchorPointIndex);
+			//Debug.Log(gameObject.name);
+			//Debug.Log(CurrentGoalAnchorPointIndex);
 			float waitDuration = _anchorData[CurrentGoalAnchorPointIndex].NPCwaitDuration;
 			CurrentGoalAnchorPointIndex++;
 			if (waitDuration > 0)

@@ -359,13 +359,16 @@ public abstract class NPClivingBeing : NPCabstract
 
 		if (savedState.Equals(default(NPCdata))) yield break;
 
+		_NPCstateMachineController.SetNPCState((NPCstateTypes)Enum.Parse(typeof(NPCstateTypes), savedState.NPCstate));
+		_NPCmovementController.SetLoadedCurrentAnchorPoint(savedState.NPCcurrentGoalAnchorPoint);
+
 		gameObject.transform.position = savedState.NPCposition;
 		gameObject.transform.rotation = savedState.NPCrotation;
 
 		_NPChealthController.SetCurrentHealthFromLoad(savedState.NPChealth);
 
-		int safeAnchorIndex = Mathf.Clamp(savedState.NPCcurrentGoalAnchorPoint, 0, _NPCmovementController.AnchorData.Count > 0 ? _NPCmovementController.AnchorData.Count - 1 : 0);
-		_NPCstateMachineController.SetNPCState((NPCstateTypes)Enum.Parse(typeof(NPCstateTypes), savedState.NPCstate));
+		
+		
 
 		yield return null;
 	}
