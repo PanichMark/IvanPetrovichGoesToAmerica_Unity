@@ -10825,7 +10825,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _noteObject: {fileID: 0}
   _cutscene: {fileID: 644469909}
-  _triggerOnSceneLoad: 0
+  _triggerOnSceneLoad: 1
 --- !u!1 &194131567
 GameObject:
   m_ObjectHideFlags: 0
@@ -43557,7 +43557,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5519263260445635623, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 5519263260445635623, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -43583,6 +43583,14 @@ PrefabInstance:
       propertyPath: '_meshesLimbs.Array.data[1]'
       value: 
       objectReference: {fileID: 7269057075899792634}
+    - target: {fileID: 7806101446053906628, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.006196629
+      objectReference: {fileID: 0}
+    - target: {fileID: 7806101446053906628, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.005830808
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1227955338538806679, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
@@ -43599,7 +43607,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6255269002747941484, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6503224551250172223}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 159260596393591729, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1611142365}
   m_SourcePrefab: {fileID: 100100000, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
 --- !u!4 &605700693 stripped
 Transform:
@@ -43609,6 +43620,11 @@ Transform:
 --- !u!4 &605700694 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6255269002747941484, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+  m_PrefabInstance: {fileID: 605700692}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &605700695 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 159260596393591729, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
   m_PrefabInstance: {fileID: 605700692}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &607043832
@@ -45520,6 +45536,8 @@ PlayableDirector:
     value: {fileID: 1726961591}
   - key: {fileID: 5818435944519524512, guid: 7899e3e3f5b033d46840a2d655ad0290, type: 2}
     value: {fileID: 644469910}
+  - key: {fileID: 3365992572693890636, guid: 7899e3e3f5b033d46840a2d655ad0290, type: 2}
+    value: {fileID: 1611142364}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &644469909
@@ -54387,7 +54405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b2d13efc91bd44479fdb04440ff9f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _noteObject: {fileID: 0}
+  _noteObject: {fileID: 1157052408}
   _cutscene: {fileID: 0}
   _triggerOnSceneLoad: 0
 --- !u!1 &773403190
@@ -55027,7 +55045,7 @@ GameObject:
   m_Layer: 0
   m_Name: CutscenePlayerCameraProxy
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -110803,6 +110821,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608577884}
   m_Mesh: {fileID: -5994977351781131247, guid: d181785754ec38b419ad2eda9681aec3, type: 3}
+--- !u!95 &1611142364 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4635663677921271933, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+  m_PrefabInstance: {fileID: 605700692}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1611142365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605700695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c01eafdaa357a439d6f5079893587d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _NPCdialogueData: {fileID: 11400000, guid: d7b3aa2d526bca0489f1c5b9311ec8f2, type: 2}
+  _dialogueBranchStructsList:
+  - DialogueBranchLine: 3
+    GoToNoOptionLine: 8
+    FinalYesLine: 0
+    GoToYesFinalLine: 0
+    YesOptionAnswer: 
+    NoOptionAnswer: 
+    ActionOnYesAnswer: {fileID: 0}
+    ActionOnNoAnswer: {fileID: 0}
+  _dialogueDefaultAnimationStateName: {fileID: 3091315475550263998, guid: 3df9367abff42f945a89f114be95b4c6, type: 3}
+  _dialogueGesturesDataList: []
+  _dialogueFacialExpressionsDataList: []
 --- !u!1 &1611337218
 GameObject:
   m_ObjectHideFlags: 0

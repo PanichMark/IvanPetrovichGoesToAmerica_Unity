@@ -53,7 +53,7 @@ public class NPCdialogueController : MonoBehaviour
 	};
 	private bool _isIvanPetrovichSpeaking;
 	private GameObject _playerEyesLookAt;
-	public Dictionary<LanguagesEnum, List<string>> LocalizedDialogue => _localizedDialogue;
+	//public Dictionary<LanguagesEnum, List<string>> LocalizedDialogue => _localizedDialogue;
 	private TextMeshProUGUI _NPCdialogueText;
 	
 	private GameScenesManager _gameSceneManager;
@@ -391,8 +391,8 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 	private void ShowDialogueAnswerOptions(int index)
 	{
-		_textComponentDialogueYes.text = _localizationManager.GetLocalizedString(_dialogueBranchStructsList[index].YesOptionAnswer);
-		_textComponentDialogueNo.text = _localizationManager.GetLocalizedString(_dialogueBranchStructsList[index].NoOptionAnswer);
+		_textComponentDialogueYes.text = _localizedDialogue[_localizationManager.CurrentLanguage][_currentDialogueStepIndex];
+		_textComponentDialogueYes.text = _localizedDialogue[_localizationManager.CurrentLanguage][_currentDialogueStepIndex + 1];
 	}
 
 	private void ActivateButtons()
