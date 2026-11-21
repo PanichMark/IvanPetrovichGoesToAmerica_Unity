@@ -348,7 +348,8 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 		_playerCameraController.transform.forward,
 		out _hitObject,
 		_interactionRange,
-		~_layersInteractionToIgnore) &&
+		~_layersInteractionToIgnore,
+		QueryTriggerInteraction.Ignore) &&
 		_hitObject.collider.CompareTag("Interactable"))
 		{
 

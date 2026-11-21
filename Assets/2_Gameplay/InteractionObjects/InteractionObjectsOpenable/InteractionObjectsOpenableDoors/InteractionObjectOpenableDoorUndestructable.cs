@@ -19,6 +19,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	[SerializeField] private InteractionObjectChangeSceneData _changeScene;
 	[SerializeField] protected bool _isLockedForever;
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
+	protected DoorNPCDetector _npcDetector;
 	protected NavMeshObstacle _navMeshObstacle;
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 	private GameScenesManager _gameSceneManager;
@@ -31,6 +32,12 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 
 	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
+		if (_changeScene == null && _isLockedForever == false)
+		{
+			_npcDetector = GetComponentInChildren<DoorNPCDetector>();
+			Debug.Log(gameObject.name);
+			_npcDetector.Initialize(this);
+		}
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 		_keysManager = ServiceLocator.Resolve<KeyItemsManager>();
@@ -228,6 +235,20 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 		}
 	}
 	//public event IInteractable.InteractableObjectHandler OnInteract;
+
+	public void NPCtryOpeningDoor()
+	{
+		if (IsOpenableUnlocked)
+		{
+			if (!IsObjectOpened)
+			{
+				Debug.Log($"NPC Opened {InteractionObjectNameUI}");
+				_isObjectOpened = true;
+				_currentAnimation = StartCoroutine(OpenDoor());
+			}
+		}
+	}
+
 	protected override void PerformOpenableInteraction()
 	{
 		base.PerformOpenableInteraction();
