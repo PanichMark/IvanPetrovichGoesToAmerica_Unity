@@ -284,8 +284,9 @@ public struct NPCdata
 	public Vector3 NPCposition;
 	[JsonConverter(typeof(JsonFileDataHandler.QuaternionConverter))]
 	public Quaternion NPCrotation;
-	public int NPCnextAnchorPoint;
+	
 	public string NPCstate;
+	public int NPCcurrentGoalAnchorPoint;
 	public float NPChealth;
 }
 

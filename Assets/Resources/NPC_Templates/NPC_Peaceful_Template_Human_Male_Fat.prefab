@@ -123,7 +123,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!195 &2316464135459723754
 NavMeshAgent:
@@ -146,7 +146,7 @@ NavMeshAgent:
   m_Height: 1.8
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2
 --- !u!82 &3704847563418625374
 AudioSource:
   m_ObjectHideFlags: 0

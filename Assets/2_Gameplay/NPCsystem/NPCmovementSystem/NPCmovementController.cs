@@ -5,8 +5,7 @@ using UnityEngine.AI;
 
 public class NPCmovementController : MonoBehaviour
 {
-	private int _nextIndex = 0;
-	private GameObject _lastVisitedStopPoint;
+	public int CurrentGoalAnchorPointIndex {  get; private set; }
 	private Coroutine _currentMovementCoroutine;
 	private NavMeshAgent _navMeshAgent;
 	[SerializeField] private List<NPCanchorData> _anchorData = new List<NPCanchorData>();
@@ -14,15 +13,19 @@ public class NPCmovementController : MonoBehaviour
 	public float AnimationDuration => _animationDuration;
 	private float _animationDuration = 99999f;
 	public Coroutine currentRotationCoroutine { get; private set; }
-
+	private NPCstateMachineController _NPCstateMachineController;
 	private float _initialRotationY;
 	private GameObject _cachedPlayer;
-
-	public void Initialize(NavMeshAgent navMeshAgent)
+	public float CurrentStationaryWaitTime { get; private set; }
+	public void Initialize(
+		NPCstateMachineController NPCstateMachineController,
+		NavMeshAgent navMeshAgent)
 	{
+		_NPCstateMachineController = NPCstateMachineController;
 		_initialRotationY = transform.eulerAngles.y;
 		_cachedPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
 		_navMeshAgent = navMeshAgent;
+		CurrentGoalAnchorPointIndex = -1;
 	}
 
 	public void TurnNavmeshOn()
@@ -35,42 +38,11 @@ public class NPCmovementController : MonoBehaviour
 		_navMeshAgent.enabled = false;
 	}
 
-	public int FindLastVisitedStopIndex()
-	{
-		if (_lastVisitedStopPoint == null)
-		{
-			return -1;
-		}
-
-		for (int i = 0; i < _anchorData.Count; i++)
-		{
-			// Сравниваем поле AnchorPoint структуры с нашим объектом
-			if (_anchorData[i].NPCanchorPoint == _lastVisitedStopPoint)
-			{
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public void SetLastVisitedStopPoint(GameObject point)
-	{
-		_lastVisitedStopPoint = point;
-	}
-
-	public GameObject GetLastVisitedStopPoint()
-	{
-		return _lastVisitedStopPoint;
-	}
-
-	public bool IsAtPosition(Vector3 position, float tolerance = 1f)
-	{
-		return Vector3.Distance(transform.position, position) <= tolerance;
-	}
-
 	public void StartAnchorMove()
 	{
 		_currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCoroutine());
+
+		Debug.Log(CurrentGoalAnchorPointIndex);
 	}
 
 	public void StopAnchorMove()
@@ -80,61 +52,75 @@ public class NPCmovementController : MonoBehaviour
 			StopCoroutine(_currentMovementCoroutine);
 			_currentMovementCoroutine = null;
 		}
+
+		Debug.Log(CurrentGoalAnchorPointIndex);
+	}
+
+	private void Update()
+	{
+		//Debug.Log(CurrentAnchorPointIndex);
+		//Debug.Log(_anchorData.Count);
 	}
 
 	public IEnumerator MoveBetweenAnchorPointsCoroutine()
 	{
-		// Инициализируем индекс, если он вышел за пределы списка
-		if (_nextIndex >= _anchorData.Count)
+		if (CurrentGoalAnchorPointIndex == -1)
 		{
-			_nextIndex = 0;
+			CurrentGoalAnchorPointIndex = 0;
 		}
 
 		while (true)
 		{
-			if (_anchorData.Count > 0)
+
+			GameObject targetPoint = _anchorData[CurrentGoalAnchorPointIndex].NPCanchorPoint;
+
+			_navMeshAgent.destination = targetPoint.transform.position;
+
+			
+			while (_navMeshAgent.pathPending || _navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
 			{
-				// 1. Получаем цель для движения
-				// _anchorData[_nextIndex] - это структура NPCAnchorData
-				// .AnchorPoint - это поле GameObject внутри этой структуры
-				GameObject targetPoint = _anchorData[_nextIndex].NPCanchorPoint;
+				yield return null;
+			}
+			
 
-				// 2. Устанавливаем точку назначения для NavMeshAgent
-				if (targetPoint != null) // Проверка на случай, если AnchorPoint не назначен
-				{
-					_navMeshAgent.destination = targetPoint.transform.position;
+			//while (_navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
+			//{
+			//	yield return null;
+			//}
 
-					// 3. Ждем, пока агент не достигнет точки назначения
-					while (_navMeshAgent.pathPending || _navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
-					{
-						yield return null;
-					}
+			
+			Debug.Log(gameObject.name);
+			Debug.Log(CurrentGoalAnchorPointIndex);
+			float waitDuration = _anchorData[CurrentGoalAnchorPointIndex].NPCwaitDuration;
+			CurrentGoalAnchorPointIndex++;
+			if (waitDuration > 0)
+			{
+				StartCoroutine(WaitFor(waitDuration));
+				_NPCstateMachineController.SetNPCState(NPCstateTypes.StationaryAction);
 
-					// 4. Сохраняем последнюю посещенную точку
-					// Сохраняем всю структуру, а не только GameObject, если она может понадобиться позже
-					_lastVisitedStopPoint = targetPoint;
-
-					// 5. Выполняем действие в точке (например, ожидание)
-					float waitDuration = _anchorData[_nextIndex].NPCwaitDuration;
-					yield return new WaitForSeconds(waitDuration);
-				}
-
-				// 6. Переходим к следующей точке в списке
-				_nextIndex++;
-
-				// 7. Если индекс превышает количество точек, возвращаемся к началу (0)
-				if (_nextIndex >= _anchorData.Count)
-				{
-					_nextIndex = 0;
-				}
+				yield return null;
 			}
 			else
 			{
-				// Если список пуст, просто ждем, чтобы не нагружать цикл
-				yield return null;
+				if (CurrentGoalAnchorPointIndex >= _anchorData.Count)
+				{
+					CurrentGoalAnchorPointIndex = 0;
+				}
 			}
+
 		}
 	}
+
+	private IEnumerator WaitFor(float howMuch)
+	{
+		yield return new WaitForSeconds(howMuch);
+
+		_NPCstateMachineController.SetNPCState(NPCstateTypes.Patrolling);
+
+		yield return null;
+	}
+
+
 
 	public void StartRandomMove()
 	{

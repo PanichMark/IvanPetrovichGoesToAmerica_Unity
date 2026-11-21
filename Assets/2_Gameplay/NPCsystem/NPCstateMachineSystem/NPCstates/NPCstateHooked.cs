@@ -7,7 +7,7 @@ public class NPCstateHooked : NPCstateAbstract
 		_NPCStateMachineController = npcStateMachineController;
 		_NPCmovementController = NPCmovementController;
 		_NPCmovementController.StopAnchorMove();
-		_NPCmovementController.TurnNavmeshOff();
+		//_NPCmovementController.TurnNavmeshOff();
 	}
 
 	/* 

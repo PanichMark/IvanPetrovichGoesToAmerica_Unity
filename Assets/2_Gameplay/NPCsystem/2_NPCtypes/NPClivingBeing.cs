@@ -126,9 +126,12 @@ public abstract class NPClivingBeing : NPCabstract
 		_npcvfxController = GetComponent<NPCvfxEffectsController>();
 		_NPCdebugHUDcontroller = GetComponent<NPCdebugHUDcontroller>();
 
-		_NPCmovementController.Initialize(_navMeshAgent);
+		_NPCmovementController.Initialize(
+			_NPCstateMachineController,
+			_navMeshAgent);
 
-		_NPCmovementAnimationController.Initialize(_NPCmovementController);
+		_NPCmovementAnimationController.Initialize(
+			_NPCmovementController);
 
 		_NPCstateMachineController.Initialize(
 			this,
@@ -329,8 +332,8 @@ public abstract class NPClivingBeing : NPCabstract
 				Mathf.Round(gameObject.transform.rotation.y * 100f) / 100f,
 				Mathf.Round(gameObject.transform.rotation.z * 100f) / 100f,
 				Mathf.Round(gameObject.transform.rotation.w * 100f) / 100f),
-			NPCnextAnchorPoint = _NPCmovementController.AnchorData.Count,
 			NPCstate = _NPCstateMachineController.CurrentNPCState.ToString(),
+			NPCcurrentGoalAnchorPoint = _NPCmovementController.CurrentGoalAnchorPointIndex,
 			NPChealth = Mathf.Round(_NPChealthController.CurrentHealth * 100f) / 100f
 		};
 
@@ -361,7 +364,7 @@ public abstract class NPClivingBeing : NPCabstract
 
 		_NPChealthController.SetCurrentHealthFromLoad(savedState.NPChealth);
 
-		int safeAnchorIndex = Mathf.Clamp(savedState.NPCnextAnchorPoint, 0, _NPCmovementController.AnchorData.Count > 0 ? _NPCmovementController.AnchorData.Count - 1 : 0);
+		int safeAnchorIndex = Mathf.Clamp(savedState.NPCcurrentGoalAnchorPoint, 0, _NPCmovementController.AnchorData.Count > 0 ? _NPCmovementController.AnchorData.Count - 1 : 0);
 		_NPCstateMachineController.SetNPCState((NPCstateTypes)Enum.Parse(typeof(NPCstateTypes), savedState.NPCstate));
 
 		yield return null;

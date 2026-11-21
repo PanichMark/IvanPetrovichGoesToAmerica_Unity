@@ -8,23 +8,6 @@
 		_NPCmovementController.StartAnchorMove();
 	}
 
-	public override void Update()
-	{
-		foreach (var config in _NPCmovementController.AnchorData)
-		{
-			var triggerPoint = config.NPCanchorPoint;
-
-			if (_NPCmovementController.GetLastVisitedStopPoint() == triggerPoint)
-				continue;
-
-			if (_NPCmovementController.IsAtPosition(triggerPoint.transform.position))
-			{
-				_NPCmovementController.SetLastVisitedStopPoint(triggerPoint);
-				_NPCStateMachineController.SetNPCState(NPCstateTypes.StationaryAction);
-			}
-		}
-	}
-
 	/*
 	 *	ходим между AnchorPoint
 	 */

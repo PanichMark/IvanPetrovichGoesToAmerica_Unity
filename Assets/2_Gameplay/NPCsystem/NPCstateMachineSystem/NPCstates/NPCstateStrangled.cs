@@ -5,7 +5,7 @@
 		_NPCmovementController = NPCmovementController;
 		_NPCStateMachineController = npcStateMachineController;
 		_NPCmovementController.StopAnchorMove();
-		_NPCmovementController.TurnNavmeshOff();
+		//_NPCmovementController.TurnNavmeshOff();
 	}
 
 	/*
