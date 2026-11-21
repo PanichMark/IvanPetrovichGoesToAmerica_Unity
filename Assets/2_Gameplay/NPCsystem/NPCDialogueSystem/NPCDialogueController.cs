@@ -297,7 +297,15 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 					break;
 				}
 
-				if ((_currentDialogueStepIndex == _dialogueBranchStructsList[i].DialogueBranchLine) || ((_currentDialogueStepIndex + 1) == _dialogueBranchStructsList[i].GoToNoOptionLine))
+				if (_currentDialogueStepIndex == _dialogueBranchStructsList[i].DialogueBranchLine + 2 && _dialogueBranchStructsList[i].DoesIvanAnswerOnYes)
+				{
+					_NPCdialogueText.text = $"{_localizationManager.GetLocalizedString("NPC_MainCharacter_IvanPetrovich")}: {_localizedDialogue[currentLanguage][_currentDialogueStepIndex]}";
+
+					_isIvanPetrovichSpeaking = true;
+
+					OnResetAllBlendShapesPhonemes?.Invoke();
+				}
+				if (_currentDialogueStepIndex == _dialogueBranchStructsList[i].GoToNoOptionLine - 1 && _dialogueBranchStructsList[i].DoesIvanAnswerOnNo)
 				{
 					_NPCdialogueText.text = $"{_localizationManager.GetLocalizedString("NPC_MainCharacter_IvanPetrovich")}: {_localizedDialogue[currentLanguage][_currentDialogueStepIndex]}";
 
@@ -415,7 +423,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 		}
 		else
 		{
-			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine;
+			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1;
 		}
 
 			_buttonDialogueYes.onClick.RemoveAllListeners();

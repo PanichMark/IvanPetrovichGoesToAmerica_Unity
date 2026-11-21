@@ -110843,10 +110843,14 @@ MonoBehaviour:
   _dialogueBranchStructsList:
   - DialogueBranchLine: 2
     GoToNoOptionLine: 8
+    DoesIvanAnswerOnYes: 1
+    DoesIvanAnswerOnNo: 1
     ActionOnYesAnswer: {fileID: 0}
     ActionOnNoAnswer: {fileID: 0}
   - DialogueBranchLine: 10
     GoToNoOptionLine: 17
+    DoesIvanAnswerOnYes: 1
+    DoesIvanAnswerOnNo: 0
     ActionOnYesAnswer: {fileID: 0}
     ActionOnNoAnswer: {fileID: 0}
   _dialogueDefaultAnimationStateName: {fileID: 3091315475550263998, guid: 3df9367abff42f945a89f114be95b4c6, type: 3}
