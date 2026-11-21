@@ -71,6 +71,7 @@ public class ObjectPoolWeaponController : MonoBehaviour
 
 	public void SpawnDecal(Vector3 position, Quaternion rotation, bool isBloodTarget, Transform parentTransform)
 	{
+		/*
 		if (_currentIndex < _maxInstances && _decalList[_currentIndex] != null)
 		{
 			SpriteRenderer sr = _decalList[_currentIndex];
@@ -98,6 +99,9 @@ public class ObjectPoolWeaponController : MonoBehaviour
 				_currentIndex = 0;
 			}
 		}
+		*/
+
+		// ill work on Bullet Decals later OK
 	}
 
 	public void ReturnSpecificDecalsToPool(SpriteRenderer[] decalsToReturn)

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8056446637061148164}
   - component: {fileID: 8802338139220368234}
   - component: {fileID: 6745789141294225495}
-  - component: {fileID: 8209397833901085374}
   m_Layer: 0
   m_Name: InteractionObject_Openable_Door_Destructable_Attic
   m_TagString: Interactable
@@ -102,33 +101,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.5, y: 1.0500001, z: -0.05}
   m_TimeToStationary: 0.5
---- !u!54 &8209397833901085374
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870243123093254547}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &3373778483847240902
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,7 +198,7 @@ GameObject:
   - component: {fileID: 1708184289451103486}
   - component: {fileID: 3420821312639392588}
   - component: {fileID: 6497317729138754198}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DoorNPCDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}

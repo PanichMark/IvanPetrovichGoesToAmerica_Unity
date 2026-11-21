@@ -38,6 +38,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 			Debug.Log(gameObject.name);
 			_npcDetector.Initialize(this);
 		}
+
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 		_keysManager = ServiceLocator.Resolve<KeyItemsManager>();
@@ -97,7 +98,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 				|| _electronicElectricalPanel != null && IsOpenableUnlocked)
 			{
 				SetUnlockedDoorHintMessageMain();
-
+				IsOpenableUnlocked = true;
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			}
 		}
@@ -238,14 +239,21 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 
 	public void NPCtryOpeningDoor()
 	{
-		if (IsOpenableUnlocked)
+		if (IsOpenableUnlocked && !IsObjectOpened)
 		{
-			if (!IsObjectOpened)
-			{
-				Debug.Log($"NPC Opened {InteractionObjectNameUI}");
-				_isObjectOpened = true;
-				_currentAnimation = StartCoroutine(OpenDoor());
-			}
+			Debug.Log($"NPC Opened {InteractionObjectNameUI}");
+			_isObjectOpened = true;
+			_currentAnimation = StartCoroutine(OpenDoor());
+		}
+	}
+
+	public void NPCtryClosingDoor()
+	{
+		if (IsObjectOpened)
+		{
+			Debug.Log($"NPC Closed {InteractionObjectNameUI}");
+			_isObjectOpened = false;
+			_currentAnimation = StartCoroutine(CloseDoor());
 		}
 	}
 

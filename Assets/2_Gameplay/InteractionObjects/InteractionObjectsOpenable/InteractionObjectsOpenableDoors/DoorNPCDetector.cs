@@ -2,23 +2,44 @@
 
 public class DoorNPCDetector : MonoBehaviour
 {
-	private InteractionObjectOpenableDoorUndestructable _doorController;
-	private Collider _collider;
+    private InteractionObjectOpenableDoorUndestructable _doorController;
+    private Collider _collider;
+    private Collider _mainNPCCollider; // Кэш главного коллайдера
 
-	public void Initialize(InteractionObjectOpenableDoorUndestructable doorController)
-	{
-		_doorController = doorController;
-		_collider = GetComponent<Collider>();
-		_collider.isTrigger = true;
-	}
+    public void Initialize(InteractionObjectOpenableDoorUndestructable doorController)
+    {
+        _doorController = doorController;
+        _collider = GetComponent<Collider>();
+        _collider.isTrigger = true;
+    }
 
-	private void OnTriggerEnter(Collider other)
-	{
-		Debug.Log(other);
+    private void OnTriggerEnter(Collider other)
+    {
+        // Ищем главный коллайдер NPC (тот, что на корне)
+        if (other.transform.root.TryGetComponent<NPClivingBeing>(out _))
+        {
+            // Кэшируем его при первом входе
+            if (_mainNPCCollider == null)
+            {
+                _mainNPCCollider = other.transform.root.GetComponentInChildren<Collider>();
+                Debug.Log($"NPC Detector Enter: {_mainNPCCollider.name}");
+                _doorController.NPCtryOpeningDoor();
+            }
+        }
+    }
 
-		if (other.TryGetComponent<NPClivingBeing>(out _))
-		{
-			_doorController.NPCtryOpeningDoor();
-		}
-	}
+    private void OnTriggerExit(Collider other)
+    {
+        // Проверяем выход ТОЛЬКО по закешированному главному коллайдеру
+        if (_mainNPCCollider != null && other == _mainNPCCollider)
+        {
+            Debug.Log($"NPC Detector Exit: {_mainNPCCollider.name}");
+            _mainNPCCollider = null; // Сбрасываем кэш
+
+            if (_doorController.IsObjectOpened)
+            {
+                _doorController.NPCtryClosingDoor();
+            }
+        }
+    }
 }
