@@ -420,7 +420,10 @@ public class CutsceneController : MonoBehaviour
 
 
 		_playerCameraStateMachineController.SetPlayerCameraState(_playerCameraController.PreviousPlayerCameraGameplayType);
-		
+
+		_gameController.MakePlayerControllable();
+		_gameController.MakeGameSavable();
+
 		if (_shouldChangeNPCState)
 		{
 			foreach (var data in _NPCstateChanges)
@@ -458,8 +461,7 @@ public class CutsceneController : MonoBehaviour
 				}
 			}
 		}
-		_gameController.MakePlayerControllable();
-		_gameController.MakeGameSavable();
+		
 		//Destroy(gameObject);
 
 	

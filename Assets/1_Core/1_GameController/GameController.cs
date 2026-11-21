@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+
 public class GameController
 {
 	public bool IsPlayerControllable { get; private set; }
@@ -153,6 +154,8 @@ public class GameController
 	{
 		IsGameAbleToSave = true;
 		OnSaveGameAvailable?.Invoke();
+
+		//Debug.Log("MAKE SAVABLE!!!!");
 	}
 
 	public void MakeGameUnsavable()

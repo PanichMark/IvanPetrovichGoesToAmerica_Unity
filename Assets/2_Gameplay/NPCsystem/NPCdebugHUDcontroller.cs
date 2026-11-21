@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class NPCdebugHUDcontroller : MonoBehaviour
 {
-	private GameObject _canvasNPCstatus;
 
 	private GameObject _textNPCcurrentState;
 	private RectTransform _textNPCcurrentStateRectTransform;
@@ -29,14 +28,12 @@ public class NPCdebugHUDcontroller : MonoBehaviour
 		GameObject playerCameraComponent,
 		NPChealthController NPChealthController,
 		NPCstateMachineController NPCstateMachineController,
-		GameObject canvasNPCstatus,
 		GameObject textNPCcurrentState,
 		GameObject textNPCcurrentHealth)
 	{
 		_playerCameraComponent = playerCameraComponent.GetComponent<Camera>();
 		_NPChealthController = NPChealthController;
 		_NPCstateMachineController = NPCstateMachineController;
-		_canvasNPCstatus = canvasNPCstatus;
 		_textNPCcurrentState = textNPCcurrentState;
 		_textNPCcurrentStateRectTransform = _textNPCcurrentState.GetComponent<RectTransform>();
 		_textNPCcurrentStateHeight = _textNPCcurrentStateRectTransform.rect.height;
@@ -79,12 +76,12 @@ public class NPCdebugHUDcontroller : MonoBehaviour
 
 	private void Update()
 	{
-		ProcessNPCdebugMEssageCanvasTransform(_textNPCcurrentState, _textNPCcurrentStateRectTransform, _textNPCcurrentStateHeight, 2.6f);
+		ProcessNPCdebugMessageCanvasTransform(_textNPCcurrentState, _textNPCcurrentStateRectTransform, _textNPCcurrentStateHeight, 2.6f);
 
-		ProcessNPCdebugMEssageCanvasTransform(_textNPCcurrentHealth, _textNPCcurrentHealthRectTransform, _textNPCcurrentHealthHeight, 2.8f);
+		ProcessNPCdebugMessageCanvasTransform(_textNPCcurrentHealth, _textNPCcurrentHealthRectTransform, _textNPCcurrentHealthHeight, 2.8f);
 	}
 
-	private void ProcessNPCdebugMEssageCanvasTransform(
+	private void ProcessNPCdebugMessageCanvasTransform(
 		GameObject NPCdebugMessage,
 		RectTransform NPCdebugMessageRectTransform,
 		float NPCdebugMessageHeight,

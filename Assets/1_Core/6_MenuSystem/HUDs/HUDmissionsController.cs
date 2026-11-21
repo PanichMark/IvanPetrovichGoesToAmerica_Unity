@@ -139,7 +139,7 @@ public class HUDmissionsController : MonoBehaviour
 
 	private void ShowCanvasHUDmissions()
 	{
-		if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_gameController.IsMainMenuOrEndGameTitlesActive && !_menuManager.IsWeaponWheelMenuOpened && !_menuManager.IsMainMenuBeingLoaded)
+		if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_gameController.IsMainMenuOrEndGameTitlesActive && !_menuManager.IsWeaponWheelMenuOpened && !_menuManager.IsMainMenuBeingLoaded && !_menuManager.IsCutsceneMenuOpened)
 		{
 			_canvasHUDmissions.SetActive(true);
 

@@ -39,6 +39,10 @@ public class Bootstrap : MonoBehaviour
 	[SerializeField] private Mission _mission;
 	[SerializeField] private int _missionStep;
 
+	[Header("--- DEBUG  ---")]
+	[SerializeField] private bool _debugNPC;
+	public bool DebugNPC => _debugNPC;
+
 	public OperationSystemsEnum OperationSystem { get; private set; }
 
 	private ViewModelBootstrapInitialization _viewModelBootstrapInitialization;

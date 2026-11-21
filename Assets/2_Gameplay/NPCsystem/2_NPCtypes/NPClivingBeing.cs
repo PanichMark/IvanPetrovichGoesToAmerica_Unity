@@ -9,7 +9,7 @@ public abstract class NPClivingBeing : NPCabstract
 {
 	[SerializeField] private ConfigNPCBodyType _NPCBodyType;
 	[SerializeField] private InteractionObjectPickableData _NPCPickableBodyType;
-
+	private Bootstrap _bootstrap;
 	[SerializeField] protected GameObject _NPCLootObject;
 	[SerializeField] private NPCphrasesData _NPCPhrasesInterested;
 	[SerializeField] private NPCphrasesData _NPCPhrasesAlarmed;
@@ -71,7 +71,7 @@ public abstract class NPClivingBeing : NPCabstract
 	private NPCvfxEffectsController _npcvfxController;
 
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
-	private GameObject _canvasNPCstatus;
+	private GameObject _canvasNPC;
 	private GameObject _imageDetectionSign;
 	private List<Sprite> _detectionSignFrames;
 	private GameObject _textNPCcurrentState;
@@ -95,6 +95,7 @@ public abstract class NPClivingBeing : NPCabstract
 
 	protected override void InitializeNPCabstract()
 	{
+		_bootstrap = ServiceLocator.Resolve<Bootstrap>();
 		_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
 		_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>();
 		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
@@ -108,10 +109,22 @@ public abstract class NPClivingBeing : NPCabstract
 		_NPCvfxEffectMeshRenderers = _NPCarmatureTransform.GetComponentsInChildren<MeshRenderer>(true);
 		//Debug.Log($"НАШЛОСЬ {_NPCeffectMeshRenderers.Length} MeshRenderer компонентов.");
 
-		_canvasNPCstatus = transform.Find("NPC_Canvas").gameObject;
-		_imageDetectionSign = _canvasNPCstatus.transform.Find("DetectionSign").gameObject;
-		_textNPCcurrentState = _canvasNPCstatus.transform.Find("DebugNPCcurrentState").gameObject;
-		_textNPCcurrentHealth = _canvasNPCstatus.transform.Find("DebugNPCcurrentHealth").gameObject;
+		_canvasNPC = transform.Find("NPC_Canvas").gameObject;
+		_imageDetectionSign = _canvasNPC.transform.Find("DetectionSign").gameObject;
+		_textNPCcurrentState = _canvasNPC.transform.Find("DebugNPCcurrentState").gameObject;
+		_textNPCcurrentHealth = _canvasNPC.transform.Find("DebugNPCcurrentHealth").gameObject;
+
+		if (_bootstrap.DebugNPC)
+		{
+			_textNPCcurrentState.SetActive(true);
+			_textNPCcurrentHealth.SetActive(true);
+		}
+		else
+		{
+			_textNPCcurrentState.SetActive(false);
+			_textNPCcurrentHealth.SetActive(false);
+		}
+
 		_NPCmovementAnimationController = GetComponent<NPCmovementAnimationController>();
 		_NPCstateMachineController = GetComponent<NPCstateMachineController>();
 		_NPCeventController = GetComponent<EventController>();
@@ -149,7 +162,7 @@ public abstract class NPClivingBeing : NPCabstract
 
 		_NPCdetectionSignController.Initialize(
 			_NPCdetectionManager,
-			_canvasNPCstatus,
+			_canvasNPC,
 			_imageDetectionSign,
 			_detectionSignFrames,
 			_playerCameraGameObject);
@@ -158,7 +171,6 @@ public abstract class NPClivingBeing : NPCabstract
 			_playerCameraGameObject,
 			_NPChealthController,
 			_NPCstateMachineController,
-			_canvasNPCstatus,
 			_textNPCcurrentState,
 			_textNPCcurrentHealth);
 
@@ -220,7 +232,8 @@ public abstract class NPClivingBeing : NPCabstract
 			Destroy(capsuleCollider);
 		}
 
-		//gameObject.AddComponent<Rigidbody>();
+		var Rigidbody =  gameObject.GetComponent<Rigidbody>();
+		Rigidbody.isKinematic = false;
 
 		_pickable = InteractionObjectPickableNonThrowableUndestructable.CreateWithName(gameObject, _NPCName, _NPCPickableBodyType);
 
