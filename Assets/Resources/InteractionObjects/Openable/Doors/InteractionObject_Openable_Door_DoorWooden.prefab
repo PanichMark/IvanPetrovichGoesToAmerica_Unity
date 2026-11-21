@@ -209,13 +209,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Openable_Door_DoorWooden
+  _isObjectOpened: 0
   _doorOpenAngle: 90
   _doorOpeningSpeed: 200
   _interactionObjectKeyData: {fileID: 0}
   _mechanicalLockController: {fileID: 0}
   _electronicLockController: {fileID: 0}
   _electronicElectricalPanel: {fileID: 0}
-  _maxDurability: 100
-  _damageThreshold: 50
-  _isDestructable: 0
+  _changeScene: {fileID: 0}
   _isLockedForever: 0
+  _doorSibling: {fileID: 0}

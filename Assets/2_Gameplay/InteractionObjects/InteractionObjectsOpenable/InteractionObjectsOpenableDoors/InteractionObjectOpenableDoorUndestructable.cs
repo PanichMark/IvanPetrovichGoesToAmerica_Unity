@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpenableAbstract
@@ -18,6 +19,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	[SerializeField] private InteractionObjectChangeSceneData _changeScene;
 	[SerializeField] protected bool _isLockedForever;
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
+	protected NavMeshObstacle _navMeshObstacle;
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 	private GameScenesManager _gameSceneManager;
 	protected bool _isDoorDouble;
@@ -36,7 +38,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 
 		Vector3 openedEulerAngles = new Vector3(0, _doorOpenAngle, 0);
 		_openedRotation = Quaternion.Euler(openedEulerAngles);
-
+		_navMeshObstacle = GetComponent<NavMeshObstacle>();
 		if (_doorSibling == null)
 		{
 			_isDoorDouble = false;
@@ -280,12 +282,14 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	{
 		//Quaternion startRotation = transform.localRotation;
 		//transform.localRotation = startRotation * _openedRotation;
+		_navMeshObstacle.enabled = false;
 	}
 
 	public virtual void SetDoorToClosedPosition()
 	{
 		//Quaternion startRotation = transform.localRotation;
 		//transform.localRotation = startRotation * _closedRotation;
+		_navMeshObstacle.enabled = true;
 	}
 
 	protected virtual IEnumerator OpenDoor()

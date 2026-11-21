@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2840949100833335124}
   - component: {fileID: 8056446637061148164}
   - component: {fileID: 8802338139220368234}
+  - component: {fileID: 6745789141294225495}
   m_Layer: 0
   m_Name: InteractionObject_Openable_Door_Destructable_Attic
   m_TagString: Interactable
@@ -83,6 +84,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0005317, y: 2.1, z: 0.20977181}
   m_Center: {x: 0.5, y: 1.05, z: -0.04999998}
+--- !u!208 &6745789141294225495
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870243123093254547}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 1.0500001, z: 0.105000004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.5, y: 1.0500001, z: -0.05}
+  m_TimeToStationary: 0.5
 --- !u!1 &3373778483847240902
 GameObject:
   m_ObjectHideFlags: 0
