@@ -120,6 +120,7 @@ public class CutsceneController : MonoBehaviour
 		_blackLineUp = _viewModelMenuCutscene.BlackLineUp;
 		_blackLineDown = _viewModelMenuCutscene.BlackLineDown;
 		_textSkipCutscene = _viewModelMenuCutscene.TextSkipCutscene;
+		_textComponentSkipCutscene = _textSkipCutscene.GetComponent<TextMeshProUGUI>();
 		_circleSkipCutscene = _viewModelMenuCutscene.CircleSkipCutscene;
 		_imageCircleSkipCutscene = _circleSkipCutscene.GetComponent<Image>();
 		_imageCircleSkipCutscene.fillAmount = 0f;
@@ -158,9 +159,9 @@ public class CutsceneController : MonoBehaviour
 		_director.stopped += OnTimelineStopped;
 		_menuManager.OnOpenPauseMenu += PauseCutscene;
 		_menuManager.OnClosePauseMenu += ResumeCutscene;
-
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		//BindProxyObjects();
-
+		ChangeLanguage(_localizationManager);
 		_isInitialized = true;
 
 		//Debug.Log($"Cutscene {gameObject.name} initialized");
@@ -175,6 +176,8 @@ public class CutsceneController : MonoBehaviour
 
 		_gameSceneManager.OnBeginLoadingGameplayScene -= CancelCutsceneOnLoad;
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene -= CancelCutsceneOnLoad;
+
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
 	}
 
 
@@ -286,6 +289,7 @@ public class CutsceneController : MonoBehaviour
 
 		AudioClip[] currentLanguageVoiceLines = null;
 
+
 		if (currentLanguage == LanguagesEnum.Russian)
 		{
 			currentLanguageVoiceLines = _cutsceneDialogueData.CutsceneVoicelinesRussian;
@@ -295,15 +299,19 @@ public class CutsceneController : MonoBehaviour
 			currentLanguageVoiceLines = _cutsceneDialogueData.CutsceneVoicelinesEnglish;
 		}
 
-		if (_isCutsceneDialogueActorPlayer == false)
+		if (currentLanguageVoiceLines.Length > 0)
 		{
-			_audioSource.PlayOneShot(currentLanguageVoiceLines[_currentCutsceneDialogueLineIndex]);
+			if (_isCutsceneDialogueActorPlayer == false)
+			{
+				_audioSource.PlayOneShot(currentLanguageVoiceLines[_currentCutsceneDialogueLineIndex]);
+			}
 		}
+		
 
 		_currentCutsceneDialogueLineIndex++;
 	}
 
-	public void HideTextCutsceneDialogue()
+	public void HidePreviousTextCutsceneDialogue()
 	{
 		_textCutsceneDialogue.SetActive(false);
 		_textComponentCutsceneDialogue.text = string.Empty;
@@ -463,6 +471,7 @@ public class CutsceneController : MonoBehaviour
 		Debug.Log("CUTSCENE!!!");
 		_director.Play();
 		_gameController.MakeGameUnsavable();
+		HidePreviousTextCutsceneDialogue();
 
 		_currentCutsceneDialogueLineIndex = 0;
 
@@ -546,5 +555,17 @@ public class CutsceneController : MonoBehaviour
 				Debug.Log($"Cutscene {gameObject.name} resumed");
 			}
 		}
+	}
+
+	private void ChangeLanguage(LocalizationManager	localizationManager)
+	{
+		_localizationManager = localizationManager;
+
+		if (IsCutscenePlaying)
+		{
+			_textComponentCutsceneDialogue.text = _localizedCutsceneDialogues[_localizationManager.CurrentLanguage][_currentCutsceneDialogueLineIndex];
+		}
+
+		_textComponentSkipCutscene.text = _localizationManager.GetLocalizedString("UI_Menu_Cutscene_SkipToHold");
 	}
 }
