@@ -88,6 +88,15 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	}
 
+	private void OnDestroy()
+	{
+		_menuManager.OnCloseInteractionMenu -= CloseAndDeactivate;
+		//_noteToOpenAfter = null;
+		//_showMissionGoalOnClose = false;
+		
+		//CloseAndDeactivate();
+	}
+
 	public void ChangeLanguage(LocalizationManager localizationManager)
 	{
 		if (_isReading)
@@ -132,7 +141,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	public virtual void Interact()
 	{
-		Debug.Log("NOT IS SHOWING");
+		//Debug.Log("NOTE IS SHOWING");
 
 		_menuManager.OpenInteractionMenu();
 		_isReading = true;
@@ -206,9 +215,11 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 	private void CloseAndDeactivate()
 	{
+		//Debug.Log("NOTE IS CLOSING 1");
+
 		if (_isReading)
 		{
-		
+			//Debug.Log("NOTE IS CLOSING 2");
 
 			_textComponent.text = string.Empty;
 				
