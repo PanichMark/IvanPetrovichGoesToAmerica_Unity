@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 4095148267488736434}
   - component: {fileID: 7271838222949213480}
   - component: {fileID: 1944270714934039901}
+  - component: {fileID: 493993662577042502}
   m_Layer: 0
   m_Name: NPC_Peaceful_Template_Human_Male_Fat
   m_TagString: Interactable
@@ -450,6 +451,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11816908c46ca704fb92502c6aec76eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &493993662577042502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159260596393591729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef250d1ea41aaba4f87e54917430c351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &728645609935123064

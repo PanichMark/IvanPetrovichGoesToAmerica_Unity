@@ -50,75 +50,89 @@ _playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerE
 
 	private void LoadVoiceLineFiles()
 	{
-		if (_NPCphrasesDefaultData.PhrasesVoicelinesRussian != null && _NPCphrasesDefaultData.PhrasesVoicelinesRussian.Length > 0)
+		if (_NPCphrasesDefaultData != null)
 		{
-			foreach (var clip in _NPCphrasesDefaultData.PhrasesVoicelinesRussian)
+			if (_NPCphrasesDefaultData.PhrasesVoicelinesRussian != null && _NPCphrasesDefaultData.PhrasesVoicelinesRussian.Length > 0)
 			{
-				if (clip != null)
+				foreach (var clip in _NPCphrasesDefaultData.PhrasesVoicelinesRussian)
 				{
-					_localizedVoiceLines[LanguagesEnum.Russian].Add(clip);
+					if (clip != null)
+					{
+						_localizedVoiceLines[LanguagesEnum.Russian].Add(clip);
+					}
 				}
 			}
-		}
-		else if (_NPCphrasesDefaultData.PhrasesVoicelinesEnglish != null && _NPCphrasesDefaultData.PhrasesVoicelinesEnglish.Length > 0)
-		{
-			Debug.LogWarning("Russian voice lines array is not assigned!");
-		}
+			else if (_NPCphrasesDefaultData.PhrasesVoicelinesEnglish != null && _NPCphrasesDefaultData.PhrasesVoicelinesEnglish.Length > 0)
+			{
+				Debug.LogWarning("Russian voice lines array is not assigned!");
+			}
 
-		if (_NPCphrasesDefaultData.PhrasesVoicelinesEnglish != null && _NPCphrasesDefaultData.PhrasesVoicelinesEnglish.Length > 0)
-		{
-			foreach (var clip in _NPCphrasesDefaultData.PhrasesVoicelinesEnglish)
+			if (_NPCphrasesDefaultData.PhrasesVoicelinesEnglish != null && _NPCphrasesDefaultData.PhrasesVoicelinesEnglish.Length > 0)
 			{
-				if (clip != null)
+				foreach (var clip in _NPCphrasesDefaultData.PhrasesVoicelinesEnglish)
 				{
-					_localizedVoiceLines[LanguagesEnum.English].Add(clip);
+					if (clip != null)
+					{
+						_localizedVoiceLines[LanguagesEnum.English].Add(clip);
+					}
 				}
 			}
+			else if (_NPCphrasesDefaultData.PhrasesVoicelinesRussian != null && _NPCphrasesDefaultData.PhrasesVoicelinesRussian.Length > 0)
+			{
+				Debug.LogWarning("English voice lines array is not assigned!");
+			}
 		}
-		else if (_NPCphrasesDefaultData.PhrasesVoicelinesRussian != null && _NPCphrasesDefaultData.PhrasesVoicelinesRussian.Length > 0)
+		else
 		{
-			Debug.LogWarning("English voice lines array is not assigned!");
+			Debug.LogWarning("Default Phrases not assigned");
 		}
 	}
 
 	private void LoadPhrasesTextFiles()
 	{
-		if (_NPCphrasesDefaultData.PhrasesFileRussian != null)
+		if (_NPCphrasesDefaultData != null)
 		{
-			using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileRussian.text))
+			if (_NPCphrasesDefaultData.PhrasesFileRussian != null)
 			{
-				string line;
-				while ((line = reader.ReadLine()) != null)
+				using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileRussian.text))
 				{
-					if (!string.IsNullOrWhiteSpace(line))
+					string line;
+					while ((line = reader.ReadLine()) != null)
 					{
-						_localizedNPSphrases[LanguagesEnum.Russian].Add(line.Trim());
+						if (!string.IsNullOrWhiteSpace(line))
+						{
+							_localizedNPSphrases[LanguagesEnum.Russian].Add(line.Trim());
+						}
 					}
 				}
 			}
-		}
-		else
-		{
-			Debug.LogWarning("Russian phrase file is not assigned!");
-		}
+			else
+			{
+				Debug.LogWarning("Russian phrase file is not assigned!");
+			}
 
-		if (_NPCphrasesDefaultData.PhrasesFileEnglish != null)
-		{
-			using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileEnglish.text))
+			if (_NPCphrasesDefaultData.PhrasesFileEnglish != null)
 			{
-				string line;
-				while ((line = reader.ReadLine()) != null)
+				using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileEnglish.text))
 				{
-					if (!string.IsNullOrWhiteSpace(line))
+					string line;
+					while ((line = reader.ReadLine()) != null)
 					{
-						_localizedNPSphrases[LanguagesEnum.English].Add(line.Trim());
+						if (!string.IsNullOrWhiteSpace(line))
+						{
+							_localizedNPSphrases[LanguagesEnum.English].Add(line.Trim());
+						}
 					}
 				}
+			}
+			else
+			{
+				Debug.LogWarning("English phrase file is not assigned!");
 			}
 		}
 		else
 		{
-			Debug.LogWarning("English phrase file is not assigned!");
+			Debug.LogWarning("Default Phrases not assigned");
 		}
 	}
 

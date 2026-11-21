@@ -480,7 +480,7 @@ public class PlayerInteractionController : MonoBehaviour, IJsonSaveLoad
 
 	public void ShowGainedItems(string gainedItemName, Sprite gainedItemIcon)
 	{
-		Debug.Log("SHOW!!!!!");
+		//Debug.Log("SHOW!!!!!");
 
 		if (!_itemsTexts[0].gameObject.activeInHierarchy)
 		{

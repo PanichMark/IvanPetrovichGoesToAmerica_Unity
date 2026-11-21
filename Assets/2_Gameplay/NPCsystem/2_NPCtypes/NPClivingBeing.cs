@@ -103,7 +103,7 @@ public abstract class NPClivingBeing : NPCabstract
 
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 
-		_NPCarmatureTransform = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid");
+		_NPCarmatureTransform = transform.Find("NPC_3Dmodel/ArmatureHitbox/Armature_Humanoid");
 
 		_NPCvfxEffectMeshRenderers = _NPCarmatureTransform.GetComponentsInChildren<MeshRenderer>(true);
 		//Debug.Log($"НАШЛОСЬ {_NPCeffectMeshRenderers.Length} MeshRenderer компонентов.");

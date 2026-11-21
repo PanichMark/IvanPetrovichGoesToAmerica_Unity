@@ -86,10 +86,10 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 		{
 			_wasZoneTriggered = true;
 
-			Debug.Log($"was off?? {gameObject.name} {_wasZoneTriggered}");
+			//Debug.Log($"was off?? {gameObject.name} {_wasZoneTriggered}");
 			if (_cutscene != null)
 			{
-				Debug.Log("CUTSCENE!!!!");
+				//Debug.Log("CUTSCENE!!!!");
 				_cutscene.TriggerCutscene(null);
 			}
 

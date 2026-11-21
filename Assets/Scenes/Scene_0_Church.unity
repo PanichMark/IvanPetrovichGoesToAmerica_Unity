@@ -374,7 +374,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 771323632}
   - {fileID: 1157052407}
   - {fileID: 1165905098}
   - {fileID: 1348972477}
@@ -12730,7 +12729,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 203745478}
+  m_Father: {fileID: 1585387087}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &193391122
 BoxCollider:
@@ -12760,14 +12759,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193391120}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b2d13efc91bd44479fdb04440ff9f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _noteObject: {fileID: 0}
-  _cutscene: {fileID: 644469909}
-  _triggerOnSceneLoad: 1
+  _cutscene: {fileID: 0}
+  _triggerOnSceneLoad: 0
 --- !u!1 &194131567
 GameObject:
   m_ObjectHideFlags: 0
@@ -13401,7 +13400,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 193391121}
   - {fileID: 430251599}
   m_Father: {fileID: 508285364}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -48946,6 +48944,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC_Peaceful_Template_Human_Male_Fat
       objectReference: {fileID: 0}
+    - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: _NPCName
+      value: NPC_Preist_Male
+      objectReference: {fileID: 0}
+    - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: _NPCPickableBodyType
+      value: 
+      objectReference: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
     - target: {fileID: 5519263260445635623, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.404686
@@ -48986,6 +48992,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6553842799769070374, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: _NPCconfigHealth
+      value: 
+      objectReference: {fileID: 11400000, guid: 5d9c496ecdaad2243b2424706c31bad4, type: 2}
     - target: {fileID: 7398710591030411975, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _meshTorso
       value: 
@@ -61168,7 +61178,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2935870}
+  m_Father: {fileID: 1585387087}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &771323633
 BoxCollider:
@@ -61198,12 +61208,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 771323631}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b2d13efc91bd44479fdb04440ff9f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _noteObject: {fileID: 1157052408}
+  _noteObject: {fileID: 0}
   _cutscene: {fileID: 0}
   _triggerOnSceneLoad: 0
 --- !u!1 &773403190
@@ -123888,6 +123898,39 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1584342167}
   m_Mesh: {fileID: -4141290696927874395, guid: d181785754ec38b419ad2eda9681aec3, type: 3}
+--- !u!1 &1585387086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1585387087}
+  m_Layer: 0
+  m_Name: '### TIRGGER ZONES'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1585387087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585387086}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 193391121}
+  - {fileID: 771323632}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1587238668
 GameObject:
   m_ObjectHideFlags: 0
@@ -168052,3 +168095,4 @@ SceneRoots:
   - {fileID: 508285364}
   - {fileID: 2059737134}
   - {fileID: 605700692}
+  - {fileID: 1585387087}

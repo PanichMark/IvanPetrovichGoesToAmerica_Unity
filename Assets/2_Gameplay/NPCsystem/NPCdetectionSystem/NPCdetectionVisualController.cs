@@ -12,7 +12,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 	public bool IsPlayerVisible { get; private set; }
 	private Transform _playerEyes;
 	private LayerMask _targetMask;
-	private LayerMask _obstacleMask;
+	private LayerMask _obstacleMasks;
 
 	private float _currentVisibilityMeterMultiplicator;
 
@@ -46,9 +46,9 @@ public class NPCdetectionVisualController : MonoBehaviour
 		_npcDetectionManager = detectionManager;
 
 		_targetMask = LayerMask.GetMask("Player");
-		_obstacleMask = LayerMask.GetMask("Default");
+		_obstacleMasks = LayerMask.GetMask("Default", "SceneCollider");
 
-		_NPCeyesPosition = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine/Neck/Head");
+		_NPCeyesPosition = transform.Find("NPC_3Dmodel/ArmatureHitbox/Armature_Humanoid/Root/Spine/Neck/Head");
 		_raycastStartPosition = _NPCeyesPosition;
 
 		if (Application.isPlaying)
@@ -132,13 +132,13 @@ public class NPCdetectionVisualController : MonoBehaviour
 				float dstToTargetEyes = Vector3.Distance(_raycastStartPosition.position, _playerEyes.position);
 
 				// === ПРОВЕРКА 1: Луч в центр игрока ===
-				if (!Physics.Raycast(_raycastStartPosition.position, dirToTargetCenter, dstToTargetCenter, _obstacleMask))
+				if (!Physics.Raycast(_raycastStartPosition.position, dirToTargetCenter, dstToTargetCenter, _obstacleMasks))
 				{
 					isVisibleByCenter = true;
 				}
 
 				// === ПРОВЕРКА 2: Луч в глаза игрока ===
-				if (!Physics.Raycast(_raycastStartPosition.position, dirToTargetEyes, dstToTargetEyes, _obstacleMask))
+				if (!Physics.Raycast(_raycastStartPosition.position, dirToTargetEyes, dstToTargetEyes, _obstacleMasks))
 				{
 					isVisibleByEyes = true;
 				}

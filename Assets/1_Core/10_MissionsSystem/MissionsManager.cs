@@ -142,7 +142,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 			{
 				if (_jsonSaveLoadController.IsLoadingFromSaveFile)
 				{
-					Debug.Log("IsLoadingFromSaveFile");
+					//Debug.Log("IsLoadingFromSaveFile");
 					_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
 				}
 				else
@@ -152,13 +152,13 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 					if (_previousMissionStepIndex == -1)
 					{
-						Debug.Log("_previousMissionStep !=");
+						//Debug.Log("_previousMissionStep !=");
 						
 						_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
 					}
 					else
 					{
-						Debug.Log("Else");
+						//Debug.Log("Else");
 						_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, true);
 					}
 				}

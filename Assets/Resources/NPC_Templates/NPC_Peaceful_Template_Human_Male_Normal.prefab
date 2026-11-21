@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 4095148267488736434}
   - component: {fileID: 7271838222949213480}
   - component: {fileID: 1944270714934039901}
+  - component: {fileID: 4328097598458880771}
   m_Layer: 0
   m_Name: NPC_Peaceful_Template_Human_Male_Normal
   m_TagString: Interactable
@@ -452,6 +453,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11816908c46ca704fb92502c6aec76eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4328097598458880771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159260596393591729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef250d1ea41aaba4f87e54917430c351, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &728645609935123064
 GameObject:
   m_ObjectHideFlags: 0
@@ -785,7 +798,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 0}
   _meshTorso: {fileID: 0}
-  _baseMeshTorso: 1
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 0}
   - {fileID: 0}
