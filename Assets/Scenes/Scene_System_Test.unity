@@ -811,7 +811,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 1152971099}
   _meshTorso: {fileID: 638521993}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 1147045493}
   - {fileID: 1430287969}
@@ -4504,6 +4504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _noteObject: {fileID: 1432603770}
   _cutscene: {fileID: 0}
+  _triggerOnSceneLoad: 0
 --- !u!65 &115502250
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5004,7 +5005,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 1806881736}
   _meshTorso: {fileID: 423212210}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 1425435868}
   - {fileID: 57294629}
@@ -5295,7 +5296,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 5359350228133982178}
   _meshTorso: {fileID: 0}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 3498096590895113308}
   - {fileID: 2230371591773313295}
@@ -6587,7 +6588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 0}
   _meshTorso: {fileID: 0}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 0}
   - {fileID: 0}
@@ -9132,7 +9133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 4213416415207591790}
   _meshTorso: {fileID: 1452743472}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 1228075484}
   - {fileID: 681598458}
@@ -19433,7 +19434,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 0}
   _meshTorso: {fileID: 0}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 0}
   - {fileID: 0}
@@ -29356,7 +29357,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 5346455414184855939}
   _meshTorso: {fileID: 405560853}
-  _baseMeshTorso: 1
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 1757758549}
   - {fileID: 407499854}
@@ -36459,7 +36460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 0}
   _meshTorso: {fileID: 0}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 0}
   - {fileID: 0}
@@ -43552,7 +43553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 0}
   _meshTorso: {fileID: 0}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 0}
   - {fileID: 0}
@@ -56042,7 +56043,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 0}
   _meshTorso: {fileID: 0}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 0}
   - {fileID: 0}
@@ -59662,7 +59663,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 559327989}
   _meshTorso: {fileID: 562930526}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 790558393}
   - {fileID: 716297570}
@@ -94294,7 +94295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 5144391026639210403}
   _meshTorso: {fileID: 7164924262008626107}
-  _baseMeshTorso: 1
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 412190493626386494}
   - {fileID: 6119228808324865485}

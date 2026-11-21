@@ -317,9 +317,13 @@ MonoBehaviour:
   _NPCName: 
   _NPCPhrasesDefault: {fileID: 0}
   _NPCBodyType: {fileID: 0}
-  _pickableBodyData: {fileID: 11400000, guid: f7e174cf3e7bed04498ef2b9fba0c72c, type: 2}
-  _NPClootObject: {fileID: 0}
-  _NPCpeacefulReactionType: 0
+  _NPCPickableBodyType: {fileID: 0}
+  _NPCLootObject: {fileID: 0}
+  _NPCPhrasesInterested: {fileID: 0}
+  _NPCPhrasesAlarmed: {fileID: 0}
+  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPeacefulReactionType: 0
+  _NPCPhrasesAfraid: {fileID: 0}
 --- !u!114 &6553842799769070374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,7 +548,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7305638839234882381}
   m_Layer: 0
-  m_Name: 3Dmodel.......
+  m_Name: '### 3D MODEL ###'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

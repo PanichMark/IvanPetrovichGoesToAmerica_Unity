@@ -6,7 +6,7 @@ public class TransferSkinnedMeshRendererArmatureBones : MonoBehaviour
 {
 	[SerializeField] private Transform _baseArmatureRootBone;
 	[SerializeField] private GameObject _meshTorso;
-	[SerializeField] private bool _baseMeshTorso = false;
+	[SerializeField] private bool _bakeMeshTorso = false;
 	[SerializeField] private List<GameObject> _meshesLimbs;
 
 	private SkinnedMeshRenderer _torsoSkinnedMeshRenderer;
@@ -29,7 +29,7 @@ public class TransferSkinnedMeshRendererArmatureBones : MonoBehaviour
 			_torsoSkinnedMeshRenderer = _meshTorso.GetComponent<SkinnedMeshRenderer>();
 			_torsoMeshBones = new Transform[_torsoSkinnedMeshRenderer.bones.Length];
 
-			if (_baseMeshTorso)
+			if (_bakeMeshTorso)
 			{
 				var originalMesh = _torsoSkinnedMeshRenderer.sharedMesh;
 				Debug.Log($"[AssignMeshes] Копируем меш '{_meshTorso.name}'...");
