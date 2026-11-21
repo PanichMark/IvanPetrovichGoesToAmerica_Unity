@@ -310,9 +310,9 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 		_currentDialogueStepIndex++;
 
-		if (_currentDialogueStepIndex == _dialogueBranchStructsList[_dialogueBranchStructIndex].FinalYesLine)
+		if (_currentDialogueStepIndex == _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1)
 		{
-			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToYesFinalLine;
+			_currentDialogueStepIndex = _localizedDialogue[_localizationManager.CurrentLanguage].Count;
 
 			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer != null)
 			{
@@ -391,8 +391,8 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 	private void ShowDialogueAnswerOptions(int index)
 	{
-		_textComponentDialogueYes.text = _localizedDialogue[_localizationManager.CurrentLanguage][_currentDialogueStepIndex];
-		_textComponentDialogueYes.text = _localizedDialogue[_localizationManager.CurrentLanguage][_currentDialogueStepIndex + 1];
+		_textComponentDialogueYes.text = _localizedDialogue[_localizationManager.CurrentLanguage][_currentDialogueStepIndex +1];
+		_textComponentDialogueNo.text = _localizedDialogue[_localizationManager.CurrentLanguage][_currentDialogueStepIndex + 2];
 	}
 
 	private void ActivateButtons()
@@ -409,14 +409,16 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 	private void SelectOption(bool isYesSelected)
 	{
-		var currentLanguage = _localizationManager.CurrentLanguage;
-
-		if (!isYesSelected)
+		if (isYesSelected)
 		{
-			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1;
+			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].DialogueBranchLine + 2;
+		}
+		else
+		{
+			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine;
 		}
 
-		_buttonDialogueYes.onClick.RemoveAllListeners();
+			_buttonDialogueYes.onClick.RemoveAllListeners();
 		_buttonDialogueNo.onClick.RemoveAllListeners();
 
 		DisplayNextDialogueLine();

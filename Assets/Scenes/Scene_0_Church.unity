@@ -45564,7 +45564,8 @@ MonoBehaviour:
   _shouldLoadScene: 0
   _sceneToLoadAfterCutscene: 1
   _NPCstateChanges: []
-  _interactionObjects: []
+  _interactionObjects:
+  - {fileID: 605700695}
 --- !u!114 &644469910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110840,12 +110841,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _NPCdialogueData: {fileID: 11400000, guid: d7b3aa2d526bca0489f1c5b9311ec8f2, type: 2}
   _dialogueBranchStructsList:
-  - DialogueBranchLine: 3
+  - DialogueBranchLine: 2
     GoToNoOptionLine: 8
-    FinalYesLine: 0
-    GoToYesFinalLine: 0
-    YesOptionAnswer: 
-    NoOptionAnswer: 
+    ActionOnYesAnswer: {fileID: 0}
+    ActionOnNoAnswer: {fileID: 0}
+  - DialogueBranchLine: 10
+    GoToNoOptionLine: 17
     ActionOnYesAnswer: {fileID: 0}
     ActionOnNoAnswer: {fileID: 0}
   _dialogueDefaultAnimationStateName: {fileID: 3091315475550263998, guid: 3df9367abff42f945a89f114be95b4c6, type: 3}
