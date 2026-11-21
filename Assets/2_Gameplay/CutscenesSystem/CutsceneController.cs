@@ -337,7 +337,7 @@ public class CutsceneController : MonoBehaviour
 		else
 		{
 			Debug.Log("ON_TIME_STOPPED");
-			ExecutePostCutsceneActions();
+			ExecutePostCutsceneActions(false);
 		}
 	}
 
@@ -379,10 +379,10 @@ public class CutsceneController : MonoBehaviour
 	{
 		_wasCutsceneSkipped = true;
 		Debug.Log("CUTSCENE SKIPPED");
-		ExecutePostCutsceneActions();
+		ExecutePostCutsceneActions(true);
 	}
 
-	private void ExecutePostCutsceneActions()
+	private void ExecutePostCutsceneActions(bool wasCutsceneSkipped)
 	{
 		_playerBootstrap.transform.SetParent(null);
 		SceneManager.MoveGameObjectToScene(_playerBootstrap, SceneManager.GetSceneAt(0));
@@ -390,7 +390,15 @@ public class CutsceneController : MonoBehaviour
 
 		_playerCameraBootstrap.transform.SetParent(null);
 		SceneManager.MoveGameObjectToScene(_playerCameraBootstrap, SceneManager.GetSceneAt(0));
-		
+
+		_director.time = _director.playableAsset.duration;
+		_director.Evaluate();
+
+
+		if (wasCutsceneSkipped)
+		{
+			_director.Stop();
+		}
 
 		if (_playerBehaviourController.WasPlayerArmed)
 		{
@@ -451,6 +459,11 @@ public class CutsceneController : MonoBehaviour
 		_gameController.MakePlayerControllable();
 		_gameController.MakeGameSavable();
 		//Destroy(gameObject);
+
+	
+
+		
+		
 		Debug.Log($"Post-cutscene {gameObject.name} actions executed.");
 	}
 
