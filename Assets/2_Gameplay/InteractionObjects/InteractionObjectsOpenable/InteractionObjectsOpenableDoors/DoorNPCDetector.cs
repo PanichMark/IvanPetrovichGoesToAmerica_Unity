@@ -6,6 +6,7 @@ public class DoorNPCDetector : MonoBehaviour
     private Collider _collider;
     private Collider _mainNPCCollider; // Кэш главного коллайдера
 
+
     public void Initialize(InteractionObjectOpenableDoorUndestructable doorController)
     {
         _doorController = doorController;
@@ -15,31 +16,42 @@ public class DoorNPCDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Ищем главный коллайдер NPC (тот, что на корне)
-        if (other.transform.root.TryGetComponent<NPClivingBeing>(out _))
+        if (_doorController.CanNPCopenThis)
         {
-            // Кэшируем его при первом входе
-            if (_mainNPCCollider == null)
+            // Ищем главный коллайдер NPC (тот, что на корне)
+            if (other.transform.root.TryGetComponent<NPClivingBeing>(out _))
             {
-                _mainNPCCollider = other.transform.root.GetComponentInChildren<Collider>();
-                Debug.Log($"NPC Detector Enter: {_mainNPCCollider.name}");
-                _doorController.NPCtryOpeningDoor();
+                // Кэшируем его при первом входе
+                if (_mainNPCCollider == null)
+                {
+                    _mainNPCCollider = other.transform.root.GetComponentInChildren<Collider>();
+                    Debug.Log($"NPC Detector Enter: {_mainNPCCollider.name}");
+                    _doorController.NPCtryOpeningDoor();
+                }
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // Проверяем выход ТОЛЬКО по закешированному главному коллайдеру
-        if (_mainNPCCollider != null && other == _mainNPCCollider)
+        if (_doorController.CanNPCopenThis)
         {
-            Debug.Log($"NPC Detector Exit: {_mainNPCCollider.name}");
-            _mainNPCCollider = null; // Сбрасываем кэш
-
-            if (_doorController.IsObjectOpened)
+            // Проверяем выход ТОЛЬКО по закешированному главному коллайдеру
+            if (_mainNPCCollider != null)
             {
-                _doorController.NPCtryClosingDoor();
+                Debug.Log($"NPC Detector Exit: {_mainNPCCollider.name}");
+                _mainNPCCollider = null; // Сбрасываем кэш
+                Debug.Log(_doorController);
+                if (_doorController.IsObjectOpened)
+                {
+                    _doorController.NPCtryClosingDoor();
+                }
             }
         }
     }
+
+	private void Update()
+	{
+        //Debug.Log(_mainNPCCollider);
+	}
 }

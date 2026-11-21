@@ -29,15 +29,19 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	private PlayerMovementController _playerMovementController;
 	private string _interactionHintMessageFail;
 	public override string InteractionHintMessageFail => _interactionHintMessageFail;
+	public bool DidNPCopenedThisDoor {  get; private set; }
+	public bool CanNPCopenThis {  get; private set; }
 
 	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
 		if (_changeScene == null && _isLockedForever == false)
 		{
-			_npcDetector = GetComponentInChildren<DoorNPCDetector>();
-			Debug.Log(gameObject.name);
+			_npcDetector = transform.parent.GetComponentInChildren<DoorNPCDetector>();
+			//Debug.Log(gameObject.name);
 			_npcDetector.Initialize(this);
+			CanNPCopenThis = true;
 		}
+
 
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
@@ -241,6 +245,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	{
 		if (IsOpenableUnlocked && !IsObjectOpened)
 		{
+			DidNPCopenedThisDoor = true;
 			Debug.Log($"NPC Opened {InteractionObjectNameUI}");
 			_isObjectOpened = true;
 			_currentAnimation = StartCoroutine(OpenDoor());
@@ -251,9 +256,14 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	{
 		if (IsObjectOpened)
 		{
-			Debug.Log($"NPC Closed {InteractionObjectNameUI}");
-			_isObjectOpened = false;
-			_currentAnimation = StartCoroutine(CloseDoor());
+			if (DidNPCopenedThisDoor)
+			{
+				Debug.Log($"NPC Closed {InteractionObjectNameUI}");
+				_isObjectOpened = false;
+				_currentAnimation = StartCoroutine(CloseDoor());
+			}
+			
+			DidNPCopenedThisDoor = false;
 		}
 	}
 

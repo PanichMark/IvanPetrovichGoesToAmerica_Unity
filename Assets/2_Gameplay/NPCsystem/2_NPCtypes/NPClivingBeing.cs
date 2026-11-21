@@ -217,7 +217,7 @@ public abstract class NPClivingBeing : NPCabstract
 			Destroy(capsuleCollider);
 		}
 
-		gameObject.AddComponent<Rigidbody>();
+		//gameObject.AddComponent<Rigidbody>();
 
 		_pickable = InteractionObjectPickableNonThrowableUndestructable.CreateWithName(gameObject, _NPCName, _NPCPickableBodyType);
 
