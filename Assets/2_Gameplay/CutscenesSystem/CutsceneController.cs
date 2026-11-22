@@ -87,7 +87,7 @@ public class CutsceneController : MonoBehaviour
 
 	private int _currentCutsceneDialogueLineIndex;
 
-	[Header("Move player")] [SerializeField] private bool _shouldMovePlayer;
+	[Header("Move player")]
 	[SerializeField] private CutsceneMovePlayerData _newPlayerTransform;
 
 	[Header("Load scene")] [SerializeField] bool _shouldLoadScene;
@@ -493,11 +493,10 @@ public class CutsceneController : MonoBehaviour
 			}
 		}
 		
-		if (_shouldMovePlayer)
-		{
-			_playerMovementController.SetPlayerPosition(_newPlayerTransform.PlayerPosition);
-			_playerCameraController.SetCameraRotationY(_newPlayerTransform.PlayerRotationY);
-		}
+
+		_playerMovementController.SetPlayerPosition(_newPlayerTransform.PlayerPosition);
+		_playerCameraController.SetCameraRotationY(_newPlayerTransform.PlayerRotationY);
+		
 
 		if (_shouldLoadScene)
 		{
