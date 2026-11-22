@@ -84,7 +84,7 @@ public class NPCdialogueController : MonoBehaviour
 	_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 	_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 	_animator = GetComponent<Animator>();
-	_animator.speed = 0.5f;
+
 	_interactionController = ServiceLocator.Resolve<PlayerInteractionController>();
 	_buttonDialogueYes = _viewModelMenuDialogue.ButtonDialogueYes.GetComponent<Button>();
 	_buttonDialogueNo = _viewModelMenuDialogue.ButtonDialogueNo.GetComponent<Button>();
@@ -118,28 +118,31 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 	private void Update()
 	{
-		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && IsDialogueActive && _canSkip && !_menuManager.IsPauseMenuOpened)
+		if (IsDialogueActive)
 		{
-			DisplayNextDialogueLine();
+			if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) && _canSkip && !_menuManager.IsPauseMenuOpened)
+			{
+				DisplayNextDialogueLine();
+			}
+
+			if (!_isIvanPetrovichSpeaking)
+			{
+				_uLipSyncBlendShape.ApplyBlendShapes();
+			}
+
+			if (_menuManager.IsPauseMenuOpened || _menuManager.IsInteractionMenuOpened)
+			{
+
+			}
+			else
+			{
+				_animator.Update(Time.unscaledDeltaTime);
+
+				OnAfterAnimatorReapplyIKweights?.Invoke(_playerEyesLookAt);
+			}
 		}
 
-		if (!_isIvanPetrovichSpeaking)
-		{ 
-			_uLipSyncBlendShape.ApplyBlendShapes();
-		}
-
-		if (_menuManager.IsPauseMenuOpened || _menuManager.IsInteractionMenuOpened)
-		{
-		
-		}
-		else
-		{
-			_animator.Update(Time.unscaledDeltaTime);
-
-			OnAfterAnimatorReapplyIKweights?.Invoke(_playerEyesLookAt);
-		}
-
-		//Debug.Log(_currentDialogueStepIndex);
+		//Debug.Log(_animator.speed);
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
@@ -152,6 +155,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 	public void Interact()
 	{
+		//_animator.speed = 1f;
 		_currentDialogueStepIndex = 0;
 		_dialogueBranchStructIndex = 0;
 		_interactionController.ChangeLayerRecursively(gameObject, LayerMask.NameToLayer("Default"));
@@ -159,7 +163,6 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 		_menuManager.OpenDialogueMenu();
 		IsDialogueActive = true;
 		ChangeGestureAnimation(_dialogueDefaultAnimationStateName.name);
-		_animator.speed = 1;
 		_gameController.MakeGameUnsavable();
 		ShowNPCDialogueCanvas();
 		DisplayNextDialogueLine();
@@ -174,6 +177,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 	{
 		if (IsDialogueActive)
 		{
+			//_animator.speed = 1f;
 			_buttonDialogueYes.onClick.RemoveAllListeners();
 			_buttonDialogueNo.onClick.RemoveAllListeners();
 			_gameController.MakeGameSavable();
@@ -197,7 +201,6 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 				_PerformActionOnYesFinal = false;
 			}
 
-			_animator.speed = 0.5f;
 			ChangeGestureAnimation(_originalAnimationStateName);
 			_playerCameraController.SetPostDialogueCameraTransform();
 			OnStopLookingAtObject?.Invoke(_playerEyesLookAt);
