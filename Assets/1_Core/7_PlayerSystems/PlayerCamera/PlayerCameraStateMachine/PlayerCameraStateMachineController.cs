@@ -20,6 +20,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 	public event CameraStateHandler OnCameraStateChanged;
 	public event CameraStateHandler OnFirstPersonCameraState;
 	public event CameraStateHandler OnThirdPersonCameraState;
+	public event CameraStateHandler OnCutsceneCameraState;
 
 	public void Initialize(
 		Bootstrap bootstrap,
@@ -85,6 +86,7 @@ public class PlayerCameraStateMachineController : MonoBehaviour, IJsonSaveLoad
 		else if (newPlayerCameraStateType == PlayerCameraStateTypes.Cutscene)
 		{
 			newState = new PlayerCameraStateCutscene();
+			OnCutsceneCameraState?.Invoke();
 		}
 		else
 		{

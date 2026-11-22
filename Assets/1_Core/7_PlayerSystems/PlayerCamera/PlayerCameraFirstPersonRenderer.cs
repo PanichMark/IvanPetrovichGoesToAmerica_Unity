@@ -19,6 +19,7 @@ public class PlayerCameraFirstPersonRenderer : MonoBehaviour
 
 		_playerStateMachineCamera.OnFirstPersonCameraState += HidePlayerHead;
 		_playerStateMachineCamera.OnThirdPersonCameraState += ShowPlayerHead;
+		_playerStateMachineCamera.OnCutsceneCameraState += ShowPlayerHead;
 
 		Debug.Log("PlayerCameraFirstPersonRender Initialized");
 	}

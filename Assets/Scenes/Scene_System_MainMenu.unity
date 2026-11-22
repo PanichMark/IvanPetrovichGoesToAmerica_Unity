@@ -59081,6 +59081,7 @@ MonoBehaviour:
   _cutscenePlayerProxy: {fileID: 1580316157}
   _cutscenePlayerCameraProxy: {fileID: 537340853}
   _cutsceneDialogueData: {fileID: 0}
+  _animatedNPCs: []
   _ShouldDisarmPlayer: 0
   _dialogueActorsMapping: []
   _shouldMovePlayer: 1
@@ -95420,6 +95421,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1580316158}
+  - component: {fileID: 1580316159}
   m_Layer: 0
   m_Name: CutscenePlayerProxy
   m_TagString: Untagged
@@ -95442,6 +95444,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 917948900}
   m_LocalEulerAnglesHint: {x: 0, y: -165, z: 0}
+--- !u!95 &1580316159
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1580316157}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: eabc6cfb9e5dfc34599a448a430f7105, type: 3}
+  m_Controller: {fileID: 9100000, guid: 7e00e73912717554ab572f23b511cc0c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1581263089
 PrefabInstance:
   m_ObjectHideFlags: 0
