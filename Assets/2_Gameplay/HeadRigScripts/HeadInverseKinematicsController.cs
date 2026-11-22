@@ -15,7 +15,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 	private Coroutine _currentHeadIKcourutine;
 	private bool _isThisHeadInDialogueOrCutscene;
-	private bool _canAnimateIK => !_menuManager.IsAnyMenuOpened || _isThisHeadInDialogueOrCutscene;
+	private bool _canAnimateIK => !_menuManager.IsAnyMenuOpened || (_isThisHeadInDialogueOrCutscene && !_menuManager.IsPauseMenuOpened);
 
 	private void Start()
 	{
@@ -120,7 +120,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 				_weightedTransform = new WeightedTransform(_weightedTransform.transform, Mathf.Lerp(startWeight, targetWeight, t));
 
 				UpdateSources();
-				Debug.Log("Current IK Weight: " + _weightedTransform.weight, this);
+				//Debug.Log("Current IK Weight: " + _weightedTransform.weight, this);
 				
 			}
 
@@ -128,6 +128,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 		}
 
 		_weightedTransform = new WeightedTransform(_weightedTransform.transform, targetWeight);
+		//Debug.Log(_weightedTransform.weight);
 		
 		UpdateSources();
 
@@ -149,6 +150,6 @@ public class HeadInverseKinematicsController : MonoBehaviour
 		var tempNeckData = _neckIK.data;
 		tempNeckData.sourceObjects = new WeightedTransformArray { _weightedTransform };
 		_neckIK.data = tempNeckData;
-		Debug.Log(_neckIK.data.sourceObjects[0].weight);
+		//Debug.Log(_neckIK.data.sourceObjects[0].weight);
 	}
 }
