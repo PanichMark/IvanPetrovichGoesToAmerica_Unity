@@ -90,50 +90,44 @@ _playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerE
 
 	private void LoadPhrasesTextFiles()
 	{
-		if (_NPCphrasesDefaultData != null)
+		if (_NPCphrasesDefaultData.PhrasesFileRussian != null)
 		{
-			if (_NPCphrasesDefaultData.PhrasesFileRussian != null)
+			using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileRussian.text))
 			{
-				using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileRussian.text))
+				string line;
+				while ((line = reader.ReadLine()) != null)
 				{
-					string line;
-					while ((line = reader.ReadLine()) != null)
+					if (!string.IsNullOrWhiteSpace(line))
 					{
-						if (!string.IsNullOrWhiteSpace(line))
-						{
-							_localizedNPSphrases[LanguagesEnum.Russian].Add(line.Trim());
-						}
+						_localizedNPSphrases[LanguagesEnum.Russian].Add(line.Trim());
 					}
 				}
-			}
-			else
-			{
-				Debug.LogWarning("Russian phrase file is not assigned!");
-			}
-
-			if (_NPCphrasesDefaultData.PhrasesFileEnglish != null)
-			{
-				using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileEnglish.text))
-				{
-					string line;
-					while ((line = reader.ReadLine()) != null)
-					{
-						if (!string.IsNullOrWhiteSpace(line))
-						{
-							_localizedNPSphrases[LanguagesEnum.English].Add(line.Trim());
-						}
-					}
-				}
-			}
-			else
-			{
-				Debug.LogWarning("English phrase file is not assigned!");
 			}
 		}
 		else
 		{
-			Debug.LogWarning("Default Phrases not assigned");
+			Debug.LogWarning("Russian phrase file is not assigned!");
 		}
+
+		if (_NPCphrasesDefaultData.PhrasesFileEnglish != null)
+		{
+			using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileEnglish.text))
+			{
+				string line;
+				while ((line = reader.ReadLine()) != null)
+				{
+					if (!string.IsNullOrWhiteSpace(line))
+					{
+						_localizedNPSphrases[LanguagesEnum.English].Add(line.Trim());
+					}
+				}
+			}
+		}
+		else
+		{
+			Debug.LogWarning("English phrase file is not assigned!");
+		}
+		
 	}
 
 	public void TemporaryShowPhrases()
@@ -175,7 +169,7 @@ _playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerE
 		}
 		else
 		{
-			yield return new WaitForSeconds(3.5f);
+			yield return new WaitForSeconds(3f);
 		}
 
 		_NPCphrasesTextComponent.text = string.Empty;

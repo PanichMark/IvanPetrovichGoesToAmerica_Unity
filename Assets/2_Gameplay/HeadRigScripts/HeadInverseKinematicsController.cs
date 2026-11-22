@@ -101,11 +101,12 @@ public class HeadInverseKinematicsController : MonoBehaviour
 			_weightedTransform = new WeightedTransform(_weightedTransform.transform, Mathf.Lerp(startWeight, targetWeight, t));
 
 			UpdateSources();
-
+			Debug.Log("Current IK Weight: " + _weightedTransform.weight, this);
 			yield return null;
 		}
 
 		_weightedTransform = new WeightedTransform(_weightedTransform.transform, targetWeight);
+		
 		UpdateSources();
 
 		if (targetWeight == 0f)
