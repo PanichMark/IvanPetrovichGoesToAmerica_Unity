@@ -58,7 +58,7 @@ public class CutsceneController : MonoBehaviour
 	private bool _shouldInteractWithObjects;
 	private bool _isInitialized;
 	private Animator _playerProxyAnimator;
-	private Animator _playerBootstrapAnimator;
+	//private Animator _playerBootstrapAnimator;
 	//private bool _isPlayerAnimated;
 	private GameObject _textSkipCutscene;
 	private TextMeshProUGUI _textComponentSkipCutscene;
@@ -210,7 +210,7 @@ public class CutsceneController : MonoBehaviour
 		
 
 		ProcessCutsceneSkipping();
-
+	
 		if (IsCutscenePlaying)
 		{
 			
@@ -428,7 +428,7 @@ public class CutsceneController : MonoBehaviour
 		_director.Stop();
 		//}
 
-		_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.Normal;
+		//_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.Normal;
 		_playerProxyAnimator.updateMode = AnimatorUpdateMode.Normal;
 		if (_animatedNPCs.Count > 0)
 		{
@@ -525,6 +525,19 @@ public class CutsceneController : MonoBehaviour
 
 		CutsceneStopTime();
 
+		if (_animatedNPCs.Count > 0)
+		{
+			foreach (var npc in _animatedNPCs)
+			{
+				//Debug.Log(npc.gameObject.name);
+				//if (npc.gameObject.name != "CutscenePlayerProxy")
+				//{
+				npc.updateMode = AnimatorUpdateMode.UnscaledTime;
+				//}
+			}
+
+
+		}
 		
 
 		//RebindProxyObjects();
@@ -559,30 +572,12 @@ public class CutsceneController : MonoBehaviour
 			_playerCameraBootstrap.transform.localPosition = Vector3.zero;
 			_playerCameraBootstrap.transform.localRotation = Quaternion.identity;
 
-			_playerBootstrapAnimator = _cutscenePlayerProxy.transform.GetChild(0).GetComponent<Animator>();
-			_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-			//_playerProxyAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-			if (_animatedNPCs.Count > 0)
-			{
-				foreach (var npc in _animatedNPCs)
-				{
-					//Debug.Log(npc.gameObject.name);
-					//if (npc.gameObject.name != "CutscenePlayerProxy")
-					//{
-					npc.updateMode = AnimatorUpdateMode.UnscaledTime;
-					//}
-				}
+			//_playerBootstrapAnimator = _cutscenePlayerProxy.transform.GetChild(0).GetComponent<Animator>();
+			//_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+
+			_playerProxyAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
 
 
-				/*
-				if (_isPlayerAnimated)
-				{
-					
-				}
-				*/
-			}
-
-			
 		}
 		else
 		{
@@ -621,7 +616,7 @@ public class CutsceneController : MonoBehaviour
 			_director.Pause();
 			_director.Evaluate();
 			Debug.Log($"Cutscene {gameObject.name} paused");
-			_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.Normal;
+			//_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.Normal;
 			_playerProxyAnimator.updateMode = AnimatorUpdateMode.Normal;
 			if (_animatedNPCs.Count > 0)
 			{
@@ -648,7 +643,7 @@ public class CutsceneController : MonoBehaviour
 				IsCutscenePlaying = true;
 				_gameController.MakePlayerNonControllable();
 				_playerProxyAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-				_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+				//_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
 				if (_animatedNPCs.Count > 0)
 				{
 					foreach (var npc in _animatedNPCs)
