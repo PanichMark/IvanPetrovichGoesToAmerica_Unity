@@ -57,7 +57,8 @@ public class CutsceneController : MonoBehaviour
 	private bool _shouldChangeNPCState;
 	private bool _shouldInteractWithObjects;
 	private bool _isInitialized;
-
+	private Animator _playerAnimator;
+	private bool _isPlayerAnimated;
 	private GameObject _textSkipCutscene;
 	private TextMeshProUGUI _textComponentSkipCutscene;
 	private GameObject _circleSkipCutscene;
@@ -67,6 +68,10 @@ public class CutsceneController : MonoBehaviour
 
 	[Header("Cutscene dialogue data")]
 	[SerializeField] private CutsceneDialogueData _cutsceneDialogueData;
+
+	[Header("Animated NPCs")]
+	[SerializeField] private List<Animator> _animatedNPCs = new List<Animator>();
+
 
 	[Header("Disarm Player")]
 	[SerializeField] private bool _ShouldDisarmPlayer;
@@ -94,6 +99,17 @@ public class CutsceneController : MonoBehaviour
 
 	private void Start()
 	{
+
+		foreach (var npc in _animatedNPCs)
+		{
+			if (npc.gameObject.name == "CutscenePlayerProxy")
+			{
+				_playerAnimator = npc.GetComponentInChildren<Animator>();
+				_isPlayerAnimated = true;
+			}
+		}
+
+
 		_HUDmissionsController = ServiceLocator.Resolve<HUDmissionsController>();
 		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
@@ -187,9 +203,29 @@ public class CutsceneController : MonoBehaviour
 
 		ProcessCutsceneSkipping();
 
-		if (IsCutscenePlaying && _isSkipRequested)
+		if (IsCutscenePlaying)
 		{
-			SkipCutscene();
+			if (_animatedNPCs.Count > 0)
+			{
+				foreach (var npc in _animatedNPCs)
+				{
+					//Debug.Log(npc.gameObject.name);
+					if (npc.gameObject.name != "CutscenePlayerProxy")
+					{
+						npc.Update(Time.unscaledDeltaTime);
+					}
+				}
+
+				if (_isPlayerAnimated)
+				{
+					_playerAnimator.Update(Time.unscaledDeltaTime);
+				}
+			}
+
+			if (_isSkipRequested)
+			{
+				SkipCutscene();
+			}
 		}
 	}
 
@@ -399,6 +435,23 @@ public class CutsceneController : MonoBehaviour
 			_director.Stop();
 		//}
 
+		if (_animatedNPCs.Count > 0)
+		{
+			foreach (var npc in _animatedNPCs)
+			{
+				//Debug.Log(npc.gameObject.name);
+				if (npc.gameObject.name != "CutscenePlayerProxy")
+				{
+					npc.Update(Time.deltaTime);
+				}
+			}
+
+			if (_isPlayerAnimated)
+			{
+				_playerAnimator.Update(Time.deltaTime);
+			}
+		}
+
 		if (_playerBehaviourController.WasPlayerArmed)
 		{
 			_playerBehaviourController.ArmPlayer();
@@ -481,7 +534,7 @@ public class CutsceneController : MonoBehaviour
 
 		CutsceneStopTime();
 
-	
+		
 
 		//RebindProxyObjects();
 
