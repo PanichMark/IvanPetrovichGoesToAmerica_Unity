@@ -86,6 +86,7 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 				else
 				{
 					StartCoroutine(MoveTowardsRightHandThirdPerson());
+					gameObject.layer = LayerMask.NameToLayer("Default");
 				}
 			}
 			else
