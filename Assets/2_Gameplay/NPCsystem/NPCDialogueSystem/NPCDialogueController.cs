@@ -19,6 +19,7 @@ public class NPCdialogueController : MonoBehaviour
 	public delegate void HeadIKHandler(GameObject objectToLookAt);
 	public event HeadIKHandler OnStartLookingAtObject;
 	public event HeadIKHandler OnStopLookingAtObject;
+	public event HeadIKHandler OnAfterAnimatorReapplyIKweights;
 
 	private string _currentGestureAnimation;
 	[SerializeField] private NPCdialogueData _NPCdialogueData;
@@ -134,6 +135,8 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 		else
 		{
 			_animator.Update(Time.unscaledDeltaTime);
+
+			OnAfterAnimatorReapplyIKweights?.Invoke(_playerEyesLookAt);
 		}
 
 		//Debug.Log(_currentDialogueStepIndex);

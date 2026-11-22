@@ -12,7 +12,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 	private WeightedTransform _weightedTransform;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private RigBuilder _rigBuilder;
-
+	private bool _shouldForceIKafterDialogueUpdate;
 	private Coroutine _currentHeadIKcourutine;
 	private bool _isThisHeadInDialogueOrCutscene;
 	private bool _canAnimateIK => !_menuManager.IsAnyMenuOpened || (_isThisHeadInDialogueOrCutscene && !_menuManager.IsPauseMenuOpened);
@@ -26,6 +26,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 		if (_NPCDialogueController != null)
 		{
+			_NPCDialogueController.OnAfterAnimatorReapplyIKweights += ForceApplyIKWeight;
 			_NPCDialogueController.OnStartLookingAtObject += SetHeadToDialogueOrCustcene;
 			_NPCDialogueController.OnStartLookingAtObject += StartLookingAtObject;
 			_NPCDialogueController.OnStopLookingAtObject += RemoveHeadToDialogueOrCustcene;
@@ -33,6 +34,14 @@ public class HeadInverseKinematicsController : MonoBehaviour
 		}
 
 		_weightedTransform = new WeightedTransform();
+	}
+
+	public void ForceApplyIKWeight(GameObject objectToLookAt)
+	{
+		if (_shouldForceIKafterDialogueUpdate)
+		{
+			UpdateSources();
+		}
 	}
 
 	private void SetHeadToDialogueOrCustcene(GameObject objectToLookAt)
@@ -52,6 +61,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 		if (_NPCDialogueController != null)
 		{
+			_NPCDialogueController.OnAfterAnimatorReapplyIKweights -= ForceApplyIKWeight;
 			_NPCDialogueController.OnStartLookingAtObject -= StartLookingAtObject;
 			_NPCDialogueController.OnStartLookingAtObject -= StartLookingAtObject;
 			_NPCDialogueController.OnStopLookingAtObject -= RemoveHeadToDialogueOrCustcene;
@@ -61,6 +71,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 	private void StartLookingAtObject(GameObject objectToLookAt)
 	{
+		
 		//Debug.Log("START LOOKING");
 
 		if (_currentHeadIKcourutine != null)
@@ -102,6 +113,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 	private IEnumerator LerpWeight(float targetWeight)
 	{
+		_shouldForceIKafterDialogueUpdate = false;
 		//Debug.Log(targetWeight);
 		float duration = 1f;
 		float timeElapsed = 0f;
@@ -127,10 +139,17 @@ public class HeadInverseKinematicsController : MonoBehaviour
 			yield return null;
 		}
 
+	
+
 		_weightedTransform = new WeightedTransform(_weightedTransform.transform, targetWeight);
 		//Debug.Log(_weightedTransform.weight);
 		
 		UpdateSources();
+
+		if (_isThisHeadInDialogueOrCutscene && targetWeight == 1)
+		{
+			_shouldForceIKafterDialogueUpdate = true;
+		}
 
 		if (targetWeight == 0f)
 		{
