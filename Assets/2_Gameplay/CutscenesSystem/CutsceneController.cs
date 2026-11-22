@@ -613,23 +613,24 @@ public class CutsceneController : MonoBehaviour
 		if (!_wasCutsceneSkipped && IsCutscenePlaying)
 		{
 			IsCutscenePlaying = false;
-			_director.Pause();
-			_director.Evaluate();
-			Debug.Log($"Cutscene {gameObject.name} paused");
-			//_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.Normal;
-			_playerProxyAnimator.updateMode = AnimatorUpdateMode.Normal;
+
+			
 			if (_animatedNPCs.Count > 0)
 			{
-				foreach (var npc in _animatedNPCs)
-				{
-					//Debug.Log(npc.gameObject.name);
-					//if (npc.gameObject.name != "CutscenePlayerProxy")
-					//{
-					npc.updateMode = AnimatorUpdateMode.Normal;
-					//}
-				}
+				foreach (var npc in _animatedNPCs) npc.updateMode = AnimatorUpdateMode.Normal;
 			}
-			//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
+
+			_director.playableGraph.GetRootPlayable(0).SetSpeed(0f);
+
+			// Evaluate нужен, чтобы зафиксировать визуальный кадр в этом моменте.
+		
+			_director.Evaluate();
+
+			// ХАК: Принудительно просим Animator применить текущий кадр графика еще раз.
+			// Это перезаписывает возможный сброс в T-pose, который сделал Evaluate.
+			_playerProxyAnimator.Update(0f);
+
+			Debug.Log($"Cutscene {gameObject.name} paused.");
 		}
 	}
 
@@ -639,10 +640,10 @@ public class CutsceneController : MonoBehaviour
 		{
 			if (!_wasCutsceneSkipped)
 			{
-				_director.Resume();
+		
 				IsCutscenePlaying = true;
 				_gameController.MakePlayerNonControllable();
-				_playerProxyAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+				
 				//_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
 				if (_animatedNPCs.Count > 0)
 				{
@@ -655,6 +656,12 @@ public class CutsceneController : MonoBehaviour
 						//}
 					}
 				}
+
+				_director.playableGraph.GetRootPlayable(0).SetSpeed(1f);
+
+				// Evaluate нужен, чтобы зафиксировать визуальный кадр в этом моменте.
+
+				//_director.Evaluate();
 				//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
 
 				Debug.Log($"Cutscene {gameObject.name} resumed");
