@@ -196,13 +196,29 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			_isNewRightWeaponShown = false;
 		}
 
-			StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponRightEquip, WeaponHandType.Right, true));
+		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponRightEquip, WeaponHandType.Right, true));
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponRightPalm, 1);
-		_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer1stWeaponRightPalm);
 
-		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponRightEquip, WeaponHandType.Right,true));
+		if (weapon is WeaponMeleeAbstract meleeWeapon1st)
+		{
+			_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{meleeWeapon1st.WeaponMeleeType}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer1stWeaponRightPalm);
+		}
+		else
+		{
+			_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer1stWeaponRightPalm);
+		}
+
+		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponRightEquip, WeaponHandType.Right, true));
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponRightPalm, 1);
-		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponRightPalm);
+
+		if (weapon is WeaponMeleeAbstract meleeWeapon3rd)
+		{
+			_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{meleeWeapon3rd.WeaponMeleeType}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponRightPalm);
+		}
+		else
+		{
+			_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponRightPalm);
+		}
 
 		if (weapon is WeaponEugenicAbstract && _isNewRightWeaponShown == true)
 		{
@@ -224,11 +240,27 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 
 		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator1stPerson, _layer1stWeaponLeftEquip, WeaponHandType.Left, true));
 		_playerAnimator1stPerson.SetLayerWeight(_layer1stWeaponLeftPalm, 1);
-		_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer1stWeaponLeftPalm);
+
+		if (weapon is WeaponMeleeAbstract meleeWeapon1st)
+		{
+			_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{meleeWeapon1st.WeaponMeleeType}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer1stWeaponLeftPalm);
+		}
+		else
+		{
+			_playerAnimator1stPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer1stWeaponLeftPalm);
+		}
 
 		StartCoroutine(ChangePlayerWeaponEquipAnimation(_playerAnimator3rdPerson, _layer3rdWeaponLeftEquip, WeaponHandType.Left, true));
 		_playerAnimator3rdPerson.SetLayerWeight(_layer3rdWeaponLeftPalm, 1);
-		_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponLeftPalm);
+
+		if (weapon is WeaponMeleeAbstract meleeWeapon3rd)
+		{
+			_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{meleeWeapon3rd.WeaponMeleeType}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponLeftPalm);
+		}
+		else
+		{
+			_playerAnimator3rdPerson.Play($"{weapon.WeaponType}_{weapon.WeaponName}_{AnimationsHumanoidWeaponsEnum.Hold}_{weapon.WeaponHandType}", _layer3rdWeaponLeftPalm);
+		}
 
 		if (weapon is WeaponEugenicAbstract && _isNewLeftWeaponShown == true)
 		{
@@ -417,17 +449,50 @@ public class PlayerWeaponAnimationController : MonoBehaviour
 			_turnOnSlowly =  StartCoroutine(TurnOnFullArmLayerSlowly(weaponFullArm.WeaponHandType, 1.5f));
 		}
 
-		if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
+		if (weaponFullArm is WeaponMeleeAbstract meleeWeapon)
 		{
-			Debug.Log("MELLE ATTACK RIGHT ANIMATION");
-			_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponRightArm, 0f);
-			_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
+			if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
+			{
+				Debug.Log("FULL ARM MELEE ATTACK RIGHT ANIMATION");
+				_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_{meleeWeapon.WeaponMeleeType}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponRightArm, 0f);
+				_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_{meleeWeapon.WeaponMeleeType}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
+			}
+			else
+			{
+				Debug.Log("FULL ARM MELEE ATTACK LEFT ANIMATION");
+				_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_{meleeWeapon.WeaponMeleeType}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
+				_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_{meleeWeapon.WeaponMeleeType}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
+			}
 		}
-		else
+		if (weaponFullArm is WeaponEugenicAbstract)
 		{
-			Debug.Log("MELLE ATTACK LEFT ANIMATION");
-			_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
-			_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
+			if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
+			{
+				Debug.Log("FULL ARM EUGENIxATTACK RIGHT ANIMATION");
+				_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponRightArm, 0f);
+				_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
+			}
+			else
+			{
+				Debug.Log("FULL ARM EUGENIC ATTACK LEFT ANIMATION");
+				_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
+				_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
+			}
+		}
+		if (weaponFullArm is not WeaponMeleeAbstract and not WeaponRangedAbstract and not WeaponEugenicAbstract)
+		{
+			if (weaponFullArm.WeaponHandType == WeaponHandType.Right)
+			{
+				Debug.Log("MONOCULAR RIGHT ANIMATION");
+				_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponRightArm, 0f);
+				_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponRightArm, 0f);
+			}
+			else
+			{
+				Debug.Log("MONOCULAR LEFT ANIMATION");
+				_playerAnimator1stPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer1stWeaponLeftArm, 0f);
+				_playerAnimator3rdPerson.Play($"{weaponFullArm.WeaponType}_{weaponFullArm.WeaponName}_{AnimationsHumanoidWeaponsEnum.Attack}_{weaponFullArm.WeaponHandType}", _layer3rdWeaponLeftArm, 0f);
+			}
 		}
 
 		if (switchLayersImmediately)

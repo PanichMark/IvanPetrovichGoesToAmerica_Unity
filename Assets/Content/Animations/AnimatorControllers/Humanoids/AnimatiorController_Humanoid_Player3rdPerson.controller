@@ -152,7 +152,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melee_CircularSaw_Hold_Left
+  m_Name: Melee_Shaking_Hold_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -630,7 +630,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melee_Baton_Attack_Left
+  m_Name: Melee_Swinging_Attack_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1510,7 +1510,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melee_CircularSaw_Hold_Right
+  m_Name: Melee_Shaking_Hold_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1640,7 +1640,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melee_CircularSaw_Attack_Right
+  m_Name: Melee_Shaking_Attack_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1783,7 +1783,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 3436776151837300512, guid: dd9b02c9069d6224ea5f3d6be76d465b, type: 3}
+  m_Motion: {fileID: 7169818312517836829, guid: b0ad041cae58a7742b29fdafd9a9cd2d, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2195,7 +2195,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melee_Baton_Attack_Right
+  m_Name: Melee_Swinging_Attack_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -2234,7 +2234,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -8323839463160836600, guid: dd9b02c9069d6224ea5f3d6be76d465b, type: 3}
+  m_Motion: {fileID: -7909717329526663970, guid: b0ad041cae58a7742b29fdafd9a9cd2d, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2498,7 +2498,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melee_CircularSaw_Attack_Left
+  m_Name: Melee_Shaking_Attack_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -2550,7 +2550,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melee_Baton_Hold_Right
+  m_Name: Melee_Swinging_Hold_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -2650,7 +2650,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melee_Baton_Hold_Left
+  m_Name: Melee_Swinging_Hold_Left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
