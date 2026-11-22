@@ -43515,10 +43515,18 @@ PrefabInstance:
       propertyPath: _initialState
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4837707364710883254, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: _NPCDialogueController
+      value: 
+      objectReference: {fileID: 1611142365}
     - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _NPCName
       value: NPC_Preist_Male
       objectReference: {fileID: 0}
+    - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: _NPCPhrasesDefault
+      value: 
+      objectReference: {fileID: 11400000, guid: 63cf64af5ae0b7d459f0112651dfb630, type: 2}
     - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _NPCPickableBodyType
       value: 
