@@ -205,34 +205,34 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 
 	public void CameraStanding()
 	{
-		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+		transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
 	}
 
 	public void CameraCrouching()
 	{
-		transform.position = new Vector3(transform.position.x, transform.position.y - 0.4f, transform.position.z);
+		transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 0.4f, transform.localPosition.z);
 	}
 
 	public void FirstPersonCameraTransform()
 	{
-		transform.position = _player.transform.position + Quaternion.Euler(0, _mouseRotation.x, 0) *
+		transform.localPosition = _player.transform.localPosition + Quaternion.Euler(0, _mouseRotation.x, 0) *
 		new Vector3(0, _movementController.PlayerCurrentHeight - 0.13f, 0.1f);
 	}
 
 	public void ThirdPersonCameraTransform()
 	{
-		transform.position = _player.transform.position - Quaternion.Euler(-_mouseRotation.y, _mouseRotation.x, 0) *
+		transform.localPosition = _player.transform.localPosition - Quaternion.Euler(-_mouseRotation.y, _mouseRotation.x, 0) *
 		new Vector3(PlayerCameraDistanceX, PlayerCameraDistanceY, PlayerCameraDistanceZ);
 	}
 
 	public void SetCameraMainMenuPosition(Vector3 position)
 	{
-		transform.position = position;
+		transform.localPosition = position;
 	}
 
 	public void SetCameraMainMenuRotation(Quaternion rotation)
 	{
-		transform.rotation = rotation;
+		transform.localRotation = rotation;
 		//Debug.Log(transform.rotation);
 	}
 
@@ -406,7 +406,7 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 		{
 			if (!_menuManager.IsPauseMenuOpened)
 			{
-				Vector3 direction = NPC.transform.position - transform.position + new Vector3(0, 1.65f, 0);
+				Vector3 direction = NPC.transform.localPosition - transform.localPosition + new Vector3(0, 1.65f, 0);
 
 				endRotation = Quaternion.LookRotation(direction);
 
@@ -416,14 +416,14 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 					break;
 				}
 				float step = rotationSpeed * Time.unscaledDeltaTime;
-				transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
+				transform.localRotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
 			}
 			yield return null;
 		}
 
-		transform.rotation = endRotation;
+		transform.localRotation = endRotation;
 
-		_postDialogueCameraPosition = transform.position;
+		_postDialogueCameraPosition = transform.localPosition;
 		_postDialogueCameraRotation = endRotation;
 	}
 

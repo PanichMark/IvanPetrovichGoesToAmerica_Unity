@@ -414,7 +414,7 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 
 	public void SetPlayerRotationY(float rotationY)
 	{
-		transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+		transform.localRotation = Quaternion.Euler(0f, rotationY, 0f);
 		OnSetPlayerCameraRotationY?.Invoke(rotationY);
 	}
 
@@ -424,15 +424,15 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 	}
 	public void SetPlayerPosition(Vector3 position)
 	{
-		transform.position = position;
+		transform.localPosition = position;
 	}
 
 	public void RotatePlayerTowardsNPC(GameObject NPC)
 	{
-		StartCoroutine(RotatePlayerTowardsPlayerCoroutine(NPC));
+		StartCoroutine(RotatePlayerTowardsNPCcoroutine(NPC));
 	}
 
-	private IEnumerator RotatePlayerTowardsPlayerCoroutine(GameObject NPC)
+	private IEnumerator RotatePlayerTowardsNPCcoroutine(GameObject NPC)
 	{
 		yield return null;
 
@@ -443,23 +443,23 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 			if (!_menuManager.IsPauseMenuOpened)
 			{
 				float rotationSpeed = 160f;
-				Vector3 direction = NPC.transform.position - transform.position;
+				Vector3 direction = NPC.transform.localPosition - transform.localPosition;
 				float desiredYAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-				Quaternion startRotation = transform.rotation;
+				Quaternion startRotation = transform.localRotation;
 				endRotation = Quaternion.Euler(0, desiredYAngle, 0);
 
-				float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
+				float angleDiff = Quaternion.Angle(transform.localRotation, endRotation);
 				if (angleDiff < 0.1f)
 				{
 					break;
 				}
 				float step = rotationSpeed * Time.unscaledDeltaTime;
-				transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
+				transform.localRotation = Quaternion.RotateTowards(transform.localRotation, endRotation, step);
 			}
 			yield return null;
 		}
 
-		transform.rotation = endRotation;
+		transform.localRotation = endRotation;
 	}
 
 	public IEnumerator SaveJsonData(JsonGameData data)
