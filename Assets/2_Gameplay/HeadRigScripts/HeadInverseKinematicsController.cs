@@ -8,7 +8,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 	[SerializeField] private MultiAimConstraint _neckIK;
 	[SerializeField] private NPCphrasesController _NPCPhrasesController;
 	[SerializeField] private NPCdialogueController _NPCDialogueController;
-
+	private MenuManager _menuManager;
 	private WeightedTransform _weightedTransform;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private RigBuilder _rigBuilder;
@@ -18,6 +18,8 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 	private void Start()
 	{
+		_menuManager = ServiceLocator.Resolve<MenuManager>();
+
 		_NPCPhrasesController.OnStartLookingAtObject += StartLookingAtObject;
 		_NPCPhrasesController.OnStopLookingAtObject += StopLookingAtObject;
 
@@ -67,7 +69,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 			UpdateSources();
 
 			_rigBuilder.Build();
-			_animator.Rebind();
+			//_animator.Rebind();
 		}
 
 		_currentHeadIKcourutine = StartCoroutine(LerpWeight(1f));
@@ -91,7 +93,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 		float startWeight = _weightedTransform.weight;
 
-		while (timeElapsed < duration)
+		while (timeElapsed < duration && !_menuManager.IsAnyMenuOpened)
 		{
 			timeElapsed += Time.unscaledDeltaTime;
 
@@ -127,5 +129,6 @@ public class HeadInverseKinematicsController : MonoBehaviour
 		var tempNeckData = _neckIK.data;
 		tempNeckData.sourceObjects = new WeightedTransformArray { _weightedTransform };
 		_neckIK.data = tempNeckData;
+		Debug.Log(_neckIK.data.sourceObjects[0].weight);
 	}
 }
