@@ -434,16 +434,20 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 
 	private IEnumerator RotatePlayerTowardsPlayerCoroutine(GameObject NPC)
 	{
-		float rotationSpeed = 160f;
-		Vector3 direction = NPC.transform.position - transform.position;
-		float desiredYAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-		Quaternion startRotation = transform.rotation;
-		Quaternion endRotation = Quaternion.Euler(0, desiredYAngle, 0);
+		yield return null;
+
+		Quaternion endRotation = Quaternion.identity;
 
 		while (true)
 		{
 			if (!_menuManager.IsPauseMenuOpened)
 			{
+				float rotationSpeed = 160f;
+				Vector3 direction = NPC.transform.position - transform.position;
+				float desiredYAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+				Quaternion startRotation = transform.rotation;
+				endRotation = Quaternion.Euler(0, desiredYAngle, 0);
+
 				float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
 				if (angleDiff < 0.1f)
 				{

@@ -398,6 +398,8 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 	{
 		float rotationSpeed = 160f;
 
+		yield return null;
+
 		Quaternion endRotation = Quaternion.identity;
 
 		while (true)

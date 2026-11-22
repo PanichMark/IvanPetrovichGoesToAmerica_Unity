@@ -57,7 +57,7 @@ public class CutsceneController : MonoBehaviour
 	private bool _shouldChangeNPCState;
 	private bool _shouldInteractWithObjects;
 	private bool _isInitialized;
-	//private Animator _playerProxyAnimator;
+	private Animator _playerProxyAnimator;
 	private Animator _playerBootstrapAnimator;
 	//private bool _isPlayerAnimated;
 	private GameObject _textSkipCutscene;
@@ -103,14 +103,14 @@ public class CutsceneController : MonoBehaviour
 
 		//foreach (var npc in _animatedNPCs)
 		//{
-			//if (npc.gameObject.name == "CutscenePlayerProxy")
-			//{
-				//_playerAnimator = npc.GetComponentInChildren<Animator>();
-				//_isPlayerAnimated = true;
-			//}
+		//if (npc.gameObject.name == "CutscenePlayerProxy")
+		//{
+		//_playerAnimator = npc.GetComponentInChildren<Animator>();
+		//_isPlayerAnimated = true;
+		//}
 		//}
 		//_playerBootstrapAnimator = _cutscenePlayerProxy.GetComponentInChildren<Animator>();
-
+		_playerProxyAnimator = _cutscenePlayerProxy.GetComponent<Animator>();
 		_HUDmissionsController = ServiceLocator.Resolve<HUDmissionsController>();
 		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
@@ -200,7 +200,14 @@ public class CutsceneController : MonoBehaviour
 
 	private void Update()
 	{
+		
+	
+		
+
+
 		if (!_isInitialized) return;
+
+		
 
 		ProcessCutsceneSkipping();
 
@@ -422,6 +429,7 @@ public class CutsceneController : MonoBehaviour
 		//}
 
 		_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.Normal;
+		_playerProxyAnimator.updateMode = AnimatorUpdateMode.Normal;
 		if (_animatedNPCs.Count > 0)
 		{
 			foreach (var npc in _animatedNPCs)
@@ -507,6 +515,7 @@ public class CutsceneController : MonoBehaviour
 
 	public void TriggerCutscene(GameObject inspectedWeapon)
 	{
+
 		Debug.Log("CUTSCENE!!!");
 		_director.Play();
 		_gameController.MakeGameUnsavable();
@@ -552,6 +561,7 @@ public class CutsceneController : MonoBehaviour
 
 			_playerBootstrapAnimator = _cutscenePlayerProxy.transform.GetChild(0).GetComponent<Animator>();
 			_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+			//_playerProxyAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
 			if (_animatedNPCs.Count > 0)
 			{
 				foreach (var npc in _animatedNPCs)
@@ -612,6 +622,7 @@ public class CutsceneController : MonoBehaviour
 			_director.Evaluate();
 			Debug.Log($"Cutscene {gameObject.name} paused");
 			_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.Normal;
+			_playerProxyAnimator.updateMode = AnimatorUpdateMode.Normal;
 			if (_animatedNPCs.Count > 0)
 			{
 				foreach (var npc in _animatedNPCs)
@@ -636,6 +647,7 @@ public class CutsceneController : MonoBehaviour
 				_director.Resume();
 				IsCutscenePlaying = true;
 				_gameController.MakePlayerNonControllable();
+				_playerProxyAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
 				_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
 				if (_animatedNPCs.Count > 0)
 				{
