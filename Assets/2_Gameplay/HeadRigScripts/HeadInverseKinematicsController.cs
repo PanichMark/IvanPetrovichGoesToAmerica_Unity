@@ -14,7 +14,8 @@ public class HeadInverseKinematicsController : MonoBehaviour
 	[SerializeField] private RigBuilder _rigBuilder;
 
 	private Coroutine _currentHeadIKcourutine;
-
+	private bool _isThisHeadInDialogueOrCutscene;
+	private bool _canAnimateIK => !_menuManager.IsAnyMenuOpened || _isThisHeadInDialogueOrCutscene;
 
 	private void Start()
 	{
@@ -25,11 +26,23 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 		if (_NPCDialogueController != null)
 		{
+			_NPCDialogueController.OnStartLookingAtObject += SetHeadToDialogueOrCustcene;
 			_NPCDialogueController.OnStartLookingAtObject += StartLookingAtObject;
+			_NPCDialogueController.OnStopLookingAtObject += RemoveHeadToDialogueOrCustcene;
 			_NPCDialogueController.OnStopLookingAtObject += StopLookingAtObject;
 		}
 
 		_weightedTransform = new WeightedTransform();
+	}
+
+	private void SetHeadToDialogueOrCustcene(GameObject objectToLookAt)
+	{
+		_isThisHeadInDialogueOrCutscene = true;
+	}
+
+	private void RemoveHeadToDialogueOrCustcene(GameObject objectToLookAt)
+	{
+		_isThisHeadInDialogueOrCutscene = false;
 	}
 
 	private void OnDestroy()
@@ -40,6 +53,8 @@ public class HeadInverseKinematicsController : MonoBehaviour
 		if (_NPCDialogueController != null)
 		{
 			_NPCDialogueController.OnStartLookingAtObject -= StartLookingAtObject;
+			_NPCDialogueController.OnStartLookingAtObject -= StartLookingAtObject;
+			_NPCDialogueController.OnStopLookingAtObject -= RemoveHeadToDialogueOrCustcene;
 			_NPCDialogueController.OnStopLookingAtObject -= StopLookingAtObject;
 		}
 	}
@@ -93,17 +108,22 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 		float startWeight = _weightedTransform.weight;
 
-		while (timeElapsed < duration && !_menuManager.IsAnyMenuOpened)
+		while (timeElapsed < duration)
 		{
-			timeElapsed += Time.unscaledDeltaTime;
+			if (_canAnimateIK)
+			{
+				timeElapsed += Time.unscaledDeltaTime;
 
-			float t = Mathf.Clamp01(timeElapsed / duration);
+				float t = Mathf.Clamp01(timeElapsed / duration);
 
-			// Создаем новую структуру с новым весом
-			_weightedTransform = new WeightedTransform(_weightedTransform.transform, Mathf.Lerp(startWeight, targetWeight, t));
+				// Создаем новую структуру с новым весом
+				_weightedTransform = new WeightedTransform(_weightedTransform.transform, Mathf.Lerp(startWeight, targetWeight, t));
 
-			UpdateSources();
-			Debug.Log("Current IK Weight: " + _weightedTransform.weight, this);
+				UpdateSources();
+				Debug.Log("Current IK Weight: " + _weightedTransform.weight, this);
+				
+			}
+
 			yield return null;
 		}
 
