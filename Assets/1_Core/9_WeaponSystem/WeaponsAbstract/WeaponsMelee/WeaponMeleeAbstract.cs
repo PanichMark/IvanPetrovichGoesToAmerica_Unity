@@ -10,9 +10,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 	protected float _forwardOffset;
 	public abstract float MeleeAttackDelay { get; }
 	protected Coroutine _currentWeaponPlayerMeleeAttackRoutine;
-	[SerializeField] protected WeaponsMeleeTypes _weaponMeleeType;
-
-	public WeaponsMeleeTypes WeaponMeleeType => _weaponMeleeType;
+	abstract public WeaponsMeleeTypes WeaponMeleeType {  get; }
 
 	public override void InitializeWeaponPlayer()
 	{

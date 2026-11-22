@@ -1,7 +1,6 @@
 ﻿public enum WeaponsMeleeTypes
 {
-	Baton,
+	Swinging,
 	Thrusting,
-	Knife,
-	CircularSaw
+	Shaking
 }

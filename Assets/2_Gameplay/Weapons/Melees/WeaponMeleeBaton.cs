@@ -2,58 +2,49 @@
 using System.Collections;
 using TMPro;
 
-public class WeaponMeleeBaton : WeaponMeleeAbstract
+public class WeaponMeleeBaton : WeaponMeleeSwinging
 {
-	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Baton;
-	public override WeaponTypes WeaponType => WeaponTypes.Melee;
-	public override bool IsWeaponAuto => false;
-	private GameController _gameController;
-	public override float WeaponAttackSpeedRate => 1.560f;
-	[SerializeField] private AudioClip _weaponSoundSwing;
-	private float _strangleDuration =3.292f;
-	public override float MeleeAttackDelay => 0.840f;
-	private LocalizationManager	_localizationManager;
-	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
-
+	private Coroutine _currentStranglingCoroutine;
+	private NPCstateMachineController _NPCstateMachineController;
+	private bool _isAbleToStrangle = false;
+	private bool _npcDetected = false;
+	private GameObject _strangleHintNPCtext;
+	private TextMeshProUGUI _strangleHintNPCtextComponent;
 	private IInputDevice _inputDevice;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private PlayerWeaponController _weaponController;
+	private LocalizationManager _localizationManager;
 	private PlayerWeaponFirstPersonRenderer _playerWeaponFirstPersonRenderer;
-	private Coroutine currentStranglingCoroutine = null;
 
-	private GameObject _strangleHintNPCtext;
-	private TextMeshProUGUI _strangleHintNPCtextComponent;
-
-	private bool _isAbleToStrangle = false;
-	private bool _npcDetected = false;
-	private NPCstateMachineController _NPCstateMachineController;
+	private float _strangleDuration = 3.292f;
 	private ViewModelHUDInteraction _viewModelHUDInteraction;
+	private GameController _gameController;
 
 	protected override void InitializeWeaponMelee()
 	{
+		base.InitializeWeaponMelee();
 		_gameController = ServiceLocator.Resolve<GameController>();
 		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
-		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
+		_strangleHintNPCtext = _viewModelHUDInteraction.TextStrangleHintNPC;
+		_strangleHintNPCtextComponent = _strangleHintNPCtext.GetComponent<TextMeshProUGUI>();
 		_inputDevice = ServiceLocator.Resolve<IInputDevice>();
 		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
 		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>();
-
-		_strangleHintNPCtext = _viewModelHUDInteraction.TextStrangleHintNPC;
-		_strangleHintNPCtextComponent = _strangleHintNPCtext.GetComponent<TextMeshProUGUI>();
-
-		_capsuleHeight = 1.8f;
-		_capsuleRadius = 0.3f;
-		_forwardOffset = 0.5f;
-
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		ChangeLanguage(_localizationManager);
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 	}
 
+	private void OnDestroy()
+	{
+		//_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
+
 	public override void WeaponPlayerAttack()
 	{
-		
+
 		if (isPlayerWeaponAttacking)
 		{
 			Debug.Log("Already attacking melee");
@@ -62,61 +53,13 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 		if (_isAbleToStrangle)
 		{
-			
+
 			PerformStrangleAttack();
 			return;
 		}
 
 		StartCoroutine(SingleMeleeWeaponAttack());
-		
-	}
 
-	protected override IEnumerator SingleMeleeWeaponAttack()
-	{
-		isPlayerWeaponAttacking = true;
-
-		StartCoroutine(DelayAttackSound());
-
-		_currentWeaponPlayerMeleeAttackRoutine = StartCoroutine(_playerWeaponAnimationController.WeaponFullArmAttackAnimation(this, true));
-
-		Vector3 startPoint = _attackPoint.transform.position + _attackPoint.transform.forward * _forwardOffset;
-		Vector3 endPoint = startPoint + _attackPoint.transform.up * _capsuleHeight;
-
-		RaycastHit[] hits = Physics.CapsuleCastAll(startPoint, endPoint, _capsuleRadius, _attackPoint.transform.forward, 0f);
-
-		foreach (RaycastHit hit in hits)
-		{
-			if (hit.collider.gameObject == _attackPoint)
-				continue;
-
-			if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
-			{
-				StartCoroutine(DelayMeleeAttackDamageable(damageable, MeleeAttackDelay));
-			}
-
-			if (hit.collider.TryGetComponent<IBreakable>(out var breakable))
-			{
-				StartCoroutine(DelayMeleeAttackBreakable(breakable, MeleeAttackDelay));
-			}
-		}
-
-		yield return _currentWeaponPlayerMeleeAttackRoutine;
-
-		isPlayerWeaponAttacking = false;
-
-		_currentWeaponPlayerMeleeAttackRoutine = null;
-	}
-
-	protected override IEnumerator DelayAttackSound()
-	{
-		Debug.Log("SOUND ON HIT");
-		yield return new WaitForSeconds(MeleeAttackDelay - 0.35f);
-		_weaponAudioSource.PlayOneShot(_weaponSoundSwing);
-		yield return new WaitForSeconds(0.18f);
-
-		_weaponAudioSource.PlayOneShot(_weaponSoundAttack);
-
-		yield return null;
 	}
 
 	private void Update()
@@ -124,7 +67,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		if (!_isWeaponInitialized)
 			return;
 
-		if (currentStranglingCoroutine != null)
+		if (_currentStranglingCoroutine != null)
 			return;
 
 		Vector3 playerPosition = _attackPoint.transform.position;
@@ -149,24 +92,24 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 		_npcDetected = newDetection;
 
-		bool isCrouching = (_playerMovementStateMachineController.CurrentPlayerMovementStateType ==  PlayerMovementStateTypes.PlayerIdleCrouhcing ||
+		bool isCrouching = (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerIdleCrouhcing ||
 						   _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerWalkingCrouching);
 
 		_isAbleToStrangle = _npcDetected && isCrouching && !isPlayerWeaponAttacking;
 
-		
+
 
 		_strangleHintNPCtext.SetActive(_isAbleToStrangle);
 	}
 
 	private void PerformStrangleAttack()
 	{
-		if (currentStranglingCoroutine != null)
+		if (_currentStranglingCoroutine != null)
 		{
-			StopCoroutine(currentStranglingCoroutine);
+			StopCoroutine(_currentStranglingCoroutine);
 		}
 
-		currentStranglingCoroutine = StartCoroutine(StranglingCoroutine());
+		_currentStranglingCoroutine = StartCoroutine(StranglingCoroutine());
 	}
 
 	private IEnumerator StranglingCoroutine()
@@ -176,7 +119,7 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		isPlayerWeaponAttacking = true;
 		StartCoroutine(_playerWeaponAnimationController.AnimationBatonStrangle(this));
 		_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("Default", WeaponHandType);
-		
+
 		_strangleHintNPCtext.SetActive(false);
 		Debug.Log("START strangle!");
 		_NPCstateMachineController.SetNPCState(NPCstateTypes.Strangled);
@@ -191,11 +134,11 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
 				StopStrangling();
-				yield break; 
+				yield break;
 			}
 
 			elapsed += Time.deltaTime;
-			yield return null; 
+			yield return null;
 		}
 
 		Debug.Log("strangle SUCCESS!!!");
@@ -206,17 +149,10 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 	private void StopStrangling()
 	{
 		_gameController.MakePlayerStopStranglingNPC();
-		currentStranglingCoroutine = null;
+		_currentStranglingCoroutine = null;
 		isPlayerWeaponAttacking = false;
 		_playerWeaponFirstPersonRenderer.Set1stPersonStranglingObjectsToLayer("FirstPerson", WeaponHandType);
 		_playerMovementStateMachineController.SetPlayerMovementState(PlayerMovementStateTypes.PlayerIdleStanding);
-	}
-
-	public override IEnumerator InspectWeaponAnimation()
-	{
-		throw new System.NotImplementedException();
-
-		// baton isnt inspected but given straigth away during Bistro fight tutorial
 	}
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
@@ -233,5 +169,12 @@ public class WeaponMeleeBaton : WeaponMeleeAbstract
 		}
 	}
 
-
+	public override void OnHideWeaponPlayer()
+	{
+		if (_currentStranglingCoroutine != null)
+		{
+			_currentStranglingCoroutine = null;
+			StopStrangling();
+		}
+	}
 }
