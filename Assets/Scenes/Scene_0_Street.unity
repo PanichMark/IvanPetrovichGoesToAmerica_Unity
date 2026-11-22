@@ -33732,12 +33732,10 @@ MonoBehaviour:
   _showMissionGoalHint: 0
   _cutscenePlayerProxy: {fileID: 79884861}
   _cutscenePlayerCameraProxy: {fileID: 1478078458}
-  _cutsceneDialogueData: {fileID: 0}
-  _animatedNPCs:
-  - {fileID: 79884862}
+  _cutsceneDialogueData: {fileID: 11400000, guid: 33a66eaab4fea7846ae751c71a6473ea, type: 2}
+  _animatedNPCs: []
   _ShouldDisarmPlayer: 0
   _dialogueActorsMapping: []
-  _shouldMovePlayer: 1
   _newPlayerTransform: {fileID: 11400000, guid: 5d85b7e2b92a95f479b597b345393fb8, type: 2}
   _shouldLoadScene: 0
   _sceneToLoadAfterCutscene: 0

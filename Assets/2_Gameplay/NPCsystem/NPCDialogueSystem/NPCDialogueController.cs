@@ -130,6 +130,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 				_uLipSyncBlendShape.ApplyBlendShapes();
 			}
 
+			/*
 			if (_menuManager.IsPauseMenuOpened || _menuManager.IsInteractionMenuOpened)
 			{
 
@@ -138,8 +139,9 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 			{
 				_animator.Update(Time.unscaledDeltaTime);
 
-				OnAfterAnimatorReapplyIKweights?.Invoke(_playerEyesLookAt);
+				//OnAfterAnimatorReapplyIKweights?.Invoke(_playerEyesLookAt);
 			}
+			*/
 		}
 
 		//Debug.Log(_animator.speed);
@@ -259,6 +261,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 		if (IsDialogueActive)
 		{
 			_canvasDialogue.SetActive(true);
+			_animator.updateMode = AnimatorUpdateMode.UnscaledTime;
 		}
 	}
 
@@ -267,6 +270,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 		if (IsDialogueActive)
 		{
 			_canvasDialogue.SetActive(false);
+			_animator.updateMode = AnimatorUpdateMode.Normal;
 		}
 	}
 

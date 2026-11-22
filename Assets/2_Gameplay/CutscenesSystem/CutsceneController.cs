@@ -57,7 +57,8 @@ public class CutsceneController : MonoBehaviour
 	private bool _shouldChangeNPCState;
 	private bool _shouldInteractWithObjects;
 	private bool _isInitialized;
-	private Animator _playerAnimator;
+	//private Animator _playerProxyAnimator;
+	private Animator _playerBootstrapAnimator;
 	//private bool _isPlayerAnimated;
 	private GameObject _textSkipCutscene;
 	private TextMeshProUGUI _textComponentSkipCutscene;
@@ -108,7 +109,7 @@ public class CutsceneController : MonoBehaviour
 				//_isPlayerAnimated = true;
 			//}
 		//}
-		_playerAnimator = _cutscenePlayerProxy.GetComponentInChildren<Animator>();
+		//_playerBootstrapAnimator = _cutscenePlayerProxy.GetComponentInChildren<Animator>();
 
 		_HUDmissionsController = ServiceLocator.Resolve<HUDmissionsController>();
 		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
@@ -205,25 +206,7 @@ public class CutsceneController : MonoBehaviour
 
 		if (IsCutscenePlaying)
 		{
-			if (_animatedNPCs.Count > 0)
-			{
-				foreach (var npc in _animatedNPCs)
-				{
-					//Debug.Log(npc.gameObject.name);
-					//if (npc.gameObject.name != "CutscenePlayerProxy")
-					//{
-						npc.Update(Time.unscaledDeltaTime);
-					//}
-				}
-
-				_playerAnimator.Update(Time.unscaledDeltaTime);
-				/*
-				if (_isPlayerAnimated)
-				{
-					
-				}
-				*/
-			}
+			
 
 			if (_isSkipRequested)
 			{
@@ -424,7 +407,7 @@ public class CutsceneController : MonoBehaviour
 
 		_playerBootstrap.transform.SetParent(null);
 		SceneManager.MoveGameObjectToScene(_playerBootstrap, SceneManager.GetSceneAt(0));
-		
+
 
 		_playerCameraBootstrap.transform.SetParent(null);
 		SceneManager.MoveGameObjectToScene(_playerCameraBootstrap, SceneManager.GetSceneAt(0));
@@ -435,9 +418,10 @@ public class CutsceneController : MonoBehaviour
 
 		//if (wasCutsceneSkipped)
 		//{
-			_director.Stop();
+		_director.Stop();
 		//}
 
+		_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.Normal;
 		if (_animatedNPCs.Count > 0)
 		{
 			foreach (var npc in _animatedNPCs)
@@ -445,83 +429,79 @@ public class CutsceneController : MonoBehaviour
 				//Debug.Log(npc.gameObject.name);
 				//if (npc.gameObject.name != "CutscenePlayerProxy")
 				//{
-					npc.Update(Time.deltaTime);
+				npc.updateMode = AnimatorUpdateMode.Normal;
 				//}
 			}
-
-			//if (_isPlayerAnimated)
-			//{
-				_playerAnimator.Update(Time.deltaTime);
-			//}
 		}
 
-		if (_playerBehaviourController.WasPlayerArmed)
-		{
-			_playerBehaviourController.ArmPlayer();
-		}
-
-		if (_showMissionGoalHint)
-		{
-			_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedGoalText, true);
-		}
-
-		//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
-		WasCutscenePlaying = false;	
-		IsCutscenePlaying = false;
-		CutsceneResumeTime();
-		_menuManager.CloseCutsceneMenu();
-
-
-		_playerCameraStateMachineController.SetPlayerCameraState(_playerCameraController.PreviousPlayerCameraGameplayType);
-
-		_gameController.MakePlayerControllable();
-		_gameController.MakeGameSavable();
-
-		if (_shouldChangeNPCState)
-		{
-			foreach (var data in _NPCstateChanges)
+			if (_playerBehaviourController.WasPlayerArmed)
 			{
-				if (data.npcObject != null)
+				_playerBehaviourController.ArmPlayer();
+			}
+
+			if (_showMissionGoalHint)
+			{
+				_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedGoalText, true);
+			}
+
+			//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
+			WasCutscenePlaying = false;
+			IsCutscenePlaying = false;
+			CutsceneResumeTime();
+			_menuManager.CloseCutsceneMenu();
+
+
+			_playerCameraStateMachineController.SetPlayerCameraState(_playerCameraController.PreviousPlayerCameraGameplayType);
+
+			_gameController.MakePlayerControllable();
+			_gameController.MakeGameSavable();
+
+			if (_shouldChangeNPCState)
+			{
+				foreach (var data in _NPCstateChanges)
 				{
-					var controller = data.npcObject.GetComponent<NPCstateMachineController>();
-					if (controller != null)
+					if (data.npcObject != null)
 					{
-						controller.SetNPCState(data.stateToSet);
-						Debug.Log($"Катсцена {gameObject.name} изменила состояние NPC {data.npcObject.name} на {data.stateToSet}.");
+						var controller = data.npcObject.GetComponent<NPCstateMachineController>();
+						if (controller != null)
+						{
+							controller.SetNPCState(data.stateToSet);
+							Debug.Log($"Катсцена {gameObject.name} изменила состояние NPC {data.npcObject.name} на {data.stateToSet}.");
+						}
 					}
 				}
 			}
-		}
-		
 
-		_playerMovementController.SetPlayerPosition(_newPlayerTransform.PlayerPosition);
-		_playerCameraController.SetCameraRotationY(_newPlayerTransform.PlayerRotationY);
-		
 
-		if (_shouldLoadScene)
-		{
-			_gameSceneManager.StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesGameplayEnum)_sceneToLoadAfterCutscene));
-		}
+			_playerMovementController.SetPlayerPosition(_newPlayerTransform.PlayerPosition);
+			_playerCameraController.SetCameraRotationY(_newPlayerTransform.PlayerRotationY);
 
-		if (_shouldInteractWithObjects)
-		{
-			foreach (var data in _interactionObjects)
+
+			if (_shouldLoadScene)
 			{
-				if (data != null && data.GetComponent<IInteractable>() != null)
+				_gameSceneManager.StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesGameplayEnum)_sceneToLoadAfterCutscene));
+			}
+
+			if (_shouldInteractWithObjects)
+			{
+				foreach (var data in _interactionObjects)
 				{
-					data.GetComponent<IInteractable>().InteractCutscene();
+					if (data != null && data.GetComponent<IInteractable>() != null)
+					{
+						data.GetComponent<IInteractable>().InteractCutscene();
+					}
 				}
 			}
-		}
-		
-		//Destroy(gameObject);
 
-	
+			//Destroy(gameObject);
 
-		
-		
-		Debug.Log($"Post-cutscene {gameObject.name} actions executed.");
+
+
+
+
+			Debug.Log($"Post-cutscene {gameObject.name} actions executed.");
 	}
+	
 
 
 
@@ -569,6 +549,30 @@ public class CutsceneController : MonoBehaviour
 			_playerCameraBootstrap.transform.SetParent(_cutscenePlayerCameraProxy.transform);
 			_playerCameraBootstrap.transform.localPosition = Vector3.zero;
 			_playerCameraBootstrap.transform.localRotation = Quaternion.identity;
+
+			_playerBootstrapAnimator = _cutscenePlayerProxy.transform.GetChild(0).GetComponent<Animator>();
+			_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+			if (_animatedNPCs.Count > 0)
+			{
+				foreach (var npc in _animatedNPCs)
+				{
+					//Debug.Log(npc.gameObject.name);
+					//if (npc.gameObject.name != "CutscenePlayerProxy")
+					//{
+					npc.updateMode = AnimatorUpdateMode.UnscaledTime;
+					//}
+				}
+
+
+				/*
+				if (_isPlayerAnimated)
+				{
+					
+				}
+				*/
+			}
+
+			
 		}
 		else
 		{
@@ -607,7 +611,18 @@ public class CutsceneController : MonoBehaviour
 			_director.Pause();
 			_director.Evaluate();
 			Debug.Log($"Cutscene {gameObject.name} paused");
-
+			_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.Normal;
+			if (_animatedNPCs.Count > 0)
+			{
+				foreach (var npc in _animatedNPCs)
+				{
+					//Debug.Log(npc.gameObject.name);
+					//if (npc.gameObject.name != "CutscenePlayerProxy")
+					//{
+					npc.updateMode = AnimatorUpdateMode.Normal;
+					//}
+				}
+			}
 			//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
 		}
 	}
@@ -621,7 +636,18 @@ public class CutsceneController : MonoBehaviour
 				_director.Resume();
 				IsCutscenePlaying = true;
 				_gameController.MakePlayerNonControllable();
-
+				_playerBootstrapAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+				if (_animatedNPCs.Count > 0)
+				{
+					foreach (var npc in _animatedNPCs)
+					{
+						//Debug.Log(npc.gameObject.name);
+						//if (npc.gameObject.name != "CutscenePlayerProxy")
+						//{
+						npc.updateMode = AnimatorUpdateMode.UnscaledTime;
+						//}
+					}
+				}
 				//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.UnscaledTime;
 
 				Debug.Log($"Cutscene {gameObject.name} resumed");
