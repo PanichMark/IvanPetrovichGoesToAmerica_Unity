@@ -18,7 +18,7 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 
 	public delegate void PlayerCameraRotationHandler(float rotationY); 
 	public event PlayerCameraRotationHandler OnSetPlayerCameraRotationY;
-
+	private MenuManager _menuManager;
 	private Camera _playerCamera;
 
 	private Vector3 _playerWorldMovement;
@@ -88,8 +88,10 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 	public void Initialize(
 		Bootstrap bootstrap,
 		GameScenesManager gameSceneManager,
+		MenuManager menuManager,
 		PlayerBehaviourController playerBehaviour)
 	{
+		_menuManager = menuManager;
 		_bootstrap = bootstrap;
 		_gameSceneManager = gameSceneManager;
 		_playerBehaviour = playerBehaviour;
@@ -440,13 +442,16 @@ public class PlayerMovementController : MonoBehaviour, IJsonSaveLoad
 
 		while (true)
 		{
-			float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
-			if (angleDiff < 0.1f)
+			if (!_menuManager.IsPauseMenuOpened)
 			{
-				break;
+				float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
+				if (angleDiff < 0.1f)
+				{
+					break;
+				}
+				float step = rotationSpeed * Time.unscaledDeltaTime;
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
 			}
-			float step = rotationSpeed * Time.unscaledDeltaTime;
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
 			yield return null;
 		}
 

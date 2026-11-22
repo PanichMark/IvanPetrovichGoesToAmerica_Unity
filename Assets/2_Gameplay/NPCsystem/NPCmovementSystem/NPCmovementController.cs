@@ -12,15 +12,19 @@ public class NPCmovementController : MonoBehaviour
 	public List<NPCanchorData> AnchorData => _anchorData;
 	public float AnimationDuration => _animationDuration;
 	private float _animationDuration = 99999f;
+
 	public Coroutine currentRotationCoroutine { get; private set; }
 	private NPCstateMachineController _NPCstateMachineController;
 	private float _initialRotationY;
 	private GameObject _cachedPlayer;
+	private MenuManager _menuManager;
 	public float CurrentStationaryWaitTime { get; private set; }
 	public void Initialize(
+		MenuManager menuManager,
 		NPCstateMachineController NPCstateMachineController,
 		NavMeshAgent navMeshAgent)
 	{
+		_menuManager = menuManager;
 		_NPCstateMachineController = NPCstateMachineController;
 		_initialRotationY = transform.eulerAngles.y;
 		_cachedPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
@@ -185,13 +189,16 @@ public class NPCmovementController : MonoBehaviour
 
 		while (true)
 		{
-			float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
-			if (angleDiff < 0.1f)
+			if (!_menuManager.IsPauseMenuOpened)
 			{
-				break;
+				float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
+				if (angleDiff < 0.1f)
+				{
+					break;
+				}
+				float step = rotationSpeed * Time.unscaledDeltaTime;
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
 			}
-			float step = rotationSpeed * Time.unscaledDeltaTime;
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
 			yield return null;
 		}
 
@@ -215,11 +222,14 @@ public class NPCmovementController : MonoBehaviour
 
 		while (true)
 		{
-			float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
-			if (angleDiff < 0.1f)
-				break;
-			float step = rotationSpeed * Time.unscaledDeltaTime;
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
+			if (!_menuManager.IsPauseMenuOpened)
+			{
+				float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
+				if (angleDiff < 0.1f)
+					break;
+				float step = rotationSpeed * Time.unscaledDeltaTime;
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
+			}
 			yield return null;
 		}
 

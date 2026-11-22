@@ -402,17 +402,20 @@ public class PlayerCameraController : MonoBehaviour, IJsonSaveLoad
 
 		while (true)
 		{
-			Vector3 direction = NPC.transform.position - transform.position + new Vector3(0, 1.65f, 0);
-
-			endRotation = Quaternion.LookRotation(direction);
-
-			float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
-			if (angleDiff < 0.1f)
+			if (!_menuManager.IsPauseMenuOpened)
 			{
-				break;
+				Vector3 direction = NPC.transform.position - transform.position + new Vector3(0, 1.65f, 0);
+
+				endRotation = Quaternion.LookRotation(direction);
+
+				float angleDiff = Quaternion.Angle(transform.rotation, endRotation);
+				if (angleDiff < 0.1f)
+				{
+					break;
+				}
+				float step = rotationSpeed * Time.unscaledDeltaTime;
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
 			}
-			float step = rotationSpeed * Time.unscaledDeltaTime;
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, endRotation, step);
 			yield return null;
 		}
 

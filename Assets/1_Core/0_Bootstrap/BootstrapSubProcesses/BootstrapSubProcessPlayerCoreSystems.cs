@@ -120,8 +120,10 @@ public class BootstrapSubProcessPlayerSystems
 			_inputDevice,
 			_gameSceneManager);
 
-		PlayerMovementController.Initialize(_bootstrap,
+		PlayerMovementController.Initialize(
+			_bootstrap,
 			_gameSceneManager,
+			_bootstrapSubProcessMenuSystem.MenuManager,
 			PlayerBehaviour);
 
 		PlayerMovementStateMachineController.Initialize(

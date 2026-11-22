@@ -92,9 +92,10 @@ public abstract class NPClivingBeing : NPCabstract
 	protected NPCdetectionSignController _NPCdetectionSignController;
 
 	protected NPCdebugHUDcontroller _NPCdebugHUDcontroller;
-
+	protected MenuManager _menuManager;
 	protected override void InitializeNPCabstract()
 	{
+		_menuManager = ServiceLocator.Resolve<MenuManager>();
 		_bootstrap = ServiceLocator.Resolve<Bootstrap>();
 		_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
 		_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>();
@@ -140,6 +141,7 @@ public abstract class NPClivingBeing : NPCabstract
 		_NPCdebugHUDcontroller = GetComponent<NPCdebugHUDcontroller>();
 
 		_NPCmovementController.Initialize(
+			_menuManager,
 			_NPCstateMachineController,
 			_navMeshAgent);
 
