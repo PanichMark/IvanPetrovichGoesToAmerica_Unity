@@ -43593,11 +43593,11 @@ PrefabInstance:
       objectReference: {fileID: 7269057075899792634}
     - target: {fileID: 7806101446053906628, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.006196629
+      value: 0.0061966293
       objectReference: {fileID: 0}
     - target: {fileID: 7806101446053906628, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.005830808
+      value: 0.0058308085
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -45566,7 +45566,19 @@ MonoBehaviour:
   _cutscenePlayerCameraProxy: {fileID: 779810798}
   _cutsceneDialogueData: {fileID: 11400000, guid: 33a66eaab4fea7846ae751c71a6473ea, type: 2}
   _ShouldDisarmPlayer: 0
-  _dialogueActorsMapping: []
+  _dialogueActorsMapping:
+  - {fileID: 605700695}
+  - {fileID: 605700695}
+  - {fileID: 0}
+  - {fileID: 605700695}
+  - {fileID: 605700695}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 605700695}
+  - {fileID: 605700695}
+  - {fileID: 0}
+  - {fileID: 605700695}
+  - {fileID: 605700695}
   _shouldMovePlayer: 1
   _newPlayerTransform: {fileID: 11400000, guid: 719b26bc60110c14cb0d1ed3ebe3fe77, type: 2}
   _shouldLoadScene: 0

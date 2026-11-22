@@ -36,7 +36,7 @@ public class CutsceneController : MonoBehaviour
 	[SerializeField] private bool _showMissionGoalHint;
 	[SerializeField] private GameObject _cutscenePlayerProxy;
 	[SerializeField] private GameObject _cutscenePlayerCameraProxy;
-
+	private string _currentActorName;
 	private HUDmissionsController _HUDmissionsController;
 	private MissionsManager _missionsManager;
 	private ViewModelMenuCutscene _viewModelMenuCutscene;
@@ -72,7 +72,7 @@ public class CutsceneController : MonoBehaviour
 	[SerializeField] private bool _ShouldDisarmPlayer;
 
 	[Header("Dialogue actors mapping")]
-	[SerializeField] private List<CutsceneDialogueLinesRoles> _dialogueActorsMapping = new List<CutsceneDialogueLinesRoles>();
+	[SerializeField] private GameObject[] _dialogueActorsMapping;
 
 	private Dictionary<LanguagesEnum, List<string>> _localizedCutsceneDialogues = new Dictionary<LanguagesEnum, List<string>>
 	{
@@ -263,28 +263,25 @@ public class CutsceneController : MonoBehaviour
 		//Debug.Log(currentLanguage);
 		//Debug.Log(_currentCutsceneDialogueLineIndex);
 		_textCutsceneDialogue.SetActive(true);
-		_textComponentCutsceneDialogue.text = _localizedCutsceneDialogues[currentLanguage][_currentCutsceneDialogueLineIndex];
 
 		_isCutsceneDialogueActorPlayer = false;
 
-		foreach (var role in _dialogueActorsMapping)
+		NPClivingBeing NPCactor = null;
+		if (_dialogueActorsMapping[_currentCutsceneDialogueLineIndex] != null)
 		{
-			//Debug.Log(role.DialogueStepIndex);
-			//Debug.Log(_currentCutsceneDialogueLineIndex + 1);
+			NPCactor = _dialogueActorsMapping[_currentCutsceneDialogueLineIndex].GetComponent<NPClivingBeing>();
+		}
 
-			if (role.DialogueStepIndex == _currentCutsceneDialogueLineIndex + 1)
-			{
-				if (role.DialogueLineActor != null)
-				{
-					_audioSource = role.DialogueLineActor.GetComponent<AudioSource>();
-					break;
-				}
-				else
-				{
-					_isCutsceneDialogueActorPlayer = true;
-					break;
-				}
-			}
+		if (NPCactor != null)
+		{
+			_currentActorName = _localizationManager.GetLocalizedString(NPCactor.InteractionObjectNameSystem);
+			_textComponentCutsceneDialogue.text = ($"{_currentActorName}: {_localizedCutsceneDialogues[currentLanguage][_currentCutsceneDialogueLineIndex]}");
+		}
+		else
+		{
+			_isCutsceneDialogueActorPlayer = true;
+			_currentActorName = _localizationManager.GetLocalizedString("NPC_MainCharacter_IvanPetrovich");
+			_textComponentCutsceneDialogue.text = ($"{_currentActorName}: {_localizedCutsceneDialogues[currentLanguage][_currentCutsceneDialogueLineIndex]}");
 		}
 
 		AudioClip[] currentLanguageVoiceLines = null;
