@@ -10,7 +10,8 @@ public class InteractionObjectLockAbstract : MonoBehaviour, IInteractable
 
 	[SerializeField] protected string _interactionObjectNameSystem;
 	public string InteractionHintMessageFail => null;
-
+	public delegate void UnlockLockEventHandler();
+	public event UnlockLockEventHandler OnUnlockLock;
 	public bool IsInteractionHintMessageFailActive => false;
 
 	public string InteractionObjectNameUI { get; protected set; }
@@ -18,6 +19,11 @@ public class InteractionObjectLockAbstract : MonoBehaviour, IInteractable
 	public string InteractionHintMessageAction => _interactionHintMessageAction;
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
+
+	protected void SendLockPickedSignal()
+	{
+		OnUnlockLock?.Invoke();
+	}
 
 	public virtual void Interact()
 	{

@@ -8,8 +8,6 @@ using TMPro;
 
 public class InteractionObjectLockElectronic : InteractionObjectLockAbstract
 {
-	public delegate void UnlockLockEventHandler();
-	public event UnlockLockEventHandler OnUnlockLock;
 
 	private LocalizationManager _localizationManager;
 	
@@ -200,8 +198,9 @@ _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 			yield return new WaitForSecondsRealtime(0.1f);
 		}
 
+		SendLockPickedSignal();
+
 		EndPuzzle();
-		OnUnlockLock?.Invoke();
 	}
 
 	private IEnumerator FlashAndResetButtons()

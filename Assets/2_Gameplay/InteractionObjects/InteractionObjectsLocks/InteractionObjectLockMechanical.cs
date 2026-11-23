@@ -6,11 +6,9 @@ using UnityEngine.UI;
 
 public class InteractionObjectLockMechanical : InteractionObjectLockAbstract
 {
-	public delegate void UnlockLockEventHandler();
-	public event UnlockLockEventHandler OnUnlockLock;
+
 
 	[SerializeField] private GameObject _gearPrefab;
-	[SerializeField] private string _interactionObjectNameSystem;
 	[SerializeField] private int _segmentsCount;
 	[SerializeField] private float _rotationSpeed;
 	[SerializeField] private float _moveSpeed;
@@ -265,8 +263,8 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 			{
 				Debug.Log("Center intersected with END object.");
 				WasUnlocked = true;
+				SendLockPickedSignal();
 				OnClosePuzzle();
-				OnUnlockLock?.Invoke();
 			}
 		}
 	}
