@@ -358,6 +358,11 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 		_currentDialogueStepIndex++;
 
+		if (_currentDialogueStepIndex == _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1)
+		{
+			_currentDialogueStepIndex = _localizedDialogue[_localizationManager.CurrentLanguage].Count;
+		}
+
 		if (_dialogueGesturesDataList.Count > 0)
 		{
 			bool gestureFound = false;
