@@ -13,7 +13,7 @@ public abstract class NPClivingBeing : NPCabstract
 	[SerializeField] protected GameObject _NPCLootObject;
 	[SerializeField] private NPCphrasesData _NPCPhrasesInterested;
 	[SerializeField] private NPCphrasesData _NPCPhrasesAlarmed;
-	[SerializeField] private NPCphrasesData _NPCPhrasesDefeated;
+	//[SerializeField] private NPCphrasesData _NPCPhrasesDefeated;
 
 	// ... (ваши существующие поля) ...
 
