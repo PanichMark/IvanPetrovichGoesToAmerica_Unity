@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ObjectInteracted ", menuName = "Missions/StepConditions/ObjectInteracted ")]
+[CreateAssetMenu(fileName = "ObjectInteracted ", menuName = "Missions/StepConditions/ObjectInteracted")]
 public class MissionStepConditionObjectInteracted : MissionStepConditionAbstract
 {
 

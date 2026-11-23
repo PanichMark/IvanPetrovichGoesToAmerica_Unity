@@ -20,7 +20,8 @@ public class NPCdialogueController : MonoBehaviour
 	public event HeadIKHandler OnStartLookingAtObject;
 	public event HeadIKHandler OnStopLookingAtObject;
 	//public event HeadIKHandler OnAfterAnimatorReapplyIKweights;
-
+	public delegate void DialogueSelectionHandler(int branchIndex, bool isYesSelected);
+	public event DialogueSelectionHandler OnDialogueOptionSelected;
 	private string _currentGestureAnimation;
 	[SerializeField] private NPCdialogueData _NPCdialogueData;
 	private uLipSyncBlendShape _uLipSyncBlendShape;
@@ -509,6 +510,8 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 		DisplayNextDialogueLine();
 		DeactivateButtons();
+
+		OnDialogueOptionSelected?.Invoke(_dialogueBranchStructIndex, isYesSelected);
 
 		_canSkip = true;
 	}

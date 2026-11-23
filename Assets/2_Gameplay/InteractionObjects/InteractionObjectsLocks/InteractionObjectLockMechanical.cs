@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
+public class InteractionObjectLockMechanical : InteractionObjectLockAbstract
 {
 	public delegate void UnlockLockEventHandler();
 	public event UnlockLockEventHandler OnUnlockLock;
@@ -21,7 +21,7 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 	private Button _buttonMoveLockMechanismLeft;
 	private JsonSaveLoadController _saveLoadController;
 	private LocalizationManager _localizationManager;
-	public event IInteractable.InteractableObjectHandler OnInteract;
+	//public event IInteractable.InteractableObjectHandler OnInteract;
 	private Button _buttonExitLockpickMechanicalMenu;
 	private TextMeshProUGUI _textButtonExitLockpickMechanicalMenu;
 	private MenuManager _menuManager;
@@ -48,20 +48,12 @@ public class InteractionObjectLockMechanical : MonoBehaviour, IInteractable
 
 	private List<MeshCollider> _cachedWallColliders;
 
-	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
 
-	private string _interactionHintMessageMain;
-	public string InteractionHintMessageMain => _interactionHintMessageMain;
-
-	public string InteractionHintMessageAction { get; protected set; }
-
-	public string InteractionHintMessageFail => null;
-
-	public bool IsInteractionHintMessageFailActive => false;
 	private GameplayCanvases _gameCanvasesList;
 	private GameObject _canvasLockMechanical;
-	public string InteractionObjectNameUI { get; protected set; }
-	
+
+	private string _interactionHintMessageMain;
+
 	private ViewModelMenuLockpickMechanical _viewModelMenuLockpickMechanical;
 	private void Awake()
 	{
@@ -85,7 +77,7 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 		_buttonMoveLockMechanismLeft = _viewModelMenuLockpickMechanical.ButtonMoveLockMechanismLeft.GetComponent<Button>();
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Lockpick", gameObject.name);
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Lockpick", gameObject.name);
 		_cubeFollow = Resources.Load<GameObject>("InteractionObjects/Locks/Lock_Mechanical_PuzzleCube");
 
 		_buttonMoveLockMechanismUp.onClick.AddListener(RotateGearUp);
@@ -129,7 +121,7 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 		}
 	}
 
-	public void Interact()
+	public override void Interact()
 	{
 		_menuManager.OpenInteractionMenu();
 		_isPuzzleActive = true;
@@ -187,7 +179,7 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 		_movementStep = 0.1f;
 	}
 
-	public void InteractAfterDialogueOrCutscene()
+	public override void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}
@@ -196,7 +188,7 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 	{
 		_localizationManager = localizationManager;
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
-		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Lockpick", gameObject.name);
+		_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Lockpick", gameObject.name);
 		_textButtonExitLockpickMechanicalMenu.text = _localizationManager.GetLocalizedString("UI_Menu_InteractionMenu_LockMechanical_ButtonCloseMenuLockMechanical", gameObject.name);
 		//	_buttonText.text = _localizationManager.GetLocalizedString("MenuInteractionLockPick_ExitButton");
 	

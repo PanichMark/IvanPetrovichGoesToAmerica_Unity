@@ -17,7 +17,8 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 	public float CurrentPlayerHealth { get; private set; }
 	private int _healingItemEffect = 34;
 	public int MaxHealingItemsNumber { get; private set; } = 9;
-
+	public delegate void HealthHandler(float newHealth);
+	public event HealthHandler OnHealthChanged;
 	public int CurrentHealingItemsNumber { get; private set; }
 
 	public bool IsObjectDestroyed => false;
@@ -123,6 +124,8 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 		}
 
 		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
+
+		OnHealthChanged?.Invoke(CurrentPlayerHealth);
 	}
 
 	public void TakeDamage(float amount)
@@ -137,6 +140,8 @@ public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
 		{
 			ObjectIsFullyDamaged();
 		}
+
+		OnHealthChanged?.Invoke(CurrentPlayerHealth);
 	}
 
 	private void FallDamage(PlayerMovementStateTypes playerMovementStateType)

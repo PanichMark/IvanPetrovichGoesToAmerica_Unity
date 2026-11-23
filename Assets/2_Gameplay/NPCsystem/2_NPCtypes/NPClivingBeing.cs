@@ -11,7 +11,7 @@ public abstract class NPClivingBeing : NPCabstract
 	[SerializeField] private InteractionObjectPickableData _NPCPickableBodyType;
 	private Bootstrap _bootstrap;
 	[SerializeField] protected GameObject _NPCLootObject;
-
+	private MissionsManager _missionsManager;
 	//[SerializeField] private NPCphrasesData _NPCPhrasesDefeated;
 
 	// ... (ваши существующие поля) ...
@@ -94,6 +94,7 @@ public abstract class NPClivingBeing : NPCabstract
 	protected MenuManager _menuManager;
 	protected override void InitializeNPCabstract()
 	{
+		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 		_menuManager = ServiceLocator.Resolve<MenuManager>();
 		_bootstrap = ServiceLocator.Resolve<Bootstrap>();
 		_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
@@ -141,6 +142,7 @@ public abstract class NPClivingBeing : NPCabstract
 
 		_NPCmovementController.Initialize(
 			_menuManager,
+			_missionsManager,
 			_NPCstateMachineController,
 			_navMeshAgent);
 

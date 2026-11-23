@@ -6,24 +6,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
+public class InteractionObjectLockElectronic : InteractionObjectLockAbstract
 {
 	public delegate void UnlockLockEventHandler();
 	public event UnlockLockEventHandler OnUnlockLock;
 
 	private LocalizationManager _localizationManager;
-	[SerializeField] private string _interactionObjectNameSystem;
-	private string _interactionHintMessageAction;
-	private string _interactionHintMessageMain;
+	
+
 	public bool WasUnlocked { get; private set; }
-	public event IInteractable.InteractableObjectHandler OnInteract;
-	public string InteractionObjectNameSystem => _interactionObjectNameSystem;
-	public string InteractionObjectNameUI { get; protected set; }
-	public string InteractionHintMessageMain => _interactionHintMessageMain;
-	public string InteractionHintMessageAction => _interactionHintMessageAction;
-	public string InteractionHintMessageFail => null;
-	private bool _isPuzzleActive;
-	public bool IsInteractionHintMessageFailActive => false;
+	//public event IInteractable.InteractableObjectHandler OnInteract;
 
 	private Button _buttonExitLockpickElectronicMenu;
 	private TextMeshProUGUI _textButtonExitLockpickElectronicMenu;
@@ -38,6 +30,7 @@ public class InteractionObjectLockElectronic : MonoBehaviour, IInteractable
 	private GameplayCanvases _gameCanvasesList;
 	private GameObject _canvasLockEletcronic;
 	private ViewModelMenuLockpickElectronic _viewModelMenuLockpickElectronic;
+	private bool _isPuzzleActive;
 	void Awake()
 	{
 		_gameCanvasesList = ServiceLocator.Resolve<GameplayCanvases>();
@@ -109,7 +102,7 @@ _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 		}
 	}
 
-	public void Interact()
+	public override void Interact()
 	{
 		if (!_isPuzzleActive)
 		{
@@ -120,7 +113,7 @@ _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 		}
 	}
 
-	public void InteractAfterDialogueOrCutscene()
+	public override void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

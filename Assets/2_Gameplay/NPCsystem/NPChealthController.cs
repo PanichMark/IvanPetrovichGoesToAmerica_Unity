@@ -6,7 +6,8 @@ public class NPChealthController : MonoBehaviour, IDamageable
 
 	public delegate void NPChealthHandler(float newHealth);
 	public event NPChealthHandler OnNPChealthChanged;
-
+	public delegate void HealthHandler(float newHealth);
+	public event HealthHandler OnHealthChanged;
 	public ConfigNPCHealth NPCconfigHealth => _NPCconfigHealth;	
 	public bool IsObjectDestroyed => false;
 	private NPCabstract _NPCabstract;
@@ -54,6 +55,8 @@ public class NPChealthController : MonoBehaviour, IDamageable
 				ObjectIsFullyDamaged();
 			}
 		}
+
+		OnHealthChanged?.Invoke(_currentHealth);
 	}
 
 	public void ObjectIsFullyDamaged()

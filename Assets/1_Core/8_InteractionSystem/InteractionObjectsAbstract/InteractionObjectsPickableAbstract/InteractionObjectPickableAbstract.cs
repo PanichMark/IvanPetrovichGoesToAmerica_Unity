@@ -10,7 +10,8 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectJsonSave
 	[SerializeField] protected string _interactionObjectNameSystem;
 
 	[SerializeField] protected InteractionObjectPickableData _interactionObjectPickableType;
-
+	public delegate void PickableObjectHandler();
+public event PickableObjectHandler OnPickableObjectReleased;
 	public InteractionObjectsPickableTypes PickableType => _interactionObjectPickableType.PickableType;
 
 	protected PlayerInteractionController _playerInteractionController;
@@ -42,6 +43,11 @@ public abstract class InteractionObjectPickableAbstract : GameplayObjectJsonSave
 	public bool IsObjectDestroyed => _isObjectDestroyed;
 
 	protected bool _isObjectDestroyed;
+
+	protected virtual void SendSignalOnReleaseObject()
+	{
+		OnPickableObjectReleased?.Invoke();
+	}
 
 	protected virtual void InitializePickable()
 	{
@@ -169,7 +175,7 @@ _pickableLayer = LayerMask.NameToLayer("Pickable");
 		}
 
 		IsObjectPickedUp = false;
-
+		SendSignalOnReleaseObject();
 		transform.parent = null;
 		transform.localPosition += transform.forward * 0.3f;
 

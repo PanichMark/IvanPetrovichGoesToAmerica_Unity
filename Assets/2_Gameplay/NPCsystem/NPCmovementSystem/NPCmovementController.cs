@@ -8,11 +8,11 @@ public class NPCmovementController : MonoBehaviour
 	public int CurrentGoalAnchorPointIndex {  get; private set; }
 	private Coroutine _currentMovementCoroutine;
 	private NavMeshAgent _navMeshAgent;
-	[SerializeField] private List<NPCanchorData> _anchorData = new List<NPCanchorData>();
-	public List<NPCanchorData> AnchorData => _anchorData;
+	[SerializeField] private List<NPCmovementAnchorData> _anchorData = new List<NPCmovementAnchorData>();
+	public List<NPCmovementAnchorData> AnchorData => _anchorData;
 	public float AnimationDuration => _animationDuration;
 	private float _animationDuration = 99999f;
-
+	private MissionsManager _missionsManager;
 	public Coroutine currentRotationCoroutine { get; private set; }
 	private NPCstateMachineController _NPCstateMachineController;
 	private float _initialRotationY;
@@ -21,9 +21,11 @@ public class NPCmovementController : MonoBehaviour
 	public float CurrentStationaryWaitTime { get; private set; }
 	public void Initialize(
 		MenuManager menuManager,
+		MissionsManager missionsManager,
 		NPCstateMachineController NPCstateMachineController,
 		NavMeshAgent navMeshAgent)
 	{
+		_missionsManager = missionsManager;
 		_menuManager = menuManager;
 		_NPCstateMachineController = NPCstateMachineController;
 		_initialRotationY = transform.eulerAngles.y;
@@ -80,43 +82,41 @@ public class NPCmovementController : MonoBehaviour
 
 		while (true)
 		{
-
 			GameObject targetPoint = _anchorData[CurrentGoalAnchorPointIndex].NPCanchorPoint;
-
 			_navMeshAgent.destination = targetPoint.transform.position;
 
-			
 			while (_navMeshAgent.pathPending || _navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
 			{
 				yield return null;
 			}
-			
 
-			//while (_navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
-			//{
-			//	yield return null;
-			//}
-
-			
-			//Debug.Log(gameObject.name);
-			//Debug.Log(CurrentGoalAnchorPointIndex);
 			float waitDuration = _anchorData[CurrentGoalAnchorPointIndex].NPCwaitDuration;
+			MissionStep requiredStep = _anchorData[CurrentGoalAnchorPointIndex].RequiredMissionStepToProceed;
+
 			CurrentGoalAnchorPointIndex++;
-			if (waitDuration > 0)
+			if (CurrentGoalAnchorPointIndex >= _anchorData.Count)
 			{
-				StartCoroutine(WaitFor(waitDuration));
+				CurrentGoalAnchorPointIndex = 0;
+			}
+
+			if (requiredStep != null)
+			{
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.StationaryAction);
 
-				yield return null;
-			}
-			else
-			{
-				if (CurrentGoalAnchorPointIndex >= _anchorData.Count)
+				// ИСПРАВЛЕННАЯ СТРОКА: Сравниваем индекс из MissionManager с индексом шага в массиве Mission.MissionSteps
+				int requiredStepIndex = System.Array.IndexOf(_missionsManager.ActiveMission.MissionSteps, requiredStep);
+				while (_missionsManager.CurrentStepIndex != requiredStepIndex)
 				{
-					CurrentGoalAnchorPointIndex = 0;
+					yield return null;
 				}
-			}
 
+				_NPCstateMachineController.SetNPCState(NPCstateTypes.Patrolling);
+			}
+			else if (waitDuration > 0)
+			{
+				_NPCstateMachineController.SetNPCState(NPCstateTypes.StationaryAction);
+				yield return StartCoroutine(WaitFor(waitDuration));
+			}
 		}
 	}
 

@@ -132,7 +132,7 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 		IsObjectPickedUp = false;
 		transform.parent = null;
 		_wasThrown = true;
-
+		SendSignalOnReleaseObject();
 		_canObjectBeDestroyedOnImpact = true;
 
 		Vector3 throwDirection = CachedPlayer.transform.forward - Camera.main.transform.up * Mathf.Tan(Camera.main.transform.eulerAngles.x * Mathf.Deg2Rad);
