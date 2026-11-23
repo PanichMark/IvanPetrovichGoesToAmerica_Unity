@@ -90,6 +90,7 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 	public virtual void InteractAfterDialogueOrCutscene()
 	{
 		Debug.Log("DIALOGUE INTERACT!");
+		SendGainedItemInfoToInteractionController();
 		gameObject.SetActive(false);
 		OnInteract?.Invoke();
 	}
