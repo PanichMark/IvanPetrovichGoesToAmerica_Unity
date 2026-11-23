@@ -50141,7 +50141,7 @@ MonoBehaviour:
     DoesIvanAnswerOnYes: 1
     DoesIvanAnswerOnNo: 1
     ActionOnYesAnswer: {fileID: 0}
-    ActionOnNoAnswer: {fileID: 1878783523}
+    ActionOnNoAnswer: {fileID: 2124069698}
   _dialogueDefaultAnimationStateName: {fileID: 3091315475550263998, guid: 3df9367abff42f945a89f114be95b4c6, type: 3}
   _dialogueGesturesDataList: []
   _dialogueFacialExpressionsDataList: []
@@ -110687,11 +110687,6 @@ MonoBehaviour:
   m_ObjectForwardAxis: 2
   m_ObjectUpAxis: 1
   m_StartOffset: 0
---- !u!1 &1878783523 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 751171582044607888, guid: 6552881ab8b00b645a20e13f2f2c0f72, type: 3}
-  m_PrefabInstance: {fileID: 1449802867}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1879403524
 GameObject:
   m_ObjectHideFlags: 0
@@ -125573,6 +125568,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+--- !u!1 &2124069698 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1924960421275062703, guid: f30cbfe64858bfd4a9aa14d063a42368, type: 3}
+  m_PrefabInstance: {fileID: 2124069697}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2130202199
 GameObject:
   m_ObjectHideFlags: 0

@@ -40,7 +40,8 @@ public class NPCdialogueController : MonoBehaviour
 	private Button _buttonDialogueNo;
 
 	private LocalizationManager _localizationManager;
-	private bool _PerformActionOnYesFinal;
+	private bool _performActionOnYesFinal;
+	private bool _performActionOnNoFinal;
 	private GameObject _textDialogueYes;
 	private GameObject _textDialogueNo;
 	private NPCabstract _NPCabstract;
@@ -184,25 +185,54 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 			_buttonDialogueNo.onClick.RemoveAllListeners();
 			_gameController.MakeGameSavable();
 			_currentDialogueStepIndex = 0;
-			_dialogueBranchStructIndex = 0;
+			
 			_menuManager.CloseDialogueMenu();
 			HideNPCDialogueCanvas();
 			IsDialogueActive = false;
 			DeactivateButtons();
 
-			if (_PerformActionOnYesFinal)
+			Debug.Log(_performActionOnYesFinal);
+			Debug.Log(_performActionOnNoFinal);
+
+			if (_performActionOnYesFinal)
 			{
-				if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<IInteractable>() != null)
+				var yesActionObject = _dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer;
+				if (yesActionObject != null)
 				{
-					_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<IInteractable>().InteractAfterDialogueOrCutscene();
+					var interactable = yesActionObject.GetComponent<IInteractable>();
+					if (interactable != null)
+					{
+						interactable.InteractAfterDialogueOrCutscene();
+					}
+					var cutscene = yesActionObject.GetComponent<CutsceneController>();
+					if (cutscene != null)
+					{
+						cutscene.TriggerCutscene(null);
+					}
 				}
-				if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>() != null)
-				{
-					_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer.GetComponent<CutsceneController>().TriggerCutscene(null);
-				}
-				_PerformActionOnYesFinal = false;
+				_performActionOnYesFinal = false;
 			}
 
+			if (_performActionOnNoFinal)
+			{
+				var noActionObject = _dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnNoAnswer;
+				if (noActionObject != null)
+				{
+					var interactable = noActionObject.GetComponent<IInteractable>();
+					if (interactable != null)
+					{
+						interactable.InteractAfterDialogueOrCutscene();
+					}
+					var cutscene = noActionObject.GetComponent<CutsceneController>();
+					if (cutscene != null)
+					{
+						cutscene.TriggerCutscene(null);
+					}
+				}
+				_performActionOnNoFinal = false;
+			}
+
+			_dialogueBranchStructIndex = 0;
 			ChangeGestureAnimation(_originalAnimationStateName);
 			_playerCameraController.SetPostDialogueCameraTransform();
 			OnStopLookingAtObject?.Invoke(_playerEyesLookAt);
@@ -328,16 +358,6 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 		_currentDialogueStepIndex++;
 
-		if (_currentDialogueStepIndex == _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1)
-		{
-			_currentDialogueStepIndex = _localizedDialogue[_localizationManager.CurrentLanguage].Count;
-
-			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer != null)
-			{
-				_PerformActionOnYesFinal = true;
-			}
-		}
-
 		if (_dialogueGesturesDataList.Count > 0)
 		{
 			bool gestureFound = false;
@@ -427,13 +447,26 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 	private void SelectOption(bool isYesSelected)
 	{
+		_performActionOnNoFinal = false;
+		_performActionOnYesFinal = false;
+
 		if (isYesSelected)
 		{
 			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].DialogueBranchLine + 2;
+
+			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer != null)
+			{
+				_performActionOnYesFinal = true;
+			}
 		}
 		else
 		{
 			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1;
+
+			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnNoAnswer != null)
+			{
+				_performActionOnNoFinal = true;
+			}
 		}
 
 			_buttonDialogueYes.onClick.RemoveAllListeners();
