@@ -62,7 +62,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		_gameSceneManager.OnEndLoadingGameplayScene += ShowMissionGoalHUD;
 
-		_gameSceneManager.OnBeginLoadingGameplayScene += () => ResetAllStepTurnOnOffLists();
+		_gameSceneManager.OnBeginLoadingGameplayScene += () => ResetAllMissionStepsActionLists();
 
 		ResetAllStepConditions();
 
@@ -103,7 +103,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		}
 	}
 
-	private void ResetAllStepTurnOnOffLists()
+	private void ResetAllMissionStepsActionLists()
 	{
 		if (_gameMissions == null || _gameMissions.MissionsInOrder == null)
 			return;
@@ -115,6 +115,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 			foreach (var step in mission.MissionSteps)
 			{
 				step.ClearGameObjectsTurnOnOffLists();
+				step.ClearNPCdialoguesAvailabilityLists();
 			}
 		}
 	}

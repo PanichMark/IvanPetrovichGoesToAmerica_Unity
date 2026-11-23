@@ -43521,7 +43521,7 @@ PrefabInstance:
       objectReference: {fileID: 1611142365}
     - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _NPCName
-      value: NPC_Preist_Male
+      value: NPC_Priest_Male
       objectReference: {fileID: 0}
     - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _NPCPhrasesDefault
@@ -43619,6 +43619,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 159260596393591729, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1611142365}
+    - targetCorrespondingSourceObject: {fileID: 159260596393591729, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1611142386}
   m_SourcePrefab: {fileID: 100100000, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
 --- !u!4 &605700693 stripped
 Transform:
@@ -110877,6 +110880,19 @@ MonoBehaviour:
   _dialogueDefaultAnimationStateName: {fileID: 3091315475550263998, guid: 3df9367abff42f945a89f114be95b4c6, type: 3}
   _dialogueGesturesDataList: []
   _dialogueFacialExpressionsDataList: []
+--- !u!114 &1611142386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605700695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f06b4fd38617847bb598381a418fb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkedMissionStep: {fileID: 11400000, guid: e1b907ecb4ea6774aac6f422acef379e, type: 2}
 --- !u!1 &1611337218
 GameObject:
   m_ObjectHideFlags: 0

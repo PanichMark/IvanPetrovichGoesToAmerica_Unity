@@ -60,12 +60,14 @@ public class MissionStep : ScriptableObject
 				obj.GetComponent<IMissionStepActionNPCdialogueAvailability>().EnableDialogue();
 			}
 		}
-
+		//Debug.Log("STEP SARTED");
+		Debug.Log(_NPCdialoguesDisable.Count);
 		if (_NPCdialoguesDisable.Count > 0)
 		{
 			foreach (var obj in _NPCdialoguesDisable)
 			{
 				obj.GetComponent<IMissionStepActionNPCdialogueAvailability>().DisableDialogue();
+				//Debug.Log(obj.name);
 			}
 		}
 	}
@@ -132,14 +134,14 @@ public class MissionStep : ScriptableObject
 		_gameObjectTurnOff.Add(objectTurnOff);
 	}
 
-	public void RegisterNPCdialoguesEnable(GameObject objectTurnOn)
+	public void RegisterNPCdialoguesEnable(GameObject NPCwithDialogue)
 	{
-		_gameObjectTurnOn.Add(objectTurnOn);
+		_NPCdialoguesEnable.Add(NPCwithDialogue);
 	}
 
-	public void RegisterNPCdialoguesDisable(GameObject objectTurnOff)
+	public void RegisterNPCdialoguesDisable(GameObject NPCwithDialogue)
 	{
-		_gameObjectTurnOff.Add(objectTurnOff);
+		_NPCdialoguesDisable.Add(NPCwithDialogue);
 	}
 
 	public void RegisterMissionStepGoalMarkerObject(GameObject markerObject)

@@ -11503,9 +11503,9 @@ MonoBehaviour:
   _cutscenePlayerProxy: {fileID: 0}
   _cutscenePlayerCameraProxy: {fileID: 0}
   _cutsceneDialogueData: {fileID: 0}
+  _animatedNPCs: []
   _ShouldDisarmPlayer: 1
   _dialogueActorsMapping: []
-  _shouldMovePlayer: 0
   _newPlayerTransform: {fileID: 0}
   _shouldLoadScene: 0
   _sceneToLoadAfterCutscene: 0
@@ -38197,7 +38197,7 @@ PrefabInstance:
       objectReference: {fileID: 942794710}
     - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _NPCName
-      value: NPC_Preist_Male
+      value: NPC_Priest_Male
       objectReference: {fileID: 0}
     - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _NPCPhrasesDefault
@@ -59114,9 +59114,9 @@ MonoBehaviour:
   _cutscenePlayerProxy: {fileID: 0}
   _cutscenePlayerCameraProxy: {fileID: 0}
   _cutsceneDialogueData: {fileID: 0}
+  _animatedNPCs: []
   _ShouldDisarmPlayer: 0
   _dialogueActorsMapping: []
-  _shouldMovePlayer: 0
   _newPlayerTransform: {fileID: 0}
   _shouldLoadScene: 0
   _sceneToLoadAfterCutscene: 0
@@ -61800,15 +61800,12 @@ MonoBehaviour:
   _cutscenePlayerProxy: {fileID: 0}
   _cutscenePlayerCameraProxy: {fileID: 0}
   _cutsceneDialogueData: {fileID: 11400000, guid: df40b53820a8bd044ada718ecf37440c, type: 2}
+  _animatedNPCs: []
   _ShouldDisarmPlayer: 0
   _dialogueActorsMapping:
-  - DialogueStepIndex: 1
-    DialogueLineActor: {fileID: 0}
-  - DialogueStepIndex: 2
-    DialogueLineActor: {fileID: 0}
-  - DialogueStepIndex: 3
-    DialogueLineActor: {fileID: 0}
-  _shouldMovePlayer: 0
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   _newPlayerTransform: {fileID: 0}
   _shouldLoadScene: 0
   _sceneToLoadAfterCutscene: 0
@@ -75758,7 +75755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _NPCName
-      value: NPC_Preist_Male
+      value: NPC_Priest_Male
       objectReference: {fileID: 0}
     - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _NPCPhrasesDefault
