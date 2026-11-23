@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MissionStepObjectRegistractionTurnOff : MonoBehaviour
+public class MissionStepRegistrationGameObjectTurnOff : MonoBehaviour
 {
 	[SerializeField] private MissionStep _linkedMissionStep;
 

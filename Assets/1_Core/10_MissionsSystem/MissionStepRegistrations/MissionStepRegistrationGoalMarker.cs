@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MissionStepGoalMarkerRegistration : MonoBehaviour
+public class MissionStepRegistrationGoalMarker : MonoBehaviour
 {
     [SerializeField] private MissionStep _missionStepGoalMarker;
 
