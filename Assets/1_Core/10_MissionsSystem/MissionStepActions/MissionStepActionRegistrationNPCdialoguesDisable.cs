@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class MissionStepRegistrationNPCdialoguesDisable : MonoBehaviour
+public class MissionStepActionRegistrationNPCdialoguesDisable : MonoBehaviour
 {
 	[SerializeField] private MissionStep _linkedMissionStep;
 

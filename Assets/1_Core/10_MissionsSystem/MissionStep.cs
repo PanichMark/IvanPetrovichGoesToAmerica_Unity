@@ -45,12 +45,27 @@ public class MissionStep : ScriptableObject
 
 		if (_gameObjectTurnOff.Count > 0)
 		{
-			
 			foreach (var obj in _gameObjectTurnOff)
 			{
 				Debug.Log("TurnOFF");
 				Debug.Log(obj.name);
 				obj.SetActive(false);
+			}
+		}
+
+		if (_NPCdialoguesEnable.Count > 0)
+		{
+			foreach (var obj in _NPCdialoguesEnable)
+			{
+				obj.GetComponent<IMissionStepActionNPCdialogueAvailability>().EnableDialogue();
+			}
+		}
+
+		if (_NPCdialoguesDisable.Count > 0)
+		{
+			foreach (var obj in _NPCdialoguesDisable)
+			{
+				obj.GetComponent<IMissionStepActionNPCdialogueAvailability>().DisableDialogue();
 			}
 		}
 	}
@@ -70,7 +85,7 @@ public class MissionStep : ScriptableObject
 
 
 		ClearGameObjectsTurnOnOffLists();
-		ClearNPCdialoguesTurnEnableDisableLists();
+		ClearNPCdialoguesAvailabilityLists();
 
 
 		foreach (var condition in StepConditions)
@@ -93,7 +108,7 @@ public class MissionStep : ScriptableObject
 		}
 	}
 
-	public void ClearNPCdialoguesTurnEnableDisableLists()
+	public void ClearNPCdialoguesAvailabilityLists()
 	{
 
 		//Debug.Log(GameObjectTurnOn.Count);

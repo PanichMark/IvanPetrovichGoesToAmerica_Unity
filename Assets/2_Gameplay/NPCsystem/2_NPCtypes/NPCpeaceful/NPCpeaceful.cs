@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class NPCpeaceful : NPClivingBeing
+public class NPCpeaceful : NPClivingBeing, IMissionStepActionNPCdialogueAvailability
 {
 	private NPCdialogueController _NPCdialogueController;
 	[SerializeField] private NPCpeacefulReactionType _NPCPeacefulReactionType;
