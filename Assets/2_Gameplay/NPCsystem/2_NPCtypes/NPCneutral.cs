@@ -34,6 +34,22 @@ public class NPCneutral : NPClivingBeing
 			_NPCanimator);
 	}
 
+	public void EnableDialogue()
+	{
+		if (_NPCdialogueController != null)
+		{
+			_NPCdialogueController.enabled = true;
+		}
+	}
+
+	public void DisableDialogue()
+	{
+		if (_NPCdialogueController != null)
+		{
+			_NPCdialogueController.enabled = false;
+		}
+	}
+
 	public override void Interact()
 	{
 		if (_NPCstateMachineController.CurrentNPCState == NPCstateTypes.Dead || _NPCstateMachineController.CurrentNPCState == NPCstateTypes.Unconscious)
@@ -58,7 +74,7 @@ public class NPCneutral : NPClivingBeing
 
 		if (!_canNPCbeRobbed)
 		{
-			if (_NPCdialogueController != null)
+			if (_NPCdialogueController != null && _NPCdialogueController.enabled == true)
 			{
 				_NPCdialogueController.Interact();
 			}

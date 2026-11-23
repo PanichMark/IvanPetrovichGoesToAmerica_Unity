@@ -18,6 +18,22 @@ public class NPCpeaceful : NPClivingBeing
 		}
 	}
 
+	public void EnableDialogue()
+	{
+		if (_NPCdialogueController != null)
+		{
+			_NPCdialogueController.enabled = true;
+		}
+	}
+
+	public void DisableDialogue()
+	{
+		if (_NPCdialogueController != null)
+		{
+			_NPCdialogueController.enabled = false;
+		}
+	}
+
 	public override void Interact()
 	{
 		//Debug.Log("NPC interact");
@@ -44,7 +60,8 @@ public class NPCpeaceful : NPClivingBeing
 
 		if (!_canNPCbeRobbed)
 		{
-			if (_NPCdialogueController != null)
+			if (_NPCdialogueController != null && _NPCdialogueController.enabled == true)
+
 			{
 				_NPCdialogueController.Interact();
 			}

@@ -9,8 +9,11 @@ public class MissionStep : ScriptableObject
 	private MissionsManager _missionsManager;
 	public bool ShowMissionMarker => showMissionMarker;
 
-	private List<GameObject> GameObjectTurnOn = new List<GameObject>();
-	private List<GameObject> GameObjectTurnOff = new List<GameObject>();
+	private List<GameObject> _gameObjectTurnOn = new List<GameObject>();
+	private List<GameObject> _gameObjectTurnOff = new List<GameObject>();
+
+	private List<GameObject> _NPCdialoguesEnable = new List<GameObject>();
+	private List<GameObject> _NPCdialoguesDisable = new List<GameObject>();
 
 	public GameObject MissionStepGoalMarkerObject {  get; private set; }
 
@@ -30,9 +33,9 @@ public class MissionStep : ScriptableObject
 
 	public void OnStepStarted()
 	{
-		if (GameObjectTurnOn.Count > 0)
+		if (_gameObjectTurnOn.Count > 0)
 		{
-			foreach (var obj in GameObjectTurnOn)
+			foreach (var obj in _gameObjectTurnOn)
 			{
 				Debug.Log("TurnON");
 				Debug.Log(obj.name);
@@ -40,10 +43,10 @@ public class MissionStep : ScriptableObject
 			}
 		}
 
-		if (GameObjectTurnOff.Count > 0)
+		if (_gameObjectTurnOff.Count > 0)
 		{
 			
-			foreach (var obj in GameObjectTurnOff)
+			foreach (var obj in _gameObjectTurnOff)
 			{
 				Debug.Log("TurnOFF");
 				Debug.Log(obj.name);
@@ -66,7 +69,8 @@ public class MissionStep : ScriptableObject
 		_missionsManager = missionsManager;
 
 
-		ClearTurnOnOffLists();
+		ClearGameObjectsTurnOnOffLists();
+		ClearNPCdialoguesTurnEnableDisableLists();
 
 
 		foreach (var condition in StepConditions)
@@ -75,28 +79,52 @@ public class MissionStep : ScriptableObject
 		}
 	}
 
-	public void ClearTurnOnOffLists()
+	public void ClearGameObjectsTurnOnOffLists()
 	{
 
 		//Debug.Log(GameObjectTurnOn.Count);
-		if (GameObjectTurnOn.Count > 0)
+		if (_gameObjectTurnOn.Count > 0)
 		{
-			GameObjectTurnOn.Clear();
+			_gameObjectTurnOn.Clear();
 		}
-		if (GameObjectTurnOff.Count > 0)
+		if (_gameObjectTurnOff.Count > 0)
 		{
-			GameObjectTurnOff.Clear();
+			_gameObjectTurnOff.Clear();
+		}
+	}
+
+	public void ClearNPCdialoguesTurnEnableDisableLists()
+	{
+
+		//Debug.Log(GameObjectTurnOn.Count);
+		if (_NPCdialoguesEnable.Count > 0)
+		{
+			_NPCdialoguesEnable.Clear();
+		}
+		if (_NPCdialoguesDisable.Count > 0)
+		{
+			_NPCdialoguesDisable.Clear();
 		}
 	}
 
 	public void RegisterObjectsTurnOn(GameObject objectTurnOn)
 	{
-		GameObjectTurnOn.Add(objectTurnOn);
+		_gameObjectTurnOn.Add(objectTurnOn);
 	}
 
 	public void RegisterObjectsTurnOff(GameObject objectTurnOff)
 	{
-		GameObjectTurnOff.Add(objectTurnOff);
+		_gameObjectTurnOff.Add(objectTurnOff);
+	}
+
+	public void RegisterNPCdialoguesEnable(GameObject objectTurnOn)
+	{
+		_gameObjectTurnOn.Add(objectTurnOn);
+	}
+
+	public void RegisterNPCdialoguesDisable(GameObject objectTurnOff)
+	{
+		_gameObjectTurnOff.Add(objectTurnOff);
 	}
 
 	public void RegisterMissionStepGoalMarkerObject(GameObject markerObject)
