@@ -344,15 +344,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCPhrasesDefault: {fileID: 0}
-  _NPCBodyType: {fileID: 0}
-  _NPCPickableBodyType: {fileID: 0}
+  _NPCPickableBodyType: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
   _NPCLootObject: {fileID: 0}
-  _NPCPhrasesInterested: {fileID: 0}
-  _NPCPhrasesAlarmed: {fileID: 0}
-  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPhrasesDataPeaceful: {fileID: 0}
   _NPCPeacefulReactionType: 0
-  _NPCPhrasesAfraid: {fileID: 0}
 --- !u!114 &6553842799769070374
 MonoBehaviour:
   m_ObjectHideFlags: 0

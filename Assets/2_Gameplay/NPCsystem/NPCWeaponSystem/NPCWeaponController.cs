@@ -39,20 +39,20 @@ public class NPCweaponController : MonoBehaviour
 
 		if (_weaponHandType == WeaponHandType.Right)
 		{
-			_weaponHandSlot = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R").gameObject;
+			_weaponHandSlot = transform.Find("NPC_3Dmodel/ArmatureHitbox/Armature_Humanoid/Root/Spine/Arm.R/Forearm.R/Palm.R/WeaponSlot_Hand.R").gameObject;
 		}
 		else
 		{
-			_weaponHandSlot = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/WeaponSlot_Hand.L").gameObject;
+			_weaponHandSlot = transform.Find("NPC_3Dmodel/ArmatureHitbox/Armature_Humanoid/Root/Spine/Arm.L/Forearm.L/Palm.L/WeaponSlot_Hand.L").gameObject;
 		}
 
 		if (_weaponRestingSlotType == NPCweaponSlotTypes.Belt)
 		{
-			_weaponRestingSlot = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/WeaponSlot_Belt").gameObject;
+			_weaponRestingSlot = transform.Find("NPC_3Dmodel/ArmatureHitbox/Armature_Humanoid/Root/WeaponSlot_Belt").gameObject;
 		}
 		if (_weaponRestingSlotType == NPCweaponSlotTypes.Chest)
 		{
-			_weaponRestingSlot = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine/WeaponSlot_Chest").gameObject;
+			_weaponRestingSlot = transform.Find("NPC_3Dmodel/ArmatureHitbox/Armature_Humanoid/Root/Spine/WeaponSlot_Chest").gameObject;
 		}
 		if (_weaponRestingSlotType == NPCweaponSlotTypes.Hand)
 		{
@@ -66,7 +66,7 @@ public class NPCweaponController : MonoBehaviour
 			TransferWeaponEugenicBones(_weaponHandType);
 		}
 
-		_NPCweaponAttackPoint = transform.Find("NPC_3Dmodel/HitboxArmature/Armature_Humanoid/Root/Spine");
+		_NPCweaponAttackPoint = transform.Find("NPC_3Dmodel/ArmatureHitbox/Armature_Humanoid/Root/Spine");
 		_NPCweaponAttackPoint.rotation = Quaternion.Euler(0f, 90f, 0f);
 
 		_NPCweaponComponent.InstantiateWeaponNPC(_weaponRestingSlot.transform, _NPCweaponAttackPoint);
