@@ -6017,6 +6017,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5530120989385960007, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
   m_PrefabInstance: {fileID: 122125726}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &122125728 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 159260596393591729, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
+  m_PrefabInstance: {fileID: 122125726}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &122675948
 GameObject:
   m_ObjectHideFlags: 0
@@ -50142,6 +50147,10 @@ MonoBehaviour:
     DoesIvanAnswerOnNo: 1
     ActionOnYesAnswer: {fileID: 0}
     ActionOnNoAnswer: {fileID: 2124069698}
+    NPCStateChangesOnYes:
+    - npcObject: {fileID: 122125728}
+      stateToSet: 24
+    NPCStateChangesOnNo: []
   _dialogueDefaultAnimationStateName: {fileID: 3091315475550263998, guid: 3df9367abff42f945a89f114be95b4c6, type: 3}
   _dialogueGesturesDataList: []
   _dialogueFacialExpressionsDataList: []

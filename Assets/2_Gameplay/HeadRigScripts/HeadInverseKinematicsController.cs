@@ -26,7 +26,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 		if (_NPCDialogueController != null)
 		{
-			_NPCDialogueController.OnAfterAnimatorReapplyIKweights += ForceApplyIKWeight;
+			//_NPCDialogueController.OnAfterAnimatorReapplyIKweights += ForceApplyIKWeight;
 			_NPCDialogueController.OnStartLookingAtObject += SetHeadToDialogueOrCustcene;
 			_NPCDialogueController.OnStartLookingAtObject += StartLookingAtObject;
 			_NPCDialogueController.OnStopLookingAtObject += RemoveHeadToDialogueOrCustcene;
@@ -61,7 +61,7 @@ public class HeadInverseKinematicsController : MonoBehaviour
 
 		if (_NPCDialogueController != null)
 		{
-			_NPCDialogueController.OnAfterAnimatorReapplyIKweights -= ForceApplyIKWeight;
+			//_NPCDialogueController.OnAfterAnimatorReapplyIKweights -= ForceApplyIKWeight;
 			_NPCDialogueController.OnStartLookingAtObject -= StartLookingAtObject;
 			_NPCDialogueController.OnStartLookingAtObject -= StartLookingAtObject;
 			_NPCDialogueController.OnStopLookingAtObject -= RemoveHeadToDialogueOrCustcene;

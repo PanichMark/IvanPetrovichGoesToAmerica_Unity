@@ -19,7 +19,7 @@ public class NPCdialogueController : MonoBehaviour
 	public delegate void HeadIKHandler(GameObject objectToLookAt);
 	public event HeadIKHandler OnStartLookingAtObject;
 	public event HeadIKHandler OnStopLookingAtObject;
-	public event HeadIKHandler OnAfterAnimatorReapplyIKweights;
+	//public event HeadIKHandler OnAfterAnimatorReapplyIKweights;
 
 	private string _currentGestureAnimation;
 	[SerializeField] private NPCdialogueData _NPCdialogueData;
@@ -47,6 +47,9 @@ public class NPCdialogueController : MonoBehaviour
 	private NPCabstract _NPCabstract;
 	private TextMeshProUGUI _textComponentDialogueYes;
 	private TextMeshProUGUI _textComponentDialogueNo;
+	// Флаги для новой логики смены состояния NPC
+	private bool _performNPCStateChangeOnYes;
+	private bool _performNPCStateChangeOnNo;
 	private PlayerInteractionController _interactionController;
 	private Dictionary<LanguagesEnum, List<string>> _localizedDialogue = new Dictionary<LanguagesEnum, List<string>>
 	{
@@ -230,6 +233,18 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 					}
 				}
 				_performActionOnNoFinal = false;
+			}
+
+			if (_performNPCStateChangeOnYes)
+			{
+				ApplyStateFromStructList(_dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnYes);
+				_performNPCStateChangeOnYes = false;
+			}
+
+			if (_performNPCStateChangeOnNo)
+			{
+				ApplyStateFromStructList(_dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnNo);
+				_performNPCStateChangeOnNo = false;
 			}
 
 			_dialogueBranchStructIndex = 0;
@@ -452,29 +467,44 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 	private void SelectOption(bool isYesSelected)
 	{
-		_performActionOnNoFinal = false;
+		// Сбрасываем ВСЕ флаги
 		_performActionOnYesFinal = false;
+		_performActionOnNoFinal = false;
+		_performNPCStateChangeOnYes = false;
+		_performNPCStateChangeOnNo = false;
 
 		if (isYesSelected)
 		{
 			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].DialogueBranchLine + 2;
 
+			// Флаг для Action (существующая логика)
 			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer != null)
 			{
 				_performActionOnYesFinal = true;
+			}
+			// НОВЫЙ флаг для смены состояния NPC
+			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnYes != null && _dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnYes.Count > 0)
+			{
+				_performNPCStateChangeOnYes = true;
 			}
 		}
 		else
 		{
 			_currentDialogueStepIndex = _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1;
 
+			// Флаг для Action (существующая логика)
 			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnNoAnswer != null)
 			{
 				_performActionOnNoFinal = true;
 			}
+			// НОВЫЙ флаг для смены состояния NPC
+			if (_dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnNo != null && _dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnNo.Count > 0)
+			{
+				_performNPCStateChangeOnNo = true;
+			}
 		}
 
-			_buttonDialogueYes.onClick.RemoveAllListeners();
+		_buttonDialogueYes.onClick.RemoveAllListeners();
 		_buttonDialogueNo.onClick.RemoveAllListeners();
 
 		DisplayNextDialogueLine();
@@ -492,6 +522,25 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 			//Debug.Log(newAnimation);
 		
 			_animator.CrossFade(newAnimation, crossfade);
+		}
+	}
+
+	private void ApplyStateFromStructList(List<NPCchangeStateStruct> stateChanges)
+	{
+		if (stateChanges != null)
+		{
+			foreach (var changeData in stateChanges)
+			{
+				if (changeData.npcObject != null)
+				{
+					var controller = changeData.npcObject.GetComponent<NPCstateMachineController>();
+					if (controller != null)
+					{
+						controller.SetNPCState(changeData.stateToSet);
+						Debug.Log($"Диалог {gameObject.name} изменил состояние NPC {changeData.npcObject.name} на {changeData.stateToSet}.");
+					}
+				}
+			}
 		}
 	}
 }

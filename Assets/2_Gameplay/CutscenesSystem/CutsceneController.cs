@@ -94,7 +94,7 @@ public class CutsceneController : MonoBehaviour
 	[Header("Load scene")] [SerializeField] bool _shouldLoadScene;
 	[SerializeField] private GameScenesGameplayEnum _sceneToLoadAfterCutscene;
 
-	[Header("NPC state")] [SerializeField] private List<CutsceneDataNPC> _NPCstateChanges = new List<CutsceneDataNPC>();
+	[Header("NPC state")] [SerializeField] private List<NPCchangeStateStruct> _NPCstateChanges = new List<NPCchangeStateStruct>();
 
 	[Header("Interaction objects")] [SerializeField] private List<GameObject> _interactionObjects = new List<GameObject>();
 

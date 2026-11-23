@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public struct CutsceneDataNPC
+public struct NPCchangeStateStruct
 {
 	public GameObject npcObject;
 	public NPCstateTypes stateToSet;
