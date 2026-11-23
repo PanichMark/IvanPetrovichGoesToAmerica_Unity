@@ -68,7 +68,7 @@ public class CutsceneController : MonoBehaviour
 	private Image _imageCircleSkipCutscene;
 
 	[Header("Cutscene dialogue data")]
-	[SerializeField] private CutsceneDialogueData _cutsceneDialogueData;
+	[SerializeField] private CutsceneData _cutsceneDialogueData;
 
 	[Header("Animated NPCs")]
 	[SerializeField] private List<Animator> _animatedNPCs = new List<Animator>();
@@ -245,9 +245,9 @@ public class CutsceneController : MonoBehaviour
 	{
 		if (_cutsceneDialogueData != null)
 		{
-			if (_cutsceneDialogueData.CutsceneDialogueFileRussian != null)
+			if (_cutsceneDialogueData.CutsceneTextFileRussian != null)
 			{
-				using (var reader = new StringReader(_cutsceneDialogueData.CutsceneDialogueFileRussian.text))
+				using (var reader = new StringReader(_cutsceneDialogueData.CutsceneTextFileRussian.text))
 				{
 					string line;
 					while ((line = reader.ReadLine()) != null)
@@ -264,9 +264,9 @@ public class CutsceneController : MonoBehaviour
 				Debug.LogWarning("Russian phrase file is not assigned!");
 			}
 
-			if (_cutsceneDialogueData.CutsceneDialogueFileEnglish != null)
+			if (_cutsceneDialogueData.CutsceneTextFileEnglish != null)
 			{
-				using (var reader = new StringReader(_cutsceneDialogueData.CutsceneDialogueFileEnglish.text))
+				using (var reader = new StringReader(_cutsceneDialogueData.CutsceneTextFileEnglish.text))
 				{
 					string line;
 					while ((line = reader.ReadLine()) != null)
