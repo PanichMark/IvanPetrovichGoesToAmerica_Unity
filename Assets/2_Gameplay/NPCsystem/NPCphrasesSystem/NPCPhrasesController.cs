@@ -25,27 +25,99 @@ public class NPCphrasesController : MonoBehaviour
 		{LanguagesEnum.English, new List<AudioClip>() }
 	};
 
-	private NPCphrasesData _NPCphrasesDefaultData;
 	private GameObject _NPCphrasesText;
 	private TextMeshProUGUI _NPCphrasesTextComponent;
 
 	private ViewModelHUDInteraction _viewModelHUDInteraction;
 
-	public void Initialize(
+	private NPCphrasesData _NPCphrasesDefaultData;
+	private NPCphrasesData _NPCphrasesInterestedData;
+	private NPCphrasesData _NPCphrasesAlarmedData;
+	private NPCphrasesData _NPCphrasesChasingData;
+	private NPCphrasesData _NPCphrasesAttackingData;
+	private NPCphrasesData _NPCphrasesSearchingData;
+	private NPCphrasesData _NPCphrasesAfraidData;
+	private NPCphrasesData _NPCphrasesGreetingData;
+	private NPCphrasesData _NPCphrasesPurchaseData;
+
+	private NPCphrasesDataTypes _NPCphrasesType;
+
+	public void InitializePeaceful(
 		NPCabstract NPCabstract,
-		NPCphrasesData NPCphrasesDefaultData)
+		NPCphrasesDataPeaceful NPCphrasesDataPeaceful)
 	{
-		_NPCphrasesDefaultData = NPCphrasesDefaultData;
-		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
+		_NPCphrasesType = NPCphrasesDataTypes.Peaceful;
+
 		_NPCabstract = NPCabstract;
-	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
-_NPCphrasesText = _viewModelHUDInteraction.TextPhraseLine;
-_NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();
-//Debug.Log(_NPCphrasesText);
-_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes);
+
 		_audioSource = GetComponent<AudioSource>();
+
+		_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes);
+
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+
+		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
+		_NPCphrasesText = _viewModelHUDInteraction.TextPhraseLine;
+		_NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();
+
+		_NPCphrasesDefaultData = NPCphrasesDataPeaceful.PhrasesDefault;
+		_NPCphrasesInterestedData = NPCphrasesDataPeaceful.PhrasesInterested;
+		_NPCphrasesAlarmedData = NPCphrasesDataPeaceful.PhrasesAlarmed;
+		_NPCphrasesAfraidData = NPCphrasesDataPeaceful.PhrasesAfraid;
+
 		LoadPhrasesTextFiles();
 		LoadVoiceLineFiles();
+	}
+
+	public void InitializeNonPeaceful(
+		NPCabstract NPCabstract,
+		NPCphrasesDataNonPeaceful NPCphrasesDataNonPeaceful)
+	{
+		_NPCphrasesType = NPCphrasesDataTypes.NonPeaceful;
+
+		_NPCabstract = NPCabstract;
+
+		_audioSource = GetComponent<AudioSource>();
+
+		_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes);
+
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+
+		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
+		_NPCphrasesText = _viewModelHUDInteraction.TextPhraseLine;
+		_NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();
+
+		_NPCphrasesDefaultData = NPCphrasesDataNonPeaceful.PhrasesDefault;
+		_NPCphrasesInterestedData = NPCphrasesDataNonPeaceful.PhrasesInterested;
+		_NPCphrasesAlarmedData = NPCphrasesDataNonPeaceful.PhrasesAlarmed;
+		_NPCphrasesChasingData = NPCphrasesDataNonPeaceful.PhrasesChasing;
+		_NPCphrasesAttackingData = NPCphrasesDataNonPeaceful.PhrasesAttacking;
+		_NPCphrasesSearchingData = NPCphrasesDataNonPeaceful.PhrasesSeaching;
+
+		LoadPhrasesTextFiles();
+		LoadVoiceLineFiles();
+	}
+
+	public void InitializeAutomaton(
+		NPCabstract NPCabstract,
+		NPCphrasesDataAutomaton NPCphrasesDataAutomaton)
+	{
+		_NPCphrasesType = NPCphrasesDataTypes.Automaton;
+
+		_NPCabstract = NPCabstract;
+
+		_audioSource = GetComponent<AudioSource>();
+
+		_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes);
+
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+
+		_viewModelHUDInteraction = ServiceLocator.Resolve<ViewModelHUDInteraction>();
+		_NPCphrasesText = _viewModelHUDInteraction.TextPhraseLine;
+		_NPCphrasesTextComponent = _NPCphrasesText.GetComponent<TextMeshProUGUI>();
+
+		_NPCphrasesGreetingData = NPCphrasesDataAutomaton.PhrasesGreeting;
+		_NPCphrasesPurchaseData = NPCphrasesDataAutomaton.PhrasesPurchase;
 	}
 
 	private void LoadVoiceLineFiles()

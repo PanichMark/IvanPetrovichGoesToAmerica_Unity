@@ -15,6 +15,10 @@ public class NPCneutral : NPClivingBeing, IMissionStepActionNPCdialogueAvailabil
 		_NPCweaponController = GetComponent<NPCweaponController>();
 		_NPCweaponAnimationController = GetComponent<NPCweaponAnimationController>();
 
+		_NPCphrasesController.InitializeNonPeaceful(
+			this,
+			_NPCPhrasesDataNeutral);
+
 		if (_NPCdialogueController != null)
 		{
 			_NPCdialogueController.Initialize(

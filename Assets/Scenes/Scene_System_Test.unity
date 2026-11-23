@@ -3996,15 +3996,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCPhrasesDefault: {fileID: 0}
   _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
-  _NPCPhrasesInterested: {fileID: 0}
-  _NPCPhrasesAlarmed: {fileID: 0}
-  _NPCPhrasesDefeated: {fileID: 0}
-  _NPCPhrasesFight: {fileID: 0}
-  _NPCPhrasesSearching: {fileID: 0}
+  _NPCPhrasesDataAggressive: {fileID: 0}
 --- !u!114 &88182336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12959,15 +12954,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCPhrasesDefault: {fileID: 0}
   _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
-  _NPCPhrasesInterested: {fileID: 0}
-  _NPCPhrasesAlarmed: {fileID: 0}
-  _NPCPhrasesDefeated: {fileID: 0}
-  _NPCPhrasesFight: {fileID: 0}
-  _NPCPhrasesSearching: {fileID: 0}
+  _NPCPhrasesDataAggressive: {fileID: 0}
 --- !u!114 &304654822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33600,15 +33590,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCPhrasesDefault: {fileID: 0}
   _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
-  _NPCPhrasesInterested: {fileID: 0}
-  _NPCPhrasesAlarmed: {fileID: 0}
-  _NPCPhrasesDefeated: {fileID: 0}
-  _NPCPhrasesFight: {fileID: 0}
-  _NPCPhrasesSearching: {fileID: 0}
+  _NPCPhrasesDataAggressive: {fileID: 0}
 --- !u!114 &840462203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36200,15 +36185,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCPhrasesDefault: {fileID: 0}
   _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
-  _NPCPhrasesInterested: {fileID: 0}
-  _NPCPhrasesAlarmed: {fileID: 0}
-  _NPCPhrasesDefeated: {fileID: 0}
-  _NPCPhrasesFight: {fileID: 0}
-  _NPCPhrasesSearching: {fileID: 0}
+  _NPCPhrasesDataNeutral: {fileID: 0}
 --- !u!195 &904153500
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -38207,6 +38187,10 @@ PrefabInstance:
       propertyPath: _NPCPickableBodyType
       value: 
       objectReference: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
+    - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: _NPCPhrasesDataPeaceful
+      value: 
+      objectReference: {fileID: 11400000, guid: ed43ea7e5b4246442aac660738468790, type: 2}
     - target: {fileID: 5519263260445635623, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.54
@@ -47222,15 +47206,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCPhrasesDefault: {fileID: 0}
   _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
-  _NPCPhrasesInterested: {fileID: 0}
-  _NPCPhrasesAlarmed: {fileID: 0}
-  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPhrasesDataPeaceful: {fileID: 0}
   _NPCPeacefulReactionType: 0
-  _NPCPhrasesAfraid: {fileID: 0}
 --- !u!195 &1172950684
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -75765,6 +75745,10 @@ PrefabInstance:
       propertyPath: _NPCPickableBodyType
       value: 
       objectReference: {fileID: 11400000, guid: 15e3be5508e33f446b43c99191e8bf8e, type: 2}
+    - target: {fileID: 5496140246887277862, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: _NPCPhrasesDataPeaceful
+      value: 
+      objectReference: {fileID: 11400000, guid: ed43ea7e5b4246442aac660738468790, type: 2}
     - target: {fileID: 5519263260445635623, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.21
@@ -77171,15 +77155,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCPhrasesDefault: {fileID: 0}
   _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
-  _NPCPhrasesInterested: {fileID: 0}
-  _NPCPhrasesAlarmed: {fileID: 0}
-  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPhrasesDataPeaceful: {fileID: 0}
   _NPCPeacefulReactionType: 0
-  _NPCPhrasesAfraid: {fileID: 0}
 --- !u!114 &1892999739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93846,15 +93826,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCPhrasesDefault: {fileID: 0}
   _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
-  _NPCPhrasesInterested: {fileID: 0}
-  _NPCPhrasesAlarmed: {fileID: 0}
-  _NPCPhrasesDefeated: {fileID: 0}
+  _NPCPhrasesDataPeaceful: {fileID: 0}
   _NPCPeacefulReactionType: 0
-  _NPCPhrasesAfraid: {fileID: 0}
 --- !u!1 &906560015039859404
 GameObject:
   m_ObjectHideFlags: 0

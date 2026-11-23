@@ -10,6 +10,10 @@ public class NPCpeaceful : NPClivingBeing, IMissionStepActionNPCdialogueAvailabi
 
 	protected override void InitializeNPClivingBeing()
 	{
+		_NPCphrasesController.InitializePeaceful(
+			this,
+			_NPCPhrasesDataPeaceful);
+
 		_NPCdialogueController = GetComponent<NPCdialogueController>();
 
 		if (_NPCdialogueController != null)

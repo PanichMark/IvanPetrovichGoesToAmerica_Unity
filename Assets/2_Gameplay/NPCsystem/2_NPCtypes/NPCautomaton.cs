@@ -6,9 +6,10 @@ public class NPCautomaton : NPCabstract
 
 	protected override void InitializeNPCabstract()
 	{
-
+		_NPCphrasesController.InitializeAutomaton(
+			this,
+			_NPCPhrasesDataAutomaton);
 	}
-
 
 	public override void Interact()
 	{

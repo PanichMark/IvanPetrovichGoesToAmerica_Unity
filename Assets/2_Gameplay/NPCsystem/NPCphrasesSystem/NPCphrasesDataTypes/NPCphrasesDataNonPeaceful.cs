@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NPCphrasesDataNonPeaceful", menuName = "NPC/NPCphrasesDataNonPeacefull")]
+[CreateAssetMenu(fileName = "NPCphrasesDataNonPeaceful", menuName = "NPC/NPCphrasesDataTypes/NonPeaceful")]
 public class NPCphrasesDataNonPeaceful : ScriptableObject
 {
 	public NPCphrasesData PhrasesDefault;

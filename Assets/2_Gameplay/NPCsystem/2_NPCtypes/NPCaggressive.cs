@@ -11,6 +11,10 @@ public class NPCaggressive : NPClivingBeing
 		_NPCweaponController = GetComponent<NPCweaponController>();
 		_NPCweaponAnimationController = GetComponent<NPCweaponAnimationController>();
 
+		_NPCphrasesController.InitializeNonPeaceful(
+			this,
+			_NPCPhrasesDataAggressive);
+
 		_NPCweaponController.Initialize(
 			_NPCstateMachineController,
 			_NPCdetectionManager,
