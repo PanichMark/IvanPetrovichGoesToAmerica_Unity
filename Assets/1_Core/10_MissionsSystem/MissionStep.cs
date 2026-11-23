@@ -61,7 +61,7 @@ public class MissionStep : ScriptableObject
 			}
 		}
 		//Debug.Log("STEP SARTED");
-		Debug.Log(_NPCdialoguesDisable.Count);
+		//Debug.Log(_NPCdialoguesDisable.Count);
 		if (_NPCdialoguesDisable.Count > 0)
 		{
 			foreach (var obj in _NPCdialoguesDisable)

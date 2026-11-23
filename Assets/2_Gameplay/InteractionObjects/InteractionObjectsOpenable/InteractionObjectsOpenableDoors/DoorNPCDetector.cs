@@ -25,7 +25,7 @@ public class DoorNPCDetector : MonoBehaviour
                 if (_mainNPCCollider == null)
                 {
                     _mainNPCCollider = other.transform.root.GetComponentInChildren<Collider>();
-                    Debug.Log($"NPC Detector Enter: {_mainNPCCollider.name}");
+                   //Debug.Log($"NPC Detector Enter: {_mainNPCCollider.name}");
                     _doorController.NPCtryOpeningDoor();
                 }
             }
@@ -39,9 +39,9 @@ public class DoorNPCDetector : MonoBehaviour
             // Проверяем выход ТОЛЬКО по закешированному главному коллайдеру
             if (_mainNPCCollider != null)
             {
-                Debug.Log($"NPC Detector Exit: {_mainNPCCollider.name}");
+                //Debug.Log($"NPC Detector Exit: {_mainNPCCollider.name}");
                 _mainNPCCollider = null; // Сбрасываем кэш
-                Debug.Log(_doorController);
+               // Debug.Log(_doorController);
                 if (_doorController.IsObjectOpened)
                 {
                     _doorController.NPCtryClosingDoor();

@@ -113,6 +113,7 @@ MonoBehaviour:
   _changeScene: {fileID: 0}
   _isLockedForever: 0
   _doorSibling: {fileID: 0}
+  _canNPCOpenDoor: 1
 --- !u!65 &747265382952539077
 BoxCollider:
   m_ObjectHideFlags: 0

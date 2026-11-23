@@ -98,7 +98,7 @@ public class HUDmissionsController : MonoBehaviour
 	{
 		if (SceneManager.sceneCount > 1)
 		{
-			Debug.Log("NEW MISSION NOTIFICATION!");
+			//Debug.Log("NEW MISSION NOTIFICATION!");
 		StopAllCoroutines();
 
 		

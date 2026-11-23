@@ -39465,6 +39465,10 @@ PrefabInstance:
       value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 2024142681752826760, guid: 16e978056c459e441a9d3d09b61679bb, type: 3}
+      propertyPath: _canNPCOpenDoor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024142681752826760, guid: 16e978056c459e441a9d3d09b61679bb, type: 3}
       propertyPath: _isObjectOpened
       value: 0
       objectReference: {fileID: 0}
@@ -98591,6 +98595,7 @@ MonoBehaviour:
   _changeScene: {fileID: 11400000, guid: f171ff56e0b09454293c4831e769d6aa, type: 2}
   _isLockedForever: 0
   _doorSibling: {fileID: 0}
+  _canNPCOpenDoor: 1
 --- !u!23 &1348972479
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -115750,6 +115755,10 @@ PrefabInstance:
     - target: {fileID: 2024142681752826760, guid: 16e978056c459e441a9d3d09b61679bb, type: 3}
       propertyPath: _doorOpenAngle
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2024142681752826760, guid: 16e978056c459e441a9d3d09b61679bb, type: 3}
+      propertyPath: _canNPCOpenDoor
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2024142681752826760, guid: 16e978056c459e441a9d3d09b61679bb, type: 3}
       propertyPath: _isObjectOpened

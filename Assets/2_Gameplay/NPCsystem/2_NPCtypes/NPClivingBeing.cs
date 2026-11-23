@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public abstract class NPClivingBeing : NPCabstract
 {
-	[SerializeField] private ConfigNPCBodyType _NPCBodyType;
+	//[SerializeField] private ConfigNPCBodyType _NPCBodyType;
 	[SerializeField] private InteractionObjectPickableData _NPCPickableBodyType;
 	private Bootstrap _bootstrap;
 	[SerializeField] protected GameObject _NPCLootObject;

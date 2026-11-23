@@ -19,6 +19,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	[SerializeField] private InteractionObjectChangeSceneData _changeScene;
 	[SerializeField] protected bool _isLockedForever;
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
+	[SerializeField] protected bool _canNPCOpenDoor = true;
 	protected DoorNPCDetector _npcDetector;
 	protected NavMeshObstacle _navMeshObstacle;
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
@@ -243,7 +244,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 
 	public void NPCtryOpeningDoor()
 	{
-		if (IsOpenableUnlocked && !IsObjectOpened)
+		if (IsOpenableUnlocked && !IsObjectOpened && _canNPCOpenDoor)
 		{
 			DidNPCopenedThisDoor = true;
 			Debug.Log($"NPC Opened {InteractionObjectNameUI}");
@@ -254,7 +255,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 
 	public void NPCtryClosingDoor()
 	{
-		if (IsObjectOpened)
+		if (IsObjectOpened && _canNPCOpenDoor)
 		{
 			if (DidNPCopenedThisDoor)
 			{
