@@ -48,4 +48,16 @@ public class InteractionObjectLootConsumable : InteractionObjectLootAbstract
 			InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Drink", gameObject.name);
 		}
 	}
+
+	public override void InteractAfterDialogueOrCutscene()
+	{
+		if (!_isRotten)
+		{
+			_playerHealthController.ReceiveHealth(_healthAffected);
+		}
+		else
+		{
+			_playerHealthController.TakeDamage(_healthAffected);
+		}
+	}
 }

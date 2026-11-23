@@ -61,7 +61,7 @@ public class InteractionObjectLightSwitchButton : MonoBehaviour, IInteractable, 
 		}
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

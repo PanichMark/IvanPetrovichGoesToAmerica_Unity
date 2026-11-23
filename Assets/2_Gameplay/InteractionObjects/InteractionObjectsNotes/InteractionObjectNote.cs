@@ -179,7 +179,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 		gameObject.tag = "Untagged";
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

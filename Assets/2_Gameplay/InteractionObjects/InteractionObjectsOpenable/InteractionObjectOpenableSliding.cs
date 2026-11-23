@@ -86,7 +86,7 @@ public class InteractionObjectOpenableSliding : InteractionObjectOpenableAbstrac
 
 	}
 
-	public override void InteractCutscene()
+	public override void InteractAfterDialogueOrCutscene()
 	{
 		if (!IsObjectOpened)
 		{

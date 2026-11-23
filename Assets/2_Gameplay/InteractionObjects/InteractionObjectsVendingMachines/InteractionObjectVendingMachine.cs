@@ -144,7 +144,7 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 		
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

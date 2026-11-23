@@ -43,7 +43,7 @@ public class InteractionObjectOpenableDoorFoldablePart : MonoBehaviour, IInterac
 		_controller.Interact(); // Безопасный вызов через null-условный оператор
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		//throw new System.NotImplementedException();
 	}

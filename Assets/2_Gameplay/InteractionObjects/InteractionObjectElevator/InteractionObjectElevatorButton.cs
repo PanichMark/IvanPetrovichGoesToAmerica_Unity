@@ -96,7 +96,7 @@ public class InteractionObjectElevatorButton : MonoBehaviour, IInteractable, IEl
 		}
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

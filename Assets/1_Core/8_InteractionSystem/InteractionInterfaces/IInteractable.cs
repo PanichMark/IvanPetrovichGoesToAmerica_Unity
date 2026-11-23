@@ -12,5 +12,5 @@
 
 	void Interact();
 
-	void InteractCutscene();
+	void InteractAfterDialogueOrCutscene();
 }

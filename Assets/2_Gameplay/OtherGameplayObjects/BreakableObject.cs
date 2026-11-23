@@ -36,7 +36,7 @@ public class BreakableObject : GameplayObjectJsonSaveLoad, IInteractable, IBreak
 		throw new System.NotImplementedException();
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		throw new System.NotImplementedException();
 	}

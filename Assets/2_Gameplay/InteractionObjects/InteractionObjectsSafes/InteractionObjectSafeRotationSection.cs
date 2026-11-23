@@ -35,7 +35,7 @@ public class InteractionObjectSafeRotationSection : MonoBehaviour, IInteractable
 		}
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

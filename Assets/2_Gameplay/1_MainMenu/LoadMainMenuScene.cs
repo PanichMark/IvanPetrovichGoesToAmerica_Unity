@@ -27,7 +27,7 @@ public class LoadMainMenuScene : MonoBehaviour, IInteractable
 		StartCoroutine(StartLoadingMainMenuScene());
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

@@ -187,7 +187,7 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 		_movementStep = 0.1f;
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

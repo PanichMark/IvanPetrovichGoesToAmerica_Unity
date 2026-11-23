@@ -87,9 +87,11 @@ public abstract class InteractionObjectLootAbstract : GameplayObjectJsonSaveLoad
 		OnInteract?.Invoke();
 	}
 
-	public virtual void InteractCutscene()
+	public virtual void InteractAfterDialogueOrCutscene()
 	{
+		Debug.Log("DIALOGUE INTERACT!");
 		gameObject.SetActive(false);
+		OnInteract?.Invoke();
 	}
 
 	public virtual void ChangeLanguage(LocalizationManager localizationManager)

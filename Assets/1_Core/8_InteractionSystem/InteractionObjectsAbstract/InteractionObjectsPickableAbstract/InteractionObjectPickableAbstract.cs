@@ -191,7 +191,7 @@ _pickableLayer = LayerMask.NameToLayer("Pickable");
 	}
 
 	// Этот метод также изменен согласно вашему запросу "везде"
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		gameObject.tag = "Untagged";
 

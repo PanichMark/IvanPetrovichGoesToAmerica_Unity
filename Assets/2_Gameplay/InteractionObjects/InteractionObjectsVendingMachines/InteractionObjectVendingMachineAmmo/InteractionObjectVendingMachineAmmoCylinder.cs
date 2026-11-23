@@ -85,7 +85,7 @@ public class InteractionObjectVendingMachineAmmoCylinder : MonoBehaviour, IInter
 		}
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

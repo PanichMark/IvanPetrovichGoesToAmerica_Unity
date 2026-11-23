@@ -20,9 +20,9 @@ public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
 		_playerWeaponController.UnlockWeapon(_weapon);
 	}
 
-	public override void InteractCutscene()
+	public override void InteractAfterDialogueOrCutscene()
 	{
-		base.InteractCutscene();
+		base.InteractAfterDialogueOrCutscene();
 		Debug.Log($"You picked up {InteractionObjectNameUI}");
 		_playerWeaponController.UnlockWeapon(_weapon);
 	}

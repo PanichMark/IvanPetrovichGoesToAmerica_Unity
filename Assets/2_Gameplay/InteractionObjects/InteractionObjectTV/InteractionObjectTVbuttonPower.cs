@@ -37,7 +37,7 @@ public class InteractionObjectTVbuttonPower : MonoBehaviour, IInteractable
 		_tvController.TogglePower();
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

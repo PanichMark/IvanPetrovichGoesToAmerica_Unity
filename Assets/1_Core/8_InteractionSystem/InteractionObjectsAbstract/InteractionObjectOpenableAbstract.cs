@@ -26,7 +26,7 @@ public abstract class InteractionObjectOpenableAbstract : GameplayObjectJsonSave
 		OnInteract?.Invoke();
 	}
 
-	public abstract void InteractCutscene();
+	public abstract void InteractAfterDialogueOrCutscene();
 
 	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{

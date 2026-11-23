@@ -51,7 +51,7 @@ public class InteractionObjectTVbuttonChannel : MonoBehaviour, IInteractable
 		_tvController.SwitchChannel(_isNextChannel);
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

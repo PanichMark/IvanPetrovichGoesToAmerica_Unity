@@ -25,4 +25,11 @@ public class InteractionObjectLootKeyItem : InteractionObjectLootAbstract
 		_keysItemsManager.AddKeyItemToCollected(_keyItemID);
 		Debug.Log($"Added key: {_keyItemID}");
 	}
+
+	public override void InteractAfterDialogueOrCutscene()
+	{
+		base.InteractAfterDialogueOrCutscene();
+		_keysItemsManager.AddKeyItemToCollected(_keyItemID);
+	}
+
 }

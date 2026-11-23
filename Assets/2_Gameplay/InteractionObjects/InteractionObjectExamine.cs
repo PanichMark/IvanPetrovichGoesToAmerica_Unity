@@ -21,7 +21,7 @@ public class InteractionObjectExamine : MonoBehaviour, IInteractable
 		throw new System.NotImplementedException();
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		throw new System.NotImplementedException();
 	}

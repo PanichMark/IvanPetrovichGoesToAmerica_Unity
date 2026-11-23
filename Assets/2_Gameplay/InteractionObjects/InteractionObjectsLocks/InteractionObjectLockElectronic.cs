@@ -120,7 +120,7 @@ _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 		}
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

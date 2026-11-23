@@ -132,7 +132,7 @@ public class InteractionObjectSafeUndestructableController : GameplayObjectJsonS
 		}
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

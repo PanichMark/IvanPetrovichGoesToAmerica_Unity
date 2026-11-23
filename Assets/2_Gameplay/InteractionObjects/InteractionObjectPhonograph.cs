@@ -93,7 +93,7 @@ public class InteractionObjectPhonograph : GameplayObjectJsonSaveLoad, IInteract
 		_audioSource.Stop();
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		throw new System.NotImplementedException();
 	}

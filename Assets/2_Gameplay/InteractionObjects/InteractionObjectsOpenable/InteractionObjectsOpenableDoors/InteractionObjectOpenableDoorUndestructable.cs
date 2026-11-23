@@ -176,7 +176,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 		}
 	}
 
-	public override void InteractCutscene()
+	public override void InteractAfterDialogueOrCutscene()
 	{
 		Interact();
 	}

@@ -51,7 +51,7 @@ _playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>()
 		}
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		//throw new System.NotImplementedException();
 	}

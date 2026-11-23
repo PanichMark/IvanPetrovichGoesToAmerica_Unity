@@ -46,7 +46,7 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 		//Debug.Log("bruh");
 	}
 
-	public void InteractCutscene()
+	public void InteractAfterDialogueOrCutscene()
 	{
 		//Debug.Log("LMAO!");
 		Interact();

@@ -29,11 +29,11 @@ public class InteractionObjectLootHealth : InteractionObjectLootAbstract
 		}
 	}
 
-	public override void InteractCutscene()
+	public override void InteractAfterDialogueOrCutscene()
 	{
 		if (_playerResourcesHealthManager.CurrentHealingItemsNumber < 9)
 		{
-			base.InteractCutscene();
+			base.InteractAfterDialogueOrCutscene();
 			Debug.Log($"You picked up {InteractionObjectNameUI}");
 
 			_playerResourcesHealthManager.AddHealingItem();

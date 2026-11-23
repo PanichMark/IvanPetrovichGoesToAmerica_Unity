@@ -18,11 +18,12 @@ public class InteractionObjectLootAmmo : InteractionObjectLootAbstract
 		_playerResourcesAmmoManager.AddAmmoToReserve(_ammoTypes, _ammoCapacity);
 	}
 
-	public override void InteractCutscene()
+	public override void InteractAfterDialogueOrCutscene()
 	{
-		base.InteractCutscene();
+		base.InteractAfterDialogueOrCutscene();
 		Debug.Log($"Picked up {InteractionObjectNameUI}");
 		_playerResourcesAmmoManager.AddAmmoToReserve(_ammoTypes, _ammoCapacity);
+
 	}
 
 	protected override void InitializeLootObject()

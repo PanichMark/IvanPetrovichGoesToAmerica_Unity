@@ -496,7 +496,7 @@ public class CutsceneController : MonoBehaviour
 				{
 					if (data != null && data.GetComponent<IInteractable>() != null)
 					{
-						data.GetComponent<IInteractable>().InteractCutscene();
+						data.GetComponent<IInteractable>().InteractAfterDialogueOrCutscene();
 					}
 				}
 			}

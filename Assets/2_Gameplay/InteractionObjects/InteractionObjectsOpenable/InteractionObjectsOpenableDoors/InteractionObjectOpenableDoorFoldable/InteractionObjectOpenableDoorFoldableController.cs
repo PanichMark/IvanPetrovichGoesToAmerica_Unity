@@ -58,7 +58,7 @@ public class InteractionObjectOpenableDoorFoldableController : InteractionObject
 		_closedRotationChild = _partChildTransform.localRotation;
 	}
 
-	public override void InteractCutscene()
+	public override void InteractAfterDialogueOrCutscene()
 	{
 		//throw new System.NotImplementedException();
 	}

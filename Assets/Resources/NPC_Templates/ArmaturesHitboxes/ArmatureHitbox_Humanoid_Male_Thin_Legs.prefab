@@ -951,7 +951,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1451278187399406702}
-  - component: {fileID: 7834504129115590249}
   m_Layer: 0
   m_Name: ArmatureHitbox_Humanoid_Male_Thin_Legs
   m_TagString: Untagged
@@ -975,28 +974,6 @@ Transform:
   - {fileID: 8365736765551116015}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &7834504129115590249
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1968417866203521595}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 50b03616c32495844bfda149515aca6a, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2027332566402341444
 GameObject:
   m_ObjectHideFlags: 0

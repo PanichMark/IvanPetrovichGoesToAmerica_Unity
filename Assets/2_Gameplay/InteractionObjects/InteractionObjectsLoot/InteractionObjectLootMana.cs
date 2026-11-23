@@ -27,11 +27,11 @@ public class InteractionObjectLootMana : InteractionObjectLootAbstract
 		}
 	}
 
-	public override void InteractCutscene()
+	public override void InteractAfterDialogueOrCutscene()
 	{
 		if (_playerResourcesManaManager.CurrentManaReplenishItemsNumber < 9)
 		{
-			base.InteractCutscene();
+			base.InteractAfterDialogueOrCutscene();
 			Debug.Log($"You picked up {InteractionObjectNameUI}");
 
 			_playerResourcesManaManager.AddManaReplenishItem();

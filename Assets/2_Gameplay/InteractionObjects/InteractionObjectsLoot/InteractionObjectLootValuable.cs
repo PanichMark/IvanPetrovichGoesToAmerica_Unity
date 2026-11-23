@@ -19,9 +19,9 @@ public class InteractionObjectLootValuable : InteractionObjectLootAbstract
 		_playerResourcesMoneyManager.AddMoney(_moneyValue);
 	}
 
-	public override void InteractCutscene()
+	public override void InteractAfterDialogueOrCutscene()
 	{
-		base.InteractCutscene();
+		base.InteractAfterDialogueOrCutscene();
 		Debug.Log($"Picked up {InteractionObjectNameUI}, received {_moneyValue} rubles");
 
 		_playerResourcesMoneyManager.AddMoney(_moneyValue);
