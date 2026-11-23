@@ -4,8 +4,10 @@
 public class NPCpeaceful : NPClivingBeing, IMissionStepActionNPCdialogueAvailability
 {
 	private NPCdialogueController _NPCdialogueController;
+
+	[SerializeField] private NPCphrasesDataPeaceful _NPCPhrasesDataPeaceful;
 	[SerializeField] private NPCpeacefulReactionType _NPCPeacefulReactionType;
-	[SerializeField] private NPCphrasesData _NPCPhrasesAfraid;
+
 	protected override void InitializeNPClivingBeing()
 	{
 		_NPCdialogueController = GetComponent<NPCdialogueController>();

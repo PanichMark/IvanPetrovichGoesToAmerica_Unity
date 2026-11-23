@@ -6,9 +6,7 @@ public class NPCneutral : NPClivingBeing, IMissionStepActionNPCdialogueAvailabil
 
 	private NPCweaponController _NPCweaponController;
 	private NPCweaponAnimationController _NPCweaponAnimationController;
-	[SerializeField] private NPCphrasesData _NPCPhrasesChasing;
-	[SerializeField] private NPCphrasesData _NPCPhrasesAttacking;
-	[SerializeField] private NPCphrasesData _NPCPhrasesSearching;
+	[SerializeField] private NPCphrasesDataNonPeaceful _NPCPhrasesDataNeutral;
 
 	protected override void InitializeNPClivingBeing()
 	{

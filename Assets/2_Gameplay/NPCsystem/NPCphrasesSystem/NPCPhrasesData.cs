@@ -3,9 +3,9 @@
 [CreateAssetMenu(fileName = "NPCphrasesData", menuName = "NPC/NPCphrasesData")]
 public class NPCphrasesData : ScriptableObject
 {
-	public TextAsset PhrasesFileRussian;
+	public TextAsset PhrasesTextFileRussian;
 	public AudioClip[] PhrasesVoicelinesRussian;
 
-	public TextAsset PhrasesFileEnglish;
+	public TextAsset PhrasesTextFileEnglish;
 	public AudioClip[] PhrasesVoicelinesEnglish;
 }

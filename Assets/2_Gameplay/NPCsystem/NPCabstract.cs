@@ -8,7 +8,6 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 	protected LocalizationManager _localizationManager;
 	protected Animator _NPCanimator;
 	protected NPCphrasesController _NPCphrasesController;
-	[SerializeField] private NPCphrasesData _NPCPhrasesDefault;
 	public event IInteractable.InteractableObjectHandler OnInteract;
 
 
@@ -29,9 +28,6 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 		_interactionHintMessageFail = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_CantTalkToPlayerRightNow");
 		_NPCphrasesController = GetComponent<NPCphrasesController>();
-		_NPCphrasesController.Initialize(
-			this,
-			_NPCPhrasesDefault);
 	
 		InitializeNPCabstract();
 

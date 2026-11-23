@@ -4,9 +4,8 @@ public class NPCaggressive : NPClivingBeing
 {
 	private NPCweaponController _NPCweaponController;
 	private NPCweaponAnimationController _NPCweaponAnimationController;
-	[SerializeField] private NPCphrasesData _NPCPhrasesChasing;
-	[SerializeField] private NPCphrasesData _NPCPhrasesAttacking;
-	[SerializeField] private NPCphrasesData _NPCPhrasesSearching;
+	[SerializeField] private NPCphrasesDataNonPeaceful _NPCPhrasesDataAggressive;
+
 	protected override void InitializeNPClivingBeing()
 	{
 		_NPCweaponController = GetComponent<NPCweaponController>();

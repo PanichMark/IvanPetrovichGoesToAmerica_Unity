@@ -90,9 +90,9 @@ _playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerE
 
 	private void LoadPhrasesTextFiles()
 	{
-		if (_NPCphrasesDefaultData.PhrasesFileRussian != null)
+		if (_NPCphrasesDefaultData.PhrasesTextFileRussian != null)
 		{
-			using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileRussian.text))
+			using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesTextFileRussian.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
@@ -109,9 +109,9 @@ _playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerE
 			Debug.LogWarning("Russian phrase file is not assigned!");
 		}
 
-		if (_NPCphrasesDefaultData.PhrasesFileEnglish != null)
+		if (_NPCphrasesDefaultData.PhrasesTextFileEnglish != null)
 		{
-			using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesFileEnglish.text))
+			using (var reader = new StringReader(_NPCphrasesDefaultData.PhrasesTextFileEnglish.text))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
