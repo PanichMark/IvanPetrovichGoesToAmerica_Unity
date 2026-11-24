@@ -27,7 +27,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 	private PlayerCameraStateMachineController _playerCameraStateMachineController;
 	private bool _isCrossbowAttacking;
 	private GameObject _player;
-	private GameObject _playerCollider;
+	private CapsuleCollider _playerCollider;
 	private GameObject _playerCamera;
 	private Rigidbody _playerRigidbody;
 	private Vector3 _projectile1stPersonRestPosition;
@@ -82,12 +82,12 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 		_projectile3rdPersonRestDirection = _projectile3rdPerson.transform.localRotation;
 		//Debug.Log(_projectileRestPosition);
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
-		_playerCamera = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+		_playerCamera = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerCamera);
 		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
-		_player = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_player = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
 		_playerRigidbody = _player.GetComponent<Rigidbody>();
 		_gameController = ServiceLocator.Resolve<GameController>();
-		_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
+		_playerCollider = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player).GetComponent<CapsuleCollider>();
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 		//Debug.Log(_gameSceneManager);
 		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>();
@@ -330,7 +330,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 
 	private IEnumerator PlungePlayer(Vector3 hookPoint)
 	{
-		_playerCollider.SetActive(false);
+		_playerCollider.enabled = false;
 		_playerRigidbody.useGravity = false;
 
 		while (_isCrossbowAttacking)
@@ -502,7 +502,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 			_isCrossbowAttacking = false;
 			Debug.Log("Притяжение завершено.");
 			_gameController.PlayerStoppedPlunging();
-			_playerCollider.SetActive(true);
+			_playerCollider.enabled = true;
 		}
 	}
 
@@ -532,7 +532,7 @@ public class WeaponSpecialCrossbow : WeaponAbstract
 			_isCrossbowAttacking = false;
 			Debug.Log("Притяжение завершено.");
 			_gameController.PlayerStoppedPlunging();
-			_playerCollider.SetActive(true);
+			_playerCollider.enabled = true;
 
 			// Отключаем ОБЕ линии рендера
 			_lineRenderer1stPerson.enabled = false;

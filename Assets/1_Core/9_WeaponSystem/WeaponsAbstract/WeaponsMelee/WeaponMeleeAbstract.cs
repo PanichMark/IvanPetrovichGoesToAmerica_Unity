@@ -14,7 +14,7 @@ public abstract class WeaponMeleeAbstract : WeaponAbstract
 
 	public override void InitializeWeaponPlayer()
 	{
-		_attackPoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_attackPoint = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
 		
 		InitializeWeaponMelee();
 	}

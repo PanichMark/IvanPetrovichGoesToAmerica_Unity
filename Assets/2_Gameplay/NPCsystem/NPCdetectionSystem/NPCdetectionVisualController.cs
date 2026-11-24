@@ -42,7 +42,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 	public void Initialize(NPCdetectionManager detectionManager)
 	{
 		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
-		_playerEyes = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes).transform;
+		_playerEyes = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerEyes).transform;
 		_npcDetectionManager = detectionManager;
 
 		_targetMask = LayerMask.GetMask("Player");

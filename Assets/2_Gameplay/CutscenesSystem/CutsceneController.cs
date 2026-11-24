@@ -117,8 +117,8 @@ public class CutsceneController : MonoBehaviour
 		_playerBehaviourController = ServiceLocator.Resolve<PlayerBehaviourController>();
 		_viewModelMenuCutscene = ServiceLocator.Resolve<ViewModelMenuCutscene>();
 		_playerWeaponAnimationController = ServiceLocator.Resolve<PlayerWeaponAnimationController>();
-		_playerCameraBootstrap = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
-		_playerBootstrap = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_playerCameraBootstrap = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerCamera);
+		_playerBootstrap = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_gameController = ServiceLocator.Resolve<GameController>();

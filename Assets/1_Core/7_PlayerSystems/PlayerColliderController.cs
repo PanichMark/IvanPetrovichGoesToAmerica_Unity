@@ -21,6 +21,7 @@ public class PlayerColliderController : MonoBehaviour
 
 	void Update()
     {
+		
 		if (!_bootstrap.IsBootstrapInitialized)
 			return;
 
@@ -29,13 +30,18 @@ public class PlayerColliderController : MonoBehaviour
 			|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerSliding)
 			//|| _playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerJumping)
 		{
-            transform.position = transform.parent.position + new Vector3(0f, 0.45f, 0f);
-            transform.localScale = new Vector3(1f,  0.5f, 1f);
+			_playerCollider.center = new Vector3(0f, 0.45f, 0f);
+			_playerCollider.height = 0.9f;
+			//transform.position = transform.parent.position + new Vector3(0f, 0.45f, 0f);
+            //transform.localScale = new Vector3(1f,  0.5f, 1f);
         }
 		else 
 		{
-			transform.position = transform.parent.position + new Vector3(0f, 0.9f, 0f);
-			transform.localScale = new Vector3(1f, 1f, 1f);
+			//transform.position = transform.parent.position + new Vector3(0f, 0.9f, 0f);
+			//transform.localScale = new Vector3(1f, 1f, 1f);
+
+			_playerCollider.center = new Vector3(0f, 0.9f, 0f);
+			_playerCollider.height = 1.8f;
 		}
 
 		if (_playerMovementStateMachineController.CurrentPlayerMovementStateType == PlayerMovementStateTypes.PlayerLedgeClimbingStanding)
@@ -46,5 +52,6 @@ public class PlayerColliderController : MonoBehaviour
 		{
 			_playerCollider.enabled = true;
 		}
+		
 	}
 }

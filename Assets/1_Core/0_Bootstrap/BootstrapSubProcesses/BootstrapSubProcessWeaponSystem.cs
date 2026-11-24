@@ -156,10 +156,10 @@ public class BootstrapSubProcessWeaponSystem
 		ServiceLocator.Register<PlayerWeaponFirstPersonRenderer>(_weaponFirstPersonRender);
 		ServiceLocator.Register<HUDweaponsController>(_HUDweaponController);
 
-		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonLeftHand, _gameObjectFirstPersonLeftHandWeaponSlot);
-		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand, _gameObjectFirstPersonRightHandWeaponSlot);
-		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonLeftHand, _gameObjectThirdPersonLeftHandWeaponSlot);
-		ServiceLocator.Register(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand, _gameObjectThirdPersonRightHandWeaponSlot);
+		ServiceLocator.Register(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotFirstPersonLeftHand, _gameObjectFirstPersonLeftHandWeaponSlot);
+		ServiceLocator.Register(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotFirstPersonRightHand, _gameObjectFirstPersonRightHandWeaponSlot);
+		ServiceLocator.Register(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotThirdPersonLeftHand, _gameObjectThirdPersonLeftHandWeaponSlot);
+		ServiceLocator.Register(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotThirdPersonRightHand, _gameObjectThirdPersonRightHandWeaponSlot);
 
 		yield break;
 	}

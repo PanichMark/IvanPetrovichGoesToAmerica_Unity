@@ -9,7 +9,7 @@ public class MissionStepConditionObjectsInsideZoneRegistrationOwner : MonoBehavi
 
 	private void Start()
 	{
-		_playerSpine = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerSpineBone);
+		_playerSpine = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerSpineBone);
 
 
 		// Говорим условию: "Я — твоя зона, зафиксируй меня как Owner"

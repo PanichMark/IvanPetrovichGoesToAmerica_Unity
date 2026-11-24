@@ -25,8 +25,8 @@ public abstract class WeaponEugenicAbstract : WeaponAbstract
 
 	public override void InitializeWeaponPlayer()
 	{
-		_eugenicAttackDirection = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
-		_eugenicSourcePoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+		_eugenicAttackDirection = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
+		_eugenicSourcePoint = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerCamera);
 
 		_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
 		

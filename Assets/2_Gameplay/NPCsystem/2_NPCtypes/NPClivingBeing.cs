@@ -97,7 +97,7 @@ public abstract class NPClivingBeing : NPCabstract
 		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 		_menuManager = ServiceLocator.Resolve<MenuManager>();
 		_bootstrap = ServiceLocator.Resolve<Bootstrap>();
-		_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera);
+		_playerCameraGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerCamera);
 		_detectionSignFrames = ServiceLocator.Resolve<List<Sprite>>();
 		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
 

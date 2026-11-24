@@ -29,7 +29,7 @@ public class NPCmovementController : MonoBehaviour
 		_menuManager = menuManager;
 		_NPCstateMachineController = NPCstateMachineController;
 		_initialRotationY = transform.eulerAngles.y;
-		_cachedPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		_cachedPlayer = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
 		_navMeshAgent = navMeshAgent;
 		CurrentGoalAnchorPointIndex = -1;
 	}

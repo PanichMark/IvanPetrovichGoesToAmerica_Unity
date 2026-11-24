@@ -20,7 +20,6 @@ public event PickableObjectHandler OnPickableObjectReleased;
 	protected bool _isCollisionIgnored = false;
 	protected bool _isPlayerInsideTrigger = false;
 	
-	protected GameObject _playerColliderGameObject;
 	protected int _pickableLayer;
 	protected int _playerLayer;
 	public event IInteractable.InteractableObjectHandler OnInteract;
@@ -58,15 +57,14 @@ public event PickableObjectHandler OnPickableObjectReleased;
 	{
 _pickableLayer = LayerMask.NameToLayer("Pickable");
 		_playerLayer = LayerMask.NameToLayer("Player");
-		_playerColliderGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
-		_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
+		_playerCollider = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player).GetComponent<CapsuleCollider>();
 		_gameController = ServiceLocator.Resolve<GameController>();
 		_playerInteractionController = ServiceLocator.Resolve<PlayerInteractionController>();
 		Collider = GetComponent<BoxCollider>();
 
 		RigidBody = GetComponent<Rigidbody>();
-		CachedPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
-		_gameObjectSpineSlot = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerSpineBone);
+		CachedPlayer = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
+		_gameObjectSpineSlot = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerSpineBone);
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 

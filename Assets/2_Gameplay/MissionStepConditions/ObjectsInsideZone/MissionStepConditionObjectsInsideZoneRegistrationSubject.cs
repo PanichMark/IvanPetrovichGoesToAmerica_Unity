@@ -4,15 +4,15 @@ public class MissionStepConditionObjectsInsideZoneRegistrationSubject : MonoBeha
 {
 	[SerializeField] private MissionStepConditionObjectsInsideZoneRegistrationOwner _owner;
 	[SerializeField] private bool _isSubjectPlayer;
-	private GameObject _playerCollider;
+	private GameObject _player;
 
 	private void Start()
 	{
 		// Проверка 1: Присоединен ли вообще ScriptableObject в инспекторе
 		if (_isSubjectPlayer)
 		{
-			_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
-			_owner.RegisterTrackedSubject(_playerCollider);
+			_player = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
+			_owner.RegisterTrackedSubject(_player);
 		}
 		else
 		{

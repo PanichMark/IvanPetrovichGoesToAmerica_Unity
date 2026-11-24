@@ -11,7 +11,7 @@ public class BootstrapSubProcessPlayerSystems
 	private GameScenesManager _gameSceneManager;
 
 	private GameObject _gameObjectPlayer;
-	private GameObject _gameObjectPlayerCollider;
+	//private GameObject _gameObjectPlayerCollider;
 	private GameObject _canvasMenuBackground;
 
 	private GameObject _gameObjectPlayerHead;
@@ -74,14 +74,14 @@ public class BootstrapSubProcessPlayerSystems
 
 	public IEnumerator Initialize()
 	{
-		_gameObjectPlayerCollider = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerCollider");
+		//_gameObjectPlayerCollider = _bootstrap.FindDeepGameObject(_gameObjectPlayer, "PlayerCollider");
 		PlayerCameraFirstPerson = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraFirstPerson");
 		PlayerCameraPostProcessing = _bootstrap.FindDeepGameObject(_gameObjectPlayerCamera, "CameraIgnorePostProcessing");
 
 		PlayerBehaviour = _gameObjectPlayer.GetComponent<PlayerBehaviourController>();
 		PlayerMovementController = _gameObjectPlayer.GetComponent<PlayerMovementController>();
 		PlayerMovementStateMachineController = _gameObjectPlayer.GetComponent<PlayerMovementStateMachineController>();
-		_playerColliderController = _gameObjectPlayer.GetComponentInChildren<PlayerColliderController>();
+		_playerColliderController = _gameObjectPlayer.GetComponent<PlayerColliderController>();
 		_playerMovementAnimationController = _gameObjectPlayer.GetComponent<PlayerMovementAnimationController>();
 
 		PlayerCameraController = _gameObjectPlayerCamera.GetComponent<PlayerCameraController>();
@@ -209,11 +209,11 @@ ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioMovement, Play
 ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponRight, PlayerAudioWeaponRight);
 ServiceLocator.Register(ServiceLocatorAudioSourcesEnum.PlayerAudioWeaponLeft, PlayerAudioWeaponLeft);
 
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.Player, _gameObjectPlayer);
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerEyes, _gameobjectPlayerEyesLookAt);
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerHead, _gameObjectPlayerHead);
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerCollider, _gameObjectPlayerCollider);
-	ServiceLocator.Register(ServiceLocatorGameObjectsEnum.PlayerCamera, _gameObjectPlayerCamera);
+	ServiceLocator.Register(ServiceLocatorPlayerGameObjectsEnum.Player, _gameObjectPlayer);
+	ServiceLocator.Register(ServiceLocatorPlayerGameObjectsEnum.PlayerEyes, _gameobjectPlayerEyesLookAt);
+	ServiceLocator.Register(ServiceLocatorPlayerGameObjectsEnum.PlayerHead, _gameObjectPlayerHead);
+	//ServiceLocator.Register(ServiceLocatorPlayerGameObjectsEnum.PlayerCollider, _gameObjectPlayerCollider);
+	ServiceLocator.Register(ServiceLocatorPlayerGameObjectsEnum.PlayerCamera, _gameObjectPlayerCamera);
 
 		yield break;
 	}

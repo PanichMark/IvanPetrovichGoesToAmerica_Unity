@@ -21,13 +21,12 @@ public abstract class InteractionObjectPickableThrowableAbstract : InteractionOb
 	{
 		_pickableLayer = LayerMask.NameToLayer("Pickable");
 		_playerLayer = LayerMask.NameToLayer("Player");
-		_playerColliderGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
-		_playerCollider = _playerColliderGameObject.GetComponent<Collider>();
-		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
-		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand);
+		_playerCollider = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player).GetComponent<CapsuleCollider>();
+		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotFirstPersonRightHand);
+		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotThirdPersonRightHand);
 		Collider = GetComponent<Collider>();
 		RigidBody = GetComponent<Rigidbody>();
-		CachedPlayer = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.Player);
+		CachedPlayer = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
 

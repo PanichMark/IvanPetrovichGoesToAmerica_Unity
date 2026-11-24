@@ -52,7 +52,7 @@ public class NPCphrasesController : MonoBehaviour
 
 		_audioSource = GetComponent<AudioSource>();
 
-		_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes);
+		_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerEyes);
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
@@ -79,7 +79,7 @@ public class NPCphrasesController : MonoBehaviour
 
 		_audioSource = GetComponent<AudioSource>();
 
-		_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes);
+		_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerEyes);
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 
@@ -108,7 +108,7 @@ public class NPCphrasesController : MonoBehaviour
 
 		_audioSource = GetComponent<AudioSource>();
 
-		_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes);
+		_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerEyes);
 
 		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 

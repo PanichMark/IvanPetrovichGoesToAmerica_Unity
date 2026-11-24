@@ -39,7 +39,7 @@ public abstract class WeaponRangedAbstract : WeaponAbstract
 	public override void InitializeWeaponPlayer()
 	{
 		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
-		WeaponRangedShootPoint = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCamera).transform;
+		WeaponRangedShootPoint = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerCamera).transform;
 		_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>();
 		_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
 		_VFXmuzzleFlashEffect1stPerson = FirstPersonWeaponModelInstance.transform.Find("VFX")?.gameObject;

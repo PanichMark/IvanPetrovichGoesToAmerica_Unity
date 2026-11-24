@@ -36,7 +36,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 	public void RegisterTrackedSubject(GameObject obj)
 	{
 		if (_isConditionMet) return;
-
+		Debug.Log("HOW MANY!" + _registeredObjects.Count + obj.name);
 		// Защита от дубликатов при многократных стартах в редакторе
 		if (!_registeredObjects.Contains(obj))
 		{
@@ -47,7 +47,8 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 
 	public void InitializeWithZone(GameObject zoneObj, bool  shouldUpdateZoneStatus)
 	{
-
+		
+		
 		_updateZoneStatus = shouldUpdateZoneStatus;
 		_stepConditionOwner = zoneObj;
 		Debug.Log($"[Условие][Init] Владелец (ZoneMain) зафиксирован: {_stepConditionOwner.name}");

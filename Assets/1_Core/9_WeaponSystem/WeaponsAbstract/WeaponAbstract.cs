@@ -78,14 +78,14 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 		WeaponHandType = handType;
 
-		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
+		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotFirstPersonRightHand);
 		_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
-		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonRightHand);
+		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotThirdPersonRightHand);
 		_thirdPersonRightHandWeaponSlotTransform = _thirdPersonRightHandWeaponSlotGameObject.transform;
 
-		_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonLeftHand);
+		_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotFirstPersonLeftHand);
 		_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
-		_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotThirdPersonLeftHand);
+		_thirdPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotThirdPersonLeftHand);
 		_thirdPersonLeftHandWeaponSlotTransform = _thirdPersonLeftHandWeaponSlotGameObject.transform;
 		
 		ThirdPersonWeaponModelInstance = gameObject;
@@ -204,10 +204,10 @@ public abstract class WeaponAbstract : MonoBehaviour
 
 	public void SetUpWeaponInspect()
 	{
-		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonRightHand);
+		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotFirstPersonRightHand);
 		_firstPersonRightHandWeaponSlotTransform = _firstPersonRightHandWeaponSlotGameObject.transform;
 
-		_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.WeaponSlotFirstPersonLeftHand);
+		_firstPersonLeftHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotFirstPersonLeftHand);
 		_firstPersonLeftHandWeaponSlotTransform = _firstPersonLeftHandWeaponSlotGameObject.transform;
 
 		//Destroy(ThirdPersonWeaponModelInstance);

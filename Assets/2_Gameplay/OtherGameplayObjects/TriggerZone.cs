@@ -10,7 +10,7 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 	[SerializeField] private bool _triggerOnSceneLoad;
 	private Collider _triggerZone;
 	private bool _wasZoneTriggered;
-	private GameObject _playerCollider;
+	private GameObject _player;
 	private PauseSubMenuSettingsSectionGeneralController _pauseSubMenuSettingsSectionGeneralController;
 	private bool _isPlayerInside;
 	private bool _finishedLoadingData;
@@ -20,7 +20,7 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
 		_pauseSubMenuSettingsSectionGeneralController = ServiceLocator.Resolve<PauseSubMenuSettingsSectionGeneralController>();
-		_playerCollider = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerCollider);
+		_player = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
 		_gameScenesManager = ServiceLocator.Resolve<GameScenesManager>();
 		_triggerZone = GetComponent<Collider>();
 
@@ -49,7 +49,7 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject == _playerCollider)
+		if (other.gameObject == _player)
 		{
 			if (!_isEndTitlesScene)
 			{
@@ -71,7 +71,7 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (other.gameObject == _playerCollider)
+		if (other.gameObject == _player)
 		{
 
 			_isPlayerInside = false;

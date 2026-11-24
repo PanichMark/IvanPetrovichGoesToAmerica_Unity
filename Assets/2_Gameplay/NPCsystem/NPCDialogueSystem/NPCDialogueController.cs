@@ -102,7 +102,7 @@ public class NPCdialogueController : MonoBehaviour
 _textDialogueYes = _viewModelMenuDialogue.TextDialogueYes;
 _textDialogueNo = _viewModelMenuDialogue.TextDialogueNo;
 
-_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorGameObjectsEnum.PlayerEyes);
+_playerEyesLookAt = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerEyes);
 
 _textComponentDialogueYes = _textDialogueYes.GetComponent<TextMeshProUGUI>();
 _textComponentDialogueNo = _textDialogueNo.GetComponent<TextMeshProUGUI>();
