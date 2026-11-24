@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -81,10 +82,24 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	{
 		if (_isInitialized)
 		{
-			foreach (var mission in _gameMissions.MissionsInOrder)
+			for (int i = 0; i < _gameMissions.MissionsInOrder.Length; i++)
 			{
-				foreach (var step in mission.MissionSteps)
+				var mission = _gameMissions.MissionsInOrder[i];
+				if (i > ActiveMissionIndex)
 				{
+					break;
+				}
+				Debug.Log($"Mission index: {i}");
+
+				// Если индексы нужны и для шагов:
+				for (int j = 0; j < mission.MissionSteps.Length; j++)
+				{
+					var step = mission.MissionSteps[j];
+					if (j >= CurrentStepIndex)
+					{
+						break;
+					}
+					Debug.Log($"  Step index: {j}");
 					step.ApplyAllCurrentGameplaySceneActions();
 				}
 			}
