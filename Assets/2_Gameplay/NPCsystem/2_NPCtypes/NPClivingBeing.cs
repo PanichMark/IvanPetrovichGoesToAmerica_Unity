@@ -159,7 +159,10 @@ public abstract class NPClivingBeing : NPCabstract
 
 		_NPCdetectionManager.Initialize(_NPCstateMachineController);
 
-		_NPCdetectionVisualController.Initialize(_NPCdetectionManager);
+		_NPCdetectionVisualController.Initialize(
+			this,
+			_NPCstateMachineController,
+			_NPCdetectionManager);
 
 		_NPCdetectionAudioController.Initialize();
 

@@ -28,19 +28,27 @@ public class NPCdetectionVisualController : MonoBehaviour
 	private Coroutine _scanRoutine;
 	private Transform _NPCeyesPosition;
 
-	[Space]
 	[Header("Detection Speed Settings")]
 	[SerializeField] private float BaseGainPerSecond = 20f;
 	[SerializeField] private float BaseLossPerSecond = 15f;
-
+	private NPCstateMachineController _NPCstateMachineController;
 	private float _currentSpeed;
 	private float _meterBuffer;
 	private Transform _visibleTarget;
 	private PlayerMovementStateMachineController _playerMovementStateMachineController;
 	private float HalfHeight => viewHeightTotal / 2f;
+	private bool _shouldSpotPlayer;
+	private NPClivingBeing _NPClivingBeing;
+	private Coroutine _currentSpottingCoroutine;
+	private float _spottingTick = 0.1f;
 
-	public void Initialize(NPCdetectionManager detectionManager)
+	public void Initialize(
+		NPClivingBeing NPClivingBeing,
+		NPCstateMachineController NPCstateMachineController,
+		NPCdetectionManager detectionManager)
 	{
+		_NPClivingBeing = NPClivingBeing;
+		_NPCstateMachineController = NPCstateMachineController;
 		_playerMovementStateMachineController = ServiceLocator.Resolve<PlayerMovementStateMachineController>();
 		_playerEyes = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerEyes).transform;
 		_npcDetectionManager = detectionManager;
@@ -51,12 +59,99 @@ public class NPCdetectionVisualController : MonoBehaviour
 		_NPCeyesPosition = transform.Find("NPC_3Dmodel/ArmatureHitbox/Armature_Humanoid/Root/Spine/Neck/Head");
 		_raycastStartPosition = _NPCeyesPosition;
 
-		if (Application.isPlaying)
-		{
-			StartCoroutine(FindTargetsWithDelay(0.1f));
-		}
+		//if (Application.isPlaying)
+		//{
+		//	StartCoroutine(FindTargetsWithDelay(0.1f));
+		//}
 		_currentVisibilityMeterMultiplicator = _defaultVisibilityMeterMultiplicator;
 		_playerMovementStateMachineController.OnChangeMovementState += ChangeVisibilityMeterMultiplicator;
+
+		_NPCstateMachineController.OnNewNPCstate += DecideIfToSpotPlayer;
+
+		if (Application.isPlaying)
+		{
+			DecideIfToSpotPlayer(_NPCstateMachineController.CurrentNPCState);
+		}
+	}
+
+	private void OnDestroy()
+	{
+		if (_playerMovementStateMachineController != null)
+		{
+			_playerMovementStateMachineController.OnChangeMovementState -= ChangeVisibilityMeterMultiplicator;
+		}
+
+		if (_NPCstateMachineController != null)
+		{
+			_NPCstateMachineController.OnNewNPCstate -= DecideIfToSpotPlayer;
+		}
+	}
+
+	private void DecideIfToSpotPlayer(NPCstateTypes newNPCstate)
+	{
+		if (_NPClivingBeing is NPCaggressive)
+		{
+			if (newNPCstate == NPCstateTypes.Strangled ||
+				newNPCstate == NPCstateTypes.Hooked ||
+				newNPCstate == NPCstateTypes.BlownAway ||
+				newNPCstate == NPCstateTypes.ElectroShocked ||
+				newNPCstate == NPCstateTypes.Falling ||
+				newNPCstate == NPCstateTypes.StandingUp ||
+				newNPCstate == NPCstateTypes.Carried ||
+				newNPCstate == NPCstateTypes.Dizzy ||
+				newNPCstate == NPCstateTypes.Unconscious ||
+				newNPCstate == NPCstateTypes.Dying ||
+				newNPCstate == NPCstateTypes.Dead)
+			{
+				_shouldSpotPlayer = false;
+			}
+			else
+			{
+				_shouldSpotPlayer = true;
+			}
+		}
+		else
+		{
+			if (newNPCstate == NPCstateTypes.StationaryAction ||
+				newNPCstate == NPCstateTypes.Patrolling ||
+				newNPCstate == NPCstateTypes.ReturningToStationaryAction ||
+				newNPCstate == NPCstateTypes.Interested ||
+				newNPCstate == NPCstateTypes.Strangled ||
+				newNPCstate == NPCstateTypes.Hooked ||
+				newNPCstate == NPCstateTypes.BlownAway ||
+				newNPCstate == NPCstateTypes.ElectroShocked ||
+				newNPCstate == NPCstateTypes.Falling ||
+				newNPCstate == NPCstateTypes.StandingUp ||
+				newNPCstate == NPCstateTypes.Carried ||
+				newNPCstate == NPCstateTypes.Dizzy ||
+				newNPCstate == NPCstateTypes.Unconscious ||
+				newNPCstate == NPCstateTypes.Dying ||
+				newNPCstate == NPCstateTypes.Dead)
+			{
+				_shouldSpotPlayer = false;
+			}
+			else
+			{
+				_shouldSpotPlayer = true;
+			}
+		}
+
+		if (_shouldSpotPlayer == true)
+		{
+			if (_currentSpottingCoroutine == null)
+			{
+				_currentSpottingCoroutine = StartCoroutine(FindTargetsWithDelay(_spottingTick));
+			}
+		}
+		else
+		{
+			if (_currentSpottingCoroutine != null)
+			{
+				StopCoroutine(_currentSpottingCoroutine);
+				_currentSpottingCoroutine = null;
+			}
+		}
+	
 	}
 
 	private void ChangeVisibilityMeterMultiplicator(PlayerMovementStateTypes newMovementState)
