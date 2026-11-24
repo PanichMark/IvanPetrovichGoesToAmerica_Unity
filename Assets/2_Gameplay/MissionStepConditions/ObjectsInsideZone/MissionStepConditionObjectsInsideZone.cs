@@ -100,4 +100,12 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 		Debug.Log($"[Условие] УСПЕХ! Все объекты внутри {_stepConditionOwner.name}. Шаг выполнен.");
 		//NotifyMissionManagerOnStepCompletion();
 	}
+
+	public void ResetProgess()
+	{
+		_registeredObjects.Clear();
+		_objectsCurrentlyInside.Clear();
+
+		Debug.Log("CLEAR ZONE REGISTER");
+	}
 }

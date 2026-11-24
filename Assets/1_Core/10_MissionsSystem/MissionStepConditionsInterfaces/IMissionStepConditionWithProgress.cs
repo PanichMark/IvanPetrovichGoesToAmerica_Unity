@@ -3,4 +3,6 @@
 public interface IMissionStepConditionWithProgress
 {
 	event Action<int, int> OnStepConditionProgressUpdated;
+
+	void ResetProgess();
 }

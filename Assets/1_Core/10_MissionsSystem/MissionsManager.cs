@@ -102,8 +102,22 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 					}
 					Debug.Log($"  Step index: {j}");
 					Debug.Log("current index" + CurrentStepIndex);
+
+					
+
 					step.ApplyAllCurrentGameplaySceneActions();
+
+					if (step is MissionStep typedStep)
+					{
+						foreach (var condition in typedStep.Conditions)
+						{
+							if (condition is IMissionStepConditionWithProgress progressableStepCondition)
+							{
+								progressableStepCondition.ResetProgess();
+							}
+					}
 				}
+			}
 			}
 		//}
 	}
@@ -271,10 +285,19 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		//Debug.Log(ActiveMission);
 	}
 
+
+	// PERSISTENCE OBJECTS UNSUBS BECAUSE ITS SCRIPTABLE OBJECT!!!!!!
 	private void OnDestroy()
 	{
-		_missionStepConditionWithProgress.OnStepConditionProgressUpdated -= HandleStepProgress;
-		_missionStepConditionWithCountdown.OnStepConditionTimeTick -= HandleStepCountdown;
+		if (_missionStepConditionWithProgress != null)
+		{
+			_missionStepConditionWithProgress.OnStepConditionProgressUpdated -= HandleStepProgress;
+		}
+
+		if (_missionStepConditionWithCountdown != null)
+		{
+			_missionStepConditionWithCountdown.OnStepConditionTimeTick -= HandleStepCountdown;
+		}
 	}
 
 	private void HandleStepProgress(int currentAmount, int requiredAmount)
