@@ -5,12 +5,17 @@ public class MissionStepConditionObjectsInsideZoneRegistrationOwner : MonoBehavi
 {
 	[SerializeField] private MissionStepConditionAbstract _linkedMissionCondition;
 	private GameObject _playerSpine;
-	[SerializeField] private bool _updateZoneStatus;
 
+	[SerializeField] private bool _updateZoneStatus;
+	[SerializeField] private bool _isSubjectPlayer;
+	private GameObject _player;
 	private void Start()
 	{
 		_playerSpine = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerSpineBone);
-
+		if (_isSubjectPlayer)
+		{
+			_player = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
+			RegisterTrackedSubject(_player);		}
 
 		// Говорим условию: "Я — твоя зона, зафиксируй меня как Owner"
 		if (_linkedMissionCondition is MissionStepConditionObjectsInsideZone condition)
@@ -38,6 +43,12 @@ public class MissionStepConditionObjectsInsideZoneRegistrationOwner : MonoBehavi
 			{
 				condition.ReportSubjectEntered(target); // Условие получит именно тот объект, где лежит скрипт
 			}
+
+			if (_isSubjectPlayer && other.gameObject == _player)
+			{
+				condition.ReportSubjectEntered(_player);
+			}
+
 		}
 	}
 
@@ -51,6 +62,11 @@ public class MissionStepConditionObjectsInsideZoneRegistrationOwner : MonoBehavi
 			if (target != null)
 			{
 				condition.ReportSubjectExited(target); // Условие получит именно тот объект, где лежит скрипт
+			}
+
+			if (_isSubjectPlayer && other.gameObject == _player)
+			{
+				condition.ReportSubjectExited(_player);
 			}
 		}
 	}
