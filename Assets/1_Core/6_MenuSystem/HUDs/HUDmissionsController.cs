@@ -103,6 +103,7 @@ public class HUDmissionsController : MonoBehaviour
 			{
 				Debug.Log(_currentMissionNotificationRoutine);
 				StopCoroutine(_currentMissionNotificationRoutine);
+				_currentMissionNotificationRoutine = null;
 			}
 
 		

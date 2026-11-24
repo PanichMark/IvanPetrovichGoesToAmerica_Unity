@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -63,7 +62,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		_gameSceneManager.OnEndLoadingGameplayScene += ShowMissionGoalHUD;
 
-		_gameSceneManager.OnBeginLoadingGameplayScene += () => ResetAllMissionStepsActionLists();
+		_gameSceneManager.OnBeginLoadingGameplayScene += ResetAllMissionStepsActionLists;
 
 		ResetAllStepConditions();
 
@@ -251,15 +250,27 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		//Debug.Log(ActiveMission);
 	}
 
+	private void OnDestroy()
+	{
+		_missionStepConditionWithProgress.OnStepConditionProgressUpdated -= HandleStepProgress;
+		_missionStepConditionWithCountdown.OnStepConditionTimeTick -= HandleStepCountdown;
+	}
+
 	private void HandleStepProgress(int currentAmount, int requiredAmount)
 	{
-		//Debug.Log(currentAmount);
-		//Debug.Log(requiredAmount);
+		// Добавьте эту проверку:
+		if (_HUDmissionsController == null)
+		{
+			Debug.LogError("HUDmissionsController is NULL inside MissionsManager! Поле не обновилось.");
+			return;
+		}
 
-		Debug.Log(CurrentStepIndex);
+		if (!_HUDmissionsController.gameObject.scene.IsValid() || !_HUDmissionsController.gameObject.activeInHierarchy)
+		{
+			Debug.LogError("HUDmissionsController ссылается на НЕАКТИВНЫЙ или УНИЧТОЖЕННЫЙ объект!");
+		}
 
 		LocalizedStepGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
-
 		_HUDmissionsController.ShowNewMissionGoalHUDnotification($"{LocalizedStepGoalText}: {currentAmount}/{requiredAmount}", false);
 	}
 
