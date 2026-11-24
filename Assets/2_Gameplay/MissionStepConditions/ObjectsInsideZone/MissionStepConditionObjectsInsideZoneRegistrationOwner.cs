@@ -5,6 +5,7 @@ public class MissionStepConditionObjectsInsideZoneRegistrationOwner : MonoBehavi
 {
 	[SerializeField] private MissionStepConditionAbstract _linkedMissionCondition;
 	private GameObject _playerSpine;
+	[SerializeField] private bool _updateZoneStatus;
 
 	private void Start()
 	{
@@ -21,7 +22,7 @@ public class MissionStepConditionObjectsInsideZoneRegistrationOwner : MonoBehavi
 		// Говорим условию: "Я — твоя зона, зафиксируй меня как Owner"
 		if (_linkedMissionCondition is MissionStepConditionObjectsInsideZone condition)
 		{
-			condition.InitializeWithZone(gameObject);
+			condition.InitializeWithZone(gameObject, _updateZoneStatus);
 		}
 	}
 

@@ -11,7 +11,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 	// Временный список: кто сейчас физически внутри (сбрасывается всегда)
 	private readonly List<GameObject> _objectsCurrentlyInside = new();
 
-
+	private bool _updateZoneStatus;
 	public event Action<int, int> OnStepConditionProgressUpdated;
 
 	/*
@@ -45,10 +45,10 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 		}
 	}
 
-	internal void InitializeWithZone(GameObject zoneObj)
+	internal void InitializeWithZone(GameObject zoneObj, bool  shouldUpdateZoneStatus)
 	{
-	
 
+		_updateZoneStatus = shouldUpdateZoneStatus;
 		_stepConditionOwner = zoneObj;
 		Debug.Log($"[Условие][Init] Владелец (ZoneMain) зафиксирован: {_stepConditionOwner.name}");
 	}
@@ -62,7 +62,10 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 			_objectsCurrentlyInside.Add(obj);
 
 			int remaining = _registeredObjects.Count - _objectsCurrentlyInside.Count;
-			OnStepConditionProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
+			if (_updateZoneStatus)
+			{
+				OnStepConditionProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
+			}
 			Debug.Log($"[Условие][Вход] Объект: {obj.name}. Внутри: {_objectsCurrentlyInside.Count}/{_registeredObjects.Count}. Осталось: {remaining}");
 
 			if (remaining == 0 && _registeredObjects.Count > 0)
@@ -81,7 +84,10 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 			_objectsCurrentlyInside.Remove(obj);
 
 			int remaining = _registeredObjects.Count - _objectsCurrentlyInside.Count;
-			OnStepConditionProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
+			if (_updateZoneStatus)
+			{
+				OnStepConditionProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
+			}
 			Debug.Log($"[Условие][Выход] Объект: {obj.name}. Внутри: {_objectsCurrentlyInside.Count}/{_registeredObjects.Count}. Осталось: {remaining}");
 		}
 	}

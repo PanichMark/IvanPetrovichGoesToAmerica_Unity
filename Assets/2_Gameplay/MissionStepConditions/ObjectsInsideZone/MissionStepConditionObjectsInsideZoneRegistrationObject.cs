@@ -3,7 +3,6 @@
 public class MissionStepConditionObjectsInsideZoneRegistrationObject : MonoBehaviour
 {
 	[SerializeField] private MissionStepConditionAbstract _linkedMissionCondition;
-
 	private void Start()
 	{
 		// Проверка 1: Присоединен ли вообще ScriptableObject в инспекторе

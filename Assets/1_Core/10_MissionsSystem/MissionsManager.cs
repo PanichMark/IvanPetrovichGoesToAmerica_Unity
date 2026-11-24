@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 {
 	private IMissionStepConditionWithProgress _missionStepConditionWithProgress;
+	private IMissionStepConditionWithCountdown _missionStepConditionWithCountdown;
 
 	private GameMissionsList _gameMissions;
 	public Mission ActiveMission { get; private set; }
@@ -23,7 +24,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	public delegate void DestructionEventHandler(GameObject destroyedObject, bool wasLethal);
 	public event DestructionEventHandler OnAnyObjectDestroyed;
 	private JournalMenuSectionMissionInfoController _journalMenuSectionMissionInfoController;
-	public string LocalizedGoalText { get; private set; }
+	public string LocalizedStepGoalText { get; private set; }
 
 	public void Initialize(
 		LocalizationManager localizationManager,
@@ -52,8 +53,8 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		//Debug.Log(ActiveMission);
 		if (ActiveMission.MissionSteps.Length > 0)
 		{
-			LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
-			_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedGoalText);
+			LocalizedStepGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
+			_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedStepGoalText);
 
 			//ActiveMission.MissionSteps[CurrentStepIndex].OnStepStarted();
 		}
@@ -133,7 +134,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	private void ShowMissionGoalHUD()
 	{
-		LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
+		LocalizedStepGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 
 		if (SceneManager.sceneCount > 1)
 		{
@@ -144,7 +145,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 				if (_jsonSaveLoadController.IsLoadingFromSaveFile)
 				{
 					//Debug.Log("IsLoadingFromSaveFile");
-					_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
+					_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedStepGoalText, false);
 				}
 				else
 				{
@@ -155,12 +156,12 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 					{
 						//Debug.Log("_previousMissionStep !=");
 						
-						_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, false);
+						_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedStepGoalText, false);
 					}
 					else
 					{
 						//Debug.Log("Else");
-						_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedGoalText, true);
+						_HUDmissionsController.ShowNewMissionGoalHUDnotification(LocalizedStepGoalText, true);
 					}
 				}
 			}
@@ -203,12 +204,12 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 			ActiveMission.MissionSteps[CurrentStepIndex].OnStepStarted();
 
-			LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
+			LocalizedStepGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 
 
 
 			ShowMissionGoalHUD();
-			_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedGoalText);
+			_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedStepGoalText);
 		}
 		else
 		{
@@ -234,17 +235,20 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		{
 			_missionStepConditionWithProgress.OnStepConditionProgressUpdated -= HandleStepProgress;
 		}
+
+		if (ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0] is IMissionStepConditionWithCountdown)
+		{
+			_missionStepConditionWithCountdown = ActiveMission.MissionSteps[CurrentStepIndex].Conditions[0] as IMissionStepConditionWithCountdown;
+
+			_missionStepConditionWithCountdown.OnStepConditionTimeTick += HandleStepCountdown;
+		}
+		else if (_missionStepConditionWithCountdown != null)
+		{
+			_missionStepConditionWithCountdown.OnStepConditionTimeTick -= HandleStepCountdown;
+		}
 		//Debug.Log(CurrentStepIndex);
 		//Debug.Log(ActiveMission.MissionSteps.Length);
 		//Debug.Log(ActiveMission);
-	}
-
-	private void OnDestroy()
-	{
-		if (_missionStepConditionWithProgress != null)
-		{
-			_missionStepConditionWithProgress.OnStepConditionProgressUpdated -= HandleStepProgress;
-		}
 	}
 
 	private void HandleStepProgress(int currentAmount, int requiredAmount)
@@ -254,9 +258,18 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		Debug.Log(CurrentStepIndex);
 
-		LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
+		LocalizedStepGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 
-		_HUDmissionsController.ShowNewMissionGoalHUDnotification($"{LocalizedGoalText}: {currentAmount}/{requiredAmount}", false);
+		_HUDmissionsController.ShowNewMissionGoalHUDnotification($"{LocalizedStepGoalText}: {currentAmount}/{requiredAmount}", false);
+	}
+
+	private void HandleStepCountdown(float remainingTime)
+	{
+		LocalizedStepGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
+
+		string formattedTime = remainingTime.ToString("F1", System.Globalization.CultureInfo.InvariantCulture);
+
+		_HUDmissionsController.ShowNewMissionGoalHUDnotification($"{LocalizedStepGoalText}: {formattedTime}", false);
 	}
 
 	private void StartNextMission()
@@ -307,8 +320,8 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		{
 			if (SceneManager.sceneCount > 1 && (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString()))
 			{
-				LocalizedGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
-				_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedGoalText);
+				LocalizedStepGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
+				_journalMenuSectionMissionInfoController.SetMissionStep(LocalizedStepGoalText);
 			}
 		}
 	}

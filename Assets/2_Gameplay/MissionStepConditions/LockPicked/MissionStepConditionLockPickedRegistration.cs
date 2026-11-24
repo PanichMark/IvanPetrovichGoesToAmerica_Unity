@@ -9,13 +9,11 @@ public class MissionStepConditionLockPickedRegistration : MonoBehaviour
 
 	private void Start()
 	{
-		// Если ссылка не задана в инспекторе, пытаемся найти на этом же объекте
-		if (_lockObject == null)
-		{
-			_lockObject = GetComponent<InteractionObjectLockAbstract>();
-		}
 
-		if (_lockObject == null) return;
+			_lockObject = GetComponent<InteractionObjectLockAbstract>();
+		
+
+		
 
 		_lockObject.OnUnlockLock += HandleLockUnlocked;
 	}
@@ -30,9 +28,8 @@ public class MissionStepConditionLockPickedRegistration : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		if (_lockObject != null)
-		{
+		
 			_lockObject.OnUnlockLock -= HandleLockUnlocked;
-		}
+		
 	}
 }

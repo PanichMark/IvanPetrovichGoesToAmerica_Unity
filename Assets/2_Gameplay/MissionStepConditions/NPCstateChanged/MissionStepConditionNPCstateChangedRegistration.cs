@@ -11,7 +11,7 @@ public class MissionStepConditionNPCstateChangedRegistration : MonoBehaviour
 	private void Start()
 	{
 		_stateMachine = GetComponent<NPCstateMachineController>();
-		if (_stateMachine == null) return;
+
 
 		_stateMachine.OnNewNPCstate += HandleStateChanged;
 	}
@@ -29,9 +29,8 @@ public class MissionStepConditionNPCstateChangedRegistration : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		if (_stateMachine != null)
-		{
+	
 			_stateMachine.OnNewNPCstate -= HandleStateChanged;
-		}
+		
 	}
 }

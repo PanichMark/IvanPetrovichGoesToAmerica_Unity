@@ -240,7 +240,7 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 			if (_showMissionGoalOnClose)
 			{
-				_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedGoalText, true);
+				_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedStepGoalText, true);
 			}
 		}
 	}

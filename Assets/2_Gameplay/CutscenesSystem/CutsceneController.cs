@@ -449,7 +449,7 @@ public class CutsceneController : MonoBehaviour
 
 			if (_showMissionGoalHint)
 			{
-				_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedGoalText, true);
+				_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedStepGoalText, true);
 			}
 
 			//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;

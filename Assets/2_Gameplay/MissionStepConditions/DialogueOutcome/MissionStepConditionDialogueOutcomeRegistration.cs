@@ -13,11 +13,6 @@ public class MissionStepConditionDialogueOutcomeRegistration : MonoBehaviour
 	private void Start()
 	{
 		_dialogueController = GetComponent<NPCdialogueController>();
-		if (_dialogueController == null)
-		{
-			Debug.LogError($"На объекте {gameObject.name} нет NPCdialogueController.");
-			return;
-		}
 
 		// Регистрируем владельца (самого NPC) в условии
 		_linkedMissionCondition.RegisterOwner(gameObject);
@@ -28,10 +23,9 @@ public class MissionStepConditionDialogueOutcomeRegistration : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		if (_dialogueController != null)
-		{
-			_dialogueController.OnDialogueOptionSelected -= HandleDialogueSelection;
-		}
+	
+		_dialogueController.OnDialogueOptionSelected -= HandleDialogueSelection;
+		
 	}
 
 	private void HandleDialogueSelection(int triggeredBranchIndex, bool isYesSelected)
