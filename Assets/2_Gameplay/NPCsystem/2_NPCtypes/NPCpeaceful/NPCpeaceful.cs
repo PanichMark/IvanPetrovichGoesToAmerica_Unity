@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class NPCpeaceful : NPClivingBeing, IMissionStepActionNPCdialogueAvailability
+public class NPCpeaceful : NPClivingBeing, IMissionStepActionNPCdialogueEnable
 {
 	private NPCdialogueController _NPCdialogueController;
 

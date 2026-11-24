@@ -9,13 +9,11 @@ public class MissionStep : ScriptableObject
 	private MissionsManager _missionsManager;
 	public bool ShowMissionMarker => showMissionMarker;
 
-	private List<GameObject> _gameObjectTurnOn = new List<GameObject>();
-	private List<GameObject> _gameObjectTurnOff = new List<GameObject>();
+	// 1. Структуры данных заменены на списки кортежей (ValueTuple)
+	private List<(GameObject Object, bool IsEnabled)> _gameObjectTurnOn = new List<(GameObject, bool)>();
+	private List<(GameObject Object, bool IsEnabled)> _NPCdialoguesEnable = new List<(GameObject, bool)>();
 
-	private List<GameObject> _NPCdialoguesEnable = new List<GameObject>();
-	private List<GameObject> _NPCdialoguesDisable = new List<GameObject>();
-
-	public GameObject MissionStepGoalMarkerObject {  get; private set; }
+	public GameObject MissionStepGoalMarkerObject { get; private set; }
 
 	[TextArea(3, 10)]
 	public string StepDescription;
@@ -33,41 +31,41 @@ public class MissionStep : ScriptableObject
 
 	public void OnStepStarted()
 	{
+		// 2. Логика выполнения обновлена для работы с кортежами
 		if (_gameObjectTurnOn.Count > 0)
 		{
-			foreach (var obj in _gameObjectTurnOn)
+			foreach (var tuple in _gameObjectTurnOn)
 			{
-				Debug.Log("TurnON");
-				Debug.Log(obj.name);
-				obj.SetActive(true);
-			}
-		}
-
-		if (_gameObjectTurnOff.Count > 0)
-		{
-			foreach (var obj in _gameObjectTurnOff)
-			{
-				Debug.Log("TurnOFF");
-				Debug.Log(obj.name);
-				obj.SetActive(false);
+				if (tuple.Object != null)
+				{
+					tuple.Object.SetActive(tuple.IsEnabled);
+					// Логируем фактическое действие
+					Debug.Log($"SetActive для {tuple.Object.name}: {tuple.IsEnabled}");
+				}
 			}
 		}
 
 		if (_NPCdialoguesEnable.Count > 0)
 		{
-			foreach (var obj in _NPCdialoguesEnable)
+			foreach (var tuple in _NPCdialoguesEnable)
 			{
-				obj.GetComponent<IMissionStepActionNPCdialogueAvailability>().EnableDialogue();
-			}
-		}
-		//Debug.Log("STEP SARTED");
-		//Debug.Log(_NPCdialoguesDisable.Count);
-		if (_NPCdialoguesDisable.Count > 0)
-		{
-			foreach (var obj in _NPCdialoguesDisable)
-			{
-				obj.GetComponent<IMissionStepActionNPCdialogueAvailability>().DisableDialogue();
-				//Debug.Log(obj.name);
+				if (tuple.Object != null)
+				{
+					var dialogueComponent = tuple.Object.GetComponent<IMissionStepActionNPCdialogueEnable>();
+					if (dialogueComponent != null)
+					{
+						// Если нужно включить — вызываем Enable, если выключить — Disable
+						if (tuple.IsEnabled)
+						{
+							dialogueComponent.EnableDialogue();
+						}
+						else
+						{
+							dialogueComponent.DisableDialogue();
+						}
+						Debug.Log($"Dialogue для {tuple.Object.name}: {(tuple.IsEnabled ? "Enabled" : "Disabled")}");
+					}
+				}
 			}
 		}
 	}
@@ -78,17 +76,12 @@ public class MissionStep : ScriptableObject
 		{
 			_missionsManager.GoToNextStep(goToNextStep);
 		}
-	
 	}
 
 	public void Initialize(MissionsManager missionsManager)
 	{
 		_missionsManager = missionsManager;
-
-
-		ClearGameObjectsTurnOnOffLists();
-		ClearNPCdialoguesAvailabilityLists();
-
+		ClearAllMissionStepActionsLists();
 
 		foreach (var condition in StepConditions)
 		{
@@ -96,52 +89,27 @@ public class MissionStep : ScriptableObject
 		}
 	}
 
-	public void ClearGameObjectsTurnOnOffLists()
+	public void ClearAllMissionStepActionsLists()
 	{
-
-		//Debug.Log(GameObjectTurnOn.Count);
 		if (_gameObjectTurnOn.Count > 0)
 		{
 			_gameObjectTurnOn.Clear();
 		}
-		if (_gameObjectTurnOff.Count > 0)
-		{
-			_gameObjectTurnOff.Clear();
-		}
-	}
-
-	public void ClearNPCdialoguesAvailabilityLists()
-	{
-
-		//Debug.Log(GameObjectTurnOn.Count);
 		if (_NPCdialoguesEnable.Count > 0)
 		{
 			_NPCdialoguesEnable.Clear();
 		}
-		if (_NPCdialoguesDisable.Count > 0)
-		{
-			_NPCdialoguesDisable.Clear();
-		}
 	}
 
-	public void RegisterObjectsTurnOn(GameObject objectTurnOn)
+	// 3. Методы регистрации теперь сохраняют значение bool
+	public void RegisterObjectsTurnOn(GameObject objectTurnOn, bool enable)
 	{
-		_gameObjectTurnOn.Add(objectTurnOn);
+		_gameObjectTurnOn.Add((objectTurnOn, enable));
 	}
 
-	public void RegisterObjectsTurnOff(GameObject objectTurnOff)
+	public void RegisterNPCdialoguesEnable(GameObject NPCwithDialogue, bool enable)
 	{
-		_gameObjectTurnOff.Add(objectTurnOff);
-	}
-
-	public void RegisterNPCdialoguesEnable(GameObject NPCwithDialogue)
-	{
-		_NPCdialoguesEnable.Add(NPCwithDialogue);
-	}
-
-	public void RegisterNPCdialoguesDisable(GameObject NPCwithDialogue)
-	{
-		_NPCdialoguesDisable.Add(NPCwithDialogue);
+		_NPCdialoguesEnable.Add((NPCwithDialogue, enable));
 	}
 
 	public void RegisterMissionStepGoalMarkerObject(GameObject markerObject)

@@ -114,8 +114,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 			foreach (var step in mission.MissionSteps)
 			{
-				step.ClearGameObjectsTurnOnOffLists();
-				step.ClearNPCdialoguesAvailabilityLists();
+				step.ClearAllMissionStepActionsLists();
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class NPCneutral : NPClivingBeing, IMissionStepActionNPCdialogueAvailability
+public class NPCneutral : NPClivingBeing, IMissionStepActionNPCdialogueEnable
 {
 	private NPCdialogueController _NPCdialogueController;
 

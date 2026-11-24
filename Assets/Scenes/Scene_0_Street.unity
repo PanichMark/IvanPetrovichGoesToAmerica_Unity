@@ -6123,10 +6123,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 122125728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc5fee0d718dc0047b9ef121bbc71073, type: 3}
+  m_Script: {fileID: 11500000, guid: 74392adaa05fecd4ea7c6d2bdb346a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _linkedMissionStep: {fileID: 11400000, guid: 1fbd0eb885edce242ae3e622133d2251, type: 2}
+  _enable: 0
 --- !u!114 &122125730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50438,6 +50439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _linkedMissionStep: {fileID: 11400000, guid: 49e3993059d2739419651ad1c612631b, type: 2}
+  _enable: 0
 --- !u!114 &869027484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50451,6 +50453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _linkedMissionStep: {fileID: 11400000, guid: 1fbd0eb885edce242ae3e622133d2251, type: 2}
+  _enable: 0
 --- !u!1 &873588525
 GameObject:
   m_ObjectHideFlags: 0
