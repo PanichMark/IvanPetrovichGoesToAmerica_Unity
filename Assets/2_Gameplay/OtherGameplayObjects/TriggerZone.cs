@@ -24,6 +24,8 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 		_gameScenesManager = ServiceLocator.Resolve<GameScenesManager>();
 		_triggerZone = GetComponent<Collider>();
 
+
+		Debug.Log("IT DID INITIALIZE");
 		_triggerZone.isTrigger = true;
 
 		if (SceneManager.GetSceneAt(1).name == GameScenesSystemEnum.Scene_System_EndGameTitles.ToString())

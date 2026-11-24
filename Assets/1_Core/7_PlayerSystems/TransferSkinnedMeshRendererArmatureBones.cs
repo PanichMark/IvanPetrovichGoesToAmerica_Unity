@@ -32,7 +32,7 @@ public class TransferSkinnedMeshRendererArmatureBones : MonoBehaviour
 			if (_bakeMeshTorso)
 			{
 				var originalMesh = _torsoSkinnedMeshRenderer.sharedMesh;
-				Debug.Log($"[AssignMeshes] Копируем меш '{_meshTorso.name}'...");
+				//Debug.Log($"[AssignMeshes] Копируем меш '{_meshTorso.name}'...");
 
 				var newMesh = Instantiate(originalMesh);
 				_torsoSkinnedMeshRenderer.sharedMesh = newMesh;
@@ -69,8 +69,7 @@ public class TransferSkinnedMeshRendererArmatureBones : MonoBehaviour
 					}
 					else
 					{
-						Debug.LogError($"[AssignMeshes] КОСТЬ НЕ НАЙДЕНА: '{targetName}'. Доступные примеры в базе: " +
-										$"{string.Join(", ", _baseArmatureBoneNames.Keys.Take(5))}...");
+						Debug.LogError($"[AssignMeshes] КОСТЬ НЕ НАЙДЕНА: '{targetName}'. Доступные примеры в базе: " + $"{string.Join(", ", _baseArmatureBoneNames.Keys.Take(5))}...");
 						bindPoses[i] = transform.localToWorldMatrix;
 						hasErrors = true;
 					}

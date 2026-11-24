@@ -31,8 +31,8 @@ public class MissionStep : ScriptableObject
 
 	public void ApplyAllCurrentGameplaySceneActions()
 	{
-		Debug.Log("REAPPLY gameObjects" + _gameObjectTurnOn.Count);
-		Debug.Log("REAPPLY Dialogues" + _NPCdialoguesEnable.Count);
+		//Debug.Log("REAPPLY gameObjects" + _gameObjectTurnOn.Count);
+		//Debug.Log("REAPPLY Dialogues" + _NPCdialoguesEnable.Count);
 
 		if (_gameObjectTurnOn.Count > 0)
 		{
@@ -41,7 +41,7 @@ public class MissionStep : ScriptableObject
 
 				tuple.Object.SetActive(tuple.IsEnabled);
 				// Логируем фактическое действие
-				Debug.Log($"SetActive для {tuple.Object.name}: {tuple.IsEnabled}");
+				//Debug.Log($"SetActive для {tuple.Object.name}: {tuple.IsEnabled}");
 				
 			}
 		}
@@ -64,7 +64,7 @@ public class MissionStep : ScriptableObject
 						{
 							dialogueComponent.DisableDialogue();
 						}
-						Debug.Log($"Dialogue для {tuple.Object.name}: {(tuple.IsEnabled ? "Enabled" : "Disabled")}");
+						//Debug.Log($"Dialogue для {tuple.Object.name}: {(tuple.IsEnabled ? "Enabled" : "Disabled")}");
 					}
 				}
 			}
@@ -112,7 +112,7 @@ public class MissionStep : ScriptableObject
 	{
 		_gameObjectTurnOn.Add((objectTurnOn, enable));
 
-		Debug.Log("REGISTER" + objectTurnOn);
+		//Debug.Log("REGISTER" + objectTurnOn);
 	}
 
 	public void RegisterNPCdialoguesEnable(GameObject NPCwithDialogue, bool enable)

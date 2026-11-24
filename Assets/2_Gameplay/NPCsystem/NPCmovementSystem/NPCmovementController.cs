@@ -18,6 +18,7 @@ public class NPCmovementController : MonoBehaviour
 	private float _initialRotationY;
 	private GameObject _cachedPlayer;
 	private MenuManager _menuManager;
+	private bool _isAnchorMoving;
 	public float CurrentStationaryWaitTime { get; private set; }
 	public void Initialize(
 		MenuManager menuManager,
@@ -48,13 +49,25 @@ public class NPCmovementController : MonoBehaviour
 	{
 		TurnNavmeshOn();
 		_currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCoroutine());
-
+		_isAnchorMoving = true;
 		//Debug.Log(CurrentGoalAnchorPointIndex);
 	}
 
 	public void SetLoadedCurrentAnchorPoint(int newPoint)
 	{
 		CurrentGoalAnchorPointIndex = newPoint;
+
+		if (_isAnchorMoving)
+		{
+			if (_currentMovementCoroutine != null)
+			{
+				StopCoroutine(_currentMovementCoroutine);
+				_currentMovementCoroutine = null;
+				_currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCoroutine());
+			}
+		}
+
+		
 	}
 
 	public void StopAnchorMove()
@@ -65,7 +78,7 @@ public class NPCmovementController : MonoBehaviour
 			StopCoroutine(_currentMovementCoroutine);
 			_currentMovementCoroutine = null;
 		}
-
+		_isAnchorMoving = false;
 		//Debug.Log(CurrentGoalAnchorPointIndex);
 	}
 

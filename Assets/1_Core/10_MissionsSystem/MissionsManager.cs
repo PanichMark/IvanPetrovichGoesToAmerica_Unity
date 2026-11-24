@@ -91,7 +91,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 				{
 					break;
 				}
-				Debug.Log($"Mission index: {i}");
+				//Debug.Log($"Mission index: {i}");
 
 				// Если индексы нужны и для шагов:
 				for (int j = 0; j < mission.MissionSteps.Length; j++)
@@ -101,8 +101,8 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 					{
 						break;
 					}
-					Debug.Log($"  Step index: {j}");
-					Debug.Log("current index" + CurrentStepIndex);
+					//Debug.Log($"  Step index: {j}");
+					//Debug.Log("current index" + CurrentStepIndex);
 
 					step.ApplyAllCurrentGameplaySceneActions();
 

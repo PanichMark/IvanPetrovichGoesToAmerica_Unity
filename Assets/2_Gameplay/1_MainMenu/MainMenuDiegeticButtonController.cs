@@ -261,14 +261,14 @@ public class MainMenuDiegeticButtonController : MonoBehaviour
 	{
 		if (!_mainMenuInitialize.IsCutsceneNewGamePlaying)
 		{
-			Debug.Log(_mainMenuInitialize.IsCutsceneNewGamePlaying);
+			//Debug.Log(_mainMenuInitialize.IsCutsceneNewGamePlaying);
 			foreach (var instance in _instances)
 			{
 				var colliderInstance = instance._collider;
 				colliderInstance.enabled = true;
 			}
 
-			Debug.Log("ENABLE");
+			//Debug.Log("ENABLE");
 		}
 	}
 

@@ -40,7 +40,7 @@ public class MissionStepConditionTimeCountdownRegistration : MonoBehaviour
 		
 			if (_missionsManager.GameMissions.MissionsInOrder[0].MissionSteps[i] == _linkedMissionCondition.MissionStepAbstract)
 			{
-				Debug.Log(i);
+				//Debug.Log(i);
 
 				_stepToStartCountDown = i;
 				break;

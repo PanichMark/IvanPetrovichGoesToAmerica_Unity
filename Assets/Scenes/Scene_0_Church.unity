@@ -20464,6 +20464,24 @@ GameObject:
   m_Component:
   - component: {fileID: 308647996}
   - component: {fileID: 308647997}
+  - component: {fileID: 308648015}
+  - component: {fileID: 308648014}
+  - component: {fileID: 308648013}
+  - component: {fileID: 308648012}
+  - component: {fileID: 308648011}
+  - component: {fileID: 308648010}
+  - component: {fileID: 308648009}
+  - component: {fileID: 308648008}
+  - component: {fileID: 308648007}
+  - component: {fileID: 308648006}
+  - component: {fileID: 308648005}
+  - component: {fileID: 308648004}
+  - component: {fileID: 308648003}
+  - component: {fileID: 308648002}
+  - component: {fileID: 308648001}
+  - component: {fileID: 308648000}
+  - component: {fileID: 308647999}
+  - component: {fileID: 308647998}
   m_Layer: 0
   m_Name: RegistrateGoal
   m_TagString: Untagged
@@ -20499,6 +20517,240 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _missionStepGoalMarker: {fileID: 11400000, guid: e1b907ecb4ea6774aac6f422acef379e, type: 2}
+--- !u!114 &308647998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: c992b16f159972149b5c6eeb6f3c15f9, type: 2}
+--- !u!114 &308647999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 76a419c6d15988a4aaada87cd147865d, type: 2}
+--- !u!114 &308648000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: df6d5b24a9277a7478e001498b84678c, type: 2}
+--- !u!114 &308648001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 2c141747a626ba64ab3230335ec32aed, type: 2}
+--- !u!114 &308648002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 5c6ea1396f1490d4991d7dd76e77eace, type: 2}
+--- !u!114 &308648003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: eb158a15905ea1e44b230a39aee0fa29, type: 2}
+--- !u!114 &308648004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 5f9e4e6e8f96ad040b6b3b7f7371e6d8, type: 2}
+--- !u!114 &308648005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 146e4c58e5aa273479b489c90bbedfe0, type: 2}
+--- !u!114 &308648006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 488d58048874e7d40b9741de1ef2100b, type: 2}
+--- !u!114 &308648007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 1aa29bc5e0393dd4e85dd7541d5aa6bd, type: 2}
+--- !u!114 &308648008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 937be128cacb4b242bebb1bb7d43d5a1, type: 2}
+--- !u!114 &308648009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 1fbd0eb885edce242ae3e622133d2251, type: 2}
+--- !u!114 &308648010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 96f799a002eab8441a365a0ffbf35820, type: 2}
+--- !u!114 &308648011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 35ea6877ce5d84e498d5940887ea0ede, type: 2}
+--- !u!114 &308648012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 6032eed6d94771d4cb9e36f95f37fbe7, type: 2}
+--- !u!114 &308648013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: a4fdc27fd3760cb41a9cb1d2e733d0b2, type: 2}
+--- !u!114 &308648014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 49e3993059d2739419651ad1c612631b, type: 2}
+--- !u!114 &308648015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308647995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: ed5c704e1f25acc498c8c2040e56617d, type: 2}
 --- !u!1 &312597285
 GameObject:
   m_ObjectHideFlags: 0

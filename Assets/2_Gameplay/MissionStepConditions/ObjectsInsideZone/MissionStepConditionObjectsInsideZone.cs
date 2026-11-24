@@ -38,12 +38,12 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 	public void RegisterTrackedSubject(GameObject obj)
 	{
 		if (_isConditionMet) return;
-		Debug.Log("HOW MANY!" + _registeredObjects.Count + obj.name);
+		//Debug.Log("HOW MANY!" + _registeredObjects.Count + obj.name);
 		// Защита от дубликатов при многократных стартах в редакторе
 		if (!_registeredObjects.Contains(obj))
 		{
 			_registeredObjects.Add(obj);
-			Debug.Log($"[Условие][Init] Зарегистрирован Required-объект: {obj.name}. Всего в списке ожидания: {_registeredObjects.Count}");
+			//Debug.Log($"[Условие][Init] Зарегистрирован Required-объект: {obj.name}. Всего в списке ожидания: {_registeredObjects.Count}");
 		}
 	}
 
@@ -53,7 +53,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 		
 		_updateZoneStatus = shouldUpdateZoneStatus;
 		_stepConditionOwner = zoneObj;
-		Debug.Log($"[Условие][Init] Владелец (ZoneMain) зафиксирован: {_stepConditionOwner.name}");
+		//Debug.Log($"[Условие][Init] Владелец (ZoneMain) зафиксирован: {_stepConditionOwner.name}");
 	}
 
 	public void ReportSubjectEntered(GameObject obj)
@@ -69,7 +69,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 			{
 				OnStepConditionProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
 			}
-			Debug.Log($"[Условие][Вход] Объект: {obj.name}. Внутри: {_objectsCurrentlyInside.Count}/{_registeredObjects.Count}. Осталось: {remaining}");
+			//Debug.Log($"[Условие][Вход] Объект: {obj.name}. Внутри: {_objectsCurrentlyInside.Count}/{_registeredObjects.Count}. Осталось: {remaining}");
 
 			if (remaining == 0 && _registeredObjects.Count > 0)
 			{
@@ -91,7 +91,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 			{
 				OnStepConditionProgressUpdated?.Invoke(_objectsCurrentlyInside.Count, _registeredObjects.Count);
 			}
-			Debug.Log($"[Условие][Выход] Объект: {obj.name}. Внутри: {_objectsCurrentlyInside.Count}/{_registeredObjects.Count}. Осталось: {remaining}");
+			//Debug.Log($"[Условие][Выход] Объект: {obj.name}. Внутри: {_objectsCurrentlyInside.Count}/{_registeredObjects.Count}. Осталось: {remaining}");
 		}
 	}
 
@@ -99,7 +99,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 	{
 		_isConditionMet = true;
 		_missionStepAbstract.OnStepCompleted(GoToNextStep);
-		Debug.Log($"[Условие] УСПЕХ! Все объекты внутри {_stepConditionOwner.name}. Шаг выполнен.");
+		//Debug.Log($"[Условие] УСПЕХ! Все объекты внутри {_stepConditionOwner.name}. Шаг выполнен.");
 		//NotifyMissionManagerOnStepCompletion();
 	}
 
