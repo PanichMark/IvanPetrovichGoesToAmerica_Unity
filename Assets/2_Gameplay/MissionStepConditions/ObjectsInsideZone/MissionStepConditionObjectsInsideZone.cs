@@ -33,7 +33,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 		_objectsCurrentlyInside.Clear();
 	}
 
-	internal void RegisterTrackedObject(GameObject obj)
+	public void RegisterTrackedSubject(GameObject obj)
 	{
 		if (_isConditionMet) return;
 
@@ -45,7 +45,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 		}
 	}
 
-	internal void InitializeWithZone(GameObject zoneObj, bool  shouldUpdateZoneStatus)
+	public void InitializeWithZone(GameObject zoneObj, bool  shouldUpdateZoneStatus)
 	{
 
 		_updateZoneStatus = shouldUpdateZoneStatus;
@@ -53,7 +53,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 		Debug.Log($"[Условие][Init] Владелец (ZoneMain) зафиксирован: {_stepConditionOwner.name}");
 	}
 
-	internal void ReportObjectEntered(GameObject obj)
+	public void ReportSubjectEntered(GameObject obj)
 	{
 		if (_isConditionMet) return;
 
@@ -75,7 +75,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 		}
 	}
 
-	internal void ReportObjectExited(GameObject obj)
+	public void ReportSubjectExited(GameObject obj)
 	{
 		if (_isConditionMet) return;
 

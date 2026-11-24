@@ -20,7 +20,7 @@ public class HUDmissionsController : MonoBehaviour
 	//private GameObject _textCurrentMissionStep;
 	//private TextMeshProUGUI _textComponentCurrentMissionStep;
 
-
+	private Coroutine _currentMissionNotificationRoutine;
 
 	public void Initialize(
 		GameController gameController,
@@ -99,12 +99,15 @@ public class HUDmissionsController : MonoBehaviour
 		if (SceneManager.sceneCount > 1)
 		{
 			//Debug.Log("NEW MISSION NOTIFICATION!");
-		StopAllCoroutines();
+			if (_currentMissionNotificationRoutine != null)
+			{
+				StopCoroutine(_currentMissionNotificationRoutine);
+			}
 
 		
 			if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
 			{
-				StartCoroutine(ShowNewMissionGoalHUDnotificationCoroutine(textGoal, isNewGoal));
+				_currentMissionNotificationRoutine = StartCoroutine(ShowNewMissionGoalHUDnotificationCoroutine(textGoal, isNewGoal));
 				//Debug.Log("SHOW");
 			}
 		}
