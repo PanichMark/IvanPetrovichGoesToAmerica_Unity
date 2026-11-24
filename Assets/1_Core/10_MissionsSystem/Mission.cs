@@ -10,14 +10,15 @@ public class Mission : ScriptableObject
 	[SerializeField] private Sprite _missionTargetSprite;
 	[SerializeField] private TextAsset _missionDescription_RU;
 	[SerializeField] private TextAsset _missionDescription_EN;
-
+	[SerializeField] private MissionStep[] _missionSteps;
 	public GameMissionsNamesEnum MissionName => _missionName;
 
 	[TextArea(3, 10)]
 	public string MissionDescription;
 
 	public MissionResourcesData MissionResources => _missionResources;
-	public MissionStep[] MissionSteps;
+	public MissionStep[] MissionSteps => _missionSteps;
+
 
 	public Sprite MissionTargetSprite => _missionTargetSprite;
 	public TextAsset MissionDescription_RU => _missionDescription_RU;

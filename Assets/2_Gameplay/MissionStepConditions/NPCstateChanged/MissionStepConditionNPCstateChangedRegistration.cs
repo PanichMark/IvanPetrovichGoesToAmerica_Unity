@@ -4,7 +4,7 @@ public class MissionStepConditionNPCstateChangedRegistration : MonoBehaviour
 {
 	[SerializeField] private MissionStepConditionAbstract _linkedMissionCondition;
 
-	[SerializeField] private NPCstateTypes _targetStateToTrack;
+	[SerializeField] private NPCstateTypes _goalState;
 
 	private NPCstateMachineController _stateMachine;
 
@@ -20,7 +20,7 @@ public class MissionStepConditionNPCstateChangedRegistration : MonoBehaviour
 	{
 		if (_linkedMissionCondition is MissionStepConditionNPCstateChanged stateCondition)
 		{
-			if (newState == _targetStateToTrack)
+			if (newState == _goalState)
 			{
 				stateCondition.CheckState(newState);
 			}

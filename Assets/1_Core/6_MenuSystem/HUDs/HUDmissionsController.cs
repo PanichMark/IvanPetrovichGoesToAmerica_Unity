@@ -78,7 +78,7 @@ public class HUDmissionsController : MonoBehaviour
 			//Debug.Log("NEW MISSION NOTIFICATION!");
 			if (_currentMissionNotificationRoutine != null)
 			{
-				Debug.Log(_currentMissionNotificationRoutine);
+				//Debug.Log(_currentMissionNotificationRoutine);
 				StopCoroutine(_currentMissionNotificationRoutine);
 				_currentMissionNotificationRoutine = null;
 			}

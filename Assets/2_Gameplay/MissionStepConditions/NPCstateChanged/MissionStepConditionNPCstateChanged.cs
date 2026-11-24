@@ -7,6 +7,8 @@ public class MissionStepConditionNPCstateChanged : MissionStepConditionAbstract
 	{
 		if (_isConditionMet) return;
 
+
+
 		// Логика сравнения состояния, если она нужна, или просто вызов
 		_isConditionMet = true;
 		_missionStepAbstract.OnStepCompleted(GoToNextStep);

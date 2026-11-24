@@ -17,13 +17,7 @@ MonoBehaviour:
   _missionTargetSprite: {fileID: 21300000, guid: e39a307162a7d694682fc42a929feb71, type: 3}
   _missionDescription_RU: {fileID: 4900000, guid: 3c49aa3db796bf04ab8fb269895fdb0b, type: 3}
   _missionDescription_EN: {fileID: 4900000, guid: 45f51469293714e4e9df8ab3dd055338, type: 3}
-  _missionMaps: []
-  MissionDescription: "\u0414\u043E\u0431\u0440\u0430\u0442\u044C\u0441\u044F \u0447\u0435\u0440\u0435\u0437
-    \u0432\u043D\u0443\u0442\u0440\u0435\u043D\u043D\u0438\u0439 \u0434\u0432\u043E\u0440
-    \u043D\u0430 \u0441\u0442\u0430\u043D\u0446\u0438\u044E \u043C\u043E\u043D\u043E\u0440\u0435\u043B\u044C\u0441\u0430
-    \u0438 \u0443\u0435\u0445\u0430\u0442\u044C (\u0437\u0432\u0435\u0440\u0448\u0438\u0442\u044C
-    \u0434\u0435\u043C\u043E \u0432\u0435\u0440\u0441\u0438\u044E)"
-  MissionSteps:
+  _missionSteps:
   - {fileID: 11400000, guid: 52ba99a81ed6dd249b69d6ded749aae3, type: 2}
   - {fileID: 11400000, guid: 5cb439b6cd1eb9441ae40327d7c5c1de, type: 2}
   - {fileID: 11400000, guid: 9dbdbc0facbc9304a81737312d67dd45, type: 2}
@@ -37,3 +31,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d278b0d1e6723184ba29af0d5921db0f, type: 2}
   - {fileID: 11400000, guid: baff73fd39129214891731f1c8e38fd3, type: 2}
   - {fileID: 11400000, guid: 985458a13f345e942a022da4c391b413, type: 2}
+  MissionDescription: "\u0414\u043E\u0431\u0440\u0430\u0442\u044C\u0441\u044F \u0447\u0435\u0440\u0435\u0437
+    \u0432\u043D\u0443\u0442\u0440\u0435\u043D\u043D\u0438\u0439 \u0434\u0432\u043E\u0440
+    \u043D\u0430 \u0441\u0442\u0430\u043D\u0446\u0438\u044E \u043C\u043E\u043D\u043E\u0440\u0435\u043B\u044C\u0441\u0430
+    \u0438 \u0443\u0435\u0445\u0430\u0442\u044C (\u0437\u0432\u0435\u0440\u0448\u0438\u0442\u044C
+    \u0434\u0435\u043C\u043E \u0432\u0435\u0440\u0441\u0438\u044E)"

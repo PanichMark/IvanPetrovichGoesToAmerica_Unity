@@ -9,15 +9,45 @@ public class MissionStepConditionTimeCountdownRegistration : MonoBehaviour
 
 	private MissionStepConditionTimeCountdown _condition;
 	private Coroutine _timerCoroutine;
+	private MissionsManager _missionsManager;
 
 	private void Start()
 	{
 		if (_linkedMissionCondition is MissionStepConditionTimeCountdown condition)
 		{
-			_condition = condition;
-			_condition.OnStepConditionTimeTick += HandleTimeUpdate;
+			_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 
-			_timerCoroutine = StartCoroutine(CountdownCoroutine(_countdownDuration));
+			_condition = condition;
+			//_condition.OnStepConditionTimeTick += HandleTimeUpdate;
+
+			_missionsManager.OnCurrentStepChanged += StartCountdownCorotune;
+
+			
+		}
+	}
+
+	
+
+	private void StartCountdownCorotune()
+	{
+		for (int i = 0; i < _missionsManager.ActiveMission.MissionSteps.Length; i++)
+		{
+			//Debug.Log(i);
+			if (_missionsManager.GameMissions.MissionsInOrder[0].MissionSteps[i] == _linkedMissionCondition.MissionStepAbstract)
+			{
+				Debug.Log("COUNTDOWN IS THIS");
+				if (_timerCoroutine != null)
+				{
+					_timerCoroutine = StartCoroutine(CountdownCoroutine(_countdownDuration));
+				}
+			}
+			else
+			{
+				if (_timerCoroutine != null)
+				{
+					StopCoroutine(_timerCoroutine);
+				}
+			}
 		}
 	}
 
@@ -36,20 +66,13 @@ public class MissionStepConditionTimeCountdownRegistration : MonoBehaviour
 		_condition.CompleteCondition();
 	}
 
-	private void HandleTimeUpdate(float timeRemaining)
-	{
-		Debug.Log($"Осталось времени: {timeRemaining:F1}");
-	}
-
 	private void OnDestroy()
 	{
-		if (_condition != null)
-		{
-			_condition.OnStepConditionTimeTick -= HandleTimeUpdate;
-		}
 		if (_timerCoroutine != null)
 		{
 			StopCoroutine(_timerCoroutine);
 		}
+
+		_missionsManager.OnCurrentStepChanged -= StartCountdownCorotune;
 	}
 }

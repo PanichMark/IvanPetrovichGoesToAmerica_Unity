@@ -50,9 +50,9 @@ public class NPCdetectionManager : MonoBehaviour
 
 	private void ProcessDetectionMeter()
 	{
-		if (NPCdetectionMeter >= 50)
+		if (NPCdetectionMeter == 100)
 		{
-			//_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
+			_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
 		}
 	}
 

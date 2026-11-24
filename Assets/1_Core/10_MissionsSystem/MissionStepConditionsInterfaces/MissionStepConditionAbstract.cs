@@ -11,6 +11,8 @@ public abstract class MissionStepConditionAbstract : ScriptableObject
 
 	protected MissionsManager _missionsManager;
 	protected MissionStep _missionStepAbstract;
+
+	public MissionStep MissionStepAbstract => _missionStepAbstract;
 	public void RegisterOwner(GameObject owner)
 	{
 		_stepConditionOwner = owner;

@@ -8,6 +8,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	private IMissionStepConditionWithCountdown _missionStepConditionWithCountdown;
 
 	private GameMissionsList _gameMissions;
+	public GameMissionsList GameMissions => _gameMissions;
 	public Mission ActiveMission { get; private set; }
 	public int ActiveMissionIndex { get; private set; }
 	public bool IsInitialized {  get; private set; }
@@ -18,11 +19,9 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	public delegate void OnStepChangedDelegate();
 	public event OnStepChangedDelegate OnCurrentStepChanged;
 	private GameScenesManager _gameSceneManager;
-	public delegate void InteractionEventHandler(GameObject interactedObject);
-	public event InteractionEventHandler OnAnyObjectInteracted;
+
 	private int _previousMissionStepIndex;
-	public delegate void DestructionEventHandler(GameObject destroyedObject, bool wasLethal);
-	public event DestructionEventHandler OnAnyObjectDestroyed;
+
 	private JournalMenuSectionMissionInfoController _journalMenuSectionMissionInfoController;
 	public string LocalizedStepGoalText { get; private set; }
 

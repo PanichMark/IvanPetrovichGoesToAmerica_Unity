@@ -1267,6 +1267,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 48524854094872116, guid: 5694143299ca0934cb00efc7632ad5db, type: 3}
   m_PrefabInstance: {fileID: 381797618}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &28251018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 28251020}
+  - component: {fileID: 28251019}
+  m_Layer: 0
+  m_Name: HideAndSeekHIDEcountdown
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &28251019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28251018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91a755f7de8a564418464963eb59505f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkedMissionCondition: {fileID: 11400000, guid: 9f6e46a6ea528f645a7e590a717dab55, type: 2}
+  _countdownDuration: 10
+--- !u!4 &28251020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28251018}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &31289933
 GameObject:
   m_ObjectHideFlags: 0
@@ -6010,11 +6056,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a4fdc27fd3760cb41a9cb1d2e733d0b2, type: 2}
     - target: {fileID: 3846252662188365726, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.010694532
+      value: 0.010694533
       objectReference: {fileID: 0}
     - target: {fileID: 3846252662188365726, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.011105484
+      value: 0.011105485
       objectReference: {fileID: 0}
     - target: {fileID: 5407114899954910214, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: _NPCweaponGive
@@ -6066,11 +6112,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6248201690095134270, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.10731158
+      value: -0.107311584
       objectReference: {fileID: 0}
     - target: {fileID: 6248201690095134270, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.16502072
+      value: -0.16502073
       objectReference: {fileID: 0}
     - target: {fileID: 6553842799769070374, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: _NPCconfigHealth
@@ -6098,11 +6144,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 47131698ba25c964d9340b490b17d0be, type: 2}
     - target: {fileID: 8111590229587270294, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.004130157
+      value: 0.0041301576
       objectReference: {fileID: 0}
     - target: {fileID: 8111590229587270294, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0009249812
+      value: 0.00092498126
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -6127,6 +6173,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 159260596393591729, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       insertIndex: -1
       addedObject: {fileID: 122125730}
+    - targetCorrespondingSourceObject: {fileID: 159260596393591729, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 122125775}
   m_SourcePrefab: {fileID: 100100000, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
 --- !u!4 &122125727 stripped
 Transform:
@@ -6175,6 +6224,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5519263260445635623, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
   m_PrefabInstance: {fileID: 122125726}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &122125775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122125728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8c8ee45a8b23e41a0418f9f2a19ee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkedMissionCondition: {fileID: 11400000, guid: 24ee2275ba421194cb513f0f05234ebd, type: 2}
+  _goalState: 4
 --- !u!1 &122675948
 GameObject:
   m_ObjectHideFlags: 0
@@ -114447,7 +114510,7 @@ MonoBehaviour:
   _sceneToLoadAfterCutscene: 0
   _NPCstateChanges:
   - npcObject: {fileID: 122125728}
-    stateToSet: 8
+    stateToSet: 0
   _interactionObjects: []
 --- !u!4 &1935748396
 Transform:
@@ -154580,3 +154643,4 @@ SceneRoots:
   - {fileID: 786963426}
   - {fileID: 314492436}
   - {fileID: 1935748396}
+  - {fileID: 28251020}

@@ -5,6 +5,7 @@ public class NPCstateSearching : NPCstateAbstract
 	public NPCstateSearching(NPCmovementController NPCmovementController)
 	{
 		_NPCmovementController = NPCmovementController;
+		_NPCmovementController.StopAnchorMove();
 		_NPCmovementController.StartRandomMove();
 	}
 	/*

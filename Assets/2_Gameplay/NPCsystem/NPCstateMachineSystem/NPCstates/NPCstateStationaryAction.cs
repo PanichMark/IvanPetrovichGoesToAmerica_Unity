@@ -18,15 +18,15 @@ public class NPCstateStationaryAction : NPCstateAbstract
 
 	public override void Update()
 	{
-		if (_NPCmovementController.AnchorData.Count != 0)
-		{
+		//if (_NPCmovementController.AnchorData.Count != 0)
+		//{
 			
 
 			//if (timer >= animationDuration)
 			//{
 			//_NPCStateMachineController.SetNPCState(NPCstateTypes.Patrolling);
 			//}
-		}
+		//}
 	}
 
 	/*
