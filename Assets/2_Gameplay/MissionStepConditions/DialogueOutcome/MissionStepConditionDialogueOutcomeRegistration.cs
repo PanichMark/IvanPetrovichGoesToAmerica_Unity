@@ -18,13 +18,13 @@ public class MissionStepConditionDialogueOutcomeRegistration : MonoBehaviour
 		_linkedMissionCondition.RegisterOwner(gameObject);
 
 		// Подписываемся на общий селектор диалога
-		_dialogueController.OnDialogueOptionSelected += HandleDialogueSelection;
+		_dialogueController.OnDialogueAnswerSelected += HandleDialogueSelection;
 	}
 
 	private void OnDestroy()
 	{
 	
-		_dialogueController.OnDialogueOptionSelected -= HandleDialogueSelection;
+		_dialogueController.OnDialogueAnswerSelected -= HandleDialogueSelection;
 		
 	}
 

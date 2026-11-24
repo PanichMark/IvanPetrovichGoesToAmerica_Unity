@@ -22,8 +22,7 @@ public class NPCneutral : NPClivingBeing, IMissionStepActionNPCdialogueAvailabil
 		if (_NPCdialogueController != null)
 		{
 			_NPCdialogueController.Initialize(
-				_NPCmovementController,
-				_NPCstateMachineController);
+				_NPCmovementController);
 		}
 
 		_NPCweaponController.Initialize(

@@ -19,8 +19,7 @@ public class NPCpeaceful : NPClivingBeing, IMissionStepActionNPCdialogueAvailabi
 		if (_NPCdialogueController != null)
 		{
 			_NPCdialogueController.Initialize(
-				_NPCmovementController,
-				_NPCstateMachineController);
+				_NPCmovementController);
 		}
 	}
 

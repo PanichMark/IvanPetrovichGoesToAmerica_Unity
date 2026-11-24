@@ -20,8 +20,14 @@ public class NPCdialogueController : MonoBehaviour
 	public event HeadIKHandler OnStartLookingAtObject;
 	public event HeadIKHandler OnStopLookingAtObject;
 	//public event HeadIKHandler OnAfterAnimatorReapplyIKweights;
-	public delegate void DialogueSelectionHandler(int branchIndex, bool isYesSelected);
-	public event DialogueSelectionHandler OnDialogueOptionSelected;
+	// 1. Объявляем тип делегата (можно вынести в отдельный файл или оставить внутри класса)
+	// 1. Делегат и событие (вызывается в Exit)
+	public delegate void DialogueBranchSelectedHandler(int branchIndex, bool isYesSelected);
+	public event DialogueBranchSelectedHandler OnDialogueAnswerSelected;
+
+	// 2. Словарь для накопления истории ответов (индекс ветки -> ответ)
+	private Dictionary<int, bool> _dialogueAnswersHistory = new Dictionary<int, bool>();
+	
 	private string _currentGestureAnimation;
 	[SerializeField] private NPCdialogueData _NPCdialogueData;
 	private uLipSyncBlendShape _uLipSyncBlendShape;
@@ -65,17 +71,16 @@ public class NPCdialogueController : MonoBehaviour
 	private GameScenesManager _gameSceneManager;
 	private int _currentDialogueStepIndex;
 	private bool _canSkip;
-	private NPCstateMachineController _NPCstateMachineController;
+	
 	public bool IsDialogueActive { get; private set; }
+	private bool _wasDialogueCanceledOnLoad;
 
-	private GameCanvasesList _canvasesList;
 	private GameObject _canvasDialogue;
 	private ViewModelMenuDialogue _viewModelMenuDialogue;
 	private Bootstrap _bootstrap;
 
 	public void Initialize(
-		NPCmovementController NPCMovementController,
-		NPCstateMachineController NPCstateMachineController)
+		NPCmovementController NPCMovementController)
 	{
 		_NPCMovementController = NPCMovementController;
 		_bootstrap = ServiceLocator.Resolve < Bootstrap>();
@@ -107,18 +112,36 @@ _menuManager = ServiceLocator.Resolve<MenuManager>();
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMeshProUGUI>();
 
-		_NPCstateMachineController = NPCstateMachineController;
+		
 
 		_menuManager.OnOpenPauseMenu += HideNPCDialogueCanvas;
 		_menuManager.OnClosePauseMenu += ShowNPCDialogueCanvas;
 
-		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += ExitNPCDialogue;
-		_gameSceneManager.OnBeginLoadingGameplayScene += ExitNPCDialogue;
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CancelDialogueOnLoad;
+		_gameSceneManager.OnBeginLoadingGameplayScene += CancelDialogueOnLoad;
 
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		LoadDialogueFromFiles();
 
 		_canSkip = true;
+	}
+
+	private void OnDestroy()
+	{
+		_menuManager.OnOpenPauseMenu -= HideNPCDialogueCanvas;
+		_menuManager.OnClosePauseMenu -= ShowNPCDialogueCanvas;
+
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene -= CancelDialogueOnLoad;
+		_gameSceneManager.OnBeginLoadingGameplayScene -= CancelDialogueOnLoad;
+
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+	}
+
+	private void CancelDialogueOnLoad()
+	{
+		_wasDialogueCanceledOnLoad = true;
+		ExitNPCDialogue();
+	
 	}
 
 	private void Update()
@@ -162,6 +185,8 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 	public void Interact()
 	{
+		_wasDialogueCanceledOnLoad = false;
+		_dialogueAnswersHistory.Clear();
 		//_animator.speed = 1f;
 		_currentDialogueStepIndex = 0;
 		_dialogueBranchStructIndex = 0;
@@ -195,58 +220,70 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 			IsDialogueActive = false;
 			DeactivateButtons();
 
-			Debug.Log(_performActionOnYesFinal);
-			Debug.Log(_performActionOnNoFinal);
-
-			if (_performActionOnYesFinal)
+			if (_wasDialogueCanceledOnLoad == false)
 			{
-				var yesActionObject = _dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer;
-				if (yesActionObject != null)
+				if (OnDialogueAnswerSelected != null && _dialogueAnswersHistory.Count > 0)
 				{
-					var interactable = yesActionObject.GetComponent<IInteractable>();
-					if (interactable != null)
+					foreach (var kvp in _dialogueAnswersHistory)
 					{
-						interactable.InteractAfterDialogueOrCutscene();
-					}
-					var cutscene = yesActionObject.GetComponent<CutsceneController>();
-					if (cutscene != null)
-					{
-						cutscene.TriggerCutscene(null);
+						OnDialogueAnswerSelected(kvp.Key, kvp.Value);
 					}
 				}
-				_performActionOnYesFinal = false;
-			}
 
-			if (_performActionOnNoFinal)
-			{
-				var noActionObject = _dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnNoAnswer;
-				if (noActionObject != null)
+				//Debug.Log(_performActionOnYesFinal);
+				//Debug.Log(_performActionOnNoFinal);
+
+				if (_performActionOnYesFinal)
 				{
-					var interactable = noActionObject.GetComponent<IInteractable>();
-					if (interactable != null)
+					var yesActionObject = _dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnYesAnswer;
+					if (yesActionObject != null)
 					{
-						interactable.InteractAfterDialogueOrCutscene();
+						var interactable = yesActionObject.GetComponent<IInteractable>();
+						if (interactable != null)
+						{
+							interactable.InteractAfterDialogueOrCutscene();
+						}
+						var cutscene = yesActionObject.GetComponent<CutsceneController>();
+						if (cutscene != null)
+						{
+							cutscene.TriggerCutscene(null);
+						}
 					}
-					var cutscene = noActionObject.GetComponent<CutsceneController>();
-					if (cutscene != null)
-					{
-						cutscene.TriggerCutscene(null);
-					}
+					_performActionOnYesFinal = false;
 				}
-				_performActionOnNoFinal = false;
-			}
 
-			if (_performNPCStateChangeOnYes)
-			{
-				ApplyStateFromStructList(_dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnYes);
-				_performNPCStateChangeOnYes = false;
-			}
+				if (_performActionOnNoFinal)
+				{
+					var noActionObject = _dialogueBranchStructsList[_dialogueBranchStructIndex].ActionOnNoAnswer;
+					if (noActionObject != null)
+					{
+						var interactable = noActionObject.GetComponent<IInteractable>();
+						if (interactable != null)
+						{
+							interactable.InteractAfterDialogueOrCutscene();
+						}
+						var cutscene = noActionObject.GetComponent<CutsceneController>();
+						if (cutscene != null)
+						{
+							cutscene.TriggerCutscene(null);
+						}
+					}
+					_performActionOnNoFinal = false;
+				}
 
-			if (_performNPCStateChangeOnNo)
-			{
-				ApplyStateFromStructList(_dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnNo);
-				_performNPCStateChangeOnNo = false;
+				if (_performNPCStateChangeOnYes)
+				{
+					ApplyStateFromStructList(_dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnYes);
+					_performNPCStateChangeOnYes = false;
+				}
+
+				if (_performNPCStateChangeOnNo)
+				{
+					ApplyStateFromStructList(_dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnNo);
+					_performNPCStateChangeOnNo = false;
+				}
 			}
+		
 
 			_dialogueBranchStructIndex = 0;
 			ChangeGestureAnimation(_originalAnimationStateName);
@@ -511,7 +548,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 		DisplayNextDialogueLine();
 		DeactivateButtons();
 
-		OnDialogueOptionSelected?.Invoke(_dialogueBranchStructIndex, isYesSelected);
+		_dialogueAnswersHistory[_dialogueBranchStructIndex] = isYesSelected;
 
 		_canSkip = true;
 	}
