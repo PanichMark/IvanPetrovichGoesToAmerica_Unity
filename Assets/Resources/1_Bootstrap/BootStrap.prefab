@@ -47,11 +47,11 @@ MonoBehaviour:
   _gameData: {fileID: 11400000, guid: c0b59741d1d422949996e0bcbed55959, type: 2}
   _initializationScreenDuration: 1
   _keyPauseMenu: 1
-  _firstSceneToLoad: 4
+  _firstSceneToLoad: 3
   _playerPrefsPresequisites: 0
   _playerPrefsReset: 1
   _applyConfigsPlayer: 1
-  _playerTransform: {fileID: 11400000, guid: 3eb5bbf01a37ecd42b3981d783496c92, type: 2}
+  _playerTransform: {fileID: 11400000, guid: a42fc05e7db07674e9239b404ac2274f, type: 2}
   _playerHealth: 100
   _playerHealingItems: 9
   _playerMana: 100
@@ -59,7 +59,7 @@ MonoBehaviour:
   _playerMoney: 999999
   _playerWeapons: {fileID: 11400000, guid: c9e310553e195574d976e4b9d55a52f6, type: 2}
   _playerAmmo: {fileID: 11400000, guid: ba889de390a4d7648af20ff7494b8832, type: 2}
-  _applyConfigsMission: 1
+  _applyConfigsMission: 0
   _mission: {fileID: 11400000, guid: 3e12f522c0bdf7d4ba4b70092e6c1080, type: 2}
   _missionStep: 2
-  _debugNPC: 1
+  _debugNPC: 0

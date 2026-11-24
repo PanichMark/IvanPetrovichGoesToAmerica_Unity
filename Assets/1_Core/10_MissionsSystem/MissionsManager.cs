@@ -10,6 +10,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	private GameMissionsList _gameMissions;
 	public Mission ActiveMission { get; private set; }
 	public int ActiveMissionIndex { get; private set; }
+	private bool _isInitialized;
 	public int CurrentStepIndex { get; private set; }
 	private LocalizationManager _localizationManager;
 	private HUDmissionsController _HUDmissionsController;
@@ -62,10 +63,12 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		_gameSceneManager.OnEndLoadingGameplayScene += ShowMissionGoalHUD;
 
+		_gameSceneManager.OnEndLoadingGameplayScene += ReapplyAllCurrentGameplaySceneActions;
+
 		_gameSceneManager.OnBeginLoadingGameplayScene += ResetAllMissionStepsActionLists;
 
 		ResetAllStepConditions();
-
+		_isInitialized = true;
 		Debug.Log("MissionsManager Initialized");
 	}
 
@@ -74,17 +77,24 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		//Debug.Log(CurrentStepIndex);
 	}
 
-
+	private void ReapplyAllCurrentGameplaySceneActions()
+	{
+		if (_isInitialized)
+		{
+			foreach (var mission in _gameMissions.MissionsInOrder)
+			{
+				foreach (var step in mission.MissionSteps)
+				{
+					step.ApplyAllCurrentGameplaySceneActions();
+				}
+			}
+		}
+	}
 
 	private void ResetAllStepConditions()
 	{
-		if (_gameMissions == null || _gameMissions.MissionsInOrder == null)
-			return;
-
 		foreach (var mission in _gameMissions.MissionsInOrder)
 		{
-			if (mission == null || mission.MissionSteps == null) continue;
-
 			foreach (var step in mission.MissionSteps)
 			{
 				step.Initialize(this);
@@ -105,13 +115,8 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	private void ResetAllMissionStepsActionLists()
 	{
-		if (_gameMissions == null || _gameMissions.MissionsInOrder == null)
-			return;
-
 		foreach (var mission in _gameMissions.MissionsInOrder)
 		{
-			if (mission == null || mission.MissionSteps == null) continue;
-
 			foreach (var step in mission.MissionSteps)
 			{
 				step.ClearAllMissionStepActionsLists();

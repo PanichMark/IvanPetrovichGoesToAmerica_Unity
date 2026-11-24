@@ -9,7 +9,6 @@ public abstract class MissionStepConditionAbstract : ScriptableObject
 
 	protected GameObject _stepConditionOwner;
 	protected bool _isConditionMet;
-	public GameObject StepConditionOwner => _stepConditionOwner;
 	public bool IsConditionMet => _isConditionMet;
 
 	protected MissionsManager _missionsManager;

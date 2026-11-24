@@ -29,9 +29,10 @@ public class MissionStep : ScriptableObject
 
 	public List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
 
-	public void OnStepStarted()
+	public void ApplyAllCurrentGameplaySceneActions()
 	{
-		// 2. Логика выполнения обновлена для работы с кортежами
+		Debug.Log("REAPPLY" + _NPCdialoguesEnable.Count);
+
 		if (_gameObjectTurnOn.Count > 0)
 		{
 			foreach (var tuple in _gameObjectTurnOn)
@@ -68,6 +69,11 @@ public class MissionStep : ScriptableObject
 				}
 			}
 		}
+	}
+
+	public void OnStepStarted()
+	{
+		ApplyAllCurrentGameplaySceneActions();
 	}
 
 	public void OnStepCompleted(int goToNextStep)
