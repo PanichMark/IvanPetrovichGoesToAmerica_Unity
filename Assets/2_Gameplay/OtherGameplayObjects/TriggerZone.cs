@@ -56,13 +56,16 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 				if (_finishedLoadingData)
 				{
 					TriggerZoneInteraction();
+					Debug.Log("TRIGGER INSIDE");
 				}
 			}
 			else
 			{
 				TriggerZoneInteraction();
+				
 			}
 
+			
 			_isPlayerInside = true;
 			//_triggerZone.enabled = false;
 		}
@@ -161,14 +164,9 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 		if (savedState.Equals(default(TriggerZoneData)))
 		{
 			//Debug.Log("BRUH333333!!!!");
-			_finishedLoadingData = true;
+		
 			_wasZoneTriggered = false;
-			if (_isPlayerInside)
-			{
-				//TriggerZoneInteraction();
-			}
-			//Debug.Log("was triggered");
-			//Debug.Log(_wasZoneTriggered);
+			_finishedLoadingData = true;
 			yield break;
 		}
 		else
@@ -187,6 +185,8 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 				}
 			}
 		}
+
+		_finishedLoadingData = true;
 
 		yield return null;
 	}
