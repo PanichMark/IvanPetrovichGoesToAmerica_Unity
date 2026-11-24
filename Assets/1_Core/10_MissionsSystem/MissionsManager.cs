@@ -70,6 +70,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		ResetAllStepConditions();
 		_isInitialized = true;
+		//Debug.Log("current index" + CurrentStepIndex);
 		Debug.Log("MissionsManager Initialized");
 	}
 
@@ -80,8 +81,8 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	private void ReapplyAllCurrentGameplaySceneActions()
 	{
-		if (_isInitialized)
-		{
+		//if (_isInitialized)
+		//{
 			for (int i = 0; i < _gameMissions.MissionsInOrder.Length; i++)
 			{
 				var mission = _gameMissions.MissionsInOrder[i];
@@ -95,15 +96,16 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 				for (int j = 0; j < mission.MissionSteps.Length; j++)
 				{
 					var step = mission.MissionSteps[j];
-					if (j >= CurrentStepIndex)
+					if (j > CurrentStepIndex)
 					{
 						break;
 					}
 					Debug.Log($"  Step index: {j}");
+					Debug.Log("current index" + CurrentStepIndex);
 					step.ApplyAllCurrentGameplaySceneActions();
 				}
 			}
-		}
+		//}
 	}
 
 	private void ResetAllStepConditions()

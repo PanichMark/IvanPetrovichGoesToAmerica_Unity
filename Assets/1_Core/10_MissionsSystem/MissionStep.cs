@@ -37,12 +37,10 @@ public class MissionStep : ScriptableObject
 		{
 			foreach (var tuple in _gameObjectTurnOn)
 			{
-				if (tuple.Object != null)
-				{
-					tuple.Object.SetActive(tuple.IsEnabled);
-					// Логируем фактическое действие
-					Debug.Log($"SetActive для {tuple.Object.name}: {tuple.IsEnabled}");
-				}
+				tuple.Object.SetActive(tuple.IsEnabled);
+				// Логируем фактическое действие
+				Debug.Log($"SetActive для {tuple.Object.name}: {tuple.IsEnabled}");
+				
 			}
 		}
 
