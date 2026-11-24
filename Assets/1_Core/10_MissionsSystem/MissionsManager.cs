@@ -302,7 +302,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		LocalizedStepGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 
 		string formattedTime = remainingTime.ToString("F1", System.Globalization.CultureInfo.InvariantCulture);
-		Debug.Log(_HUDmissionsController);
+		//Debug.Log(_HUDmissionsController);
 		_HUDmissionsController.ShowNewMissionGoalHUDnotification($"{LocalizedStepGoalText}: {formattedTime}", false);
 	}
 

@@ -75,6 +75,11 @@ public class HUDmissionsController : MonoBehaviour
 	{
 		if (SceneManager.sceneCount > 1)
 		{
+			if (this == null) // prevents from NULL when TimeCountDown Notification
+			{
+				return;
+			}
+
 			//Debug.Log("NEW MISSION NOTIFICATION!");
 			if (_currentMissionNotificationRoutine != null)
 			{
