@@ -200,13 +200,13 @@ public class CutsceneController : MonoBehaviour
 
 	private void Update()
 	{
-		
-	
-		
+
+
+		//Debug.Log(_isSkipRequested);
 
 
 		if (!_isInitialized) return;
-
+		//Debug.Log(IsCutscenePlaying);
 		
 
 		ProcessCutsceneSkipping();
@@ -447,16 +447,14 @@ public class CutsceneController : MonoBehaviour
 				_playerBehaviourController.ArmPlayer();
 			}
 
-			if (_showMissionGoalHint)
-			{
-				_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedStepGoalText, true);
-			}
+			_menuManager.CloseCutsceneMenu();
+
 
 			//_playerAnimator1stPerson.updateMode = AnimatorUpdateMode.Normal;
 			WasCutscenePlaying = false;
 			IsCutscenePlaying = false;
 			CutsceneResumeTime();
-			_menuManager.CloseCutsceneMenu();
+			
 
 
 			_playerCameraStateMachineController.SetPlayerCameraState(_playerCameraController.PreviousPlayerCameraGameplayType);
@@ -490,7 +488,12 @@ public class CutsceneController : MonoBehaviour
 				_gameSceneManager.StartCoroutine(_gameSceneManager.LoadGameplayScene((GameScenesGameplayEnum)_sceneToLoadAfterCutscene));
 			}
 
-			if (_shouldInteractWithObjects)
+		if (_showMissionGoalHint)
+		{
+			_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedStepGoalText, true);
+		}
+
+		if (_shouldInteractWithObjects)
 			{
 				foreach (var data in _interactionObjects)
 				{
@@ -506,7 +509,7 @@ public class CutsceneController : MonoBehaviour
 
 
 
-
+			gameObject.SetActive(false);
 			Debug.Log($"Post-cutscene {gameObject.name} actions executed.");
 	}
 	

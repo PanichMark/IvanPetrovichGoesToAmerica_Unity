@@ -24,7 +24,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 	public override void ResetStepCondition()
 	{
 		//Debug.Log($"[Условие][RESET] Сброс шага. Очистка временных списков.");
-		Debug.Log("CLEAR ZONE REGISTER");
+		//Debug.Log("CLEAR ZONE REGISTER");
 		_isConditionMet = false;
 		_registeredObjects.Clear();
 		_objectsCurrentlyInside.Clear();

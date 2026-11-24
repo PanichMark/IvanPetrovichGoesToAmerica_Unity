@@ -68,29 +68,6 @@ public class HUDmissionsController : MonoBehaviour
 		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += HideCanvasHUDmissions;
 		_gameSceneManager.OnBeginLoadingGameplayScene += ShowCanvasHUDmissions;
 
-		_gameSceneManager.OnEndLoadingGameplayScene += () =>
-		{
-			/*
-			if (SceneManager.sceneCount > 1)
-			{
-				//Debug.Log("MISSIONBREUH");
-				//Debug.Log(SceneManager.GetSceneAt(1).name);
-
-				if (SceneManager.GetSceneAt(1).name != GameScenesSystemEnum.Scene_System_Test.ToString())
-				{
-					_textComponentCurrentMissionGoal.text = _textGoal;
-					//Debug.Log("SHOW");
-				}
-				else
-				{
-					//._textComponentsCurrentMissionGoal.text = _localizationManager.GetLocalizedString("UI_Menu_PauseMenu_MissionGoal_Current");
-					_textComponentCurrentMissionGoal.text = null;
-					//Debug.Log("DONT SHOW");
-				}
-			}
-			*/
-		};
-
 		_gameController.OnPlayerEarlyDeath += HideCanvasHUDmissions;
 	}
 
@@ -144,6 +121,7 @@ public class HUDmissionsController : MonoBehaviour
 
 	private void ShowCanvasHUDmissions()
 	{
+
 		if (!_menuManager.IsInteractionMenuOpened && !_menuManager.IsDialogueMenuOpened && !_gameController.IsMainMenuOrEndGameTitlesActive && !_menuManager.IsWeaponWheelMenuOpened && !_menuManager.IsMainMenuBeingLoaded && !_menuManager.IsCutsceneMenuOpened)
 		{
 			_canvasHUDmissions.SetActive(true);

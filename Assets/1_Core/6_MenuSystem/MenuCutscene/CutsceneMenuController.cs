@@ -36,10 +36,10 @@ public class CutsceneMenuController : MonoBehaviour
 
 	private void HideCanvasCutscene()
 	{
-		if (_menuManager.IsCutsceneMenuOpened)
-		{
+		//if (_menuManager.IsCutsceneMenuOpened)
+		//{
 			_canvasCutscene.SetActive(false);
 			Debug.Log("Hide CutsceneMenu");
-		}
+		//}
 	}
 }

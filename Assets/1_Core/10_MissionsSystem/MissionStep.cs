@@ -31,12 +31,14 @@ public class MissionStep : ScriptableObject
 
 	public void ApplyAllCurrentGameplaySceneActions()
 	{
-		Debug.Log("REAPPLY" + _NPCdialoguesEnable.Count);
+		Debug.Log("REAPPLY gameObjects" + _gameObjectTurnOn.Count);
+		Debug.Log("REAPPLY Dialogues" + _NPCdialoguesEnable.Count);
 
 		if (_gameObjectTurnOn.Count > 0)
 		{
 			foreach (var tuple in _gameObjectTurnOn)
 			{
+
 				tuple.Object.SetActive(tuple.IsEnabled);
 				// Логируем фактическое действие
 				Debug.Log($"SetActive для {tuple.Object.name}: {tuple.IsEnabled}");
@@ -109,6 +111,8 @@ public class MissionStep : ScriptableObject
 	public void RegisterObjectsTurnOn(GameObject objectTurnOn, bool enable)
 	{
 		_gameObjectTurnOn.Add((objectTurnOn, enable));
+
+		Debug.Log("REGISTER" + objectTurnOn);
 	}
 
 	public void RegisterNPCdialoguesEnable(GameObject NPCwithDialogue, bool enable)

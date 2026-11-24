@@ -288,10 +288,10 @@ public class MenuManager : MonoBehaviour
 	public void CloseCutsceneMenu()
 	{
 		CloseAnyMenu();
-		
+		IsCutsceneMenuOpened = false;
 		OnCloseCutsceneMenu?.Invoke();
 		OnCloseMenuBackground?.Invoke();
-		IsCutsceneMenuOpened = false;
+		
 		Debug.Log("CutsceneMenu closed");
 	}
 	public void OpenWeaponWheelMenu()

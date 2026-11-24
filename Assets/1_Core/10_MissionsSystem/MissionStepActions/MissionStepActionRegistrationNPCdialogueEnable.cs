@@ -10,5 +10,7 @@ public class MissionStepActionRegistrationNPCdialogueEnable : MonoBehaviour
 		//Debug.Log($"{gameObject.name} registered in NPC Dialogue Disable for {_linkedMissionStep}");
 		_linkedMissionStep.RegisterNPCdialoguesEnable(gameObject, _enable);
 
+
+
 	}
 }
