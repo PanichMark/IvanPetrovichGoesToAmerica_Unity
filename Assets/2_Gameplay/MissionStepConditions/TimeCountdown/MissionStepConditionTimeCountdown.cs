@@ -16,15 +16,14 @@ public class MissionStepConditionTimeCountdown : MissionStepConditionAbstract, I
 		}
 	}
 
-	public void UpdateTimer(float currentTimeRemaining, bool showTimer)
+	public void UpdateTimer(float currentTimeRemaining)
 	{
-		//Debug.Log(currentTimeRemaining);
+		Debug.Log(currentTimeRemaining);
 
 
-		if (showTimer)
-		{
-			OnStepConditionTimeTick?.Invoke(currentTimeRemaining);
-		}
+		
+		OnStepConditionTimeTick?.Invoke(currentTimeRemaining);
+		
 	}
 
 	public override void ResetStepCondition()

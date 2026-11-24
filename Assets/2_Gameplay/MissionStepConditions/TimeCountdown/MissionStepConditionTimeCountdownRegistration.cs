@@ -37,9 +37,11 @@ public class MissionStepConditionTimeCountdownRegistration : MonoBehaviour
 	{
 		for (int i = 0; i < _missionsManager.ActiveMission.MissionSteps.Length; i++)
 		{
-			//Debug.Log(i);
+		
 			if (_missionsManager.GameMissions.MissionsInOrder[0].MissionSteps[i] == _linkedMissionCondition.MissionStepAbstract)
 			{
+				Debug.Log(i);
+
 				_stepToStartCountDown = i;
 				break;
 
@@ -51,11 +53,12 @@ public class MissionStepConditionTimeCountdownRegistration : MonoBehaviour
 	{
 		if (_missionsManager.CurrentStepIndex == _stepToStartCountDown)
 		{
-			StartCoroutine(CountdownCoroutine(_countdownDuration));
+			_timerCoroutine = StartCoroutine(CountdownCoroutine(_countdownDuration));
 		}
 	}
 
 	private IEnumerator CountdownCoroutine(float duration)
+
 	{
 		Debug.Log("STARTED COUNTDOWN!");
 		float elapsed = 0f;
@@ -65,7 +68,12 @@ public class MissionStepConditionTimeCountdownRegistration : MonoBehaviour
 			{
 				float timeRemaining = duration - elapsed;
 
-				_condition.UpdateTimer(timeRemaining, _showCountDown);
+
+				if (_showCountDown)
+
+				{
+					_condition.UpdateTimer(timeRemaining);
+				}
 
 				elapsed += Time.deltaTime;
 			}
@@ -75,7 +83,7 @@ public class MissionStepConditionTimeCountdownRegistration : MonoBehaviour
 			
 		}
 
-		_condition.UpdateTimer(0f, _showCountDown);
+		_condition.UpdateTimer(0);
 		_condition.CompleteCondition();
 	}
 
@@ -84,6 +92,7 @@ public class MissionStepConditionTimeCountdownRegistration : MonoBehaviour
 		if (_timerCoroutine != null)
 		{
 			StopCoroutine(_timerCoroutine);
+			_timerCoroutine = null;
 		}
 
 

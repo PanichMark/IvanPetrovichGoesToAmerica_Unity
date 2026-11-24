@@ -1278,7 +1278,7 @@ GameObject:
   - component: {fileID: 28251020}
   - component: {fileID: 28251019}
   m_Layer: 0
-  m_Name: HideAndSeekHIDEcountdown
+  m_Name: HideAndSeekCountdownPREPARE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1297,7 +1297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _linkedMissionCondition: {fileID: 11400000, guid: 9f6e46a6ea528f645a7e590a717dab55, type: 2}
-  _countdownDuration: 10
+  _countdownDuration: 5
   _showCountDown: 1
 --- !u!4 &28251020
 Transform:
@@ -18160,6 +18160,53 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293604383}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &298178171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 298178173}
+  - component: {fileID: 298178172}
+  m_Layer: 0
+  m_Name: HideAndSeekCountdownHIDE
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &298178172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298178171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91a755f7de8a564418464963eb59505f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkedMissionCondition: {fileID: 11400000, guid: 63e99d5e0a0855c4b8bc1a221f2ba8a1, type: 2}
+  _countdownDuration: 5
+  _showCountDown: 1
+--- !u!4 &298178173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298178171}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &298332457
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -86143,6 +86190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1527532293}
   - component: {fileID: 1527532294}
+  - component: {fileID: 1527532295}
   m_Layer: 0
   m_Name: RegisterStepGoal
   m_TagString: Untagged
@@ -86178,6 +86226,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _missionStepGoalMarker: {fileID: 11400000, guid: 49e3993059d2739419651ad1c612631b, type: 2}
+--- !u!114 &1527532295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527532292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 35ea6877ce5d84e498d5940887ea0ede, type: 2}
 --- !u!1 &1528550696
 GameObject:
   m_ObjectHideFlags: 0
@@ -154645,3 +154706,4 @@ SceneRoots:
   - {fileID: 314492436}
   - {fileID: 1935748396}
   - {fileID: 28251020}
+  - {fileID: 298178173}

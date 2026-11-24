@@ -17,8 +17,6 @@ MonoBehaviour:
   MissionStepGoal_EN: Dinf the Bistro owner
   StepDescription: "\u041D\u0430\u0439\u0442\u0438 \u0432\u043B\u0430\u0434\u0435\u043B\u044C\u0446\u0430
     \u0431\u0438\u0441\u0442\u0440\u043E \u043D\u0430 \u0443\u043B\u0438\u0446\u0435"
-  showMissionMarker: 1
-  _minStepIndexIgnore: 0
-  _maxStepIndexIgnore: 0
+  showMissionMarker: 0
   StepConditions:
   - {fileID: 11400000, guid: 0edd7d820c84d5b4ea5a407c022c0592, type: 2}

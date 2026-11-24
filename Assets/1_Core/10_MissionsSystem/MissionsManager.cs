@@ -293,18 +293,6 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 	private void HandleStepProgress(int currentAmount, int requiredAmount)
 	{
-		// Добавьте эту проверку:
-		if (_HUDmissionsController == null)
-		{
-			Debug.LogError("HUDmissionsController is NULL inside MissionsManager! Поле не обновилось.");
-			return;
-		}
-
-		if (!_HUDmissionsController.gameObject.scene.IsValid() || !_HUDmissionsController.gameObject.activeInHierarchy)
-		{
-			Debug.LogError("HUDmissionsController ссылается на НЕАКТИВНЫЙ или УНИЧТОЖЕННЫЙ объект!");
-		}
-
 		LocalizedStepGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 		_HUDmissionsController.ShowNewMissionGoalHUDnotification($"{LocalizedStepGoalText}: {currentAmount}/{requiredAmount}", false);
 	}
@@ -314,7 +302,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		LocalizedStepGoalText = GetLocalizedGoalText(ActiveMission.MissionSteps[CurrentStepIndex]);
 
 		string formattedTime = remainingTime.ToString("F1", System.Globalization.CultureInfo.InvariantCulture);
-
+		Debug.Log(_HUDmissionsController);
 		_HUDmissionsController.ShowNewMissionGoalHUDnotification($"{LocalizedStepGoalText}: {formattedTime}", false);
 	}
 
