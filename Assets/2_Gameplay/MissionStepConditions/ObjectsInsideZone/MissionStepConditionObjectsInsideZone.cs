@@ -24,13 +24,15 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 	public override void ResetStepCondition()
 	{
 		//Debug.Log($"[Условие][RESET] Сброс шага. Очистка временных списков.");
-
+		Debug.Log("CLEAR ZONE REGISTER");
 		_isConditionMet = false;
+		_registeredObjects.Clear();
+		_objectsCurrentlyInside.Clear();
+
+
 
 		// ВАЖНО: Не очищаем _registeredObjects здесь насовсем, иначе потеряем данные дизайнера.
 		// Но очищаем текущее состояние для теста.
-		_registeredObjects.Clear();
-		_objectsCurrentlyInside.Clear();
 	}
 
 	public void RegisterTrackedSubject(GameObject obj)
@@ -101,11 +103,5 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 		//NotifyMissionManagerOnStepCompletion();
 	}
 
-	public void ResetProgess()
-	{
-		_registeredObjects.Clear();
-		_objectsCurrentlyInside.Clear();
 
-		Debug.Log("CLEAR ZONE REGISTER");
-	}
 }

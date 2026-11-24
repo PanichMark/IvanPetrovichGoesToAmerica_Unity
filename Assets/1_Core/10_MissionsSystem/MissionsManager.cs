@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +10,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 	private GameMissionsList _gameMissions;
 	public Mission ActiveMission { get; private set; }
 	public int ActiveMissionIndex { get; private set; }
-	private bool _isInitialized;
+	public bool IsInitialized {  get; private set; }
 	public int CurrentStepIndex { get; private set; }
 	private LocalizationManager _localizationManager;
 	private HUDmissionsController _HUDmissionsController;
@@ -66,10 +65,13 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 		_gameSceneManager.OnEndLoadingGameplayScene += ReapplyAllCurrentGameplaySceneActions;
 
-		_gameSceneManager.OnBeginLoadingGameplayScene += ResetAllMissionStepsActionLists;
+
+		_gameSceneManager.OnBeginLoadingGameplayScene += ResetAllMissionStepsActionListsAndStuff;
+
+
 
 		ResetAllStepConditions();
-		_isInitialized = true;
+		IsInitialized = true;
 		//Debug.Log("current index" + CurrentStepIndex);
 		Debug.Log("MissionsManager Initialized");
 	}
@@ -103,21 +105,12 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 					Debug.Log($"  Step index: {j}");
 					Debug.Log("current index" + CurrentStepIndex);
 
-					
-
 					step.ApplyAllCurrentGameplaySceneActions();
 
-					if (step is MissionStep typedStep)
-					{
-						foreach (var condition in typedStep.Conditions)
-						{
-							if (condition is IMissionStepConditionWithProgress progressableStepCondition)
-							{
-								progressableStepCondition.ResetProgess();
-							}
-					}
+					
+
+					
 				}
-			}
 			}
 		//}
 	}
@@ -144,27 +137,26 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		}
 	}
 
-	private void ResetAllMissionStepsActionLists()
+	private void ResetAllMissionStepsActionListsAndStuff()
 	{
 		foreach (var mission in _gameMissions.MissionsInOrder)
 		{
 			foreach (var step in mission.MissionSteps)
 			{
 				step.ClearAllMissionStepActionsLists();
+
+				foreach (var condition in step.Conditions)
+				{
+					condition.ResetStepCondition();
+
+					// maybe in the case with back and forth
+					// like with crates
+					// itsll break progression on LOAD
+					//well see...
+				}
 			}
 		}
 	}
-
-
-	/*
-	public void CheckAndCompleteCurrentStep()
-	{
-		if (ActiveMission == null) return;
-		if (CurrentStepIndex >= ActiveMission.MissionSteps.Length) return;
-
-		ActiveMission.MissionSteps[CurrentStepIndex].OnStepCompleted();
-	}
-	*/
 
 	private void ShowMissionGoalHUD()
 	{
