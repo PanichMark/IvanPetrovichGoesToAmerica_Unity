@@ -127,7 +127,7 @@ public class NPCstateMachineController : MonoBehaviour
 		}
 		else if (NPCstateType == NPCstateTypes.Searching)
 		{
-			newState = new NPCstateSearching();
+			newState = new NPCstateSearching(_NPCmovementController);
 		}
 		else if (NPCstateType == NPCstateTypes.Huddled)
 		{
@@ -207,7 +207,7 @@ public class NPCstateMachineController : MonoBehaviour
 		}
 
 		_NPCstate = newState;
-
+		Debug.Log($"{gameObject.name} NewState: {_NPCstate.ToString()}");
 		OnNewNPCstate?.Invoke(NPCstateType);
 		//_NPCabstract.ShowNPCcurrentState(CurrentNPCState);
 	}

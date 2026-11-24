@@ -2,10 +2,11 @@
 
 public class NPCstateSearching : NPCstateAbstract
 {
-    public NPCstateSearching()
-    {
-
-    }
+	public NPCstateSearching(NPCmovementController NPCmovementController)
+	{
+		_NPCmovementController = NPCmovementController;
+		_NPCmovementController.StartRandomMove();
+	}
 	/*
 	 *	Ходим какоето время в рандомныфе поовроты с интервалами ищем игрока опять
 	 */

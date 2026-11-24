@@ -46,6 +46,7 @@ public class NPCmovementController : MonoBehaviour
 
 	public void StartAnchorMove()
 	{
+		TurnNavmeshOn();
 		_currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCoroutine());
 
 		//Debug.Log(CurrentGoalAnchorPointIndex);
@@ -60,6 +61,7 @@ public class NPCmovementController : MonoBehaviour
 	{
 		if (_currentMovementCoroutine != null)
 		{
+			TurnNavmeshOff();
 			StopCoroutine(_currentMovementCoroutine);
 			_currentMovementCoroutine = null;
 		}
@@ -133,6 +135,7 @@ public class NPCmovementController : MonoBehaviour
 
 	public void StartRandomMove()
 	{
+		TurnNavmeshOn();
 		_currentMovementCoroutine = StartCoroutine(RandomMoveCoroutine());
 	}
 
@@ -140,6 +143,7 @@ public class NPCmovementController : MonoBehaviour
 	{
 		if (_currentMovementCoroutine != null)
 		{
+			TurnNavmeshOff();
 			StopCoroutine(_currentMovementCoroutine);
 			_currentMovementCoroutine = null;
 		}

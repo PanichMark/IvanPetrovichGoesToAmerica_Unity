@@ -4,7 +4,6 @@
 	{
 		_NPCmovementController = NPCmovementController;
 		_NPCStateMachineController = npcStateMachineController;
-		_NPCmovementController.TurnNavmeshOn();
 		_NPCmovementController.StartAnchorMove();
 	}
 
