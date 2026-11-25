@@ -209,6 +209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478bb28c037830e43922005b26bdc952, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _elevatorController: {fileID: 0}
+  _isButtonUp: 0
 --- !u!1 &7315511364550647010
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,3 +332,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478bb28c037830e43922005b26bdc952, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _elevatorController: {fileID: 0}
+  _isButtonUp: 0

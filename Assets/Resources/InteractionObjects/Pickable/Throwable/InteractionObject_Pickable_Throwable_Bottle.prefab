@@ -151,8 +151,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Pickable_Throwable_Bottle
   _interactionObjectPickableType: {fileID: 11400000, guid: f06abb95f931bce43832101c38356be3, type: 2}
+  IsDestroyedUponImpact: 1
   _damage: 10
   _canDamageBreakable: 0
   _health: 10
   _canBeDamaged: 1
+  _canBeBroken: 1
   _breakingThreshold: 0

@@ -151,7 +151,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: 
   _interactionObjectPickableType: {fileID: 0}
+  _health: 0
+  _canBeDamaged: 0
+  _canBeBroken: 0
+  _breakingThreshold: 0
   _damage: 0
   _canDamageBreakable: 0
-  _explosionRadius: 0
-  _explodeOnImpact: 0
