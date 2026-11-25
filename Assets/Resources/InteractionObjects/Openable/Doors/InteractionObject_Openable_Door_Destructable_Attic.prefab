@@ -9,12 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2840949100833335124}
-  - component: {fileID: 8056446637061148164}
-  - component: {fileID: 8802338139220368234}
-  - component: {fileID: 6745789141294225495}
   m_Layer: 0
   m_Name: InteractionObject_Openable_Door_Destructable_Attic
-  m_TagString: Interactable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,75 +29,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9009970414150149954}
   - {fileID: 1708184289451103486}
+  - {fileID: 9009970414150149954}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8056446637061148164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870243123093254547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8b36c928b6ebcb4c915a53b23d5f107, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactionObjectNameSystem: InteractionObject_Openable_Door_DoorWooden
-  _isObjectOpened: 0
-  _doorOpenAngle: 90
-  _doorOpeningSpeed: 200
-  _interactionObjectKeyData: {fileID: 0}
-  _mechanicalLockController: {fileID: 0}
-  _electronicLockController: {fileID: 0}
-  _electronicElectricalPanel: {fileID: 0}
-  _changeScene: {fileID: 0}
-  _isLockedForever: 0
-  _doorSibling: {fileID: 0}
-  _maxDurability: 100
-  _damageThreshold: 50
-  _doorNormal: {fileID: 3373778483847240902}
-  _doorDamaged: {fileID: 3373778483847240902}
-  _doorBroken: {fileID: 3373778483847240902}
---- !u!65 &8802338139220368234
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870243123093254547}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.0005317, y: 2.1, z: 0.20977181}
-  m_Center: {x: 0.5, y: 1.05, z: -0.04999998}
---- !u!208 &6745789141294225495
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870243123093254547}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 1.0500001, z: 0.105000004}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0.5, y: 1.0500001, z: -0.05}
-  m_TimeToStationary: 0.5
 --- !u!1 &3373778483847240902
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,9 +44,12 @@ GameObject:
   - component: {fileID: 9009970414150149954}
   - component: {fileID: 4634244781152952882}
   - component: {fileID: 6666108213780339089}
+  - component: {fileID: 8076460103683864675}
+  - component: {fileID: 6814973396115247593}
+  - component: {fileID: 7027683182576160549}
   m_Layer: 0
-  m_Name: Normal
-  m_TagString: Untagged
+  m_Name: Door
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -187,6 +122,67 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8076460103683864675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373778483847240902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da23f0dac497b84c84a3a23da8f4b19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionObjectNameSystem: InteractionObject_Openable_Door_DoorWooden
+  _isObjectOpened: 0
+  _doorOpenAngle: 90
+  _doorOpeningSpeed: 200
+  _interactionObjectKeyData: {fileID: 0}
+  _mechanicalLockController: {fileID: 0}
+  _electronicLockController: {fileID: 0}
+  _electronicElectricalPanel: {fileID: 0}
+  _changeScene: {fileID: 0}
+  _isLockedForever: 0
+  _doorSibling: {fileID: 0}
+  _canNPCOpenDoor: 1
+--- !u!65 &6814973396115247593
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373778483847240902}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0005317, y: 2.1, z: 0.20977181}
+  m_Center: {x: 0.5, y: 1.05, z: -0.04999998}
+--- !u!208 &7027683182576160549
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373778483847240902}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 1.0500001, z: 0.105000004}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.5, y: 1.0500001, z: -0.05}
+  m_TimeToStationary: 0.5
 --- !u!1 &3989572728440830785
 GameObject:
   m_ObjectHideFlags: 0

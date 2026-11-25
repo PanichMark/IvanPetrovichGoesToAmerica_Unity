@@ -148,8 +148,18 @@ public class InteractionObjectNote : MonoBehaviour, IInteractable
 
 		ShowNoteCanvas();
 
-		_imageComponent.gameObject.SetActive(true);
-		_imageComponent.sprite = _noteData.NoteImage;
+		//Debug.Log(_noteData.NoteImage);
+
+		if (_noteData.NoteImage != null)
+		{
+			_imageComponent.gameObject.SetActive(true);
+		
+			_imageComponent.sprite = _noteData.NoteImage;
+		}
+		else
+		{
+			_imageComponent.gameObject.SetActive(false);
+		}
 
 		if (!_noteData.IsNoteToGlanceAt)
 		{

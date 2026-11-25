@@ -136,6 +136,9 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 
 	public override void Interact()
 	{
+		base.Interact();
+		//OnInteract?.Invoke();
+
 		if (!_isLockedForever)
 		{
 			if (_interactionObjectKeyData != null && !IsOpenableUnlocked)

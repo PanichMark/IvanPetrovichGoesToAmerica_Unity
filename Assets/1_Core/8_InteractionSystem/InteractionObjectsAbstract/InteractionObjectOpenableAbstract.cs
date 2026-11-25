@@ -19,11 +19,15 @@ public abstract class InteractionObjectOpenableAbstract : GameplayObjectJsonSave
 	protected Coroutine _currentAnimation;
 
 	public event IInteractable.InteractableObjectHandler OnInteract;
-	public abstract void Interact();
+	public virtual void Interact()
+	{
+		OnInteract?.Invoke();
+	}
+
 
 	protected virtual void PerformOpenableInteraction()
 	{
-		OnInteract?.Invoke();
+		
 	}
 
 	public abstract void InteractAfterDialogueOrCutscene();
