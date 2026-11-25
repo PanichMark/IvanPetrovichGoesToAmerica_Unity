@@ -1,8 +1,0 @@
-﻿public enum NPCdialogueFacialExpressionsEnum
-{
-	BlendShape_FacialExpression_Happy,
-	BlendShape_FacialExpression_Surprised,
-	BlendShape_FacialExpression_Sad,
-	BlendShape_FacialExpression_Suspicious,
-	BlendShape_FacialExpression_Angry
-}

@@ -1,7 +1,0 @@
-﻿public enum InteractionObjectsKeyItemsNamesEnum
-{
-	KeyItem_Scene_0_Church_Key_Quarters,
-	KeyItem_Scene_0_Street_Key_ChurchGate,
-
-	Key_ItemScene_0_RevenueHouse_SafeCode_SemyonSomovSafe
-}
