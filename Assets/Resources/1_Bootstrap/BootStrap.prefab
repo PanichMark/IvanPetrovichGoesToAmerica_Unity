@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7968887224968274582}
-  - component: {fileID: 4006196211601909102}
+  - component: {fileID: 3384868384285505917}
   m_Layer: 0
-  m_Name: BootStrap
+  m_Name: Bootstrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4006196211601909102
+--- !u!114 &3384868384285505917
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49,7 +49,7 @@ MonoBehaviour:
   _keyPauseMenu: 1
   _firstSceneToLoad: 4
   _playerPrefsPresequisites: 0
-  _playerPrefsReset: 1
+  _playerPrefsReset: 0
   _applyConfigsPlayer: 1
   _playerTransform: {fileID: 11400000, guid: 74c93e7c7fa7e984e822892491d69ea4, type: 2}
   _playerHealth: 100
@@ -62,4 +62,4 @@ MonoBehaviour:
   _applyConfigsMission: 1
   _mission: {fileID: 11400000, guid: 3e12f522c0bdf7d4ba4b70092e6c1080, type: 2}
   _missionStep: 8
-  _debugNPC: 0
+  _debugNPC: 1
