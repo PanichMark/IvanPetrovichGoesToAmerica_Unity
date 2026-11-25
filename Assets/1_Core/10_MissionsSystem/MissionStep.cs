@@ -9,9 +9,7 @@ public class MissionStep : ScriptableObject
 	private MissionsManager _missionsManager;
 	public bool ShowMissionMarker => showMissionMarker;
 
-	// 1. Структуры данных заменены на списки кортежей (ValueTuple)
-	private List<(GameObject Object, bool IsEnabled)> _gameObjectTurnOn = new List<(GameObject, bool)>();
-	private List<(GameObject Object, bool IsEnabled)> _NPCdialoguesEnable = new List<(GameObject, bool)>();
+	private readonly List<MonoBehaviour> _registeredActions = new List<MonoBehaviour>();
 
 	public GameObject MissionStepGoalMarkerObject { get; private set; }
 
@@ -31,42 +29,12 @@ public class MissionStep : ScriptableObject
 
 	public void ApplyAllCurrentGameplaySceneActions()
 	{
-		//Debug.Log("REAPPLY gameObjects" + _gameObjectTurnOn.Count);
-		//Debug.Log("REAPPLY Dialogues" + _NPCdialoguesEnable.Count);
-
-		if (_gameObjectTurnOn.Count > 0)
+		for (int i = 0; i < _registeredActions.Count; i++)
 		{
-			foreach (var tuple in _gameObjectTurnOn)
+			var actionComponent = _registeredActions[i];
+			if (actionComponent != null && actionComponent is IMissionStepAction action)
 			{
-
-				tuple.Object.SetActive(tuple.IsEnabled);
-				// Логируем фактическое действие
-				//Debug.Log($"SetActive для {tuple.Object.name}: {tuple.IsEnabled}");
-				
-			}
-		}
-
-		if (_NPCdialoguesEnable.Count > 0)
-		{
-			foreach (var tuple in _NPCdialoguesEnable)
-			{
-				if (tuple.Object != null)
-				{
-					var dialogueComponent = tuple.Object.GetComponent<IMissionStepActionNPCdialogueEnable>();
-					if (dialogueComponent != null)
-					{
-						// Если нужно включить — вызываем Enable, если выключить — Disable
-						if (tuple.IsEnabled)
-						{
-							dialogueComponent.EnableDialogue();
-						}
-						else
-						{
-							dialogueComponent.DisableDialogue();
-						}
-						//Debug.Log($"Dialogue для {tuple.Object.name}: {(tuple.IsEnabled ? "Enabled" : "Disabled")}");
-					}
-				}
+				action.PerformAction();
 			}
 		}
 	}
@@ -97,27 +65,15 @@ public class MissionStep : ScriptableObject
 
 	public void ClearAllMissionStepActionsLists()
 	{
-		if (_gameObjectTurnOn.Count > 0)
-		{
-			_gameObjectTurnOn.Clear();
-		}
-		if (_NPCdialoguesEnable.Count > 0)
-		{
-			_NPCdialoguesEnable.Clear();
-		}
+		_registeredActions.Clear();
 	}
 
-	// 3. Методы регистрации теперь сохраняют значение bool
-	public void RegisterObjectsTurnOn(GameObject objectTurnOn, bool enable)
+	public void RegisterAction(MonoBehaviour actionComponent)
 	{
-		_gameObjectTurnOn.Add((objectTurnOn, enable));
-
-		//Debug.Log("REGISTER" + objectTurnOn);
-	}
-
-	public void RegisterNPCdialoguesEnable(GameObject NPCwithDialogue, bool enable)
-	{
-		_NPCdialoguesEnable.Add((NPCwithDialogue, enable));
+		if (actionComponent != null && actionComponent is IMissionStepAction && !_registeredActions.Contains(actionComponent))
+		{
+			_registeredActions.Add(actionComponent);
+		}
 	}
 
 	public void RegisterMissionStepGoalMarkerObject(GameObject markerObject)

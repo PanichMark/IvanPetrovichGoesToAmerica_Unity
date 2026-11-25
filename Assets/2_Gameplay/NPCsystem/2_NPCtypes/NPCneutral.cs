@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class NPCneutral : NPClivingBeing, IMissionStepActionNPCdialogueEnable
+public class NPCneutral : NPClivingBeing
 {
 	private NPCdialogueController _NPCdialogueController;
 
@@ -35,22 +35,6 @@ public class NPCneutral : NPClivingBeing, IMissionStepActionNPCdialogueEnable
 			_NPCdetectionVisualController,
 			_NPCweaponController,
 			_NPCanimator);
-	}
-
-	public void EnableDialogue()
-	{
-		if (_NPCdialogueController != null)
-		{
-			_NPCdialogueController.enabled = true;
-		}
-	}
-
-	public void DisableDialogue()
-	{
-		if (_NPCdialogueController != null)
-		{
-			_NPCdialogueController.enabled = false;
-		}
 	}
 
 	public override void Interact()

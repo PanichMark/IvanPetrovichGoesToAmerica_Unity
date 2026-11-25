@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class NPCpeaceful : NPClivingBeing, IMissionStepActionNPCdialogueEnable
+public class NPCpeaceful : NPClivingBeing
 {
 	private NPCdialogueController _NPCdialogueController;
 
@@ -21,22 +21,6 @@ public class NPCpeaceful : NPClivingBeing, IMissionStepActionNPCdialogueEnable
 			_NPCdialogueController.Initialize(
 				this,
 				_NPCmovementController);
-		}
-	}
-
-	public void EnableDialogue()
-	{
-		if (_NPCdialogueController != null)
-		{
-			_NPCdialogueController.enabled = true;
-		}
-	}
-
-	public void DisableDialogue()
-	{
-		if (_NPCdialogueController != null)
-		{
-			_NPCdialogueController.enabled = false;
 		}
 	}
 
