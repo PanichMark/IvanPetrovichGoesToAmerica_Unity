@@ -1,0 +1,23 @@
+public enum MenuSystemEvents
+{
+	OpenPauseMenu,
+	ClosePauseMenu,
+	OpenWeaponWheelMenu,
+	CloseWeaponWheelMenu,
+	OpenInteractionHUD,
+	CloseInteractionHUD,
+	OpenInteractionMenu,
+	CloseInteractionMenu,
+	OpenDialogueMenu,
+	CloseDialogueMenu,
+	OpenCutsceneMenu,
+	CloseCutsceneMenu,
+	ClosePauseMenuDuringOpenedDialogueMenu,
+	ClosePauseMenuDuringOpenedCutsceneMenu,
+	OpenAnyMenu,
+	CloseAnyMenu,
+	OpenMenuBackground,
+	CloseMenuBackground,
+	OpenConfirmationOnExitToMainMenu,
+	CloseConfirmationOnExitToMainMenu
+}

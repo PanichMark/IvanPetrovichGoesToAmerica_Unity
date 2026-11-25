@@ -1,0 +1,229 @@
+﻿using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class PlayerHealthController : MonoBehaviour, IDamageable, IJsonSaveLoad
+{
+	private Bootstrap _bootstrap;
+	private PlayerMovementAnimationController _playerMovementAnimationController;
+	private GameController _gameController;
+	private Slider _sliderHealthBar;
+	private Button _buttonHealingItem;
+	private TextMeshProUGUI _healingItemNumber;
+	private PlayerMovementStateMachineController _playerMovementStateMachineController;
+	public float MaxPlayerHealth { get; private set; } = 100;
+	public float CurrentPlayerHealth { get; private set; }
+	private int _healingItemEffect = 34;
+	public int MaxHealingItemsNumber { get; private set; } = 9;
+	public delegate void HealthHandler(float newHealth);
+	public event HealthHandler OnHealthChanged;
+	public int CurrentHealingItemsNumber { get; private set; }
+
+	public bool IsObjectDestroyed => false;
+
+	private bool _isFalling;
+	private float _fallStartTime;
+	private const float MinFallDurationForDamage = 1.0f;
+	private const float DamagePerSecondOverThreshold = 0.5f;
+
+	public float CurrentHealth => CurrentPlayerHealth;
+
+	public bool CanObjectBeDamaged => true;
+	private JournalMenuSectionInventoryController _journalMenuSectionInventoryController;
+	public void Initialize(
+		Bootstrap bootstrap,
+		GameController gameController,
+		PlayerMovementAnimationController playerMovementController,
+		PlayerMovementStateMachineController playerMovementStateMachineController,
+		ViewModelHUDHealthAndMana viewModelHUDHealthAndMana,
+		ViewModelMenuWeaponWheel viewModelMenuWeaponWheel,
+		JournalMenuSectionInventoryController journalMenuSectionInventoryController)
+	{
+		_journalMenuSectionInventoryController = journalMenuSectionInventoryController;
+		_playerMovementAnimationController = playerMovementController;
+		_bootstrap = bootstrap;
+		_sliderHealthBar = viewModelHUDHealthAndMana.SliderHealthBar.GetComponent<Slider>();
+		_buttonHealingItem = viewModelMenuWeaponWheel.ButtonUseHealingItem.GetComponent<Button>();
+		_healingItemNumber = viewModelMenuWeaponWheel.TextHealingItemNumber.GetComponent<TextMeshProUGUI>();
+		_gameController = gameController;
+		_buttonHealingItem.onClick.AddListener(() => UseHealingItem());
+
+		_playerMovementStateMachineController = playerMovementStateMachineController;
+		_playerMovementStateMachineController.OnChangeMovementState += FallDamage;
+		_sliderHealthBar.maxValue = MaxPlayerHealth;
+
+		Debug.Log("PlayerResourcesHealthManager Initialized");
+	}
+
+	public void ConfigApplyPlayerHealth(int setHealth)
+	{
+		CurrentPlayerHealth = setHealth;
+
+		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
+	}
+
+	public void ConfigApplyPlayerHealingItems(int setHealingItems)
+	{
+		CurrentHealingItemsNumber = setHealingItems;
+
+		_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+		_journalMenuSectionInventoryController.UpdateInventoryHealingItems(CurrentHealingItemsNumber);
+	}
+
+	private void UseHealingItem()
+    {
+        if (CurrentHealingItemsNumber > 0)
+        {
+            if (CurrentPlayerHealth < MaxPlayerHealth)
+            {	
+				CurrentHealingItemsNumber--;
+
+                CurrentPlayerHealth += _healingItemEffect;
+
+				if (CurrentPlayerHealth >= MaxPlayerHealth)
+				{
+					CurrentPlayerHealth = MaxPlayerHealth;
+				}
+
+				//Debug.Log(CurrentPlayerHealth);
+				_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
+
+				_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+				_journalMenuSectionInventoryController.UpdateInventoryHealingItems(CurrentHealingItemsNumber);
+
+				Debug.Log("Used Healing Item");
+			}
+            else Debug.Log("Health is already Full");
+		}
+		else Debug.Log("0 Healing Items");
+	}
+
+    public void AddHealingItem()
+    {
+		if (CurrentHealingItemsNumber < 9)
+		{ 
+			CurrentHealingItemsNumber++;
+
+			_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+			_journalMenuSectionInventoryController.UpdateInventoryHealingItems(CurrentHealingItemsNumber);
+
+			Debug.Log("Added Healing Item");
+		}
+        else Debug.Log("Max Healing Items");
+	}
+
+	public void ReceiveHealth(float health)
+	{
+		CurrentPlayerHealth += health;
+
+		if (CurrentPlayerHealth > MaxPlayerHealth)
+		{
+			CurrentPlayerHealth = MaxPlayerHealth;
+		}
+
+		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
+
+		OnHealthChanged?.Invoke(CurrentPlayerHealth);
+	}
+
+	public void TakeDamage(float amount)
+	{
+		Debug.Log($"Player is damaged by: {amount}");
+
+		CurrentPlayerHealth -= amount;
+
+		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
+
+		if (CurrentPlayerHealth <= 0)
+		{
+			ObjectIsFullyDamaged();
+		}
+
+		OnHealthChanged?.Invoke(CurrentPlayerHealth);
+	}
+
+	private void FallDamage(PlayerMovementStateTypes playerMovementStateType)
+	{
+	
+
+		if (_gameController.IsPauseMenuAvailable) // this is so player cant die on load while falling in previous scene because itll SOFTLOCK!
+		{
+			if (SceneManager.sceneCount > 1)
+			{
+				//Debug.Log(SceneManager.GetSceneAt(1).name);
+			}
+
+			if (playerMovementStateType == PlayerMovementStateTypes.PlayerFalling)
+			{
+				if (!_isFalling)
+				{
+					_isFalling = true;
+					_fallStartTime = Time.time;
+				}
+			}
+			else if (_isFalling)
+			{
+				CalculateAndApplyFallDamage();
+				_isFalling = false;
+			}
+		}
+		else
+		{
+			_isFalling = false;
+		}
+	}
+
+	private void CalculateAndApplyFallDamage()
+	{
+		float realGameplayDuration = (Time.time - _fallStartTime) * Time.timeScale;
+
+		if (realGameplayDuration > MinFallDurationForDamage)
+		{
+			float excessDuration = realGameplayDuration - MinFallDurationForDamage;
+
+			// Целая часть секунд сверху порога, которая влияет на множитель
+			int fullSecondsOverThreshold = Mathf.FloorToInt(excessDuration);
+
+			// Базовый урон за первую лишнюю секунду
+			float baseDamage = MaxPlayerHealth * DamagePerSecondOverThreshold;
+
+			// Экспоненциальный рост: 10% * (2 ^ количество полных лишних секунд)
+			float damageToTake = baseDamage * Mathf.Pow(2f, fullSecondsOverThreshold);
+
+			TakeDamage(damageToTake);
+		}
+	}
+
+	public void ObjectIsFullyDamaged()
+	{
+		CurrentPlayerHealth = 0;
+		_playerMovementAnimationController.PlayerDeathAnimation();
+		StartCoroutine(_gameController.PlayerHasDied());
+		
+	}
+
+	public IEnumerator SaveJsonData(JsonGameData data)
+	{
+		data.PlayerResources.PlayerHealth = CurrentPlayerHealth;
+		data.PlayerResources.PlayerHealingItemsNumber = CurrentHealingItemsNumber;
+		yield return null;
+	}
+
+	public IEnumerator LoadJsonData(JsonGameData data)
+	{
+		//Debug.Log("LOAD HEALTH");
+
+		CurrentPlayerHealth = data.PlayerResources.PlayerHealth;
+		
+		CurrentHealingItemsNumber = data.PlayerResources.PlayerHealingItemsNumber;
+
+		_sliderHealthBar.value = CurrentPlayerHealth * 0.23f;
+
+		_healingItemNumber.text = CurrentHealingItemsNumber.ToString();
+		_journalMenuSectionInventoryController.UpdateInventoryHealingItems(CurrentHealingItemsNumber);
+
+		yield return null;
+	}
+}

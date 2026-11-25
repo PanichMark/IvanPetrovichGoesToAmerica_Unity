@@ -1,0 +1,613 @@
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+
+public class WeaponSpecialCrossbow : WeaponAbstract
+{
+	private GameController _gameController;
+	private GameScenesManager _gameSceneManager;
+	private PlayerBehaviourController _playerBehaviour;
+	public override float WeaponAttackSpeedRate => 0f;
+	private HUDweaponsController _HUDweaponsController;
+	private MenuManager _menuManager;
+	private GameObject _projectile1stPerson;
+	private Transform _projectileParent1stPerson;
+	private GameObject _projectileStringStartPoint1stPerson;
+	private GameObject _projectileStringEndPoint1stPerson;
+	private LineRenderer _lineRenderer1stPerson;
+	private PlayerWeaponFirstPersonRenderer _playerWeaponFirstPersonRenderer;
+	private GameObject _projectile3rdPerson;
+	private Transform _projectileParent3rdPerson;
+	private GameObject _projectileStringStartPoint3rdPerson;
+	private GameObject _projectileStringEndPoint3rdPerson;
+	private LineRenderer _lineRenderer3rdPerson;
+	[SerializeField] protected AudioClip _weaponSoundReelRope;
+	[SerializeField] protected AudioClip _weaponSoundPlungerPop;
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
+	private bool _isCrossbowAttacking;
+	private GameObject _player;
+	private CapsuleCollider _playerCollider;
+	private GameObject _playerCamera;
+	private Rigidbody _playerRigidbody;
+	private Vector3 _projectile1stPersonRestPosition;
+	private Quaternion _projectile1stPersonRestDirection;
+	private Vector3 _projectile3rdPersonRestPosition;
+	private Quaternion _projectile3rdPersonRestDirection;
+	private bool _isHoldingDown;
+	private SkinnedMeshRenderer _Crossbow1stPersonSkinnedMesh;
+	private SkinnedMeshRenderer _Crossbow3rdPersonSkinnedMesh;
+
+
+
+	private Quaternion _projectileFlyingDirection;
+	public override bool IsWeaponAuto => true;
+	private GameObject _hookedObject;
+	private Rigidbody _hookedObjectRigidbody;
+	private Collider _hookedObjectCollider;
+
+	private NPCstateMachineController _NPCstateMachineController;
+	private NPCabstract _NPCabstract;
+	private NavMeshAgent _hookedObjectNavMeshAgent;
+
+	private Vector3 _hookPoint;
+	private float _maxHookDistance = 20f;
+	private float _projectileSpeed = 15f;
+
+	public override PlayerWeaponNames WeaponName => PlayerWeaponNames.Crossbow;
+	public override WeaponTypes WeaponType => WeaponTypes.Special;
+	private bool _wasCrossbowJustEquiped;
+	public override float TimeBetweenAbilityToAttack => throw new System.NotImplementedException();
+	
+	public override void InitializeWeaponPlayer()
+	{
+		_projectile1stPerson = FirstPersonWeaponModelInstance.transform.Find("Projectile").gameObject;
+		_projectileParent1stPerson = _projectile1stPerson.transform.parent;
+		_projectileStringStartPoint1stPerson = FirstPersonWeaponModelInstance.transform.Find("ProjectileStringStartPoint").gameObject;
+		_projectileStringEndPoint1stPerson = _projectile1stPerson.transform.Find("ProjectileStringEndPoint").gameObject;
+		_lineRenderer1stPerson = FirstPersonWeaponModelInstance.GetComponent<LineRenderer>();
+		_Crossbow1stPersonSkinnedMesh = FirstPersonWeaponModelInstance.transform.Find("Crossbow").GetComponent<SkinnedMeshRenderer>();
+		_menuManager = ServiceLocator.Resolve<MenuManager>();
+		_projectile3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("Projectile").gameObject;
+		_projectileParent3rdPerson = _projectile3rdPerson.transform.parent;
+		_projectileStringStartPoint3rdPerson = ThirdPersonWeaponModelInstance.transform.Find("ProjectileStringStartPoint").gameObject;
+		_projectileStringEndPoint3rdPerson = _projectile3rdPerson.transform.Find("ProjectileStringEndPoint").gameObject;
+		_lineRenderer3rdPerson = ThirdPersonWeaponModelInstance.GetComponent<LineRenderer>();
+		_Crossbow3rdPersonSkinnedMesh = ThirdPersonWeaponModelInstance.transform.Find("Crossbow").GetComponent<SkinnedMeshRenderer>();
+		_HUDweaponsController = ServiceLocator.Resolve<HUDweaponsController>();
+		_projectile1stPersonRestPosition = _projectile1stPerson.transform.localPosition;
+		_projectile1stPersonRestDirection = _projectile1stPerson.transform.localRotation;
+
+		_projectile3rdPersonRestPosition = _projectile3rdPerson.transform.localPosition;
+		_projectile3rdPersonRestDirection = _projectile3rdPerson.transform.localRotation;
+		//Debug.Log(_projectileRestPosition);
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+		_playerCamera = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerCamera);
+		_playerWeaponFirstPersonRenderer = ServiceLocator.Resolve<PlayerWeaponFirstPersonRenderer>();
+		_player = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
+		_playerRigidbody = _player.GetComponent<Rigidbody>();
+		_gameController = ServiceLocator.Resolve<GameController>();
+		_playerCollider = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player).GetComponent<CapsuleCollider>();
+		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
+		//Debug.Log(_gameSceneManager);
+		_playerBehaviour = ServiceLocator.Resolve<PlayerBehaviourController>();
+
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+		{
+			ChangeCrossbow1stPerson();
+		}
+		else
+		{
+			ChangeCrossbow3rdPerson();
+		}
+
+		_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += FullStopPlunging;
+		_gameSceneManager.OnBeginLoadingGameplayScene += FullStopPlunging;
+		_playerBehaviour.OnPlayerDisarmed += StopCrossbowAttack;
+		_playerCameraStateMachineController.OnFirstPersonCameraState += ChangeCrossbow1stPerson;
+		_playerCameraStateMachineController.OnThirdPersonCameraState += ChangeCrossbow3rdPerson;
+
+
+		_menuManager.OnOpenAnyMenu += () =>
+		{
+			if (!_isCrossbowAttacking)
+			{
+				if (_isHoldingDown)
+				{
+					_wasCrossbowJustEquiped = true;
+
+					_isHoldingDown = false;
+				}
+
+				_HUDweaponsController.HandleCrossbowCrosshair(0);
+				_lastCrosshairState = 0;
+			}
+		};
+
+
+		_menuManager.OnCloseAnyMenu += () =>
+		{
+			if (!_isCrossbowAttacking)
+			{
+				if (_isHoldingDown)
+				{
+					_wasCrossbowJustEquiped = true;
+
+					_isHoldingDown = false;
+				}
+
+				_HUDweaponsController.HandleCrossbowCrosshair(0);
+				_lastCrosshairState = 0;
+			}
+		};
+
+		_playerWeaponController.OnShowWeapon += (WeaponAbstract) =>
+		{
+			_wasCrossbowJustEquiped = true;
+
+			_isHoldingDown = false;
+
+			_HUDweaponsController.HandleCrossbowCrosshair(0);
+			_lastCrosshairState = 0;
+		};
+	}
+
+	private void ChangeCrossbow1stPerson()
+	{
+		//_currentProjectile = _projectile1stPerson;
+		_lineRenderer1stPerson.enabled = true;
+		_lineRenderer3rdPerson.enabled = false;
+	}
+
+	private void ChangeCrossbow3rdPerson()
+	{
+		//_currentProjectile = _projectile3rdPerson;
+		_lineRenderer1stPerson.enabled = false;
+		_lineRenderer3rdPerson.enabled = true;
+	}
+
+	public override void WeaponPlayerAttack()
+	{
+		if (_isCrossbowAttacking) return;
+
+		if (_menuManager.IsAnyMenuOpened) return;
+
+		if (gameObject.activeInHierarchy == false) return;
+
+		if (_wasCrossbowJustEquiped) return;
+
+		_isHoldingDown = true;
+
+	}
+
+	public override void StartAutoAttackingWeaponPlayer()
+	{
+		
+	}
+
+	public override void StopAutoAttackingWeaponPlayer()
+	{
+		//Debug.Log("LAUNCH CROSSBOW");
+
+		if (_wasCrossbowJustEquiped)
+		{
+			_wasCrossbowJustEquiped = false;
+			return;
+		}
+
+		if (_isCrossbowAttacking) return;
+
+		if (_menuManager.IsAnyMenuOpened) return;
+
+		if (gameObject.activeInHierarchy == false) return;
+
+		_isHoldingDown = false;
+
+		Ray ray = new Ray(_playerCamera.transform.position, _playerCamera.transform.forward);
+		RaycastHit hit;
+
+		if (Physics.Raycast(ray, out hit, _maxHookDistance, ~LayerMask.GetMask("InvisibleWall")))
+		{
+			_hookPoint = hit.point;
+			_isCrossbowAttacking = true;
+			StartCoroutine(PerformCrossbowShoot(_hookPoint, hit));
+		}
+	}
+
+	private int _lastCrosshairState = -1;
+
+	private void Update()
+	{
+		if (_isHoldingDown && !_wasCrossbowJustEquiped)
+		{
+			Ray ray = new Ray(_playerCamera.transform.position, _playerCamera.transform.forward);
+
+			if (Physics.Raycast(ray, out RaycastHit hit, _maxHookDistance, ~LayerMask.GetMask("InvisibleWall")))
+			{
+				if (hit.collider.gameObject.TryGetComponent<NPClivingBeing>(out _) || hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _))
+				{
+					if (_lastCrosshairState != 2)
+					{
+						_HUDweaponsController.HandleCrossbowCrosshair(2);
+						_lastCrosshairState = 2;
+					}
+				}
+				else
+				{
+					if (_lastCrosshairState != 1)
+					{
+						_HUDweaponsController.HandleCrossbowCrosshair(1);
+						_lastCrosshairState = 1;
+					}
+				}
+			}
+			else
+			{
+				if (_lastCrosshairState != 3)
+				{
+					_HUDweaponsController.HandleCrossbowCrosshair(3);
+					_lastCrosshairState = 3;
+				}
+			}
+		}
+		else
+		{
+			if (_lastCrosshairState != 0)
+			{
+				_HUDweaponsController.HandleCrossbowCrosshair(0);
+				_lastCrosshairState = 0;
+			}
+		}
+
+
+	}
+
+	private IEnumerator PerformCrossbowShoot(Vector3 point, RaycastHit hit)
+	{
+		isPlayerWeaponAttacking = true;
+
+		_weaponAudioSource.PlayOneShot(_weaponSoundReelRope);
+
+		_gameController.PlayerStartedPlunging();
+		//_lineRenderer1stPerson.enabled = true;
+		//_lineRenderer3rdPerson.enabled = true;
+
+		StartCoroutine(StraightenCrossbowLimb());
+
+		yield return StartCoroutine(ShootProjectile(point));
+
+		if ((hit.collider.gameObject.TryGetComponent<NPClivingBeing>(out _) ||
+			hit.collider.gameObject.TryGetComponent<InteractionObjectPickableAbstract>(out _)))
+		{
+			Debug.Log("Крюк зацепил предмет/NPC");
+
+			yield return StartCoroutine(HookObject(hit));
+		}
+		else
+		{
+			Debug.Log($"Крюк зацепился за: {hit.collider.name}");
+			yield return StartCoroutine(PlungePlayer(point));
+		}
+	}
+
+	private IEnumerator ShootProjectile(Vector3 point)
+	{
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+		{
+			ChangeCrossbow1stPerson();
+		}
+		else
+		{
+			ChangeCrossbow3rdPerson();
+		}
+
+		_projectile1stPerson.transform.SetParent(null);
+		_projectile1stPerson.layer = LayerMask.NameToLayer("Default");
+
+		_projectile3rdPerson.transform.SetParent(null);
+
+		_projectileFlyingDirection = _playerCamera.transform.rotation;
+		_projectile1stPerson.transform.rotation = _projectileFlyingDirection;
+		_projectile3rdPerson.transform.rotation = _projectileFlyingDirection;
+
+		while (Vector3.Distance(_projectile1stPerson.transform.position, point) > 0.1f)
+		{
+			Vector3 newPosFP = Vector3.MoveTowards(_projectile1stPerson.transform.position, point, _projectileSpeed * Time.deltaTime);
+			_projectile1stPerson.transform.position = newPosFP;
+			_lineRenderer1stPerson.SetPosition(0, _projectileStringStartPoint1stPerson.transform.position);
+			_lineRenderer1stPerson.SetPosition(1, _projectileStringEndPoint1stPerson.transform.position);
+			
+			Vector3 newPosTP = Vector3.MoveTowards(_projectile3rdPerson.transform.position, point, _projectileSpeed * Time.deltaTime);
+			_projectile3rdPerson.transform.position = newPosTP;
+			_lineRenderer3rdPerson.SetPosition(0, _projectileStringStartPoint3rdPerson.transform.position);
+			_lineRenderer3rdPerson.SetPosition(1, _projectileStringEndPoint3rdPerson.transform.position);
+			
+			yield return null;
+		}
+
+		_weaponAudioSource.PlayOneShot(_weaponSoundPlungerPop);
+	}
+
+	private IEnumerator PlungePlayer(Vector3 hookPoint)
+	{
+		_playerCollider.enabled = false;
+		_playerRigidbody.useGravity = false;
+
+		while (_isCrossbowAttacking)
+		{
+			Vector3 directionToHook = (hookPoint - _player.transform.position).normalized;
+			_playerRigidbody.linearVelocity = directionToHook * _projectileSpeed;
+
+			float distanceToHook = Vector3.Distance(_player.transform.position, hookPoint);
+
+			if (distanceToHook < 0.2f)
+			{
+				_player.transform.position = hookPoint;
+				_playerRigidbody.linearVelocity = Vector3.zero;
+
+				yield return StartCoroutine(ReturnProjectile());
+			}
+
+			_lineRenderer1stPerson.SetPosition(0, _projectileStringStartPoint1stPerson.transform.position);
+			_lineRenderer1stPerson.SetPosition(1, _projectileStringEndPoint1stPerson.transform.position);
+
+			_lineRenderer3rdPerson.SetPosition(0, _projectileStringStartPoint3rdPerson.transform.position);
+			_lineRenderer3rdPerson.SetPosition(1, _projectileStringEndPoint3rdPerson.transform.position);
+
+			yield return null;
+		}
+	}
+
+	private IEnumerator HookObject(RaycastHit hit)
+	{
+		_projectile1stPerson.transform.SetParent(hit.collider.transform);
+		_projectile3rdPerson.transform.SetParent(hit.collider.transform);
+		ProccessHookedObject(hit);
+
+		while (_isCrossbowAttacking)
+		{
+			Vector3 finalPosition = _player.transform.position;
+			finalPosition.y += 0.5f;
+			finalPosition += _player.transform.forward * 1.5f;
+
+			Vector3 directionToTarget = (finalPosition - _hookedObject.transform.position).normalized;
+			_hookedObjectRigidbody.linearVelocity = directionToTarget * _projectileSpeed;
+
+			float distanceToTarget = Vector3.Distance(_hookedObject.transform.position, finalPosition);
+
+			if (distanceToTarget < 0.3f)
+			{
+				_hookedObjectRigidbody.linearVelocity = Vector3.zero;
+				_hookedObjectRigidbody.position = finalPosition;
+				StopHookingObject();
+
+				yield return StartCoroutine(ReturnProjectile());
+			}
+
+			_lineRenderer1stPerson.SetPosition(0, _projectileStringStartPoint1stPerson.transform.position);
+			_lineRenderer1stPerson.SetPosition(1, _projectileStringEndPoint1stPerson.transform.position);
+
+			_lineRenderer3rdPerson.SetPosition(0, _projectileStringStartPoint3rdPerson.transform.position);
+			_lineRenderer3rdPerson.SetPosition(1, _projectileStringEndPoint3rdPerson.transform.position);
+
+			yield return null;
+		}
+	}
+
+	private void ProccessHookedObject(RaycastHit hit)
+	{
+		_hookedObject = hit.collider.gameObject;
+		_hookedObjectRigidbody = _hookedObject.GetComponent<Rigidbody>();
+		_hookedObjectCollider = _hookedObject.GetComponent<Collider>();
+
+		if (_hookedObjectRigidbody == null)
+		{
+			_hookedObjectRigidbody = _hookedObject.AddComponent<Rigidbody>();
+			Debug.LogWarning($"Rigidbody добавлен к NPC: {_hookedObject.name}");
+
+		}
+		_hookedObjectNavMeshAgent = _hookedObject.GetComponent<NavMeshAgent>();
+		if (_hookedObjectNavMeshAgent != null)
+		{
+			_hookedObjectNavMeshAgent.enabled = false;
+		}
+		_NPCstateMachineController = _hookedObject?.GetComponent<NPCstateMachineController>();
+		if (_NPCstateMachineController != null)
+		{
+			_NPCstateMachineController.SetNPCState(NPCstateTypes.Hooked);
+		}
+
+		_hookedObjectCollider.enabled = false;
+
+		_hookedObjectRigidbody.useGravity = false;
+		_hookedObjectRigidbody.linearDamping = 0;
+	}
+
+	private void StopHookingObject()
+	{
+		if (_isCrossbowAttacking)
+		{
+			_hookedObjectRigidbody.linearVelocity = Vector3.zero;
+
+			_hookedObjectRigidbody.useGravity = true;
+			_hookedObjectCollider.enabled = true;
+			_hookedObjectCollider = null;
+			_hookedObjectNavMeshAgent = null;
+			_NPCabstract = null;
+			_hookedObject = null;
+			_hookedObjectRigidbody = null;
+			Debug.Log("Притяжение NPC завершено.");
+		}
+	}
+
+	private void OnDestroy()
+	{
+		// Проверка на null защищает от ошибки, если эти объекты были уничтожены
+		//Debug.Log(_gameSceneManager);
+		if (_hookedObject != null)
+		{
+			StopHookingObject();
+		}
+
+		if (_gameSceneManager != null)
+		{
+			_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene -= FullStopPlunging;
+			_gameSceneManager.OnBeginLoadingGameplayScene -= FullStopPlunging;
+		}
+
+		if (_playerBehaviour != null)
+		{
+			_playerBehaviour.OnPlayerDisarmed -= StopCrossbowAttack;
+		}
+
+		if (_playerCameraStateMachineController != null)
+		{
+			_playerCameraStateMachineController.OnFirstPersonCameraState -= ChangeCrossbow1stPerson;
+			_playerCameraStateMachineController.OnThirdPersonCameraState -= ChangeCrossbow3rdPerson;
+		}
+
+		OnCrossbowDestroyed();
+	}
+
+	private IEnumerator ReturnProjectile()
+	{
+		// Отсоединяем перед движением
+		_projectile1stPerson.transform.SetParent(null);
+		_projectile3rdPerson.transform.SetParent(null);
+
+		SceneManager.MoveGameObjectToScene(_projectile1stPerson, SceneManager.GetSceneByBuildIndex(0));
+		SceneManager.MoveGameObjectToScene(_projectile3rdPerson, SceneManager.GetSceneByBuildIndex(0));
+
+		while (Vector3.Distance(_projectile1stPerson.transform.position, _projectile1stPersonRestPosition) > 0.001f)
+		{
+			Vector3 targetPos1st = Vector3.MoveTowards(_projectile1stPerson.transform.position, _projectile1stPersonRestPosition, _projectileSpeed * Time.deltaTime);
+			_projectile1stPerson.transform.position = targetPos1st;
+
+			Vector3 targetPos3rd = Vector3.MoveTowards(_projectile3rdPerson.transform.position, _projectile3rdPersonRestPosition, _projectileSpeed * Time.deltaTime);
+			_projectile3rdPerson.transform.position = targetPos3rd;
+		}
+	
+		StopCrossbowAttack();
+
+		yield return null;
+	}
+
+	private void OnCrossbowDestroyed()
+	{
+		if (_isCrossbowAttacking)
+		{
+			Destroy(_projectile1stPerson);
+			Destroy(_projectile3rdPerson);
+			_playerRigidbody.useGravity = true;
+			_isCrossbowAttacking = false;
+			Debug.Log("Притяжение завершено.");
+			_gameController.PlayerStoppedPlunging();
+			_playerCollider.enabled = true;
+		}
+	}
+
+	private void StopCrossbowAttack()
+	{
+		if (_isCrossbowAttacking)
+		{
+			isPlayerWeaponAttacking = false;
+			Debug.Log("STOP ATTACKING");
+			// Возвращаем физические объекты к их родителям
+			_projectile1stPerson.transform.SetParent(_projectileParent1stPerson);
+			_projectile1stPerson.layer = LayerMask.NameToLayer("FirstPerson");
+			_projectile1stPerson.transform.localPosition = _projectile1stPersonRestPosition;
+			_projectile1stPerson.transform.localRotation = _projectile1stPersonRestDirection;
+
+			_projectile3rdPerson.transform.SetParent(_projectileParent3rdPerson);
+			_projectile3rdPerson.transform.localPosition = _projectile3rdPersonRestPosition;
+			_projectile3rdPerson.transform.localRotation = _projectile3rdPersonRestDirection;
+
+			_lineRenderer1stPerson.SetPosition(0, _projectileStringStartPoint1stPerson.transform.position);
+			_lineRenderer1stPerson.SetPosition(1, _projectileStringEndPoint1stPerson.transform.position);
+
+			_lineRenderer3rdPerson.SetPosition(0, _projectileStringStartPoint3rdPerson.transform.position);
+			_lineRenderer3rdPerson.SetPosition(1, _projectileStringEndPoint3rdPerson.transform.position);
+
+			_playerRigidbody.useGravity = true;
+			_isCrossbowAttacking = false;
+			Debug.Log("Притяжение завершено.");
+			_gameController.PlayerStoppedPlunging();
+			_playerCollider.enabled = true;
+
+			// Отключаем ОБЕ линии рендера
+			_lineRenderer1stPerson.enabled = false;
+			_lineRenderer3rdPerson.enabled = false;
+		
+			_playerWeaponFirstPersonRenderer.UpdateWeaponVisibility(this);
+
+			if (_hookedObject != null)
+			{
+				StopHookingObject();
+			}
+
+			_Crossbow1stPersonSkinnedMesh.SetBlendShapeWeight(0, 0);
+			_Crossbow3rdPersonSkinnedMesh.SetBlendShapeWeight(0, 0);
+
+			_weaponAudioSource.Stop();
+
+			if (_NPCstateMachineController != null)
+			{
+				if (_NPCstateMachineController.PreviousNPCState == NPCstateTypes.Dying || _NPCstateMachineController.PreviousNPCState == NPCstateTypes.Dead)
+				{
+					_NPCstateMachineController.SetNPCState(NPCstateTypes.Dead);
+				}
+				else if (_NPCstateMachineController.PreviousNPCState == NPCstateTypes.Dizzy || _NPCstateMachineController.PreviousNPCState == NPCstateTypes.Unconscious)
+				{
+					_NPCstateMachineController.SetNPCState(NPCstateTypes.Unconscious);
+				}
+				else
+				{
+					_NPCstateMachineController.SetNPCState(NPCstateTypes.Alarmed);
+				}
+
+				_NPCstateMachineController = null;
+			}
+		}
+	}
+
+	private void FullStopPlunging()
+	{
+		_playerRigidbody.linearVelocity = Vector3.zero;
+
+		StopCrossbowAttack();
+	}
+
+	
+
+	public override IEnumerator AutoAttackWeaponPlayerCourutine()
+	{
+		//throw new System.NotImplementedException();
+		yield return null;
+	}
+
+	private IEnumerator StraightenCrossbowLimb()
+	{
+		float elapsed = 0f;
+		const float duration = 0.05f;
+
+		while (elapsed < duration)
+		{
+			float t = Mathf.Clamp01(elapsed / duration);
+
+			_Crossbow1stPersonSkinnedMesh.SetBlendShapeWeight(0, Mathf.Lerp(0f, 100f, t));
+			_Crossbow3rdPersonSkinnedMesh.SetBlendShapeWeight(0, Mathf.Lerp(0f, 100f, t));
+
+			elapsed += Time.deltaTime;
+			yield return null;
+		}
+
+		// Фиксация конечного значения на случай погрешности плавающего числа
+		_Crossbow1stPersonSkinnedMesh.SetBlendShapeWeight(0, 100f);
+		_Crossbow3rdPersonSkinnedMesh.SetBlendShapeWeight(0, 100f);
+	}
+
+	public override IEnumerator InspectWeaponAnimation()
+	{
+		throw new System.NotImplementedException();
+	}
+}

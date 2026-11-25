@@ -1,0 +1,51 @@
+﻿using UnityEngine;
+
+public class InteractionObjectLootMana : InteractionObjectLootAbstract
+{
+	private bool _isInteractionHintMessageFailActive;
+	public override bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
+	private PlayerManaController _playerResourcesManaManager;
+
+	protected override bool _shouldShowGainedItem => true;
+
+
+	[SerializeField] Sprite _lootObjectIcon;
+	public override Sprite LootObjectIcon => _lootObjectIcon;
+	public override void Interact()
+	{
+		if (_playerResourcesManaManager.CurrentManaReplenishItemsNumber < 9)
+		{
+			base.Interact();
+			Debug.Log($"You picked up {InteractionObjectNameUI}");
+
+			_playerResourcesManaManager.AddManaReplenishItem();
+			_isInteractionHintMessageFailActive = false;
+		}
+		else
+		{
+			_isInteractionHintMessageFailActive = true;
+		}
+	}
+
+	public override void InteractAfterDialogueOrCutscene()
+	{
+		if (_playerResourcesManaManager.CurrentManaReplenishItemsNumber < 9)
+		{
+			base.InteractAfterDialogueOrCutscene();
+			Debug.Log($"You picked up {InteractionObjectNameUI}");
+
+			_playerResourcesManaManager.AddManaReplenishItem();
+			_isInteractionHintMessageFailActive = false;
+		}
+		else
+		{
+			//_isInteractionHintMessageFailActive = true;
+		}
+	}
+
+	protected override void InitializeLootObject()
+	{
+	_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
+		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+	}
+}

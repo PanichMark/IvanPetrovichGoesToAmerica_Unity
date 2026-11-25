@@ -1,0 +1,81 @@
+﻿using UnityEngine;
+
+public class MainMenuInitialize : MonoBehaviour
+{
+    [SerializeField] private MainMenuChooseMissionController _mainMenuChooseMissionController;
+    [SerializeField] private MainMenuReadNewsController _readNewsController;
+    [SerializeField] private MainMenuCanvasController _canvasController;
+    [SerializeField] private MainMenuDiegeticButtonController[] _diegeticButtonController;
+	[SerializeField] private CutsceneController _cutsceneNewGame;
+	[SerializeField] private GameObject _canvasMainMenu;
+	[SerializeField] private GameObject _canvasNewGameCutscene;
+	public bool IsCutsceneNewGamePlaying { get; private set; }
+	private PlayerMovementController _playerMovementController;
+	private PlayerCameraController _playerCameraController;
+	private PlayerHealthController _playerResourcesHealthManager;
+	private PlayerManaController _playerResourcesManaManager;
+	private PlayerMoneyController _playerResourcesMoneyManager;
+	private PlayerWeaponController _weaponController;
+	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
+	private LocalizationManager _localizationManager;
+	private MissionsManager _missionsManager;
+	private Bootstrap _bootstrap;
+
+    void Start()
+    {
+		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		_bootstrap = ServiceLocator.Resolve<Bootstrap>();
+		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
+		_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
+		_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>();
+		_playerResourcesManaManager = ServiceLocator.Resolve<PlayerManaController>();
+		_playerResourcesMoneyManager = ServiceLocator.Resolve<PlayerMoneyController>();
+		_weaponController = ServiceLocator.Resolve<PlayerWeaponController>();
+		_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>();
+
+		_mainMenuChooseMissionController.Initialize(
+			_bootstrap,
+			_playerMovementController,
+			_playerCameraController,
+			_playerResourcesHealthManager,
+			_playerResourcesManaManager,
+			_playerResourcesMoneyManager,
+			_weaponController,
+			_playerResourcesAmmoManager,
+			_missionsManager);
+
+		_readNewsController.Initialize(
+			_bootstrap,
+			_localizationManager);
+
+		for (int i = 0; i < _diegeticButtonController.Length; i++)
+		{
+			_diegeticButtonController[i].Initialize(
+				_bootstrap,
+				this,
+				_mainMenuChooseMissionController,
+				_readNewsController,
+				_cutsceneNewGame,
+				_playerMovementController,
+				_playerCameraController,
+				_playerResourcesHealthManager,
+				_playerResourcesManaManager,
+				_playerResourcesMoneyManager,
+				_weaponController,
+				_playerResourcesAmmoManager);
+		}
+
+		_canvasController.Initialize(
+			this,
+			_mainMenuChooseMissionController,
+			_readNewsController,
+			_canvasMainMenu,
+			_canvasNewGameCutscene);
+	}
+
+	public void PlayNewGameCutscene()
+	{
+		IsCutsceneNewGamePlaying = true;
+	}
+}

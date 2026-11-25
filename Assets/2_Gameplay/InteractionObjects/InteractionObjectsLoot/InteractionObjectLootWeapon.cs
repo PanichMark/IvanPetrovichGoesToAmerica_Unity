@@ -1,0 +1,51 @@
+﻿using UnityEngine;
+
+public class InteractionObjectLootWeapon : InteractionObjectLootAbstract
+{
+	[SerializeField] Sprite _lootObjectIcon;
+	public override Sprite LootObjectIcon => _lootObjectIcon;
+
+	[SerializeField] private GameObject _weapon;
+	[SerializeField] private InteractionObjectNote _noteObject;
+
+	private PlayerWeaponController _playerWeaponController;
+	[SerializeField] private CutsceneController _cutsceneController;
+
+	protected override bool _shouldShowGainedItem => false;
+
+	public override void Interact()
+	{
+		base.Interact();
+		Debug.Log($"You picked up {InteractionObjectNameUI}");
+		_playerWeaponController.UnlockWeapon(_weapon);
+	}
+
+	public override void InteractAfterDialogueOrCutscene()
+	{
+		base.InteractAfterDialogueOrCutscene();
+		Debug.Log($"You picked up {InteractionObjectNameUI}");
+		_playerWeaponController.UnlockWeapon(_weapon);
+	}
+
+	protected override void OnAfterLooted()
+	{
+		if (_noteObject != null)
+		{
+			_noteObject.Interact();
+		}
+
+		if (_cutsceneController != null)
+		{
+			_cutsceneController.TriggerCutscene(_weapon);
+		}
+	}
+
+	protected override void InitializeLootObject()
+	{
+		_playerWeaponController = ServiceLocator.Resolve<PlayerWeaponController>();
+
+		var weaponComponent = _weapon.GetComponent<WeaponAbstract>();
+		LootObjectIcon = weaponComponent.WeaponIconBig;
+
+	}
+}
