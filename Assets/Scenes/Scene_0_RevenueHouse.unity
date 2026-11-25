@@ -52006,12 +52006,13 @@ MonoBehaviour:
   _doorOpenAngle: 90
   _doorOpeningSpeed: 200
   _interactionObjectKeyData: {fileID: 0}
-  _mechanicalLockController: {fileID: 0}
-  _electronicLockController: {fileID: 0}
-  _electronicElectricalPanel: {fileID: 0}
+  _lockMechanicalController: {fileID: 0}
+  _lockElectronicController: {fileID: 0}
+  _electricalPanel: {fileID: 0}
   _changeScene: {fileID: 11400000, guid: 41eb1fcbc83ff69488ce3ced392721b9, type: 2}
   _isLockedForever: 0
   _doorSibling: {fileID: 0}
+  _canNPCOpenDoor: 1
 --- !u!1 &179635944
 GameObject:
   m_ObjectHideFlags: 0

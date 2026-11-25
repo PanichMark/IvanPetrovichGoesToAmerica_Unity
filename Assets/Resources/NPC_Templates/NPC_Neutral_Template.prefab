@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 0}
   _meshTorso: {fileID: 0}
-  _baseMeshTorso: 1
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 0}
   - {fileID: 0}
@@ -899,10 +899,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f68370d733ada4587d0bf029dc595d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCname: 
-  _NPCconfigBodyType: {fileID: 0}
-  _pickableBodyData: {fileID: 0}
-  _NPClootObject: {fileID: 0}
+  _NPCName: 
+  _NPCPickableBodyType: {fileID: 0}
+  _NPCLootObject: {fileID: 0}
+  _NPCPhrasesDataNeutral: {fileID: 0}
 --- !u!114 &2224048641700310310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -966,7 +966,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e029d798f5f114ba9c2879ec2f0961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _NPCphrasesData: {fileID: 0}
 --- !u!114 &1372227057307795595
 MonoBehaviour:
   m_ObjectHideFlags: 0

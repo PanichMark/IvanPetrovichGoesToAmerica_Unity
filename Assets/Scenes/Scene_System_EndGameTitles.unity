@@ -219,9 +219,9 @@ MonoBehaviour:
   _cutscenePlayerProxy: {fileID: 2083126494}
   _cutscenePlayerCameraProxy: {fileID: 765776532}
   _cutsceneDialogueData: {fileID: 0}
+  _animatedNPCs: []
   _ShouldDisarmPlayer: 0
   _dialogueActorsMapping: []
-  _shouldMovePlayer: 0
   _newPlayerTransform: {fileID: 0}
   _shouldLoadScene: 0
   _sceneToLoadAfterCutscene: 0
@@ -667,6 +667,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _noteObject: {fileID: 0}
   _cutscene: {fileID: 272818562}
+  _triggerOnSceneLoad: 0
 --- !u!65 &1510609687
 BoxCollider:
   m_ObjectHideFlags: 0

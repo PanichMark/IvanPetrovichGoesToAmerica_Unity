@@ -130,15 +130,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionObjectNameSystem: InteractionObject_Pickable_NonThrowable_WeaponRanged_MaximGun
   _interactionObjectPickableType: {fileID: 11400000, guid: 12b0c0209c3318045b7f195fdf474d8f, type: 2}
-  _health: 0
-  _canBeBroken: 0
-  _breakingThreshold: 0
   _isMovementRestricted: 1
   _movementSpeedPenaltyMultiplier: 0.35
   _weaponRightMouseButtonAttackMessage: HUD_Interaction_HintMessage_PickableWeapon_MaximGun_AttackRight
   _weaponLeftMouseButtonAttackMessage: HUD_Interaction_HintMessage_PickableWeapon_MaximGun_AttackLeft
-  _damage: 0
-  _attackSpeedRate: 0
 --- !u!65 &5082930833271842599
 BoxCollider:
   m_ObjectHideFlags: 0
