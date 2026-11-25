@@ -43,7 +43,12 @@ public abstract class NPCabstract : GameplayObjectJsonSaveLoad, IInteractable
 
 	public virtual void Interact()
 	{
-		//Debug.Log("bruh");
+
+	}
+
+	public void CallOnInteract()
+	{
+		OnInteract?.Invoke();
 	}
 
 	public void InteractAfterDialogueOrCutscene()

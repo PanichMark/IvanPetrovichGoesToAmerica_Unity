@@ -22,6 +22,7 @@ public class NPCneutral : NPClivingBeing, IMissionStepActionNPCdialogueEnable
 		if (_NPCdialogueController != null)
 		{
 			_NPCdialogueController.Initialize(
+				this,
 				_NPCmovementController);
 		}
 
@@ -56,12 +57,14 @@ public class NPCneutral : NPClivingBeing, IMissionStepActionNPCdialogueEnable
 	{
 		if (_NPCstateMachineController.CurrentNPCState == NPCstateTypes.Dead || _NPCstateMachineController.CurrentNPCState == NPCstateTypes.Unconscious)
 		{
+			CallOnInteract();
 			_pickable.Interact();
 
 			if (!_wasNPCrobbed)
 			{
 				if (_NPCLootObject != null)
 				{
+					CallOnInteract();
 					_NPClootObjectComponent.Interact();
 					NPCwasRobbed();
 				}
@@ -82,12 +85,14 @@ public class NPCneutral : NPClivingBeing, IMissionStepActionNPCdialogueEnable
 			}
 			else
 			{
+				CallOnInteract();
 				StopAllCoroutines();
 				_NPCphrasesController.TemporaryShowPhrases();
 			}
 		}
 		else
 		{
+			CallOnInteract();
 			_NPClootObjectComponent.Interact();
 			NPCwasRobbed();
 		}

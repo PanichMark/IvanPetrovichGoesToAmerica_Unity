@@ -30,12 +30,14 @@ public class NPCaggressive : NPClivingBeing
 	{
 		if (_NPCstateMachineController.CurrentNPCState == NPCstateTypes.Dead || _NPCstateMachineController.CurrentNPCState == NPCstateTypes.Unconscious)
 		{
+			CallOnInteract();
 			_pickable.Interact();
 
 			if (!_wasNPCrobbed)
 			{
 				if (_NPCLootObject != null)
 				{
+					CallOnInteract();
 					_NPClootObjectComponent.Interact();
 					NPCwasRobbed();
 				}
@@ -46,6 +48,7 @@ public class NPCaggressive : NPClivingBeing
 
 		if (_canNPCbeRobbed)
 		{
+			CallOnInteract();
 			_NPClootObjectComponent.Interact();
 			NPCwasRobbed();
 		}

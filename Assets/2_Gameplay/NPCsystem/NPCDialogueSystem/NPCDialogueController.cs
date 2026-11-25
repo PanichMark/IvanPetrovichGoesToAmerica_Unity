@@ -51,7 +51,6 @@ public class NPCdialogueController : MonoBehaviour
 	private bool _performActionOnNoFinal;
 	private GameObject _textDialogueYes;
 	private GameObject _textDialogueNo;
-	private NPCabstract _NPCabstract;
 	private TextMeshProUGUI _textComponentDialogueYes;
 	private TextMeshProUGUI _textComponentDialogueNo;
 	// Флаги для новой логики смены состояния NPC
@@ -78,10 +77,13 @@ public class NPCdialogueController : MonoBehaviour
 	private GameObject _canvasDialogue;
 	private ViewModelMenuDialogue _viewModelMenuDialogue;
 	private Bootstrap _bootstrap;
+	private NPCabstract _NPCabstract;
 
 	public void Initialize(
+		NPCabstract NPCabstract,
 		NPCmovementController NPCMovementController)
 	{
+		_NPCabstract = NPCabstract;
 		_NPCMovementController = NPCMovementController;
 		_bootstrap = ServiceLocator.Resolve < Bootstrap>();
 		//_canvasesList = ServiceLocator.Resolve<GameCanvasesList>();
@@ -89,7 +91,6 @@ public class NPCdialogueController : MonoBehaviour
 		_viewModelMenuDialogue = ServiceLocator.Resolve<ViewModelMenuDialogue>();
 		_uLipSyncBlendShape = GetComponent<uLipSyncBlendShape>();
 		_audioSource = GetComponent<AudioSource>();
-		_NPCabstract = GetComponent<NPCabstract>();
 	_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
 	_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 	_playerCameraController = ServiceLocator.Resolve<PlayerCameraController>();
@@ -222,6 +223,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 			if (_wasDialogueCanceledOnLoad == false)
 			{
+
 				if (OnDialogueAnswerSelected != null && _dialogueAnswersHistory.Count > 0)
 				{
 					foreach (var kvp in _dialogueAnswersHistory)
@@ -290,6 +292,8 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 			_playerCameraController.SetPostDialogueCameraTransform();
 			OnStopLookingAtObject?.Invoke(_playerEyesLookAt);
 			_uLipSyncBlendShape.updateMethod = UpdateMethod.LipSyncUpdateEvent;
+
+			_NPCabstract.CallOnInteract();
 		}
 	}
 
@@ -411,9 +415,12 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 
 		_currentDialogueStepIndex++;
 
-		if (_currentDialogueStepIndex == _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1)
+		if (_dialogueBranchStructsList.Count > 0)
 		{
-			_currentDialogueStepIndex = _localizedDialogue[_localizationManager.CurrentLanguage].Count;
+			if (_currentDialogueStepIndex == _dialogueBranchStructsList[_dialogueBranchStructIndex].GoToNoOptionLine - 1)
+			{
+				_currentDialogueStepIndex = _localizedDialogue[_localizationManager.CurrentLanguage].Count;
+			}
 		}
 
 		if (_dialogueGesturesDataList.Count > 0)

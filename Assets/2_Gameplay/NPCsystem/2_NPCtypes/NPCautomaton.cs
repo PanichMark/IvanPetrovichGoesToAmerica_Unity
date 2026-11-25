@@ -13,6 +13,7 @@ public class NPCautomaton : NPCabstract
 
 	public override void Interact()
 	{
+		CallOnInteract();
 		StopAllCoroutines();
 		_NPCphrasesController.TemporaryShowPhrases();
 	}
