@@ -3996,7 +3996,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
   _NPCPhrasesDataAggressive: {fileID: 0}
@@ -12954,7 +12953,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
   _NPCPhrasesDataAggressive: {fileID: 0}
@@ -32183,6 +32181,23 @@ Transform:
   - {fileID: 399425148}
   m_Father: {fileID: 1572354751}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &807112520
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 1131860431500390742, guid: 92d01b6e31d0bb749a641501b02189e1, type: 3}
+  m_PrefabInstance: {fileID: 1254317103987752171}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1254317103987752173}
+  - component: {fileID: 1254317103987752174}
+  m_Layer: 0
+  m_Name: InteractionObject_Lock_ElectronicBase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &807529006
 GameObject:
   m_ObjectHideFlags: 0
@@ -33590,7 +33605,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
   _NPCPhrasesDataAggressive: {fileID: 0}
@@ -36185,7 +36199,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
   _NPCPhrasesDataNeutral: {fileID: 0}
@@ -38315,12 +38328,16 @@ MonoBehaviour:
     DoesIvanAnswerOnNo: 1
     ActionOnYesAnswer: {fileID: 0}
     ActionOnNoAnswer: {fileID: 0}
+    NPCStateChangesOnYes: []
+    NPCStateChangesOnNo: []
   - DialogueBranchLine: 10
     GoToNoOptionLine: 17
     DoesIvanAnswerOnYes: 1
     DoesIvanAnswerOnNo: 0
     ActionOnYesAnswer: {fileID: 0}
     ActionOnNoAnswer: {fileID: 0}
+    NPCStateChangesOnYes: []
+    NPCStateChangesOnNo: []
   _dialogueDefaultAnimationStateName: {fileID: 3091315475550263998, guid: 3df9367abff42f945a89f114be95b4c6, type: 3}
   _dialogueGesturesDataList: []
   _dialogueFacialExpressionsDataList: []
@@ -47206,7 +47223,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
   _NPCPhrasesDataPeaceful: {fileID: 0}
@@ -77155,7 +77171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
   _NPCPhrasesDataPeaceful: {fileID: 0}
@@ -79358,6 +79373,23 @@ Transform:
   - {fileID: 972384572}
   m_Father: {fileID: 1790394181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1942900745
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 3283383320651132257, guid: 71b8143ac470b5b42bc859bfc6c38a6d, type: 3}
+  m_PrefabInstance: {fileID: 5949750581232722387}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5949750581232722389}
+  - component: {fileID: 5949750581232722390}
+  m_Layer: 0
+  m_Name: InteractionObject_Lock_MechanicalBase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1943277993
 GameObject:
   m_ObjectHideFlags: 0
@@ -93826,7 +93858,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCName: 
-  _NPCBodyType: {fileID: 0}
   _NPCPickableBodyType: {fileID: 0}
   _NPCLootObject: {fileID: 0}
   _NPCPhrasesDataPeaceful: {fileID: 0}
@@ -96961,11 +96992,34 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92d01b6e31d0bb749a641501b02189e1, type: 3}
---- !u!4 &1254317103987752173 stripped
+--- !u!4 &1254317103987752173
 Transform:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 1911844985984032508, guid: 92d01b6e31d0bb749a641501b02189e1, type: 3}
   m_PrefabInstance: {fileID: 1254317103987752171}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807112520}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1787584640}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1254317103987752174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -5896222682434273169, guid: 92d01b6e31d0bb749a641501b02189e1, type: 3}
+  m_PrefabInstance: {fileID: 1254317103987752171}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807112520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d414fefa621a12e4892dc1039007262b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionObjectNameSystem: Lock_Electronic
 --- !u!1 &1255701829424397144
 GameObject:
   m_ObjectHideFlags: 0
@@ -133540,11 +133594,36 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71b8143ac470b5b42bc859bfc6c38a6d, type: 3}
---- !u!4 &5949750581232722389 stripped
+--- !u!4 &5949750581232722389
 Transform:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 3783654880670892843, guid: 71b8143ac470b5b42bc859bfc6c38a6d, type: 3}
   m_PrefabInstance: {fileID: 5949750581232722387}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942900745}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1787584640}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5949750581232722390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -3305222146820722199, guid: 71b8143ac470b5b42bc859bfc6c38a6d, type: 3}
+  m_PrefabInstance: {fileID: 5949750581232722387}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942900745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f499c8d011549449a0f035cd7a206b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionObjectNameSystem: Lock_Mechanical_Easy
+  _gearPrefab: {fileID: 8156295745365785935, guid: 755a54250ecfa8c47a4531ab4b5e5dc7, type: 3}
+  _lockType: 0
 --- !u!1 &5950778339348054555
 GameObject:
   m_ObjectHideFlags: 0

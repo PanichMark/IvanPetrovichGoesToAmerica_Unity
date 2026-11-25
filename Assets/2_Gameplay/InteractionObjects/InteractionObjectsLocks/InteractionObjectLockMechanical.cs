@@ -18,7 +18,6 @@ public class InteractionObjectLockMechanical : InteractionObjectLockAbstract
 	private Button _buttonMoveLockMechanismDown;
 	private Button _buttonMoveLockMechanismRight;
 	private Button _buttonMoveLockMechanismLeft;
-	private JsonSaveLoadController _saveLoadController;
 	private LocalizationManager _localizationManager;
 	//public event IInteractable.InteractableObjectHandler OnInteract;
 	private Button _buttonExitLockpickMechanicalMenu;
@@ -82,7 +81,6 @@ public class InteractionObjectLockMechanical : InteractionObjectLockAbstract
 _menuManager = ServiceLocator.Resolve<MenuManager>();
 _buttonExitLockpickMechanicalMenu = _viewModelMenuLockpickMechanical.ButtonCloseMenuLockpickMechanical.GetComponent<Button>();
 		_textButtonExitLockpickMechanicalMenu = _viewModelMenuLockpickMechanical.TextButtonCloseMenuLockpickMechanical.GetComponent<TextMeshProUGUI>();
-		_saveLoadController = ServiceLocator.Resolve<JsonSaveLoadController>();
 _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 _gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += OnClosePuzzle;
 _gameSceneManager.OnBeginLoadingGameplayScene += OnClosePuzzle;
@@ -95,7 +93,7 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 
 		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
 		_interactionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Lockpick", gameObject.name);
-		_cubeFollow = Resources.Load<GameObject>("InteractionObjects/Locks/Lock_Mechanical_PuzzleCube");
+		_cubeFollow = Resources.Load<GameObject>("Locks/Mechanical/Lock_Mechanical_MainPart");
 
 		_buttonMoveLockMechanismUp.onClick.AddListener(RotateGearUp);
 		_buttonMoveLockMechanismDown.onClick.AddListener(RotateGearDown);
@@ -147,7 +145,7 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 		_currentGearInstance.transform.LookAt(Camera.main.transform);
 		_currentGearInstance.transform.Translate(-0.05f, 0f, 0f, Space.Self);
 
-		Transform endTransform = _currentGearInstance.transform.Find("END");
+		Transform endTransform = _currentGearInstance.transform.Find("Lock_Mechanical_End");
 		if (endTransform != null)
 		{
 			_endCollider = endTransform.GetComponent<MeshCollider>();
@@ -168,11 +166,11 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 
 		Transform root = _currentCubeFollow.transform;
 		ShowPuzzleCanvas();
-		_centreZoneCollider = root.Find("CentreZone")?.GetComponent<MeshCollider>();
-		_upZoneCollider = root.Find("UpZone")?.GetComponent<MeshCollider>();
-		_downZoneCollider = root.Find("DownZone")?.GetComponent<MeshCollider>();
-		_leftZoneCollider = root.Find("LeftZone")?.GetComponent<MeshCollider>();
-		_rightZoneCollider = root.Find("RightZone")?.GetComponent<MeshCollider>();
+		_centreZoneCollider = root.Find("Lock_Mechanical_MainPart_ColliderCentre")?.GetComponent<MeshCollider>();
+		_upZoneCollider = root.Find("Lock_Mechanical_MainPart_ColliderUp")?.GetComponent<MeshCollider>();
+		_downZoneCollider = root.Find("Lock_Mechanical_MainPart_ColliderDown")?.GetComponent<MeshCollider>();
+		_leftZoneCollider = root.Find("Lock_Mechanical_MainPart_ColliderLeft")?.GetComponent<MeshCollider>();
+		_rightZoneCollider = root.Find("Lock_Mechanical_MainPart_ColliderRight")?.GetComponent<MeshCollider>();
 
 		Transform wallsGroup = _currentGearInstance.transform.Find("Walls");
 		if (wallsGroup != null)

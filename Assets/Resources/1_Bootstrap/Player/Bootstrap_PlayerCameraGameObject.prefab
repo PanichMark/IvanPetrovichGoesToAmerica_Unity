@@ -4161,7 +4161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseArmatureRootBone: {fileID: 1108788975380253757}
   _meshTorso: {fileID: 0}
-  _baseMeshTorso: 0
+  _bakeMeshTorso: 0
   _meshesLimbs:
   - {fileID: 6780012779541865954}
   - {fileID: 6960034031799164454}
@@ -6265,7 +6265,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 1
   m_Cameras: []
-  m_RendererIndex: 0
+  m_RendererIndex: 2
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
