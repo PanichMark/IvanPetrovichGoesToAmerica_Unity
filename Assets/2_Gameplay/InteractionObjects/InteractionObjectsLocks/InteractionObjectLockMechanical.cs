@@ -9,9 +9,10 @@ public class InteractionObjectLockMechanical : InteractionObjectLockAbstract
 
 
 	[SerializeField] private GameObject _gearPrefab;
-	[SerializeField] private int _segmentsCount;
-	[SerializeField] private float _rotationSpeed;
-	[SerializeField] private float _moveSpeed;
+	private int _segmentsCount;
+	private float _rotationSpeed;
+	private float _moveSpeed;
+	[SerializeField] private InteractionObjectLockMechanicalTypes _lockType;
 	private GameObject _cubeFollow;
 	private Button _buttonMoveLockMechanismUp;
 	private Button _buttonMoveLockMechanismDown;
@@ -50,11 +51,29 @@ public class InteractionObjectLockMechanical : InteractionObjectLockAbstract
 	private GameplayCanvases _gameCanvasesList;
 	private GameObject _canvasLockMechanical;
 
-	private string _interactionHintMessageMain;
 
 	private ViewModelMenuLockpickMechanical _viewModelMenuLockpickMechanical;
 	private void Awake()
 	{
+		if (_lockType == InteractionObjectLockMechanicalTypes.Easy)
+		{
+			_segmentsCount = 16;
+			_rotationSpeed = 15;
+			_moveSpeed = 15;
+		}
+		if (_lockType == InteractionObjectLockMechanicalTypes.Medium)
+		{
+			_segmentsCount = 0;
+			_rotationSpeed = 0;
+			_moveSpeed = 0;
+		}
+		if (_lockType == InteractionObjectLockMechanicalTypes.Medium)
+		{
+			_segmentsCount = 0;
+			_rotationSpeed = 0;
+			_moveSpeed = 0;
+		}
+
 		_viewModelMenuLockpickMechanical = ServiceLocator.Resolve<ViewModelMenuLockpickMechanical>();
 	_gameCanvasesList = ServiceLocator.Resolve<GameplayCanvases>();
 		_canvasLockMechanical = _gameCanvasesList.CanvasLockMechanical;

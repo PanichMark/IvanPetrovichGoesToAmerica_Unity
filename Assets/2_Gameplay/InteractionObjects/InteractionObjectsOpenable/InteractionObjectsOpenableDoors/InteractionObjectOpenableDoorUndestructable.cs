@@ -13,9 +13,9 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	private KeyItemsManager _keysManager;
 	[SerializeField] protected float _doorOpeningSpeed = 200f;
 	[SerializeField] protected InteractionObjectKeyItemData _interactionObjectKeyData;
-	[SerializeField] protected InteractionObjectLockMechanical _mechanicalLockController;
-	[SerializeField] protected InteractionObjectLockElectronic _electronicLockController;
-	[SerializeField] protected InteractionObjectElectricalPanel _electronicElectricalPanel;
+	[SerializeField] protected InteractionObjectLockMechanical _lockMechanicalController;
+	[SerializeField] protected InteractionObjectLockElectronic _lockElectronicController;
+	[SerializeField] protected InteractionObjectElectricalPanel _electricalPanel;
 	[SerializeField] private InteractionObjectChangeSceneData _changeScene;
 	[SerializeField] protected bool _isLockedForever;
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
@@ -80,27 +80,27 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_LockedByKey", gameObject.name)}!";
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			}
-			if (_mechanicalLockController != null && !IsOpenableUnlocked)
+			if (_lockMechanicalController != null && !IsOpenableUnlocked)
 			{
-				_interactionHintMessageMain = _mechanicalLockController.InteractionHintMessageMain;
-				_mechanicalLockController.OnUnlockLock += UnlockDoor;
+				_interactionHintMessageMain = _lockMechanicalController.InteractionHintMessageMain;
+				_lockMechanicalController.OnUnlockLock += UnlockDoor;
 			}
-			if (_electronicLockController != null && !IsOpenableUnlocked)
+			if (_lockElectronicController != null && !IsOpenableUnlocked)
 			{
-				_interactionHintMessageMain = _electronicLockController.InteractionHintMessageMain;
-				_electronicLockController.OnUnlockLock += UnlockDoor;
+				_interactionHintMessageMain = _lockElectronicController.InteractionHintMessageMain;
+				_lockElectronicController.OnUnlockLock += UnlockDoor;
 			}
-			if (_electronicElectricalPanel != null && !IsOpenableUnlocked)
+			if (_electricalPanel != null && !IsOpenableUnlocked)
 			{
 				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_LockedByElectricalPanel", gameObject.name)}!";
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
-				_electronicElectricalPanel.OnWentOutOfService += UnlockDoor;
+				_electricalPanel.OnWentOutOfService += UnlockDoor;
 			}
-			if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null && _electronicElectricalPanel == null)
+			if ((_interactionObjectKeyData == null && _lockMechanicalController == null && _lockElectronicController == null && _electricalPanel == null)
 				|| (_interactionObjectKeyData != null && (_keysManager.CollectedKeyItems.Contains(_interactionObjectKeyData.KeyItemID.ToString()) || IsOpenableUnlocked))
-				|| (_mechanicalLockController != null && IsOpenableUnlocked)
-				|| (_electronicLockController != null && IsOpenableUnlocked)
-				|| _electronicElectricalPanel != null && IsOpenableUnlocked)
+				|| (_lockMechanicalController != null && IsOpenableUnlocked)
+				|| (_lockElectronicController != null && IsOpenableUnlocked)
+				|| _electricalPanel != null && IsOpenableUnlocked)
 			{
 				SetUnlockedDoorHintMessageMain();
 				IsOpenableUnlocked = true;
@@ -145,25 +145,25 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 			{
 				_isAdditionalInteractionHintActive = true;
 			}
-			if (_mechanicalLockController != null && !IsOpenableUnlocked)
+			if (_lockMechanicalController != null && !IsOpenableUnlocked)
 			{
 				Debug.Log("Attempting to unlock the lock...");
-				_mechanicalLockController.Interact();
+				_lockMechanicalController.Interact();
 			}
-			if (_electronicLockController != null && !IsOpenableUnlocked)
+			if (_lockElectronicController != null && !IsOpenableUnlocked)
 			{
 				Debug.Log("Attempting to unlock the lock...");
-				_electronicLockController.Interact();
+				_lockElectronicController.Interact();
 			}
-			if (_electronicElectricalPanel != null && !IsOpenableUnlocked)
+			if (_electricalPanel != null && !IsOpenableUnlocked)
 			{
 				_isAdditionalInteractionHintActive = true;
 			}
-			if ((_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null && _electronicElectricalPanel == null)
+			if ((_interactionObjectKeyData == null && _lockMechanicalController == null && _lockElectronicController == null && _electricalPanel == null)
 				|| (_interactionObjectKeyData != null && (_keysManager.CollectedKeyItems.Contains(_interactionObjectKeyData.KeyItemID.ToString()) || IsOpenableUnlocked))
-				|| (_mechanicalLockController != null && IsOpenableUnlocked)
-				|| (_electronicLockController != null && IsOpenableUnlocked)
-				|| _electronicElectricalPanel != null && IsOpenableUnlocked)
+				|| (_lockMechanicalController != null && IsOpenableUnlocked)
+				|| (_lockElectronicController != null && IsOpenableUnlocked)
+				|| _electricalPanel != null && IsOpenableUnlocked)
 			{
 				PerformOpenableInteraction();
 
@@ -201,20 +201,20 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 				_interactionHintMessageFail = $"{_localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Fail_LockedByKey", gameObject.name)}!";
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
 			}
-			if (_mechanicalLockController != null && !_mechanicalLockController.WasUnlocked)
+			if (_lockMechanicalController != null && !_lockMechanicalController.WasUnlocked)
 			{
-				_interactionHintMessageMain = _mechanicalLockController.InteractionHintMessageMain;
-				_mechanicalLockController.OnUnlockLock += UnlockDoor;
+				_interactionHintMessageMain = _lockMechanicalController.InteractionHintMessageMain;
+				_lockMechanicalController.OnUnlockLock += UnlockDoor;
 			}
-			if (_electronicLockController != null && !_electronicLockController.WasUnlocked)
+			if (_lockElectronicController != null && !_lockElectronicController.WasUnlocked)
 			{
-				_interactionHintMessageMain = _electronicLockController.InteractionHintMessageMain;
-				_electronicLockController.OnUnlockLock += UnlockDoor;
+				_interactionHintMessageMain = _lockElectronicController.InteractionHintMessageMain;
+				_lockElectronicController.OnUnlockLock += UnlockDoor;
 			}
 			if (IsOpenableUnlocked ||
-				(_interactionObjectKeyData == null && _mechanicalLockController == null && _electronicLockController == null)
-				|| (_mechanicalLockController != null && _mechanicalLockController.WasUnlocked)
-				|| (_electronicLockController != null && _electronicLockController.WasUnlocked)
+				(_interactionObjectKeyData == null && _lockMechanicalController == null && _lockElectronicController == null)
+				|| (_lockMechanicalController != null && _lockMechanicalController.WasUnlocked)
+				|| (_lockElectronicController != null && _lockElectronicController.WasUnlocked)
 				|| (_interactionObjectKeyData != null && _keysManager.CollectedKeyItems.Contains(_interactionObjectKeyData.KeyItemID.ToString())))
 			{
 				_interactionHintMessageMain = $"{InteractionHintMessageAction} {InteractionObjectNameUI}?";
