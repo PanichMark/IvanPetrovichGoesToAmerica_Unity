@@ -1,0 +1,166 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+
+public class WeaponWheelMenuButton2D : MonoBehaviour
+{
+	private PlayerWeaponController _weaponController;
+	private WeaponWheelMenuController2D _weaponWheelController;
+	private GameObject _WeaponPrefab;
+	private string _WeaponName;
+	private Sprite _WeaponIcon;
+	private Button _button;
+
+	private Color _originalNormalColor;
+	LocalizationManager _localizationManager;
+	private GameObject _currentWeapon;
+	private WeaponAbstract _weaponComponent;
+	private WeaponRangedAbstract _weaponRangedAbstract;
+	private GameObject _previousWeapon;
+	private Color _highlightedColor;
+
+	public void Initialize(LocalizationManager localizationManager, PlayerWeaponController weaponController, WeaponWheelMenuController2D weaponWheelController, GameObject weaponPrefab, WeaponAbstract weaponComponent)
+	{
+		_localizationManager = localizationManager;
+		_weaponController = weaponController;
+		_weaponWheelController = weaponWheelController;
+		_WeaponPrefab = weaponPrefab;
+		_weaponComponent = weaponComponent;
+		_WeaponName = _localizationManager.GetLocalizedString(_weaponComponent.WeaponNameSystem);
+		_WeaponIcon = _weaponComponent.WeaponIconBig;
+
+		var button = GetComponent<Button>();
+		button.onClick.AddListener(() => SelectWeapon());
+		button.onClick.AddListener(() => _weaponWheelController.ShowWeaponIcon());
+
+		_button = button; 
+
+		_originalNormalColor = _button.colors.normalColor;
+		_highlightedColor = _button.colors.highlightedColor;
+
+		_weaponWheelController.OnOpenWeaponWheelMenu += OnOpenWeaponWheel;
+		_localizationManager.OnLanguageChanged += ChangeLanguage;
+		_weaponController.OnWeaponChanged += OnWeaponChange;
+
+		//Debug.Log("NEW BUTTON!!!!!");
+	}
+
+	private void OnOpenWeaponWheel(WeaponHandType activeHand)
+	{
+		if (activeHand == WeaponHandType.Left)
+		{
+			_previousWeapon = _weaponController.LeftHandWeapon;
+		}
+		else
+		{
+			_previousWeapon = _weaponController.RightHandWeapon;
+		}
+		HandleOnWeaponChanged(activeHand);
+	}
+
+	private void OnWeaponChange(WeaponHandType activeHand)
+	{
+		HandleOnWeaponChanged(activeHand);
+		_previousWeapon = _currentWeapon;
+	}
+
+	private void HandleOnWeaponChanged(WeaponHandType activeHand)
+	{
+		if (activeHand == WeaponHandType.Left)
+		{
+			_currentWeapon = _weaponController.LeftHandWeapon;
+		}
+		else
+		{
+			_currentWeapon = _weaponController.RightHandWeapon;
+		}
+		if (_currentWeapon != _previousWeapon)
+		{
+			UpdateButtonColor(_currentWeapon);
+		}
+		else
+		{
+			UpdateButtonColor(_previousWeapon);
+		}
+	}
+
+	private void UpdateButtonColor(GameObject activeWeapon)
+	{
+		if (activeWeapon == null)
+		{
+			ChangeButtonColor(_originalNormalColor);
+			return;
+		}
+
+		WeaponAbstract activeWeaponComponent = activeWeapon.GetComponent<WeaponAbstract>();
+
+		WeaponAbstract buttonWeaponComponent = _WeaponPrefab.GetComponent<WeaponAbstract>();
+
+		if (activeWeaponComponent != null && buttonWeaponComponent != null)
+		{
+			if (activeWeaponComponent.WeaponNameSystem == buttonWeaponComponent.WeaponNameSystem)
+			{
+				ChangeButtonColor(_highlightedColor);
+			}
+			else
+			{
+				ChangeButtonColor(_originalNormalColor);
+			}
+		}
+	}
+
+	public void HoverEnter()
+	{
+		_weaponWheelController.WeaponIcon.gameObject.SetActive(true);
+		_weaponWheelController.WeaponText.text = _WeaponName;
+		_weaponWheelController.WeaponIcon.sprite = _WeaponIcon;
+
+		if (_weaponComponent is WeaponRangedAbstract)
+		{
+			_weaponRangedAbstract = _WeaponPrefab.GetComponent<WeaponRangedAbstract>();
+			_weaponWheelController.ShowWeaponAmmo(_weaponRangedAbstract);
+		}
+		else
+		{
+			_weaponWheelController.HideWeaponAmmo();
+		}
+	}
+
+	public void HoverExit()
+	{
+		_weaponWheelController.ShowWeaponName();
+		_weaponWheelController.ShowWeaponIcon();
+
+		_weaponWheelController.ShowWeaponAmmo();
+	}
+
+	private void SelectWeapon()
+	{
+		if (_weaponController.IsAbleToUseRightWeapon || (_weaponController.IsLeftHand && _weaponController.IsAbleToUseLeftWeapon))
+		{
+			_weaponController.SelectWeapon(_WeaponPrefab);
+		}
+	}
+
+	private void OnDestroy()
+	{
+		_weaponController.OnWeaponChanged -= OnWeaponChange;
+		_weaponWheelController.OnOpenWeaponWheelMenu -= OnOpenWeaponWheel;
+		_localizationManager.OnLanguageChanged -= ChangeLanguage;
+
+		//Debug.Log("DESTROY BUTTON!!!!!");
+	}
+
+	private void ChangeButtonColor(Color newColor)
+	{
+		ColorBlock colors = _button.colors;
+		colors.normalColor = newColor;
+		_button.colors = colors;
+	}
+
+	private void ChangeLanguage(LocalizationManager localizationManager)
+	{
+		_localizationManager = localizationManager;
+
+		_WeaponName = _localizationManager.GetLocalizedString(_weaponComponent.WeaponNameSystem);
+	}
+}

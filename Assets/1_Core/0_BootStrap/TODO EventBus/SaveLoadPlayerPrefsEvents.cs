@@ -1,0 +1,7 @@
+public enum SaveLoadPlayerPrefsEvents
+{
+	ApplySettingsSectionGeneralPlayerPrefs,
+	ApplySettingsSectionControlsPlayerPrefs,
+	ApplySettingsSectionGraphicsPlayerPrefs,
+	ApplySettingsSectionAudioPlayerPrefs
+}

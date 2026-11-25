@@ -1,0 +1,33 @@
+﻿using UnityEngine;
+
+public class InteractionObjectLootAmmo : InteractionObjectLootAbstract
+{
+	private PlayerWeaponAmmoController _playerResourcesAmmoManager;
+	[SerializeField] Sprite _lootObjectIcon;
+	public override Sprite LootObjectIcon => _lootObjectIcon;
+	[SerializeField] private AmmoTypes _ammoTypes;
+	[SerializeField] private int _ammoCapacity;
+
+	protected override bool _shouldShowGainedItem => true;
+
+
+	public override void Interact()
+	{
+		base.Interact();
+		Debug.Log($"Picked up {InteractionObjectNameUI}");
+		_playerResourcesAmmoManager.AddAmmoToReserve(_ammoTypes, _ammoCapacity);
+	}
+
+	public override void InteractAfterDialogueOrCutscene()
+	{
+		base.InteractAfterDialogueOrCutscene();
+		Debug.Log($"Picked up {InteractionObjectNameUI}");
+		_playerResourcesAmmoManager.AddAmmoToReserve(_ammoTypes, _ammoCapacity);
+
+	}
+
+	protected override void InitializeLootObject()
+	{
+	_playerResourcesAmmoManager = ServiceLocator.Resolve<PlayerWeaponAmmoController>();
+	}
+}

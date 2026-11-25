@@ -1,0 +1,54 @@
+﻿using UnityEngine;
+
+public class InteractionObjectLootHealth : InteractionObjectLootAbstract
+{
+	private PlayerHealthController _playerResourcesHealthManager;
+	private bool _isInteractionHintMessageFailActive;
+
+	public override bool IsInteractionHintMessageFailActive => _isInteractionHintMessageFailActive;
+
+	protected override bool _shouldShowGainedItem => true;
+
+	[SerializeField] Sprite _lootObjectIcon;
+	public override Sprite LootObjectIcon => _lootObjectIcon;
+
+	public override void Interact()
+	{
+		if (_playerResourcesHealthManager.CurrentHealingItemsNumber < 9)
+		{
+			base.Interact();
+			Debug.Log($"You picked up {InteractionObjectNameUI}");
+
+			_playerResourcesHealthManager.AddHealingItem();
+			_isInteractionHintMessageFailActive = false;
+			
+		}
+		else
+		{
+			_isInteractionHintMessageFailActive = true;
+		}
+	}
+
+	public override void InteractAfterDialogueOrCutscene()
+	{
+		if (_playerResourcesHealthManager.CurrentHealingItemsNumber < 9)
+		{
+			base.InteractAfterDialogueOrCutscene();
+			Debug.Log($"You picked up {InteractionObjectNameUI}");
+
+			_playerResourcesHealthManager.AddHealingItem();
+			_isInteractionHintMessageFailActive = false;
+		}
+		else
+		{
+			//_isInteractionHintMessageFailActive = true;
+		}
+	}
+
+	protected override void InitializeLootObject()
+	{
+_playerResourcesHealthManager = ServiceLocator.Resolve<PlayerHealthController>();
+
+		//InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+	}
+}

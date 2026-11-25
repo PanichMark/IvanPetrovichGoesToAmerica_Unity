@@ -1,0 +1,26 @@
+﻿using UnityEngine;
+
+public class ViewModelMenuLockpickElectronic
+{
+	public GameObject[] ButtonsLockElectronic;
+	public GameObject ButtonCloseMenuLockpickElectronic;
+	public GameObject TextButtonCloseMenuLockpickElectronic;
+
+	public ViewModelMenuLockpickElectronic(Bootstrap bootstrap, GameObject canvas)
+	{
+		ButtonsLockElectronic = new GameObject[]
+		{
+			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic1"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic2"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic3"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic4"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic5"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic6"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic7"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic8"),
+			bootstrap.FindDeepGameObject(canvas, "ButtonLockElectronic9")
+		};
+		ButtonCloseMenuLockpickElectronic = bootstrap.FindDeepGameObject(canvas, "ButtonExitLockpickElectronicMenu");
+		TextButtonCloseMenuLockpickElectronic = bootstrap.FindDeepGameObject(canvas, "TextButtonExitLockpickElectronicMenu");
+	}
+}

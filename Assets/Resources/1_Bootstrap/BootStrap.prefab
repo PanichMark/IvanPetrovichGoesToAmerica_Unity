@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7854876846829433716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7968887224968274582}
+  - component: {fileID: 3384868384285505917}
+  m_Layer: 0
+  m_Name: Bootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7968887224968274582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7854876846829433716}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3384868384285505917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7854876846829433716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3111ffddc8a1d604895768280c24a8c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameData: {fileID: 11400000, guid: c0b59741d1d422949996e0bcbed55959, type: 2}
+  _initializationScreenDuration: 1
+  _keyPauseMenu: 1
+  _firstSceneToLoad: 4
+  _playerPrefsPresequisites: 0
+  _playerPrefsReset: 0
+  _applyConfigsPlayer: 1
+  _playerTransform: {fileID: 11400000, guid: 74c93e7c7fa7e984e822892491d69ea4, type: 2}
+  _playerHealth: 100
+  _playerHealingItems: 9
+  _playerMana: 100
+  _playerManaReplenishItems: 9
+  _playerMoney: 999999
+  _playerWeapons: {fileID: 11400000, guid: c9e310553e195574d976e4b9d55a52f6, type: 2}
+  _playerAmmo: {fileID: 11400000, guid: ba889de390a4d7648af20ff7494b8832, type: 2}
+  _applyConfigsMission: 1
+  _mission: {fileID: 11400000, guid: 3e12f522c0bdf7d4ba4b70092e6c1080, type: 2}
+  _missionStep: 8
+  _debugNPC: 1

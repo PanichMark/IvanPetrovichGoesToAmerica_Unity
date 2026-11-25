@@ -1,0 +1,669 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Bootstrap : MonoBehaviour
+{
+	public delegate void SettingsDataEventHandler();
+	public event SettingsDataEventHandler OnLoadSettingsData;
+
+	[Header("--- GAME DATA ---")]
+	[SerializeField] private BootstrapGameDataList _gameData;
+	public BootstrapGameDataList GameData => _gameData;
+
+	[Header("---  CONFIGS BOOTSTRAP ---")]
+	[SerializeField] private ConfigBootstrapInitializationScreenDuration _initializationScreenDuration;
+	[SerializeField] private ConfigBootstrapKeyPauseMenu _keyPauseMenu;
+	[SerializeField] private GameScenesSystemEnum _firstSceneToLoad;
+
+	[Header("---  CONFIGS PLAYERPREFS ---")]
+	[SerializeField] private ConfigPlayerPrefsPresequisites _playerPrefsPresequisites;
+	[SerializeField] private ConfigPlayerPrefsReset _playerPrefsReset;
+
+	[Header("--- CONFIGS PLAYER  ---")]
+	[SerializeField] private bool _applyConfigsPlayer;
+	[SerializeField] private ConfigPlayerTransform _playerTransform;
+	[SerializeField, Range(1, 100)] private int _playerHealth;
+	[SerializeField, Range(0, 9)] private int _playerHealingItems;
+	[SerializeField, Range(0, 100)] private int _playerMana;
+	[SerializeField, Range(0, 9)] private int _playerManaReplenishItems;
+	[SerializeField, Range(0, 999999)] private int _playerMoney;
+	[SerializeField] private ConfigPlayerWeapons _playerWeapons;
+	[SerializeField] private ConfigPlayerAmmo _playerAmmo;
+
+	[Header("--- CONFIGS MISSION  ---")]
+	[SerializeField] private bool _applyConfigsMission;
+	[SerializeField] private Mission _mission;
+	[SerializeField] private int _missionStep;
+
+	[Header("--- DEBUG  ---")]
+	[SerializeField] private bool _debugNPC;
+	public bool DebugNPC => _debugNPC;
+
+	public OperationSystemsEnum OperationSystem { get; private set; }
+
+	private ViewModelBootstrapInitialization _viewModelBootstrapInitialization;
+
+	private GameObject _canvasBootstrapInitialization;
+	private GameObject _canvasBootstrapChooseFirstLanguage;
+	private GameObject _canvasBootstrapSignTermsAndConditions;
+	private GameObject _canvasSceneLoadingScreen;
+	private GameObject _canvasSavingProcess;
+	private GameObject _canvasMenuBackground;
+	private GameObject _canvasPauseMenu;
+	private GameObject _canvasPauseSubMenuSave;
+	private GameObject _canvasPauseSubMenuLoad;
+	private GameObject _canvasPauseSubMenuAppearance;
+	private GameObject _canvasPauseSubMenuTutorial;
+	private GameObject _canvasPauseSubMenuSettings;
+	private GameObject _canvasPauseSubMenuSettingsGameDifficulty;
+	private GameObject _canvasPauseMenuConfirmAction;
+	private GameObject _canvasJournalMenu;
+	public GameObject _canvasMainMenuChooseMission {  get; private set; }
+	public GameObject _canvasMainMenuReadNews { get; private set; }
+	private GameObject _canvasHUDinteraction;
+	private GameObject _canvasHUDmission;
+	private GameObject _canvasHUDhealthAndMana;
+	private GameObject _canvasHUDweapons;
+	private GameObject _canvasHUDmonocular;
+	private GameObject _canvasMenuWeaponWheel;
+	public GameObject _canvasMenuNote {  get; private set; }
+	public GameObject _canvasMenuLockpickMechanical {  get; private set; }
+	public GameObject _canvasMenuLockpickElectronic { get; private set; }
+	public GameObject _canvasMenuDialogue { get; private set; }
+	public GameObject _canvasMenuCutscene { get; private set; }
+
+	private GameController _gameController;
+	private IInputDevice _inputDevice;
+	public LocalizationManager LocalizationManager { get; private set; }
+	private PlayerPrefsData _playerPrefsData;
+
+	private BootstrapSubProcessScenesSystem _bootstrapSubProcessSceneSystem;
+	private BootstrapSubProcessSaveLoadSystem _bootstrapSubProcessSaveLoadSystem;
+	private BootstrapSubProcessMenuSystem _bootstrapSubProcessMenuSystem;
+	private BootstrapSubProcessPlayerSystems _bootstrapSubProcessPlayerSystems;
+	private BootstrapSubProcessInteractionSystem _bootstrapSubProcessInteractionSystem;
+	private BootstrapSubProcessWeaponSystem _bootstrapSubProcessWeaponSystem;
+	private BootstrapSubProcessMissionsSystem _bootstrapSubProcessMissionsSystem;
+	private BootstrapSubProcessObjectPoolSystem _bootstrapSubProcessObjectPoolSystem;
+
+	private KeyCode _keyCodePauseMenu;
+
+	private GameObject _gameObjectPlayer;
+	public GameObject GameObjectPlayerCamera { get; private set; }
+	private GameObject _gameObjectBootstrapTemporaryCamera;
+	public bool IsBootstrapInitialized { get; private set; }
+
+	private IEnumerator Start()
+	{
+		Debug.Log("!!! STARTED GAME INITIALIZATION !!!");
+
+		ServiceLocator.ClearAllServices();
+
+		_canvasBootstrapInitialization = Instantiate(_gameData.GameCanvasesList.CanvasBootstrapInitialization);
+		_canvasBootstrapInitialization.SetActive(true);
+		_viewModelBootstrapInitialization = new ViewModelBootstrapInitialization(this, _canvasBootstrapInitialization);
+		_viewModelBootstrapInitialization.BootstrapInitializationPart1.SetActive(true);
+
+		Time.timeScale = 0f;
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
+		CreateBootstrapTemporaryCamera();
+
+		yield return StartCoroutine(BootstrapSystemsInitialization());
+
+		float duration = 5;
+		if (_initializationScreenDuration == ConfigBootstrapInitializationScreenDuration.Instant)
+		{
+			duration = 0;
+		}
+
+		float startTime = Time.realtimeSinceStartup;
+
+		yield return new WaitUntil(() => (Time.realtimeSinceStartup - startTime >= duration) || Input.anyKeyDown);
+
+		_viewModelBootstrapInitialization.BootstrapInitializationPart1.SetActive(false);
+		_viewModelBootstrapInitialization.BootstrapInitializationPart2.SetActive(true);
+
+		yield return null;
+
+		float secondStartTime = Time.realtimeSinceStartup;
+		yield return new WaitUntil(() => (Time.realtimeSinceStartup - secondStartTime >= duration) || Input.anyKeyDown);
+
+		_viewModelBootstrapInitialization.BootstrapInitializationPart2.SetActive(false);
+
+		yield return null;
+
+		Debug.Log("!!! GAME INITIALIZED !!!");
+
+		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.SaveLoadController.NewGame());
+
+		if (_playerPrefsReset == ConfigPlayerPrefsReset.Yes)
+		{
+			PlayerPrefs.DeleteAll();
+		}
+
+		if (_playerPrefsData.BootstrapArePrerequisitesMet == false || _playerPrefsPresequisites == ConfigPlayerPrefsPresequisites.No)
+		{
+			yield return StartCoroutine(BootstrapPrerequisites());
+		}
+		else
+		{
+			ChangeLanguage((LanguagesEnum)Enum.Parse(typeof(LanguagesEnum), PlayerPrefs.GetString(PlayerPrefsSettingsSectionAudioEnum.Language.ToString())));
+		}
+
+		_viewModelBootstrapInitialization.BootstrapInitializationPart2.SetActive(false);
+		_viewModelBootstrapInitialization.BootstrapInitializationPart3.SetActive(true);
+		_viewModelBootstrapInitialization.TextSavingProcessIcon.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SavingProcess");
+
+		float thirdStartTime = Time.realtimeSinceStartup;
+		yield return new WaitUntil(() => (Time.realtimeSinceStartup - secondStartTime >= duration * 1.5f) || Input.anyKeyDown);
+
+		_canvasBootstrapInitialization.SetActive(false);
+		Destroy(_gameObjectBootstrapTemporaryCamera);
+
+		yield return StartCoroutine(LoadFirstGameplayScene());
+
+		if (_applyConfigsPlayer)
+		{
+			ApplyBootstrapPlayerConfigs();
+		}
+
+		if (_applyConfigsMission)
+		{
+			ApplyBootstrapMissionConfigs();
+		}
+
+		OnLoadSettingsData?.Invoke();
+
+		IsBootstrapInitialized = true;
+	}
+
+	private void Update()
+	{
+		if (IsBootstrapInitialized)
+			return;
+
+		RotateGear(300f);
+	}
+
+	private void RotateGear(float speed)
+	{
+		Vector3 currentRotation = _viewModelBootstrapInitialization.Gear.transform.localEulerAngles;
+		currentRotation.z += speed * Time.unscaledDeltaTime;
+		_viewModelBootstrapInitialization.Gear.transform.localEulerAngles = currentRotation;
+	}
+
+	private IEnumerator SetUpOpeationSystem()
+	{
+		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+		{
+			OperationSystem = OperationSystemsEnum.Windows;
+		}
+		if (Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor)
+		{
+			OperationSystem = OperationSystemsEnum.MacOS;
+		}
+		if (Application.platform == RuntimePlatform.LinuxPlayer || Application.platform == RuntimePlatform.LinuxEditor)
+		{
+			OperationSystem = OperationSystemsEnum.Linux;
+		}
+
+		yield return null;
+	}
+
+	private IEnumerator BootstrapSystemsInitialization()
+	{
+		yield return StartCoroutine(SetUpOpeationSystem());
+		yield return StartCoroutine(InitializeInterfaces());
+		yield return StartCoroutine(InitializeCanvases());
+		yield return StartCoroutine(InitializeSceneSystem());
+		yield return StartCoroutine(InitializeSaveLoadSystem());
+		yield return StartCoroutine(InitializeMenuSystem());
+		yield return StartCoroutine(InitializePlayerSystems());
+		yield return StartCoroutine(InitializeInteractionSystem());
+		yield return StartCoroutine(InitializeWeaponSystem());
+		yield return StartCoroutine(InitializeMissionsSystem());
+		yield return StartCoroutine(InitializeObjectPoolSystem());
+
+
+		yield return StartCoroutine(RegisterBootstrapDependencies());
+	}
+
+	private IEnumerator InitializeInterfaces()
+	{
+		_gameController = new GameController();
+
+		if (_keyPauseMenu == ConfigBootstrapKeyPauseMenu.DEFAULT_Escape)
+		{
+			_keyCodePauseMenu = KeyCode.Escape;
+		}
+		else
+		{
+			_keyCodePauseMenu = KeyCode.Alpha1;
+		}
+
+		_inputDevice = new InputKeyboard(_gameController, _keyCodePauseMenu);
+
+		LocalizationManager = new LocalizationManager(this);
+
+		_playerPrefsData = new PlayerPrefsData();
+
+		Debug.Log("=== INTERFACES INITIALIZED ===");
+		yield break;
+	}
+
+	private IEnumerator InitializeCanvases()
+	{
+		_canvasBootstrapChooseFirstLanguage = Instantiate(_gameData.GameCanvasesList.CanvasBootstrapChooseFirstLanguage);
+		_canvasBootstrapSignTermsAndConditions = Instantiate(_gameData.GameCanvasesList.CanvasBootstrapSignTermsAndConditions);
+
+		_canvasSceneLoadingScreen = Instantiate(_gameData.GameCanvasesList.CanvasSceneLoadingScreen);
+	
+		_canvasSavingProcess = Instantiate(_gameData.GameCanvasesList.CanvasSavingProcess);
+
+		_canvasMenuBackground = Instantiate(_gameData.GameCanvasesList.CanvasMenuBackground);
+
+	    _canvasPauseMenu = Instantiate(_gameData.GameCanvasesList.CanvasPauseMenu);
+		_canvasPauseSubMenuSave = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuSave);
+		_canvasPauseSubMenuLoad = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuLoad);
+		_canvasPauseSubMenuAppearance = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuAppearance);
+		_canvasPauseSubMenuTutorial = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuTutorial);
+		_canvasPauseSubMenuSettings = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuSettings);
+		_canvasPauseSubMenuSettingsGameDifficulty = Instantiate(_gameData.GameCanvasesList.CanvasPauseSubMenuSettingsGameDifficulty);
+		_canvasPauseMenuConfirmAction = Instantiate(_gameData.GameCanvasesList.CanvasPauseMenuConfirmAction);
+
+		_canvasMainMenuChooseMission = Instantiate(_gameData.GameCanvasesList.CanvasMainMenuChooseMission);
+		_canvasMainMenuReadNews = Instantiate(_gameData.GameCanvasesList.CanvasMainMenuReadNews);
+
+		_canvasJournalMenu = Instantiate(_gameData.GameCanvasesList.CanvasJournalMenu);
+
+		_canvasMenuWeaponWheel = Instantiate(_gameData.GameCanvasesList.CanvasMenuWeaponWheel);
+
+		_canvasMenuWeaponWheel = Instantiate(_gameData.GameCanvasesList.CanvasMenuWeaponWheel);
+		_canvasMenuCutscene = Instantiate(_gameData.GameCanvasesList.CanvasMenuCutscene);
+
+		_canvasHUDhealthAndMana = Instantiate(_gameData.GameCanvasesList.CanvasHUDhealthAndMana);
+		_canvasHUDweapons = Instantiate(_gameData.GameCanvasesList.CanvasHUDweapons);
+		_canvasHUDinteraction = Instantiate(_gameData.GameCanvasesList.CanvasHUDinteraction);
+		_canvasHUDmission = Instantiate(_gameData.GameCanvasesList.CanvasHUDmission);
+		_canvasHUDmonocular = Instantiate(_gameData.GameCanvasesList.CanvasHUDmonocular);
+
+		_canvasMenuNote = Instantiate(_gameData.GameCanvasesList.CanvasMenuNote);
+		_canvasMenuLockpickElectronic = Instantiate(_gameData.GameCanvasesList.CanvasMenuLockpickElectronic);
+		_canvasMenuLockpickMechanical = Instantiate(_gameData.GameCanvasesList.CanvasMenuLockpickMechanical);
+		_canvasMenuDialogue = Instantiate(_gameData.GameCanvasesList.CanvasMenuDialogue);
+
+		Debug.Log("=== CANVASES INITIALIZED ===");
+		yield break;
+	}
+
+	private IEnumerator InitializeSceneSystem()
+	{
+		_bootstrapSubProcessSceneSystem = new BootstrapSubProcessScenesSystem(
+			this, 
+			_gameController,
+			LocalizationManager,
+			_canvasSceneLoadingScreen);
+
+		yield return StartCoroutine(_bootstrapSubProcessSceneSystem.Initialize());
+
+		Debug.Log("=== SCENE SYSTEM INITIALIZED ===");
+	}
+
+	private IEnumerator InitializeSaveLoadSystem()
+	{
+		_bootstrapSubProcessSaveLoadSystem = new BootstrapSubProcessSaveLoadSystem(
+			this,
+			_gameController,
+			_inputDevice,
+			_bootstrapSubProcessSceneSystem);
+
+		yield return StartCoroutine(_bootstrapSubProcessSaveLoadSystem.Initialize());
+
+		Debug.Log("=== SAVELOAD SYSTEM INITIALIZED ===");
+	}
+
+	private IEnumerator InitializeMenuSystem()
+	{
+		_bootstrapSubProcessMenuSystem = new BootstrapSubProcessMenuSystem(
+			this,
+			_bootstrapSubProcessSceneSystem,
+			_bootstrapSubProcessSaveLoadSystem,
+			_gameController,
+			_inputDevice,
+			LocalizationManager,
+			_canvasBootstrapChooseFirstLanguage,
+			_canvasMenuBackground,
+			_canvasSavingProcess,
+			_canvasPauseMenu,
+			_canvasPauseSubMenuSave,
+			_canvasPauseSubMenuLoad,
+			_canvasPauseSubMenuAppearance,
+			_canvasPauseSubMenuTutorial,
+			_canvasPauseSubMenuSettings,
+			_canvasPauseSubMenuSettingsGameDifficulty,
+			_canvasPauseMenuConfirmAction,
+			_canvasMainMenuReadNews,
+			_canvasJournalMenu,
+			_canvasMenuWeaponWheel,
+			_canvasMenuCutscene,
+			_canvasHUDhealthAndMana,
+			_canvasHUDweapons,
+			_canvasHUDinteraction,
+			_canvasHUDmission,
+			_canvasMenuNote,
+			_canvasMenuLockpickMechanical,
+			_canvasMenuLockpickElectronic,
+			_canvasMenuDialogue,
+			_canvasMainMenuChooseMission,
+			_canvasBootstrapSignTermsAndConditions,
+			_canvasHUDmonocular);
+
+		yield return StartCoroutine(_bootstrapSubProcessMenuSystem.Initialize());
+
+		Debug.Log("=== MENU SYSTEM INITIALIZED ===");
+	}
+
+	private IEnumerator InitializePlayerSystems()
+	{
+		_gameObjectPlayer = Instantiate((GameObject)Resources.Load("1_Bootstrap/Player/Bootstrap_PlayerGameObject"));
+		GameObjectPlayerCamera = Instantiate((GameObject)Resources.Load("1_Bootstrap/Player/Bootstrap_PlayerCameraGameObject"));
+
+		_bootstrapSubProcessPlayerSystems = new BootstrapSubProcessPlayerSystems(
+			this,
+			_bootstrapSubProcessSceneSystem,
+			_bootstrapSubProcessMenuSystem,
+			_gameController,
+			_inputDevice,
+			_canvasMenuBackground,
+			_gameObjectPlayer,
+			GameObjectPlayerCamera);
+
+		yield return StartCoroutine(_bootstrapSubProcessPlayerSystems.Initialize());
+
+		Debug.Log("=== PLAYER SYSTEMS INITIALIZED ===");
+	}
+
+	private IEnumerator InitializeInteractionSystem()
+	{
+		_bootstrapSubProcessInteractionSystem = new BootstrapSubProcessInteractionSystem(
+			this,
+			_bootstrapSubProcessSceneSystem,
+			_bootstrapSubProcessMenuSystem,
+			_bootstrapSubProcessPlayerSystems,
+			_gameController,
+			_inputDevice,
+			LocalizationManager,
+			_gameObjectPlayer,
+			GameObjectPlayerCamera);
+
+		yield return StartCoroutine(_bootstrapSubProcessInteractionSystem.Initialize());
+
+		Debug.Log("=== INTERACTION SYSTEM INITIALIZED ===");
+	}
+
+	private IEnumerator InitializeWeaponSystem()
+	{
+		_bootstrapSubProcessWeaponSystem = new BootstrapSubProcessWeaponSystem(
+			this,
+			_gameController,
+			_inputDevice,
+			LocalizationManager,
+			_gameObjectPlayer,
+			GameObjectPlayerCamera,
+			_bootstrapSubProcessSceneSystem,
+			_bootstrapSubProcessMenuSystem,
+			_bootstrapSubProcessPlayerSystems,
+			_bootstrapSubProcessInteractionSystem);
+
+		yield return StartCoroutine(_bootstrapSubProcessWeaponSystem.Initialize());
+
+		Debug.Log("=== WEAPON SYSTEM INITIALIZED ===");
+	}
+
+	private IEnumerator InitializeMissionsSystem()
+	{
+		_bootstrapSubProcessMissionsSystem = new BootstrapSubProcessMissionsSystem(
+			this,
+			_bootstrapSubProcessSceneSystem,
+			_bootstrapSubProcessSaveLoadSystem,
+			_bootstrapSubProcessMenuSystem,
+			GameObjectPlayerCamera);
+
+		yield return StartCoroutine(_bootstrapSubProcessMissionsSystem.Initialize());
+
+		Debug.Log("=== MISSIONS SYSTEM INITIALIZED ===");
+	}
+
+	private IEnumerator InitializeObjectPoolSystem()
+	{
+		_bootstrapSubProcessObjectPoolSystem = new BootstrapSubProcessObjectPoolSystem(
+			this,
+			_bootstrapSubProcessSceneSystem,
+			_bootstrapSubProcessMenuSystem);
+
+		yield return StartCoroutine(_bootstrapSubProcessObjectPoolSystem.Initialize());
+
+		Debug.Log("=== OBJECT POOL SYSTEM INITIALIZED ===");
+	}
+
+	private IEnumerator RegisterBootstrapDependencies()
+	{
+		ServiceLocator.Register<LocalizationManager>(LocalizationManager);
+		ServiceLocator.Register<GameController>(_gameController);
+		ServiceLocator.Register<IInputDevice>(_inputDevice);
+		ServiceLocator.Register<KeyCode>(_keyCodePauseMenu);
+		ServiceLocator.Register<GameScenesList>(GameData.GameScenesList);
+		ServiceLocator.Register<GameMissionsList>(GameData.GameMissionsList);
+		ServiceLocator.Register<List<Sprite>>(GameData.NPCdetectionSignFrames);
+		ServiceLocator.Register<Bootstrap>(this);
+		Debug.Log("=== BOOTSTRAP SERVICES REGISTERED ===");
+
+		yield break;
+	}
+
+	private void CreateBootstrapTemporaryCamera()
+	{
+		_gameObjectBootstrapTemporaryCamera = new GameObject("BootstrapTemporaryCamera");
+		_gameObjectBootstrapTemporaryCamera.AddComponent<Camera>();
+	}
+
+	public void ChangeLanguage(LanguagesEnum newLanguage)
+	{
+		LocalizationManager.ChangeLanguage(newLanguage);
+
+		// Удаление конкретного сервиса
+		ServiceLocator.Remove<LocalizationManager>();
+
+		// Теперь можно регистрировать его заново
+		ServiceLocator.Register<LocalizationManager>(LocalizationManager);
+	}
+
+	public void ChangeWeaponWheelType(WeaponWheelMenuTypes weaponWheelMenuTypes)
+	{
+		_bootstrapSubProcessWeaponSystem.ChangeWeaponWheelType(weaponWheelMenuTypes);
+	}
+
+	private IEnumerator LoadFirstGameplayScene()
+	{
+		if (_firstSceneToLoad == GameScenesSystemEnum.Scene_System_MainMenu)
+		{
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadMainMenuScene());
+		}
+		else if (_firstSceneToLoad == GameScenesSystemEnum.Scene_System_EndGameTitles)
+		{
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadEndGameTitlesScene());
+		}
+		else
+		{
+			yield return StartCoroutine(_bootstrapSubProcessSceneSystem.GameSceneManager.LoadGameplayScene((GameScenesGameplayEnum)((int)_firstSceneToLoad - 2)));
+		}
+	}
+
+	private IEnumerator BootstrapPrerequisites()
+	{
+		yield return StartCoroutine(ChooseInitialLanguage());
+
+		yield return StartCoroutine(SignTermsAndConditions());
+
+		_playerPrefsData.SetBootstrapPrerequisitesMet();
+	}
+
+	private IEnumerator ChooseInitialLanguage()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+
+		_canvasBootstrapChooseFirstLanguage.SetActive(true);
+
+		bool languageSelected = false;
+
+		_bootstrapSubProcessMenuSystem.ViewModelMenuChooseFirstLanguage.ButtonRussianLangauge.GetComponent<Button>().onClick.AddListener(() =>
+		{
+			ChangeLanguage(LanguagesEnum.Russian);
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionAudioController.SaveSettingsAudio();
+			languageSelected = true;
+		});
+
+		_bootstrapSubProcessMenuSystem.ViewModelMenuChooseFirstLanguage.ButtonEnglishLanguage.GetComponent<Button>().onClick.AddListener(() =>
+		{
+			ChangeLanguage(LanguagesEnum.English);
+			_bootstrapSubProcessMenuSystem.PauseSubMenuSettingsSectionAudioController.SaveSettingsAudio();
+			languageSelected = true;
+		});
+
+		yield return new WaitUntil(() => languageSelected);
+
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
+		Destroy(_canvasBootstrapChooseFirstLanguage);
+	}
+
+	private IEnumerator SignTermsAndConditions()
+	{
+		_canvasBootstrapSignTermsAndConditions.SetActive(true);
+
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+
+		bool termsAkcnowledged = false;
+		bool termsSigned = false;
+
+		var toggleComponent = _bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ToggleAgreeWithTerms.GetComponent<Toggle>();
+		var buttonSignComponent = _bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ButtonSign.GetComponent<Button>();
+
+		buttonSignComponent.interactable = false;
+
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextHeaderTermsAndConditions.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SignTermsnAndConditions_TextHeaderTermsAndConditions");
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextButtonSign.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SignTermsnAndConditions_ButtonSign");
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextButtonRefuse.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SignTermsnAndConditions_ButtonRefuse");
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextToggleAgreeWithTerms.GetComponent<TextMeshProUGUI>().text = LocalizationManager.GetLocalizedString("UI_Menu_Bootstrap_SignTermsnAndConditions_ToggleAcceptWithTerms");
+
+		if (LocalizationManager.CurrentLanguage == LanguagesEnum.Russian)
+		{
+			_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextTermsAndConditions.GetComponent<TextMeshProUGUI>().text = GameData.TermsAndConditions.TermsAndConditions_RU.text;
+		}
+		else
+		{
+			_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.TextTermsAndConditions.GetComponent<TextMeshProUGUI>().text = GameData.TermsAndConditions.TermsAndConditions_EN.text;
+		}
+
+		toggleComponent.isOn = false;
+
+		toggleComponent.onValueChanged.AddListener((bool isOn) =>
+		{
+			termsAkcnowledged = isOn;
+			buttonSignComponent.interactable = isOn;
+		});
+
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ButtonSign.GetComponent<Button>().onClick.AddListener(() =>
+		{
+			termsSigned = true;
+		});
+
+		_bootstrapSubProcessMenuSystem.ViewModelBootstrapSignTermsAndConditions.ButtonRefuse.GetComponent<Button>().onClick.AddListener(() =>
+		{
+			Debug.Log("EXIT GAME");
+			Application.Quit();
+		});
+
+		yield return new WaitUntil(() => termsSigned);
+
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
+		Destroy(_canvasBootstrapSignTermsAndConditions);
+	}
+
+	private void ApplyBootstrapPlayerConfigs()
+	{
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesHealthManager.ConfigApplyPlayerHealth(_playerHealth);
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesHealthManager.ConfigApplyPlayerHealingItems(_playerHealingItems);
+
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesManaManager.ConfigApplyPlayerMana(_playerMana);
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesManaManager.ConfigApplyPlayerManaReplenishItems(_playerManaReplenishItems);
+
+		_bootstrapSubProcessPlayerSystems.PlayerResourcesMoneyManager.ConfigApplyPlayerMoney(_playerMoney);
+
+		GameObject[] availableWeapons = _playerWeapons.GetAvailableWeapons();
+		if (availableWeapons != null)
+		{
+			foreach (GameObject weaponPrefab in availableWeapons)
+			{
+				_bootstrapSubProcessWeaponSystem.WeaponController.UnlockWeapon(weaponPrefab);
+			}
+		}
+
+		var startAmmoEntries = _playerAmmo.GetStartAmmoEntries();
+		if (startAmmoEntries != null && startAmmoEntries.Length > 0)
+		{
+			foreach (var ammoEntry in startAmmoEntries)
+			{
+				_bootstrapSubProcessWeaponSystem.PlayerResourcesAmmoManager.ConfigApplyPlayerAmmo(
+					ammoEntry.AmmoType,
+					ammoEntry.StartAmount
+				);
+			}
+		}
+
+		if (_firstSceneToLoad != GameScenesSystemEnum.Scene_System_MainMenu && _firstSceneToLoad != GameScenesSystemEnum.Scene_System_EndGameTitles)
+		{
+			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerPosition(_playerTransform.PlayerPosition);
+			_bootstrapSubProcessPlayerSystems.PlayerMovementController.SetPlayerRotationY(_playerTransform.PlayerRotationY);
+			_bootstrapSubProcessPlayerSystems.PlayerCameraController.SetCameraRotationY(_playerTransform.PlayerRotationY);
+		}
+	}
+
+	private void ApplyBootstrapMissionConfigs()
+	{
+		_bootstrapSubProcessMissionsSystem.MissionsManager.ApplyMissionConfig(_mission, _missionStep);
+	}
+
+	public GameObject FindDeepGameObject(GameObject root, string targetName)
+	{
+		Queue<Transform> queue = new Queue<Transform>();
+		queue.Enqueue(root.transform);
+		while (queue.Count > 0)
+		{
+			var current = queue.Dequeue();
+			if (current.name == targetName)
+				return current.gameObject;
+			foreach (Transform child in current)
+			{
+				queue.Enqueue(child);
+			}
+		}
+		throw new System.Exception($"Child with name {targetName} not found in {root.name}");
+	}
+
+	private void OnApplicationQuit()
+	{
+		ServiceLocator.ClearAllServices();
+	}
+}
