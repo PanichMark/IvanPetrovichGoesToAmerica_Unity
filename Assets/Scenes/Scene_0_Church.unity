@@ -98793,9 +98793,9 @@ MonoBehaviour:
   _doorOpenAngle: 90
   _doorOpeningSpeed: 200
   _interactionObjectKeyData: {fileID: 11400000, guid: 3f18782af4bcb8748ac1edef412270fe, type: 2}
-  _mechanicalLockController: {fileID: 0}
-  _electronicLockController: {fileID: 0}
-  _electronicElectricalPanel: {fileID: 0}
+  _lockMechanicalController: {fileID: 0}
+  _lockElectronicController: {fileID: 0}
+  _electricalPanel: {fileID: 0}
   _changeScene: {fileID: 11400000, guid: f171ff56e0b09454293c4831e769d6aa, type: 2}
   _isLockedForever: 0
   _doorSibling: {fileID: 0}
@@ -110929,6 +110929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _NPCdialogueData: {fileID: 11400000, guid: d7b3aa2d526bca0489f1c5b9311ec8f2, type: 2}
+  _showMissionGoalHint: 1
   _dialogueBranchStructsList:
   - DialogueBranchLine: 2
     GoToNoOptionLine: 8

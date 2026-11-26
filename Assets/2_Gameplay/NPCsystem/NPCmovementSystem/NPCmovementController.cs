@@ -258,8 +258,10 @@ public class NPCmovementController : MonoBehaviour
 	public void RotateTowardsInitialRotation()
 	{
 		if (currentRotationCoroutine != null)
+		{
 			StopCoroutine(currentRotationCoroutine);
-		currentRotationCoroutine = StartCoroutine(RotateTowardsInitialRotation(_initialRotationY));
+			currentRotationCoroutine = StartCoroutine(RotateTowardsInitialRotation(_initialRotationY));
+		}
 	}
 
 	private IEnumerator RotateTowardsInitialRotation(float targetYAngle)

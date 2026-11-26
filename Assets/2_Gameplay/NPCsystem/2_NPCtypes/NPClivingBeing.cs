@@ -335,8 +335,8 @@ public abstract class NPClivingBeing : NPCabstract
 
 		int indexInList = targetList.FindIndex(item => item.NPCindex == GameplayObjectIndex);
 
-		Debug.Log(GameplayObjectIndex);
-		Debug.Log(_NPCmovementController);
+		//Debug.Log(GameplayObjectIndex);
+		//Debug.Log(_NPCmovementController);
 
 		var updatedItem = new NPCdata
 		{

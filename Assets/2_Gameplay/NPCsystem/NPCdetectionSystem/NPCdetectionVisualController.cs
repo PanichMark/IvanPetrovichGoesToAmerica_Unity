@@ -140,6 +140,7 @@ public class NPCdetectionVisualController : MonoBehaviour
 		{
 			if (_currentSpottingCoroutine == null)
 			{
+				Debug.Log("START SPOTTING");
 				_currentSpottingCoroutine = StartCoroutine(FindTargetsWithDelay(_spottingTick));
 			}
 		}
@@ -147,8 +148,14 @@ public class NPCdetectionVisualController : MonoBehaviour
 		{
 			if (_currentSpottingCoroutine != null)
 			{
+				Debug.Log("STOP SPOTTING");
 				StopCoroutine(_currentSpottingCoroutine);
 				_currentSpottingCoroutine = null;
+			}
+			if (_scanRoutine != null)
+			{
+				StopCoroutine(_scanRoutine);
+				_scanRoutine = null;
 			}
 		}
 	

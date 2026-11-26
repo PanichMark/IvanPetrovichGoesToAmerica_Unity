@@ -33,12 +33,14 @@ public class NPCdialogueController : MonoBehaviour
 	private uLipSyncBlendShape _uLipSyncBlendShape;
 	public NPCdialogueData NPCdialogueData => _NPCdialogueData;
 	private GameController _gameController;
+	[SerializeField] private bool _showMissionGoalHint;
 	[SerializeField] private List<NPCdialogueBranchData> _dialogueBranchStructsList;
 
 	[SerializeField] private AnimationClip _dialogueDefaultAnimationStateName;
 	[SerializeField] private List<NPCdialogueGesturesData> _dialogueGesturesDataList;
 	private Animator _animator;
-
+	private HUDmissionsController _HUDmissionsController;
+	private MissionsManager _missionsManager;
 	[SerializeField] private List<NPCdialogueFacialExpressionsData> _dialogueFacialExpressionsDataList;
 	private AudioSource _audioSource;
 	private int _dialogueBranchStructIndex;
@@ -83,6 +85,8 @@ public class NPCdialogueController : MonoBehaviour
 		NPCabstract NPCabstract,
 		NPCmovementController NPCMovementController)
 	{
+		_HUDmissionsController = ServiceLocator.Resolve<HUDmissionsController>();
+		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 		_NPCabstract = NPCabstract;
 		_NPCMovementController = NPCMovementController;
 		_bootstrap = ServiceLocator.Resolve < Bootstrap>();
@@ -158,22 +162,7 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 			{
 				_uLipSyncBlendShape.ApplyBlendShapes();
 			}
-
-			/*
-			if (_menuManager.IsPauseMenuOpened || _menuManager.IsInteractionMenuOpened)
-			{
-
-			}
-			else
-			{
-				_animator.Update(Time.unscaledDeltaTime);
-
-				//OnAfterAnimatorReapplyIKweights?.Invoke(_playerEyesLookAt);
-			}
-			*/
 		}
-
-		//Debug.Log(_animator.speed);
 	}
 
 	private void ChangeLanguage(LocalizationManager localizationManager)
@@ -284,15 +273,26 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 					ApplyStateFromStructList(_dialogueBranchStructsList[_dialogueBranchStructIndex].NPCStateChangesOnNo);
 					_performNPCStateChangeOnNo = false;
 				}
+
+				if (_showMissionGoalHint)
+				{
+					_HUDmissionsController.ShowNewMissionGoalHUDnotification(_missionsManager.LocalizedStepGoalText, true);
+				}
+
+				
 			}
-		
 
-			_dialogueBranchStructIndex = 0;
-			ChangeGestureAnimation(_originalAnimationStateName);
+			//Debug.Log(gameObject.activeInHierarchy);
+
+			if (gameObject.activeInHierarchy)
+			{
+				_dialogueBranchStructIndex = 0;
+				ChangeGestureAnimation(_originalAnimationStateName);
+				OnStopLookingAtObject?.Invoke(_playerEyesLookAt);
+				_uLipSyncBlendShape.updateMethod = UpdateMethod.LipSyncUpdateEvent;
+			}
+
 			_playerCameraController.SetPostDialogueCameraTransform();
-			OnStopLookingAtObject?.Invoke(_playerEyesLookAt);
-			_uLipSyncBlendShape.updateMethod = UpdateMethod.LipSyncUpdateEvent;
-
 			_NPCabstract.CallOnInteract();
 		}
 	}
@@ -369,7 +369,12 @@ _NPCdialogueText = _viewModelMenuDialogue.TextDialogueLine.GetComponent<TextMesh
 		if (_currentDialogueStepIndex >= _localizedDialogue[currentLanguage].Count)
 		{
 			ExitNPCDialogue();
-			_NPCMovementController.RotateTowardsInitialRotation();
+
+			if (gameObject.activeInHierarchy == true)
+			{
+				_NPCMovementController.RotateTowardsInitialRotation();
+			}
+
 			return;
 		}
 

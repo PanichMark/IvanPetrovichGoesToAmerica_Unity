@@ -10,7 +10,7 @@ public class MissionStepConditionDialogueOutcome : MissionStepConditionAbstract
 		{
 			_isConditionMet = true;
 			_missionStepAbstract.OnStepCompleted(GoToNextStep);
-			Debug.Log("[Условие] Диалоговое условие выполнено.");
+			//Debug.Log("[Условие] Диалоговое условие выполнено.");
 		}
 	}
 
