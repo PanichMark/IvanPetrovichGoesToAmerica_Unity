@@ -9,13 +9,17 @@ public class MissionStepConditionObjectsInsideZoneRegistrationOwner : MonoBehavi
 	[SerializeField] private bool _updateZoneStatus;
 	[SerializeField] private bool _isSubjectPlayer;
 	private GameObject _player;
+	private MissionsManager _missionsManager;
+
 	private void Start()
 	{
+		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 		_playerSpine = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerSpineBone);
 		if (_isSubjectPlayer)
 		{
 			_player = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
-			RegisterTrackedSubject(_player);		}
+			RegisterTrackedSubject(_player);
+		}
 
 		// Говорим условию: "Я — твоя зона, зафиксируй меня как Owner"
 		if (_linkedMissionCondition is MissionStepConditionObjectsInsideZone condition)
@@ -42,11 +46,23 @@ public class MissionStepConditionObjectsInsideZoneRegistrationOwner : MonoBehavi
 			if (target != null)
 			{
 				condition.ReportSubjectEntered(target); // Условие получит именно тот объект, где лежит скрипт
+				Debug.Log(_missionsManager.ActiveMission.MissionSteps[_missionsManager.CurrentStepIndex].Conditions[0].GetType());
 			}
 
-			if (_isSubjectPlayer && other.gameObject == _player)
+			
+
+			if (_missionsManager.ActiveMission.MissionSteps[_missionsManager.CurrentStepIndex].Conditions[0] is not MissionStepConditionObjectInteracted)
 			{
-				condition.ReportSubjectEntered(_player);
+				// so basically the thing is -
+				// its for the returning to releasing ChickenCage in BistroOwner MissionSteps
+				// if player has to pick up up AGAIN 
+				// and if he triggers the ObjectsInsideZone withOUT the cage
+				// it DOESNT count!
+
+				if (_isSubjectPlayer && other.gameObject == _player)
+				{
+					condition.ReportSubjectEntered(_player);
+				}
 			}
 
 		}
@@ -64,9 +80,18 @@ public class MissionStepConditionObjectsInsideZoneRegistrationOwner : MonoBehavi
 				condition.ReportSubjectExited(target); // Условие получит именно тот объект, где лежит скрипт
 			}
 
-			if (_isSubjectPlayer && other.gameObject == _player)
+			if (_missionsManager.ActiveMission.MissionSteps[_missionsManager.CurrentStepIndex].Conditions[0] is not MissionStepConditionObjectInteracted)
 			{
-				condition.ReportSubjectExited(_player);
+				// so basically the thing is -
+				// its for the returning to releasing ChickenCage in BistroOwner MissionSteps
+				// if player has to pick up up AGAIN 
+				// and if he triggers the ObjectsInsideZone withOUT the cage
+				// it DOESNT count!
+
+				if (_isSubjectPlayer && other.gameObject == _player)
+				{
+					condition.ReportSubjectExited(_player);
+				}
 			}
 		}
 	}
