@@ -4,8 +4,7 @@ public class MissionStepConditionLockPickedRegistration : MonoBehaviour
 {
 	[SerializeField] private MissionStepConditionAbstract _linkedMissionCondition;
 
-	// Ссылка на конкретный замок в инспекторе
-	[SerializeField] private InteractionObjectLockAbstract _lockObject;
+	private InteractionObjectLockAbstract _lockObject;
 
 	private void Start()
 	{
