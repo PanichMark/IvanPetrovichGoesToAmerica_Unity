@@ -9,7 +9,7 @@ public class NPCmovementController : MonoBehaviour
 	private Coroutine _currentMovementCoroutine;
 	private NavMeshAgent _navMeshAgent;
 	[SerializeField] private List<NPCmovementAnchorData> _anchorData = new List<NPCmovementAnchorData>();
-	public bool IsWaitingForMissionStepToPatroll {  get; private set; }
+	public bool IsPatrollWaitingForAnotherState {  get; private set; }
 	private MissionsManager _missionsManager;
 	public Coroutine currentRotationCoroutine { get; private set; }
 	private NPCstateMachineController _NPCstateMachineController;
@@ -69,7 +69,7 @@ public class NPCmovementController : MonoBehaviour
 
 	public void StopAnchorMove()
 	{
-		if (IsWaitingForMissionStepToPatroll == false)
+		if (IsPatrollWaitingForAnotherState == false)
 		{
 			if (_currentMovementCoroutine != null)
 			{
@@ -79,13 +79,11 @@ public class NPCmovementController : MonoBehaviour
 			}
 			_isAnchorMoving = false;
 		}
+		else
+		{
+			IsPatrollWaitingForAnotherState = false;
+		}
 		//Debug.Log(CurrentGoalAnchorPointIndex);
-	}
-
-	private void Update()
-	{
-		//Debug.Log(CurrentAnchorPointIndex);
-		//Debug.Log(_anchorData.Count);
 	}
 
 	public IEnumerator MoveBetweenAnchorPointsCoroutine()
@@ -116,7 +114,10 @@ public class NPCmovementController : MonoBehaviour
 
 			if (requiredStep != null)
 			{
-				IsWaitingForMissionStepToPatroll = true;
+				if (_anchorData[CurrentGoalAnchorPointIndex].WaitForPatrollingAfterMissionStep)
+				{
+					IsPatrollWaitingForAnotherState = true;
+				}
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.StationaryAction);
 
 				// ИСПРАВЛЕННАЯ СТРОКА: Сравниваем индекс из MissionManager с индексом шага в массиве Mission.MissionSteps
@@ -129,12 +130,12 @@ public class NPCmovementController : MonoBehaviour
 					yield return null;
 
 				}
-				IsWaitingForMissionStepToPatroll = false;
+				IsPatrollWaitingForAnotherState = false;
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.Patrolling);
 			}
 			else
 			{
-				IsWaitingForMissionStepToPatroll = false;
+				IsPatrollWaitingForAnotherState = false;
 			}
 
 			if (waitDuration > 0)

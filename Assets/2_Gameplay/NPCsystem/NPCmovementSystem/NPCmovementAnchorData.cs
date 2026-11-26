@@ -7,4 +7,5 @@ public struct NPCmovementAnchorData
 	public float NPCwaitDuration;
 	public Vector3 NPCrotation;
 	public MissionStep RequiredMissionStepToProceed;
+	public bool WaitForPatrollingAfterMissionStep;
 }

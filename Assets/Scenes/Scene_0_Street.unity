@@ -6112,6 +6112,10 @@ PrefabInstance:
       propertyPath: _anchorData.Array.data[2].RequiredMissionStepToProceed
       value: 
       objectReference: {fileID: 11400000, guid: a4fdc27fd3760cb41a9cb1d2e733d0b2, type: 2}
+    - target: {fileID: 2316464135459723754, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
+      propertyPath: m_Speed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3846252662188365726, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.010694533
@@ -6295,7 +6299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _linkedMissionCondition: {fileID: 11400000, guid: 24ee2275ba421194cb513f0f05234ebd, type: 2}
-  _goalState: 4
+  _goalState: 8
 --- !u!1 &122675948
 GameObject:
   m_ObjectHideFlags: 0
@@ -47266,6 +47270,10 @@ PrefabInstance:
       propertyPath: _anchorData.Array.data[3].RequiredMissionStepToProceed
       value: 
       objectReference: {fileID: 11400000, guid: 5f9e4e6e8f96ad040b6b3b7f7371e6d8, type: 2}
+    - target: {fileID: 320915802098946565, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: _anchorData.Array.data[3].WaitForPatrollingAfterMissionStep
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 555867520600369371, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _initialState
       value: 0
@@ -50454,6 +50462,7 @@ GameObject:
   - component: {fileID: 851775111}
   - component: {fileID: 851775112}
   - component: {fileID: 851775113}
+  - component: {fileID: 851775114}
   m_Layer: 0
   m_Name: RegisterMissionStepGoal
   m_TagString: Untagged
@@ -50502,6 +50511,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _missionStepGoalMarker: {fileID: 11400000, guid: 488d58048874e7d40b9741de1ef2100b, type: 2}
+--- !u!114 &851775114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851775110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 5f9e4e6e8f96ad040b6b3b7f7371e6d8, type: 2}
 --- !u!1001 &852046208
 PrefabInstance:
   m_ObjectHideFlags: 0

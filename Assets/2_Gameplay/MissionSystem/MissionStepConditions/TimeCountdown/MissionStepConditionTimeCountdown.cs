@@ -18,7 +18,7 @@ public class MissionStepConditionTimeCountdown : MissionStepConditionAbstract, I
 
 	public void UpdateTimer(float currentTimeRemaining)
 	{
-		Debug.Log(currentTimeRemaining);
+		//Debug.Log(currentTimeRemaining);
 
 
 		
