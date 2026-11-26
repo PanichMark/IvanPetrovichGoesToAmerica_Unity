@@ -45,8 +45,9 @@ public event PickableObjectHandler OnPickableObjectReleased;
 
 
 
-	protected virtual void SendSignalOnReleaseObject()
+	protected void SendSignalOnReleaseObject()
 	{
+		Debug.Log("RELEASED");
 		OnPickableObjectReleased?.Invoke();
 	}
 
