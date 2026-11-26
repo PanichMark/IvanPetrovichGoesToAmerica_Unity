@@ -12,7 +12,7 @@ public class MissionStepConditionTimeCountdown : MissionStepConditionAbstract, I
 		{
 			_isConditionMet = true;
 			_missionStepAbstract.OnStepCompleted(GoToNextStep);
-			Debug.Log("[Условие] Время вышло.");
+			//Debug.Log("[Условие] Время вышло.");
 		}
 	}
 

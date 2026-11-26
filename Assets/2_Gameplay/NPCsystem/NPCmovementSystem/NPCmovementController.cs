@@ -76,8 +76,8 @@ public class NPCmovementController : MonoBehaviour
 
 	private void Update()
 	{
-		Debug.Log(_currentMovementCoroutine);
-		Debug.Log(IsPatrollWaitingForAnotherState);
+		//Debug.Log(_currentMovementCoroutine);
+		//Debug.Log(IsPatrollWaitingForAnotherState);
 	}
 
 	public void StopAnchorMove()
@@ -87,7 +87,7 @@ public class NPCmovementController : MonoBehaviour
 			if (_currentMovementCoroutine != null)
 			{
 
-				Debug.Log("DEFAULT STOP!");
+				//Debug.Log("DEFAULT STOP!");
 				TurnNavmeshOff();
 				StopCoroutine(_currentMovementCoroutine);
 				_currentMovementCoroutine = null;

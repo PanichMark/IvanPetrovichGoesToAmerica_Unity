@@ -58,7 +58,7 @@ public class TriggerZone : GameplayObjectJsonSaveLoad
 				if (_finishedLoadingData)
 				{
 					TriggerZoneInteraction();
-					Debug.Log("TRIGGER INSIDE");
+					//Debug.Log("TRIGGER INSIDE");
 				}
 			}
 			else

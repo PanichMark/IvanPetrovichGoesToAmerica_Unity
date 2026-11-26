@@ -1328,7 +1328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _linkedMissionCondition: {fileID: 11400000, guid: 9f6e46a6ea528f645a7e590a717dab55, type: 2}
-  _countdownDuration: 5
+  _countdownDuration: 10
   _showCountDown: 1
 --- !u!4 &28251020
 Transform:
@@ -6241,7 +6241,7 @@ PrefabInstance:
       addedObject: {fileID: 122125730}
     - targetCorrespondingSourceObject: {fileID: 159260596393591729, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 122125775}
+      addedObject: {fileID: 122125797}
   m_SourcePrefab: {fileID: 100100000, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
 --- !u!4 &122125727 stripped
 Transform:
@@ -6290,7 +6290,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5519263260445635623, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
   m_PrefabInstance: {fileID: 122125726}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &122125775
+--- !u!114 &122125797
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6299,11 +6299,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 122125728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd8c8ee45a8b23e41a0418f9f2a19ee5, type: 3}
+  m_Script: {fileID: 11500000, guid: 24af8a664e68414b92564d81c1a9ba73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _linkedMissionCondition: {fileID: 11400000, guid: 24ee2275ba421194cb513f0f05234ebd, type: 2}
-  _goalState: 8
+  _linkedMissionStep: {fileID: 11400000, guid: 6032eed6d94771d4cb9e36f95f37fbe7, type: 2}
+  _npcStateToSet: 8
 --- !u!1 &122675948
 GameObject:
   m_ObjectHideFlags: 0
@@ -18303,7 +18303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _linkedMissionCondition: {fileID: 11400000, guid: 63e99d5e0a0855c4b8bc1a221f2ba8a1, type: 2}
-  _countdownDuration: 5
+  _countdownDuration: 10
   _showCountDown: 1
 --- !u!4 &298178173
 Transform:

@@ -362,7 +362,7 @@ public class CutsceneController : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("ON_TIME_STOPPED");
+			//Debug.Log("ON_TIME_STOPPED");
 			ExecutePostCutsceneActions();
 		}
 	}
@@ -370,20 +370,20 @@ public class CutsceneController : MonoBehaviour
 	private void CutsceneStopTime()
 	{
 		Time.timeScale = 0f;
-		Debug.Log("Cutscene Time = 0");
+		//Debug.Log("Cutscene Time = 0");
 	}
 
 	private void CutsceneResumeTime()
 	{
 		Time.timeScale = 1f;
-		Debug.Log("Cutscene Time = 1");
+		//Debug.Log("Cutscene Time = 1");
 	}
 
 	private void CancelCutsceneOnLoad()
 	{
 		//_menuManager.OnCloseMenuBackground();
 
-		Debug.Log($"Cutscene {gameObject.name} Cancelled");
+		//Debug.Log($"Cutscene {gameObject.name} Cancelled");
 
 		_playerBootstrap.transform.SetParent(null);
 		SceneManager.MoveGameObjectToScene(_playerBootstrap, SceneManager.GetSceneAt(0));
@@ -404,7 +404,7 @@ public class CutsceneController : MonoBehaviour
 	private void SkipCutscene()
 	{
 		_wasCutsceneSkipped = true;
-		Debug.Log("CUTSCENE SKIPPED");
+		//Debug.Log("CUTSCENE SKIPPED");
 		ExecutePostCutsceneActions();
 	}
 
@@ -472,7 +472,7 @@ public class CutsceneController : MonoBehaviour
 						if (controller != null)
 						{
 							controller.SetNPCState(data.stateToSet);
-							Debug.Log($"Катсцена {gameObject.name} изменила состояние NPC {data.npcObject.name} на {data.stateToSet}.");
+							//Debug.Log($"Катсцена {gameObject.name} изменила состояние NPC {data.npcObject.name} на {data.stateToSet}.");
 						}
 					}
 				}
@@ -510,7 +510,7 @@ public class CutsceneController : MonoBehaviour
 
 
 			gameObject.SetActive(false);
-			Debug.Log($"Post-cutscene {gameObject.name} actions executed.");
+			//Debug.Log($"Post-cutscene {gameObject.name} actions executed.");
 	}
 	
 
@@ -519,7 +519,7 @@ public class CutsceneController : MonoBehaviour
 	public void TriggerCutscene(GameObject inspectedWeapon)
 	{
 
-		Debug.Log("CUTSCENE!!!");
+		//Debug.Log("CUTSCENE!!!");
 		_director.Play();
 		_gameController.MakeGameUnsavable();
 		HidePreviousTextCutsceneDialogue();

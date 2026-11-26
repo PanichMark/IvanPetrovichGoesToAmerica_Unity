@@ -60,7 +60,7 @@ public class MissionStepConditionTimeCountdownRegistration : MonoBehaviour
 	private IEnumerator CountdownCoroutine(float duration)
 
 	{
-		Debug.Log("STARTED COUNTDOWN!");
+		//Debug.Log("STARTED COUNTDOWN!");
 		float elapsed = 0f;
 		while (elapsed < duration)
 		{
