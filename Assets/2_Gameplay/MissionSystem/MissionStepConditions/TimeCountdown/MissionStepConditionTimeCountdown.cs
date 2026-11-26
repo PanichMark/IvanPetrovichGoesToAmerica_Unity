@@ -14,6 +14,10 @@ public class MissionStepConditionTimeCountdown : MissionStepConditionAbstract, I
 			_missionStepAbstract.OnStepCompleted(GoToNextStep);
 			//Debug.Log("[Условие] Время вышло.");
 		}
+		else
+		{
+			Debug.Log("Timecountdown was already met THIS !");
+		}	
 	}
 
 	public void UpdateTimer(float currentTimeRemaining)

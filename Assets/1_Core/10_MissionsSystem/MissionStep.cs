@@ -16,16 +16,22 @@ public class MissionStep : ScriptableObject
 	[TextArea(3, 10)]
 	public string StepDescription;
 	[SerializeField] private bool showMissionMarker = true;
+	[SerializeField] private bool _canStepBeReturnedTo;
 
-	public IReadOnlyList<MissionStepConditionAbstract> Conditions
-	{
-		get { return StepConditions.ConvertAll(c => (MissionStepConditionAbstract)c); }
-	}
+	public List<MissionStepConditionAbstract> Conditions => StepConditions;
 
 	//[SerializeField] private int _minStepIndexIgnore;
 	//[SerializeField] private int _maxStepIndexIgnore;
 
-	public List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
+	[SerializeField] private List<MissionStepConditionAbstract> StepConditions = new List<MissionStepConditionAbstract>();
+
+	private void ResetAllReturnableStepConditions()
+	{
+		for (int i = 0; i < StepConditions.Count; i++)
+		{
+			StepConditions[i].ResetStepCondition();
+		}
+	}
 
 	public void ApplyAllCurrentGameplaySceneActions()
 	{
@@ -42,6 +48,11 @@ public class MissionStep : ScriptableObject
 	public void OnStepStarted()
 	{
 		ApplyAllCurrentGameplaySceneActions();
+
+		if (_canStepBeReturnedTo)
+		{
+			ResetAllReturnableStepConditions();
+		}
 	}
 
 	public void OnStepCompleted(int goToNextStep)
