@@ -15,7 +15,12 @@ public class MissionStepConditionNPCstateChanged : MissionStepConditionAbstract
 		Debug.Log($"[Условие] Миссия пройдена. NPC перешел в состояние {newState}.");
 	}
 
-	public override void ResetStepCondition()
+	public override void ResetStepConditionBySystem()
+	{
+		_isConditionMet = false;
+	}
+
+	public override void ResetStepConditionByReturning()
 	{
 		_isConditionMet = false;
 	}

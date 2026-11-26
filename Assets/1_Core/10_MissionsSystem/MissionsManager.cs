@@ -65,11 +65,11 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		_gameSceneManager.OnEndLoadingGameplayScene += ReapplyAllCurrentGameplaySceneActions;
 
 
-		_gameSceneManager.OnBeginLoadingGameplayScene += ResetAllMissionStepsActionListsAndStuff;
+		_gameSceneManager.OnBeginLoadingGameplayScene += ResetAlllStepConditionsAndStepActionsOnSceneLoad;
 
 
 
-		ResetAllStepConditions();
+		ResetAllStepConditionsAtInitializeGame();
 		IsInitialized = true;
 		//Debug.Log("current index" + CurrentStepIndex);
 		Debug.Log("MissionsManager Initialized");
@@ -114,7 +114,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		//}
 	}
 
-	private void ResetAllStepConditions()
+	private void ResetAllStepConditionsAtInitializeGame()
 	{
 		foreach (var mission in _gameMissions.MissionsInOrder)
 		{
@@ -128,7 +128,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 					{
 						if (condition is MissionStepConditionAbstract resettableCondition)
 						{
-							resettableCondition.ResetStepCondition();
+							resettableCondition.ResetStepConditionBySystem();
 						}
 					}
 				}
@@ -136,7 +136,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 		}
 	}
 
-	private void ResetAllMissionStepsActionListsAndStuff()
+	private void ResetAlllStepConditionsAndStepActionsOnSceneLoad()
 	{
 		foreach (var mission in _gameMissions.MissionsInOrder)
 		{
@@ -146,7 +146,7 @@ public class MissionsManager : MonoBehaviour, IJsonSaveLoad
 
 				foreach (var condition in step.Conditions)
 				{
-					condition.ResetStepCondition();
+					condition.ResetStepConditionBySystem();
 
 					// maybe in the case with back and forth
 					// like with crates

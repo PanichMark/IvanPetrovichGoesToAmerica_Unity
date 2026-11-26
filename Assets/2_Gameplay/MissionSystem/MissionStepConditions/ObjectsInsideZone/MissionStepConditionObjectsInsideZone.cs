@@ -21,7 +21,7 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 	}
 	*/
 
-	public override void ResetStepCondition()
+	public override void ResetStepConditionBySystem()
 	{
 		//Debug.Log($"[Условие][RESET] Сброс шага. Очистка временных списков.");
 		//Debug.Log("CLEAR ZONE REGISTER");
@@ -101,6 +101,11 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 		_missionStepAbstract.OnStepCompleted(GoToNextStep);
 		//Debug.Log($"[Условие] УСПЕХ! Все объекты внутри {_stepConditionOwner.name}. Шаг выполнен.");
 		//NotifyMissionManagerOnStepCompletion();
+	}
+
+	public override void ResetStepConditionByReturning()
+	{
+		_isConditionMet = false;
 	}
 
 

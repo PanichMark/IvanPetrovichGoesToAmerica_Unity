@@ -19,7 +19,8 @@ public abstract class MissionStepConditionAbstract : ScriptableObject
 		_missionsManager = ServiceLocator.Resolve<MissionsManager>();
 	}
 
-	public abstract void ResetStepCondition();
+	public abstract void ResetStepConditionBySystem();
+	public abstract void ResetStepConditionByReturning();
 
 	public void Initialize(MissionStep missionStepAbstract)
 	{

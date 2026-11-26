@@ -30,7 +30,12 @@ public class MissionStepConditionTimeCountdown : MissionStepConditionAbstract, I
 		
 	}
 
-	public override void ResetStepCondition()
+	public override void ResetStepConditionBySystem()
+	{
+		_isConditionMet = false;
+	}
+
+	public override void ResetStepConditionByReturning()
 	{
 		_isConditionMet = false;
 	}

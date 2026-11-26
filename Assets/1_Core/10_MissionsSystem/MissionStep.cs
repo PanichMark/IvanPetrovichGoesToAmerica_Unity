@@ -29,7 +29,7 @@ public class MissionStep : ScriptableObject
 	{
 		for (int i = 0; i < StepConditions.Count; i++)
 		{
-			StepConditions[i].ResetStepCondition();
+			StepConditions[i].ResetStepConditionByReturning();
 		}
 	}
 
