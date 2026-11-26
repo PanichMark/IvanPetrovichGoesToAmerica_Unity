@@ -44,9 +44,16 @@ public class NPCmovementController : MonoBehaviour
 
 	public void StartAnchorMove()
 	{
-		TurnNavmeshOn();
-		_currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCoroutine());
-		_isAnchorMoving = true;
+		//Debug.Log(IsPatrollWaitingForAnotherState);
+
+		if (IsPatrollWaitingForAnotherState == false)
+		{
+			TurnNavmeshOn();
+
+			_currentMovementCoroutine = StartCoroutine(MoveBetweenAnchorPointsCoroutine());
+
+			_isAnchorMoving = true;
+		}
 		//Debug.Log(CurrentGoalAnchorPointIndex);
 	}
 
@@ -67,12 +74,20 @@ public class NPCmovementController : MonoBehaviour
 		
 	}
 
+	private void Update()
+	{
+		Debug.Log(_currentMovementCoroutine);
+		Debug.Log(IsPatrollWaitingForAnotherState);
+	}
+
 	public void StopAnchorMove()
 	{
 		if (IsPatrollWaitingForAnotherState == false)
 		{
 			if (_currentMovementCoroutine != null)
 			{
+
+				Debug.Log("DEFAULT STOP!");
 				TurnNavmeshOff();
 				StopCoroutine(_currentMovementCoroutine);
 				_currentMovementCoroutine = null;
@@ -81,7 +96,7 @@ public class NPCmovementController : MonoBehaviour
 		}
 		else
 		{
-			IsPatrollWaitingForAnotherState = false;
+			//IsPatrollWaitingForAnotherState = false;
 		}
 		//Debug.Log(CurrentGoalAnchorPointIndex);
 	}
@@ -106,15 +121,12 @@ public class NPCmovementController : MonoBehaviour
 			float waitDuration = _anchorData[CurrentGoalAnchorPointIndex].NPCwaitDuration;
 			MissionStep requiredStep = _anchorData[CurrentGoalAnchorPointIndex].RequiredMissionStepToProceed;
 
-			CurrentGoalAnchorPointIndex++;
-			if (CurrentGoalAnchorPointIndex >= _anchorData.Count)
-			{
-				CurrentGoalAnchorPointIndex = 0;
-			}
-
 			if (requiredStep != null)
 			{
-				if (_anchorData[CurrentGoalAnchorPointIndex].WaitForPatrollingAfterMissionStep)
+				//Debug.Log(CurrentGoalAnchorPointIndex);
+				//Debug.Log(_anchorData[CurrentGoalAnchorPointIndex].NPCanchorPoint.ToString());
+				//Debug.Log(_anchorData[CurrentGoalAnchorPointIndex].WaitForPatrollingAfterMissionStep);
+				if (_anchorData[CurrentGoalAnchorPointIndex].WaitForPatrollingAfterMissionStep == true)
 				{
 					IsPatrollWaitingForAnotherState = true;
 				}
@@ -130,8 +142,10 @@ public class NPCmovementController : MonoBehaviour
 					yield return null;
 
 				}
-				IsPatrollWaitingForAnotherState = false;
+				
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.Patrolling);
+				IsPatrollWaitingForAnotherState = false;
+
 			}
 			else
 			{
@@ -142,6 +156,12 @@ public class NPCmovementController : MonoBehaviour
 			{
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.StationaryAction);
 				yield return StartCoroutine(WaitFor(waitDuration));
+			}
+
+			CurrentGoalAnchorPointIndex++;
+			if (CurrentGoalAnchorPointIndex >= _anchorData.Count)
+			{
+				CurrentGoalAnchorPointIndex = 0;
 			}
 		}
 	}

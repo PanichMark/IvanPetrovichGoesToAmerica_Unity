@@ -3475,12 +3475,12 @@ GameObject:
   - component: {fileID: 76198865}
   - component: {fileID: 76198864}
   m_Layer: 0
-  m_Name: TriggerZoneFoundBIstroMan
+  m_Name: TriggerZoneFoundBistroMan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &76198864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6087,6 +6087,10 @@ PrefabInstance:
     - target: {fileID: 159260596393591729, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: m_Name
       value: NPC_Neutral_Teenager
+      objectReference: {fileID: 0}
+    - target: {fileID: 159260596393591729, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 320915802098946565, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: _anchorData.Array.size
@@ -42747,6 +42751,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC_Peaceful_Priest
       objectReference: {fileID: 0}
+    - target: {fileID: 159260596393591729, guid: 1277da79186776a4da2ecd8cc722669e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 555867520600369371, guid: 1277da79186776a4da2ecd8cc722669e, type: 3}
       propertyPath: _initialState
       value: 0
@@ -47225,6 +47233,10 @@ PrefabInstance:
     - target: {fileID: 159260596393591729, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: m_Name
       value: NPC_Peaceful_BistroOwner
+      objectReference: {fileID: 0}
+    - target: {fileID: 159260596393591729, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 320915802098946565, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _anchorData.Array.size
@@ -125339,7 +125351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2076478554
 MonoBehaviour:
   m_ObjectHideFlags: 0
