@@ -24,7 +24,7 @@ public class MissionStepConditionObjectInteracted : MissionStepConditionAbstract
 		{
 			_isConditionMet = true;
 			_missionStepAbstract.OnStepCompleted(GoToNextStep);
-			Debug.Log($"[Условие] Взаимодействие с {_stepConditionOwner.name} засчитано.");
+			//Debug.Log($"[Условие] Взаимодействие с {_stepConditionOwner.name} засчитано.");
 			//NotifyMissionManagerOnStepCompletion(); // Сообщаем менеджеру о завершении шага
 		}
 	}

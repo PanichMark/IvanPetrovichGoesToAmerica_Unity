@@ -86,7 +86,7 @@ public class MissionStepGoalMarkerController : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log($"NO MARKER GAMEOBJECT IN {_currentMissionStepCache}");
+			Debug.Log($"!!!NO MARKER GAMEOBJECT!!! IN {_currentMissionStepCache}");
 		}
 
 		//Debug.Log("[MissionMarker] Активных целей для отслеживания не найдено.");

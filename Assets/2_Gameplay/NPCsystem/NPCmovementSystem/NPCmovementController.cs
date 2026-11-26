@@ -9,9 +9,7 @@ public class NPCmovementController : MonoBehaviour
 	private Coroutine _currentMovementCoroutine;
 	private NavMeshAgent _navMeshAgent;
 	[SerializeField] private List<NPCmovementAnchorData> _anchorData = new List<NPCmovementAnchorData>();
-	public List<NPCmovementAnchorData> AnchorData => _anchorData;
-	public float AnimationDuration => _animationDuration;
-	private float _animationDuration = 99999f;
+	public bool IsWaitingForMissionStepToPatroll {  get; private set; }
 	private MissionsManager _missionsManager;
 	public Coroutine currentRotationCoroutine { get; private set; }
 	private NPCstateMachineController _NPCstateMachineController;
@@ -19,7 +17,6 @@ public class NPCmovementController : MonoBehaviour
 	private GameObject _cachedPlayer;
 	private MenuManager _menuManager;
 	private bool _isAnchorMoving;
-	public float CurrentStationaryWaitTime { get; private set; }
 	public void Initialize(
 		MenuManager menuManager,
 		MissionsManager missionsManager,
@@ -72,13 +69,16 @@ public class NPCmovementController : MonoBehaviour
 
 	public void StopAnchorMove()
 	{
-		if (_currentMovementCoroutine != null)
+		if (IsWaitingForMissionStepToPatroll == false)
 		{
-			TurnNavmeshOff();
-			StopCoroutine(_currentMovementCoroutine);
-			_currentMovementCoroutine = null;
+			if (_currentMovementCoroutine != null)
+			{
+				TurnNavmeshOff();
+				StopCoroutine(_currentMovementCoroutine);
+				_currentMovementCoroutine = null;
+			}
+			_isAnchorMoving = false;
 		}
-		_isAnchorMoving = false;
 		//Debug.Log(CurrentGoalAnchorPointIndex);
 	}
 
@@ -116,18 +116,28 @@ public class NPCmovementController : MonoBehaviour
 
 			if (requiredStep != null)
 			{
+				IsWaitingForMissionStepToPatroll = true;
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.StationaryAction);
 
 				// ИСПРАВЛЕННАЯ СТРОКА: Сравниваем индекс из MissionManager с индексом шага в массиве Mission.MissionSteps
 				int requiredStepIndex = System.Array.IndexOf(_missionsManager.ActiveMission.MissionSteps, requiredStep);
 				while (_missionsManager.CurrentStepIndex != requiredStepIndex)
 				{
+					//Debug.Log(_missionsManager.CurrentStepIndex);
+					//Debug.Log(requiredStepIndex);
+					//Debug.Log("WAITING FOR MISSION STEP");
 					yield return null;
-				}
 
+				}
+				IsWaitingForMissionStepToPatroll = false;
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.Patrolling);
 			}
-			else if (waitDuration > 0)
+			else
+			{
+				IsWaitingForMissionStepToPatroll = false;
+			}
+
+			if (waitDuration > 0)
 			{
 				_NPCstateMachineController.SetNPCState(NPCstateTypes.StationaryAction);
 				yield return StartCoroutine(WaitFor(waitDuration));

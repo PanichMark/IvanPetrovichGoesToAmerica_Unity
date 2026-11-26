@@ -43,6 +43,8 @@ public event PickableObjectHandler OnPickableObjectReleased;
 
 	protected bool _isObjectDestroyed;
 
+
+
 	protected virtual void SendSignalOnReleaseObject()
 	{
 		OnPickableObjectReleased?.Invoke();
@@ -109,6 +111,7 @@ _pickableLayer = LayerMask.NameToLayer("Pickable");
 
 	public void Interact()
 	{
+		OnInteract?.Invoke();
 		PickUpObject(false);
 	}
 
