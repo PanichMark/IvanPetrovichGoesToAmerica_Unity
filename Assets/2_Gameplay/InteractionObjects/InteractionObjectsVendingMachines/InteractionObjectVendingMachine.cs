@@ -124,6 +124,8 @@ public class InteractionObjectVendingMachine : GameplayObjectJsonSaveLoad, IInte
 
 	protected void SpawnGoods()
 	{
+		OnInteract?.Invoke();
+
 		Vector3 spawnPosition = transform.localPosition + transform.TransformDirection(new Vector3(0, 0.5f, 1));
 		float yRotation = transform.eulerAngles.y;
 		Quaternion spawnRotation = Quaternion.Euler(0, yRotation, 0);
