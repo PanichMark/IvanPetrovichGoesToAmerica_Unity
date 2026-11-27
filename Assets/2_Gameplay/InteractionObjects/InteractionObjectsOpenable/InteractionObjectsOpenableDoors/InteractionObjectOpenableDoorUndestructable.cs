@@ -17,8 +17,9 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	[SerializeField] protected InteractionObjectLockElectronic _lockElectronicController;
 	[SerializeField] protected InteractionObjectElectricalPanel _electricalPanel;
 	[SerializeField] private InteractionObjectChangeSceneData _changeScene;
-	[SerializeField] protected bool _isLockedForever;
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
+	[SerializeField] protected bool _isDoorCompletelyShut;
+
 	[SerializeField] protected bool _canNPCOpenDoor = true;
 	[SerializeField] protected bool _shouldNPCcloseDoorBehind = true;
 	protected InteractionObjectOpenableDoorNPCdetector _npcDetector;
@@ -32,19 +33,13 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	private string _interactionHintMessageFail;
 	public override string InteractionHintMessageFail => _interactionHintMessageFail;
 	public bool DidNPCopenedThisDoor {  get; private set; }
-	public bool CanNPCopenThis {  get; private set; }
+	public bool CanNPCopenThis => _canNPCOpenDoor;
 
 	protected override void InitializeGameplayObjectJsonSaveLoad()
 	{
-		if (_changeScene == null && _isLockedForever == false)
-		{
 			_npcDetector = transform.parent.GetComponentInChildren<InteractionObjectOpenableDoorNPCdetector>();
 			//Debug.Log(gameObject.name);
 			_npcDetector.Initialize(this);
-			CanNPCopenThis = true;
-		}
-
-
 		_playerMovementController = ServiceLocator.Resolve<PlayerMovementController>();
 		_gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 		_keysManager = ServiceLocator.Resolve<KeyItemsManager>();
@@ -74,7 +69,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 			transform.localRotation = _openedRotation;
 		}
 
-		if (!_isLockedForever)
+		if (!_isDoorCompletelyShut)
 		{
 			if (_interactionObjectKeyData != null && !IsOpenableUnlocked)
 			{
@@ -140,7 +135,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 		base.Interact();
 		//OnInteract?.Invoke();
 
-		if (!_isLockedForever)
+		if (!_isDoorCompletelyShut)
 		{
 			if (_interactionObjectKeyData != null && !IsOpenableUnlocked)
 			{
@@ -195,7 +190,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 		_localizationManager = localizationManager;
 		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_Open", gameObject.name);
 
-		if (!_isLockedForever)
+		if (!_isDoorCompletelyShut)
 		{
 			if (_interactionObjectKeyData != null)
 			{
@@ -326,7 +321,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	{
 		//Quaternion startRotation = transform.localRotation;
 		//transform.localRotation = startRotation * _openedRotation;
-		if (_changeScene == null && _isLockedForever == false)
+		if (_changeScene == null && _isDoorCompletelyShut == false)
 		{
 			_navMeshObstacle.enabled = false;
 		}
@@ -336,7 +331,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	{
 		//Quaternion startRotation = transform.localRotation;
 		//transform.localRotation = startRotation * _closedRotation;
-		if (_changeScene == null && _isLockedForever == false)
+		if (_changeScene == null && _isDoorCompletelyShut == false)
 		{
 			_navMeshObstacle.enabled = true;
 		}

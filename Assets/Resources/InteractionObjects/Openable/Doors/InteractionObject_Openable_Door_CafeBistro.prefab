@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 1455448513903721230}
   - component: {fileID: 3823775423419999824}
   - component: {fileID: 6639050576276222781}
-  - component: {fileID: 8888753350795050162}
+  - component: {fileID: 243107685194482395}
   m_Layer: 0
   m_Name: Door
   m_TagString: Interactable
@@ -173,13 +173,14 @@ MonoBehaviour:
   _doorOpenAngle: 90
   _doorOpeningSpeed: 200
   _interactionObjectKeyData: {fileID: 0}
-  _mechanicalLockController: {fileID: 0}
-  _electronicLockController: {fileID: 0}
-  _electronicElectricalPanel: {fileID: 0}
+  _lockMechanicalController: {fileID: 0}
+  _lockElectronicController: {fileID: 0}
+  _electricalPanel: {fileID: 0}
   _changeScene: {fileID: 0}
-  _isLockedForever: 0
   _doorSibling: {fileID: 0}
+  _isDoorCompletelyShut: 0
   _canNPCOpenDoor: 1
+  _shouldNPCcloseDoorBehind: 1
 --- !u!65 &6639050576276222781
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -199,9 +200,9 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000176, y: 2.7, z: 0.44000006}
-  m_Center: {x: -0.49999118, y: 1.35, z: -0.07999998}
---- !u!208 &8888753350795050162
+  m_Size: {x: 1.0000176, y: 2.7, z: 0.1613653}
+  m_Center: {x: -0.49999118, y: 1.35, z: -0.08142911}
+--- !u!208 &243107685194482395
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,7 +212,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 1.35, z: 0.22000001}
+  m_Extents: {x: 0.5, y: 1.35, z: 0.08}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1

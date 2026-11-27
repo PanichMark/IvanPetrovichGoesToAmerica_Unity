@@ -18,13 +18,16 @@ public class InteractionObjectOpenableDoorNPCdetector : MonoBehaviour
     {
         if (_doorController.CanNPCopenThis)
         {
+            Debug.Log(1);
             // Ищем главный коллайдер NPC (тот, что на корне)
             if (other.transform.root.TryGetComponent<NPClivingBeing>(out _))
             {
-                // Кэшируем его при первом входе
-                if (_mainNPCCollider == null)
+				Debug.Log(2);
+				// Кэшируем его при первом входе
+				if (_mainNPCCollider == null)
                 {
-                    _mainNPCCollider = other.transform.root.GetComponentInChildren<Collider>();
+					Debug.Log(3);
+					_mainNPCCollider = other.transform.root.GetComponentInChildren<Collider>();
                    //Debug.Log($"NPC Detector Enter: {_mainNPCCollider.name}");
                     _doorController.NPCtryOpeningDoor();
                 }
