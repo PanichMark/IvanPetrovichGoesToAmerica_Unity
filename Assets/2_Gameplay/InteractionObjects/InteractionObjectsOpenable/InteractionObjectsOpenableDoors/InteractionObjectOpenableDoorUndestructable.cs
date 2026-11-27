@@ -130,6 +130,18 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 
 	}
 
+	public void ShutDoor()
+	{
+		_isDoorCompletelyShut = true;
+		IsOpenableUnlocked = false;
+	}
+
+	public void UnshutDoor()
+	{
+		_isDoorCompletelyShut = false;
+		IsOpenableUnlocked = true;
+	}
+
 	public override void Interact()
 	{
 		base.Interact();
@@ -243,6 +255,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 
 	public void NPCtryOpeningDoor()
 	{
+		//Debug.Log("NPC TRIED TO OPEN!");
 		if (IsOpenableUnlocked && !IsObjectOpened && _canNPCOpenDoor)
 		{
 			DidNPCopenedThisDoor = true;
