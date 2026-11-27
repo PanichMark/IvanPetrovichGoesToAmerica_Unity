@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine;
 
 
 public class NPCpeaceful : NPClivingBeing
 {
-	private NPCdialogueController _NPCdialogueController;
+	private List<NPCdialogueController> _NPCdialogueControllers = new List<NPCdialogueController>();
 
 	[SerializeField] private NPCphrasesDataPeaceful _NPCPhrasesDataPeaceful;
 	[SerializeField] private NPCpeacefulReactionType _NPCPeacefulReactionType;
@@ -14,11 +15,11 @@ public class NPCpeaceful : NPClivingBeing
 			this,
 			_NPCPhrasesDataPeaceful);
 
-		_NPCdialogueController = GetComponent<NPCdialogueController>();
+		_NPCdialogueControllers = new List<NPCdialogueController>(GetComponents<NPCdialogueController>());
 
-		if (_NPCdialogueController != null)
+		foreach (var dialogueController in _NPCdialogueControllers)
 		{
-			_NPCdialogueController.Initialize(
+			dialogueController.Initialize(
 				this,
 				_NPCmovementController);
 		}
@@ -52,17 +53,14 @@ public class NPCpeaceful : NPClivingBeing
 
 		if (!_canNPCbeRobbed)
 		{
-			if (_NPCdialogueController != null && _NPCdialogueController.enabled == true)
+			if (TryInteractWithEnabledDialogue())
+			{
+				return;
+			}
 
-			{
-				_NPCdialogueController.Interact();
-			}
-			else
-			{
-				CallOnInteract();
-				StopAllCoroutines();
-				_NPCphrasesController.TemporaryShowPhrases();
-			}
+			CallOnInteract();
+			StopAllCoroutines();
+			_NPCphrasesController.TemporaryShowPhrases();
 		}
 		else
 		{
@@ -72,11 +70,52 @@ public class NPCpeaceful : NPClivingBeing
 		}
 	}
 
+	public bool SetDialogueControllerEnabled(int dialogueIndex, bool enable)
+	{
+		if (dialogueIndex < 0 || dialogueIndex >= _NPCdialogueControllers.Count)
+		{
+			Debug.LogError($"Dialogue index {dialogueIndex} is out of range on NPC '{name}'.", this);
+			return false;
+		}
+
+		_NPCdialogueControllers[dialogueIndex].enabled = enable;
+		return true;
+	}
+
+	private bool TryInteractWithEnabledDialogue()
+	{
+		NPCdialogueController enabledDialogueController = null;
+
+		foreach (var dialogueController in _NPCdialogueControllers)
+		{
+			if (!dialogueController.enabled)
+			{
+				continue;
+			}
+
+			if (enabledDialogueController != null)
+			{
+				Debug.LogError($"Multiple enabled dialogue components on NPC '{name}'.", this);
+				return true;
+			}
+
+			enabledDialogueController = dialogueController;
+		}
+
+		if (enabledDialogueController == null)
+		{
+			return false;
+		}
+
+		enabledDialogueController.Interact();
+		return true;
+	}
+
 	protected override void DisableDialogueController()
 	{
-		if (_NPCdialogueController != null)
+		foreach (var dialogueController in _NPCdialogueControllers)
 		{
-			_NPCdialogueController.enabled = false;
+			dialogueController.enabled = false;
 		}
 	}
 }

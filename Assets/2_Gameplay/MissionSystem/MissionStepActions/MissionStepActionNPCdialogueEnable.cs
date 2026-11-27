@@ -4,6 +4,7 @@ public class MissionStepActionNPCdialogueEnable : MonoBehaviour, IMissionStepAct
 {
 	[SerializeField] private MissionStep _linkedMissionStep;
 	[SerializeField] private bool _enable;
+	[SerializeField] private int _dialogueIndex;
 
 	private void Start()
 	{
@@ -15,10 +16,20 @@ public class MissionStepActionNPCdialogueEnable : MonoBehaviour, IMissionStepAct
 
 	public void PerformAction()
 	{
-		var dialogueController = GetComponent<NPCdialogueController>();
-		if (dialogueController != null)
+		var neutralNPC = GetComponent<NPCneutral>();
+		if (neutralNPC != null)
 		{
-			dialogueController.enabled = _enable;
+			neutralNPC.SetDialogueControllerEnabled(_dialogueIndex, _enable);
+			return;
 		}
+
+		var peacefulNPC = GetComponent<NPCpeaceful>();
+		if (peacefulNPC != null)
+		{
+			peacefulNPC.SetDialogueControllerEnabled(_dialogueIndex, _enable);
+			return;
+		}
+
+		Debug.LogError($"Cannot find NPCneutral or NPCpeaceful on '{name}' to set dialogue state.", this);
 	}
 }
