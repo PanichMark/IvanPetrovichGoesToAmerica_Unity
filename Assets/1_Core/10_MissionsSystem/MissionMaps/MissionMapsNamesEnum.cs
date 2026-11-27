@@ -1,0 +1,10 @@
+﻿public enum MissionMapsNamesEnum
+{
+	MissionMap_0_ResentymentarnyDistrictMap,
+	MissionMap_0_RevenueHouse_Floor1Plan,
+	MissionMap_0_RevenueHouse_Floor2Plan,
+	MissionMap_0_RevenueHouse_Floor3Plan,
+	MissionMap_0_RevenueHouse_Floor4Plan,
+	MissionMap_0_RevenueHouse_SewersPlan,
+	MissionMap_0_InnerYardMap,
+}

@@ -1,0 +1,11 @@
+﻿using UnityEngine;
+
+[CreateAssetMenu(fileName = "GameSceneData", menuName = "Bootstrap/GameData/GameScenes/GameSceneData")]
+public class GameSceneData : ScriptableObject
+{
+	public GameScenesSystemEnum GameScene;
+	public TextAsset SceneDescription_RU;
+	public TextAsset SceneDescription_EN;
+	public Sprite SceneLoadingScreenImage;
+	public Mission SceneGameMission;
+}

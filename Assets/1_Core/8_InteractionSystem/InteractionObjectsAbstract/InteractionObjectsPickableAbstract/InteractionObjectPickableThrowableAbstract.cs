@@ -1,0 +1,211 @@
+﻿using System.Collections;
+using UnityEngine;
+
+public abstract class InteractionObjectPickableThrowableAbstract : InteractionObjectPickableAbstract, IThrowable
+{
+	protected bool _canObjectBeDestroyedOnImpact;
+	public float ObjectThrowPower => 10f;
+	private GameObject _firstPersonRightHandWeaponSlotGameObject;
+
+	[Header("Object Damage")]
+	[SerializeField] protected float _damage;
+	[SerializeField] protected bool _canDamageBreakable;
+
+	private GameObject _thirdPersonRightHandWeaponSlotGameObject;
+	protected bool _wasThrown;
+
+
+	private PlayerCameraStateMachineController _playerCameraStateMachineController;
+
+	protected override void InitializePickable()
+	{
+		_pickableLayer = LayerMask.NameToLayer("Pickable");
+		_playerLayer = LayerMask.NameToLayer("Player");
+		_playerCollider = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player).GetComponent<CapsuleCollider>();
+		_firstPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotFirstPersonRightHand);
+		_thirdPersonRightHandWeaponSlotGameObject = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.PlayerWeaponSlotThirdPersonRightHand);
+		Collider = GetComponent<Collider>();
+		RigidBody = GetComponent<Rigidbody>();
+		CachedPlayer = ServiceLocator.Resolve(ServiceLocatorPlayerGameObjectsEnum.Player);
+		_localizationManager = ServiceLocator.Resolve<LocalizationManager>();
+		_playerCameraStateMachineController = ServiceLocator.Resolve<PlayerCameraStateMachineController>();
+
+		InteractionObjectNameUI = _localizationManager.GetLocalizedString(_interactionObjectNameSystem);
+		InteractionHintMessageAction = _localizationManager.GetLocalizedString("UI_HUD_Interaction_HintMessage_Action_PickUp", gameObject.name);
+		//_localizationManager.OnLanguageChanged += ChangeLanguage;
+
+		_playerCameraStateMachineController.OnFirstPersonCameraState += ChangeThrowableCameraStateFirst;
+		_playerCameraStateMachineController.OnThirdPersonCameraState += ChangeThrowableCameraStateThird;
+	}
+
+	private void ChangeThrowableCameraStateFirst()
+	{
+		if (IsObjectPickedUp)
+		{
+			gameObject.layer = LayerMask.NameToLayer("FirstPerson");
+
+			StopAllCoroutines();
+
+			transform.parent = _firstPersonRightHandWeaponSlotGameObject.transform;
+			transform.position = _firstPersonRightHandWeaponSlotGameObject.transform.position;
+			transform.rotation = Quaternion.Euler(0, _firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		}
+	}
+
+	private void ChangeThrowableCameraStateThird()
+	{
+		if (IsObjectPickedUp)
+		{
+			gameObject.layer = LayerMask.NameToLayer("Default");
+
+			StopAllCoroutines();
+
+			transform.parent = _thirdPersonRightHandWeaponSlotGameObject.transform;
+			transform.position = _thirdPersonRightHandWeaponSlotGameObject.transform.position;
+			transform.rotation = Quaternion.Euler(0, _thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		}
+	}
+
+	public override void PickUpObject(bool isPickedUpByLoadSafeFile)
+	{
+		if (!IsObjectPickedUp)
+		{
+			Debug.Log($"Picked up {InteractionObjectNameSystem}");
+
+			gameObject.tag = "Untagged";
+			Collider.enabled = false;
+			RigidBody.isKinematic = true;
+
+			if (!isPickedUpByLoadSafeFile)
+			{
+				if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+				{
+					StartCoroutine(MoveTowardsRightHandFirstPerson());
+				}
+				else
+				{
+					StartCoroutine(MoveTowardsRightHandThirdPerson());
+					gameObject.layer = LayerMask.NameToLayer("Default");
+				}
+			}
+			else
+			{
+				SetPickableObjectTransformAtPlayerArms();
+			}
+
+			IsObjectPickedUp = true;
+		}
+	}
+
+	protected virtual void OnCollisionEnter(Collision collision)
+	{
+		if (_canObjectBeDestroyedOnImpact)
+		{
+			var damageable = collision.gameObject.GetComponent<IDamageable>();
+			if (damageable != null && damageable.CanObjectBeDamaged)
+			{
+				damageable.TakeDamage(_damage);
+			}
+
+			if (_canDamageBreakable)
+			{
+				var breakable = collision.gameObject.GetComponent<IBreakable>();
+				if (breakable != null && breakable.CanObjectBeBroken && !breakable.IsObjectDestroyed)
+				{
+					breakable.TakeBreakDamage(_damage);
+				}
+			}
+		}
+	}
+
+	public void ThrowObject()
+	{
+		gameObject.tag = "Untagged";
+
+		Debug.Log($"Throwed {InteractionObjectNameSystem}");
+
+		Physics.IgnoreCollision(Collider, _playerCollider, true);
+		_isCollisionIgnored = true;
+		Collider.enabled = true;
+		RigidBody.isKinematic = false;
+		IsObjectPickedUp = false;
+		transform.parent = null;
+		_wasThrown = true;
+		SendSignalOnReleaseObject();
+		_canObjectBeDestroyedOnImpact = true;
+
+		Vector3 throwDirection = CachedPlayer.transform.forward - Camera.main.transform.up * Mathf.Tan(Camera.main.transform.eulerAngles.x * Mathf.Deg2Rad);
+		throwDirection.Normalize();
+
+		RigidBody.AddForce(throwDirection * ObjectThrowPower, ForceMode.Impulse);
+
+		gameObject.layer = LayerMask.NameToLayer("Default");
+	}
+
+
+	public void ObjectIsFullyDamaged()
+	{
+		Debug.Log($"{InteractionObjectNameSystem} was destroyed!");
+
+		_isObjectDestroyed = true;
+
+		gameObject.SetActive(false);
+	}
+	
+	private IEnumerator MoveTowardsRightHandFirstPerson()
+	{
+		gameObject.layer = LayerMask.NameToLayer("FirstPerson");
+
+		while (true)
+		{
+			Vector3 targetPosition = _firstPersonRightHandWeaponSlotGameObject.transform.position;
+
+			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
+
+			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
+			{
+				break;
+			}
+
+			yield return null;
+		}
+
+		SetPickableObjectTransformAtPlayerArms();
+	}
+	
+
+	private IEnumerator MoveTowardsRightHandThirdPerson()
+	{
+		while (true)
+		{
+			Vector3 targetPosition = _thirdPersonRightHandWeaponSlotGameObject.transform.position;
+
+			transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5f * Time.deltaTime);
+
+			if ((transform.position - targetPosition).sqrMagnitude < 0.001f)
+			{
+				break;
+			}
+
+			yield return null;
+		}
+
+		SetPickableObjectTransformAtPlayerArms();
+	}
+
+	protected override void SetPickableObjectTransformAtPlayerArms()
+	{
+		if (_playerCameraStateMachineController.CurrentPlayerCameraStateType == PlayerCameraStateTypes.FirstPerson)
+		{
+			transform.parent = _firstPersonRightHandWeaponSlotGameObject.transform;
+			transform.position = _firstPersonRightHandWeaponSlotGameObject.transform.position;
+			transform.rotation = Quaternion.Euler(0, _firstPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		}
+		else
+		{
+			transform.parent = _thirdPersonRightHandWeaponSlotGameObject.transform;
+			transform.position = _thirdPersonRightHandWeaponSlotGameObject.transform.position;
+			transform.rotation = Quaternion.Euler(0, _thirdPersonRightHandWeaponSlotGameObject.transform.localEulerAngles.y, 0);
+		}
+	}
+}
