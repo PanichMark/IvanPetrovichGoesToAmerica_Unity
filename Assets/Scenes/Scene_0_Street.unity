@@ -6071,7 +6071,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a4fdc27fd3760cb41a9cb1d2e733d0b2, type: 2}
     - target: {fileID: 2316464135459723754, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: m_Speed
-      value: 10
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 3846252662188365726, guid: ee226a4b398eccc49ad11a924cf16d19, type: 3}
       propertyPath: m_LocalRotation.x
@@ -47561,7 +47561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2316464135459723754, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: m_Speed
-      value: 10
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 4837707364710883254, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _NPCDialogueController
@@ -82188,6 +82188,7 @@ MonoBehaviour:
   _isLockedForever: 0
   _doorSibling: {fileID: 0}
   _canNPCOpenDoor: 1
+  _shouldNPCcloseDoorBehind: 1
 --- !u!23 &1383169954
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -94493,6 +94494,10 @@ PrefabInstance:
       propertyPath: _lockElectronicController
       value: 
       objectReference: {fileID: 264650258}
+    - target: {fileID: 9163452554118338337, guid: a1a14d1d68a897945bc2ec6877fc685a, type: 3}
+      propertyPath: _shouldNPCcloseDoorBehind
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -100565,6 +100570,10 @@ PrefabInstance:
       propertyPath: _lockElectronicController
       value: 
       objectReference: {fileID: 264650258}
+    - target: {fileID: 9163452554118338337, guid: a1a14d1d68a897945bc2ec6877fc685a, type: 3}
+      propertyPath: _shouldNPCcloseDoorBehind
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

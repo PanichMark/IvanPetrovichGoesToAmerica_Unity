@@ -20,6 +20,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	[SerializeField] protected bool _isLockedForever;
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
 	[SerializeField] protected bool _canNPCOpenDoor = true;
+	[SerializeField] protected bool _shouldNPCcloseDoorBehind = true;
 	protected DoorNPCDetector _npcDetector;
 	protected NavMeshObstacle _navMeshObstacle;
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
@@ -258,7 +259,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 
 	public void NPCtryClosingDoor()
 	{
-		if (IsObjectOpened && _canNPCOpenDoor)
+		if (IsObjectOpened && _canNPCOpenDoor && _shouldNPCcloseDoorBehind)
 		{
 			if (DidNPCopenedThisDoor)
 			{
