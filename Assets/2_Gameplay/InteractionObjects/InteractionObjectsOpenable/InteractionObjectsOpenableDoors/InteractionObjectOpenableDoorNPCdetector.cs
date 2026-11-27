@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DoorNPCDetector : MonoBehaviour
+public class InteractionObjectOpenableDoorNPCdetector : MonoBehaviour
 {
     private InteractionObjectOpenableDoorUndestructable _doorController;
     private Collider _collider;

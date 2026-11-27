@@ -21,7 +21,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	[SerializeField] protected InteractionObjectOpenableDoorUndestructable _doorSibling;
 	[SerializeField] protected bool _canNPCOpenDoor = true;
 	[SerializeField] protected bool _shouldNPCcloseDoorBehind = true;
-	protected DoorNPCDetector _npcDetector;
+	protected InteractionObjectOpenableDoorNPCdetector _npcDetector;
 	protected NavMeshObstacle _navMeshObstacle;
 	public override string InteractionHintMessageMain => _interactionHintMessageMain;
 	private GameScenesManager _gameSceneManager;
@@ -38,7 +38,7 @@ public class InteractionObjectOpenableDoorUndestructable : InteractionObjectOpen
 	{
 		if (_changeScene == null && _isLockedForever == false)
 		{
-			_npcDetector = transform.parent.GetComponentInChildren<DoorNPCDetector>();
+			_npcDetector = transform.parent.GetComponentInChildren<InteractionObjectOpenableDoorNPCdetector>();
 			//Debug.Log(gameObject.name);
 			_npcDetector.Initialize(this);
 			CanNPCopenThis = true;
