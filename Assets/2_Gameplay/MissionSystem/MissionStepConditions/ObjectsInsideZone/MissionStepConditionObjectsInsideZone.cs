@@ -97,6 +97,9 @@ public class MissionStepConditionObjectsInsideZone : MissionStepConditionAbstrac
 
 	private void CompleteMission()
 	{
+		if (_isConditionMet) return;
+		if (!IsActive) return;
+
 		_isConditionMet = true;
 		_missionStepAbstract.OnStepCompleted(GoToNextStep);
 		//Debug.Log($"[Условие] УСПЕХ! Все объекты внутри {_stepConditionOwner.name}. Шаг выполнен.");

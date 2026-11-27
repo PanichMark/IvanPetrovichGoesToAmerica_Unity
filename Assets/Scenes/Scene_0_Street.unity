@@ -19337,6 +19337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 302916669}
   - component: {fileID: 302916670}
+  - component: {fileID: 302916671}
   m_Layer: 0
   m_Name: RegisterMissionStepGoal
   m_TagString: Untagged
@@ -19372,6 +19373,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _missionStepGoalMarker: {fileID: 11400000, guid: 146e4c58e5aa273479b489c90bbedfe0, type: 2}
+--- !u!114 &302916671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302916668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 5c6ea1396f1490d4991d7dd76e77eace, type: 2}
 --- !u!1 &303215939
 GameObject:
   m_ObjectHideFlags: 0
@@ -39001,7 +39015,16 @@ PrefabInstance:
       addedObject: {fileID: 639967070}
     - targetCorrespondingSourceObject: {fileID: 4023577473073585539, guid: 6b16561caf5d6fa4180ccb63691ce508, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 639967074}
+    - targetCorrespondingSourceObject: {fileID: 4023577473073585539, guid: 6b16561caf5d6fa4180ccb63691ce508, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 639967071}
+    - targetCorrespondingSourceObject: {fileID: 4023577473073585539, guid: 6b16561caf5d6fa4180ccb63691ce508, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 639967073}
+    - targetCorrespondingSourceObject: {fileID: 4023577473073585539, guid: 6b16561caf5d6fa4180ccb63691ce508, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 639967072}
   m_SourcePrefab: {fileID: 100100000, guid: 6b16561caf5d6fa4180ccb63691ce508, type: 3}
 --- !u!4 &639967068 stripped
 Transform:
@@ -39039,6 +39062,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _linkedMissionCondition: {fileID: 11400000, guid: adff110c239deef41a62b8973023e3ae, type: 2}
+--- !u!114 &639967072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639967069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4d2c30968a436a4f8b99e9acd2deac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkedMissionCondition: {fileID: 11400000, guid: 422be6aabb2bac64fb9bca9efcc78f02, type: 2}
+--- !u!114 &639967073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639967069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4d2c30968a436a4f8b99e9acd2deac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkedMissionCondition: {fileID: 11400000, guid: 765abdaf03949184b91401a4648bbef1, type: 2}
+--- !u!114 &639967074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639967069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d57da4d8cbea72043bfcf0a4089cf6ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkedMissionCondition: {fileID: 11400000, guid: 3811601f09fd4604e87ada5527661227, type: 2}
 --- !u!1 &640956703
 GameObject:
   m_ObjectHideFlags: 0
@@ -50654,6 +50716,7 @@ GameObject:
   - component: {fileID: 851775112}
   - component: {fileID: 851775113}
   - component: {fileID: 851775114}
+  - component: {fileID: 851775115}
   m_Layer: 0
   m_Name: RegisterMissionStepGoal
   m_TagString: Untagged
@@ -50715,6 +50778,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _missionStepGoalMarker: {fileID: 11400000, guid: 5f9e4e6e8f96ad040b6b3b7f7371e6d8, type: 2}
+--- !u!114 &851775115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851775110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ab6352ff3d5d4a93d59c58d04d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionStepGoalMarker: {fileID: 11400000, guid: 2c141747a626ba64ab3230335ec32aed, type: 2}
 --- !u!1001 &852046208
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ public class MissionStepConditionNPCstateChanged : MissionStepConditionAbstract
 {
 	public void CheckState(NPCstateTypes newState)
 	{
-		if (_isConditionMet) return;
+		if (_isConditionMet || !IsActive) return;
 
 
 

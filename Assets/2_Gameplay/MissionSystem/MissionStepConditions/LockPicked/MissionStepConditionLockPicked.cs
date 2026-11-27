@@ -5,7 +5,7 @@ public class MissionStepConditionLockPicked : MissionStepConditionAbstract
 {
 	public void CompleteCondition()
 	{
-		if (!_isConditionMet)
+		if (!_isConditionMet && IsActive)
 		{
 			_isConditionMet = true;
 			_missionStepAbstract.OnStepCompleted(GoToNextStep);

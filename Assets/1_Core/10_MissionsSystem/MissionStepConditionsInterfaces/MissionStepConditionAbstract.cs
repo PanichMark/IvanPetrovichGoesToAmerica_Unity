@@ -13,6 +13,7 @@ public abstract class MissionStepConditionAbstract : ScriptableObject
 	protected MissionStep _missionStepAbstract;
 
 	public MissionStep MissionStepAbstract => _missionStepAbstract;
+	public bool IsActive => _missionStepAbstract.IsCurrentStep;
 	public void RegisterOwner(GameObject owner)
 	{
 		_stepConditionOwner = owner;

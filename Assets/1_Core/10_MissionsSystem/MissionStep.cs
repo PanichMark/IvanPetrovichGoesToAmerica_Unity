@@ -8,6 +8,7 @@ public class MissionStep : ScriptableObject
 	public string MissionStepGoal_EN;
 	private MissionsManager _missionsManager;
 	public bool ShowMissionMarker => showMissionMarker;
+	public bool IsCurrentStep => _missionsManager.ActiveMission.MissionSteps[_missionsManager.CurrentStepIndex] == this;
 
 	private readonly List<MonoBehaviour> _registeredActions = new List<MonoBehaviour>();
 

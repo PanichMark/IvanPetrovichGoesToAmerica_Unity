@@ -20,7 +20,7 @@ public class MissionStepConditionObjectInteracted : MissionStepConditionAbstract
 	public void OnPlayerInteracted(GameObject interactedObject)
 	{
 		// Проверяем, что у нас есть владелец и что взаимодействовали именно с ним
-		if (_stepConditionOwner != null && interactedObject == _stepConditionOwner && !_isConditionMet)
+		if (_stepConditionOwner != null && interactedObject == _stepConditionOwner && !_isConditionMet && IsActive)
 		{
 			_isConditionMet = true;
 			_missionStepAbstract.OnStepCompleted(GoToNextStep);
