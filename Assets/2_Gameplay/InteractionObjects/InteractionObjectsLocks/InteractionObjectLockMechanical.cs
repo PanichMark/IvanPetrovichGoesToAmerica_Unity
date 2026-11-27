@@ -24,7 +24,7 @@ public class InteractionObjectLockMechanical : InteractionObjectLockAbstract
 	private TextMeshProUGUI _textButtonExitLockpickMechanicalMenu;
 	private MenuManager _menuManager;
 	private GameScenesManager _gameSceneManager;
-
+	private Bootstrap _bootstrap;
 	private bool _isPuzzleActive;
 	public bool WasUnlocked { get; private set; } = false;
 	private bool _isMovingOrRotating = false;
@@ -73,6 +73,7 @@ public class InteractionObjectLockMechanical : InteractionObjectLockAbstract
 			_moveSpeed = 0;
 		}
 
+		_bootstrap = ServiceLocator.Resolve<Bootstrap>();
 		_viewModelMenuLockpickMechanical = ServiceLocator.Resolve<ViewModelMenuLockpickMechanical>();
 	_gameCanvasesList = ServiceLocator.Resolve<GameplayCanvases>();
 		_canvasLockMechanical = _gameCanvasesList.CanvasLockMechanical;
@@ -114,26 +115,44 @@ _buttonMoveLockMechanismDown = _viewModelMenuLockpickMechanical.ButtonMoveLockMe
 	{
 		if (_isPuzzleActive)
 		{
-			if (!_isMovingOrRotating && !_menuManager.IsPauseMenuOpened)
+			if (_bootstrap.ImmediateLocks == false)
 			{
-				if (Input.GetKeyDown(KeyCode.UpArrow))
+				if (!_isMovingOrRotating && !_menuManager.IsPauseMenuOpened)
 				{
-					RotateGearUp();
+					if (Input.GetKeyDown(KeyCode.UpArrow))
+					{
+						RotateGearUp();
+					}
+					if (Input.GetKeyDown(KeyCode.DownArrow))
+					{
+						RotateGearDown();
+					}
+					if (Input.GetKeyDown(KeyCode.RightArrow))
+					{
+						MoveRight();
+					}
+					if (Input.GetKeyDown(KeyCode.LeftArrow))
+					{
+						MoveLeft();
+					}
 				}
-				if (Input.GetKeyDown(KeyCode.DownArrow))
+			}
+			else
+			{
+				if (Input.GetKeyDown(KeyCode.W))
 				{
-					RotateGearDown();
-				}
-				if (Input.GetKeyDown(KeyCode.RightArrow))
-				{
-					MoveRight();
-				}
-				if (Input.GetKeyDown(KeyCode.LeftArrow))
-				{
-					MoveLeft();
+					FinishImmediateLock();
 				}
 			}
 		}
+
+	}
+
+	private void FinishImmediateLock()
+	{
+		WasUnlocked = true;
+		SendLockPickedSignal();
+		OnClosePuzzle();
 	}
 
 	public override void Interact()

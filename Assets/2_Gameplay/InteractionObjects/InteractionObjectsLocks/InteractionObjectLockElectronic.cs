@@ -24,13 +24,14 @@ public class InteractionObjectLockElectronic : InteractionObjectLockAbstract
 	private Color _colorOriginal;
 	private List<int> _alarmIndices;
 	private int _movesLeft = 5;
-
+	private Bootstrap _bootstrap;
 	private GameplayCanvases _gameCanvasesList;
 	private GameObject _canvasLockEletcronic;
 	private ViewModelMenuLockpickElectronic _viewModelMenuLockpickElectronic;
 	private bool _isPuzzleActive;
 	void Awake()
 	{
+		_bootstrap = ServiceLocator.Resolve<Bootstrap>();
 		_gameCanvasesList = ServiceLocator.Resolve<GameplayCanvases>();
 		_canvasLockEletcronic = _gameCanvasesList.CanvasLockElectronic;
 		_viewModelMenuLockpickElectronic = ServiceLocator.Resolve<ViewModelMenuLockpickElectronic>();
@@ -55,6 +56,15 @@ _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 		_localizationManager.OnLanguageChanged += ChangeLanguage;
 		//_gameSceneManager.OnBeginLoadingMainMenuOrEndGameTitlesScene += CloseElectronicLockPuzzle;
 		//_gameSceneManager.OnBeginLoadingGameplayScene += CloseElectronicLockPuzzle;
+	}
+
+	private void FinishImmediateLock()
+	{
+		if (WasUnlocked) return;
+
+		WasUnlocked = true;
+		SendLockPickedSignal();
+		CloseElectronicLockPuzzle();
 	}
 
 	public void ChangeLanguage(LocalizationManager localizationManager)
@@ -151,6 +161,11 @@ _gameSceneManager = ServiceLocator.Resolve<GameScenesManager>();
 
 	private void OnButtonClicked(Button clickedButton)
 	{
+		if (_bootstrap.ImmediateLocks)
+		{
+			FinishImmediateLock(); return;
+		}
+
 		int buttonIndex = Array.IndexOf(_buttonsLockElectrical, clickedButton.gameObject);
 
 		if (_alarmIndices.Contains(buttonIndex))

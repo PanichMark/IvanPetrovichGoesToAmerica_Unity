@@ -41,7 +41,10 @@ public class Bootstrap : MonoBehaviour
 
 	[Header("--- DEBUG  ---")]
 	[SerializeField] private bool _debugNPC;
+	[SerializeField] private bool _immediateLocks;
+
 	public bool DebugNPC => _debugNPC;
+	public bool ImmediateLocks => _immediateLocks;
 
 	public OperationSystemsEnum OperationSystem { get; private set; }
 

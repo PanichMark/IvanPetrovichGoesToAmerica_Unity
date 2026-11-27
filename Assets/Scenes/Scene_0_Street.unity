@@ -45912,6 +45912,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 766142058}
   m_Mesh: {fileID: -1761190392093596079, guid: 8fbe557a22a3bfc43af2a0516e4f9649, type: 3}
+--- !u!1 &769278371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 769278372}
+  m_Layer: 0
+  m_Name: BistrowOwner7
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &769278372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769278371}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.96, y: 0, z: -55.17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1205039571}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &769571850
 GameObject:
   m_ObjectHideFlags: 0
@@ -47470,7 +47501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 320915802098946565, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _anchorData.Array.size
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 320915802098946565, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _anchorData.Array.data[0].NPCanchorPoint
@@ -47503,7 +47534,7 @@ PrefabInstance:
     - target: {fileID: 320915802098946565, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _anchorData.Array.data[7].NPCanchorPoint
       value: 
-      objectReference: {fileID: 1043140315}
+      objectReference: {fileID: 769278371}
     - target: {fileID: 320915802098946565, guid: 1d50634a2107a434d9e3aa91e028f684, type: 3}
       propertyPath: _anchorData.Array.data[8].NPCanchorPoint
       value: 
@@ -61648,7 +61679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1043140316}
   m_Layer: 0
-  m_Name: BistrowOwner7
+  m_Name: BistrowOwner8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70320,6 +70351,7 @@ Transform:
   - {fileID: 1891215878}
   - {fileID: 947432848}
   - {fileID: 1654162428}
+  - {fileID: 769278372}
   - {fileID: 1043140316}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -94454,6 +94486,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1684219871}
     - target: {fileID: 9163452554118338337, guid: a1a14d1d68a897945bc2ec6877fc685a, type: 3}
+      propertyPath: _doorOpenAngle
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 9163452554118338337, guid: a1a14d1d68a897945bc2ec6877fc685a, type: 3}
       propertyPath: _lockElectronicController
       value: 
       objectReference: {fileID: 264650258}
@@ -98973,7 +99009,7 @@ Transform:
   m_GameObject: {fileID: 1654162427}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.78, y: 0, z: -56.74}
+  m_LocalPosition: {x: -9.48, y: 0, z: -57.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -99076,6 +99112,7 @@ GameObject:
   - component: {fileID: 1656745232}
   - component: {fileID: 1656745234}
   - component: {fileID: 1656745233}
+  - component: {fileID: 1656745235}
   m_Layer: 0
   m_Name: Prop_Street_Fence_Tall_Section (1)
   m_TagString: Untagged
@@ -99151,6 +99188,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1656745231}
   m_Mesh: {fileID: -8587946946623288270, guid: a83f97a5b80ded049b4761c3899ecdc7, type: 3}
+--- !u!65 &1656745235
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656745231}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.05, y: 3.5002162, z: 0.10000004}
+  m_Center: {x: -0.975, y: 1.7501081, z: 0}
 --- !u!1 &1657067062
 GameObject:
   m_ObjectHideFlags: 0
@@ -100499,6 +100557,10 @@ PrefabInstance:
       propertyPath: _doorSibling
       value: 
       objectReference: {fileID: 1600069267}
+    - target: {fileID: 9163452554118338337, guid: a1a14d1d68a897945bc2ec6877fc685a, type: 3}
+      propertyPath: _doorOpenAngle
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 9163452554118338337, guid: a1a14d1d68a897945bc2ec6877fc685a, type: 3}
       propertyPath: _lockElectronicController
       value: 
@@ -160490,6 +160552,7 @@ GameObject:
   - component: {fileID: 4677221020469091118}
   - component: {fileID: 7063181675393100929}
   - component: {fileID: 442897203617119882}
+  - component: {fileID: 8272355178650061017}
   m_Layer: 0
   m_Name: Prop_Street_Fence_Tall_Section
   m_TagString: Untagged
@@ -160497,6 +160560,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
+--- !u!65 &8272355178650061017
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8272355178650061016}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.05, y: 3.5002162, z: 0.10000004}
+  m_Center: {x: -0.975, y: 1.7501081, z: 0}
 --- !u!1 &8282394429688998003
 GameObject:
   m_ObjectHideFlags: 0
